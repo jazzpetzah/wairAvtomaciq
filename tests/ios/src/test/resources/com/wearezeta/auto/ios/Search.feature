@@ -65,7 +65,7 @@ Feature: Search
       | Name      | ParticipantsCount |
       | user1Name | 2                 |
 
-  @C40 @rc @regression
+  @C40 @rc @regression @fastLogin
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -140,7 +140,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C1049 @rc @clumsy @regression
+  @C1049 @rc @clumsy @regression @fastLogin
   Scenario Outline: Verify starting a call with action button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

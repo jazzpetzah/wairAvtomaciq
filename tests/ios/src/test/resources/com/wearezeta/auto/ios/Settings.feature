@@ -48,7 +48,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C1107 @regression
+  @C1107 @regression @fastLogin
   Scenario Outline: Verify default value for sound settings is all
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number

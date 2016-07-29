@@ -88,7 +88,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @C1087 @regression @fastLogin
+  @C1087 @regression
   Scenario Outline: Verify error message appears in case of entering a not valid phone number
     Given There is 1 user where <Name> is me with email only
     Given I sign in using my email
