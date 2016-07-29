@@ -463,7 +463,6 @@ Feature: VideoCalling
     And <Contact> verifies to get audio data from me
     And <Contact> verifies to get video data from me
     And <Contact> verifies that all audio flows have greater than 0 bytes
-    And <Contact> verifies that all video flows have greater than 0 bytes
     When I hang up call with conversation <Contact>
     Then I do not see the call controls for conversation <Contact>
     And I do not see my self video view
