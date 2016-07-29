@@ -120,9 +120,18 @@ public class SEBridge {
         getOrAddDevice(userFrom, deviceName).shareLocation(convId, longitude, latitude, locationName, zoom);
     }
 
+    public void deleteMessage(ClientUser userFrom, String convId, MessageId messageId) throws Exception {
+        getOrAddRandomDevice(userFrom).deleteMessage(convId, messageId);
+    }
+
     public void deleteMessage(ClientUser userFrom, String convId, MessageId messageId, String deviceName)
             throws Exception {
-        getOrAddDevice(userFrom, deviceName).deleteMessage(convId, messageId);
+        if (deviceName == null) {
+            deleteMessage(userFrom, convId, messageId);
+        }
+        else {
+            getOrAddDevice(userFrom, deviceName).deleteMessage(convId, messageId);
+        }
     }
 
     public void shareDefaultLocation(ClientUser userFrom, String convId, String deviceName) throws Exception {
@@ -131,6 +140,9 @@ public class SEBridge {
 
     public ActorMessage.MessageInfo[] getConversationMessages(ClientUser userFrom, String convId, String deviceName)
             throws Exception {
+        if (deviceName == null) {
+            return getOrAddRandomDevice(userFrom).getConversationMessages(convId);
+        }
         return getOrAddDevice(userFrom, deviceName).getConversationMessages(convId);
     }
 

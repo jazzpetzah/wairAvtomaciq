@@ -1202,7 +1202,7 @@ public class CommonIOSSteps {
      * @throws Exception
      * @step. ^User (.*) deletes? the recent message from (user|group conversation) (.*) via device (.*)$
      */
-    @When("^User (.*) deletes? the recent message from (user|group conversation) (.*) via device (.*)$")
+    @When("^User (.*) deletes? the recent message from (user|group conversation) (.*)(?: via device (.*))?$")
     public void UserXDeleteLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
             throws Exception {
         boolean isGroup = convoType.equals("group conversation");
