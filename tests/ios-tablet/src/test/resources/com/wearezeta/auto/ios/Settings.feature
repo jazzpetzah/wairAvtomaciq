@@ -1,6 +1,6 @@
 Feature: Settings
 
-  @C2905 @regression
+  @C2905 @regression @fastLogin
   Scenario Outline: Verify user can access settings [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -15,7 +15,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C2906 @regression @rc
+  @C2906 @regression @rc @fastLogin
   Scenario Outline: Attempt to open About screen in settings [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -32,7 +32,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C2907 @regression
+  @C2907 @regression @fastLogin
   Scenario Outline: Verify reset password page is accessible from settings [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -81,7 +81,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C2911 @regression
+  @C2911 @regression @fastLogin
   Scenario Outline: Verify about screen contains all the required information [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given User me change accent color to <Color>

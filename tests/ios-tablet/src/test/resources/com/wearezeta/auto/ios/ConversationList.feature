@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @C2530 @regression @rc
+  @C2530 @regression @rc @fastLogin
   Scenario Outline: Verify archive a conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -17,7 +17,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2528 @regression
+  @C2528 @regression @fastLogin
   Scenario Outline: Verify archive a group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -35,7 +35,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
-  @C2529 @regression
+  @C2529 @regression @fastLogin
   Scenario Outline: Unarchive conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -51,7 +51,7 @@ Feature: Conversation List
       | Name      | ArchivedUser |
       | user1Name | user2Name    |
 
-  @C2506 @regression
+  @C2506 @regression @fastLogin
   Scenario Outline: Verify opening search by tapping on the search field [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -64,7 +64,7 @@ Feature: Conversation List
       | Name      |
       | user1Name |
 
-  @C2533 @regression
+  @C2533 @regression @fastLogin
   Scenario Outline: Verify Ping animation in the conversations list [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -82,7 +82,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2508 @regression
+  @C2508 @regression @fastLogin
   Scenario Outline: Verify conversations are sorted according to most recent activity [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
@@ -101,7 +101,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  | Contact3  | Number | Picture     |
       | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
 
-  @C2509 @regression @rc
+  @C2509 @regression @rc @fastLogin
   Scenario Outline: (ZIOS-6338) Verify inbox area displaying in case of new incoming connection requests [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -118,7 +118,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2532 @regression
+  @C2532 @regression @fastLogin
   Scenario Outline: Verify missed call indicator appearance in conversation list [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -140,7 +140,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact1  | Number | CallBackend |
       | user1Name | user2Name | user3Name | 2      | chrome      |
 
-  @C2535 @regression
+  @C2535 @regression @fastLogin
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -165,7 +165,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2558 @regression
+  @C2558 @regression @fastLogin
   Scenario Outline: Verify action menu is opened on swipe right on the group conversation [LANDSCAPE]
     Given I rotate UI to landscape
     Given There are 3 users where <Name> is me
@@ -185,7 +185,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3name | ActionMenuChat |
 
-  @C2561 @regression
+  @C2561 @regression @fastLogin
   Scenario Outline: Verify action menu is opened on swipe right on 1to1 conversation [LANDSCAPE]
     Given I rotate UI to landscape
     Given There are 2 users where <Name> is me
@@ -204,7 +204,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2511 @regression
+  @C2511 @regression @fastLogin
   Scenario Outline: Verify first conversation in the list is highlighted and opened [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -219,7 +219,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2545 @regression
+  @C2545 @regression @fastLogin
   Scenario Outline: Verify that deleted conversation isn't going to archive [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -238,7 +238,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2547 @regression
+  @C2547 @regression @fastLogin
   Scenario Outline: Verify deleting 1-to-1 conversation from archive [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -259,7 +259,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2553 @rc @regression
+  @C2553 @rc @regression @fastLogin
   Scenario Outline: ZIOS-6809 Verify posting in a group conversation without content [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -287,7 +287,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
-  @C2543 @regression
+  @C2543 @regression @fastLogin
   Scenario Outline: Verify canceling blocking person [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -303,7 +303,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2388 @regression
+  @C2388 @regression @fastLogin
   Scenario Outline: Verify archiving silenced conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -328,7 +328,7 @@ Feature: Conversation List
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C2551 @regression @ZIOS-5247
+  @C2551 @regression @ZIOS-5247 @fastLogin
   Scenario Outline: Verify removing the content and leaving from the group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -353,7 +353,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C2555 @regression
+  @C2555 @regression @fastLogin
   Scenario Outline: Verify deleting the history from kicked out conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -375,7 +375,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | KICKCHAT      |
 
-  @C2541 @regression
+  @C2541 @regression @fastLogin
   Scenario Outline: Verify blocking person from action menu [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -396,7 +396,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2536 @regression @rc
+  @C2536 @regression @rc @fastLogin
   Scenario Outline: Verify messages are marked read after opening a conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -415,7 +415,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C95633 @regression
+  @C95633 @regression @fastLogin
   Scenario Outline: Verify hint is not shown anymore after tapping on it once [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

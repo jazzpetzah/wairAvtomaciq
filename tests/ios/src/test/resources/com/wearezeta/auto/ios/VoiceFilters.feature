@@ -1,6 +1,6 @@
 Feature: Voice Filters
 
-  @C165138 @regression
+  @C165138 @regression @fastLogin
   Scenario Outline: Verify you can record an audio message and apply voice filter to it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -20,7 +20,7 @@ Feature: Voice Filters
       | Name      | Contact   | ButtonsCount |
       | user1Name | user2Name | 4            |
 
-  @C165139 @regression
+  @C165139 @regression @fastLogin
   Scenario Outline: Verify you can cancel filtered voice message sending
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -41,7 +41,7 @@ Feature: Voice Filters
       | Name      | Contact   | ButtonsCount |
       | user1Name | user2Name | 2            |
 
-  @C165156 @regression
+  @C165156 @regression @fastLogin
   Scenario Outline: ZIOS-6904 Verify voice filter control is not dismissed if audio recording is in progress and other UI event happens
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -69,7 +69,7 @@ Feature: Voice Filters
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
-  @C165155 @regression
+  @C165155 @regression @fastLogin
   Scenario Outline: ZIOS-6903 Voice Filters: Verify voice filter control is preserved if one has already recorded something
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -98,7 +98,7 @@ Feature: Voice Filters
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
-  @C165140 @regression
+  @C165140 @regression @fastLogin
   Scenario Outline: Verify you can retry recording of filtered voice message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -117,7 +117,7 @@ Feature: Voice Filters
       | Name      | Contact   | ButtonsCount |
       | user1Name | user2Name | 1            |
 
-  @C165178 @regression
+  @C165178 @regression @fastLogin
   Scenario Outline: Verify only one recorder works at a time
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

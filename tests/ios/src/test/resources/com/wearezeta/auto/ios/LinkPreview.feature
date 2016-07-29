@@ -1,6 +1,6 @@
 Feature: Link Preview
 
-  @C167029 @regression
+  @C167029 @regression @fastLogin
   Scenario Outline: Verify preview is shown for sent link (link only)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -19,7 +19,7 @@ Feature: Link Preview
       | Name      | Contact   | Link                                                                                  |
       | user1Name | user2Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 |
 
-  @C167030 @C167031 @C167032 @regression
+  @C167030 @C167031 @C167032 @regression @fastLogin
   Scenario Outline: Verify preview is shown for mixed link and text
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -53,7 +53,7 @@ Feature: Link Preview
       | Name      | Contact   | Link                                                                                  | Text       | Text1      |
       | user1Name | user2Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 | My text    | Text first |
 
-  @C169224 @regression
+  @C169224 @regression @fastLogin
   Scenario Outline: Verify preview is shown for shortened URL
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -69,7 +69,7 @@ Feature: Link Preview
       | Name      | Contact   | Shortenlink          |
       | user1Name | user2Name | http://goo.gl/pA9mgH |
 
-  @C167039 @regression
+  @C167039 @regression @fastLogin
   Scenario Outline: Verify preview is shown for different formats of link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -117,7 +117,7 @@ Feature: Link Preview
       | Name      | Contact   | Link                | Link1                | Link2                   | Link3               | Link4               |
       | user1Name | user2Name | http://facebook.com | https://facebook.com | http://www.facebook.com | Http://facebook.com | HTTP://FACEBOOK.COM |
 
-  @C167038 @regression
+  @C167038 @regression @fastLogin
   Scenario Outline: Verify copying link preview
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>, <Contact1>
@@ -139,7 +139,7 @@ Feature: Link Preview
       | Name      | Contact   | Contact1  | Link                                                                                  |
       | user1Name | user2Name | user3Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 |
 
-  @C167033 @regression
+  @C167033 @regression @fastLogin
   Scenario Outline: Verify preview is shown without picture when there are none
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -154,7 +154,7 @@ Feature: Link Preview
       | Name      | Contact   | Link                                               |
       | user1Name | user2Name | https://en.wikipedia.org/wiki/Provincial_Secretary |
 
-  @C167041 @regression
+  @C167041 @regression @fastLogin
   Scenario Outline: Verify link preview isn't shown for YouTube, SoundCloud, Vimeo, Giphy
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

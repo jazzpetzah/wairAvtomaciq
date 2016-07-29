@@ -1,6 +1,6 @@
 Feature: Autoconnect
 
-  @C2034 @C2035 @real @noAcceptAlert
+  @C2034 @C2035 @real @noAcceptAlert @fastLogin
   Scenario Outline: Verify autoconnect users by direct match phone numbers
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number

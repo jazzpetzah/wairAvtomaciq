@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @C2598 @regression
+  @C2598 @regression @fastLogin
   Scenario Outline: Tap the cursor to get to the end of the conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -15,7 +15,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2625 @regression
+  @C2625 @regression @fastLogin
   Scenario Outline: Verify you can see conversation images in fullscreen [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -41,7 +41,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2629 @regression
+  @C2629 @regression @fastLogin
   Scenario Outline: Verify you can see conversation images in fullscreen [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -68,7 +68,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2661 @regression
+  @C2661 @regression @fastLogin
   Scenario Outline: I can send and play inline youtube link [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -84,7 +84,7 @@ Feature: Conversation View
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
-  @C2662 @regression
+  @C2662 @regression @fastLogin
   Scenario Outline: I can send and play inline youtube link [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -101,7 +101,7 @@ Feature: Conversation View
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
-  @C2630 @regression
+  @C2630 @regression @fastLogin
   Scenario Outline: Rotate image in fullscreen mode [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -122,7 +122,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2729 @regression
+  @C2729 @regression @fastLogin
   Scenario Outline: Verify archiving conversation from ellipsis menu [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -140,7 +140,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2733 @rc @regression
+  @C2733 @rc @regression @fastLogin
   Scenario Outline: Verify archiving conversation from ellipsis menu [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -159,7 +159,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2596 @regressionF2601
+  @C2596 @regression @fastLogin
   Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
@@ -178,7 +178,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
       | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
 
-  @C2601 @regression
+  @C2601 @regression @fastLogin
   Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
@@ -197,7 +197,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
       | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
 
-  @C2564 @regression
+  @C2564 @regression @fastLogin
   Scenario Outline: Verify player is displayed for vimeo links with video IDs [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -211,7 +211,7 @@ Feature: Conversation View
       | Name      | Contact1  | VimeoLink                   |
       | user1Name | user2Name | https://vimeo.com/129426512 |
 
-  @C2565 @regression
+  @C2565 @regression @fastLogin
   Scenario Outline: Verify player is displayed for vimeo links with video IDs [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -225,7 +225,7 @@ Feature: Conversation View
       | Name      | Contact1  | VimeoLink                   |
       | user1Name | user2Name | https://vimeo.com/129426512 |
 
-  @C2567 @regression
+  @C2567 @regression @fastLogin
   Scenario Outline: Verify player isn't displayed for vimeo links without video IDs [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -240,7 +240,7 @@ Feature: Conversation View
       | Name      | Contact   | VimeoLink                    |
       | user1Name | user2Name | https://vimeo.com/categories |
 
-  @C2668 @regression
+  @C2668 @regression @fastLogin
   Scenario Outline: Verify input field and action buttons are not shown simultaniously [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -257,7 +257,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2583 @regression
+  @C2583 @regression @fastLogin
   Scenario Outline: Verify possibility to copy image in the conversation view [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -280,7 +280,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C2587 @regression
+  @C2587 @regression @fastLogin
   Scenario Outline: Verify possibility to copy image in the conversation view [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -304,7 +304,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C2549 @regression @ZIOS-5063
+  @C2549 @regression @ZIOS-5063 @fastLogin
   Scenario Outline: Verify posting in a 1-to-1 conversation without content [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -328,7 +328,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2617 @regression
+  @C2617 @regression @fastLogin
   Scenario Outline: Verify downloading images in fullscreen [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -351,7 +351,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C2631 @regression
+  @C2631 @regression @fastLogin
   Scenario Outline: Verify downloading images in fullscreen [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -374,7 +374,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C2460 @regression
+  @C2460 @regression @fastLogin
   Scenario Outline: Verify you still receive messages from blocked person in a group chat [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -392,7 +392,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | Caramba!      | testing.jpg |
 
-  @C2603 @regression
+  @C2603 @regression @fastLogin
   Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -412,7 +412,7 @@ Feature: Conversation View
       | Name      | Contact   | Contact1  |
       | user1Name | user2Name | user3Name |
 
-  @C2624 @regression @rc
+  @C2624 @regression @rc @fastLogin
   Scenario Outline: Verify sending GIF format pic [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -430,7 +430,7 @@ Feature: Conversation View
       | Name      | Contact   | GifPicture   |
       | user1Name | user2Name | animated.gif |
 
-  @C2592 @regression
+  @C2592 @regression @fastLogin
   Scenario Outline: Verify cursor tooltip is shown
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>

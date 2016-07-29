@@ -1,6 +1,6 @@
 Feature: Emoji
 
-  @C164766 @regression
+  @C164766 @regression @fastLogin
   Scenario Outline: Verify emoji is displayed bigger if it is sent alone
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

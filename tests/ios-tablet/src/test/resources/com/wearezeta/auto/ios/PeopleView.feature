@@ -1,6 +1,6 @@
 Feature: People View
 
-  @C2779 @regression
+  @C2779 @regression @fastLogin
   Scenario Outline: Start group chat with users from contact list [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -21,7 +21,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2896 @regression
+  @C2896 @regression @fastLogin
   Scenario Outline: Start group chat with users from contact list [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -43,7 +43,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2704 @regression
+  @C2704 @regression @fastLogin
   Scenario Outline: Start group chat from 1:1 conversation [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -64,7 +64,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @C2715 @regression @rc
+  @C2715 @regression @rc @fastLogin
   Scenario Outline: Start group chat from 1:1 conversation [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -85,7 +85,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @C2743 @regression
+  @C2743 @regression @fastLogin
   Scenario Outline: Verify leaving group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -104,7 +104,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | LeaveGroup    |
 
-  @C2744 @rc @regression @regression
+  @C2744 @rc @regression @regression @fastLogin
   Scenario Outline: Verify leaving group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -124,7 +124,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | LeaveGroup    |
 
-  @C2710 @regression
+  @C2710 @regression @fastLogin
   Scenario Outline: Verify removing from group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -143,7 +143,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | RemoveGroup   |
 
-  @C2716 @rc @regression
+  @C2716 @rc @regression @fastLogin
   Scenario Outline: Verify removing from group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -163,7 +163,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | RemoveGroup   |
 
-  @C2727 @regression
+  @C2727 @regression @fastLogin
   Scenario Outline: Verify editing the conversation name [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -185,7 +185,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | ChatName |
       | user1Name | user2Name | user3Name | RenameGroup   | NewName  |
 
-  @C2728 @rc @regression
+  @C2728 @rc @regression @fastLogin
   Scenario Outline: Verify editing the conversation name [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -206,7 +206,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | ChatName |
       | user1Name | user2Name | user3Name | RenameGroup   | NewName  |
 
-  @C2711 @regression
+  @C2711 @regression @fastLogin
   Scenario Outline: Verify correct group info page information [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -222,7 +222,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | ParticipantsNumber |
       | user1Name | user2Name | user3Name | GroupInfo     | 2                  |
 
-  @C2717 @rc @regression
+  @C2717 @rc @regression @fastLogin
   Scenario Outline: Verify correct group info page information [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -239,7 +239,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | ParticipantsNumber |
       | user1Name | user2Name | user3Name | GroupInfo     | 2                  |
 
-  @C2702 @regression
+  @C2702 @regression @fastLogin
   Scenario Outline: Check any users personal info in group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>,<ConnectedContact>
@@ -255,7 +255,7 @@ Feature: People View
       | Name      | Contact2  | ConnectedContact | GroupChatName   |
       | user1Name | user2Name | user3Name        | SingleInfoGroup |
 
-  @C2718 @rc @regression
+  @C2718 @rc @regression @fastLogin
   Scenario Outline: Check any users personal info in group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>,<ConnectedContact>
@@ -272,7 +272,7 @@ Feature: People View
       | Name      | Contact2  | ConnectedContact | GroupChatName   |
       | user1Name | user2Name | user3Name        | SingleInfoGroup |
 
-  @C2719 @regression
+  @C2719 @regression @fastLogin
   Scenario Outline: Verify you cant start 1:1 with unconnected user in group [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given <GroupCreator> is connected to me
@@ -290,7 +290,7 @@ Feature: People View
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
-  @C2720 @regression
+  @C2720 @regression @fastLogin
   Scenario Outline: Verify you cant start 1:1 with unconnected user in group [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given <GroupCreator> is connected to me
@@ -309,7 +309,7 @@ Feature: People View
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
-  @C2714 @regression
+  @C2714 @regression @fastLogin
   Scenario Outline: Verify opening 1-to-1 conversation from group conversation details [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
@@ -328,7 +328,7 @@ Feature: People View
       | Name      | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | 1on1FromGroup |
 
-  @C2721 @rc @regression
+  @C2721 @rc @regression @fastLogin
   Scenario Outline: Verify opening 1-to-1 conversation from group conversation details [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
@@ -348,7 +348,7 @@ Feature: People View
       | Name      | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | 1on1FromGroup |
 
-  @C2745 @regression
+  @C2745 @regression @fastLogin
   Scenario Outline: Verify unsilince the conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -370,7 +370,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | SILENCE       |
 
-  @C2747 @rc @regression
+  @C2747 @rc @regression @fastLogin
   Scenario Outline: Verify unsilince the conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -392,7 +392,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | SILENCE       |
 
-  @C2746 @regression
+  @C2746 @regression @fastLogin
   Scenario Outline: Verify silence the conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -413,7 +413,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | SILENCE       |
 
-  @C2748 @rc @regression
+  @C2748 @rc @regression @fastLogin
   Scenario Outline: Verify silence the conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -434,7 +434,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | SILENCE       |
 
-  @C2722 @regression
+  @C2722 @regression @fastLogin
   Scenario Outline: Add someone to a group conversation [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -453,7 +453,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | ParticipantsNumber |
       | user1Name | user2Name | user3Name | user4Name | AddContact    | 3                  |
 
-  @C2723 @regression
+  @C2723 @regression @fastLogin
   Scenario Outline: Add someone to a group conversation [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -473,7 +473,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | ParticipantsNumber |
       | user1Name | user2Name | user3Name | user4Name | AddContact    | 3                  |
 
-  @C2447 @regression
+  @C2447 @regression @fastLogin
   Scenario Outline: ZIOS-6762 Verify you can block a person from profile view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -492,7 +492,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2458 @regression
+  @C2458 @regression @fastLogin
   Scenario Outline: Verify you can block a person from profile view [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -512,7 +512,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2450 @regression
+  @C2450 @regression @fastLogin
   Scenario Outline: Verify you can unblock someone from a group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -532,7 +532,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | UnblockFromGroup |
 
-  @C2459 @regression
+  @C2459 @regression @fastLogin
   Scenario Outline: Verify you can unblock someone from a group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -552,7 +552,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | UnblockFromGroup |
 
-  @C2708 @regression
+  @C2708 @regression @fastLogin
   Scenario Outline: Verify displaying only connected users in the search in group chat [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -570,7 +570,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
-  @C2724 @regression
+  @C2724 @regression @fastLogin
   Scenario Outline: Verify displaying only connected users in the search in group chat [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -589,7 +589,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
-  @C2738 @regression
+  @C2738 @regression @fastLogin
   Scenario Outline: Verify that deleted conversation via participant view is not going to archive [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -611,7 +611,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C2739 @rc @regression
+  @C2739 @rc @regression @fastLogin
   Scenario Outline: Verify that deleted conversation via participant view is not going to archive [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -634,7 +634,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C2740 @regression
+  @C2740 @regression @fastLogin
   Scenario Outline: (ZIOS-6195) Verify removing the content and leaving from the group conversation via participant view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -661,7 +661,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C2741 @rc @regression
+  @C2741 @rc @regression @fastLogin
   Scenario Outline: (ZIOS-6195) Verify removing the content and leaving from the group conversation via participant view [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -689,7 +689,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C1833 @regression
+  @C1833 @regression @fastLogin
   Scenario Outline: ZIOS-6809 Verify removing the content from the group conversation via participant view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -716,7 +716,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
-  @C1834 @regression
+  @C1834 @regression @fastLogin
   Scenario Outline: ZIOS-6809 Verify removing the content from the group conversation via participant view [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -744,7 +744,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
-  @C1835 @regression
+  @C1835 @regression @fastLogin
   Scenario Outline: Verify removing the content from 1-to-1 via participant view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -770,7 +770,7 @@ Feature: People View
       | Name      | Contact1  | Image       |
       | user1Name | user2Name | testing.jpg |
 
-  @C1836 @regression
+  @C1836 @regression @fastLogin
   Scenario Outline: Verify removing the content from 1-to-1 via participant view [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -797,7 +797,7 @@ Feature: People View
       | Name      | Contact1  | Image       |
       | user1Name | user2Name | testing.jpg |
 
-  @C2556 @regression
+  @C2556 @regression @fastLogin
   Scenario Outline: Verify that left conversation is shown in the Archive [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -821,7 +821,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
 
-  @C2557 @regression
+  @C2557 @regression @fastLogin
   Scenario Outline: Verify that left conversation is shown in the Archive [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -846,7 +846,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
 
-  @C2432 @regression
+  @C2432 @regression @fastLogin
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending user (People view) [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact3>,<Contact2>,<Name>
@@ -864,7 +864,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | TESTCHAT      |
 
-  @C2433 @regression
+  @C2433 @regression @fastLogin
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending user (People view) [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact3>,<Contact2>,<Name>
@@ -883,7 +883,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | TESTCHAT      |
 
-  @C2736 @regression
+  @C2736 @regression @fastLogin
   Scenario Outline: Verify canceling blocking person from participant list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to all other users
@@ -900,7 +900,7 @@ Feature: People View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2737 @regression
+  @C2737 @regression @fastLogin
   Scenario Outline: Verify canceling blocking person from participant list [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to all other users
@@ -918,7 +918,7 @@ Feature: People View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2709 @regression
+  @C2709 @regression @fastLogin
   Scenario Outline: Verify length limit for group conversation name [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -936,7 +936,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLength |
       | user1Name | user2Name | user3Name | TESTCHAT      | 65                     |
 
-  @C2725 @regression
+  @C2725 @regression @fastLogin
   Scenario Outline: Verify length limit for group conversation name [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

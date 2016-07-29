@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @C2461 @regression
+  @C2461 @regression @fastLogin
   Scenario Outline: Verify possibility of disconnecting from conversation list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
@@ -17,7 +17,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2465 @rc @regression
+  @C2465 @rc @regression @fastLogin
   Scenario Outline: Verify possibility of disconnecting from conversation list [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
@@ -34,7 +34,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2462 @regression
+  @C2462 @regression @fastLogin
   Scenario Outline: (ZIOS-6323) Verify sending connection request after disconnecting [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
@@ -58,7 +58,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2466 @rc @regression
+  @C2466 @rc @regression @fastLogin
   Scenario Outline: Verify sending connection request after disconnecting [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
@@ -82,7 +82,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2463 @regression
+  @C2463 @regression @fastLogin
   Scenario Outline: Verify possibility of disconnecting from Search UI [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
@@ -100,7 +100,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2467 @regression
+  @C2467 @regression @fastLogin
   Scenario Outline: Verify possibility of disconnecting from Search UI [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
@@ -119,7 +119,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2437 @regression
+  @C2437 @regression @fastLogin
   Scenario Outline: ZIOS-4985 Verify ignoring a connection request from another person (People view) [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -146,7 +146,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
 
-  @C2442 @rc @regression
+  @C2442 @rc @regression @fastLogin
   Scenario Outline: ZIOS-4985 Verify ignoring a connection request from another person (People view) [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -172,7 +172,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
 
-  @C2513 @rc @regression
+  @C2513 @rc @regression @fastLogin
   Scenario Outline: Verify inbox is highlighted and opened in the list [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact3>
@@ -188,7 +188,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @C2430 @regression
+  @C2430 @regression @fastLogin
   Scenario Outline: Verify displaying first and last names for the incoming connection request [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to Me
@@ -203,7 +203,7 @@ Feature: Connect
       | Name      | Contact   | NewName  |
       | user1Name | user2Name | New Name |
 
-  @C2431 @regression
+  @C2431 @regression @fastLogin
   Scenario Outline: Verify displaying first and last names for the incoming connection request [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to Me
@@ -219,7 +219,7 @@ Feature: Connect
       | Name      | Contact   | NewName  |
       | user1Name | user2Name | New Name |
 
-  @C2468 @regression
+  @C2468 @regression @fastLogin
   Scenario Outline: Verify connection request is deleted from the inbox of the addresser [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -234,7 +234,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2469 @regression
+  @C2469 @regression @fastLogin
   Scenario Outline: Verify connection request is deleted from the inbox of the addresser [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -250,7 +250,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2436 @regression @rc
+  @C2436 @regression @rc @fastLogin
   Scenario Outline: Verify accepting a connection request from another person (People view) [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Contact2>,Me
@@ -273,7 +273,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @C2470 @regression
+  @C2470 @regression @fastLogin
   Scenario Outline: Verify copying invitation to the clipboard [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

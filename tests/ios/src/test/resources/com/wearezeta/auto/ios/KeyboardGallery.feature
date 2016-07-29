@@ -1,6 +1,6 @@
 Feature: Keyboard Gallery
 
-  @C169229 @real
+  @C169229 @real @fastLogin
   Scenario Outline: Verify full screen camera is opened by tapping on arrows icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -17,7 +17,7 @@ Feature: Keyboard Gallery
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C173057 @C170362 @regression
+  @C173057 @C170362 @regression @fastLogin
   Scenario Outline: Verify opening gallery tapping on gallery icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -34,7 +34,7 @@ Feature: Keyboard Gallery
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C183864 @staging
+  @C183864 @staging @fastLogin
   Scenario Outline: Verify switching camera keyboard with all others
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
