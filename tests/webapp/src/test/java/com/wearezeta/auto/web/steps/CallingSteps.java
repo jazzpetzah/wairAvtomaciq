@@ -258,13 +258,13 @@ public class CallingSteps {
             final Flow oldFlow = oldFlows.get(newFlowEntry.getKey());
             if (not == null) {
                 assertThat(
-                        "There is no video data flowing: \n" + newFlow.getTelemetry().getStats().getVideo()+ "\n\n" + oldFlow.
+                        "There is no video data flowing: \noldFlow: " + oldFlow.getTelemetry().getStats().getVideo()+ "\n\nnewFlow: " + newFlow.
                         getTelemetry().getStats().getVideo(),
                         newFlow.getTelemetry().getStats().getVideo().getBytesReceived(),
                         greaterThan(oldFlow.getTelemetry().getStats().getVideo().getBytesReceived()));
             } else {
                 assertThat(
-                        "There is video data flowing: \n" + newFlow.getTelemetry().getStats().getVideo() + "\n\n" + oldFlow.
+                        "There is video data flowing: \noldFlow: " + oldFlow.getTelemetry().getStats().getVideo() + "\n\nnewFlow: " + newFlow.
                         getTelemetry().getStats().getVideo(),
                         newFlow.getTelemetry().getStats().getVideo().getBytesReceived(),
                         equalTo(oldFlow.getTelemetry().getStats().getVideo().getBytesReceived()));
@@ -306,13 +306,13 @@ public class CallingSteps {
             final Flow oldFlow = oldFlows.get(newFlowEntry.getKey());
             if (not == null) {
                 assertThat(
-                        "There is no audio data flowing: \n" + newFlow.getTelemetry().getStats().getAudio() + "\n\n" + oldFlow.
+                        "There is no audio data flowing: \noldFlow: " + oldFlow.getTelemetry().getStats().getAudio() + "\n\nnewFlow:" + newFlow.
                         getTelemetry().getStats().getAudio(),
                         newFlow.getTelemetry().getStats().getAudio().getBytesReceived(),
                         greaterThan(oldFlow.getTelemetry().getStats().getAudio().getBytesReceived()));
             } else {
                 assertThat(
-                        "There is audio data flowing: \n" + newFlow.getTelemetry().getStats().getAudio() + "\n\n" + oldFlow.
+                        "There is audio data flowing: \noldFlow: " + oldFlow.getTelemetry().getStats().getAudio() + "\n\nnewFlow:" + newFlow.
                         getTelemetry().getStats().getAudio(),
                         newFlow.getTelemetry().getStats().getAudio().getBytesReceived(),
                         equalTo(oldFlow.getTelemetry().getStats().getAudio().getBytesReceived()));
