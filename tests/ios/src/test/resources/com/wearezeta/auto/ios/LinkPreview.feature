@@ -162,15 +162,19 @@ Feature: Link Preview
     Given I see conversations list
     When I tap on contact name <Contact>
     And User <Contact> sends encrypted message "<YouTubeLink>" to user <Name>
+    # Wait for the message to be received and rendered
+    And I wait for 5 seconds
     Then I see the conversation view contains message <YouTubeLink>
     And I do not see link preview container in the conversation view
     When User <Contact> sends encrypted message "<SoundCloudLink>" to user <Name>
+    # Wait for the message to be received and rendered
+    And I wait for 5 seconds
     Then I see the conversation view contains message <SoundCloudLink>
     And I do not see link preview container in the conversation view
-  #Vimeo link verification is commented due to ZIOS-6982 - app crash
-    #When User <Contact> sends encrypted message "<VimeoLink>" to user <Name>
-    #Then I see the conversation view contains message <VimeoLink>
-    #And I do not see link preview container in the conversation view
+    # Vimeo link verification is commented due to ZIOS-6982 - app crash
+    # When User <Contact> sends encrypted message "<VimeoLink>" to user <Name>
+    # Then I see the conversation view contains message <VimeoLink>
+    # And I do not see link preview container in the conversation view
     When I type tag for giphy preview <GiphyTag> and open preview overlay
     # Wait for GIF picture to be downloaded
     And I wait for 10 seconds
