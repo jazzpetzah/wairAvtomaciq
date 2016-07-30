@@ -34,7 +34,7 @@ Feature: Keyboard Gallery
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C183864 @staging @fastLogin
+  @C183864 @regression @fastLogin
   Scenario Outline: Verify switching camera keyboard with all others
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
