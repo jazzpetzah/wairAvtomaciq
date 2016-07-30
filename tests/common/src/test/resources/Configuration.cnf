@@ -11,6 +11,7 @@ webappLipisApplicationPath=https://wire-webapp-lipis.zinfra.io/
 webappChrisApplicationPath=https://wire-webapp-chris.zinfra.io/
 webappEdgeApplicationPath=https://wire-webapp-edge.zinfra.io/
 webappStagingApplicationPath=https://wire-webapp-staging.zinfra.io/
+webappDevApplicationPath=https://wire-webapp-dev.zinfra.io/
 webappProductionApplicationPath=https://app.wire.com/
 pictureResultsPath=${pictureResultsPath}
 driverTimeoutSeconds=${driverTimeoutSeconds}

@@ -230,6 +230,7 @@ public class CommonUtils {
             case "rene":
             case "lipis":
             case "chris":
+            case "dev":
                 return getValueFromCommonConfig(c, "stagingBackendUrl");
             case "production":
                 return getValueFromCommonConfig(c, "productionBackendUrl");
@@ -263,6 +264,8 @@ public class CommonUtils {
             switch (currentBackendType.toLowerCase()) {
                 case "edge":
                     return getValueFromConfig(c, "webappEdgeApplicationPath");
+                case "dev":
+                    return getValueFromConfig(c, "webappDevApplicationPath");
                 case "staging":
                     return getValueFromConfig(c, "webappStagingApplicationPath");
                 case "production":
