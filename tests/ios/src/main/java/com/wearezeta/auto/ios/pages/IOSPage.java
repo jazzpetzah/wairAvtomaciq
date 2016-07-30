@@ -78,7 +78,7 @@ public abstract class IOSPage extends BasePage {
 
     private static final By classAlert = By.className("UIAAlert");
 
-    private static final Function<String, String> xpathStrAlertButtonByCaption = caption ->
+    protected static final Function<String, String> xpathStrAlertButtonByCaption = caption ->
             String.format("//UIAAlert//UIAButton[@label='%s']", caption);
 
     private IOSKeyboard onScreenKeyboard;
