@@ -27,7 +27,7 @@
         <!-- edge | staging | production -->
         <backendType>staging</backendType>
         <!-- DEV, EDGE, STAGING, PRODUCTION, BENNY, GREGOR, RENE, LIPIS, CHRIS - defaults to STAGING -->
-        <com.wire.calling.env>dev</com.wire.calling.env>
+        <com.wire.calling.env>staging</com.wire.calling.env>
         <!-- leave webappApplicationPath empty to get the default URL for the backendType -->
         <webappApplicationPath />
         <otrOnly>true</otrOnly>
