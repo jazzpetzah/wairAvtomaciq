@@ -354,7 +354,13 @@ class IOSRealDevice(BaseNodeVerifier):
 
             self._run_device_power_cycle(client)
 
-            available_devices = self._get_connected_devices(client)
+            seconds_started = time.time()
+            available_devices = []
+            while time.time() - seconds_started <= 5:
+                available_devices = self._get_connected_devices(client)
+                if available_devices:
+                    break
+                time.sleep(0.5)
             if not available_devices:
                 msg = 'There are no real iOS device(s) connected to the node "{}"'.format(self._node.name)
                 sys.stderr.write(msg)
