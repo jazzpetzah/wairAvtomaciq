@@ -1,14 +1,12 @@
 package com.wire.picklejar.construct;
 
 import com.wire.picklejar.Config;
-import static com.wire.picklejar.Config.SCREENSHOT_PATH;
 import com.wire.picklejar.PickleJar;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -134,14 +132,19 @@ public class TestClassGenerator {
 
     public static void main(String[] args) throws IOException {
         TestClassGenerator generator = new TestClassGenerator();
-        for (TestCase generateTestCase : generator.generateTestCases()) {
+        Collection<Object[]> testcases;
+        if (Config.RANDOM != 0) {
+            testcases = PickleJar.getRandom(6);
+        }else{
+            testcases = PickleJar.getTestcases();
+        }
+        for (TestCase generateTestCase : generator.generateTestCases(testcases)) {
             LOG.info("Generated Testclass: {}", generateTestCase.toClassName());
             generator.compile(generateTestCase.toClassName(), generateTestCase.toSource());
         }
     }
 
-    public List<TestCase> generateTestCases() throws IOException {
-        Collection<Object[]> testcases = PickleJar.getTestcases();
+    public List<TestCase> generateTestCases(Collection<Object[]> testcases) throws IOException {
         String template = new String(Files.readAllBytes(Paths.get(TEST_TEMPLATE_LOCATION + TEST_TEMPLATE_NAME)),
                 StandardCharsets.UTF_8);
 
