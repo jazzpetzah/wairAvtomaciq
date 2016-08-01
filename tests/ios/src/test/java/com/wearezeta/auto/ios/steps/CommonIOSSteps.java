@@ -736,7 +736,18 @@ public class CommonIOSSteps {
         }
     }
 
-    @Given("^User (.*) sends (encrypted )?message \"(.*)\" to (user|group conversation) (.*)$")
+    /**
+     * User A sends a simple text message to user/goup B
+     *
+     * @param userFromNameAlias the user who sends the message
+     * @param areEncrypted      whether the message has to be encrypted
+     * @param msg               a message to send. Random string will be sent if it is empty
+     * @param conversationType  either 'user' or 'group conversation'
+     * @param conversationName  The user/group chat to receive the message
+     * @throws Exception
+     * @step. ^User (.*) sends? (encrypted )?message "(.*)" to (user|group conversation) (.*)$
+     */
+    @Given("^User (.*) sends? (encrypted )?message \"(.*)\" to (user|group conversation) (.*)$")
     public void UserSentMessageToConversation(String userFromNameAlias,
                                               String areEncrypted, String msg,
                                               String conversationType, String conversationName) throws Exception {
@@ -1198,47 +1209,12 @@ public class CommonIOSSteps {
      * @param userNameAlias user name/alias
      * @param convoType     either 'user' or 'group conversation'
      * @param dstNameAlias  destination user name/alias or group convo name
-     * @param deviceName    source device name. Will be created if does not exist yet
      * @throws Exception
-     * @step. ^User (.*) deletes? the recent message from (user|group conversation) (.*) via device (.*)$
+     * @step. ^User (.*) deletes? the recent message from (user|group conversation) (.*)$
      */
-    @When("^User (.*) deletes? the recent message from (user|group conversation) (.*)(?: via device (.*))?$")
-    public void UserXDeleteLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
-            throws Exception {
+    @When("^User (.*) deletes? the recent message from (user|group conversation) (.*)$")
+    public void UserXDeleteLastMessage(String userNameAlias, String convoType, String dstNameAlias) throws Exception {
         boolean isGroup = convoType.equals("group conversation");
-        commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup);
-    }
-
-    /**
-     * User A sends a simple text message to user B
-     *
-     * @param msgFromUserNameAlias the user who sends the message
-     * @param msg                  a message to send. Random string will be sent if it is empty
-     * @param deviceName           the device to use when using encryption
-     * @param dstConvoName         The user to receive the message
-     * @param isEncrypted          whether the message has to be encrypted
-     * @param convoType            either 'user' or 'group conversation'
-     * @throws Exception
-     * @step. ^User (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$
-     */
-    @When("^User (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
-    public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
-                                              String msg, String deviceName, String convoType, String dstConvoName) throws
-            Exception {
-        final String msgToSend = (msg == null || msg.trim().length() == 0) ?
-                CommonUtils.generateRandomString(10) : msg.trim();
-        if (convoType.equals("user")) {
-            if (isEncrypted == null) {
-                commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
-            } else {
-                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
-            }
-        } else {
-            if (isEncrypted == null) {
-                commonSteps.UserSentMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend);
-            } else {
-                commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
-            }
-        }
+        commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, null, isGroup);
     }
 }

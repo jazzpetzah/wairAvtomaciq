@@ -114,8 +114,8 @@ public class SEBridge {
         getOrAddDevice(userFrom, deviceName).sendFile(convId, path, mime);
     }
 
-    public void sendLocation(ClientUser userFrom, String deviceName, String convId, float longitude, float latitude, String locationName,
-                             int zoom)
+    public void sendLocation(ClientUser userFrom, String deviceName, String convId, float longitude, float latitude, String
+            locationName, int zoom)
             throws Exception {
         getOrAddDevice(userFrom, deviceName).shareLocation(convId, longitude, latitude, locationName, zoom);
     }
@@ -128,8 +128,7 @@ public class SEBridge {
             throws Exception {
         if (deviceName == null) {
             deleteMessage(userFrom, convId, messageId);
-        }
-        else {
+        } else {
             getOrAddDevice(userFrom, deviceName).deleteMessage(convId, messageId);
         }
     }
