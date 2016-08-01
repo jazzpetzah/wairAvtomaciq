@@ -744,7 +744,18 @@ public class CommonIOSSteps {
         }
     }
 
-    @Given("^User (.*) sends (encrypted )?message \"(.*)\" to (user|group conversation) (.*)$")
+    /**
+     * User A sends a simple text message to user/goup B
+     *
+     * @param userFromNameAlias the user who sends the message
+     * @param areEncrypted      whether the message has to be encrypted
+     * @param msg               a message to send. Random string will be sent if it is empty
+     * @param conversationType  either 'user' or 'group conversation'
+     * @param conversationName  The user/group chat to receive the message
+     * @throws Exception
+     * @step. ^User (.*) sends? (encrypted )?message "(.*)" to (user|group conversation) (.*)$
+     */
+    @Given("^User (.*) sends? (encrypted )?message \"(.*)\" to (user|group conversation) (.*)$")
     public void UserSentMessageToConversation(String userFromNameAlias,
                                               String areEncrypted, String msg,
                                               String conversationType, String conversationName) throws Exception {
@@ -1197,5 +1208,21 @@ public class CommonIOSSteps {
     @When("^I tap (?:Commit|Return|Send|Enter) button on the keyboard$")
     public void ITapCommitButtonOnKeyboard() throws Exception {
         pagesCollection.getCommonPage().tapKeyboardCommitButton();
+    }
+
+    /**
+     * User X delete message from User/Group via specified device
+     * Note : The recent message means the recent message sent from specified device by SE, the device should online.
+     *
+     * @param userNameAlias user name/alias
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  destination user name/alias or group convo name
+     * @throws Exception
+     * @step. ^User (.*) deletes? the recent message from (user|group conversation) (.*)$
+     */
+    @When("^User (.*) deletes? the recent message from (user|group conversation) (.*)$")
+    public void UserXDeleteLastMessage(String userNameAlias, String convoType, String dstNameAlias) throws Exception {
+        boolean isGroup = convoType.equals("group conversation");
+        commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, null, isGroup);
     }
 }
