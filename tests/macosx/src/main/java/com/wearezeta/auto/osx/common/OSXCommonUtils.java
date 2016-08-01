@@ -188,6 +188,7 @@ public class OSXCommonUtils extends CommonUtils {
     }
 
     public static int clearAppData() throws Exception {
+        LOG.debug("Clearing Wire wrapper database");
         final String[] commands = new String[]{
             "/bin/sh",
             "-c",
