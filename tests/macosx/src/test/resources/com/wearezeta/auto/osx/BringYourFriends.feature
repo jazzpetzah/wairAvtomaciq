@@ -41,9 +41,24 @@ Feature: Bring Your Friends
     Given I am signed in properly
     When I type shortcut combination for preferences
     And I see Settings dialog
-    And I click button to import contacts from address book
-#    When I verify address book permission window is visible
+    And I click button to import contacts from address book via preferences
     Then I allow address book access
+    And I see more than 0 suggestions in people picker
+
+    Examples:
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @C149663 @smoke
+  Scenario Outline: Import address book from search UI
+    Given There are 1 users where <Name> is me
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    Then I see Search is opened
+    And I click button to import contacts from address book via search UI
+    Then I allow address book access
+    Then I see Search is opened
     And I see more than 0 suggestions in people picker
 
     Examples:
