@@ -457,3 +457,24 @@ Feature: Connect
     Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
+
+  @C183892 @C183893 @staging
+  Scenario Outline: Verify autoconnect users by phones
+    Given I delete all contacts from Address Book
+    Given I see welcome screen
+  # Add A into B's address book
+    Given I add name <AName> and phone <APhone> with prefix <PhonePrefix> to Address Book
+    Given I add name <A2Name> and phone <A2Phone> with prefix <PhonePrefix> to Address Book
+    Given I see welcome screen
+  # Here is B
+    When I input a new phone number for user <Contact>
+    And I input the verification code
+    And I input my name
+    And I wait for 3 seconds
+    And I select to keep the current picture
+    Then I see Conversations list with name <AName>
+    And I see Conversations list with name <A2Name>
+
+    Examples:
+      | Contact   | AName            | APhone     | PhonePrefix | A2Name           | A2Phone    |
+      | user1Name | AutoconnectUser2 | 1722036230 | +49         | AutoconnectUser3 | 1622360109 |
