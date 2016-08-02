@@ -467,14 +467,14 @@ Feature: Calling
     Then I see ongoing call
     When <Contact2> calls me
     Then I do not see incoming call
-#    Then I see incoming call
+    #Then I see incoming call
     And <Contact1>,<Contact2> stop calling me
 
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
-  @calling_autoAnswer
+  @torun @calling_autoAnswer
   Scenario Outline: Auto Answer Call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -484,6 +484,8 @@ Feature: Calling
     Given I see Conversations list with conversations
     When <Contact> calls me
     Then I see ongoing call
+    And I wait for 10 seconds
+    And I hang up ongoing call
 
     Examples:
       | Name      | Contact   | CallBackend |
