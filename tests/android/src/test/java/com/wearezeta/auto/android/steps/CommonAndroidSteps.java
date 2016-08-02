@@ -1013,6 +1013,21 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * Add existed and known contact into Address book
+     *
+     * @param contactName        expected contact name
+     * @param contactPhoneNumber should be phone number without prefix
+     * @param prefix             should be +49 or others with same formate
+     * @throws Exception
+     * @step. ^I add contact with name (.*) and phone (.*) to Address Book$
+     */
+    @Given("^I add name (.*) and phone (.*) with prefix (.*) to Address Book$")
+    public void IAddContactIntoAddressBook(String contactName, String contactPhoneNumber, String prefix) throws Exception {
+        PhoneNumber phoneNumber = new PhoneNumber(prefix, contactPhoneNumber);
+        AndroidCommonUtils.insertContact(contactName, phoneNumber);
+    }
+
+    /**
      * Send personal invitation over the backend
      *
      * @param userToNameAlias the name/alias of conversations list owner
