@@ -209,7 +209,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameLinkPreviewImage = MobileBy.AccessibilityId("linkPreviewImage");
 
-    private static final int MAX_CONTAINER_APPEARANCE_TIME = 20;
+    private static final int MAX_APPEARANCE_TIME = 20;
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -937,7 +937,7 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isContainerVisible(String name) throws Exception {
         final By locator = getContainerIdentifier(name);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, MAX_CONTAINER_APPEARANCE_TIME);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, MAX_APPEARANCE_TIME);
     }
 
     public boolean isContainerInvisible(String name) throws Exception {
@@ -954,7 +954,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isFileTransferMenuItemVisible(String itemName) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), MobileBy.AccessibilityId(itemName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), MobileBy.AccessibilityId(itemName), MAX_APPEARANCE_TIME);
     }
 
     public int getMessageHeight(String msg) throws Exception {
