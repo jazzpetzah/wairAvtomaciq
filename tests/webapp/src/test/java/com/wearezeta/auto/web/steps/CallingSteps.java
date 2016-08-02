@@ -237,6 +237,7 @@ public class CallingSteps {
      */
     @Then("(.*) verif(?:ies|y) to( not)? get video data from (.*)$")
     public void UserXVerifesToGetVideoDataFromY(String callees, String not, String caller) throws Exception {
+        context.startPinging();
         ClientUser sender = context.getUserManager().findUserByNameOrNameAlias(caller);
         List<String> splitAliases = splitAliases(callees);
         Map<String, Flow> oldFlows = new HashMap<>();
@@ -258,18 +259,19 @@ public class CallingSteps {
             final Flow oldFlow = oldFlows.get(newFlowEntry.getKey());
             if (not == null) {
                 assertThat(
-                        "There is no video data flowing: \n" + newFlow.getTelemetry().getStats().getVideo()+ "\n\n" + oldFlow.
+                        "There is no video data flowing: \noldFlow: " + oldFlow.getTelemetry().getStats().getVideo()+ "\n\nnewFlow: " + newFlow.
                         getTelemetry().getStats().getVideo(),
                         newFlow.getTelemetry().getStats().getVideo().getBytesReceived(),
                         greaterThan(oldFlow.getTelemetry().getStats().getVideo().getBytesReceived()));
             } else {
                 assertThat(
-                        "There is video data flowing: \n" + newFlow.getTelemetry().getStats().getVideo() + "\n\n" + oldFlow.
+                        "There is video data flowing: \noldFlow: " + oldFlow.getTelemetry().getStats().getVideo() + "\n\nnewFlow: " + newFlow.
                         getTelemetry().getStats().getVideo(),
                         newFlow.getTelemetry().getStats().getVideo().getBytesReceived(),
                         equalTo(oldFlow.getTelemetry().getStats().getVideo().getBytesReceived()));
             }
         }
+        context.stopPinging();
     }
 
     /**
@@ -284,6 +286,7 @@ public class CallingSteps {
      */
     @Then("(.*) verif(?:ies|y) to( not)? get audio data from (.*)$")
     public void UserXVerifesToGetAudioDataFromY(String callees, String not, String caller) throws Exception {
+        context.startPinging();
         ClientUser sender = context.getUserManager().findUserByNameOrNameAlias(caller);
         List<String> splitAliases = splitAliases(callees);
         Map<String, Flow> oldFlows = new HashMap<>();
@@ -306,18 +309,19 @@ public class CallingSteps {
             final Flow oldFlow = oldFlows.get(newFlowEntry.getKey());
             if (not == null) {
                 assertThat(
-                        "There is no audio data flowing: \n" + newFlow.getTelemetry().getStats().getAudio() + "\n\n" + oldFlow.
+                        "There is no audio data flowing: \noldFlow: " + oldFlow.getTelemetry().getStats().getAudio() + "\n\nnewFlow:" + newFlow.
                         getTelemetry().getStats().getAudio(),
                         newFlow.getTelemetry().getStats().getAudio().getBytesReceived(),
                         greaterThan(oldFlow.getTelemetry().getStats().getAudio().getBytesReceived()));
             } else {
                 assertThat(
-                        "There is audio data flowing: \n" + newFlow.getTelemetry().getStats().getAudio() + "\n\n" + oldFlow.
+                        "There is audio data flowing: \noldFlow: " + oldFlow.getTelemetry().getStats().getAudio() + "\n\nnewFlow:" + newFlow.
                         getTelemetry().getStats().getAudio(),
                         newFlow.getTelemetry().getStats().getAudio().getBytesReceived(),
                         equalTo(oldFlow.getTelemetry().getStats().getAudio().getBytesReceived()));
             }
         }
+        context.stopPinging();
     }
 
     private Map<String, Flow> getFlows(String callee) throws CallingServiceInstanceException, NoSuchUserException,

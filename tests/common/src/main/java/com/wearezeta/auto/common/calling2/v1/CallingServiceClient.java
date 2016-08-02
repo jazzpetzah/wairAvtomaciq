@@ -87,8 +87,7 @@ public class CallingServiceClient {
     // TODO: mute/unmute/listen/speak
     private static BackendType getBackendType() {
         try {
-            return BackendType.valueOf(CommonUtils.getBackendType(
-                    CallingServiceClient.class).toUpperCase());
+            return BackendType.valueOf(System.getProperty("com.wire.calling.env", "staging").toUpperCase());
         } catch (Exception ex) {
             LOG.warn("Can't get backend type", ex);
             return BackendType.STAGING;

@@ -1,6 +1,6 @@
 Feature: E2EE
 
-  @C3284 @rc @regression
+  @C3284 @rc @regression @fastLogin
   Scenario Outline: Verify newly added people in a group conversation don't see a history
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to Myself,<Contact2>,<Contact3>
@@ -20,7 +20,7 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | EncryptedGrp  |
 
-  @C3296 @regression
+  @C3296 @regression @fastLogin
   Scenario Outline: Verify opening device details by clicking on it in person's profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -36,7 +36,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName1 | DeviceName2 | DeviceName3 |
       | user1Name | user2Name | Device1     | Device2     | Device3     |
 
-  @C3290 @noAcceptAlert @rc @regression
+  @C3290 @noAcceptAlert @rc @regression @fastLogin
   Scenario Outline: Verify new device is added to device management after sign in
     Given There is 1 user where <Name> is me
     Given User Myself removes his avatar picture
@@ -61,7 +61,7 @@ Feature: E2EE
       | Name      | DeviceName | DeviceLabel  |
       | user1Name | Device1    | Device1Label |
 
-  @C3295 @regression
+  @C3295 @regression @fastLogin
   Scenario Outline: Verify shield appearance on the person's profile after verifying all the clients
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -85,7 +85,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName1 | DeviceName2 |
       | user1Name | user2Name | Device1     | Device2     |
 
-  @C3287 @regression
+  @C3287 @regression @fastLogin
   Scenario Outline: Verify the group conversation is marked as verified after verifying clients of each other
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -116,7 +116,7 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | DeviceName1 | DeviceLabel1 | DeviceName2 | DeviceLabel2 | GroupChatName |
       | user1Name | user2Name | user3Name | Device1     | Label1       | Device2     | Label2       | VerifiedGroup |
 
-  @C3294 @rc @regression
+  @C3294 @rc @regression @fastLogin
   Scenario Outline: (ZIOS-5787) Verify system message appearance in case of using a new device by friend
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -142,7 +142,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                |
       | user1Name | user2Name | Device2     | Label2       | STARTED USING A NEW DEVICE |
 
-  @C3293 @rc @regression
+  @C3293 @rc @regression @fastLogin
   Scenario Outline: Verify system message appearance in case of using a new device by you
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -180,7 +180,7 @@ Feature: E2EE
       | Login      | Password      | Name      | DeviceName | DeviceLabel  |
       | user1Email | user1Password | user1Name | Device1    | Device1Label |
 
-  @C3510 @noAcceptAlert @regression
+  @C3510 @noAcceptAlert @regression @fastLogin
   Scenario Outline: Verify deleting one of the devices from device management by Edit
     Given There is 1 user where <Name> is me
     Given I sign in using my email
@@ -201,7 +201,7 @@ Feature: E2EE
       | Name      | DeviceName | Password      |
       | user1Name | Device1    | user1Password |
 
-  @C3509 @regression
+  @C3509 @regression @fastLogin
   Scenario Outline: Verify verifying/unverifying one of the devices
     Given There is 1 user where <Name> is me
     Given I sign in using my email
@@ -226,7 +226,7 @@ Feature: E2EE
       | Name      | DeviceName | DeviceLabel  |
       | user1Name | Device1    | Device1Label |
 
-  @C3492 @regression
+  @C3492 @regression @fastLogin
   Scenario Outline: Verify link is active for your own device and leads you to device's fingerprint
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -245,7 +245,7 @@ Feature: E2EE
       | Name      | Contact1  | ExpectedMsg               |
       | user1Name | user2Name | STARTED USING THIS DEVICE |
 
-  @C14317 @rc @regression
+  @C14317 @rc @regression @fastLogin
   Scenario Outline: First time when 1:1 conversation is degraded - I can ignore alert screen and send messages with resend button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -269,7 +269,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 |
       | user1Name | user2Name | Device2     | Label2       |
 
-  @C3288 @regression
+  @C3288 @regression @fastLogin
   Scenario Outline: Verify conversation is downgraded after adding a new device
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -294,7 +294,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                    |
       | user1Name | user2Name | Device2     | Label2       | YOU STARTED USING A NEW DEVICE |
 
-  @C3286 @regression @rc
+  @C3286 @regression @rc @fastLogin
   Scenario Outline: Verify conversation is marked as verified after approving all friend's clients in 1-to-1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -332,7 +332,7 @@ Feature: E2EE
       | Name      | DeviceName1 | DeviceName2 | DeviceName3 | DeviceName4 | DeviceName5 | DeviceName6 | DeviceName7 |
       | user1Name | Device1     | Device2     | Device3     | Device4     | Device5     | Device6     | Device7     |
 
-  @C14314 @regression
+  @C14314 @regression @fastLogin
   Scenario Outline: Verify you can see device ids of the other conversation participant in participant details view inside a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -355,7 +355,7 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | DeviceName1 | DeviceName2 | GroupChatName | DeviceName3 | DeviceName4 |
       | user1Name | user2Name | user3Name | Device1     | Device2     | VerifiedGroup | Device3     | Device4     |
 
-  @C14318 @regression
+  @C14318 @regression @fastLogin
   Scenario Outline: First time when group conversation is degraded - I can ignore alert screen and send messages with resend button
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -389,7 +389,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | Contact2  | GroupChatName |
       | user1Name | user2Name | Device2     | Label2       | user3Name | ThisGroup     |
 
-  @C3507 @regression
+  @C3507 @regression @fastLogin
   Scenario Outline: Verify remove, verify and reset session are absent for current device
     Given There is 1 user where <Name> is me
     Given I sign in using my email
@@ -409,7 +409,7 @@ Feature: E2EE
       | Name      |
       | user1Name |
 
-  @C3511 @noAcceptAlert @regression
+  @C3511 @noAcceptAlert @regression @fastLogin
   Scenario Outline: Verify deleting one of the devices from device information screen
     Given There is 1 user where <Name> is me
     Given I sign in using my email
@@ -430,7 +430,7 @@ Feature: E2EE
       | Name      | DeviceName | Password      |
       | user1Name | Device1    | user1Password |
 
-  @C3289 @regression
+  @C3289 @regression @fastLogin
   Scenario Outline: Verify conversation is not verified after checking only one device out of many
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact1>
@@ -454,7 +454,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceName1 | ExpectedMessage               |
       | user1Name | user2Name | Device2     | Device1     | ALL FINGERPRINTS ARE VERIFIED |
 
-  @C3498 @rc @regression
+  @C3498 @rc @regression @fastLogin
   Scenario Outline: Verify "learn more" leads to the proper page
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -478,7 +478,7 @@ Feature: E2EE
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C3494 @regression
+  @C3494 @regression @fastLogin
   Scenario Outline: Verify unverifying of the device in verified conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -511,7 +511,7 @@ Feature: E2EE
       | Name      | Contact1  | VerificationMsg               | UnverificationMsg     |
       | user1Name | user2Name | ALL FINGERPRINTS ARE VERIFIED | YOU UNVERIFIED ONE OF |
 
-  @C3500 @regression
+  @C3500 @regression @fastLogin
   Scenario Outline: Verify shield is not shown when any text presents into the input field
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -533,7 +533,7 @@ Feature: E2EE
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C14311 @regression
+  @C14311 @regression @fastLogin
   Scenario Outline: Verify the appropriate device is signed out if you remove it from settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email

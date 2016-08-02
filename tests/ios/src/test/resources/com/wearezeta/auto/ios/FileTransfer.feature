@@ -1,6 +1,6 @@
 Feature: File Transfer
 
-  @C82524 @regression @rc
+  @C82524 @regression @rc @fastLogin
   Scenario Outline: Verify placeholder is shown for the receiver
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -17,7 +17,7 @@ Feature: File Transfer
       | Name      | Contact   | FileName | FileExt | FileSize | FileMIME   | ContactDevice | Timeout |
       | user1Name | user2Name | testing  | jpg     | 240 KB   | image/jpeg | device1       | 20      |
 
-  @C82517 @regression
+  @C82517 @regression @fastLogin
   Scenario Outline: Verify file transfer icon exists in cursor area in 1-to-1 and group conversations
     Given There are <UsersAmount> users where <Name> is me
     Given Myself is connected to all other
@@ -34,7 +34,7 @@ Feature: File Transfer
       | Name      | Contact   | GroupChatName | UsersAmount |
       | user1Name | user2Name | GroupChat     | 3           |
 
-  @C82518 @regression
+  @C82518 @regression @fastLogin
   Scenario Outline: Verify placeholder is shown for the sender
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -49,7 +49,7 @@ Feature: File Transfer
       | Name      | Contact   | ItemName                   |
       | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
 
-  @C82529 @regression
+  @C82529 @regression @fastLogin
   Scenario Outline: Verify not supported file has no preview and share menu is opened
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -70,7 +70,7 @@ Feature: File Transfer
       | Name      | Contact1  | Contact2  | GroupChatName | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | Timeout |
       | user1Name | user2Name | user3Name | FTransfer     | testing  | tmp     | 240 KB   | application/octet-stream | device1       | 20      |
 
-  @C95960 @rc @regression
+  @C95960 @rc @regression @fastLogin
   Scenario Outline: Verify sending file in the empty conversation and text after it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -87,7 +87,7 @@ Feature: File Transfer
       | Name      | Contact   | ItemName                   |
       | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
 
-  @C82523 @regression @noAcceptAlert
+  @C82523 @regression @noAcceptAlert @fastLogin
   Scenario Outline: Verify notification is shown if file size is more than 25 MB
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @C3211 @regression
+  @C3211 @regression @fastLogin
   Scenario Outline: Change your profile picture
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -19,7 +19,7 @@ Feature: Self Profile
       | Name      | Timeout |
       | user1Name | 60      |
 
-  @C1092 @regression
+  @C1092 @regression @fastLogin
   Scenario Outline: Attempt to enter a name with 0 chars
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -35,7 +35,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @C1093 @regression
+  @C1093 @regression @fastLogin
   Scenario Outline: Attempt to enter a name with 1 char
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -51,7 +51,7 @@ Feature: Self Profile
       | Name      | username |
       | user1Name | c        |
 
-  @C1097 @regression @rc @clumsy
+  @C1097 @regression @rc @clumsy @fastLogin
   Scenario Outline: Verify name change
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -125,7 +125,7 @@ Feature: Self Profile
       | Name      | Number        | Code | ExpectedText                |
       | user1Name | 8301652248706 | +0   | has already been registered |
 
-  @C1081 @regression @rc
+  @C1081 @regression @rc @fastLogin
   Scenario Outline: Verify theme switcher is shown on the self profile
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -137,7 +137,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @C3168 @real
+  @C3168 @real @fastLogin
   Scenario Outline: Verify changing profile picture using camera
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number

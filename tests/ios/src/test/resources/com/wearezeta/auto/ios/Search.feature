@@ -1,6 +1,6 @@
 Feature: Search
 
-  @C1035 @rc @clumsy @regression
+  @C1035 @rc @clumsy @regression @fastLogin
   Scenario Outline: Verify search by email
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -13,7 +13,7 @@ Feature: Search
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
-  @C1036 @rc @clumsy @regression
+  @C1036 @rc @clumsy @regression @fastLogin
   Scenario Outline: Verify search by name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -28,7 +28,7 @@ Feature: Search
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C3167 @rc @regression
+  @C3167 @rc @regression @fastLogin
   Scenario Outline: Start 1:1 chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -46,7 +46,7 @@ Feature: Search
       | Name      | UserCount |
       | user1Name | 4         |
 
-  @C1069 @rc @regression
+  @C1069 @rc @regression @fastLogin
   Scenario Outline: Start group chat with users from Top Connections
     Given There are 4 users where <Name> is me
     Given Myself is connected to all other users
@@ -65,7 +65,7 @@ Feature: Search
       | Name      | ParticipantsCount |
       | user1Name | 2                 |
 
-  @C40 @rc @regression
+  @C40 @rc @regression @fastLogin
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -86,7 +86,7 @@ Feature: Search
       | Name      | UnconnectedUser | Contact2  |
       | user1Name | user2Name       | user3Name |
 
-  @C3220 @regression
+  @C3220 @regression @fastLogin
   Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -104,7 +104,7 @@ Feature: Search
       | Name      | Contact   | Number |
       | user1Name | user2Name | 2      |
 
-  @C3244 @regression
+  @C3244 @regression @fastLogin
   Scenario Outline: Verify you can unblock someone from search list
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
@@ -125,7 +125,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2785 @regression
+  @C2785 @regression @fastLogin
   Scenario Outline: Verify search by part of the name
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -140,7 +140,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C1049 @rc @clumsy @regression
+  @C1049 @rc @clumsy @regression @fastLogin
   Scenario Outline: Verify starting a call with action button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -157,7 +157,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C1053 @rc @regression
+  @C1053 @rc @regression @fastLogin
   Scenario Outline: Verify sharing a photo to a newly created group conversation with action button
     Given There are 4 users where <Name> is me
     Given Myself is connected to all other users
@@ -181,7 +181,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @C1043 @regression
+  @C1043 @regression @fastLogin
   Scenario Outline: Verify action buttons appear after selecting person from Top People
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -197,7 +197,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C1044 @regression
+  @C1044 @regression @fastLogin
   Scenario Outline: Verify action buttons appear after choosing user from search results
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -212,7 +212,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C1047 @regression
+  @C1047 @regression @fastLogin
   Scenario Outline: Verify button Open is changed on Create after checking second person
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -230,7 +230,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C1045 @regression
+  @C1045 @regression @fastLogin
   Scenario Outline: Verify action buttons disappear by unchecking the avatar
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -248,7 +248,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C1046 @regression
+  @C1046 @regression @fastLogin
   Scenario Outline: Verify action buttons disappear by deleting token from a search field
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -273,7 +273,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C1048 @regression
+  @C1048 @regression @fastLogin
   Scenario Outline: Verify opening conversation with action button
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -290,7 +290,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C1042 @regression
+  @C1042 @regression @fastLogin
   Scenario Outline: Verify action buttons appear after choosing user from search results
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users

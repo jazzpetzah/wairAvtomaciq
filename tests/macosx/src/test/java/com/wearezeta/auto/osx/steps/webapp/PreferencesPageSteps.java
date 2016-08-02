@@ -38,7 +38,7 @@ public class PreferencesPageSteps {
      *
      * @throws Exception
      */
-    @When("^I click button to import contacts from address book$")
+    @When("^I click button to import contacts from address book via preferences$")
     public void IClickAddressbookImportButton() throws Exception {
         WebappPagesCollection.getInstance().getPage(SettingsPage.class).clickImportAddressbookButton();
     }

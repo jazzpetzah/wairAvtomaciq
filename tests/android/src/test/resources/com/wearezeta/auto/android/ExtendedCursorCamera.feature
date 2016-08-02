@@ -15,7 +15,7 @@ Feature: Extended Cursor Camera
     And I see thumbnails in extended cursor camera overlay
     And I see Take Photo button on Extended cursor camera overlay
     And I see Switch Camera button on Extended cursor camera overlay
-    And I see External Camera button on Extended cursor camera overlay
+    And I see Camera button on Extended cursor camera overlay
     And I see External Video button on Extended cursor camera overlay
     #C183867
     When I swipe left on Extended cursor camera overlay
@@ -25,7 +25,7 @@ Feature: Extended Cursor Camera
     Then I see thumbnails in extended cursor camera overlay
     And I see Take Photo button on Extended cursor camera overlay
     And I see Switch Camera button on Extended cursor camera overlay
-    And I see External Camera button on Extended cursor camera overlay
+    And I see Camera button on Extended cursor camera overlay
     And I see External Video button on Extended cursor camera overlay
 
     Examples:
@@ -59,8 +59,8 @@ Feature: Extended Cursor Camera
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I tap Add picture button from cursor toolbar
-    And I tap External Camera button on Extended cursor camera overlay
-    Then I see a picture in the conversation view
+    And I tap Camera button on Extended cursor camera overlay
+    Then I see Take Photo button on Take Picture view
 
     Examples:
       | Name      | Contact   |

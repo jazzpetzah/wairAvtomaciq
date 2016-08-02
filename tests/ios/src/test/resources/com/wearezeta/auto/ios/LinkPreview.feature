@@ -1,6 +1,6 @@
 Feature: Link Preview
 
-  @C167029 @regression
+  @C167029 @regression @fastLogin
   Scenario Outline: Verify preview is shown for sent link (link only)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -19,7 +19,7 @@ Feature: Link Preview
       | Name      | Contact   | Link                                                                                  |
       | user1Name | user2Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 |
 
-  @C167030 @C167031 @C167032 @regression
+  @C167030 @C167031 @C167032 @regression @fastLogin
   Scenario Outline: Verify preview is shown for mixed link and text
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -53,7 +53,7 @@ Feature: Link Preview
       | Name      | Contact   | Link                                                                                  | Text       | Text1      |
       | user1Name | user2Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 | My text    | Text first |
 
-  @C169224 @regression
+  @C169224 @regression @fastLogin
   Scenario Outline: Verify preview is shown for shortened URL
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -69,55 +69,37 @@ Feature: Link Preview
       | Name      | Contact   | Shortenlink          |
       | user1Name | user2Name | http://goo.gl/pA9mgH |
 
-  @C167039 @regression
+  @C167039 @regression @fastLogin
   Scenario Outline: Verify preview is shown for different formats of link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And I type the "<Link>" message and send it
-    And I navigate back to conversations list
-    And I tap on contact name <Contact>
+    Given I tap on contact name <Contact>
+    When User Myself send encrypted message "<Link>" to user <Contact>
     Then I see link preview container in the conversation view
-    When I long tap on link preview in conversation view
-    And I tap on Delete badge item
-    # Sometimes the alert is not accepted automatically
-    And I tap Delete button on the alert
-    When I type the "<Link1>" message and send it
-    And I navigate back to conversations list
-    And I tap on contact name <Contact>
+    When User Myself deletes the recent message from user <Contact>
+    Then I do not see link preview container in the conversation view
+    When User Myself send encrypted message "<Link1>" to user <Contact>
     Then I see link preview container in the conversation view
-    When I long tap on link preview in conversation view
-    And I tap on Delete badge item
-    # Sometimes the alert is not accepted automatically
-    And I tap Delete button on the alert
-    When I type the "<Link2>" message and send it
-    And I navigate back to conversations list
-    And I tap on contact name <Contact>
+    When User Myself deletes the recent message from user <Contact>
+    Then I do not see link preview container in the conversation view
+    When User Myself send encrypted message "<Link2>" to user <Contact>
     Then I see link preview container in the conversation view
-    When I long tap on link preview in conversation view
-    And I tap on Delete badge item
-    # Sometimes the alert is not accepted automatically
-    And I tap Delete button on the alert
-    When I type the "<Link3>" message and send it
-    And I navigate back to conversations list
-    And I tap on contact name <Contact>
+    When User Myself deletes the recent message from user <Contact>
+    Then I do not see link preview container in the conversation view
+    When User Myself send encrypted message "<Link3>" to user <Contact>
     Then I see link preview container in the conversation view
-    When I long tap on link preview in conversation view
-    And I tap on Delete badge item
-    # Sometimes the alert is not accepted automatically
-    And I tap Delete button on the alert
+    When User Myself deletes the recent message from user <Contact>
+    Then I do not see link preview container in the conversation view
     When I type the "<Link4>" message and send it
-    And I navigate back to conversations list
-    And I tap on contact name <Contact>
     Then I see link preview container in the conversation view
 
     Examples:
       | Name      | Contact   | Link                | Link1                | Link2                   | Link3               | Link4               |
       | user1Name | user2Name | http://facebook.com | https://facebook.com | http://www.facebook.com | Http://facebook.com | HTTP://FACEBOOK.COM |
 
-  @C167038 @regression
+  @C167038 @regression @fastLogin
   Scenario Outline: Verify copying link preview
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>, <Contact1>
@@ -139,7 +121,7 @@ Feature: Link Preview
       | Name      | Contact   | Contact1  | Link                                                                                  |
       | user1Name | user2Name | user3Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 |
 
-  @C167033 @regression
+  @C167033 @regression @fastLogin
   Scenario Outline: Verify preview is shown without picture when there are none
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -154,7 +136,7 @@ Feature: Link Preview
       | Name      | Contact   | Link                                               |
       | user1Name | user2Name | https://en.wikipedia.org/wiki/Provincial_Secretary |
 
-  @C167041 @regression
+  @C167041 @regression @fastLogin
   Scenario Outline: Verify link preview isn't shown for YouTube, SoundCloud, Vimeo, Giphy
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -162,15 +144,19 @@ Feature: Link Preview
     Given I see conversations list
     When I tap on contact name <Contact>
     And User <Contact> sends encrypted message "<YouTubeLink>" to user <Name>
+    # Wait for the message to be received and rendered
+    And I wait for 5 seconds
     Then I see the conversation view contains message <YouTubeLink>
     And I do not see link preview container in the conversation view
     When User <Contact> sends encrypted message "<SoundCloudLink>" to user <Name>
+    # Wait for the message to be received and rendered
+    And I wait for 5 seconds
     Then I see the conversation view contains message <SoundCloudLink>
     And I do not see link preview container in the conversation view
-  #Vimeo link verification is commented due to ZIOS-6982 - app crash
-    #When User <Contact> sends encrypted message "<VimeoLink>" to user <Name>
-    #Then I see the conversation view contains message <VimeoLink>
-    #And I do not see link preview container in the conversation view
+    # Vimeo link verification is commented due to ZIOS-6982 - app crash
+    # When User <Contact> sends encrypted message "<VimeoLink>" to user <Name>
+    # Then I see the conversation view contains message <VimeoLink>
+    # And I do not see link preview container in the conversation view
     When I type tag for giphy preview <GiphyTag> and open preview overlay
     # Wait for GIF picture to be downloaded
     And I wait for 10 seconds

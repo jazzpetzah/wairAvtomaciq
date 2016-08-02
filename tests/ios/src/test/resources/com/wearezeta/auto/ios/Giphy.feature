@@ -1,6 +1,6 @@
 Feature: Giphy
 
-  @C955 @regression
+  @C955 @regression @fastLogin
   Scenario Outline: Verify preview is opened after tapping on GIF button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -16,7 +16,7 @@ Feature: Giphy
       | Name      | Contact   | GiphyTag |
       | user1Name | user2Name | Happy    |
 
-  @C962 @clumsy @regression @rc @IPv6
+  @C962 @clumsy @regression @rc @IPv6 @fastLogin
   Scenario Outline: Verify I can send gif from preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -33,7 +33,7 @@ Feature: Giphy
       | Name      | Contact   | GiphyTag |
       | user1Name | user2Name | Happy    |
 
-  @C959 @regression
+  @C959 @regression @fastLogin
   Scenario Outline: Verify opening grid of gifs clicking on giphy icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

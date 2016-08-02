@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @C836 @rc @regression
+  @C836 @rc @regression @fastLogin
   Scenario Outline: Unarchive conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -16,7 +16,7 @@ Feature: Conversation List
       | Name      | ArchivedUser |
       | user1Name | user2Name    |
 
-  @C12 @regression
+  @C12 @regression @fastLogin
   Scenario Outline: Verify archiving silenced conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -39,7 +39,7 @@ Feature: Conversation List
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C350 @regression
+  @C350 @regression @fastLogin
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -62,7 +62,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C19 @regression
+  @C19 @regression @fastLogin
   Scenario Outline: Verify archive a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -79,7 +79,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
-  @C20 @regression
+  @C20 @regression @fastLogin
   Scenario Outline: Verify unarchive a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -97,7 +97,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
-  @C104 @rc @regression
+  @C104 @rc @regression @fastLogin
   Scenario Outline: Verify conversations are sorted according to most recent activity
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -114,7 +114,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Contact3  | Picture     |
       | user1Name | user2Name | user3name | user4name | testing.jpg |
 
-  @C851 @regression
+  @C851 @regression @fastLogin
   Scenario Outline: Verify action menu is opened on swipe right on the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -133,7 +133,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3name | ActionMenuChat |
 
-  @C852 @regression
+  @C852 @regression @fastLogin
   Scenario Outline: Verify action menu is opened on swipe right on 1to1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -151,7 +151,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C837 @rc @clumsy @regression
+  @C837 @rc @clumsy @regression @fastLogin
   Scenario Outline: Verify archiving from the action menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -169,7 +169,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C848 @rc @clumsy @regression
+  @C848 @rc @clumsy @regression @fastLogin
   Scenario Outline: Verify leaving group conversation from the action menu
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -192,7 +192,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName   |
       | user1Name | user2Name | user3Name | LeaveActionMenu |
 
-  @C840 @rc @clumsy @regression
+  @C840 @rc @clumsy @regression @fastLogin
   Scenario Outline: Verify removing the content from the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -217,7 +217,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
 
-  @C842 @rc @clumsy @regression
+  @C842 @rc @clumsy @regression @fastLogin
   Scenario Outline: ZIOS-6809 Verify removing the history from 1-to1 conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -243,7 +243,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Picture     |
       | user1Name | user2Name | user3Name | testing.jpg |
 
-  @C853 @regression
+  @C853 @regression @fastLogin
   Scenario Outline: Verify closing the action menu by clicking on cancel on out of the menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -259,7 +259,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C850 @regression
+  @C850 @regression @fastLogin
   Scenario Outline: Verify silencing and notify from the action menu
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -281,7 +281,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C106 @regression
+  @C106 @regression @fastLogin
   Scenario Outline: Verify first conversation in the list is highlighted and opened
     Given There are 3 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -297,7 +297,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C843 @regression
+  @C843 @regression @fastLogin
   Scenario Outline: Verify that deleted conversation isn't going to archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -315,7 +315,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C844 @regression
+  @C844 @regression @fastLogin
   Scenario Outline: Verify deleting 1-to-1 conversation from archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -335,7 +335,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C841 @regression
+  @C841 @regression @fastLogin
   Scenario Outline: Verify removing the content and leaving from the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -359,7 +359,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C846 @rc @regression
+  @C846 @rc @regression @fastLogin
   Scenario Outline: Verify posting in a group conversation without content
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -377,7 +377,7 @@ Feature: Conversation List
     When I open search UI
     And I input in People picker search field conversation name <GroupChatName>
     And I tap on conversation <GroupChatName> in search result
-    Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
+    Then I see 0 conversation entries
     When I type the default message and send it
     Then I see 1 default message in the conversation view
 
@@ -385,7 +385,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
-  @C847 @regression
+  @C847 @regression @fastLogin
   Scenario Outline: Verify deleting the history from kicked out conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -406,7 +406,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | KICKCHAT      |
 
-  @C839 @regression
+  @C839 @regression @fastLogin
   Scenario Outline: Verify canceling blocking person
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -421,7 +421,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C838 @regression
+  @C838 @regression @fastLogin
   Scenario Outline: Verify blocking person from action menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -441,7 +441,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C366 @rc @regression
+  @C366 @rc @regression @fastLogin
   Scenario Outline: Verify messages are marked as read with disappearing unread dot
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -459,7 +459,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C854 @regression
+  @C854 @regression @fastLogin
   Scenario Outline: Verify action menu is opened on swipe right on outgoing connection request
     Given There are 2 users where <Name> is me
     Given Myself sent connection request to <Contact>
@@ -503,7 +503,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Contact2  | AlertText            |
       | user1Email | user1Password | user1Name | user2Name | user3Name | access your Contacts |
 
-  @C95627 @regression
+  @C95627 @regression @fastLogin
   Scenario Outline: Verify deleting a conversation is synchronised to all devices
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -520,7 +520,7 @@ Feature: Conversation List
       | Name      | Contact1  | DeviceName | Timeout |
       | user1Name | user2Name | device1    | 15      |
 
-  @C95634 @regression
+  @C95634 @regression @fastLogin
   Scenario Outline: Verify hint is not shown anymore after tapping on it once
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

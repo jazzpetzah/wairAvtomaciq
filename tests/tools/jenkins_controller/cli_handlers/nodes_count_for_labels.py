@@ -7,6 +7,7 @@ from pprint import pformat
 import random
 import re
 import smtplib
+import socket
 import sys
 import time
 import tempfile
@@ -290,10 +291,55 @@ class IOSSimulator(BaseNodeVerifier):
             client.close()
 
 
+MAX_NODES_PER_HOST = 5
+
+POWER_CYCLE_SCRIPT = lambda devnum: """#!/usr/bin/env python
+
+import time
+
+from brainstem import discover
+from brainstem.link import Spec
+from brainstem.stem import USBHub2x4
+
+
+if __name__ == '__main__':
+    stem = USBHub2x4()
+    spec = discover.find_first_module(Spec.USB)
+    if spec is None:
+        raise RuntimeError("No USBHub is connected!")
+    stem.connect_from_spec(spec)
+    stem.usb.setPowerDisable({0})
+    time.sleep(1)
+    stem.usb.setPowerEnable({0})
+    time.sleep(1)
+""".format(devnum)
+
 class IOSRealDevice(BaseNodeVerifier):
     def _get_connected_devices(self, ssh_client):
         _, stdout, _ = ssh_client.exec_command('/usr/sbin/system_profiler SPUSBDataType')
         return re.findall(r'Serial Number: ([0-9a-f]{40})', stdout.read())
+
+    def _get_current_vm_number(self):
+        ip_as_list = socket.gethostbyname(self._node_hostname).split('.')
+        # Must be IPv4
+        assert len(ip_as_list) == 4
+        last_digit = int(ip_as_list[-1])
+        return last_digit % MAX_NODES_PER_HOST
+
+    def _run_device_power_cycle(self, ssh_client):
+        sftp = ssh_client.open_sftp()
+        _, localpath = tempfile.mkstemp(suffix='.py')
+        try:
+            with open(localpath, 'w') as f:
+                f.write(POWER_CYCLE_SCRIPT(self._get_current_vm_number() - 1))
+            remotepath = '/tmp/' + os.path.basename(localpath)
+            sftp.put(localpath, remotepath)
+        finally:
+            sftp.close()
+            os.unlink(localpath)
+        stdin, stdout, stderr = ssh_client.exec_command('python "{}"'.format(remotepath))
+        stdout.channel.recv_exit_status()
+        ssh_client.exec_command('rm -f "{}"'.format(remotepath))
 
     def _is_verification_passed(self):
         result = super(IOSRealDevice, self)._is_verification_passed()
@@ -306,7 +352,15 @@ class IOSRealDevice(BaseNodeVerifier):
             client.connect(self._node_hostname, username=self._verification_kwargs['node_user'],
                            password=self._verification_kwargs['node_password'])
 
-            available_devices = self._get_connected_devices(client)
+            self._run_device_power_cycle(client)
+
+            seconds_started = time.time()
+            available_devices = []
+            while time.time() - seconds_started <= 5:
+                available_devices = self._get_connected_devices(client)
+                if available_devices:
+                    break
+                time.sleep(0.5)
             if not available_devices:
                 msg = 'There are no real iOS device(s) connected to the node "{}"'.format(self._node.name)
                 sys.stderr.write(msg)
