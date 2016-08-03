@@ -52,7 +52,7 @@ Feature: Keyboard Gallery
       | Name      | Contact   | ItemName                   |
       | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
 
-  @C183904 @staging @fastLogin
+  @C183904 @regression @fastLogin
   Scenario Outline: I can draw a sketch on picture from gallery
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
