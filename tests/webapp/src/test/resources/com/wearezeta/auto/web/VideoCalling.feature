@@ -151,7 +151,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
-  @C12097 @videocalling @long-call
+  @C12097 @long-call
   Scenario Outline: Verify I can have video call more than 30 mins
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -662,7 +662,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 30      | userpicture_landscape.jpg |
 
-  @C165129 @regression @videocalling @calling_debug
+  @C165129 @regression @videocalling
   Scenario Outline: Verify that current video call is terminated if you want to call someone else
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -731,7 +731,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 20      |
 
-  @C165142 @regression @videocalling @calling_debug
+  @C165142 @regression @videocalling
   Scenario Outline: Verify that current video call is terminated if you want to videocall someone else
     Given My browser supports calling
     Given There are 3 users where <Name> is me

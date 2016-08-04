@@ -247,7 +247,7 @@ Feature: Audio Messaging
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
   @C131215 @regression @fastLogin
-  Scenario Outline: (ZIOS-6759) Verify playback is stopped when audio message recording is started
+  Scenario Outline: Verify playback is stopped when audio message recording is started
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number

@@ -11,13 +11,13 @@ public class TakePicturePage extends AndroidPage {
     public static final By xpathTakePhotoButton = By
             .xpath("//*[@id='gtv__camera_control__take_a_picture' and @shown='true']");
 
-    private static final By idCloseTakePictureViewButton = By.id("gtv__camera_control__back_to_change_image");
+    private static final By idCloseTakePictureViewButton = By.id("gtv__camera_control__take_a_picture");
 
     public static final By idChangePhotoBtn = By.id("gtv__camera_control__change_image_source");
 
-    private static final By idGalleryCameraBtn = By.id("gtv__camera_control__pick_from_gallery_in_camera");
+    private static final By idGalleryCameraBtn = By.id("gtv__camera_control__gallery");
 
-    private static final By idSwitchCameraButton = By.id("gtv__camera__top_control__back_camera");
+    private static final By idSwitchCameraButton = By.id("gtv__camera__top_control__change_camera");
 
     public static final By xpathConfirmOKButton = By.xpath("//*[@id='ttv__confirmation__confirm' and @value='OK']");
 
