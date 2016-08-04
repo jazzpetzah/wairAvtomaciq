@@ -23,7 +23,7 @@ public class TakePicturePage extends AndroidPage {
 
     public static final By xpathCancelButton = By.xpath("//*[@id='ttv__confirmation__cancel' and @value='CANCEL']");
 
-    private static final By idSketchImagePaintButton = By.id("ll__preview__sketch");
+    private static final By xpathSketchImagePaintButton = By.xpath("//*[@value='Add a sketch']");
 
     public TakePicturePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -111,7 +111,7 @@ public class TakePicturePage extends AndroidPage {
     }
 
     public void tapSketchOnImageButton() throws Exception {
-        getElement(idSketchImagePaintButton, "Draw sketch on image button is not visible").click();
+        getElement(xpathSketchImagePaintButton, "Draw sketch on image button is not visible").click();
     }
 
     public boolean isGalleryCameraButtonVisible() throws Exception {
