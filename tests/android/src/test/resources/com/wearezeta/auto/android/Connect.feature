@@ -478,3 +478,48 @@ Feature: Connect
     Examples:
       | Contact   | AName            | APhone     | PhonePrefix | A2Name           | A2Phone    |
       | user1Name | AutoconnectUser2 | 1722036230 | +49         | AutoconnectUser3 | 1622360109 |
+
+
+  @C192699 @staging
+  Scenario Outline: Verify autoconnect users by phone - Delay
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email or phone number
+    When User Myself has phone numbers <PhonePrefix><APhone>,<PhonePrefix><A2Phone> in address book
+    And I accept First Time overlay as soon as it is visible
+    And I wait for 3 seconds
+    Then I see Conversations list with name <AName>
+    And I see Conversations list with name <A2Name>
+
+    Examples:
+      | Name      | APhone     | PhonePrefix | A2Phone    | AName            | A2Name           |
+      | user1Name | 1722036230 | +49         | 1622360109 | AutoconnectUser2 | AutoconnectUser3 |
+
+  @staging
+  Scenario Outline: Direct matching emails -  delayed
+    # Given I am on Android 4.4 or better
+    Given There are 2 users where <UserA> is me
+    Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with no conversations
+    Given User <UserB> has email <UserA> in address book
+    When I wait for 10 seconds
+    # Then I see the message "<Message>" in push notifications list
+    When I open Search UI
+    And I type user name "<UserB>" in search field
+    Then I see user <UserB> in Search result list
+    When I clear search result by tap clear button or back button
+    And I tap conversations list settings button
+    And I select "Account" settings menu item
+    And I select "Log out" settings menu item
+    And I confirm sign out
+    And User <UserB> is me
+    And I sign in using my email
+    And I accept First Time overlay as soon as it is visible
+    And I see Conversations list with no conversations
+    And I open Search UI
+    And I type user name "<UserA>" in search field
+    Then I see user <UserA> in Search result list
+
+    Examples:
+      | UserA     | UserB     | Message          |
+      | user1Name | user2Name | No spec for that |

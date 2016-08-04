@@ -78,6 +78,7 @@ Feature: Permissions
     And I press Back button
     And I press Back button
     And I press Back button
+    And I press Back button
     # --- Verify no user if visible in invites list if contacts access is denied
     And I open Search UI
     Then I do not see user <Contact3> in Contact list
@@ -99,6 +100,7 @@ Feature: Permissions
     # deny access to camera
     And I dismiss security alert
     # Workaround for AN-4119
+    And I press Back button
     And I press Back button
     And I select to keep the current picture
     Then I see Conversations list with no conversations
