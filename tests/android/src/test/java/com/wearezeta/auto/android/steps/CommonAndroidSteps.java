@@ -276,6 +276,13 @@ public class CommonAndroidSteps {
             e.printStackTrace();
         }
 
+        // Clear all contacts in address book
+        try {
+            AndroidCommonUtils.clearAllContacts();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         try {
             usrMgr.resetUsers();
         } catch (Exception e) {
