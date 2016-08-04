@@ -23,7 +23,7 @@ public class TakePicturePage extends AndroidPage {
 
     public static final By xpathCancelButton = By.xpath("//*[@id='ttv__confirmation__cancel' and @value='CANCEL']");
 
-    private static final By idSketchImagePaintButton = By.id("gtv__sketch_image_paint_button");
+    private static final By idSketchImagePaintButton = By.id("ll__preview__sketch");
 
     public TakePicturePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);

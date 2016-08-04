@@ -458,7 +458,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C183892 @C183893 @staging
+  @C183892 @C183893 @regression
   Scenario Outline: Verify autoconnect users by phones
     Given I delete all contacts from Address Book
     Given I see welcome screen
