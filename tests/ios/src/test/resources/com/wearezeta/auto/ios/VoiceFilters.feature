@@ -1,6 +1,6 @@
 Feature: Voice Filters
 
-  @C165138 @regression @fastLogin
+  @C165138 @rc @regression @fastLogin
   Scenario Outline: Verify you can record an audio message and apply voice filter to it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

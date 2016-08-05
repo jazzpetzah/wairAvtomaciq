@@ -1,6 +1,6 @@
 Feature: Share Location
 
-  @C150025 @C150026 @regression @fastLogin
+  @C150025 @C150026 @rc @regression @fastLogin
   Scenario Outline: Map is shown in the conversation view
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -38,7 +38,7 @@ Feature: Share Location
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
 
-  @C165104 @C165105 @regression @fastLogin
+  @C165104 @C165105 @rc @regression @fastLogin
   Scenario Outline: Verify sending location from a map view (1to1)
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>

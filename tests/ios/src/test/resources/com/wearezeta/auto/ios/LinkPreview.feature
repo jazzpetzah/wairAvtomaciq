@@ -1,6 +1,6 @@
 Feature: Link Preview
 
-  @C167029 @regression @fastLogin
+  @C167029 @rc @regression @fastLogin
   Scenario Outline: Verify preview is shown for sent link (link only)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -69,7 +69,7 @@ Feature: Link Preview
       | Name      | Contact   | Shortenlink          |
       | user1Name | user2Name | http://goo.gl/pA9mgH |
 
-  @C167039 @regression @fastLogin
+  @C167039 @rc @regression @fastLogin
   Scenario Outline: Verify preview is shown for different formats of link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -99,7 +99,7 @@ Feature: Link Preview
       | Name      | Contact   | Link                | Link1                | Link2                   | Link3               | Link4               |
       | user1Name | user2Name | http://facebook.com | https://facebook.com | http://www.facebook.com | Http://facebook.com | HTTP://FACEBOOK.COM |
 
-  @C167038 @regression @fastLogin
+  @C167038 @rc @regression @fastLogin
   Scenario Outline: Verify copying link preview
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>, <Contact1>
