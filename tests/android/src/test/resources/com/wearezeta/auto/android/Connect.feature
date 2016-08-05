@@ -480,7 +480,7 @@ Feature: Connect
       | user1Name | AutoconnectUser2 | 1722036230 | +49         | AutoconnectUser3 | 1622360109 |
 
 
-  @C192699 @staging
+  @C192699 @regression @rc
   Scenario Outline: Verify autoconnect users by phone - Delay
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -494,7 +494,7 @@ Feature: Connect
       | Name      | APhone     | PhonePrefix | A2Phone    | AName            | A2Name           |
       | user1Name | 1722036230 | +49         | 1622360109 | AutoconnectUser2 | AutoconnectUser3 |
 
-  @staging
+  @C194553 @regression
   Scenario Outline: Direct matching emails -  delayed
     # Given I am on Android 4.4 or better
     Given There are 2 users where <UserA> is me

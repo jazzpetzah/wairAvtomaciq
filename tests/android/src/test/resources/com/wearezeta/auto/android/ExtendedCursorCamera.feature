@@ -191,8 +191,8 @@ Feature: Extended Cursor Camera
       | Name      | Contact   | NumColors |
       | user1Name | user2Name | 2         |
 
-  @C183883 @staging
-  Scenario Outline: (AN-4336) I can draw a sketch on camera photo from full screen camera
+  @C183883 @regression @rc
+  Scenario Outline: I can draw a sketch on camera photo from full screen camera
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
