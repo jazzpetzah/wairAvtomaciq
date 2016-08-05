@@ -34,6 +34,12 @@ Feature: Analytics
     Given I push 1.00MB file having name "qa_random.txt" to the device
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
+    # Audio message
+    When I long tap Audio message cursor button 3 seconds and swipe up
+    And I see Audio Message container in the conversation view
+    And I wait for 5 seconds
+    Then I verify that <LogType> log contains string "media.sent_audio_message"
+    And I verify that <LogType> log contains string "ACTION=file"
     # Text message
     When I type the message "<Message>" and send it
     Then I verify that <LogType> log contains string "media.completed_media_action"
@@ -68,12 +74,6 @@ Feature: Analytics
     And I tap Send button on Share Location page
     And I see Share Location container in the conversation view
     Then I verify that <LogType> log contains string "ACTION=location"
-    # Audio message
-    When I long tap Audio message cursor button 3 seconds and swipe up
-    And I see Audio Message container in the conversation view
-    And I wait for 5 seconds
-    Then I verify that <LogType> log contains string "media.sent_audio_message"
-    And I verify that <LogType> log contains string "ACTION=file"
     # Video message
     When I tap Video message button from cursor toolbar
     And I see Video Message container in the conversation view
