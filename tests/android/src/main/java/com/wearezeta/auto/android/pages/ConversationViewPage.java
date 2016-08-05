@@ -23,16 +23,18 @@ public class ConversationViewPage extends AndroidPage {
 
     public static final By xpathConfirmOKButton = By.xpath("//*[@id='ttv__confirmation__confirm' and @value='OK']");
 
-    public static final String idStrDialogImages = "iv__row_conversation__message_image";
-    public static final By idDialogImages = By.id(idStrDialogImages);
+    public static final String idStrConversationImages = "iv__row_conversation__message_image";
+    public static final By idConversationImages = By.id(idStrConversationImages);
 
-    private static final By xpathLastPicture = By.xpath(String.format("(//*[@id='%s'])[last()]", idStrDialogImages));
+    private static final By xpathLastPicture = By.xpath(String.format("(//*[@id='%s'])[last()]", idStrConversationImages));
 
     public static final By idCursorCamera = By.id("cursor_menu_item_camera");
 
     public static final By idCursorPing = By.id("cursor_menu_item_ping");
 
     private static final By idCursorMore = By.id("cursor_menu_item_more");
+
+    private static final By idCursorLess = By.id("cursor_menu_item_less");
 
     public static final By idCursorVideoMessage = By.id("cursor_menu_item_video");
 
@@ -55,7 +57,7 @@ public class ConversationViewPage extends AndroidPage {
                     xpathStrConversationMessageByText.apply(text));
 
     private static final By xpathUnsentIndicatorForImage = By
-            .xpath("//*[@id='" + idStrDialogImages + "']/parent::*/parent::*//*[@id='v__row_conversation__error']");
+            .xpath("//*[@id='" + idStrConversationImages + "']/parent::*/parent::*//*[@id='v__row_conversation__error']");
 
     public static final String idStrCursorEditText = "cet__cursor";
 
@@ -351,8 +353,15 @@ public class ConversationViewPage extends AndroidPage {
         if (btn.isPresent()) {
             btn.get().click();
         } else {
-            getElement(idCursorMore).click();
-            getElement(locator).click();
+            getElementIfDisplayed(idCursorMore, 3).orElseGet(() ->
+                    {
+                        try {
+                            return getElement(idCursorLess);
+                        } catch (Exception e) {
+                            throw new IllegalStateException("Cannot find element with Cursor less button");
+                        }
+                    }
+            ).click();
         }
     }
 
@@ -496,8 +505,8 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean isImageExists() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idDialogImages);
+    public boolean isImageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idConversationImages);
     }
 
     public boolean isConversationTitleVisible(String conversationTitle) throws Exception {
@@ -573,7 +582,7 @@ public class ConversationViewPage extends AndroidPage {
     public void tapPlayPauseBtn() throws Exception {
         // TODO: Remove this workaround once when swipe on SoundCloud container doesn't trigger long tap
         Optional<WebElement> actionCloseButton = getElementIfDisplayed(idActionModeBarCloseButton, 3);
-        if(actionCloseButton.isPresent()) {
+        if (actionCloseButton.isPresent()) {
             actionCloseButton.get().click();
         }
 
@@ -639,7 +648,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public Optional<BufferedImage> getRecentPictureScreenshot() throws Exception {
-        return this.getElementScreenshot(getElement(idDialogImages));
+        return this.getElementScreenshot(getElement(idConversationImages));
     }
 
     public Optional<BufferedImage> getPreviewPictureScreenshot() throws Exception {
@@ -647,7 +656,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean isImageInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idDialogImages);
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idConversationImages);
     }
 
     public boolean waitForAPictureWithUnsentIndicator() throws Exception {
@@ -674,13 +683,13 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean waitForXImages(int expectedCount) throws Exception {
         assert expectedCount >= 0;
-        final Optional<WebElement> imgElement = getElementIfDisplayed(idDialogImages);
+        final Optional<WebElement> imgElement = getElementIfDisplayed(idConversationImages);
         if (expectedCount <= 1) {
             return (expectedCount == 0 && !imgElement.isPresent()) || (expectedCount == 1 && imgElement.isPresent());
         }
         final long msStarted = System.currentTimeMillis();
         do {
-            int actualCnt = getElements(idDialogImages).size();
+            int actualCnt = getElements(idConversationImages).size();
             if (actualCnt >= expectedCount) {
                 return true;
             }
