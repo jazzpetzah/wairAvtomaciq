@@ -15,7 +15,7 @@ Feature: Link Preview
       | Name      | Contact   | Link                                                                                  |
       | user1Name | user2Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 |
 
-  @C169219 @regression @fastLogin
+  @C169219 @rc @regression @fastLogin
   Scenario Outline: Verify deleting link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -35,7 +35,7 @@ Feature: Link Preview
       | Name      | Contact   | Link                                                                                  |
       | user1Name | user2Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 |
 
-  @C169218 @regression @fastLogin
+  @C169218 @rc @regression @fastLogin
   Scenario Outline: Verify preview is shown for received link
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>

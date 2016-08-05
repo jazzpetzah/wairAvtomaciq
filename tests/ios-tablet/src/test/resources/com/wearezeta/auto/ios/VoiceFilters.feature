@@ -1,6 +1,6 @@
 Feature: Voice Filters
 
-  @C169215 @regression @fastLogin
+  @C169215 @rc @regression @fastLogin
   Scenario Outline: Verify you can record an audio message and apply voice filter to it [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -21,7 +21,7 @@ Feature: Voice Filters
       | Name      | Contact   | ButtonsCount |
       | user1Name | user2Name | 4            |
 
-  @C169216 @regression @fastLogin
+  @C169216 @rc @regression @fastLogin
   Scenario Outline: Verify sending original audio without any filters [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
