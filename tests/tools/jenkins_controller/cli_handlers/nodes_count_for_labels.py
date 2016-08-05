@@ -293,9 +293,7 @@ class IOSSimulator(BaseNodeVerifier):
 
 MAX_NODES_PER_HOST = 5
 
-POWER_CYCLE_SCRIPT = lambda devnum: """#!/usr/bin/env python
-
-import time
+POWER_CYCLE_SCRIPT = lambda devnum: """import time
 
 from brainstem import discover
 from brainstem.link import Spec
