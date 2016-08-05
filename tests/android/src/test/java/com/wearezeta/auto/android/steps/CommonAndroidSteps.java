@@ -1619,7 +1619,7 @@ public class CommonAndroidSteps {
      * @throws Exception
      * @step. ^User (.*) resets password to default$
      */
-    @When("^User (.*) resets password to \"(.*)\"")
+    @When("^User (.*) resets password to \"(.*)\"$")
     public void UserXRestesPassword(String userNmaeAlias, String newPassword) throws Exception {
         newPassword = usrMgr.replaceAliasesOccurences(newPassword, ClientUsersManager.FindBy.PASSWORD_ALIAS);
         commonSteps.UserResetsPassword(userNmaeAlias, newPassword);
@@ -1631,23 +1631,11 @@ public class CommonAndroidSteps {
      * @param asUser name of the user where the address book is uploaded
      * @param emails list of email addresses seperated by comma
      * @throws Exception
+     * @step. ^User (.*) has (?: emails?|phone numbers?) (.*) in address book$
      */
-    @Given("^User (.*) has emails? (.*) in address book")
-    public void UserXHasEmailsInAddressBook(String asUser, String emails)
+    @Given("^User (.*) has (?:emails?|phone numbers?) (.*) in address book$")
+    public void UserXHasEmailsInAddressBook(String asUser, String contacts)
             throws Exception {
-        commonSteps.UserXHasContactsInAddressBook(asUser, emails);
-    }
-
-    /**
-     * Add email(s) into address book of a user and upload address book in backend
-     *
-     * @param asUser name of the user where the address book is uploaded
-     * @param emails list of email addresses seperated by comma
-     * @throws Exception
-     */
-    @Given("^User (.*) has phone numbers? (.*) in address book")
-    public void UserXHasPhoneNumbersInAddressBook(String asUser, String emails)
-            throws Exception {
-        commonSteps.UserXHasPhoneNumberInAddressBook(asUser, emails);
+        commonSteps.UserXHasContactsInAddressBook(asUser, contacts);
     }
 }
