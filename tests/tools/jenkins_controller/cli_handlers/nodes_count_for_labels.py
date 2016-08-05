@@ -339,6 +339,9 @@ class IOSRealDevice(BaseNodeVerifier):
             os.unlink(localpath)
         stdin, stdout, stderr = ssh_client.exec_command('python "{}"'.format(remotepath))
         stdout.channel.recv_exit_status()
+        if stderr:
+            sys.stderr.write('!!! Error on power cycle script execution:\n')
+            sys.stderr.write(stderr + '\n')
         ssh_client.exec_command('rm -f "{}"'.format(remotepath))
 
     def _is_verification_passed(self):
