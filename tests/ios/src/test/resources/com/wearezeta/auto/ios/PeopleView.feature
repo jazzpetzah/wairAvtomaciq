@@ -412,7 +412,7 @@ Feature: People View
     And I open search UI
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
-    Then I see group chat page with users <Contact1>,<Contact2>
+    Then I see conversation name <GroupChatName> in Upper Toolbar
     And I see 0 conversation entries
 
     Examples:

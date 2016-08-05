@@ -13,7 +13,7 @@ Feature: E2EE
     Given I wait for 5 seconds
     Given User <Contact1> adds user Myself to group chat <GroupChatName>
     When I tap on contact name <GroupChatName>
-    Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
+    Then I see conversation name <GroupChatName> in Upper Toolbar
     And I see 0 conversation entries
 
     Examples:
@@ -117,7 +117,7 @@ Feature: E2EE
       | user1Name | user2Name | user3Name | Device1     | Label1       | Device2     | Label2       | VerifiedGroup |
 
   @C3294 @rc @regression @fastLogin
-  Scenario Outline: (ZIOS-5787) Verify system message appearance in case of using a new device by friend
+  Scenario Outline: Verify system message appearance in case of using a new device by friend
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email

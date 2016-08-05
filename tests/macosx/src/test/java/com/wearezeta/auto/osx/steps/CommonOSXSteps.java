@@ -15,8 +15,8 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAddressbookPermission;
-
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAppData;
+
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.getSizeOfAppInMB;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.killAllApps;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.startAppium4Mac;
@@ -57,7 +57,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.lessThan;
 
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -66,8 +65,10 @@ import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import static org.junit.Assert.assertEquals;
 import org.openqa.selenium.By;
+import static com.wearezeta.auto.osx.common.OSXExecutionContext.KEEP_DATABASE;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 
 public class CommonOSXSteps {
 
@@ -221,7 +222,9 @@ public class CommonOSXSteps {
             startAppium4Mac();
             killAllApps();
             Thread.sleep(5000);
-            clearAppData();
+            if (!KEEP_DATABASE) {
+                clearAppData();
+            }
             // Disabled addressbook permission revoke
             clearAddressbookPermission();
         } catch (Exception e) {

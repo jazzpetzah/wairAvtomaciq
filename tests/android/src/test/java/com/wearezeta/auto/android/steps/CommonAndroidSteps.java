@@ -276,6 +276,13 @@ public class CommonAndroidSteps {
             e.printStackTrace();
         }
 
+        // Clear all contacts in address book
+        try {
+            AndroidCommonUtils.clearAllContacts();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         try {
             usrMgr.resetUsers();
         } catch (Exception e) {
@@ -1013,6 +1020,21 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * Add existed and known contact into Address book
+     *
+     * @param contactName        expected contact name
+     * @param contactPhoneNumber should be phone number without prefix
+     * @param prefix             should be +49 or others with same formate
+     * @throws Exception
+     * @step. ^I add contact with name (.*) and phone (.*) to Address Book$
+     */
+    @Given("^I add name (.*) and phone (.*) with prefix (.*) to Address Book$")
+    public void IAddContactIntoAddressBook(String contactName, String contactPhoneNumber, String prefix) throws Exception {
+        PhoneNumber phoneNumber = new PhoneNumber(prefix, contactPhoneNumber);
+        AndroidCommonUtils.insertContact(contactName, phoneNumber);
+    }
+
+    /**
      * Send personal invitation over the backend
      *
      * @param userToNameAlias the name/alias of conversations list owner
@@ -1601,5 +1623,31 @@ public class CommonAndroidSteps {
     public void UserXRestesPassword(String userNmaeAlias, String newPassword) throws Exception {
         newPassword = usrMgr.replaceAliasesOccurences(newPassword, ClientUsersManager.FindBy.PASSWORD_ALIAS);
         commonSteps.UserResetsPassword(userNmaeAlias, newPassword);
+    }
+
+    /**
+     * Add email(s) into address book of a user and upload address book in backend
+     *
+     * @param asUser name of the user where the address book is uploaded
+     * @param emails list of email addresses seperated by comma
+     * @throws Exception
+     */
+    @Given("^User (.*) has emails? (.*) in address book")
+    public void UserXHasEmailsInAddressBook(String asUser, String emails)
+            throws Exception {
+        commonSteps.UserXHasContactsInAddressBook(asUser, emails);
+    }
+
+    /**
+     * Add email(s) into address book of a user and upload address book in backend
+     *
+     * @param asUser name of the user where the address book is uploaded
+     * @param emails list of email addresses seperated by comma
+     * @throws Exception
+     */
+    @Given("^User (.*) has phone numbers? (.*) in address book")
+    public void UserXHasPhoneNumbersInAddressBook(String asUser, String emails)
+            throws Exception {
+        commonSteps.UserXHasPhoneNumberInAddressBook(asUser, emails);
     }
 }

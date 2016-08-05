@@ -237,6 +237,7 @@ public class CallingSteps {
      */
     @Then("(.*) verif(?:ies|y) to( not)? get video data from (.*)$")
     public void UserXVerifesToGetVideoDataFromY(String callees, String not, String caller) throws Exception {
+        context.startPinging();
         ClientUser sender = context.getUserManager().findUserByNameOrNameAlias(caller);
         List<String> splitAliases = splitAliases(callees);
         Map<String, Flow> oldFlows = new HashMap<>();
@@ -270,6 +271,7 @@ public class CallingSteps {
                         equalTo(oldFlow.getTelemetry().getStats().getVideo().getBytesReceived()));
             }
         }
+        context.stopPinging();
     }
 
     /**
@@ -284,6 +286,7 @@ public class CallingSteps {
      */
     @Then("(.*) verif(?:ies|y) to( not)? get audio data from (.*)$")
     public void UserXVerifesToGetAudioDataFromY(String callees, String not, String caller) throws Exception {
+        context.startPinging();
         ClientUser sender = context.getUserManager().findUserByNameOrNameAlias(caller);
         List<String> splitAliases = splitAliases(callees);
         Map<String, Flow> oldFlows = new HashMap<>();
@@ -318,6 +321,7 @@ public class CallingSteps {
                         equalTo(oldFlow.getTelemetry().getStats().getAudio().getBytesReceived()));
             }
         }
+        context.stopPinging();
     }
 
     private Map<String, Flow> getFlows(String callee) throws CallingServiceInstanceException, NoSuchUserException,

@@ -14,22 +14,6 @@ public final class OSXLocators {
                 .format("/AXMenu/AXMenuItem[contains(@AXTitle, '%s')]", name);
     }
 
-    public static final class NoInternetConnectionPage {
-
-        public static final String idOKButton = "_NS:14";
-
-        public static final String xpathNoInternetMessage = "//AXStaticText[contains(@AXValue,'No Internet Connection')]";
-    }
-
-    public static final class ProblemReportPage {
-
-        public static final String idWindow = "_NS:162";
-
-        public static final String nameCancelButton = "Cancel";
-
-        public static final String nameSendButton = "Send";
-    }
-
     public static final class MainWirePage {
 
         public static final String xpathWindow = "//AXApplication[contains(@AXTitle,'Wire')]//AXWindow[contains(@AXTitle,'Wire')]";

@@ -143,6 +143,7 @@
                 <picklejar.feature.package>com.wearezeta.auto.web</picklejar.feature.package>
                 <picklejar.cucumber.report.path>target/</picklejar.cucumber.report.path>
                 <picklejar.screenshot.path>${pictureResultsPath}</picklejar.screenshot.path>
+                <picklejar.random>0</picklejar.random>
             </properties>
 
             <build>
@@ -161,6 +162,7 @@
                                     <target>
                                         <property name="picklejar.tag" value="${picklejar.tag}"/>
                                         <property name="picklejar.feature.package" value="${picklejar.feature.package}"/>
+                                        <property name="picklejar.random" value="${picklejar.random}"/>
                                         <property name="basedir" value="${project.build.directory}" />
                                         <property name="runtime_classpath" refid="maven.runtime.classpath" />
                                         <exec executable="java" spawn="false">
@@ -168,6 +170,7 @@
                                             <arg value="${runtime_classpath}:${basedir}/target/test-classes"/>
                                             <arg value="-Dpicklejar.tag=${picklejar.tag}"/>
                                             <arg value="-Dpicklejar.feature.package=${picklejar.feature.package}"/>
+                                            <arg value="-Dpicklejar.random=${picklejar.random}"/>
                                             <arg value="-Dlog4j.rootLogger=DEBUG"/>
                                             <arg value="com.wire.picklejar.construct.TestClassGenerator"/>
                                         </exec>  
@@ -214,6 +217,7 @@
                                 <picklejar.parallel.max>${picklejar.parallel.max}</picklejar.parallel.max>
                                 <picklejar.cucumber.report.path>${picklejar.cucumber.report.path}</picklejar.cucumber.report.path>
                                 <picklejar.screenshot.path>${picklejar.screenshot.path}</picklejar.screenshot.path>
+                                <picklejar.random>${picklejar.random}</picklejar.random>
                                 <java.awt.headless>true</java.awt.headless>
                                 <org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>
                                 <org.apache.commons.logging.simplelog.log.org.apache.http>warn</org.apache.commons.logging.simplelog.log.org.apache.http>

@@ -23,6 +23,7 @@ import static com.wearezeta.auto.web.steps.CommonWebAppSteps.log;
 import com.wearezeta.auto.win.common.WinCommonUtils;
 import static com.wearezeta.auto.win.common.WinCommonUtils.clearAppData;
 import static com.wearezeta.auto.win.common.WinCommonUtils.killAllApps;
+import static com.wearezeta.auto.win.common.WinExecutionContext.KEEP_DATABASE;
 import static com.wearezeta.auto.win.common.WinExecutionContext.WINIUM_URL;
 import static com.wearezeta.auto.win.common.WinExecutionContext.WIRE_APP_FOLDER;
 import static com.wearezeta.auto.win.common.WinExecutionContext.WIRE_APP_PATH;
@@ -76,7 +77,9 @@ public class CommonWinSteps {
     public void setUp() throws Exception {
         try {
             killAllApps();
-            clearAppData();
+            if (!KEEP_DATABASE) {
+                clearAppData();
+            }
         } catch (Exception e) {
             LOG.error(e);
         }

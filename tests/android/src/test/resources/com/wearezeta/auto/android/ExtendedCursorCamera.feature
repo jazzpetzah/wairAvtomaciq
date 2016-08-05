@@ -15,7 +15,7 @@ Feature: Extended Cursor Camera
     And I see thumbnails in extended cursor camera overlay
     And I see Take Photo button on Extended cursor camera overlay
     And I see Switch Camera button on Extended cursor camera overlay
-    And I see External Camera button on Extended cursor camera overlay
+    And I see Camera button on Extended cursor camera overlay
     And I see External Video button on Extended cursor camera overlay
     #C183867
     When I swipe left on Extended cursor camera overlay
@@ -25,7 +25,7 @@ Feature: Extended Cursor Camera
     Then I see thumbnails in extended cursor camera overlay
     And I see Take Photo button on Extended cursor camera overlay
     And I see Switch Camera button on Extended cursor camera overlay
-    And I see External Camera button on Extended cursor camera overlay
+    And I see Camera button on Extended cursor camera overlay
     And I see External Video button on Extended cursor camera overlay
 
     Examples:
@@ -59,8 +59,8 @@ Feature: Extended Cursor Camera
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I tap Add picture button from cursor toolbar
-    And I tap External Camera button on Extended cursor camera overlay
-    Then I see a picture in the conversation view
+    And I tap Camera button on Extended cursor camera overlay
+    Then I see Take Photo button on Take Picture view
 
     Examples:
       | Name      | Contact   |
@@ -190,3 +190,23 @@ Feature: Extended Cursor Camera
     Examples:
       | Name      | Contact   | NumColors |
       | user1Name | user2Name | 2         |
+
+  @C183883 @regression @rc
+  Scenario Outline: I can draw a sketch on camera photo from full screen camera
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
+    And I tap Add picture button from cursor toolbar
+    And I tap Camera button on Extended cursor camera overlay
+    And I tap Take Photo button on Take Picture view
+    And I tap Sketch Image Paint button on Take Picture view
+    And I draw a sketch on image with <NumColors> colors
+    And I send my sketch
+    Then I see a picture in the conversation view
+
+    Examples:
+      | Name      | Contact1  | NumColors |
+      | user1Name | user2Name | 6         |

@@ -1,6 +1,6 @@
 Feature: Calling_Matrix
 
-  @C5359 @calling_matrix @calling
+  @C5359 @calling_matrix
   Scenario Outline: Verify I can make 1:1 audio call to <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -28,7 +28,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | firefox:46.0.1       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
 
-  @C5360 @calling_matrix @calling
+  @C5360 @calling_matrix
   Scenario Outline: Verify I can make 1:1 video call to <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -58,7 +58,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | firefox:46.0.1       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
 
-  @C5361 @calling_matrix @calling
+  @C5361 @calling_matrix
   Scenario Outline: Verify I can make 1:1 call to AVS <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -79,11 +79,11 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend     | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | zcall:2.7.21    | 20      |
+      | user1Email | user1Password | user1Name | user2Name | zcall:2.7.25    | 20      |
 # not necessary due to same versions in android and ios
 #      | user1Email | user1Password | user1Name | user2Name | zcall:2.3.8    | 20      |
 
-  @C5362 @calling_matrix @calling
+  @C5362 @calling_matrix
   Scenario Outline: Verify I can receive 1:1 audio call from <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -111,7 +111,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | firefox:46.0.1       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
 
-  @C5363 @calling_matrix @calling
+  @C5363 @calling_matrix
   Scenario Outline: Verify I can receive 1:1 video call from <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -141,7 +141,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | firefox:46.0.1       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
 
-  @C5364 @calling_matrix @calling
+  @C5364 @calling_matrix
   Scenario Outline: Verify I can receive 1:1 audio call from AVS <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -162,11 +162,11 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend       | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | autocall:2.7.21   | 20      |
+      | user1Email | user1Password | user1Name | user2Name | autocall:2.7.26   | 20      |
 # not necessary due to same versions in android and ios
 #      | user1Email | user1Password | user1Name | user2Name | autocall:2.3.8   | 20      |
 
-  @C5365 @calling_matrix @calling
+  @C5365 @calling_matrix
   Scenario Outline: Verify I can make audio group call with multiple <WaitBackend>
     Given My browser supports calling
     Given There are 5 users where <Name> is me
@@ -201,7 +201,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:46.0.1       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:45.0.1       | 30      |
 
-  @C5366 @calling_matrix @calling
+  @C5366 @calling_matrix
   Scenario Outline: Verify I can make audio group call with multiple AVS <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -221,11 +221,11 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend    | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.7.21   | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.7.26   | 30      |
 # not necessary due to same versions in android and ios
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.3.8    | 30      |
 
-  @C5367 @calling_matrix @calling
+  @C5367 @calling_matrix
   Scenario Outline: Verify I can join audio group call with multiple <Backend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -263,7 +263,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:45.0.1       | 30      |
       
 
-  @C5368 @calling_matrix @calling
+  @C5368 @calling_matrix
   Scenario Outline: Verify I can join audio group call with AVS <Backend> and <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -297,17 +297,17 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | Backend          | WaitBackend          | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.7.21  | chrome:52.0.2743.82  | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.7.21  | chrome:51.0.2704.106 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.7.21  | firefox:46.0.1       | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.7.21  | firefox:45.0.1       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.7.26  | chrome:52.0.2743.82  | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.7.26  | chrome:51.0.2704.106 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.7.26  | firefox:46.0.1       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.7.26  | firefox:45.0.1       | 30      |
 # not necessary due to same versions in android and ios
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | chrome:52.0.2743.82  | 30      |
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | chrome:51.0.2704.106 | 30      |
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | firefox:46.0.1       | 30      |
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | firefox:45.0.1       | 30      |
 
-  @C5369 @calling_matrix @calling
+  @C5369 @calling_matrix
   Scenario Outline: Verify I can join audio group call with AVS <Backend> and <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -332,13 +332,13 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend           | WaitBackend   | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.7.21   | zcall:2.7.21  | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.7.26   | zcall:2.7.25  | 30      |
 # not necessary due to same versions in android and ios
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2.46  | zcall:2.2.38 | 30      |
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2.38  | zcall:2.2.38 | 30      |
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2.38  | zcall:2.2.46 | 30      |
 
-  @C5370 @calling_matrix @calling
+  @C5370 @calling_matrix
   Scenario Outline: Verify I can create, leave and rejoin an audio group call with <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -370,7 +370,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:46.0.1       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:45.0.1       | 30      |
 
-  @C5370 @calling_matrix @calling
+  @C5370 @calling_matrix
   Scenario Outline: Verify I can create, leave and rejoin an audio group call with AVS <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -394,4 +394,4 @@ Feature: Calling_Matrix
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend  | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | zcall:2.7.21 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | zcall:2.7.26 | 30      |

@@ -45,7 +45,7 @@ Feature: Conversation View
       | Name      | Contact   | PingMsg    |
       | user1Name | user2Name | YOU PINGED |
 
-  @C909 @C173062 @regression @IPv6 @fastLogin
+  @C909 @C173062 @rc @regression @IPv6 @fastLogin
   Scenario Outline: Send a camera roll picture to user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -329,7 +329,7 @@ Feature: Conversation View
       | user1Name | user2Name | https://vimeo.com/categories |
 
   @C907 @regression @fastLogin
-  Scenario Outline: Verify player is displayed for vimeo links with video IDs
+  Scenario Outline: (ZIOS-7010) Verify player is displayed for vimeo links with video IDs
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -446,7 +446,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C917 @C173060 @real @fastLogin
+  @C917 @C173060 @rc @real @fastLogin
   Scenario Outline: Verify sending photo from a back camera
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

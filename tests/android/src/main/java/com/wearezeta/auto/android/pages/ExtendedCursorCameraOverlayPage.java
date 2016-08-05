@@ -16,7 +16,7 @@ public class ExtendedCursorCameraOverlayPage extends AndroidPage {
 
     private static final By idCameraSwitchButton = By.id("gtv__cursor_image__front_back");
 
-    private static final By idOpenExternalCameraButton = By.id("gtv__cursor_image__open_camera");
+    private static final By idOpenCameraButton = By.id("gtv__cursor_image__open_camera");
 
     private static final By idOpenExternalVideoButton = By.id("gtv__cursor_image__open_video");
 
@@ -90,8 +90,8 @@ public class ExtendedCursorCameraOverlayPage extends AndroidPage {
                 return idCameraSwitchButton;
             case "gallery":
                 return idNavigationOpenGalleryButton;
-            case "external camera":
-                return idOpenExternalCameraButton;
+            case "camera":
+                return idOpenCameraButton;
             case "external video":
                 return idOpenExternalVideoButton;
             case "back":
