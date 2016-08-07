@@ -331,17 +331,33 @@ public class CallingSteps {
     }
 
     /**
-     * Verify that each call of the instances was successful
+     * Verify that each outgoing call of the instances was successful
      *
      * @step. (.*) verif(?:ies|y) that call to conversation (.*) was successful$
+     *
+     * @param callers comma separated list of caller names/aliases
+     * @throws Exception
+     */
+    @Then("(.*) verif(?:ies|y) that call to conversation (.*) was successful$")
+    public void UserXVerifesOutgoingCallWasSuccessful(String callers, String conversation) throws Exception {
+        for (Call call : context.getCallingManager().getOutgoingCall(splitAliases(callers), conversation)) {
+            assertNotNull("There are no metrics available for this call \n" + call, call.getMetrics());
+            assertTrue("Call failed: \n" + call + "\n" + call.getMetrics(), call.getMetrics().isSuccess());
+        }
+    }
+    
+    /**
+     * Verify that each incoming call of the instances was successful
+     *
+     * @step. (.*) verif(?:ies|y) that incoming call was successful$
      *
      * @param callees comma separated list of callee names/aliases
      * @throws Exception
      */
-    @Then("(.*) verif(?:ies|y) that call to conversation (.*) was successful$")
-    public void UserXVerifesCallWasSuccessful(String callees, String conversation) throws Exception {
-        for (Call call : context.getCallingManager().getOutgoingCall(splitAliases(callees), conversation)) {
-            assertNotNull("There are no metrics available for this call \n" + call, call.getMetrics());
+    @Then("(.*) verif(?:ies|y) that incoming call was successful$")
+    public void UserXVerifesIncomingCallWasSuccessful(String callees) throws Exception {
+        for (Call call : context.getCallingManager().getIncomingCall(splitAliases(callees))) {
+            assertNotNull("There are no metrics available for this incoming call \n" + call, call.getMetrics());
             assertTrue("Call failed: \n" + call + "\n" + call.getMetrics(), call.getMetrics().isSuccess());
         }
     }
