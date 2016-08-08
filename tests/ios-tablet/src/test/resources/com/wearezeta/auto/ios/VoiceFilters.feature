@@ -31,7 +31,7 @@ Feature: Voice Filters
     When I tap on contact name <Contact>
     And I tap Audio Message button from input tools
     And I tap Start Recording button on Voice Filters overlay
-    And I wait for 3 seconds
+    And I wait for 5 seconds
     And I tap Stop Recording button on Voice Filters overlay
     And I tap Confirm button on Voice Filters overlay
     Then I see audio message container in the conversation view
