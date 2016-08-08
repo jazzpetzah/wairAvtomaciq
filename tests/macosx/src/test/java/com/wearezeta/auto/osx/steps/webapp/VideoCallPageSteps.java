@@ -1,5 +1,6 @@
 package com.wearezeta.auto.osx.steps.webapp;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Optional;
@@ -20,6 +21,9 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 
 import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class VideoCallPageSteps {
@@ -59,9 +63,8 @@ public class VideoCallPageSteps {
         VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
 
         // get position and size of self video element
-        WebElement element = videoCallPage.getLocalScreenShareVideoElement();
-        final Point elementLocation = element.getLocation();
-        final Dimension elementSize = element.getSize();
+        final Point elementLocation = videoCallPage.getLocalScreenShareVideoElementLocation();
+        final Dimension elementSize = videoCallPage.getLocalScreenShareVideoElementSize();
 
         // get local screenshot
         MainWirePage mainWirePage = osxPagesCollection.getPage(MainWirePage.class);
@@ -80,7 +83,7 @@ public class VideoCallPageSteps {
 
         // Write images to disk
         String resizedScreenshotName = "target/resizedScreenshot" + System.currentTimeMillis() + ".png";
-        String localScreenShareVideoName = "target/remoteScreenshot" + System.currentTimeMillis() + ".png";
+        String localScreenShareVideoName = "target/localScreenshare" + System.currentTimeMillis() + ".png";
         ImageUtil.storeImage(resizedScreenshot, new File(resizedScreenshotName));
         ImageUtil.storeImage(localScreenShareVideo, new File(localScreenShareVideoName));
         String reportPath = "../artifact/tests/macosx/";
@@ -124,5 +127,55 @@ public class VideoCallPageSteps {
     @When("^I minimize video call$")
     public void IMinimizeVideoCall() throws Exception {
         webappPagesCollection.getPage(VideoCallPage.class).clickMinimizeVideoCallButton();
+    }
+
+    /**
+     * Turn off and on the camera on video call page
+     *
+     * @throws Exception
+     * @step. ^I see video call is (minimized|maximized)$
+     */
+    @When("^I click on video button$")
+    public void IClickVideoButton() throws Exception {
+        VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
+        videoCallPage.clickVideoButton();
+    }
+
+    /**
+     * Checks if the self video is black
+     *
+     * @throws Exception
+     * @step. ^I see my self video is black$
+     */
+    @Then("^I see my self video is( not)? black$")
+    public void ISeeSelfVideoBlack(String not) throws Exception {
+        VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
+        Optional<BufferedImage> selfVideo = videoCallPage.getSelfVideo();
+        Assert.assertTrue("Self video is not present", selfVideo.isPresent());
+        BufferedImage image = selfVideo.get();
+        Color pixel = new Color(image.getRGB(image.getWidth() / 2, image.getHeight() / 2));
+        if(not == null) {
+            Assert.assertThat("RGB red", pixel.getRed(), lessThan(2));
+            Assert.assertThat("RGB green", pixel.getGreen(), lessThan(2));
+            Assert.assertThat("RGB blue", pixel.getBlue(), lessThan(2));
+        } else {
+            Assert.assertThat("All RGB values summarized", pixel.getRed() + pixel.getGreen() + pixel.getGreen(), greaterThan(20));
+        }
+    }
+
+    /**
+     * Checks whether the self video is on or off
+     *
+     * @throws Exception
+     * @step. ^I see my self video is (off|on)$
+     */
+    @Then("^I see my self video is (off|on)$")
+    public void ISeeSelfVideoOff(String onOffToggle) throws Exception {
+        VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
+        if ("off".equals(onOffToggle)) {
+            assertTrue("Disabled video icon is still shown", videoCallPage.isDisabledVideoIconVisible());
+        }else{
+            assertTrue("Disabled video icon is not shown", videoCallPage.isDisabledVideoIconInvisible());
+        }
     }
 }
