@@ -105,7 +105,7 @@ Feature: Audio Messaging
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C131218 @regression @fastLogin
+  @C131218 @regression @fastLogin @torun
   Scenario Outline: Verify not sent yet audio message is preserved on minimising the app
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
