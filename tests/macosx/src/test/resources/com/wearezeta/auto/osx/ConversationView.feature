@@ -227,7 +227,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C183888 @smoke
+  @C183888 @smoke @WEBAPP-3052
   Scenario Outline: Send a long message containing new lines in 1on1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
