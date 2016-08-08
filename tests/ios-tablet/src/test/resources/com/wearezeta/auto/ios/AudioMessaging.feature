@@ -18,7 +18,7 @@ Feature: Audio Messaging
 
     Examples:
       | Name      | Contact   | Duration |
-      | user1Name | user2Name | 5        |
+      | user1Name | user2Name | 15       |
 
   @C145954 @rc @regression @fastLogin
   Scenario Outline: Verify receiving and playing an audio message [LANDSCAPE]
