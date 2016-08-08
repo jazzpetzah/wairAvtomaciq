@@ -112,7 +112,7 @@ Feature: Connect
     Then I see connect to <Contact3> dialog
     When I Connect with contact by pressing button
     And I wait for 5 seconds
-    And I navigate back from dialog page
+    And I navigate back from conversation
     Then I see Conversations list with name <WaitingMess2>
 
     Examples:
@@ -274,7 +274,7 @@ Feature: Connect
     When I click left Connect button
     And I click Connect button on connect to page
     Then I close participant page by UI button
-    When I navigate back from dialog page
+    When I navigate back from conversation
     Then I see Conversations list with name <Contact2>
 
     Examples:
@@ -338,7 +338,7 @@ Feature: Connect
     And I tap on user name found on People picker page <Contact2>
     Then User info should be shown with Unblock button
     When I click Unblock button
-    And I navigate back from dialog page
+    And I navigate back from conversation
     Then I see Conversations list with name <Contact2>
 
     Examples:
@@ -375,7 +375,7 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact2>
-    And I navigate back from dialog page
+    And I navigate back from conversation
     And I wait until <Contact1> exists in backend search results
     And I open Search UI
     And I type user name "<Contact1>" in search field
@@ -384,7 +384,7 @@ Feature: Connect
     Then User info should be shown with Unblock button
     When I click Unblock button
     Then I see conversation view
-    When I navigate back from dialog page
+    When I navigate back from conversation
     Then I see Conversations list with name <Contact1>
 
     Examples:

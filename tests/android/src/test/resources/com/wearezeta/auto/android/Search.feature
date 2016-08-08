@@ -9,7 +9,7 @@ Feature: Search
     Given I see Conversations list with conversations
     Given I wait until <Contact1> exists in backend search results
     When I tap on conversation name <Contact2>
-    And I navigate back from dialog page
+    And I navigate back from conversation
     And I open Search UI
     And I type user name "<Contact1>" in search field
     Then I see user <Contact1> in Search result list
@@ -43,7 +43,7 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact2>
-    And I navigate back from dialog page
+    And I navigate back from conversation
     And I open Search UI
     And I type the first <Size> chars of user name "<Contact1>" in search field
     Then I see user <Contact1> in Search result list

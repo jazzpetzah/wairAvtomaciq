@@ -69,7 +69,7 @@ Feature: Permissions
     Then I do not see incoming call
     And <Contact2> stops calling me
     # --- Select Profile Picture ---
-    When I navigate back from dialog page
+    When I navigate back from conversation
     And I tap conversations list settings button
     And I select "Account" settings menu item
     And I select "Picture" settings menu item
