@@ -22,6 +22,7 @@ Feature: Audio Messaging
     Given I see conversations list
     When I tap on contact name <Contact>
     And I long tap Audio Message button for <Duration> seconds from input tools
+    And I close the app for 1 seconds
     And I tap Send record control button
     Then I see audio message container in the conversation view
     When I remember the state of Play button on audio message placeholder
