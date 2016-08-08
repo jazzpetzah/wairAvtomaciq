@@ -178,26 +178,4 @@ public class VideoCallPageSteps {
             assertTrue("Disabled video icon is not shown", videoCallPage.isDisabledVideoIconInvisible());
         }
     }
-
-    /**
-     * Check if remote video in fullscreen is black or not
-     *
-     * @param not
-     * @throws Exception
-     */
-    @Then("^I see video from other user is( not)? black$")
-    public void ISeeRemoteVideoBlack(String not) throws Exception {
-        VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
-        Optional<BufferedImage> maximizedRemoteVideo = videoCallPage.getMaximizedRemoteVideo();
-        Assert.assertTrue("Maximized remote video is not present", maximizedRemoteVideo.isPresent());
-        BufferedImage image = maximizedRemoteVideo.get();
-        Color pixel = new Color(image.getRGB(image.getWidth() / 2, image.getHeight() / 2));
-        if(not == null) {
-            Assert.assertThat("RGB red", pixel.getRed(), lessThan(2));
-            Assert.assertThat("RGB green", pixel.getGreen(), lessThan(2));
-            Assert.assertThat("RGB blue", pixel.getBlue(), lessThan(2));
-        } else {
-            Assert.assertThat("All RGB values summarized", pixel.getRed() + pixel.getGreen() + pixel.getGreen(), greaterThan(20));
-        }
-    }
 }
