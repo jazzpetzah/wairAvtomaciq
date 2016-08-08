@@ -29,18 +29,6 @@ def chunks(l, n):
         yield l[i:i+n]
 
 
-CURRENT_HOST_IP = socket.gethostbyname(socket.gethostname())
-
-def calc_vm_master_host_ip():
-    ip_as_list = CURRENT_HOST_IP.split('.')
-    # Must be IPv4
-    assert len(ip_as_list) == 4
-    last_digit = int(ip_as_list[-1])
-    return '.'.join(ip_as_list[:3] + [str(last_digit - (last_digit % MAX_NODES_PER_HOST))])
-
-MASTER_HOST_IP = calc_vm_master_host_ip()
-
-
 class NodesCountForLabels(CliHandlerBase):
     def _build_options(self, parser):
         super(NodesCountForLabels, self)._build_options(parser)
@@ -323,24 +311,35 @@ stem.usb.setPowerEnable({0})
 time.sleep(1)
 """.format(devnum)
 
+
 class IOSRealDevice(BaseNodeVerifier):
     def _get_connected_devices(self, ssh_client):
         _, stdout, _ = ssh_client.exec_command('/usr/sbin/system_profiler SPUSBDataType')
         return re.findall(r'Serial Number: ([0-9a-f]{40})', stdout.read())
 
-    def _get_current_vm_number(self):
-        ip_as_list = socket.gethostbyname(self._node_hostname).split('.')
+    def _get_dst_vm_ip(self):
+        return socket.gethostbyname(self._node_hostname)
+
+    def _get_dst_vm_number(self):
+        ip_as_list = self._get_dst_vm_ip()
         # Must be IPv4
         assert len(ip_as_list) == 4
         last_digit = int(ip_as_list[-1])
         return last_digit % MAX_NODES_PER_HOST
+
+    def _get_dst_vm_host_ip(self):
+        ip_as_list = self._get_dst_vm_ip()
+        # Must be IPv4
+        assert len(ip_as_list) == 4
+        last_digit = int(ip_as_list[-1])
+        return '.'.join(ip_as_list[:3] + [str(last_digit - (last_digit % MAX_NODES_PER_HOST))])
 
     def _run_device_power_cycle(self, ssh_client):
         sftp = ssh_client.open_sftp()
         _, localpath = tempfile.mkstemp(suffix='.py')
         try:
             with open(localpath, 'w') as f:
-                f.write(POWER_CYCLE_SCRIPT(self._get_current_vm_number() - 1))
+                f.write(POWER_CYCLE_SCRIPT(self._get_dst_vm_number() - 1))
             remotepath = '/tmp/' + os.path.basename(localpath)
             sftp.put(localpath, remotepath)
         finally:
@@ -361,7 +360,7 @@ class IOSRealDevice(BaseNodeVerifier):
         try:
             client.load_system_host_keys()
             client.set_missing_host_key_policy(paramiko.WarningPolicy())
-            client.connect(MASTER_HOST_IP,
+            client.connect(self._get_dst_vm_host_ip(),
                            username=self._verification_kwargs['node_user'],
                            password=self._verification_kwargs['node_password'])
             self._run_device_power_cycle(client)
