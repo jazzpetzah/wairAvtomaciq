@@ -638,17 +638,24 @@ public final class CommonSteps {
                 PICTURE_CHANGE_TIMEOUT);
     }
 
+    /**
+     * Upload fake addressbook to Backend
+     *
+     * @param userAsNameAlias the user who upload the addressbook
+     * @param contacts could be a list of phone numbers (+49.....) or emails , seperated by comma
+     * @throws Exception
+     */
     public void UserXHasContactsInAddressBook(String userAsNameAlias, String contacts) throws Exception {
         StringBuilder sb = new StringBuilder();
         for (String contact : splitAliases(contacts)) {
-            sb.append(usrMgr.findUserByNameOrNameAlias(contact).getEmail());
+            if (contact.startsWith("+")) {
+                sb.append(contact);
+            } else {
+                sb.append(usrMgr.replaceAliasesOccurences(contact, FindBy.EMAIL_ALIAS));
+            }
             sb.append(ALIASES_SEPARATOR);
         }
         this.UserXHasEmailsInAddressBook(userAsNameAlias, sb.toString());
-    }
-
-    public void UserXHasPhoneNumberInAddressBook(String userAsNameAlias, String phoneNumbers) throws Exception {
-        this.UserXHasEmailsInAddressBook(userAsNameAlias, phoneNumbers);
     }
 
     public void UserXHasEmailsInAddressBook(String userAsNameAlias,

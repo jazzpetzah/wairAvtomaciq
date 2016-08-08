@@ -375,9 +375,9 @@ public class ConversationViewPageSteps {
      * Swipe down on dialog page until Mediabar appears
      *
      * @throws Exception
-     * @step. ^I swipe down on dialog page until Mediabar appears$
+     * @step. ^I swipe down on conversation until Mediabar appears$
      */
-    @When("^I swipe down on dialog page until Mediabar appears$")
+    @When("^I swipe down on conversation until Mediabar appears$")
     public void ISwipedownOnDialogPageUntilMediaBarAppears() throws Exception {
         Assert.assertTrue("Media Bar is not visible", getConversationViewPage().scrollUpUntilMediaBarVisible(MAX_SWIPES));
     }
@@ -386,10 +386,10 @@ public class ConversationViewPageSteps {
      * Navigates back to the contact list page using back button (disabled using a swipe right)
      *
      * @throws Exception
-     * @step. ^I navigate back from dialog page$
+     * @step. ^I navigate back from conversation
      */
-    @When("^I navigate back from dialog page$")
-    public void INavigateBackFromDialogPage() throws Exception {
+    @When("^I navigate back from conversation$")
+    public void INavigateBackFromConversation() throws Exception {
         getConversationViewPage().navigateBack(1000);
     }
 
@@ -675,14 +675,14 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify that dialog page contains missed call from contact
+     * Verify that Conversation contains missed call from contact
      *
      * @param contact contact name string
      * @throws Exception
-     * @step. ^I see dialog with missed call from (.*)$
+     * @step. ^I see missed call from (.*) in the conversation$
      */
-    @Then("^I see dialog with missed call from (.*)$")
-    public void ISeeDialogWithMissedCallFrom(String contact) throws Exception {
+    @Then("^I see missed call from (.*) in the conversation$")
+    public void ISeeMissedCallFrom(String contact) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         final String expectedMessage = contact + " CALLED";
         Assert.assertTrue(String.format("Missed call message '%s' is not visible in the conversation view", expectedMessage),
@@ -690,13 +690,13 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify whether a picture in dialog/preview is animated
+     * Verify whether a picture in conversation/preview is animated
      *
-     * @param destination either "dialog" or "preview"
+     * @param destination either "conversation" or "preview"
      * @throws Exception
-     * @step. ^I see the picture in the (dialog|preview) is animated$
+     * @step. ^I see the picture in the (conversation|preview) is animated$
      */
-    @Then("^I see the picture in the (dialog|preview) is animated$")
+    @Then("^I see the picture in the (conversation|preview) is animated$")
     public void ISeeDialogPictureIsAnimated(String destination) throws Exception {
         final PictureDestination dst = PictureDestination.valueOf(destination.toUpperCase());
         double avgThreshold;
@@ -724,9 +724,9 @@ public class ConversationViewPageSteps {
      * Check whether unsent indicator is shown next to a new picture in the convo view
      *
      * @throws Exception
-     * @step. ^I see unsent indicator next to new picture in the dialog$
+     * @step. ^I see unsent indicator next to new picture in the conversation
      */
-    @Then("^I see unsent indicator next to new picture in the dialog$")
+    @Then("^I see unsent indicator next to new picture in the conversation")
     public void ISeeUnsentIndictatorNextToAPicture() throws Exception {
         Assert.assertTrue("There is no unsent indicator next to a picture in the conversation view",
                 getConversationViewPage().waitForAPictureWithUnsentIndicator());

@@ -32,7 +32,7 @@ Feature: Conversations list
     Given I see Conversations list with conversations
     And I tap on conversation name <Contact1>
     And I scroll to the bottom of conversation view
-    And I navigate back from dialog page
+    And I navigate back from conversation
     And I remember unread messages indicator state for conversation <Contact1>
     When User <Contact1> sends 2 encrypted messages to user Myself
     Then I see unread messages indicator state is changed for conversation <Contact1>
@@ -42,7 +42,7 @@ Feature: Conversations list
     When I remember unread messages indicator state for conversation <Contact1>
     And I tap on conversation name <Contact1>
     And I scroll to the bottom of conversation view
-    And I navigate back from dialog page
+    And I navigate back from conversation
     Then I see unread messages indicator state is changed for conversation <Contact1>
 
     Examples:
@@ -65,7 +65,7 @@ Feature: Conversations list
     Given I wait for 10 seconds
     And I scroll to the bottom of conversation view
     And I see the most recent conversation message is "<Message>"
-    And I navigate back from dialog page
+    And I navigate back from conversation
     And I swipe right on a <Contact1>
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert
@@ -114,7 +114,7 @@ Feature: Conversations list
     Given I wait for 10 seconds
     When I scroll to the bottom of conversation view
     And I see the most recent conversation message is "<Message>"
-    And I navigate back from dialog page
+    And I navigate back from conversation
     And I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert

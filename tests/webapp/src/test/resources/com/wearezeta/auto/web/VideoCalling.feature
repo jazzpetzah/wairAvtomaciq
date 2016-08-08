@@ -583,7 +583,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      |
 
-  @C77946 @videocalling @staging @WEBAPP-2463
+  @C77946 @videocalling @staging
   Scenario Outline: Verify I can start an audio call back after declining a video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -596,12 +596,12 @@ Feature: VideoCalling
     Then I see the incoming call controls for conversation <Contact>
     And I see decline call button for conversation <Contact>
     When I ignore the call from conversation <Contact>
-    Then I do not see the call controls for conversation <Contact>
+    Then I see join call button for conversation <Contact>
     And I do not see my self video view
     When I open conversation with <Contact>
     And I call
-    Then I see the outgoing call controls for conversation <Contact>
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verifies to have 1 flow
     And <Contact> verifies to get audio data from me
     And <Contact> verifies that all audio flows have greater than 0 bytes
@@ -831,7 +831,6 @@ Feature: VideoCalling
     When I click on video button
     And I see video button unpressed
     And <Contact> verify that all audio flows have greater than 0 bytes
-    And <Contact> verify that all video flows have greater than 0 bytes
 #    And <Contact> verifies to not get video data from me
     Then I see my self video is off
     And I see video from other user is not black
@@ -851,9 +850,7 @@ Feature: VideoCalling
     Then I see video button pressed
     And I see broadcast indicator is shown for video
     When <Contact> switches video off
-    Then I see minimized video is black
     When I maximize video call via titlebar
-    Then I see video from other user is black
     When <Contact> switches video on
     Then I see video from other user is not black
     When I end the video call

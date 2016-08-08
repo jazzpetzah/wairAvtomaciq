@@ -45,7 +45,7 @@ Feature: Offline
     And I tap Take Photo button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
     And I scroll to the bottom of conversation view
-    Then I see unsent indicator next to new picture in the dialog
+    Then I see unsent indicator next to new picture in the conversation
 
     Examples:
       | Name      | Contact   | Message    |
