@@ -152,6 +152,12 @@ public class ConversationPage extends WebPage {
     @FindBy(xpath = WebAppLocators.ConversationPage.xpathSharedLocationLink)
     private WebElement locationLink;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssLinkTitle)
+    private WebElement linkTitle;
+
+    @FindBy(css = WebAppLocators.ConversationPage.cssLinkPreviewImage)
+    private WebElement previewImage;
+
     public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -1117,4 +1123,40 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
                 .cssBroadcastIndicatorVideo));
     }
+
+    public String getLinkTitle() {
+        return linkTitle.getText();
+    }
+
+    public boolean isLinkTitleNotShownInConversationView() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage.cssLinkTitle));
+    }
+
+    public boolean isImageFromLinkPreviewVisible() throws Exception {
+        return DriverUtils.waitUntilElementClickable(this.getDriver(), previewImage);
+    }
+
+    public boolean isImageFromLinkPreviewNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+                By.cssSelector(WebAppLocators.ConversationPage.cssLinkPreviewImage));
+    }
+
+    public BufferedImage getImageFromLastLinkPreview() throws Exception {
+        List<WebElement> images = getPreviewImages();
+        return this.getElementScreenshot(images.get(images.size() - 1)).orElseThrow(IllegalStateException::new);
+    }
+
+    private List<WebElement> getPreviewImages() throws Exception {
+        By picturesLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLinkPreviewImage);
+        List<WebElement> all = getDriver().findElements(picturesLocator);
+        return all;
+    }
+
+    public boolean waitForLinkPreviewContains(String link) throws Exception {
+        final By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLinkPreviewLink);
+        WebDriverWait wait = new WebDriverWait(getDriver(), TIMEOUT_I_SEE_MESSAGE);
+        return wait.withTimeout(TIMEOUT_I_SEE_MESSAGE, TimeUnit.SECONDS)
+                .until(presenceOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(link))));
+    }
+
 }

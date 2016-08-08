@@ -375,6 +375,14 @@ public final class WebAppLocators {
 
         public static final String cssLastAction = cssLastMessage + " .action";
 
+        //Link preview
+
+        public static final String cssLinkTitle = ".link-preview-title";
+
+        public static final String cssLinkPreviewImage = ".link-preview-image img";
+
+        public static final String cssLinkPreviewLink = ".link-preview-site";
+
         //Location sharing
 
         public static final String cssSharedLocation = "[data-uie-name='location-name']";
