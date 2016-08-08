@@ -43,7 +43,7 @@ Feature: Screen Sharing
       | user1Email | user1Password | user1Name | user2Name | Chrome      | 20      |
 
 
-  @C167025 @smoke
+  @C167025 @staging
   Scenario Outline: Verify I can toggle between screen sharing and video
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
