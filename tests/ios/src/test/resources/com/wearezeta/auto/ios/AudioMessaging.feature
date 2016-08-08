@@ -14,7 +14,7 @@ Feature: Audio Messaging
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C129327 @rc @regression @fastLogin
+  @C129327 @rc @regression @fastLogin @torun
   Scenario Outline: Verify sending voice message by check icon tap and playing it
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
