@@ -39,7 +39,7 @@ Feature: Archive
     Then I see Conversations list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I select ARCHIVE from conversation settings menu
-    And I navigate back from dialog page
+    And I navigate back from conversation
     Then I do not see Conversations list with name <GroupChatName>
     Then I swipe up Conversations list
     When I see Conversations list with name <GroupChatName>

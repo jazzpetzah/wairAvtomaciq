@@ -229,7 +229,7 @@ Feature: VideoCalling
     And <Contact> stops calling me
     And I do not see incoming video call
     When I tap on conversation name <Contact>
-    Then I see dialog with missed call from <Contact>
+    Then I see missed call from <Contact> in the conversation
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
@@ -306,7 +306,7 @@ Feature: VideoCalling
     Then I hang up ongoing video call
     And <Contact1> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call
-    When I navigate back from dialog page
+    When I navigate back from conversation
     And I tap on conversation name <Contact2>
     When I tap Video Call button from top toolbar
     And I see outgoing video call
@@ -476,7 +476,7 @@ Feature: VideoCalling
     Then I see ongoing video call
     And I wait for <Timeout> seconds
     And I do not see ongoing video call
-    Then I see dialog with missed call from YOU
+    Then I see missed call from YOU in the conversation
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
