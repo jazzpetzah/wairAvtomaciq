@@ -246,7 +246,7 @@ Feature: Delete
     When I write message MESSAGE1_NAME
     And I send message
     And I see text message MESSAGE1_NAME
-    And User <Contact1> sends message MESSAGE1_CONTACT to conversation GROUPCHAT
+    And Contact <Contact1> sends message MESSAGE1_CONTACT to group conversation GROUPCHAT
     And I see text message MESSAGE1_CONTACT
     And I write message MESSAGE2_NAME
     And I send message

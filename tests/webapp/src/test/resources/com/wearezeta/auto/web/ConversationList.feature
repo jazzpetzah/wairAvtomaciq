@@ -278,7 +278,7 @@ Feature: Conversation List
     And I see a delete warning modal for group conversations
     And I click delete button in the delete warning for group conversations
     And I do not see Contact list with name <ChatName>
-    And User <Contact1> sends message <Message> to conversation <ChatName>
+    And Contact <Contact1> sends message <Message> to group conversation <ChatName>
     And I open conversation with <ChatName>
     Then I see <Action> action for <Contact1> in conversation
     And I see <Action> action for <Contact2> in conversation
@@ -390,7 +390,7 @@ Feature: Conversation List
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     And I open conversation with <Contact1>
-    When User <Contact1> sends message <Msg1> to conversation <Contact1>
+    When Contact <Contact1> sends message <Msg1> to group conversation <Contact1>
     Then I see text message <Msg1>
     When I click on options button for conversation <Contact1>
     And I click delete in the options popover
@@ -401,7 +401,7 @@ Feature: Conversation List
     And I type <Contact1> in search field of People Picker
     Then I see user <Contact1> found in People Picker
     And I close People Picker
-    When User <Contact1> sends message <Msg2> to conversation <Contact1>
+    When Contact <Contact1> sends message <Msg2> to group conversation <Contact1>
     Then I see Contact list with name <Contact1>
     And I open conversation with <Contact1>
     And I see text message <Msg2>
