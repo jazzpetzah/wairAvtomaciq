@@ -144,7 +144,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2655 @regression @fastLogin
+  @C2655 @regression
   Scenario Outline: Copy and paste to send the message [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
