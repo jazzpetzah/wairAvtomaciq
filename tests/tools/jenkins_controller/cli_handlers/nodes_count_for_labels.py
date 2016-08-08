@@ -321,14 +321,14 @@ class IOSRealDevice(BaseNodeVerifier):
         return socket.gethostbyname(self._node_hostname)
 
     def _get_dst_vm_number(self):
-        ip_as_list = self._get_dst_vm_ip()
+        ip_as_list = self._get_dst_vm_ip().split('.')
         # Must be IPv4
         assert len(ip_as_list) == 4
         last_digit = int(ip_as_list[-1])
         return last_digit % MAX_NODES_PER_HOST
 
     def _get_dst_vm_host_ip(self):
-        ip_as_list = self._get_dst_vm_ip()
+        ip_as_list = self._get_dst_vm_ip().split('.')
         # Must be IPv4
         assert len(ip_as_list) == 4
         last_digit = int(ip_as_list[-1])
