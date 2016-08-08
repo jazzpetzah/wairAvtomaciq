@@ -115,6 +115,8 @@ Feature: Audio Messaging
     And I long tap Audio Message button from input tools
     And I close the app for 3 seconds
     Then I see audio message recorder container in the conversation view
+    And I tap Send record control button
+    Then I see audio message container in the conversation view
 
     Examples:
       | Name      | Contact   |

@@ -789,6 +789,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapRecordControlButton(String buttonName) throws Exception {
+        log.debug(getDriver().getPageSource());
         By button = getRecordControlButtonByName(buttonName);
         if (button.equals(namePlayAudioRecorderButton)) {
             getElement(button).click();
