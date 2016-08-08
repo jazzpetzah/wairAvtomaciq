@@ -541,15 +541,19 @@ public class CommonWebAppSteps {
      *
      * @param userFromNameAlias user who wants to send a message
      * @param message           message to send
-     * @param conversationName  the name of existing conversation to send the message to
+     * @param convoType         group conversation or user
+     * @param dstConvoName      the name of existing conversation to send the message to
      * @throws Exception
-     * @step. ^Contact (.*) sends unencrypted message (.*) to group conversation (.*)
+     * @step. ^Contact (.*) sends unencrypted message (.*) to (user|group conversation) (.*)
      */
-    @When("^Contact (.*) sends? unencrypted message (.*) to group conversation (.*)")
-    public void UserSentMessageToConversation(String userFromNameAlias,
-                                              String message, String conversationName) throws Exception {
-        context.getCommonSteps().UserSentMessageToConversation(userFromNameAlias,
-                conversationName, message);
+    @When("^Contact (.*) sends? unencrypted message (.*) to (user|group conversation) (.*)")
+    public void UserSentMessageToConversation(String userFromNameAlias, String message, String convoType,
+                                              String dstConvoName) throws Exception {
+        if (convoType.equals("user")) {
+            context.getCommonSteps().UserSentMessageToUser(userFromNameAlias, dstConvoName, message);
+        } else {
+            context.getCommonSteps().UserSentMessageToConversation(userFromNameAlias, dstConvoName, message);
+        }
     }
 
     /**
