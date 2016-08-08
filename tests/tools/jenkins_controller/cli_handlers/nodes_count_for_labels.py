@@ -17,7 +17,7 @@ import xml.etree.ElementTree as ET
 
 from cli_handlers.cli_handler_base import CliHandlerBase
 
-
+MAX_NODES_PER_HOST = 5
 VERIFICATION_JOB_TIMEOUT = 60 * 3 #seconds
 MAX_VERIFICATION_JOBS = 4
 
@@ -27,6 +27,18 @@ def chunks(l, n):
     """Yield successive n-sized chunks from l."""
     for i in xrange(0, len(l), n):
         yield l[i:i+n]
+
+
+CURRENT_HOST_IP = socket.gethostbyname(socket.gethostname())
+
+def calc_vm_master_host_ip():
+    ip_as_list = CURRENT_HOST_IP.split('.')
+    # Must be IPv4
+    assert len(ip_as_list) == 4
+    last_digit = int(ip_as_list[-1])
+    return '.'.join(ip_as_list[:3] + [str(last_digit - (last_digit % MAX_NODES_PER_HOST))])
+
+MASTER_HOST_IP = calc_vm_master_host_ip()
 
 
 class NodesCountForLabels(CliHandlerBase):
@@ -291,25 +303,24 @@ class IOSSimulator(BaseNodeVerifier):
             client.close()
 
 
-MAX_NODES_PER_HOST = 5
-
-POWER_CYCLE_SCRIPT = lambda devnum: """import time
+POWER_CYCLE_SCRIPT = lambda devnum: \
+"""
+import time
 
 from brainstem import discover
 from brainstem.link import Spec
 from brainstem.stem import USBHub2x4
 
 
-if __name__ == '__main__':
-    stem = USBHub2x4()
-    spec = discover.find_first_module(Spec.USB)
-    if spec is None:
-        raise RuntimeError("No USBHub is connected!")
-    stem.connect_from_spec(spec)
-    stem.usb.setPowerDisable({0})
-    time.sleep(1)
-    stem.usb.setPowerEnable({0})
-    time.sleep(1)
+stem = USBHub2x4()
+spec = discover.find_first_module(Spec.USB)
+if spec is None:
+    raise RuntimeError("No USBHub is connected!")
+stem.connect_from_spec(spec)
+stem.usb.setPowerDisable({0})
+time.sleep(1)
+stem.usb.setPowerEnable({0})
+time.sleep(1)
 """.format(devnum)
 
 class IOSRealDevice(BaseNodeVerifier):
@@ -336,25 +347,33 @@ class IOSRealDevice(BaseNodeVerifier):
             sftp.close()
             os.unlink(localpath)
         stdin, stdout, stderr = ssh_client.exec_command('python "{}"'.format(remotepath))
-        stdout.channel.recv_exit_status()
-        if stderr:
+        if stdout.channel.recv_exit_status() != 0:
             sys.stderr.write('!!! Error on power cycle script execution:\n')
-            sys.stderr.write(stderr + '\n')
+            sys.stderr.write(stderr.read() + '\n')
         ssh_client.exec_command('rm -f "{}"'.format(remotepath))
 
     def _is_verification_passed(self):
         result = super(IOSRealDevice, self)._is_verification_passed()
         if not result:
             return False
+
+        client = paramiko.SSHClient()
+        try:
+            client.load_system_host_keys()
+            client.set_missing_host_key_policy(paramiko.WarningPolicy())
+            client.connect(MASTER_HOST_IP,
+                           username=self._verification_kwargs['node_user'],
+                           password=self._verification_kwargs['node_password'])
+            self._run_device_power_cycle(client)
+        finally:
+            client.close()
+
         client = paramiko.SSHClient()
         try:
             client.load_system_host_keys()
             client.set_missing_host_key_policy(paramiko.WarningPolicy())
             client.connect(self._node_hostname, username=self._verification_kwargs['node_user'],
                            password=self._verification_kwargs['node_password'])
-
-            self._run_device_power_cycle(client)
-
             seconds_started = time.time()
             available_devices = []
             while time.time() - seconds_started <= 5:
