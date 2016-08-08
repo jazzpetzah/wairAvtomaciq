@@ -167,12 +167,12 @@ Feature: Conversation List
 
   @C2558 @regression @fastLogin
   Scenario Outline: Verify action menu is opened on swipe right on the group conversation [LANDSCAPE]
-    Given I rotate UI to landscape
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see conversations list
+    Given I see conversations list
     When I swipe right on a <GroupChatName>
     Then I see conversation <GroupChatName> name in action menu in Contact List
     And I see Mute action button
@@ -187,11 +187,11 @@ Feature: Conversation List
 
   @C2561 @regression @fastLogin
   Scenario Outline: Verify action menu is opened on swipe right on 1to1 conversation [LANDSCAPE]
-    Given I rotate UI to landscape
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see conversations list
+    Given I see conversations list
     When I swipe right on a <Contact>
     Then I see conversation <Contact> name in action menu in Contact List
     And I see Mute action button
