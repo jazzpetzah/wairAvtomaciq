@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -137,7 +138,8 @@ public class CallingSteps {
     public void UserXStartsInstance(String callees,
             String callingServiceBackend) throws Exception {
         context.startPinging();
-        context.getCallingManager().startInstances(splitAliases(callees), callingServiceBackend);
+        context.getCallingManager().startInstances(splitAliases(callees), callingServiceBackend, 
+                String.format("%s_%s", "Webapp", WebAppExecutionContext.getBrowser()), context.getTestname());
         context.stopPinging();
     }
 
@@ -235,6 +237,7 @@ public class CallingSteps {
      */
     @Then("(.*) verif(?:ies|y) to( not)? get video data from (.*)$")
     public void UserXVerifesToGetVideoDataFromY(String callees, String not, String caller) throws Exception {
+        context.startPinging();
         ClientUser sender = context.getUserManager().findUserByNameOrNameAlias(caller);
         List<String> splitAliases = splitAliases(callees);
         Map<String, Flow> oldFlows = new HashMap<>();
@@ -256,18 +259,19 @@ public class CallingSteps {
             final Flow oldFlow = oldFlows.get(newFlowEntry.getKey());
             if (not == null) {
                 assertThat(
-                        "There is no video data flowing: \n" + newFlow.getTelemetry().getStats().getVideo()+ "\n\n" + oldFlow.
+                        "There is no video data flowing: \noldFlow: " + oldFlow.getTelemetry().getStats().getVideo()+ "\n\nnewFlow: " + newFlow.
                         getTelemetry().getStats().getVideo(),
                         newFlow.getTelemetry().getStats().getVideo().getBytesReceived(),
                         greaterThan(oldFlow.getTelemetry().getStats().getVideo().getBytesReceived()));
             } else {
                 assertThat(
-                        "There is video data flowing: \n" + newFlow.getTelemetry().getStats().getVideo() + "\n\n" + oldFlow.
+                        "There is video data flowing: \noldFlow: " + oldFlow.getTelemetry().getStats().getVideo() + "\n\nnewFlow: " + newFlow.
                         getTelemetry().getStats().getVideo(),
                         newFlow.getTelemetry().getStats().getVideo().getBytesReceived(),
                         equalTo(oldFlow.getTelemetry().getStats().getVideo().getBytesReceived()));
             }
         }
+        context.stopPinging();
     }
 
     /**
@@ -282,6 +286,7 @@ public class CallingSteps {
      */
     @Then("(.*) verif(?:ies|y) to( not)? get audio data from (.*)$")
     public void UserXVerifesToGetAudioDataFromY(String callees, String not, String caller) throws Exception {
+        context.startPinging();
         ClientUser sender = context.getUserManager().findUserByNameOrNameAlias(caller);
         List<String> splitAliases = splitAliases(callees);
         Map<String, Flow> oldFlows = new HashMap<>();
@@ -304,18 +309,19 @@ public class CallingSteps {
             final Flow oldFlow = oldFlows.get(newFlowEntry.getKey());
             if (not == null) {
                 assertThat(
-                        "There is no audio data flowing: \n" + newFlow.getTelemetry().getStats().getAudio() + "\n\n" + oldFlow.
+                        "There is no audio data flowing: \noldFlow: " + oldFlow.getTelemetry().getStats().getAudio() + "\n\nnewFlow:" + newFlow.
                         getTelemetry().getStats().getAudio(),
                         newFlow.getTelemetry().getStats().getAudio().getBytesReceived(),
                         greaterThan(oldFlow.getTelemetry().getStats().getAudio().getBytesReceived()));
             } else {
                 assertThat(
-                        "There is audio data flowing: \n" + newFlow.getTelemetry().getStats().getAudio() + "\n\n" + oldFlow.
+                        "There is audio data flowing: \noldFlow: " + oldFlow.getTelemetry().getStats().getAudio() + "\n\nnewFlow:" + newFlow.
                         getTelemetry().getStats().getAudio(),
                         newFlow.getTelemetry().getStats().getAudio().getBytesReceived(),
                         equalTo(oldFlow.getTelemetry().getStats().getAudio().getBytesReceived()));
             }
         }
+        context.stopPinging();
     }
 
     private Map<String, Flow> getFlows(String callee) throws CallingServiceInstanceException, NoSuchUserException,
@@ -325,17 +331,33 @@ public class CallingSteps {
     }
 
     /**
-     * Verify that each call of the instances was successful
+     * Verify that each outgoing call of the instances was successful
      *
      * @step. (.*) verif(?:ies|y) that call to conversation (.*) was successful$
+     *
+     * @param callers comma separated list of caller names/aliases
+     * @throws Exception
+     */
+    @Then("(.*) verif(?:ies|y) that call to conversation (.*) was successful$")
+    public void UserXVerifesOutgoingCallWasSuccessful(String callers, String conversation) throws Exception {
+        for (Call call : context.getCallingManager().getOutgoingCall(splitAliases(callers), conversation)) {
+            assertNotNull("There are no metrics available for this call \n" + call, call.getMetrics());
+            assertTrue("Call failed: \n" + call + "\n" + call.getMetrics(), call.getMetrics().isSuccess());
+        }
+    }
+    
+    /**
+     * Verify that each incoming call of the instances was successful
+     *
+     * @step. (.*) verif(?:ies|y) that incoming call was successful$
      *
      * @param callees comma separated list of callee names/aliases
      * @throws Exception
      */
-    @Then("(.*) verif(?:ies|y) that call to conversation (.*) was successful$")
-    public void UserXVerifesCallWasSuccessful(String callees, String conversation) throws Exception {
-        for (Call call : context.getCallingManager().getOutgoingCall(splitAliases(callees), conversation)) {
-            assertNotNull("There are no metrics available for this call \n" + call, call.getMetrics());
+    @Then("(.*) verif(?:ies|y) that incoming call was successful$")
+    public void UserXVerifesIncomingCallWasSuccessful(String callees) throws Exception {
+        for (Call call : context.getCallingManager().getIncomingCall(splitAliases(callees))) {
+            assertNotNull("There are no metrics available for this incoming call \n" + call, call.getMetrics());
             assertTrue("Call failed: \n" + call + "\n" + call.getMetrics(), call.getMetrics().isSuccess());
         }
     }

@@ -11,19 +11,19 @@ public class TakePicturePage extends AndroidPage {
     public static final By xpathTakePhotoButton = By
             .xpath("//*[@id='gtv__camera_control__take_a_picture' and @shown='true']");
 
-    private static final By idCloseTakePictureViewButton = By.id("gtv__camera_control__back_to_change_image");
+    private static final By idCloseTakePictureViewButton = By.id("gtv__camera_control__take_a_picture");
 
     public static final By idChangePhotoBtn = By.id("gtv__camera_control__change_image_source");
 
-    private static final By idGalleryCameraBtn = By.id("gtv__camera_control__pick_from_gallery_in_camera");
+    private static final By idGalleryCameraBtn = By.id("gtv__camera_control__gallery");
 
-    private static final By idSwitchCameraButton = By.id("gtv__camera__top_control__back_camera");
+    private static final By idSwitchCameraButton = By.id("gtv__camera__top_control__change_camera");
 
     public static final By xpathConfirmOKButton = By.xpath("//*[@id='ttv__confirmation__confirm' and @value='OK']");
 
     public static final By xpathCancelButton = By.xpath("//*[@id='ttv__confirmation__cancel' and @value='CANCEL']");
 
-    private static final By idSketchImagePaintButton = By.id("gtv__sketch_image_paint_button");
+    private static final By xpathSketchImagePaintButton = By.xpath("//*[@value='Add a sketch']");
 
     public TakePicturePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -111,7 +111,7 @@ public class TakePicturePage extends AndroidPage {
     }
 
     public void tapSketchOnImageButton() throws Exception {
-        getElement(idSketchImagePaintButton, "Draw sketch on image button is not visible").click();
+        getElement(xpathSketchImagePaintButton, "Draw sketch on image button is not visible").click();
     }
 
     public boolean isGalleryCameraButtonVisible() throws Exception {

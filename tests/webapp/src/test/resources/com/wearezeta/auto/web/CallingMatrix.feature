@@ -1,6 +1,6 @@
 Feature: Calling_Matrix
 
-  @C5359 @calling_matrix @calling
+  @C5359 @calling_matrix
   Scenario Outline: Verify I can make 1:1 audio call to <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -28,7 +28,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | firefox:46.0.1       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
 
-  @C5360 @calling_matrix @calling
+  @C5360 @calling_matrix
   Scenario Outline: Verify I can make 1:1 video call to <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -58,7 +58,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | firefox:46.0.1       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
 
-  @C5361 @calling_matrix @calling
+  @C5361 @calling_matrix
   Scenario Outline: Verify I can make 1:1 call to AVS <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -76,14 +76,16 @@ Feature: Calling_Matrix
     And I wait for 5 seconds
     And I hang up call with conversation <Contact>
     And I do not see the call controls for conversation <Contact>
+    Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
+    And <Contact> verifies that incoming call was successful
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend     | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | zcall:2.7.21    | 20      |
+      | user1Email | user1Password | user1Name | user2Name | zcall:2.7.26    | 20      |
 # not necessary due to same versions in android and ios
 #      | user1Email | user1Password | user1Name | user2Name | zcall:2.3.8    | 20      |
 
-  @C5362 @calling_matrix @calling
+  @C5362 @calling_matrix
   Scenario Outline: Verify I can receive 1:1 audio call from <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -106,12 +108,12 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome:52.0.2743.82 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:52.0.2743.82  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:51.0.2704.106 | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:46.0.1       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
 
-  @C5363 @calling_matrix @calling
+  @C5363 @calling_matrix
   Scenario Outline: Verify I can receive 1:1 video call from <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -136,12 +138,12 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome:52.0.2743.82 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:52.0.2743.82  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:51.0.2704.106 | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:46.0.1       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
 
-  @C5364 @calling_matrix @calling
+  @C5364 @calling_matrix
   Scenario Outline: Verify I can receive 1:1 audio call from AVS <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -157,16 +159,16 @@ Feature: Calling_Matrix
     Then I see the ongoing call controls for conversation <Contact>
     And I hang up call with conversation <Contact>
     And I do not see the call controls for conversation <Contact>
-#    Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
-#    And <Contact> verifies that call to conversation <Contact> was successful
+    Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
+    And <Contact> verifies that call to conversation <Contact> was successful
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend       | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | autocall:2.7.21   | 20      |
+      | user1Email | user1Password | user1Name | user2Name | zcall:2.7.26      | 20      |
 # not necessary due to same versions in android and ios
-#      | user1Email | user1Password | user1Name | user2Name | autocall:2.3.8   | 20      |
+#      | user1Email | user1Password | user1Name | user2Name | zcall:2.3.8   | 20      |
 
-  @C5365 @calling_matrix @calling
+  @C5365 @calling_matrix
   Scenario Outline: Verify I can make audio group call with multiple <WaitBackend>
     Given My browser supports calling
     Given There are 5 users where <Name> is me
@@ -201,7 +203,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:46.0.1       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:45.0.1       | 30      |
 
-  @C5366 @calling_matrix @calling
+  @C5366 @calling_matrix
   Scenario Outline: Verify I can make audio group call with multiple AVS <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -218,14 +220,19 @@ Feature: Calling_Matrix
     And I see the ongoing call controls for conversation <ChatName1>
     When I hang up call with conversation <ChatName1>
     Then I see the join call controls for conversation <ChatName1>
+# Stops all incoming instance calls
+# Leaving out last participant - call gets destroyed automatically
+    When <Contact1> stops calling
+    And <Contact1>,<Contact2> verify that waiting instance status is changed to destroyed in <Timeout> seconds
+    Then <Contact1>,<Contact2> verify that incoming call was successful
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend    | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.7.21   | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.7.26   | 30      |
 # not necessary due to same versions in android and ios
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.3.8    | 30      |
 
-  @C5367 @calling_matrix @calling
+  @C5367 @calling_matrix
   Scenario Outline: Verify I can join audio group call with multiple <Backend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -263,7 +270,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:45.0.1       | 30      |
       
 
-  @C5368 @calling_matrix @calling
+  @C5368 @calling_matrix
   Scenario Outline: Verify I can join audio group call with AVS <Backend> and <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -292,22 +299,26 @@ Feature: Calling_Matrix
     And I wait for 10 seconds
     And <Contact2> verifies to have 1 flow
     And <Contact2> verifies that all audio flows have greater than 0 bytes
-    # Stops all autocall instance calls
+# Stops all outgoing instance calls
+# Leaving out last participant - call gets destroyed automatically
     And <Contact1> stops calling <ChatName1>
+    And <Contact1> verifies that call status to <ChatName1> is changed to destroyed in <Timeout> seconds
+    And <Contact2> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
+    Then <Contact1> verifies that call to conversation <ChatName1> was successful
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | Backend          | WaitBackend          | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.7.21  | chrome:52.0.2743.82  | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.7.21  | chrome:51.0.2704.106 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.7.21  | firefox:46.0.1       | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.7.21  | firefox:45.0.1       | 30      |
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | Backend       | WaitBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.7.26  | chrome:52.0.2743.82  | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.7.26  | chrome:51.0.2704.106 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.7.26  | firefox:46.0.1       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.7.26  | firefox:45.0.1       | 30      |
 # not necessary due to same versions in android and ios
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | chrome:52.0.2743.82  | 30      |
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | chrome:51.0.2704.106 | 30      |
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | firefox:46.0.1       | 30      |
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | firefox:45.0.1       | 30      |
 
-  @C5369 @calling_matrix @calling
+  @C5369 @calling_matrix
   Scenario Outline: Verify I can join audio group call with AVS <Backend> and <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -327,18 +338,23 @@ Feature: Calling_Matrix
     And I see the ongoing call controls for conversation <ChatName1>
     And I hang up call with conversation <ChatName1>
     Then I see the join call controls for conversation <ChatName1>
-    # Stops all autocall instance calls
-    And <Contact1> stops calling <ChatName1>
+# Stops all outgoing instance calls
+# Leaving out last participant - call gets destroyed automatically
+    When <Contact1> stops calling <ChatName1>
+    And <Contact1> verifies that call status to <ChatName1> is changed to destroyed in <Timeout> seconds
+    And <Contact2> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
+    Then <Contact1> verifies that call to conversation <ChatName1> was successful
+    And <Contact2> verify that incoming call was successful
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend           | WaitBackend   | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.7.21   | zcall:2.7.21  | 30      |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend        | WaitBackend   | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.7.26   | zcall:2.7.26  | 30      |
 # not necessary due to same versions in android and ios
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2.46  | zcall:2.2.38 | 30      |
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2.38  | zcall:2.2.38 | 30      |
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2.38  | zcall:2.2.46 | 30      |
 
-  @C5370 @calling_matrix @calling
+  @C5370 @calling_matrix
   Scenario Outline: Verify I can create, leave and rejoin an audio group call with <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -370,7 +386,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:46.0.1       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:45.0.1       | 30      |
 
-  @C5370 @calling_matrix @calling
+  @C5370 @calling_matrix
   Scenario Outline: Verify I can create, leave and rejoin an audio group call with AVS <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -391,7 +407,11 @@ Feature: Calling_Matrix
     When I join call of conversation <ChatName>
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
+# Stops all outgoing instance calls
+    When <Contact1>,<Contact2> stops calling
+    And <Contact1>,<Contact2> verify that waiting instance status is changed to destroyed in <Timeout> seconds
+    Then <Contact1>,<Contact2> verify that incoming call was successful
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend  | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | zcall:2.7.21 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | zcall:2.7.26 | 30      |

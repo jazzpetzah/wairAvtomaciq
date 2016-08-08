@@ -70,15 +70,15 @@ public abstract class IOSPage extends BasePage {
 
     protected static final By nameBackToWireBrowserButton = MobileBy.AccessibilityId("Back to Wire");
 
-    private static final By xpathConfirmButton = By.xpath("//UIAButton[@name='OK' and @visible='true']");
+    protected static final By xpathConfirmButton = By.xpath("//UIAButton[@name='OK' and @visible='true']");
 
-    private static final By nameCancelButton = MobileBy.AccessibilityId("Cancel");
+    protected static final By xpathCancelButton = By.xpath("//UIAButton[@name='Cancel' and @visible='true']");
 
     private static final By nameDoneButton = MobileBy.AccessibilityId("Done");
 
     private static final By classAlert = By.className("UIAAlert");
 
-    private static final Function<String, String> xpathStrAlertButtonByCaption = caption ->
+    protected static final Function<String, String> xpathStrAlertButtonByCaption = caption ->
             String.format("//UIAAlert//UIAButton[@label='%s']", caption);
 
     private IOSKeyboard onScreenKeyboard;
@@ -123,10 +123,6 @@ public abstract class IOSPage extends BasePage {
     @Override
     protected Future<ZetaIOSDriver> getLazyDriver() {
         return (Future<ZetaIOSDriver>) super.getLazyDriver();
-    }
-
-    public void swipeRight(int time, int percentX, int percentY) throws Exception {
-        DriverUtils.swipeRight(this.getDriver(), getElement(nameMainWindow), time, percentX, percentY);
     }
 
     public void swipeUp(int time) throws Exception {
@@ -218,39 +214,6 @@ public abstract class IOSPage extends BasePage {
                 String.format("%.2f", y * 1.0 / windowSize.height), "2");
     }
 
-    /**
-     * !!! this method is not able to enter line breaks !!!
-     *
-     * @param dstElement          the destination eit field
-     * @param relativeClickPointX where to click the element before type, 0% <= X <= 100%
-     * @param relativeClickPointY where to click the element before type, 0% <= Y <= 100%
-     * @param str                 string to enter
-     * @throws Exception
-     */
-    public void inputStringFromKeyboard(WebElement dstElement, int relativeClickPointX, int relativeClickPointY,
-                                        String str, boolean shouldCommitInput) throws Exception {
-        final Dimension elSize = dstElement.getSize();
-        final Point elLocation = dstElement.getLocation();
-        final int tapX = elLocation.x + (relativeClickPointX * elSize.width) / 100;
-        final int tapY = elLocation.y + (relativeClickPointY * elSize.height) / 100;
-        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            CommonUtils.setStringValueInSystemClipboard(str);
-            // FIXME: Paste menu will not be shown without this
-            IOSSimulatorHelper.selectPasteMenuItem();
-            longClickAtSimulator(tapX, tapY);
-            getElement(nameEditingItemPaste).click();
-            if (shouldCommitInput) {
-                IOSSimulatorHelper.pressEnterKey();
-            }
-        } else {
-            getDriver().tap(1, tapX, tapY, DriverUtils.SINGLE_TAP_DURATION);
-            this.onScreenKeyboard.typeString(str);
-            if (shouldCommitInput) {
-                this.clickKeyboardCommitButton();
-            }
-        }
-    }
-
     public void inputStringFromPasteboard(WebElement dstElement, boolean shouldCommitInput) throws Exception {
         final Dimension elSize = dstElement.getSize();
         final Point elLocation = dstElement.getLocation();
@@ -266,17 +229,17 @@ public abstract class IOSPage extends BasePage {
             getDriver().tap(1, tapX, tapY, DriverUtils.LONG_TAP_DURATION);
             getElement(nameEditingItemPaste, "Paste item is not visible", 15).click();
             if (shouldCommitInput) {
-                this.clickKeyboardCommitButton();
+                this.tapKeyboardCommitButton();
             }
         }
     }
 
-    public void inputStringFromKeyboard(WebElement dstElement, String str, boolean shouldCommitInput) throws Exception {
-        inputStringFromKeyboard(dstElement, 50, 50, str, shouldCommitInput);
-    }
-
     public boolean isKeyboardVisible() throws Exception {
         return this.onScreenKeyboard.isVisible();
+    }
+
+    public boolean isKeyboardInvisible(int timeoutSeconds) throws Exception {
+        return this.onScreenKeyboard.isInvisible(timeoutSeconds);
     }
 
     public void clickKeyboardDeleteButton() throws Exception {
@@ -291,7 +254,7 @@ public abstract class IOSPage extends BasePage {
         this.onScreenKeyboard.pressSpaceButton();
     }
 
-    public void clickKeyboardCommitButton() throws Exception {
+    public void tapKeyboardCommitButton() throws Exception {
         this.onScreenKeyboard.pressCommitButton();
     }
 
@@ -424,13 +387,9 @@ public abstract class IOSPage extends BasePage {
         });
          */
         final ZetaIOSDriver driver = this.getDriver();
-        final Callable callable = new Callable<Boolean>() {
-
-            @Override
-            public Boolean call() throws Exception {
-                driver.lockScreen(20);
-                return true;
-            }
+        final Callable callable = () -> {
+            driver.lockScreen(20);
+            return true;
         };
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.submit(callable);
@@ -561,7 +520,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void tapCancelButton() throws Exception {
-        getElement(nameCancelButton).click();
+        getElement(xpathCancelButton).click();
     }
 
     public void tapDoneButton() throws Exception {
@@ -606,16 +565,12 @@ public abstract class IOSPage extends BasePage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), classAlert, timeoutSeconds);
     }
 
-    public boolean waitUntilAlertDisappears() throws Exception {
-        return waitUntilAlertDisappears(DriverUtils.getDefaultLookupTimeoutSeconds());
-    }
-
-    public boolean waitUntilAlertDisappears(int timeoutSeconds) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), classAlert, timeoutSeconds);
-    }
-
     public void tapAlertButton(String caption) throws Exception {
         final By locator = By.xpath(xpathStrAlertButtonByCaption.apply(caption));
         getElement(locator).click();
+    }
+
+    public boolean isKeyboardInvisible() throws Exception {
+        return this.onScreenKeyboard.isInvisible();
     }
 }

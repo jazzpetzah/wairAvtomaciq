@@ -16,8 +16,8 @@ public class FastLoginContainer {
                                      int retriesCount) throws Exception;
     }
 
-    public static final String TAG_NAME = "@fastLogin";
     public static final String CAPABILITY_NAME = "fastLogin";
+    public static final String TAG_NAME = "@" + CAPABILITY_NAME;
 
     private FastLoginContainer() {
     }

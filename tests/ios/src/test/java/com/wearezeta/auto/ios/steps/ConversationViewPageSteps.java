@@ -110,9 +110,9 @@ public class ConversationViewPageSteps {
     @When("^I type the (default|\".*\") message and send it$")
     public void ITypeTheMessageAndSendIt(String msg) throws Exception {
         if (msg.equals("default")) {
-            getConversationViewPage().typeAndSendConversationMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+            getConversationViewPage().typeMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE, true);
         } else {
-            getConversationViewPage().typeAndSendConversationMessage(msg.replaceAll("^\"|\"$", ""));
+            getConversationViewPage().typeMessage(msg.replaceAll("^\"|\"$", ""), true);
         }
     }
 
@@ -140,7 +140,7 @@ public class ConversationViewPageSteps {
 
     @When("^I send the message$")
     public void WhenISendTheMessage() throws Exception {
-        getConversationViewPage().clickKeyboardCommitButton();
+        getConversationViewPage().tapKeyboardCommitButton();
     }
 
     @Then("^I see (\\d+) (default )?messages? in the conversation view$")
@@ -286,11 +286,6 @@ public class ConversationViewPageSteps {
     @When("I click video container for the first time")
     public void IPlayVideoFirstTime() throws Exception {
         getConversationViewPage().clickOnPlayVideoButton();
-    }
-
-    @When("^I post url link (.*)$")
-    public void IPostURLLink(String link) throws Throwable {
-        getConversationViewPage().typeAndSendConversationMessage(link);
     }
 
     /**
@@ -767,17 +762,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Clicks the send button on the keyboard
-     *
-     * @throws Exception
-     * @step. ^I click send button on keyboard
-     */
-    @When("^I click send button on keyboard$")
-    public void iClickSendButtonOnKeyboard() throws Exception {
-        getConversationViewPage().clickKeyboardCommitButton();
-    }
-
-    /**
      * Verify whether shield icon is visible next to convo input field
      *
      * @param shouldNotSee equals to null if the shield should be visible
@@ -932,6 +916,17 @@ public class ConversationViewPageSteps {
                 avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
     }
 
+    private String expandFileTransferItemName(String itemName) {
+        switch (itemName) {
+            case "FTRANSFER_MENU_DEFAULT_PNG":
+                return FTRANSFER_MENU_DEFAULT_PNG;
+            case "TOO_BIG":
+                return FTRANSFER_MENU_TOO_BIG;
+            default:
+                return itemName;
+        }
+    }
+
     /**
      * Tap on file transfer menu item by name
      *
@@ -941,16 +936,22 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap file transfer menu item (.*)")
     public void ITapFileTransferMenuItem(String itemName) throws Exception {
-        String realName = itemName;
-        switch (itemName) {
-            case "FTRANSFER_MENU_DEFAULT_PNG":
-                realName = FTRANSFER_MENU_DEFAULT_PNG;
-                break;
-            case "TOO_BIG":
-                realName = FTRANSFER_MENU_TOO_BIG;
-                break;
-        }
+        final String realName = expandFileTransferItemName(itemName);
         getConversationViewPage().tapFileTransferMenuItem(realName);
+    }
+
+    /**
+     * Verify visibility of the corresponding file transfer menu item
+     *
+     * @param itemName name of the item
+     * @throws Exception
+     * @step. ^I see file transfer menu item (.*)
+     */
+    @When("^I see file transfer menu item (.*)")
+    public void ISeeFileTransferMenuItem(String itemName) throws Exception {
+        final String realName = expandFileTransferItemName(itemName);
+        Assert.assertTrue(String.format("File transfer menu item '%s' is not visible", realName),
+                getConversationViewPage().isFileTransferMenuItemVisible(realName));
     }
 
     /**
@@ -1173,7 +1174,7 @@ public class ConversationViewPageSteps {
         if (tapFunc == null) {
             throw new IllegalArgumentException(
                     String.format("Cannot perform%s tap on '%s' container, because it is not implemented",
-                    (isLongTap == null) ? "" : " long", conversationItem));
+                            (isLongTap == null) ? "" : " long", conversationItem));
         }
         tapFunc.run();
     }
@@ -1368,6 +1369,42 @@ public class ConversationViewPageSteps {
         } else {
             Assert.assertTrue("Link preview image is visible, but should be hidden",
                     getConversationViewPage().isLinkPreviewImageInvisible());
+        }
+    }
+
+    /**
+     * Verify the difference between the height of two strings
+     *
+     * @param msg1               the first conversation message text
+     * @param isNot              equals to null is the current percentage should be greater or equal to the expected one
+     * @param msg2               the second message text
+     * @param expectedPercentage the expected diff percentage
+     * @throws Exception
+     * @step. ^I see that the difference in height of "(.*)" and "(.*)" messages is (not )?greater than (\d+) percent$
+     */
+    @Then("^I see that the difference in height of \"(.*)\" and \"(.*)\" messages is (not )?greater than (\\d+) percent$")
+    public void ISeeMassagesHaveEqualHeight(String msg1, String msg2, String isNot, int expectedPercentage)
+            throws Exception {
+        final int msg1Height = getConversationViewPage().getMessageHeight(msg1);
+        assert msg1Height > 0;
+        final int msg2Height = getConversationViewPage().getMessageHeight(msg2);
+        assert msg2Height > 0;
+        int currentPercentage = 0;
+        if (msg1Height > msg2Height) {
+            currentPercentage = msg1Height * 100 / msg2Height - 100;
+        } else if (msg1Height < msg2Height) {
+            currentPercentage = msg2Height * 100 / msg1Height - 100;
+        }
+        if (isNot == null) {
+            Assert.assertTrue(
+                    String.format("The height of '%s' message (%s) is less than %s%% different than the height of "
+                            + "'%s' message (%s)", msg1, msg1Height, expectedPercentage, msg2, msg2Height),
+                    currentPercentage >= expectedPercentage);
+        } else {
+            Assert.assertTrue(
+                    String.format("The height of '%s' message (%s) is more than %s%% different than the height of "
+                            + "'%s' message (%s)", msg1, msg1Height, expectedPercentage, msg2, msg2Height),
+                    currentPercentage <= expectedPercentage);
         }
     }
 }

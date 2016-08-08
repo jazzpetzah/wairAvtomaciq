@@ -1,6 +1,6 @@
 Feature: Voice Filters
 
-  @C169215 @regression
+  @C169215 @rc @regression @fastLogin
   Scenario Outline: Verify you can record an audio message and apply voice filter to it [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -10,7 +10,7 @@ Feature: Voice Filters
     When I tap on contact name <Contact>
     And I tap Audio Message button from input tools
     And I tap Start Recording button on Voice Filters overlay
-    And I wait for 3 seconds
+    And I wait for 10 seconds
     And I tap Stop Recording button on Voice Filters overlay
     And I tap <ButtonsCount> random effect buttons on Voice Filters overlay
     And I tap Confirm button on Voice Filters overlay
@@ -21,7 +21,7 @@ Feature: Voice Filters
       | Name      | Contact   | ButtonsCount |
       | user1Name | user2Name | 4            |
 
-  @C169216 @regression
+  @C169216 @rc @regression @fastLogin
   Scenario Outline: Verify sending original audio without any filters [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -31,7 +31,7 @@ Feature: Voice Filters
     When I tap on contact name <Contact>
     And I tap Audio Message button from input tools
     And I tap Start Recording button on Voice Filters overlay
-    And I wait for 3 seconds
+    And I wait for 5 seconds
     And I tap Stop Recording button on Voice Filters overlay
     And I tap Confirm button on Voice Filters overlay
     Then I see audio message container in the conversation view

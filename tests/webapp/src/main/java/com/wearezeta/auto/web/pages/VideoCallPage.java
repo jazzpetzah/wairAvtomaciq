@@ -22,8 +22,12 @@ public class VideoCallPage extends WebPage {
     @FindBy(css = WebAppLocators.VideoCallPage.cssMinimizeVideoCallButton)
     private WebElement minimizeVideoCallButton;
 
+    @FindBy(css = WebAppLocators.VideoCallPage.cssMaximizeVideoCallButtonOnRemotevideo)
+    private WebElement maximizeVideoCallButtonOnRemoteVideo;
+
     @FindBy(css = WebAppLocators.VideoCallPage.cssMaximizeVideoCallButton)
     private WebElement maximizeVideoCallButton;
+
 
     @FindBy(css = WebAppLocators.VideoCallPage.cssCameraButton)
     private WebElement cameraButton;
@@ -107,7 +111,7 @@ public class VideoCallPage extends WebPage {
     }
 
     public boolean isMinimizeVideoCallButtonNotVisible() throws Exception {
-        WebCommonUtils.hoverOverElement(getDriver(), minimizeVideoCallButton);
+        //WebCommonUtils.hoverOverElement(getDriver(), minimizeVideoCallButton);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 By.cssSelector(WebAppLocators.VideoCallPage.cssMinimizeVideoCallButton));
     }
@@ -127,6 +131,11 @@ public class VideoCallPage extends WebPage {
     public void clickMaximizeVideoCallButton() throws Exception {
         WebCommonUtils.hoverOverElement(getDriver(), maximizeVideoCallButton);
         maximizeVideoCallButton.click();
+    }
+
+    public void clickMaximizeVideoCallButtonOnRemoteVideo() throws Exception {
+        WebCommonUtils.hoverOverElement(getDriver(), maximizeVideoCallButtonOnRemoteVideo);
+        maximizeVideoCallButtonOnRemoteVideo.click();
     }
 
     public boolean isVideoInPortrait() throws Exception {

@@ -71,7 +71,7 @@ public class SettingsPage extends IOSPage {
         getElement(nameEditButton).click();
     }
 
-    public void pressDeleteDeviceButton(String deviceName) throws Exception {
+    public void tapDeleteDeviceButton(String deviceName) throws Exception {
         final By locator = By.xpath(xpathDeleteDeviceButtonByName.apply(deviceName));
         getElement(locator, String.format("Device '%s' is not visible in Manage Device List", deviceName)).click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator)) {
@@ -79,7 +79,7 @@ public class SettingsPage extends IOSPage {
         }
     }
 
-    public void pressDeleteButton() throws Exception {
+    public void tapDeleteButton() throws Exception {
         final WebElement deleteButton = getElement(nameDeleteButton);
         deleteButton.click();
 

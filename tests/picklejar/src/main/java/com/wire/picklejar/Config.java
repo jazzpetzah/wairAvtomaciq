@@ -9,6 +9,7 @@ public class Config {
     private static final String STEP_PACKAGE_KEY = "picklejar.steps.package";
     private static final String GENERATED_TEST_PACKAGE_KEY = "picklejar.tests.package";
     private static final String PICKLE_MAX_PARALLEL_KEY = "picklejar.parallel.max";
+    private static final String RANDOM_KEY = "picklejar.random";
     
     public static final String FEATURE_EXTENSION = "feature";
     public static final String CUCUMBER_REPORT_PATH = System.getProperty(CUCUMBER_REPORT_PATH_KEY, "target/");
@@ -20,5 +21,6 @@ public class Config {
     public static final int PICKLE_MAX_PARALLEL = Integer.parseInt(System.getProperty(
             PICKLE_MAX_PARALLEL_KEY,
             Integer.toString(Runtime.getRuntime().availableProcessors())));
+    public static final int RANDOM = Integer.parseInt(System.getProperty(RANDOM_KEY, "0"));
 
 }

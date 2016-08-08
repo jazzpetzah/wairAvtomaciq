@@ -22,7 +22,9 @@ public class PersonalInfoPage extends IOSPage {
 
     private static final By nameTermsOfUseButton = MobileBy.AccessibilityId("Terms of Use");
 
-    private static final By namePictureButton = MobileBy.AccessibilityId("CameraLibraryButton");
+    private static final By nameOpenCameraRollButton = MobileBy.AccessibilityId("CameraLibraryButton");
+
+    private static final By nameOpenCameraButton = MobileBy.AccessibilityId("cameraButton");
 
     private static final By xpathProfileNameEditField =
             By.xpath("//UIAElement[@name='ProfileSelfNameField']/UIATextView");
@@ -66,6 +68,8 @@ public class PersonalInfoPage extends IOSPage {
 
     private static final By xpathTermsAndConditions = By.xpath("//*[@name='Basic Information']");
     private static final By xpathPrivacyPolicy= By.xpath("//*[@name='Our Privacy Commitment']");
+
+    private static final By nameAddEmailAddressButton = MobileBy.AccessibilityId("ADD EMAIL ADDRESS AND PASSWORD");
 
     private static final int COLORS_COUNT = 7;
 
@@ -187,7 +191,7 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public void tapCameraButton() throws Exception {
-        getElement(namePictureButton).click();
+        getElement(nameOpenCameraButton).click();
     }
 
     public void tapOnSettingsButton() throws Exception {
@@ -230,5 +234,13 @@ public class PersonalInfoPage extends IOSPage {
         return getElementScreenshot(getElement(nameAccentColorPicker)).orElseThrow(
                 () -> new IllegalStateException("Cannot get a screenshot of color picker")
         );
+    }
+
+    public void tapCameraRollButton() throws Exception {
+        getElement(nameOpenCameraRollButton).click();
+    }
+
+    public void tapAddEmailAddressButton() throws Exception {
+        getElement(nameAddEmailAddressButton).click();
     }
 }

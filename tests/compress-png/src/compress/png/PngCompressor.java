@@ -23,6 +23,9 @@ public class PngCompressor {
     private static int minSize;
     private static int maxSize;
     private static int savedSize = 0;
+    private static long filesTotal = 0;
+    private static long currFileNum = 0;
+    private static int progress = 0;
 
     public PngCompressor() {
     }
@@ -204,22 +207,26 @@ public class PngCompressor {
 
     private static void compressPngsInFolder(final String folderPath, final int minSize, final int maxSize) throws Exception {
         Files.walk(Paths.get(folderPath)).forEach(filePath -> {
-                    if (Files.isRegularFile(filePath) && filePath.toString().toLowerCase().endsWith(".png")) {
-                        try {
-                            PngCompressor.compress(filePath.toFile(), filePath.toFile(), minSize, maxSize);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
+            currFileNum++;
+            if (Files.isRegularFile(filePath) && filePath.toString().toLowerCase().endsWith(".png")) {
+                try {
+                    PngCompressor.compress(filePath.toFile(), filePath.toFile(), minSize, maxSize);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-        );
+            }
+            if (progress < (int) (100 * currFileNum / filesTotal)) {
+                progress = (int) (100 * currFileNum / filesTotal);
+                if (progress % 3 == 0) System.out.print("*");
+            }
+        });
     }
 
     public static void main(String[] args) throws Exception {
         if (args.length == 0) {
             showCommandLineHelp();
         } else {
-            System.out.println("Starting PNG compression...");
+            System.out.println("PNG compressor starting...");
             final long startTime = System.currentTimeMillis();
             if (args.length > 0) {
                 verbose = "true".equalsIgnoreCase(System.getProperty("verbose"));
@@ -250,9 +257,13 @@ public class PngCompressor {
                 System.out.println("  minSize=" + minSize);
                 System.out.println("  maxSize=" + maxSize);
 
+                filesTotal = countFiles(args[0]);
+                setSavedSize(0);
+
+                System.out.println("\n0....................100");
                 compressPngsInFolder(args[0], minSize, maxSize);
-                System.out.println("PNG compression finished after " + (System.currentTimeMillis() - startTime) / 1000 + " " +
-                        "seconds. Released " + String.format("%.2f", (float)getSavedSize()/1024/1024) + " Mb");
+                System.out.println("\n\nPNG compression finished after " + (System.currentTimeMillis() - startTime) / 1000 + " " +
+                        "seconds. Released " + String.format("%.2f", (float) getSavedSize() / 1024 / 1024) + " Mb");
             } else System.out.println("<Path> to compress is missed");
         }
     }
@@ -272,5 +283,13 @@ public class PngCompressor {
 
     private static void setSavedSize(int size) {
         savedSize = size;
+    }
+
+    public static long countFiles(String folderPath) throws Exception {
+        setSavedSize(0);
+        Files.walk(Paths.get(folderPath)).forEach(filePath -> {
+            appendSavedSize(1);
+        });
+        return getSavedSize();
     }
 }

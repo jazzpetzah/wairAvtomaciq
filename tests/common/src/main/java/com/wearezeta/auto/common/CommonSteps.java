@@ -647,6 +647,10 @@ public final class CommonSteps {
         this.UserXHasEmailsInAddressBook(userAsNameAlias, sb.toString());
     }
 
+    public void UserXHasPhoneNumberInAddressBook(String userAsNameAlias, String phoneNumbers) throws Exception {
+        this.UserXHasEmailsInAddressBook(userAsNameAlias, phoneNumbers);
+    }
+
     public void UserXHasEmailsInAddressBook(String userAsNameAlias,
                                             String emails) throws Exception {
         final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(userAsNameAlias);

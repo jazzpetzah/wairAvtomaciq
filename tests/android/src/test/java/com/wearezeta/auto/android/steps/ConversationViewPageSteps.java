@@ -327,7 +327,7 @@ public class ConversationViewPageSteps {
     @Then("^I (do not )?see (?:any|a) (?:photos?|pictures?) in the conversation view$")
     public void ISeeNewPhotoInTheDialog(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
-            Assert.assertTrue("No new photo is present in the chat", getConversationViewPage().isImageExists());
+            Assert.assertTrue("No new photo is present in the chat", getConversationViewPage().isImageVisible());
         } else {
             Assert.assertTrue("A photo is present in the chat, but it should not be vivible",
                     getConversationViewPage().isImageInvisible());

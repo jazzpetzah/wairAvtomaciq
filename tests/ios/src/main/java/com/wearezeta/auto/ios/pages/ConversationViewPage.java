@@ -14,6 +14,7 @@ import com.wearezeta.auto.common.sync_engine_bridge.Constants;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.ios.IOSElement;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -61,6 +62,9 @@ public class ConversationViewPage extends IOSPage {
 
     private static final Function<String, String> xpathStrMessageByTextPart = text ->
             String.format("%s[contains(@value, '%s')]", xpathStrAllTextMessages, text);
+
+    private static final Function<String, String> xpathStrMessageByExactText = text ->
+            String.format("%s[@value='%s']", xpathStrAllTextMessages, text);
 
     private static final Function<String, String> xpathStrMessageCellByTextPart = text ->
             String.format("%s[contains(@value, '%s')]/parent::*", xpathStrAllTextMessages, text);
@@ -205,7 +209,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameLinkPreviewImage = MobileBy.AccessibilityId("linkPreviewImage");
 
-    private static final int MAX_CONTAINER_APPEARANCE_TIME = 20;
+    private static final int MAX_APPEARANCE_TIME = 20;
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -457,31 +461,31 @@ public class ConversationViewPage extends IOSPage {
 
     private static final long KEYBOARD_OPEN_ANIMATION_DURATION = 5500; // milliseconds
 
-    public void typeAndSendConversationMessage(String message) throws Exception {
+    public void typeMessage(String message, boolean shouldSend) throws Exception {
         final WebElement convoInput = getElement(nameConversationInput,
                 "Conversation input is not visible after the timeout");
-        convoInput.click();
-        // Wait for animation
-        Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            inputStringFromKeyboard(convoInput, message, true);
+        final boolean wasKeyboardInvisible = this.isKeyboardInvisible(2);
+        if (wasKeyboardInvisible) {
+            convoInput.click();
+            // Wait for keyboard opening animation
+            Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
+        }
+        if (shouldSend) {
+            if (wasKeyboardInvisible) {
+                // This is faster and allows to avoid autocorrection, but does not update input cursor position properly
+                ((IOSElement) convoInput).setValue(message);
+            } else {
+                // to keep the existing stuff inside the input field
+                convoInput.sendKeys(message);
+            }
+            this.tapKeyboardCommitButton();
         } else {
             convoInput.sendKeys(message);
-            this.clickKeyboardCommitButton();
         }
     }
 
     public void typeMessage(String message) throws Exception {
-        final WebElement convoInput = getElement(nameConversationInput,
-                "Conversation input is not visible after the timeout");
-        convoInput.click();
-        // Wait for animation
-        Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            inputStringFromKeyboard(convoInput, message, false);
-        } else {
-            convoInput.sendKeys(message);
-        }
+        typeMessage(message, false);
     }
 
     public void clickOnPlayVideoButton() throws Exception {
@@ -933,7 +937,7 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isContainerVisible(String name) throws Exception {
         final By locator = getContainerIdentifier(name);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, MAX_CONTAINER_APPEARANCE_TIME);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, MAX_APPEARANCE_TIME);
     }
 
     public boolean isContainerInvisible(String name) throws Exception {
@@ -949,4 +953,12 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameLinkPreviewImage);
     }
 
+    public boolean isFileTransferMenuItemVisible(String itemName) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), MobileBy.AccessibilityId(itemName), MAX_APPEARANCE_TIME);
+    }
+
+    public int getMessageHeight(String msg) throws Exception {
+        final By locator = By.xpath(xpathStrMessageByExactText.apply(msg));
+        return getElement(locator).getSize().getHeight();
+    }
 }

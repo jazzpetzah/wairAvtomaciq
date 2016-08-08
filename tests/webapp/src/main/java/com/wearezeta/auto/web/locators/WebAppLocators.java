@@ -276,6 +276,7 @@ public final class WebAppLocators {
         public static final String cssConfirmText = "[data-uie-name='delete-confirm-text']";
         public static final String cssSentText = "[data-uie-name='delete-sent']";
         public static final String cssImportButton = "[data-uie-name='do-share-contacts']";
+        public static final String cssImportAddressbookButton = "[data-uie-name='do-share-osx-contacts']";//macOS
         public static final String cssBackButton = "[data-uie-name='do-device-close']";
         public static final String cssVerificationToggle = ".button-label";
         public static final String cssDeviceIds = ".self-settings-device-list .device-info [data-uie-name='device-id']";
@@ -476,7 +477,9 @@ public final class WebAppLocators {
 
         public static final String cssVideoCallButton = "[data-uie-name='do-video-call']";
 
-        public static final String cssVideoCallButtonPulsating = ".icon-video.button-round-pulsate";
+        public static final String cssBroadcastIndicatorVideo = "[data-uie-name='status-self-video']";
+
+        public static final String cssBroadcastIndicatorScreensharing = "[data-uie-name='status-self-screensharing']";
 
         public static final String cssGIFButton = "[data-uie-name='do-giphy-popover']";
 
@@ -707,7 +710,9 @@ public final class WebAppLocators {
 
         public static final String cssMinimizeVideoCallButton = "[data-uie-name='do-call-controls-video-minimize']";
 
-        public static final String cssMaximizeVideoCallButton = "[data-uie-name='do-call-controls-video-maximize']";
+        public static final String cssMaximizeVideoCallButtonOnRemotevideo = "[data-uie-name='do-call-controls-video-maximize']";
+
+        public static final String cssMaximizeVideoCallButton = "[data-uie-name='do-maximize-call']";
 
         public static final String cssDurationTimer = ".video-timer";
 
@@ -725,7 +730,7 @@ public final class WebAppLocators {
 
         public static final String cssCameraButtonNotPressed = cssCameraButton + ":not(.toggled)";
 
-        public static final String cssSelfVideo = "#video-element-local";
+        public static final String cssSelfVideo = ".video-element-local";
         
         public static final String cssSelfVideoOff = ".video-element-overlay.icon-video-off";
 

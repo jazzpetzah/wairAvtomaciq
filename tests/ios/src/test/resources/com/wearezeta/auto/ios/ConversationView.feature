@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @C3182 @regression
+  @C3182 @regression @fastLogin
   Scenario Outline: Verify tooltip is shown when cursor area is empty and in/not in focus
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -17,7 +17,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C3181 @rc @regression @clumsy @IPv6
+  @C3181 @rc @regression @clumsy @IPv6 @fastLogin
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -34,7 +34,6 @@ Feature: Conversation View
   @C923 @regression @fastLogin
   Scenario Outline: Send Hello to contact
     Given There are 2 users where <Name> is me
-    Given I prepare Wire to perform fast log in by email as Myself
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -46,7 +45,7 @@ Feature: Conversation View
       | Name      | Contact   | PingMsg    |
       | user1Name | user2Name | YOU PINGED |
 
-  @C909 @regression @IPv6
+  @C909 @C173062 @rc @regression @IPv6 @fastLogin
   Scenario Outline: Send a camera roll picture to user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -55,14 +54,14 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
     And I select the first picture from Keyboard Gallery
-    And I tap Confirm button on Camera preview page
+    And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C924 @regression
+  @C924 @regression @fastLogin
   Scenario Outline: Send message to group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -77,7 +76,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | MessageToGroup |
 
-  @C883 @regression
+  @C883 @regression @fastLogin
   Scenario Outline: Tap the cursor to get to the end of the conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -91,7 +90,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C932 @regression
+  @C932 @regression @fastLogin
   Scenario Outline: Send Message to contact after navigating away from chat page
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -102,7 +101,7 @@ Feature: Conversation View
     And I navigate back to conversations list
     And I tap on contact name <Contact>
     And I tap on text input
-    And I press Enter key in Simulator window
+    And I tap Send button on the keyboard
     Then I see 1 default message in the conversation view
 
     Examples:
@@ -135,7 +134,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Text       |
       | user1Email | user1Password | user1Name | user2Name | TextToCopy |
 
-  @C931 @regression
+  @C931 @regression @fastLogin
   Scenario Outline: Send a text containing spaces
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -152,7 +151,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C920 @regression
+  @C920 @regression @fastLogin
   Scenario Outline: Verify you can see conversation images in fullscreen
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -178,7 +177,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C921 @regression
+  @C921 @regression @fastLogin
   Scenario Outline: Rotate image in fullscreen mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -196,7 +195,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C1826 @regression
+  @C1826 @regression @fastLogin
   Scenario Outline: Verify archiving conversation from ellipsis menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -214,7 +213,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C940 @rc @regression @IPv6
+  @C940 @rc @regression @IPv6 @fastLogin
   Scenario Outline: Receive message from contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -228,7 +227,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C922 @regression @IPv6
+  @C922 @regression @IPv6 @fastLogin
   Scenario Outline: Receive a camera roll picture from user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -242,7 +241,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C951 @rc @regression
+  @C951 @rc @regression @fastLogin
   Scenario Outline: I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -258,7 +257,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C891 @rc @regression
+  @C891 @rc @regression @fastLogin
   Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
@@ -277,7 +276,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
       | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
 
-  @C954 @regression
+  @C954 @regression @fastLogin
   Scenario Outline: Verify drawing on image from single view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -297,7 +296,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C952 @rc @regression
+  @C952 @173061 @rc @regression @fastLogin
   Scenario Outline: Verify drawing on the image from gallery
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -309,14 +308,13 @@ Feature: Conversation View
     And I tap Sketch button on Picture preview page
     And I draw a random sketch
     And I send my sketch
-    And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C908 @regression
+  @C908 @regression @fastLogin
   Scenario Outline: Verify player isn't displayed for vimeo links without video IDs
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -330,13 +328,13 @@ Feature: Conversation View
       | Name      | Contact   | VimeoLink                    |
       | user1Name | user2Name | https://vimeo.com/categories |
 
-  @C907 @regression
-  Scenario Outline: Verify player is displayed for vimeo links with video IDs
+  @C907 @regression @fastLogin
+  Scenario Outline: (ZIOS-7010) Verify player is displayed for vimeo links with video IDs
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Name> sends encrypted message "<VimeoLink>" to user <Contact1>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     Then I see vimeo link <VimeoLink> and media in dialog
 
@@ -344,7 +342,7 @@ Feature: Conversation View
       | Name      | Contact1  | VimeoLink                   |
       | user1Name | user2Name | https://vimeo.com/129426512 |
 
-  @C845 @regression
+  @C845 @regression @fastLogin
   Scenario Outline: Verify posting in a 1-to-1 conversation without content
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -368,7 +366,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C879 @regression @ZIOS-6517
+  @C879 @regression @ZIOS-6517 @fastLogin
   Scenario Outline: (BUG-ZIOS-6517) Verify possibility to copy image in the conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -389,7 +387,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C911 @regression
+  @C911 @regression @fastLogin
   Scenario Outline: Verify downloading images in fullscreen
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -412,7 +410,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C27 @regression
+  @C27 @regression @fastLogin
   Scenario Outline: Verify you still receive messages from blocked person in a group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -429,7 +427,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | Caramba!      | testing.jpg |
 
-  @C886 @regression
+  @C886 @regression @fastLogin
   Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -448,7 +446,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C917 @real
+  @C917 @C173060 @rc @real @fastLogin
   Scenario Outline: Verify sending photo from a back camera
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -464,7 +462,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C918 @real
+  @C918 @C169229 @real @fastLogin
   Scenario Outline: Verify sending photo from a front camera
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -494,7 +492,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C77968 @regression
+  @C77968 @regression @fastLogin
   Scenario Outline: Verify upper toolbar for the outgoing connection request is shown
     Given There are 2 users where <Name> is me
     Given I sent connection request to <Contact1>
@@ -508,7 +506,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C77970 @regression
+  @C77970 @regression @fastLogin
   Scenario Outline: Verify call icon is not shown in the left group conversation
     Given There are <UsersAmount> users where <Name> is me
     Given Myself is connected to all other
@@ -525,7 +523,7 @@ Feature: Conversation View
       | Name      | GroupChatName  | UsersAmount |
       | user1Name | LeaveGROUPCALL | 4           |
 
-  @C78373 @regression
+  @C78373 @regression @fastLogin
   Scenario Outline: Verify changing name of the user in the upper toolbar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -540,7 +538,7 @@ Feature: Conversation View
       | Name      | Contact   | NewName |
       | user1Name | user2Name | NewName |
 
-  @C37374 @regression
+  @C37374 @regression @fastLogin
   Scenario Outline: Verify changing conversation title in the upper toolbar
     Given There are <UsersAmount> users where <Name> is me
     Given Myself is connected to all other
@@ -556,7 +554,7 @@ Feature: Conversation View
       | Name      | Contact   | GroupChatName  | UsersAmount | NewChatName |
       | user1Name | user2Name | RenameChatName | 4           | NewName     |
 
-  @C95637 @regression
+  @C95637 @regression @fastLogin
   Scenario Outline: Verify opening the image twice in the raw
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -578,7 +576,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C111318 @regression @rc
+  @C111318 @regression @rc @fastLogin
   Scenario Outline: Verify cursor and toolbar appear after adding person back
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other

@@ -63,6 +63,7 @@ public class WinCommonUtils {
     }
 
     public static boolean clearAppData() throws Exception {
+        LOG.debug("Clearing Wire wrapper database");
         final String[] commands = new String[]{"cmd", "/c",
             String.format("DEL /F /S /Q /A \"%s*\"", WIRE_APP_CACHE_FOLDER)};
         return new ProcessHandler(commands).startProcess(30, TimeUnit.SECONDS).stopProcess().getExitCode() == 0;

@@ -1,6 +1,6 @@
 Feature: Archive
 
-  @C2389 @regression
+  @C2389 @regression @fastLogin
   Scenario Outline: Verify unarchive by receiving data [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -31,7 +31,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | chrome      |
 
-  @C2390 @regression
+  @C2390 @regression @fastLogin
   Scenario Outline: Verify unarchiving silenced conversation only by call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -57,7 +57,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | chrome      |
 
-  @C2392 @regression
+  @C2392 @regression @fastLogin
   Scenario Outline: Verify restoring from archive after adding to conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -77,7 +77,7 @@ Feature: Archive
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | LeaveArchive  |
 
-  @C95635 @regression
+  @C95635 @regression @fastLogin
   Scenario Outline: Verify archive behaviour when one archive/unarchive a conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>

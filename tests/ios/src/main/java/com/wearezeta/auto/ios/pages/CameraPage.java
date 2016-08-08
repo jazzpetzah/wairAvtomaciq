@@ -9,9 +9,14 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 
 public class CameraPage extends IOSPage {
-    private static final By nameCameraRollButton = MobileBy.AccessibilityId("Camera Roll");
 
-    private static final By nameTakePhotoButton = MobileBy.AccessibilityId("PhotoCapture");
+    private static final By xpathCameraRollButton =
+            By.xpath("//UIAButton[@name='cameraLibraryButton' or @name='CameraLibraryButton']");
+
+    private static final By xpathTakePhotoButton =
+            By.xpath("//UIAButton[@name='cameraShutterButton' or @name='cameraButton' or @name='PhotoCapture']");
+
+    private static final By nameCloseButton = MobileBy.AccessibilityId("cameraCloseButton");
 
     private boolean isTestImageUploaded = false;
 
@@ -19,15 +24,26 @@ public class CameraPage extends IOSPage {
         super(lazyDriver);
     }
 
-    public void tapTakePhotoButton() throws Exception {
-        getElement(nameTakePhotoButton).click();
+    private By getButtonByName(String name) {
+        switch (name.toLowerCase()) {
+            case "take photo":
+                return xpathTakePhotoButton;
+            case "camera roll":
+                return xpathCameraRollButton;
+            case "close":
+                return nameCloseButton;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
+        }
     }
 
-    public void tapCameraRollButton() throws Exception {
-        if (!isTestImageUploaded && CommonUtils.getIsSimulatorFromConfig(getClass())) {
+    public void tapButton(String name) throws Exception {
+        final By locator = getButtonByName(name);
+        if (!isTestImageUploaded && locator.equals(xpathCameraRollButton) &&
+                CommonUtils.getIsSimulatorFromConfig(getClass())) {
             IOSSimulatorHelper.uploadImage();
             isTestImageUploaded = true;
         }
-        getElement(nameCameraRollButton).click();
+        getElement(getButtonByName(name)).click();
     }
 }

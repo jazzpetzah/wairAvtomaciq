@@ -1,6 +1,6 @@
 Feature: People View
 
-  @C985 @regression
+  @C985 @regression @fastLogin
   Scenario Outline: Start group chat with users from contact list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -22,7 +22,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C973 @regression
+  @C973 @regression @fastLogin
   Scenario Outline: Add user to a group conversation
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -45,7 +45,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | Number | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | 3      | TESTCHAT      |
 
-  @C3175 @rc @regression @clumsy
+  @C3175 @rc @regression @clumsy @fastLogin
   Scenario Outline: Leave from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -65,7 +65,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @C3169 @rc @regression @clumsy
+  @C3169 @rc @regression @clumsy @fastLogin
   Scenario Outline: Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -84,7 +84,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @C3173 @rc @regression @clumsy
+  @C3173 @rc @regression @clumsy @fastLogin
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -100,7 +100,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName |
       | user1Name | user2Name | user3Name | 2                 | GroupInfo     |
 
-  @C3174 @rc @regression @clumsy
+  @C3174 @rc @regression @clumsy @fastLogin
   Scenario Outline: I can edit the conversation name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -120,7 +120,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | ChatName | GroupChatName |
       | user1Name | user2Name | user3Name | QAtest   | TESTCHAT      |
 
-  @C3172 @rc @regression @clumsy
+  @C3172 @rc @regression @clumsy @fastLogin
   Scenario Outline: Tap on participant profiles in group info page participant view
     Given There are 3 users where <Name> is me
     Given <GroupCreator> is connected to me
@@ -141,7 +141,7 @@ Feature: People View
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
-  @C988 @regression
+  @C988 @regression @fastLogin
   Scenario Outline: Verify you can start 1:1 conversation from a group conversation profile
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -159,7 +159,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @C972 @regression
+  @C972 @regression @fastLogin
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
     Given There are 3 users where <Name> is me
     Given <GroupCreator> is connected to me
@@ -176,7 +176,7 @@ Feature: People View
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
-  @C975 @regression
+  @C975 @regression @fastLogin
   Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -195,7 +195,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C986 @rc @clumsy @regression
+  @C986 @rc @clumsy @regression @fastLogin
   Scenario Outline: Verify you can add people from 1:1 people view (via keyboard button)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -217,7 +217,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @C977 @regression
+  @C977 @regression @fastLogin
   Scenario Outline: Verify you can add people from 1:1 people view (cancel view)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -241,7 +241,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @C3170 @rc @regression @clumsy
+  @C3170 @rc @regression @clumsy @fastLogin
   Scenario Outline: Verify silence the conversation
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -262,7 +262,7 @@ Feature: People View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C3171 @rc @regression @clumsy
+  @C3171 @rc @regression @clumsy @fastLogin
   Scenario Outline: Verify unsilence the conversation
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -284,7 +284,7 @@ Feature: People View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C26 @regression
+  @C26 @regression @fastLogin
   Scenario Outline: Verify you can block a person from profile view
     Given There are 2 users where <Name> is me
     Given Myself is connected to all other users
@@ -302,7 +302,7 @@ Feature: People View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C29 @regression
+  @C29 @regression @fastLogin
   Scenario Outline: Verify you can unblock someone from a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -321,7 +321,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | UnblockFromGroup |
 
-  @C980 @regression
+  @C980 @regression @fastLogin
   Scenario Outline: Verify displaying only connected users in the search in group chat
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -345,7 +345,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
-  @C1829 @regression
+  @C1829 @regression @fastLogin
   Scenario Outline: Verify that deleted conversation via participant view is not going to archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -366,7 +366,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C1831 @regression
+  @C1831 @regression @fastLogin
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -393,7 +393,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C1830 @regression
+  @C1830 @regression @fastLogin
   Scenario Outline: ZIOS-6809 Verify removing the content from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -412,14 +412,14 @@ Feature: People View
     And I open search UI
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
-    Then I see group chat page with users <Contact1>,<Contact2>
+    Then I see conversation name <GroupChatName> in Upper Toolbar
     And I see 0 conversation entries
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
-  @C1832 @rc @regression
+  @C1832 @rc @regression @fastLogin
   Scenario Outline: Verify removing the content from 1-to-1 via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -444,7 +444,7 @@ Feature: People View
       | Name      | Contact1  | Image       |
       | user1Name | user2Name | testing.jpg |
 
-  @C849 @regression
+  @C849 @regression @fastLogin
   Scenario Outline: Verify that left conversation is shown in the Archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -467,7 +467,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
 
-  @C42 @regression
+  @C42 @regression @fastLogin
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending user (People view)
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact3>,<Contact2>,<Name>
@@ -485,7 +485,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | TESTCHAT      |
 
-  @C1828 @regression
+  @C1828 @regression @fastLogin
   Scenario Outline: Verify canceling blocking person from participant list
     Given There are 2 users where <Name> is me
     Given Myself is connected to all other users
@@ -502,7 +502,7 @@ Feature: People View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C984 @regression
+  @C984 @regression @fastLogin
   Scenario Outline: Verify length limit for group conversation name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

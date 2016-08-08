@@ -1,6 +1,6 @@
 Feature: ContactsUI
 
-  @C2499 @regression
+  @C2499 @regression @fastLogin
   Scenario Outline: Verify blocked users are not displayed in the Contacts UI [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -19,7 +19,7 @@ Feature: ContactsUI
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2493 @regression
+  @C2493 @regression @fastLogin
   Scenario Outline: Verify opening existing conversation from Contacts UI [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to all other users

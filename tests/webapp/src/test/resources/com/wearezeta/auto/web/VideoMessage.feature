@@ -111,7 +111,7 @@ Feature: Video Message
       | Login      | Password      | Name      | Contact   | File        | Size  |
       | user1Email | user1Password | user1Name | user2Name | C123929.mp4 | 18MB  |
 
-  @C123928 @videomessage @regression
+  @C123928 @videomessage @staging
   Scenario Outline: Verify receiver can cancel video message download
     Given my browser supports video message feature
     Given There are 3 users where <Name> is me

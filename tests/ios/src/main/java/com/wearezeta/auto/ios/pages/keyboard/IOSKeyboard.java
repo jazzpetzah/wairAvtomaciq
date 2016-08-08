@@ -54,8 +54,16 @@ public class IOSKeyboard extends BasePage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), classNameKeyboard, timeoutSeconds);
     }
 
+    public boolean isInvisible(int timeoutSeconds) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), classNameKeyboard, timeoutSeconds);
+    }
+
     public boolean isVisible() throws Exception {
         return isVisible(DEFAULT_VISIBILITY_TIMEOUT);
+    }
+
+    public boolean isInvisible() throws Exception {
+        return isInvisible(DEFAULT_VISIBILITY_TIMEOUT);
     }
 
     public void pressSpaceButton() throws Exception {

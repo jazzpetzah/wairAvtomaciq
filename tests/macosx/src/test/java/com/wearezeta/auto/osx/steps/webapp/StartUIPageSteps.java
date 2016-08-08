@@ -7,8 +7,8 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.osx.pages.webapp.StartUIPage;
 import com.wearezeta.auto.web.pages.ContactListPage;
-import com.wearezeta.auto.web.pages.StartUIPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.external.GoogleLoginPage;
 import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
@@ -400,5 +400,15 @@ public class StartUIPageSteps {
         assertThat("people suggestions",
                 webappPagesCollection.getPage(StartUIPage.class)
                 .getNumberOfTopPeople(), equalTo(count));
+    }
+    
+    /**
+     * Click on import contacts from address book via search UI
+     *
+     * @throws Exception
+     */
+    @When("^I click button to import contacts from address book via search UI")
+    public void IClickAddressbookImportButton() throws Exception {
+        WebappPagesCollection.getInstance().getPage(StartUIPage.class).clickImportAddressbookButton();
     }
 }

@@ -1,7 +1,7 @@
 Feature: Extended Cursor Camera
 
-  @C183865 @C183866 @C183867 @C183869 @staging
-  Scenario Outline:  Gallery Keyboard UI test
+  @C183899 @regression @rc
+  Scenario Outline: Check Gallery Keyboard UI and interaction with buttons
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -15,7 +15,7 @@ Feature: Extended Cursor Camera
     And I see thumbnails in extended cursor camera overlay
     And I see Take Photo button on Extended cursor camera overlay
     And I see Switch Camera button on Extended cursor camera overlay
-    And I see External Camera button on Extended cursor camera overlay
+    And I see Camera button on Extended cursor camera overlay
     And I see External Video button on Extended cursor camera overlay
     #C183867
     When I swipe left on Extended cursor camera overlay
@@ -25,7 +25,7 @@ Feature: Extended Cursor Camera
     Then I see thumbnails in extended cursor camera overlay
     And I see Take Photo button on Extended cursor camera overlay
     And I see Switch Camera button on Extended cursor camera overlay
-    And I see External Camera button on Extended cursor camera overlay
+    And I see Camera button on Extended cursor camera overlay
     And I see External Video button on Extended cursor camera overlay
 
     Examples:
@@ -33,7 +33,7 @@ Feature: Extended Cursor Camera
       | user1Name | user2Name |
 
 
-  @C183870 @staging
+  @C183870 @regression
   Scenario Outline: When select picture from thumbnail and tap cancel in preview -  Gallery Keyboard should be still opened
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -50,8 +50,8 @@ Feature: Extended Cursor Camera
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C183871 @staging
-  Scenario Outline: When I tap external camera button - I see the a picture
+  @C183871 @regression
+  Scenario Outline: When I tap enlarge button - full camera view appears
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -59,15 +59,15 @@ Feature: Extended Cursor Camera
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I tap Add picture button from cursor toolbar
-    And I tap External Camera button on Extended cursor camera overlay
-    Then I see a picture in the conversation view
+    And I tap Camera button on Extended cursor camera overlay
+    Then I see Take Photo button on Take Picture view
 
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
 
-  @C183872 @staging
+  @C183872 @regression @rc
   Scenario Outline: When I tap shoot button - Picture taken and preview appears
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -86,8 +86,8 @@ Feature: Extended Cursor Camera
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C183885 @C183886 @staging
-  Scenario Outline: When device locked/unlocked with opened Gallery Kezboard - keyboard should be dismissed
+  @C183885 @C183886 @regression
+  Scenario Outline: When device locked/unlocked with opened Gallery Keyboard - keyboard should be dismissed
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -114,7 +114,7 @@ Feature: Extended Cursor Camera
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C183887 @staging
+  @C183887 @regression
   Scenario Outline: When I swipe to conversations list with opened Gallery Keyboard and then back to conversation - Keyboard should be closed
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -133,7 +133,7 @@ Feature: Extended Cursor Camera
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C183877 @staging
+  @C183877 @regression
   Scenario Outline: I can retake picture from mini camera (dismiss one in preview and shoot another)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -153,7 +153,7 @@ Feature: Extended Cursor Camera
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C183881 @staging
+  @C183881 @regression @rc
   Scenario Outline: I can draw a sketch on picture selected from thumbnail
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -172,7 +172,7 @@ Feature: Extended Cursor Camera
       | Name      | Contact   | NumColors |
       | user1Name | user2Name | 2         |
 
-  @C183882 @staging
+  @C183882 @regression @rc
   Scenario Outline: I can draw a sketch on camera photo (mini camera)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -190,3 +190,23 @@ Feature: Extended Cursor Camera
     Examples:
       | Name      | Contact   | NumColors |
       | user1Name | user2Name | 2         |
+
+  @C183883 @regression @rc
+  Scenario Outline: I can draw a sketch on camera photo from full screen camera
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
+    And I tap Add picture button from cursor toolbar
+    And I tap Camera button on Extended cursor camera overlay
+    And I tap Take Photo button on Take Picture view
+    And I tap Sketch Image Paint button on Take Picture view
+    And I draw a sketch on image with <NumColors> colors
+    And I send my sketch
+    Then I see a picture in the conversation view
+
+    Examples:
+      | Name      | Contact1  | NumColors |
+      | user1Name | user2Name | 6         |
