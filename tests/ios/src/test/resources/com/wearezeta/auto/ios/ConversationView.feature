@@ -446,7 +446,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C917 @C173060 @rc @real @fastLogin
+  @C917 @C173060 @real_rc @real @fastLogin
   Scenario Outline: Verify sending photo from a back camera
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
