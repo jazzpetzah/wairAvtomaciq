@@ -1,6 +1,6 @@
 Feature: Keyboard Gallery
 
-  @C194554 @staging @fastLogin
+  @C194554 @regression @fastLogin
   Scenario Outline: Verify opening gallery tapping on gallery icon [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -18,7 +18,7 @@ Feature: Keyboard Gallery
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C194555 @staging @fastLogin
+  @C194555 @regression @fastLogin
   Scenario Outline: I can draw a sketch on picture from gallery [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
