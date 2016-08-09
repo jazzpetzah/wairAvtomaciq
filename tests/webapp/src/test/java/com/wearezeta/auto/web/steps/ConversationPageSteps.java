@@ -48,7 +48,7 @@ public class ConversationPageSteps {
 
     @SuppressWarnings("unused")
     private static final Logger log = ZetaLogger.getLog(ConversationPageSteps.class.getSimpleName());
-    private static final String VIDEO_MESSAGE_IMAGE = "userpicture_landscape.jpg";
+    private static final String VIDEO_MESSAGE_IMAGE = "example.png";
 
     private String randomMessage;
 
