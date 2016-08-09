@@ -22,7 +22,7 @@ Feature: Audio Messaging
     Given I see conversations list
     When I tap on contact name <Contact>
     And I long tap Audio Message button for <Duration> seconds from input tools
-    And I close the app for 1 seconds
+    #And I close the app for 1 seconds
     And I tap Send record control button
     Then I see audio message container in the conversation view
     When I remember the state of Play button on audio message placeholder
@@ -58,7 +58,7 @@ Feature: Audio Messaging
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
 
-  @C129326 @rc @regression @fastLogin
+  @C129326 @rc @regression @fastLogin @torun
   Scenario Outline: Verify sending voice message by swipe up
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -106,7 +106,7 @@ Feature: Audio Messaging
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C131218 @regression @fastLogin @torun
+  @C131218 @regression @fastLogin
   Scenario Outline: Verify not sent yet audio message is preserved on minimising the app
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -116,8 +116,6 @@ Feature: Audio Messaging
     And I long tap Audio Message button from input tools
     And I close the app for 3 seconds
     Then I see audio message recorder container in the conversation view
-    And I tap Send record control button
-    Then I see audio message container in the conversation view
 
     Examples:
       | Name      | Contact   |
