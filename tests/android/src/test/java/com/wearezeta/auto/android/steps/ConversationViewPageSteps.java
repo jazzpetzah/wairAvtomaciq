@@ -704,7 +704,7 @@ public class ConversationViewPageSteps {
         final long screenshotingDelay = 0;
         final int maxFrames = 4;
         switch (dst) {
-            case DIALOG:
+            case CONVERSATION:
                 avgThreshold = ImageUtil.getAnimationThreshold(getConversationViewPage()::getRecentPictureScreenshot, maxFrames,
                         screenshotingDelay);
                 Assert.assertTrue(String.format("The picture in the conversation view seems to be static (%.2f >= %.2f)",
@@ -851,7 +851,7 @@ public class ConversationViewPageSteps {
     }
 
     private enum PictureDestination {
-        DIALOG, PREVIEW
+        CONVERSATION, PREVIEW
     }
 
     /**
