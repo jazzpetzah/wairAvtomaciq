@@ -8,7 +8,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
-import org.junit.Assert;
 import org.openqa.selenium.*;
 
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
@@ -24,7 +23,6 @@ public class ConversationsListPage extends AndroidPage {
 
     private static final String xpathStrConvoListNames =
             String.format("//*[@id='%s']/*/*/*[boolean(string(@value))]", idStrConversationListFrame);
-    private static final By xpathContactListNames = By.xpath(xpathStrConvoListNames);
 
     private static final By xpathLoadingContactListItem =
             By.xpath(String.format("%s[contains(@value, '%s')]", xpathStrConvoListNames, LOADING_CONVERSATION_NAME));
@@ -35,10 +33,8 @@ public class ConversationsListPage extends AndroidPage {
     public static final Function<String, String> xpathStrContactByExpr = expr ->
             String.format("%s[%s and @shown='true']", xpathStrConvoListNames, expr);
 
-    private static final Function<Integer, String> xpathStrContactByIndex = index ->
-            String.format("(%s)[%s]", xpathStrConvoListNames, index);
-
-    private static final By xpathLastContact = By.xpath(String.format("(%s)[last()]", xpathStrConvoListNames));
+    private static final By xpathValidContact = By.xpath(String.format("%s[not(contains(@value,'%s'))]",
+            xpathStrConvoListNames, LOADING_CONVERSATION_NAME));
 
     public static final Function<String, String> xpathStrMutedIconByConvoName = convoName -> String
             .format("%s/parent::*//*[@id='tv_conv_list_voice_muted']", xpathStrContactByName.apply(convoName));
@@ -196,7 +192,7 @@ public class ConversationsListPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), idConversationListHintContainer);
     }
 
-    private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
+    private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 15;
     private static final int CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS = CONTACT_LIST_LOAD_TIMEOUT_SECONDS * 2;
 
     public void verifyContactListIsFullyLoaded() throws Exception {
@@ -240,31 +236,12 @@ public class ConversationsListPage extends AndroidPage {
     }
 
     public boolean isAnyConversationVisible() throws Exception {
-        for (int i = getElements(xpathContactListNames).size(); i >= 1; i--) {
-            final By locator = By.xpath(xpathStrContactByIndex.apply(i));
-            final Optional<WebElement> contactEl = getElementIfDisplayed(locator);
-            try {
-                if (contactEl.isPresent() && !contactEl.get().getText().equals(LOADING_CONVERSATION_NAME)) {
-                    return true;
-                }
-            } catch (NoSuchElementException e) {
-                // pass silently
-            }
-        }
-        final Optional<WebElement> lastEl = getElementIfDisplayed(xpathLastContact, CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
-        return lastEl.isPresent() && !lastEl.get().getText().equals(LOADING_CONVERSATION_NAME);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathValidContact,
+                CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
     }
 
     public boolean isNoConversationsVisible() throws Exception {
-        Assert.assertTrue("Conversations list frame is not visible",
-                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idConversationListFrame));
-        for (int i = getElements(xpathContactListNames).size(); i >= 1; i--) {
-            final By locator = By.xpath(xpathStrContactByIndex.apply(i));
-            if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator)) {
-                return false;
-            }
-        }
-        return true;
+        return !DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathValidContact, 3);
     }
 
     public void selectConvoSettingsMenuItem(String itemName) throws Exception {

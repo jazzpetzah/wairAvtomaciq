@@ -7,7 +7,9 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.win.common.WinExecutionContext;
 import com.wearezeta.auto.win.locators.WinLocators;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -98,5 +100,9 @@ public abstract class WinPage extends BasePage {
 
     public Dimension getDesktopSize() throws Exception {
         throw new RuntimeException("Not implemented yet");
+    }
+
+    public Optional<BufferedImage> getScreenshot() throws Exception {
+        return DriverUtils.takeFullScreenShot(getDriver());
     }
 }

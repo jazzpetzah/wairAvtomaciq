@@ -28,6 +28,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
     private static final By idMissedCallImage = By.id("sci__conversation__missed_call__image");
 
+    private static final By idSketchButtonOnPicturePreviewOverlay = By.id("gtv__single_image_message__sketch");
+
     public static final Function<String, String> xpathConversationMessageByValue = value -> String
             .format("//*[@id='ltv__row_conversation__message' and @value='%s']", value);
 
@@ -74,7 +76,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilAPictureAppears() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idDialogImages);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idConversationImages);
     }
 
     public boolean waitUntilGCNIsVisible() throws Exception {
@@ -111,12 +113,11 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return getConversationViewPage().getPreviewPictureScreenshot();
     }
 
-    public void tapRecentPicture() throws Exception {
+    public void tapRecentImage() throws Exception {
         getConversationViewPage().tapRecentImage();
     }
 
-    public boolean waitForSystemConnectionMessageContains(String expectedMessage)
-            throws Exception {
+    public boolean waitForSystemConnectionMessageContains(String expectedMessage) throws Exception {
         final By locator = By.xpath(xpathStrSystemConnectionMessageByContent
                 .apply(expectedMessage));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
@@ -132,7 +133,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilPicturesNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idDialogImages);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idConversationImages);
     }
 
     public boolean waitUntilUnsentIndicatorIsVisible(String msg) throws Exception {
@@ -151,8 +152,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCloseImageBtn);
     }
 
-    public boolean waitUntilClosePicturePreviewButtonInvisible()
-            throws Exception {
+    public boolean waitUntilClosePicturePreviewButtonInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCloseImageBtn);
     }
 
@@ -186,5 +186,85 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
     public void tapTopToolbarTitle() throws Exception {
         getConversationViewPage().tapTopToolbarTitle();
+    }
+
+    public void tapMessage(String msg) throws Exception {
+        getConversationViewPage().tapMessage(msg);
+    }
+
+    public void longTapMessage(String msg) throws Exception {
+        getConversationViewPage().longTapMessage(msg);
+    }
+
+    public void tapActionBarButton(String btnName) throws Exception {
+        getConversationViewPage().tapActionBarButton(btnName);
+    }
+
+    public boolean isActionModeBarButtonVisible(String name) throws Exception {
+        return getConversationViewPage().isActionModeBarButtonVisible(name);
+    }
+
+    public boolean isActionModeBarButtonInvisible(String name) throws Exception {
+        return getConversationViewPage().isActionModeBarButtonInvisible(name);
+    }
+
+    public boolean isContainerVisible(String containerType) throws Exception {
+        return getConversationViewPage().isContainerVisible(containerType);
+    }
+
+    public boolean isContainerInvisible(String containerType) throws Exception {
+        return getConversationViewPage().isContainerInvisible(containerType);
+    }
+
+    public boolean isCursorToolbarVisible() throws Exception {
+        return getConversationViewPage().isCursorToolbarVisible();
+    }
+
+    public boolean isCursorToolbarInvisible() throws Exception {
+        return getConversationViewPage().isCursorToolbarInvisible();
+    }
+
+    public void longTapAudioMessageCursorBtn() throws Exception {
+        getConversationViewPage().longTapAudioMessageCursorBtn(DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public void longTapAudioMessageCursorBtn(int durationSeconds) throws Exception {
+        getConversationViewPage().longTapAudioMessageCursorBtn(durationSeconds * 1000);
+    }
+
+    public void tapAudioRecordingButton(String name) throws Exception {
+        getConversationViewPage().tapAudioRecordingButton(name);
+    }
+
+    public void longTapAudioMessageCursorBtnAndSwipeUp(int durationSeconds) throws Exception {
+        getConversationViewPage().longTapAudioMessageCursorBtnAndSwipeUp(durationSeconds * 1000);
+    }
+
+    public void tapTopBarButton(String btnName) throws Exception {
+        getConversationViewPage().tapTopBarButton(btnName);
+    }
+
+    public BufferedImage getFilePlaceholderActionButtonState() throws Exception {
+        return getConversationViewPage().getFilePlaceholderActionButtonState();
+    }
+
+    public void waitUntilFileUploadIsCompleted(int timeoutSeconds, String size, String extension) throws Exception {
+        getConversationViewPage().waitUntilFileUploadIsCompleted(timeoutSeconds, size, extension);
+    }
+
+    public boolean isFilePlaceHolderVisible(String fileFullName, String size, String extension, boolean isUpload,
+                                            boolean isSuccess, int lookUpTimeoutSeconds) throws Exception {
+        return getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, isUpload, isSuccess,
+                lookUpTimeoutSeconds);
+    }
+
+    public boolean isFilePlaceHolderInvisible(String fileFullName, String size, String extension, boolean isUpload,
+                                              boolean isSuccess, int lookUpTimeoutSeconds) throws Exception {
+        return getConversationViewPage().isFilePlaceHolderInvisible(fileFullName, size, extension, isUpload, isSuccess,
+                lookUpTimeoutSeconds);
+    }
+
+    public void tapSketchOnPicturePreviewOverlay() throws Exception {
+        getElement(idSketchButtonOnPicturePreviewOverlay).click();
     }
 }

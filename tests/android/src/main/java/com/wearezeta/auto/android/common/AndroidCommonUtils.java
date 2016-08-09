@@ -44,7 +44,8 @@ public class AndroidCommonUtils extends CommonUtils {
             "android.permission.READ_CONTACTS",
             "android.permission.RECORD_AUDIO",
             "android.permission.CAMERA",
-            "android.permission.READ_PHONE_STATE"
+            "android.permission.READ_PHONE_STATE",
+            "android.permission.ACCESS_FINE_LOCATION"
     };
 
     public static void executeAdb(final String cmdline) throws Exception {
@@ -308,7 +309,7 @@ public class AndroidCommonUtils extends CommonUtils {
         } else {
             executeAdb(String.format("install -r %s/testing_gallery-debug19.apk", getAndroidToolsPathFromConfig(c)));
             if (deviceVersion.compareTo(new DefaultArtifactVersion("6.0")) >= 0) {
-                grantPermissionsTo("com.wire.testinggallery", "android.permission.WRITE_EXTERNAL_STORAGE");
+                grantPermissionsTo("com.wire.testinggallery", "android.permission.READ_EXTERNAL_STORAGE");
             }
          }
     }
@@ -704,7 +705,16 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     private static void ensureClipperServiceIsRunning() throws Exception {
-        executeAdb("shell am startservice ca.zgrs.clipper/.ClipboardService");
+        final DefaultArtifactVersion deviceVersion =
+                new DefaultArtifactVersion(getPropertyFromAdb("ro.build.version.release"));
+
+        // Related issue for Android 4.2: http://stackoverflow.com/questions/13588668/adb-throws-securityexception-while-starting-service-after-system-update-to-nexus
+
+        if (deviceVersion.compareTo(new DefaultArtifactVersion("4.3")) <= 0) {
+            executeAdb("shell am startservice --user 0 -n ca.zgrs.clipper/.ClipboardService");
+        } else {
+            executeAdb("shell am startservice ca.zgrs.clipper/.ClipboardService");
+        }
     }
 
     public static Optional<String> getClipboardContent() throws Exception {
@@ -740,6 +750,16 @@ public class AndroidCommonUtils extends CommonUtils {
 
     // ***
 
+
+    // ***
+    // http://stackoverflow.com/questions/11420617/android-emulator-screen-rotation/14253321#14253321
+
+    public static void changeAccelerometerState(boolean isEnabled) throws Exception {
+        executeAdb(String.format("shell content insert --uri content://settings/system " +
+                "--bind name:s:accelerometer_rotation --bind value:i:%s", isEnabled ? "1" : "0"));
+    }
+
+    // ***
 
     // ***
 

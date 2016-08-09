@@ -34,21 +34,6 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | PING   |
       | user1Email | user1Password | user1Name | user2Name | pinged |
 
-  @C2334 @smoke
-  Scenario Outline: Verify you start a call in a conversation when you press ⌘ R (Mac)
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    And I am signed in properly
-    When I open conversation with <Contact>
-    And I type shortcut combination to start a call
-    Then I see the outgoing call controls for conversation <Contact>
-
-    Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
-
   @C2345 @smoke
   Scenario Outline: Verify I can call a conversation using the menu bar
     Given There are 2 users where <Name> is me
@@ -99,22 +84,6 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | PING   |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | pinged |
-
-  @C2349 @smoke
-  Scenario Outline: Verify you start a call in a group conversation when you press ⌘ T (Mac)
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    And I am signed in properly
-    When I open conversation with <ChatName>
-    And I type shortcut combination to start a call
-    Then I see the outgoing call controls for conversation <ChatName>
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
 
   @C2347 @smoke
   Scenario Outline: Verify I can call a group conversation using the menu bar
@@ -257,3 +226,23 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+
+  @C183888 @smoke @WEBAPP-3052
+  Scenario Outline: Send a long message containing new lines in 1on1
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact>
+    When I write 10 new lines
+    And I write message aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    And I write 10 new lines
+    And I write message bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+    And I write 10 new lines
+    And I send message
+    Then I verify the last text message equals to <ExpectedMessage>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | ExpectedMessage                   |
+      | user1Email | user1Password | user1Name | user2Name | ('a' * 100)('LF' * 10)('b' * 100) |

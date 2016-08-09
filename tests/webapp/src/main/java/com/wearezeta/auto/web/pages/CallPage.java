@@ -54,6 +54,13 @@ public class CallPage extends ContactListPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(locator));
     }
 
+    public boolean isJoinCallButtonNotVisibleForConversation(String conversationName) throws Exception {
+        conversationName = fixDefaultGroupConvoName(conversationName, false);
+        final String locator = WebAppLocators.CallPage.xpathJoinCallButtonByConversationName.apply(conversationName);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.xpath(locator));
+    }
+
+
     public boolean isMuteCallButtonVisibleForConversation(
             String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
@@ -175,6 +182,7 @@ public class CallPage extends ContactListPage {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
         final String locator = WebAppLocators.CallPage.xpathDeclineCallButtonByConversationName.apply(conversationName);
         WebElement declineCallButton = getDriver().findElementByXPath(locator);
+        DriverUtils.waitUntilElementClickable(getDriver(), declineCallButton);
         declineCallButton.click();
     }
 
@@ -182,6 +190,7 @@ public class CallPage extends ContactListPage {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
         final String locator = WebAppLocators.CallPage.xpathAcceptCallButtonByConversationName.apply(conversationName);
         WebElement acceptCallButton = getDriver().findElementByXPath(locator);
+        DriverUtils.waitUntilElementClickable(getDriver(), acceptCallButton);
         acceptCallButton.click();
     }
 

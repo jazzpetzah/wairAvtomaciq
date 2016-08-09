@@ -1,6 +1,6 @@
 Feature: Search
 
-  @C1035 @rc @clumsy @regression @id2147
+  @C1035 @rc @clumsy @regression @fastLogin
   Scenario Outline: Verify search by email
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -13,7 +13,7 @@ Feature: Search
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
-  @C1036 @rc @clumsy @regression @id2148 @id2543
+  @C1036 @rc @clumsy @regression @fastLogin
   Scenario Outline: Verify search by name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -28,7 +28,7 @@ Feature: Search
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C3167 @rc @regression @id1394
+  @C3167 @rc @regression @fastLogin
   Scenario Outline: Start 1:1 chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -46,7 +46,7 @@ Feature: Search
       | Name      | UserCount |
       | user1Name | 4         |
 
-  @C1069 @rc @regression @id1150
+  @C1069 @rc @regression @fastLogin
   Scenario Outline: Start group chat with users from Top Connections
     Given There are 4 users where <Name> is me
     Given Myself is connected to all other users
@@ -65,7 +65,7 @@ Feature: Search
       | Name      | ParticipantsCount |
       | user1Name | 2                 |
 
-  @C40 @rc @regression @id1454
+  @C40 @rc @regression @fastLogin
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -76,8 +76,7 @@ Feature: Search
     When I open search UI
     And I input in People picker search field conversation name <UnconnectedUser>
     And I tap on conversation <UnconnectedUser> in search result
-    Then I see connect to <UnconnectedUser> dialog
-    And I click Connect button on connect to dialog
+    And I tap Connect button on Pending outgoing connection page
     And I click close button to dismiss people view
     And I tap on contact name <UnconnectedUser>
     And I open conversation details
@@ -87,7 +86,7 @@ Feature: Search
       | Name      | UnconnectedUser | Contact2  |
       | user1Name | user2Name       | user3Name |
 
-  @C3220 @regression @id763
+  @C3220 @regression @fastLogin
   Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -105,7 +104,7 @@ Feature: Search
       | Name      | Contact   | Number |
       | user1Name | user2Name | 2      |
 
-  @C3244 @regression @id1456
+  @C3244 @regression @fastLogin
   Scenario Outline: Verify you can unblock someone from search list
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
@@ -126,14 +125,14 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2785 @regression @id2149
+  @C2785 @regression @fastLogin
   Scenario Outline: Verify search by part of the name
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <Contact> exists in backend search results
     When I open search UI
-    And I wait until <Contact> exists in backend search results
     And I input in People picker search field first 5 letters of user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
 
@@ -141,12 +140,13 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C1049 @rc @clumsy @regression @id3282
+  @C1049 @rc @clumsy @regression @fastLogin
   Scenario Outline: Verify starting a call with action button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -157,7 +157,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C1053 @rc @regression @id3286
+  @C1053 @rc @regression @fastLogin
   Scenario Outline: Verify sharing a photo to a newly created group conversation with action button
     Given There are 4 users where <Name> is me
     Given Myself is connected to all other users
@@ -169,9 +169,9 @@ Feature: Search
     Then I tap on first 3 top connections
     When I see Send image action button on People picker page
     And I tap Send image action button on People picker page
-    And I press Camera Roll button
-    And I choose a picture from camera roll
-    And I confirm my choice
+    And I tap Camera Roll button on Camera page
+    And I select the first picture from Camera Roll
+    And I tap Confirm button on Picture preview page
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I see 1 photo in the conversation view
     When I navigate back to conversations list
@@ -181,7 +181,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @C1043 @regression @id3276
+  @C1043 @regression @fastLogin
   Scenario Outline: Verify action buttons appear after selecting person from Top People
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -197,7 +197,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C1044 @regression @id3277
+  @C1044 @regression @fastLogin
   Scenario Outline: Verify action buttons appear after choosing user from search results
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -212,7 +212,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C1047 @regression @id3280
+  @C1047 @regression @fastLogin
   Scenario Outline: Verify button Open is changed on Create after checking second person
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -230,7 +230,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C1045 @regression @id3278
+  @C1045 @regression @fastLogin
   Scenario Outline: Verify action buttons disappear by unchecking the avatar
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -248,7 +248,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C1046 @regression @id3279
+  @C1046 @regression @fastLogin
   Scenario Outline: Verify action buttons disappear by deleting token from a search field
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -273,7 +273,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C1048 @regression @id3281
+  @C1048 @regression @fastLogin
   Scenario Outline: Verify opening conversation with action button
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -290,7 +290,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C1042 @regression @id4118
+  @C1042 @regression @fastLogin
   Scenario Outline: Verify action buttons appear after choosing user from search results
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users

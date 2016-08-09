@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.CommonSteps;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -55,7 +54,7 @@ public class ConversationPageSteps {
      */
     @When("^I write random message$")
     public void WhenIWriteRandomMessage() throws Exception {
-        randomMessage = CommonUtils.generateGUID();
+        randomMessage = UUID.randomUUID().toString();
         IWriteMessage(randomMessage);
     }
 
@@ -584,18 +583,6 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Hovers ping button
-     *
-     * @step. ^I hover ping button$
-     * @throws Exception
-     */
-    @Then("^I hover ping button$")
-    public void IHoverPingButton() throws Exception {
-        WebappPagesCollection.getInstance().getPage(ConversationPage.class)
-                .hoverPingButton();
-    }
-
-    /**
      * Types shortcut combination to ping
      *
      * @step. ^I type shortcut combination to ping$
@@ -700,17 +687,6 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Hovers call button
-     *
-     * @step. ^I hover call button$
-     */
-    @When("^I hover call button$")
-    public void IHoverCallButton() throws Throwable {
-        WebappPagesCollection.getInstance().getPage(ConversationPage.class)
-                .hoverCallButton();
-    }
-
-    /**
      * Verifies whether call button tool tip is correct or not.
      *
      * @step. ^I see correct call button tool tip$
@@ -761,4 +737,15 @@ public class ConversationPageSteps {
         WebappPagesCollection.getInstance().getPage(ConversationPage.class)
                 .clickUserAvatar(user.getId());
     }
+
+    /**
+     * Start a video call in opened conversation
+     *
+     * @step. ^I start a video call$
+     */
+    @When("^I start a video call$")
+    public void IMakeVideoCallToUser() throws Throwable {
+        WebappPagesCollection.getInstance().getPage(ConversationPage.class).clickVideoCallButton();
+    }
+
 }

@@ -1,23 +1,6 @@
 Feature: Search
-  @C471 @id2180 @regression
-  Scenario Outline: I should able to swipe to conversation when search is opened (portrait only)
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to Myself
-    Given I rotate UI to portrait
-    Given I sign in using my email
-    Given I accept First Time overlay as soon as it is visible
-    Given I see the conversations list with conversations
-    When I open Search UI
-    And I swipe left to show the conversation view
-    Then I do not see People Picker page
-    When I swipe right to show the conversations list
-    Then I see People Picker page
 
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C490 @id2848 @regression
+  @C490 @regression
   Scenario Outline: I ignore someone from search and clear my inbox (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
@@ -38,7 +21,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C524 @id3130 @regression
+  @C524 @regression
   Scenario Outline: I ignore someone from search and clear my inbox (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
@@ -58,7 +41,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C762 @id2853 @regression @rc
+  @C762 @regression @rc
   Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -80,7 +63,7 @@ Feature: Search
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @C819 @id3882 @regression @rc @rc44
+  @C819 @regression @rc @rc44
   Scenario Outline: Verify opening conversation with action button (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -100,7 +83,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C820 @id3891 @regression @rc
+  @C820 @regression @rc
   Scenario Outline: Verify opening conversation with action button (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -120,7 +103,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C537 @id3885 @regression
+  @C537 @regression
   Scenario Outline: Verify starting a new group conversation with action button (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -146,7 +129,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C545 @id3894 @regression
+  @C545 @regression
   Scenario Outline: Verify starting a new group conversation with action button (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -172,7 +155,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C536 @id3884 @regression
+  @C536 @regression
   Scenario Outline: Verify sending a photo with action button (landscape)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -186,7 +169,6 @@ Feature: Search
     And I tap the found item <Contact> on People Picker page
     When I tap Send Image action button on People Picker page
     And I tap Take Photo button on Take Picture view
-    And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
     And I do not see People Picker page
 
@@ -194,7 +176,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C539 @id3887 @regression
+  @C539 @regression
   Scenario Outline: Verify sharing a photo to a newly created group conversation with action button (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -211,7 +193,6 @@ Feature: Search
     And I tap the found item <Contact2> on People Picker page
     When I tap Send Image action button on People Picker page
     And I tap Take Photo button on Take Picture view
-    And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
     And I do not see People Picker page
     When I tap conversation name from top toolbar
@@ -224,7 +205,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C547 @id3896 @regression
+  @C547 @regression
   Scenario Outline: Verify sharing a photo to a newly created group conversation with action button (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -241,7 +222,6 @@ Feature: Search
     And I tap the found item <Contact2> on People Picker page
     When I tap Send Image action button on People Picker page
     And I tap Take Photo button on Take Picture view
-    And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
     And I do not see People Picker page
     When I tap conversation name from top toolbar
@@ -254,8 +234,8 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C534 @id3881 @regression
-  Scenario Outline: (AN-3616) Verify button Open is changed to Create after checking second person (landscape)
+  @C534 @regression
+  Scenario Outline: (AN-4031) Verify button Open is changed to Create after checking second person (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
@@ -280,8 +260,8 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C542 @id3890 @regression
-  Scenario Outline: (AN-3616) Verify button Open is changed to Create after checking second person (portrait)
+  @C542 @regression
+  Scenario Outline: (AN-4031) Verify button Open is changed to Create after checking second person (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to portrait
@@ -306,7 +286,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C535 @id3883 @regression
+  @C535 @regression
   Scenario Outline: Verify starting a call with action button (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -326,7 +306,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C543 @id3892 @regression
+  @C543 @regression
   Scenario Outline: Verify starting a call with action button (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -346,7 +326,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C538 @id3886 @regression
+  @C538 @regression
   Scenario Outline: Verify starting a group conversation and a group call with action button (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -368,7 +348,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C546 @id3895 @regression
+  @C546 @regression
   Scenario Outline: Verify starting a group conversation and a group call with action button (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

@@ -110,9 +110,9 @@ public class ConversationViewPageSteps {
     @When("^I type the (default|\".*\") message and send it$")
     public void ITypeTheMessageAndSendIt(String msg) throws Exception {
         if (msg.equals("default")) {
-            getConversationViewPage().typeAndSendConversationMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+            getConversationViewPage().typeMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE, true);
         } else {
-            getConversationViewPage().typeAndSendConversationMessage(msg.replaceAll("^\"|\"$", ""));
+            getConversationViewPage().typeMessage(msg.replaceAll("^\"|\"$", ""), true);
         }
     }
 
@@ -140,7 +140,7 @@ public class ConversationViewPageSteps {
 
     @When("^I send the message$")
     public void WhenISendTheMessage() throws Exception {
-        getConversationViewPage().clickKeyboardCommitButton();
+        getConversationViewPage().tapKeyboardCommitButton();
     }
 
     @Then("^I see (\\d+) (default )?messages? in the conversation view$")
@@ -205,12 +205,12 @@ public class ConversationViewPageSteps {
      *                        Works with long tap only
      * @param durationSeconds specific time duration you press the button
      * @throws Exception
-     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)?
+     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)?
      * from input tool( without releasing my finger)?s$
      */
-    @When("^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)? from input tools( without releasing my finger)?$")
-    public void IPressAddPictureButton(String isLongTap, String btnName, String durationSeconds,
-                                       String shouldKeepTap) throws Exception {
+    @When("^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)? from input tools( without releasing my finger)?$")
+    public void ITapButtonByNameFromInputTools(String isLongTap, String btnName, String durationSeconds,
+                                               String shouldKeepTap) throws Exception {
         if (isLongTap == null) {
             getConversationViewPage().tapInputToolButtonByName(btnName);
         } else {
@@ -257,7 +257,7 @@ public class ConversationViewPageSteps {
         }
     }
 
-    @Then("^I see Pending Connect to (.*) message on Dialog page$")
+    @Then("^I see Pending Connect to (.*) message in the conversation view$")
     public void ISeePendingConnectMessage(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         Assert.assertTrue(String.format("Connecting to %s is not visible", contact),
@@ -288,11 +288,6 @@ public class ConversationViewPageSteps {
         getConversationViewPage().clickOnPlayVideoButton();
     }
 
-    @When("^I post media link (.*)$")
-    public void IPostMediaLink(String link) throws Throwable {
-        getConversationViewPage().typeAndSendConversationMessage(link);
-    }
-
     /**
      * Copy to system clipboard, paste and send invitation link from pointed user in a conversation
      *
@@ -307,11 +302,6 @@ public class ConversationViewPageSteps {
         IOSSimulatorHelper.copySystemClipboardToSimulatorClipboard();
         ITapHoldTextInput();
         IClickPopupPasteAndCommitText();
-    }
-
-    @When("^I tap media container$")
-    public void ITapMediaContainer() throws Throwable {
-        getConversationViewPage().startMediaContent();
     }
 
     @When("^I scroll media out of sight until media bar appears$")
@@ -437,11 +427,6 @@ public class ConversationViewPageSteps {
                 getConversationViewPage().isLastMessageContain(link));
         Assert.assertTrue("View did not scroll back", getConversationViewPage()
                 .isMediaContainerVisible());
-    }
-
-    @When("I tap and hold image to open full screen")
-    public void ITapImageToOpenFullScreen() throws Throwable {
-        getConversationViewPage().tapImageToOpen();
     }
 
     @Then("^I navigate back to conversations list")
@@ -777,17 +762,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Clicks the send button on the keyboard
-     *
-     * @throws Exception
-     * @step. ^I click send button on keyboard
-     */
-    @When("^I click send button on keyboard$")
-    public void iClickSendButtonOnKeyboard() throws Exception {
-        getConversationViewPage().clickKeyboardCommitButton();
-    }
-
-    /**
      * Verify whether shield icon is visible next to convo input field
      *
      * @param shouldNotSee equals to null if the shield should be visible
@@ -923,7 +897,7 @@ public class ConversationViewPageSteps {
                 isYouCalledMessageAndButtonVisible());
     }
 
-    private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
+    private static final double MAX_SIMILARITY_THRESHOLD = 0.98;
 
     /**
      * Verify whether the particular picture is animated
@@ -942,6 +916,17 @@ public class ConversationViewPageSteps {
                 avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
     }
 
+    private String expandFileTransferItemName(String itemName) {
+        switch (itemName) {
+            case "FTRANSFER_MENU_DEFAULT_PNG":
+                return FTRANSFER_MENU_DEFAULT_PNG;
+            case "TOO_BIG":
+                return FTRANSFER_MENU_TOO_BIG;
+            default:
+                return itemName;
+        }
+    }
+
     /**
      * Tap on file transfer menu item by name
      *
@@ -951,16 +936,22 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap file transfer menu item (.*)")
     public void ITapFileTransferMenuItem(String itemName) throws Exception {
-        String realName = itemName;
-        switch (itemName) {
-            case "FTRANSFER_MENU_DEFAULT_PNG":
-                realName = FTRANSFER_MENU_DEFAULT_PNG;
-                break;
-            case "TOO_BIG":
-                realName = FTRANSFER_MENU_TOO_BIG;
-                break;
-        }
+        final String realName = expandFileTransferItemName(itemName);
         getConversationViewPage().tapFileTransferMenuItem(realName);
+    }
+
+    /**
+     * Verify visibility of the corresponding file transfer menu item
+     *
+     * @param itemName name of the item
+     * @throws Exception
+     * @step. ^I see file transfer menu item (.*)
+     */
+    @When("^I see file transfer menu item (.*)")
+    public void ISeeFileTransferMenuItem(String itemName) throws Exception {
+        final String realName = expandFileTransferItemName(itemName);
+        Assert.assertTrue(String.format("File transfer menu item '%s' is not visible", realName),
+                getConversationViewPage().isFileTransferMenuItemVisible(realName));
     }
 
     /**
@@ -1094,53 +1085,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verifies if media container is visible or not in the conversation view
-     *
-     * @param shouldNotBeVisible equals to null if the media container should be visible
-     * @throws Exception
-     * @step. ^I (do not )?see the media container in the conversation view$
-     */
-    @Then("^I (do not )?see the media container in the conversation view$")
-    public void ISeeTheMediaContainerInTheConversationView(String shouldNotBeVisible) throws Exception {
-        if (shouldNotBeVisible == null) {
-            Assert.assertTrue("Media container is not visible in the conversation view",
-                    getConversationViewPage().isMediaContainerVisible());
-        } else {
-            Assert.assertTrue("Media container is visible in the conversation view",
-                    getConversationViewPage().isMediaContainerInvisible());
-        }
-    }
-
-    /**
-     * Wait for a while until video message container is shown in the conversation view
-     *
-     * @throws Exception
-     * @step. ^I see a preview of video message$"
-     */
-    @Then("^I see a preview of video message$")
-    public void IWaitForVideoMessage() throws Exception {
-        Assert.assertTrue("Video message container has not been shown",
-                getConversationViewPage().isVideoMessageContainerVisible());
-    }
-
-    /**
-     * Verify whether audio message record progress control is visible
-     *
-     * @throws Exception
-     * @step. ^I see audio message record container$
-     */
-    @Then("^I (do not )?see audio message record container$")
-    public void ISeeAudioRecordProgress(String shouldNotSee) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue("Audio message record progress control has not been shown",
-                    getConversationViewPage().isAudioMessageRecordCancelVisible());
-        } else {
-            Assert.assertTrue("Audio message record progress control is shown",
-                    getConversationViewPage().isAudioMessageRecordCancelInvisible());
-        }
-    }
-
-    /**
      * Tap pointed control button
      *
      * @throws Exception
@@ -1161,24 +1105,6 @@ public class ConversationViewPageSteps {
     public void ISeeRecordControlButton(String buttonName) throws Exception {
         Assert.assertTrue(String.format("Record control button '%s' is not visible", buttonName),
                 getConversationViewPage().isRecordControlButtonVisible(buttonName));
-    }
-
-    /**
-     * Verify visibility of audio message placeholder
-     *
-     * @param shouldNotSee equals to null if the placeholder should be visible
-     * @throws Exception
-     * @step. ^I (do not )?see audio message placeholder$"
-     */
-    @Then("^I (do not )?see audio message placeholder$")
-    public void ISeeAudioMessagePlaceholder(String shouldNotSee) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue("Audio message placeholder is not shown",
-                    getConversationViewPage().isAudioActionButtonVisible());
-        } else {
-            Assert.assertTrue("Audio message placeholder should not be visible",
-                    getConversationViewPage().isAudioActionButtonInvisible());
-        }
     }
 
     /**
@@ -1209,28 +1135,48 @@ public class ConversationViewPageSteps {
      * Long tap on a conversation view item
      *
      * @param conversationItem item name
+     * @param isLongTap        equals to null if simple tap should be performed
+     *                         Works with long tap only
      * @throws Exception
-     * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in
+     * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder|location map) in
      * conversation view$")
      */
-    @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in conversation view$")
-    public void ITapAndHoldAudioMessagePlaceholder(String conversationItem) throws Exception {
+    @When("^I (long )?tap on (image|media container|file transfer placeholder|audio message placeholder|location map|link preview) in conversation view$")
+    public void ITapAndHoldAudioMessagePlaceholder(String isLongTap, String conversationItem) throws Exception {
+        FunctionalInterfaces.RunnableWithException tapFunc;
         switch (conversationItem) {
             case "image":
-                getConversationViewPage().tapHoldImageWithRetry();
+                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapImageToOpen :
+                        getConversationViewPage()::longTapImage;
                 break;
             case "media container":
-                getConversationViewPage().tapAndHoldMediaContainer();
+                tapFunc = (isLongTap == null) ? getConversationViewPage()::startMediaContent :
+                        getConversationViewPage()::longTapMediaContainer;
+                break;
+            case "location map":
+                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapLocationContainer :
+                        getConversationViewPage()::longTapLocationContainer;
                 break;
             case "file transfer placeholder":
-                getConversationViewPage().tapAndHoldFileTransferPlaceholder();
+                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapFileTransferPlaceholder :
+                        getConversationViewPage()::longTapFileTransferPlaceholder;
                 break;
             case "audio message placeholder":
-                getConversationViewPage().tapAndHoldAudioMessage();
+                tapFunc = (isLongTap == null) ? null : getConversationViewPage()::longTapAudioMessage;
+                break;
+            case "link preview":
+                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapLocationContainer :
+                        getConversationViewPage()::longTapLinkPreviewContainer;
                 break;
             default:
                 throw new IllegalArgumentException("Not known conversation item. Please use only items pointed in the step");
         }
+        if (tapFunc == null) {
+            throw new IllegalArgumentException(
+                    String.format("Cannot perform%s tap on '%s' container, because it is not implemented",
+                            (isLongTap == null) ? "" : " long", conversationItem));
+        }
+        tapFunc.run();
     }
 
     /**
@@ -1354,5 +1300,111 @@ public class ConversationViewPageSteps {
     public void IseeRecordToolbarButtonStateIs(String buttonState) throws Exception {
         Assert.assertTrue(String.format("Wrong button state. Expected state is '%s'", buttonState),
                 getConversationViewPage().isRecordControlButtonState(buttonState));
+    }
+
+    /**
+     * Verify visibility of default received|sent Share Location address
+     *
+     * @param shouldNotSee equals to null if text input should be visible
+     * @param origin       'received' if shared in precondition step or 'sent' if shared from conversation view
+     * @throws Exception
+     * @step. I (do not )?see the default (received|sent) Share Location address in the conversation view$
+     */
+    @Then("^I (do not )?see the default (received|sent) Share Location address in the conversation view$")
+    public void VerifyShareLocationAddressVisibility(String shouldNotSee, String origin) throws Exception {
+        boolean condition;
+        if (origin.equals("received")) {
+            condition = (shouldNotSee == null) ? getConversationViewPage().isDefaultReceivedShareLocationAddressVisible() :
+                    getConversationViewPage().isDefaultReceivedShareLocationAddressNotVisible();
+        } else {
+            condition = (shouldNotSee == null) ? getConversationViewPage().isDefaultSentShareLocationAddressVisible() :
+                    getConversationViewPage().isDefaultSentShareLocationAddressNotVisible();
+        }
+        Assert.assertTrue(String.format("Share %s Location address should be %s in the conversation view", origin,
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
+
+    /**
+     * Verify visibility of default Map application
+     *
+     * @throws Exception
+     * @step. ^I see map application is opened$
+     */
+    @Then("^I see map application is opened$")
+    public void VerifyMapDefaultApplicationVisibility() throws Exception {
+        Assert.assertTrue("The default map application is not visible",
+                getConversationViewPage().isDefaultMapApplicationVisible());
+    }
+
+    /**
+     * Verify whether container is visible in the conversation
+     *
+     * @param shouldNotSee  equals to null if the container should be visible
+     * @param containerType media|video message|audio message record|location map|link previeww
+     * @throws Exception
+     * @step. ^I (do not )?see (media|video message|audio message record|location map|link preview) container in the conversation view$
+     */
+    @Then("^I (do not )?see (media|video message|audio message recorder|audio message|location map|link preview) " +
+            "container in the conversation view$")
+    public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
+        final boolean condition = (shouldNotSee == null) ?
+                getConversationViewPage().isContainerVisible(containerType) :
+                getConversationViewPage().isContainerInvisible(containerType);
+        Assert.assertTrue(String.format("%s should be %s in the conversation view", containerType,
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
+
+    /**
+     * Verify link preview image visibility
+     *
+     * @param shouldNotBeVisible equals to null if the placeholder should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see link preview image in the conversation view
+     */
+    @When("^I (do not )?see link preview image in the conversation view$")
+    public void ISeeLinkPreviewImage(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("Link preview image is not visible",
+                    getConversationViewPage().isLinkPreviewImageVisible());
+        } else {
+            Assert.assertTrue("Link preview image is visible, but should be hidden",
+                    getConversationViewPage().isLinkPreviewImageInvisible());
+        }
+    }
+
+    /**
+     * Verify the difference between the height of two strings
+     *
+     * @param msg1               the first conversation message text
+     * @param isNot              equals to null is the current percentage should be greater or equal to the expected one
+     * @param msg2               the second message text
+     * @param expectedPercentage the expected diff percentage
+     * @throws Exception
+     * @step. ^I see that the difference in height of "(.*)" and "(.*)" messages is (not )?greater than (\d+) percent$
+     */
+    @Then("^I see that the difference in height of \"(.*)\" and \"(.*)\" messages is (not )?greater than (\\d+) percent$")
+    public void ISeeMassagesHaveEqualHeight(String msg1, String msg2, String isNot, int expectedPercentage)
+            throws Exception {
+        final int msg1Height = getConversationViewPage().getMessageHeight(msg1);
+        assert msg1Height > 0;
+        final int msg2Height = getConversationViewPage().getMessageHeight(msg2);
+        assert msg2Height > 0;
+        int currentPercentage = 0;
+        if (msg1Height > msg2Height) {
+            currentPercentage = msg1Height * 100 / msg2Height - 100;
+        } else if (msg1Height < msg2Height) {
+            currentPercentage = msg2Height * 100 / msg1Height - 100;
+        }
+        if (isNot == null) {
+            Assert.assertTrue(
+                    String.format("The height of '%s' message (%s) is less than %s%% different than the height of "
+                            + "'%s' message (%s)", msg1, msg1Height, expectedPercentage, msg2, msg2Height),
+                    currentPercentage >= expectedPercentage);
+        } else {
+            Assert.assertTrue(
+                    String.format("The height of '%s' message (%s) is more than %s%% different than the height of "
+                            + "'%s' message (%s)", msg1, msg1Height, expectedPercentage, msg2, msg2Height),
+                    currentPercentage <= expectedPercentage);
+        }
     }
 }

@@ -8,6 +8,8 @@ import java.security.MessageDigest;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver.SurfaceOrientation;
@@ -15,6 +17,7 @@ import com.wearezeta.auto.common.video.SequenceEncoder;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.ntp.NTPUDPClient;
 import org.apache.log4j.Logger;
 import org.jcodec.common.model.Picture;
@@ -230,6 +233,7 @@ public class CommonUtils {
             case "rene":
             case "lipis":
             case "chris":
+            case "dev":
                 return getValueFromCommonConfig(c, "stagingBackendUrl");
             case "production":
                 return getValueFromCommonConfig(c, "productionBackendUrl");
@@ -263,6 +267,8 @@ public class CommonUtils {
             switch (currentBackendType.toLowerCase()) {
                 case "edge":
                     return getValueFromConfig(c, "webappEdgeApplicationPath");
+                case "dev":
+                    return getValueFromConfig(c, "webappDevApplicationPath");
                 case "staging":
                     return getValueFromConfig(c, "webappStagingApplicationPath");
                 case "production":
@@ -460,10 +466,11 @@ public class CommonUtils {
         return initialScreenshot;
     }
 
-    private static final int MAX_PHONE_SCREENSHOT_WIDTH = 480;
     private static final int MAX_PHONE_SCREENSHOT_HEIGHT = 800;
-    private static final int MAX_TABLET_SCREENSHOT_WIDTH = 1600;
-    private static final int MAX_TABLET_SCREENSHOT_HEIGHT = 900;
+    private static final int MAX_PHONE_SCREENSHOT_WIDTH = 480;
+
+    private static final int MAX_TABLET_SCREENSHOT_WIDTH = 1440;
+    private static final int MAX_TABLET_SCREENSHOT_HEIGHT = 800;
 
 
     public static void takeAndroidScreenshot(ZetaAndroidDriver driver, File resultScreenshot, boolean shouldApplyScale)
@@ -576,6 +583,10 @@ public class CommonUtils {
         return Executors.newSingleThreadExecutor().submit(task);
     }
 
+    public static String getLocalIP4Address() throws UnknownHostException {
+        return InetAddress.getLocalHost().getHostAddress();
+    }
+
     public static boolean isRunningInJenkinsNetwork() throws UnknownHostException {
         final String prevPropValue = System.getProperty("java.net.preferIPv4Stack");
         try {
@@ -584,7 +595,7 @@ public class CommonUtils {
             } catch (Exception e) {
                 // skip silently
             }
-            return InetAddress.getLocalHost().getHostAddress().startsWith("192.168.2.");
+            return getLocalIP4Address().startsWith("192.168.2.");
         } finally {
             try {
                 System.setProperty("java.net.preferIPv4Stack", prevPropValue);
@@ -592,6 +603,26 @@ public class CommonUtils {
                 // skip silently
             }
         }
+    }
+
+    private final static int MAC_GROUPS = 6;
+
+    public static String normalizeMACAddress(String mac) {
+        final String regex = "([0-9a-f]+):([0-9a-f]+):([0-9a-f]+):([0-9a-f]+):([0-9a-f]+):([0-9a-f]+)";
+        final Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        final StringBuilder result = new StringBuilder();
+        final Matcher m = p.matcher(mac);
+        if (m.find()) {
+            for(int groupNum = 1; groupNum <= MAC_GROUPS; groupNum++) {
+                result.append(StringUtils.leftPad(m.group(groupNum), 2, "0").toLowerCase());
+                if (groupNum != MAC_GROUPS) {
+                    result.append(":");
+                }
+            }
+            return result.toString();
+        }
+        throw new IllegalArgumentException(String.format("MAC address %s seems to be incorrect and cannot be parsed",
+                mac));
     }
 
     public static void setStringValueInSystemClipboard(String val) throws Exception {

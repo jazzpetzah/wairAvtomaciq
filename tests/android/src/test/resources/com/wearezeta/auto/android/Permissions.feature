@@ -12,14 +12,15 @@ Feature: Permissions
     When I sign in using my phone number
     And I wait for 3 seconds
     Then I dismiss security alert if it is visible
-    And I see Contact list with contacts
-    And I tap on contact name <Contact1>
+    And I see Conversations list with conversations
+    And I tap on conversation name <Contact1>
     # --- Add Picture ---
     When I tap Add picture button from cursor toolbar
+    ## for camera
     And I dismiss security alert
-    And I do not see Take Photo button on Take Picture view
-    And I tap Close button on Take Picture view
-    Then I do not see any pictures in the conversation view
+    ## for gallery
+    And I dismiss security alert
+    Then I do not see extended cursor camera overlay
     # --- Record Video ---
     When I tap Video message button from cursor toolbar
     And I dismiss security alert
@@ -29,6 +30,11 @@ Feature: Permissions
     When I long tap Audio message button from cursor toolbar
     And I dismiss security alert
     Then I see conversation view
+    # --- Share Location ---
+    When I tap Share location button from cursor toolbar
+    And I dismiss security alert
+    And I tap Send button on Share Location page
+    Then I see Share Location container in the conversation view
     # --- Unfortunately, File Upload cannot be tested  ---
     # --- Audio call from toolbar ---
     When I tap Audio Call button from top toolbar
@@ -63,19 +69,19 @@ Feature: Permissions
     Then I do not see incoming call
     And <Contact2> stops calling me
     # --- Select Profile Picture ---
-    When I navigate back from dialog page
-    # TODO: Implement updated change profile picture flow
-    #    And I tap conversations list settings button
-    #    And I tap on personal info screen
-    #    And I dismiss security alert
-    #    And I tap Change Photo button on Take Picture view
-    #    And I dismiss security alert
-    #    Then I do not see Take Photo button on Take Picture view
-    #    And I tap Close button on Take Picture view
-    #    When I close Personal Info Page
+    When I navigate back from conversation
+    And I tap conversations list settings button
+    And I select "Account" settings menu item
+    And I select "Picture" settings menu item
+    And I dismiss security alert
+    Then I do not see Take Photo button on Take Picture view
+    And I press Back button
+    And I press Back button
+    And I press Back button
+    And I press Back button
     # --- Verify no user if visible in invites list if contacts access is denied
     And I open Search UI
-    Then I do not see <Contact3> in the invites list
+    Then I do not see user <Contact3> in Contact list
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | CallBackend | CallBackend2 |
@@ -95,8 +101,9 @@ Feature: Permissions
     And I dismiss security alert
     # Workaround for AN-4119
     And I press Back button
+    And I press Back button
     And I select to keep the current picture
-    Then I see Contact list with no contacts
+    Then I see Conversations list with no conversations
 
     Examples:
       | Name      |

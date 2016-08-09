@@ -220,8 +220,7 @@ public class SelfProfilePageSteps {
 	 */
 	@When("^I upload picture (.*) to self profile$")
 	public void IUploadPicture(String pictureName) throws Exception {
-		context.getPagesCollection().getPage(SelfProfilePage.class).uploadPicture(
-				pictureName);
+		context.getPagesCollection().getPage(SelfProfilePage.class).uploadPicture(pictureName);
 	}
 
 	@When("^I see the clear data dialog$")

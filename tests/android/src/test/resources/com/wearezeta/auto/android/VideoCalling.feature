@@ -7,7 +7,7 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When <Contact> starts a video call to me
     And I see incoming video call
     And I swipe to accept the call
@@ -29,7 +29,7 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When <Contact> starts a video call to me
     And I see incoming video call
     And I swipe to ignore the call
@@ -47,7 +47,7 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When I lock the device
     And <Contact> starts a video call to me
     # Wait until the call appears in UI
@@ -107,7 +107,7 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When I lock the device
     And <Contact> starts a video call to me
     And I wait for 10 seconds
@@ -127,8 +127,8 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap Video Call button from top toolbar
     Then I see outgoing video call
     When <Contact> accepts next incoming video call automatically
@@ -150,7 +150,7 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
+    Given I see Conversations list with no conversations
     When <Contact> starts a video call to me
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
     And I do not see incoming video call
@@ -166,7 +166,7 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When <Contact> starts a video call to me
     And I see incoming video call
     And I swipe to accept the call
@@ -195,10 +195,10 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given I wait until <Contact> exists in backend search results
     When I open Search UI
-    And I enter "<Contact>" into Search input on People Picker page
+    And I type user name "<Contact>" in search field
     And I tap on user name found on People picker page <Contact>
     And I tap Video Call action button on People Picker page
     Then I see outgoing video call
@@ -222,14 +222,14 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When <Contact> starts a video call to me
     And I see incoming video call
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
     And <Contact> stops calling me
     And I do not see incoming video call
-    When I tap on contact name <Contact>
-    Then I see dialog with missed call from <Contact>
+    When I tap on conversation name <Contact>
+    Then I see missed call from <Contact> in the conversation
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
@@ -242,7 +242,7 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When <Contact> starts a video call to me
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
@@ -265,14 +265,14 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When <Contact> starts a video call to me
     And I see incoming video call
     And I swipe to ignore the call
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
     # Sometimes previous steps are done too fast
-    And I wait for 1 second
+    And I wait for 5 seconds
     When I tap Audio Call button from top toolbar
     Then I see alert message containing "<ExpectedMsg>" in the body
     And <Contact> verifies that call status to me is changed to connecting in 3 seconds
@@ -288,8 +288,8 @@ Feature: VideoCalling
     Given <Contact1>,<Contact2> start instances using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    And I tap on conversation name <Contact1>
     When I tap Video Call button from top toolbar
     And I see outgoing video call
     And <Contact1> accepts next incoming video call automatically
@@ -306,8 +306,8 @@ Feature: VideoCalling
     Then I hang up ongoing video call
     And <Contact1> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call
-    When I navigate back from dialog page
-    And I tap on contact name <Contact2>
+    When I navigate back from conversation
+    And I tap on conversation name <Contact2>
     When I tap Video Call button from top toolbar
     And I see outgoing video call
     And <Contact2> accepts next incoming video call automatically
@@ -328,8 +328,8 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When <Contact> calls me
     And I see incoming call
     And I swipe to ignore the call
@@ -349,7 +349,7 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When <Contact> starts a video call to me
     And I see incoming video call
     And I swipe to accept the call
@@ -375,7 +375,7 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When <Contact> starts a video call to me
     And I see incoming video call
     And I swipe to accept the call
@@ -400,7 +400,7 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When I minimize the application
     And <Contact> starts a video call to me
     # Wait for a while until the call is established with UI
@@ -424,7 +424,7 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     And <Contact> starts a video call to me
     And I see incoming video call
     And I swipe to accept the call
@@ -447,7 +447,7 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     And <Contact> starts a video call to me
     And I see incoming video call
     And I swipe to accept the call
@@ -470,13 +470,13 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap Video Call button from top toolbar
     Then I see ongoing video call
     And I wait for <Timeout> seconds
     And I do not see ongoing video call
-    Then I see dialog with missed call from YOU
+    Then I see missed call from YOU in the conversation
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
@@ -489,7 +489,7 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When I minimize the application
     And <Contact> starts a video call to me
     # Wait until the call is shown in the UI

@@ -1,6 +1,6 @@
 Feature: DeleteMessage
 
-  @C111321 @regression @rc
+  @C111321 @regression @rc @fastLogin
   Scenario Outline: Verify deleting own text message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -11,14 +11,14 @@ Feature: DeleteMessage
     Then I see 1 default message in the conversation view
     When I long tap default message in conversation view
     And I tap on Delete badge item
-    And I accept alert
+    And I tap Delete button on the alert
     Then I see 0 default messages in the conversation view
 
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C111322 @regression
+  @C111322 @regression @fastLogin
   Scenario Outline: Verify deleting received text message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -29,14 +29,14 @@ Feature: DeleteMessage
     Then I see 1 default message in the conversation view
     When I long tap default message in conversation view
     And I tap on Delete badge item
-    And I accept alert
+    And I tap Delete button on the alert
     Then I see 0 default messages in the conversation view
 
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C111323 @regression @rc
+  @C111323 @regression @rc @fastLogin
   Scenario Outline: Verify deleting the picture, gif from Giphy
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -48,7 +48,7 @@ Feature: DeleteMessage
     When I long tap on image in conversation view
     And I tap on Delete badge item
     # FIXME: Sometimes autoaccept fails
-    And I accept alert
+    And I tap Delete button on the alert
     Then I see 0 photos in the conversation view
     And I type tag for giphy preview <GiphyTag> and open preview overlay
     # Wait for GIF picture to be downloaded
@@ -58,14 +58,14 @@ Feature: DeleteMessage
     When I long tap on image in conversation view
     And I tap on Delete badge item
     # Sometimes the alert is not accepted automatically
-    And I accept alert
+    And I tap Delete button on the alert
     Then I see 0 photos in the conversation view
 
     Examples:
       | Name      | Contact   | Picture     | GiphyTag |
       | user1Name | user2Name | testing.jpg | hello    |
 
-  @C111324 @regression
+  @C111324 @regression @fastLogin
   Scenario Outline: Verify deleting soundcloud message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -74,14 +74,14 @@ Feature: DeleteMessage
     When I tap on contact name <Contact>
     And I long tap on media container in conversation view
     And I tap on Delete badge item
-    And I accept alert
-    Then I do not see the media container in the conversation view
+    And I tap Delete button on the alert
+    Then I do not see media container in the conversation view
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                   |
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
-  @C111961 @regression
+  @C167037 @regression @fastLogin
   Scenario Outline: Verify deleting messages containing links
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -89,17 +89,17 @@ Feature: DeleteMessage
     Given I see conversations list
     Given User Myself sends encrypted message "Try this app <Link>" to user <Contact>
     When I tap on contact name <Contact>
-    Then I see 1 message in the conversation view
-    When I long tap "<Link>" message in conversation view
+    Then I see link preview container in the conversation view
+    When I long tap on link preview in conversation view
     And I tap on Delete badge item
-    And I accept alert
-    Then I see 0 messages in the conversation view
+    And I tap Delete button on the alert
+    Then I do not see link preview container in the conversation view
 
     Examples:
       | Name      | Contact   | Link                  |
       | user1Name | user2Name | https://www.wire.com/ |
 
-  @C111325 @rc @regression
+  @C111325 @rc @regression @fastLogin
   Scenario Outline: Verify deleting shared file
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -112,14 +112,14 @@ Feature: DeleteMessage
     And I wait for 10 seconds
     And I long tap on file transfer placeholder in conversation view
     And I tap on Delete badge item
-    And I accept alert
+    And I tap Delete button on the alert
     Then I do not see file transfer placeholder
 
     Examples:
       | Name      | Contact   | FileName                   |
       | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
 
-  @C123604 @regression @noAcceptAlert
+  @C123604 @regression @noAcceptAlert @fastLogin
   Scenario Outline: Verify canceling deleting a message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

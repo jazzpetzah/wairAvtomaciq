@@ -1,6 +1,6 @@
 Feature: People View
 
-  @C742 @id2261 @regression @rc
+  @C742 @regression @rc
   Scenario Outline: Check contact personal info in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -17,7 +17,7 @@ Feature: People View
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @C732 @id2247 @regression @rc @rc44
+  @C732 @regression @rc @rc44
   Scenario Outline: Check contact personal info in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -34,7 +34,7 @@ Feature: People View
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @C739 @id2257 @regression @rc
+  @C739 @regression @rc
   Scenario Outline: Leave group conversation in portrait mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -55,7 +55,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName  | ItemLeave |
       | user1Name | user2Name | user3Name | LeaveGroupChat | LEAVE     |
 
-  @C729 @id2243 @regression @rc @rc44
+  @C729 @regression @rc @rc44
   Scenario Outline: Leave group conversation in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -76,7 +76,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName  | ItemLeave |
       | user1Name | user2Name | user3Name | LeaveGroupChat | LEAVE     |
 
-  @C468 @id2258 @regression
+  @C468 @regression
   Scenario Outline: Remove from group chat in portrait mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -99,7 +99,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName       | Action      |
       | user1Name | user2Name | user3Name | RemoveFromGroupChat | You removed |
 
-  @C464 @id2244 @regression
+  @C464 @regression
   Scenario Outline: Remove from group chat in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -122,7 +122,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName       | Action      |
       | user1Name | user2Name | user3Name | RemoveFromGroupChat | You removed |
 
-  @C748 @id2282 @regression @rc
+  @C748 @regression @rc
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People in portrait mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -140,7 +140,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C749 @id2283 @regression @rc @rc44
+  @C749 @regression @rc @rc44
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -160,7 +160,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C508 @id2898 @regression
+  @C508 @regression
   Scenario Outline: Start 1:1 conversation from group pop-over (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -181,7 +181,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Message |
       | user1Name | user2Name | user3Name | GroupChat     | Msg     |
 
-  @C531 @id3152 @regression
+  @C531 @regression
   Scenario Outline: Start 1:1 conversation from group pop-over (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -202,7 +202,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Message |
       | user1Name | user2Name | user3Name | GroupChat     | Msg     |
 
-  @C481 @id2824 @regression
+  @C481 @regression
   Scenario Outline: I can access user details page from group details pop-over (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -221,7 +221,7 @@ Feature: People View
       | Name      | Contact1  | Contact1Email | Contact2  | GroupChatName |
       | user1Name | user2Name | user2Email    | user3Name | GroupChat     |
 
-  @C530 @id3150 @regression
+  @C530 @regression
   Scenario Outline: I can access user details page from group details pop-over (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -240,7 +240,7 @@ Feature: People View
       | Name      | Contact1  | Contact1Email | Contact2  | GroupChatName |
       | user1Name | user2Name | user2Email    | user3Name | GroupChat     |
 
-  @C763 @id2856 @regression @rc
+  @C763 @regression @rc
   Scenario Outline: I see conversation name, number of participants and their avatars in group pop-over (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -259,7 +259,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Subheader |
       | user1Name | user2Name | user3Name | GroupChat     | 2 PEOPLE  |
 
-  @C801 @id3154 @regression @rc
+  @C801 @regression @rc
   Scenario Outline: I see conversation name, number of participants and their avatars in group pop-over (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -278,7 +278,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Subheader |
       | user1Name | user2Name | user3Name | GroupChat     | 2 PEOPLE  |
 
-  @C507 @id2895 @regression
+  @C507 @regression
   Scenario Outline: Check interaction with options menu (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -300,7 +300,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | ItemLeave |
       | user1Name | user2Name | user3Name | GroupChat     | LEAVE     |
 
-  @C529 @id3148 @regression
+  @C529 @regression
   Scenario Outline: Check interaction with options menu (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -321,7 +321,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | ItemLeave |
       | user1Name | user2Name | user3Name | GroupChat     | LEAVE     |
 
-  @C773 @id2883 @regression @rc
+  @C773 @regression @rc
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>

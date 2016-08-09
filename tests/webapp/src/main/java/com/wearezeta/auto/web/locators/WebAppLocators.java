@@ -59,8 +59,9 @@ public final class WebAppLocators {
         public static final String cssParentContactListItem = "#conversation-list";
         public static final String cssParentArchiveListItem = "#archive";
 
-        public static final String cssIncomingPendingConvoItem = cssParentContactListItem
-                + " [data-uie-name='item-pending-requests']";
+        public static final String cssIncomingPendingConvoItem = "[data-uie-name='item-pending-requests']";
+        public static final String cssSelectedIncomingPendingConvoItem = ".conversation-list-item.text-theme " +
+                cssIncomingPendingConvoItem;
 
         public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
 
@@ -91,6 +92,11 @@ public final class WebAppLocators {
                                 "div[data-uie-name='item-call'][data-uie-value='%s']",
                         cssParentContactListItem, name,
                         cssParentContactListItem, name);
+
+        public static final Function<String, String> cssSelectedContactListEntryByName = (
+                name) -> String
+                .format(".conversation-list-item.text-theme div[data-uie-name='item-conversation'][data-uie-value='%s'], " +
+                                "div[data-uie-name='item-call'][data-uie-value='%s'].text-theme", name, name);
 
         public static final Function<String, String> cssOptionsButtonByContactName = (
                 name) -> String
@@ -270,6 +276,10 @@ public final class WebAppLocators {
         public static final String cssConfirmText = "[data-uie-name='delete-confirm-text']";
         public static final String cssSentText = "[data-uie-name='delete-sent']";
         public static final String cssImportButton = "[data-uie-name='do-share-contacts']";
+        public static final String cssImportAddressbookButton = "[data-uie-name='do-share-osx-contacts']";//macOS
+        public static final String cssBackButton = "[data-uie-name='do-device-close']";
+        public static final String cssVerificationToggle = ".button-label";
+        public static final String cssDeviceIds = ".self-settings-device-list .device-info [data-uie-name='device-id']";
     }
 
     public static final class SelfProfilePage {
@@ -365,6 +375,20 @@ public final class WebAppLocators {
 
         public static final String cssLastAction = cssLastMessage + " .action";
 
+        //Link preview
+
+        public static final String cssLinkTitle = ".link-preview-title";
+
+        public static final String cssLinkPreviewImage = ".link-preview-image img";
+
+        public static final String cssLinkPreviewLink = ".link-preview-site";
+
+        //Location sharing
+
+        public static final String cssSharedLocation = "[data-uie-name='location-name']";
+
+        public static final String xpathSharedLocationLink = "//div[contains(@data-uie-name, 'location-name')]/following-sibling::a[last()]";
+
         // File transfer
 
         public static final String cssFile = "[data-uie-name='file'][data-uie-value='%s']";
@@ -410,6 +434,8 @@ public final class WebAppLocators {
         public static final String cssVideoTime = cssVideo + " [data-uie-name='status-video-time']";
 
         public static final String cssVideoCancelUpload = cssVideo + " .media-button-lg";
+
+        public static final String cssVideoCancelDownload = cssVideo + " [data-uie-name='status-loading-media']";
 
         // images
 
@@ -458,6 +484,10 @@ public final class WebAppLocators {
         public static final String cssNobodyLeftModal = "[data-uie-name=modal-call-conversation-empty']";
 
         public static final String cssVideoCallButton = "[data-uie-name='do-video-call']";
+
+        public static final String cssBroadcastIndicatorVideo = "[data-uie-name='status-self-video']";
+
+        public static final String cssBroadcastIndicatorScreensharing = "[data-uie-name='status-self-screensharing']";
 
         public static final String cssGIFButton = "[data-uie-name='do-giphy-popover']";
 
@@ -590,8 +620,9 @@ public final class WebAppLocators {
 
         public static final String cssSearchField = "[data-uie-name='enter-users']";
 
-        public static final String cssBringFriendsFromGMailButton = ".start-ui-import-buttons";
+        public static final String cssBringFriendsFromGMailButton = "[data-uie-name='from-gmail']";
 
+        public static final String cssBringFriendsFromContactsButton = "[data-uie-name='from-contacts']";
     }
 
     public static final class RegistrationPage {
@@ -685,6 +716,12 @@ public final class WebAppLocators {
 
         public static final String cssMuteCallButton = "[data-uie-name='do-call-controls-video-call-mute']";
 
+        public static final String cssMinimizeVideoCallButton = "[data-uie-name='do-call-controls-video-minimize']";
+
+        public static final String cssMaximizeVideoCallButtonOnRemotevideo = "[data-uie-name='do-call-controls-video-maximize']";
+
+        public static final String cssMaximizeVideoCallButton = "[data-uie-name='do-maximize-call']";
+
         public static final String cssDurationTimer = ".video-timer";
 
         public static final String xpathMuteCallButtonPressed = "//div[@data-uie-name='do-call-controls-video-call-mute'" +
@@ -692,6 +729,26 @@ public final class WebAppLocators {
 
         public static final String xpathMuteCallButtonNotPressed = "//div[@data-uie-name='do-call-controls-video-call-mute'" +
                 " and not(contains(@class, 'toggled'))]";
+
+        public static final String cssVideoPortrait = ".video-mode-portrait";
+
+        public static final String cssCameraButton = ".icon-video";
+
+        public static final String cssCameraButtonPressed = cssCameraButton + ".toggled";
+
+        public static final String cssCameraButtonNotPressed = cssCameraButton + ":not(.toggled)";
+
+        public static final String cssSelfVideo = ".video-element-local";
+        
+        public static final String cssSelfVideoOff = ".video-element-overlay.icon-video-off";
+
+        public static final String cssMinimizedRemoteVideo = "#video-element-remote";
+
+        public static final String cssMaximizedRemoteVideo = ".video-element-portrait";
+
+        public static final String cssScreenShareButton = ".icon-screensharing";
+
+        public static final String cssLocalScreenShareVideo = ".video-element-local";
     }
 
     public static final class WarningPage {
@@ -780,5 +837,9 @@ public final class WebAppLocators {
     public static final class PhoneNumberLoginPage {
 
         public static final String cssErrorMessage = "#login-method-phone [data-uie-name='status-error']";
+    }
+
+    public static final class HistoryInfoPage {
+        public static final String cssConfirmButton = "[data-uie-name='do-history-confirm']";
     }
 }

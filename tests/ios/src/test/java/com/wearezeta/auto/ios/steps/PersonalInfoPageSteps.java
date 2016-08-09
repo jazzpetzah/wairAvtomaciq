@@ -220,9 +220,18 @@ public class PersonalInfoPageSteps {
         getPersonalInfoPage().tapOnScreenCenter();
     }
 
-    @When("^I press Camera button$")
-    public void IPressCameraButton() throws Exception {
-        getPersonalInfoPage().pressCameraButton();
+    @When("^I tap (Camera|Camera Roll) button on personal screen$")
+    public void ITapButton(String name) throws Exception {
+        switch (name.toLowerCase()) {
+            case "camera":
+                getPersonalInfoPage().tapCameraButton();
+                break;
+            case "camera roll":
+                getPersonalInfoPage().tapCameraRollButton();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
+        }
     }
 
     private ElementState previousProfilePictureScreenshot = new ElementState(
@@ -449,6 +458,17 @@ public class PersonalInfoPageSteps {
     public void IVerifyColorPickerState() throws Exception {
         Assert.assertTrue("Color picker state has not been changed",
                 colorPickerState.isChanged(COLOR_PICKER_STATE_CHANGE_TIMEOUT, MIN_COLOR_PICKER_SIMILARITY_SCORE));
+    }
+
+    /**
+     * Tap on ADD EMAIL ADDRESS AND PASSWORD buttton
+     *
+     * @throws Exception
+     * @step. ^I tap ADD EMAIL ADDRESS AND PASSWORD$
+     */
+    @When("^I tap ADD EMAIL ADDRESS AND PASSWORD$")
+    public void ITapAddEmailAddress() throws Exception {
+        getPersonalInfoPage().tapAddEmailAddressButton();
     }
 }
 

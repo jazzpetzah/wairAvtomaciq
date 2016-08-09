@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.misc.ElementState;
 import org.junit.Assert;
 
@@ -202,11 +203,24 @@ public class ConversationViewPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Ping|Add picture|Sketch|File) button$ from cursor toolbar$
+     * @step. ^I tap (Ping|Add picture|Sketch|File|Share location|Audio message|Video message) button$ from cursor toolbar$
      */
-    @When("^I tap (Ping|Add picture|Sketch|File) button from cursor toolbar$")
-    public void WhenITapCursorToolButton(String btnName) throws Exception {
-        getConversationViewPage().tapCursorToolButton(btnName);
+    @When("^I (long )?tap (Ping|Add picture|Sketch|File|Share location|Audio message|Video message) " +
+            "button from cursor toolbar( for \\d+ seconds?)?$")
+    public void WhenITapCursorToolButton(String isLongTap, String btnName, String duration) throws Exception {
+        if (isLongTap == null) {
+            getConversationViewPage().tapCursorToolButton(btnName);
+        } else {
+            if (!btnName.equals("Audio message")) {
+                throw new IllegalArgumentException("Long tap is inl;y supported for audio messages");
+            }
+            if (duration == null) {
+                getConversationViewPage().longTapAudioMessageCursorBtn();
+            } else {
+                getConversationViewPage().longTapAudioMessageCursorBtn(
+                        Integer.parseInt(duration.replaceAll("[\\D]", "")));
+            }
+        }
     }
 
     /**
@@ -234,11 +248,11 @@ public class ConversationViewPageSteps {
      * Tap the recent picture in the conversation view to open a preview
      *
      * @throws Exception
-     * @step. ^I tap the new picture in (?:the |\\s*)[Cc]onversation view$
+     * @step. ^I tap the recent (?:image|picture) in the conversation view
      */
-    @When("^I tap the new picture in (?:the |\\s*)[Cc]onversation view$")
-    public void ITapNewPicture() throws Exception {
-        getConversationViewPage().tapRecentPicture();
+    @When("^I tap the recent (?:image|picture) in the conversation view$")
+    public void ITapRecentImage() throws Exception {
+        getConversationViewPage().tapRecentImage();
     }
 
     /**
@@ -528,5 +542,217 @@ public class ConversationViewPageSteps {
             Assert.assertTrue("Media control button state has changed",
                     mediaButtonState.isNotChanged(MEDIA_BUTTON_STATE_CHANGE_TIMEOUT, MEDIA_BUTTON_MIN_SIMILARITY_SCORE));
         }
+    }
+
+    /**
+     * Tap the corresponding message in the conversation
+     *
+     * @param isLongTap equals to null if this should be regular tap
+     * @param msg       message to tap
+     * @throws Exception
+     * @step. ^I (long )?tap the message "(.*)" in the conversation view$
+     */
+    @When("^I (long )?tap the message \"(.*)\" in the conversation view$")
+    public void ITapMessage(String isLongTap, String msg) throws Exception {
+        if (isLongTap == null) {
+            getConversationViewPage().tapMessage(msg);
+        } else {
+            getConversationViewPage().longTapMessage(msg);
+        }
+    }
+
+    /**
+     * Tap the corresponding actions bar button
+     *
+     * @param btnName one of available button names
+     * @throws Exception
+     * @step. ^I tap (Delete|Copy|Close|Forward) button on the action mode bar$"
+     */
+    @When("^I tap (Delete|Copy|Close|Forward) button on the action mode bar$")
+    public void ITapActionBarButton(String btnName) throws Exception {
+        getConversationViewPage().tapActionBarButton(btnName);
+    }
+
+    /**
+     * Check the corresponding action mode bar button. The toolbar appears upon long tap on conversation item
+     *
+     * @param name one of possible toolbar button names
+     * @throws Exception
+     * @step. ^I (do not )?see (Delete|Copy|Close) button on the action mode bar$
+     */
+    @Then("^I (do not )?see (Delete|Copy|Close) button on the action mode bar$")
+    public void ITapTopToolbarButton(String shouldNotSee, String name) throws Exception {
+        final boolean condition = (shouldNotSee == null) ?
+                getConversationViewPage().isActionModeBarButtonVisible(name) :
+                getConversationViewPage().isActionModeBarButtonInvisible(name);
+        Assert.assertTrue(String.format("The top toolbar button '%s' should be %s", name,
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
+
+    /**
+     * Verify whether container is visible in the conversation
+     *
+     * @param shouldNotSee  equals to null if the container should be visible
+     * @param containerType euiter Youtube or Soundcloud or File Upload or Video Message
+     * @throws Exception
+     * @step. ^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location) container in the conversation view$
+     */
+    @Then("^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location) " +
+            "container in the conversation view$")
+    public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
+        final boolean condition = (shouldNotSee == null) ?
+                getConversationViewPage().isContainerVisible(containerType) :
+                getConversationViewPage().isContainerInvisible(containerType);
+        Assert.assertTrue(String.format("%s should be %s in the conversation view", containerType,
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
+
+    /**
+     * Long tap on Audio message cursor button , and then move finger up to send button within Audio message slide
+     *
+     * @param durationSeconds number of seconds to keep audio message button pressed
+     * @throws Exception
+     * @step. ^I long tap Audio message cursor button (\d+) seconds and swipe up$
+     */
+    @When("^I long tap Audio message cursor button (\\d+) seconds and swipe up$")
+    public void LongTapAudioMessageCursorAndSwipeUp(int durationSeconds) throws Exception {
+        getConversationViewPage().longTapAudioMessageCursorBtnAndSwipeUp(durationSeconds);
+    }
+
+    /**
+     * Check the cursor bar only contains ping, sketch, add picture, people and file buttons in cursor bar
+     *
+     * @throws Exception
+     * @step. ^I( do not)? see cursor toolbar$
+     */
+    @Then("^I( do not)? see cursor toolbar$")
+    public void ThenISeeCursorToolbar(String doNotSee) throws Exception {
+        if (doNotSee == null) {
+            Assert.assertTrue("Cursor toolbar is not visible",
+                    getConversationViewPage().isCursorToolbarVisible());
+        } else {
+            Assert.assertTrue("Cursor toolbar is visible, but should be hidden",
+                    getConversationViewPage().isCursorToolbarInvisible());
+        }
+    }
+
+    /**
+     * Tap on send button within Audio message slide
+     *
+     * @param name could be send or cancel or play
+     * @throws Exception
+     * @step. ^I tap audio recording (Send|Cancel|Play) button$
+     */
+    @When("^I tap audio recording (Send|Cancel|Play) button$")
+    public void WhenITapAudioMessageSendButton(String name) throws Exception {
+        getConversationViewPage().tapAudioRecordingButton(name);
+    }
+
+    /**
+     * Press the corresponding button in the top toolbar
+     *
+     * @param btnName button name
+     * @throws Exception
+     * @step. ^I tap (Audio Call|Video Call|Back) button from top toolbar$
+     */
+    @When("^I tap (Audio Call|Video Call|Back) button from top toolbar$")
+    public void WhenITapTopToolbarButton(String btnName) throws Exception {
+        getConversationViewPage().tapTopBarButton(btnName);
+    }
+
+    private static final double FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE = 0.4;
+    private final ElementState filePlaceHolderActionButtonState = new ElementState(
+            () -> getConversationViewPage().getFilePlaceholderActionButtonState());
+
+    /**
+     * Store the screenshot of current file placeholder action button
+     *
+     * @throws Exception
+     * @step. ^I remember the state of (?:Download|View) button on file (?:upload|download) placeholder$
+     */
+    @When("^I remember the state of (?:Download|View) button on file (?:upload|download) placeholder$")
+    public void IRememberFileTransferActionBtnState() throws Exception {
+        filePlaceHolderActionButtonState.remember();
+    }
+
+    /**
+     * Wait until the file uploading completely
+     *
+     * @param timeoutSeconds the timeout in seconds for uploading
+     * @param size           should be good formated value, such as 5.00MB rather tha 5MB
+     * @param extension
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until (.*) file with extension "(\w+)" is uploaded$"
+     */
+    @When("^I wait up to (\\d+) seconds? until (.*) file with extension \"(\\w+)\" is uploaded$")
+    public void IWaitFileUploadingComplete(int timeoutSeconds, String size, String extension) throws Exception {
+        getConversationViewPage().waitUntilFileUploadIsCompleted(timeoutSeconds, size, extension);
+    }
+
+    /**
+     * Check whether the file transfer placeholder of expected filew is visible
+     *
+     * @param doNotSee      equal null means should see the place holder
+     * @param size          the expected size displayed, value should be good formatted, such as 3.00MB rather than 3MB
+     * @param loadDirection could be upload or received
+     * @param fileFullName  the expected file name displayed
+     * @param extension     the extension of the file uploaded
+     * @param timeout       (optional) to define the validation should be complete within timeout
+     * @param actionFailed  equals null means current action successfully
+     * @throws Exception
+     * @step. ^I( do not)? see the result of (.*) file (upload|received)? having name "(.*)" and extension "(\w+)"( in \d+
+     * seconds)?( failed)?$
+     */
+    @Then("^I( do not)? see the result of (.*) file (upload|received)? having name \"(.*)\"" +
+            " and extension \"(\\w+)\"( in \\d+ seconds)?( failed)?$")
+    public void ThenISeeTheResultOfXFileUpload(String doNotSee, String size, String loadDirection, String fileFullName,
+                                               String extension, String timeout, String actionFailed) throws Exception {
+        int lookUpTimeoutSeconds = (timeout == null) ? DriverUtils.getDefaultLookupTimeoutSeconds()
+                : Integer.parseInt(timeout.replaceAll("[\\D]", ""));
+        boolean isUpload = loadDirection.equals("upload");
+        boolean isSuccess = (actionFailed == null);
+        if (doNotSee == null) {
+            Assert.assertTrue("The placeholder of sending file should be visible",
+                    getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, isUpload,
+                            isSuccess, lookUpTimeoutSeconds));
+        } else {
+            Assert.assertTrue("The placeholder of sending file should be invisible",
+                    getConversationViewPage().isFilePlaceHolderInvisible(fileFullName, size, extension, isUpload,
+                            isSuccess, lookUpTimeoutSeconds));
+        }
+    }
+
+    /**
+     * Wait to check whether the file placeholder action button is changed
+     *
+     * @param timeout            timeout in seconds
+     * @param shouldNotBeChanged is not null if the button should not be changed
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)
+     * placeholder is changed$
+     */
+    @When("^I wait up to (\\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)" +
+            " placeholder is (not )?changed$")
+    public void IWaitFileTransferActionButtonChanged(int timeout, String shouldNotBeChanged) throws Exception {
+        if (shouldNotBeChanged == null) {
+            Assert.assertTrue(String.format("State of file transfer action button has not been changed after %s seconds",
+                    timeout), filePlaceHolderActionButtonState.isChanged(timeout,
+                    FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
+        } else {
+            Assert.assertTrue(String.format("State of file transfer action button has been changed after %s seconds",
+                    timeout), filePlaceHolderActionButtonState.isNotChanged(timeout,
+                    FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
+        }
+    }
+
+    /**
+     * Tap sketch image paint button on Picture preview overlay
+     *
+     * @throws Exception
+     * @step. ^I tap Sketch Image Paint button on Picture preview overlay$
+     */
+    @When("^I tap Sketch Image Paint button on Picture preview overlay$")
+    public void ITapSketchOnPictureView() throws Exception {
+        getConversationViewPage().tapSketchOnPicturePreviewOverlay();
     }
 }

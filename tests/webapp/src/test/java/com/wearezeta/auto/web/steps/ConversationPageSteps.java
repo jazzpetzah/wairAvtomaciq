@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
+import java.awt.image.BufferedImage;
 import java.io.RandomAccessFile;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -12,6 +13,7 @@ import java.util.regex.Pattern;
 import com.wearezeta.auto.common.CommonSteps;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -42,12 +44,11 @@ public class ConversationPageSteps {
     private static final String SHORTCUT_PING_WIN = "(Ctrl + Alt + K)";
     private static final String SHORTCUT_PING_MAC = "(⌘⌥K)";
     private static final String TOOLTIP_CALL = "Call";
-    private static final String SHORTCUT_CALL_WIN = "(Ctrl + Alt + R)";
-    private static final String SHORTCUT_CALL_MAC = "(⌘⌥R)";
+    private static final String TOOLTIP_VIDEO_CALL = "Video Call";
 
     @SuppressWarnings("unused")
     private static final Logger log = ZetaLogger.getLog(ConversationPageSteps.class.getSimpleName());
-    private static final String VIDEO_MESSAGE_IMAGE = "userpicture_landscape.jpg";
+    private static final String VIDEO_MESSAGE_IMAGE = "example.png";
 
     private String randomMessage;
 
@@ -109,15 +110,24 @@ public class ConversationPageSteps {
     public void IPasteMessageFromFile(String file) throws Exception {
         String s = WebCommonUtils.getTextFromFile(file);
         String message = "";
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (c == '\n') {
-                message = message + Keys.chord(Keys.SHIFT, Keys.ENTER);
-            } else {
-                message = message + c;
+        if (WebAppExecutionContext.getBrowser().isSupportingKeys()) {
+            for (int i = 0; i < s.length(); i++) {
+                char c = s.charAt(i);
+                if (c == '\n') {
+                    message = message + Keys.chord(Keys.SHIFT, Keys.ENTER);
+                } else {
+                    message = message + c;
+                }
             }
+        } else {
+            message = s;
         }
-        context.getPagesCollection().getPage(ConversationPage.class).writeNewMessage(message);
+        int index = 0;
+        while (index < message.length()) {
+            String chunk = message.substring(index, Math.min(index + 100, message.length()));
+            context.getPagesCollection().getPage(ConversationPage.class).writeNewMessage(chunk);
+            index += 100;
+        }
     }
 
     /**
@@ -131,7 +141,11 @@ public class ConversationPageSteps {
     public void IWriteXNewLines(int amount) throws Exception {
         String message = "";
         for (int i = 0; i < amount; i++) {
-            message = message + Keys.chord(Keys.SHIFT, Keys.ENTER);
+            if (WebAppExecutionContext.getBrowser().isSupportingKeys()) {
+                message = message + Keys.chord(Keys.SHIFT, Keys.ENTER);
+            } else {
+                message = message + "\n";
+            }
         }
         context.getPagesCollection().getPage(ConversationPage.class).writeNewMessage(message);
     }
@@ -142,7 +156,7 @@ public class ConversationPageSteps {
      * @step. ^I send message$
      */
     @When("^I send message$")
-    public void WhenISendMessage() throws Exception {
+    public void ISendMessage() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).sendNewMessage();
     }
 
@@ -561,10 +575,10 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).playVideo(fileName);
     }
 
-    @Then("^And I see cancel upload button for video (.*)$")
+    @Then("^I see cancel upload button for video (.*)$")
     public void ISeeCancelUpload(String fileName) throws Exception {
         assertThat("Cancel video upload button is not shown", context.getPagesCollection().getPage(ConversationPage.class)
-            .isCancelButtonVisible(fileName));
+                .isCancelButtonVisible(fileName));
     }
 
     @Then("^I see play button of video (.*) in the conversation view$")
@@ -917,14 +931,30 @@ public class ConversationPageSteps {
      *
      * @param doNot is set to null if "do not" part does not exist
      * @throws java.lang.Exception
-     * @step. ^I can see calling button$
+     * @step. ^I( do not)? see call button$
      */
-    @Then("^I( do not)? see calling button$")
+    @Then("^I( do not)? see call button$")
     public void ISeeCallButton(String doNot) throws Exception {
         if (doNot == null) {
             assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isCallButtonVisible());
         } else {
-            assertFalse(context.getPagesCollection().getPage(ConversationPage.class).isCallButtonVisible());
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isCallButtonInvisible());
+        }
+    }
+
+    /**
+     * Verifies whether video calling button is visible or not.
+     *
+     * @param doNot is set to null if "do not" part does not exist
+     * @throws java.lang.Exception
+     * @step. ^I( do not)? see video call button$
+     */
+    @Then("^I( do not)? see video call button$")
+    public void ISeeVideoCallButton(String doNot) throws Exception {
+        if (doNot == null) {
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isVideoCallButtonVisible());
+        } else {
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isVideoCallButtonInvisible());
         }
     }
 
@@ -1059,17 +1089,6 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Hovers ping button
-     *
-     * @throws Exception
-     * @step. ^I hover ping button$
-     */
-    @Then("^I hover ping button$")
-    public void IHoverPingButton() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).hoverPingButton();
-    }
-
-    /**
      * Types shortcut combination to ping
      *
      * @throws Exception
@@ -1099,30 +1118,26 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Hovers call button
-     *
-     * @step. ^I hover call button$
-     */
-    @When("^I hover call button$")
-    public void IHoverCallButton() throws Throwable {
-        context.getPagesCollection().getPage(ConversationPage.class).hoverCallButton();
-    }
-
-    /**
      * Verifies whether call button tool tip is correct or not.
      *
      * @step. ^I see correct call button tool tip$
      */
     @Then("^I see correct call button tooltip$")
     public void ISeeCorrectCallButtonTooltip() throws Exception {
-
-        String tooltip = TOOLTIP_CALL + " ";
-        if (WebAppExecutionContext.isCurrentPlatformWindows()) {
-            tooltip = tooltip + SHORTCUT_CALL_WIN;
-        } else {
-            tooltip = tooltip + SHORTCUT_CALL_MAC;
-        }
+        String tooltip = TOOLTIP_CALL;
         assertThat("Call button tooltip", context.getPagesCollection().getPage(ConversationPage.class).getCallButtonToolTip(),
+                equalTo(tooltip));
+    }
+
+    /**
+     * Verifies whether video call button tool tip is correct or not.
+     *
+     * @step. ^I see correct call button tool tip$
+     */
+    @Then("^I see correct video call button tooltip$")
+    public void ISeeCorrectVideoCallButtonTooltip() throws Exception {
+        String tooltip = TOOLTIP_VIDEO_CALL;
+        assertThat("Video Call button tooltip", context.getPagesCollection().getPage(ConversationPage.class).getVideoCallButtonToolTip(),
                 equalTo(tooltip));
     }
 
@@ -1275,5 +1290,118 @@ public class ConversationPageSteps {
             context.getPagesCollection().getPage(ConversationPage.class).clearConversationInput();
             i--;
         }
+    }
+
+
+    /**
+     * Verifies whether location message is shown in the conversation view or not.
+     *
+     * @param doNot        is set to null if "do not" part does not exist
+     * @param locationName name of the shared location
+     * @param longitude    longitude of the shared location, float
+     * @param latitude     latitude of the shared location, float
+     * @throws java.lang.Exception
+     * @step. ^I (do not )?see location message (.*) with ([-+]?[0-9]*\.?[0-9]+) and ([-+]?[0-9]*\.?[0-9]+) in the conversation view$
+     */
+    @Then("^I (do not )?see location message (.*) with ([-+]?[0-9]*\\.?[0-9]+) and ([-+]?[0-9]*\\.?[0-9]+) in the conversation view$")
+    public void ISeeLocationMessage(String doNot, String locationName, float longitude, float latitude) throws Exception {
+        if (doNot == null) {
+            //check location name:
+            assertThat("Could not find location message " + locationName,
+                    context.getPagesCollection().getPage(ConversationPage.class).getLocationName(), equalTo(locationName));
+            String locationLinkValue = context.getPagesCollection().getPage(ConversationPage.class).getLocationNameFromLink();
+            assertThat("The link doesn't contain a proper location", locationLinkValue, containsString(locationName));
+            //getting coordinates from location link
+            ArrayList<Float> listCoordinates = new ArrayList<>();
+            Pattern p = Pattern.compile("[-]?[0-9]*\\.?[0-9]+");
+            Matcher m = p.matcher(locationLinkValue);
+            while (m.find()) {
+                listCoordinates.add(Float.parseFloat(m.group()));
+            }
+            assertThat("The link doesn't contain proper coordinates", listCoordinates, hasItems(longitude, latitude));
+        } else {
+            assertThat("Location message " + locationName + "is shown",
+                    context.getPagesCollection().getPage(ConversationPage.class).isLocationNotShownInConversationView());
+        }
+    }
+
+
+    /**
+     * Cancel video download
+     *
+     * @param fileName the name of a video file
+     * @throws Exception
+     */
+    @When("^I cancel video download of video (.*)$")
+    public void ICancelVideoDownload(String fileName) throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).cancelVideoDownload(fileName);
+    }
+
+    @When("^I see broadcast indicator is( not)? shown for video$")
+    public void ISeeVideoButtonPulsating(String not) throws Exception {
+        if (not == null) {
+            // video button pulsating?
+            assertThat("broadcast indicator not shown :(",
+                    context.getPagesCollection().getPage(ConversationPage.class).isBroadcastIndicatorVideoShown());
+        } else {
+            // video button not pulsating?
+            assertThat("broadcast indicator is shown :(",
+                    context.getPagesCollection().getPage(ConversationPage.class).isBroadcastIndicatorVideoNotShown());
+        }
+    }
+
+    /**
+     * Verifies whether link title is shown in the conversation view or not.
+     *
+     * @param linkTitle title of the link in link preview
+     * @param doNot     is set to null if "do not" part does not exist
+     * @throws java.lang.Exception
+     * @step. ^I see a title (.*) in link preview in the conversation view$
+     */
+    @Then("^I (do not )?see a title (.*) in link preview in the conversation view$")
+    public void ISeeLinkTitle(String doNot, String linkTitle) throws Exception {
+        if (doNot == null) {
+            assertThat("Could not find link title " + linkTitle,
+                    context.getPagesCollection().getPage(ConversationPage.class).getLinkTitle(), containsString(linkTitle));
+        } else {
+            assertThat("link title " + linkTitle + "is shown",
+                    context.getPagesCollection().getPage(ConversationPage.class).isLinkTitleNotShownInConversationView());
+        }
+    }
+
+    /**
+     * Verifies whether previously link preview contains picture in the conversation view
+     *
+     * @param pictureName the name of a picture file. This file should already exist in the ~/Documents folder
+     * @throws Exception
+     * @step. ^I see a picture (.*) from link preview$
+     */
+    @Then("^I (do not )?see a picture (.*) from link preview$")
+    public void ISeePictureInLinkPreview(String doNot, String pictureName) throws Exception {
+        if (doNot == null) {
+            assertThat("I see a picture from link preview in the conversation",
+                    context.getPagesCollection().getPage(ConversationPage.class).isImageFromLinkPreviewVisible());
+
+            final String picturePath = WebCommonUtils.getFullPicturePath(pictureName);
+            BufferedImage originalImage = ImageUtil.readImageFromFile(picturePath);
+            BufferedImage linkPreviewScreenshot = context.getPagesCollection().getPage(ConversationPage.class).getImageFromLastLinkPreview();
+
+            assertThat("Not enough good matches", ImageUtil.getMatches(originalImage, linkPreviewScreenshot), greaterThan(40));
+        } else {
+            assertThat("I see a picture in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
+                    .isImageFromLinkPreviewNotVisible());
+        }
+    }
+
+    /**
+     * Verify a link from link preview is visible in conversation.
+     *
+     * @param link link in the link preview
+     * @throws Exception
+     * @step. ^I see link (.*) in link preview message$
+     */
+    @Then("^I see link (.*) in link preview message")
+    public void ISeeLinkInLinkPreview(String link) throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).waitForLinkPreviewContains(link);
     }
 }

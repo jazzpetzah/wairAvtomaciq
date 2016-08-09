@@ -4,10 +4,13 @@ import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.common.rc.BasicScenarioResultToTestrailTransformer;
+import com.wearezeta.auto.common.testrail.TestrailSyncUtilities;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
 import com.wearezeta.auto.web.steps.CommonWebAppSteps;
 import static com.wearezeta.auto.web.steps.CommonWebAppSteps.log;
+import com.wire.picklejar.gherkin.model.Step;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -15,13 +18,16 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.Dimension;
@@ -40,7 +46,6 @@ import org.openqa.selenium.safari.SafariOptions;
 public class Lifecycle {
 
     public static final int SAFARI_DRIVER_CREATION_RETRY = 3;
-    public static final long DRIVER_INIT_TIMEOUT = 60 * 1000;
     private TestContext context;
     private TestContext compatContext;
 
@@ -53,12 +58,18 @@ public class Lifecycle {
         return context;
     }
 
+    // #### START ############################################################ COMPATIBILITY INSTRUCTIONS
     @Before("~@performance")
     public void setUp(Scenario scenario) throws Exception {
         String id = scenario.getId().substring(
                 scenario.getId().lastIndexOf(";") + 1);
         setUp(scenario.getName() + "_" + id);
     }
+    @After
+    public void tearDown(Scenario scenario) throws Exception {
+        tearDown();
+    }
+    // #### END ############################################################## COMPATIBILITY INSTRUCTIONS
 
     public void setUp(String testname) throws Exception {
 
@@ -164,10 +175,26 @@ public class Lifecycle {
 
         ZetaFormatter.setLazyDriver(lazyWebDriver);
     }
-
-    @After
-    public void tearDown(Scenario scenario) throws Exception {
+    
+    public void tearDown(com.wire.picklejar.gherkin.model.Scenario scenario) throws Exception {
+        try {
+            Set<String> tagSet = scenario.getTags().stream()
+                    .map((tag) -> tag.getName())
+                    .collect(Collectors.toSet());
+            TestrailSyncUtilities.syncExecutedScenarioWithTestrail(scenario.getName(),
+                    new BasicScenarioResultToTestrailTransformer(mapScenario(scenario)).transform(), tagSet);
+        } catch (Exception e) {
+            log.warn(e);
+        }
         tearDown();
+    }
+    
+    private Map<String, String> mapScenario(com.wire.picklejar.gherkin.model.Scenario scenario){
+        Map<String, String> stepResultMap = new LinkedHashMap<>();
+        for (Step step : scenario.getSteps()) {
+            stepResultMap.put(step.getName(), step.getResult().getStatus());
+        }
+        return stepResultMap;
     }
 
     public void tearDown() {
@@ -184,13 +211,13 @@ public class Lifecycle {
                 driver.executeScript(logoutScript);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn(e);
         } finally {
             /**
              * #### START ############################################################ COMPATIBILITY INSTRUCTIONS
              */
             try {
-                log.debug("Releasing devices");
+                log.debug("COMPAT: Releasing devices");
                 log.debug(compatContext.getUserManager().getCreatedUsers());
                 compatContext.getDeviceManager().releaseDevicesOfUsers(compatContext.getUserManager().getCreatedUsers());
             } catch (Exception e) {
@@ -215,6 +242,7 @@ public class Lifecycle {
             try {
                 log.debug("Cleaning up calling instances");
                 context.getCallingManager().cleanup();
+                log.debug("COMPAT: Cleaning up calling instances");
                 compatContext.getCallingManager().cleanup();
             } catch (Exception e) {
                 log.warn(e);
@@ -222,6 +250,7 @@ public class Lifecycle {
             try {
                 log.debug("Clearing pages collection");
                 context.getPagesCollection().clearAllPages();
+                log.debug("COMPAT: Clearing pages collection");
                 compatContext.getPagesCollection().clearAllPages();
                 WebPage.clearPagesCollection();
             } catch (Exception e) {
@@ -230,6 +259,7 @@ public class Lifecycle {
             try {
                 log.debug("Resetting users");
                 context.getUserManager().resetUsers();
+                log.debug("COMPAT: Resetting users");
                 compatContext.getUserManager().resetUsers();
             } catch (Exception e) {
                 log.warn(e);
@@ -291,7 +321,12 @@ public class Lifecycle {
         profile.setPreference("dom.webnotifications.enabled", false);
         // allow skipping the security prompt for sharing the media device
         profile.setPreference("media.navigator.permission.disabled", true);
+        // do not store any form data automatically
+        profile.setPreference("signon.autofillForms", false);
+        profile.setPreference("signon.rememberSignons", false);
+        profile.setPreference("signon.storeWhenAutocompleteOff", false);
         capabilities.setCapability("firefox_profile", profile);
+        capabilities.setCapability("marionette", true);
     }
 
     private static void setCustomSafariProfile(DesiredCapabilities capabilities) {
@@ -384,6 +419,8 @@ public class Lifecycle {
         capabilities.setCapability("name", uniqueTestName);
         capabilities.setCapability("resolution", "1280x1024");
         capabilities.setCapability("browserstack.debug", "true");
+        capabilities.setCapability("project", System.getenv("JOB_NAME"));
+        capabilities.setCapability("build", System.getenv("BUILD_NUMBER"));
 
         return capabilities;
     }

@@ -26,19 +26,8 @@ public class GroupConversationViewPageSteps {
                 ClientUsersManager.FindBy.NAME_ALIAS);
         final List<String> participantNames = CommonSteps.splitAliases(participantNameAliases);
         Assert.assertTrue(
-                String.format("Users '%s' are not visible in the group conversation", participantNameAliases),
+                String.format("Users '%s' are not displayed on Upper Toolbar", participantNameAliases),
                 getGroupConversationViewPage().isUpperToolbarContainNames(participantNames));
-    }
-
-    /**
-     * Verifies that group chat is empty and has only system message
-     *
-     * @param participantNameAliases user names comma separated
-     * @throws Exception
-     */
-    @Then("^I see empty group chat page with users (.*) with only system message$")
-    public void ISeeGroupChatPageWithUsersAndOnlySystemMessage(String participantNameAliases) throws Exception {
-        ThenISeeGroupChatPage(participantNameAliases);
     }
 
     @When("^I swipe up on group chat page$")

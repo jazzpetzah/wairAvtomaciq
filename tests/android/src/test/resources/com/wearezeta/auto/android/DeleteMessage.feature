@@ -6,8 +6,8 @@ Feature: Delete Message
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    And I tap on conversation name <Contact>
     And I tap on text input
     And I type the message "<Message1>" and send it
     And I type the message "<Message2>" and send it
@@ -35,14 +35,14 @@ Feature: Delete Message
     Given I accept First Time overlay as soon as it is visible
     Given User Myself adds new device <Device>
     Given User <Contact1> adds new device <ContactDevice>
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And User Myself send encrypted message "<Message>" via device <Device> to user <Contact1>
     Then I see the message "<Message>" in the conversation view
     When User Myself delete the recent message from user <Contact1> via device <Device>
     Then I do not see the message "<Message>" in the conversation view
-    When I tap back button in upper toolbar
-    And I tap on contact name <GroupChatName>
+    When I tap Back button from top toolbar
+    And I tap on conversation name <GroupChatName>
     And User Myself send encrypted message "<Message>" via device <Device> to group conversation <GroupChatName>
     Then I see the message "<Message>" in the conversation view
     When User Myself delete the recent message from group conversation <GroupChatName> via device <Device>
@@ -58,8 +58,8 @@ Feature: Delete Message
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    And I tap on conversation name <Contact>
     And I tap on text input
     And I type the message "<YoutubeLink>" and send it
     And I type the message "<SoundcloudLink>" and send it
@@ -85,8 +85,8 @@ Feature: Delete Message
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And User <Contact> send encrypted message "<Message>" to user Myself
     And I long tap the Text message "<Message>" in the conversation view
     And I tap Delete button on the action mode bar
@@ -98,14 +98,14 @@ Feature: Delete Message
       | user1Name | user2Name | DeleteTextMessage |
 
   @C111643 @regression @rc
-  Scenario Outline: Verfiy deleting ping
+  Scenario Outline: Verify deleting ping
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap Ping button from cursor toolbar
     And User <Contact> securely pings conversation Myself
     And I see Ping message "<Message2>" in the conversation view
@@ -121,14 +121,14 @@ Feature: Delete Message
       | user1Name | user2Name | You pinged | autocall    | user2Name pinged |
 
   @C111642 @regression @rc
-  Scenario Outline: AN-4171 Verify deleting the shared file
+  Scenario Outline: (AN-4171) Verify deleting the shared file
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I push <FileSize> file having name "<FileName>.<FileExtension>" to the device
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    And I tap on conversation name <Contact1>
     And I tap File button from cursor toolbar
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
     When I long tap File Upload container in the conversation view
@@ -141,7 +141,7 @@ Feature: Delete Message
       | user1Name | user2Name | qa_random | txt           | 1.00MB   | 20               |
 
   @C111645 @regression @rc @C111647
-  Scenario Outline: (AN-3934) Verify deleting is synchronised across own devices when one of them was offline
+  Scenario Outline: Verify deleting is synchronised across own devices when one of them was offline
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -149,40 +149,39 @@ Feature: Delete Message
     Given I accept First Time overlay as soon as it is visible
     When User Myself adds new device <Device>
     And User <Contact1> adds new device <ContactDevice>
-    And I see Contact list with contacts
-    And I tap on contact name <Contact1>
+    And I see Conversations list with conversations
+    And I tap on conversation name <Contact1>
     And User Myself send encrypted message "<Message>" via device <Device> to user <Contact1>
-    And I tap back button in upper toolbar
-    And I tap on contact name <GroupChatName>
+    And I tap Back button from top toolbar
+    And I tap on conversation name <GroupChatName>
     And User Myself send encrypted message "<Message>" via device <Device> to group conversation <GroupChatName>
-    # The following step should be delete , which is blocked by AN-3934
-    And I tap back button in upper toolbar
     And I enable Airplane mode on the device
+    And I see No Internet bar in 15 seconds
     And User Myself deletes the recent message from user <Contact1> via device <Device>
     And User Myself deletes the recent message from group conversation <GroupChatName> via device <Device>
     And I disable Airplane mode on the device
-    # Wait for sync
-    And I wait for 10 seconds
-    # This line also should be deleted when AN-3934 fixed
-    And I tap on contact name <GroupChatName>
+    And I do not see No Internet bar in 20 seconds
     Then I do not see the message "<Message>" in the conversation view
-    When I tap back button in upper toolbar
-    And I tap on contact name <Contact1>
+    When I tap Back button from top toolbar
+    And I tap on conversation name <Contact1>
     Then I do not see the message "<Message>" in the conversation view
     When I type the message "<Message2>" and send it
     And User Myself remember the recent message from user <Contact1> via device <Device>
     And I enable Airplane mode on the device
+    And I see No Internet bar in 20 seconds
     And I long tap the Text message "<Message2>" in the conversation view
     And I tap Delete button on the action mode bar
     And I tap Delete button on the alert
     Then I do not see the message "<Message2>" in the conversation view
     When I disable Airplane mode on the device
-    And I wait for 10 seconds
+    And I do not see No Internet bar in 20 seconds
+    # Wait for SE sync
+    And I wait for 20 seconds
     Then User Myself see the recent message from user <Contact1> via device <Device> is changed
 
     Examples:
-      | Name      | Contact1  | Contact2  | Message           | Device  | ContactDevice | GroupChatName | Message2  |
-      | user1Name | user2Name | user3Name | DeleteTextMessage | Device1 | Device2       | MyGroup       | MyMessage |
+      | Name      | Contact1  | Contact2  | Message          | Device  | ContactDevice | GroupChatName | Message2        |
+      | user1Name | user2Name | user3Name | MessageRemoteDel | Device1 | Device2       | MyGroup       | MessageLocalDel |
 
   @C111640 @regression @rc
   Scenario Outline: Verify deleting the picture, gif from Giphy
@@ -190,8 +189,8 @@ Feature: Delete Message
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap on text input
     And I type the message "<Message>"
     And I click on the GIF button
@@ -214,8 +213,8 @@ Feature: Delete Message
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I enable Airplane mode on the device
     And I type the message "<Message>" and send it
     And I long tap the Text message "<Message>" in the conversation view
@@ -235,10 +234,10 @@ Feature: Delete Message
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When I long tap Audio message button <TapDuration> seconds from cursor toolbar
-    And I tap on audio message send button
+    And I tap audio recording Send button
     # Wait for the audio to be fully uploaded
     And I wait for 5 seconds
     And I long tap Audio Message container in the conversation view
@@ -257,11 +256,11 @@ Feature: Delete Message
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When I enable Airplane mode on the device
     And I long tap Audio message button <TapDuration> seconds from cursor toolbar
-    And I tap on audio message send button
+    And I tap audio recording Send button
     And I long tap Audio Message container in the conversation view
     Then I do not see Copy button on the action mode bar
     When I tap Delete button on the action mode bar
@@ -278,9 +277,11 @@ Feature: Delete Message
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
+    And I see Audio Message container in the conversation view
+    And I wait for 5 seconds
     And I enable Airplane mode on the device
     And I tap Play button on the recent audio message in the conversation view
     And I long tap Audio Message container in the conversation view
@@ -292,3 +293,39 @@ Feature: Delete Message
     Examples:
       | Name      | Contact   | FileName | MIMEType  | DeviceName |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
+
+  @C150030 @regression
+  Scenario Outline: Verify you can delete Share Location placeholder from conversation view
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User <Contact> shares his location to user Myself via device <DeviceName>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When I long tap Share Location container in the conversation view
+    And I tap Delete button on the action mode bar
+    And I tap Delete button on the alert
+    Then I do not see Share Location container in the conversation view
+
+    Examples:
+      | Name      | Contact   | DeviceName |
+      | user1Name | user2Name | device1    |
+
+  @C165145 @regression
+  Scenario Outline: I can delete link preview
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User <Contact> send encrypted message "<Link>" to user Myself
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When I long tap Link Preview container in the conversation view
+    And I tap Delete button on the action mode bar
+    And I tap Delete button on the alert
+    Then I do not see Link Preview container in the conversation view
+
+    Examples:
+      | Name      | Contact   | Link                                                                                               |
+      | user1Name | user2Name | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 |

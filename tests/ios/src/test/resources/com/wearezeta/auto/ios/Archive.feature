@@ -1,6 +1,6 @@
 Feature: Archive
 
-  @C13 @regression @id1336
+  @C13 @regression @fastLogin
   Scenario Outline: Verify unarchive by receiving data
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -9,11 +9,11 @@ Feature: Archive
     Given I sign in using my email or phone number
     Given I see conversations list
     And I do not see conversation <ArchivedUser> in conversations list
-    Given User <ArchivedUser> sends 1 encrypted message to user Myself
+    And User <ArchivedUser> sends 1 encrypted message to user Myself
     Then I see first item in contact list named <ArchivedUser>
     When User Myself archives single user conversation <ArchivedUser>
     And I do not see conversation <ArchivedUser> in conversations list
-    Given User <ArchivedUser> sends encrypted image <Picture> to single user conversation Myself
+    And User <ArchivedUser> sends encrypted image <Picture> to single user conversation Myself
     Then I see first item in contact list named <ArchivedUser>
     When User Myself archives single user conversation <ArchivedUser>
     And I do not see conversation <ArchivedUser> in conversations list
@@ -30,7 +30,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | chrome      |
 
-  @C14 @regression @id1337
+  @C14 @regression @fastLogin
   Scenario Outline: Verify unarchiving silenced conversation only by call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -55,7 +55,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | chrome      |
 
-  @C16 @regression @id1339
+  @C16 @regression @fastLogin
   Scenario Outline: Verify restoring from archive after adding to conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -74,7 +74,7 @@ Feature: Archive
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | LeaveArchive  |
 
-  @C82827 @regression
+  @C82827 @regression @fastLogin
   Scenario Outline: Verify archive behaviour when one archive/unarchive a conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>

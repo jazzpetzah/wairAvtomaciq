@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @C667 @id9 @regression @rc
+  @C667 @regression @rc
   Scenario Outline: Register new user by phone and set profile picture using camera
     Given I see welcome screen
     When I input a new phone number for user <Name>
@@ -10,7 +10,7 @@ Feature: Registration
     And I select Camera as picture source
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
-    Then I see Contact list with no contacts
+    Then I see Conversations list with no conversations
 
     Examples:
       | Name      |
@@ -25,13 +25,13 @@ Feature: Registration
     And I select to choose my own picture
     And I select Gallery as picture source
     And I tap Confirm button on Take Picture view
-    Then I see Contact list with no contacts
+    Then I see Conversations list with no conversations
 
     Examples:
       | Name      |
       | user1Name |
 
-  @C566 @id4094 @regression @noAcceptAlert
+  @C566 @regression @noAcceptAlert
   Scenario Outline: Wrong phone activation code is followed by correct error message
     Given I see welcome screen
     When I input a new phone number for user <Name>

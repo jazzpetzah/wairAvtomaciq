@@ -68,7 +68,7 @@ public class CallOutgoingPageSteps {
      * @step. I tap (speaker|video|mute)) button for outgoing call
      */
     @When("^I tap (speaker|video|mute) button for outgoing call$")
-    public void WhenITapButton(String btnName) throws Exception {
+    public void ITapButton(String btnName) throws Exception {
         switch (btnName) {
             case "mute":
                 getAudioPage().toggleMute();

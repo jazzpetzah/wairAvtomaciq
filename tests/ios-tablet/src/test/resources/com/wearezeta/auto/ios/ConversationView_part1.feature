@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @C2645 @rc @regression @id2375
+  @C2645 @rc @regression @fastLogin
   Scenario Outline: Verify sending message [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -15,7 +15,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2644 @regression @id2695
+  @C2644 @regression @fastLogin
   Scenario Outline: Receive message from contact [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -30,7 +30,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2621 @regression @id2413
+  @C2621 @regression @fastLogin
   Scenario Outline: Verify sending image [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -38,16 +38,15 @@ Feature: Conversation View
     And I see conversations list
     When I tap on contact name <Contact>
     And I press Add Picture button on iPad
-    And I press Camera Roll button
-    And I choose a picture from camera roll
-    And I confirm my choice
+    And I select the first picture from Keyboard Gallery
+    And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2615 @regression @rc @id2407
+  @C2615 @regression @rc @fastLogin
   Scenario Outline: Verify sending image [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -56,16 +55,15 @@ Feature: Conversation View
     And I see conversations list
     When I tap on contact name <Contact>
     And I press Add Picture button on iPad
-    And I press Camera Roll button
-    And I choose a picture from camera roll
-    And I confirm my choice
+    And I select the first picture from Keyboard Gallery
+    And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2642 @regression @id2429 @C3222
+  @C2642 @regression @C3222 @fastLogin
   Scenario Outline: Verify you can see Ping on the other side - 1:1 conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given User <Contact1> change name to <ContactName>
@@ -82,7 +80,7 @@ Feature: Conversation View
       | Name      | Contact1  | ContactName |
       | user1Name | user2Name | OtherUser   |
 
-  @C2640 @regression @id2427 @C3224
+  @C2640 @regression @C3224 @fastLogin
   Scenario Outline: Verify you can see Ping on the other side - group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -98,7 +96,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName        |
       | user1Name | user2Name | user3Name | ReceivePingGroupChat |
 
-  @C2627 @regression @id2669
+  @C2627 @regression @fastLogin
   Scenario Outline: Receive a camera roll picture from user from contact list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -112,7 +110,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
 
-  @C2628 @regression @id2670
+  @C2628 @regression @fastLogin
   Scenario Outline: Receive a camera roll picture from user from contact list [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -127,7 +125,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C2647 @regression @id2737
+  @C2647 @regression @fastLogin
   Scenario Outline: Send Message to contact after navigating away from chat page [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Me is connected to <Contact1>,<Contact2>
@@ -139,14 +137,14 @@ Feature: Conversation View
     And I tap on contact name <Contact2>
     And I tap on contact name <Contact1>
     And I tap on text input
-    And I press Enter key in Simulator window
+    And I tap Send button on the keyboard
     Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2655 @regression @id2745
+  @C2655 @regression
   Scenario Outline: Copy and paste to send the message [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -173,7 +171,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Text       |
       | user1Email | user1Password | user1Name | user2Name | TextToCopy |
 
-  @C2657 @regression @id2747
+  @C2657 @regression @fastLogin
   Scenario Outline: Send a text containing spaces on either end of message [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -191,7 +189,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2676 @regression @id2987
+  @C2676 @regression @fastLogin
   Scenario Outline: I can send a sketch[PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -207,7 +205,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2677 @regression @id2988
+  @C2677 @regression @fastLogin
   Scenario Outline: I can send a sketch[LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -224,7 +222,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2658 @regression @id3193
+  @C2658 @regression @fastLogin
   Scenario Outline: Verify sending ping in 1-to-1 conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -239,7 +237,7 @@ Feature: Conversation View
       | Name      | Contact   | PingMsg    |
       | user1Name | user2Name | YOU PINGED |
 
-  @C2660 @regression @id3195
+  @C2660 @regression @fastLogin
   Scenario Outline: Send message to group chat [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

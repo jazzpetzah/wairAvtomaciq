@@ -20,7 +20,6 @@ import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.performance.PerformanceCommon;
-import com.wearezeta.auto.common.performance.PerformanceCommon.PerformanceLoop;
 import com.wearezeta.auto.common.performance.PerformanceHelpers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -46,7 +45,7 @@ public class PerformanceSteps {
         return pagesCollection.getPage(ConversationsListPage.class);
     }
 
-    private ConversationViewPage getDialogPage() throws Exception {
+    private ConversationViewPage getConversationViewPage() throws Exception {
         return pagesCollection.getPage(ConversationViewPage.class);
     }
 
@@ -126,12 +125,15 @@ public class PerformanceSteps {
                 e.printStackTrace();
             }
             Thread.sleep(10000);
-        } while (!getDialogPage().isDialogVisible() &&
+        } while (!getConversationViewPage().isConversationVisible() &&
                 System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
-        assert getDialogPage().isDialogVisible() : "The conversation has not been opened after "
-                + timeoutSeconds + " seconds timeout";
-        getDialogPage().scrollToTheBottom();
-        getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
+        if (!getConversationViewPage().isConversationVisible()) {
+            pagesCollection.getCommonPage().logUIAutomatorSource();
+            throw new IllegalStateException(
+                    String.format("The conversation has not been opened after %s seconds timeout", timeoutSeconds));
+        }
+        getConversationViewPage().scrollToTheBottom();
+        getConversationViewPage().navigateBack(DEFAULT_SWIPE_TIME);
     }
 
     /**
@@ -145,7 +147,7 @@ public class PerformanceSteps {
      * from (.*)
      */
     @When("^I start test cycle for (\\d+) minutes? with messages received from (.*)")
-    public void WhenIStartTestCycleForNMinutes(int timeout, String fromContact) throws Exception {
+    public void IStartTestCycleForNMinutes(int timeout, String fromContact) throws Exception {
         waitUntilConversationsListIsFullyLoaded();
         final String destConvoName = usrMgr.findUserByNameOrNameAlias(fromContact).getName();
         String firstConvoName = getContactListPage().getFirstVisibleConversationName();
@@ -170,12 +172,7 @@ public class PerformanceSteps {
 
         // Visit the conversation for the first time
         visitConversationWhenAvailable(destConvoName);
-
-        perfCommon.runPerformanceLoop(new PerformanceLoop() {
-            public void run() throws Exception {
-                visitConversationWhenAvailable(destConvoName);
-            }
-        }, timeout);
+        perfCommon.runPerformanceLoop(() -> visitConversationWhenAvailable(destConvoName), timeout);
     }
 
     /**
@@ -243,11 +240,11 @@ public class PerformanceSteps {
                                 caller, secondsElapsed));
             }
             for (Flow flow : flows) {
-                flowRxBytes = flow.getBytesIn();
+                flowRxBytes = flow.getTelemetry().getStats().getAudio().getBytesReceived();
                 Assert.assertTrue(
                         "Received bytes count should be greater than 0",
                         flowRxBytes > 0);
-                flowTxBytes = flow.getBytesOut();
+                flowTxBytes = flow.getTelemetry().getStats().getAudio().getBytesSent();
                 Assert.assertTrue("Sent bytes count should be greater than 0",
                         flowTxBytes > 0);
             }

@@ -5,11 +5,14 @@ import com.wire.picklejar.execution.exception.StepNotExecutableException;
 import com.wire.picklejar.execution.exception.StepNotFoundException;
 import com.wire.picklejar.scan.PickleAnnotationSeeker;
 import com.wire.picklejar.scan.JavaSeeker;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -83,25 +86,26 @@ public class PickleExecutor {
             final Matcher matcher = pattern.matcher(step);
 
             if (matcher.matches()) {
-                LOG.debug("Method {} matches", method.getName());
+                LOG.trace("Method {} matches", method.getName());
 
                 if (matcher.groupCount() == method.getParameterTypes().length) {
-                    LOG.debug("Number of Regex groups and number of method paramaters match");
+                    LOG.trace("Number of Regex groups and number of method paramaters match");
                 } else {
-                    LOG.debug("Number of Regex groups and number of method paramaters do not match:\n"
+                    LOG.trace("Number of Regex groups and number of method paramaters do not match:\n"
                             + "Regex groups: {}\n"
                             + "Method paramaters: {}", new Object[]{matcher.groupCount(), method.getParameterTypes().length});
-                    LOG.info("Parameters do not match - Looking for other method");
+                    LOG.debug("Parameters do not match - Looking for other method");
                     continue;
                 }
 
                 final List<Object> params = new ArrayList<>();
                 Class<?>[] types = method.getParameterTypes();
-                LOG.debug("Expected parameter types: \n{}", new Object[]{Arrays.asList(types)});
+                LOG.trace("Expected parameter types: \n{}", new Object[]{Arrays.asList(types)});
                 for (int i = 1; i <= matcher.groupCount(); i++) {
                     params.add(tryCast(matcher.group(i), types[i - 1]));
                 }
-                LOG.debug("Actual parameters: \n{}", new Object[]{params});
+                LOG.trace("Actual parameters: \n{}", new Object[]{params});
+                LOG.info("Executing method {} {}", method.getName(), params);
 
                 startTime = Instant.now();
                 try {
@@ -114,8 +118,8 @@ public class PickleExecutor {
                     } else {
                         method.invoke(getOrAddCachedDeclaringClassForMethod(method, constructorParams), params.toArray());
                     }
-                } catch (IllegalArgumentException | InvocationTargetException | IllegalAccessException | InstantiationException |
-                        NoSuchMethodException ite) {
+                } catch (PendingException | IllegalArgumentException | InvocationTargetException | IllegalAccessException |
+                        InstantiationException | NoSuchMethodException ite) {
                     endTime = Instant.now();
                     throw new StepNotExecutableException(Duration.between(startTime, endTime).toNanos(), String.format("\n"
                             + ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\n"
@@ -147,8 +151,8 @@ public class PickleExecutor {
             final List<Object> constructorParamsList = Arrays.asList(constructorParams);
             final List<Class<?>> constructorParamTypesList = constructorParamsList.stream().map((object) -> object.getClass()).
                     collect(Collectors.toList());
-            LOG.debug("Step constructor param list size: {}", constructorParamsList.size());
-            LOG.debug("Step constructor param type list size: {}", constructorParamTypesList.size());
+            LOG.trace("Step constructor param list size: {}", constructorParamsList.size());
+            LOG.trace("Step constructor param type list size: {}", constructorParamTypesList.size());
 
             final Constructor<?> ctor = method.getDeclaringClass().getConstructor(constructorParamTypesList.toArray(
                     new Class<?>[constructorParamTypesList.size()]));
@@ -161,12 +165,58 @@ public class PickleExecutor {
 
     private static Object tryCast(String thingToCast, Class<?> clazz) {
         switch (clazz.toString()) {
-            case "int":
+            case "short":
+            case "class java.lang.Short":
                 try {
                     return Integer.parseInt(thingToCast);
                 } catch (NumberFormatException e) {
-                    // Fallthrough
+                    return thingToCast;
                 }
+            case "int":
+            case "class java.lang.Integer":
+                try {
+                    return Integer.parseInt(thingToCast);
+                } catch (NumberFormatException e) {
+                    return thingToCast;
+                }
+            case "long":
+            case "class java.lang.Long":
+                try {
+                    return Long.parseLong(thingToCast);
+                } catch (NumberFormatException e) {
+                    return thingToCast;
+                }
+            case "float":
+            case "class java.lang.Float":
+                try {
+                    return Float.parseFloat(thingToCast);
+                } catch (NumberFormatException e) {
+                    return thingToCast;
+                }
+            case "double":
+            case "class java.lang.Double":
+                try {
+                    return Double.parseDouble(thingToCast);
+                } catch (NumberFormatException e) {
+                    return thingToCast;
+                }
+            case "char":
+            case "class java.lang.Character":
+                try {
+                    return thingToCast.charAt(0);
+                } catch (IndexOutOfBoundsException e) {
+                    return thingToCast;
+                }
+            case "byte":
+            case "class java.lang.Byte":
+                try {
+                    return Byte.parseByte(thingToCast);
+                } catch (NumberFormatException e) {
+                    return thingToCast;
+                }
+            case "boolean":
+            case "class java.lang.Boolean":
+                return Boolean.parseBoolean(thingToCast);
             case "class java.lang.String":
             default:
                 return thingToCast;
@@ -178,6 +228,16 @@ public class PickleExecutor {
             rawStep = rawStep.replaceAll("<" + key + ">", exampleParams.get(key));
         }
         return rawStep;
+    }
+
+    public static Throwable getLastCause(Throwable e) {
+        return e.getCause() != null ? getLastCause(e.getCause()) : e;
+    }
+
+    public static String getThrowableStacktraceString(Throwable e) {
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        return sw.toString();
     }
 
 }

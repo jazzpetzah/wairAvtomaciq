@@ -18,4 +18,9 @@ public interface FunctionalInterfaces {
     interface ISupplierWithException<T> {
         T call() throws Exception;
     }
+
+    @FunctionalInterface
+    interface RunnableWithException {
+        void run() throws Exception;
+    }
 }

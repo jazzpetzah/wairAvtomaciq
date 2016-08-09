@@ -1,9 +1,11 @@
 package com.wearezeta.auto.android_tablet.pages.registration;
 
 import com.wearezeta.auto.android.pages.RegistrationPage;
+import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.android_tablet.pages.AndroidTabletPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import org.openqa.selenium.ScreenOrientation;
 
 import java.util.concurrent.Future;
 

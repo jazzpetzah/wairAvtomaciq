@@ -20,7 +20,8 @@ public class SettingsPage extends IOSPage {
 
     private static final By nameBackButton = MobileBy.AccessibilityId("Back");
 
-    private static final By xpathAllSoundAlertsButton = By.xpath("//UIATableCell[@name='All']");
+    private static final By xpathAllSoundAlertsButton =
+            By.xpath("//UIATableCell[@name='Sound Alerts']/*[@value='All']");
 
     private static final By nameEditButton = MobileBy.AccessibilityId("Edit");
 
@@ -41,9 +42,6 @@ public class SettingsPage extends IOSPage {
 
     private static final String xpathStrCurrentDevice = xpathStrMainWindow + "/UIATableView[1]/UIATableCell[1]";
     private static final By xpathCurrentDevices = By.xpath(xpathStrCurrentDevice);
-    private static final String xpathStrDevicesList = xpathStrMainWindow + "/UIATableView[1]/UIATableCell";
-    private static final Function<Integer, String> xpathStrDeviceByIndex = idx ->
-            String.format("%s[%s]", xpathStrDevicesList, idx);
 
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -62,7 +60,7 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean isSoundAlertsSetToDefault() throws Exception {
-        return getElement(xpathAllSoundAlertsButton).getAttribute("value").equals("1");
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathAllSoundAlertsButton);
     }
 
     public boolean isItemVisible(String itemName) throws Exception {
@@ -73,7 +71,7 @@ public class SettingsPage extends IOSPage {
         getElement(nameEditButton).click();
     }
 
-    public void pressDeleteDeviceButton(String deviceName) throws Exception {
+    public void tapDeleteDeviceButton(String deviceName) throws Exception {
         final By locator = By.xpath(xpathDeleteDeviceButtonByName.apply(deviceName));
         getElement(locator, String.format("Device '%s' is not visible in Manage Device List", deviceName)).click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator)) {
@@ -81,7 +79,7 @@ public class SettingsPage extends IOSPage {
         }
     }
 
-    public void pressDeleteButton() throws Exception {
+    public void tapDeleteButton() throws Exception {
         final WebElement deleteButton = getElement(nameDeleteButton);
         deleteButton.click();
 

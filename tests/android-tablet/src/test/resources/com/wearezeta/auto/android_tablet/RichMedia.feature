@@ -1,6 +1,6 @@
 Feature: Rich Media
 
-  @C759 @id2830 @regression @rc
+  @C759 @regression @rc
   Scenario Outline: Send GIF format pic (portrait)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -13,14 +13,14 @@ Feature: Rich Media
     When I scroll to the bottom of the conversation view
     Then I see a new picture in the conversation view
     And I see the picture in the conversation view is animated
-    When I tap the new picture in the conversation view
+    When I tap the recent picture in the conversation view
     Then I see the picture in the preview is animated
 
     Examples:
       | Name      | Contact   | GifName      |
       | user1Name | user2Name | animated.gif |
 
-  @C796 @id3141 @regression @rc
+  @C796 @regression @rc
   Scenario Outline: Send GIF format pic (landscape)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -33,14 +33,14 @@ Feature: Rich Media
     When I scroll to the bottom of the conversation view
     Then I see a new picture in the conversation view
     And I see the picture in the conversation view is animated
-    When I tap the new picture in the conversation view
+    When I tap the recent picture in the conversation view
     Then I see the picture in the preview is animated
 
     Examples:
       | Name      | Contact   | GifName      |
       | user1Name | user2Name | animated.gif |
 
-  @C774 @id2884 @regression @rc
+  @C774 @regression @rc
   Scenario Outline: Verify you can play/pause media from the conversation list (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -65,7 +65,7 @@ Feature: Rich Media
       | Name      | Contact   | SoundCloudLink                                                      |
       | user1Name | user2Name | https://soundcloud.com/scottisbell/scott-isbell-tonight-feat-adessi |
 
-  @C798 @id3144 @regression @rc
+  @C798 @regression @rc
   Scenario Outline: (AN-3300) Verify you can play/pause media from the conversation list (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -89,7 +89,7 @@ Feature: Rich Media
       | Name      | Contact   | SoundCloudLink                                                      |
       | user1Name | user2Name | https://soundcloud.com/scottisbell/scott-isbell-tonight-feat-adessi |
 
-  @C788 @id2991 @regression @rc
+  @C788 @regression @rc
   Scenario Outline: I can send giphy image by typing some massage and clicking GIF button (portrait)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -114,7 +114,7 @@ Feature: Rich Media
       | Name      | Contact   | Message |
       | user1Name | user2Name | H       |
 
-  @C797 @id3142 @regression @rc
+  @C797 @regression @rc
   Scenario Outline: I can send giphy image by typing some massage and clicking GIF button (landscape)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -139,7 +139,7 @@ Feature: Rich Media
       | Name      | Contact   | Message |
       | user1Name | user2Name | H       |
 
-  @C502 @id2880 @regression
+  @C502 @regression
   Scenario Outline: Verify you can play/pause media from the Media Bar in conversation view (portrait only)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

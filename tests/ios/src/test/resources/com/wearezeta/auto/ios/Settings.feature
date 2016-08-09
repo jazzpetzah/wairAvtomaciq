@@ -1,6 +1,6 @@
 Feature: Settings
 
-  @C1098 @id482 @regression
+  @C1098 @regression @fastLogin
   Scenario Outline: Verify user can access settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -14,7 +14,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C1099 @regression @rc @id729
+  @C1099 @regression @rc @fastLogin
   Scenario Outline: Attempt to open About screen in settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -31,7 +31,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C1102 @regression @id862
+  @C1102 @regression @fastLogin
   Scenario Outline: Verify reset password page is accessible from settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -48,7 +48,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C1107 @id1258 @regression
+  @C1107 @regression @fastLogin
   Scenario Outline: Verify default value for sound settings is all
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -63,7 +63,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C1109 @regression @id2074
+  @C1109 @regression @fastLogin
   Scenario Outline: Verify you can access Help site within the app
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -78,7 +78,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C1100 @regression @id730 @id731
+  @C1100 @regression @fastLogin
   Scenario Outline: Verify about screen contains all the required information
     Given There is 1 user where <Name> is me
     Given User me change accent color to <Color>
@@ -107,7 +107,7 @@ Feature: Settings
       | Name      | Color  |
       | user1Name | Violet |
 
-  @C3247 @regression @rc @useSpecialEmail
+  @C3247 @regression @rc @useSpecialEmail @fastLogin
   Scenario Outline: Verify deleting the account registered by email
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -119,7 +119,7 @@ Feature: Settings
     And I start waiting for <Name> account removal notification
     And I select settings item Delete Account
     # FIXME: Sometimes the alert is not accepted automatically
-    And I accept alert
+    And I tap OK button on the alert
     Then I see sign in screen
     And I verify account removal notification is received
 

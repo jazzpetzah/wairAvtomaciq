@@ -128,6 +128,7 @@ Feature: E2EE
     And I navigate to download page
     And User <Name> removes all his registered OTR clients
     And I navigate to previously remembered page
+    And I see Sign In page
     And I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
@@ -833,7 +834,6 @@ Feature: E2EE
     When I Sign in using login <Email> and password <Password>
     And I see the history info page
     And I click confirm on history info page
-    And I disable ad banner
     And I am signed in properly
     And I open conversation with <Contact>
     And Contact <Name> sends message <StartMessage> via device Device1 to user <Contact>
@@ -843,7 +843,6 @@ Feature: E2EE
     And Contact <Contact> sends 50 messages with prefix <PREFIX1> via device Device1 to user <Name>
     And Contact <Name> sends 50 messages with prefix <PREFIX2> via device Device1 to user <Contact>
     And I navigate to previously remembered page
-    And I disable ad banner
     And Contact <Contact> sends 60 messages with prefix <PREFIX3> via device Device1 to user <Name>
     And Contact <Name> sends 60 messages with prefix <PREFIX4> via device Device1 to user <Contact>
     And I am signed in properly
@@ -855,3 +854,73 @@ Feature: E2EE
     Examples:
       | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT | StartMessage | PREFIX1 | PREFIX2 | PREFIX3 | PREFIX4 |
       | user1Email | user1Password | user1Name | user2Name | WAS NOT RECEIVED  | Let's start  | First   | Second  | Third   | Four    |
+
+  @C82814 @regression
+  Scenario Outline: Verify I can trust all my own devices
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given user <Name> adds a new device Device1 with label Label1
+    Given user <Name> adds a new device Device2 with label Label2
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I am signed in properly
+    When I see Contact list with name <Contact>
+    Then I open self profile
+    And I click gear button on self profile page
+    And I select Settings menu item on self profile page
+    When I see Settings dialog
+    And I wait for devices
+    And I see a device named Device1 in the devices section
+    And I click on the device Device1 in the devices section
+    Then I see a device named Device1 with label Label1 in the device details
+    And I verify device on self settings Device Detail section
+    And I click back button on self settings Device Detail section
+    Then I see device Device1 of user <Name> is verified in device section
+    Then I do not see device Device2 of user <Name> is verified in device section
+    When I see a device named Device2 in the devices section
+    And I click on the device Device2 in the devices section
+    Then I see a device named Device2 with label Label2 in the device details
+    And I verify device on self settings Device Detail section
+    And I click back button on self settings Device Detail section
+    Then I see device Device1 of user <Name> is verified in device section
+    Then I see device Device2 of user <Name> is verified in device section
+
+    Examples:
+      | Email      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @C202301 @regression
+  Scenario Outline: Verify it is not possible to receive unencrypted messages in 1:1 conversation
+    Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    When I open conversation with <Contact>
+    And Contact <Contact> sends unencrypted message <Message> to user <Name>
+    Then I do not see text message <Message>
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | Message             |
+      | user1Email | user1Password | user1Name | user2Name | unencrypted message |
+
+  @C202302 @regression
+  Scenario Outline: Verify it is not possible to receive unencrypted messages in group conversation
+    Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    When I open conversation with <GroupChatName>
+    And Contact <Contact1> sends unencrypted message <Message> to group conversation <GroupChatName>
+    Then I do not see text message <Message>
+
+    Examples:
+      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName    | Message             |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | unencryptedGroup | unencrypted message |

@@ -6,7 +6,7 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     When I open self profile
     And I see user name on self profile page <Name>
     And I change username to <NewName>
@@ -88,7 +88,7 @@ Feature: Self Profile
     Then I verify my accent color in color picker is set to <ColorName> color
     And I verify my avatar background color is set to <ColorName> color
     When User <Contact1> pinged in the conversation with <Name>
-    And User <Contact2> sends message <Msg1> to conversation <Name>
+    And Contact <Contact2> sends message Msg1 to user <Name>
     Then I verify ping icon in conversation with <Contact1> has <ColorName> color
     And I verify unread dot in conversation with <Contact2> has <ColorName> color
 

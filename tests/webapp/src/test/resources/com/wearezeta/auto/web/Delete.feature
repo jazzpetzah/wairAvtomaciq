@@ -1,6 +1,6 @@
 Feature: Delete
 
-  @C111956 @regression
+  @C111956 @regression @CM-1029
   Scenario Outline: Verify I can delete messages in 1:1 and from second device
     Given There are 2 users where <Name> is me
     Given user <Name> adds a new device SecondDevice with label Label1
@@ -246,7 +246,7 @@ Feature: Delete
     When I write message MESSAGE1_NAME
     And I send message
     And I see text message MESSAGE1_NAME
-    And User <Contact1> sends message MESSAGE1_CONTACT to conversation GROUPCHAT
+    And Contact <Contact1> sends message MESSAGE1_CONTACT to group conversation GROUPCHAT
     And I see text message MESSAGE1_CONTACT
     And I write message MESSAGE2_NAME
     And I send message

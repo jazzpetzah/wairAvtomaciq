@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Alert;
 
@@ -163,27 +164,14 @@ public class WebPage extends BasePage {
      * @throws Exception
      */
     public void breakSession(String deviceId) throws Exception {
-        String breakSession = "s = wire.app.repository.cryptography.cryptobox.store.sessions;\n" +
-                "cs = s[Object.keys(s).filter((x) => x.endsWith(\"" + deviceId + "\"))[0]];\n" +
-                "cs.session_states = {};";
-        getDriver().executeScript(breakSession);
-    }
-
-    /**
-     * Disables the Ad banner for the webapp to make sure tests are not affected by it.
-     *
-     * @throws Exception
-     */
-    public void disableAdBanner() throws Exception {
-        Boolean wireLoaded;
-        int retry = WIRE_LOADED_MAX_RETRY;
-        do{
-            wireLoaded = (Boolean) getDriver().executeScript("console.log('checking for app wire');\n"
-                + "return typeof wire !== \"undefined\" && typeof wire.app !== \"undefined\" && typeof wire.app.repository !== \"undefined\"");
-            retry--;
-            Thread.sleep(WIRE_LOADED_WAIT_MS);
-        }while(!wireLoaded && retry > 0);
-        getDriver().executeScript("console.log('setting banner true');\n"
-                + "wire.app.repository.user.properties.app_banner = true");
+        if (WebAppExecutionContext.getBrowser().isSupportingAccessToJavascriptContext()) {
+            String breakSession = "s = wire.app.repository.cryptography.cryptobox.store.sessions;\n" +
+                    "cs = s[Object.keys(s).filter((x) => x.endsWith(\"" + deviceId + "\"))[0]];\n" +
+                    "cs.session_states = {};";
+            getDriver().executeScript(breakSession);
+        } else {
+            throw new Exception("Geckodriver is unable to access script context in Firefox < 48. See https://bugzilla.mozilla" +
+                    ".org/show_bug.cgi?id=1123506");
+        }
     }
 }

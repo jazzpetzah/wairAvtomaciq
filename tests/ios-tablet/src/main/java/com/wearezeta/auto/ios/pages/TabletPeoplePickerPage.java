@@ -16,7 +16,8 @@ public class TabletPeoplePickerPage extends PeoplePickerPage {
 
     public static final By namePeoplePickerAddToConversationButton = MobileBy.AccessibilityId("ADD");
 
-    public static final By namePeoplePickerCreateConversationButton = MobileBy.AccessibilityId("CREATE");
+    public static final By xpathPeoplePickerCreateConversationButton =
+            By.xpath("//UIAPopover//UIAButton[@name='CREATE GROUP']");
 
     public static final Function<String,String> xpathStrIPADPeoplePickerResultUserName = name ->
             String.format("//UIAPopover//UIAStaticText[@name='%s']", name);
@@ -49,6 +50,6 @@ public class TabletPeoplePickerPage extends PeoplePickerPage {
     }
 
     public void clickCreateConversationButtonOniPadPopover() throws Exception {
-        getElement(namePeoplePickerCreateConversationButton).click();
+        getElement(xpathPeoplePickerCreateConversationButton).click();
     }
 }

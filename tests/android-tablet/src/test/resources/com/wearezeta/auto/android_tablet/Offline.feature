@@ -1,6 +1,6 @@
 Feature: Offline Mode
 
-  @C778 @id2889 @regression @rc
+  @C778 @regression @rc
   Scenario Outline: Receive updated content when changing from offline to online
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -29,7 +29,7 @@ Feature: Offline Mode
       | Name      | Contact   | Message1 | Message2  | Picture     |
       | user1Name | user2Name | FirstMsg | SecondMsg | testing.jpg |
 
-  @C780 @id2904 @regression @rc
+  @C780 @regression @rc
   Scenario Outline: (CM-682) I want to see an unsent indicator when I send message or image during offline
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -47,7 +47,6 @@ Feature: Offline Mode
     When I hide keyboard
     And I tap Add picture button from cursor toolbar
     And I tap Take Photo button on Take Picture view
-    And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
     And I scroll to the bottom of the conversation view
     And I see unsent indicator next to new picture in the conversation view

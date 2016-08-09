@@ -2,6 +2,8 @@ package com.wearezeta.auto.android.pages;
 
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.logging.AndroidLogListener;
+import com.wearezeta.auto.android.common.logging.AndroidLogListener.ListenerType;
 import com.wearezeta.auto.android.common.uiautomation.UIAutomatorDriver;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
@@ -20,6 +22,8 @@ import org.openqa.selenium.interactions.touch.TouchActions;
 import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class AndroidPage extends BasePage {
     private static final Function<String, String> xpathStrAlertMessageByText =
@@ -39,8 +43,6 @@ public abstract class AndroidPage extends BasePage {
     public static final int DRIVER_CREATION_RETRIES_COUNT = 2;
 
     protected static final Logger log = ZetaLogger.getLog(CommonUtils.class.getSimpleName());
-
-    protected static final By idPager = By.id("conversation_pager");
 
     private static final By xpathInternetIndicator =
             By.xpath("//*[@id='civ__connectivity_indicator' and //*[@value='NO INTERNET']]");
@@ -109,29 +111,26 @@ public abstract class AndroidPage extends BasePage {
     }
 
     public void rotateLandscape() throws Exception {
-        // AndroidCommonUtils.rotateLanscape();
         this.getDriver().rotate(ScreenOrientation.LANDSCAPE);
     }
 
     public void rotatePortrait() throws Exception {
-        // AndroidCommonUtils.rotatePortrait();
         this.getDriver().rotate(ScreenOrientation.PORTRAIT);
     }
 
     public void dialogsPagesSwipeUp(int durationMilliseconds) throws Exception {
-        swipeByCoordinates(durationMilliseconds, 50, 80, 50, 30);
+        swipeByCoordinates(durationMilliseconds, 50, 70, 50, 30);
     }
 
     public void dialogsPagesSwipeDown(int durationMilliseconds)
             throws Exception {
-        swipeByCoordinates(durationMilliseconds, 50, 30, 50, 80);
+        swipeByCoordinates(durationMilliseconds, 50, 30, 50, 70);
     }
 
     public void swipeByCoordinates(int durationMilliseconds,
                                    int widthStartPercent, int heightStartPercent, int widthEndPercent,
                                    int heightEndPercent) throws Exception {
-        final Dimension screenDimension = getDriver().manage().window()
-                .getSize();
+        final Dimension screenDimension = getDriver().manage().window().getSize();
         this.getDriver().swipe(screenDimension.width * widthStartPercent / 100,
                 screenDimension.height * heightStartPercent / 100,
                 screenDimension.width * widthEndPercent / 100,
@@ -403,5 +402,48 @@ public abstract class AndroidPage extends BasePage {
 
     private static int getNextCoord(double startC, double endC, double current, double duration) {
         return (int) Math.round(startC + (endC - startC) / duration * current);
+    }
+
+    @Override
+    protected WebElement getElement(By locator) throws Exception {
+        try {
+            return super.getElement(locator);
+        } catch (Exception e) {
+            log.debug(getDriver().getPageSource());
+            throw e;
+        }
+    }
+
+    @Override
+    protected WebElement getElement(By locator, String message) throws Exception {
+        try {
+            return super.getElement(locator, message);
+        } catch (Exception e) {
+            log.debug(getDriver().getPageSource());
+            throw e;
+        }
+    }
+
+    @Override
+    protected WebElement getElement(By locator, String message, int timeoutSeconds) throws Exception {
+        try {
+            return super.getElement(locator, message, timeoutSeconds);
+        } catch (Exception e) {
+            log.debug(getDriver().getPageSource());
+            throw e;
+        }
+    }
+
+    public int countOfLogContain(ListenerType listenerType, String expectedString) throws Exception {
+        final AndroidLogListener dstListener = AndroidLogListener.getInstance(listenerType);
+        Pattern pattern = Pattern.compile(".*\\b" + Pattern.quote(expectedString) + "\\b.*");
+        Matcher matcher = pattern.matcher(dstListener.getStdOut());
+        int count;
+        for (count = 0; matcher.find(); count++) ;
+        return count;
+    }
+
+    public void logUIAutomatorSource() throws Exception {
+        log.info(UIAutomatorDriver.getUIDump());
     }
 }

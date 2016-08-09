@@ -1,9 +1,9 @@
 package com.wearezeta.auto.osx.steps;
 
-import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
+import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.steps.CallPageSteps;
@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
+
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
@@ -124,8 +125,7 @@ public class CallingSteps {
     @When("(.*) starts? instances? using (.*)$")
     public void UserXStartsInstance(String callees,
             String callingServiceBackend) throws Exception {
-        commonCallingSteps.startInstances(splitAliases(callees),
-                callingServiceBackend);
+        commonCallingSteps.startInstances(splitAliases(callees), callingServiceBackend, "OSX_Wrapper", ZetaFormatter.getScenario());
     }
 
     /**
@@ -177,8 +177,8 @@ public class CallingSteps {
     public void UserXVerifesHavingXFlows(String callees) throws Exception {
         for (String callee : splitAliases(callees)) {
             for (Flow flow : commonCallingSteps.getFlows(callee)) {
-                assertThat("incoming bytes: \n" + flow, flow.getBytesIn(), greaterThan(0L));
-                assertThat("outgoing bytes: \n" + flow, flow.getBytesOut(), greaterThan(0L));
+                assertThat("incoming bytes: \n" + flow, flow.getTelemetry().getStats().getAudio().getBytesReceived(), greaterThan(0L));
+                assertThat("outgoing bytes: \n" + flow, flow.getTelemetry().getStats().getAudio().getBytesSent(), greaterThan(0L));
             }
         }
     }
@@ -259,9 +259,7 @@ public class CallingSteps {
                         LOG.error("Cannot stop call " + i + " " + ex);
                     }
                 }
-                for (String callee : calleeList) {
-                    commonCalling.stopWaitingCall(callee);
-                }
+                commonCalling.stopIncomingCall(calleeList);
                 LOG.info("All instances are stopped");
             } catch (Throwable e) {
                 LOG.error("Can not stop waiting call " + i + " " + e);
@@ -296,14 +294,14 @@ public class CallingSteps {
             String callee, int participantSize) throws Exception {
         UserXVerifesHavingXFlows(callee, participantSize);
         for (Flow flow : commonCallingSteps.getFlows(callee)) {
-            Flow oldFlow = flowMap.get(callee + flow.getRemoteUserId());
+            Flow oldFlow = flowMap.get(callee + flow.getMeta().getRemoteUserId());
             if (oldFlow != null) {
-                assertThat("incoming bytes", flow.getBytesIn(),
-                        greaterThan(oldFlow.getBytesIn()));
-                assertThat("outgoing bytes", flow.getBytesOut(),
-                        greaterThan(oldFlow.getBytesOut()));
+                assertThat("incoming bytes", flow.getTelemetry().getStats().getAudio().getBytesReceived(),
+                        greaterThan(oldFlow.getTelemetry().getStats().getAudio().getBytesReceived()));
+                assertThat("outgoing bytes", flow.getTelemetry().getStats().getAudio().getBytesSent(),
+                        greaterThan(oldFlow.getTelemetry().getStats().getAudio().getBytesSent()));
             }
-            flowMap.put(callee + flow.getRemoteUserId(), flow);
+            flowMap.put(callee + flow.getMeta().getRemoteUserId(), flow);
         }
     }
 }

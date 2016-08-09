@@ -394,7 +394,6 @@ Feature: Conversation View
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     And I open conversation with <Contact>
-    When I hover ping button
     Then I see correct ping button tooltip
     When I type shortcut combination to ping
     Then I see <PING> action in conversation
@@ -403,25 +402,6 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | PING       |
       | user1Email | user1Password | user1Name | user2Name | you pinged |
 
-  @C1795 @regression
-  Scenario Outline: Verify you start a call in a conversation when you press ⌥ ⌘ R (Mac) or alt + ctrl + R (Win)
-    Given My browser supports calling
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    And I am signed in properly
-    And I open conversation with <Contact>
-    And I see calling button
-    When I hover call button
-    Then I see correct call button tooltip
-    When I type shortcut combination to start a call
-    Then I see the outgoing call controls for conversation <Contact>
-
-    Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
-
   @C111934 @regression
   Scenario Outline: Verify conversation scrolls to first unread message while being online
     Given There are 2 users where <Name> is me
@@ -429,7 +409,6 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I disable ad banner
     And I am signed in properly
     When I open conversation with <Contact>
     And Contact <Contact> sends 35 messages with prefix <READ> via device Device1 to user <Name>
@@ -449,7 +428,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | READ | UNREAD |
       | user1Email | user1Password | user1Name | user2Name | Read | Unread |
 
-  @C149662 @staging
+  @C149662 @regression @WEBAPP-2921
   Scenario Outline: Verify maximum character limit dialog is shown when want to send a very long text message to group conversation
     Given I switch to Sign In page
     Given I Sign in temporary using login <Login> and password <Password>

@@ -1,6 +1,6 @@
 Feature: Copy/Delete Message
 
-  @C119753 @regression
+  @C119753 @regression @fastLogin
   Scenario Outline: Verify copy/delete menu disappears on the rotation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -18,7 +18,7 @@ Feature: Copy/Delete Message
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C145958 @regression
+  @C145958 @rc @regression @fastLogin
   Scenario Outline: Delete Message. Verify deleting a picture [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

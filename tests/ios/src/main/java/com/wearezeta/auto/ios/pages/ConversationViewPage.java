@@ -10,9 +10,11 @@ import java.util.stream.Collectors;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
+import com.wearezeta.auto.common.sync_engine_bridge.Constants;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.ios.IOSElement;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -60,6 +62,9 @@ public class ConversationViewPage extends IOSPage {
 
     private static final Function<String, String> xpathStrMessageByTextPart = text ->
             String.format("%s[contains(@value, '%s')]", xpathStrAllTextMessages, text);
+
+    private static final Function<String, String> xpathStrMessageByExactText = text ->
+            String.format("%s[@value='%s']", xpathStrAllTextMessages, text);
 
     private static final Function<String, String> xpathStrMessageCellByTextPart = text ->
             String.format("%s[contains(@value, '%s')]/parent::*", xpathStrAllTextMessages, text);
@@ -118,6 +123,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameFileTransferButton = MobileBy.AccessibilityId("uploadFileButton");
     private static final By nameVideoMessageButton = MobileBy.AccessibilityId("videoButton");
     private static final By nameAudioMessageButton = MobileBy.AccessibilityId("audioButton");
+    private static final By nameShareLocationButton = MobileBy.AccessibilityId("locationButton");
 
     private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[./UIAButton[@name='Back']]";
     private static final By xpathConversationViewTopBar = By.xpath(xpathStrConversationViewTopBar);
@@ -126,14 +132,12 @@ public class ConversationViewPage extends IOSPage {
     private static Function<String, String> xpathStrToolbarByExpr = expr ->
             String.format("%s/UIAButton[%s]", xpathStrConversationViewTopBar, expr);
 
+    private static final By nameEllipsisButton = MobileBy.AccessibilityId("showOtherRowButton");
     private static final By xpathAudioCallButton = MobileBy.AccessibilityId("audioCallBarButton");
     private static final By xpathVideoCallButton = MobileBy.AccessibilityId("videoCallBarButton");
     private static final By xpathConversationDetailsButton = By.xpath(xpathStrConversationViewTopBar +
             "/UIAButton[@name='Back']/following-sibling::" +
             "UIAButton[not(@name='ConversationBackButton') and boolean(string(@label))]");
-
-    private final By[] inputTools = new By[]{namePingButton, nameCursorSketchButton, nameAddPictureButton,
-            nameFileTransferButton};
 
     private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("Too many people to call");
 
@@ -189,12 +193,23 @@ public class ConversationViewPage extends IOSPage {
     private static final Function<Integer, String> xpathStrAudioActionButtonByIndex = index ->
             String.format("(//*[@name='%s'])[%s]", strNameAudioActionButton, index);
 
-    private static final Function<String, String> placeholderAudioMessageButtonState = buttonState ->
-            String.format("//UIAButton[@name='%s' and @value='%s']", strNameAudioActionButton, buttonState);
-
     private static final FunctionFor2Parameters<String, String, Integer> placeholderAudioMessageButtonStateByIndex =
             (buttonState, index) ->
-            String.format("(//UIAButton[@name='%s'])[%s][@value='%s']", strNameAudioActionButton, index, buttonState);
+                    String.format("(//UIAButton[@name='%s'])[%s][@value='%s']", strNameAudioActionButton, index, buttonState);
+
+    private static final By classNameShareLocationContainer = MobileBy.className("UIAMapView");
+
+    private static final By nameDefaultRecievedLocationAddress = MobileBy.AccessibilityId(Constants.DEFAULT_GMAP_ADDRESS);
+
+    private static final By nameDefaultSentLocationAddress = MobileBy.AccessibilityId("1800 Ellis St, San Francisco, CA  94102");
+
+    private static final By xpathDefaultMapApplication = By.xpath("//UIAApplication[@name='Maps']");
+
+    private static final By nameLinkPreviewSource = MobileBy.AccessibilityId("linkPreviewSource");
+
+    private static final By nameLinkPreviewImage = MobileBy.AccessibilityId("linkPreviewImage");
+
+    private static final int MAX_APPEARANCE_TIME = 20;
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -412,10 +427,6 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathMediaContainerCell);
     }
 
-    public boolean isMediaContainerInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), xpathMediaContainerCell);
-    }
-
     public boolean isMediaBarDisplayed() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameTitle);
     }
@@ -450,31 +461,31 @@ public class ConversationViewPage extends IOSPage {
 
     private static final long KEYBOARD_OPEN_ANIMATION_DURATION = 5500; // milliseconds
 
-    public void typeAndSendConversationMessage(String message) throws Exception {
+    public void typeMessage(String message, boolean shouldSend) throws Exception {
         final WebElement convoInput = getElement(nameConversationInput,
                 "Conversation input is not visible after the timeout");
-        convoInput.click();
-        // Wait for animation
-        Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            inputStringFromKeyboard(convoInput, message, true);
+        final boolean wasKeyboardInvisible = this.isKeyboardInvisible(2);
+        if (wasKeyboardInvisible) {
+            convoInput.click();
+            // Wait for keyboard opening animation
+            Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
+        }
+        if (shouldSend) {
+            if (wasKeyboardInvisible) {
+                // This is faster and allows to avoid autocorrection, but does not update input cursor position properly
+                ((IOSElement) convoInput).setValue(message);
+            } else {
+                // to keep the existing stuff inside the input field
+                convoInput.sendKeys(message);
+            }
+            this.tapKeyboardCommitButton();
         } else {
             convoInput.sendKeys(message);
-            this.clickKeyboardCommitButton();
         }
     }
 
     public void typeMessage(String message) throws Exception {
-        final WebElement convoInput = getElement(nameConversationInput,
-                "Conversation input is not visible after the timeout");
-        convoInput.click();
-        // Wait for animation
-        Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            inputStringFromKeyboard(convoInput, message, false);
-        } else {
-            convoInput.sendKeys(message);
-        }
+        typeMessage(message, false);
     }
 
     public void clickOnPlayVideoButton() throws Exception {
@@ -500,21 +511,8 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGiphyImage);
     }
 
-    public void tapHoldImage() {
-        try {
-            this.getDriver().tap(1, getElement(xpathLastImageCell), 1000);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void tapHoldImageWithRetry() throws Exception {
-        for (int i = 0; i < 3; i++) {
-            tapHoldImage();
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEditingItemDelete, 5)) {
-                break;
-            }
-        }
+    public void longTapImage() throws Exception {
+        this.getDriver().tap(1, getElement(xpathLastImageCell), DriverUtils.LONG_TAP_DURATION);
     }
 
     public boolean isUserAvatarNextToInputVisible() throws Exception {
@@ -566,21 +564,11 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean areInputToolsVisible() throws Exception {
-        for (By inputTool : inputTools) {
-            if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), inputTool, 2)) {
-                return false;
-            }
-        }
-        return true;
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameVideoMessageButton);
     }
 
     public boolean areInputToolsInvisible() throws Exception {
-        for (By inputTool : inputTools) {
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), inputTool, 2)) {
-                return false;
-            }
-        }
-        return true;
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameVideoMessageButton);
     }
 
     public boolean isMissedCallButtonVisibleFor(String username) throws Exception {
@@ -645,21 +633,44 @@ public class ConversationViewPage extends IOSPage {
                 return nameVideoMessageButton;
             case "audio message":
                 return nameAudioMessageButton;
+            case "share location":
+                return nameShareLocationButton;
             default:
                 throw new IllegalArgumentException(String.format("Unknown input tools button name %s", btnName));
         }
     }
 
     public boolean isInputToolButtonByNameVisible(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getInputToolButtonByName(name));
+        final By locator = getInputToolButtonByName(name);
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator)) {
+            return true;
+        } else {
+            DriverUtils.tapOnPercentOfElement(getDriver(), getElement(nameEllipsisButton), 50, 50);
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
+        }
     }
 
     public boolean isInputToolButtonByNameNotVisible(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), getInputToolButtonByName(name));
+        final By locator = getInputToolButtonByName(name);
+        if (DriverUtils.waitUntilLocatorDissapears(getDriver(), locator) &&
+                DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEllipsisButton)) {
+            return true;
+        } else {
+            DriverUtils.tapOnPercentOfElement(getDriver(), getElement(nameEllipsisButton), 50, 50);
+            return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3);
+        }
     }
 
+    private boolean isTestImageUploaded = false;
+
     public void tapInputToolButtonByName(String name) throws Exception {
-        getElement(getInputToolButtonByName(name)).click();
+        final By locator = getInputToolButtonByName(name);
+        if (locator.equals(nameAddPictureButton) && !isTestImageUploaded &&
+                CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            IOSSimulatorHelper.uploadImage();
+            isTestImageUploaded = true;
+        }
+        locateCursorToolButton(locator).click();
     }
 
     public boolean waitUntilDownloadReadyPlaceholderVisible(String expectedFileName, String expectedSize,
@@ -733,40 +744,35 @@ public class ConversationViewPage extends IOSPage {
         DriverUtils.tapOnPercentOfElement(getDriver(), lastMessage, 10, 50, 1000);
     }
 
-    public void tapAndHoldMediaContainer() throws Exception {
+    public void longTapMediaContainer() throws Exception {
         this.getDriver().tap(1, getElement(xpathMediaContainerCell), DriverUtils.LONG_TAP_DURATION);
     }
 
-    public void tapAndHoldFileTransferPlaceholder() throws Exception {
+    public void longTapFileTransferPlaceholder() throws Exception {
         this.getDriver().tap(1, getElement(nameFileTransferTopLabel), DriverUtils.LONG_TAP_DURATION);
     }
 
-    public boolean isVideoMessageContainerVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameVideoMessageActionButton);
-    }
-
-    public void tapVideoMessageContainerButton() throws Exception {
-        getElement(nameVideoMessageActionButton).click();
+    private WebElement locateCursorToolButton(By locator) throws Exception {
+        final Optional<WebElement> toolButton = getElementIfDisplayed(locator, 3);
+        if (toolButton.isPresent()) {
+            return toolButton.get();
+        } else {
+            DriverUtils.tapOnPercentOfElement(getDriver(), getElement(nameEllipsisButton), 50, 50);
+            return getElement(locator);
+        }
     }
 
     public void longTapInputToolButtonByName(String btnName, boolean shouldKeepTap) throws Exception {
+        final WebElement dstElement = locateCursorToolButton(getInputToolButtonByName(btnName));
         if (shouldKeepTap) {
-            new TouchAction(getDriver()).press(getElement(getInputToolButtonByName(btnName))).perform();
+            new TouchAction(getDriver()).press(dstElement).perform();
         } else {
-            getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), DriverUtils.LONG_TAP_DURATION);
+            getDriver().tap(1, dstElement, DriverUtils.LONG_TAP_DURATION);
         }
     }
 
     public void longTapWithDurationInputToolButtonByName(String btnName, int durationSeconds) throws Exception {
-        getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), durationSeconds * 1000);
-    }
-
-    public boolean isAudioMessageRecordCancelVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAudioRecorderCancelButton);
-    }
-
-    public boolean isAudioMessageRecordCancelInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameAudioRecorderCancelButton);
+        getDriver().tap(1, locateCursorToolButton(getInputToolButtonByName(btnName)), durationSeconds * 1000);
     }
 
     private By getRecordControlButtonByName(String buttonName) {
@@ -778,20 +784,17 @@ public class ConversationViewPage extends IOSPage {
             case "play":
                 return namePlayAudioRecorderButton;
             default:
-                throw new IllegalArgumentException("Not know record control button");
+                throw new IllegalArgumentException(String.format("Button '%s' is not known as a record control button", buttonName));
         }
     }
 
     public void tapRecordControlButton(String buttonName) throws Exception {
-        getElement(getRecordControlButtonByName(buttonName)).click();
-    }
-
-    public boolean isAudioActionButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAudioActionButton);
-    }
-
-    public boolean isAudioActionButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameAudioActionButton);
+        By button = getRecordControlButtonByName(buttonName);
+        if (button.equals(namePlayAudioRecorderButton)) {
+            getElement(button).click();
+        } else {
+            clickElementWithRetryIfStillDisplayed(button);
+        }
     }
 
     public void tapVideoMessageContainer(String username) throws Exception {
@@ -802,11 +805,15 @@ public class ConversationViewPage extends IOSPage {
     public void tapAudioRecordWaitAndSwipe(int swipeDelaySeconds) throws Exception {
         WebElement recordAudioMessageBtn = getElement(nameAudioMessageButton);
         int y = getElement(nameConversationInput).getLocation().getY() - recordAudioMessageBtn.getLocation().getY();
-        new TouchAction(getDriver()).press(recordAudioMessageBtn).waitAction(swipeDelaySeconds * 1000).moveTo(0, 2 * y).release
-                ().perform();
+        new TouchAction(getDriver()).press(recordAudioMessageBtn)
+                .waitAction(swipeDelaySeconds * 1000)
+                .moveTo(0, 3 * y)
+                .waitAction(1000)
+                .release()
+                .perform();
     }
 
-    public void tapAndHoldAudioMessage() throws Exception {
+    public void longTapAudioMessage() throws Exception {
         this.getDriver().tap(1, getElement(nameAudioActionButton), DriverUtils.LONG_TAP_DURATION);
     }
 
@@ -817,6 +824,18 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapPlayAudioMessageButton() throws Exception {
         getElement(nameAudioActionButton).click();
+    }
+
+    public void longTapLocationContainer() throws Exception {
+        this.getDriver().tap(1, getElement(classNameShareLocationContainer), DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public void tapLocationContainer() throws Exception {
+        getElement(classNameShareLocationContainer).click();
+    }
+
+    public void longTapLinkPreviewContainer() throws Exception {
+        this.getDriver().tap(1, getElement(nameLinkPreviewSource), DriverUtils.LONG_TAP_DURATION);
     }
 
     public BufferedImage getPlayAudioMessageButtonScreenshot(int placeholderIndex) throws Exception {
@@ -848,11 +867,6 @@ public class ConversationViewPage extends IOSPage {
         return getElement(nameAudioPlaceholderTimeLabel).getAttribute("value");
     }
 
-    public boolean isPlaceholderAudioMessageButtonState(String buttonState) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(placeholderAudioMessageButtonState.apply
-                (buttonState)));
-    }
-
     public boolean isPlaceholderAudioMessageButtonState(String buttonState, int index) throws Exception {
         final By locator = By.xpath(placeholderAudioMessageButtonStateByIndex.apply(buttonState, index));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
@@ -880,5 +894,71 @@ public class ConversationViewPage extends IOSPage {
     public boolean isRecordControlButtonState(String buttonState) throws Exception {
         final By locator = By.xpath(recordControlButtonWithState.apply(buttonState));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isDefaultReceivedShareLocationAddressVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultRecievedLocationAddress);
+    }
+
+    public boolean isDefaultReceivedShareLocationAddressNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDefaultRecievedLocationAddress);
+    }
+
+    public boolean isDefaultSentShareLocationAddressVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultSentLocationAddress);
+    }
+
+    public boolean isDefaultSentShareLocationAddressNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultSentLocationAddress);
+    }
+
+    public boolean isDefaultMapApplicationVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathDefaultMapApplication, 15);
+    }
+
+    private By getContainerIdentifier(String name) {
+        switch (name.toLowerCase()) {
+            case "media":
+                return xpathMediaContainerCell;
+            case "video message":
+                return nameVideoMessageActionButton;
+            case "audio message recorder":
+                return nameAudioRecorderCancelButton;
+            case "audio message":
+                return nameAudioActionButton;
+            case "location map":
+                return classNameShareLocationContainer;
+            case "link preview":
+                return nameLinkPreviewSource;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown container %s", name));
+        }
+    }
+
+    public boolean isContainerVisible(String name) throws Exception {
+        final By locator = getContainerIdentifier(name);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, MAX_APPEARANCE_TIME);
+    }
+
+    public boolean isContainerInvisible(String name) throws Exception {
+        final By locator = getContainerIdentifier(name);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public boolean isLinkPreviewImageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameLinkPreviewImage);
+    }
+
+    public boolean isLinkPreviewImageInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameLinkPreviewImage);
+    }
+
+    public boolean isFileTransferMenuItemVisible(String itemName) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), MobileBy.AccessibilityId(itemName), MAX_APPEARANCE_TIME);
+    }
+
+    public int getMessageHeight(String msg) throws Exception {
+        final By locator = By.xpath(xpathStrMessageByExactText.apply(msg));
+        return getElement(locator).getSize().getHeight();
     }
 }

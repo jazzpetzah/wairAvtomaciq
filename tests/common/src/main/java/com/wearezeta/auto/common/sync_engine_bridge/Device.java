@@ -261,6 +261,27 @@ class Device extends RemoteEntity implements IDevice {
     }
 
     @Override
+    public void shareLocation(String convId, float lon, float lat, String address, int zoom) throws Exception {
+        try {
+            askActor(this.ref(), new ActorMessage.SendLocation(new RConvId(convId), lon, lat, address,
+                    zoom));
+        } catch (TimeoutException e) {
+            // recreate process and retry
+            respawn();
+            if (hasLoggedInUser()) {
+                logInWithUser(this.loggedInUser.get());
+                askActor(this.ref(), new ActorMessage.SendLocation(new RConvId(convId), lon, lat, address, zoom));
+            }
+        }
+    }
+
+    @Override
+    public void shareLocation(String convId) throws Exception {
+        shareLocation(convId, Constants.DEFAULT_GMAP_LON, Constants.DEFAULT_GMAP_LAT, Constants.DEFAULT_GMAP_ADDRESS,
+                Constants.DEFAULT_GMAP_ZOOM_LEVEL);
+    }
+
+    @Override
     public String getId() throws Exception {
         if (!this.id.isPresent()) {
             Object resp;

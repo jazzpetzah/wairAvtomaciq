@@ -22,7 +22,7 @@ public class WelcomePage extends AndroidPage {
 
     private static final By xpathSignInTab = By.xpath("//*[@id='til__app_entry']//*[*][1]");
 
-    private static final By idWelcomeSlogan = By.id("tv__welcome__terms_of_service");
+    private static final By idScreenRoot = By.id("fl_main_content");
 
     private static final By idAreaCodeSelector = By.id("tv__country_code");
 
@@ -51,7 +51,7 @@ public class WelcomePage extends AndroidPage {
     }
 
     public boolean waitForInitialScreen() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idWelcomeSlogan, 30);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idScreenRoot, 30);
     }
 
     public void clickAreaCodeSelector() throws Exception {

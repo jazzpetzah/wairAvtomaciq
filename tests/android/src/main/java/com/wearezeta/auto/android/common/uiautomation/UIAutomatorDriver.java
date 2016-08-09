@@ -41,7 +41,7 @@ public class UIAutomatorDriver {
         }
     }
 
-    private static String getUIDump() throws Exception {
+    public static String getUIDump() throws Exception {
         AndroidCommonUtils.getAdbOutput(String.format("shell uiautomator dump %s", DUMP_LOCATION));
         return AndroidCommonUtils.getAdbOutput(String.format("shell cat %s", DUMP_LOCATION));
     }

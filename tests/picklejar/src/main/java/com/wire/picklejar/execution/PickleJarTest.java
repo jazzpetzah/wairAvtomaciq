@@ -2,6 +2,7 @@ package com.wire.picklejar.execution;
 
 import static com.wire.picklejar.Config.SCREENSHOT_PATH;
 import com.wire.picklejar.PickleJar;
+import java.awt.*;
 import java.util.List;
 import java.util.Map;
 import com.wire.picklejar.PickleJarJUnitProvider;
@@ -10,6 +11,9 @@ import com.wire.picklejar.gherkin.model.Feature;
 import com.wire.picklejar.gherkin.model.Scenario;
 import com.wire.picklejar.gherkin.model.Step;
 import com.wire.picklejar.gherkin.model.Tag;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,6 +22,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import javax.imageio.ImageIO;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -28,7 +33,7 @@ import org.slf4j.LoggerFactory;
 
 public abstract class PickleJarTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PickleJarTest.class.getSimpleName());
+    protected static final Logger LOG = LoggerFactory.getLogger(PickleJarTest.class.getSimpleName());
 
     static final Map<Feature, List<Scenario>> FEATURE_SCENARIO_MAP = new ConcurrentHashMap<>();
     private static final AtomicInteger TEST_COUNTER = new AtomicInteger(0);
@@ -43,6 +48,9 @@ public abstract class PickleJarTest {
     private final Feature reportFeature;
     private final Scenario reportScenario;
     private final List<Step> reportSteps = new ArrayList<>();
+
+    private static final int MAX_SCREENSHOT_WIDTH = 1440;
+    private static final int MAX_SCREENSHOT_HEIGHT = 800;
 
     protected PickleJarTest(String feature, String testcase, Integer exampleNum, List<String> steps,
             Map<String, String> exampleRow, List<String> tags)
@@ -65,12 +73,16 @@ public abstract class PickleJarTest {
 
     @BeforeClass
     protected static void setUpClass() throws Exception {
-        LOG.info("### Before full testrun");
     }
 
     @Before
     protected void setUp() throws Exception {
         LOG.info("### Before testcase Count: {}", TEST_COUNTER.incrementAndGet());
+        LOG.info("\n"
+                + ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\n"
+                + "::          [{} {}: {}]\n"
+                + "''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''", 
+                new Object[]{tags, feature, testcase});
         pickle.reset();
         List<Scenario> scenariosForFeature = FEATURE_SCENARIO_MAP.getOrDefault(reportFeature, new ArrayList<>());
         scenariosForFeature.add(reportScenario);
@@ -79,7 +91,6 @@ public abstract class PickleJarTest {
 
     @Test
     protected void test() throws Throwable {
-        LOG.info("Executing {}: {}", new Object[]{feature, testcase});
     }
 
     @After
@@ -90,14 +101,19 @@ public abstract class PickleJarTest {
 
     @AfterClass
     protected static void tearDownClass() throws Exception {
-        LOG.info("### After full testrun");
     }
 
     protected void saveScreenshot(Step step, byte[] screenshot) throws IOException {
         final String featureName = reportFeature.getName().replaceAll("[^a-zA-Z0-9]", "_");
-        final String scenarioName = reportScenario.getName().replaceAll("[^a-zA-Z0-9]", "_");
         
-        // QUICKFIX: cucumber does not replace characters like " with _ but just removes them beforehand
+        // cucumber does not replace characters like " with _ but just removes them beforehand
+        // needs more investigation what characters are removed and which are replaced by _
+        // known removed characters are: ', ", !
+        String scenarioName = reportScenario.getName().replaceAll("[\"!,']", "");
+        scenarioName = scenarioName.replaceAll("[^a-zA-Z0-9]", "_");
+        scenarioName = scenarioName.replaceAll("__", "_").replaceAll("__", "_");
+        
+        // cucumber does not replace characters like " with _ but just removes them beforehand
         // needs more investigation what characters are removed and which are replaced by _
         // known removed characters are: ', ", !
         String stepName = step.getName().replaceAll("[\"!']", "");
@@ -113,7 +129,44 @@ public abstract class PickleJarTest {
             index++;
             desiredPicture = Paths.get(path.toString(), stepName + "_" + index + ".png");
         }
+        screenshot = adjustScreenshotSize(screenshot, MAX_SCREENSHOT_WIDTH, MAX_SCREENSHOT_HEIGHT);
         Files.write(desiredPicture, screenshot);
+    }
+
+    private byte[] adjustScreenshotSize (byte[] screenshot, final int maxWidth, final int maxHeight) throws IOException {
+        BufferedImage imgScreenshot =  ImageIO.read(new ByteArrayInputStream(screenshot));
+        try {
+            imgScreenshot = scaleTo(imgScreenshot, maxWidth, maxHeight);
+        } catch (IOException e){}
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(imgScreenshot, "png", baos);
+        return baos.toByteArray();
+    }
+
+    private static BufferedImage scaleTo(BufferedImage originalImage, final int maxWidth, final int maxHeight) throws IOException {
+        final int height = originalImage.getHeight();
+        final int width = originalImage.getWidth();
+        float resizeRatio = 1;
+        if (width > maxWidth || height > maxHeight) {
+            final float resizeRatioW1 = (float) maxWidth / width;
+            final float resizeRatioW2 = (float) maxWidth / height;
+            final float resizeRatioH1 = (float) maxHeight / width;
+            final float resizeRatioH2 = (float) maxHeight / height;
+            float resizeRatioH = (resizeRatioH1 < resizeRatioH2) ? resizeRatioH1 : resizeRatioH2;
+            float resizeRatioW = (resizeRatioW1 < resizeRatioW2) ? resizeRatioW1 : resizeRatioW2;
+            final float resizeRatioLimitedW = (resizeRatioH > resizeRatioW) ? resizeRatioH : resizeRatioW;
+            resizeRatioH = (resizeRatioH1 > resizeRatioH2) ? resizeRatioH1 : resizeRatioH2;
+            resizeRatioW = (resizeRatioW1 > resizeRatioW2) ? resizeRatioW1 : resizeRatioW2;
+            final float resizeRatioLimitedH = (resizeRatioH < resizeRatioW) ? resizeRatioH : resizeRatioW;
+            resizeRatio = (resizeRatioLimitedW < resizeRatioLimitedH) ? resizeRatioLimitedW : resizeRatioLimitedH;
+        }
+        final int scaledW = Math.round(width * resizeRatio);
+        final int scaledH = Math.round(height * resizeRatio);
+        BufferedImage resizedImage = new BufferedImage(scaledW, scaledH, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = resizedImage.createGraphics();
+        g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
+        g2d.drawImage(originalImage, 0, 0, scaledW, scaledH, null);
+        return resizedImage;
     }
 
     protected PickleJar getPickle() {

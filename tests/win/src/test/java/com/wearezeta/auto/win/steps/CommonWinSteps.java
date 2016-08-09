@@ -3,7 +3,6 @@ package com.wearezeta.auto.win.steps;
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import org.apache.log4j.Logger;
 import com.wearezeta.auto.common.CommonSteps;
-import static com.wearezeta.auto.common.CommonUtils.executeOsXCommand;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -21,8 +20,10 @@ import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.steps.CommonWebAppSteps;
 
 import static com.wearezeta.auto.web.steps.CommonWebAppSteps.log;
+import com.wearezeta.auto.win.common.WinCommonUtils;
 import static com.wearezeta.auto.win.common.WinCommonUtils.clearAppData;
 import static com.wearezeta.auto.win.common.WinCommonUtils.killAllApps;
+import static com.wearezeta.auto.win.common.WinExecutionContext.KEEP_DATABASE;
 import static com.wearezeta.auto.win.common.WinExecutionContext.WINIUM_URL;
 import static com.wearezeta.auto.win.common.WinExecutionContext.WIRE_APP_FOLDER;
 import static com.wearezeta.auto.win.common.WinExecutionContext.WIRE_APP_PATH;
@@ -76,7 +77,9 @@ public class CommonWinSteps {
     public void setUp() throws Exception {
         try {
             killAllApps();
-            clearAppData();
+            if (!KEEP_DATABASE) {
+                clearAppData();
+            }
         } catch (Exception e) {
             LOG.error(e);
         }
@@ -755,11 +758,9 @@ public class CommonWinSteps {
      */
     @Then("^I verify app has quit$")
     public void IVerifyAppHasQuit() throws Exception {
-        final String[] commands = new String[]{"cmd", "/c",
-            String.format("taskkill /im %s", "Wire.exe")};
-        int exitCode = executeOsXCommand(commands);
+        int exitCode = WinCommonUtils.killOnlyWire();
         // 128 is the error code of the taskkill command for 'no such process'
-        assertEquals(128, exitCode);
+        assertEquals(String.format("The kill command found a process to kill and exited with code '%d'", exitCode), 128, exitCode);
     }
 
     /**

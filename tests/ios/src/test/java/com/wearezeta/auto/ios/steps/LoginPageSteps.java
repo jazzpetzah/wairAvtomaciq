@@ -62,12 +62,12 @@ public class LoginPageSteps {
 
     private void emailLoginSequence(String login, String password) throws Exception {
         getLoginPage().switchToLogin();
-        // TODO: skip the whole login flow when using Fast log in option
-        if (!FastLoginContainer.getInstance().isEnabled()) {
-            getLoginPage().setLogin(login);
-            getLoginPage().setPassword(password);
-            getLoginPage().clickLoginButton();
+        if (FastLoginContainer.getInstance().isEnabled()) {
+            return;
         }
+        getLoginPage().setLogin(login);
+        getLoginPage().setPassword(password);
+        getLoginPage().clickLoginButton();
         getLoginPage().waitForLoginToFinish();
         getLoginPage().acceptAlertIfVisible(5);
         getFirstTimeOverlayPage().acceptIfVisible(2);
@@ -170,8 +170,7 @@ public class LoginPageSteps {
     @Given("^I sign in using my email or phone number$")
     public void GivenISignInUsingEmailOrPhone() throws Exception {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
-        if (rand.nextInt(100) < BY_PHONE_NUMBER_LOGIN_PROBABILITY &&
-                !FastLoginContainer.getInstance().isEnabled()) {
+        if (!FastLoginContainer.getInstance().isEnabled() && rand.nextInt(100) < BY_PHONE_NUMBER_LOGIN_PROBABILITY) {
             phoneLoginSequence(self.getPhoneNumber());
         } else {
             emailLoginSequence(self.getEmail(), self.getPassword());

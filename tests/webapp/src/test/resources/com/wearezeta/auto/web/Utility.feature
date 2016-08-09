@@ -158,6 +158,8 @@ Feature: Utility
     When I enter email "<Email>"
     And I enter password "<NewPassword>"
     And I press Sign In button
+    And I see the history info page
+    And I click confirm on history info page
     Then I am signed in properly
 
     Examples:

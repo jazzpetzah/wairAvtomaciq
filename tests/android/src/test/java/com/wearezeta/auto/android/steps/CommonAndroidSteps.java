@@ -123,10 +123,6 @@ public class CommonAndroidSteps {
         AndroidCommonUtils.disableHockeyUpdates();
         AndroidCommonUtils.installTestingGalleryApp(CommonAndroidSteps.class);
         AndroidCommonUtils.installClipperApp(CommonAndroidSteps.class);
-        // FIXME: This is handled by TestingGallery now
-        final String backendJSON =
-                AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidSteps.class));
-        AndroidCommonUtils.deployBackendFile(backendJSON);
         return null;
     }
 
@@ -236,10 +232,12 @@ public class CommonAndroidSteps {
 
         isAutoAnswerCallEnabled = scenario.getSourceTagNames().contains("@calling_autoAnswer");
 
+        if (scenario.getSourceTagNames().contains("@performance")) {
+            AndroidLogListener.getInstance(ListenerType.PERF).start();
+        } else if (scenario.getSourceTagNames().contains("@analytics")) {
+            AndroidLogListener.getInstance(ListenerType.ANALYTICS).start();
+        }
         if (isLogcatEnabled) {
-            if (scenario.getSourceTagNames().contains("@performance")) {
-                AndroidLogListener.getInstance(ListenerType.PERF).start();
-            }
             AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
         }
 
@@ -249,6 +247,61 @@ public class CommonAndroidSteps {
         }
         final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath);
         updateDriver(lazyDriver);
+    }
+
+    @After
+    public void tearDown(Scenario scenario) {
+        try {
+            AndroidCommonUtils.setAirplaneMode(false);
+        } catch (Exception e) {
+            // do not fail if smt fails here
+            e.printStackTrace();
+        }
+
+        try {
+            // async calls/waiting instances cleanup
+            CommonCallingSteps2.getInstance().cleanup();
+        } catch (Exception e) {
+            // do not fail if smt fails here
+            e.printStackTrace();
+        }
+
+        pagesCollection.clearAllPages();
+
+        try {
+            if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Clear all contacts in address book
+        try {
+            AndroidCommonUtils.clearAllContacts();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            usrMgr.resetUsers();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        LoggingProfile loggingProfile = new RegressionPassedLoggingProfile();
+        if (!scenario.getStatus().equals(Result.PASSED)) {
+            loggingProfile = new RegressionFailedLoggingProfile();
+        }
+        if (isLogcatEnabled) {
+            try {
+                AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener.getInstance(ListenerType.DEFAULT),
+                        loggingProfile);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        AndroidLogListener.forceStopAll();
     }
 
     private void updateDriver(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
@@ -421,7 +474,7 @@ public class CommonAndroidSteps {
      * @step. ^I take screenshot$
      */
     @When("^I take screenshot$")
-    public void WhenITake1stScreenshot() throws Exception {
+    public void ITake1stScreenshot() throws Exception {
         screenState.remember();
     }
 
@@ -446,7 +499,7 @@ public class CommonAndroidSteps {
      * @step. ^I tap on center of screen$
      */
     @When("^I tap on center of screen")
-    public void WhenITapOnCenterOfScreen() throws Throwable {
+    public void ITapOnCenterOfScreen() throws Throwable {
         pagesCollection.getCommonPage().tapByCoordinates(50, 40);
     }
 
@@ -462,7 +515,7 @@ public class CommonAndroidSteps {
         if (shouldBeEqual == null) {
             Assert.assertTrue(
                     String.format("The current screen state seems to be similar to the previous one after %s seconds",
-                            timeoutSeconds), screenState.isChanged(timeoutSeconds, 0.975));
+                            timeoutSeconds), screenState.isChanged(timeoutSeconds, 0.98));
         } else {
             Assert.assertTrue(
                     String.format("The current screen state seems to be different to the previous one after %s seconds",
@@ -478,7 +531,7 @@ public class CommonAndroidSteps {
      * @step. ^(.*) sent connection request to (.*)$
      */
     @Given("^(.*) sent connection request to (.*)$")
-    public void GivenConnectionRequestIsSentTo(String userFromNameAlias, String usersToNameAliases) throws Throwable {
+    public void ConnectionRequestIsSentTo(String userFromNameAlias, String usersToNameAliases) throws Throwable {
         commonSteps.ConnectionRequestIsSentTo(userFromNameAlias, usersToNameAliases);
     }
 
@@ -493,7 +546,7 @@ public class CommonAndroidSteps {
      * @step. ^(.*) has an avatar picture from file (.*)$
      */
     @Given("^(.*) has an avatar picture from file (.*)$")
-    public void GivenUserHasAnAvatarPicture(String name, String picture) throws Exception {
+    public void UserHasAnAvatarPicture(String name, String picture) throws Exception {
         String picturePath = CommonUtils.getImagesPath(CommonAndroidSteps.class) + "/" + picture;
         try {
             name = usrMgr.findUserByNameOrNameAlias(name).getName();
@@ -512,7 +565,7 @@ public class CommonAndroidSteps {
      * @step. ^(.*) has an accent color (.*)$
      */
     @Given("^(.*) has an accent color (.*)$")
-    public void GivenUserHasAnAccentColor(String name, String colorName) throws Throwable {
+    public void UserHasAnAccentColor(String name, String colorName) throws Throwable {
         try {
             name = usrMgr.findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
@@ -530,7 +583,7 @@ public class CommonAndroidSteps {
      * @step. ^(.*) has a name (.*)$
      */
     @Given("^(.*) has a name (.*)$")
-    public void GivenUserHasAName(String name, String newName) throws Throwable {
+    public void UserHasAName(String name, String newName) throws Throwable {
         try {
             name = usrMgr.findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
@@ -768,7 +821,7 @@ public class CommonAndroidSteps {
     @Given("^There (?:are|is) (\\d+) users? where (.*) is me$")
     public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
-        GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
+        UserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
     }
 
     /**
@@ -788,7 +841,7 @@ public class CommonAndroidSteps {
         } else {
             commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
         }
-        GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
+        UserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
     }
 
     /**
@@ -816,7 +869,7 @@ public class CommonAndroidSteps {
     @Given("^User (\\w+) is [Mm]e$")
     public void UserXIsMe(String nameAlias) throws Exception {
         commonSteps.UserXIsMe(nameAlias);
-        GivenUserHasAnAvatarPicture(nameAlias, DEFAULT_USER_AVATAR);
+        UserHasAnAvatarPicture(nameAlias, DEFAULT_USER_AVATAR);
     }
 
     /**
@@ -894,54 +947,6 @@ public class CommonAndroidSteps {
         }
     }
 
-    @After
-    public void tearDown(Scenario scenario) {
-        try {
-            AndroidCommonUtils.setAirplaneMode(false);
-        } catch (Exception e) {
-            // do not fail if smt fails here
-            e.printStackTrace();
-        }
-
-        try {
-            // async calls/waiting instances cleanup
-            CommonCallingSteps2.getInstance().cleanup();
-        } catch (Exception e) {
-            // do not fail if smt fails here
-            e.printStackTrace();
-        }
-
-        pagesCollection.clearAllPages();
-
-        try {
-            if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            usrMgr.resetUsers();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        AndroidLogListener.forceStopAll();
-        LoggingProfile loggingProfile = new RegressionPassedLoggingProfile();
-        if (!scenario.getStatus().equals(Result.PASSED)) {
-            loggingProfile = new RegressionFailedLoggingProfile();
-        }
-        if (isLogcatEnabled) {
-            try {
-                AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener.getInstance(ListenerType.DEFAULT),
-                        loggingProfile);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     /**
      * Rotate device to landscape or portrait
      *
@@ -950,7 +955,7 @@ public class CommonAndroidSteps {
      * @step. ^I rotate UI to (landscape|portrait)$
      */
     @When("^I rotate UI to (landscape|portrait)$")
-    public void WhenIRotateUI(String direction) throws Exception {
+    public void IRotateUI(String direction) throws Exception {
         if (direction.equals("landscape")) {
             pagesCollection.getCommonPage().rotateLandscape();
         } else {
@@ -1012,6 +1017,21 @@ public class CommonAndroidSteps {
         final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
         final PhoneNumber phoneNumber = usrMgr.findUserByNameOrNameAlias(alias).getPhoneNumber();
         AndroidCommonUtils.insertContact(name, email, phoneNumber);
+    }
+
+    /**
+     * Add existed and known contact into Address book
+     *
+     * @param contactName        expected contact name
+     * @param contactPhoneNumber should be phone number without prefix
+     * @param prefix             should be +49 or others with same formate
+     * @throws Exception
+     * @step. ^I add contact with name (.*) and phone (.*) to Address Book$
+     */
+    @Given("^I add name (.*) and phone (.*) with prefix (.*) to Address Book$")
+    public void IAddContactIntoAddressBook(String contactName, String contactPhoneNumber, String prefix) throws Exception {
+        PhoneNumber phoneNumber = new PhoneNumber(prefix, contactPhoneNumber);
+        AndroidCommonUtils.insertContact(contactName, phoneNumber);
     }
 
     /**
@@ -1274,10 +1294,10 @@ public class CommonAndroidSteps {
      * User X delete message from User/Group via specified device
      * Note : The recent message means the recent message sent from specified device by SE, the device should online.
      *
-     * @param userNameAlias
-     * @param convoType
-     * @param dstNameAlias
-     * @param deviceName
+     * @param userNameAlias user name/alias
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  destination user name/alias or group convo name
+     * @param deviceName    source device name. Will be created if does not exist yet
      * @throws Exception
      * @step. ^User (.*) deletes? the recent message from (user|group conversation) (.*) via device (.*)$
      */
@@ -1291,10 +1311,10 @@ public class CommonAndroidSteps {
     /**
      * Remember the recent message Id
      *
-     * @param userNameAlias
-     * @param convoType
-     * @param dstNameAlias
-     * @param deviceName
+     * @param userNameAlias user name/alias
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  destination user name/alias or group convo name
+     * @param deviceName    source device name. Will be created if does not exist yet
      * @throws Exception
      * @step. ^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$
      */
@@ -1309,33 +1329,31 @@ public class CommonAndroidSteps {
     /**
      * Check the rememberd message is changed
      *
-     * @param userNameAlias
-     * @param convoType
-     * @param dstNameAlias
-     * @param deviceName
+     * @param userNameAlias user name/alias
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  destination user name/alias or group convo name
+     * @param deviceName    source device name. Will be created if does not exist yet
      * @throws Exception
      * @step. ^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed$
      */
     @Then("^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed$")
-    public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
-            throws Exception {
+    public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias,
+                                             String deviceName) throws Exception {
         if (recentMessageId.equals(Optional.empty())) {
             throw new IllegalStateException("You should remember the recent message befor you check it");
         }
-
-        boolean isGroup = convoType.equals("group conversation");
-        Optional<String> actualMessageId = commonSteps.UserGetRecentMessageId(userNameAlias, dstNameAlias, deviceName, isGroup);
-
-        Assert.assertTrue(String.format("Remembered message Id should not equal to '%s'", actualMessageId),
-                actualMessageId.get() != recentMessageId.get());
+        final Optional<String> actualMessageId = commonSteps.UserGetRecentMessageId(userNameAlias,
+                dstNameAlias, deviceName, convoType.equals("group conversation"));
+        Assert.assertFalse(String.format("Remembered message Id should not equal to '%s'", actualMessageId),
+                actualMessageId.get().equals(recentMessageId.get()));
     }
 
     /**
      * Verify the downloaded file are saved correctly
      *
-     * @param size
-     * @param fileFullName
-     * @param timeoutSeconds
+     * @param size           the expected file size. 3 MB for example
+     * @param fileFullName   file name with extension
+     * @param timeoutSeconds max seconds to wait until the file appears on the device
      * @throws Exception
      * @step. ^I wait up (\d+) seconds? until (.*) file having name "(.*)" is downloaded to the device$
      */
@@ -1483,17 +1501,18 @@ public class CommonAndroidSteps {
         commonSteps.ThereAreXAdditionalUsers(CURRENT_PLATFORM, count);
     }
 
-    private static final int PUSH_NOTIFICATION_TIMEOUT_SEC = 20;
+    private static final int PUSH_NOTIFICATION_TIMEOUT_SEC = 15;
 
     /**
-     * Verify whether the paricular string is present in Wire push messages
+     * Verify whether the particular string is present in Wire push messages
      *
      * @param expectedMessage the expected push message
+     * @param shouldNotSee    equals to null if the message should be visible
      * @throws Exception
      * @step. ^I see the message "(.*)" in push notifications list$
      */
-    @Then("^I see the message \"(.*)\" in push notifications list$")
-    public void ISeePushMessage(String expectedMessage) throws Exception {
+    @Then("^I (do not )?see the message \"(.*)\" in push notifications list$")
+    public void ISeePushMessage(String shouldNotSee, String expectedMessage) throws Exception {
         boolean isMsgFound = false;
         final Pattern pattern = Pattern.compile("\\b" + Pattern.quote(expectedMessage) + "\\b");
         final long millisecondsStarted = System.currentTimeMillis();
@@ -1506,9 +1525,14 @@ public class CommonAndroidSteps {
             }
             Thread.sleep(500);
         } while (System.currentTimeMillis() - millisecondsStarted <= PUSH_NOTIFICATION_TIMEOUT_SEC * 1000);
-        Assert.assertTrue(String.format("Push message '%s' has not been received within %s seconds timeout OR "
-                        + "TestingGallery app has no access to read push notifications (please check phone settings)",
-                expectedMessage, PUSH_NOTIFICATION_TIMEOUT_SEC), isMsgFound);
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("Push message '%s' has not been received within %s seconds timeout OR "
+                            + "TestingGallery app has no access to read push notifications (please check phone settings)",
+                    expectedMessage, PUSH_NOTIFICATION_TIMEOUT_SEC), isMsgFound);
+        } else {
+            Assert.assertFalse(String.format("Push message '%s' has been received, although it is not expected",
+                    expectedMessage), isMsgFound);
+        }
     }
 
     /**
@@ -1538,5 +1562,80 @@ public class CommonAndroidSteps {
             Assert.assertTrue("Chathead notification is still visible",
                     pagesCollection.getCommonPage().waitUntilChatheadNotificationInvisible());
         }
+    }
+
+    /**
+     * Send location sharing message
+     *
+     * @param userNameAlias sender name/alias
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  user name/alias or group conversation name
+     * @param deviceName    destination device
+     * @throws Exception
+     * @step. ^User (.*) shares? his location to (user|group conversation) (.*) via device (.*)
+     */
+    @When("^User (.*) shares? his location to (user|group conversation) (.*) via device (.*)")
+    public void UserXSharesLocationTo(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
+            throws Exception {
+        commonSteps.UserSharesLocationTo(userNameAlias, dstNameAlias, convoType.equals("group conversation"),
+                deviceName);
+    }
+
+    private static final long LOG_SEARCH_TIMEOUT_MILLIS = 5000;
+
+    /**
+     * Verify whether the particular string is present in the logcat output
+     *
+     * @param logType          one of possible log types. See AndroidLogListener.ListenerType enumeration for more details
+     * @param expectedTimesStr the times of appearance
+     * @param expectedString   the string to verify
+     * @throws Exception
+     * @step. ^I verify that (PERF|ANALYTICS|DEFAULT) log contains string "(.*)"( \d+ times?)?$
+     */
+    @Then("^I verify that (PERF|ANALYTICS|DEFAULT) log contains string \"(.*)\"( \\d+ times?)?$")
+    public void IVerifyLogContains(String logType, String expectedString, String expectedTimesStr) throws Exception {
+        int result;
+        int expectedTimes = (expectedTimesStr == null) ? 1 : Integer.parseInt(expectedTimesStr.replaceAll("[\\D]", ""));
+
+        final long msStarted = System.currentTimeMillis();
+        do {
+            result = pagesCollection.getCommonPage().countOfLogContain(ListenerType.valueOf(logType), expectedString);
+            if (result >= expectedTimes) {
+                break;
+            } else {
+                Thread.sleep(100);
+            }
+        } while (System.currentTimeMillis() - msStarted <= LOG_SEARCH_TIMEOUT_MILLIS);
+
+        Assert.assertTrue(
+                String.format("The %s log does not contain '%s' substring %d times, (actural %d times)",
+                        logType, expectedString, expectedTimes, result), result >= expectedTimes);
+    }
+
+    /**
+     * Rest exist user password
+     *
+     * @param userNmaeAlias name alias of the contact
+     * @throws Exception
+     * @step. ^User (.*) resets password to default$
+     */
+    @When("^User (.*) resets password to \"(.*)\"$")
+    public void UserXRestesPassword(String userNmaeAlias, String newPassword) throws Exception {
+        newPassword = usrMgr.replaceAliasesOccurences(newPassword, ClientUsersManager.FindBy.PASSWORD_ALIAS);
+        commonSteps.UserResetsPassword(userNmaeAlias, newPassword);
+    }
+
+    /**
+     * Add email(s) into address book of a user and upload address book in backend
+     *
+     * @param asUser name of the user where the address book is uploaded
+     * @param emails list of email addresses seperated by comma
+     * @throws Exception
+     * @step. ^User (.*) has (?: emails?|phone numbers?) (.*) in address book$
+     */
+    @Given("^User (.*) has (?:emails?|phone numbers?) (.*) in address book$")
+    public void UserXHasEmailsInAddressBook(String asUser, String contacts)
+            throws Exception {
+        commonSteps.UserXHasContactsInAddressBook(asUser, contacts);
     }
 }

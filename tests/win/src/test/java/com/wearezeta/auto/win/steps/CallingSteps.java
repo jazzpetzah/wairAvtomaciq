@@ -2,6 +2,7 @@ package com.wearezeta.auto.win.steps;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
+import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 
 import cucumber.api.java.en.Then;
@@ -112,8 +113,7 @@ public class CallingSteps {
     @When("(.*) starts? instances? using (.*)$")
     public void UserXStartsInstance(String callees,
             String callingServiceBackend) throws Exception {
-        commonCallingSteps.startInstances(splitAliases(callees),
-                callingServiceBackend);
+        commonCallingSteps.startInstances(splitAliases(callees), callingServiceBackend, "Win_Wrapper", ZetaFormatter.getScenario());
     }
 
     /**
@@ -165,8 +165,8 @@ public class CallingSteps {
     public void UserXVerifesHavingXFlows(String callees) throws Exception {
         for (String callee : splitAliases(callees)) {
             for (Flow flow : commonCallingSteps.getFlows(callee)) {
-                assertThat("incoming bytes: \n" + flow, flow.getBytesIn(), greaterThan(0L));
-                assertThat("outgoing bytes: \n" + flow, flow.getBytesOut(), greaterThan(0L));
+                assertThat("incoming bytes: \n" + flow, flow.getTelemetry().getStats().getAudio().getBytesReceived(), greaterThan(0L));
+                assertThat("outgoing bytes: \n" + flow, flow.getTelemetry().getStats().getAudio().getBytesSent(), greaterThan(0L));
             }
         }
     }

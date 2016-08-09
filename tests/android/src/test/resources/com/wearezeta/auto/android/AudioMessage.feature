@@ -1,27 +1,13 @@
 Feature: Audio Message
 
-  @C131173 @regression @rc @rc42
-  Scenario Outline: Verify hint appears on voice icon tapping
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I tap on contact name <Contact>
-    Then I tap Audio message button from cursor toolbar and see hint message "<HintMessage>"
-
-    Examples:
-      | Name      | Contact   | HintMessage                           |
-      | user1Name | user2Name | Tap and hold to send an audio message |
-
   @C131179 @C131175 @regression @rc @rc42
   Scenario Outline: Verify sending voice message by long tap > swipe up
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When I long tap Audio message cursor button <TapDuration> seconds and swipe up
     Then I see cursor toolbar
     And I see Audio Message container in the conversation view
@@ -36,8 +22,8 @@ Feature: Audio Message
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When I long tap Audio message microphone button <TapDuration> seconds and remember icon
     And I verify the state of audio message microphone button in the conversation view is changed
 
@@ -51,13 +37,13 @@ Feature: Audio Message
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When I long tap Audio message button <TapDuration> seconds from cursor toolbar
-    And I tap on audio message send button
+    And I tap audio recording Send button
     Then I see cursor toolbar
     And I see Audio Message container in the conversation view
-    And I wait for 15 seconds until audio message upload completed
+    And I wait for 25 seconds until audio message upload completed
     When I remember the state of recent audio message seekbar
     And I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
@@ -68,7 +54,7 @@ Feature: Audio Message
 
     Examples:
       | Name      | Contact   | TapDuration |
-      | user1Name | user2Name | 10          |
+      | user1Name | user2Name | 15          |
 
   @C131188 @regression @rc
   Scenario Outline: Verify getting a chathead when voice message is sent in the other conversation
@@ -76,8 +62,8 @@ Feature: Audio Message
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact2>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact2>
     When <Contact1> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
     Then I see new message notification "<Notification>"
 
@@ -91,8 +77,8 @@ Feature: Audio Message
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
     # C131189
     Then I see Audio Message container in the conversation view
@@ -119,23 +105,23 @@ Feature: Audio Message
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When I enable Airplane mode on the device
     # Wait for network is totally disabled
     And I wait for 3 seconds
     And I long tap Audio message button <TapDuration> seconds from cursor toolbar
-    And I tap on audio message send button
-    And I see Audio Message container in the conversation view
-    And I remember the state of Retry button on the recent audio message in the conversation view
+    And I tap audio recording Send button
+    Then I see Audio Message container in the conversation view
+    When I remember the state of Retry button on the recent audio message in the conversation view
     And I disable Airplane mode on the device
     # Wait for sync
     And I wait for 10 seconds
     And I tap Retry button on the recent audio message in the conversation view
     # Retry button changes to Play button
     Then I verify the state of Retry button on the recent audio message in the conversation view is changed
-    Then I wait for 15 seconds until audio message upload completed
-    And I remember the state of Play button on the recent audio message in the conversation view
+    And I wait for 15 seconds until audio message upload completed
+    When I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
     Then I verify the state of Play button on the recent audio message in the conversation view is changed
 
@@ -149,13 +135,13 @@ Feature: Audio Message
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When I long tap Audio message button <TapDuration> seconds from cursor toolbar
     And I remember the state of audio message preview seekbar
-    And I tap on audio message play button
-    And I verify the state of audio message preview seekbar is changed
-    And I tap on audio message cancel button
+    And I tap audio recording Play button
+    Then I verify the state of audio message preview seekbar is changed
+    When I tap audio recording Cancel button
     Then I see cursor toolbar
     And I do not see Audio Message container in the conversation view
 
@@ -169,16 +155,18 @@ Feature: Audio Message
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
-    And I see Audio Message container in the conversation view
-    And I remember the state of recent audio message seekbar
+    Then I see Audio Message container in the conversation view
+    # Wait until the seekbar initialized completely
+    And I wait for 3 seconds
+    When I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
     Then I wait for 15 seconds until audio message download completed
-    Then I verify the state of recent audio message seekbar in the conversation view is changed
+    And I verify the state of recent audio message seekbar in the conversation view is changed
     # Wait until play button changes to pause button
-    When I wait for 2 seconds
+    And I wait for 2 seconds
     When I remember the state of Pause button on the recent audio message in the conversation view
     And I minimize the application
     # Wait until Wire is minimized
@@ -202,14 +190,14 @@ Feature: Audio Message
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     Given <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
     When I see Audio Message container in the conversation view
     And I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
     Then I wait for 15 seconds until audio message download completed
-    Then I verify the state of recent audio message seekbar in the conversation view is changed
+    And I verify the state of recent audio message seekbar in the conversation view is changed
     When I remember the state of Pause button on the recent audio message in the conversation view
     And <Contact> calls me
     And I see incoming call from <Contact>
@@ -228,16 +216,16 @@ Feature: Audio Message
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     Given <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
     When I see Audio Message container in the conversation view
     And I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
     Then I wait for 15 seconds until audio message download completed
-    Then I verify the state of recent audio message seekbar in the conversation view is changed
+    And I verify the state of recent audio message seekbar in the conversation view is changed
     When I remember the state of Pause button on the recent audio message in the conversation view
-    When <Contact> starts a video call to me
+    And <Contact> starts a video call to me
     And I see incoming video call
     And <Contact> stops calling me
     And I do not see incoming video call
@@ -254,8 +242,8 @@ Feature: Audio Message
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When I long tap Audio message button from cursor toolbar without releasing my finger
     And I wait for 3 seconds
     And <Contact> calls me
@@ -267,3 +255,28 @@ Feature: Audio Message
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
+
+  @C165127 @C165128 @C165137 @regression
+  Scenario Outline: Single tap on mic button open voice recording dialog
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When I tap Audio message button from cursor toolbar
+    # C165127
+    Then I see Voice filters overlay
+    When I tap Start Record button on Voice filters overlay
+    And I wait for <MessageDuration> seconds
+    And I tap Stop Record button on Voice filters overlay
+    And I tap the 3rd Filter button on Voice filters overlay
+    # C165137
+    Then I see voice graph on Voice filters overlay
+    When I tap Approve button on Voice filters overlay
+    # C165128
+    Then I see Audio Message container in the conversation view
+
+    Examples:
+      | Name      | Contact   | MessageDuration |
+      | user1Name | user2Name | 5               |

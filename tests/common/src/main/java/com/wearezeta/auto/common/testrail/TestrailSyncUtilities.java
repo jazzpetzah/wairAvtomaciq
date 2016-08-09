@@ -253,6 +253,11 @@ public class TestrailSyncUtilities {
 
     public static void syncExecutedScenarioWithTestrail(Scenario scenario, TestrailExecutionStatus actualTestResult,
                                                         Set<String> normalizedTags) {
+        syncExecutedScenarioWithTestrail(scenario.getName(), actualTestResult, normalizedTags);
+    }
+    
+    public static void syncExecutedScenarioWithTestrail(String scenarioName, TestrailExecutionStatus actualTestResult,
+                                                        Set<String> normalizedTags) {
         final boolean isTestrailRCRun = testrailProjectName.isPresent() && testrailProjectName.get().length() > 0
                 && testrailPlanName.isPresent() && testrailPlanName.get().length() > 0
                 && testrailRunName.isPresent() && testrailRunName.get().length() > 0;
@@ -269,8 +274,6 @@ public class TestrailSyncUtilities {
         }
 
         if (isTestrailRCRun && testrailRunId.isPresent()) {
-            // Commented out due to the request from WebApp team
-            // if (!normalizedTags.contains(RCTestcase.RC_TAG)) {
             try {
                 syncCurrentTestResultWithTestrail(actualTestResult, normalizedTags);
             } catch (Exception e) {
@@ -278,11 +281,11 @@ public class TestrailSyncUtilities {
             }
         }
         if (isTestrailMutedSyncEnabled) {
-            syncTestrailIsMutedState(scenario.getName(), normalizedTags,
+            syncTestrailIsMutedState(scenarioName, normalizedTags,
                     actualTestResult);
         }
         if (isTestrailAutomatedSyncEnabled) {
-            syncTestrailIsAutomatedState(scenario.getName(), normalizedTags);
+            syncTestrailIsAutomatedState(scenarioName, normalizedTags);
         }
     }
 }

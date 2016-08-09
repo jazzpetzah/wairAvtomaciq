@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @C1019 @clumsy @regression @rc @id589
+  @C1019 @clumsy @regression @rc
   Scenario Outline: Register new user using photo album
     Given I see sign in screen
     When I enter phone number for <Name>
@@ -9,7 +9,7 @@ Feature: Registration
     And I input name <Name> and hit Enter
     And I press Choose Own Picture button
     And I press Choose Photo button
-    And I choose a picture from camera roll
+    And I select the first picture from Camera Roll
     And I tap Share Contacts button on Share Contacts overlay
     Then I see conversations list
 
@@ -27,7 +27,7 @@ Feature: Registration
       | Count | ExpectedText               |
       | 16    | enter a valid phone number |
 
-  @C2652 @regression @noAcceptAlert @id2742
+  @C2652 @regression @noAcceptAlert
   Scenario Outline: Verify notification appearance in case of incorrect code
     Given I see sign in screen
     When I enter phone number for <Name>
@@ -47,9 +47,9 @@ Feature: Registration
     And I input name <Name> and hit Enter
     And I press Choose Own Picture button
     And I press Take Photo button
-    And I tap Camera Shutter button
+    And I tap Take Photo button on Camera page
     And I remember current screen state
-    And I confirm my choice
+    And I tap Confirm button on Picture preview page
     And I tap Share Contacts button on Share Contacts overlay
     And I tap settings gear button
     And I tap on personal screen

@@ -1,8 +1,10 @@
 package com.wearezeta.auto.android.pages;
 
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import org.openqa.selenium.By;
 
@@ -26,13 +28,13 @@ public class SettingsPage extends AndroidPage {
 
     private static final By idPasswordConfirmationInput = By.id("acet__remove_otr__password");
 
-    private static final By xpathConfirmationInputOKButton = By.xpath("//*[starts-with(@id, 'button') and @value='OK']");
-
     private static final By idNameEdit = By.id("edit");
 
     private static final By xpathOKButton = By.xpath("//*[starts-with(@id, 'button') and @value='OK']");
 
     private static final By idEmailEdit = By.id("acet__preferences__email");
+
+    private static final int SCREEN_HEIGHT_THRESHOLD = 10;
 
     public SettingsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -40,9 +42,15 @@ public class SettingsPage extends AndroidPage {
 
     private boolean scrollUntilMenuElementVisible(By locator, int maxScrolls) throws Exception {
         int nScrolls = 0;
+        int screenHeight = AndroidCommonUtils.getScreenSize(getDriver()).getHeight();
+
         while (nScrolls < maxScrolls) {
             if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
-                return true;
+                WebElement menuElement = getElement(locator);
+                if (menuElement.getLocation().getY() + menuElement.getSize().getHeight()
+                        <= screenHeight + SCREEN_HEIGHT_THRESHOLD) {
+                    return true;
+                }
             }
             this.swipeUpCoordinates(500, 50);
             nScrolls++;
@@ -66,21 +74,17 @@ public class SettingsPage extends AndroidPage {
         getElement(locator, "Log out confirmation is not visible").click();
     }
 
-    public boolean waitUntilPasswordConfirmationIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idPasswordConfirmationInput);
-    }
-
     public void enterConfirmationPassword(String password) throws Exception {
         final WebElement confirmationPasswordInput = getElement(idPasswordConfirmationInput);
-        confirmationPasswordInput.click();
+        Thread.sleep(3000);
         confirmationPasswordInput.sendKeys(password);
     }
 
     public void tapOKButtonOnPasswordConfirmationDialog() throws Exception {
-        final WebElement okBtn = getElement(xpathConfirmationInputOKButton);
-        okBtn.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathConfirmationInputOKButton, 5)) {
-            okBtn.click();
+        getElement(xpathOKButton).click();
+        // TODO: How to defect that element has changed his location?
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOKButton, 5)) {
+            DriverUtils.tapByCoordinatesWithPercentOffcet(getDriver(), getElement(xpathOKButton), 50, -200);
         }
     }
 

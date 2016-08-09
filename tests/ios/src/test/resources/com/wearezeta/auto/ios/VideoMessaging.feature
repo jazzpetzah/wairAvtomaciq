@@ -1,6 +1,6 @@
 Feature: Video Messaging
 
-  @C111938 @rc @regression
+  @C111938 @rc @regression @fastLogin
   Scenario Outline: Verify recording a video
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -9,13 +9,13 @@ Feature: Video Messaging
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Video Message button from input tools
-    Then I see a preview of video message
+    Then I see video message container in the conversation view
 
     Examples:
       | Name      | Contact   | FileName    |
       | user1Name | user2Name | testing.mp4 |
 
-  @C125733 @rc @regression
+  @C125733 @rc @regression @fastLogin
   Scenario Outline: Verify receiving video message
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -24,10 +24,8 @@ Feature: Video Messaging
     When I tap on contact name <Contact>
     And User <Contact> sends file <FileName> having MIME type <MIMEType> to single user conversation <Name> using device <DeviceName>
     # Wait until video preview is generated
-    And I wait for 3 seconds
+    And I wait for 10 seconds
     When I tap the video message container sent from <Contact>
-    # Wait to make sure video is downloaded
-    And I wait for 12 seconds
     Then I see video message player page is opened
 
     Examples:

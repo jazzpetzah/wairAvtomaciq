@@ -68,8 +68,8 @@ public class SettingsPageSteps {
      */
     @When("^I verify sound alerts settings are set to default values$")
     public void IVerifyAllIsDefaultValue() throws Exception {
-        Assert.assertTrue("Sound alerts settings are NOT set to their default values", getSettingsPage()
-                .isSoundAlertsSetToDefault());
+        Assert.assertTrue("Sound alerts settings are NOT set to their default values",
+                getSettingsPage().isSoundAlertsSetToDefault());
     }
 
     /**
@@ -125,8 +125,8 @@ public class SettingsPageSteps {
      */
     @When("^I tap Delete (.*) button from devices$")
     public void ITapDeleteButtonFromDevices(String deviceName) throws Exception {
-        getSettingsPage().pressDeleteDeviceButton(deviceName);
-        getSettingsPage().pressDeleteButton();
+        getSettingsPage().tapDeleteDeviceButton(deviceName);
+        getSettingsPage().tapDeleteButton();
     }
 
     /**
@@ -139,7 +139,7 @@ public class SettingsPageSteps {
     @When("^I confirm with my (.*) the deletion of the device$")
     public void IConfirmWithMyPasswordTheDeletionOfTheDevice(String password) throws Exception {
         getSettingsPage().typePasswordToConfirmDeleteDevice(password);
-        pagesCollection.getCommonPage().acceptAlertIfVisible();
+        pagesCollection.getCommonPage().tapAlertButton("OK");
     }
 
     /**

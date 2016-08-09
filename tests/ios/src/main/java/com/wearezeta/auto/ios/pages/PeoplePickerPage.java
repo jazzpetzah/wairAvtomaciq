@@ -20,7 +20,7 @@ public class PeoplePickerPage extends IOSPage {
 
     private static final By nameKeyboardEnterButton = MobileBy.AccessibilityId("Return");
 
-    private static final By nameCreateConversationButton = MobileBy.AccessibilityId("CREATE");
+    private static final By xpathCreateConversationButton = By.xpath("//UIAButton[@name='CREATE GROUP']");
 
     private static final By namePeoplePickerTopPeopleLabel = MobileBy.AccessibilityId("TOP PEOPLE");
 
@@ -98,11 +98,7 @@ public class PeoplePickerPage extends IOSPage {
 
     public void fillTextInPeoplePickerSearch(String text) throws Exception {
         final WebElement searchInput = getElement(xpathPickerSearch);
-        if (CommonUtils.getIsSimulatorFromConfig(this.getClass()) && text.matches(".*\\W+.*")) {
-            inputStringFromKeyboard(searchInput, text + " ", false);
-        } else {
-            searchInput.sendKeys(text + " ");
-        }
+        searchInput.sendKeys(text + " ");
     }
 
     public Optional<WebElement> getSearchResultsElement(String user) throws Exception {
@@ -230,7 +226,7 @@ public class PeoplePickerPage extends IOSPage {
     private By getActionButtonByName(String name) {
         switch (name) {
             case "Create conversation":
-                return nameCreateConversationButton;
+                return xpathCreateConversationButton;
             case "Open conversation":
                 return nameOpenConversationButton;
             case "Video call":

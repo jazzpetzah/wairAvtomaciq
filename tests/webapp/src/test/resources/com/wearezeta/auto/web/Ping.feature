@@ -68,7 +68,7 @@ Feature: Ping
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
-    And User <Name> sends message <Message> to conversation <Contact1>
+    And Contact <Name> sends message <Message> to user <Contact1>
     And I see Sign In page
     And User <Contact1> is me
     And I Sign in using login <Login1> and password <Password1>

@@ -53,20 +53,19 @@ public class WelcomePage extends WebPage {
 	public void uploadPicture(String pictureName) throws Exception {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
-		if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
-			this.getDriver()
-					.executeScript(
-							"$(\""
-									+ WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput
-									+ "\").css({'left': '0', 'opacity': '100', 'z-index': '100'});");
-		}
 		chooseYourOwnInput.sendKeys(picturePath);
-		// manually trigger change event on input
-		this.getDriver()
-				.executeScript(
-						"e = $.Event('change');$(\""
-								+ WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput
-								+ "\").trigger(e);");
+		if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
+			// manually trigger change event on input until https://bugzilla.mozilla.org/show_bug.cgi?id=1280947 is fixed
+			this.getDriver().executeScript("evt = new Event('change');arguments[0].dispatchEvent(evt);", chooseYourOwnInput);
+		}
+		// manually trigger change event for redirect
+		if (WebAppExecutionContext.getBrowser().isSupportingAccessToJavascriptContext()) {
+			this.getDriver().executeScript("e = $.Event('change');$(\""
+					+ WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput + "\").trigger(e);");
+		} else {
+			throw new Exception("Geckodriver is unable to access script context in Firefox < 48. See https://bugzilla.mozilla" +
+					".org/show_bug.cgi?id=1123506");
+		}
 	}
 
 	public void keepPicture() throws Exception {

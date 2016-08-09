@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.pages;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.Future;
@@ -14,7 +15,6 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
-import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
@@ -45,6 +45,15 @@ public class SettingsPage extends WebPage {
 
     @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssImportButton)
     private WebElement importButton;
+
+    @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssBackButton)
+    private WebElement backButton;
+
+    @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssVerificationToggle)
+    private WebElement verificationToggle;
+
+    @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssDeviceIds)
+    private WebElement firstDevice;
 
     public SettingsPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -107,7 +116,7 @@ public class SettingsPage extends WebPage {
 
     public void setSoundAlertsLevel(SoundAlertsLevel newLevel) throws Exception {
         assert SoundAlertsLevel.values().length > 1;
-        if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
+        if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
             final Actions builder = new Actions(this.getDriver());
             final int width = soundAlertsLevel.getSize().width;
             final int height = soundAlertsLevel.getSize().height;
@@ -119,16 +128,17 @@ public class SettingsPage extends WebPage {
                     .moveToElement(soundAlertsLevel, dstX, dstY).release()
                     .build().perform();
         } else {
-            // Workaround for browsers, which don't support native events
-            // TODO: workaround should be clicking instead of sliding and not JS
-            final String[] sliderMoveCode = new String[]{
-                    "$(\"" + WebAppLocators.SettingsPage.cssSoundAlertsLevel
-                            + "\").val(" + newLevel.getIntRepresenation()
-                            + ");",
-                    "wire.app.view.content.self_profile.user_repository.save_property_sound_alerts('"
-                            + newLevel.toString().toLowerCase() + "');"};
-            this.getDriver().executeScript(
-                    StringUtils.join(sliderMoveCode, "\n"));
+            if (WebAppExecutionContext.getBrowser().isSupportingAccessToJavascriptContext()) {
+                // Workaround for browsers, which don't support native events
+                final String[] sliderMoveCode = new String[]{"$(\"" + WebAppLocators.SettingsPage.cssSoundAlertsLevel + "\")" +
+                        ".val(" + newLevel.getIntRepresenation() + ");", "wire.app.view.content.self_profile.user_repository" +
+                        ".save_property_sound_alerts('" + newLevel.toString().toLowerCase() + "');"};
+                this.getDriver().executeScript(
+                        StringUtils.join(sliderMoveCode, "\n"));
+            } else {
+                throw new Exception("Geckodriver is unable to access script context in Firefox < 48. See https://bugzilla" +
+                        ".mozilla.org/show_bug.cgi?id=1123506");
+            }
         }
     }
 
@@ -145,6 +155,7 @@ public class SettingsPage extends WebPage {
     public void clickDevice(String device) throws Exception {
         final String locator = WebAppLocators.SettingsPage.xpathDeviceLabel
                 .apply(device);
+        DriverUtils.waitUntilElementClickable(getDriver(), getDriver().findElement(By.xpath(locator)));
         getDriver().findElement(By.xpath(locator)).click();
     }
 
@@ -174,5 +185,35 @@ public class SettingsPage extends WebPage {
     public void clickImportButton() throws Exception {
         DriverUtils.waitUntilElementClickable(getDriver(), importButton);
         importButton.click();
+    }
+
+    public void clickBackButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), backButton);
+        backButton.click();
+    }
+
+    public void verifyDevice() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), verificationToggle);
+        verificationToggle.click();
+    }
+
+    public boolean waitForDevices() throws Exception {
+        // Unfortunately there is no other workaround than waiting for 1 second
+        Thread.sleep(1000);
+        return DriverUtils.waitUntilElementClickable(this.getDriver(), firstDevice);
+    }
+
+    public List<String> getVerifiedDeviceIds() throws Exception {
+        final By useElement = By.xpath(".//*[local-name()='use']");
+        List<WebElement> deviceList = getDriver().findElements(useElement);
+        List<String> idList = new ArrayList<>();
+
+        for (int i=0; i < deviceList.size(); i++) {
+            if ("user-device-verified".equals(deviceList.get(i).getAttribute("data-uie-name"))) {
+                WebElement parent = deviceList.get(i).findElement(By.xpath("parent::*"));
+                idList.add(parent.getAttribute("data-uie-value").toUpperCase());
+            }
+        }
+        return idList;
     }
 }

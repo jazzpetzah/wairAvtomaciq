@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @C836 @rc @regression @id1333
+  @C836 @rc @regression @fastLogin
   Scenario Outline: Unarchive conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -16,14 +16,14 @@ Feature: Conversation List
       | Name      | ArchivedUser |
       | user1Name | user2Name    |
 
-  @C12 @regression @id1334
+  @C12 @regression @fastLogin
   Scenario Outline: Verify archiving silenced conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <Contact>
-    And I tap Silence action button
+    And I tap Mute action button
     When I swipe right on a <Contact>
     And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
@@ -39,7 +39,7 @@ Feature: Conversation List
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C350 @regression @id2153
+  @C350 @regression @fastLogin
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -62,7 +62,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C19 @regression @id2040
+  @C19 @regression @fastLogin
   Scenario Outline: Verify archive a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -79,7 +79,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
-  @C20 @regression @id2041
+  @C20 @regression @fastLogin
   Scenario Outline: Verify unarchive a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -97,7 +97,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
-  @C104 @rc @regression @id2761
+  @C104 @rc @regression @fastLogin
   Scenario Outline: Verify conversations are sorted according to most recent activity
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -114,7 +114,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Contact3  | Picture     |
       | user1Name | user2Name | user3name | user4name | testing.jpg |
 
-  @C851 @regression @id3310
+  @C851 @regression @fastLogin
   Scenario Outline: Verify action menu is opened on swipe right on the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -123,7 +123,7 @@ Feature: Conversation List
     Given I see conversations list
     When I swipe right on a <GroupChatName>
     Then I see conversation <GroupChatName> name in action menu in Contact List
-    And I see Silence action button
+    And I see Mute action button
     And I see Archive action button
     And I see Delete action button
     And I see Leave action button
@@ -133,7 +133,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3name | ActionMenuChat |
 
-  @C852 @regression @id3311
+  @C852 @regression @fastLogin
   Scenario Outline: Verify action menu is opened on swipe right on 1to1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -141,7 +141,7 @@ Feature: Conversation List
     Given I see conversations list
     When I swipe right on a <Contact>
     Then I see conversation <Contact> name in action menu in Contact List
-    And I see Silence action button
+    And I see Mute action button
     And I see Archive action button
     And I see Delete action button
     And I see Block action button
@@ -151,7 +151,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C837 @rc @clumsy @regression @id3313
+  @C837 @rc @clumsy @regression @fastLogin
   Scenario Outline: Verify archiving from the action menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -169,7 +169,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C848 @rc @clumsy @regression @id3314
+  @C848 @rc @clumsy @regression @fastLogin
   Scenario Outline: Verify leaving group conversation from the action menu
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -192,8 +192,8 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName   |
       | user1Name | user2Name | user3Name | LeaveActionMenu |
 
-  @C840 @rc @clumsy @regression @id3315
-  Scenario Outline: ZIOS-6809 Verify removing the content from the group conversation
+  @C840 @rc @clumsy @regression @fastLogin
+  Scenario Outline: Verify removing the content from the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -211,14 +211,13 @@ Feature: Conversation List
     And I open search UI
     And I input in People picker search field conversation name <GroupChatName>
     And I tap on conversation <GroupChatName> in search result
-    Then I see group chat page with users <Contact1>,<Contact2>
-    And I see 0 conversation entries
+    Then I see 0 conversation entries
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
 
-  @C842 @rc @clumsy @regression @id3318
+  @C842 @rc @clumsy @regression @fastLogin
   Scenario Outline: ZIOS-6809 Verify removing the history from 1-to1 conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -244,7 +243,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Picture     |
       | user1Name | user2Name | user3Name | testing.jpg |
 
-  @C853 @regression @id3319
+  @C853 @regression @fastLogin
   Scenario Outline: Verify closing the action menu by clicking on cancel on out of the menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -260,7 +259,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C850 @regression @id3312
+  @C850 @regression @fastLogin
   Scenario Outline: Verify silencing and notify from the action menu
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -271,18 +270,18 @@ Feature: Conversation List
     And I tap on contact name <Contact>
     And I navigate back to conversations list
     When I swipe right on a <Contact>
-    And I tap Silence action button
+    And I tap Mute action button
     Then I see the state of <Contact> conversation item is changed
     When I remember the state of <Contact> conversation item
     And I swipe right on a <Contact>
-    And I tap Notify action button
+    And I tap Unmute action button
     Then I see the state of <Contact> conversation item is changed
 
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C106 @regression @id3899
+  @C106 @regression @fastLogin
   Scenario Outline: Verify first conversation in the list is highlighted and opened
     Given There are 3 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -298,7 +297,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C843 @regression @id3954
+  @C843 @regression @fastLogin
   Scenario Outline: Verify that deleted conversation isn't going to archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -316,7 +315,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C844 @regression @id3960
+  @C844 @regression @fastLogin
   Scenario Outline: Verify deleting 1-to-1 conversation from archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -336,7 +335,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C841 @regression @id3316
+  @C841 @regression @fastLogin
   Scenario Outline: Verify removing the content and leaving from the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -360,7 +359,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C846 @rc @regression @id3968
+  @C846 @rc @regression @fastLogin
   Scenario Outline: Verify posting in a group conversation without content
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -378,7 +377,7 @@ Feature: Conversation List
     When I open search UI
     And I input in People picker search field conversation name <GroupChatName>
     And I tap on conversation <GroupChatName> in search result
-    Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
+    Then I see 0 conversation entries
     When I type the default message and send it
     Then I see 1 default message in the conversation view
 
@@ -386,7 +385,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
-  @C847 @regression @id4005
+  @C847 @regression @fastLogin
   Scenario Outline: Verify deleting the history from kicked out conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -407,7 +406,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | KICKCHAT      |
 
-  @C839 @regression @id4017
+  @C839 @regression @fastLogin
   Scenario Outline: Verify canceling blocking person
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -422,7 +421,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C838 @regression @id3317
+  @C838 @regression @fastLogin
   Scenario Outline: Verify blocking person from action menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -433,6 +432,7 @@ Feature: Conversation List
     And I confirm blocking alert
     Then I do not see conversation <Contact> in conversations list
     And I do not see Archive button at the bottom of conversations list
+    And I wait until <Contact> exists in backend search results
     And I open search UI
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
@@ -441,7 +441,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C366 @rc @regression @id1075
+  @C366 @rc @regression @fastLogin
   Scenario Outline: Verify messages are marked as read with disappearing unread dot
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -459,7 +459,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C854 @regression
+  @C854 @regression @fastLogin
   Scenario Outline: Verify action menu is opened on swipe right on outgoing connection request
     Given There are 2 users where <Name> is me
     Given Myself sent connection request to <Contact>
@@ -495,7 +495,7 @@ Feature: Conversation List
     And I tap Invite more people button
     Then I see Share Contacts settings warning
     When I dismiss settings warning
-    And I tap Cancel button
+    And I discard my choice
     And I tap Invite more people button
     Then I see Share Contacts settings warning
 
@@ -503,7 +503,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Contact2  | AlertText            |
       | user1Email | user1Password | user1Name | user2Name | user3Name | access your Contacts |
 
-  @C95627 @regression
+  @C95627 @regression @fastLogin
   Scenario Outline: Verify deleting a conversation is synchronised to all devices
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -520,7 +520,7 @@ Feature: Conversation List
       | Name      | Contact1  | DeviceName | Timeout |
       | user1Name | user2Name | device1    | 15      |
 
-  @C95634 @regression
+  @C95634 @regression @fastLogin
   Scenario Outline: Verify hint is not shown anymore after tapping on it once
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

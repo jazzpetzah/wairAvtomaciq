@@ -154,11 +154,23 @@ public class AsyncProcess {
         }
     }
 
+    public void resetStdOut() {
+        if (this.stdOut.isPresent()) {
+            stdOut = Optional.of(new StringBuilder(""));
+        }
+    }
+
     public String getStderr() {
         if (this.stdErr.isPresent()) {
             return stdErr.get().toString();
         } else {
             return "";
+        }
+    }
+
+    public void resetStdErr() {
+        if (this.stdErr.isPresent()) {
+            stdErr = Optional.of(new StringBuilder(""));
         }
     }
 

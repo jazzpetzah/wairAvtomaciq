@@ -33,7 +33,7 @@
         <syncIsMuted>False</syncIsMuted>
         <cachedOtrDevicesCount>3</cachedOtrDevicesCount>
         <!-- http://192.168.10.18:8081/nexus/content/repositories/releases/com/wearezeta/zmessaging-actor/ -->
-        <zmessaging.actor.version>73.470</zmessaging.actor.version>
+        <zmessaging.actor.version>76.502</zmessaging.actor.version>
     </properties>
 
     <dependencies>
@@ -158,7 +158,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.wearezeta</groupId>
+            <groupId>com.wire</groupId>
             <artifactId>zmessaging-actor</artifactId>
             <version>${zmessaging.actor.version}</version>
         </dependency>
@@ -203,6 +203,7 @@
                 <version>2.19.1</version>
                 <configuration>
                     <skipTests>true</skipTests>
+                    <trimStackTrace>false</trimStackTrace>  
                     <failIfNoSpecifiedTests>false</failIfNoSpecifiedTests>
                     <failIfNoTests>false</failIfNoTests>
                 </configuration>
@@ -223,10 +224,11 @@
     </build>
 
     <repositories>
+        <!-- New SE actor repository -->
         <repository>
-            <id>releases</id>
-            <name>Releases</name>
-            <url>http://192.168.10.18:8081/nexus/content/repositories/releases/</url>
+            <id>bintray</id>
+            <name>Bintray</name>
+            <url>https://dl.bintray.com/wire-android/snapshots/</url>
             <layout>default</layout>
         </repository>
     </repositories>

@@ -111,7 +111,7 @@ public class ConversationPageSteps {
     public void IWriteXNewLines(int amount) throws Exception {
         String message = "";
         for (int i = 0; i < amount; i++) {
-            message = message + Keys.chord(Keys.SHIFT, Keys.ENTER);
+            message = message + Keys.chord(Keys.ALT, Keys.ENTER);
         }
         webappPagesCollection.getPage(ConversationPage.class).writeNewMessage(
                 message);
@@ -604,17 +604,6 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Hovers ping button
-     *
-     * @step. ^I hover ping button$
-     * @throws Exception
-     */
-    @Then("^I hover ping button$")
-    public void IHoverPingButton() throws Exception {
-        webappPagesCollection.getPage(ConversationPage.class).hoverPingButton();
-    }
-
-    /**
      * Verifies whether ping button tool tip is correct or not.
      *
      * @step. ^I see correct ping button tool tip$
@@ -632,16 +621,6 @@ public class ConversationPageSteps {
         assertThat("Ping button tooltip",
                 webappPagesCollection.getPage(ConversationPage.class)
                 .getPingButtonToolTip(), equalTo(tooltip));
-    }
-
-    /**
-     * Hovers call button
-     *
-     * @step. ^I hover call button$
-     */
-    @When("^I hover call button$")
-    public void IHoverCallButton() throws Throwable {
-        webappPagesCollection.getPage(ConversationPage.class).hoverCallButton();
     }
 
     /**
@@ -681,5 +660,15 @@ public class ConversationPageSteps {
         ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
         webappPagesCollection.getPage(ConversationPage.class).clickUserAvatar(
                 user.getId());
+    }
+
+    /**
+     * Start a video call in opened conversation
+     *
+     * @step. ^I start a video call$
+     */
+    @When("^I start a video call$")
+    public void IMakeVideoCallToUser() throws Throwable {
+        webappPagesCollection.getPage(ConversationPage.class).clickVideoCallButton();
     }
 }

@@ -24,7 +24,7 @@ Feature: Search
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
   @C1723 @regression
-  Scenario Outline: Verify the new conversation is created on the other end (Search UI source)
+  Scenario Outline: Verify the new conversation is created on the other end from Search UI
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
@@ -143,12 +143,14 @@ Feature: Search
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given User Me sends message <Message1> to conversation <Contact1>
-    Given User <Contact1> sends message <Message1> to conversation <Name>
-    Given User Me sends message <Message1> to conversation <Contact2>
-    Given User <Contact2> sends message <Message1> to conversation <Name>
+    Given Contact Me sends message <Message1> to user <Contact1>
+    Given Contact <Contact1> sends message <Message1> to user <Name>
+    Given Contact Me sends message <Message1> to user <Contact2>
+    Given Contact <Contact2> sends message <Message1> to user <Name>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
     When I am signed in properly
     And Myself waits until 2 people in backend top people results
     And I open People Picker from Contact List
@@ -165,14 +167,16 @@ Feature: Search
   Scenario Outline: Verify you can create a group conversation from Top People list
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
-    Given User Me sends message <Message1> to conversation <Contact1>
-    Given User <Contact1> sends message <Message1> to conversation <Name>
-    Given User Me sends message <Message1> to conversation <Contact2>
-    Given User <Contact2> sends message <Message1> to conversation <Name>
-    Given User Me sends message <Message1> to conversation <Contact3>
-    Given User <Contact3> sends message <Message1> to conversation <Name>
+    Given Contact Me sends message <Message1> to user <Contact1>
+    Given Contact <Contact1> sends message <Message1> to user <Name>
+    Given Contact Me sends message <Message1> to user <Contact2>
+    Given Contact <Contact2> sends message <Message1> to user <Name>
+    Given Contact Me sends message <Message1> to user <Contact3>
+    Given Contact <Contact3> sends message <Message1> to user <Name>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
     When I am signed in properly
     And Myself waits until 3 people in backend top people results
     And I open People Picker from Contact List

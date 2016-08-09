@@ -8,6 +8,11 @@ import java.io.Serializable;
 @JsonPropertyOrder({"duration", "error_message", "status"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Result implements Serializable {
+    
+    public static final String SKIPPED = "skipped";
+    public static final String UNDEFINED = "undefined";
+    public static final String PASSED = "passed";
+    public static final String FAILED = "failed";
 
     @JsonProperty("duration")
     private Long duration;
@@ -21,9 +26,13 @@ public class Result implements Serializable {
         this.status = status;
         this.error_message = error_message;
     }
+
+    public String getStatus() {
+        return status;
+    }
     
     @Override
     public String toString() {
-        return "Result{" + "duration=" + duration + ", status=" + status + ", error_message=" + error_message + '}';
+        return "Result{status=" + status + ", duration=" + duration + ", error_message=...}";
     }
 }

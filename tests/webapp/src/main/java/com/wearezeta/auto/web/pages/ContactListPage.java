@@ -187,7 +187,7 @@ public class ContactListPage extends WebPage {
 
     public boolean waitForContactListVisible() throws Exception {
         return DriverUtils
-                .waitUntilLocatorAppears(
+                .waitUntilLocatorIsDisplayed(
                         this.getDriver(),
                         By.cssSelector(WebAppLocators.ContactListPage.cssOpenStartUIButton));
 
@@ -423,25 +423,6 @@ public class ContactListPage extends WebPage {
         return convOptions;
     }
 
-    private static final int SELECTION_TIMEOUT = 5; // seconds
-    private static final String NON_SELECTED_ITEM_COLOR = "rgba(255, 255, 255, 1)";
-
-    private boolean isEntrySelected(WebElement entry) {
-        return !entry.getCssValue("color").equals(NON_SELECTED_ITEM_COLOR);
-    }
-
-    private void waitUtilEntryIsSelected(final WebElement entry)
-            throws Exception {
-        Wait<WebDriver> wait = new FluentWait<WebDriver>(this.getDriver())
-                .withTimeout(SELECTION_TIMEOUT, TimeUnit.SECONDS).pollingEvery(
-                        1, TimeUnit.SECONDS);
-        wait.until(new Function<WebDriver, Boolean>() {
-            public Boolean apply(WebDriver driver) {
-                return isEntrySelected(entry);
-            }
-        });
-    }
-
     public void clickWithJS(String cssSelector) throws Exception {
         this.getDriver()
                 .executeScript(
@@ -449,45 +430,36 @@ public class ContactListPage extends WebPage {
                                 cssSelector));
     }
 
-    private void selectEntryWithRetry(By locator, String cssLocator)
-            throws Exception {
-        final WebElement entry = getDriver().findElement(locator);
-        if (!isEntrySelected(entry)) {
-            entry.click();
-            try {
-                waitUtilEntryIsSelected(entry);
-            } catch (TimeoutException e) {
-                clickWithJS(cssLocator);
-                waitUtilEntryIsSelected(entry);
-            }
-        }
-    }
-
     private static final int OPEN_CONVO_LIST_ENTRY_TIMEOUT = 8; // seconds
 
     public void openConversation(String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
-        final By entryLocator = By
-                .cssSelector(WebAppLocators.ContactListPage.cssContactListEntryByName
-                        .apply(conversationName));
+        By locator = By.cssSelector(WebAppLocators.ContactListPage.cssContactListEntryByName.apply(conversationName));
+        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+        WebElement conversation = getDriver().findElement(locator);
+        DriverUtils.waitUntilElementClickable(this.getDriver(), conversation);
+        conversation.click();
+        By selected = By.cssSelector(WebAppLocators.ContactListPage.cssSelectedContactListEntryByName.apply(conversationName));
         assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                entryLocator, OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Conversation item '"
-                + conversationName
-                + "' has not been found in the conversations list within "
+                selected, OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Conversation is not selected within "
                 + OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
-        selectEntryWithRetry(entryLocator,
-                WebAppLocators.ContactListPage.cssContactListEntryByName
-                        .apply(conversationName));
+    }
+
+    public boolean isConversationSelected(String conversationName) throws Exception {
+        conversationName = fixDefaultGroupConvoName(conversationName, false);
+        By selected = By.cssSelector(WebAppLocators.ContactListPage.cssSelectedContactListEntryByName.apply(conversationName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                selected, OPEN_CONVO_LIST_ENTRY_TIMEOUT);
     }
 
     public void openConnectionRequestsList() throws Exception {
-        final By entryLocator = By
-                .cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
+        final By locator = By.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
+        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+        this.getDriver().findElement(locator).click();
+        By selected = By.cssSelector(WebAppLocators.ContactListPage.cssSelectedIncomingPendingConvoItem);
         assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                entryLocator, OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Incoming connection requests entry has not been found within "
+                selected, OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Conversation is not selected within "
                 + OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
-        selectEntryWithRetry(entryLocator,
-                WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
     }
 
     public void openSelfProfile() throws Exception {
@@ -526,14 +498,7 @@ public class ContactListPage extends WebPage {
                 archivedEntryLocator);
         archivedEntry.click();
 
-        final By unarchivedEntryLocator = By
-                .cssSelector(WebAppLocators.ContactListPage.cssContactListEntryByName
-                        .apply(conversationName));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                unarchivedEntryLocator, 3);
-        final WebElement unarchivedEntry = this.getDriver().findElement(
-                unarchivedEntryLocator);
-        waitUtilEntryIsSelected(unarchivedEntry);
+        assert isConversationSelected(conversationName) : "Conversation not selected after unarchiving";
     }
 
     public String getIncomingPendingItemText() throws Exception {
@@ -542,35 +507,6 @@ public class ContactListPage extends WebPage {
         assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
                 entryLocator) : "There are no visible incoming pending connections in the conversations list";
         return getDriver().findElement(entryLocator).getText();
-    }
-
-    public boolean isSelfNameEntrySelected() throws Exception {
-        final By locator = By
-                .cssSelector(WebAppLocators.ContactListPage.cssSelfProfileButton);
-        waitForSelfProfileButton();
-        final WebElement entry = getDriver().findElement(locator);
-        try {
-            waitUtilEntryIsSelected(entry);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public boolean isConversationSelected(String convoName) throws Exception {
-        convoName = fixDefaultGroupConvoName(convoName, false);
-        final By locator = By
-                .cssSelector(WebAppLocators.ContactListPage.cssContactListEntryByName
-                        .apply(convoName));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                locator, 3);
-        final WebElement entryElement = getDriver().findElement(locator);
-        try {
-            waitUtilEntryIsSelected(entryElement);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     public int getItemIndex(String convoName) throws Exception {
