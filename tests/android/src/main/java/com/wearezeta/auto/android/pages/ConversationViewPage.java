@@ -26,6 +26,8 @@ public class ConversationViewPage extends AndroidPage {
     public static final String idStrConversationImages = "iv__row_conversation__message_image";
     public static final By idConversationImages = By.id(idStrConversationImages);
 
+    private static final By idClickedImageSendingIndicator = By.id("v__row_conversation__pending");
+
     private static final By xpathLastPicture = By.xpath(String.format("(//*[@id='%s'])[last()]", idStrConversationImages));
 
     public static final By idCursorCamera = By.id("cursor_menu_item_camera");
@@ -506,7 +508,8 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean isImageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idConversationImages);
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idConversationImages) &&
+                DriverUtils.waitUntilLocatorDissapears(getDriver(), idClickedImageSendingIndicator, 20);
     }
 
     public boolean isConversationTitleVisible(String conversationTitle) throws Exception {
