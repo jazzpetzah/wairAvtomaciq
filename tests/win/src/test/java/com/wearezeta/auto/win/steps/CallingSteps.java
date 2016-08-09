@@ -13,8 +13,7 @@ import static org.junit.Assert.assertThat;
 
 public class CallingSteps {
 
-    private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2
-            .getInstance();
+    private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2.getInstance();
 
     /**
      * Make audio or video call(s) to one specific conversation.
