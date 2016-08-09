@@ -445,9 +445,9 @@ public class CommonIOSSteps {
      *
      * @param seconds time in seconds to close the app
      * @throws Exception
-     * @step. ^I close the app for (.*) seconds$
+     * @step. ^I close the app for (.*) seconds?$
      */
-    @When("^I close the app for (\\d+) seconds$")
+    @When("^I close the app for (\\d+) seconds?$")
     public void ICloseApp(int seconds) throws Exception {
         pagesCollection.getCommonPage().minimizeApplication(seconds);
     }
