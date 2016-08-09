@@ -86,6 +86,20 @@ public class CallingSteps {
             context.getCallingManager().stopOutgoingCall(splitAliases(instanceUsers), conversationName);
         }
     }
+    
+    /**
+     * Declines call in conversation
+     *
+     * @step. ^(.*) declines? calls? from conversation (.*)$
+     *
+     * @param calleeNames callee names/aliases
+     * @param conversationName destination conversation name
+     * @throws Exception
+     */
+    @When("^(.*) declines? calls? from conversation (.*)$")
+    public void UserXDeclinesCallFromConversationY(String calleeNames, String conversationName) throws Exception {
+        context.getCallingManager().declineIncomingCallToConversation(splitAliases(calleeNames), conversationName);
+    }
 
     /**
      * Verify whether call status is changed to one of the expected values after N seconds timeout

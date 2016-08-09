@@ -307,6 +307,23 @@ public final class CommonCallingSteps2 {
                     getOutgoingCall(userAs, convId));
         }
     }
+    
+    /**
+     * Declines a remote call within the given converastion
+     * <p>
+     *
+     * @param calleeNames List of callees names who should decline the incoming call
+     * @param conversationName the name of the conversation with the call to decline
+     * @throws Exception
+     */
+    public void declineIncomingCallToConversation(List<String> calleeNames, String conversationName) throws Exception {
+        for (String callerName : calleeNames) {
+            final ClientUser callerUser = usrMgr.findUserByNameOrNameAlias(callerName);
+            final String convId = getConversationId(callerUser, conversationName);
+            final Instance instance = getInstance(callerUser);
+            final Call call = client.declineCall(instance, convId);
+        }
+    }
 
     public List<Flow> getFlows(String callerName)
             throws CallingServiceInstanceException, NoSuchUserException,

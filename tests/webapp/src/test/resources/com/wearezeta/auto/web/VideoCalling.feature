@@ -860,3 +860,36 @@ Feature: VideoCalling
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
+
+  @C183895 @videocalling @staging
+  Scenario Outline: Verify my video is not shown if my audio call is declined but I got called back via video
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact>
+    When I call
+    Then <Contact> declines call from conversation <Contact>
+    And <Contact> starts a video call to me
+    And I see video call is minimized
+    And I see video button unpressed
+    And <Contact> verifies to have 1 flows
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    When I click on video button
+    And I see video button pressed
+    And <Contact> verify that all audio flows have greater than 0 bytes
+    And <Contact> verify that all video flows have greater than 0 bytes
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    When I maximize video call via button on remote video
+    Then I see my self video is on
+    And I see my self video is not black
+    Then I see broadcast indicator is shown for video
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 20      |
