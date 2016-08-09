@@ -908,7 +908,7 @@ Feature: E2EE
       | user1Email | user1Password | user1Name | user2Name | unencrypted message |
 
   @C202302 @regression
-  Scenario Outline: Verify it is not possible to receive unencrypted messages in 1:1 conversation
+  Scenario Outline: Verify it is not possible to receive unencrypted messages in group conversation
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1
     Given user <Contact2> adds a new device Device1 with label Label1
