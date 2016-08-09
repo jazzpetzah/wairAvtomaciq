@@ -809,7 +809,7 @@ public class ConversationViewPage extends IOSPage {
         int y = getElement(nameConversationInput).getLocation().getY() - recordAudioMessageBtn.getLocation().getY();
         new TouchAction(getDriver()).press(recordAudioMessageBtn)
                 .waitAction(swipeDelaySeconds * 1000)
-                .moveTo(0, 3 * y)
+                .moveTo(getElement(xpathAudioCallButton))
                 .waitAction(1000)
                 .release()
                 .perform();
