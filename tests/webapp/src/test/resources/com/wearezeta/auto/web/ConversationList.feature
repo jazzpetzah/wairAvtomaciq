@@ -159,7 +159,7 @@ Feature: Conversation List
     And I type <ChatName> in search field of People Picker
     Then I see group conversation <ChatName> found in People Picker
     And I close People Picker
-    When User <Contact1> sends message <Msg1> to conversation <ChatName>
+    When Contact <Contact1> sends message <Msg1> to group conversation <ChatName>
     Then I see Contact list with name <ChatName>
     And I open self profile
     And I click gear button on self profile page
@@ -169,6 +169,8 @@ Feature: Conversation List
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
+    And I see the history info page
+    And I click confirm on history info page
     And I am signed in properly
     When I open conversation with <ChatName>
     Then I do not see <Message> action in conversation
@@ -199,7 +201,7 @@ Feature: Conversation List
     Then I see a block warning modal
     And I click block button in the block warning
     Then I do not see Contact list with name <Contact>
-    When User <Contact> sends message <Msg1> to conversation <Name>
+    When Contact <Contact> sends message <Msg1> to user <Name>
     Then I do not see Contact list with name <Contact>
     When I open self profile
     And I click gear button on self profile page
@@ -209,6 +211,8 @@ Feature: Conversation List
     And User <Contact> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
+    And I see the history info page
+    And I click confirm on history info page
     And I am signed in properly
     And I open conversation with <Name>
     Then I do not see <Action> action for <Name> in conversation
@@ -245,7 +249,7 @@ Feature: Conversation List
     And I unarchive conversation <ChatName>
     Then I do not see Archive button at the bottom of my Contact list
     And I see <Action1> action in conversation
-    When User <Contact1> sends message <Msg1> to conversation <ChatName>
+    When Contact <Contact1> sends message <Msg1> to group conversation <ChatName>
     Then I do not see text message <Msg1>
     When I open self profile
     And I click gear button on self profile page
@@ -255,6 +259,8 @@ Feature: Conversation List
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
+    And I see the history info page
+    And I click confirm on history info page
     And I am signed in properly
     And I open conversation with <ChatName>
     Then I see <Action2> action for <Name> in conversation
@@ -345,7 +351,7 @@ Feature: Conversation List
     And I type <ChatName> in search field of People Picker
     Then I do not see group conversation <ChatName> found in People Picker
     And I close People Picker
-    When User <Contact1> sends message <Msg1> to conversation <ChatName>
+    When Contact <Contact1> sends message <Msg1> to group conversation <ChatName>
     Then I do not see Contact list with name <ChatName>
     And I open self profile
     And I click gear button on self profile page
@@ -355,6 +361,8 @@ Feature: Conversation List
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
+    And I see the history info page
+    And I click confirm on history info page
     And I am signed in properly
     When I open conversation with <ChatName>
     Then I see <Message> action in conversation
@@ -414,6 +422,8 @@ Feature: Conversation List
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
+    And I see the history info page
+    And I click confirm on history info page
     And I am signed in properly
     When I open conversation with <Name>
     Then I do not see <Action> action in conversation
