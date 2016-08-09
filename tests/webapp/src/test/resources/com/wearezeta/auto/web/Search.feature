@@ -149,6 +149,8 @@ Feature: Search
     Given Contact <Contact2> sends message <Message1> to user <Name>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
     When I am signed in properly
     And Myself waits until 2 people in backend top people results
     And I open People Picker from Contact List
@@ -173,6 +175,8 @@ Feature: Search
     Given Contact <Contact3> sends message <Message1> to user <Name>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
     When I am signed in properly
     And Myself waits until 3 people in backend top people results
     And I open People Picker from Contact List

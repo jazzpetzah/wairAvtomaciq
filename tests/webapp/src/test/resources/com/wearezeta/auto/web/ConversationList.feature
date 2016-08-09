@@ -211,8 +211,6 @@ Feature: Conversation List
     And User <Contact> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
-    And I see the history info page
-    And I click confirm on history info page
     And I am signed in properly
     And I open conversation with <Name>
     Then I do not see <Action> action for <Name> in conversation
@@ -259,8 +257,6 @@ Feature: Conversation List
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
-    And I see the history info page
-    And I click confirm on history info page
     And I am signed in properly
     And I open conversation with <ChatName>
     Then I see <Action2> action for <Name> in conversation
@@ -361,8 +357,6 @@ Feature: Conversation List
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
-    And I see the history info page
-    And I click confirm on history info page
     And I am signed in properly
     When I open conversation with <ChatName>
     Then I see <Message> action in conversation
