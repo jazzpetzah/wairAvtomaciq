@@ -58,21 +58,6 @@ Feature: Audio Messaging
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
 
-  @C129326 @rc @regression @fastLogin @torun
-  Scenario Outline: Verify sending voice message by swipe up
-    Given There are 2 user where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I wait for 3 seconds
-    And I record 5 seconds long audio message and send it using swipe up gesture
-    Then I see audio message container in the conversation view
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
   @C131214 @regression @fastLogin
   Scenario Outline: Verify cancelling recorded audio message preview
     Given There are 2 user where <Name> is me
@@ -96,7 +81,10 @@ Feature: Audio Messaging
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I record 6 seconds long audio message and send it using swipe up gesture
+    And I long tap Audio Message button for <Duration> seconds from input tools
+    And I close the app for 1 seconds
+    And I tap Send record control button
+    Then I see audio message container in the conversation view
     And I tap Play audio message button
     And I long tap on audio message placeholder in conversation view
     And I tap on Delete badge item
@@ -104,8 +92,8 @@ Feature: Audio Messaging
     Then I do not see audio message container in the conversation view
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | Duration |
+      | user1Name | user2Name | 30       |
 
   @C131218 @regression @fastLogin
   Scenario Outline: Verify not sent yet audio message is preserved on minimising the app

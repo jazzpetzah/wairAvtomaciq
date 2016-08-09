@@ -789,12 +789,11 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapRecordControlButton(String buttonName) throws Exception {
-        //getDriver().getPageSource();
+        getDriver().getPageSource();
         By button = getRecordControlButtonByName(buttonName);
         if (button.equals(namePlayAudioRecorderButton)) {
             getElement(button).click();
         } else {
-            //getDriver().getPageSource();
             clickElementWithRetryIfStillDisplayed(button);
         }
     }
@@ -807,7 +806,6 @@ public class ConversationViewPage extends IOSPage {
     public void tapAudioRecordWaitAndSwipe(int swipeDelaySeconds) throws Exception {
         getDriver().getPageSource();
         WebElement recordAudioMessageBtn = getElement(nameAudioMessageButton);
-        //int y = getElement(nameConversationInput).getLocation().getY() - recordAudioMessageBtn.getLocation().getY();
         new TouchAction(getDriver()).press(recordAudioMessageBtn)
                 .waitAction(swipeDelaySeconds * 1000)
                 .moveTo(getElement(xpathAudioCallButton))
