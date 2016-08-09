@@ -33,7 +33,7 @@ Feature: Conversation View
     And I press options menu button
     And I press UNMUTE conversation menu button
     And I press back button
-    And I navigate back from dialog page
+    And I navigate back from conversation
     Then Conversation <Contact1> is not muted
 
     Examples:
@@ -94,7 +94,7 @@ Feature: Conversation View
     And I tap conversation name from top toolbar
     And I press back button
     Then I see group chat page with users <Contact1>,<Contact2>
-    And I navigate back from dialog page
+    And I navigate back from conversation
     And I see group conversation with <Contact1>,<Contact2> in conversations list
 
     Examples:
@@ -189,7 +189,7 @@ Feature: Conversation View
     And I rotate UI to landscape
     And I tap Image Close button on Take Picture view
     Then I rotate UI to portrait
-    And I navigate back from dialog page
+    And I navigate back from conversation
     And I see Conversations list
 
     Examples:
@@ -282,7 +282,7 @@ Feature: Conversation View
     When I tap on conversation name <Contact>
     And I scroll to the bottom of conversation view
     Then I see a picture in the conversation view
-    And I see the picture in the dialog is animated
+    And I see the picture in the conversation is animated
     When I tap the recent picture in the conversation view
     Then I see the picture in the preview is animated
 
@@ -364,7 +364,7 @@ Feature: Conversation View
     When I tap on conversation name <GroupChatName>
     Then I see the audio call button in upper toolbar
     And I do not see the video call button in upper toolbar
-    And I navigate back from dialog page
+    And I navigate back from conversation
     And I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     Then I see the audio call button in upper toolbar

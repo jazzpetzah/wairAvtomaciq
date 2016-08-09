@@ -76,7 +76,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilAPictureAppears() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idDialogImages);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idConversationImages);
     }
 
     public boolean waitUntilGCNIsVisible() throws Exception {
@@ -133,7 +133,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilPicturesNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idDialogImages);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idConversationImages);
     }
 
     public boolean waitUntilUnsentIndicatorIsVisible(String msg) throws Exception {

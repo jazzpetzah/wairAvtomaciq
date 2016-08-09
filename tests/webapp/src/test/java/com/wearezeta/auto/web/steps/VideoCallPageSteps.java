@@ -230,26 +230,4 @@ public class VideoCallPageSteps {
         assertThat("RGB green", pixel.getGreen(), lessThan(2));
         assertThat("RGB blue", pixel.getBlue(), lessThan(2));
     }
-
-    /**
-     * Check if remote video in fullscreen is black or not
-     *
-     * @param not
-     * @throws Exception
-     */
-    @Then("^I see video from other user is( not)? black$")
-    public void ISeeRemoteVideoBlack(String not) throws Exception {
-        VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
-        Optional<BufferedImage> maximizedRemoteVideo = videoCallPage.getMaximizedRemoteVideo();
-        Assert.assertTrue("Maximized remote video is not present", maximizedRemoteVideo.isPresent());
-        BufferedImage image = maximizedRemoteVideo.get();
-        Color pixel = new Color(image.getRGB(image.getWidth() / 2, image.getHeight() / 2));
-        if(not == null) {
-            assertThat("RGB red", pixel.getRed(), lessThan(2));
-            assertThat("RGB green", pixel.getGreen(), lessThan(2));
-            assertThat("RGB blue", pixel.getBlue(), lessThan(2));
-        } else {
-            assertThat("All RGB values summarized", pixel.getRed() + pixel.getGreen() + pixel.getGreen(), greaterThan(20));
-        }
-    }
 }

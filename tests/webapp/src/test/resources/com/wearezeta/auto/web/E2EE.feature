@@ -890,3 +890,37 @@ Feature: E2EE
     Examples:
       | Email      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+
+  @C202301 @regression
+  Scenario Outline: Verify it is not possible to receive unencrypted messages in 1:1 conversation
+    Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    When I open conversation with <Contact>
+    And Contact <Contact> sends unencrypted message <Message> to user <Name>
+    Then I do not see text message <Message>
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | Message             |
+      | user1Email | user1Password | user1Name | user2Name | unencrypted message |
+
+  @C202302 @regression
+  Scenario Outline: Verify it is not possible to receive unencrypted messages in group conversation
+    Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    When I open conversation with <GroupChatName>
+    And Contact <Contact1> sends unencrypted message <Message> to group conversation <GroupChatName>
+    Then I do not see text message <Message>
+
+    Examples:
+      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName    | Message             |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | unencryptedGroup | unencrypted message |

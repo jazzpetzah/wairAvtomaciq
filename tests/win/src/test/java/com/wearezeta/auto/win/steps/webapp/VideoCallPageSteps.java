@@ -19,23 +19,9 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class VideoCallPageSteps {
 
@@ -56,11 +42,10 @@ public class VideoCallPageSteps {
         VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
         if (videoCallSize.equals("minimized")) {
             //Assert.assertTrue("Video is in portrait mode", videoCallPage.isVideoNotInPortrait());
-            Assert.assertTrue("Maximize Video Call button is not visible", videoCallPage.isMaximizeVideoCallButtonVisible());
+            Assert.assertTrue("Minimize Video Call button is visible", videoCallPage.isMinimizeVideoCallButtonNotVisible());
         } else {
             //Assert.assertTrue("Video is not in portrait mode", videoCallPage.isVideoInPortrait());
             Assert.assertTrue("Minimize Video Call button is not visible", videoCallPage.isMinimizeVideoCallButtonVisible());
-
         }
     }
 
@@ -128,7 +113,7 @@ public class VideoCallPageSteps {
 
         // do feature Matching + homography to find objects
         assertThat("Not enough good matches between " +
-                "<a href='" + reportPath + resizedScreenshotName + "'>screenshot</a> and <a href='" + reportPath + remoteScreenshotName + "'>remote</a>", ImageUtil.getMatches(resizedScreenshot, remoteScreenshot), greaterThan(50));
+                "<a href='" + reportPath + resizedScreenshotName + "'>screenshot</a> and <a href='" + reportPath + remoteScreenshotName + "'>remote</a>", ImageUtil.getMatches(resizedScreenshot, remoteScreenshot), greaterThan(40));
     }
 
     /**
@@ -140,5 +125,33 @@ public class VideoCallPageSteps {
     @When("^I minimize video call$")
     public void IMinimizeVideoCall() throws Exception {
         webappPagesCollection.getPage(VideoCallPage.class).clickMinimizeVideoCallButton();
+    }
+
+    /**
+     * Turn off and on the camera on video call page
+     *
+     * @throws Exception
+     * @step. ^I see video call is (minimized|maximized)$
+     */
+    @When("^I click on video button$")
+    public void IClickVideoButton() throws Exception {
+        VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
+        videoCallPage.clickVideoButton();
+    }
+
+    /**
+     * Checks whether the self video is on or off
+     *
+     * @throws Exception
+     * @step. ^I see my self video is (off|on)$
+     */
+    @Then("^I see my self video is (off|on)$")
+    public void ISeeSelfVideoOff(String onOffToggle) throws Exception {
+        VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
+        if ("off".equals(onOffToggle)) {
+            assertTrue("Disabled video icon is still shown", videoCallPage.isDisabledVideoIconVisible());
+        }else{
+            assertTrue("Disabled video icon is not shown", videoCallPage.isDisabledVideoIconInvisible());
+        }
     }
 }

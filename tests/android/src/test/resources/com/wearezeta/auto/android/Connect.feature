@@ -112,7 +112,7 @@ Feature: Connect
     Then I see connect to <Contact3> dialog
     When I Connect with contact by pressing button
     And I wait for 5 seconds
-    And I navigate back from dialog page
+    And I navigate back from conversation
     Then I see Conversations list with name <WaitingMess2>
 
     Examples:
@@ -274,7 +274,7 @@ Feature: Connect
     When I click left Connect button
     And I click Connect button on connect to page
     Then I close participant page by UI button
-    When I navigate back from dialog page
+    When I navigate back from conversation
     Then I see Conversations list with name <Contact2>
 
     Examples:
@@ -338,7 +338,7 @@ Feature: Connect
     And I tap on user name found on People picker page <Contact2>
     Then User info should be shown with Unblock button
     When I click Unblock button
-    And I navigate back from dialog page
+    And I navigate back from conversation
     Then I see Conversations list with name <Contact2>
 
     Examples:
@@ -375,7 +375,7 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact2>
-    And I navigate back from dialog page
+    And I navigate back from conversation
     And I wait until <Contact1> exists in backend search results
     And I open Search UI
     And I type user name "<Contact1>" in search field
@@ -384,7 +384,7 @@ Feature: Connect
     Then User info should be shown with Unblock button
     When I click Unblock button
     Then I see conversation view
-    When I navigate back from dialog page
+    When I navigate back from conversation
     Then I see Conversations list with name <Contact1>
 
     Examples:
@@ -458,7 +458,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C183892 @C183893 @staging
+  @C183892 @C183893 @regression
   Scenario Outline: Verify autoconnect users by phones
     Given I delete all contacts from Address Book
     Given I see welcome screen
@@ -480,7 +480,7 @@ Feature: Connect
       | user1Name | AutoconnectUser2 | 1722036230 | +49         | AutoconnectUser3 | 1622360109 |
 
 
-  @C192699 @staging
+  @C192699 @regression @rc
   Scenario Outline: Verify autoconnect users by phone - Delay
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -494,18 +494,16 @@ Feature: Connect
       | Name      | APhone     | PhonePrefix | A2Phone    | AName            | A2Name           |
       | user1Name | 1722036230 | +49         | 1622360109 | AutoconnectUser2 | AutoconnectUser3 |
 
-  @staging
+  @C194553 @regression
   Scenario Outline: Direct matching emails -  delayed
-    # Given I am on Android 4.4 or better
     Given There are 2 users where <UserA> is me
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with no conversations
-    Given User <UserB> has email <UserA> in address book
+    Given User <UserB> has email <UserAEmail> in address book
     When I wait for 10 seconds
-    # Then I see the message "<Message>" in push notifications list
     When I open Search UI
-    And I type user name "<UserB>" in search field
+    And I type the first 5 chars of user name "<UserB>" in search field
     Then I see user <UserB> in Search result list
     When I clear search result by tap clear button or back button
     And I tap conversations list settings button
@@ -517,9 +515,9 @@ Feature: Connect
     And I accept First Time overlay as soon as it is visible
     And I see Conversations list with no conversations
     And I open Search UI
-    And I type user name "<UserA>" in search field
+    And I type the first 5 chars of user name "<UserA>" in search field
     Then I see user <UserA> in Search result list
 
     Examples:
-      | UserA     | UserB     | Message          |
-      | user1Name | user2Name | No spec for that |
+      | UserA     | UserB     | UserAEmail |
+      | user1Name | user2Name | user1Email |

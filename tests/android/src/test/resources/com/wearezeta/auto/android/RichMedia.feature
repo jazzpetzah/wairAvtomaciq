@@ -19,7 +19,7 @@ Feature: Rich Media
     And I scroll to the bottom of conversation view
     And I tap Play button on SoundCloud container
     And I remember the state of Play button on SoundCloud container
-    And I swipe down on dialog page until Mediabar appears
+    And I swipe down on conversation until Mediabar appears
     And I press PlayPause on Mediabar button
     Then I verify the state of upper toolbar item is not changed
     And I see the media bar is below the upper toolbar

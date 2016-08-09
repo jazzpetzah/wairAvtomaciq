@@ -76,7 +76,7 @@ public class SettingsPage extends AndroidPage {
 
     public void enterConfirmationPassword(String password) throws Exception {
         final WebElement confirmationPasswordInput = getElement(idPasswordConfirmationInput);
-        confirmationPasswordInput.click();
+        Thread.sleep(3000);
         confirmationPasswordInput.sendKeys(password);
     }
 

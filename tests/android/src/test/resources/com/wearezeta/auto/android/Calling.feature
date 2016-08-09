@@ -14,7 +14,7 @@ Feature: Calling
     Then <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
     And I do not see incoming call
     When I tap on conversation name <Contact>
-    Then I see dialog with missed call from <Contact>
+    Then I see missed call from <Contact> in the conversation
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |

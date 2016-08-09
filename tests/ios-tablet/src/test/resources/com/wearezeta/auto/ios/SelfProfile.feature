@@ -132,7 +132,7 @@ Feature: Self Profile
       | Name      | Color1 | Color2          | Contact   |
       | user1Name | Violet | StrongLimeGreen | user2Name |
 
-  @C2860 @regression @fastLogin
+  @C2860 @regression
   Scenario Outline: Verify adding phone number to the contact signed up with email [PORTRAIT]
     Given There is 1 users where <Name> is me with email only
     Given I Sign in on tablet using my email

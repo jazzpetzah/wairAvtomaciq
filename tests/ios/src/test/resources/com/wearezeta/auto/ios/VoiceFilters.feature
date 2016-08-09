@@ -1,6 +1,6 @@
 Feature: Voice Filters
 
-  @C165138 @regression @fastLogin
+  @C165138 @rc @regression @fastLogin
   Scenario Outline: Verify you can record an audio message and apply voice filter to it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -9,7 +9,7 @@ Feature: Voice Filters
     When I tap on contact name <Contact>
     And I tap Audio Message button from input tools
     And I tap Start Recording button on Voice Filters overlay
-    And I wait for 5 seconds
+    And I wait for 10 seconds
     And I tap Stop Recording button on Voice Filters overlay
     And I tap <ButtonsCount> random effect buttons on Voice Filters overlay
     And I tap Confirm button on Voice Filters overlay
@@ -29,7 +29,7 @@ Feature: Voice Filters
     When I tap on contact name <Contact>
     And I tap Audio Message button from input tools
     And I tap Start Recording button on Voice Filters overlay
-    And I wait for 5 seconds
+    And I wait for 10 seconds
     And I tap Stop Recording button on Voice Filters overlay
     And I tap <ButtonsCount> random effect buttons on Voice Filters overlay
     And I tap Cancel button on Voice Filters overlay
@@ -51,7 +51,7 @@ Feature: Voice Filters
     When I tap on contact name <Contact1>
     And I tap Audio Message button from input tools
     And I tap Start Recording button on Voice Filters overlay
-    And I wait for 5 seconds
+    And I wait for 10 seconds
     And I navigate back to conversations list
     And I tap on contact name <Contact2>
     And I navigate back to conversations list
@@ -79,7 +79,7 @@ Feature: Voice Filters
     When I tap on contact name <Contact1>
     And I tap Audio Message button from input tools
     And I tap Start Recording button on Voice Filters overlay
-    And I wait for 5 seconds
+    And I wait for 10 seconds
     And I tap Stop Recording button on Voice Filters overlay
     And I navigate back to conversations list
     And I tap on contact name <Contact2>
@@ -107,7 +107,7 @@ Feature: Voice Filters
     When I tap on contact name <Contact>
     And I tap Audio Message button from input tools
     And I tap Start Recording button on Voice Filters overlay
-    And I wait for 5 seconds
+    And I wait for 10 seconds
     And I tap Stop Recording button on Voice Filters overlay
     And I tap <ButtonsCount> random effect buttons on Voice Filters overlay
     And I tap Redo button on Voice Filters overlay
@@ -126,7 +126,7 @@ Feature: Voice Filters
     When I tap on contact name <Contact>
     And I tap Audio Message button from input tools
     And I tap Start Recording button on Voice Filters overlay
-    And I wait for 5 seconds
+    And I wait for 10 seconds
     And I long tap Audio Message button for <Duration> seconds from input tools
     Then I do not see audio message container in the conversation view
     And I tap Stop Recording button on Voice Filters overlay
