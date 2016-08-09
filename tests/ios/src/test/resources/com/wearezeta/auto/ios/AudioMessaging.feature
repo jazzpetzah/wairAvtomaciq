@@ -65,6 +65,7 @@ Feature: Audio Messaging
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
+    And I wait for 3 seconds
     And I record 5 seconds long audio message and send it using swipe up gesture
     Then I see audio message container in the conversation view
 
