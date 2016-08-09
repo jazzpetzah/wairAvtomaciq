@@ -164,10 +164,11 @@ Feature: Settings
       | Name      | Password      | DeviceToRemoveWithoutPassword | DeviceToRemove | OtherDevice |
       | user1Name | user1Password | Device2                       | Device3        | Device4     |
 
-  @C150017 @staging @torun
+  @C150017 @staging
   Scenario Outline: Verify you can add a phone number from settings
     Given There is 1 user with email address only where <Name> is me
     Given I sign in using my email
+    Given I postpone Add Phone Number action
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with no conversations
     When I tap conversations list settings button
@@ -179,8 +180,6 @@ Feature: Settings
     And I confirm sign out
     Then I see welcome screen
     When I sign in using my phone number
-    # Workaround
-    And I accept First Time overlay as soon as it is visible
     Then I see Conversations list with no conversations
 
     Examples:

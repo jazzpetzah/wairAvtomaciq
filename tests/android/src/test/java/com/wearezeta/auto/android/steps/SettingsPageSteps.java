@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.android.pages.SettingsPage;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
@@ -148,5 +149,22 @@ public class SettingsPageSteps {
             default:
                 throw new IllegalArgumentException(String.format("Unknown property '%s'", what));
         }
+    }
+
+    /**
+     * Get the verification code for a phone number and types it into the corresponding
+     * UI field
+     *
+     * @param number phone number to use
+     * @throws Exception
+     * @step. ^I commit verification code for phone number (.*)
+     */
+    @And("^I commit verification code for phone number (.*)")
+    public void ICommitVerificationCodeForPhoneNumber(String number) throws Exception {
+        number = usrMgr.replaceAliasesOccurences(number, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+        final String activationCode = BackendAPIWrappers.getActivationCodeByPhoneNumber(new PhoneNumber(
+                PhoneNumber.WIRE_COUNTRY_PREFIX, number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "")
+        ));
+        getSettingsPage().commitPhoneNumberVerificationCode(activationCode);
     }
 }
