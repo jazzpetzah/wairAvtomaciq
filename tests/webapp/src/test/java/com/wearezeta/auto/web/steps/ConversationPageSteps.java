@@ -127,6 +127,8 @@ public class ConversationPageSteps {
             String chunk = message.substring(index, Math.min(index + 100, message.length()));
             context.getPagesCollection().getPage(ConversationPage.class).writeNewMessage(chunk);
             index += 100;
+            // Sleep one second to avoid the browser to logout
+            Thread.sleep(1000);
         }
     }
 
