@@ -19,7 +19,7 @@ Feature: Link Preview
       | user1Email | user1Password | user1Name | user2Name | https://wire.com                                                                                     | wire.com                                                                                  | Wire — modern, private communication.            | linkpreview0.png |
       | user1Email | user1Password | user1Name | user2Name | http://www.heise.de/developer/meldung/Wire-Messenger-ist-jetzt-vollstaendig-Open-Source-3277490.html | heise.de/developer/meldung/Wire-Messenger-ist-jetzt-vollstaendig-Open-Source-3277490.html | Wire-Messenger ist jetzt vollständig Open Source | linkpreview1.png |
 
-  @C169235 @staging @WEBAPP-2998
+  @C169235 @regression @WEBAPP-2998
   Scenario Outline: Verify you can delete link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
