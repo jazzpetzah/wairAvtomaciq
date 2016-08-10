@@ -190,7 +190,7 @@ Feature: Audio Messaging
       | Name      | Contact   | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout | SoundCloudLink                                                   |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
-  @C131215 @regression @fastLogin
+  @C131215 @regression @fastLogin @torun
   Scenario Outline: Verify playback is stopped when audio message recording is started
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -203,7 +203,7 @@ Feature: Audio Messaging
     And I tap Play audio message button
     # Wait until the audio is downloaded and starts playback
     And I wait for <AudioDownloadTimeout> seconds
-    And I long tap Audio Message button for 3 seconds from input tools
+    And I long tap Audio Message button for 5 seconds from input tools
     When I tap Cancel record control button
     Then I verify the state of Play button on audio message placeholder is not changed
 
