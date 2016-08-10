@@ -92,8 +92,7 @@ public class CommonWinSteps {
             // async calls/waiting instances cleanup
             CommonCallingSteps2.getInstance().cleanup();
             writeBrowserLogsIntoMainLog(PlatformDrivers.getInstance()
-                    .getDriver(WinExecutionContext.CURRENT_SECONDARY_PLATFORM)
-                    .get());
+                    .getDriver(WinExecutionContext.CURRENT_SECONDARY_PLATFORM).get());
         } catch (Exception e) {
             // do not fail if smt fails here
             e.printStackTrace();
@@ -129,8 +128,7 @@ public class CommonWinSteps {
         webappPagesCollection.setFirstPage(new RegistrationPage(webDriverFuture));
     }
 
-    private Future<ZetaWebAppDriver> createWebDriver(
-            Future<ZetaWinDriver> winDriver) throws IOException {
+    private Future<ZetaWebAppDriver> createWebDriver(Future<ZetaWinDriver> winDriver) throws IOException {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         ChromeOptions options = new ChromeOptions();
         // simulate a fake webcam and mic for testing
@@ -147,9 +145,9 @@ public class CommonWinSteps {
         setExtendedLoggingLevel(capabilities, WinExecutionContext.EXTENDED_LOGGING_LEVEL);
 
         service = new ChromeDriverService.Builder()
-                .usingDriverExecutable(
-                        new File(WinExecutionContext.CHROMEDRIVER_PATH))
-                .usingAnyFreePort().build();
+                .usingDriverExecutable(new File(WinExecutionContext.CHROMEDRIVER_PATH))
+                .usingAnyFreePort()
+                .build();
         service.start();
         final ExecutorService pool = Executors.newFixedThreadPool(1);
 
@@ -165,8 +163,7 @@ public class CommonWinSteps {
         return lazyWebDriver;
     }
 
-    private Future<ZetaWinDriver> createWinDriver()
-            throws MalformedURLException {
+    private Future<ZetaWinDriver> createWinDriver() throws MalformedURLException {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
         capabilities.setCapability(CapabilityType.PLATFORM, "WIN");
@@ -178,16 +175,14 @@ public class CommonWinSteps {
         capabilities.setCapability("debugConnectToRunningApp", "true");
         final ExecutorService pool = Executors.newFixedThreadPool(1);
 
-        Callable<ZetaWinDriver> callableWinDriver = () -> new ZetaWinDriver(
-                new URL(WINIUM_URL), capabilities);
+        Callable<ZetaWinDriver> callableWinDriver = () -> new ZetaWinDriver(new URL(WINIUM_URL), capabilities);
 
         final Future<ZetaWinDriver> lazyWinDriver = pool.submit(callableWinDriver);
         PlatformDrivers.getInstance().getDrivers().put(WinExecutionContext.CURRENT_PLATFORM, lazyWinDriver);
         return lazyWinDriver;
     }
 
-    private static void setExtendedLoggingLevel(
-            DesiredCapabilities capabilities, String loggingLevelName) {
+    private static void setExtendedLoggingLevel(DesiredCapabilities capabilities, String loggingLevelName) {
         final LoggingPreferences logs = new LoggingPreferences();
         // set it to SEVERE by default
         Level level = Level.SEVERE;
@@ -222,8 +217,7 @@ public class CommonWinSteps {
 
     @SuppressWarnings("unchecked")
     private List<LogEntry> getBrowserLog(RemoteWebDriver driver) {
-        return IteratorUtils.toList((Iterator<LogEntry>) driver.manage().logs()
-                .get(LogType.BROWSER).iterator());
+        return IteratorUtils.toList((Iterator<LogEntry>) driver.manage().logs().get(LogType.BROWSER).iterator());
     }
 
     private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
@@ -252,17 +246,16 @@ public class CommonWinSteps {
         if (doesNot == null) {
             // should support calling
             if (!WebAppExecutionContext.getBrowser().isSupportingCalls()) {
-                throw new PendingException("Browser "
-                        + WebAppExecutionContext.getBrowser().toString()
+                throw new PendingException("Browser " + WebAppExecutionContext.getBrowser().toString()
                         + " does not support calling.");
             }
-        } else // should not support calling
-         if (WebAppExecutionContext.getBrowser().isSupportingCalls()) {
-                throw new PendingException(
-                        "Browser "
-                        + WebAppExecutionContext.getBrowser().toString()
+        } else {
+            // should not support calling
+            if (WebAppExecutionContext.getBrowser().isSupportingCalls()) {
+                throw new PendingException("Browser " + WebAppExecutionContext.getBrowser().toString()
                         + " does support calling but this test is just for browsers without support.");
             }
+        }
     }
 
     /**
@@ -278,8 +271,7 @@ public class CommonWinSteps {
      */
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me$")
     public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
-        commonSteps.ThereAreNUsersWhereXIsMe(
-                WinExecutionContext.CURRENT_PLATFORM, count, myNameAlias);
+        commonSteps.ThereAreNUsersWhereXIsMe(WinExecutionContext.CURRENT_PLATFORM, count, myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "default");
     }
 
@@ -297,8 +289,7 @@ public class CommonWinSteps {
      * @throws Exception
      */
     @Given("^User (\\w+) change accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
-    public void IChangeAccentColor(String userNameAlias, String newColor)
-            throws Exception {
+    public void IChangeAccentColor(String userNameAlias, String newColor) throws Exception {
         commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
     }
 
@@ -314,10 +305,8 @@ public class CommonWinSteps {
      * @throws Exception
      */
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me without avatar picture$")
-    public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count,
-            String myNameAlias) throws Exception {
-        commonSteps.ThereAreNUsersWhereXIsMe(
-                WinExecutionContext.CURRENT_PLATFORM, count, myNameAlias);
+    public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count, String myNameAlias) throws Exception {
+        commonSteps.ThereAreNUsersWhereXIsMe(WinExecutionContext.CURRENT_PLATFORM, count, myNameAlias);
     }
 
     /**
@@ -332,8 +321,7 @@ public class CommonWinSteps {
      * @throws Exception
      */
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")
-    public void ThereAreNUsersWhereXIsMeWithoutEmail(int count,
-            String myNameAlias) throws Exception {
+    public void ThereAreNUsersWhereXIsMeWithoutEmail(int count, String myNameAlias) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
     }
 
@@ -347,8 +335,7 @@ public class CommonWinSteps {
      * @throws Exception
      */
     @When("^User (\\w+) changes? avatar picture to (.*)")
-    public void IChangeUserAvatarPicture(String userNameAlias, String path)
-            throws Exception {
+    public void IChangeUserAvatarPicture(String userNameAlias, String path) throws Exception {
         String avatar = null;
         final String rootPath = "/images/";
         if (path.equals("default")) {
@@ -356,11 +343,9 @@ public class CommonWinSteps {
         } else {
             avatar = rootPath + path;
         }
-        URI uri = new URI(CommonWebAppSteps.class.getResource(avatar)
-                .toString());
+        URI uri = new URI(CommonWebAppSteps.class.getResource(avatar).toString());
         String pathString = Paths.get(uri).toString();
-        log.debug("Change avatar of user " + userNameAlias + " to "
-                + pathString);
+        log.debug("Change avatar of user " + userNameAlias + " to " + pathString);
         commonSteps.IChangeUserAvatarPicture(userNameAlias, pathString);
     }
 
@@ -375,8 +360,7 @@ public class CommonWinSteps {
      * @throws Exception
      */
     @Given("^(\\w+) is connected to (.*)$")
-    public void UserIsConnectedTo(String userFromNameAlias,
-            String usersToNameAliases) throws Exception {
+    public void UserIsConnectedTo(String userFromNameAlias, String usersToNameAliases) throws Exception {
         commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
     }
 
@@ -391,8 +375,7 @@ public class CommonWinSteps {
      * @throws Exception
      */
     @Given("^(\\w+) blocked (\\w+)$")
-    public void UserBlocks(String userAsNameAlias, String userToBlockNameAlias)
-            throws Exception {
+    public void UserBlocks(String userAsNameAlias, String userToBlockNameAlias) throws Exception {
         commonSteps.BlockContact(userAsNameAlias, userToBlockNameAlias);
     }
 
@@ -408,11 +391,9 @@ public class CommonWinSteps {
      * @throws Exception
      */
     @Given("^(.*) (?:has|have) group chat (.*) with (.*)")
-    public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
-            String chatName, String otherParticipantsNameAlises)
+    public void UserHasGroupChatWithContacts(String chatOwnerNameAlias, String chatName, String otherParticipantsNameAlises)
             throws Exception {
-        commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName,
-                otherParticipantsNameAlises);
+        commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName, otherParticipantsNameAlises);
     }
 
     /**
@@ -455,10 +436,8 @@ public class CommonWinSteps {
      * @throws Exception
      */
     @Given("^(.*) sent connection request to (.*)")
-    public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
-            String usersToNameAliases) throws Throwable {
-        commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
-                usersToNameAliases);
+    public void GivenConnectionRequestIsSentTo(String userFromNameAlias, String usersToNameAliases) throws Throwable {
+        commonSteps.ConnectionRequestIsSentTo(userFromNameAlias, usersToNameAliases);
     }
 
     /**
@@ -473,8 +452,7 @@ public class CommonWinSteps {
      * @throws Exception
      */
     @Given("^(\\w+) waits? until (.*) exists in backend search results$")
-    public void UserWaitsUntilContactExistsInHisSearchResults(
-            String searchByNameAlias, String query) throws Exception {
+    public void UserWaitsUntilContactExistsInHisSearchResults(String searchByNameAlias, String query) throws Exception {
         commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
     }
 
@@ -501,10 +479,8 @@ public class CommonWinSteps {
      * @throws Exception
      */
     @When("^(.*) muted conversation with (.*)$")
-    public void MuteConversationWithUser(String userToNameAlias,
-            String muteUserNameAlias) throws Exception {
-        commonSteps
-                .MuteConversationWithUser(userToNameAlias, muteUserNameAlias);
+    public void MuteConversationWithUser(String userToNameAlias, String muteUserNameAlias) throws Exception {
+        commonSteps.MuteConversationWithUser(userToNameAlias, muteUserNameAlias);
     }
 
     /**
@@ -517,10 +493,8 @@ public class CommonWinSteps {
      * @throws Exception
      */
     @When("^(.*) archived conversation with (.*)$")
-    public void ArchiveConversationWithUser(String userToNameAlias,
-            String archivedUserNameAlias) throws Exception {
-        commonSteps.ArchiveConversationWithUser(userToNameAlias,
-                archivedUserNameAlias);
+    public void ArchiveConversationWithUser(String userToNameAlias, String archivedUserNameAlias) throws Exception {
+        commonSteps.ArchiveConversationWithUser(userToNameAlias, archivedUserNameAlias);
     }
 
     /**
@@ -533,10 +507,8 @@ public class CommonWinSteps {
      * @throws Exception
      */
     @When("^User (.*) pinged in the conversation with (.*)$")
-    public void UserPingedConversation(String pingFromUserNameAlias,
-            String dstConversationName) throws Exception {
-        commonSteps.UserPingedConversation(pingFromUserNameAlias,
-                dstConversationName);
+    public void UserPingedConversation(String pingFromUserNameAlias, String dstConversationName) throws Exception {
+        commonSteps.UserPingedConversation(pingFromUserNameAlias, dstConversationName);
     }
 
     /**
@@ -549,10 +521,8 @@ public class CommonWinSteps {
      * @throws Exception
      */
     @When("^User (.*) pinged twice in the conversation with (.*)$")
-    public void UserHotPingedConversation(String pingFromUserNameAlias,
-            String dstConversationName) throws Exception {
-        commonSteps.UserHotPingedConversation(pingFromUserNameAlias,
-                dstConversationName);
+    public void UserHotPingedConversation(String pingFromUserNameAlias, String dstConversationName) throws Exception {
+        commonSteps.UserHotPingedConversation(pingFromUserNameAlias, dstConversationName);
     }
 
     /**
@@ -565,10 +535,8 @@ public class CommonWinSteps {
      * @throws Exception
      */
     @When("^User (.*) sent message (.*) to conversation (.*)")
-    public void UserSentMessageToConversation(String userFromNameAlias,
-            String message, String conversationName) throws Exception {
-        commonSteps.UserSentMessageToConversation(userFromNameAlias,
-                conversationName, message);
+    public void UserSentMessageToConversation(String userFromNameAlias, String message, String conversationName) throws Exception {
+        commonSteps.UserSentMessageToConversation(userFromNameAlias, conversationName, message);
     }
 
     /**
@@ -582,10 +550,8 @@ public class CommonWinSteps {
      * @throws Exception
      */
     @Given("^User (.*) added contacts? (.*) to group chat (.*)")
-    public void UserXAddedContactsToGroupChat(String asUser, String contacts,
-            String conversationName) throws Exception {
-        commonSteps.UserXAddedContactsToGroupChat(asUser, contacts,
-                conversationName);
+    public void UserXAddedContactsToGroupChat(String asUser, String contacts, String conversationName) throws Exception {
+        commonSteps.UserXAddedContactsToGroupChat(asUser, contacts, conversationName);
     }
 
     /**
@@ -607,8 +573,7 @@ public class CommonWinSteps {
      * @throws Exception
      */
     @Given("^User (.*) has contacts? (.*) in address book")
-    public void UserXHasContactsInAddressBook(String asUser, String emails)
-            throws Exception {
+    public void UserXHasContactsInAddressBook(String asUser, String emails) throws Exception {
         commonSteps.UserXHasContactsInAddressBook(asUser, emails);
     }
 
@@ -621,8 +586,7 @@ public class CommonWinSteps {
      * @throws Exception
      */
     @Given("(.*) takes? snapshot of current profile picture$")
-    public void UserXTakesSnapshotOfProfilePicture(String asUser)
-            throws Exception {
+    public void UserXTakesSnapshotOfProfilePicture(String asUser) throws Exception {
         commonSteps.UserXTakesSnapshotOfProfilePicture(asUser);
     }
 
@@ -635,10 +599,8 @@ public class CommonWinSteps {
      * @throws Exception
      */
     @Then("^I verify that current profile picture snapshot of (.*) differs? from the previous one$")
-    public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(
-            String userNameAlias) throws Exception {
-        commonSteps
-                .UserXVerifiesSnapshotOfProfilePictureIsDifferent(userNameAlias);
+    public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(String userNameAlias) throws Exception {
+        commonSteps.UserXVerifiesSnapshotOfProfilePictureIsDifferent(userNameAlias);
     }
 
     /**
@@ -649,8 +611,7 @@ public class CommonWinSteps {
      */
     @Given("^My browser supports synthetic drag and drop$")
     public void MyBrowserSupportsSyntheticDragDrop() {
-        if (!WebAppExecutionContext.getBrowser()
-                .isSupportingSyntheticDragAndDrop()) {
+        if (!WebAppExecutionContext.getBrowser().isSupportingSyntheticDragAndDrop()) {
             throw new PendingException();
         }
     }
@@ -666,8 +627,7 @@ public class CommonWinSteps {
      *
      */
     @When("^I click menu bar item \"(.*)\" and menu item \"(.*)\"$")
-    public void clickMenuBarItem(String menuBarItemName, String menuItemName)
-            throws Exception {
+    public void clickMenuBarItem(String menuBarItemName, String menuItemName) throws Exception {
         MainWirePage mainPage = winPagesCollection.getPage(MainWirePage.class);
         mainPage.clickMenuBarItem(menuBarItemName, menuItemName);
     }
@@ -685,8 +645,7 @@ public class CommonWinSteps {
      *
      */
     @When("^I click menu bar item \"(.*)\" and menu items \"(.*)\" and \"(.*)\"$")
-    public void clickMenuBarItem(String menuBarItemName, String menuItemName,
-            String menuItemName2) throws Exception {
+    public void clickMenuBarItem(String menuBarItemName, String menuItemName, String menuItemName2) throws Exception {
         MainWirePage mainPage = winPagesCollection.getPage(MainWirePage.class);
         mainPage.clickMenuBarItem(menuBarItemName, menuItemName, menuItemName2);
     }
@@ -719,8 +678,7 @@ public class CommonWinSteps {
      */
     @When("^I click menu bar item with name \"(.*)\"$")
     public void clickMenuBarItem(String menuBarItemName) throws Exception {
-        winPagesCollection.getPage(MainWirePage.class).clickMenuBarItem(
-                menuBarItemName);
+        winPagesCollection.getPage(MainWirePage.class).clickMenuBarItem(menuBarItemName);
     }
 
     /**
@@ -760,7 +718,8 @@ public class CommonWinSteps {
     public void IVerifyAppHasQuit() throws Exception {
         int exitCode = WinCommonUtils.killOnlyWire();
         // 128 is the error code of the taskkill command for 'no such process'
-        assertEquals(String.format("The kill command found a process to kill and exited with code '%d'", exitCode), 128, exitCode);
+        assertEquals(String.format("The kill command found a process to kill and exited with code '%d'", exitCode), 128,
+                exitCode);
     }
 
     /**

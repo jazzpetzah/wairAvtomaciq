@@ -1,8 +1,6 @@
 package com.wearezeta.auto.win.common;
 
 import com.wearezeta.auto.common.Platform;
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
 
 public class WinExecutionContext {
 
@@ -54,7 +52,4 @@ public class WinExecutionContext {
     public static final String USER_HOME = System.getProperty("user.home");
 
     public static final String USERNAME = System.getProperty("user.name");
-
-    public static final HashMap<String, BufferedImage> SCREENSHOTS = new HashMap<>();
-
 }

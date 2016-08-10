@@ -14,30 +14,6 @@ Feature: Audio Messaging
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C129327 @rc @regression @fastLogin
-  Scenario Outline: Verify sending voice message by check icon tap and playing it
-    Given There are 2 user where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I long tap Audio Message button for <Duration> seconds from input tools
-    And I tap Send record control button
-    Then I see audio message container in the conversation view
-    When I remember the state of Play button on audio message placeholder
-    When I tap Play audio message button
-    Then I see state of button on audio message placeholder is pause
-    # TODO: Should be uncommented once ZIOS-6798 is fixed
-    #And I see the audio message in placeholder gets played
-    When I tap Pause audio message button
-    Then I see state of button on audio message placeholder is play
-    # TODO: Should be uncommented once ZIOS-6798 is fixed
-    #And I see the audio message in placeholder gets paused
-
-    Examples:
-      | Name      | Contact   | Duration |
-      | user1Name | user2Name | 60       |
-
   @C129341 @C129345 @rc @regression @fastLogin
   Scenario Outline: Verify receiving a voice message and deleting it
     Given There are 2 users where <Name> is me
@@ -57,20 +33,6 @@ Feature: Audio Messaging
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
 
-  @C129326 @rc @regression @fastLogin
-  Scenario Outline: Verify sending voice message by swipe up
-    Given There are 2 user where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I record 5 seconds long audio message and send it using swipe up gesture
-    Then I see audio message container in the conversation view
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
   @C131214 @regression @fastLogin
   Scenario Outline: Verify cancelling recorded audio message preview
     Given There are 2 user where <Name> is me
@@ -82,24 +44,6 @@ Feature: Audio Messaging
     And I tap Cancel record control button
     Then I do not see audio message container in the conversation view
     And I see Audio Message button in input tools palette
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C129349 @regression @fastLogin
-  Scenario Outline: Verify deleting playing voice message
-    Given There are 2 user where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I record 6 seconds long audio message and send it using swipe up gesture
-    And I tap Play audio message button
-    And I long tap on audio message placeholder in conversation view
-    And I tap on Delete badge item
-    And I tap Delete button on the alert
-    Then I do not see audio message container in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -259,7 +203,7 @@ Feature: Audio Messaging
     And I tap Play audio message button
     # Wait until the audio is downloaded and starts playback
     And I wait for <AudioDownloadTimeout> seconds
-    And I long tap Audio Message button for 3 seconds from input tools
+    And I long tap Audio Message button for 10 seconds from input tools
     When I tap Cancel record control button
     Then I verify the state of Play button on audio message placeholder is not changed
 

@@ -35,7 +35,7 @@ Feature: Screen Sharing
     Then I see video call is minimized
     When I click on screen share button
     And I wait for 5 seconds
-  #Then I verify my self video shows my screen
+    #Then I verify my self video shows my screen
     Then I verify <Contact> sees my screen
 
     Examples:

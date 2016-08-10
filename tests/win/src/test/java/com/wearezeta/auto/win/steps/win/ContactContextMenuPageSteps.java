@@ -9,11 +9,9 @@ import cucumber.api.java.en.When;
 
 public class ContactContextMenuPageSteps {
 
-    private final WinPagesCollection osxPagesCollection = WinPagesCollection
-            .getInstance();
+    private final WinPagesCollection winPagesCollection = WinPagesCollection.getInstance();
     @SuppressWarnings("unused")
-    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-            .getInstance();
+    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection.getInstance();
 
     @SuppressWarnings("unused")
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -26,8 +24,7 @@ public class ContactContextMenuPageSteps {
      */
     @When("^I click block in context menu$")
     public void IClickBlockButtonInContextMenu() throws Exception {
-        osxPagesCollection.getPage(ContactContextMenuPage.class)
-                .clickBlock();
+        winPagesCollection.getPage(ContactContextMenuPage.class).clickBlock();
     }
 
     /**
@@ -38,8 +35,7 @@ public class ContactContextMenuPageSteps {
      */
     @When("^I click leave in context menu$")
     public void IClickLeaveButtonInContextMenu() throws Exception {
-        osxPagesCollection.getPage(ContactContextMenuPage.class)
-                .clickLeave();
+        winPagesCollection.getPage(ContactContextMenuPage.class).clickLeave();
     }
 
     /**
@@ -50,8 +46,7 @@ public class ContactContextMenuPageSteps {
      */
     @When("^I click silence in context menu$")
     public void IClickSilenceButtonInContextMenu() throws Exception {
-        osxPagesCollection.getPage(ContactContextMenuPage.class)
-                .clickSilence();
+        winPagesCollection.getPage(ContactContextMenuPage.class).clickSilence();
     }
 
     /**
@@ -62,8 +57,7 @@ public class ContactContextMenuPageSteps {
      */
     @When("^I click notify in context menu$")
     public void IClickNotifyButtonInContextMenu() throws Exception {
-        osxPagesCollection.getPage(ContactContextMenuPage.class)
-                .clickNotify();
+        winPagesCollection.getPage(ContactContextMenuPage.class).clickNotify();
     }
 
     /**
@@ -74,8 +68,7 @@ public class ContactContextMenuPageSteps {
      */
     @When("^I click delete in context menu$")
     public void IClickDeleteButtonInContextMenu() throws Exception {
-        osxPagesCollection.getPage(ContactContextMenuPage.class)
-                .clickDelete();
+        winPagesCollection.getPage(ContactContextMenuPage.class).clickDelete();
     }
 
     /**
@@ -86,7 +79,6 @@ public class ContactContextMenuPageSteps {
      */
     @When("^I click archive in context menu$")
     public void IClickArchiveButtonInContextMenu() throws Exception {
-        osxPagesCollection.getPage(ContactContextMenuPage.class)
-                .clickArchive();
+        winPagesCollection.getPage(ContactContextMenuPage.class).clickArchive();
     }
 }

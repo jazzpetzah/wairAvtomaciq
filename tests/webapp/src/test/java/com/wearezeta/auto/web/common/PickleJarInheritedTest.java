@@ -10,7 +10,9 @@ import com.wire.picklejar.execution.exception.StepNotExecutableException;
 import com.wire.picklejar.gherkin.model.Result;
 import static com.wire.picklejar.gherkin.model.Result.FAILED;
 import static com.wire.picklejar.gherkin.model.Result.PASSED;
+import static com.wire.picklejar.gherkin.model.Result.SKIPPED;
 import com.wire.picklejar.gherkin.model.Step;
+import cucumber.api.PendingException;
 import java.io.IOException;
 import java.util.Collection;
 import org.junit.After;
@@ -71,9 +73,13 @@ public class PickleJarInheritedTest extends PickleJarTest {
                 setResult(reportStep, new Result(execTime, PASSED, null));
             } catch (Throwable e) {
                 ex = e;
-                if (e instanceof StepNotExecutableException) {
+                if (ex instanceof StepNotExecutableException) {
                     execTime = ((StepNotExecutableException) e).getExecutionTime();
                     ex = PickleExecutor.getLastCause(e);
+                } 
+                if(ex instanceof PendingException){
+                    setResult(reportStep, new Result(execTime, SKIPPED, PickleExecutor.getThrowableStacktraceString(ex)));
+                    break;
                 }
                 setResult(reportStep, new Result(execTime, FAILED, PickleExecutor.getThrowableStacktraceString(ex)));
             }

@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.NSPoint;
 import com.wearezeta.auto.common.driver.ZetaDriver;
-import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWinDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import static com.wearezeta.auto.win.common.WinExecutionContext.WIRE_APP_CACHE_FOLDER;
 import java.nio.file.Paths;
@@ -20,46 +20,18 @@ import org.openqa.selenium.Point;
 
 public class WinCommonUtils {
 
-    private static final Logger LOG = ZetaLogger.getLog(WinCommonUtils.class
-            .getName());
+    private static final Logger LOG = ZetaLogger.getLog(WinCommonUtils.class.getName());
 
-    public static NSPoint calculateScreenResolution(ZetaOSXDriver driver)
-            throws Exception {
-        BufferedImage im = DriverUtils.takeFullScreenShot(driver).orElseThrow(
-                IllegalStateException::new);
+    public static NSPoint calculateScreenResolution(ZetaWinDriver driver) throws Exception {
+        BufferedImage im = DriverUtils.takeFullScreenShot(driver).orElseThrow(IllegalStateException::new);
         return new NSPoint(im.getWidth(), im.getHeight());
     }
 
-    public static boolean isRetinaDisplay(ZetaOSXDriver driver)
-            throws Exception {
-        NSPoint size = calculateScreenResolution(driver);
-        return isRetinaDisplay(size.x(), size.y());
-    }
-
-    public static boolean isRetinaDisplay(int width, int height) {
-        if (width == 2560 && height == 1600) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public static int screenPixelsMultiplier(ZetaOSXDriver driver)
-            throws Exception {
-        return (isRetinaDisplay(driver)) ? WinConstants.Common.SIZE_MULTIPLIER_RETINA
-                : WinConstants.Common.SIZE_MULTIPLIER_NO_RETINA;
-    }
-
-    public static BufferedImage takeElementScreenshot(WebElement element,
-            ZetaOSXDriver driver) throws Exception {
-        int multiply = screenPixelsMultiplier(driver);
-
-        BufferedImage screenshot = DriverUtils.takeFullScreenShot(
-                (ZetaDriver) driver).orElseThrow(IllegalStateException::new);
+    public static BufferedImage takeElementScreenshot(WebElement element, ZetaWinDriver driver) throws Exception {
+        BufferedImage screenshot = DriverUtils.takeFullScreenShot((ZetaDriver) driver).orElseThrow(IllegalStateException::new);
         Point elPoint = element.getLocation();
         Dimension elSize = element.getSize();
-        return screenshot.getSubimage(elPoint.x * multiply, elPoint.y
-                * multiply, elSize.width * multiply, elSize.height * multiply);
+        return screenshot.getSubimage(elPoint.x, elPoint.y, elSize.width, elSize.height);
     }
 
     public static boolean clearAppData() throws Exception {

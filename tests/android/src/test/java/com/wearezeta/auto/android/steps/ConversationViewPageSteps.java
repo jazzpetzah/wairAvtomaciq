@@ -1110,6 +1110,19 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Verify the link preview URL
+     *
+     * @param url the expected url in Link Preview container
+     * @throws Exception
+     * @step. ^I see Link Preview URL (.*)$
+     */
+    @Then("^I see Link Preview URL (.*)$")
+    public void ISeeLinkPreviewUrl(String url) throws Exception {
+        Assert.assertTrue(String.format("The url '%s' should be visible in recent link preview container", url),
+                getConversationViewPage().waitUntilLinkPreviewUrlVisible(url));
+    }
+
+    /**
      * Tap container
      *
      * @param isLongTap     equals to null if this should be ordinary single tap

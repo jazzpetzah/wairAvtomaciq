@@ -1,9 +1,8 @@
 package com.wearezeta.auto.win.pages.webapp;
 
-import com.wearezeta.auto.common.driver.ZetaOSXWebAppDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.common.driver.ZetaWinWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import static com.wearezeta.auto.win.common.WinConstants.Scripts.PASTE_SCRIPT;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.nio.file.Files;
@@ -13,13 +12,12 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 
-public class ConversationPage extends
-        com.wearezeta.auto.web.pages.ConversationPage {
+public class ConversationPage extends com.wearezeta.auto.web.pages.ConversationPage {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = ZetaLogger
-            .getLog(com.wearezeta.auto.web.pages.ConversationPage.class
-                    .getName());
+    private static final Logger LOG = ZetaLogger.getLog(com.wearezeta.auto.web.pages.ConversationPage.class.getName());
+    
+    private static final String PASTE_SCRIPT = "security restrictions";
 
     // TODO hide behind driver impl
     private final Robot robot = new Robot();
@@ -68,10 +66,8 @@ public class ConversationPage extends
     }
 
     public void pressShortCutForPaste() throws Exception {
-        String script = new String(Files.readAllBytes(Paths.get(getClass()
-                .getResource(PASTE_SCRIPT).toURI())));
-        ((ZetaOSXWebAppDriver) getDriver()).getOsxDriver()
-                .executeScript(script);
+        String script = new String(Files.readAllBytes(Paths.get(getClass().getResource(PASTE_SCRIPT).toURI())));
+        ((ZetaWinWebAppDriver) getDriver()).getWinDriver().executeScript(script);
     }
 
     public void pressShortCutForCopy() throws Exception {

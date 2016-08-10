@@ -464,4 +464,15 @@ public class ConversationsListPageSteps {
         getConversationsListPage().tapThreeDotOptionMenuButton();
     }
 
+    /**
+     * Verify the settings button indicator is visible
+     *
+     * @throws Exception
+     * @step. ^I see indicator on settings button in conversation list$
+     */
+    @Then("^I see indicator on settings button in conversation list$")
+    public void ISeeSettingsButtonIndicator() throws Exception {
+        getConversationsListPage().waitUntilSettingsButtonIndicatorVisible();
+    }
+
 }

@@ -83,6 +83,12 @@ public class CallingServiceClient {
             throws CallingServiceCallException {
         return CALL_RESOURCE.stop(instance, call);
     }
+    
+    public Call declineCall(Instance instance, String convId)
+            throws CallingServiceCallException {
+        CallRequest callRequest = new CallRequest(convId);
+        return CALL_RESOURCE.decline(instance, callRequest);
+    }
 
     // TODO: mute/unmute/listen/speak
     private static BackendType getBackendType() {

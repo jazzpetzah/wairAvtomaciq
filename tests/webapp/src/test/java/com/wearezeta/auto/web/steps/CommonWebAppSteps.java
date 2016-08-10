@@ -55,7 +55,7 @@ public class CommonWebAppSteps {
 
     private final TestContext context;
 
-    private static final String VIDEO_MESSAGE_IMAGE = "userpicture_landscape.jpg";
+    private static final String VIDEO_MESSAGE_IMAGE = "example.png";
 
     public CommonWebAppSteps() {
         this.context = new TestContext();

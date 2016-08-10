@@ -3,6 +3,7 @@
 import os
 import paramiko
 import socket
+import sys
 import time
 import tempfile
 
@@ -20,27 +21,26 @@ def get_current_vm_number():
     return last_digit % MAX_NODES_PER_HOST
 
 
-POWER_CYCLE_SCRIPT = """#!/usr/bin/env python
-
-import time
+POWER_CYCLE_SCRIPT = \
+"""import time
 
 from brainstem import discover
 from brainstem.link import Spec
 from brainstem.stem import USBHub2x4
 
 
-if __name__ == '__main__':
-    stem = USBHub2x4()
-    spec = discover.find_first_module(Spec.USB)
-    if spec is None:
-        raise RuntimeError("No USBHub is connected!")
-    stem.connect_from_spec(spec)
-    stem.usb.setPowerDisable({0})
-    time.sleep(1)
-    stem.usb.setPowerEnable({0})
-    time.sleep(1)
+stem = USBHub2x4()
+spec = discover.find_first_module(Spec.USB)
+if spec is None:
+    raise RuntimeError("No USBHub is connected!")
+stem.connect_from_spec(spec)
+stem.usb.setPowerDisable({0})
+time.sleep(10)
+stem.usb.setPowerEnable({0})
+time.sleep(1)
 """.format(get_current_vm_number() - 1)
 # VM number starts from 1
+
 
 def calc_vm_master_host_ip():
     ip_as_list = CURRENT_HOST_IP.split('.')
@@ -66,8 +66,10 @@ if __name__ == '__main__':
             sftp.close()
         finally:
             os.unlink(localpath)
-        stdin, stdout, sterr = client.exec_command('python "{}"'.format(remotepath))
+        stdin, stdout, stderr = client.exec_command('python "{}"'.format(remotepath))
         stdout.channel.recv_exit_status()
+        if stderr:
+            sys.stderr.write('\n' + stderr.read() + '\n')
         client.exec_command('rm -f "{}"'.format(remotepath))
     finally:
         client.close()

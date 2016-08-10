@@ -789,6 +789,9 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapRecordControlButton(String buttonName) throws Exception {
+        //sometimes for such dynamic elements like record bar appium do not get the actual page source
+        //in some cases this method helps to refresh elements tree.
+        this.printPageSource();
         By button = getRecordControlButtonByName(buttonName);
         if (button.equals(namePlayAudioRecorderButton)) {
             getElement(button).click();
@@ -803,12 +806,13 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapAudioRecordWaitAndSwipe(int swipeDelaySeconds) throws Exception {
+        //sometimes for such dynamic elements like record bar appium do not get the actual page source
+        //in some cases this method helps to refresh elements tree.
+        this.printPageSource();
         WebElement recordAudioMessageBtn = getElement(nameAudioMessageButton);
-        int y = getElement(nameConversationInput).getLocation().getY() - recordAudioMessageBtn.getLocation().getY();
         new TouchAction(getDriver()).press(recordAudioMessageBtn)
                 .waitAction(swipeDelaySeconds * 1000)
-                .moveTo(0, 3 * y)
-                .waitAction(1000)
+                .moveTo(getElement(xpathAudioCallButton))
                 .release()
                 .perform();
     }
