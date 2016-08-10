@@ -66,8 +66,10 @@ if __name__ == '__main__':
             sftp.close()
         finally:
             os.unlink(localpath)
-        stdin, stdout, sterr = client.exec_command('python "{}"'.format(remotepath))
+        stdin, stdout, stderr = client.exec_command('python "{}"'.format(remotepath))
         stdout.channel.recv_exit_status()
+        if stderr:
+            sys.stderr.write('\n' + stderr.read() + '\n')
         client.exec_command('rm -f "{}"'.format(remotepath))
     finally:
         client.close()
