@@ -150,16 +150,22 @@ public class IOSSimulatorHelper {
 
     public static String getId() throws Exception {
         final String deviceName = getDeviceName(IOSSimulatorHelper.class);
+        final String platformVersion = CommonUtils.getPlatformVersionFromConfig(IOSSimulatorHelper.class);
         if (!simIdsMapping.containsKey(deviceName)) {
             final String output = executeSimctl(new String[]{"list", "devices"});
+            final Pattern linePattern = Pattern.compile(
+                            "([\\w\\s]+)\\(([0-9\\.]+)\\)\\s+\\[([\\w]{8}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{12})");
             for (String line : output.split("\n")) {
-                if (line.contains(deviceName + " (") && !line.contains("unavailable")) {
-                    final Pattern pattern =
-                            Pattern.compile("([\\w]{8}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{12})");
-                    final Matcher m = pattern.matcher(line);
+                if (!line.contains("unavailable")) {
+                    final Matcher m = linePattern.matcher(line);
                     if (m.find()) {
-                        simIdsMapping.put(deviceName, m.group(0));
-                        break;
+                        final String actualDeviceName = m.group(1).trim();
+                        final String actualPlatformVersion = m.group(2).trim();
+                        final String actualSimId = m.group(3).trim();
+                        if (deviceName.equals(actualDeviceName) && platformVersion.startsWith(actualPlatformVersion)) {
+                            simIdsMapping.put(deviceName, actualSimId);
+                            break;
+                        }
                     }
                 }
             }
