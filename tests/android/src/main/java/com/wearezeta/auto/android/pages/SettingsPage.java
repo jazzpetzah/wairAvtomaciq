@@ -135,7 +135,7 @@ public class SettingsPage extends AndroidPage {
         getElement(xpathOKButton).click();
         // Confirm the alert
         Thread.sleep(1000);
-        getElement(xpathOKButton).click();
+        getElementIfDisplayed(xpathOKButton, 3).orElseGet(DummyElement::new).click();
     }
 
     public void commitPhoneNumberVerificationCode(String activationCode) throws Exception {
