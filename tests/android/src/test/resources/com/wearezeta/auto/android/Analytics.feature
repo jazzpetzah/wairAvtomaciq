@@ -39,7 +39,7 @@ Feature: Analytics
     And I see Audio Message container in the conversation view
     And I wait for 5 seconds
     Then I verify that <LogType> log contains string "media.sent_audio_message"
-    And I verify that <LogType> log contains string "ACTION=file"
+    And I verify that <LogType> log contains string "ACTION=audio"
     # Text message
     When I type the message "<Message>" and send it
     Then I verify that <LogType> log contains string "media.completed_media_action"
@@ -79,12 +79,12 @@ Feature: Analytics
     And I see Video Message container in the conversation view
     And I wait for 10 seconds
     Then I verify that <LogType> log contains string "media.sent_video_message"
-    And I verify that <LogType> log contains string "ACTION=file" 2 times
+    And I verify that <LogType> log contains string "ACTION=video"
     # File
     When I tap File button from cursor toolbar
     And I see File Upload container in the conversation view
     And I wait for 5 seconds
-    Then I verify that <LogType> log contains string "ACTION=file" 3 times
+    Then I verify that <LogType> log contains string "ACTION=file"
     # Outgoing audio call
     When I tap Audio Call button from top toolbar
     And I see outgoing call
