@@ -1386,7 +1386,7 @@ public class ConversationPageSteps {
             BufferedImage originalImage = ImageUtil.readImageFromFile(picturePath);
             BufferedImage linkPreviewScreenshot = context.getPagesCollection().getPage(ConversationPage.class).getImageFromLastLinkPreview();
 
-            assertThat("Not enough good matches", ImageUtil.getMatches(originalImage, linkPreviewScreenshot), greaterThan(40));
+            assertThat("Not enough good matches", ImageUtil.getMatches(originalImage, linkPreviewScreenshot), greaterThan(100));
         } else {
             assertThat("I see a picture in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
                     .isImageFromLinkPreviewNotVisible());
