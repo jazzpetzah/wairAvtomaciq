@@ -185,3 +185,24 @@ Feature: Settings
     Examples:
       | Name      | NewNumber        |
       | user1Name | user1PhoneNumber |
+
+  @C150019 @staging
+  Scenario Outline: Verify you can change a phone number from settings
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with no conversations
+    When I tap conversations list settings button
+    And I select "Account" settings menu item
+    And I select "<CurrentNumber>" settings menu item
+    And I commit my new phone number "<NewNumber>"
+    And I commit verification code for phone number <NewNumber>
+    And I select "Log out" settings menu item
+    And I confirm sign out
+    Then I see welcome screen
+    When I sign in using my phone number
+    Then I see Conversations list with no conversations
+
+    Examples:
+      | Name      | CurrentNumber    | NewNumber        |
+      | user1Name | user1PhoneNumber | user2PhoneNumber |
