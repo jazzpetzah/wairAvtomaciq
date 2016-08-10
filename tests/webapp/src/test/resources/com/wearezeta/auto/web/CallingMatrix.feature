@@ -386,7 +386,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:46.0.1       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:45.0.1       | 30      |
 
-  @C5370 @calling_matrix
+  @C5371 @calling_matrix
   Scenario Outline: Verify I can create, leave and rejoin an audio group call with AVS <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -415,3 +415,66 @@ Feature: Calling_Matrix
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend  | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | zcall:2.7.26 | 30      |
+
+  @C5372 @calling_matrix
+  Scenario Outline: Verify I can 1:1 audio call a user with <CallBackend> twice in a row
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact>
+    And I call
+    Then <Contact> accepts next incoming call automatically
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verify to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verify that all audio flows have greater than 0 bytes
+    When I hang up call with conversation <Contact>
+    Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
+    And <Contact> accepts next incoming call automatically
+    And <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    When I call
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verify to have 1 flow
+    And <Contact> verifies to get audio data from me
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:52.0.2743.82  | 20      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:51.0.2704.106 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:46.0.1       | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
+
+  @C5373 @calling_matrix
+  Scenario Outline: Verify I can 1:1 audio call a user with AVS <CallBackend> twice in a row
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact>
+    And I call
+    Then <Contact> accepts next incoming call automatically
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the ongoing call controls for conversation <Contact>
+    When I hang up call with conversation <Contact>
+    Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
+    Then <Contact> verify that incoming call was successful
+    And <Contact> accepts next incoming call automatically
+    And <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    When I call
+    And I see the ongoing call controls for conversation <Contact>
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    When <Contact> stops calling
+    Then <Contact> verify that incoming call was successful
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | CallBackend  | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | zcall:2.7.26 | 20      |
