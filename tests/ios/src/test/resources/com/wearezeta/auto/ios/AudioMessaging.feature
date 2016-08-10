@@ -203,7 +203,7 @@ Feature: Audio Messaging
     And I tap Play audio message button
     # Wait until the audio is downloaded and starts playback
     And I wait for <AudioDownloadTimeout> seconds
-    And I long tap Audio Message button for 10 seconds from input tools
+    And I long tap Audio Message button for 5 seconds from input tools
     When I tap Cancel record control button
     Then I verify the state of Play button on audio message placeholder is not changed
 
