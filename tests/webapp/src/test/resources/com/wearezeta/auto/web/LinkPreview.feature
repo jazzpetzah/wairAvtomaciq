@@ -15,9 +15,9 @@ Feature: Link Preview
     And I see a picture <LinkPreviewImage> from link preview
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Link                                                                                                 | LinkInPreview                                                                             | LinkTitle                                        | LinkPreviewImage |
-      | user1Email | user1Password | user1Name | user2Name | https://wire.com                                                                                     | wire.com                                                                                  | Wire — modern, private communication.            | linkpreview0.png |
-      | user1Email | user1Password | user1Name | user2Name | http://www.heise.de/developer/meldung/Wire-Messenger-ist-jetzt-vollstaendig-Open-Source-3277490.html | heise.de/developer/meldung/Wire-Messenger-ist-jetzt-vollstaendig-Open-Source-3277490.html | Wire-Messenger ist jetzt vollständig Open Source | linkpreview1.png |
+      | Login      | Password      | Name      | Contact   | Link                                                                                                               | LinkInPreview                                                                                           | LinkTitle                                                          | LinkPreviewImage |
+    #  | user1Email | user1Password | user1Name | user2Name | https://wire.com                                                                                                   | wire.com                                                                                                | Wire — modern, private communication.                              | linkpreview0.png |
+      | user1Email | user1Password | user1Name | user2Name | http://www.heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | Wire: Neuer WebRTC-Messenger soll WhatsApp &amp; Co. Konkurrenz machen | linkpreview1.png |
 
   @C169235 @regression @WEBAPP-2998
   Scenario Outline: Verify you can delete link preview
