@@ -431,8 +431,8 @@ Feature: Calling_Matrix
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
     And <Contact> verify to have 1 flow
+    And <Contact> verify that all audio flows have greater than 0 bytes    
     And <Contact> verifies to get audio data from me
-    And <Contact> verify that all audio flows have greater than 0 bytes
     When I hang up call with conversation <Contact>
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
     And <Contact> accepts next incoming call automatically
@@ -441,6 +441,7 @@ Feature: Calling_Matrix
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
     And <Contact> verify to have 1 flow
+    And <Contact> verify that all audio flows have greater than 0 bytes    
     And <Contact> verifies to get audio data from me
 
     Examples:
@@ -478,3 +479,42 @@ Feature: Calling_Matrix
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend  | Timeout |
       | user1Email | user1Password | user1Name | user2Name | zcall:2.7.26 | 20      |
+
+  @C5374 @calling_matrix
+  Scenario Outline: Verify I can 1:1 video call a user with <CallBackend> twice in a row
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact>
+    And I start a video call
+    Then <Contact> accepts next incoming video call automatically
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verify to have 1 flow
+    And <Contact> verify that all audio flows have greater than 0 bytes
+    And <Contact> verify that all video flows have greater than 0 bytes
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    When I hang up call with conversation <Contact>
+    Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
+    And <Contact> accepts next incoming video call automatically
+    And <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    And I start a video call
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verify to have 1 flow
+    And <Contact> verify that all audio flows have greater than 0 bytes
+    And <Contact> verify that all video flows have greater than 0 bytes
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:52.0.2743.82  | 20      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:51.0.2704.106 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:46.0.1       | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
