@@ -367,6 +367,7 @@ public class ConversationViewPage extends AndroidPage {
                         }
                     }
             ).click();
+            getElement(locator).click();
         }
     }
 
