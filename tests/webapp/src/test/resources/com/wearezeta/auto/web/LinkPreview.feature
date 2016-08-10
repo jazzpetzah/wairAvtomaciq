@@ -10,14 +10,14 @@ Feature: Link Preview
     Given I see Contact list with name <Contact>
     When I open conversation with <Contact>
     And Contact <Contact> sends message <Link> via device Device1 to user me
-    Then I see link <Link> in link preview message
+    Then I see link <LinkInPreview> in link preview message
     And I see a title <LinkTitle> in link preview in the conversation view
     And I see a picture <LinkPreviewImage> from link preview
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Link                                                                                                 | LinkTitle                                        | LinkPreviewImage |
-      | user1Email | user1Password | user1Name | user2Name | https://wire.com                                                                                     | Wire — modern, private communication.            | linkpreview0.png      |
-      | user1Email | user1Password | user1Name | user2Name | http://www.heise.de/developer/meldung/Wire-Messenger-ist-jetzt-vollstaendig-Open-Source-3277490.html | Wire-Messenger ist jetzt vollständig Open Source | linkpreview1.png |
+      | Login      | Password      | Name      | Contact   | Link                                                                                                 | LinkInPreview                                                                             | LinkTitle                                        | LinkPreviewImage |
+      | user1Email | user1Password | user1Name | user2Name | https://wire.com                                                                                     | wire.com                                                                                  | Wire — modern, private communication.            | linkpreview0.png |
+      | user1Email | user1Password | user1Name | user2Name | http://www.heise.de/developer/meldung/Wire-Messenger-ist-jetzt-vollstaendig-Open-Source-3277490.html | heise.de/developer/meldung/Wire-Messenger-ist-jetzt-vollstaendig-Open-Source-3277490.html | Wire-Messenger ist jetzt vollständig Open Source | linkpreview1.png |
 
   @C169235 @staging @WEBAPP-2998
   Scenario Outline: Verify you can delete link preview
@@ -29,7 +29,7 @@ Feature: Link Preview
     Given I see Contact list with name <Contact>
     When I open conversation with <Contact>
     And Contact <Contact> sends message <Link> via device Device1 to user me
-    Then I see link <Link> in link preview message
+    Then I see link <LinkInPreview> in link preview message
     And I see a title <LinkTitle> in link preview in the conversation view
     And I see a picture <LinkPreviewImage> from link preview
     When I click to delete the latest message
@@ -38,5 +38,5 @@ Feature: Link Preview
     And I do not see a picture <LinkPreviewImage> from link preview
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Link             | LinkTitle                             | LinkPreviewImage |
-      | user1Email | user1Password | user1Name | user2Name | https://wire.com | Wire — modern, private communication. | linkpreview0.png |
+      | Login      | Password      | Name      | Contact   | Link             | LinkInPreview | LinkTitle                             | LinkPreviewImage |
+      | user1Email | user1Password | user1Name | user2Name | https://wire.com | wire.com      | Wire — modern, private communication. | linkpreview0.png |
