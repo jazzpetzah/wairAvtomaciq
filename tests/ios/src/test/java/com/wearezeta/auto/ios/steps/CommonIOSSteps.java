@@ -78,6 +78,10 @@ public class CommonIOSSteps {
         return getOldAppPathFromConfig(CommonIOSSteps.class);
     }
 
+    private static String getiOSAddressbookAppPath() throws Exception {
+        return getiOSAddressbookAppPathFromConfig(CommonIOSSteps.class);
+    }
+
     private static boolean isUseNativeInstrumentsEnabled() throws Exception {
         return Boolean.parseBoolean(getIsUseNativeInstrumentsLibFromConfig(
                 CommonIOSSteps.class).orElseGet(() -> "false"));
@@ -196,8 +200,10 @@ public class CommonIOSSteps {
         }
 
         String appPath = getAppPath();
-        if (scenario.getSourceTagNames().contains("@upgrade")) {
-            appPath = getOldAppPath();
+        if (scenario.getSourceTagNames().contains("@upgrade") || scenario.getSourceTagNames().contains("@addressbookStart")) {
+            if(scenario.getSourceTagNames().contains("@upgrade")){
+                appPath = getOldAppPath();
+            }
             if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
                 PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
             }
@@ -1230,25 +1236,100 @@ public class CommonIOSSteps {
      * Add email(s) into address book of a user and upload address book in backend
      *
      * @param asUser name of the user where the address book is uploaded
-     * @param emails list of email addresses seperated by comma
      * @throws Exception
+     * @step. ^User (.*) has (?: emails?|phone numbers?) (.*) in address book$
      */
-    @Given("^User (.*) has emails? (.*) in address book")
-    public void UserXHasEmailsInAddressBook(String asUser, String emails)
+    @Given("^User (.*) has (?:emails?|phone numbers?) (.*) in address book$")
+    public void UserXHasEmailsInAddressBook(String asUser, String contacts)
             throws Exception {
-        commonSteps.UserXHasContactsInAddressBook(asUser, emails);
+        commonSteps.UserXHasContactsInAddressBook(asUser, contacts);
     }
 
     /**
-     * Add email(s) into address book of a user and upload address book in backend
+     * Installs the Addressbook helper app on to the simulator
      *
-     * @param asUser name of the user where the address book is uploaded
-     * @param emails list of email addresses seperated by comma
      * @throws Exception
+     * @step. ^I install Addressbook helper app$
      */
-    @Given("^User (.*) has phone numbers? (.*) in address book")
-    public void UserXHasPhoneNumbersInAddressBook(String asUser, String emails)
-            throws Exception {
-        commonSteps.UserXHasPhoneNumberInAddressBook(asUser, emails);
+    @Given("^I install Addressbook helper app$")
+    public void IInstallAddressbookHelperApp() throws Exception {
+        final File app = new File(getiOSAddressbookAppPath());
+        IOSSimulatorHelper.installIpa(app);
+    }
+
+    private static final String ADDRESSBOOK_APP_BUNDLE = "com.wire.addressbookautomation";
+
+    /**
+     * Launches the Addressbook Helper App on to the simluator
+     *
+     * @throws Exception
+     * @step. ^I launch Addressbook helper app$
+     */
+    @Given("^I launch Addressbook helper app$")
+    public void ILaunchAddressbookHelperApp() throws Exception {
+        IOSSimulatorHelper.launchApp(ADDRESSBOOK_APP_BUNDLE);
+    }
+
+    @Given("^I delete all contacts from addressbook$")
+    public void IDeleteAllContactsFromAddressbook() throws Throwable {
+        Thread.sleep(1000);
+
+    }
+
+    @Given("^I add name user(\\d+)Name and phone user(\\d+)Phone with prefix \\+(\\d+) to Address Book$")
+    public void IAddNameAndPhoneWithPrefixToAddressBook(int arg1, int arg2, int arg3) throws Throwable {
+    }
+
+    @Given("^I add name user(\\d+)Name and email user(\\d+)Email to Address Book$")
+    public void IAddNameAndEmailToAddressBook(int arg1, int arg2) throws Throwable {
+    }
+
+    final Map<String, Object> customCaps = new HashMap<>();
+
+    /**
+     * Quits Wire on the simulator
+     *
+     * @throws Exception
+     * @step. ^I quit Wire$
+     */
+    @Given("^I quit Wire$")
+    public void IQuitWire() throws Exception {
+        if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+            final RemoteWebDriver currentDriver = PlatformDrivers.getInstance().getDriver(CURRENT_PLATFORM).get();
+            final Map<String, ?> currentCapabilities = currentDriver.getCapabilities().asMap();
+            for (Map.Entry<String, ?> capabilityItem : currentCapabilities.entrySet()) {
+                customCaps.put(capabilityItem.getKey(), capabilityItem.getValue());
+            }
+            try {
+                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+                //IOSSimulatorHelper.goHome();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Relaunches Wire on the simulator
+     *
+     * @throws Exception
+     * @step. ^I relaunch Wire$
+     */
+    @Given("^I relaunch Wire$")
+    public void IRelaunchWire() throws Exception {
+        customCaps.put("noReset", true);
+        customCaps.put("fullReset", false);
+        final String appPath = getAppPath();
+        if (appPath.endsWith(".ipa")) {
+            pagesCollection.getCommonPage().installIpa(new File(appPath));
+        } else if (appPath.endsWith(".app")) {
+            pagesCollection.getCommonPage().installApp(new File(appPath));
+        } else {
+            throw new IllegalArgumentException(String.format("Only .app and .ipa package formats are supported. " +
+                    "%s is given instead.", appPath));
+        }
+        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath, Optional.of(customCaps), 1);
+        updateDriver(lazyDriver);
     }
 }
