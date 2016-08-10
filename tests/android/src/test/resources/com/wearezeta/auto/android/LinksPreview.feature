@@ -101,3 +101,32 @@ Feature: Links Preview
       | Name      | Contact   | TextLink                 | LinkText                  | TextLinkText                      | url4                | url5                |
       | user1Name | user2Name | text http://facebook.com | https://facebook.com text | text http://www.facebook.com text | Http://facebook.com | HTTP://FACEBOOK.COM |
 
+  @C202305 @staging
+  Scenario Outline: Show correct Url in link preview
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
+    And I type the message "<Link1>" and send it
+    Then I see Link Preview URL <LinkUrl>
+    When I long tap Link Preview container in the conversation view
+    And I tap Delete button on the action mode bar
+    And I tap Delete button on the alert
+    And I type the message "<Link2>" and send it
+    Then I see Link Preview URL <LinkUrl>
+    When I long tap Link Preview container in the conversation view
+    And I tap Delete button on the action mode bar
+    And I tap Delete button on the alert
+    And I type the message "<Link3>" and send it
+    Then I see Link Preview URL <LinkUrl>
+    When I long tap Link Preview container in the conversation view
+    And I tap Delete button on the action mode bar
+    And I tap Delete button on the alert
+    And I type the message "<Link4>" and send it
+    Then I see Link Preview URL <Link2Url>
+
+    Examples:
+      | Name      | Contact   | Link1               | Link2                    | Link3                    | LinkUrl      | Link4                        | Link2Url         |
+      | user1Name | user2Name | http://facebook.com | https://www.facebook.com | http://www.facebook.com/ | facebook.com | HTTP://WWW.FRANCE24.COM/FR/  | france24.com/FR  |

@@ -168,6 +168,9 @@ public class ConversationViewPage extends AndroidPage {
     private static final Function<String, String> xpathMoreActionButton = value -> String
             .format("//*[@value='%s']", value);
 
+    private static final Function<String, String> xpathLinkPreviewUrlByValue = value -> String
+            .format("//*[@id='ttv__row_conversation__link_preview__url' and @value='%s']", value);
+
     private static final By idActionModeBarForwardButton = By.id("action_fwd");
     private static final By idActionModeBarDeleteButton = By.id("action_delete");
     private static final By idActionModeBarCopyButton = By.id("action_copy");
@@ -865,6 +868,10 @@ public class ConversationViewPage extends AndroidPage {
     public boolean isContainerInvisible(String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public boolean waitUntilLinkPreviewUrlVisible(String url) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathLinkPreviewUrlByValue.apply(url)));
     }
 
     public void tapContainer(String name) throws Exception {
