@@ -69,12 +69,6 @@ import org.openqa.selenium.By;
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.KEEP_DATABASE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
 
 public class CommonOSXSteps {
 
