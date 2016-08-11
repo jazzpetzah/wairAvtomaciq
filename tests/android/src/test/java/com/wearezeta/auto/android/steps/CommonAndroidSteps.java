@@ -1177,12 +1177,15 @@ public class CommonAndroidSteps {
      * Checks to see that an alert message contains the correct text
      *
      * @param expectedMsg the expected error message
+     * @param pureText    to specifiy whether it replace the name alias
      * @throws Exception
-     * @step. ^I see alert message containing \"(.*)\"$
+     * @step. ^I see alert message containing (pure text )?\"(.*)\"$
      */
-    @Then("^I see alert message containing \"(.*)\" in the (title|body)$")
-    public void ISeeAlertMessage(String expectedMsg, String location) throws Exception {
-        expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, ClientUsersManager.FindBy.NAME_ALIAS);
+    @Then("^I see alert message containing (pure text )?\"(.*)\" in the (title|body)$")
+    public void ISeeAlertMessage(String pureText, String expectedMsg, String location) throws Exception {
+        if (pureText == null) {
+            expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, ClientUsersManager.FindBy.NAME_ALIAS);
+        }
         switch (location.toLowerCase()) {
             case "body":
                 Assert.assertTrue(String.format("An alert containing text '%s' in body is not visible", expectedMsg),
