@@ -10,6 +10,9 @@ import static org.hamcrest.Matchers.*;
 
 import org.junit.Assert;
 import org.openqa.selenium.Dimension;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MainWirePageSteps {
 
@@ -208,11 +211,11 @@ public class MainWirePageSteps {
         MainWirePage mainWirePage = osxPagesCollection
                 .getPage(MainWirePage.class);
         Assert.assertTrue("Expected X coordinate " + x
-                + " does not match the actual value " + mainWirePage.getX(),
-                mainWirePage.isX(x));
+                + " does not match the actual value " + mainWirePage.getStrippedX(),
+                mainWirePage.isStrippedX(x));
         Assert.assertTrue("Expected Y coordinate " + y
-                + " does not match the actual value " + mainWirePage.getY(),
-                mainWirePage.isY(y));
+                + " does not match the actual value " + mainWirePage.getStrippedY(),
+                mainWirePage.isStrippedY(y));
     }
 
     /**
