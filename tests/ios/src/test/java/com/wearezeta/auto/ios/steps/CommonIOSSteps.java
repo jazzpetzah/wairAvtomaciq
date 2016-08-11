@@ -17,7 +17,10 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
+import com.wearezeta.auto.ios.tools.ABProvisioner.ABContact;
+import com.wearezeta.auto.ios.tools.ABProvisioner.ABProvisionerAPI;
 import com.wearezeta.auto.ios.tools.FastLoginContainer;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
@@ -50,6 +53,7 @@ public class CommonIOSSteps {
     private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
+    private final ABProvisionerAPI addressbookProvisioner = ABProvisionerAPI.getInstance();
     private static Logger log = ZetaLogger.getLog(CommonIOSSteps.class.getSimpleName());
 
     // We keep this short and compatible with spell checker
@@ -127,8 +131,9 @@ public class CommonIOSSteps {
                 // https://wearezeta.atlassian.net/browse/ZIOS-5769
                 "--disable-autocorrection",
                 // https://wearezeta.atlassian.net/browse/ZIOS-5259
-                "-AnalyticsUserDefaultsDisabledKey", "0"
-                // ,"--debug-log-network"
+                "-AnalyticsUserDefaultsDisabledKey", "0",
+                "--debug-log-network",
+                "--addressbook-on-simulator"
         ));
 
         if (additionalCaps.isPresent()) {
@@ -141,7 +146,7 @@ public class CommonIOSSteps {
                             "--loginemail=" + ((ClientUser) entry.getValue()).getEmail(),
                             "--loginpassword=" + ((ClientUser) entry.getValue()).getPassword()
                     ));
-                } else {
+                }else {
                     capabilities.setCapability(entry.getKey(), entry.getValue());
                 }
             }
@@ -1268,23 +1273,63 @@ public class CommonIOSSteps {
     @Given("^I launch Addressbook helper app$")
     public void ILaunchAddressbookHelperApp() throws Exception {
         IOSSimulatorHelper.launchApp(ADDRESSBOOK_APP_BUNDLE);
+        Thread.sleep(2000);
+        //Pressing the accept OK button on the alert
+        IOSSimulatorHelper.clickAt("0.68", "0.58", "1");
     }
 
+    /**
+     * Addressbook helper app deletes all contacts from simulator addressbook
+     *
+     * @throws Exception
+     * @step. ^I delete all contacts from addressbook$
+     */
     @Given("^I delete all contacts from addressbook$")
-    public void IDeleteAllContactsFromAddressbook() throws Throwable {
-        Thread.sleep(1000);
-
+    public void IDeleteAllContactsFromAddressbook() throws Exception {
+        addressbookProvisioner.clearContacts();
     }
 
-    @Given("^I add name user(\\d+)Name and phone user(\\d+)Phone with prefix \\+(\\d+) to Address Book$")
-    public void IAddNameAndPhoneWithPrefixToAddressBook(int arg1, int arg2, int arg3) throws Throwable {
+    /**
+     * Uploads name and phone number of contact to the simulator addressbook
+     *
+     * @param name name of contact to be added to addressbook
+     * @param phoneNumber phone number of contact to be added to addressbook
+     * @throws Exception
+     * @step. ^I add name (.*) and phone (.*) to Address Book$
+     */
+    @Given("^I add name (.*) and phone (.*) to Address Book$")
+    public void IAddNameAndPhoneToAddressBook(String name, String phoneNumber) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        phoneNumber = usrMgr.replaceAliasesOccurences(phoneNumber,ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+        List<String> phoneNumberList = new ArrayList<>();
+        phoneNumberList.add(phoneNumber);
+        ABContact contact = new ABContact(name,Optional.empty(),Optional.of(phoneNumberList));
+        List<ABContact> newContacts = new ArrayList<>();
+        newContacts.add(contact);
+        addressbookProvisioner.addContacts(newContacts);
     }
 
-    @Given("^I add name user(\\d+)Name and email user(\\d+)Email to Address Book$")
-    public void IAddNameAndEmailToAddressBook(int arg1, int arg2) throws Throwable {
+    /**
+     * Uploads name and email of contact to the simulator addressbook
+     *
+     * @param name name of contact to be added to addressbook
+     * @param email email of contact to be added to addressbook
+     * @throws Throwable
+     * @step. ^I add name (.*) and email (.*) to Address Book$
+     */
+    @Given("^I add name (.*) and email (.*) to Address Book$")
+    public void IAddNameAndEmailToAddressBook(String name, String email) throws Throwable {
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        email = usrMgr.replaceAliasesOccurences(email,ClientUsersManager.FindBy.EMAIL_ALIAS);
+        List<String> emailList = new ArrayList<>();
+        emailList.add(email);
+        ABContact contact = new ABContact(name,Optional.of(emailList),Optional.empty());
+        List<ABContact> newContacts = new ArrayList<>();
+        newContacts.add(contact);
+        addressbookProvisioner.addContacts(newContacts);
     }
 
-    final Map<String, Object> customCaps = new HashMap<>();
+    private final Map<String, Object> savedCaps = new HashMap<>();
 
     /**
      * Quits Wire on the simulator
@@ -1298,12 +1343,10 @@ public class CommonIOSSteps {
             final RemoteWebDriver currentDriver = PlatformDrivers.getInstance().getDriver(CURRENT_PLATFORM).get();
             final Map<String, ?> currentCapabilities = currentDriver.getCapabilities().asMap();
             for (Map.Entry<String, ?> capabilityItem : currentCapabilities.entrySet()) {
-                customCaps.put(capabilityItem.getKey(), capabilityItem.getValue());
+                savedCaps.put(capabilityItem.getKey(), capabilityItem.getValue());
             }
             try {
                 PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
-                //IOSSimulatorHelper.goHome();
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1318,18 +1361,9 @@ public class CommonIOSSteps {
      */
     @Given("^I relaunch Wire$")
     public void IRelaunchWire() throws Exception {
-        customCaps.put("noReset", true);
-        customCaps.put("fullReset", false);
-        final String appPath = getAppPath();
-        if (appPath.endsWith(".ipa")) {
-            pagesCollection.getCommonPage().installIpa(new File(appPath));
-        } else if (appPath.endsWith(".app")) {
-            pagesCollection.getCommonPage().installApp(new File(appPath));
-        } else {
-            throw new IllegalArgumentException(String.format("Only .app and .ipa package formats are supported. " +
-                    "%s is given instead.", appPath));
-        }
-        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath, Optional.of(customCaps), 1);
+        savedCaps.put("noReset", true);
+        savedCaps.put("fullReset", false);
+        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(getAppPath(), Optional.of(savedCaps), 1);
         updateDriver(lazyDriver);
     }
 }
