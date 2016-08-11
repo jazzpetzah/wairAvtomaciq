@@ -9,6 +9,7 @@ import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.SecurityAlertPage;
+import com.wearezeta.auto.android.pages.registration.BackendSelectPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.AppiumServer;
@@ -103,8 +104,7 @@ public class CommonAndroidSteps {
         capabilities.setCapability("deviceName", "null");
         capabilities.setCapability("app", path);
         capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(getClass()));
-        capabilities.setCapability("appActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
-        capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidLoginActivityFromConfig(getClass()));
+        capabilities.setCapability("appActivity", CommonUtils.getAndroidLaunchActivity(getClass()));
         capabilities.setCapability("automationName", "Selendroid");
         if (additionalCaps.isPresent()) {
             for (Map.Entry<String, Object> entry : additionalCaps.get().entrySet()) {
@@ -245,8 +245,16 @@ public class CommonAndroidSteps {
         if (scenario.getSourceTagNames().contains("@upgrade")) {
             appPath = getOldPath();
         }
-        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath);
-        updateDriver(lazyDriver);
+
+        Map<String, Object> additionalCapsMap = new HashMap<>();
+        if (!CommonUtils.getHasBackendSelection(getClass())) {
+            additionalCapsMap.put("appActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
+            additionalCapsMap.put("appWaitActivity", CommonUtils.getAndroidLoginActivityFromConfig(getClass()));
+        }
+        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath,
+                additionalCapsMap.isEmpty() ? Optional.empty() : Optional.of(additionalCapsMap));
+
+        updateDriver(lazyDriver, CommonUtils.getHasBackendSelection(getClass()));
     }
 
     @After
@@ -304,12 +312,17 @@ public class CommonAndroidSteps {
         AndroidLogListener.forceStopAll();
     }
 
-    private void updateDriver(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+    private void updateDriver(Future<ZetaAndroidDriver> lazyDriver, boolean hasBackendSelectPopup) throws Exception {
         ZetaFormatter.setLazyDriver(lazyDriver);
         if (pagesCollection.hasPages()) {
             pagesCollection.clearAllPages();
         }
-        pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
+        if (hasBackendSelectPopup) {
+            pagesCollection.setFirstPage(new BackendSelectPage(lazyDriver));
+            pagesCollection.getPage(BackendSelectPage.class).waitForInitialScreen();
+        } else {
+            pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
+        }
     }
 
     /**
@@ -327,9 +340,9 @@ public class CommonAndroidSteps {
         customCaps.put("noReset", true);
         customCaps.put("fullReset", false);
         customCaps.put("skipUninstall", true);
-        customCaps.put("appWaitActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
+        customCaps.put("appActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
         final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath, Optional.of(customCaps));
-        updateDriver(lazyDriver);
+        updateDriver(lazyDriver, false);
     }
 
     /**

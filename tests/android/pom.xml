@@ -20,7 +20,7 @@
         <package>com.waz.zclient.dev</package>
         <mainActivity>com.waz.zclient.MainActivity</mainActivity>
         <loginActivity>com.waz.zclient.AppEntryActivity</loginActivity>
-        <convoListActivity>com.waz.zclient.LaunchActivity</convoListActivity>
+        <launchActivity>com.waz.zclient.LaunchActivity</launchActivity>
         <driverTimeoutSeconds>7</driverTimeoutSeconds>
         <defaultEmail>smoketester@wire.com</defaultEmail>
         <specialEmail>smoketester.android@wire.com</specialEmail>
@@ -33,6 +33,7 @@
         <rcNotificationsRecepients>vova@wire.com,nick@wire.com,robin@wire.com</rcNotificationsRecepients>
         <adbPrefix></adbPrefix>
         <showLogcat>true</showLogcat>
+        <hasBackendSelection>true</hasBackendSelection>
     </properties>
 
     <dependencies>

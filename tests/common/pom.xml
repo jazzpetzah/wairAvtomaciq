@@ -34,6 +34,7 @@
         <cachedOtrDevicesCount>3</cachedOtrDevicesCount>
         <!-- http://192.168.10.18:8081/nexus/content/repositories/releases/com/wearezeta/zmessaging-actor/ -->
         <zmessaging.actor.version>76.502</zmessaging.actor.version>
+        <backendType>staging</backendType>
     </properties>
 
     <dependencies>

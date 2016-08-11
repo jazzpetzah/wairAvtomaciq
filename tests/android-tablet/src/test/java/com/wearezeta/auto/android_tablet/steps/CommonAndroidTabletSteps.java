@@ -9,6 +9,7 @@ import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
+import com.wearezeta.auto.android_tablet.pages.TabletBackendSelectPage;
 import com.wearezeta.auto.android_tablet.pages.TabletWelcomePage;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.AppiumServer;
@@ -37,8 +38,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -78,7 +78,8 @@ public class CommonAndroidTabletSteps {
     private boolean isAutoAcceptOfSecurityAlertsEnabled = false;
 
     @SuppressWarnings("unchecked")
-    public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path) throws Exception {
+    public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path,
+                                                        Optional<Map<String, Object>> additionalCaps) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
         capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
@@ -86,9 +87,13 @@ public class CommonAndroidTabletSteps {
         capabilities.setCapability("deviceName", "null");
         capabilities.setCapability("app", path);
         capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(getClass()));
-        capabilities.setCapability("appActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
-        capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidLoginActivityFromConfig(getClass()));
+        capabilities.setCapability("appActivity", CommonUtils.getAndroidLaunchActivity(getClass()));
         capabilities.setCapability("automationName", "Selendroid");
+        if (additionalCaps.isPresent()) {
+            for (Map.Entry<String, Object> entry : additionalCaps.get().entrySet()) {
+                capabilities.setCapability(entry.getKey(), entry.getValue());
+            }
+        }
 
         devicePreparationThread.get(DEVICE_PREPARATION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
@@ -200,9 +205,17 @@ public class CommonAndroidTabletSteps {
         if (isLogcatEnabled) {
             AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
         }
-        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), getPath());
-        ZetaFormatter.setLazyDriver(lazyDriver);
-        pagesCollection.setFirstPage(new TabletWelcomePage(lazyDriver));
+
+        Map<String, Object> additionalCapsMap = new HashMap<>();
+        if (!CommonUtils.getHasBackendSelection(getClass())) {
+            additionalCapsMap.put("appActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
+            additionalCapsMap.put("appWaitActivity", CommonUtils.getAndroidLoginActivityFromConfig(getClass()));
+        }
+
+        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), getPath(),
+                additionalCapsMap.isEmpty() ? Optional.empty() : Optional.of(additionalCapsMap));
+
+        updateDriver(lazyDriver, CommonUtils.getHasBackendSelection(getClass()));
         screenOrientationHelper.resetOrientation();
     }
 
@@ -252,6 +265,19 @@ public class CommonAndroidTabletSteps {
             }
         }
         AndroidLogListener.forceStopAll();
+    }
+
+    private void updateDriver(Future<ZetaAndroidDriver> lazyDriver, boolean hasBackendSelectPopup) throws Exception {
+        ZetaFormatter.setLazyDriver(lazyDriver);
+        if (pagesCollection.hasPages()) {
+            pagesCollection.clearAllPages();
+        }
+        if (hasBackendSelectPopup) {
+            pagesCollection.setFirstPage(new TabletBackendSelectPage(lazyDriver));
+            pagesCollection.getPage(TabletBackendSelectPage.class).waitForInitialScreen();
+        } else {
+            pagesCollection.setFirstPage(new TabletWelcomePage(lazyDriver));
+        }
     }
 
     /**
