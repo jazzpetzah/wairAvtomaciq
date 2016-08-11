@@ -564,11 +564,13 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean areInputToolsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameVideoMessageButton);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAddPictureButton) ||
+                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEllipsisButton) ;
     }
 
     public boolean areInputToolsInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameVideoMessageButton);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameAddPictureButton) &&
+                DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEllipsisButton);
     }
 
     public boolean isMissedCallButtonVisibleFor(String username) throws Exception {
