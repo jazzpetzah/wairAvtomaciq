@@ -137,7 +137,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @C3168 @real @fastLogin
+  @C3168 @real
   Scenario Outline: Verify changing profile picture using camera
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
