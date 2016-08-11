@@ -23,6 +23,9 @@ import cucumber.api.java.en.When;
 public class ConversationsListPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
+    private final ElementState newDeviceIndicatorState = new ElementState(
+            () -> getConversationsListPage().getNewDeviceIndicatorState());
+
     private ConversationsListPage getConversationsListPage() throws Exception {
         return pagesCollection.getPage(ConversationsListPage.class);
     }
@@ -48,6 +51,33 @@ public class ConversationsListPageSteps {
                     getConversationsListPage().isNoConversationsVisible());
 
         }
+    }
+
+    /**
+     * Store the screenshot of new device indicator
+     *
+     * @throws Exception
+     * @step. ^I remember the state of new device indicator on settings button$
+     */
+    @When("^I remember the state of new device indicator on settings button$")
+    public void IRememberAudioMessagePreviewSeekbar() throws Exception {
+        newDeviceIndicatorState.remember();
+    }
+
+    private static final double MIN_NEW_DEVICE_INDICATOR_SCORE = 0.93;
+    private static final int NEW_DEVICE_INDICATOR_STATE_CHANGE_TIMEOUT = 10; //seconds
+
+    /**
+     * Verify whether the new device indicator is changed
+     *
+     * @throws Exception
+     * @step. ^I verify the state of new device indicator is changed$
+     */
+    @Then("^I verify the state of new device indicator is changed$")
+    public void ISeeNewDeviceIndicatorIsChanged() throws Exception {
+        Assert.assertTrue("The current and previous state of audio message preview seekbar seems to be same",
+                newDeviceIndicatorState.isChanged(NEW_DEVICE_INDICATOR_STATE_CHANGE_TIMEOUT,
+                        MIN_NEW_DEVICE_INDICATOR_SCORE));
     }
 
     /**
@@ -463,16 +493,4 @@ public class ConversationsListPageSteps {
     public void IPressTheThreeDotsOptionMenuButton() throws Exception {
         getConversationsListPage().tapThreeDotOptionMenuButton();
     }
-
-    /**
-     * Verify the settings button indicator is visible
-     *
-     * @throws Exception
-     * @step. ^I see indicator on settings button in conversation list$
-     */
-    @Then("^I see indicator on settings button in conversation list$")
-    public void ISeeSettingsButtonIndicator() throws Exception {
-        getConversationsListPage().waitUntilSettingsButtonIndicatorVisible();
-    }
-
 }

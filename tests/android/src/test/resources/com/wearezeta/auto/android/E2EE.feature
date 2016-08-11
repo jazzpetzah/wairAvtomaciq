@@ -545,8 +545,9 @@ Feature: E2EE
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with no conversations
+    When I remember the state of new device indicator on settings button
     And User Myself adds new device <Device>
-    Then I see indicator on settings button in conversation list
+    Then I verify the state of new device indicator is changed
 
     Examples:
       | Name      | Device  |
