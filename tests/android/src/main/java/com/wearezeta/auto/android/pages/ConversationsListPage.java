@@ -56,8 +56,6 @@ public class ConversationsListPage extends AndroidPage {
 
     private static final By idListSettingsButton = By.id("gtv__list_actions__settings");
 
-    private static final By idSettingsButtonIndicator = By.id("cv__list_actions__settings_indicator");
-
     public static final By idListActionsAvatar = By.id("gtv__list_actions__avatar");
 
     private static final By idConversationListHintContainer = By.id("ll__conversation_list__hint_container");
@@ -79,6 +77,12 @@ public class ConversationsListPage extends AndroidPage {
 
     public ConversationsListPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
+    }
+
+    public BufferedImage getNewDeviceIndicatorState() throws Exception {
+        return this.getElementScreenshot(getElement(idListSettingsButton)).orElseThrow(
+                () -> new IllegalStateException("Cannot get a screenshot of new device indicator")
+        );
     }
 
     public String getFirstVisibleConversationName() throws Exception {
@@ -308,10 +312,6 @@ public class ConversationsListPage extends AndroidPage {
 
     public boolean isThreeDotButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idThreeDotsOptionMenuButton);
-    }
-
-    public boolean waitUntilSettingsButtonIndicatorVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idSettingsButtonIndicator);
     }
 
     public void tapThreeDotOptionMenuButton() throws Exception {

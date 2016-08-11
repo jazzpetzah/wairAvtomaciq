@@ -164,7 +164,7 @@ Feature: Settings
       | Name      | Password      | DeviceToRemoveWithoutPassword | DeviceToRemove | OtherDevice |
       | user1Name | user1Password | Device2                       | Device3        | Device4     |
 
-  @C150017 @staging
+  @C150017 @regression
   Scenario Outline: Verify you can add a phone number from settings
     Given There is 1 user with email address only where <Name> is me
     Given I sign in using my email
@@ -186,7 +186,7 @@ Feature: Settings
       | Name      | NewNumber        |
       | user1Name | user1PhoneNumber |
 
-  @C150019 @staging
+  @C150019 @regression
   Scenario Outline: Verify you can change a phone number from settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email
