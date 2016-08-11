@@ -1,14 +1,14 @@
 Feature: Autoconnect
 
-  @torun @C2034 @C2035 @addressbookStart
+  @C2034 @C2035 @addressbookStart
   Scenario Outline: Verify autoconnect users by direct match phone numbers
     Given There are 2 users
     Given I quit Wire
     Given I install Addressbook helper app
     Given I launch Addressbook helper app
     Given I delete all contacts from addressbook
-    Given I add name <Contact1> and phone <CPhone> with prefix <PhonePrefix> to Address Book
-    Given I add name <Contact2> and phone <C2Phone> with prefix <PhonePrefix> to Address Book
+    Given I add name <Contact1> and phone <CPhone> to Address Book
+    Given I add name <Contact2> and phone <C2Phone> to Address Book
     Given I relaunch Wire
     Given I see sign in screen
     When I enter phone number for <Name>
@@ -21,8 +21,28 @@ Feature: Autoconnect
     And I see conversation <Contact2> in conversations list
 
     Examples:
-      | Contact1  | Contact2   | CPhone     | C2Phone    |PhonePrefix  | Name      |
-      | user1Name | user2Name  | user1Phone | user2Phone | +0          | user3Name |
+      | Contact1  | Contact2   | CPhone           | C2Phone          | Name      |
+      | user1Name | user2Name  | user1PhoneNumber | user2PhoneNumber | user3Name |
+
+  @torun @addressbookStart
+  Scenario Outline: phone 2
+    Given There are 3 user where <Name> is me
+    Given I quit Wire
+    Given I install Addressbook helper app
+    Given I launch Addressbook helper app
+    Given I delete all contacts from addressbook
+    Given I add name <Contact1> and phone <CPhone> to Address Book
+    Given I add name <Contact2> and phone <C2Phone> to Address Book
+    Given I relaunch Wire
+    Given I sign in using my email or phone number
+    When I open search UI
+    And I accept alert
+    And I see conversation view page
+
+    Examples:
+      | Contact1  | Contact2   | CPhone           | C2Phone          | Name      |
+      | user3Name | user2Name  | user3PhoneNumber | user2PhoneNumber | user1Name |
+
 
   @C202304 @noAcceptAlert
   Scenario Outline: Verify autoconnect users by direct match phone numbers - delayed
