@@ -252,7 +252,7 @@ public class ConversationsListPageSteps {
         dialogSteps.IOpenConversationDetails();
 
         OtherUserPersonalInfoPageSteps infoPageSteps = new OtherUserPersonalInfoPageSteps();
-        infoPageSteps.WhenIPressAddButton();
+        infoPageSteps.ITapCreateGroupButton();
 
         PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
         pickerSteps.WhenITapOnSearchInputOnPeoplePickerPage();

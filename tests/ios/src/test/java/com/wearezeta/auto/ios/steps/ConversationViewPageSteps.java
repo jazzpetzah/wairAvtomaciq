@@ -330,7 +330,7 @@ public class ConversationViewPageSteps {
     public void IVerifyMediaBarIsNotVisible(int timeoutSeconds) throws Exception {
         final long millisecondsStarted = System.currentTimeMillis();
         do {
-            if (getConversationViewPage().isMediaBarNotVisibled()) {
+            if (getConversationViewPage().isMediaBarNotDisplayed()) {
                 return;
             }
         } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
@@ -338,8 +338,8 @@ public class ConversationViewPageSteps {
                 timeoutSeconds));
     }
 
-    @When("^I press play in media bar$")
-    public void IPressPlayInMediaBar() throws Exception {
+    @When("^I tap Play in media bar$")
+    public void ITapPlayInMediaBar() throws Exception {
         getConversationViewPage().playMediaContent();
     }
 
@@ -410,7 +410,7 @@ public class ConversationViewPageSteps {
     public void ISeeMediaBarInDialog(String shouldNotSee) throws Exception {
         final boolean condition = (shouldNotSee == null) ?
                 getConversationViewPage().isMediaBarDisplayed() :
-                getConversationViewPage().isMediabarNotDisaplyed();
+                getConversationViewPage().isMediaBarNotDisplayed();
         Assert.assertTrue(String.format("Media bar is expected to be %s",
                 (shouldNotSee == null)  ? "visible" : "invisible"), condition);
     }

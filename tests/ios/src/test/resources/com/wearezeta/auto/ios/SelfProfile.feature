@@ -161,7 +161,7 @@ Feature: Self Profile
     Given I enter activation code
     Given I accept terms of service
     Given I input name <Name> and hit Enter
-    Given I press Keep This One button
+    Given I tap Keep This One button
     Given I tap Share Contacts button on Share Contacts overlay
     Given I see conversations list
     When I tap settings gear button

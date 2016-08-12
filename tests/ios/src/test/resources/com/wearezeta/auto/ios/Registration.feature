@@ -7,8 +7,8 @@ Feature: Registration
     And I enter activation code
     And I accept terms of service
     And I input name <Name> and hit Enter
-    And I press Choose Own Picture button
-    And I press Choose Photo button
+    And I tap Choose Own Picture button
+    And I tap Choose Photo button
     And I select the first picture from Camera Roll
     And I tap Share Contacts button on Share Contacts overlay
     Then I see conversations list
@@ -45,8 +45,8 @@ Feature: Registration
     And I enter activation code
     And I accept terms of service
     And I input name <Name> and hit Enter
-    And I press Choose Own Picture button
-    And I press Take Photo button
+    And I tap Choose Own Picture button
+    And I tap Take Photo button
     And I tap Take Photo button on Camera page
     And I remember current screen state
     And I tap Confirm button on Picture preview page
@@ -66,7 +66,7 @@ Feature: Registration
     Given I enter activation code
     Given I accept terms of service
     And I input Non-English name <ArabicName> and hit Enter
-    And I press Keep This One button
+    And I tap Keep This One button
     When I tap Not Now button on Share Contacts overlay
     Then I see conversations list
     When I tap settings gear button

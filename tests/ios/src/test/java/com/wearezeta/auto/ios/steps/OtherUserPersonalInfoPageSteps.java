@@ -27,8 +27,8 @@ public class OtherUserPersonalInfoPageSteps {
         Assert.assertTrue(getOtherUserPersonalInfoPage().isOtherUserProfileNameVisible(name));
     }
 
-    @When("^I press Add button$")
-    public void WhenIPressAddButton() throws Exception {
+    @When("^I tap (?:Add People|Create Group) button$")
+    public void ITapCreateGroupButton() throws Exception {
         getOtherUserPersonalInfoPage().addContactToChat();
     }
 
@@ -62,10 +62,10 @@ public class OtherUserPersonalInfoPageSteps {
      * Opens the conversation details menu by clicking the according button
      *
      * @throws Exception
-     * @step. ^I press conversation menu button$
+     * @step. ^I open conversation menu$
      */
-    @When("^I press conversation menu button$")
-    public void IPressConversationMenuButton() throws Exception {
+    @When("^I open conversation menu$")
+    public void ITapConversationMenuButton() throws Exception {
         getOtherUserPersonalInfoPage().openConversationMenu();
     }
 

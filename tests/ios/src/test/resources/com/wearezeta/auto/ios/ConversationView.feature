@@ -120,7 +120,7 @@ Feature: Conversation View
     And I click on popup Copy item
     And I have entered login <Login>
     And I have entered password <Password>
-    And I press Login button
+    And I tap Login button
     And I accept First Time overlay if it is visible
     And I dismiss settings warning
     And I see conversations list
@@ -287,7 +287,7 @@ Feature: Conversation View
     And I see 1 photo in the conversation view
     And I tap on image in conversation view
     And I see Full Screen Page opened
-    And I press Sketch button on image fullscreen page
+    And I tap Sketch button on image fullscreen page
     And I draw a random sketch
     And I send my sketch
     Then I see 2 photos in the conversation view

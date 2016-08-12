@@ -37,7 +37,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I press Add Picture button on iPad
+    And I tap Add Picture button on iPad
     And I select the first picture from Keyboard Gallery
     And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
@@ -54,7 +54,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I press Add Picture button on iPad
+    And I tap Add Picture button on iPad
     And I select the first picture from Keyboard Gallery
     And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
@@ -157,7 +157,7 @@ Feature: Conversation View
     And I click on popup Copy item
     And I have entered login <Login>
     And I have entered password <Password>
-    And I press Login button
+    And I tap Login button
     And I accept First Time overlay if it is visible
     And I dismiss settings warning
     And I see conversations list

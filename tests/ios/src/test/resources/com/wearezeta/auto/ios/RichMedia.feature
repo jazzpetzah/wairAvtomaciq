@@ -31,7 +31,7 @@ Feature: Rich Media
     And I scroll media out of sight until media bar appears
     And I pause playing the media in media bar
     Then I see media is paused on Media Bar
-    And I press play in media bar
+    And I tap Play in media bar
     Then I see media is playing on Media Bar
     And I stop media in media bar
     Then I see media is stopped on Media Bar

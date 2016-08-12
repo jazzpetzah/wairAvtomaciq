@@ -182,9 +182,9 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search UI
-    And I press the send an invite button
-    And I press invite others button
-    And I press the copy button
+    And I tap Send Invite button
+    And I tap Invite Others button
+    And I tap Copy button
     And I click close Invite list button
     And I click clear button
     And I tap on contact name <Contact>
@@ -205,7 +205,7 @@ Feature: Connect
     When I open search UI
     Given I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user email <ContactEmail>
-    And I press the instant connect button next to <UnconnectedUser>
+    And I tap the instant connect button next to <UnconnectedUser>
     And I click close button to dismiss people view
     And I see first item in contact list named <UnconnectedUser>
     And I tap on contact name <UnconnectedUser>

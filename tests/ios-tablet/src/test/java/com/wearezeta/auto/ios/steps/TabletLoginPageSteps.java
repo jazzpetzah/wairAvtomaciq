@@ -37,7 +37,7 @@ public class TabletLoginPageSteps {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
         getTabletLoginPage().setLogin(self.getEmail());
         getTabletLoginPage().setPassword(self.getPassword());
-        getTabletLoginPage().clickLoginButton();
+        getTabletLoginPage().tapLoginButton();
         getTabletLoginPage().waitForLoginToFinish();
         getTabletLoginPage().acceptAlertIfVisible(5);
         getFirstTimeOverlayPage().acceptIfVisible(2);

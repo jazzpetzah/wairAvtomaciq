@@ -181,7 +181,7 @@ Feature: Conversation List
     And I see Leave action button
     And I tap Leave action button
     And I see leave conversation alert
-    And I press leave
+    And I confirm leaving
     Then I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list
@@ -483,7 +483,7 @@ Feature: Conversation List
     Given I switch to Log In tab
     Given I have entered login <Login>
     Given I have entered password <Password>
-    Given I press Login button
+    Given I tap Login button
     Given I dismiss alert
     Given I accept First Time overlay if it is visible
     Given I dismiss alert
