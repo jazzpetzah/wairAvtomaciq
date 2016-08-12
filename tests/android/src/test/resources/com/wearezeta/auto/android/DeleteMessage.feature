@@ -341,3 +341,64 @@ Feature: Delete Message
     Examples:
       | Name      | Contact   | Link                                                                                               |
       | user1Name | user2Name | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 |
+
+  @C202326 @staging
+  Scenario Outline: Verify I can delete my message everywhere (1:1) (myview and other view)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User <Contact1> adds new device <ContactDevice>
+    Given I see Conversations list with conversations
+    # Delete from otherview
+    When I tap on conversation name <Contact1>
+    And User <Contact1> send encrypted message "<Message>" via device <ContactDevice> to user Myself
+    And I see the message "<Message>" in the conversation view
+    And User <Contact1> delete the recent message everywhere from user Myself via device <ContactDevice>
+    Then I do not see the message "<Message>" in the conversation view
+# TODO: Should add check for trash icon next to the user name (Will be implemented by AN-4375)
+    # Delete from my view
+    When User Myself adds new device <MySecondDevice>
+    And User Myself send encrypted message "<Message2>" via device <MySecondDevice> to user <Contact1>
+    And I see the message "<Message2>" in the conversation view
+    And User <Contact1> remember the recent message from user Myself via device <ContactDevice>
+    And I long tap the Text message "<Message2>" in the conversation view
+    And I tap Delete for everyone button on the message bottom menu
+    And I tap Delete button on the alert
+    Then I do not see the message "<Message2>" in the conversation view
+    And User <Contact1> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
+
+    Examples:
+      | Name      | Contact1  | Message           | ContactDevice | MySecondDevice | Message2 |
+      | user1Name | user2Name | DeleteTextMessage | Device2       | Device1        | Del2     |
+
+  @C202327 @staging
+  Scenario Outline: Verify I can delete my message everywhere (group) (myview and other view)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User <Contact1> adds new device <ContactDevice>
+    Given I see Conversations list with conversations
+   # Delete from otherview
+    When I tap on conversation name <Group>
+    And User <Contact1> send encrypted message "<Message>" via device <ContactDevice> to group conversation <Group>
+    And I see the message "<Message>" in the conversation view
+    And User <Contact1> delete the recent message everywhere from group conversation <Group> via device <ContactDevice>
+    Then I do not see the message "<Message>" in the conversation view
+# TODO: Should add check for trash icon next to the user name (Will be implemented by AN-4375)
+   # Delete from my view
+    When User Myself adds new device <MySecondDevice>
+    And User Myself send encrypted message "<Message2>" via device <MySecondDevice> to group conversation <Group>
+    And I see the message "<Message2>" in the conversation view
+    And User <Contact1> remember the recent message from group conversation <Group> via device <ContactDevice>
+    And I long tap the Text message "<Message2>" in the conversation view
+    And I tap Delete for everyone button on the message bottom menu
+    And I tap Delete button on the alert
+    Then I do not see the message "<Message2>" in the conversation view
+    And User <Contact1> see the recent message from group conversation <Group> via device <ContactDevice> is changed in 15 seconds
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Group  | Message           | ContactDevice | MySecondDevice | Message2 |
+      | user1Name | user2Name | user3Name | TGroup | DeleteTextMessage | Device2       | Device1        | Del2     |

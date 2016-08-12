@@ -63,7 +63,7 @@ public class CommonAndroidSteps {
             )
     );
 
-    private static Optional<String> recentMessageId;
+    private static Optional<String> recentMessageId = null;
 
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -1310,18 +1310,20 @@ public class CommonAndroidSteps {
      * User X delete message from User/Group via specified device
      * Note : The recent message means the recent message sent from specified device by SE, the device should online.
      *
-     * @param userNameAlias user name/alias
-     * @param convoType     either 'user' or 'group conversation'
-     * @param dstNameAlias  destination user name/alias or group convo name
-     * @param deviceName    source device name. Will be created if does not exist yet
+     * @param userNameAlias    user name/alias
+     * @param deleteEverywhere not null means delete everywhere, otherwise delete local
+     * @param convoType        either 'user' or 'group conversation'
+     * @param dstNameAlias     destination user name/alias or group convo name
+     * @param deviceName       source device name. Will be created if does not exist yet
      * @throws Exception
-     * @step. ^User (.*) deletes? the recent message from (user|group conversation) (.*) via device (.*)$
+     * @step. ^User (.*) deletes? the recent message (everywhere )?from (user|group conversation) (.*) via device (.*)$
      */
-    @When("^User (.*) deletes? the recent message from (user|group conversation) (.*) via device (.*)$")
-    public void UserXDeleteLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
+    @When("^User (.*) deletes? the recent message (everywhere )?from (user|group conversation) (.*) via device (.*)$")
+    public void UserXDeleteLastMessage(String userNameAlias, String deleteEverywhere, String convoType, String dstNameAlias, String deviceName)
             throws Exception {
         boolean isGroup = convoType.equals("group conversation");
-        commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup);
+        boolean isDeleteEverywhere = deleteEverywhere != null;
+        commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup, isDeleteEverywhere);
     }
 
     /**
@@ -1337,7 +1339,6 @@ public class CommonAndroidSteps {
     @When("^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$")
     public void UserXRemeberLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
             throws Exception {
-        recentMessageId = Optional.empty();
         boolean isGroup = convoType.equals("group conversation");
         recentMessageId = commonSteps.UserGetRecentMessageId(userNameAlias, dstNameAlias, deviceName, isGroup);
     }
@@ -1350,18 +1351,39 @@ public class CommonAndroidSteps {
      * @param dstNameAlias  destination user name/alias or group convo name
      * @param deviceName    source device name. Will be created if does not exist yet
      * @throws Exception
-     * @step. ^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed$
+     * @step. ^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed( in \\d+ seconds?)?$
      */
-    @Then("^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed$")
+    @Then("^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed( in \\d+ seconds?)?$")
     public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias,
-                                             String deviceName) throws Exception {
-        if (recentMessageId.equals(Optional.empty())) {
+                                             String deviceName, String waitDuration) throws Exception {
+        if (recentMessageId == null) {
             throw new IllegalStateException("You should remember the recent message befor you check it");
         }
-        final Optional<String> actualMessageId = commonSteps.UserGetRecentMessageId(userNameAlias,
-                dstNameAlias, deviceName, convoType.equals("group conversation"));
-        Assert.assertFalse(String.format("Remembered message Id should not equal to '%s'", actualMessageId),
-                actualMessageId.get().equals(recentMessageId.get()));
+
+        String rememberedMessage = recentMessageId.orElse("");
+
+        int timeout = (waitDuration == null) ? CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
+                : Integer.parseInt(waitDuration.replaceAll("[\\D]", ""));
+
+        final Optional<String> actualMessageId = CommonUtils.waitUntil(timeout,
+                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
+                () -> {
+                    Optional<String> messageId = commonSteps.UserGetRecentMessageId(userNameAlias,
+                            dstNameAlias, deviceName, convoType.equals("group conversation"));
+
+                    String actualMessage = messageId.orElse("");
+                    // Try to wait for a different a message id
+                    if (actualMessage.equals(rememberedMessage)) {
+                        throw new IllegalStateException(
+                                String.format("recent remembered message id %s, current message id %s, should be different",
+                                        rememberedMessage, actualMessage));
+                    } else {
+                        return actualMessage;
+                    }
+                });
+
+        Assert.assertTrue(String.format("Actual message Id should not equal to '%s'", rememberedMessage),
+                actualMessageId.isPresent());
     }
 
     /**

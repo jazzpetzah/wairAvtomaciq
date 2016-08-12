@@ -27,6 +27,7 @@ public final class CommonSteps {
     public static final String CONNECTION_NAME = "CONNECT TO ";
     public static final String CONNECTION_MESSAGE = "Hello!";
     public static final long DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS = 1000;
+    public static final int DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS = 10;
 
     private static final int BACKEND_USER_SYNC_TIMEOUT = 180; // seconds
     private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 90; // seconds
@@ -385,8 +386,7 @@ public final class CommonSteps {
         if (!ArrayUtils.isEmpty(messageInfos)) {
             return Optional.ofNullable(messageInfos[messageInfos.length - 1].id().str());
         }
-        // Means there is no any message
-        return Optional.of("");
+        return Optional.empty();
     }
 
     public void UserSentMessageToUser(String msgFromUserNameAlias,
