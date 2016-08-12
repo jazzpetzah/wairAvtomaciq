@@ -16,7 +16,6 @@ Feature: Analytics
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
     Then I verify that <LogType> log contains string "registration.added_photo"
-    And I verify that <LogType> log contains string "session"
     And I see Conversations list with no conversations
 
     Examples:
