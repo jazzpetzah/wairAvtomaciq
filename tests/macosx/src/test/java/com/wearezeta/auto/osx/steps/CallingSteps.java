@@ -304,4 +304,13 @@ public class CallingSteps {
             flowMap.put(callee + flow.getMeta().getRemoteUserId(), flow);
         }
     }
+    
+    @When("(.*) (maximises|minimises) video call")
+    public void UserXResizesVideo(String callees, String toggle) throws Exception {
+        if (toggle.equals("maximises")) {
+            commonCallingSteps.maximiseVideoCall(splitAliases(callees));
+        } else {
+            commonCallingSteps.minimiseVideoCall(splitAliases(callees));
+        }
+    }
 }

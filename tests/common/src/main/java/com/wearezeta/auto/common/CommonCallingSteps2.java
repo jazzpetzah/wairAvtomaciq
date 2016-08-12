@@ -561,5 +561,23 @@ public final class CommonCallingSteps2 {
             client.switchVideoOff(instance, getCurrentCall(instance));
         }
     }
+    
+    public void maximiseVideoCall(List<String> calleeNames) throws NoSuchUserException, InstanceNotFoundException,
+            CallingServiceCallException, CallingServiceInstanceException {
+        for (String calleeName : calleeNames) {
+            final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
+            Instance instance = getInstance(userAs);
+            client.maximiseVideoCall(instance, getCurrentCall(instance));
+        }
+    }
+
+    public void minimiseVideoCall(List<String> calleeNames) throws NoSuchUserException, InstanceNotFoundException,
+            CallingServiceCallException, CallingServiceInstanceException {
+        for (String calleeName : calleeNames) {
+            final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
+            Instance instance = getInstance(userAs);
+            client.minimiseVideoCall(instance, getCurrentCall(instance));
+        }
+    }
 
 }
