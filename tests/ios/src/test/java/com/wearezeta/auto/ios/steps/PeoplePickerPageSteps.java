@@ -1,7 +1,5 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.awt.datatransfer.UnsupportedFlavorException;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -208,9 +206,9 @@ public class PeoplePickerPageSteps {
         Assert.assertFalse(getPeoplePickerPage().isUserSelected(name));
     }
 
-    @When("I press backspace button")
+    @When("^I press Backspace button in search field$")
     public void IPressBackspaceBtn() throws Exception {
-        getPeoplePickerPage().hitDeleteButton();
+        getPeoplePickerPage().pressBackspaceButton();
     }
 
     /**

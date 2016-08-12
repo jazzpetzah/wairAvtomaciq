@@ -167,11 +167,11 @@ Feature: Search
     And I see Open conversation action button on People picker page
     And I tap on 2nd top connection contact
     Then I see Create conversation action button on People picker page
-    When I press backspace button
-    And I press backspace button
+    When I press Backspace button in search field
+    And I press Backspace button in search field
     Then I do not see Create conversation action button on People picker page
-    When I press backspace button
-    And I press backspace button
+    When I press Backspace button in search field
+    And I press Backspace button in search field
     Then I do not see Open conversation action button on People picker page
 
     Examples: 
@@ -234,8 +234,8 @@ Feature: Search
     And I tap on conversation <Contact> in search result
     And I do not see Invite more people button
     And I see Open conversation action button on People picker page
-    And I press backspace button
-    And I press backspace button
+    And I press Backspace button in search field
+    And I press Backspace button in search field
     And I do not see Open conversation action button on People picker page
     Then I see Invite more people button
 
