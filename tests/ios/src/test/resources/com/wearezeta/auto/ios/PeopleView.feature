@@ -151,7 +151,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact1>
-    And I tap on start dialog button on other user profile page
+    And I tap Start Conversation button on other user profile page
     And I type the default message and send it
     Then I see 1 default message in the conversation view
 
@@ -378,7 +378,7 @@ Feature: People View
     And I open group conversation details
     And I press conversation menu button
     And I tap Delete action button
-    And I select Also Leave option on Delete conversation dialog
+    And I select Also Leave option on Delete conversation confirmation
     And I confirm delete conversation content
     And I open search UI
     And I input in People picker search field conversation name <GroupChatName>

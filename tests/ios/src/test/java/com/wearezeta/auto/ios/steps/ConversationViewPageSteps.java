@@ -158,8 +158,8 @@ public class ConversationViewPageSteps {
                         actualCount, expectedCount), actualCount == expectedCount);
     }
 
-    @Then("^I see last message in dialog (is|contains) expected message (.*)")
-    public void ThenISeeLasMessageInTheDialogIsExpected(String operation, String msg) throws Exception {
+    @Then("^I see last message in the conversation view (is|contains) expected message (.*)")
+    public void ThenISeeLasMessageIsd(String operation, String msg) throws Exception {
         if (!Normalizer.isNormalized(msg, Form.NFC)) {
             msg = Normalizer.normalize(msg, Form.NFC);
         }
@@ -406,14 +406,13 @@ public class ConversationViewPageSteps {
                 "%s seconds timeout", currentState, MEDIA_STATE_CHANGE_TIMEOUT / 1000));
     }
 
-    @Then("^I see media bar on dialog page$")
-    public void ISeeMediaBarInDialog() throws Exception {
-        Assert.assertTrue(getConversationViewPage().isMediaBarDisplayed());
-    }
-
-    @Then("^I dont see media bar on dialog page$")
-    public void ISeeMediaBarDisappear() throws Exception {
-        Assert.assertTrue(getConversationViewPage().waitMediabarClose());
+    @Then("^I (do not )?see media bar in the conversation view$")
+    public void ISeeMediaBarInDialog(String shouldNotSee) throws Exception {
+        final boolean condition = (shouldNotSee == null) ?
+                getConversationViewPage().isMediaBarDisplayed() :
+                getConversationViewPage().isMediabarNotDisaplyed();
+        Assert.assertTrue(String.format("Media bar is expected to be %s",
+                (shouldNotSee == null)  ? "visible" : "invisible"), condition);
     }
 
     @When("^I tap on the media bar$")
@@ -604,9 +603,9 @@ public class ConversationViewPageSteps {
      *
      * @param link of vimeo video
      * @throws Exception
-     * @step. ^I see vimeo link (.*) and media in dialog$
+     * @step. ^I see vimeo link (.*) and media in the conversation view$
      */
-    @Then("^I see vimeo link (.*) and media in dialog$")
+    @Then("^I see vimeo link (.*) and media in the conversation view$")
     public void ISeeVimeoLinkAndMediaInDialog(String link) throws Exception {
         Assert.assertTrue("Media is missing in dialog", getConversationViewPage()
                 .isYoutubeContainerVisible());
@@ -807,9 +806,9 @@ public class ConversationViewPageSteps {
      * Verifies that Upper Toolbar is visible in conversation
      *
      * @throws Exception
-     * @step. ^I see Upper Toolbar on dialog page$
+     * @step. ^I see Upper Toolbar on the conversation view$
      */
-    @Then("^I see Upper Toolbar on dialog page$")
+    @Then("^I see Upper Toolbar in the conversation view$")
     public void ISeeUpperToolbar() throws Exception {
         Assert.assertTrue(getConversationViewPage().isUpperToolbarVisible());
     }

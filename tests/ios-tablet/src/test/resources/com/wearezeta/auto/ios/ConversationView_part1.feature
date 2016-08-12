@@ -165,7 +165,7 @@ Feature: Conversation View
     And I tap on text input
     And I tap and hold on message input
     And I paste and commit the text
-    Then I see last message in dialog is expected message <Text>
+    Then I see last message in the conversation view is expected message <Text>
 
     Examples:
       | Login      | Password      | Name      | Contact   | Text       |

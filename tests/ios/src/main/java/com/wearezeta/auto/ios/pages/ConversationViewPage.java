@@ -435,7 +435,7 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameTitle);
     }
 
-    public boolean waitMediabarClose() throws Exception {
+    public boolean isMediabarNotDisaplyed() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameTitle);
     }
 

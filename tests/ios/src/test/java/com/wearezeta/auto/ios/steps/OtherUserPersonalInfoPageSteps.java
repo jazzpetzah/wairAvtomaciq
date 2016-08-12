@@ -42,9 +42,9 @@ public class OtherUserPersonalInfoPageSteps {
         getOtherUserPersonalInfoPage().confirmRemove();
     }
 
-    @When("I tap on start dialog button on other user profile page")
-    public void ITapStartDialogOnOtherUserPage() throws Exception {
-        getOtherUserPersonalInfoPage().clickOnStartDialogButton();
+    @When("^I tap Start Conversation button on other user profile page$")
+    public void ITapStartConversationOtherUserPage() throws Exception {
+        getOtherUserPersonalInfoPage().tapStartConversationButton();
     }
 
     /**
@@ -92,13 +92,13 @@ public class OtherUserPersonalInfoPageSteps {
     }
 
     /**
-     * Select Also Leave option on Delete conversation dialog
+     * Select Also Leave option on Delete conversation confirmation
      *
      * @throws Exception
-     * @step. ^I select Also Leave option on Delete conversation dialog$
+     * @step. ^I select Also Leave option on Delete conversation confirmation$
      */
-    @When("^I select Also Leave option on Delete conversation dialog$")
-    public void ISelectAlsoLeaveOptionOnDeleteDialog() throws Exception {
+    @When("^I select Also Leave option on Delete conversation confirmation$")
+    public void ISelectAlsoLeaveOptionOnDeleteConfirmation() throws Exception {
         getOtherUserPersonalInfoPage().clickAlsoLeaveButton();
     }
 

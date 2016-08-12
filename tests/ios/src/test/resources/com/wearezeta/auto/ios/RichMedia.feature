@@ -90,7 +90,7 @@ Feature: Rich Media
     And I tap on media container in conversation view
     When I scroll media out of sight until media bar appears
     And I scroll to the bottom of the conversation
-    Then I dont see media bar on dialog page
+    Then I do not see media bar in the conversation view
 
     Examples:
       | Name      | Contact1  | SoundCloudLink                                                   |

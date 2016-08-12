@@ -205,7 +205,7 @@ Feature: Conversation View
     Given User Myself sends encrypted message "<VimeoLink>" to user <Contact1>
     Given I see conversations list
     When I tap on contact name <Contact1>
-    Then I see vimeo link <VimeoLink> and media in dialog
+    Then I see vimeo link <VimeoLink> and media in the conversation view
 
     Examples:
       | Name      | Contact1  | VimeoLink                   |
@@ -219,7 +219,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given User Myself sends encrypted message "<VimeoLink>" to user <Contact1>
     When I see conversations list
-    Then I see vimeo link <VimeoLink> and media in dialog
+    Then I see vimeo link <VimeoLink> and media in the conversation view
 
     Examples:
       | Name      | Contact1  | VimeoLink                   |

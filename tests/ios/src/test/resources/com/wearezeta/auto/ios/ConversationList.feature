@@ -345,7 +345,7 @@ Feature: Conversation List
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I tap Delete action button
-    And I select Also Leave option on Delete conversation dialog
+    And I select Also Leave option on Delete conversation confirmation
     And I confirm delete conversation content
     And I open search UI
     And I input in People picker search field conversation name <GroupChatName>

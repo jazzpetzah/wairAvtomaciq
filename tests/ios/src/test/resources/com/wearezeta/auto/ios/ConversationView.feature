@@ -128,7 +128,7 @@ Feature: Conversation View
     And I tap on text input
     And I tap and hold on message input
     And I paste and commit the text
-    Then I see last message in dialog is expected message <Text>
+    Then I see last message in the conversation view is expected message <Text>
 
     Examples:
       | Login      | Password      | Name      | Contact   | Text       |
@@ -336,7 +336,7 @@ Feature: Conversation View
     Given User <Name> sends encrypted message "<VimeoLink>" to user <Contact1>
     Given I see conversations list
     When I tap on contact name <Contact1>
-    Then I see vimeo link <VimeoLink> and media in dialog
+    Then I see vimeo link <VimeoLink> and media in the conversation view
 
     Examples:
       | Name      | Contact1  | VimeoLink                   |
@@ -486,7 +486,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    Then I see Upper Toolbar on dialog page
+    Then I see Upper Toolbar in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -499,7 +499,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    Then I see Upper Toolbar on dialog page
+    Then I see Upper Toolbar in the conversation view
     And I do not see Calling buttons on Upper Toolbar
 
     Examples:
