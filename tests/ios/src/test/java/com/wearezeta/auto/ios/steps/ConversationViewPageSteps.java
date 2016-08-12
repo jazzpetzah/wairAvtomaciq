@@ -412,7 +412,7 @@ public class ConversationViewPageSteps {
                 getConversationViewPage().isMediaBarDisplayed() :
                 getConversationViewPage().isMediaBarNotDisplayed();
         Assert.assertTrue(String.format("Media bar is expected to be %s",
-                (shouldNotSee == null)  ? "visible" : "invisible"), condition);
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }
 
     @When("^I tap on the media bar$")
@@ -1140,7 +1140,9 @@ public class ConversationViewPageSteps {
      * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder|location map) in
      * conversation view$")
      */
-    @When("^I (long )?tap on (image|media container|file transfer placeholder|audio message placeholder|location map|link preview) in conversation view$")
+    @When("^I (long )?tap on " +
+            "(image|media container|file transfer placeholder|audio message placeholder|location map|link preview) " +
+            "in conversation view$")
     public void ITapAndHoldAudioMessagePlaceholder(String isLongTap, String conversationItem) throws Exception {
         FunctionalInterfaces.RunnableWithException tapFunc;
         switch (conversationItem) {
