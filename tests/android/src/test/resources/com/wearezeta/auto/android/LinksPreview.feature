@@ -14,7 +14,7 @@ Feature: Links Preview
     And I see the message "<DeadLink>" in the conversation view
     When I type the message "<ShortenUrl>" and send it
     # C169222
-    Then I do not see Link Preview container in the conversation view
+    Then I see Link Preview container in the conversation view
     And I see the message "<ShortenUrl>" in the conversation view
     When I type the message "<Link>" and send it
     # C165143
