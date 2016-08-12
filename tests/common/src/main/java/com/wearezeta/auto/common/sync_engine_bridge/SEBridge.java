@@ -124,12 +124,25 @@ public class SEBridge {
         getOrAddRandomDevice(userFrom).deleteMessage(convId, messageId);
     }
 
+    public void deleteMessageEverywhere(ClientUser userFrom, String convId, MessageId messageId) throws Exception {
+        getOrAddRandomDevice(userFrom).deleteMessageEveryWhere(convId, messageId);
+    }
+
     public void deleteMessage(ClientUser userFrom, String convId, MessageId messageId, String deviceName)
             throws Exception {
         if (deviceName == null) {
             deleteMessage(userFrom, convId, messageId);
         } else {
             getOrAddDevice(userFrom, deviceName).deleteMessage(convId, messageId);
+        }
+    }
+
+    public void deleteMessageEverywhere(ClientUser userFrom, String convId, MessageId messageId, String deviceName)
+            throws Exception {
+        if (deviceName == null) {
+            deleteMessageEverywhere(userFrom, convId, messageId);
+        } else {
+            getOrAddDevice(userFrom, deviceName).deleteMessageEveryWhere(convId, messageId);
         }
     }
 
