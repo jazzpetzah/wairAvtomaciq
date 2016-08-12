@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import inspect
-from multiprocessing import Process, Queue
+from multiprocessing import Process, Queue, Lock
 import paramiko
 from pprint import pformat
 import random
@@ -18,7 +18,7 @@ import xml.etree.ElementTree as ET
 from cli_handlers.cli_handler_base import CliHandlerBase
 
 MAX_NODES_PER_HOST = 5
-VERIFICATION_JOB_TIMEOUT = 60 * 3 #seconds
+VERIFICATION_JOB_TIMEOUT = 60 * 2 #seconds
 MAX_VERIFICATION_JOBS = 4
 
 normalize_labels = lambda labels_list: set(map(lambda x: x.strip(), labels_list))
@@ -36,7 +36,7 @@ class NodesCountForLabels(CliHandlerBase):
                             help='List of comma-separated node labels to match')
         parser.add_argument('--apply_verification', default=None,
                             help='Whether to apply special verification for a node. '
-                                 'Available verifications: RealAndroidDevice, IOSSimulator')
+                                 'Available verifications: see class names below')
         parser.add_argument('--ios_simulator_name', default=None,
                             help='The name of iOS simulator to verify. '
                                  'Used together with --apply_verification=IOSSimulator')
@@ -313,6 +313,8 @@ time.sleep(1)
 
 
 class IOSRealDevice(BaseNodeVerifier):
+    LOCK = Lock()
+
     def _get_connected_devices(self, ssh_client):
         _, stdout, _ = ssh_client.exec_command('/usr/sbin/system_profiler SPUSBDataType')
         return re.findall(r'Serial Number: ([0-9a-f]{40})', stdout.read())
@@ -357,6 +359,7 @@ class IOSRealDevice(BaseNodeVerifier):
             return False
 
         client = paramiko.SSHClient()
+        self.LOCK.acquire()
         try:
             client.load_system_host_keys()
             client.set_missing_host_key_policy(paramiko.WarningPolicy())
@@ -366,6 +369,7 @@ class IOSRealDevice(BaseNodeVerifier):
             self._run_device_power_cycle(client)
         finally:
             client.close()
+            self.LOCK.release()
 
         client = paramiko.SSHClient()
         try:
@@ -375,7 +379,7 @@ class IOSRealDevice(BaseNodeVerifier):
                            password=self._verification_kwargs['node_password'])
             seconds_started = time.time()
             available_devices = []
-            while time.time() - seconds_started <= 5:
+            while time.time() - seconds_started <= 10:
                 available_devices = self._get_connected_devices(client)
                 if available_devices:
                     break
