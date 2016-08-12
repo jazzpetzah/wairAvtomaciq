@@ -205,10 +205,12 @@ public class ConversationViewPageSteps {
      *                        Works with long tap only
      * @param durationSeconds specific time duration you press the button
      * @throws Exception
-     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)?
+     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message)
+     * button( for \\d+ seconds?)?
      * from input tool( without releasing my finger)?s$
      */
-    @When("^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)? from input tools( without releasing my finger)?$")
+    @When("^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message) " +
+            "button( for \\d+ seconds?)? from input tools( without releasing my finger)?$")
     public void ITapButtonByNameFromInputTools(String isLongTap, String btnName, String durationSeconds,
                                                String shouldKeepTap) throws Exception {
         if (isLongTap == null) {
@@ -228,9 +230,11 @@ public class ConversationViewPageSteps {
      *
      * @param btnName one of available button names
      * @throws Exception
-     * @step. ^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input tools palette$
+     * @step. ^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input
+     * tools palette$
      */
-    @When("^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input tools palette$")
+    @When("^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input " +
+            "tools palette$")
     public void VerifyButtonVisibilityInInputTools(String shouldNot, String btnName) throws Exception {
         if (shouldNot == null) {
             Assert.assertTrue(btnName + "button in input tools palette is not visible",
@@ -1343,7 +1347,8 @@ public class ConversationViewPageSteps {
      * @param shouldNotSee  equals to null if the container should be visible
      * @param containerType media|video message|audio message record|location map|link previeww
      * @throws Exception
-     * @step. ^I (do not )?see (media|video message|audio message record|location map|link preview) container in the conversation view$
+     * @step. ^I (do not )?see (media|video message|audio message record|location map|link preview) container in the
+     * conversation view$
      */
     @Then("^I (do not )?see (media|video message|audio message recorder|audio message|location map|link preview) " +
             "container in the conversation view$")
