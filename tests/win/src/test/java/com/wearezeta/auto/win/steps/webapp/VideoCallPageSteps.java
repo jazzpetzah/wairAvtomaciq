@@ -101,7 +101,7 @@ public class VideoCallPageSteps {
         // do feature Matching + homography to find objects
         assertThat("Not enough good matches between "
                 + "<a href='" + reportPath + resizedScreenshotName + "'>screenshot</a> and <a href='" + reportPath + localScreenShareVideoName + "'>self video</a>",
-                ImageUtil.getMatches(resizedScreenshot, localScreenShareVideo), greaterThan(50));
+                ImageUtil.getMatches(resizedScreenshot, localScreenShareVideo), greaterThan(5));
     }
 
     @Then("^I verify (.*) sees my screen$")
