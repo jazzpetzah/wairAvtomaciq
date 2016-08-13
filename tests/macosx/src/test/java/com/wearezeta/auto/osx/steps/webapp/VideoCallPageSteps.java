@@ -95,9 +95,8 @@ public class VideoCallPageSteps {
         int retinaMultiplicator = OSXCommonUtils.screenPixelsMultiplier(osxDriver);
         int x = mainWirePage.getX() * retinaMultiplicator;
         int y = mainWirePage.getY() * retinaMultiplicator;
-        // NOTE: for some reason X and Y are interchanged so we switch it here
-        int elementY = elementLocation.getX() * retinaMultiplicator;
-        int elementX = elementLocation.getY() * retinaMultiplicator;
+        int elementY = elementLocation.getY() * retinaMultiplicator;
+        int elementX = elementLocation.getX() * retinaMultiplicator;
         int elementWidth = elementSize.getWidth() * retinaMultiplicator;
         int elementHeight = elementSize.getHeight() * retinaMultiplicator;
 
