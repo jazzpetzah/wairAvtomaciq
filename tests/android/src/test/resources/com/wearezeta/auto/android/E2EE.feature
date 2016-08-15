@@ -539,7 +539,7 @@ Feature: E2EE
       | Name      | Contact1  | Device  | Message1 | Message2    |
       | user1Name | user2Name | device2 | Msg1     | MsgToResend |
 
-  @C200108 @staging
+  @C200108 @regression
   Scenario Outline: Verify new device notification indicator in conversation list cogweel symbol
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number

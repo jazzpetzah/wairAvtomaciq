@@ -101,7 +101,7 @@ Feature: Links Preview
       | Name      | Contact   | TextLink                 | LinkText                  | TextLinkText                      | url4                | url5                |
       | user1Name | user2Name | text http://facebook.com | https://facebook.com text | text http://www.facebook.com text | Http://facebook.com | HTTP://FACEBOOK.COM |
 
-  @C202305 @staging
+  @C202305 @regression
   Scenario Outline: Show correct Url in link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
