@@ -171,3 +171,182 @@ Feature: Delete Everywhere
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size |
       | user1Email | user1Password | user1Name | user2Name | C206248.mp4 | 1MB  |
+
+  @C206236 @staging
+  Scenario Outline: Verify I see status message if other user deletes his message everywhere (1:1)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And Contact <Contact> sends message <Message_1> via device Device1 to user <Name>
+    And Contact <Contact> sends message <Message_2> via device Device1 to user <Name>
+    Then I see text message <Message_1>
+    And I see text message <Message_2>
+    And User <Contact> deletes the recent 1 message from user <Name> everywhere via device Device1
+    Then I see text message <Message_1>
+    And I do not see text message <Message_2>
+    Then I see 1 deleted messages in conversation
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | Message_1      | Message_2      | Message_3      |
+      | user1Email | user1Password | user1Name | user2Name | Test_Message_1 | Test_Message_2 | Test_Message_3 |
+
+  @C206237 @staging
+  Scenario Outline: Verify I see status message if other user deletes his message everywhere (group)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <ChatName> with <Contact1>,<Contact2>
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device2 with label Label1
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <ChatName>
+    And Contact <Contact1> sends message <Message_1> via device Device1 to group conversation <ChatName>
+    And Contact <Contact1> sends message <Message_2> via device Device1 to group conversation <ChatName>
+    Then I see text message <Message_1>
+    And I see text message <Message_2>
+    And User <Contact1> deletes the recent 1 message from group conversation <ChatName> everywhere via device Device1
+    Then I see text message <Message_1>
+    And I do not see text message <Message_2>
+    Then I see 1 deleted messages in conversation
+    And Contact <Contact2> sends message <Message_3> via device Device2 to group conversation <ChatName>
+    And Contact <Contact2> sends message <Message_4> via device Device2 to group conversation <ChatName>
+    Then I see text message <Message_1>
+    And I do not see text message <Message_2>
+    Then I see 1 deleted messages in conversation
+    Then I see text message <Message_3>
+    And I see text message <Message_4>
+    And User <Contact2> deletes the recent 1 message from group conversation <ChatName> everywhere via device Device2
+    Then I see text message <Message_1>
+    And I do not see text message <Message_2>
+    Then I see text message <Message_3>
+    And I do not see text message <Message_4>
+    Then I see 2 deleted messages in conversation
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Message_1      | Message_2      | Message_3      | Message_4      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GC1      | Test_Message_1 | Test_Message_2 | Test_Message_3 | Test_Message_4 |
+
+  @C206240 @staging
+  Scenario Outline: When I delete my message everywhere on a different device (1:1)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given user <Name> adds a new device Device1 with label Label1
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I write message <Message_1>
+    And I send message
+    And I write message <Message_2>
+    And I send message
+    Then I see text message <Message_2>
+    And I see text message <Message_2>
+    And User <Name> deletes the recent 1 message from user <Contact> everywhere via device Device1
+    Then I see text message <Message_1>
+    And I do not see text message <Message_2>
+    Then I see 0 deleted messages in conversation
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | Message_1      | Message_2      | Message_3      |
+      | user1Email | user1Password | user1Name | user2Name | Test_Message_1 | Test_Message_2 | Test_Message_3 |
+
+  @C206241 @staging
+  Scenario Outline: When I delete my message everywhere on a different device (group)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <ChatName> with <Contact1>,<Contact2>
+    Given user <Name> adds a new device Device1 with label Label1
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I am signed in properly
+    When I open conversation with <ChatName>
+    And I write message <Message_1>
+    And I send message
+    And I write message <Message_2>
+    And I send message
+    Then I see text message <Message_1>
+    And I see text message <Message_2>
+    And User <Name> deletes the recent 1 message from group conversation <ChatName> everywhere via device Device1
+    Then I see text message <Message_1>
+    And I do not see text message <Message_2>
+    Then I see 0 deleted messages in conversation
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Message_1      | Message_2      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GC1      | Test_Message_1 | Test_Message_2 |
+
+  @C206250 @staging
+  Scenario Outline: Verify deleted messages remain deleted everywhere after I archive and unarchive a conversation
+    Given There are 2 users where <Name> is me
+    Given user <Name> adds a new device Device1 with label Label1
+    Given user <Contact> adds a new device Device2 with label Label1
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I write message <Message_1>
+    And I send message
+    And I write message <Message_2>
+    And I send message
+    Then I see text message <Message_1>
+    And I see text message <Message_2>
+    And User Myself deletes the recent 1 message from user <Contact> everywhere via device Device1
+    Then I see text message <Message_1>
+    And I do not see text message <Message_2>
+    And Contact <Contact> sends message <Message_3> via device Device2 to user <Name>
+    And I see text message <Message_3>
+    And User <Contact> deletes the recent 1 message from user <Name> everywhere via device Device2
+    And I do not see text message <Message_3>
+    And I see 1 deleted messages in conversation
+    When I archive conversation <Contact>
+    And I do not see Contact list with name <Contact>
+    And I open archive
+    And I see archive list with name <Contact>
+    And I unarchive conversation <Contact>
+    And I see Contact list with name <Contact>
+    And I open conversation with <Contact>
+    Then I see text message <Message_1>
+    And I do not see text message <Message_2>
+    And I do not see text message <Message_3>
+    And I see 1 deleted messages in conversation
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | Message_1      | Message_2      | Message_3      |
+      | user1Email | user1Password | user1Name | user2Name | Test_Message_1 | Test_Message_2 | Test_Message_3 |
+
+  @C206249 @staging
+  Scenario Outline: Verify I see no unread dot if a message was deleted from someone in a conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact1>
+    And Contact <Contact1> sends message <Message_1> via device Device1 to user <Name>
+    Then I see text message <Message_1>
+    And Contact <Contact1> sends message <Message_2> via device Device1 to user <Name>
+    When I open conversation with <Contact2>
+    And User <Contact1> deletes the recent 1 message from user <Name> everywhere via device Device1
+    And I wait for 5 seconds
+    Then I do not see unread dot in conversation <Contact1>
+    When I open conversation with <Contact1>
+    Then I see text message <Message_1>
+    And I do not see text message <Message_2>
+    Then I see 1 deleted messages in conversation
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | Message_1      | Message_2      | Message_3      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | Test_Message_1 | Test_Message_2 | Test_Message_3 |

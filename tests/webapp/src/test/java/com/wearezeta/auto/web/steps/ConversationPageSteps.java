@@ -299,8 +299,19 @@ public class ConversationPageSteps {
      */
     @Then("^I see (\\d+) messages? in conversation$")
     public void ISeeXMessagesInConversation(int x) throws Exception {
-        assertThat("Number of messages int the conversation", context.getPagesCollection().getPage(ConversationPage.class)
+        assertThat("Number of messages in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
                 .getNumberOfMessagesInCurrentConversation(), equalTo(x));
+    }
+    /**
+     * Verifies that x deleted messages are in the conversation
+     *
+     * @param x the amount of deleted messages
+     * @step. ^I see (\\d+) deleted messages in conversation$
+     */
+    @Then("^I see (\\d+) deleted messages in conversation$")
+    public void ISeeXDeletedMessagesInConversation(int x) throws Exception {
+        assertThat("Number of deleted messages in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
+                .getNumberOfDeletedMessagesInCurrentConversation(), equalTo(x));
     }
 
     /**

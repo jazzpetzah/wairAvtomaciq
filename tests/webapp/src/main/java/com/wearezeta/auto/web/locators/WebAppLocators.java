@@ -456,6 +456,8 @@ public final class WebAppLocators {
 
         public static final String cssMessageAmount = "[data-uie-name='item-message']";
 
+        public static final String cssDeletedMessageAmount = "[data-uie-name='item-message'][data-uie-value='delete']";
+
         public static final String cssPingMessage = ".pinged";
 
         // special message identifier

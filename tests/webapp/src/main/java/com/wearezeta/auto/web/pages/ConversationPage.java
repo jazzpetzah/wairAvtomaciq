@@ -52,6 +52,9 @@ public class ConversationPage extends WebPage {
 
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssMessageAmount)
     private List<WebElement> messageAmount;
+    
+    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssDeletedMessageAmount)
+    private List<WebElement> deletedMessageAmount;
 
     @FindBy(id = WebAppLocators.ConversationPage.idConversation)
     private WebElement conversation;
@@ -1179,6 +1182,10 @@ public class ConversationPage extends WebPage {
         WebDriverWait wait = new WebDriverWait(getDriver(), TIMEOUT_I_SEE_MESSAGE);
         return wait.withTimeout(TIMEOUT_I_SEE_MESSAGE, TimeUnit.SECONDS)
                 .until(presenceOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(link))));
+    }
+    
+    public int getNumberOfDeletedMessagesInCurrentConversation() {
+        return deletedMessageAmount.size();
     }
 
 }
