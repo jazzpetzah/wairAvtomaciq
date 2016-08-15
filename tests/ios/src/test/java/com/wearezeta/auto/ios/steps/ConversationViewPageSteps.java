@@ -10,6 +10,7 @@ import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import cucumber.api.PendingException;
+import cucumber.api.java.en.And;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -682,6 +683,18 @@ public class ConversationViewPageSteps {
             default:
                 throw new IllegalArgumentException("Only (Select All|Copy|Delete|Paste) are allowed options");
         }
+    }
+
+    /**
+     * Select the corresponding item from the modal menu, which appears after Delete badge is tapped
+     *
+     * @step. ^I select (Delete only for me|Delete for everyone|Cancel) item from Delete menu$
+     * @param name one of possible item names
+     * @throws Exception
+     */
+    @And("^I select (Delete only for me|Delete for everyone|Cancel) item from Delete menu$")
+    public void ISelectDeleteMenuItem(String name) throws Exception {
+        getConversationViewPage().selectDeleteMenuItem(name);
     }
 
     /**

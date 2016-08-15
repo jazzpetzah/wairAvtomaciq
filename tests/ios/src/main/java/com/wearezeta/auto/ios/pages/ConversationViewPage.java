@@ -209,6 +209,9 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameLinkPreviewImage = MobileBy.AccessibilityId("linkPreviewImage");
 
+    private static final Function<String, String> xpathStrActionSheetBtnByName = name ->
+            String.format("//UIAActionSheet//UIAButton[@name='%s']", name);
+
     private static final int MAX_APPEARANCE_TIME = 20;
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
@@ -962,5 +965,10 @@ public class ConversationViewPage extends IOSPage {
     public int getMessageHeight(String msg) throws Exception {
         final By locator = By.xpath(xpathStrMessageByExactText.apply(msg));
         return getElement(locator).getSize().getHeight();
+    }
+
+    public void selectDeleteMenuItem(String name) throws Exception {
+        final By locator = By.xpath(xpathStrActionSheetBtnByName.apply(name));
+        getElement(locator).click();
     }
 }
