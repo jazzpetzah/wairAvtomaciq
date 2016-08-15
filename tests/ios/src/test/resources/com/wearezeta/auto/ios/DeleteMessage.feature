@@ -145,7 +145,7 @@ Feature: DeleteMessage
     When I tap on contact name <Contact>
     And I type the default message and send it
     Then I see 1 default message in the conversation view
-    And User <Contact> remembers the recent message from user Myself via device <HisDevice>
+    When User <Contact> remembers the recent message from user Myself via device <HisDevice>
     And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
     And I long tap default message in conversation view
     And I tap on Delete badge item
