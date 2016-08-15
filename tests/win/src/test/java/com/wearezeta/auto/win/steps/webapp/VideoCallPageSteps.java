@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.Optional;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
+import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -29,6 +30,17 @@ public class VideoCallPageSteps {
     private final WebappPagesCollection webappPagesCollection = WebappPagesCollection.getInstance();
     private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2.getInstance();
     private final WinPagesCollection winPagesCollection = WinPagesCollection.getInstance();
+
+    /**
+     * Maximizes video call
+     *
+     * @throws Exception
+     * @step. ^I maximize video call$
+     */
+    @When("^I maximize video call via titlebar$")
+    public void IMaximizeVideoCall() throws Exception {
+        webappPagesCollection.getPage(VideoCallPage.class).clickMaximizeVideoCallButton();
+    }
 
     /**
      * Checks if the video call minimized/maximized
@@ -87,33 +99,37 @@ public class VideoCallPageSteps {
         String reportPath = "../artifact/tests/macosx/";
 
         // do feature Matching + homography to find objects
-        assertThat("Not enough good matches between " +
-                "<a href='" + reportPath + resizedScreenshotName + "'>screenshot</a> and <a href='" + reportPath + localScreenShareVideoName + "'>self video</a>", ImageUtil.getMatches(resizedScreenshot, localScreenShareVideo), greaterThan(50));
+        assertThat("Not enough good matches between "
+                + "<a href='" + reportPath + resizedScreenshotName + "'>screenshot</a> and <a href='" + reportPath + localScreenShareVideoName + "'>self video</a>",
+                ImageUtil.getMatches(resizedScreenshot, localScreenShareVideo), greaterThan(5));
     }
 
     @Then("^I verify (.*) sees my screen$")
-    public void IVerifyUserXVideoShowsScreen(String userAlias) throws Exception {
-        final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(userAlias);
+    public void IVerifyUserXVideoShowsScreen(String callees) throws Exception {
+        for (String callee : splitAliases(callees)) {
+            final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callee);
 
-        // get screenshot from remote user
-        BufferedImage remoteScreenshot = commonCallingSteps.getScreenshot(userAs);
+            // get screenshot from remote user
+            BufferedImage remoteScreenshot = commonCallingSteps.getScreenshot(userAs);
 
-        // get local screenshot and resize to remote size
-        Optional<BufferedImage> localScreenshot = winPagesCollection.getPage(MainWirePage.class).getScreenshot();
-        Assert.assertTrue("Fullscreen screenshot cannot be captured", localScreenshot.isPresent());
-        BufferedImage resizedScreenshot = ImageUtil.scaleTo(localScreenshot.get(), remoteScreenshot.getWidth(),
-                remoteScreenshot.getHeight());
+            // get local screenshot and resize to remote size
+            Optional<BufferedImage> localScreenshot = winPagesCollection.getPage(MainWirePage.class).getScreenshot();
+            Assert.assertTrue("Fullscreen screenshot cannot be captured", localScreenshot.isPresent());
+            BufferedImage resizedScreenshot = ImageUtil.scaleTo(localScreenshot.get(), remoteScreenshot.getWidth(),
+                    remoteScreenshot.getHeight());
 
-        // Write images to disk
-        String resizedScreenshotName = "target/resizedScreenshot" + System.currentTimeMillis() + ".png";
-        String remoteScreenshotName = "target/remoteScreenshot" + System.currentTimeMillis() + ".png";
-        ImageUtil.storeImage(resizedScreenshot, new File(resizedScreenshotName));
-        ImageUtil.storeImage(remoteScreenshot, new File(remoteScreenshotName));
-        String reportPath = "../artifact/tests/macosx/";
+            // Write images to disk
+            String resizedScreenshotName = "target/resizedScreenshot" + System.currentTimeMillis() + ".png";
+            String remoteScreenshotName = "target/remoteScreenshot" + System.currentTimeMillis() + ".png";
+            ImageUtil.storeImage(resizedScreenshot, new File(resizedScreenshotName));
+            ImageUtil.storeImage(remoteScreenshot, new File(remoteScreenshotName));
+            String reportPath = "../artifact/tests/macosx/";
 
-        // do feature Matching + homography to find objects
-        assertThat("Not enough good matches between " +
-                "<a href='" + reportPath + resizedScreenshotName + "'>screenshot</a> and <a href='" + reportPath + remoteScreenshotName + "'>remote</a>", ImageUtil.getMatches(resizedScreenshot, remoteScreenshot), greaterThan(40));
+            // do feature Matching + homography to find objects
+            assertThat("Not enough good matches between "
+                    + "<a href='" + reportPath + resizedScreenshotName + "'>screenshot</a> and <a href='" + reportPath + remoteScreenshotName + "'>remote</a>",
+                    ImageUtil.getMatches(resizedScreenshot, remoteScreenshot), greaterThan(40));
+        }
     }
 
     /**
@@ -150,7 +166,7 @@ public class VideoCallPageSteps {
         VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
         if ("off".equals(onOffToggle)) {
             assertTrue("Disabled video icon is still shown", videoCallPage.isDisabledVideoIconVisible());
-        }else{
+        } else {
             assertTrue("Disabled video icon is not shown", videoCallPage.isDisabledVideoIconInvisible());
         }
     }

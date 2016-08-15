@@ -131,6 +131,7 @@ public enum Browser {
 		switch (this) {
 			case Chrome:
 			case Opera:
+			case Firefox:
 				return true;
 			default:
 				return false;

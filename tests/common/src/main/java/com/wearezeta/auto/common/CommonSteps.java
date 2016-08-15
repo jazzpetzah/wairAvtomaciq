@@ -330,16 +330,32 @@ public final class CommonSteps {
 
     public void UserDeleteMessage(String msgFromuserNameAlias, String dstConversationName, MessageId messageId,
                                   String deviceName, boolean isGroup) throws Exception {
+        //default is local delete, rather than delete everywhere
+        UserDeleteMessage(msgFromuserNameAlias, dstConversationName, messageId, deviceName, isGroup, false);
+    }
+
+    public void UserDeleteMessage(String msgFromuserNameAlias, String dstConversationName, MessageId messageId,
+                                  String deviceName, boolean isGroup, boolean isDeleteEverywhere) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromuserNameAlias);
         if (!isGroup) {
             dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
         }
         String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
-        seBridge.deleteMessage(user, dstConvId, messageId, deviceName);
+        if (isDeleteEverywhere) {
+            seBridge.deleteMessageEverywhere(user, dstConvId, messageId, deviceName);
+        } else {
+            seBridge.deleteMessage(user, dstConvId, messageId, deviceName);
+        }
     }
 
     public void UserDeleteLatestMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName,
                                         boolean isGroup) throws Exception {
+        //default is delete local, rather than delete eveywhere
+        UserDeleteLatestMessage(msgFromUserNameAlias, dstConversationName, deviceName, isGroup, false);
+    }
+
+    public void UserDeleteLatestMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName,
+                                        boolean isGroup, boolean isDeleteEverywhere) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
         if (!isGroup) {
             dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
@@ -348,7 +364,11 @@ public final class CommonSteps {
         ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
         ActorMessage.MessageInfo lastMessage = messageInfos[messageInfos.length - 1];
 
-        seBridge.deleteMessage(user, dstConvId, lastMessage.id(), deviceName);
+        if (isDeleteEverywhere) {
+            seBridge.deleteMessageEverywhere(user, dstConvId, lastMessage.id(), deviceName);
+        } else {
+            seBridge.deleteMessage(user, dstConvId, lastMessage.id(), deviceName);
+        }
     }
 
     /**
@@ -642,7 +662,7 @@ public final class CommonSteps {
      * Upload fake addressbook to Backend
      *
      * @param userAsNameAlias the user who upload the addressbook
-     * @param contacts could be a list of phone numbers (+49.....) or emails , seperated by comma
+     * @param contacts        could be a list of phone numbers (+49.....) or emails , seperated by comma
      * @throws Exception
      */
     public void UserXHasContactsInAddressBook(String userAsNameAlias, String contacts) throws Exception {

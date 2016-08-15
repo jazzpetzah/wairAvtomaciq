@@ -286,6 +286,7 @@ public class StartUIPage extends WebPage {
 		Wait<WebDriver> wait = new FluentWait<WebDriver>(getDriver())
 				.withTimeout(DriverUtils.getDefaultLookupTimeoutSeconds(),
 						TimeUnit.SECONDS).pollingEvery(1, TimeUnit.SECONDS)
+				.ignoring(NullPointerException.class)
 				.ignoring(NoSuchElementException.class);
 		return wait.until(drv -> {
 			try {

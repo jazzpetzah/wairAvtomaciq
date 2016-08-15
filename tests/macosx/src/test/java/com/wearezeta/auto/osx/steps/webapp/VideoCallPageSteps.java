@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.Optional;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
+import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
@@ -39,6 +40,17 @@ public class VideoCallPageSteps {
     private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2.getInstance();
     private final OSXPagesCollection osxPagesCollection = OSXPagesCollection.getInstance();
 
+    /**
+     * Maximizes video call
+     *
+     * @throws Exception
+     * @step. ^I maximize video call$
+     */
+    @When("^I maximize video call via titlebar$")
+    public void IMaximizeVideoCall() throws Exception {
+        webappPagesCollection.getPage(VideoCallPage.class).clickMaximizeVideoCallButton();
+    }
+    
     /**
      * Checks if the video call minimized/maximized
      *
@@ -78,13 +90,13 @@ public class VideoCallPageSteps {
         Assert.assertTrue("Fullscreen screenshot cannot be captured", localScreenshot.isPresent());
 
         // cutout from screenshot
-        ZetaOSXDriver osxDriver = (ZetaOSXDriver) PlatformDrivers.getInstance().getDrivers().get(OSXExecutionContext.CURRENT_PLATFORM).get();
+        ZetaOSXDriver osxDriver = (ZetaOSXDriver) PlatformDrivers.getInstance().getDrivers().get(
+                OSXExecutionContext.CURRENT_PLATFORM).get();
         int retinaMultiplicator = OSXCommonUtils.screenPixelsMultiplier(osxDriver);
         int x = mainWirePage.getX() * retinaMultiplicator;
         int y = mainWirePage.getY() * retinaMultiplicator;
-        // NOTE: for some reason X and Y are interchanged so we switch it here
-        int elementY = elementLocation.getX() * retinaMultiplicator;
-        int elementX = elementLocation.getY() * retinaMultiplicator;
+        int elementY = elementLocation.getY() * retinaMultiplicator;
+        int elementX = elementLocation.getX() * retinaMultiplicator;
         int elementWidth = elementSize.getWidth() * retinaMultiplicator;
         int elementHeight = elementSize.getHeight() * retinaMultiplicator;
 
@@ -93,7 +105,7 @@ public class VideoCallPageSteps {
         LOG.debug("Absolute element location is X=" + (x + elementX) + " and Y=" + (y + elementY));
         LOG.debug("Element size is Width=" + elementWidth + " and Height=" + elementHeight);
 
-        BufferedImage localScreenShareVideo = localScreenshot.get().getSubimage(x + elementX, y + elementY, 
+        BufferedImage localScreenShareVideo = localScreenshot.get().getSubimage(x + elementX, y + elementY,
                 elementWidth, elementHeight);
 
         // resize local screenshot to cutout
@@ -113,29 +125,32 @@ public class VideoCallPageSteps {
     }
 
     @Then("^I verify (.*) sees my screen$")
-    public void IVerifyUserXVideoShowsScreen(String userAlias) throws Exception {
-        final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(userAlias);
+    public void IVerifyUserXVideoShowsScreen(String callees) throws Exception {
+        for (String callee : splitAliases(callees)) {
+            final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callee);
 
-        // get screenshot from remote user
-        BufferedImage remoteScreenshot = commonCallingSteps.getScreenshot(userAs);
+            // get screenshot from remote user
+            BufferedImage remoteScreenshot = commonCallingSteps.getScreenshot(userAs);
 
-        // get local screenshot and resize to remote size
-        Optional<BufferedImage> localScreenshot = osxPagesCollection.getPage(MainWirePage.class).getScreenshot();
-        Assert.assertTrue("Fullscreen screenshot cannot be captured", localScreenshot.isPresent());
-        BufferedImage resizedScreenshot = ImageUtil.scaleTo(localScreenshot.get(), remoteScreenshot.getWidth(),
-                remoteScreenshot.getHeight());
+            // get local screenshot and resize to remote size
+            Optional<BufferedImage> localScreenshot = osxPagesCollection.getPage(MainWirePage.class).getScreenshot();
+            Assert.assertTrue("Fullscreen screenshot cannot be captured", localScreenshot.isPresent());
+            BufferedImage resizedScreenshot = ImageUtil.scaleTo(localScreenshot.get(), remoteScreenshot.getWidth(),
+                    remoteScreenshot.getHeight());
 
-        // Write images to disk
-        String resizedScreenshotName = "target/resizedScreenshot" + System.currentTimeMillis() + ".png";
-        String remoteScreenshotName = "target/remoteScreenshot" + System.currentTimeMillis() + ".png";
-        ImageUtil.storeImage(resizedScreenshot, new File(resizedScreenshotName));
-        ImageUtil.storeImage(remoteScreenshot, new File(remoteScreenshotName));
-        String reportPath = "../artifact/tests/macosx/";
+            // Write images to disk
+            long currentTimeMillis = System.currentTimeMillis();
+            String resizedScreenshotName = "target/resizedScreenshot" + currentTimeMillis + ".png";
+            String remoteScreenshotName = "target/remoteScreenshot" + currentTimeMillis + ".png";
+            ImageUtil.storeImage(resizedScreenshot, new File(resizedScreenshotName));
+            ImageUtil.storeImage(remoteScreenshot, new File(remoteScreenshotName));
+            String reportPath = "../artifact/tests/macosx/";
 
-        // do feature Matching + homography to find objects
-        assertThat("Not enough good matches between "
-                + "<a href='" + reportPath + resizedScreenshotName + "'>screenshot</a> and <a href='" + reportPath + remoteScreenshotName + "'>remote</a>",
-                ImageUtil.getMatches(resizedScreenshot, remoteScreenshot), greaterThan(38));
+            // do feature Matching + homography to find objects
+            assertThat("Not enough good matches between "
+                    + "<a href='" + reportPath + resizedScreenshotName + "'>screenshot</a> and <a href='" + reportPath + remoteScreenshotName + "'>remote</a>",
+                    ImageUtil.getMatches(resizedScreenshot, remoteScreenshot), greaterThan(38));
+        }
     }
 
     /**
