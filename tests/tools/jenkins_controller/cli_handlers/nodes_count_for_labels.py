@@ -214,7 +214,7 @@ IOS_SIMULATOR_AGENT_NAME = 'launchd_sim'
 
 class IOSSimulator(BaseNodeVerifier):
     def _get_installed_simulators(self, ssh_client):
-        _, stdout, _ = ssh_client.exec_command('/usr/bin/xcrun instruments -s')
+        _, stdout, _ = ssh_client.exec_command('/usr/bin/instruments -s')
         matches = re.findall(r'([\w\s\(\)\.]+)\[(\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12})\]', stdout.read())
         result = {}
         if matches:
