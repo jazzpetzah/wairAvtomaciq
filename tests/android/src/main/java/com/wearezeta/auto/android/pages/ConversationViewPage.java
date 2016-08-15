@@ -143,9 +143,9 @@ public class ConversationViewPage extends AndroidPage {
     private static final By xpathLastConversationMessage = By.xpath("(//*[@id='ltv__row_conversation__message'])[last" +
             "()]");
 
-    public static final String idStrDialogRoot = "clv__conversation_list_view";
-    public static final By idDialogRoot = By.id(idStrDialogRoot);
-    private static final By xpathDialogContent = By.xpath("//*[@id='" + idStrDialogRoot + "']/*/*/*");
+    public static final String idStrConversationRoot = "clv__conversation_list_view";
+    public static final By idConversationRoot = By.id(idStrConversationRoot);
+    private static final By xpathConversationContent = By.xpath("//*[@id='" + idStrConversationRoot + "']/*/*/*");
 
     private static final Function<String, String> xpathMessageNotificationByValue = value -> String
             .format("//*[starts-with(@id,'ttv_message_notification_chathead__label') and @value='%s']", value);
@@ -225,7 +225,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public BufferedImage getConvoViewStateScreenshot() throws Exception {
-        return this.getElementScreenshot(getElement(idDialogRoot)).orElseThrow(
+        return this.getElementScreenshot(getElement(idConversationRoot)).orElseThrow(
                 () -> new IllegalStateException("Cannot get a screenshot of conversation view")
         );
     }
@@ -585,7 +585,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean isConversationVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idDialogRoot);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idConversationRoot);
     }
 
     private static final double MAX_BUTTON_STATE_OVERLAP = 0.5;
@@ -681,8 +681,8 @@ public class ConversationViewPage extends AndroidPage {
         return false;
     }
 
-    public int getCurrentNumberOfItemsInDialog() throws Exception {
-        return selectVisibleElements(xpathDialogContent).size();
+    public int getCurrentNumberOfItemsInConversation() throws Exception {
+        return selectVisibleElements(xpathConversationContent).size();
     }
 
     private static final long IMAGES_VISIBILITY_TIMEOUT = 10000; // seconds;
@@ -943,5 +943,10 @@ public class ConversationViewPage extends AndroidPage {
     public boolean waitUntilTrashIconVisible(String name) throws Exception {
         final By locator = By.xpath(xpathTrashcanByName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitUntilTrashIconInvisible(String name) throws Exception {
+        final By locator = By.xpath(xpathTrashcanByName.apply(name));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 }

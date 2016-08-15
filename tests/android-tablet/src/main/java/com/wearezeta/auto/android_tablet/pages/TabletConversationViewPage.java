@@ -42,7 +42,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idDialogRoot);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idConversationRoot);
     }
 
     public boolean waitForSystemMessageContains(String expectedMessage) throws Exception {
@@ -129,7 +129,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idDialogRoot);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idConversationRoot);
     }
 
     public boolean waitUntilPicturesNotVisible() throws Exception {

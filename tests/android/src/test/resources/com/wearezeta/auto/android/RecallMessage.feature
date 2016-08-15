@@ -26,7 +26,7 @@ Feature: Recall Message
     And I tap Delete button on the alert
     Then I do not see the message "<Message2>" in the conversation view
     And User <Contact1> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
-    # TODO: Add check for Should not see trashcan in my view when I am the deleter
+    And I do not see the trashcan next to the name of Myself in the conversation view
 
     Examples:
       | Name      | Contact1  | Message           | ContactDevice | MySecondDevice | Message2 |
@@ -59,7 +59,7 @@ Feature: Recall Message
     And I tap Delete button on the alert
     Then I do not see the message "<Message2>" in the conversation view
     And User <Contact1> see the recent message from group conversation <Group> via device <ContactDevice> is changed in 15 seconds
-    # TODO: Add check for Should not see trashcan in my view when I am the deleter
+    And I do not see the trashcan next to the name of Myself in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | Group  | Message           | ContactDevice | MySecondDevice | Message2 |
@@ -255,3 +255,23 @@ Feature: Recall Message
     Examples:
       | Name      | Contact1  | Contact2  | Message           | Device  | ContactDevice | GroupChatName |
       | user1Name | user2Name | user3Name | DeleteTextMessage | Device1 | Device2       | MyGroup       |
+
+  @C206251 @staging
+  Scenario Outline: Verify I do not see unread dot if a message was deleted from someone in a conversation
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User <Contact1> adds new device <ContactDevice>
+    Given I see Conversations list with conversations
+    When User <Contact1> sends 1 encrypted messages to user Myself
+    And I tap on conversation name <Contact1>
+    And I scroll to the bottom of conversation view
+    And I navigate back from conversation
+    And I remember unread messages indicator state for conversation <Contact1>
+    And User <Contact1> delete the recent message everywhere from user Myself via device <ContactDevice>
+    Then I see unread messages indicator state is not changed for conversation <Contact1>
+
+    Examples:
+      | Name      | Contact1  | ContactDevice |
+      | user1Name | user2Name | Device1       |
