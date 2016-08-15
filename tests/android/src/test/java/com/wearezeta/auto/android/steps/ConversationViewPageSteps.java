@@ -1367,4 +1367,18 @@ public class ConversationViewPageSteps {
                     currentPercentage <= expectedPercentage);
         }
     }
+
+    /**
+     * Verify the trashcan is visible next the expected name
+     *
+     * @param name the contact name
+     * @throws Exception
+     * @step. ^I see the trashcan next to the name of (.*) in the conversation view$
+     */
+    @Then("^I see the trashcan next to the name of (.*) in the conversation view$")
+    public void ISeeTrashNextToName(String name) throws Exception {
+        name = ClientUsersManager.getInstance().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("Cannot see the trashcan next to the name '%s'", name),
+                getConversationViewPage().waitUntilTrashIconVisible(name));
+    }
 }

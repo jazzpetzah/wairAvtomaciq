@@ -171,6 +171,10 @@ public class ConversationViewPage extends AndroidPage {
     private static final Function<String, String> xpathLinkPreviewUrlByValue = value -> String
             .format("//*[@id='ttv__row_conversation__link_preview__url' and @value='%s']", value);
 
+    private static final Function<String, String> xpathTrashcanByName = name -> String
+            .format("//*[@id='ttv__row_conversation__separator__name' and @value='%s']" +
+                    "/following-sibling::*[@id='gtv__message_recalled']", name.toLowerCase());
+
     private static final By idMessageBottomMenuForwardButton = By.id("message_bottom_menu_item_forward");
     private static final By idMessageBottomMenuDeleteLocalButton = By.id("message_bottom_menu_item_delete_local");
     private static final By idMessageBottomMenuDeleteGlobalButton = By.id("message_bottom_menu_item_delete_global");
@@ -837,13 +841,8 @@ public class ConversationViewPage extends AndroidPage {
 
     public void longTapContainer(String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
-        if (locator.equals(idAudioMessageContainer)) {
-            // workaround for audio messages
-            final WebElement el = getElement(locator);
-            final Point location = el.getLocation();
-            final Dimension size = el.getSize();
-            getDriver().longTap(location.x + size.width / 2, location.y + size.height / 5, DriverUtils.LONG_TAP_DURATION);
-        } else if (locator.equals(idVideoMessageContainer)) {
+        if (locator.equals(idAudioMessageContainer) || locator.equals(idVideoMessageContainer)) {
+            // To avoid to tap on play button in Video message and Audio message container.
             final WebElement el = getElement(locator);
             final Point location = el.getLocation();
             final Dimension size = el.getSize();
@@ -940,4 +939,9 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
     //endregion
+
+    public boolean waitUntilTrashIconVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathTrashcanByName.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
 }
