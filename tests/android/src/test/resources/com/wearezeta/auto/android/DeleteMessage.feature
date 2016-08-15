@@ -402,3 +402,168 @@ Feature: Delete Message
     Examples:
       | Name      | Contact1  | Contact2  | Group  | Message           | ContactDevice | MySecondDevice | Message2 |
       | user1Name | user2Name | user3Name | TGroup | DeleteTextMessage | Device2       | Device1        | Del2     |
+
+  @C202332 @staging
+  Scenario Outline: Verify I can delete everywhere works for images
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User <Contact> adds new device <ContactDevice>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
+    And I tap Add picture button from cursor toolbar
+    And I tap Gallery button on Extended cursor camera overlay
+    And I tap Confirm button on Take Picture view
+    And I long tap the recent picture in the conversation view
+    And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    And I tap Delete for everyone button on the message bottom menu
+    And I tap Delete button on the alert
+    Then I do not see any pictures in the conversation view
+    And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
+
+    Examples:
+      | Name      | Contact   | ContactDevice |
+      | user1Name | user2Name | Device1       |
+
+  @C202333 @staging
+  Scenario Outline: Verify delete everywhere works for giphy
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User <Contact> adds new device <ContactDevice>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
+    And I tap on text input
+    And I type the message "<Message>"
+    And I click on the GIF button
+    Then I see giphy preview page
+    When I click on the giphy send button
+    And I long tap the recent picture in the conversation view
+    And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    And I tap Delete for everyone button on the message bottom menu
+    And I tap Delete button on the alert
+    Then I do not see any pictures in the conversation view
+    And I see the message "<Message> · via giphy.com" in the conversation view
+    And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
+
+    Examples:
+      | Name      | Contact   | Message | ContactDevice |
+      | user1Name | user2Name | Yo      | Device1       |
+
+  @C202334 @staging
+  Scenario Outline: Verify delete everywhere works for link preview
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User <Contact> adds new device <ContactDevice>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When I type the message "<Link>" and send it
+    And I long tap Link Preview container in the conversation view
+    And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    And I tap Delete for everyone button on the message bottom menu
+    And I tap Delete button on the alert
+    Then I do not see Link Preview container in the conversation view
+    And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
+
+
+    Examples:
+      | Name      | Contact   | Link                    | ContactDevice |
+      | user1Name | user2Name | http://www.facebook.com | Device1       |
+
+  @C202335 @staging
+  Scenario Outline: Verify delete everywhere works for Share location
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User <Contact> adds new device <ContactDevice>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When I tap Share location button from cursor toolbar
+    And I tap Send button on Share Location page
+    And I long tap Share Location container in the conversation view
+    And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    And I tap Delete for everyone button on the message bottom menu
+    And I tap Delete button on the alert
+    Then I do not see Share Location container in the conversation view
+    And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
+
+    Examples:
+      | Name      | Contact   | ContactDevice |
+      | user1Name | user2Name | device1       |
+
+  @C202336 @staging
+  Scenario Outline: Verify delete everywhere works for file sharing
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I push <FileSize> file having name "<FileName>.<FileExtension>" to the device
+    Given I accept First Time overlay as soon as it is visible
+    Given User <Contact> adds new device <ContactDevice>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When I tap File button from cursor toolbar
+    And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
+    And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    And I long tap File Upload container in the conversation view
+    And I tap Delete for everyone button on the message bottom menu
+    And I tap Delete button on the alert
+    Then I do not see File Upload container in the conversation view
+    And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
+
+    Examples:
+      | Name      | Contact   | FileName  | FileExtension | FileSize | ContactDevice | UploadingTimeout |
+      | user1Name | user2Name | qa_random | txt           | 1.00MB   | device1       | 20               |
+
+  @C202337 @staging
+  Scenario Outline: Verify delete everywhere works for audio messages
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User <Contact> adds new device <ContactDevice>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When I long tap Audio message button <TapDuration> seconds from cursor toolbar
+    And I tap audio recording Send button
+    # Wait for the audio to be fully uploaded
+    And I wait for 15 seconds
+    And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    And I long tap Audio Message container in the conversation view
+    And I tap Delete for everyone button on the message bottom menu
+    And I tap Delete button on the alert
+    Then I do not see Audio Message container in the conversation view
+    And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
+
+    Examples:
+      | Name      | Contact   | TapDuration | ContactDevice |
+      | user1Name | user2Name | 5           | Device1       |
+
+  @C202338 @staging
+  Scenario Outline: Verify delete everywhere works for video messages
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I push <FileSize> video file having name "<FileFullName>" to the device
+    Given I accept First Time overlay as soon as it is visible
+    Given User <Contact> adds new device <ContactDevice>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When I tap Video message button from cursor toolbar
+    Then I see Video Message container in the conversation view
+  # Wait for the video to be fully uploaded
+    And I wait for 20 seconds
+    And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    And I long tap Video Message container in the conversation view
+    And I tap Delete for everyone button on the message bottom menu
+    And I tap Delete button on the alert
+    Then I do not see Video Message container in the conversation view
+    And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
+
+    Examples:
+      | Name      | Contact   | FileSize | FileFullName     | ContactDevice |
+      | user1Name | user2Name | 26.00MB  | random_video.mp4 | Device1       |

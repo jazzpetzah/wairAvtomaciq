@@ -373,7 +373,7 @@ public final class CommonSteps {
     }
 
     /**
-     * Note: if there is no message in conversation, it will return Optional.of("")
+     * Note: if there is no message in conversation, it will return Optional.empty()
      */
     public Optional<String> UserGetRecentMessageId(String msgFromUserNameAlias, String dstConversationName, String deviceName,
                                                    boolean isGroup) throws Exception {
