@@ -740,7 +740,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see there is no content in the conversation$")
     public void ISeeThereIsNoContentInTheConversation() throws Exception {
-        int actualValue = getConversationViewPage().getCurrentNumberOfItemsInDialog();
+        int actualValue = getConversationViewPage().getCurrentNumberOfItemsInConversation();
         Assert.assertEquals("It looks like the conversation has some content", actualValue, 0);
     }
 
@@ -1371,14 +1371,20 @@ public class ConversationViewPageSteps {
     /**
      * Verify the trashcan is visible next the expected name
      *
-     * @param name the contact name
+     * @param shouldNotSee equals null means the trashcan should be visible next to the expected name
+     * @param name         the contact name
      * @throws Exception
      * @step. ^I see the trashcan next to the name of (.*) in the conversation view$
      */
-    @Then("^I see the trashcan next to the name of (.*) in the conversation view$")
-    public void ISeeTrashNextToName(String name) throws Exception {
+    @Then("^I (do not )?see the trashcan next to the name of (.*) in the conversation view$")
+    public void ISeeTrashNextToName(String shouldNotSee, String name) throws Exception {
         name = ClientUsersManager.getInstance().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-        Assert.assertTrue(String.format("Cannot see the trashcan next to the name '%s'", name),
-                getConversationViewPage().waitUntilTrashIconVisible(name));
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("Cannot see the trashcan next to the name '%s'", name),
+                    getConversationViewPage().waitUntilTrashIconVisible(name));
+        } else {
+            Assert.assertTrue(String.format("The trashcan next to the name '%s' should be invisible", name),
+                    getConversationViewPage().waitUntilTrashIconInvisible(name));
+        }
     }
 }
