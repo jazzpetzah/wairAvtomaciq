@@ -196,17 +196,19 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getConversationViewPage().longTapMessage(msg);
     }
 
-    public void tapActionBarButton(String btnName) throws Exception {
-        getConversationViewPage().tapActionBarButton(btnName);
+    //region Message Bottom Menu
+    public void tapMessageBottomMenuButton(String btnName) throws Exception {
+        getConversationViewPage().tapMessageBottomMenuButton(btnName);
     }
 
-    public boolean isActionModeBarButtonVisible(String name) throws Exception {
-        return getConversationViewPage().isActionModeBarButtonVisible(name);
+    public boolean waitUntilMessageBottomMenuButtonVisible(String name) throws Exception {
+        return getConversationViewPage().waitUntilMessageBottomMenuButtonVisible(name);
     }
 
-    public boolean isActionModeBarButtonInvisible(String name) throws Exception {
-        return getConversationViewPage().isActionModeBarButtonInvisible(name);
+    public boolean waitUntilMessageBottomMenuButtonInvisible(String name) throws Exception {
+        return getConversationViewPage().waitUntilMessageBottomMenuButtonInvisible(name);
     }
+    //endregion
 
     public boolean isContainerVisible(String containerType) throws Exception {
         return getConversationViewPage().isContainerVisible(containerType);

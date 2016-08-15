@@ -11,7 +11,7 @@ Feature: Copy Message
     And I tap on text input
     And I type the message "<Message>" and send it
     When I long tap the Text message "<Message>" in the conversation view
-    And I tap Copy button on the action mode bar
+    And I tap Copy button on the message bottom menu
     Then I verify that Android clipboard content equals to "<Message>"
 
     Examples:
@@ -33,9 +33,9 @@ Feature: Copy Message
     And I scroll to the bottom of conversation view
     When I long tap the Text message "<Message>" in the conversation view
     And I tap the recent picture in the conversation view
-    Then I do not see Copy button on the action mode bar
+    Then I do not see Copy button on the message bottom menu
     When I tap the Text message "<Message>" in the conversation view
-    Then I do not see Copy button on the action mode bar
+    Then I do not see Copy button on the message bottom menu
 
     Examples:
       | Name      | Contact   | Message | ImageName   |
@@ -52,7 +52,7 @@ Feature: Copy Message
     When User <Contact> sends encrypted message "<Message>" to user Myself
     Then I see Play button on Youtube container
     When I long tap the Text message "<Message>" in the conversation view
-    And I tap Copy button on the action mode bar
+    And I tap Copy button on the message bottom menu
     Then I verify that Android clipboard content equals to "<Message>"
 
     Examples:
@@ -69,7 +69,7 @@ Feature: Copy Message
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I long tap Link Preview container in the conversation view
-    And  I tap Copy button on the action mode bar
+    And  I tap Copy button on the message bottom menu
     Then I verify that Android clipboard content equals to "<Link>"
 
     Examples:
