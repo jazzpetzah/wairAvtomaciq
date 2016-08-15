@@ -390,8 +390,7 @@ public class CommonWebAppSteps {
     @When("^User (.*) pinged in the conversation with (.*)$")
     public void UserPingedConversation(String pingFromUserNameAlias,
                                        String dstConversationName) throws Exception {
-        context.getCommonSteps().UserPingedConversation(pingFromUserNameAlias,
-                dstConversationName);
+        context.getCommonSteps().UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
     }
 
     /**
