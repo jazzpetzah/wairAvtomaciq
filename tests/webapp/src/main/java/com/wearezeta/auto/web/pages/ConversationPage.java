@@ -1011,6 +1011,28 @@ public class ConversationPage extends WebPage {
         return mappedMessages;
     }
 
+    public void openContextMenuOnLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        hoverOverMessage(id);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssContextMenuButtonByMessageId.apply(id));
+        getDriver().findElement(locator).click();
+    }
+
+    public void clickDeleteEverywhereInContextMenuOfLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteEverywhereByMessageId.apply(id));
+        getDriver().findElement(locator).click();
+    }
+
+    public void clickDeleteForMeInContextMenuOfLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteForMeByMessageId.apply(id));
+        getDriver().findElement(locator).click();
+    }
+
     public void clickToDeleteLatestMessage() throws Exception {
         By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
         String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");

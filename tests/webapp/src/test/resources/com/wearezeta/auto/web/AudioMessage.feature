@@ -33,8 +33,9 @@ Feature: Audio Message
     And I see file transfer button in conversation input
     And I send audio file with length <Time> and name <File> to the current conversation
     And I wait until audio <File> is uploaded completely
-    And I click to delete the latest message
-    And I click confirm to delete message
+    And I open context menu of the latest message
+    And I click to delete message for me in context menu
+    And I click confirm to delete message for me
     Then I do not see audio message <File> in the conversation view
 
     Examples:

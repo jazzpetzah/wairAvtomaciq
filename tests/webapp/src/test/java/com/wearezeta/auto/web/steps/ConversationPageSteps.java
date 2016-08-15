@@ -297,7 +297,7 @@ public class ConversationPageSteps {
      * @param x the amount of sent messages
      * @step. ^I see (\\d+) messages in conversation$
      */
-    @Then("^I see (\\d+) messages in conversation$")
+    @Then("^I see (\\d+) messages? in conversation$")
     public void ISeeXMessagesInConversation(int x) throws Exception {
         assertThat("Number of messages int the conversation", context.getPagesCollection().getPage(ConversationPage.class)
                 .getNumberOfMessagesInCurrentConversation(), equalTo(x));
@@ -663,12 +663,32 @@ public class ConversationPageSteps {
         }
     }
 
+    @When("^I open context menu of the latest message$")
+    public void IOpenContextMenuOfLatestMessage() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).openContextMenuOnLatestMessage();
+    }
+
+    @When("^I click to delete message for everyone in context menu$")
+    public void IClickDeleteEverywhereInContextMenuOfLatestMessage() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickDeleteEverywhereInContextMenuOfLatestMessage();
+    }
+
+    @When("^I click to delete message for me in context menu$")
+    public void IClickDeleteForMeInContextMenuOfLatestMessage() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickDeleteForMeInContextMenuOfLatestMessage();
+    }
+
+    @When("^I click confirm to delete message for everyone$")
+    public void IClickConfirmToDeleteForEveryone() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).confirmDelete();
+    }
+
     @When("^I click to delete the latest message$")
     public void IClickToDelete() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickToDeleteLatestMessage();
     }
 
-    @When("^I click confirm to delete message$")
+    @When("^I click confirm to delete message for me$")
     public void IClickConfirmToDelete() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).confirmDelete();
     }
