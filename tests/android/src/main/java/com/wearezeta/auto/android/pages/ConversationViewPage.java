@@ -843,6 +843,11 @@ public class ConversationViewPage extends AndroidPage {
             final Point location = el.getLocation();
             final Dimension size = el.getSize();
             getDriver().longTap(location.x + size.width / 2, location.y + size.height / 5, DriverUtils.LONG_TAP_DURATION);
+        } else if (locator.equals(idVideoMessageContainer)) {
+            final WebElement el = getElement(locator);
+            final Point location = el.getLocation();
+            final Dimension size = el.getSize();
+            getDriver().longTap(location.x + size.width / 5, location.y + size.height / 5, DriverUtils.LONG_TAP_DURATION);
         } else {
             getDriver().longTap(getElement(locator), DriverUtils.LONG_TAP_DURATION);
         }
