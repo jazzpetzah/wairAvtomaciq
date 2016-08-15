@@ -342,7 +342,7 @@ Feature: Delete Message
       | Name      | Contact   | Link                                                                                               |
       | user1Name | user2Name | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 |
 
-  @C202326 @staging
+  @C202326 @C202328 @staging
   Scenario Outline: Verify I can delete my message everywhere (1:1) (myview and other view)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -356,7 +356,8 @@ Feature: Delete Message
     And I see the message "<Message>" in the conversation view
     And User <Contact1> delete the recent message everywhere from user Myself via device <ContactDevice>
     Then I do not see the message "<Message>" in the conversation view
-# TODO: Should add check for trash icon next to the user name (Will be implemented by AN-4375)
+    # C202328
+    And I see the trashcan next to the name of <Contact1> in the conversation view
     # Delete from my view
     When User Myself adds new device <MySecondDevice>
     And User Myself send encrypted message "<Message2>" via device <MySecondDevice> to user <Contact1>
@@ -367,12 +368,13 @@ Feature: Delete Message
     And I tap Delete button on the alert
     Then I do not see the message "<Message2>" in the conversation view
     And User <Contact1> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
+    # TODO: Add check for Should not see trashcan in my view when I am the deleter
 
     Examples:
       | Name      | Contact1  | Message           | ContactDevice | MySecondDevice | Message2 |
       | user1Name | user2Name | DeleteTextMessage | Device2       | Device1        | Del2     |
 
-  @C202327 @staging
+  @C202327 @C202329 @staging
   Scenario Outline: Verify I can delete my message everywhere (group) (myview and other view)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -387,7 +389,8 @@ Feature: Delete Message
     And I see the message "<Message>" in the conversation view
     And User <Contact1> delete the recent message everywhere from group conversation <Group> via device <ContactDevice>
     Then I do not see the message "<Message>" in the conversation view
-# TODO: Should add check for trash icon next to the user name (Will be implemented by AN-4375)
+    # C202329
+    And I see the trashcan next to the name of <Contact1> in the conversation view
    # Delete from my view
     When User Myself adds new device <MySecondDevice>
     And User Myself send encrypted message "<Message2>" via device <MySecondDevice> to group conversation <Group>
@@ -398,6 +401,7 @@ Feature: Delete Message
     And I tap Delete button on the alert
     Then I do not see the message "<Message2>" in the conversation view
     And User <Contact1> see the recent message from group conversation <Group> via device <ContactDevice> is changed in 15 seconds
+    # TODO: Add check for Should not see trashcan in my view when I am the deleter
 
     Examples:
       | Name      | Contact1  | Contact2  | Group  | Message           | ContactDevice | MySecondDevice | Message2 |
@@ -567,3 +571,29 @@ Feature: Delete Message
     Examples:
       | Name      | Contact   | FileSize | FileFullName     | ContactDevice |
       | user1Name | user2Name | 26.00MB  | random_video.mp4 | Device1       |
+
+  @C202330 @C202331 @staging
+  Scenario Outline: Verify deleting everywhere is synchronised across own devices when they are online (1:1 and group)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User Myself adds new device <Device>
+    Given User <Contact1> adds new device <ContactDevice>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
+    And User Myself send encrypted message "<Message>" via device <Device> to user <Contact1>
+    Then I see the message "<Message>" in the conversation view
+    When User Myself delete the recent message everywhere from user <Contact1> via device <Device>
+    Then I do not see the message "<Message>" in the conversation view
+    When I tap Back button from top toolbar
+    And I tap on conversation name <GroupChatName>
+    And User Myself send encrypted message "<Message>" via device <Device> to group conversation <GroupChatName>
+    Then I see the message "<Message>" in the conversation view
+    When User Myself delete the recent message everywhere from group conversation <GroupChatName> via device <Device>
+    Then I do not see the message "<Message>" in the conversation view
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Message           | Device  | ContactDevice | GroupChatName |
+      | user1Name | user2Name | user3Name | DeleteTextMessage | Device1 | Device2       | MyGroup       |
