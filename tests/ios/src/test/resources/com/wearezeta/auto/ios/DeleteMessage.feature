@@ -133,3 +133,24 @@ Feature: DeleteMessage
     Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @C202306 @staging @fastLogin @torun
+  Scenario Outline: Verify I can delete my message everywhere (1:1)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <HisDevice>
+    Given I sign in using my email or phone number
+    Given User Myself sends 1 encrypted message using device <MySecondDevice> to user <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I type the default message and send it
+    Then I see 1 default message in the conversation view
+    When I long tap default message in conversation view
+    And I tap on Delete badge item
+    And I select Delete for everyone item from Delete menu
+    Then I see 0 default messages in the conversation view
+    And
+
+    Examples:
+      | Name      | Contact   | MySecondDevice | HisDevice |
+      | user1Name | user2Name | device1        | device2   |
