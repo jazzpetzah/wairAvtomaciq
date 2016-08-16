@@ -971,4 +971,8 @@ public class ConversationViewPage extends IOSPage {
         final By locator = By.xpath(xpathStrActionSheetBtnByName.apply(name));
         getElement(locator).click();
     }
+
+    public void longTapVideoMessage() throws Exception {
+        this.getDriver().tap(1, getElement(nameVideoMessageActionButton), DriverUtils.LONG_TAP_DURATION);
+    }
 }
