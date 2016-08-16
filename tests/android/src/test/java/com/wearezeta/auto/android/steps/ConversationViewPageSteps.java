@@ -141,7 +141,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see the message \"(.*)\" in cursor input$")
     public void ISeeMessageInCursorInput(String message) throws Exception {
-        Assert.assertTrue(String.format("The expected message '%s' is not visible", message),
+        Assert.assertTrue(String.format("The expected message '%s' is not visible in cursor input", message),
                 getConversationViewPage().waitUntilCursorInputTextVisible(message));
     }
 
