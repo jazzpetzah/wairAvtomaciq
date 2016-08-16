@@ -335,6 +335,14 @@ public class ConversationViewPage extends AndroidPage {
         }
     }
 
+    public void clearMessageInCursorInput() throws Exception {
+        getElement(idCursorEditText).clear();
+    }
+
+    public boolean waitUntilCursorInputTextVisible(String text) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathCurosrEditTextByValue.apply(text)));
+    }
+
     private By getCursorToolButtonLocatorByName(String name) {
         switch (name.toLowerCase()) {
             case "ping":
