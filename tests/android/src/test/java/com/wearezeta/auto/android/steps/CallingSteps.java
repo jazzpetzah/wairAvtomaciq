@@ -217,69 +217,42 @@ public class CallingSteps {
         final ConversationViewPageSteps convSteps = new ConversationViewPageSteps();
         final CallIncomingPageSteps callIncomingPageSteps = new CallIncomingPageSteps();
         final CallOngoingAudioPageSteps callOngoingPageSteps = new CallOngoingAudioPageSteps();
+        final CallOutgoingPageSteps callOutgoingPageSteps = new CallOutgoingPageSteps();
+        final CommonAndroidSteps commonAndroidSteps = new CommonAndroidSteps();
         final Map<Integer, Throwable> failures = new HashMap<>();
         for (int i = 0; i < times; i++) {
-            LOG.info("\n\nSTARTING CALL " + i);
             try {
+                convSteps.ITapTopToolbarButton("Audio Call");
+                callOutgoingPageSteps.ISeeOutgoingCall(null,null);
+
                 for (String callee : calleeList) {
                     UserXAcceptsNextIncomingCallAutomatically(callee, null);
+                    UserXVerifesCallStatusToUserY(callee,"active",20);
                 }
-                LOG.info("All instances are waiting");
-                try {
-                    convSteps.ITapTopToolbarButton();
-                    for (String callee : calleeList) {
-                        UserXVerifesCallStatusToUserY(callee, "active", 60);
-                    }
-                    Thread.sleep(flowWaitTime * 1000);
-                    int totalFlowChecks = callDurationMinutes * 4;
-                    Map<String, Flow> flows = new HashMap<>();
-                    LOG.info(totalFlowChecks + " checks");
-                    for (int j = totalFlowChecks; j > 0; j--) {
-                        LOG.info("checking flows   " + j);
-                        for (String callee : calleeList) {
-                            UserXVerifesHavingXFlows(callee);
-                        }
-                        LOG.info("All instances are active");
-                        callOngoingPageSteps.ISeeOngoingCall(null);
-                        long flowCheckInterval = (callDurationMinutes * 60 * 1000)
-                                / totalFlowChecks;
-                        LOG.info("Waiting for " + flowCheckInterval + "ms ...");
-                        Thread.sleep(flowCheckInterval);
-                        LOG.info("!");
-                    }
 
-                    LOG.info("All instances are active");
-                    callPageSteps.ISeeCallControlsForConversation(null, null, callees);
-                    LOG.info("Callingbar is visible");
-                    callPageSteps.IClickEndCallButton(callees);
-                    LOG.info("Terminated call");
-                    callPageSteps.ISeeCallControlsForConversation("not", null, callees);
-                    LOG.info("Calling bar is not visible anymore");
-                    LOG.info("CALL " + i + " SUCCESSFUL");
-                } catch (Throwable e) {
-                    LOG.info("CALL " + i + " FAILED");
-                    failures.put(i, e);
-                    try {
-                        callPageSteps.IClickEndCallButton(callees);
-                        callPageSteps.ISeeCallControlsForConversation("not", null, callees);
-                    } catch (Throwable ex) {
-                        LOG.error("Cannot stop call " + i + " " + ex);
-                    }
+                callOngoingPageSteps.ISeeOngoingCall(null);
+                callOngoingPageSteps.IHangUp();
+
+                for (String callee : calleeList) {
+                    UserXVerifesCallStatusToUserY(callee,"destroyed",20);
                 }
-                commonCallingSteps.stopIncomingCall(calleeList);
-                LOG.info("All instances are stopped");
-            } catch (Throwable e) {
-                LOG.error("Can not stop waiting call " + i + " " + e);
-                try {
-                    callPageSteps.IClickEndCallButton(callees);
-                    callPageSteps.ISeeCallControlsForConversation("not", null, callees);
-                } catch (Throwable ex) {
-                    LOG.error("Can not stop call " + i + " " + ex);
-                }
+
+                callOngoingPageSteps.ISeeOngoingCall("do not");
+                commonAndroidSteps.WaitForTime(10);
+
+
+//            When <Contact> accepts next incoming call automatically
+//            Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+//            And I see ongoing call
+//            When I hang up ongoing call
+//            Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
+//            And I do not see ongoing call
+//                And I wait for 10 seconds
+
+            } catch (Throwable t){
+
             }
-            LOG.info("Waiting end...");
-            Thread.sleep(10000);
-            LOG.info("!");
+
         }
 
         LOG.info(failures.size() + " failures happened during " + times
