@@ -144,3 +144,53 @@ Feature: Recall Message
     Examples:
       | Name      | Contact1  | Contact2  | Contact1Device | Group       |
       | user1Name | user2Name | user3Name | device1        | RecallGroup |
+
+  @C202341 @staging @fastLogin
+  Scenario Outline: Verify delete everywhere works for Soundcloud, YouTube, Vimeo
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <HisDevice>
+    Given User Myself adds new device <MySecondDevice>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    #YouTube
+    And I type the "<YouTubeLink>" message and send it
+    Then I see the conversation view contains message <YouTubeLink>
+    And I see media container in the conversation view
+    And User <Contact> remembers the recent message from user Myself via device <HisDevice>
+    And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
+    When I long tap on media container in conversation view
+    And I tap on Delete badge item
+    And I select Delete for everyone item from Delete menu
+    Then I do not see media container in the conversation view
+    And I do not see the conversation view contains message <YouTubeLink>
+    And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in 15 seconds
+    And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in 3 seconds
+    #SoundCloud
+    And User <Name> sends encrypted message "<SoundCloudLink>" to user <Contact>
+    Then I see the conversation view contains message <SoundCloudLink>
+    And I see media container in the conversation view
+    And User <Contact> remembers the recent message from user Myself via device <HisDevice>
+    And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
+    And User <Name> deletes the recent message everywhere from user <Contact> via device <MySecondDevice>
+    Then I do not see media container in the conversation view
+    And I do not see the conversation view contains message <SoundCloudLink>
+    And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in 15 seconds
+    And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in 3 seconds
+    #Vimeo
+    And User <Contact> sends encrypted message "<VimeoLink>" to user <Name>
+    Then I see the conversation view contains message <VimeoLink>
+    And I see media container in the conversation view
+    And User <Contact> remembers the recent message from user Myself via device <HisDevice>
+    And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
+    And User <Contact> deletes the recent message everywhere from user <Name> via device <HisDevice>
+    Then I do not see media container in the conversation view
+    And I do not see the conversation view contains message <VimeoLink>
+    And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in 15 seconds
+    And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in 3 seconds
+
+
+    Examples:
+      | Name      | Contact   | YouTubeLink                                | SoundCloudLink                                   | VimeoLink                   | HisDevice | MySecondDevice |
+      | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU | https://soundcloud.com/sodab/256-ra-robag-wruhme | https://vimeo.com/129426512 | device1   | device2        |
