@@ -146,6 +146,18 @@ public class SEBridge {
         }
     }
 
+    public void updateMessage(ClientUser userFrom, MessageId messageId, String message) throws Exception {
+        getOrAddRandomDevice(userFrom).updateMessage(messageId, message);
+    }
+
+    public void updateMessage(ClientUser userFrom, MessageId messageId, String newMessage, String deviceName) throws Exception {
+        if(deviceName == null) {
+            updateMessage(userFrom, messageId, newMessage);
+        } else {
+            getOrAddDevice(userFrom, deviceName).updateMessage(messageId, newMessage);
+        }
+    }
+
     public void shareDefaultLocation(ClientUser userFrom, String convId, String deviceName) throws Exception {
         getOrAddDevice(userFrom, deviceName).shareLocation(convId);
     }

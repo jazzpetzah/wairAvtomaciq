@@ -66,3 +66,22 @@ Feature: Edit Message
     Examples:
       | Name      | Contact1  | Message |
       | user1Name | user2Name | YO      |
+
+  @C202357 @staging
+  Scenario Outline: Verify I can edit my message in 1:1
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> adds new device <ContactDevice>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
+    And User <Contact1> sends encrypted message "<Message>" via device <ContactDevice> to user Myself
+    And User <Contact1> edits the recent message to "<NewMessage>" from user Myself via device <ContactDevice>
+    Then I do not see the message "<Message>" in the conversation view
+    And I see the message "<NewMessage>" in the conversation view
+    # TODO: to check the pencil icon next to the name
+
+    Examples:
+      | Name      | Contact1  | Message | ContactDevice | NewMessage |
+      | user1Name | user2Name | YO      | Device1       | Hello      |
