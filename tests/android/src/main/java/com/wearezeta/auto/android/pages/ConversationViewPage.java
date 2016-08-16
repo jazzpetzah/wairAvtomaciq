@@ -175,6 +175,10 @@ public class ConversationViewPage extends AndroidPage {
             .format("//*[@id='ttv__row_conversation__separator__name' and @value='%s']" +
                     "/following-sibling::*[@id='gtv__message_recalled']", name.toLowerCase());
 
+    private static final Function<String, String> xpathPenByName = name -> String
+            .format("//*[@id='ttv__row_conversation__separator__name' and @value='%s']" +
+                    "/following-sibling::*[@id='gtv__message_edited']", name.toLowerCase());
+
     private static final By idMessageBottomMenuForwardButton = By.id("message_bottom_menu_item_forward");
     private static final By idMessageBottomMenuDeleteLocalButton = By.id("message_bottom_menu_item_delete_local");
     private static final By idMessageBottomMenuDeleteGlobalButton = By.id("message_bottom_menu_item_delete_global");
@@ -948,6 +952,7 @@ public class ConversationViewPage extends AndroidPage {
     }
     //endregion
 
+    //region Contact name icon
     public boolean waitUntilTrashIconVisible(String name) throws Exception {
         final By locator = By.xpath(xpathTrashcanByName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
@@ -957,4 +962,15 @@ public class ConversationViewPage extends AndroidPage {
         final By locator = By.xpath(xpathTrashcanByName.apply(name));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
+
+    public boolean waitUntilPenIconVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathPenByName.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitUntilPenIconInvisible(String name) throws Exception {
+        final By locator = By.xpath(xpathPenByName.apply(name));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+    //endregion
 }

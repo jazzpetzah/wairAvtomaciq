@@ -75,10 +75,10 @@ Feature: Edit Message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
+    Given User <Contact1> sends encrypted message "<Message>" to user Myself
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
-    And User <Contact1> sends encrypted message "<Message>" to user Myself
     And I long tap the Text message "<Message>" in the conversation view
     Then I do not see Edit button on the message bottom menu
 
@@ -92,14 +92,14 @@ Feature: Edit Message
     Given Myself is connected to <Contact1>
     Given User <Contact1> adds new device <ContactDevice>
     Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
     Given User <Contact1> sends encrypted message "<Message>" via device <ContactDevice> to user Myself
+    Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And User <Contact1> edits the recent message to "<NewMessage>" from user Myself via device <ContactDevice>
     Then I do not see the message "<Message>" in the conversation view
     And I see the message "<NewMessage>" in the conversation view
-    # TODO: to check the pencil icon next to the name
+    And I see the pen icon next to the name of <Contact1> in the conversation view
 
     Examples:
       | Name      | Contact1  | Message | ContactDevice | NewMessage |
@@ -128,3 +128,34 @@ Feature: Edit Message
     Examples:
       | Name      | Contact1  | Message | ContactDevice | NewMessage |
       | user1Name | user2Name | YO      | Device1       | Hello      |
+
+  @C202364 @staging
+  Scenario Outline: Verify I can edit a message multiple times in a row (my view)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> adds new device <ContactDevice>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
+    And I type the message "<Message>" and send it
+    And I long tap the Text message "<Message>" in the conversation view
+    And I tap Edit button on the message bottom menu
+    And I see edit message toolbar
+    And I clear cursor input
+    And I type the message "<NewMessage>"
+    And I tap Approve button in edit message toolbar
+    And I long tap the Text message "<NewMessage>" in the conversation view
+    And I tap Edit button on the message bottom menu
+    And I see edit message toolbar
+    And I clear cursor input
+    And I type the message "<NewMessage2>"
+    And I tap Approve button in edit message toolbar
+    Then I see the message "<NewMessage2>" in the conversation view
+    And I see the pen icon next to the name of Myself in the conversation view
+    And I do not see the message "<NewMessage>" in the conversation view
+    And I do not see the message "<Message>" in the conversation view
+
+    Examples:
+      | Name      | Contact1  | Message | ContactDevice | NewMessage | NewMessage2 |
+      | user1Name | user2Name | YO      | Device1       | Hello      | OK          |
