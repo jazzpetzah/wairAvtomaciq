@@ -15,7 +15,7 @@ Feature: Autoconnect
     And I enter activation code
     And I accept terms of service
     And I input name <Name> and hit Enter
-    And I press Keep This One button
+    And I tap Keep This One button
     And I tap Share Contacts button on Share Contacts overlay
     Then I see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
@@ -24,8 +24,8 @@ Feature: Autoconnect
       | Contact1  | Contact2   | CPhone           | C2Phone          | Name      |
       | user1Name | user2Name  | user1PhoneNumber | user2PhoneNumber | user3Name |
 
-  @torun @addressbookStart
-  Scenario Outline: phone 2
+  @torun @C202304 @addressbookStart
+  Scenario Outline: Verify autoconnect users by direct match phone numbers - delayed
     Given There are 3 user where <Name> is me
     Given I quit Wire
     Given I install Addressbook helper app
@@ -37,25 +37,27 @@ Feature: Autoconnect
     Given I sign in using my email or phone number
     When I open search UI
     And I accept alert
-    And I see conversation view page
+    And I click clear button
+    Then I see conversation <Contact1> in conversations list
+    And I see conversation <Contact2> in conversations list
 
     Examples:
       | Contact1  | Contact2   | CPhone           | C2Phone          | Name      |
       | user3Name | user2Name  | user3PhoneNumber | user2PhoneNumber | user1Name |
 
 
-  @C202304 @noAcceptAlert
-  Scenario Outline: Verify autoconnect users by direct match phone numbers - delayed
-    Given There are 3 user where <Name> is me
-    Given I sign in using my email or phone number
-    Given User Myself has phone numbers <PhonePrefix><APhone>,<PhonePrefix><A2Phone> in address book
-    Given I see conversations list
-    Then I see conversation <AName> in conversations list
-    And I see conversation <A2Name> in conversations list
+  #@C202304 @noAcceptAlert
+  #Scenario Outline: Verify autoconnect users by direct match phone numbers - delayed OLD TEST
+    #Given There are 3 user where <Name> is me
+    #Given I sign in using my email or phone number
+    #Given User Myself has phone numbers <PhonePrefix><APhone>,<PhonePrefix><A2Phone> in address book
+    #Given I see conversations list
+    #Then I see conversation <AName> in conversations list
+    #And I see conversation <A2Name> in conversations list
 
-    Examples:
-      | Name      | APhone     | PhonePrefix | A2Phone    | AName     | A2Name    |
-      | user1Name | user2Phone | +0          | user3Phone | user2Name | user3Name |
+    #Examples:
+      #| Name      | APhone     | PhonePrefix | A2Phone    | AName     | A2Name    |
+      #| user1Name | user2Phone | +0          | user3Phone | user2Name | user3Name |
 
   @C202303
   Scenario Outline: Verify direct matching email - delayed
@@ -83,7 +85,7 @@ Feature: Autoconnect
     And I enter activation code
     And I accept terms of service
     And I input name <Name> and hit Enter
-    And I press Keep This One button
+    And I tap Keep This One button
     And I tap Share Contacts button on Share Contacts overlay
     And I see conversations list
     When I open search UI
