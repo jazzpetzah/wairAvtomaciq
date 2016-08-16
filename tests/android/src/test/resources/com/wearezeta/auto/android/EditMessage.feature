@@ -105,6 +105,47 @@ Feature: Edit Message
       | Name      | Contact1  | Message | ContactDevice | NewMessage |
       | user1Name | user2Name | YO      | Device1       | Hello      |
 
+  @C202359 @staging
+  Scenario Outline: Verify I see changed message if message was edited from another device (1:1) (own device sync)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User Myself adds new device <Device>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
+    And User Myself send encrypted message "<Message>" via device <Device> to user <Contact1>
+    Then I see the message "<Message>" in the conversation view
+    When User Myself edits the recent message to "<NewMessage>" from user <Contact1> via device <Device>
+    Then I do not see the message "<Message>" in the conversation view
+    And I see the message "<NewMessage>" in the conversation view
+
+    Examples:
+      | Name      | Contact1  | Message | Device  | NewMessage |
+      | user1Name | user2Name | Yo      | Device1 | Hello      |
+
+  @C202360 @staging
+  Scenario Outline: Verify I see changed message if message was edited from another device (group) (own device sync)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User Myself adds new device <Device>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
+    And User Myself send encrypted message "<Message>" via device <Device> to group conversation <GroupChatName>
+    Then I see the message "<Message>" in the conversation view
+    When User Myself edits the recent message to "<NewMessage>" from group conversation <GroupChatName> via device <Device>
+    Then I do not see the message "<Message>" in the conversation view
+    And I see the message "<NewMessage>" in the conversation view
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Message | Device  | GroupChatName | NewMessage |
+      | user1Name | user2Name | user3Name | Yo      | Device1 | MyGroup       | Hello      |
+
+
+
   @C202358 @staging
   Scenario Outline: Verify I can edit my message in Group (from my view)
     Given There are 2 users where <Name> is me
