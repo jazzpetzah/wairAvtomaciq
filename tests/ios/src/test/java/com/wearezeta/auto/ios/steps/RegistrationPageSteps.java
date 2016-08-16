@@ -193,50 +193,32 @@ public class RegistrationPageSteps {
     }
 
     /**
-     * Presses the Choose own picture button on sign up
+     * Taps the corresponding button on sign up
      *
      * @throws Exception
-     * @step. ^I press Choose Own Picture button$
+     * @step. ^I tap (Choose Own Picture|Choose Photo|Keep This One|Take Photo) button$
      */
-    @When("^I press Choose Own Picture button$")
-    public void IPressChooseOwnPictureButton() throws Exception {
-        getRegistrationPage().clickChooseOwnPicButton();
+    @When("^I tap (Choose Own Picture|Choose Photo|Keep This One|Take Photo) button$")
+    public void ISelectRegPhotoFlowButton(String name) throws Exception {
+        switch (name) {
+            case "Choose Own Picture":
+                getRegistrationPage().tapChooseOwnPicButton();
+                break;
+            case "Choose Photo":
+                getRegistrationPage().tapChoosePhotoButton();
+                break;
+            case "Keep This One":
+                getRegistrationPage().tapKeepThisOneButton();
+                break;
+            case "Take Photo":
+                getRegistrationPage().tapTakePhotoButton();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
+        }
     }
 
-    /**
-     * Presses on Alert Choose Photo button
-     *
-     * @throws Exception
-     * @step. ^I press Choose Photo button$
-     */
-    @When("^I press Choose Photo button$")
-    public void IPressChoosePhotoButton() throws Exception {
-        getRegistrationPage().clickChoosePhotoButton();
-    }
-
-    /**
-     * Tap Keep This One button on unsplash page
-     *
-     * @throws Exception
-     * @step. ^I press Keep This One button$
-     */
-    @And("^I press Keep This One button$")
-    public void IPressKeepThisOneButton() throws Exception {
-        getRegistrationPage().clickKeepThisOneButton();
-    }
-
-    /**
-     * Tap Take Photo button on unsplash page
-     *
-     * @throws Exception
-     * @step. ^I press Take Photo button$
-     */
-    @And("^I press Take Photo button$")
-    public void IPressTakePhotoButton() throws Exception {
-        getRegistrationPage().tapTakePhotoButton();
-    }
-
-    /**
+     /**
      * Verify visibility of "No code to show up" label
      *
      * @param shouldNotBeVisible equals to null if the shield should be visible

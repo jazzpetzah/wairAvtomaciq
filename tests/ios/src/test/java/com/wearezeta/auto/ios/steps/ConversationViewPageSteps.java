@@ -10,6 +10,7 @@ import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import cucumber.api.PendingException;
+import cucumber.api.java.en.And;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -158,8 +159,8 @@ public class ConversationViewPageSteps {
                         actualCount, expectedCount), actualCount == expectedCount);
     }
 
-    @Then("^I see last message in dialog (is|contains) expected message (.*)")
-    public void ThenISeeLasMessageInTheDialogIsExpected(String operation, String msg) throws Exception {
+    @Then("^I see last message in the conversation view (is|contains) expected message (.*)")
+    public void ThenISeeLasMessageIsd(String operation, String msg) throws Exception {
         if (!Normalizer.isNormalized(msg, Form.NFC)) {
             msg = Normalizer.normalize(msg, Form.NFC);
         }
@@ -205,10 +206,12 @@ public class ConversationViewPageSteps {
      *                        Works with long tap only
      * @param durationSeconds specific time duration you press the button
      * @throws Exception
-     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)?
+     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message)
+     * button( for \\d+ seconds?)?
      * from input tool( without releasing my finger)?s$
      */
-    @When("^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)? from input tools( without releasing my finger)?$")
+    @When("^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message) " +
+            "button( for \\d+ seconds?)? from input tools( without releasing my finger)?$")
     public void ITapButtonByNameFromInputTools(String isLongTap, String btnName, String durationSeconds,
                                                String shouldKeepTap) throws Exception {
         if (isLongTap == null) {
@@ -228,9 +231,11 @@ public class ConversationViewPageSteps {
      *
      * @param btnName one of available button names
      * @throws Exception
-     * @step. ^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input tools palette$
+     * @step. ^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input
+     * tools palette$
      */
-    @When("^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input tools palette$")
+    @When("^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input " +
+            "tools palette$")
     public void VerifyButtonVisibilityInInputTools(String shouldNot, String btnName) throws Exception {
         if (shouldNot == null) {
             Assert.assertTrue(btnName + "button in input tools palette is not visible",
@@ -330,7 +335,7 @@ public class ConversationViewPageSteps {
     public void IVerifyMediaBarIsNotVisible(int timeoutSeconds) throws Exception {
         final long millisecondsStarted = System.currentTimeMillis();
         do {
-            if (getConversationViewPage().isMediaBarNotVisibled()) {
+            if (getConversationViewPage().isMediaBarNotDisplayed()) {
                 return;
             }
         } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
@@ -338,8 +343,8 @@ public class ConversationViewPageSteps {
                 timeoutSeconds));
     }
 
-    @When("^I press play in media bar$")
-    public void IPressPlayInMediaBar() throws Exception {
+    @When("^I tap Play in media bar$")
+    public void ITapPlayInMediaBar() throws Exception {
         getConversationViewPage().playMediaContent();
     }
 
@@ -406,14 +411,13 @@ public class ConversationViewPageSteps {
                 "%s seconds timeout", currentState, MEDIA_STATE_CHANGE_TIMEOUT / 1000));
     }
 
-    @Then("^I see media bar on dialog page$")
-    public void ISeeMediaBarInDialog() throws Exception {
-        Assert.assertTrue(getConversationViewPage().isMediaBarDisplayed());
-    }
-
-    @Then("^I dont see media bar on dialog page$")
-    public void ISeeMediaBarDisappear() throws Exception {
-        Assert.assertTrue(getConversationViewPage().waitMediabarClose());
+    @Then("^I (do not )?see media bar in the conversation view$")
+    public void ISeeMediaBarInDialog(String shouldNotSee) throws Exception {
+        final boolean condition = (shouldNotSee == null) ?
+                getConversationViewPage().isMediaBarDisplayed() :
+                getConversationViewPage().isMediaBarNotDisplayed();
+        Assert.assertTrue(String.format("Media bar is expected to be %s",
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }
 
     @When("^I tap on the media bar$")
@@ -604,9 +608,9 @@ public class ConversationViewPageSteps {
      *
      * @param link of vimeo video
      * @throws Exception
-     * @step. ^I see vimeo link (.*) and media in dialog$
+     * @step. ^I see vimeo link (.*) and media in the conversation view$
      */
-    @Then("^I see vimeo link (.*) and media in dialog$")
+    @Then("^I see vimeo link (.*) and media in the conversation view$")
     public void ISeeVimeoLinkAndMediaInDialog(String link) throws Exception {
         Assert.assertTrue("Media is missing in dialog", getConversationViewPage()
                 .isYoutubeContainerVisible());
@@ -679,6 +683,18 @@ public class ConversationViewPageSteps {
             default:
                 throw new IllegalArgumentException("Only (Select All|Copy|Delete|Paste) are allowed options");
         }
+    }
+
+    /**
+     * Select the corresponding item from the modal menu, which appears after Delete badge is tapped
+     *
+     * @step. ^I select (Delete only for me|Delete for everyone|Cancel) item from Delete menu$
+     * @param name one of possible item names
+     * @throws Exception
+     */
+    @And("^I select (Delete only for me|Delete for everyone|Cancel) item from Delete menu$")
+    public void ISelectDeleteMenuItem(String name) throws Exception {
+        getConversationViewPage().selectDeleteMenuItem(name);
     }
 
     /**
@@ -807,9 +823,9 @@ public class ConversationViewPageSteps {
      * Verifies that Upper Toolbar is visible in conversation
      *
      * @throws Exception
-     * @step. ^I see Upper Toolbar on dialog page$
+     * @step. ^I see Upper Toolbar on the conversation view$
      */
-    @Then("^I see Upper Toolbar on dialog page$")
+    @Then("^I see Upper Toolbar in the conversation view$")
     public void ISeeUpperToolbar() throws Exception {
         Assert.assertTrue(getConversationViewPage().isUpperToolbarVisible());
     }
@@ -1138,10 +1154,13 @@ public class ConversationViewPageSteps {
      * @param isLongTap        equals to null if simple tap should be performed
      *                         Works with long tap only
      * @throws Exception
-     * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder|location map) in
-     * conversation view$")
+     * @step. ^I (long )?tap on " +
+    "(image|media container|file transfer placeholder|audio message placeholder|video message|location map|link preview) " +
+    "in conversation view$
      */
-    @When("^I (long )?tap on (image|media container|file transfer placeholder|audio message placeholder|location map|link preview) in conversation view$")
+    @When("^I (long )?tap on " +
+            "(image|media container|file transfer placeholder|audio message placeholder|video message|location map|link preview) " +
+            "in conversation view$")
     public void ITapAndHoldAudioMessagePlaceholder(String isLongTap, String conversationItem) throws Exception {
         FunctionalInterfaces.RunnableWithException tapFunc;
         switch (conversationItem) {
@@ -1163,6 +1182,9 @@ public class ConversationViewPageSteps {
                 break;
             case "audio message placeholder":
                 tapFunc = (isLongTap == null) ? null : getConversationViewPage()::longTapAudioMessage;
+                break;
+            case "video message":
+                tapFunc = (isLongTap == null) ? null : getConversationViewPage()::longTapVideoMessage;
                 break;
             case "link preview":
                 tapFunc = (isLongTap == null) ? getConversationViewPage()::tapLocationContainer :
@@ -1342,7 +1364,8 @@ public class ConversationViewPageSteps {
      * @param shouldNotSee  equals to null if the container should be visible
      * @param containerType media|video message|audio message record|location map|link previeww
      * @throws Exception
-     * @step. ^I (do not )?see (media|video message|audio message record|location map|link preview) container in the conversation view$
+     * @step. ^I (do not )?see (media|video message|audio message record|location map|link preview) container in the
+     * conversation view$
      */
     @Then("^I (do not )?see (media|video message|audio message recorder|audio message|location map|link preview) " +
             "container in the conversation view$")

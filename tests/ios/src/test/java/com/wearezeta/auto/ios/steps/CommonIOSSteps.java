@@ -1238,6 +1238,87 @@ public class CommonIOSSteps {
     }
 
     /**
+     * User X delete message from User/Group via specified device
+     * Note : The recent message means the recent message sent from specified device by SE, the device should online.
+     *
+     * @param userNameAlias    user name/alias
+     * @param deleteEverywhere not null means delete everywhere, otherwise delete local
+     * @param convoType        either 'user' or 'group conversation'
+     * @param dstNameAlias     destination user name/alias or group convo name
+     * @param deviceName       source device name. Will be created if does not exist yet
+     * @throws Exception
+     * @step. ^User (.*) deletes? the recent message (everywhere )?from (user|group conversation) (.*) via device (.*)$
+     */
+    @When("^User (.*) deletes? the recent message (everywhere )?from (user|group conversation) (.*) via device (.*)$")
+    public void UserXDeleteLastMessage(String userNameAlias, String deleteEverywhere, String convoType,
+                                       String dstNameAlias, String deviceName) throws Exception {
+        boolean isGroup = convoType.equals("group conversation");
+        boolean isDeleteEverywhere = deleteEverywhere != null;
+        commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup, isDeleteEverywhere);
+    }
+
+    private static Optional<String> recentMessageId = null;
+
+    /**
+     * Remember the recent message Id
+     *
+     * @param userNameAlias user name/alias
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  destination user name/alias or group convo name
+     * @param deviceName    source device name. Will be created if does not exist yet
+     * @throws Exception
+     * @step. ^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$
+     */
+    @When("^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$")
+    public void UserXRemembersLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
+            throws Exception {
+        final boolean isGroup = convoType.equals("group conversation");
+        recentMessageId = commonSteps.UserGetRecentMessageId(userNameAlias, dstNameAlias, deviceName, isGroup);
+    }
+
+    /**
+     * Check the rememberd message is changed
+     *
+     * @param userNameAlias user name/alias
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  destination user name/alias or group convo name
+     * @param deviceName    source device name. Will be created if does not exist yet
+     * @throws Exception
+     * @step. ^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is
+     * changed( in \\d+ seconds?)?$
+     */
+    @Then("^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is " +
+            "changed( in \\d+ seconds?)?$")
+    public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias,
+                                             String deviceName, String waitDuration) throws Exception {
+        if (recentMessageId == null) {
+            throw new IllegalStateException("You should remember the recent message befor you check it");
+        }
+        final String rememberedMessage = recentMessageId.orElse("");
+        final int timeout = (waitDuration == null) ?
+                CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
+                : Integer.parseInt(waitDuration.replaceAll("[\\D]", ""));
+        final Optional<String> actualMessageId = CommonUtils.waitUntil(timeout,
+                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
+                () -> {
+                    Optional<String> messageId = commonSteps.UserGetRecentMessageId(userNameAlias,
+                            dstNameAlias, deviceName, convoType.equals("group conversation"));
+
+                    String actualMessage = messageId.orElse("");
+                    // Try to wait for a different a message id
+                    if (actualMessage.equals(rememberedMessage)) {
+                        throw new IllegalStateException(
+                                String.format("The recent remembered message id %s and the current message id %s" +
+                                        " should be different", rememberedMessage, actualMessage));
+                    } else {
+                        return actualMessage;
+                    }
+                });
+        Assert.assertTrue(String.format("Actual message Id should not equal to '%s'", rememberedMessage),
+                actualMessageId.isPresent());
+    }
+
+    /**
      * Add email(s) into address book of a user and upload address book in backend
      *
      * @param asUser name of the user where the address book is uploaded

@@ -29,8 +29,7 @@ Feature: Share Location
     And I see the default received Share Location address in the conversation view
     And I long tap on location map in conversation view
     And I tap on Delete badge item
-    # Sometimes the alert is not accepted automatically
-    And I tap Delete button on the alert
+    And I select Delete only for me item from Delete menu
     Then I do not see location map container in the conversation view
     Then I do not see the default received Share Location address in the conversation view
 

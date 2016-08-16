@@ -14,12 +14,12 @@ public class TabletDialogPageSteps {
 	/**
 	 * Presses the add picture button on iPad to open a CameraRollPopoverPage
 	 * 
-	 * @step. ^I press Add Picture button on iPad$
-	 * @throws Throwable
+	 * @step. ^I tap Add Picture button on iPad$
+	 * @throws Exception
 	 */
-	@When("^I press Add Picture button on iPad$")
-	public void IPressAddPictureButton() throws Throwable {
-		getTabletDialogPage().pressAddPictureiPadButton();
+	@When("^I tap Add Picture button on iPad$")
+	public void ITapAddPictureButton() throws Exception {
+		getTabletDialogPage().tapAddPictureiPadButton();
 	}
 
 	/**
@@ -27,20 +27,20 @@ public class TabletDialogPageSteps {
 	 * ConversationDetailPopoverPage
 	 * 
 	 * @step. ^I open conversation details on iPad$
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I open conversation details on iPad$")
-	public void IOpenConversationDetailsOniPad() throws Throwable {
+	public void IOpenConversationDetailsOniPad() throws Exception {
 		getTabletDialogPage().pressConversationDetailiPadButton();
 	}
 	
 	/**
 	 * Presses the conversation detail button on iPad to open a GroupConversationDetailPopoverPage
 	 * @step. ^I open group conversation details on iPad$
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I open group conversation details on iPad$")
-	public void IOpenGroupConversationDetailsOniPad() throws Throwable {
+	public void IOpenGroupConversationDetailsOniPad() throws Exception {
 		getTabletDialogPage().pressGroupConversationDetailiPadButton();
 	}
 }

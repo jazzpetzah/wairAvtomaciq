@@ -120,7 +120,7 @@ Feature: Conversation View
     And I click on popup Copy item
     And I have entered login <Login>
     And I have entered password <Password>
-    And I press Login button
+    And I tap Login button
     And I accept First Time overlay if it is visible
     And I dismiss settings warning
     And I see conversations list
@@ -128,7 +128,7 @@ Feature: Conversation View
     And I tap on text input
     And I tap and hold on message input
     And I paste and commit the text
-    Then I see last message in dialog is expected message <Text>
+    Then I see last message in the conversation view is expected message <Text>
 
     Examples:
       | Login      | Password      | Name      | Contact   | Text       |
@@ -287,7 +287,7 @@ Feature: Conversation View
     And I see 1 photo in the conversation view
     And I tap on image in conversation view
     And I see Full Screen Page opened
-    And I press Sketch button on image fullscreen page
+    And I tap Sketch button on image fullscreen page
     And I draw a random sketch
     And I send my sketch
     Then I see 2 photos in the conversation view
@@ -336,7 +336,7 @@ Feature: Conversation View
     Given User <Name> sends encrypted message "<VimeoLink>" to user <Contact1>
     Given I see conversations list
     When I tap on contact name <Contact1>
-    Then I see vimeo link <VimeoLink> and media in dialog
+    Then I see vimeo link <VimeoLink> and media in the conversation view
 
     Examples:
       | Name      | Contact1  | VimeoLink                   |
@@ -446,7 +446,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C917 @C173060 @real_rc @real @fastLogin
+  @C917 @C173060 @real_rc @real
   Scenario Outline: Verify sending photo from a back camera
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -462,7 +462,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C918 @C169229 @real @fastLogin
+  @C918 @C169229 @real
   Scenario Outline: Verify sending photo from a front camera
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -486,7 +486,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    Then I see Upper Toolbar on dialog page
+    Then I see Upper Toolbar in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -499,7 +499,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    Then I see Upper Toolbar on dialog page
+    Then I see Upper Toolbar in the conversation view
     And I do not see Calling buttons on Upper Toolbar
 
     Examples:

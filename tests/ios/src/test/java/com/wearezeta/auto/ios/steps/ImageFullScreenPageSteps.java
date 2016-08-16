@@ -71,10 +71,10 @@ public class ImageFullScreenPageSteps {
      * Presses the sketch button on the image fullscreen page
      *
      * @throws Exception
-     * @step. ^I press Sketch button on image fullscreen page$
+     * @step. ^I tap Sketch button on image fullscreen page$
      */
-    @When("^I press Sketch button on image fullscreen page$")
-    public void IPressSketchButtonOnImageFullscreenPage() throws Exception {
+    @When("^I tap Sketch button on image fullscreen page$")
+    public void ITapSketchButtonOnImageFullscreenPage() throws Exception {
         getImageFullScreenPage().tapSketchButton();
     }
 

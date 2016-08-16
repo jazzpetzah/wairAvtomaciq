@@ -129,6 +129,16 @@ public class CallingServiceClient {
             throws CallingServiceCallException {
         return CALL_RESOURCE.switchVideoOff(instance, call);
     }
+    
+    public Call maximiseVideoCall(Instance instance, Call call)
+            throws CallingServiceCallException {
+        return CALL_RESOURCE.maximiseVideoCall(instance, call);
+    }
+
+    public Call minimiseVideoCall(Instance instance, Call call)
+            throws CallingServiceCallException {
+        return CALL_RESOURCE.minimiseVideoCall(instance, call);
+    }
 
     public Call getCurrentCall(Instance instance) throws CallingServiceInstanceException {
         return INSTANCE_RESOURCE.getInstance(instance).getCurrentCall();

@@ -21,9 +21,9 @@ public class TabletGroupConversationDetailPopoverPageSteps {
      * Opens the ellipses menu on the ipad popover
      *
      * @throws Exception
-     * @step. ^I press conversation menu button on iPad$
+     * @step. ^I open conversation menu on iPad$
      */
-    @When("^I press conversation menu button on iPad$")
+    @When("^I open conversation menu on iPad$")
     public void IPressConversationMenuButtonOniPad() throws Exception {
         getTabletGroupConversationDetailPopoverPage().openConversationMenuOnPopover();
     }
@@ -32,21 +32,21 @@ public class TabletGroupConversationDetailPopoverPageSteps {
      * Presses leave button in ellipsis menu
      *
      * @throws Exception
-     * @step. ^I press leave converstation button on iPad$
+     * @step. ^I tap Leave Conversation button on iPad$
      */
-    @When("^I press leave converstation button on iPad$")
-    public void IPressLeaveConverstationButtonOniPad() throws Exception {
-        getTabletGroupConversationDetailPopoverPage().leaveConversation();
+    @When("^I tap Leave Conversation button on iPad$")
+    public void ITapLeaveConversationButtonOniPad() throws Exception {
+        getTabletGroupConversationDetailPopoverPage().tapLeaveConversation();
     }
 
     /**
      * Presses the confirmation leave button
      *
      * @throws Exception
-     * @step. ^I press leave on iPad$
+     * @step. ^I confirm leaving on iPad$
      */
-    @Then("^I press leave on iPad$")
-    public void i_press_leave_on_iPad() throws Exception {
+    @Then("^I confirm leaving on iPad$")
+    public void IConfirmLeaveOnIPad() throws Exception {
         getTabletGroupConversationDetailPopoverPage().confirmLeaveConversation();
     }
 

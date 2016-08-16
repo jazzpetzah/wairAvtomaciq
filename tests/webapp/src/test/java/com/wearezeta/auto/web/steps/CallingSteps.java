@@ -505,4 +505,13 @@ public class CallingSteps {
             context.getCallingManager().switchVideoOff(splitAliases(callees));
         }
     }
+    
+    @When("(.*) (maximises|minimises) video call")
+    public void UserXResizesVideo(String callees, String toggle) throws Exception {
+        if (toggle.equals("maximises")) {
+            context.getCallingManager().maximiseVideoCall(splitAliases(callees));
+        } else {
+            context.getCallingManager().minimiseVideoCall(splitAliases(callees));
+        }
+    }
 }

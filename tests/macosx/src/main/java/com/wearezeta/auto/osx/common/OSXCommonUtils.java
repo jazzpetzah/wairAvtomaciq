@@ -30,7 +30,7 @@ public class OSXCommonUtils extends CommonUtils {
     }
 
     public static boolean isRetinaDisplay(int width, int height) {
-        return width == 2560 && height == 1600;
+        return width >= 2560 && height >= 1600;
     }
 
     public static int screenPixelsMultiplier(ZetaOSXDriver driver) throws Exception {

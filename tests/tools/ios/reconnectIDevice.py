@@ -35,7 +35,7 @@ if spec is None:
     raise RuntimeError("No USBHub is connected!")
 stem.connect_from_spec(spec)
 stem.usb.setPowerDisable({0})
-time.sleep(10)
+time.sleep(5)
 stem.usb.setPowerEnable({0})
 time.sleep(1)
 """.format(get_current_vm_number() - 1)

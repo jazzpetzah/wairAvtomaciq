@@ -562,30 +562,30 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap the corresponding actions bar button
+     * Tap the corresponding message bottom menu button.
      *
-     * @param btnName one of available button names
+     * @param name one of possible message bottom menu button name
      * @throws Exception
-     * @step. ^I tap (Delete|Copy|Close|Forward) button on the action mode bar$"
+     * @step. ^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit) button on the message bottom menu$
      */
-    @When("^I tap (Delete|Copy|Close|Forward) button on the action mode bar$")
-    public void ITapActionBarButton(String btnName) throws Exception {
-        getConversationViewPage().tapActionBarButton(btnName);
+    @When("^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit) button on the message bottom menu$")
+    public void ITapMessageBottomMenuButton(String name) throws Exception {
+        getConversationViewPage().tapMessageBottomMenuButton(name);
     }
 
     /**
-     * Check the corresponding action mode bar button. The toolbar appears upon long tap on conversation item
+     * Check the corresponding message bottom menu button.
      *
-     * @param name one of possible toolbar button names
+     * @param name one of possible message bottom menu button name
      * @throws Exception
-     * @step. ^I (do not )?see (Delete|Copy|Close) button on the action mode bar$
+     * @step. ^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit) button on the message bottom menu$
      */
-    @Then("^I (do not )?see (Delete|Copy|Close) button on the action mode bar$")
-    public void ITapTopToolbarButton(String shouldNotSee, String name) throws Exception {
+    @Then("^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit) button on the message bottom menu$")
+    public void ISeeMessageBottomMenuButton(String shouldNotSee, String name) throws Exception {
         final boolean condition = (shouldNotSee == null) ?
-                getConversationViewPage().isActionModeBarButtonVisible(name) :
-                getConversationViewPage().isActionModeBarButtonInvisible(name);
-        Assert.assertTrue(String.format("The top toolbar button '%s' should be %s", name,
+                getConversationViewPage().waitUntilMessageBottomMenuButtonVisible(name) :
+                getConversationViewPage().waitUntilMessageBottomMenuButtonInvisible(name);
+        Assert.assertTrue(String.format("The message bottom menu button '%s' should be %s", name,
                 (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }
 

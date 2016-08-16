@@ -4,7 +4,6 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DummyElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
@@ -145,7 +144,7 @@ public class PeoplePickerPage extends IOSPage {
         return getElement(locator).getAttribute("value").equals("1");
     }
 
-    public void hitDeleteButton() throws Exception {
+    public void pressBackspaceButton() throws Exception {
         getElement(xpathPickerSearch).sendKeys(Keys.DELETE);
     }
 

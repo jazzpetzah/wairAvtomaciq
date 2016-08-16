@@ -14,7 +14,7 @@ Feature: Links Preview
     And I see the message "<DeadLink>" in the conversation view
     When I type the message "<ShortenUrl>" and send it
     # C169222
-    Then I do not see Link Preview container in the conversation view
+    Then I see Link Preview container in the conversation view
     And I see the message "<ShortenUrl>" in the conversation view
     When I type the message "<Link>" and send it
     # C165143
@@ -73,25 +73,25 @@ Feature: Links Preview
     Then I see Link Preview container in the conversation view
     And I see the message "<TextLink>" in the conversation view
     When I long tap Link Preview container in the conversation view
-    And I tap Delete button on the action mode bar
+    And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And I type the message "<LinkText>" and send it
     Then I see Link Preview container in the conversation view
     And I see the message "<LinkText>" in the conversation view
     When I long tap Link Preview container in the conversation view
-    And I tap Delete button on the action mode bar
+    And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And I type the message "<TextLinkText>" and send it
     Then I see Link Preview container in the conversation view
     And I see the message "<TextLinkText>" in the conversation view
     When I long tap Link Preview container in the conversation view
-    And I tap Delete button on the action mode bar
+    And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And I type the message "<url4>" and send it
     Then I see Link Preview container in the conversation view
     And I do not see the message "<url4>" in the conversation view
     When I long tap Link Preview container in the conversation view
-    And I tap Delete button on the action mode bar
+    And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And I type the message "<url5>" and send it
     Then I see Link Preview container in the conversation view
@@ -101,7 +101,7 @@ Feature: Links Preview
       | Name      | Contact   | TextLink                 | LinkText                  | TextLinkText                      | url4                | url5                |
       | user1Name | user2Name | text http://facebook.com | https://facebook.com text | text http://www.facebook.com text | Http://facebook.com | HTTP://FACEBOOK.COM |
 
-  @C202305 @staging
+  @C202305 @regression
   Scenario Outline: Show correct Url in link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -112,17 +112,17 @@ Feature: Links Preview
     And I type the message "<Link1>" and send it
     Then I see Link Preview URL <LinkUrl>
     When I long tap Link Preview container in the conversation view
-    And I tap Delete button on the action mode bar
+    And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And I type the message "<Link2>" and send it
     Then I see Link Preview URL <LinkUrl>
     When I long tap Link Preview container in the conversation view
-    And I tap Delete button on the action mode bar
+    And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And I type the message "<Link3>" and send it
     Then I see Link Preview URL <LinkUrl>
     When I long tap Link Preview container in the conversation view
-    And I tap Delete button on the action mode bar
+    And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And I type the message "<Link4>" and send it
     Then I see Link Preview URL <Link2Url>

@@ -31,7 +31,7 @@ Feature: Rich Media
     And I scroll media out of sight until media bar appears
     And I pause playing the media in media bar
     Then I see media is paused on Media Bar
-    And I press play in media bar
+    And I tap Play in media bar
     Then I see media is playing on Media Bar
     And I stop media in media bar
     Then I see media is stopped on Media Bar
@@ -90,7 +90,7 @@ Feature: Rich Media
     And I tap on media container in conversation view
     When I scroll media out of sight until media bar appears
     And I scroll to the bottom of the conversation
-    Then I dont see media bar on dialog page
+    Then I do not see media bar in the conversation view
 
     Examples:
       | Name      | Contact1  | SoundCloudLink                                                   |

@@ -209,6 +209,9 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameLinkPreviewImage = MobileBy.AccessibilityId("linkPreviewImage");
 
+    private static final Function<String, String> xpathStrActionSheetBtnByName = name ->
+            String.format("//UIAActionSheet//UIAButton[@name='%s']", name);
+
     private static final int MAX_APPEARANCE_TIME = 20;
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
@@ -431,11 +434,7 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameTitle);
     }
 
-    public boolean isMediaBarNotVisibled() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameTitle);
-    }
-
-    public boolean waitMediabarClose() throws Exception {
+    public boolean isMediaBarNotDisplayed() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameTitle);
     }
 
@@ -564,11 +563,13 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean areInputToolsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameVideoMessageButton);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAddPictureButton) ||
+                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEllipsisButton) ;
     }
 
     public boolean areInputToolsInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameVideoMessageButton);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameAddPictureButton) &&
+                DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEllipsisButton);
     }
 
     public boolean isMissedCallButtonVisibleFor(String username) throws Exception {
@@ -964,5 +965,14 @@ public class ConversationViewPage extends IOSPage {
     public int getMessageHeight(String msg) throws Exception {
         final By locator = By.xpath(xpathStrMessageByExactText.apply(msg));
         return getElement(locator).getSize().getHeight();
+    }
+
+    public void selectDeleteMenuItem(String name) throws Exception {
+        final By locator = By.xpath(xpathStrActionSheetBtnByName.apply(name));
+        getElement(locator).click();
+    }
+
+    public void longTapVideoMessage() throws Exception {
+        this.getDriver().tap(1, getElement(nameVideoMessageActionButton), DriverUtils.LONG_TAP_DURATION);
     }
 }

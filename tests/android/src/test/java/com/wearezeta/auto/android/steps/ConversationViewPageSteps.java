@@ -740,7 +740,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see there is no content in the conversation$")
     public void ISeeThereIsNoContentInTheConversation() throws Exception {
-        int actualValue = getConversationViewPage().getCurrentNumberOfItemsInDialog();
+        int actualValue = getConversationViewPage().getCurrentNumberOfItemsInConversation();
         Assert.assertEquals("It looks like the conversation has some content", actualValue, 0);
     }
 
@@ -1027,31 +1027,31 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Check the corresponding action mode bar button. The toolbar appears upon long tap on conversation item
+     * Check the corresponding message bottom menu button.
      *
-     * @param name one of possible toolbar button names
+     * @param name one of possible message bottom menu button name
      * @throws Exception
-     * @step. ^I (do not )?see (Delete|Copy|Close) button on the action mode bar$
+     * @step. ^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit) button on the message bottom menu$
      */
-    @Then("^I (do not )?see (Delete|Copy|Close) button on the action mode bar$")
-    public void ITapTopToolbarButton(String shouldNotSee, String name) throws Exception {
+    @Then("^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit) button on the message bottom menu$")
+    public void ISeeMessageBottomMenuButton(String shouldNotSee, String name) throws Exception {
         final boolean condition = (shouldNotSee == null) ?
-                getConversationViewPage().isActionModeBarButtonVisible(name) :
-                getConversationViewPage().isActionModeBarButtonInvisible(name);
-        Assert.assertTrue(String.format("The top toolbar button '%s' should be %s", name,
+                getConversationViewPage().waitUntilMessageBottomMenuButtonVisible(name) :
+                getConversationViewPage().waitUntilMessageBottomMenuButtonInvisible(name);
+        Assert.assertTrue(String.format("The message menu button '%s' should be %s", name,
                 (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }
 
     /**
-     * Tap the corresponding action mode bar button. The toolbar appears upon long tap on conversation item
+     * Tap the corresponding message bottom menu button.
      *
-     * @param name one of possible toolbar button names
+     * @param name one of possible message bottom menu button name
      * @throws Exception
-     * @step. ^I tap (Delete|Copy|Close|Forward) button on the action mode bar$
+     * @step. ^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit) button on the message bottom menu$
      */
-    @When("^I tap (Delete|Copy|Close|Forward) button on the action mode bar$")
-    public void ITapTopToolbarActionButton(String name) throws Exception {
-        getConversationViewPage().tapActionBarButton(name);
+    @When("^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit) button on the message bottom menu$")
+    public void ITapMessageBottomMenuButton(String name) throws Exception {
+        getConversationViewPage().tapMessageBottomMenuButton(name);
     }
 
     /**
@@ -1365,6 +1365,26 @@ public class ConversationViewPageSteps {
                     String.format("The height of '%s' message (%s) is more than %s%% different than the height of '%s' message (%s)",
                             msg1, msg1Height, expectedPercentage, msg2, msg2Height),
                     currentPercentage <= expectedPercentage);
+        }
+    }
+
+    /**
+     * Verify the trashcan is visible next the expected name
+     *
+     * @param shouldNotSee equals null means the trashcan should be visible next to the expected name
+     * @param name         the contact name
+     * @throws Exception
+     * @step. ^I see the trashcan next to the name of (.*) in the conversation view$
+     */
+    @Then("^I (do not )?see the trashcan next to the name of (.*) in the conversation view$")
+    public void ISeeTrashNextToName(String shouldNotSee, String name) throws Exception {
+        name = ClientUsersManager.getInstance().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("Cannot see the trashcan next to the name '%s'", name),
+                    getConversationViewPage().waitUntilTrashIconVisible(name));
+        } else {
+            Assert.assertTrue(String.format("The trashcan next to the name '%s' should be invisible", name),
+                    getConversationViewPage().waitUntilTrashIconInvisible(name));
         }
     }
 }

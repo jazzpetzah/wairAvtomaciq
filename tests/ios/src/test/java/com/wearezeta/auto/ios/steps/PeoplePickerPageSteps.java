@@ -1,7 +1,5 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.awt.datatransfer.UnsupportedFlavorException;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -208,9 +206,9 @@ public class PeoplePickerPageSteps {
         Assert.assertFalse(getPeoplePickerPage().isUserSelected(name));
     }
 
-    @When("I press backspace button")
+    @When("^I press Backspace button in search field$")
     public void IPressBackspaceBtn() throws Exception {
-        getPeoplePickerPage().hitDeleteButton();
+        getPeoplePickerPage().pressBackspaceButton();
     }
 
     /**
@@ -280,10 +278,10 @@ public class PeoplePickerPageSteps {
      * Presses the Send An Invite button in the people picker. To invite people via mail.
      *
      * @throws Exception
-     * @step. ^I press the send an invite button$
+     * @step. ^I tap Send Invite button$
      */
-    @When("^I press the send an invite button$")
-    public void IPressTheSendAnInviteButton() throws Exception {
+    @When("^I tap Send Invite button$")
+    public void ITapSendAnInviteButton() throws Exception {
         getPeoplePickerPage().tapSendInviteButton();
     }
 
@@ -291,11 +289,10 @@ public class PeoplePickerPageSteps {
      * Presses the Copy button on the Send Invitation pop up
      *
      * @throws Exception
-     * @throws UnsupportedFlavorException
-     * @step. ^I press the copy button$
+     * @step. ^I tap Copy button$
      */
-    @When("^I press the copy button$")
-    public void IPressTheCopyButton() throws Exception {
+    @When("^I tap Copy button$")
+    public void ITapCopyButton() throws Exception {
         getPeoplePickerPage().tapSendInviteCopyButton();
     }
 
@@ -304,10 +301,10 @@ public class PeoplePickerPageSteps {
      *
      * @param nameAlias user name/aias
      * @throws Exception
-     * @step. ^I press the instant connect button$
+     * @step. ^I tap the instant connect button next to (.*)
      */
-    @When("^I press the instant connect button next to (.*)$")
-    public void IPressTheInstantConnectButton(String nameAlias) throws Exception {
+    @When("^I tap the instant connect button next to (.*)")
+    public void ITapInstantConnectButton(String nameAlias) throws Exception {
         nameAlias = usrMgr.replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
         getPeoplePickerPage().pressInstantConnectButton(nameAlias);
     }

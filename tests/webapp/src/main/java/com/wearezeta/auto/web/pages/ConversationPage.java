@@ -52,6 +52,9 @@ public class ConversationPage extends WebPage {
 
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssMessageAmount)
     private List<WebElement> messageAmount;
+    
+    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssDeletedMessageAmount)
+    private List<WebElement> deletedMessageAmount;
 
     @FindBy(id = WebAppLocators.ConversationPage.idConversation)
     private WebElement conversation;
@@ -1011,6 +1014,28 @@ public class ConversationPage extends WebPage {
         return mappedMessages;
     }
 
+    public void openContextMenuOnLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        hoverOverMessage(id);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssContextMenuButtonByMessageId.apply(id));
+        getDriver().findElement(locator).click();
+    }
+
+    public void clickDeleteEverywhereInContextMenuOfLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteEverywhereByMessageId.apply(id));
+        getDriver().findElement(locator).click();
+    }
+
+    public void clickDeleteForMeInContextMenuOfLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteForMeByMessageId.apply(id));
+        getDriver().findElement(locator).click();
+    }
+
     public void clickToDeleteLatestMessage() throws Exception {
         By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
         String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
@@ -1157,6 +1182,10 @@ public class ConversationPage extends WebPage {
         WebDriverWait wait = new WebDriverWait(getDriver(), TIMEOUT_I_SEE_MESSAGE);
         return wait.withTimeout(TIMEOUT_I_SEE_MESSAGE, TimeUnit.SECONDS)
                 .until(presenceOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(link))));
+    }
+    
+    public int getNumberOfDeletedMessagesInCurrentConversation() {
+        return deletedMessageAmount.size();
     }
 
 }

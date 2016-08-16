@@ -9,7 +9,7 @@ Feature: People View
     When I tap on contact name <Contact1>
     And I open conversation details
     And I see <Contact1> user profile page
-    And I press Add button
+    And I tap Create Group button
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact2>
@@ -31,7 +31,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I press Add button
+    And I tap Add People button
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I tap on conversation <Contact3> in search result
@@ -54,9 +54,9 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I press leave conversation button
+    And I tap Leave Conversation button
     And I see leave conversation alert
-    Then I press leave
+    Then I confirm leaving
     And I open archived conversations
     And I tap on group chat with name <GroupChatName>
     And I see You Left message in group chat
@@ -151,7 +151,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact1>
-    And I tap on start dialog button on other user profile page
+    And I tap Start Conversation button on other user profile page
     And I type the default message and send it
     Then I see 1 default message in the conversation view
 
@@ -184,7 +184,7 @@ Feature: People View
     Given I see conversations list
     And I tap on contact name <Contact1>
     And I open conversation details
-    And I press Add button
+    And I tap Create Group button
     And I tap on Search input on People picker page
     When I tap on conversation <Contact2> in search result
     Then I see user <Contact2> on People picker page is selected
@@ -203,7 +203,7 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I press Add button
+    And I tap Create Group button
     And I don't see Add to conversation button
     And I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact3> in search result
@@ -225,11 +225,11 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I press Add button
+    And I tap Create Group button
     And I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact3> in search result
     And I click close button to dismiss people view
-    And I press Add button
+    And I tap Create Group button
     And I see user <Contact2> on People picker page is NOT selected
     And I see user <Contact3> on People picker page is NOT selected
     And I click close button to dismiss people view
@@ -251,7 +251,7 @@ Feature: People View
     When I remember the state of <Contact> conversation item
     And I tap on contact name <Contact>
     And I open conversation details
-    And I press conversation menu button
+    And I open conversation menu
     And I tap Mute action button
     And I click close user profile page button
     And I navigate back to conversations list
@@ -273,7 +273,7 @@ Feature: People View
     When I remember the state of <Contact> conversation item
     And I tap on contact name <Contact>
     And I open conversation details
-    And I press conversation menu button
+    And I open conversation menu
     And I tap Unmute action button
     And I click close user profile page button
     And I navigate back to conversations list
@@ -293,7 +293,7 @@ Feature: People View
     When I tap on contact name <Contact1>
     And I open conversation details
     And I see <Contact1> user profile page
-    And I press conversation menu button
+    And I open conversation menu
     And I tap Block action button
     And I confirm blocking alert
     Then I do not see conversation <Contact1> in conversations list
@@ -336,7 +336,7 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I wait until <Contact2> exists in backend search results
-    And I press Add button
+    And I tap Create Group button
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     Then I see the conversation "<Contact3>" does not exist in Search results
@@ -356,7 +356,7 @@ Feature: People View
     Given User Myself sends 1 message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I press conversation menu button
+    And I open conversation menu
     And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
@@ -376,9 +376,9 @@ Feature: People View
     Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I press conversation menu button
+    And I open conversation menu
     And I tap Delete action button
-    And I select Also Leave option on Delete conversation dialog
+    And I select Also Leave option on Delete conversation confirmation
     And I confirm delete conversation content
     And I open search UI
     And I input in People picker search field conversation name <GroupChatName>
@@ -406,7 +406,7 @@ Feature: People View
     Given User <Contact2> sends encrypted image <Picture> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I press conversation menu button
+    And I open conversation menu
     And I tap Delete action button
     And I confirm delete conversation content
     And I open search UI
@@ -431,7 +431,7 @@ Feature: People View
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I press conversation menu button
+    And I open conversation menu
     And I tap Delete action button
     And I confirm delete conversation content
     And I open search UI
@@ -455,9 +455,9 @@ Feature: People View
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I press leave conversation button
+    And I tap Leave Conversation button
     And I see leave conversation alert
-    Then I press leave
+    Then I confirm leaving
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
@@ -493,7 +493,7 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I press conversation menu button
+    And I open conversation menu
     And I tap Block action button
     And I tap Cancel action button
     Then I see conversation action menu

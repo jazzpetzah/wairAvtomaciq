@@ -169,6 +169,7 @@ Feature: Search
     And I tap the found item <Contact> on People Picker page
     When I tap Send Image action button on People Picker page
     And I tap Take Photo button on Take Picture view
+    And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
     And I do not see People Picker page
 
@@ -193,6 +194,7 @@ Feature: Search
     And I tap the found item <Contact2> on People Picker page
     When I tap Send Image action button on People Picker page
     And I tap Take Photo button on Take Picture view
+    And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
     And I do not see People Picker page
     When I tap conversation name from top toolbar
@@ -222,6 +224,7 @@ Feature: Search
     And I tap the found item <Contact2> on People Picker page
     When I tap Send Image action button on People Picker page
     And I tap Take Photo button on Take Picture view
+    And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
     And I do not see People Picker page
     When I tap conversation name from top toolbar

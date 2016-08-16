@@ -493,19 +493,19 @@ Feature: Calling_Matrix
     And I start a video call
     Then <Contact> accepts next incoming video call automatically
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the ongoing call controls for conversation <Contact>
+#    And I see the ongoing call controls for conversation <Contact>
     And <Contact> verify to have 1 flow
     And <Contact> verify that all audio flows have greater than 0 bytes
     And <Contact> verify that all video flows have greater than 0 bytes
     And <Contact> verifies to get audio data from me
     And <Contact> verifies to get video data from me
-    When I hang up call with conversation <Contact>
+    And I end the video call
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
     And <Contact> accepts next incoming video call automatically
     And <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     And I start a video call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the ongoing call controls for conversation <Contact>
+#    And I see the ongoing call controls for conversation <Contact>
     And <Contact> verify to have 1 flow
     And <Contact> verify that all audio flows have greater than 0 bytes
     And <Contact> verify that all video flows have greater than 0 bytes

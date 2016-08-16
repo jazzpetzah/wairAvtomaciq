@@ -133,7 +133,7 @@ Feature: Connect
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
     And I see incoming pending popover from user <Contact3> on iPad
-    And I tap on start dialog button on other user profile page
+    And I tap Start Conversation button on other user profile page
     And I click on Ignore button on Pending requests page
     And I dismiss popover on iPad
     And I navigate back to conversations list
@@ -161,7 +161,7 @@ Feature: Connect
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
     And I see incoming pending popover from user <Contact3> on iPad
-    And I tap on start dialog button on other user profile page
+    And I tap Start Conversation button on other user profile page
     And I click on Ignore button on Pending requests page
     And I dismiss popover on iPad
     # Workaround for ZIOS-4985
@@ -281,9 +281,9 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search UI
-    And I press the send an invite button
-    And I press invite others button
-    And I press the copy button
+    And I tap Send Invite button
+    And I tap Invite Others button
+    And I tap Copy button
     And I click close Invite list button
     And I click clear button
     And I tap on contact name <Contact>

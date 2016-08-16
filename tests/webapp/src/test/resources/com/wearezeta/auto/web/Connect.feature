@@ -25,6 +25,7 @@ Feature: Connect
     Given User me change accent color to VividRed
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
     Then I see connection request from one user
     When I open the list of incoming connection requests
     Then I see mail <UnknownContactMail> in connection request from user <UnknownContact>
@@ -56,6 +57,7 @@ Feature: Connect
     Given I wait for 20 seconds
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
     Then I see connection request from 5 user
     When I open the list of incoming connection requests
     Then I see an amount of 3 avatars in known connections in connection request from user <UnknownContact1>
@@ -75,6 +77,7 @@ Feature: Connect
     Given I wait until <Contact> exists in backend search results
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
     When I see Search is opened
     And I see Bring Your Friends or Invite People button
     And I type <ContactEmail> in search field of People Picker
@@ -96,7 +99,7 @@ Feature: Connect
     Given <Contact1> has group chat <ChatName> with <Name>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     When I open conversation with <ChatName>
     And I click on avatar of user <Contact2> in conversation view
     And I see Connect To popover
@@ -115,6 +118,7 @@ Feature: Connect
     Given I switch to Sign In page
     When I wait until <Name2> exists in backend search results
     And I Sign in using login <Login> and password <Password>
+    And I am signed in properly
     And I see People Picker
     And I type <Login2> in search field of People Picker
     And I see user <Name2> found in People Picker
@@ -202,6 +206,7 @@ Feature: Connect
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And I click People button in one to one conversation
@@ -224,6 +229,7 @@ Feature: Connect
     Given I sent connection request to <Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     And I click People button in group conversation
@@ -361,6 +367,7 @@ Feature: Connect
     Given There are suggestions for user <Me> on backend
     Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
+    Given I am signed in properly
     And I see my avatar on top of Contact list
     When I open People Picker from Contact List
     And I see user <Contact1> found in People Picker
@@ -382,6 +389,7 @@ Feature: Connect
     Given There are suggestions for user <Me> on backend
     Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
+    Given I am signed in properly
     Given I see my avatar on top of Contact list
     When I open People Picker from Contact List
     Then I see user <Contact1> found in People Picker
@@ -443,7 +451,7 @@ Feature: Connect
     Given Myself is connected to <Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I wait until <Contact1> exists in backend search results
     When I open People Picker from Contact List
     And I wait for the search field of People Picker to be empty

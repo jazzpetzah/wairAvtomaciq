@@ -347,6 +347,15 @@ public final class WebAppLocators {
         public static final Function<String, String> cssMessagesById = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s']", text);
 
+        public static final Function<String, String> cssContextMenuButtonByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] context-menu", text);
+
+        public static final Function<String, String> cssDeleteEverywhereByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] context-menu [data-context-action='delete']", text);
+
+        public static final Function<String, String> cssDeleteForMeByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] context-menu [data-context-action='delete']", text);
+
         public static final Function<String, String> cssDeleteButtonByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='do-message-delete']", text);
 
@@ -446,6 +455,8 @@ public final class WebAppLocators {
         public static final String cssLoadingImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true'].image-loading";
 
         public static final String cssMessageAmount = "[data-uie-name='item-message']";
+
+        public static final String cssDeletedMessageAmount = "[data-uie-name='item-message'][data-uie-value='delete']";
 
         public static final String cssPingMessage = ".pinged";
 

@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -36,6 +37,8 @@ public class SettingsPage extends AndroidPage {
     private static final By idCountryIdxInput = By.id("acet__preferences__country");
 
     private static final By idPhoneNumberInput = By.id("acet__preferences__phone");
+
+    private static final By idEmailPasswordInput = By.id("acet__preferences__password");
 
     // index starts from 1
     private static final Function<Integer, String> idStrVerificationCodeDigitInput = idx ->
@@ -117,9 +120,17 @@ public class SettingsPage extends AndroidPage {
     }
 
     public void commitNewEmail(String newValue) throws Exception {
+        commitNewEmailWithPassword(newValue, Optional.empty());
+    }
+
+    public void commitNewEmailWithPassword(String newValue, Optional<String> password) throws Exception {
         final WebElement emailEdit = getElement(idEmailEdit);
         emailEdit.clear();
         emailEdit.sendKeys(newValue);
+
+        if(password.isPresent()) {
+            getElement(idEmailPasswordInput, "The password input is not visible").sendKeys(password.get());
+        }
         getElement(xpathOKButton).click();
     }
 

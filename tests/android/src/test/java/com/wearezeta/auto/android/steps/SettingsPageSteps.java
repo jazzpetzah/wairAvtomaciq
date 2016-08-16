@@ -10,6 +10,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
+import java.util.Optional;
+
 public class SettingsPageSteps {
 
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
@@ -123,11 +125,14 @@ public class SettingsPageSteps {
      * @param what     either name|email|phone number
      * @param newValue the new self user name/email or phone number
      * @throws Exception
-     * @step. ^I commit my new (name|email|phone number) "(.*)"$
+     * @step. ^I commit my new (name|email|phone number) "(.*)"( with password (.*))?$
      */
-    @And("^I commit my new (name|email|phone number) \"(.*)\"$")
-    public void ICommitNewUSerName(String what, String newValue) throws Exception {
+    @And("^I commit my new (name|email|phone number) \"(.*)\"( with password (.*))?$")
+    public void ICommitNewUSerName(String what, String newValue, String withPassword, String password) throws Exception {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
+        password = withPassword != null ?
+                usrMgr.replaceAliasesOccurences(password, ClientUsersManager.FindBy.PASSWORD_ALIAS) : null;
+
         switch (what) {
             case "name":
                 newValue = usrMgr.replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.NAME_ALIAS);
@@ -136,8 +141,11 @@ public class SettingsPageSteps {
                 break;
             case "email":
                 newValue = usrMgr.replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.EMAIL_ALIAS);
-                getSettingsPage().commitNewEmail(newValue);
+                getSettingsPage().commitNewEmailWithPassword(newValue, Optional.ofNullable(password));
                 self.setEmail(newValue);
+                if (password != null) {
+                    self.setPassword(password);
+                }
                 break;
             case "phone number":
                 newValue = usrMgr.replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);

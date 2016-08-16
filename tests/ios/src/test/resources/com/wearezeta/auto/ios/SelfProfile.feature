@@ -137,7 +137,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @C3168 @real @fastLogin
+  @C3168 @real
   Scenario Outline: Verify changing profile picture using camera
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -161,7 +161,7 @@ Feature: Self Profile
     Given I enter activation code
     Given I accept terms of service
     Given I input name <Name> and hit Enter
-    Given I press Keep This One button
+    Given I tap Keep This One button
     Given I tap Share Contacts button on Share Contacts overlay
     Given I see conversations list
     When I tap settings gear button

@@ -303,9 +303,9 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search UI
-    And I press the send an invite button
-    And I press invite others button
-    And I press the copy button
+    And I tap Send Invite button
+    And I tap Invite Others button
+    And I tap Copy button
     And I click close Invite list button
     And I click clear button
     And I tap on contact name <Contact>

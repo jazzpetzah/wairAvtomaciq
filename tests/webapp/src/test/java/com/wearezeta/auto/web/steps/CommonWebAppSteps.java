@@ -390,8 +390,7 @@ public class CommonWebAppSteps {
     @When("^User (.*) pinged in the conversation with (.*)$")
     public void UserPingedConversation(String pingFromUserNameAlias,
                                        String dstConversationName) throws Exception {
-        context.getCommonSteps().UserPingedConversation(pingFromUserNameAlias,
-                dstConversationName);
+        context.getCommonSteps().UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
     }
 
     /**
@@ -581,22 +580,25 @@ public class CommonWebAppSteps {
 
     /**
      * User X delete message from User/Group via specified device
-     * Note : The recent message means the recent message sent from specified device by SE, the device should online.
+     * Note : The recent message means the recent message sent from specified device by SE, the device should be online.
      *
      * @param userNameAlias
+     * @param amount
      * @param convoType
      * @param dstNameAlias
      * @param deviceName
+     * @param deleteEverywhere
      * @throws Exception
-     * @step. ^User (.*) deletes? the recent (\\d+) messages? from (user|group conversation) (.*) via device (.*)$
+     * @step. ^User (.*) deletes? the recent (\\d+) messages? from (user|group conversation) (.*) (everywhere )via device (.*)$
      */
-    @When("^User (.*) deletes? the recent (\\d+) messages? from (user|group conversation) (.*) via device (.*)$")
-    public void UserXDeleteLastMessage(String userNameAlias, int amount, String convoType, String dstNameAlias, String deviceName)
+    @When("^User (.*) deletes? the recent (\\d+) messages? from (user|group conversation) (.*) (everywhere )via device (.*)$")
+    public void UserXDeleteLastMessage(String userNameAlias, int amount, String convoType, String dstNameAlias, String deleteEverywhere, String deviceName)
             throws Exception {
         boolean isGroup = convoType.equals("group conversation");
+        boolean isDeleteEverywhere = deleteEverywhere.equals("everywhere ");
         for (int deleteCounter = 0; deleteCounter < amount; deleteCounter++) {
             context.getCommonSteps().UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName + context.getTestname().
-                    hashCode(), isGroup);
+                    hashCode(), isGroup, isDeleteEverywhere);
         }
     }
 

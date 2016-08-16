@@ -78,7 +78,7 @@ public class LoginPage extends IOSPage {
         }
     }
 
-    public void clickLoginButton() throws Exception {
+    public void tapLoginButton() throws Exception {
         getElement(nameLoginButton).click();
     }
 

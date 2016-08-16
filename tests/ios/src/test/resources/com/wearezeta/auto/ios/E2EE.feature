@@ -172,7 +172,7 @@ Feature: E2EE
     When I switch to Log In tab
     And I have entered login <Login>
     And I have entered password <Password>
-    And I press Login button
+    And I tap Login button
     And I accept alert
     Then I see First Time overlay
 

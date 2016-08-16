@@ -147,7 +147,7 @@ Feature: File Transfer
     And I tap File button from cursor toolbar
     Then I see a picture in the conversation view
     When I long tap the recent picture in the conversation view
-    And I tap Delete button on the action mode bar
+    And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And User <Contact1> sends encrypted image <ImageFile> to single user conversation Myself
     Then I see a picture in the conversation view

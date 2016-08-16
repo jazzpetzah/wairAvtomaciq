@@ -297,10 +297,21 @@ public class ConversationPageSteps {
      * @param x the amount of sent messages
      * @step. ^I see (\\d+) messages in conversation$
      */
-    @Then("^I see (\\d+) messages in conversation$")
+    @Then("^I see (\\d+) messages? in conversation$")
     public void ISeeXMessagesInConversation(int x) throws Exception {
-        assertThat("Number of messages int the conversation", context.getPagesCollection().getPage(ConversationPage.class)
+        assertThat("Number of messages in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
                 .getNumberOfMessagesInCurrentConversation(), equalTo(x));
+    }
+    /**
+     * Verifies that x deleted messages are in the conversation
+     *
+     * @param x the amount of deleted messages
+     * @step. ^I see (\\d+) deleted messages in conversation$
+     */
+    @Then("^I see (\\d+) deleted messages in conversation$")
+    public void ISeeXDeletedMessagesInConversation(int x) throws Exception {
+        assertThat("Number of deleted messages in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
+                .getNumberOfDeletedMessagesInCurrentConversation(), equalTo(x));
     }
 
     /**
@@ -663,12 +674,32 @@ public class ConversationPageSteps {
         }
     }
 
+    @When("^I open context menu of the latest message$")
+    public void IOpenContextMenuOfLatestMessage() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).openContextMenuOnLatestMessage();
+    }
+
+    @When("^I click to delete message for everyone in context menu$")
+    public void IClickDeleteEverywhereInContextMenuOfLatestMessage() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickDeleteEverywhereInContextMenuOfLatestMessage();
+    }
+
+    @When("^I click to delete message for me in context menu$")
+    public void IClickDeleteForMeInContextMenuOfLatestMessage() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickDeleteForMeInContextMenuOfLatestMessage();
+    }
+
+    @When("^I click confirm to delete message for everyone$")
+    public void IClickConfirmToDeleteForEveryone() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).confirmDelete();
+    }
+
     @When("^I click to delete the latest message$")
     public void IClickToDelete() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickToDeleteLatestMessage();
     }
 
-    @When("^I click confirm to delete message$")
+    @When("^I click confirm to delete message for me$")
     public void IClickConfirmToDelete() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).confirmDelete();
     }
@@ -1386,7 +1417,7 @@ public class ConversationPageSteps {
             BufferedImage originalImage = ImageUtil.readImageFromFile(picturePath);
             BufferedImage linkPreviewScreenshot = context.getPagesCollection().getPage(ConversationPage.class).getImageFromLastLinkPreview();
 
-            assertThat("Not enough good matches", ImageUtil.getMatches(originalImage, linkPreviewScreenshot), greaterThan(40));
+            assertThat("Not enough good matches", ImageUtil.getMatches(originalImage, linkPreviewScreenshot), greaterThan(100));
         } else {
             assertThat("I see a picture in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
                     .isImageFromLinkPreviewNotVisible());

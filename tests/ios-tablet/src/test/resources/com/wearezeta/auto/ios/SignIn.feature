@@ -7,7 +7,7 @@ Feature: Sign In
     When I switch to Log In tab
     And I have entered login <Login>
     And I have entered password <Password>
-    And I press Login button
+    And I tap Login button
     And I accept First Time overlay
     And I dismiss settings warning
     Then I see conversations list
@@ -24,7 +24,7 @@ Feature: Sign In
     When I switch to Log In tab
     And I have entered login <Login>
     And I have entered password <Password>
-    And I press Login button
+    And I tap Login button
     And I accept First Time overlay
     And I dismiss settings warning
     Then I see conversations list
@@ -40,7 +40,7 @@ Feature: Sign In
     When I switch to Log In tab
     And I enter wrong email <WrongMail>
     And I enter wrong password <WrongPassword>
-    And I attempt to press Login button
+    And I attempt to tap Login button
     Then I see wrong credentials notification
 
     Examples:

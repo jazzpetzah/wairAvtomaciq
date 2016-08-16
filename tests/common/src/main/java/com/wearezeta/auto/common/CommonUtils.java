@@ -305,8 +305,8 @@ public class CommonUtils {
         return Boolean.parseBoolean(getOptionalValueFromConfig(c, "showLogcat").orElse("true"));
     }
 
-    public static String getAndroidConvoListActivityFromConfig(Class<?> c) throws Exception {
-        return getValueFromConfig(c, "convoListActivity");
+    public static String getAndroidLaunchActivity(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "launchActivity");
     }
 
     public static String getAndroidLoginActivityFromConfig(Class<?> c) throws Exception {
@@ -315,6 +315,10 @@ public class CommonUtils {
 
     public static String getOldAppPathFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "oldAppPath");
+    }
+
+    public static boolean getHasBackendSelection(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "hasBackendSelection").toLowerCase().equals("true");
     }
 
     public static String getiOSAddressbookAppPathFromConfig(Class<?> c) throws Exception {
