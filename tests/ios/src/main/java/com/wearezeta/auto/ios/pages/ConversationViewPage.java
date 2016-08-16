@@ -212,6 +212,10 @@ public class ConversationViewPage extends IOSPage {
     private static final Function<String, String> xpathStrActionSheetBtnByName = name ->
             String.format("//UIAActionSheet//UIAButton[@name='%s']", name);
 
+    private static final Function<String, String> xpathStrDeleteOnLabelForUser = name ->
+            String.format("//UIATableCell[@name='%s']//UIAStaticText[starts-with(@label, 'Deleted on')]",
+                    name.toUpperCase());
+
     private static final int MAX_APPEARANCE_TIME = 20;
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
@@ -564,7 +568,7 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean areInputToolsVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAddPictureButton) ||
-                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEllipsisButton) ;
+                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEllipsisButton);
     }
 
     public boolean areInputToolsInvisible() throws Exception {
@@ -974,5 +978,10 @@ public class ConversationViewPage extends IOSPage {
 
     public void longTapVideoMessage() throws Exception {
         this.getDriver().tap(1, getElement(nameVideoMessageActionButton), DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public boolean isDeletedOnLabelPresent(String name) throws Exception {
+        final By locator = By.xpath(xpathStrDeleteOnLabelForUser.apply(name));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 }

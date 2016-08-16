@@ -123,5 +123,24 @@ Feature: Recall Message
     And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in 3 seconds
 
     Examples:
-      | Name      | Contact   | HisDevice | MySecondDevice |  FileName    |
-      | user1Name | user2Name | device1   | device2        |  testing.mp4 |
+      | Name      | Contact   | HisDevice | MySecondDevice | FileName    |
+      | user1Name | user2Name | device1   | device2        | testing.mp4 |
+
+  @С202309 @staging @fastLogin
+  Scenario Outline: Verify I see status message if other user deletes his message everywhere (group)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given User <Contact1> adds new device <Contact1Device>
+    Given I sign in using my email or phone number
+    Given User <Contact1> sends 1 encrypted message to group conversation <Group>
+    Given I see conversations list
+    When I tap on contact name <Group>
+    Then I see 1 default message in the conversation view
+    When User <Contact1> deletes the recent message everywhere from group conversation <Group> via device <Contact1Device>
+    Then I see 0 default messages in the conversation view
+    And I see that Deleted label for a message from <Contact1> is present in the conversation view
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact1Device | Group       |
+      | user1Name | user2Name | user3Name | device1        | RecallGroup |
