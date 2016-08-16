@@ -1,6 +1,6 @@
 Feature: Recall Message
 
-  @C202306 @staging @fastLogin
+  @C202306 @regression @fastLogin
   Scenario Outline: Verify I can delete my message everywhere (1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -24,7 +24,7 @@ Feature: Recall Message
       | Name      | Contact   | HisDevice | MySecondDevice |
       | user1Name | user2Name | device1   | device2        |
 
-  @C202318 @staging @fastLogin
+  @C202318 @regression @fastLogin
   Scenario Outline: Verify delete everywhere works for file sharing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -76,7 +76,7 @@ Feature: Recall Message
       | Name      | Contact   | HisDevice | MySecondDevice |
       | user1Name | user2Name | device1   | device2        |
 
-  @C202311 @staging @fastLogin
+  @C202311 @regression @fastLogin
   Scenario Outline: Verify I delete my message everywhere on a different device (group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
