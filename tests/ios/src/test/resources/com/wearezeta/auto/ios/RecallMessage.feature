@@ -132,7 +132,6 @@ Feature: Recall Message
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
     Given User <Contact1> adds new device <Contact1Device>
-    Given User <Contact2> adds new device <Contact2Device>
     Given I sign in using my email or phone number
     Given User <Contact1> sends 1 encrypted message to group conversation <Group>
     Given I see conversations list
@@ -143,5 +142,5 @@ Feature: Recall Message
     And I see that Deleted label for a message from <Contact1> is present in the conversation view
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact1Device | Contact2Device | Group       |
-      | user1Name | user2Name | user3Name | device1        | device2        | RecallGroup |
+      | Name      | Contact1  | Contact2  | Contact1Device | Group       |
+      | user1Name | user2Name | user3Name | device1        | RecallGroup |
