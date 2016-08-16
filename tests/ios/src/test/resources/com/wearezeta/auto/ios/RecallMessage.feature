@@ -100,3 +100,28 @@ Feature: Recall Message
     Examples:
       | Name      | Contact1  | Contact2  | Contact1Device | Contact2Device | Group       |
       | user1Name | user2Name | user3Name | device1        | device2        | RecallGroup |
+
+  @C202320 @staging @fastLogin
+  Scenario Outline: Verify delete everywhere works for video messages
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <HisDevice>
+    Given User Myself adds new device <MySecondDevice>
+    Given I prepare <FileName> to be uploaded as a video message
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I tap Video Message button from input tools
+    Then I see video message container in the conversation view
+    And User <Contact> remembers the recent message from user Myself via device <HisDevice>
+    And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
+    And I long tap on video message in conversation view
+    And I tap on Delete badge item
+    And I select Delete for everyone item from Delete menu
+    Then I do not see video message container in the conversation view
+    And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in 15 seconds
+    And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in 3 seconds
+
+    Examples:
+      | Name      | Contact   | HisDevice | MySecondDevice |  FileName    | MIMEType  |
+      | user1Name | user2Name | device1   | device2        |  testing.mp4 | video/mp4 |

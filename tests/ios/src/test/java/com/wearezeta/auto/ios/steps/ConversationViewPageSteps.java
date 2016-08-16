@@ -1154,11 +1154,12 @@ public class ConversationViewPageSteps {
      * @param isLongTap        equals to null if simple tap should be performed
      *                         Works with long tap only
      * @throws Exception
-     * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder|location map) in
-     * conversation view$")
+     * @step. ^I (long )?tap on " +
+    "(image|media container|file transfer placeholder|audio message placeholder|video message|location map|link preview) " +
+    "in conversation view$
      */
     @When("^I (long )?tap on " +
-            "(image|media container|file transfer placeholder|audio message placeholder|location map|link preview) " +
+            "(image|media container|file transfer placeholder|audio message placeholder|video message|location map|link preview) " +
             "in conversation view$")
     public void ITapAndHoldAudioMessagePlaceholder(String isLongTap, String conversationItem) throws Exception {
         FunctionalInterfaces.RunnableWithException tapFunc;
@@ -1181,6 +1182,9 @@ public class ConversationViewPageSteps {
                 break;
             case "audio message placeholder":
                 tapFunc = (isLongTap == null) ? null : getConversationViewPage()::longTapAudioMessage;
+                break;
+            case "video message":
+                tapFunc = (isLongTap == null) ? null : getConversationViewPage()::longTapVideoMessage;
                 break;
             case "link preview":
                 tapFunc = (isLongTap == null) ? getConversationViewPage()::tapLocationContainer :
