@@ -50,7 +50,7 @@ Feature: Recall Message
       | Name      | Contact   | HisDevice | MySecondDevice | FileName                   |
       | user1Name | user2Name | device1   | device2        | FTRANSFER_MENU_DEFAULT_PNG |
 
-  @C202314 @staging @fastLogin
+  @C202314 @regression @fastLogin
   Scenario Outline: Verify delete everywhere works for images
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
