@@ -1246,7 +1246,12 @@ public class CommonIOSSteps {
         commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup, isDeleteEverywhere);
     }
 
-    private static Optional<String> recentMessageId = null;
+    private Map<String, Optional<String>> recentMessageIds = new HashMap<>();
+
+    private String generateConversationKey(String userFrom, String dstName, String deviceName) {
+        return String.format("%s:%s:%s", usrMgr.replaceAliasesOccurences(userFrom, ClientUsersManager.FindBy.NAME_ALIAS),
+                usrMgr.replaceAliasesOccurences(dstName, ClientUsersManager.FindBy.NAME_ALIAS), deviceName);
+    }
 
     /**
      * Remember the recent message Id
@@ -1262,11 +1267,12 @@ public class CommonIOSSteps {
     public void UserXRemembersLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
             throws Exception {
         final boolean isGroup = convoType.equals("group conversation");
-        recentMessageId = commonSteps.UserGetRecentMessageId(userNameAlias, dstNameAlias, deviceName, isGroup);
+        recentMessageIds.put(generateConversationKey(userNameAlias, dstNameAlias, deviceName),
+                commonSteps.UserGetRecentMessageId(userNameAlias, dstNameAlias, deviceName, isGroup));
     }
 
     /**
-     * Check the rememberd message is changed
+     * Check the remembered message is changed
      *
      * @param userNameAlias user name/alias
      * @param convoType     either 'user' or 'group conversation'
@@ -1280,10 +1286,11 @@ public class CommonIOSSteps {
             "changed( in \\d+ seconds?)?$")
     public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias,
                                              String deviceName, String waitDuration) throws Exception {
-        if (recentMessageId == null) {
-            throw new IllegalStateException("You should remember the recent message befor you check it");
+        final String convoKey = generateConversationKey(userNameAlias, dstNameAlias, deviceName);
+        if (!recentMessageIds.containsKey(convoKey)) {
+            throw new IllegalStateException("You should remember the recent message before you check it");
         }
-        final String rememberedMessage = recentMessageId.orElse("");
+        final String rememberedMessage = recentMessageIds.get(convoKey).orElse("");
         final int timeout = (waitDuration == null) ?
                 CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
                 : Integer.parseInt(waitDuration.replaceAll("[\\D]", ""));

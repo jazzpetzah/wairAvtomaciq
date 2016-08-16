@@ -63,8 +63,6 @@ public class CommonAndroidSteps {
             )
     );
 
-    private static Optional<String> recentMessageId = null;
-
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     public static final Platform CURRENT_PLATFORM = Platform.Android;
@@ -88,10 +86,6 @@ public class CommonAndroidSteps {
 
     private static String getPackageName() throws Exception {
         return CommonUtils.getAndroidPackageFromConfig(CommonAndroidSteps.class);
-    }
-
-    public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path) throws Exception {
-        return resetAndroidDriver(url, path, Optional.empty());
     }
 
     @SuppressWarnings("unchecked")
@@ -1326,6 +1320,13 @@ public class CommonAndroidSteps {
         commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup, isDeleteEverywhere);
     }
 
+    private Map<String, Optional<String>> recentMessageIds = new HashMap<>();
+
+    private String generateConversationKey(String userFrom, String dstName, String deviceName) {
+        return String.format("%s:%s:%s", usrMgr.replaceAliasesOccurences(userFrom, ClientUsersManager.FindBy.NAME_ALIAS),
+                usrMgr.replaceAliasesOccurences(dstName, ClientUsersManager.FindBy.NAME_ALIAS), deviceName);
+    }
+
     /**
      * Remember the recent message Id
      *
@@ -1339,8 +1340,9 @@ public class CommonAndroidSteps {
     @When("^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$")
     public void UserXRemeberLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
             throws Exception {
-        boolean isGroup = convoType.equals("group conversation");
-        recentMessageId = commonSteps.UserGetRecentMessageId(userNameAlias, dstNameAlias, deviceName, isGroup);
+        final boolean isGroup = convoType.equals("group conversation");
+        recentMessageIds.put(generateConversationKey(userNameAlias, dstNameAlias, deviceName),
+                commonSteps.UserGetRecentMessageId(userNameAlias, dstNameAlias, deviceName, isGroup));
     }
 
     /**
@@ -1356,15 +1358,13 @@ public class CommonAndroidSteps {
     @Then("^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed( in \\d+ seconds?)?$")
     public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias,
                                              String deviceName, String waitDuration) throws Exception {
-        if (recentMessageId == null) {
+        final String convoKey = generateConversationKey(userNameAlias, dstNameAlias, deviceName);
+        if (!recentMessageIds.containsKey(convoKey)) {
             throw new IllegalStateException("You should remember the recent message befor you check it");
         }
-
-        String rememberedMessage = recentMessageId.orElse("");
-
-        int timeout = (waitDuration == null) ? CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
+        final String rememberedMessage = recentMessageIds.get(convoKey).orElse("");
+        final int timeout = (waitDuration == null) ? CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
                 : Integer.parseInt(waitDuration.replaceAll("[\\D]", ""));
-
         final Optional<String> actualMessageId = CommonUtils.waitUntil(timeout,
                 CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
                 () -> {
@@ -1667,7 +1667,7 @@ public class CommonAndroidSteps {
      * Add email(s) into address book of a user and upload address book in backend
      *
      * @param asUser name of the user where the address book is uploaded
-     * @param emails list of email addresses seperated by comma
+     * @param contacts list of email addresses seperated by comma
      * @throws Exception
      * @step. ^User (.*) has (?: emails?|phone numbers?) (.*) in address book$
      */
