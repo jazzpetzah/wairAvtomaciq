@@ -83,12 +83,17 @@ public class CallingServiceClient {
             throws CallingServiceCallException {
         return CALL_RESOURCE.stop(instance, call);
     }
+    
+    public Call declineCall(Instance instance, String convId)
+            throws CallingServiceCallException {
+        CallRequest callRequest = new CallRequest(convId);
+        return CALL_RESOURCE.decline(instance, callRequest);
+    }
 
     // TODO: mute/unmute/listen/speak
     private static BackendType getBackendType() {
         try {
-            return BackendType.valueOf(CommonUtils.getBackendType(
-                    CallingServiceClient.class).toUpperCase());
+            return BackendType.valueOf(System.getProperty("com.wire.calling.env", "staging").toUpperCase());
         } catch (Exception ex) {
             LOG.warn("Can't get backend type", ex);
             return BackendType.STAGING;
@@ -123,6 +128,16 @@ public class CallingServiceClient {
     public Call switchVideoOff(Instance instance, Call call)
             throws CallingServiceCallException {
         return CALL_RESOURCE.switchVideoOff(instance, call);
+    }
+    
+    public Call maximiseVideoCall(Instance instance, Call call)
+            throws CallingServiceCallException {
+        return CALL_RESOURCE.maximiseVideoCall(instance, call);
+    }
+
+    public Call minimiseVideoCall(Instance instance, Call call)
+            throws CallingServiceCallException {
+        return CALL_RESOURCE.minimiseVideoCall(instance, call);
     }
 
     public Call getCurrentCall(Instance instance) throws CallingServiceInstanceException {

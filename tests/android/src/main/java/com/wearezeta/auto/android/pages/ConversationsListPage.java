@@ -79,6 +79,12 @@ public class ConversationsListPage extends AndroidPage {
         super(lazyDriver);
     }
 
+    public BufferedImage getNewDeviceIndicatorState() throws Exception {
+        return this.getElementScreenshot(getElement(idListSettingsButton)).orElseThrow(
+                () -> new IllegalStateException("Cannot get a screenshot of new device indicator")
+        );
+    }
+
     public String getFirstVisibleConversationName() throws Exception {
         final int maxTries = 20;
         final long millisecondsDelay = 20000;

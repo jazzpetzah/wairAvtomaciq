@@ -31,7 +31,7 @@ public class PendingOutgoingConnectionPage extends IOSPage {
         if (connectOtherUserButton.isPresent()) {
             connectOtherUserButton.get().click();
         } else if (isKeyboardVisible()) {
-            clickKeyboardCommitButton();
+            tapKeyboardCommitButton();
             getElement(xpathConnectOtherUserButton).click();
         }
         // Wait for animation

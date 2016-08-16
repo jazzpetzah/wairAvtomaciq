@@ -36,7 +36,11 @@ public class OSXConstants {
         public static final String SET_WIRE_FIELD_VALUE_SCRIPT = SCRIPTS_FOLDER
                 + "set_wire_field_value.txt";
 
-        public static final String PASTE_SCRIPT = SCRIPTS_FOLDER + "paste.txt";
+        public static final String PASTE_SCRIPT = SCRIPTS_FOLDER 
+                + "paste.txt";
+        
+        public static final String ADDRESSBOOK_PERMISSION_SCRIPT = SCRIPTS_FOLDER 
+                + "osx_addressbook_permission.txt";
     }
 
     public static final class BrowserActions {

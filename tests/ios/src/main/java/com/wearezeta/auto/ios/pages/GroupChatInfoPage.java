@@ -69,7 +69,7 @@ public class GroupChatInfoPage extends IOSPage {
             nameInputField.clear();
             nameInputField.sendKeys(name);
         }
-        clickKeyboardCommitButton();
+        tapKeyboardCommitButton();
     }
 
     public boolean isCorrectConversationName(List<String> expectedNames) throws Exception {
@@ -102,7 +102,7 @@ public class GroupChatInfoPage extends IOSPage {
         }
     }
 
-    public void leaveConversation() throws Exception {
+    public void tapLeaveConversation() throws Exception {
         getElement(nameRightActionButton).click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameRightActionButton)) {
             throw new IllegalStateException("Menu button is still shown");

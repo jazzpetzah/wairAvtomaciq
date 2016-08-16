@@ -1,6 +1,6 @@
 Feature: Search
 
-  @C2788 @rc @regression
+  @C2788 @rc @regression @fastLogin
   Scenario Outline: Verify search by email [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -15,7 +15,7 @@ Feature: Search
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
-  @C2789 @rc @regression
+  @C2789 @rc @regression @fastLogin
   Scenario Outline: Verify search by name [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <IntermediateContact>
@@ -32,7 +32,7 @@ Feature: Search
       | Name      | Contact   | IntermediateContact |
       | user1Name | user2Name | user3Name           |
 
-  @C2838 @regression
+  @C2838 @regression @fastLogin
   Scenario Outline: Start 1:1 chat with users from Top Connections [PORTRAIT]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -51,7 +51,7 @@ Feature: Search
       | Name      | UserCount |
       | user1Name | 2         |
 
-  @C2839 @regression
+  @C2839 @regression @fastLogin
   Scenario Outline: Start 1:1 chat with users from Top Connections [LANDSCAPE]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -71,7 +71,7 @@ Feature: Search
       | Name      | UserCount |
       | user1Name | 2         |
 
-  @C2835 @regression
+  @C2835 @regression @fastLogin
   Scenario Outline: Start group chat with users from Top Connections [PORTRAIT]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -93,7 +93,7 @@ Feature: Search
       | Name      | ConvoName    | UserCount |
       | user1Name | TopGroupTest | 3         |
 
-  @C2840 @rc @regression
+  @C2840 @rc @regression @fastLogin
   Scenario Outline: Start group chat with users from Top Connections [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -115,7 +115,7 @@ Feature: Search
       | Name      | ConvoName    |
       | user1Name | TopGroupTest |
 
-  @C2456 @C2778 @regression
+  @C2456 @C2778 @regression @fastLogin
   Scenario Outline: Verify you can unblock someone from search list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -135,7 +135,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2790 @rc @regression
+  @C2790 @rc @regression @fastLogin
   Scenario Outline: Verify you can unblock someone from search list [LANDSAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -157,7 +157,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2792 @rc @regression
+  @C2792 @rc @regression @fastLogin
   Scenario Outline: Verify search by second name (something after space) [LANDSAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -175,7 +175,7 @@ Feature: Search
       | Name      | Contact   | NewName  | LastName |
       | user1Name | user2Name | NEW NAME | NAME     |
 
-  @C2795 @rc @regression
+  @C2795 @rc @regression @fastLogin
   Scenario Outline: Verify search by part of the name [LANDSAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -192,7 +192,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2793 @regression
+  @C2793 @regression @fastLogin
   Scenario Outline: Verify search is possible after selection users from Top People [LANDSAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users

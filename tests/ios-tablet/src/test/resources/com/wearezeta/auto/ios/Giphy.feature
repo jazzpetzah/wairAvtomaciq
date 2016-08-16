@@ -1,6 +1,6 @@
 Feature: Giphy
 
-  @C2696 @rc @regression
+  @C2696 @rc @regression @fastLogin
   Scenario Outline: Verify preview is opened after tapping on GIF button [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -15,7 +15,7 @@ Feature: Giphy
       | Name      | Contact   | GiphyTag |
       | user1Name | user2Name | Wow      |
 
-  @C2695 @regression
+  @C2695 @regression @fastLogin
   Scenario Outline: Verify I can send gif from preview [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -31,7 +31,7 @@ Feature: Giphy
       | Name      | Contact   | GiphyTag |
       | user1Name | user2Name | Happy    |
 
-  @C2698 @regression
+  @C2698 @regression @fastLogin
   Scenario Outline: Verify opening grid of gifs clicking on giphy icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

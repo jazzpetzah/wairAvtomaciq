@@ -14,7 +14,7 @@ Feature: Calling
     Then <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
     And I do not see incoming call
     When I tap on conversation name <Contact>
-    Then I see dialog with missed call from <Contact>
+    Then I see missed call from <Contact> in the conversation
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
@@ -303,20 +303,23 @@ Feature: Calling
       | autocall    | user1Name | user2Name | user3Name | user4Name | user5Name | MaxGroupCallChat |
 
   @C425 @calling_basic
-  Scenario Outline: (Disable this test, no spec for it) Verify too many people in the group call
+  Scenario Outline: (AN-4376) Verify too many people in the group call
     Given There are 11 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>,<Contact10>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>, <Contact10>
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>,<Contact10> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    When I tap on conversation name <GroupChatName>
-    And I tap Audio Call button from top toolbar
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>,<Contact10> calls <GroupChatName>
+    And I see incoming call
+    And I wait for 5 seconds
+    And I swipe to accept the call
     Then I see alert message containing "<AlertTitle>" in the title
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Contact8  | Contact9   | Contact10  | GroupChatName       | AlertTitle              |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | MaxGroupCallNegChat | Too many people to call |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Contact8  | Contact9   | Contact10  | GroupChatName       | AlertTitle              | CallBackend |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | MaxGroupCallNegChat | Too many people to call | autocall    |
 
   @C427 @calling_advanced
   Scenario Outline: Verify receiving 1to1 call during group call and accepting it
@@ -328,7 +331,6 @@ Feature: Calling
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <GroupChatName>
-    And <Contact1>,<Contact2> calls <GroupChatName>
     Then I see incoming call
     When I swipe to accept the call
     Then I see ongoing call

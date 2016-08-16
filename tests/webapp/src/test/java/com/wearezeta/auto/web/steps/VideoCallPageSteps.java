@@ -13,9 +13,8 @@ import org.junit.Assert;
 
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class VideoCallPageSteps {
 
@@ -113,7 +112,18 @@ public class VideoCallPageSteps {
      * @throws Exception
      * @step. ^I maximize video call$
      */
-    @When("^I maximize video call$")
+    @When("^I maximize video call via button on remote video$")
+    public void IMaximizeVideoCallWithRemoteVideoButton() throws Exception {
+        context.getPagesCollection().getPage(VideoCallPage.class).clickMaximizeVideoCallButtonOnRemoteVideo();
+    }
+
+    /**
+     * Maximizes video call
+     *
+     * @throws Exception
+     * @step. ^I maximize video call$
+     */
+    @When("^I maximize video call via titlebar$")
     public void IMaximizeVideoCall() throws Exception {
         context.getPagesCollection().getPage(VideoCallPage.class).clickMaximizeVideoCallButton();
     }
@@ -130,7 +140,7 @@ public class VideoCallPageSteps {
         VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
         if (videoCallSize.equals("minimized")) {
             //Assert.assertTrue("Video is in portrait mode", videoCallPage.isVideoNotInPortrait());
-            Assert.assertTrue("Maximize Video Call button is not visible", videoCallPage.isMaximizeVideoCallButtonVisible());
+            Assert.assertTrue("Minimize Video Call button is visible", videoCallPage.isMinimizeVideoCallButtonNotVisible());
         } else {
             //Assert.assertTrue("Video is not in portrait mode", videoCallPage.isVideoInPortrait());
             Assert.assertTrue("Minimize Video Call button is not visible", videoCallPage.isMinimizeVideoCallButtonVisible());
@@ -187,6 +197,22 @@ public class VideoCallPageSteps {
             assertThat("All RGB values summarized", pixel.getRed() + pixel.getGreen() + pixel.getGreen(), greaterThan(20));
         }
     }
+    
+    /**
+     * Checks whether the self video is on or off
+     *
+     * @throws Exception
+     * @step. ^I see my self video is (off|on)$
+     */
+    @Then("^I see my self video is (off|on)$")
+    public void ISeeSelfVideoOff(String onOffToggle) throws Exception {
+        VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
+        if ("off".equals(onOffToggle)) {
+            assertTrue("Disabled video icon is still shown", videoCallPage.isDisabledVideoIconVisible());
+        }else{
+            assertTrue("Disabled video icon is not shown", videoCallPage.isDisabledVideoIconInvisible());
+        }
+    }
 
     /**
      * Check if minimized video is black
@@ -203,27 +229,5 @@ public class VideoCallPageSteps {
         assertThat("RGB red", pixel.getRed(), lessThan(2));
         assertThat("RGB green", pixel.getGreen(), lessThan(2));
         assertThat("RGB blue", pixel.getBlue(), lessThan(2));
-    }
-
-    /**
-     * Check if remote video in fullscreen is black or not
-     *
-     * @param not
-     * @throws Exception
-     */
-    @Then("^I see video from other user is( not)? black$")
-    public void ISeeRemoteVideoBlack(String not) throws Exception {
-        VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
-        Optional<BufferedImage> maximizedRemoteVideo = videoCallPage.getMaximizedRemoteVideo();
-        Assert.assertTrue("Maximized remote video is not present", maximizedRemoteVideo.isPresent());
-        BufferedImage image = maximizedRemoteVideo.get();
-        Color pixel = new Color(image.getRGB(image.getWidth() / 2, image.getHeight() / 2));
-        if(not == null) {
-            assertThat("RGB red", pixel.getRed(), lessThan(2));
-            assertThat("RGB green", pixel.getGreen(), lessThan(2));
-            assertThat("RGB blue", pixel.getBlue(), lessThan(2));
-        } else {
-            assertThat("All RGB values summarized", pixel.getRed() + pixel.getGreen() + pixel.getGreen(), greaterThan(20));
-        }
     }
 }

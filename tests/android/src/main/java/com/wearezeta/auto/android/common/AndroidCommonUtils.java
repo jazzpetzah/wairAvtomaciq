@@ -705,7 +705,16 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     private static void ensureClipperServiceIsRunning() throws Exception {
-        executeAdb("shell am startservice ca.zgrs.clipper/.ClipboardService");
+        final DefaultArtifactVersion deviceVersion =
+                new DefaultArtifactVersion(getPropertyFromAdb("ro.build.version.release"));
+
+        // Related issue for Android 4.2: http://stackoverflow.com/questions/13588668/adb-throws-securityexception-while-starting-service-after-system-update-to-nexus
+
+        if (deviceVersion.compareTo(new DefaultArtifactVersion("4.3")) <= 0) {
+            executeAdb("shell am startservice --user 0 -n ca.zgrs.clipper/.ClipboardService");
+        } else {
+            executeAdb("shell am startservice ca.zgrs.clipper/.ClipboardService");
+        }
     }
 
     public static Optional<String> getClipboardContent() throws Exception {

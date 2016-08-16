@@ -5,9 +5,9 @@ Feature: Upgrade
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Contact> sends 1 encrypted message to user Myself
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
+    Given I see conversations list
     # To let the content to be synchronized
     Given I wait for 5 seconds
     Given I upgrade Wire to the recent version
@@ -21,9 +21,8 @@ Feature: Upgrade
     When I tap on contact name <Contact>
     Then I see 2 default messages in the conversation view
     When I tap Add Picture button from input tools
-    And I press Camera Roll button
-    And I choose a picture from camera roll
-    And I confirm my choice
+    And I select the first picture from Keyboard Gallery
+    And I tap Confirm button on Picture preview page
     Then I see 2 photos in the conversation view
     When I restart Wire
     Then I see 2 photos in the conversation view

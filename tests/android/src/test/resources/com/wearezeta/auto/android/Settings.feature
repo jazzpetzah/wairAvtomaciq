@@ -95,9 +95,8 @@ Feature: Settings
     And I select "Account" settings menu item
     And I select "Add email" settings menu item
     And I start listening for confirmation email <NewEmail> with mailbox password <Password>
-    And I commit my new email "<NewEmail>"
+    And I commit my new email "<NewEmail>" with password <Password>
     And I verify email <NewEmail>
-    And User Myself resets password to "<Password>"
     And I select "Log out" settings menu item
     And I confirm sign out
     Then I see welcome screen
@@ -113,7 +112,7 @@ Feature: Settings
   @C150020 @rc @regression @useSpecialEmail
   Scenario Outline: Verify you can change an email from settings
     Given There is 1 user where <Name> is me
-    Given I sign in using my phone number
+    Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with no conversations
     When I tap conversations list settings button
@@ -131,8 +130,8 @@ Feature: Settings
     Then I see Conversations list with no conversations
 
     Examples:
-      | Name      | CurrentEmail | NewEmail   | Password      |
-      | user1Name | user1Email   | user2Email | user2Password |
+      | Name      | CurrentEmail | NewEmail   | Password    |
+      | user1Name | user1Email   | user2Email | NewPassword |
 
   @C165103 @regression
   Scenario Outline: Verify I can delete multiple devices without filling password every time
@@ -157,9 +156,52 @@ Feature: Settings
     And I see "<OtherDevice>" settings menu item
     And I do not see "<DeviceToRemoveWithoutPassword>" settings menu item
     And I press Back button 2 times
-    When I do not see Manage Devices overlay
-    Then I see Conversations list with no conversations
+    Then I do not see Manage Devices overlay
+    And I see Conversations list with no conversations
 
     Examples:
       | Name      | Password      | DeviceToRemoveWithoutPassword | DeviceToRemove | OtherDevice |
       | user1Name | user1Password | Device2                       | Device3        | Device4     |
+
+  @C150017 @regression
+  Scenario Outline: Verify you can add a phone number from settings
+    Given There is 1 user with email address only where <Name> is me
+    Given I sign in using my email
+    Given I postpone Add Phone Number action
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with no conversations
+    When I tap conversations list settings button
+    And I select "Account" settings menu item
+    And I select "Add phone number" settings menu item
+    And I commit my new phone number "<NewNumber>"
+    And I commit verification code for phone number <NewNumber>
+    And I select "Log out" settings menu item
+    And I confirm sign out
+    Then I see welcome screen
+    When I sign in using my phone number
+    Then I see Conversations list with no conversations
+
+    Examples:
+      | Name      | NewNumber        |
+      | user1Name | user1PhoneNumber |
+
+  @C150019 @regression
+  Scenario Outline: Verify you can change a phone number from settings
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with no conversations
+    When I tap conversations list settings button
+    And I select "Account" settings menu item
+    And I select "<CurrentNumber>" settings menu item
+    And I commit my new phone number "<NewNumber>"
+    And I commit verification code for phone number <NewNumber>
+    And I select "Log out" settings menu item
+    And I confirm sign out
+    Then I see welcome screen
+    When I sign in using my phone number
+    Then I see Conversations list with no conversations
+
+    Examples:
+      | Name      | CurrentNumber    | NewNumber        |
+      | user1Name | user1PhoneNumber | user2PhoneNumber |

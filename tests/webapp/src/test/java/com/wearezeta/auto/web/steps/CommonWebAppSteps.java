@@ -55,7 +55,7 @@ public class CommonWebAppSteps {
 
     private final TestContext context;
 
-    private static final String VIDEO_MESSAGE_IMAGE = "userpicture_landscape.jpg";
+    private static final String VIDEO_MESSAGE_IMAGE = "example.png";
 
     public CommonWebAppSteps() {
         this.context = new TestContext();
@@ -390,8 +390,7 @@ public class CommonWebAppSteps {
     @When("^User (.*) pinged in the conversation with (.*)$")
     public void UserPingedConversation(String pingFromUserNameAlias,
                                        String dstConversationName) throws Exception {
-        context.getCommonSteps().UserPingedConversation(pingFromUserNameAlias,
-                dstConversationName);
+        context.getCommonSteps().UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
     }
 
     /**
@@ -490,12 +489,7 @@ public class CommonWebAppSteps {
     public void IBreakTheSession(String deviceName, String userAlias) throws Exception {
         ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
         String deviceId = context.getDeviceManager().getDeviceId(user, deviceName + context.getTestname().hashCode());
-        // we have to strip leading zeros since we don't want to use the padding for UI
-        int limit = deviceId.length();
-        while (deviceId.startsWith("0") && limit >= 0) {
-            deviceId = deviceId.substring(1);
-            limit--;
-        }
+        deviceId = WebCommonUtils.removeDeviceIdPadding(deviceId);
         context.getPagesCollection().getPage(WebPage.class).breakSession(deviceId);
     }
 
@@ -542,19 +536,23 @@ public class CommonWebAppSteps {
     }
 
     /**
-     * Send message to a conversation
+     * Send unencrypted message to a conversation
      *
      * @param userFromNameAlias user who wants to send a message
      * @param message           message to send
-     * @param conversationName  the name of existing conversation to send the message to
+     * @param convoType         group conversation or user
+     * @param dstConvoName      the name of existing conversation to send the message to
      * @throws Exception
-     * @step. ^User (.*) sent message (.*) to conversation (.*)
+     * @step. ^Contact (.*) sends unencrypted message (.*) to (user|group conversation) (.*)
      */
-    @When("^User (.*) sends? message (.*) to conversation (.*)")
-    public void UserSentMessageToConversation(String userFromNameAlias,
-                                              String message, String conversationName) throws Exception {
-        context.getCommonSteps().UserSentMessageToConversation(userFromNameAlias,
-                conversationName, message);
+    @When("^Contact (.*) sends? unencrypted message (.*) to (user|group conversation) (.*)")
+    public void UserSentMessageToConversation(String userFromNameAlias, String message, String convoType,
+                                              String dstConvoName) throws Exception {
+        if (convoType.equals("user")) {
+            context.getCommonSteps().UserSentMessageToUser(userFromNameAlias, dstConvoName, message);
+        } else {
+            context.getCommonSteps().UserSentMessageToConversation(userFromNameAlias, dstConvoName, message);
+        }
     }
 
     /**
@@ -582,22 +580,25 @@ public class CommonWebAppSteps {
 
     /**
      * User X delete message from User/Group via specified device
-     * Note : The recent message means the recent message sent from specified device by SE, the device should online.
+     * Note : The recent message means the recent message sent from specified device by SE, the device should be online.
      *
      * @param userNameAlias
+     * @param amount
      * @param convoType
      * @param dstNameAlias
      * @param deviceName
+     * @param deleteEverywhere
      * @throws Exception
-     * @step. ^User (.*) deletes? the recent (\\d+) messages? from (user|group conversation) (.*) via device (.*)$
+     * @step. ^User (.*) deletes? the recent (\\d+) messages? from (user|group conversation) (.*) (everywhere )?via device (.*)$
      */
-    @When("^User (.*) deletes? the recent (\\d+) messages? from (user|group conversation) (.*) via device (.*)$")
-    public void UserXDeleteLastMessage(String userNameAlias, int amount, String convoType, String dstNameAlias, String deviceName)
+    @When("^User (.*) deletes? the recent (\\d+) messages? from (user|group conversation) (.*) (everywhere )?via device (.*)$")
+    public void UserXDeleteLastMessage(String userNameAlias, int amount, String convoType, String dstNameAlias, String deleteEverywhere, String deviceName)
             throws Exception {
         boolean isGroup = convoType.equals("group conversation");
+        boolean isDeleteEverywhere = deleteEverywhere.equals("everywhere ");
         for (int deleteCounter = 0; deleteCounter < amount; deleteCounter++) {
             context.getCommonSteps().UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName + context.getTestname().
-                    hashCode(), isGroup);
+                    hashCode(), isGroup, isDeleteEverywhere);
         }
     }
 

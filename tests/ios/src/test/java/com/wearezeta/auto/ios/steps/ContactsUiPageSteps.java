@@ -81,10 +81,10 @@ public class ContactsUiPageSteps {
      * via mail.
      *
      * @throws Exception
-     * @step. ^I press invite others button$
+     * @step. ^I tap Invite Others button$
      */
-    @When("^I press invite others button$")
-    public void IPressInviteOthersButton() throws Exception {
+    @When("^I tap Invite Others button$")
+    public void ITapInviteOthersButton() throws Exception {
         getContactsUiPage().tapInviteOthersButton();
     }
 

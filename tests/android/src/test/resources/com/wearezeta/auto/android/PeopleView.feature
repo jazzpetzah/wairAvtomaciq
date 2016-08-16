@@ -83,7 +83,7 @@ Feature: People View
     Then I see that the conversation name is <GroupChatName>
     And I see the correct number of participants in the title <ParticipantNumber>
     And I close participants page by UI button
-    When I navigate back from dialog page
+    When I navigate back from conversation
     And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     Then I see the correct participant avatars for <Contact1NewName>,<Contact2NewName>
@@ -106,7 +106,7 @@ Feature: People View
     # Clicking X button to close participants view crashes the app
     And I press back button
     Then I see a message informing me that I renamed the conversation to <NewConversationName>
-    And I navigate back from dialog page
+    And I navigate back from conversation
     And I see Conversations list with name <NewConversationName>
 
     Examples:

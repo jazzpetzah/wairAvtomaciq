@@ -42,7 +42,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idDialogRoot);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idConversationRoot);
     }
 
     public boolean waitForSystemMessageContains(String expectedMessage) throws Exception {
@@ -76,7 +76,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilAPictureAppears() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idDialogImages);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idConversationImages);
     }
 
     public boolean waitUntilGCNIsVisible() throws Exception {
@@ -129,11 +129,11 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idDialogRoot);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idConversationRoot);
     }
 
     public boolean waitUntilPicturesNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idDialogImages);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idConversationImages);
     }
 
     public boolean waitUntilUnsentIndicatorIsVisible(String msg) throws Exception {
@@ -196,17 +196,19 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getConversationViewPage().longTapMessage(msg);
     }
 
-    public void tapActionBarButton(String btnName) throws Exception {
-        getConversationViewPage().tapActionBarButton(btnName);
+    //region Message Bottom Menu
+    public void tapMessageBottomMenuButton(String btnName) throws Exception {
+        getConversationViewPage().tapMessageBottomMenuButton(btnName);
     }
 
-    public boolean isActionModeBarButtonVisible(String name) throws Exception {
-        return getConversationViewPage().isActionModeBarButtonVisible(name);
+    public boolean waitUntilMessageBottomMenuButtonVisible(String name) throws Exception {
+        return getConversationViewPage().waitUntilMessageBottomMenuButtonVisible(name);
     }
 
-    public boolean isActionModeBarButtonInvisible(String name) throws Exception {
-        return getConversationViewPage().isActionModeBarButtonInvisible(name);
+    public boolean waitUntilMessageBottomMenuButtonInvisible(String name) throws Exception {
+        return getConversationViewPage().waitUntilMessageBottomMenuButtonInvisible(name);
     }
+    //endregion
 
     public boolean isContainerVisible(String containerType) throws Exception {
         return getConversationViewPage().isContainerVisible(containerType);

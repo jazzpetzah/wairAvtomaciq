@@ -15,7 +15,7 @@ Feature: Conversation View
     And I press back button
     Then Conversation <Contact1> is muted
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -33,10 +33,10 @@ Feature: Conversation View
     And I press options menu button
     And I press UNMUTE conversation menu button
     And I press back button
-    And I navigate back from dialog page
+    And I navigate back from conversation
     Then Conversation <Contact1> is not muted
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -65,7 +65,7 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap Add picture button from cursor toolbar
-    And I tap Take Photo button on Take Picture view
+    And I tap Take Photo button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
 
@@ -94,13 +94,13 @@ Feature: Conversation View
     And I tap conversation name from top toolbar
     And I press back button
     Then I see group chat page with users <Contact1>,<Contact2>
-    And I navigate back from dialog page
+    And I navigate back from conversation
     And I see group conversation with <Contact1>,<Contact2> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
-      
+
   @C18044 @regression
   Scenario Outline: I see creation header when someone create group conversation with me
     Given There are 3 users where <Name> is me
@@ -152,7 +152,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C379 @regression
+  @C379 @regression @C183868
   Scenario Outline: Send existing image from gallery (portrait) in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -161,7 +161,7 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap Add picture button from cursor toolbar
-    And I tap Gallery Camera button on Take Picture view
+    And I tap Gallery button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
 
@@ -178,7 +178,7 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap Add picture button from cursor toolbar
-    And I tap Gallery Camera button on Take Picture view
+    And I tap Gallery button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
     And I tap the recent picture in the conversation view
@@ -189,7 +189,7 @@ Feature: Conversation View
     And I rotate UI to landscape
     And I tap Image Close button on Take Picture view
     Then I rotate UI to portrait
-    And I navigate back from dialog page
+    And I navigate back from conversation
     And I see Conversations list
 
     Examples:
@@ -222,7 +222,7 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap Add picture button from cursor toolbar
-    And I tap Gallery Camera button on Take Picture view
+    And I tap Gallery button on Extended cursor camera overlay
     And I tap Sketch Image Paint button on Take Picture view
     And I draw a sketch on image with <NumColors> colors
     Then I send my sketch
@@ -241,10 +241,10 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap Add picture button from cursor toolbar
-    And I tap Take Photo button on Take Picture view
+    And I tap Take Photo button on Extended cursor camera overlay
     And I tap Sketch Image Paint button on Take Picture view
     And I draw a sketch on image with <NumColors> colors
-    And I send my sketch
+    Then I send my sketch
     And I tap the recent picture in the conversation view
 
     Examples:
@@ -282,7 +282,7 @@ Feature: Conversation View
     When I tap on conversation name <Contact>
     And I scroll to the bottom of conversation view
     Then I see a picture in the conversation view
-    And I see the picture in the dialog is animated
+    And I see the picture in the conversation is animated
     When I tap the recent picture in the conversation view
     Then I see the picture in the preview is animated
 
@@ -299,8 +299,8 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap Add picture button from cursor toolbar
-    And I tap Switch Camera button on Take Picture view
-    And I tap Take Photo button on Take Picture view
+    And I tap Switch Camera button on Extended cursor camera overlay
+    And I tap Take Photo button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
 
@@ -350,8 +350,8 @@ Feature: Conversation View
     Then I see Conversations list with conversations
 
     Examples:
-      | Name      | Contact1   | Contact2   | GroupChatName |
-      | user1Name | user2Name  | user3Name  | GroupChat     |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | GroupChat     |
 
   @C77958 @regression
   Scenario Outline: Verify video call icon is not shown in a group conversation on the upper toolbar
@@ -364,7 +364,7 @@ Feature: Conversation View
     When I tap on conversation name <GroupChatName>
     Then I see the audio call button in upper toolbar
     And I do not see the video call button in upper toolbar
-    And I navigate back from dialog page
+    And I navigate back from conversation
     And I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     Then I see the audio call button in upper toolbar
@@ -383,7 +383,7 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And the conversation title should be "<Contact1>"
-    And User <Contact2> send message "<Message1>" to user Myself
+    And User <Contact2> sends encrypted message "<Message1>" to user Myself
     And I tap new message notification "<Message1>"
     Then I see the message "<Message1>" in the conversation view
     And the conversation title should be "<Contact2>"
@@ -391,13 +391,13 @@ Feature: Conversation View
     And I press back button
     When I tap Back button from top toolbar
     And I tap on conversation name <Contact1>
-    And User <Contact2> send message "<Message2>" to user Myself
+    And User <Contact2> sends encrypted message "<Message2>" to user Myself
     And I see new message notification "<Message2>"
     Then the conversation title should be "<Contact1>"
 
     Examples:
-      | Name      | Contact1  | Contact2  |  Message1 | Message2 |
-      | user1Name | user2Name | user3Name |  Msg1     | Msg2     |
+      | Name      | Contact1  | Contact2  | Message1 | Message2 |
+      | user1Name | user2Name | user3Name | Msg1     | Msg2     |
 
   @C77966 @C87626 @C111617 @regression @rc @rc42
   Scenario Outline: Verify there are no video and audio calling icons under the + button bar

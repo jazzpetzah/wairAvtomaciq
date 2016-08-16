@@ -19,7 +19,7 @@ Feature: Rich Media
     And I scroll to the bottom of conversation view
     And I tap Play button on SoundCloud container
     And I remember the state of Play button on SoundCloud container
-    And I swipe down on dialog page until Mediabar appears
+    And I swipe down on conversation until Mediabar appears
     And I press PlayPause on Mediabar button
     Then I verify the state of upper toolbar item is not changed
     And I see the media bar is below the upper toolbar
@@ -40,8 +40,9 @@ Feature: Rich Media
     When I tap on conversation name <Contact1>
     And I tap on text input
     And I type the message "<SoudCloudLink>" and send it
-    # Workaround for bug with autoscroll
+    # Workaround for bug with autoscroll for next two lines
     And I scroll to the bottom of conversation view
+    And I scroll up the conversation view
     And I tap Play button on SoundCloud container
     And I press back button
     Then I see PlayPause media content button for conversation <Contact1>
@@ -132,6 +133,7 @@ Feature: Rich Media
     And I see incoming video call
     And <Contact> stops calling me
     And I do not see incoming video call
+    And I scroll to the bottom of conversation view
     Then I verify the state of Pause button on SoundCloud container is changed
 
     Examples:

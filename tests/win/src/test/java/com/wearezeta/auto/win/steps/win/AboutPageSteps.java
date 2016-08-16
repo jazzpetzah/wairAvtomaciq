@@ -7,15 +7,12 @@ import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertTrue;
 
 public class AboutPageSteps {
 
-    private final WinPagesCollection osxPagesCollection = WinPagesCollection
-            .getInstance();
+    private final WinPagesCollection winPagesCollection = WinPagesCollection.getInstance();
     @SuppressWarnings("unused")
-    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-            .getInstance();
+    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection.getInstance();
 
     /**
      * Closes the about window
@@ -26,7 +23,7 @@ public class AboutPageSteps {
      */
     @When("^I close the about window$")
     public void ICloseApp() throws Exception {
-        osxPagesCollection.getPage(AboutPage.class).closeWindow();
+        winPagesCollection.getPage(AboutPage.class).closeWindow();
     }
 
     /**
@@ -38,7 +35,7 @@ public class AboutPageSteps {
      */
     @When("^I minimize the about window$")
     public void IMinimizeApp() throws Exception {
-        osxPagesCollection.getPage(AboutPage.class).minimizeWindow();
+        winPagesCollection.getPage(AboutPage.class).minimizeWindow();
     }
 
     /**
@@ -52,12 +49,9 @@ public class AboutPageSteps {
     @Then("^I verify about window is( not)? visible$")
     public void IVerifyAboutWindowIsVisible(String not) throws Exception {
         if (not == null) {
-            assertTrue("About window not visible within timeout",
-                    osxPagesCollection.getPage(AboutPage.class).isVisible());
+            assertTrue("About window not visible within timeout", winPagesCollection.getPage(AboutPage.class).isVisible());
         } else {
-            boolean notVisible = osxPagesCollection.getPage(AboutPage.class)
-                    .isNotVisible();
-            System.out.println("notVisible: " + notVisible);
+            boolean notVisible = winPagesCollection.getPage(AboutPage.class).isNotVisible();
             assertTrue("About window is visible", notVisible);
         }
 

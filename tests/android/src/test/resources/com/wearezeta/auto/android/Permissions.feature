@@ -16,10 +16,11 @@ Feature: Permissions
     And I tap on conversation name <Contact1>
     # --- Add Picture ---
     When I tap Add picture button from cursor toolbar
+    ## for camera
     And I dismiss security alert
-    And I do not see Take Photo button on Take Picture view
-    And I tap Close button on Take Picture view
-    Then I do not see any pictures in the conversation view
+    ## for gallery
+    And I dismiss security alert
+    Then I do not see extended cursor camera overlay
     # --- Record Video ---
     When I tap Video message button from cursor toolbar
     And I dismiss security alert
@@ -68,12 +69,13 @@ Feature: Permissions
     Then I do not see incoming call
     And <Contact2> stops calling me
     # --- Select Profile Picture ---
-    When I navigate back from dialog page
+    When I navigate back from conversation
     And I tap conversations list settings button
     And I select "Account" settings menu item
     And I select "Picture" settings menu item
     And I dismiss security alert
     Then I do not see Take Photo button on Take Picture view
+    And I press Back button
     And I press Back button
     And I press Back button
     And I press Back button
@@ -98,6 +100,7 @@ Feature: Permissions
     # deny access to camera
     And I dismiss security alert
     # Workaround for AN-4119
+    And I press Back button
     And I press Back button
     And I select to keep the current picture
     Then I see Conversations list with no conversations

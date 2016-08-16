@@ -5,9 +5,7 @@ import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
@@ -46,7 +44,7 @@ public final class CommonCallingSteps2 {
 
     private static final String CALL_BACKEND_VERSION_SEPARATOR = ":";
 
-    private static final String ZCALL_DEFAULT_VERSION = "2.7.17";
+    private static final String ZCALL_DEFAULT_VERSION = "2.7.26";
     private String zcallVersion = ZCALL_DEFAULT_VERSION;
 
     public String getZcallVersion() {
@@ -57,7 +55,7 @@ public final class CommonCallingSteps2 {
         this.zcallVersion = zcallVersion;
     }
 
-    private static final String AUTOCALL_DEFAULT_VERSION = "2.7.17";
+    private static final String AUTOCALL_DEFAULT_VERSION = "2.7.26";
     private String autocallVersion = AUTOCALL_DEFAULT_VERSION;
 
     public String getAutocallVersion() {
@@ -69,7 +67,7 @@ public final class CommonCallingSteps2 {
     }
 
     private static final String FIREFOX_DEFAULT_VERSION = "46.0.1";
-    private static final String CHROME_DEFAULT_VERSION = "51.0.2704.106";
+    private static final String CHROME_DEFAULT_VERSION = "52.0.2743.82";
 
     // Request timeout of 180 secs is set by callingservice, we add additional
     // 10 seconds on the client side to actually get a timeout response to
@@ -207,10 +205,15 @@ public final class CommonCallingSteps2 {
      */
     public void startInstances(List<String> calleeNames, String instanceType) throws Exception {
         LOG.debug("Creating instances for " + Arrays.toString(calleeNames.toArray()));
-        createInstances(calleeNames, instanceType);
+        createInstances(calleeNames, instanceType, "Unknown", ZetaFormatter.getScenario());
     }
-
-    private void createInstances(final List<String> calleeNames, String instanceType) throws InterruptedException,
+    
+    public void startInstances(List<String> calleeNames, String instanceType, String platform, String scenarioName) throws Exception {
+        LOG.debug("Creating instances for " + Arrays.toString(calleeNames.toArray()));
+        createInstances(calleeNames, instanceType, platform, scenarioName);
+    }
+    
+    private void createInstances(final List<String> calleeNames, String instanceType, String platform, String scenarioName) throws InterruptedException,
             ExecutionException, NoSuchUserException, TimeoutException {
         Map<String, CompletableFuture<Instance>> createTasks = new HashMap<>(calleeNames.size());
         for (String calleeName : calleeNames) {
@@ -220,7 +223,7 @@ public final class CommonCallingSteps2 {
                     return CompletableFuture.supplyAsync(() -> {
                         try {
                             final Instance instance = client.startInstance(userAs, convertTypeStringToTypeObject(instanceType),
-                                    ZetaFormatter.getScenario());
+                                    String.format("%s: \n%s", platform, scenarioName));
                             addInstance(instance, userAs);
                             return instance;
                         } catch (CallingServiceInstanceException ex) {
@@ -302,6 +305,23 @@ public final class CommonCallingSteps2 {
             final String convId = getConversationId(userAs, conversationName);
             client.stopCall(getInstance(userAs),
                     getOutgoingCall(userAs, convId));
+        }
+    }
+    
+    /**
+     * Declines a remote call within the given converastion
+     * <p>
+     *
+     * @param calleeNames List of callees names who should decline the incoming call
+     * @param conversationName the name of the conversation with the call to decline
+     * @throws Exception
+     */
+    public void declineIncomingCallToConversation(List<String> calleeNames, String conversationName) throws Exception {
+        for (String callerName : calleeNames) {
+            final ClientUser callerUser = usrMgr.findUserByNameOrNameAlias(callerName);
+            final String convId = getConversationId(callerUser, conversationName);
+            final Instance instance = getInstance(callerUser);
+            final Call call = client.declineCall(instance, convId);
         }
     }
 
@@ -539,6 +559,24 @@ public final class CommonCallingSteps2 {
             final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
             Instance instance = getInstance(userAs);
             client.switchVideoOff(instance, getCurrentCall(instance));
+        }
+    }
+    
+    public void maximiseVideoCall(List<String> calleeNames) throws NoSuchUserException, InstanceNotFoundException,
+            CallingServiceCallException, CallingServiceInstanceException {
+        for (String calleeName : calleeNames) {
+            final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
+            Instance instance = getInstance(userAs);
+            client.maximiseVideoCall(instance, getCurrentCall(instance));
+        }
+    }
+
+    public void minimiseVideoCall(List<String> calleeNames) throws NoSuchUserException, InstanceNotFoundException,
+            CallingServiceCallException, CallingServiceInstanceException {
+        for (String calleeName : calleeNames) {
+            final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
+            Instance instance = getInstance(userAs);
+            client.minimiseVideoCall(instance, getCurrentCall(instance));
         }
     }
 

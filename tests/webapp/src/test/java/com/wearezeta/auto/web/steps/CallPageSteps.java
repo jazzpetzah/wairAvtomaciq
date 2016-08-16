@@ -267,6 +267,28 @@ public class CallPageSteps {
     }
 
     /**
+     * Verifies if decline call button is visible for conversation
+     *
+     * @param doNot is set to null if "do not" part does not exist
+     * @param conversation conversation name string
+     * @throws Exception
+     * @step. ^I( do not)? see decline call button for conversation (.*)
+     */
+    @When("^I( do not)? see join call button for conversation (.*)")
+    public void ISeeJoinCallButton(String doNot, String conversation) throws Exception {
+        conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
+        CallPage contactListPage = context.getPagesCollection()
+                .getPage(CallPage.class);
+        if (doNot == null) {
+            assertThat(String.format("Join call button not visible for conversation %s", conversation),
+                    contactListPage.isJoinCallButtonVisibleForConversation(conversation));
+        } else {
+            assertThat(String.format("Join call button still visible for conversation %s", conversation),
+                    contactListPage.isJoinCallButtonNotVisibleForConversation(conversation));
+        }
+    }
+
+    /**
      * Clicks mute call button in conversation list
      *
      * @throws Exception

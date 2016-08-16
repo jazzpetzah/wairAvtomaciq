@@ -37,7 +37,7 @@ public class ImageFullScreenPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameImageFullScreenPage);
     }
 
-    public void clickCloseButton() throws Exception {
+    public void tapCloseButton() throws Exception {
         final WebElement closeBtn = getElement(nameFullScreenCloseButton);
         closeBtn.click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameFullScreenCloseButton)) {
@@ -49,7 +49,7 @@ public class ImageFullScreenPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFullScreenDownloadButton);
     }
 
-    public void clickDownloadButton() throws Exception {
+    public void tapDownloadButton() throws Exception {
         getElement(nameFullScreenDownloadButton).click();
     }
 
@@ -66,7 +66,7 @@ public class ImageFullScreenPage extends IOSPage {
         return getElement(nameFullScreenTimeStamp).getText();
     }
 
-    public void clickSketchButton() throws Exception {
+    public void tapSketchButton() throws Exception {
         getElement(nameFullScreenSketchButton).click();
     }
 

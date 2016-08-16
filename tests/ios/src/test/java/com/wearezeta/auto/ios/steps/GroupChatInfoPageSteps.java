@@ -23,9 +23,9 @@ public class GroupChatInfoPageSteps {
         return pagesCollection.getPage(GroupChatInfoPage.class);
     }
 
-    @When("^I press leave conversation button$")
-    public void IPressLeaveConversationButton() throws Exception {
-        getGroupChatInfoPage().leaveConversation();
+    @When("^I tap Leave Conversation button$")
+    public void ITapLeaveConversationButton() throws Exception {
+        getGroupChatInfoPage().tapLeaveConversation();
     }
 
     @When("I change group conversation name to (.*)")
@@ -86,8 +86,8 @@ public class GroupChatInfoPageSteps {
         Assert.assertTrue(getGroupChatInfoPage().isLeaveConversationAlertVisible());
     }
 
-    @Then("^I press leave$")
-    public void IPressLeave() throws Throwable {
+    @Then("^I confirm leaving$")
+    public void IConfirmLeaving() throws Throwable {
         getGroupChatInfoPage().confirmLeaveConversation();
     }
 

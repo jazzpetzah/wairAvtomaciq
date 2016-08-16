@@ -10,21 +10,22 @@ Feature: Delete Message
     And I tap on conversation name <Contact>
     And I tap on text input
     And I type the message "<Message1>" and send it
-    And I type the message "<Message2>" and send it
     When I long tap the Text message "<Message1>" in the conversation view
-    Then I see Copy button on the action mode bar
-    And I see Delete button on the action mode bar
-    When I tap the Text message "<Message2>" in the conversation view
-    Then I do not see Copy button on the action mode bar
-    When I tap Delete button on the action mode bar
-    And I see alert message containing "<AlertText>" in the title
+    # C111638
+    Then I see Copy button on the message bottom menu
+    And I see Forward button on the message bottom menu
+    And I see Edit button on the message bottom menu
+    And I see Delete only for me button on the message bottom menu
+    And I see Delete for everyone button on the message bottom menu
+    When I tap Delete only for me button on the message bottom menu
+    And I see alert message containing pure text "<AlertText>" in the title
     And I tap Delete button on the alert
+    # C111637
     Then I do not see the message "<Message1>" in the conversation view
-    And I do not see the message "<Message2>" in the conversation view
 
     Examples:
-      | Name      | Contact   | Message1 | Message2 | AlertText       |
-      | user1Name | user2Name | Yo1      | Yo2      | Delete messages |
+      | Name      | Contact   | Message1 | AlertText           |
+      | user1Name | user2Name | Yo1      | Delete only for me? |
 
   @C111644 @regression @rc
   Scenario Outline: Verify deleting is synchronised across own devices when they are online
@@ -62,17 +63,18 @@ Feature: Delete Message
     And I tap on conversation name <Contact>
     And I tap on text input
     And I type the message "<YoutubeLink>" and send it
-    And I type the message "<SoundcloudLink>" and send it
     And I hide keyboard
-    When I scroll down the conversation view
     And I long tap Youtube container in the conversation view
-    And I scroll up the conversation view
-    And I tap Soundcloud container in the conversation view
-    And I tap Delete button on the action mode bar
+    And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see the message "<YoutubeLink>" in the conversation view
     And I do not see Youtube container in the conversation view
-    And I do not see the message "<SoundcloudLink>" in the conversation view
+    When I type the message "<SoundcloudLink>" and send it
+    And I hide keyboard
+    And I long tap Soundcloud container in the conversation view
+    And I tap Delete only for me button on the message bottom menu
+    And I tap Delete button on the alert
+    Then I do not see the message "<SoundcloudLink>" in the conversation view
     And I do not see Soundcloud container in the conversation view
 
     Examples:
@@ -89,7 +91,9 @@ Feature: Delete Message
     When I tap on conversation name <Contact>
     And User <Contact> send encrypted message "<Message>" to user Myself
     And I long tap the Text message "<Message>" in the conversation view
-    And I tap Delete button on the action mode bar
+    And I see Delete only for me button on the message bottom menu
+    And I do not see Delete for everyone button on the message bottom menu
+    And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see the message "<Message>" in the conversation view
 
@@ -105,15 +109,23 @@ Feature: Delete Message
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
+    # My ping
     When I tap on conversation name <Contact>
     And I tap Ping button from cursor toolbar
     And User <Contact> securely pings conversation Myself
     And I see Ping message "<Message2>" in the conversation view
     And I long tap the Ping message "<Message1>" in the conversation view
-    And I tap the Ping message "<Message2>" in the conversation view
-    And I tap Delete button on the action mode bar
+    Then I see Delete only for me button on the message bottom menu
+    And I see Delete for everyone button on the message bottom menu
+    When I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Ping message "<Message1>" in the conversation view
+    # Other ping
+    When I long tap the Ping message "<Message2>" in the conversation view
+    And I see Delete only for me button on the message bottom menu
+    And I do not see Delete for everyone button on the message bottom menu
+    And I tap Delete only for me button on the message bottom menu
+    And I tap Delete button on the alert
     And I do not see Ping message "<Message2>" in the conversation view
 
     Examples:
@@ -121,7 +133,7 @@ Feature: Delete Message
       | user1Name | user2Name | You pinged | autocall    | user2Name pinged |
 
   @C111642 @regression @rc
-  Scenario Outline: AN-4171 Verify deleting the shared file
+  Scenario Outline: (AN-4171) Verify deleting the shared file
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -132,7 +144,7 @@ Feature: Delete Message
     And I tap File button from cursor toolbar
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
     When I long tap File Upload container in the conversation view
-    And I tap Delete button on the action mode bar
+    And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see File Upload container in the conversation view
 
@@ -156,11 +168,11 @@ Feature: Delete Message
     And I tap on conversation name <GroupChatName>
     And User Myself send encrypted message "<Message>" via device <Device> to group conversation <GroupChatName>
     And I enable Airplane mode on the device
+    And I see No Internet bar in 15 seconds
     And User Myself deletes the recent message from user <Contact1> via device <Device>
     And User Myself deletes the recent message from group conversation <GroupChatName> via device <Device>
     And I disable Airplane mode on the device
-    # Wait for sync
-    And I wait for 10 seconds
+    And I do not see No Internet bar in 20 seconds
     Then I do not see the message "<Message>" in the conversation view
     When I tap Back button from top toolbar
     And I tap on conversation name <Contact1>
@@ -168,12 +180,15 @@ Feature: Delete Message
     When I type the message "<Message2>" and send it
     And User Myself remember the recent message from user <Contact1> via device <Device>
     And I enable Airplane mode on the device
+    And I see No Internet bar in 20 seconds
     And I long tap the Text message "<Message2>" in the conversation view
-    And I tap Delete button on the action mode bar
+    And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see the message "<Message2>" in the conversation view
     When I disable Airplane mode on the device
-    And I wait for 10 seconds
+    And I do not see No Internet bar in 20 seconds
+    # Wait for SE sync
+    And I wait for 20 seconds
     Then User Myself see the recent message from user <Contact1> via device <Device> is changed
 
     Examples:
@@ -195,7 +210,7 @@ Feature: Delete Message
     When I click on the giphy send button
     Then I see a picture in the conversation view
     When I long tap the recent picture in the conversation view
-    And I tap Delete button on the action mode bar
+    And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see any pictures in the conversation view
     And I see the message "<Message> · via giphy.com" in the conversation view
@@ -215,7 +230,7 @@ Feature: Delete Message
     And I enable Airplane mode on the device
     And I type the message "<Message>" and send it
     And I long tap the Text message "<Message>" in the conversation view
-    And I tap Delete button on the action mode bar
+    And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see the message "<Message>" in the conversation view
     And I disable Airplane mode on the device
@@ -238,8 +253,8 @@ Feature: Delete Message
     # Wait for the audio to be fully uploaded
     And I wait for 5 seconds
     And I long tap Audio Message container in the conversation view
-    Then I do not see Copy button on the action mode bar
-    When I tap Delete button on the action mode bar
+    Then I do not see Copy button on the message bottom menu
+    When I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Audio Message container in the conversation view
 
@@ -259,8 +274,8 @@ Feature: Delete Message
     And I long tap Audio message button <TapDuration> seconds from cursor toolbar
     And I tap audio recording Send button
     And I long tap Audio Message container in the conversation view
-    Then I do not see Copy button on the action mode bar
-    When I tap Delete button on the action mode bar
+    Then I do not see Copy button on the message bottom menu
+    When I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Audio Message container in the conversation view
 
@@ -282,8 +297,8 @@ Feature: Delete Message
     And I enable Airplane mode on the device
     And I tap Play button on the recent audio message in the conversation view
     And I long tap Audio Message container in the conversation view
-    Then I do not see Copy button on the action mode bar
-    When I tap Delete button on the action mode bar
+    Then I do not see Copy button on the message bottom menu
+    When I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Audio Message container in the conversation view
 
@@ -301,7 +316,7 @@ Feature: Delete Message
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I long tap Share Location container in the conversation view
-    And I tap Delete button on the action mode bar
+    And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Share Location container in the conversation view
 
@@ -309,7 +324,7 @@ Feature: Delete Message
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
 
-  @C165145 @staging
+  @C165145 @regression
   Scenario Outline: I can delete link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -319,7 +334,7 @@ Feature: Delete Message
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I long tap Link Preview container in the conversation view
-    And I tap Delete button on the action mode bar
+    And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Link Preview container in the conversation view
 

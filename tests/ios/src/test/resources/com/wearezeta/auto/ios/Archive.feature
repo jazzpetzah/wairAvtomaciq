@@ -1,6 +1,6 @@
 Feature: Archive
 
-  @C13 @regression
+  @C13 @regression @fastLogin
   Scenario Outline: Verify unarchive by receiving data
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -30,7 +30,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | chrome      |
 
-  @C14 @regression
+  @C14 @regression @fastLogin
   Scenario Outline: Verify unarchiving silenced conversation only by call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -55,7 +55,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | chrome      |
 
-  @C16 @regression
+  @C16 @regression @fastLogin
   Scenario Outline: Verify restoring from archive after adding to conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -64,7 +64,7 @@ Feature: Archive
     Given I see conversations list
     When I swipe right on a <GroupChatName>
     And I tap Leave action button
-    And I press leave
+    And I confirm leaving
     Then I do not see conversation <GroupChatName> in conversations list
     When <Contact1> added me to group chat <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
@@ -74,7 +74,7 @@ Feature: Archive
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | LeaveArchive  |
 
-  @C82827 @regression
+  @C82827 @regression @fastLogin
   Scenario Outline: Verify archive behaviour when one archive/unarchive a conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>

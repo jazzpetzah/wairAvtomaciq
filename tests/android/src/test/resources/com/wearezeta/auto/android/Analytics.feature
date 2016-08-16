@@ -16,14 +16,13 @@ Feature: Analytics
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
     Then I verify that <LogType> log contains string "registration.added_photo"
-    And I verify that <LogType> log contains string "session"
     And I see Conversations list with no conversations
 
     Examples:
       | Name      | LogType   |
       | user1Name | ANALYTICS |
 
-  @C167026 @analytics @staging
+  @C167026 @analytics @regression
   Scenario Outline: Verify media statistics is sent
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -34,6 +33,12 @@ Feature: Analytics
     Given I push 1.00MB file having name "qa_random.txt" to the device
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
+    # Audio message
+    When I long tap Audio message cursor button 3 seconds and swipe up
+    And I see Audio Message container in the conversation view
+    And I wait for 5 seconds
+    Then I verify that <LogType> log contains string "media.sent_audio_message"
+    And I verify that <LogType> log contains string "ACTION=audio"
     # Text message
     When I type the message "<Message>" and send it
     Then I verify that <LogType> log contains string "media.completed_media_action"
@@ -54,12 +59,12 @@ Feature: Analytics
     Then I verify that <LogType> log contains string "ACTION=photo" 2 times
     # Photo from camera
     When I tap Add picture button from cursor toolbar
-    And I tap Take Photo button on Take Picture view
+    And I tap Take Photo button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
     Then I verify that <LogType> log contains string "ACTION=photo" 3 times
     # Photo from gallery
     When I tap Add picture button from cursor toolbar
-    And I tap Gallery Camera button on Take Picture view
+    And I tap Gallery button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
     Then I verify that <LogType> log contains string "ACTION=photo" 4 times
     # Location
@@ -68,23 +73,17 @@ Feature: Analytics
     And I tap Send button on Share Location page
     And I see Share Location container in the conversation view
     Then I verify that <LogType> log contains string "ACTION=location"
-    # Audio message
-    When I long tap Audio message cursor button 3 seconds and swipe up
-    And I see Audio Message container in the conversation view
-    And I wait for 5 seconds
-    Then I verify that <LogType> log contains string "media.sent_audio_message"
-    And I verify that <LogType> log contains string "ACTION=file"
     # Video message
     When I tap Video message button from cursor toolbar
     And I see Video Message container in the conversation view
     And I wait for 10 seconds
     Then I verify that <LogType> log contains string "media.sent_video_message"
-    And I verify that <LogType> log contains string "ACTION=file" 2 times
+    And I verify that <LogType> log contains string "ACTION=video"
     # File
     When I tap File button from cursor toolbar
     And I see File Upload container in the conversation view
     And I wait for 5 seconds
-    Then I verify that <LogType> log contains string "ACTION=file" 3 times
+    Then I verify that <LogType> log contains string "ACTION=file"
     # Outgoing audio call
     When I tap Audio Call button from top toolbar
     And I see outgoing call

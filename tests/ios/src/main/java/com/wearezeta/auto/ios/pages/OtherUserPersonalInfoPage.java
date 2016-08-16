@@ -133,7 +133,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public void clickOnStartDialogButton() throws Exception {
+    public void tapStartConversationButton() throws Exception {
         this.getDriver().tap(1, getElement(nameOtherUserAddContactToChatButton), 1);
     }
 

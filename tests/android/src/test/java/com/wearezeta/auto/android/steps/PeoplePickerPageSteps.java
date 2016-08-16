@@ -362,7 +362,7 @@ public class PeoplePickerPageSteps {
     public void IRememberTheStateOfAvatar(String alias) throws Exception {
         final String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
         this.avatarState = new ElementState(
-                () -> getSearchListPage().getUserAvatarScreenshot(name).orElseThrow(IllegalStateException::new)
+                () -> getContactListPage().getUserAvatarScreenshot(name).orElseThrow(IllegalStateException::new)
         ).remember();
     }
 
@@ -389,12 +389,12 @@ public class PeoplePickerPageSteps {
      *
      * @param alias user name/alias
      * @throws Exception
-     * @step. ^I tap Invite button next to (.*)
+     * @step. ^I tap Invite button next to (.*) in Contact list
      */
-    @When("^I tap Invite button next to (.*)")
+    @When("^I tap Invite button next to (.*) in Contact list")
     public void ITapInviteButton(String alias) throws Exception {
         final String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
-        getSearchListPage().tapInviteButtonFor(name);
+        getContactListPage().tapInviteButtonFor(name);
     }
 
     /**

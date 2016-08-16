@@ -2,10 +2,8 @@ package com.wearezeta.auto.osx.pages.osx;
 
 import static com.wearezeta.auto.osx.common.OSXConstants.Scripts.PASTE_SCRIPT;
 
-import java.awt.image.BufferedImage;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Optional;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
@@ -80,12 +78,30 @@ public class MainWirePage extends OSXPage {
         robot.keyRelease(KeyEvent.VK_COMMA);
         robot.keyRelease(KeyEvent.VK_META);
     }
-
+    
     public int getX() {
+        return window.getLocation().getX();
+    }
+    
+    public int getY() {
+        return window.getLocation().getY();
+    }
+    
+    /**
+     * Calculates X coordinate minus some space for the Dock.
+     * Dock calculation is also applied on resizeByHand(x,y)
+     * @return 
+     */
+    public int getStrippedX() {
         return window.getLocation().getX() - SPACE_FOR_DOCK;
     }
 
-    public int getY() {
+    /**
+     * Calculates Y coordinate minus some space for the Menubar.
+     * Menubar calculation is also applied on resizeByHand(x,y)
+     * @return 
+     */
+    public int getStrippedY() {
         return window.getLocation().getY() - TITLEBAR_HEIGHT;
     }
 
@@ -97,11 +113,11 @@ public class MainWirePage extends OSXPage {
         return getDriver().manage().window().getSize().getHeight();
     }
 
-    public boolean isX(int x) {
+    public boolean isStrippedX(int x) {
         return x == window.getLocation().getX() - SPACE_FOR_DOCK;
     }
 
-    public boolean isY(int y) {
+    public boolean isStrippedY(int y) {
         return y == window.getLocation().getY() - TITLEBAR_HEIGHT;
     }
 

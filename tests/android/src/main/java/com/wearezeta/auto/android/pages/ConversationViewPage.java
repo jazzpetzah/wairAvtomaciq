@@ -23,16 +23,20 @@ public class ConversationViewPage extends AndroidPage {
 
     public static final By xpathConfirmOKButton = By.xpath("//*[@id='ttv__confirmation__confirm' and @value='OK']");
 
-    public static final String idStrDialogImages = "iv__row_conversation__message_image";
-    public static final By idDialogImages = By.id(idStrDialogImages);
+    public static final String idStrConversationImages = "iv__row_conversation__message_image";
+    public static final By idConversationImages = By.id(idStrConversationImages);
 
-    private static final By xpathLastPicture = By.xpath(String.format("(//*[@id='%s'])[last()]", idStrDialogImages));
+    private static final By idClickedImageSendingIndicator = By.id("v__row_conversation__pending");
+
+    private static final By xpathLastPicture = By.xpath(String.format("(//*[@id='%s'])[last()]", idStrConversationImages));
 
     public static final By idCursorCamera = By.id("cursor_menu_item_camera");
 
     public static final By idCursorPing = By.id("cursor_menu_item_ping");
 
     private static final By idCursorMore = By.id("cursor_menu_item_more");
+
+    private static final By idCursorLess = By.id("cursor_menu_item_less");
 
     public static final By idCursorVideoMessage = By.id("cursor_menu_item_video");
 
@@ -55,7 +59,7 @@ public class ConversationViewPage extends AndroidPage {
                     xpathStrConversationMessageByText.apply(text));
 
     private static final By xpathUnsentIndicatorForImage = By
-            .xpath("//*[@id='" + idStrDialogImages + "']/parent::*/parent::*//*[@id='v__row_conversation__error']");
+            .xpath("//*[@id='" + idStrConversationImages + "']/parent::*/parent::*//*[@id='v__row_conversation__error']");
 
     public static final String idStrCursorEditText = "cet__cursor";
 
@@ -139,9 +143,9 @@ public class ConversationViewPage extends AndroidPage {
     private static final By xpathLastConversationMessage = By.xpath("(//*[@id='ltv__row_conversation__message'])[last" +
             "()]");
 
-    public static final String idStrDialogRoot = "clv__conversation_list_view";
-    public static final By idDialogRoot = By.id(idStrDialogRoot);
-    private static final By xpathDialogContent = By.xpath("//*[@id='" + idStrDialogRoot + "']/*/*/*");
+    public static final String idStrConversationRoot = "clv__conversation_list_view";
+    public static final By idConversationRoot = By.id(idStrConversationRoot);
+    private static final By xpathConversationContent = By.xpath("//*[@id='" + idStrConversationRoot + "']/*/*/*");
 
     private static final Function<String, String> xpathMessageNotificationByValue = value -> String
             .format("//*[starts-with(@id,'ttv_message_notification_chathead__label') and @value='%s']", value);
@@ -161,12 +165,27 @@ public class ConversationViewPage extends AndroidPage {
     private static final Function<String, String> xpathCursorHintByValue = value -> String
             .format("//*[@id='ctv__cursor' and @value='%s']", value);
 
-    private static final By idActionModeBarForwardButton = By.id("action_fwd");
-    private static final By idActionModeBarDeleteButton = By.id("action_delete");
-    private static final By idActionModeBarCopyButton = By.id("action_copy");
-    private static final By idActionModeBarCloseButton = By.id("action_mode_close_button");
+    private static final Function<String, String> xpathMoreActionButton = value -> String
+            .format("//*[@value='%s']", value);
 
-    private static final By idYoutubeContainer = By.id("fl__youtube_image_container");
+    private static final Function<String, String> xpathLinkPreviewUrlByValue = value -> String
+            .format("//*[@id='ttv__row_conversation__link_preview__url' and @value='%s']", value);
+
+    private static final Function<String, String> xpathTrashcanByName = name -> String
+            .format("//*[@id='ttv__row_conversation__separator__name' and @value='%s']" +
+                    "/following-sibling::*[@id='gtv__message_recalled']", name.toLowerCase());
+
+    private static final Function<String, String> xpathPenByName = name -> String
+            .format("//*[@id='ttv__row_conversation__separator__name' and @value='%s']" +
+                    "/following-sibling::*[@id='gtv__message_edited']", name.toLowerCase());
+
+    private static final By idMessageBottomMenuForwardButton = By.id("message_bottom_menu_item_forward");
+    private static final By idMessageBottomMenuDeleteLocalButton = By.id("message_bottom_menu_item_delete_local");
+    private static final By idMessageBottomMenuDeleteGlobalButton = By.id("message_bottom_menu_item_delete_global");
+    private static final By idMessageBottomMenuCopyButton = By.id("message_bottom_menu_item_copy");
+    private static final By idMessageBottomMenuEditButton = By.id("message_bottom_menu_item_edit");
+
+    private static final By idYoutubeContainer = By.id("iv__row_conversation__youtube_image");
 
     private static final By idSoundcloudContainer = By.id("mpv__row_conversation__message_media_player");
 
@@ -180,7 +199,7 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idAudioContainerButton = By.id("aab__row_conversation__audio_button");
 
-    private static final By idShareLocationContainer = By.id("cv__location_map_container");
+    private static final By idShareLocationContainer = By.id("fl__row_conversation__map_image_container");
 
     private static final By idLinkPreviewContainer = By.id("cv__row_conversation__link_preview__container");
 
@@ -210,7 +229,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public BufferedImage getConvoViewStateScreenshot() throws Exception {
-        return this.getElementScreenshot(getElement(idDialogRoot)).orElseThrow(
+        return this.getElementScreenshot(getElement(idConversationRoot)).orElseThrow(
                 () -> new IllegalStateException("Cannot get a screenshot of conversation view")
         );
     }
@@ -320,6 +339,14 @@ public class ConversationViewPage extends AndroidPage {
         }
     }
 
+    public void clearMessageInCursorInput() throws Exception {
+        getElement(idCursorEditText).clear();
+    }
+
+    public boolean waitUntilCursorInputTextVisible(String text) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathCurosrEditTextByValue.apply(text)));
+    }
+
     private By getCursorToolButtonLocatorByName(String name) {
         switch (name.toLowerCase()) {
             case "ping":
@@ -347,7 +374,15 @@ public class ConversationViewPage extends AndroidPage {
         if (btn.isPresent()) {
             btn.get().click();
         } else {
-            getElement(idCursorMore).click();
+            getElementIfDisplayed(idCursorMore, 3).orElseGet(() ->
+                    {
+                        try {
+                            return getElement(idCursorLess);
+                        } catch (Exception e) {
+                            throw new IllegalStateException("Cannot find element with Cursor less button");
+                        }
+                    }
+            ).click();
             getElement(locator).click();
         }
     }
@@ -492,8 +527,9 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean isImageExists() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idDialogImages);
+    public boolean isImageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idConversationImages) &&
+                DriverUtils.waitUntilLocatorDissapears(getDriver(), idClickedImageSendingIndicator, 20);
     }
 
     public boolean isConversationTitleVisible(String conversationTitle) throws Exception {
@@ -561,12 +597,13 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean isConversationVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idDialogRoot);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idConversationRoot);
     }
 
     private static final double MAX_BUTTON_STATE_OVERLAP = 0.5;
 
     public void tapPlayPauseBtn() throws Exception {
+        // TODO: Check whether swipe on SoundCloud, it will trigger long tap action?
         final WebElement playPauseBtn = getElement(idPlayPauseMedia, "Play/Pause button is not visible");
         if (!DriverUtils.waitUntilElementClickable(getDriver(), playPauseBtn)) {
             throw new IllegalStateException("Play/Pause button is not clickable");
@@ -629,7 +666,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public Optional<BufferedImage> getRecentPictureScreenshot() throws Exception {
-        return this.getElementScreenshot(getElement(idDialogImages));
+        return this.getElementScreenshot(getElement(idConversationImages));
     }
 
     public Optional<BufferedImage> getPreviewPictureScreenshot() throws Exception {
@@ -637,7 +674,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean isImageInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idDialogImages);
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idConversationImages);
     }
 
     public boolean waitForAPictureWithUnsentIndicator() throws Exception {
@@ -656,21 +693,21 @@ public class ConversationViewPage extends AndroidPage {
         return false;
     }
 
-    public int getCurrentNumberOfItemsInDialog() throws Exception {
-        return selectVisibleElements(xpathDialogContent).size();
+    public int getCurrentNumberOfItemsInConversation() throws Exception {
+        return selectVisibleElements(xpathConversationContent).size();
     }
 
     private static final long IMAGES_VISIBILITY_TIMEOUT = 10000; // seconds;
 
     public boolean waitForXImages(int expectedCount) throws Exception {
         assert expectedCount >= 0;
-        final Optional<WebElement> imgElement = getElementIfDisplayed(idDialogImages);
+        final Optional<WebElement> imgElement = getElementIfDisplayed(idConversationImages);
         if (expectedCount <= 1) {
             return (expectedCount == 0 && !imgElement.isPresent()) || (expectedCount == 1 && imgElement.isPresent());
         }
         final long msStarted = System.currentTimeMillis();
         do {
-            int actualCnt = getElements(idDialogImages).size();
+            int actualCnt = getElements(idConversationImages).size();
             if (actualCnt >= expectedCount) {
                 return true;
             }
@@ -699,6 +736,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public void waitUntilFileUploadIsCompleted(int timeoutSeconds, String size, String extension) throws Exception {
+        Thread.sleep(2000);
         String fileInfo = StringUtils.isEmpty(extension) ? size :
                 size + FILE_MESSAGE_SEPARATOR + extension.toUpperCase();
         fileInfo = String.format("%s%s%s", fileInfo, FILE_MESSAGE_SEPARATOR, FILE_UPLOADING_MESSAGE);
@@ -763,16 +801,6 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public boolean isActionModeBarButtonVisible(String btnNAme) throws Exception {
-        final By locator = getActionBarButtonLocatorByName(btnNAme);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public boolean isActionModeBarButtonInvisible(String btnNAme) throws Exception {
-        final By locator = getActionBarButtonLocatorByName(btnNAme);
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
-    }
-
     public void longTapMessage(String msg) throws Exception {
         final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
         getDriver().longTap(getElement(locator), DriverUtils.LONG_TAP_DURATION);
@@ -814,6 +842,10 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
+    public boolean waitUntilLinkPreviewUrlVisible(String url) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathLinkPreviewUrlByValue.apply(url)));
+    }
+
     public void tapContainer(String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
         getElement(locator).click();
@@ -821,12 +853,12 @@ public class ConversationViewPage extends AndroidPage {
 
     public void longTapContainer(String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
-        if (locator.equals(idAudioMessageContainer)) {
-            // workaround for audio messages
+        if (locator.equals(idAudioMessageContainer) || locator.equals(idVideoMessageContainer)) {
+            // To avoid to tap on play button in Video message and Audio message container.
             final WebElement el = getElement(locator);
             final Point location = el.getLocation();
             final Dimension size = el.getSize();
-            getDriver().longTap(location.x + size.width / 2, location.y + size.height / 5, DriverUtils.LONG_TAP_DURATION);
+            getDriver().longTap(location.x + size.width / 5, location.y + size.height / 5, DriverUtils.LONG_TAP_DURATION);
         } else {
             getDriver().longTap(getElement(locator), DriverUtils.LONG_TAP_DURATION);
         }
@@ -885,23 +917,60 @@ public class ConversationViewPage extends AndroidPage {
         return Integer.parseInt(getElement(locator).getAttribute("height"));
     }
 
-    private By getActionBarButtonLocatorByName(String btnName) {
+    //region Message Bottom Menu
+    private By getMessageBottomMenuButtonLocatorByName(String btnName) {
         switch (btnName.toLowerCase()) {
-            case "delete":
-                return idActionModeBarDeleteButton;
+            case "delete only for me":
+                return idMessageBottomMenuDeleteLocalButton;
+            case "delete for everyone":
+                return idMessageBottomMenuDeleteGlobalButton;
             case "copy":
-                return idActionModeBarCopyButton;
-            case "close":
-                return idActionModeBarCloseButton;
+                return idMessageBottomMenuCopyButton;
             case "forward":
-                return idActionModeBarForwardButton;
+                return idMessageBottomMenuForwardButton;
+            case "edit":
+                return idMessageBottomMenuEditButton;
             default:
-                throw new IllegalArgumentException(String.format("There is no '%s' button on the actions bar",
+                throw new IllegalArgumentException(String.format("There is no '%s' button on Message Bottom Menu",
                         btnName));
         }
     }
 
-    public void tapActionBarButton(String name) throws Exception {
-        getElement(getActionBarButtonLocatorByName(name)).click();
+    public void tapMessageBottomMenuButton(String name) throws Exception {
+        final By locator = getMessageBottomMenuButtonLocatorByName(name);
+        getElement(locator, String.format("Message bottom menu %s button is invisible", name)).click();
     }
+
+    public boolean waitUntilMessageBottomMenuButtonVisible(String btnNAme) throws Exception {
+        final By locator = getMessageBottomMenuButtonLocatorByName(btnNAme);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitUntilMessageBottomMenuButtonInvisible(String btnNAme) throws Exception {
+        final By locator = getMessageBottomMenuButtonLocatorByName(btnNAme);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+    //endregion
+
+    //region Contact name icon
+    public boolean waitUntilTrashIconVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathTrashcanByName.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitUntilTrashIconInvisible(String name) throws Exception {
+        final By locator = By.xpath(xpathTrashcanByName.apply(name));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public boolean waitUntilPenIconVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathPenByName.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitUntilPenIconInvisible(String name) throws Exception {
+        final By locator = By.xpath(xpathPenByName.apply(name));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+    //endregion
 }

@@ -9,7 +9,7 @@ Feature: Search
     Given I see Conversations list with conversations
     Given I wait until <Contact1> exists in backend search results
     When I tap on conversation name <Contact2>
-    And I navigate back from dialog page
+    And I navigate back from conversation
     And I open Search UI
     And I type user name "<Contact1>" in search field
     Then I see user <Contact1> in Search result list
@@ -43,7 +43,7 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact2>
-    And I navigate back from dialog page
+    And I navigate back from conversation
     And I open Search UI
     And I type the first <Size> chars of user name "<Contact1>" in search field
     Then I see user <Contact1> in Search result list
@@ -355,7 +355,7 @@ Feature: Search
       | user1Name | user2Name |
 
   @C49974 @regression
-  Scenario Outline: (AN-3688) Verify video call button is only available for single conversation
+  Scenario Outline: (AN-3688 / AN-4292) Verify video call button is only available for single conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number

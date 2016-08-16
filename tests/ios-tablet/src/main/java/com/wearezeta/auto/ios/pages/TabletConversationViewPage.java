@@ -15,7 +15,7 @@ public class TabletConversationViewPage extends ConversationViewPage {
 		super(lazyDriver);
 	}
 	
-	public void pressAddPictureiPadButton() throws Exception {
+	public void tapAddPictureiPadButton() throws Exception {
 		getElement(nameAddPictureButton).click();
 	}
 	

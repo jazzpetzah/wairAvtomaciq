@@ -119,12 +119,12 @@ public abstract class AndroidPage extends BasePage {
     }
 
     public void dialogsPagesSwipeUp(int durationMilliseconds) throws Exception {
-        swipeByCoordinates(durationMilliseconds, 50, 80, 50, 30);
+        swipeByCoordinates(durationMilliseconds, 50, 70, 50, 30);
     }
 
     public void dialogsPagesSwipeDown(int durationMilliseconds)
             throws Exception {
-        swipeByCoordinates(durationMilliseconds, 50, 30, 50, 80);
+        swipeByCoordinates(durationMilliseconds, 50, 30, 50, 70);
     }
 
     public void swipeByCoordinates(int durationMilliseconds,

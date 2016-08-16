@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @C2883 @regression
+  @C2883 @regression @fastLogin
   Scenario Outline: Self profile. Verify max limit in 64 chars [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -20,7 +20,7 @@ Feature: Self Profile
       | Name      | NewUsername                                                          | NewUsername1                                                     |
       | user1Name | mynewusernamewithmorethan64characters3424245345345354353452345234535 | mynewusernamewithmorethan64characters342424534534535435345234523 |
 
-  @C2869 @regression
+  @C2869 @regression @fastLogin
   Scenario Outline: Change your profile picture [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -30,16 +30,16 @@ Feature: Self Profile
     And I wait for 10 seconds
     And I remember my current profile picture
     And I tap on personal screen
-    And I press Camera Roll button
-    And I choose a picture from camera roll
-    And I confirm my choice
+    And I tap Camera Roll button on Camera page
+    And I select the first picture from Camera Roll
+    And I tap Confirm button on Picture preview page
     Then I wait up to <Timeout> seconds until my profile picture is changed
 
     Examples:
       | Name      | Timeout |
       | user1Name | 60      |
 
-  @C2875 @rc @regression
+  @C2875 @rc @regression @fastLogin
   Scenario Outline: Change your profile picture [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -50,16 +50,16 @@ Feature: Self Profile
     And I wait for 10 seconds
     And I remember my current profile picture
     And I tap on personal screen
-    And I press Camera Roll button
-    And I choose a picture from camera roll
-    And I confirm my choice
+    And I tap Camera Roll button on Camera page
+    And I select the first picture from Camera Roll
+    And I tap Confirm button on Picture preview page
     Then I wait up to <Timeout> seconds until my profile picture is changed
 
     Examples:
       | Name      | Timeout |
       | user1Name | 60      |
 
-  @C2878 @regression
+  @C2878 @regression @fastLogin
   Scenario Outline: Attempt to enter a name with 0 chars [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -75,7 +75,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @C2886 @regression
+  @C2886 @regression @fastLogin
   Scenario Outline: Verify 2 chars limit [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -92,7 +92,7 @@ Feature: Self Profile
       | Name      | username1char |
       | user1Name | c             |
 
-  @C2888 @rc @regression
+  @C2888 @rc @regression @fastLogin
   Scenario Outline: Verify name change [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -115,7 +115,7 @@ Feature: Self Profile
       | Name      | NewUsername | Contact   |
       | user1Name | NewName     | user2Name |
 
-  @C2856 @regression
+  @C2856 @regression @fastLogin
   Scenario Outline: Verify changing and applying accent color [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -170,7 +170,7 @@ Feature: Self Profile
       | Name      | Number        | Code | ExpectedText                |
       | user1Name | 8301652248706 | +0   | has already been registered |
 
-  @C2855 @rc @regression
+  @C2855 @rc @regression @fastLogin
   Scenario Outline: Verify theme switcher is not shown on the self profile [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape

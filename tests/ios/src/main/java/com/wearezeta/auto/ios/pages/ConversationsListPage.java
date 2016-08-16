@@ -7,6 +7,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.DummyElement;
+import com.wearezeta.auto.ios.tools.FastLoginContainer;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.*;
@@ -67,14 +69,20 @@ public class ConversationsListPage extends IOSPage {
 
     private static final By nameConversationsHintTextLabel = MobileBy.AccessibilityId("Conversations start here");
 
+    private static final By shareContactsAlertOKButton = By.xpath(xpathStrAlertButtonByCaption.apply("OK"));
+
     public ConversationsListPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
     public void tapContactsButton() throws Exception {
         getElement(nameContactsButton).click();
-        // Wait until animation is completed
-        DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.xpathPickerClearButton, 3);
+        if (FastLoginContainer.getInstance().isEnabled()) {
+            getElementIfDisplayed(shareContactsAlertOKButton, 3).orElseGet(DummyElement::new).click();
+        } else {
+            // Wait until animation is completed
+            DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.xpathPickerClearButton, 3);
+        }
     }
 
     public void tapPlayPauseButtonNextTo(String name) throws Exception {
@@ -133,10 +141,6 @@ public class ConversationsListPage extends IOSPage {
             swipeRightOnContact(conversation);
             count++;
         } while ((count < 5) && !isCancelActionButtonVisible());
-    }
-
-    public boolean waitForContactListToLoad() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(xpathStrConvoListEntryByIdx.apply(1)));
     }
 
     public boolean isPendingRequestInContactList() throws Exception {
@@ -268,7 +272,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public void openArchivedConversations() throws Exception {
-        getElement(nameOpenArchiveButton).click();
+        clickElementWithRetryIfStillDisplayed(nameOpenArchiveButton);
     }
 
     public boolean isArchiveButtonVisible() throws Exception {

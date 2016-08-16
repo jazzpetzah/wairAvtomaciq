@@ -1,6 +1,6 @@
 Feature: Search
 
-  @C2803 @regression
+  @C2803 @regression @fastLogin
   Scenario Outline: Verify starting a call with action button [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -17,7 +17,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2804 @rc @regression
+  @C2804 @rc @regression @fastLogin
   Scenario Outline: Verify starting a call with action button [LANDSAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -35,7 +35,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2805 @regression
+  @C2805 @regression @fastLogin
   Scenario Outline: Verify sharing a photo to a newly created group conversation with action button [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to all other users
@@ -45,10 +45,10 @@ Feature: Search
     When I open search UI
     And I see top people list on People picker page
     Then I tap on first 3 top connections
-    And I tap Send image action button on People picker page
-    And I press Camera Roll button
-    And I choose a picture from camera roll
-    And I confirm my choice
+    When I tap Send image action button on People picker page
+    And I tap Camera Roll button on Camera page
+    And I select the first picture from Camera Roll
+    And I tap Confirm button on Picture preview page
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I see 1 photo in the conversation view
     When I navigate back to conversations list
@@ -58,7 +58,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @C2806 @rc @regression
+  @C2806 @rc @regression @fastLogin
   Scenario Outline: Verify sharing a photo to a newly created group conversation with action button [LANDSAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to all other users
@@ -69,10 +69,10 @@ Feature: Search
     When I open search UI
     And I see top people list on People picker page
     Then I tap on first 3 top connections
-    And I tap Send image action button on People picker page
-    And I press Camera Roll button
-    And I choose a picture from camera roll
-    And I confirm my choice
+    When I tap Send image action button on People picker page
+    And I tap Camera Roll button on Camera page
+    And I select the first picture from Camera Roll
+    And I tap Confirm button on Picture preview page
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I see 1 photo in the conversation view
     And I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
@@ -81,7 +81,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @C2808 @regression
+  @C2808 @regression @fastLogin
   Scenario Outline: Verify action buttons appear after selecting person from Top People [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -98,7 +98,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2810 @regression
+  @C2810 @regression @fastLogin
   Scenario Outline: Verify action buttons appear after choosing user from search results [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -115,7 +115,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2812 @regression
+  @C2812 @regression @fastLogin
   Scenario Outline: Verify button Open is changed on Create after checking second person [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -133,7 +133,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C2814 @regression
+  @C2814 @regression @fastLogin
   Scenario Outline: Verify action buttons disappear by unchecking the avatar [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -152,7 +152,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C2816 @regression
+  @C2816 @regression @fastLogin
   Scenario Outline: Verify action buttons disappear by deleting token from a search field [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -167,18 +167,18 @@ Feature: Search
     And I see Open conversation action button on People picker page
     And I tap on 2nd top connection contact
     Then I see Create conversation action button on People picker page
-    When I press backspace button
-    And I press backspace button
+    When I press Backspace button in search field
+    And I press Backspace button in search field
     Then I do not see Create conversation action button on People picker page
-    When I press backspace button
-    And I press backspace button
+    When I press Backspace button in search field
+    And I press Backspace button in search field
     Then I do not see Open conversation action button on People picker page
 
     Examples: 
       | Name      |
       | user1Name |
 
-  @C2817 @regression
+  @C2817 @regression @fastLogin
   Scenario Outline: Verify opening conversation with action button [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -195,7 +195,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C2818 @regression
+  @C2818 @regression @fastLogin
   Scenario Outline: Verify opening conversation with action button [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -213,7 +213,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C2802 @regression
+  @C2802 @regression @fastLogin
   Scenario Outline: Verify action buttons appear after choosing user from search results [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -234,8 +234,8 @@ Feature: Search
     And I tap on conversation <Contact> in search result
     And I do not see Invite more people button
     And I see Open conversation action button on People picker page
-    And I press backspace button
-    And I press backspace button
+    And I press Backspace button in search field
+    And I press Backspace button in search field
     And I do not see Open conversation action button on People picker page
     Then I see Invite more people button
 

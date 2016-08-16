@@ -1,6 +1,6 @@
 Feature: Copy/Delete Message
 
-  @C119753 @regression
+  @C119753 @regression @fastLogin
   Scenario Outline: Verify copy/delete menu disappears on the rotation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -18,7 +18,7 @@ Feature: Copy/Delete Message
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C145958 @rc @regression
+  @C145958 @rc @regression @fastLogin
   Scenario Outline: Delete Message. Verify deleting a picture [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -32,8 +32,7 @@ Feature: Copy/Delete Message
     And I see <MessagesCount> default messages in the conversation view
     When I long tap on image in conversation view
     And I tap on Delete badge item
-    # FIXME: Sometimes autoaccept fails
-    And I accept alert
+    And I select Delete only for me item from Delete menu
     Then I see 0 photos in the conversation view
     And I see <MessagesCount> default messages in the conversation view
 

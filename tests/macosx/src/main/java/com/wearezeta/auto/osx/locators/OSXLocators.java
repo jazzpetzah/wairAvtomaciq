@@ -14,22 +14,6 @@ public final class OSXLocators {
                 .format("/AXMenu/AXMenuItem[contains(@AXTitle, '%s')]", name);
     }
 
-    public static final class NoInternetConnectionPage {
-
-        public static final String idOKButton = "_NS:14";
-
-        public static final String xpathNoInternetMessage = "//AXStaticText[contains(@AXValue,'No Internet Connection')]";
-    }
-
-    public static final class ProblemReportPage {
-
-        public static final String idWindow = "_NS:162";
-
-        public static final String nameCancelButton = "Cancel";
-
-        public static final String nameSendButton = "Send";
-    }
-
     public static final class MainWirePage {
 
         public static final String xpathWindow = "//AXApplication[contains(@AXTitle,'Wire')]//AXWindow[contains(@AXTitle,'Wire')]";
@@ -53,6 +37,17 @@ public final class OSXLocators {
 
         public static final String xpathMinimizeButton = xpathWindow
                 + "//AXButton[@AXRoleDescription='minimize button']";
+    }
+    
+    public static final class AddressBookPermissionPage {
+
+        public static final String xpathWindow = "//AXApplication[contains(@AXTitle,'UserNotificationCenter')]//AXWindow";
+
+        public static final String xpathOkButton = xpathWindow
+                + "//AXButton[@AXTitle='OK']";
+
+        public static final String xpathNoButton = xpathWindow
+                + "//AXButton[@AXTitle='Don't Allow]";
     }
 
     public static final class ContactListContextMenuPage {

@@ -1,13 +1,13 @@
 package com.wearezeta.auto.osx.common;
 
 import com.wearezeta.auto.common.Platform;
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
 
 public class OSXExecutionContext {
 
     public static final Platform CURRENT_PLATFORM = Platform.Mac;
     public static final Platform CURRENT_SECONDARY_PLATFORM = Platform.Web;
+    
+    public static final boolean KEEP_DATABASE = Boolean.getBoolean("com.wire.database.keep");
 
     public static final String EXTENDED_LOGGING_LEVEL = System.getProperty(
             "extendedLoggingLevel", "SEVERE");
@@ -20,9 +20,6 @@ public class OSXExecutionContext {
 
     public static final String WIRE_APP_PATH = System.getProperty(
             "com.wire.app.path", "/Applications/Wire.app");
-
-    public static final String CONFIG_DOMAIN = System.getProperty(
-            "wireConfigDomain", "com.wearezeta.zclient.mac.development");
 
     public static final String OS_NAME = System.getProperty("com.wire.os.name",
             "Mac");
@@ -52,7 +49,4 @@ public class OSXExecutionContext {
     public static final String USER_HOME = System.getProperty("user.home");
 
     public static final String USERNAME = System.getProperty("user.name");
-
-    public static final HashMap<String, BufferedImage> SCREENSHOTS = new HashMap<>();
-
 }

@@ -9,6 +9,7 @@ import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.SecurityAlertPage;
+import com.wearezeta.auto.android.pages.registration.BackendSelectPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.AppiumServer;
@@ -62,8 +63,6 @@ public class CommonAndroidSteps {
             )
     );
 
-    private static Optional<String> recentMessageId;
-
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     public static final Platform CURRENT_PLATFORM = Platform.Android;
@@ -89,10 +88,6 @@ public class CommonAndroidSteps {
         return CommonUtils.getAndroidPackageFromConfig(CommonAndroidSteps.class);
     }
 
-    public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path) throws Exception {
-        return resetAndroidDriver(url, path, Optional.empty());
-    }
-
     @SuppressWarnings("unchecked")
     public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path,
                                                         Optional<Map<String, Object>> additionalCaps) throws Exception {
@@ -103,8 +98,7 @@ public class CommonAndroidSteps {
         capabilities.setCapability("deviceName", "null");
         capabilities.setCapability("app", path);
         capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(getClass()));
-        capabilities.setCapability("appActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
-        capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidLoginActivityFromConfig(getClass()));
+        capabilities.setCapability("appActivity", CommonUtils.getAndroidLaunchActivity(getClass()));
         capabilities.setCapability("automationName", "Selendroid");
         if (additionalCaps.isPresent()) {
             for (Map.Entry<String, Object> entry : additionalCaps.get().entrySet()) {
@@ -245,8 +239,16 @@ public class CommonAndroidSteps {
         if (scenario.getSourceTagNames().contains("@upgrade")) {
             appPath = getOldPath();
         }
-        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath);
-        updateDriver(lazyDriver);
+
+        Map<String, Object> additionalCapsMap = new HashMap<>();
+        if (!CommonUtils.getHasBackendSelection(getClass())) {
+            additionalCapsMap.put("appActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
+            additionalCapsMap.put("appWaitActivity", CommonUtils.getAndroidLoginActivityFromConfig(getClass()));
+        }
+        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath,
+                additionalCapsMap.isEmpty() ? Optional.empty() : Optional.of(additionalCapsMap));
+
+        updateDriver(lazyDriver, CommonUtils.getHasBackendSelection(getClass()));
     }
 
     @After
@@ -276,6 +278,13 @@ public class CommonAndroidSteps {
             e.printStackTrace();
         }
 
+        // Clear all contacts in address book
+        try {
+            AndroidCommonUtils.clearAllContacts();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         try {
             usrMgr.resetUsers();
         } catch (Exception e) {
@@ -297,12 +306,17 @@ public class CommonAndroidSteps {
         AndroidLogListener.forceStopAll();
     }
 
-    private void updateDriver(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+    private void updateDriver(Future<ZetaAndroidDriver> lazyDriver, boolean hasBackendSelectPopup) throws Exception {
         ZetaFormatter.setLazyDriver(lazyDriver);
         if (pagesCollection.hasPages()) {
             pagesCollection.clearAllPages();
         }
-        pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
+        if (hasBackendSelectPopup) {
+            pagesCollection.setFirstPage(new BackendSelectPage(lazyDriver));
+            pagesCollection.getPage(BackendSelectPage.class).waitForInitialScreen();
+        } else {
+            pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
+        }
     }
 
     /**
@@ -320,9 +334,9 @@ public class CommonAndroidSteps {
         customCaps.put("noReset", true);
         customCaps.put("fullReset", false);
         customCaps.put("skipUninstall", true);
-        customCaps.put("appWaitActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
+        customCaps.put("appActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
         final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath, Optional.of(customCaps));
-        updateDriver(lazyDriver);
+        updateDriver(lazyDriver, false);
     }
 
     /**
@@ -508,7 +522,7 @@ public class CommonAndroidSteps {
         if (shouldBeEqual == null) {
             Assert.assertTrue(
                     String.format("The current screen state seems to be similar to the previous one after %s seconds",
-                            timeoutSeconds), screenState.isChanged(timeoutSeconds, 0.975));
+                            timeoutSeconds), screenState.isChanged(timeoutSeconds, 0.98));
         } else {
             Assert.assertTrue(
                     String.format("The current screen state seems to be different to the previous one after %s seconds",
@@ -1013,6 +1027,21 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * Add existed and known contact into Address book
+     *
+     * @param contactName        expected contact name
+     * @param contactPhoneNumber should be phone number without prefix
+     * @param prefix             should be +49 or others with same formate
+     * @throws Exception
+     * @step. ^I add contact with name (.*) and phone (.*) to Address Book$
+     */
+    @Given("^I add name (.*) and phone (.*) with prefix (.*) to Address Book$")
+    public void IAddContactIntoAddressBook(String contactName, String contactPhoneNumber, String prefix) throws Exception {
+        PhoneNumber phoneNumber = new PhoneNumber(prefix, contactPhoneNumber);
+        AndroidCommonUtils.insertContact(contactName, phoneNumber);
+    }
+
+    /**
      * Send personal invitation over the backend
      *
      * @param userToNameAlias the name/alias of conversations list owner
@@ -1142,12 +1171,15 @@ public class CommonAndroidSteps {
      * Checks to see that an alert message contains the correct text
      *
      * @param expectedMsg the expected error message
+     * @param pureText    to specifiy whether it replace the name alias
      * @throws Exception
-     * @step. ^I see alert message containing \"(.*)\"$
+     * @step. ^I see alert message containing (pure text )?\"(.*)\"$
      */
-    @Then("^I see alert message containing \"(.*)\" in the (title|body)$")
-    public void ISeeAlertMessage(String expectedMsg, String location) throws Exception {
-        expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, ClientUsersManager.FindBy.NAME_ALIAS);
+    @Then("^I see alert message containing (pure text )?\"(.*)\" in the (title|body)$")
+    public void ISeeAlertMessage(String pureText, String expectedMsg, String location) throws Exception {
+        if (pureText == null) {
+            expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, ClientUsersManager.FindBy.NAME_ALIAS);
+        }
         switch (location.toLowerCase()) {
             case "body":
                 Assert.assertTrue(String.format("An alert containing text '%s' in body is not visible", expectedMsg),
@@ -1272,18 +1304,37 @@ public class CommonAndroidSteps {
      * User X delete message from User/Group via specified device
      * Note : The recent message means the recent message sent from specified device by SE, the device should online.
      *
+     * @param userNameAlias    user name/alias
+     * @param deleteEverywhere not null means delete everywhere, otherwise delete local
+     * @param convoType        either 'user' or 'group conversation'
+     * @param dstNameAlias     destination user name/alias or group convo name
+     * @param deviceName       source device name. Will be created if does not exist yet
+     * @throws Exception
+     * @step. ^User (.*) deletes? the recent message (everywhere )?from (user|group conversation) (.*) via device (.*)$
+     */
+    @When("^User (.*) deletes? the recent message (everywhere )?from (user|group conversation) (.*) via device (.*)$")
+    public void UserXDeleteLastMessage(String userNameAlias, String deleteEverywhere, String convoType,
+                                       String dstNameAlias, String deviceName) throws Exception {
+        boolean isGroup = convoType.equals("group conversation");
+        boolean isDeleteEverywhere = deleteEverywhere != null;
+        commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup, isDeleteEverywhere);
+    }
+
+    /**
+     * User X edit his own messages, be careful this message will not control the type of the message you edit.
+     *
      * @param userNameAlias user name/alias
+     * @param newMessage    the message you want to update to
      * @param convoType     either 'user' or 'group conversation'
-     * @param dstNameAlias  destination user name/alias or group convo name
+     * @param dstNameAlias  estination user name/alias or group convo name
      * @param deviceName    source device name. Will be created if does not exist yet
      * @throws Exception
-     * @step. ^User (.*) deletes? the recent message from (user|group conversation) (.*) via device (.*)$
      */
-    @When("^User (.*) deletes? the recent message from (user|group conversation) (.*) via device (.*)$")
-    public void UserXDeleteLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
-            throws Exception {
+    @When("^User (.*) edits? the recent message to \"(.*)\" from (user|group conversation) (.*) via device (.*)$")
+    public void UserXEditLastMessage(String userNameAlias, String newMessage, String convoType,
+                                     String dstNameAlias, String deviceName) throws Exception {
         boolean isGroup = convoType.equals("group conversation");
-        commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup);
+        commonSteps.UserUpdateLatestMessage(userNameAlias, dstNameAlias, newMessage, deviceName, isGroup);
     }
 
     /**
@@ -1297,33 +1348,32 @@ public class CommonAndroidSteps {
      * @step. ^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$
      */
     @When("^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$")
-    public void UserXRemeberLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
+    public void UserXRemembersLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
             throws Exception {
-        recentMessageId = Optional.empty();
-        boolean isGroup = convoType.equals("group conversation");
-        recentMessageId = commonSteps.UserGetRecentMessageId(userNameAlias, dstNameAlias, deviceName, isGroup);
+        commonSteps.UserXRemembersLastMessage(userNameAlias, convoType.equals("group conversation"),
+                dstNameAlias, deviceName);
     }
 
     /**
-     * Check the rememberd message is changed
+     * Check the remembered message is changed
      *
      * @param userNameAlias user name/alias
      * @param convoType     either 'user' or 'group conversation'
      * @param dstNameAlias  destination user name/alias or group convo name
      * @param deviceName    source device name. Will be created if does not exist yet
      * @throws Exception
-     * @step. ^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed$
+     * @step. ^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is
+     * changed( in \\d+ seconds?)?$
      */
-    @Then("^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed$")
+    @Then("^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is " +
+            "changed( in \\d+ seconds?)?$")
     public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias,
-                                             String deviceName) throws Exception {
-        if (recentMessageId.equals(Optional.empty())) {
-            throw new IllegalStateException("You should remember the recent message befor you check it");
-        }
-        final Optional<String> actualMessageId = commonSteps.UserGetRecentMessageId(userNameAlias,
-                dstNameAlias, deviceName, convoType.equals("group conversation"));
-        Assert.assertFalse(String.format("Remembered message Id should not equal to '%s'", actualMessageId),
-                actualMessageId.get().equals(recentMessageId.get()));
+                                             String deviceName, String waitDuration) throws Exception {
+        final int durationSeconds = (waitDuration == null) ?
+                CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
+                : Integer.parseInt(waitDuration.replaceAll("[\\D]", ""));
+        commonSteps.UserXFoundLastMessageChanged(userNameAlias, convoType.equals("group conversation"), dstNameAlias,
+                deviceName, durationSeconds);
     }
 
     /**
@@ -1597,9 +1647,23 @@ public class CommonAndroidSteps {
      * @throws Exception
      * @step. ^User (.*) resets password to default$
      */
-    @When("^User (.*) resets password to \"(.*)\"")
+    @When("^User (.*) resets password to \"(.*)\"$")
     public void UserXRestesPassword(String userNmaeAlias, String newPassword) throws Exception {
         newPassword = usrMgr.replaceAliasesOccurences(newPassword, ClientUsersManager.FindBy.PASSWORD_ALIAS);
         commonSteps.UserResetsPassword(userNmaeAlias, newPassword);
+    }
+
+    /**
+     * Add email(s) into address book of a user and upload address book in backend
+     *
+     * @param asUser   name of the user where the address book is uploaded
+     * @param contacts list of email addresses seperated by comma
+     * @throws Exception
+     * @step. ^User (.*) has (?: emails?|phone numbers?) (.*) in address book$
+     */
+    @Given("^User (.*) has (?:emails?|phone numbers?) (.*) in address book$")
+    public void UserXHasEmailsInAddressBook(String asUser, String contacts)
+            throws Exception {
+        commonSteps.UserXHasContactsInAddressBook(asUser, contacts);
     }
 }

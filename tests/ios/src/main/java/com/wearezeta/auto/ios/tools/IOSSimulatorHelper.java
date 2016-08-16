@@ -21,9 +21,12 @@ import org.apache.log4j.Logger;
 
 import static com.wearezeta.auto.common.CommonUtils.getDeviceName;
 import static com.wearezeta.auto.common.CommonUtils.getIOSToolsRoot;
+import static com.wearezeta.auto.common.CommonUtils.getImagesPath;
 
 public class IOSSimulatorHelper {
     public static final int SIMULATOR_INTERACTION_TIMEOUT = 3 * 60; //seconds
+
+    private static final String TESTING_IMAGE_NAME = "testing.jpg";
 
     private static Logger log = ZetaLogger.getLog(IOSSimulatorHelper.class.getSimpleName());
 
@@ -147,16 +150,22 @@ public class IOSSimulatorHelper {
 
     public static String getId() throws Exception {
         final String deviceName = getDeviceName(IOSSimulatorHelper.class);
+        final String platformVersion = CommonUtils.getPlatformVersionFromConfig(IOSSimulatorHelper.class);
         if (!simIdsMapping.containsKey(deviceName)) {
-            final String output = executeSimctl(new String[]{"list", "devices"});
+            final String output = executeInstruments("-s");
+            final Pattern linePattern = Pattern.compile(
+                            "([\\w\\s]+)\\(([0-9\\.]+)\\)\\s+\\[([\\w]{8}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{12})");
             for (String line : output.split("\n")) {
-                if (line.contains(deviceName + " (") && !line.contains("unavailable")) {
-                    final Pattern pattern =
-                            Pattern.compile("([\\w]{8}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{12})");
-                    final Matcher m = pattern.matcher(line);
+                if (!line.contains("unavailable")) {
+                    final Matcher m = linePattern.matcher(line);
                     if (m.find()) {
-                        simIdsMapping.put(deviceName, m.group(0));
-                        break;
+                        final String actualDeviceName = m.group(1).trim();
+                        final String actualPlatformVersion = m.group(2).trim();
+                        final String actualSimId = m.group(3).trim();
+                        if (deviceName.equals(actualDeviceName) && platformVersion.startsWith(actualPlatformVersion)) {
+                            simIdsMapping.put(deviceName, actualSimId);
+                            break;
+                        }
                     }
                 }
             }
@@ -215,14 +224,14 @@ public class IOSSimulatorHelper {
     }
 
     private static final String XCRUN_PATH = "/usr/bin/xcrun";
-    private static final int XCRUN_TIMEOUT_SECONDS = 60;
+    private static final String INSTRUMENTS_PATH = "/usr/bin/instruments";
 
-    private static String executeXcRunCommand(String prefix, String[] cmd) throws Exception {
-        final String[] firstCmdPart = new String[]{XCRUN_PATH, prefix};
-        final String[] fullCmd = ArrayUtils.addAll(firstCmdPart, cmd);
-        log.debug(String.format("Executing: %s", Arrays.toString(fullCmd)));
-        final Process process = new ProcessBuilder(fullCmd).redirectErrorStream(true).start();
-        process.waitFor(XCRUN_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+    private static final int COMMAND_TIMEOUT_SECONDS = 60;
+
+    private static String getCommandOutput(String[] cmd) throws Exception {
+        log.debug(String.format("Executing: %s", Arrays.toString(cmd)));
+        final Process process = new ProcessBuilder(cmd).redirectErrorStream(true).start();
+        process.waitFor(COMMAND_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         final StringBuilder builder = new StringBuilder();
         String line;
@@ -234,12 +243,20 @@ public class IOSSimulatorHelper {
         return output;
     }
 
-    private static String executeSimctl(String[] cmd) throws Exception {
-        return executeXcRunCommand("simctl", cmd);
+    private static String executeXcRun(String verb, String[] cmd) throws Exception {
+        final String[] firstCmdPart = new String[]{XCRUN_PATH, verb};
+        final String[] fullCmd = ArrayUtils.addAll(firstCmdPart, cmd);
+        return getCommandOutput(fullCmd);
     }
 
-    private static String executeInstruments(String[] cmd) throws Exception {
-        return executeXcRunCommand("instruments", cmd);
+    private static String executeInstruments(String... args) throws Exception {
+        final String[] firstCmdPart = new String[]{INSTRUMENTS_PATH};
+        final String[] fullCmd = ArrayUtils.addAll(firstCmdPart, args);
+        return getCommandOutput(fullCmd);
+    }
+
+    private static String executeSimctl(String[] cmd) throws Exception {
+        return executeXcRun("simctl", cmd);
     }
 
     public static void kill() throws Exception {
@@ -285,8 +302,13 @@ public class IOSSimulatorHelper {
                     "Please make sure the image %s exists and is accessible", img.getCanonicalPath()
             ));
         }
-        executeSimctl(new String[]{"addphoto", "booted", img.getCanonicalPath()
-        });
+        executeSimctl(new String[]{"addphoto", "booted", img.getCanonicalPath()});
+        // Let Simulator to update the lib
+        Thread.sleep(3000);
+    }
+
+    public static void uploadImage() throws Exception {
+        uploadImage(new File(getImagesPath(IOSSimulatorHelper.class) + File.separator + TESTING_IMAGE_NAME));
     }
 
     public static void copySystemClipboardToSimulatorClipboard() throws Exception {

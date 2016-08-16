@@ -5,6 +5,7 @@ import com.wire.picklejar.execution.exception.StepNotExecutableException;
 import com.wire.picklejar.execution.exception.StepNotFoundException;
 import com.wire.picklejar.scan.PickleAnnotationSeeker;
 import com.wire.picklejar.scan.JavaSeeker;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -117,8 +118,8 @@ public class PickleExecutor {
                     } else {
                         method.invoke(getOrAddCachedDeclaringClassForMethod(method, constructorParams), params.toArray());
                     }
-                } catch (IllegalArgumentException | InvocationTargetException | IllegalAccessException | InstantiationException |
-                        NoSuchMethodException ite) {
+                } catch (PendingException | IllegalArgumentException | InvocationTargetException | IllegalAccessException |
+                        InstantiationException | NoSuchMethodException ite) {
                     endTime = Instant.now();
                     throw new StepNotExecutableException(Duration.between(startTime, endTime).toNanos(), String.format("\n"
                             + ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\n"
@@ -228,11 +229,11 @@ public class PickleExecutor {
         }
         return rawStep;
     }
-    
+
     public static Throwable getLastCause(Throwable e) {
         return e.getCause() != null ? getLastCause(e.getCause()) : e;
     }
-    
+
     public static String getThrowableStacktraceString(Throwable e) {
         StringWriter sw = new StringWriter();
         e.printStackTrace(new PrintWriter(sw));

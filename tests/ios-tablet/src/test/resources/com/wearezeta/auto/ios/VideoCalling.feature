@@ -1,6 +1,6 @@
 Feature: Video Calling
 
-  @C28850 @rc @calling_basic
+  @C28850 @rc @calling_basic @fastLogin
   Scenario Outline: Verify cancelling Video call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -18,7 +18,7 @@ Feature: Video Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C28852 @calling_basic
+  @C28852 @calling_basic @fastLogin
   Scenario Outline: Verify accepting video call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -37,7 +37,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C28856 @calling_basic
+  @C28856 @calling_basic @fastLogin
   Scenario Outline: Verify finishing video call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -57,7 +57,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C28855 @rc @calling_basic
+  @C28855 @rc @calling_basic @fastLogin
   Scenario Outline: Verify ignoring Video call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -74,7 +74,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C28864 @calling_basic
+  @C28864 @calling_basic @fastLogin
   Scenario Outline: Verify muting ongoing Video call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

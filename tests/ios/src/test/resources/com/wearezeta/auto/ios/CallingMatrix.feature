@@ -1,6 +1,6 @@
 Feature: Calling Matrix
 
-  @calling_matrix
+  @calling_matrix @fastLogin
   Scenario Outline: Verify I can make 1:1 call to <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -21,12 +21,10 @@ Feature: Calling Matrix
       | Name      | Contact   | CallBackend          | Timeout |
       | user1Name | user2Name | chrome:51.0.2704.106 | 20      |
       | user1Name | user2Name | chrome:50.0.2661.75  | 20      |
-      | user1Name | user2Name | chrome:49.0.2623.75  | 20      |
-      #| user1Name | user2Name | chrome:47.0.2526.73 | 20      |
-      #| user1Name | user2Name | firefox:45.0.1      | 20      |
-      # Due to not working firefox
-      #| user1Name | user2Name | firefox:44.0.2      | 20      |
+      | user1Name | user2Name | firefox:46.0.1       | 20      |
+      | user1Name | user2Name | firefox:45.0.1       | 20      |
 
+  @calling_matrix @fastLogin
   Scenario Outline: Verify I can make 1:1 call to AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -43,9 +41,9 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact   | CallBackend    | Timeout |
-      | user1Name | user2Name | zcall:2.7.18   | 20      |
+      | user1Name | user2Name | zcall:2.7.26   | 20      |
 
-  @calling_matrix
+  @calling_matrix @fastLogin
   Scenario Outline: Verify I can receive 1:1 call from <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -67,12 +65,10 @@ Feature: Calling Matrix
       | Name      | Contact   | CallBackend          | Timeout |
       | user1Name | user2Name | chrome:51.0.2704.106 | 20      |
       | user1Name | user2Name | chrome:50.0.2661.75  | 20      |
-      | user1Name | user2Name | chrome:49.0.2623.75  | 20      |
-      #| user1Name | user2Name | chrome:47.0.2526.73 | 20      |
+      | user1Name | user2Name | firefox:46.0.1       | 20      |
       | user1Name | user2Name | firefox:45.0.1       | 20      |
-      #| user1Name | user2Name | firefox:44.0.2      | 20      |
 
-  @calling_matrix
+  @calling_matrix @fastLogin
   Scenario Outline: Verify I can receive 1:1 call from AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -90,10 +86,10 @@ Feature: Calling Matrix
     And <Contact> verifies that call to conversation <Name> was successful
 
     Examples:
-      | Name      | Contact   | CallBackend      | Timeout |
-      | user1Name | user2Name | autocall:2.7.18  | 60      |
+      | Name      | Contact   | CallBackend   | Timeout |
+      | user1Name | user2Name | zcall:2.7.26  | 60      |
 
-  @calling_matrix
+  @calling_matrix @fastLogin
   Scenario Outline: Verify I can make group call with multiple <WaitBackend>
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -118,13 +114,10 @@ Feature: Calling Matrix
       | Name      | Contact1  | Contact2  | GroupChatName | WaitBackend          | Timeout |
       | user1Name | user2Name | user3Name | GroupCall     | chrome:51.0.2704.106 | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | chrome:50.0.2661.75  | 20      |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:49.0.2623.75  | 20      |
-      #| user1Name | user2Name | user3Name | GroupCall     | chrome:47.0.2526.73 | 20      |
+      | user1Name | user2Name | user3Name | GroupCall     | firefox:46.0.1       | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | firefox:45.0.1       | 20      |
-      # Due to not working firefox
-      #| user1Name | user2Name | user3Name | GroupCall     | firefox:44.0.2      | 20      |
 
-  @calling_matrix
+  @calling_matrix @fastLogin
   Scenario Outline: Verify I can make group call with multiple AVS <WaitBackend>
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -142,9 +135,9 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | WaitBackend   | Timeout |
-      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.7.18  | 20      |
+      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.7.26  | 20      |
 
-  @calling_matrix
+  @calling_matrix @fastLogin
   Scenario Outline: Verify I can join group call with multiple <Backend>
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -172,12 +165,10 @@ Feature: Calling Matrix
       | Name      | Contact1  | Contact2  | GroupChatName | Backend             | Timeout |
       | user1Name | user2Name | user3Name | GroupCall     | chrome:51.0.2704.106| 20      |
       | user1Name | user2Name | user3Name | GroupCall     | chrome:50.0.2661.75 | 20      |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:49.0.2623.75 | 20      |
-      #| user1Name | user2Name | user3Name | GroupCall     | chrome:47.0.2526.73 | 20      |
+      | user1Name | user2Name | user3Name | GroupCall     | firefox:46.0.1      | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | firefox:45.0.1      | 20      |
-      #| user1Name | user2Name | user3Name | GroupCall     | firefox:44.0.2      | 20      |
 
-  @calling_matrix
+  @calling_matrix @fastLogin
   Scenario Outline: Verify I can join group call with AVS <CallBackend> and <WaitBackend>
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -198,15 +189,13 @@ Feature: Calling Matrix
     Then I do not see Calling overlay
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | WaitBackend         | Timeout | CallBackend     |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:51.0.2704.106| 20      | autocall:2.7.18 |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:50.0.2661.75 | 20      | autocall:2.7.18 |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:49.0.2623.75 | 20      | autocall:2.7.18 |
-      #| user1Name | user2Name | user3Name | GroupCall     | chrome:47.0.2526.73 | 20      | autocall:2.2.46 |
-      | user1Name | user2Name | user3Name | GroupCall     | firefox:45.0.1      | 20      | autocall:2.7.18 |
-      #| user1Name | user2Name | user3Name | GroupCall     | firefox:44.0.2      | 20      | autocall:2.2.46 |
+      | Name      | Contact1  | Contact2  | GroupChatName | WaitBackend         | Timeout | CallBackend  |
+      | user1Name | user2Name | user3Name | GroupCall     | chrome:51.0.2704.106| 20      | zcall:2.7.26 |
+      | user1Name | user2Name | user3Name | GroupCall     | chrome:50.0.2661.75 | 20      | zcall:2.7.26 |
+      | user1Name | user2Name | user3Name | GroupCall     | firefox:46.0.1      | 20      | zcall:2.7.26 |
+      | user1Name | user2Name | user3Name | GroupCall     | firefox:45.0.1      | 20      | zcall:2.7.26 |
 
-  @calling_matrix
+  @calling_matrix @fastLogin
   Scenario Outline: Verify I can join group call with ZCall <WaitBackend> and <CallBackend>
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -227,12 +216,11 @@ Feature: Calling Matrix
     Then I do not see Calling overlay
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend      | Timeout | WaitBackend  |
-      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.7.18  | 20      | zcall:2.2.46 |
-      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.2.46  | 20      | zcall:2.7.18 |
-      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.7.18  | 20      | zcall:2.7.18 |
+      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend   | Timeout | WaitBackend  |
+      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.7.26  | 20      | zcall:2.7.21 |
+      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.7.26  | 20      | zcall:2.7.26 |
 
-  @calling_matrix
+  @calling_matrix @fastLogin
   Scenario Outline: Put app into background after initiating call with user <WaitBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -250,12 +238,10 @@ Feature: Calling Matrix
       | Name      | Contact   | WaitBackend         | Timeout |
       | user1Name | user2Name | chrome:51.0.2704.106| 20      |
       | user1Name | user2Name | chrome:50.0.2661.75 | 20      |
-      | user1Name | user2Name | chrome:49.0.2623.75 | 20      |
-      #| user1Name | user2Name | chrome:47.0.2526.73 | 20      |
+      | user1Name | user2Name | firefox:46.0.1      | 20      |
       | user1Name | user2Name | firefox:45.0.1      | 20      |
-      #| user1Name | user2Name | firefox:44.0.2      | 20      |
 
-  @calling_matrix
+  @calling_matrix @fastLogin
   Scenario Outline: Verify putting client to the background during 1-to-1 call <CallBackend> to me
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -272,11 +258,11 @@ Feature: Calling Matrix
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 
     Examples:
-      | Name      | Contact   | CallBackend      | Timeout |
-      | user1Name | user2Name | autocall:2.7.18  | 20      |
-      | user1Name | user2Name | autocall:2.2.46  | 20      |
+      | Name      | Contact   | CallBackend   | Timeout |
+      | user1Name | user2Name | zcall:2.7.21  | 20      |
+      | user1Name | user2Name | zcall:2.7.26  | 20      |
 
-  @calling_matrix
+  @calling_matrix @fastLogin
   Scenario Outline: Lock device screen when in call with user <WaitBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -294,9 +280,8 @@ Feature: Calling Matrix
       | Name      | Contact   | WaitBackend         | Timeout |
       | user1Name | user2Name | chrome:51.0.2704.106| 20      |
       | user1Name | user2Name | chrome:50.0.2661.75 | 20      |
-      | user1Name | user2Name | chrome:49.0.2623.75 | 20      |
-      #| user1Name | user2Name | chrome:47.0.2526.73 | 20      |
-      | user1Name | user2Name | firefox:44.0.2      | 20      |
+      | user1Name | user2Name | firefox:46.0.1      | 20      |
+      | user1Name | user2Name | firefox:45.0.1      | 20      |
 
   #Commented because its not working to answer from APNS so far on iphone
   #But want to keep it in, for more investigation

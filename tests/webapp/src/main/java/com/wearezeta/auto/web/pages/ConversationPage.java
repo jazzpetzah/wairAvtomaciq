@@ -52,6 +52,9 @@ public class ConversationPage extends WebPage {
 
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssMessageAmount)
     private List<WebElement> messageAmount;
+    
+    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssDeletedMessageAmount)
+    private List<WebElement> deletedMessageAmount;
 
     @FindBy(id = WebAppLocators.ConversationPage.idConversation)
     private WebElement conversation;
@@ -151,6 +154,12 @@ public class ConversationPage extends WebPage {
 
     @FindBy(xpath = WebAppLocators.ConversationPage.xpathSharedLocationLink)
     private WebElement locationLink;
+
+    @FindBy(css = WebAppLocators.ConversationPage.cssLinkTitle)
+    private WebElement linkTitle;
+
+    @FindBy(css = WebAppLocators.ConversationPage.cssLinkPreviewImage)
+    private WebElement previewImage;
 
     public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
@@ -1005,6 +1014,28 @@ public class ConversationPage extends WebPage {
         return mappedMessages;
     }
 
+    public void openContextMenuOnLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        hoverOverMessage(id);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssContextMenuButtonByMessageId.apply(id));
+        getDriver().findElement(locator).click();
+    }
+
+    public void clickDeleteEverywhereInContextMenuOfLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteEverywhereByMessageId.apply(id));
+        getDriver().findElement(locator).click();
+    }
+
+    public void clickDeleteForMeInContextMenuOfLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteForMeByMessageId.apply(id));
+        getDriver().findElement(locator).click();
+    }
+
     public void clickToDeleteLatestMessage() throws Exception {
         By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
         String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
@@ -1108,13 +1139,53 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage.cssSharedLocation));
     }
 
-    public boolean isVideoCallButtonPulsating() throws Exception {
+    public boolean isBroadcastIndicatorVideoShown() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
-                .cssVideoCallButtonPulsating));
+                .cssBroadcastIndicatorVideo));
     }
 
-    public boolean isVideoCallButtonNotPulsating() throws Exception {
+    public boolean isBroadcastIndicatorVideoNotShown() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
-                .cssVideoCallButtonPulsating));
+                .cssBroadcastIndicatorVideo));
     }
+
+    public String getLinkTitle() {
+        return linkTitle.getText();
+    }
+
+    public boolean isLinkTitleNotShownInConversationView() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage.cssLinkTitle));
+    }
+
+    public boolean isImageFromLinkPreviewVisible() throws Exception {
+        return DriverUtils.waitUntilElementClickable(this.getDriver(), previewImage);
+    }
+
+    public boolean isImageFromLinkPreviewNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+                By.cssSelector(WebAppLocators.ConversationPage.cssLinkPreviewImage));
+    }
+
+    public BufferedImage getImageFromLastLinkPreview() throws Exception {
+        List<WebElement> images = getPreviewImages();
+        return this.getElementScreenshot(images.get(images.size() - 1)).orElseThrow(IllegalStateException::new);
+    }
+
+    private List<WebElement> getPreviewImages() throws Exception {
+        By picturesLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLinkPreviewImage);
+        List<WebElement> all = getDriver().findElements(picturesLocator);
+        return all;
+    }
+
+    public boolean waitForLinkPreviewContains(String link) throws Exception {
+        final By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLinkPreviewLink);
+        WebDriverWait wait = new WebDriverWait(getDriver(), TIMEOUT_I_SEE_MESSAGE);
+        return wait.withTimeout(TIMEOUT_I_SEE_MESSAGE, TimeUnit.SECONDS)
+                .until(presenceOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(link))));
+    }
+    
+    public int getNumberOfDeletedMessagesInCurrentConversation() {
+        return deletedMessageAmount.size();
+    }
+
 }

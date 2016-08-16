@@ -30,17 +30,6 @@ public class GroupConversationViewPageSteps {
                 getGroupConversationViewPage().isUpperToolbarContainNames(participantNames));
     }
 
-    /**
-     * Verifies that group chat is empty and has only system message
-     *
-     * @param participantNameAliases user names comma separated
-     * @throws Exception
-     */
-    @Then("^I see empty group chat page with users (.*) with only system message$")
-    public void ISeeGroupChatPageWithUsersAndOnlySystemMessage(String participantNameAliases) throws Exception {
-        ThenISeeGroupChatPage(participantNameAliases);
-    }
-
     @When("^I swipe up on group chat page$")
     public void ISwipeUpOnGroupChatPage() throws Exception {
         getGroupConversationViewPage().swipeUp(1000);

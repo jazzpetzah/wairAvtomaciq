@@ -14,6 +14,14 @@ public class TabletTakePicturePage extends AndroidTabletPage {
         return this.getAndroidPageInstance(TakePicturePage.class);
     }
 
+    public void confirm() throws Exception {
+        getAndroidTakePicturePage().confirm();
+    }
+
+    public void cancel() throws Exception {
+        getAndroidTakePicturePage().cancel();
+    }
+
     public void takePhoto() throws Exception {
         getAndroidTakePicturePage().takePhoto();
     }

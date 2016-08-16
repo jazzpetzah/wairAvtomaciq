@@ -1,6 +1,6 @@
 Feature: Share Location
 
-  @C150025 @C150026 @regression
+  @C150025 @C150026 @rc @regression @fastLogin
   Scenario Outline: Map is shown in the conversation view
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -17,7 +17,7 @@ Feature: Share Location
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
 
-  @C150027 @regression
+  @C150027 @regression @fastLogin
   Scenario Outline: Verify deleting shared location
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -29,8 +29,7 @@ Feature: Share Location
     And I see the default received Share Location address in the conversation view
     And I long tap on location map in conversation view
     And I tap on Delete badge item
-    # Sometimes the alert is not accepted automatically
-    And I tap Delete button on the alert
+    And I select Delete only for me item from Delete menu
     Then I do not see location map container in the conversation view
     Then I do not see the default received Share Location address in the conversation view
 
@@ -38,7 +37,7 @@ Feature: Share Location
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
 
-  @C165104 @C165105 @regression
+  @C165104 @C165105 @rc @regression @fastLogin
   Scenario Outline: Verify sending location from a map view (1to1)
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -57,7 +56,7 @@ Feature: Share Location
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C165126 @regression
+  @C165126 @regression @fastLogin
   Scenario Outline: Verify sending location from a map view (group conversation)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -77,7 +76,7 @@ Feature: Share Location
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ShareInGroup  |
 
-  @C150032 @regression
+  @C150032 @regression @fastLogin
   Scenario Outline: Verify copying and pasting the shared location
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -94,7 +93,7 @@ Feature: Share Location
       | Name      | Contact   | DeviceName | ExpectedText |
       | user1Name | user2Name | device1    | Wirestan     |
 
-  @C165116 @regression @noAcceptAlert
+  @C165116 @regression @noAcceptAlert @fastLogin
   Scenario Outline: Verify permissions are asked first time on the map opening
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>

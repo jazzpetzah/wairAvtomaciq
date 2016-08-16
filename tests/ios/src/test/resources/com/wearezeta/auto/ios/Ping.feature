@@ -1,6 +1,6 @@
 Feature: Ping
 
-  @C991 @regression @rc
+  @C991 @regression @rc @fastLogin
   Scenario Outline: Verify you can send Ping in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

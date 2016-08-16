@@ -4,8 +4,8 @@ import java.util.regex.Matcher;
 
 public class NSPoint {
 
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
 
     public NSPoint(int x, int y) {
         this.x = x;

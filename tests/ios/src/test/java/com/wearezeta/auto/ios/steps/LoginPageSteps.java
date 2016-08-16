@@ -62,12 +62,12 @@ public class LoginPageSteps {
 
     private void emailLoginSequence(String login, String password) throws Exception {
         getLoginPage().switchToLogin();
-        // TODO: skip the whole login flow when using Fast log in option
-        if (!FastLoginContainer.getInstance().isEnabled()) {
-            getLoginPage().setLogin(login);
-            getLoginPage().setPassword(password);
-            getLoginPage().clickLoginButton();
+        if (FastLoginContainer.getInstance().isEnabled()) {
+            return;
         }
+        getLoginPage().setLogin(login);
+        getLoginPage().setPassword(password);
+        getLoginPage().tapLoginButton();
         getLoginPage().waitForLoginToFinish();
         getLoginPage().acceptAlertIfVisible(5);
         getFirstTimeOverlayPage().acceptIfVisible(2);
@@ -170,8 +170,7 @@ public class LoginPageSteps {
     @Given("^I sign in using my email or phone number$")
     public void GivenISignInUsingEmailOrPhone() throws Exception {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
-        if (rand.nextInt(100) < BY_PHONE_NUMBER_LOGIN_PROBABILITY &&
-                !FastLoginContainer.getInstance().isEnabled()) {
+        if (!FastLoginContainer.getInstance().isEnabled() && rand.nextInt(100) < BY_PHONE_NUMBER_LOGIN_PROBABILITY) {
             phoneLoginSequence(self.getPhoneNumber());
         } else {
             emailLoginSequence(self.getEmail(), self.getPassword());
@@ -193,11 +192,11 @@ public class LoginPageSteps {
      * Taps Login button on the corresponding screen
      *
      * @throws IOException
-     * @step. I press Login button
+     * @step. ^I tap Login button$
      */
-    @When("I press Login button")
-    public void WhenIPressSignInButtonAgain() throws Exception {
-        getLoginPage().clickLoginButton();
+    @When("^I tap Login button$")
+    public void ITapSignInButtonAgain() throws Exception {
+        getLoginPage().tapLoginButton();
         getLoginPage().waitForLoginToFinish();
     }
 
@@ -205,11 +204,11 @@ public class LoginPageSteps {
      * Taps Login button on the corresponding screen
      *
      * @throws Exception
-     * @step. I attempt to press Login button
+     * @step. ^I attempt to tap Login button$
      */
-    @When("I attempt to press Login button")
-    public void IAttemptToPressLoginButton() throws Exception {
-        getLoginPage().clickLoginButton();
+    @When("^I attempt to tap Login button$")
+    public void IAttemptToTapLoginButton() throws Exception {
+        getLoginPage().tapLoginButton();
     }
 
     /**
@@ -217,9 +216,9 @@ public class LoginPageSteps {
      *
      * @param login login string (usually it is user email)
      * @throws IOException
-     * @step. I have entered login (.*)
+     * @step. ^I have entered login (.*)
      */
-    @When("I have entered login (.*)")
+    @When("^I have entered login (.*)")
     public void WhenIHaveEnteredLogin(String login) throws Exception {
         try {
             login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();

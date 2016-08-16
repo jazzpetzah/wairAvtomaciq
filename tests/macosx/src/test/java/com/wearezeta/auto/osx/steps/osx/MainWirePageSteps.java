@@ -5,12 +5,14 @@ import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 import org.junit.Assert;
 import org.openqa.selenium.Dimension;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MainWirePageSteps {
 
@@ -209,11 +211,11 @@ public class MainWirePageSteps {
         MainWirePage mainWirePage = osxPagesCollection
                 .getPage(MainWirePage.class);
         Assert.assertTrue("Expected X coordinate " + x
-                + " does not match the actual value " + mainWirePage.getX(),
-                mainWirePage.isX(x));
+                + " does not match the actual value " + mainWirePage.getStrippedX(),
+                mainWirePage.isStrippedX(x));
         Assert.assertTrue("Expected Y coordinate " + y
-                + " does not match the actual value " + mainWirePage.getY(),
-                mainWirePage.isY(y));
+                + " does not match the actual value " + mainWirePage.getStrippedY(),
+                mainWirePage.isStrippedY(y));
     }
 
     /**
@@ -247,8 +249,17 @@ public class MainWirePageSteps {
     @When("^I verify app width is (\\d+) px and height is (\\d+) px$")
     public void IVerifySizeOf(int width, int height) throws Exception {
         MainWirePage mainPage = osxPagesCollection.getPage(MainWirePage.class);
-        assertThat("Width", mainPage.getWidth(), equalTo(width));
-        assertThat("Height", mainPage.getHeight(), equalTo(height));
+        
+        // check if height in allowance
+        assertThat("Height", mainPage.getHeight(), greaterThan(height
+                - DEVIATION_ALLOWANCE_IN_PX));
+        assertThat("Height", mainPage.getHeight(), lessThan(height
+                + DEVIATION_ALLOWANCE_IN_PX));
+        // check if width in allowance
+        assertThat("Width", mainPage.getWidth(), greaterThan(width
+                - DEVIATION_ALLOWANCE_IN_PX));
+        assertThat("Width", mainPage.getWidth(), lessThan(width
+                + DEVIATION_ALLOWANCE_IN_PX));
     }
 
     /**

@@ -276,6 +276,7 @@ public final class WebAppLocators {
         public static final String cssConfirmText = "[data-uie-name='delete-confirm-text']";
         public static final String cssSentText = "[data-uie-name='delete-sent']";
         public static final String cssImportButton = "[data-uie-name='do-share-contacts']";
+        public static final String cssImportAddressbookButton = "[data-uie-name='do-share-osx-contacts']";//macOS
         public static final String cssBackButton = "[data-uie-name='do-device-close']";
         public static final String cssVerificationToggle = ".button-label";
         public static final String cssDeviceIds = ".self-settings-device-list .device-info [data-uie-name='device-id']";
@@ -346,6 +347,15 @@ public final class WebAppLocators {
         public static final Function<String, String> cssMessagesById = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s']", text);
 
+        public static final Function<String, String> cssContextMenuButtonByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] context-menu", text);
+
+        public static final Function<String, String> cssDeleteEverywhereByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] context-menu [data-context-action='delete']", text);
+
+        public static final Function<String, String> cssDeleteForMeByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] context-menu [data-context-action='delete']", text);
+
         public static final Function<String, String> cssDeleteButtonByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='do-message-delete']", text);
 
@@ -373,6 +383,14 @@ public final class WebAppLocators {
         public static final String cssFirstAction = cssMessage + " .action";
 
         public static final String cssLastAction = cssLastMessage + " .action";
+
+        //Link preview
+
+        public static final String cssLinkTitle = ".link-preview-title";
+
+        public static final String cssLinkPreviewImage = ".link-preview-image img";
+
+        public static final String cssLinkPreviewLink = ".link-preview-site";
 
         //Location sharing
 
@@ -438,6 +456,8 @@ public final class WebAppLocators {
 
         public static final String cssMessageAmount = "[data-uie-name='item-message']";
 
+        public static final String cssDeletedMessageAmount = "[data-uie-name='item-message'][data-uie-value='delete']";
+
         public static final String cssPingMessage = ".pinged";
 
         // special message identifier
@@ -476,7 +496,9 @@ public final class WebAppLocators {
 
         public static final String cssVideoCallButton = "[data-uie-name='do-video-call']";
 
-        public static final String cssVideoCallButtonPulsating = ".icon-video.button-round-pulsate";
+        public static final String cssBroadcastIndicatorVideo = "[data-uie-name='status-self-video']";
+
+        public static final String cssBroadcastIndicatorScreensharing = "[data-uie-name='status-self-screensharing']";
 
         public static final String cssGIFButton = "[data-uie-name='do-giphy-popover']";
 
@@ -707,7 +729,9 @@ public final class WebAppLocators {
 
         public static final String cssMinimizeVideoCallButton = "[data-uie-name='do-call-controls-video-minimize']";
 
-        public static final String cssMaximizeVideoCallButton = "[data-uie-name='do-call-controls-video-maximize']";
+        public static final String cssMaximizeVideoCallButtonOnRemotevideo = "[data-uie-name='do-call-controls-video-maximize']";
+
+        public static final String cssMaximizeVideoCallButton = "[data-uie-name='do-maximize-call']";
 
         public static final String cssDurationTimer = ".video-timer";
 
@@ -725,11 +749,13 @@ public final class WebAppLocators {
 
         public static final String cssCameraButtonNotPressed = cssCameraButton + ":not(.toggled)";
 
-        public static final String cssSelfVideo = ".video-element-mirrored";
+        public static final String cssSelfVideo = ".video-element-local";
+        
+        public static final String cssSelfVideoOff = ".video-element-overlay.icon-video-off";
 
         public static final String cssMinimizedRemoteVideo = "#video-element-remote";
 
-        public static final String cssMaximizedRemoteVideo = ".video-mode-portrait";
+        public static final String cssMaximizedRemoteVideo = ".video-element-portrait";
 
         public static final String cssScreenShareButton = ".icon-screensharing";
 

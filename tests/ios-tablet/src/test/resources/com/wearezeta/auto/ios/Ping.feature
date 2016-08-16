@@ -1,6 +1,6 @@
 Feature: Ping
 
-  @C2758 @regression
+  @C2758 @regression @fastLogin
   Scenario Outline: Verify you can send Ping in a group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

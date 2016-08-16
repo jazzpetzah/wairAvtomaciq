@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @C3211 @regression
+  @C3211 @regression @fastLogin
   Scenario Outline: Change your profile picture
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -10,16 +10,16 @@ Feature: Self Profile
     And I wait for 10 seconds
     And I remember my current profile picture
     And I tap on personal screen
-    And I press Camera Roll button
-    And I choose a picture from camera roll
-    And I confirm my choice
+    And I tap Camera Roll button on personal screen
+    And I select the first picture from Camera Roll
+    And I tap Confirm button on Picture preview page
     Then I wait up to <Timeout> seconds until my profile picture is changed
 
     Examples:
       | Name      | Timeout |
       | user1Name | 60      |
 
-  @C1092 @regression
+  @C1092 @regression @fastLogin
   Scenario Outline: Attempt to enter a name with 0 chars
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -35,7 +35,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @C1093 @regression
+  @C1093 @regression @fastLogin
   Scenario Outline: Attempt to enter a name with 1 char
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -51,7 +51,7 @@ Feature: Self Profile
       | Name      | username |
       | user1Name | c        |
 
-  @C1097 @regression @rc @clumsy
+  @C1097 @regression @rc @clumsy @fastLogin
   Scenario Outline: Verify name change
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -125,7 +125,7 @@ Feature: Self Profile
       | Name      | Number        | Code | ExpectedText                |
       | user1Name | 8301652248706 | +0   | has already been registered |
 
-  @C1081 @regression @rc
+  @C1081 @regression @rc @fastLogin
   Scenario Outline: Verify theme switcher is shown on the self profile
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -145,11 +145,35 @@ Feature: Self Profile
     When I tap settings gear button
     And I remember my current profile picture
     And I tap on personal screen
-    And I tap Lens button
-    And I tap Camera Shutter button
-    And I confirm my choice
+    And I tap Camera button on personal screen
+    And I tap Take Photo button on Camera page
+    And I tap Confirm button on Picture preview page
     Then I wait up to <Timeout> seconds until my profile picture is changed
 
     Examples:
       | Name      | Timeout |
       | user1Name | 60      |
+
+  @C1086 @regression
+  Scenario Outline: Verify adding email to the contact signed up with phone number
+    Given I see sign in screen
+    Given I enter phone number for <Name>
+    Given I enter activation code
+    Given I accept terms of service
+    Given I input name <Name> and hit Enter
+    Given I tap Keep This One button
+    Given I tap Share Contacts button on Share Contacts overlay
+    Given I see conversations list
+    When I tap settings gear button
+    And I tap ADD EMAIL ADDRESS AND PASSWORD
+    And I enter email <Email>
+    And I enter password <Password>
+    And I start activation email monitoring
+    And I click Create Account Button
+    And I see confirmation page
+    And I verify registration address
+    Then I see email <Email> on Personal page
+
+    Examples:
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

@@ -335,7 +335,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C3147 @smoke
+  @C3147 @smoke @WEBAPP-3079
   Scenario Outline: Verify switching to next and previous conversation using shortcuts Ctrl Alt Up and Ctrl Alt Down
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>

@@ -23,6 +23,9 @@ import cucumber.api.java.en.When;
 public class ConversationsListPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
+    private final ElementState newDeviceIndicatorState = new ElementState(
+            () -> getConversationsListPage().getNewDeviceIndicatorState());
+
     private ConversationsListPage getConversationsListPage() throws Exception {
         return pagesCollection.getPage(ConversationsListPage.class);
     }
@@ -48,6 +51,33 @@ public class ConversationsListPageSteps {
                     getConversationsListPage().isNoConversationsVisible());
 
         }
+    }
+
+    /**
+     * Store the screenshot of new device indicator
+     *
+     * @throws Exception
+     * @step. ^I remember the state of new device indicator on settings button$
+     */
+    @When("^I remember the state of new device indicator on settings button$")
+    public void IRememberAudioMessagePreviewSeekbar() throws Exception {
+        newDeviceIndicatorState.remember();
+    }
+
+    private static final double MIN_NEW_DEVICE_INDICATOR_SCORE = 0.93;
+    private static final int NEW_DEVICE_INDICATOR_STATE_CHANGE_TIMEOUT = 10; //seconds
+
+    /**
+     * Verify whether the new device indicator is changed
+     *
+     * @throws Exception
+     * @step. ^I verify the state of new device indicator is changed$
+     */
+    @Then("^I verify the state of new device indicator is changed$")
+    public void ISeeNewDeviceIndicatorIsChanged() throws Exception {
+        Assert.assertTrue("The current and previous state of audio message preview seekbar seems to be same",
+                newDeviceIndicatorState.isChanged(NEW_DEVICE_INDICATOR_STATE_CHANGE_TIMEOUT,
+                        MIN_NEW_DEVICE_INDICATOR_SCORE));
     }
 
     /**
@@ -365,6 +395,7 @@ public class ConversationsListPageSteps {
     }
 
     private static final double MAX_UNREAD_DOT_SIMILARITY_THRESHOLD = 0.97;
+    private static final double MIN_UNREAD_DOT_THRESHOLD = 0.99;
 
     /**
      * Verify whether unread dot state is changed for the particular
@@ -372,11 +403,11 @@ public class ConversationsListPageSteps {
      *
      * @param name conversation name/alias
      * @throws Exception
-     * @step. ^I see unread messages indicator state is changed for conversation
+     * @step. ^I see unread messages indicator state is (not )?changed for conversation
      * (.*)"
      */
-    @Then("^I see unread messages indicator state is changed for conversation (.*)")
-    public void ISeeUnreadIndicatorStateIsChanged(String name) throws Exception {
+    @Then("^I see unread messages indicator state is (not )?changed for conversation (.*)")
+    public void ISeeUnreadIndicatorStateIsChanged(String notChanged, String name) throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (!this.previousUnreadIndicatorState.containsKey(name)) {
             throw new IllegalStateException(
@@ -384,10 +415,17 @@ public class ConversationsListPageSteps {
                             "Please invoke the corresponding step to make a screenshot of previous state of '%s' conversation",
                             name));
         }
-        Assert.assertTrue(String.format(
-                "The current and previous states of Unread Dot for conversation '%s' seems to be very similar",
-                name),
-                this.previousUnreadIndicatorState.get(name).isChanged(10, MAX_UNREAD_DOT_SIMILARITY_THRESHOLD));
+        if (notChanged == null) {
+            Assert.assertTrue(String.format(
+                    "The current and previous states of Unread Dot for conversation '%s' seems to be very similar",
+                    name),
+                    this.previousUnreadIndicatorState.get(name).isChanged(10, MAX_UNREAD_DOT_SIMILARITY_THRESHOLD));
+        } else {
+            Assert.assertTrue(String.format(
+                    "The current and previous states of Unread Dot for conversation '%s' seems to be very similar",
+                    name),
+                    this.previousUnreadIndicatorState.get(name).isNotChanged(5, MIN_UNREAD_DOT_THRESHOLD));
+        }
     }
 
     /**
@@ -463,5 +501,4 @@ public class ConversationsListPageSteps {
     public void IPressTheThreeDotsOptionMenuButton() throws Exception {
         getConversationsListPage().tapThreeDotOptionMenuButton();
     }
-
 }

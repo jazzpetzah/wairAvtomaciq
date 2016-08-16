@@ -157,7 +157,7 @@ public final class BackendAPIWrappers {
         return BackendREST.getActivationDataViaBackdoor(email).getString("code");
     }
 
-    private static String getActivationCodeForBookedPhoneNumber(PhoneNumber phoneNumber) throws Exception {
+    public static String getActivationCodeForBookedPhoneNumber(PhoneNumber phoneNumber) throws Exception {
         return BackendREST.getActivationDataViaBackdoor(phoneNumber).getString("code");
     }
 

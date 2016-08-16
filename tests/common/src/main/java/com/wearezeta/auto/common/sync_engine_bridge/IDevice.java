@@ -28,11 +28,15 @@ public interface IDevice extends IRemoteEntity {
 
     void unmuteConversation(String convId) throws Exception;
 
-	// TODO: void sendAsset(String convId, byte[] data, String mime, String filename) throws Exception;
+    // TODO: void sendAsset(String convId, byte[] data, String mime, String filename) throws Exception;
 
-	void sendFile(String convId, String path, String mime) throws Exception;
+    void sendFile(String convId, String path, String mime) throws Exception;
 
     void deleteMessage(String convId, MessageId messageId) throws Exception;
+
+    void deleteMessageEveryWhere(String convId, MessageId messageId) throws Exception;
+
+    void updateMessage(MessageId messageId, String newMessage) throws Exception;
 
     ActorMessage.MessageInfo[] getConversationMessages(String convId) throws Exception;
 

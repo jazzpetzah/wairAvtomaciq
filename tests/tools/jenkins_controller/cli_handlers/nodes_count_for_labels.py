@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
 import inspect
-from multiprocessing import Process, Queue
+from multiprocessing import Process, Queue, Lock
 import paramiko
 from pprint import pformat
 import random
 import re
 import smtplib
+import socket
 import sys
 import time
 import tempfile
@@ -16,8 +17,8 @@ import xml.etree.ElementTree as ET
 
 from cli_handlers.cli_handler_base import CliHandlerBase
 
-
-VERIFICATION_JOB_TIMEOUT = 60 * 3 #seconds
+MAX_NODES_PER_HOST = 5
+VERIFICATION_JOB_TIMEOUT = 60 * 2 #seconds
 MAX_VERIFICATION_JOBS = 4
 
 normalize_labels = lambda labels_list: set(map(lambda x: x.strip(), labels_list))
@@ -35,7 +36,7 @@ class NodesCountForLabels(CliHandlerBase):
                             help='List of comma-separated node labels to match')
         parser.add_argument('--apply_verification', default=None,
                             help='Whether to apply special verification for a node. '
-                                 'Available verifications: RealAndroidDevice, IOSSimulator')
+                                 'Available verifications: see class names below')
         parser.add_argument('--ios_simulator_name', default=None,
                             help='The name of iOS simulator to verify. '
                                  'Used together with --apply_verification=IOSSimulator')
@@ -213,7 +214,7 @@ IOS_SIMULATOR_AGENT_NAME = 'launchd_sim'
 
 class IOSSimulator(BaseNodeVerifier):
     def _get_installed_simulators(self, ssh_client):
-        _, stdout, _ = ssh_client.exec_command('/usr/bin/xcrun instruments -s')
+        _, stdout, _ = ssh_client.exec_command('/usr/bin/instruments -s')
         matches = re.findall(r'([\w\s\(\)\.]+)\[(\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12})\]', stdout.read())
         result = {}
         if matches:
@@ -290,23 +291,99 @@ class IOSSimulator(BaseNodeVerifier):
             client.close()
 
 
+POWER_CYCLE_SCRIPT = lambda devnum: \
+"""
+import time
+
+from brainstem import discover
+from brainstem.link import Spec
+from brainstem.stem import USBHub2x4
+
+
+stem = USBHub2x4()
+spec = discover.find_first_module(Spec.USB)
+if spec is None:
+    raise RuntimeError("No USBHub is connected!")
+stem.connect_from_spec(spec)
+stem.usb.setPowerDisable({0})
+time.sleep(1)
+stem.usb.setPowerEnable({0})
+time.sleep(1)
+""".format(devnum)
+
+
 class IOSRealDevice(BaseNodeVerifier):
+    LOCK = Lock()
+
     def _get_connected_devices(self, ssh_client):
         _, stdout, _ = ssh_client.exec_command('/usr/sbin/system_profiler SPUSBDataType')
         return re.findall(r'Serial Number: ([0-9a-f]{40})', stdout.read())
+
+    def _get_dst_vm_ip(self):
+        return socket.gethostbyname(self._node_hostname)
+
+    def _get_dst_vm_number(self):
+        ip_as_list = self._get_dst_vm_ip().split('.')
+        # Must be IPv4
+        assert len(ip_as_list) == 4
+        last_digit = int(ip_as_list[-1])
+        return last_digit % MAX_NODES_PER_HOST
+
+    def _get_dst_vm_host_ip(self):
+        ip_as_list = self._get_dst_vm_ip().split('.')
+        # Must be IPv4
+        assert len(ip_as_list) == 4
+        last_digit = int(ip_as_list[-1])
+        return '.'.join(ip_as_list[:3] + [str(last_digit - (last_digit % MAX_NODES_PER_HOST))])
+
+    def _run_device_power_cycle(self, ssh_client):
+        sftp = ssh_client.open_sftp()
+        _, localpath = tempfile.mkstemp(suffix='.py')
+        try:
+            with open(localpath, 'w') as f:
+                f.write(POWER_CYCLE_SCRIPT(self._get_dst_vm_number() - 1))
+            remotepath = '/tmp/' + os.path.basename(localpath)
+            sftp.put(localpath, remotepath)
+        finally:
+            sftp.close()
+            os.unlink(localpath)
+        stdin, stdout, stderr = ssh_client.exec_command('python "{}"'.format(remotepath))
+        if stdout.channel.recv_exit_status() != 0:
+            sys.stderr.write('!!! Error on power cycle script execution:\n')
+            sys.stderr.write(stderr.read() + '\n')
+        ssh_client.exec_command('rm -f "{}"'.format(remotepath))
 
     def _is_verification_passed(self):
         result = super(IOSRealDevice, self)._is_verification_passed()
         if not result:
             return False
+
+        client = paramiko.SSHClient()
+        self.LOCK.acquire()
+        try:
+            client.load_system_host_keys()
+            client.set_missing_host_key_policy(paramiko.WarningPolicy())
+            client.connect(self._get_dst_vm_host_ip(),
+                           username=self._verification_kwargs['node_user'],
+                           password=self._verification_kwargs['node_password'])
+            self._run_device_power_cycle(client)
+        finally:
+            client.close()
+            self.LOCK.release()
+
         client = paramiko.SSHClient()
         try:
             client.load_system_host_keys()
             client.set_missing_host_key_policy(paramiko.WarningPolicy())
             client.connect(self._node_hostname, username=self._verification_kwargs['node_user'],
                            password=self._verification_kwargs['node_password'])
-
-            available_devices = self._get_connected_devices(client)
+            seconds_started = time.time()
+            available_devices = []
+            while time.time() - seconds_started <= 10:
+                available_devices = self._get_connected_devices(client)
+                if available_devices:
+                    break
+                time.sleep(0.5)
             if not available_devices:
                 msg = 'There are no real iOS device(s) connected to the node "{}"'.format(self._node.name)
                 sys.stderr.write(msg)

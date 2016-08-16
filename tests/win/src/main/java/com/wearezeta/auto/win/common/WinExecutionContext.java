@@ -1,13 +1,13 @@
 package com.wearezeta.auto.win.common;
 
 import com.wearezeta.auto.common.Platform;
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
 
 public class WinExecutionContext {
 
     public static final Platform CURRENT_PLATFORM = Platform.Mac;
     public static final Platform CURRENT_SECONDARY_PLATFORM = Platform.Web;
+    
+    public static final boolean KEEP_DATABASE = Boolean.getBoolean("com.wire.database.keep");
 
     public static final String EXTENDED_LOGGING_LEVEL = System.getProperty(
             "extendedLoggingLevel", "SEVERE");
@@ -52,7 +52,4 @@ public class WinExecutionContext {
     public static final String USER_HOME = System.getProperty("user.home");
 
     public static final String USERNAME = System.getProperty("user.name");
-
-    public static final HashMap<String, BufferedImage> SCREENSHOTS = new HashMap<>();
-
 }

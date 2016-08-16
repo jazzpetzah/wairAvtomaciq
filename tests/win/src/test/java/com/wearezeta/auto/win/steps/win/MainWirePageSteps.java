@@ -9,8 +9,7 @@ import org.junit.Assert;
 
 public class MainWirePageSteps {
 
-    private final WinPagesCollection winPagesCollection = WinPagesCollection
-            .getInstance();
+    private final WinPagesCollection winPagesCollection = WinPagesCollection.getInstance();
 
     /**
      * Closes the app
@@ -43,8 +42,7 @@ public class MainWirePageSteps {
      */
     @When("^I type shortcut combination for preferences$")
     public void ITypeShortcutCombinationForPreferences() throws Exception {
-        winPagesCollection.getPage(MainWirePage.class)
-                .pressShortCutForPreferences();
+        winPagesCollection.getPage(MainWirePage.class).pressShortCutForPreferences();
     }
 
     /**
@@ -92,8 +90,7 @@ public class MainWirePageSteps {
      */
     @When("^I verify app is in minimum size$")
     public void IVerifyAppMini() throws Exception {
-        Assert.assertTrue(winPagesCollection.getPage(MainWirePage.class)
-                .isMini());
+        Assert.assertTrue(winPagesCollection.getPage(MainWirePage.class).isMini());
     }
 
     /**
@@ -162,13 +159,10 @@ public class MainWirePageSteps {
      */
     @When("^I verify app X coordinate is (\\d+) and Y coordinate is (\\d+)$")
     public void IVerifyPosition(int x, int y) throws Exception {
-        MainWirePage mainWirePage = winPagesCollection
-                .getPage(MainWirePage.class);
-        Assert.assertTrue("Expected X coordinate " + x
-                + " does not match the actual value " + mainWirePage.getX(),
+        MainWirePage mainWirePage = winPagesCollection.getPage(MainWirePage.class);
+        Assert.assertTrue("Expected X coordinate " + x + " does not match the actual value " + mainWirePage.getX(),
                 mainWirePage.isX(x));
-        Assert.assertTrue("Expected Y coordinate " + y
-                + " does not match the actual value " + mainWirePage.getY(),
+        Assert.assertTrue("Expected Y coordinate " + y + " does not match the actual value " + mainWirePage.getY(),
                 mainWirePage.isY(y));
     }
 
@@ -185,8 +179,7 @@ public class MainWirePageSteps {
      */
     @When("^I resize the app to width (\\d+) px and height (\\d+) px$")
     public void IResizeTo(int width, int height) throws Exception {
-        winPagesCollection.getPage(MainWirePage.class).resizeByHand(width,
-                height);
+        winPagesCollection.getPage(MainWirePage.class).resizeByHand(width, height);
     }
 
     /**
@@ -202,8 +195,7 @@ public class MainWirePageSteps {
      */
     @When("^I verify app width is (\\d+) px and height is (\\d+) px$")
     public void IVerifySizeOf(int width, int height) throws Exception {
-        MainWirePage mainWirePage = winPagesCollection
-                .getPage(MainWirePage.class);
+        MainWirePage mainWirePage = winPagesCollection.getPage(MainWirePage.class);
         Assert.assertTrue(mainWirePage.isApproximatelyHeight(height));
         Assert.assertTrue(mainWirePage.isApproximatelyWidth(width));
     }

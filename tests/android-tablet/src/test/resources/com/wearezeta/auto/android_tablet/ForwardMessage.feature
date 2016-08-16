@@ -11,7 +11,7 @@ Feature: Forward Message
     Given I see the conversations list with conversations
     Given I tap the conversation <Contact>
     When I long tap the message "<Message>" in the conversation view
-    And I tap Forward button on the action mode bar
+    And I tap Forward button on the message bottom menu
     Then I see the Wire app is not in foreground
 
     Examples:

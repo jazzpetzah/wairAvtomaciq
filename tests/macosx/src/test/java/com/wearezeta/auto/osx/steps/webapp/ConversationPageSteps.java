@@ -111,7 +111,7 @@ public class ConversationPageSteps {
     public void IWriteXNewLines(int amount) throws Exception {
         String message = "";
         for (int i = 0; i < amount; i++) {
-            message = message + Keys.chord(Keys.SHIFT, Keys.ENTER);
+            message = message + Keys.chord(Keys.ALT, Keys.ENTER);
         }
         webappPagesCollection.getPage(ConversationPage.class).writeNewMessage(
                 message);

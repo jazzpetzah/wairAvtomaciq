@@ -120,6 +120,8 @@ public class CommonIOSSteps {
         final List<String> processArgs = new ArrayList<>(Arrays.asList(
                 "-UseHockey", "0",
                 "-ZMBackendEnvironmentType", backendType,
+                // https://wearezeta.atlassian.net/browse/ZIOS-5769
+                "--disable-autocorrection",
                 // https://wearezeta.atlassian.net/browse/ZIOS-5259
                 "-AnalyticsUserDefaultsDisabledKey", "0"
                 // ,"--debug-log-network"
@@ -129,8 +131,9 @@ public class CommonIOSSteps {
             for (Map.Entry<String, Object> entry : additionalCaps.get().entrySet()) {
                 if (entry.getKey().equals(FastLoginContainer.CAPABILITY_NAME) &&
                         (entry.getValue() instanceof ClientUser)) {
-                    // https://github.com/wearezeta/zclient-ios/pull/2152
                     processArgs.addAll(Arrays.asList(
+                            // https://github.com/wearezeta/zclient-ios/pull/2152
+                            // https://wearezeta.atlassian.net/browse/ZIOS-6747
                             "--loginemail=" + ((ClientUser) entry.getValue()).getEmail(),
                             "--loginpassword=" + ((ClientUser) entry.getValue()).getPassword()
                     ));
@@ -430,7 +433,7 @@ public class CommonIOSSteps {
                 pagesCollection.getCommonPage().clickSpaceKeyboardButton();
                 break;
             case "done":
-                pagesCollection.getCommonPage().clickKeyboardCommitButton();
+                pagesCollection.getCommonPage().tapKeyboardCommitButton();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name: %s", btnName));
@@ -442,9 +445,9 @@ public class CommonIOSSteps {
      *
      * @param seconds time in seconds to close the app
      * @throws Exception
-     * @step. ^I close the app for (.*) seconds$
+     * @step. ^I close the app for (.*) seconds?$
      */
-    @When("^I close the app for (\\d+) seconds$")
+    @When("^I close the app for (\\d+) seconds?$")
     public void ICloseApp(int seconds) throws Exception {
         pagesCollection.getCommonPage().minimizeApplication(seconds);
     }
@@ -510,9 +513,9 @@ public class CommonIOSSteps {
      * @param userName name of the user who leaves
      * @param chatName chat name that user leaves
      * @throws Exception
-     * @step. ^(.*) leave(s) group chat (.*)$
+     * @step. ^(.*) leaves? group chat (.*)$
      */
-    @Given("^(.*) leave[s]* group chat (.*)$")
+    @Given("^(.*) leaves? group chat (.*)$")
     public void UserLeavesGroupChat(String userName, String chatName) throws Exception {
         commonSteps.UserXLeavesGroupChat(userName, chatName);
     }
@@ -527,10 +530,34 @@ public class CommonIOSSteps {
         commonSteps.ThereAreNUsers(CURRENT_PLATFORM, count);
     }
 
+    /**
+     * Use this step if you have @fastLogin option set and you want the application to log in
+     * under particular user, skipping the whole login flow in UI, which is supposed to be quite faster
+     * in comparison to the "classic" flow
+     *
+     * @param alias user name/alias to sign in as. This user should have his email address registered on the backedn
+     * @throws Exception
+     * @step. ^I prepare Wire to perform fast log in by email as (.*)
+     */
+    @Given("^I prepare Wire to perform fast log in by email as (.*)")
+    public void IDoFastLogin(String alias) throws Exception {
+        final FastLoginContainer flc = FastLoginContainer.getInstance();
+        if (!flc.isEnabled()) {
+            throw new IllegalStateException(
+                    String.format("Fast login should be enabled first in order to call this step." +
+                            "Make sure you have the '%s' tag in your scenario", FastLoginContainer.TAG_NAME));
+        }
+        updateDriver(flc.executeDriverCreation(usrMgr.findUserByNameOrNameAlias(alias)));
+    }
+
     @Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
     public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "default");
+        final FastLoginContainer flc = FastLoginContainer.getInstance();
+        if (flc.isEnabled()) {
+            updateDriver(flc.executeDriverCreation(usrMgr.getSelfUserOrThrowError()));
+        }
     }
 
     /**
@@ -547,6 +574,10 @@ public class CommonIOSSteps {
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")
     public void ThereAreNUsersWhereXIsMeWithoutEmail(int count, String myNameAlias) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
+        final FastLoginContainer flc = FastLoginContainer.getInstance();
+        if (flc.isEnabled()) {
+            throw new IllegalStateException("Fast login feature is only supported in log in by email");
+        }
     }
 
     /**
@@ -562,6 +593,10 @@ public class CommonIOSSteps {
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me with email only$")
     public void ThereAreNUsersWhereXIsMeWithoutPhone(int count, String myNameAlias) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMeRegOnlyByMail(count, myNameAlias);
+        final FastLoginContainer flc = FastLoginContainer.getInstance();
+        if (flc.isEnabled()) {
+            updateDriver(flc.executeDriverCreation(usrMgr.getSelfUserOrThrowError()));
+        }
     }
 
     @When("^(.*) ignore all requests$")
@@ -709,7 +744,18 @@ public class CommonIOSSteps {
         }
     }
 
-    @Given("^User (.*) sends (encrypted )?message \"(.*)\" to (user|group conversation) (.*)$")
+    /**
+     * User A sends a simple text message to user/goup B
+     *
+     * @param userFromNameAlias the user who sends the message
+     * @param areEncrypted      whether the message has to be encrypted
+     * @param msg               a message to send. Random string will be sent if it is empty
+     * @param conversationType  either 'user' or 'group conversation'
+     * @param conversationName  The user/group chat to receive the message
+     * @throws Exception
+     * @step. ^User (.*) sends? (encrypted )?message "(.*)" to (user|group conversation) (.*)$
+     */
+    @Given("^User (.*) sends? (encrypted )?message \"(.*)\" to (user|group conversation) (.*)$")
     public void UserSentMessageToConversation(String userFromNameAlias,
                                               String areEncrypted, String msg,
                                               String conversationType, String conversationName) throws Exception {
@@ -940,7 +986,7 @@ public class CommonIOSSteps {
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
             IOSSimulatorHelper.pressEnterKey();
         } else {
-            pagesCollection.getCommonPage().clickKeyboardCommitButton();
+            pagesCollection.getCommonPage().tapKeyboardCommitButton();
         }
     }
 
@@ -993,14 +1039,24 @@ public class CommonIOSSteps {
     }
 
     /**
-     * Click OK button on the current page
+     * Tap OK/Cancel button on the current page
      *
+     * @param action either 'confirm' or 'deny'
      * @throws Exception
-     * @step. ^I confirm my choice$
+     * @step. ^I (confirm|discard) my choice$
      */
-    @When("^I confirm my choice$")
-    public void IConfirmImageSelection() throws Exception {
-        pagesCollection.getCommonPage().pressConfirmButton();
+    @When("^I (confirm|discard) my choice$")
+    public void IDoChoice(String action) throws Exception {
+        switch (action.toLowerCase()) {
+            case "confirm":
+                pagesCollection.getCommonPage().tapConfirmButton();
+                break;
+            case "discard":
+                pagesCollection.getCommonPage().tapCancelButton();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Illegal action name: '%s'", action));
+        }
     }
 
     /**
@@ -1077,17 +1133,6 @@ public class CommonIOSSteps {
     }
 
     /**
-     * Taps cancel button
-     *
-     * @throws Exception
-     * @step. ^I tap Cancel button$
-     */
-    @When("^I tap Cancel button$")
-    public void ITapCancelButton() throws Exception {
-        pagesCollection.getCommonPage().tapCancelButton();
-    }
-
-    /**
      * Tap Done button
      *
      * @throws Exception
@@ -1121,26 +1166,6 @@ public class CommonIOSSteps {
     }
 
     /**
-     * Use this step if you have @fastLogin option set and you want the application to log in
-     * under particular user, skipping the whole login flow in UI, which is supposed to be quite faster
-     * in comparison to the "classic" flow
-     *
-     * @param alias user name/alias to sign in as. This user should have his email address registered on the backedn
-     * @throws Exception
-     * @step. ^I prepare Wire to perform fast log in by email as (.*)
-     */
-    @Given("^I prepare Wire to perform fast log in by email as (.*)")
-    public void IDoFastLogin(String alias) throws Exception {
-        final FastLoginContainer flc = FastLoginContainer.getInstance();
-        if (!flc.isEnabled()) {
-            throw new IllegalStateException(
-                    String.format("Fast login should be enabled first in order to call this step." +
-                            "Make sure you have the '%s' tag in your scenario", FastLoginContainer.TAG_NAME));
-        }
-        updateDriver(flc.executeDriverCreation(usrMgr.findUserByNameOrNameAlias(alias)));
-    }
-
-    /**
      * Send location sharing message
      *
      * @param userNameAlias sender name/alias
@@ -1155,5 +1180,108 @@ public class CommonIOSSteps {
             throws Exception {
         commonSteps.UserSharesLocationTo(userNameAlias, dstNameAlias, convoType.equals("group conversation"),
                 deviceName);
+    }
+
+    /**
+     * Verify whether on-screen keyboard is visible or not
+     *
+     * @param shouldNotSee equals to null if the keyboard should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see the on-screen keyboard$
+     */
+    @Then("^I (do not )?see the on-screen keyboard$")
+    public void ISeeOnScreenKeyboard(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("On-screen keyboard is not visible", pagesCollection.getCommonPage().isKeyboardVisible());
+        } else {
+            Assert.assertTrue("On-screen keyboard is visible, but should be hidden",
+                    pagesCollection.getCommonPage().isKeyboardInvisible());
+        }
+    }
+
+    /**
+     * Clicks the send button on the keyboard
+     *
+     * @throws Exception
+     * @step. ^I tap (?:Commit|Return|Send|Enter) button on the keyboard$
+     */
+    @When("^I tap (?:Commit|Return|Send|Enter) button on the keyboard$")
+    public void ITapCommitButtonOnKeyboard() throws Exception {
+        pagesCollection.getCommonPage().tapKeyboardCommitButton();
+    }
+
+    /**
+     * User X delete message from User/Group via specified device
+     * Note : The recent message means the recent message sent from specified device by SE, the device should online.
+     *
+     * @param userNameAlias user name/alias
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  destination user name/alias or group convo name
+     * @throws Exception
+     * @step. ^User (.*) deletes? the recent message from (user|group conversation) (.*)$
+     */
+    @When("^User (.*) deletes? the recent message from (user|group conversation) (.*)$")
+    public void UserXDeleteLastMessage(String userNameAlias, String convoType, String dstNameAlias) throws Exception {
+        boolean isGroup = convoType.equals("group conversation");
+        commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, null, isGroup);
+    }
+
+    /**
+     * User X delete message from User/Group via specified device
+     * Note : The recent message means the recent message sent from specified device by SE, the device should online.
+     *
+     * @param userNameAlias    user name/alias
+     * @param deleteEverywhere not null means delete everywhere, otherwise delete local
+     * @param convoType        either 'user' or 'group conversation'
+     * @param dstNameAlias     destination user name/alias or group convo name
+     * @param deviceName       source device name. Will be created if does not exist yet
+     * @throws Exception
+     * @step. ^User (.*) deletes? the recent message (everywhere )?from (user|group conversation) (.*) via device (.*)$
+     */
+    @When("^User (.*) deletes? the recent message (everywhere )?from (user|group conversation) (.*) via device (.*)$")
+    public void UserXDeleteLastMessage(String userNameAlias, String deleteEverywhere, String convoType,
+                                       String dstNameAlias, String deviceName) throws Exception {
+        boolean isGroup = convoType.equals("group conversation");
+        boolean isDeleteEverywhere = deleteEverywhere != null;
+        commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup, isDeleteEverywhere);
+    }
+
+    /**
+     * Remember the recent message Id
+     *
+     * @param userNameAlias user name/alias
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  destination user name/alias or group convo name
+     * @param deviceName    source device name. Will be created if does not exist yet
+     * @throws Exception
+     * @step. ^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$
+     */
+    @When("^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$")
+    public void UserXRemembersLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
+            throws Exception {
+        commonSteps.UserXRemembersLastMessage(userNameAlias, convoType.equals("group conversation"),
+                dstNameAlias, deviceName);
+    }
+
+    /**
+     * Check the remembered message is changed
+     *
+     * @param userNameAlias user name/alias
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  destination user name/alias or group convo name
+     * @param deviceName    source device name. Will be created if does not exist yet
+     * @throws Exception
+     * @step. ^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is
+     * changed( in \\d+ seconds?)?$
+     */
+    @Then("^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is " +
+            "changed( in \\d+ seconds?)?$")
+    public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias,
+                                             String deviceName, String waitDuration) throws Exception {
+        final int durationSeconds = (waitDuration == null) ?
+                CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
+                : Integer.parseInt(waitDuration.replaceAll("[\\D]", ""));
+        commonSteps.UserXFoundLastMessageChanged(userNameAlias, convoType.equals("group conversation"), dstNameAlias,
+                deviceName, durationSeconds);
     }
 }

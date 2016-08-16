@@ -34,8 +34,9 @@ Feature: Video Message
     Then I see file transfer button in conversation input
     When I send <Size> sized video with name <File> to the current conversation
     And I wait until video <File> is uploaded completely
-    And I click to delete the latest message
-    And I click confirm to delete message
+    And I open context menu of the latest message
+    And I click to delete message for me in context menu
+    And I click confirm to delete message for me
     Then I do not see video message <File> in the conversation view
 
     Examples:
@@ -91,7 +92,7 @@ Feature: Video Message
       | Login      | Password      | Name      | Contact1  | Contact2  | File        | ChatName  | Size  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | C123939.mp4 | GroupChat | 15MB  |
 
-  @C123929 @videomessage @staging
+  @C123929 @videomessage @regression
   Scenario Outline: Verify sender can cancel video message upload
     Given my browser supports video message feature
     Given There are 2 users where <Name> is me
@@ -109,9 +110,9 @@ Feature: Video Message
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size  |
-      | user1Email | user1Password | user1Name | user2Name | C123929.mp4 | 19MB  |
+      | user1Email | user1Password | user1Name | user2Name | C123929.mp4 | 18MB  |
 
-  @C123928 @videomessage @regression
+  @C123928 @videomessage @staging
   Scenario Outline: Verify receiver can cancel video message download
     Given my browser supports video message feature
     Given There are 3 users where <Name> is me
@@ -132,4 +133,4 @@ Feature: Video Message
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | File        | ChatName  | Size  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | C123928.mp4 | GroupChat | 10MB  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | C123928.mp4 | GroupChat | 18MB  |

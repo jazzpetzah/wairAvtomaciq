@@ -1,7 +1,7 @@
 Feature: E2EE
 
   @C3226 @rc @regression
-  Scenario Outline: Verify you can receive encrypted and non-encrypted messages in 1:1 chat
+  Scenario Outline: Verify you can receive encrypted and cannot receive non-encrypted messages in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
     Given I sign in using my email or phone number
@@ -10,8 +10,8 @@ Feature: E2EE
     When User <Contact> sends encrypted message <EncryptedMessage> to user Myself
     And User <Contact> sends message <SimpleMessage> to user Myself
     And I tap on conversation name <Contact>
-    Then I see message <SimpleMessage> 1 time in the conversation view
-    And I see message <EncryptedMessage> 1 time in the conversation view
+    Then I see message <SimpleMessage> 0 times in the conversation view
+    And I see message <EncryptedMessage> 1 times in the conversation view
 
     Examples:
       | Name      | Contact   | EncryptedMessage | SimpleMessage |
@@ -27,7 +27,6 @@ Feature: E2EE
     When User <Contact> sends encrypted image <ImageName> to single user conversation Myself
     And User <Contact> sends image <ImageName> to single user conversation Myself
     And I tap on conversation name <Contact>
-    And I scroll to the bottom of conversation view
     Then I see 1 image in the conversation view
 
     Examples:
@@ -45,13 +44,15 @@ Feature: E2EE
     And User <Contact1> sends encrypted message <Message1> to user Myself
     Then I see the most recent conversation message is "<Message1>"
     When I enable Airplane mode on the device
+    And I see No Internet bar in 15 seconds
     And User <Contact1> sends encrypted image <Picture> to single user conversation Myself
     Then I do not see any pictures in the conversation view
     When User <Contact1> sends encrypted message <Message2> to user Myself
     Then I see the most recent conversation message is "<Message1>"
     When I disable Airplane mode on the device
+    And I do not see No Internet bar in 15 seconds
     # Wait for sync
-    And I wait for 10 seconds
+    And I wait for 5 seconds
     And I scroll to the bottom of conversation view
     Then I see the most recent conversation message is "<Message2>"
     And I see a picture in the conversation view
@@ -88,7 +89,7 @@ Feature: E2EE
       | user1Name | user2Name | user3Name | Msg1     | Msg2     | testing.jpg | GroupConvo    |
 
   @C3241 @regression
-  Scenario Outline: Verify you can receive encrypted and non-encrypted messages in group chat
+  Scenario Outline: Verify you can receive encrypted and cannot receive non-encrypted messages in group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -98,8 +99,8 @@ Feature: E2EE
     When User <Contact1> sends encrypted message <EncryptedMessage> to group conversation <GroupChatName>
     And User <Contact2> sends message <SimpleMessage> to group conversation <GroupChatName>
     And I tap on conversation name <GroupChatName>
-    Then I see message <SimpleMessage> 1 time in the conversation view
-    And I see message <EncryptedMessage> 1 time in the conversation view
+    Then I see message <SimpleMessage> 0 times in the conversation view
+    And I see message <EncryptedMessage> 1 times in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | EncryptedMessage | SimpleMessage | GroupChatName |
@@ -537,3 +538,17 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | Device  | Message1 | Message2    |
       | user1Name | user2Name | device2 | Msg1     | MsgToResend |
+
+  @C200108 @regression
+  Scenario Outline: Verify new device notification indicator in conversation list cogweel symbol
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with no conversations
+    When I remember the state of new device indicator on settings button
+    And User Myself adds new device <Device>
+    Then I verify the state of new device indicator is changed
+
+    Examples:
+      | Name      | Device  |
+      | user1Name | Device1 |

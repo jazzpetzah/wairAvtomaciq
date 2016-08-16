@@ -72,7 +72,7 @@ Feature: File Transfer
 
     Examples:
       | Name      | Contact1  | FileName  | FileExtension | FileSize | UploadingTimeout |
-      | user1Name | user2Name | qa_random | txt           | 9.00MB   | 20               |
+      | user1Name | user2Name | qa_random | txt           | 2.00MB   | 20               |
 
   @C87635 @rc @regression
   Scenario Outline: Verify downloading file by sender
@@ -135,7 +135,7 @@ Feature: File Transfer
       | Name      | Contact1  | FileName  | FileExtension | FileSize |
       | user1Name | user2Name | qa_random | txt           | 24.00MB  |
 
-  @C87645 @staging
+  @C87645 @regression
   Scenario Outline: Verify I see usual image if it was sent by file transfer
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -147,7 +147,7 @@ Feature: File Transfer
     And I tap File button from cursor toolbar
     Then I see a picture in the conversation view
     When I long tap the recent picture in the conversation view
-    And I tap Delete button on the action mode bar
+    And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And User <Contact1> sends encrypted image <ImageFile> to single user conversation Myself
     Then I see a picture in the conversation view

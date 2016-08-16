@@ -51,7 +51,7 @@ public class ImageFullScreenPageSteps {
 
     @When("I tap download button on fullscreen page")
     public void ITapDownloadButtonOnFullscreenPage() throws Exception {
-        getImageFullScreenPage().clickDownloadButton();
+        getImageFullScreenPage().tapDownloadButton();
     }
 
     @When("I verify image caption and download button are not shown")
@@ -64,18 +64,18 @@ public class ImageFullScreenPageSteps {
 
     @When("I tap close fullscreen page button")
     public void ITapCloseFullscreenButton() throws Exception {
-        getImageFullScreenPage().clickCloseButton();
+        getImageFullScreenPage().tapCloseButton();
     }
 
     /**
      * Presses the sketch button on the image fullscreen page
      *
      * @throws Exception
-     * @step. ^I press Sketch button on image fullscreen page$
+     * @step. ^I tap Sketch button on image fullscreen page$
      */
-    @When("^I press Sketch button on image fullscreen page$")
-    public void IPressSketchButtonOnImageFullscreenPage() throws Exception {
-        getImageFullScreenPage().clickSketchButton();
+    @When("^I tap Sketch button on image fullscreen page$")
+    public void ITapSketchButtonOnImageFullscreenPage() throws Exception {
+        getImageFullScreenPage().tapSketchButton();
     }
 
     private static final double MAX_SIMILARITY_THRESHOLD = 0.97;

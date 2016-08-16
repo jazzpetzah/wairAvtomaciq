@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @C2079 @calling_basic
+  @C2079 @calling_basic @fastLogin
   Scenario Outline: Verify calling from missed call indicator in conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -19,7 +19,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C3180 @rc @calling_basic @clumsy
+  @C3180 @rc @calling_basic @clumsy @fastLogin
   Scenario Outline: Verify starting outgoing call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -33,7 +33,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2107 @C2073 @calling_basic @IPv6
+  @C2107 @C2073 @calling_basic @IPv6 @fastLogin
   Scenario Outline: Verify starting and ending outgoing call by same person
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -49,7 +49,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2108 @rc @calling_basic @clumsy
+  @C2108 @rc @calling_basic @clumsy @fastLogin
   Scenario Outline: Verify ignoring of incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -65,7 +65,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C2111 @rc @calling_basic @clumsy @IPv6
+  @C2111 @rc @calling_basic @clumsy @IPv6 @fastLogin
   Scenario Outline: Verify acepting and ending incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -84,7 +84,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C2072 @calling_basic
+  @C2072 @calling_basic @fastLogin
   Scenario Outline: Receiving missed call notification from one user
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -101,7 +101,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C348 @calling_basic
+  @C348 @calling_basic @fastLogin
   Scenario Outline: Verify missed call indicator appearance (list)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -126,7 +126,7 @@ Feature: Calling
       | Name      | Contact   | Contact1  | Number | CallBackend |
       | user1Name | user2Name | user3Name | 2      | chrome      |
 
-  @C2080 @calling_basic
+  @C2080 @calling_basic @fastLogin
   Scenario Outline: Screenlock device when in the call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -143,7 +143,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C3164 @rc @calling_advanced
+  @C3164 @rc @calling_advanced @fastLogin
   Scenario Outline: 3rd person tries to call me after I initiate a call to somebody
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -174,7 +174,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 |
       | user1Name | user2Name | user3Name | chrome      | chrome       |
 
-  @C2082 @calling_basic
+  @C2082 @calling_basic @fastLogin
   Scenario Outline: Put app into background after initiating call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -191,7 +191,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C2077 @calling_basic
+  @C2077 @calling_basic @fastLogin
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -209,7 +209,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | chrome      | chrome       | 30      |
 
-  @C2074 @calling_basic
+  @C2074 @calling_basic @fastLogin
   Scenario Outline: Verify starting and ending outgoing call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -227,7 +227,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C2046 @calling_basic @IPv6
+  @C2046 @calling_basic @IPv6 @fastLogin
   Scenario Outline: Verify accepting group call in foreground
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -247,7 +247,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName      | CallBackend | CallBackend2 | NumberOfAvatars |
       | user1Name | user2Name | user3Name | AcceptingGROUPCALL | chrome      | chrome       | 2               |
 
-  @C2047 @calling_basic
+  @C2047 @calling_basic @fastLogin
   Scenario Outline: Verify ignoring group call in foreground
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -265,7 +265,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName     | CallBackend |
       | user1Name | user2Name | user3Name | IgnoringGROUPCALL | chrome      |
 
-  @C2050 @rc @calling_advanced
+  @C2050 @rc @calling_advanced @fastLogin
   Scenario Outline: (ZIOS-6010) Verify receiving group call during 1-to-1 call (and accepting it)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -286,7 +286,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend | NumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | GROUPCALL     | chrome      | 2               |
 
-  @C2042 @rc @calling_advanced
+  @C2042 @rc @calling_advanced @fastLogin
   Scenario Outline: Verify leaving and coming back to the call in 20 sec
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -308,7 +308,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName   | CallBackend | NumberOfAvatars |
       | user1Name | user2Name | user3Name | RejoinGROUPCALL | chrome      | 2               |
 
-  @C2054 @rc @calling_advanced @ZIOS-6010
+  @C2054 @rc @calling_advanced @ZIOS-6010 @fastLogin
   Scenario Outline: Verify receiving 1-to-1 call during group call (and accepting it)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -332,7 +332,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend | NumberOfAvatars | NumberOf1on1CallAvatars |
       | user1Name | user2Name | user3Name | user4Name | GROUPCALL     | chrome      | 2               | 1                       |
 
-  @C2065 @rc @calling_basic @clumsy @IPv6
+  @C2065 @rc @calling_basic @clumsy @IPv6 @fastLogin
   Scenario Outline: Verify possibility of starting group call
     Given There are 7 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>
@@ -347,7 +347,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | GroupChatName  |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | StartGROUPCALL |
 
-  @C2048 @rc @calling_advanced
+  @C2048 @rc @calling_advanced @fastLogin
   Scenario Outline: Verify possibility to join call after 45 seconds of starting it
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -367,7 +367,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars |
       | user1Name | user2Name | user3Name | WaitGROUPCALL | chrome      | 2               |
 
-  @C2068 @rc @calling_basic
+  @C2068 @rc @calling_basic @fastLogin
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -387,7 +387,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C2040 @calling_basic
+  @C2040 @calling_basic @fastLogin
   Scenario Outline: Verify initiator is not a host for the call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -409,7 +409,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName      | CallBackend | NumberOfAvatars |
       | user1Name | user2Name | user3Name | AcceptingGROUPCALL | chrome      | 2               |
 
-  @C2101 @calling_basic
+  @C2101 @calling_basic @fastLogin
   Scenario Outline: Verify message about your missed call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

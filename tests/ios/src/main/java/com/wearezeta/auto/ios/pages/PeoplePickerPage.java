@@ -4,7 +4,6 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DummyElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
@@ -20,7 +19,7 @@ public class PeoplePickerPage extends IOSPage {
 
     private static final By nameKeyboardEnterButton = MobileBy.AccessibilityId("Return");
 
-    private static final By nameCreateConversationButton = MobileBy.AccessibilityId("CREATE GROUP");
+    private static final By xpathCreateConversationButton = By.xpath("//UIAButton[@name='CREATE GROUP']");
 
     private static final By namePeoplePickerTopPeopleLabel = MobileBy.AccessibilityId("TOP PEOPLE");
 
@@ -98,11 +97,7 @@ public class PeoplePickerPage extends IOSPage {
 
     public void fillTextInPeoplePickerSearch(String text) throws Exception {
         final WebElement searchInput = getElement(xpathPickerSearch);
-        if (CommonUtils.getIsSimulatorFromConfig(this.getClass()) && text.matches(".*\\W+.*")) {
-            inputStringFromKeyboard(searchInput, text + " ", false);
-        } else {
-            searchInput.sendKeys(text + " ");
-        }
+        searchInput.sendKeys(text + " ");
     }
 
     public Optional<WebElement> getSearchResultsElement(String user) throws Exception {
@@ -149,7 +144,7 @@ public class PeoplePickerPage extends IOSPage {
         return getElement(locator).getAttribute("value").equals("1");
     }
 
-    public void hitDeleteButton() throws Exception {
+    public void pressBackspaceButton() throws Exception {
         getElement(xpathPickerSearch).sendKeys(Keys.DELETE);
     }
 
@@ -230,7 +225,7 @@ public class PeoplePickerPage extends IOSPage {
     private By getActionButtonByName(String name) {
         switch (name) {
             case "Create conversation":
-                return nameCreateConversationButton;
+                return xpathCreateConversationButton;
             case "Open conversation":
                 return nameOpenConversationButton;
             case "Video call":

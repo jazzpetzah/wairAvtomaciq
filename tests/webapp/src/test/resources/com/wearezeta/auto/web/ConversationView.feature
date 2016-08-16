@@ -428,7 +428,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | READ | UNREAD |
       | user1Email | user1Password | user1Name | user2Name | Read | Unread |
 
-  @C149662 @staging @WEBAPP-2921
+  @C149662 @regression @WEBAPP-2921
   Scenario Outline: Verify maximum character limit dialog is shown when want to send a very long text message to group conversation
     Given I switch to Sign In page
     Given I Sign in temporary using login <Login> and password <Password>
@@ -455,7 +455,7 @@ Feature: Conversation View
       | Login                         | Password   | ChatName    | File1          | File2              |
       | smoketester+68b16b1c@wire.com | aqa123456! | Lorem ipsum | over8000ch.txt | lessThan8000ch.txt |
 
-  @C149661 @staging
+  @C149661 @regression
   Scenario Outline: Verify maximum character limit dialog is shown when want to send a very long text message to 1:1 conversation
     Given I switch to Sign In page
     Given I Sign in temporary using login <Login> and password <Password>

@@ -559,15 +559,20 @@ public class ContactListPageSteps {
     }
     
     /*
-     * Verifies that unread dot for given conversation is visible.
+     * Verifies whether unread dot for given conversation is visible or not.
      *
      * @throws Exception
      */
-    @Then("^I see unread dot in conversation (\\w+)$")
-    public void IVerifySeeUnreadDot(String conversationName) throws Exception {
+    @Then("^I (do not )?see unread dot in conversation (\\w+)$")
+    public void IVerifySeeUnreadDot(String not, String conversationName) throws Exception {
         conversationName = context.getUserManager().replaceAliasesOccurences(conversationName, FindBy.NAME_ALIAS);
-        assertTrue(String.format("Unread dot for conversation %s is NOT visible", conversationName), 
+        if (not == null) {
+            assertTrue(String.format("Unread dot for conversation %s is NOT visible", conversationName), 
                 context.getPagesCollection().getPage(ContactListPage.class).isUnreadDotVisibleForConversation(conversationName));
+        } else {
+            assertTrue(String.format("Unread dot for conversation %s IS visible", conversationName), 
+                context.getPagesCollection().getPage(ContactListPage.class).isUnreadDotInvisibleForConversation(conversationName));
+        }
     }
 
     /*

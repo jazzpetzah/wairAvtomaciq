@@ -18,8 +18,11 @@ Feature: VideoCalling
     Then I see my self video view
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see video call is maximized
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
     And I do not see my self video view
@@ -46,8 +49,11 @@ Feature: VideoCalling
     Then I see my self video view
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And I see video call is maximized
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
     And I do not see accept video call button for conversation <Contact>
@@ -73,7 +79,7 @@ Feature: VideoCalling
     And I see decline call button for conversation <Contact>
     And I see my self video view
     When I ignore the call from conversation <Contact>
-    Then I do not see the call controls for conversation <Contact>
+    Then I see join call button for conversation <Contact>
     And I do not see accept video call button for conversation <Contact>
     And I do not see decline call button for conversation <Contact>
     And I do not see my self video view
@@ -119,8 +125,11 @@ Feature: VideoCalling
     Then I see my self video view
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see video call is maximized
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     When I end the video call
     Then I do not see my self video view
     And <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
@@ -129,8 +138,11 @@ Feature: VideoCalling
     Then I see my self video view
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see video call is maximized
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     When I end the video call
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
     And I do not see my self video view
@@ -139,7 +151,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
-  @C12097 @videocalling @long-call
+  @C12097 @long-call
   Scenario Outline: Verify I can have video call more than 30 mins
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -155,8 +167,11 @@ Feature: VideoCalling
     Then I see my self video view
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see video call is maximized
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     And I wait for 60 seconds
     And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -258,8 +273,9 @@ Feature: VideoCalling
     Then I see my self video view
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see video call is maximized
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
     And I end the video call
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
 
@@ -307,13 +323,20 @@ Feature: VideoCalling
     Then I see my self video view
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see video call is maximized
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     When I see mute button on video call page is not pressed
     And I click mute button on video call page
     Then I see mute button on video call page is pressed
+#    And <Contact> verifies to not get audio data from me
     When I click mute button on video call page
     Then I see mute button on video call page is not pressed
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
     When I end the video call
     Then I do not see my self video view
 
@@ -339,11 +362,17 @@ Feature: VideoCalling
     Then I see my self video view
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see video call is maximized
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flow
+#    And <Contact> verifies to not get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     When I see mute button on video call page is pressed
     And I click mute button on video call page
     Then I see mute button on video call page is not pressed
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
     When I end the video call
     Then I do not see my self video view
 
@@ -374,7 +403,10 @@ Feature: VideoCalling
     Then I see the ongoing call controls for conversation <Contact>
     And I see video call is maximized
     And <Contact> verifies to have 1 flow
-    And <Contact> verifies that all flows have greater than 0 bytes
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
 
@@ -419,15 +451,19 @@ Feature: VideoCalling
     And I see the incoming call controls for conversation <Contact>
     And I see decline call button for conversation <Contact>
     When I ignore the call from conversation <Contact>
-    Then I do not see the call controls for conversation <Contact>
+    And I see join call button for conversation <Contact>
     And I open conversation with <Contact>
     When I start a video call
     Then I see my self video view
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
-    And I see video call is maximized
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all flows have greater than 0 bytes
-    When I end the video call
+    When I wait for 5 seconds
+    Then I see video call is minimized
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    When I hang up call with conversation <Contact>
     Then I do not see the call controls for conversation <Contact>
     And I do not see my self video view
 
@@ -481,8 +517,11 @@ Feature: VideoCalling
     Then I see my self video view
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And I see video call is maximized
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
 
@@ -544,7 +583,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      |
 
-  @C77946 @videocalling @staging @WEBAPP-2463
+  @C77946 @videocalling @staging
   Scenario Outline: Verify I can start an audio call back after declining a video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -557,14 +596,15 @@ Feature: VideoCalling
     Then I see the incoming call controls for conversation <Contact>
     And I see decline call button for conversation <Contact>
     When I ignore the call from conversation <Contact>
-    Then I do not see the call controls for conversation <Contact>
+    Then I see join call button for conversation <Contact>
     And I do not see my self video view
     When I open conversation with <Contact>
     And I call
-    Then I see the outgoing call controls for conversation <Contact>
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact> verifies to have 1 flows
-    And <Contact> verifies that all flows have greater than 0 bytes
+    Then I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
     When I hang up call with conversation <Contact>
     Then I do not see the call controls for conversation <Contact>
 
@@ -586,14 +626,17 @@ Feature: VideoCalling
     When I open conversation with <Contact1>
     And I start a video call
     Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact1> verify to have 1 flows
-    And <Contact1> verify that all flows have greater than 0 bytes
+    And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies to get video data from me
+    And <Contact1> verifies that all audio flows have greater than 0 bytes
+    And <Contact1> verifies that all video flows have greater than 0 bytes
     Then I see my self video view
     And I see video call is maximized
     When I minimize video call
     Then I see video call is minimized
     Then I do not see my self video view
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
     When I write random message
     And I send message
     Then I see random message in conversation
@@ -605,9 +648,13 @@ Feature: VideoCalling
     Then I see random message in conversation
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
-    And I see the video button is pulsating
-    When I maximize video call
+    When I open conversation with <Contact1>
+    Then I see broadcast indicator is shown for video
+    When I maximize video call via button on remote video
     Then I see video call is maximized
+    And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies to get video data from me
     When I end the video call
     Then I do not see my self video view
 
@@ -615,7 +662,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 30      | userpicture_landscape.jpg |
 
-  @C165129 @regression @videocalling @calling_debug
+  @C165129 @regression @videocalling
   Scenario Outline: Verify that current video call is terminated if you want to call someone else
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -631,12 +678,15 @@ Feature: VideoCalling
     When I start a video call
     Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verifies to have 1 flow
-    And <Contact1> verifies that all flows have greater than 0 bytes
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies to get video data from me
+    And <Contact1> verifies that all audio flows have greater than 0 bytes
+    And <Contact1> verifies that all video flows have greater than 0 bytes
     And I see my self video view
     And I see video call is maximized
     When I minimize video call
     Then I see video call is minimized
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
     When I open conversation with <Contact2>
     And I call
     Then I see another call warning modal
@@ -644,27 +694,27 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see the video button is pulsating
     And <Contact1> verifies to have 1 flow
-    And <Contact1> verifies that all flows have greater than 0 bytes
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies to get video data from me
     When I call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see the video button is pulsating
     And <Contact1> verifies to have 1 flow
-    And <Contact1> verifies that all flows have greater than 0 bytes
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies to get video data from me
     When I call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see the video button is pulsating
     And <Contact1> verifies to have 1 flow
-    And <Contact1> verifies that all flows have greater than 0 bytes
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies to get video data from me
     When I call
     Then I see another call warning modal
     When I click on "Hang Up" button in another call warning modal
@@ -673,14 +723,15 @@ Feature: VideoCalling
     And I do not see the ongoing call controls for conversation <Contact1>
     And I see the ongoing call controls for conversation <Contact2>
     And <Contact2> verifies to have 1 flow
-    And <Contact2> verifies that all flows have greater than 0 bytes
+    And <Contact2> verifies to get audio data from me
+    And <Contact2> verifies that all audio flows have greater than 0 bytes
     And I hang up call with conversation <Contact2>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 20      |
 
-  @C165142 @regression @videocalling @calling_debug
+  @C165142 @regression @videocalling
   Scenario Outline: Verify that current video call is terminated if you want to videocall someone else
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -696,12 +747,15 @@ Feature: VideoCalling
     When I start a video call
     Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verifies to have 1 flow
-    And <Contact1> verifies that all flows have greater than 0 bytes
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies to get video data from me
+    And <Contact1> verifies that all audio flows have greater than 0 bytes
+    And <Contact1> verifies that all video flows have greater than 0 bytes
     And I see my self video view
     And I see video call is maximized
     When I minimize video call
     Then I see video call is minimized
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
     When I open conversation with <Contact2>
     When I start a video call
     Then I see another call warning modal
@@ -709,27 +763,27 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see the video button is pulsating
     And <Contact1> verifies to have 1 flow
-    And <Contact1> verifies that all flows have greater than 0 bytes
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies to get video data from me
     When I start a video call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see the video button is pulsating
     And <Contact1> verifies to have 1 flow
-    And <Contact1> verifies that all flows have greater than 0 bytes
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies to get video data from me
     When I start a video call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see the video button is pulsating
     And <Contact1> verifies to have 1 flow
-    And <Contact1> verifies that all flows have greater than 0 bytes
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies to get video data from me
     When I start a video call
     Then I see another call warning modal
     When I click on "Hang Up" button in another call warning modal
@@ -738,62 +792,104 @@ Feature: VideoCalling
     And I see my self video view
     And I see video call is maximized
     And <Contact2> verifies to have 1 flow
-    And <Contact2> verifies that all flows have greater than 0 bytes
+    And <Contact2> verifies to get audio data from me
+    And <Contact2> verifies to get video data from me
+    And <Contact2> verifies that all audio flows have greater than 0 bytes
+    And <Contact2> verify that all video flows have greater than 0 bytes
     When I minimize video call
     Then I see video call is minimized
     And I do not see the ongoing call controls for conversation <Contact1>
     And I see the ongoing call controls for conversation <Contact2>
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 20      |
 
-    @C12074 @videocalling @staging
-    Scenario Outline: Verify I can disable video in Video call and enable it back
-      Given My browser supports calling
-      Given There are 2 users where <Name> is me
-      Given Myself is connected to <Contact>
-      Given <Contact> starts instance using <CallBackend>
-      Given <Contact> accepts next incoming video call automatically
-      Given <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
-      Given I switch to Sign In page
-      Given I Sign in using login <Login> and password <Password>
-      And I am signed in properly
-      And I open conversation with <Contact>
-      When I start a video call
-      Then I see my self video view
-      And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-      And I see video call is maximized
-      And I see video button pressed
-      And <Contact> verify to have 1 flows
-      And <Contact> verify that all flows have greater than 0 bytes
-      When I click on video button
-      And I see video button unpressed
-      Then I see my self video is black
-      And I see video from other user is not black
-      When I click on video button
-      And I see video button pressed
-      Then I see my self video is not black
-      And I see video from other user is not black
-      When I minimize video call
-      Then I see the video button is pulsating
-      When I click on video button
-      And I see video button unpressed
-      Then I see the video button is not pulsating
-      When I click on video button
-      Then I see video button pressed
-      And I see the video button is pulsating
-      When <Contact> switches video off
-      Then I see minimized video is black
-      When I maximize video call
-      Then I see video from other user is black
-      When <Contact> switches video on
-      Then I see video from other user is not black
-      When I end the video call
-      Then I do not see the call controls for conversation <Contact>
-      And I do not see my self video view
+  @C12074 @videocalling @staging
+  Scenario Outline: Verify I can disable video in Video call and enable it back
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given <Contact> accepts next incoming video call automatically
+    Given <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact>
+    When I start a video call
+    Then I see my self video view
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see video call is maximized
+    And I see video button pressed
+    And <Contact> verifies to have 1 flows
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
+    When I click on video button
+    And I see video button unpressed
+    And <Contact> verify that all audio flows have greater than 0 bytes
+#    And <Contact> verifies to not get video data from me
+    Then I see my self video is off
+    And I see video from other user is not black
+    When I click on video button
+    And I see video button pressed
+    And <Contact> verify that all audio flows have greater than 0 bytes
+    And <Contact> verify that all video flows have greater than 0 bytes
+    Then I see my self video is on
+    And I see my self video is not black
+    And I see video from other user is not black
+    When I minimize video call
+    Then I see broadcast indicator is shown for video
+    When I click on video button
+    And I see video button unpressed
+    Then I see broadcast indicator is not shown for video
+    When I click on video button
+    Then I see video button pressed
+    And I see broadcast indicator is shown for video
+    When <Contact> switches video off
+    When I maximize video call via titlebar
+    When <Contact> switches video on
+    Then I see video from other user is not black
+    When I end the video call
+    Then I do not see the call controls for conversation <Contact>
+    And I do not see my self video view
 
-      Examples:
-        | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-        | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
+    Examples:
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
+
+  @C183895 @videocalling @staging
+  Scenario Outline: Verify my video is not shown if my audio call is declined but I got called back via video
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact>
+    When I call
+    Then <Contact> declines call from conversation <Contact>
+    And <Contact> starts a video call to me
+    And I see video call is minimized
+    And I see video button unpressed
+    And <Contact> verifies to have 1 flows
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    When I click on video button
+    And I see video button pressed
+    And <Contact> verify that all audio flows have greater than 0 bytes
+    And <Contact> verify that all video flows have greater than 0 bytes
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    When I maximize video call via button on remote video
+    Then I see my self video is on
+    And I see my self video is not black
+    Then I see broadcast indicator is shown for video
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 20      |

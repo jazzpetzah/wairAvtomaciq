@@ -240,11 +240,11 @@ public class PerformanceSteps {
                                 caller, secondsElapsed));
             }
             for (Flow flow : flows) {
-                flowRxBytes = flow.getBytesIn();
+                flowRxBytes = flow.getTelemetry().getStats().getAudio().getBytesReceived();
                 Assert.assertTrue(
                         "Received bytes count should be greater than 0",
                         flowRxBytes > 0);
-                flowTxBytes = flow.getBytesOut();
+                flowTxBytes = flow.getTelemetry().getStats().getAudio().getBytesSent();
                 Assert.assertTrue("Sent bytes count should be greater than 0",
                         flowTxBytes > 0);
             }

@@ -43,7 +43,7 @@ Feature: Audio Message
     And I tap audio recording Send button
     Then I see cursor toolbar
     And I see Audio Message container in the conversation view
-    And I wait for 15 seconds until audio message upload completed
+    And I wait for 25 seconds until audio message upload completed
     When I remember the state of recent audio message seekbar
     And I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
@@ -54,7 +54,7 @@ Feature: Audio Message
 
     Examples:
       | Name      | Contact   | TapDuration |
-      | user1Name | user2Name | 10          |
+      | user1Name | user2Name | 15          |
 
   @C131188 @regression @rc
   Scenario Outline: Verify getting a chathead when voice message is sent in the other conversation
@@ -174,8 +174,8 @@ Feature: Audio Message
     And I restore the application
     Then I verify the state of Pause button on the recent audio message in the conversation view is changed
     When I long tap Audio Message container in the conversation view
-    Then I do not see Copy button on the action mode bar
-    When I tap Delete button on the action mode bar
+    Then I do not see Copy button on the message bottom menu
+    When I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see Audio Message container in the conversation view
 
@@ -256,7 +256,7 @@ Feature: Audio Message
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C165127 @C165128 @C165137 @staging
+  @C165127 @C165128 @C165137 @regression
   Scenario Outline: Single tap on mic button open voice recording dialog
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

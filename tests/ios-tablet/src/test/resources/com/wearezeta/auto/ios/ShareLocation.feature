@@ -1,6 +1,6 @@
 Feature: Share Location
 
-  @C165160 @C165167 @regression
+  @C165160 @C165167 @rc @regression @fastLogin
   Scenario Outline: Receive and share location
     Given There are 3 user where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>

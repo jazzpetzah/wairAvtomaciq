@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.android.pages.SettingsPage;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
@@ -8,6 +9,8 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
+
+import java.util.Optional;
 
 public class SettingsPageSteps {
 
@@ -122,11 +125,14 @@ public class SettingsPageSteps {
      * @param what     either name|email|phone number
      * @param newValue the new self user name/email or phone number
      * @throws Exception
-     * @step. ^I commit my new (name|email|phone number) "(.*)"$
+     * @step. ^I commit my new (name|email|phone number) "(.*)"( with password (.*))?$
      */
-    @And("^I commit my new (name|email|phone number) \"(.*)\"$")
-    public void ICommitNewUSerName(String what, String newValue) throws Exception {
+    @And("^I commit my new (name|email|phone number) \"(.*)\"( with password (.*))?$")
+    public void ICommitNewUSerName(String what, String newValue, String withPassword, String password) throws Exception {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
+        password = withPassword != null ?
+                usrMgr.replaceAliasesOccurences(password, ClientUsersManager.FindBy.PASSWORD_ALIAS) : null;
+
         switch (what) {
             case "name":
                 newValue = usrMgr.replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.NAME_ALIAS);
@@ -135,8 +141,11 @@ public class SettingsPageSteps {
                 break;
             case "email":
                 newValue = usrMgr.replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.EMAIL_ALIAS);
-                getSettingsPage().commitNewEmail(newValue);
+                getSettingsPage().commitNewEmailWithPassword(newValue, Optional.ofNullable(password));
                 self.setEmail(newValue);
+                if (password != null) {
+                    self.setPassword(password);
+                }
                 break;
             case "phone number":
                 newValue = usrMgr.replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
@@ -148,5 +157,22 @@ public class SettingsPageSteps {
             default:
                 throw new IllegalArgumentException(String.format("Unknown property '%s'", what));
         }
+    }
+
+    /**
+     * Get the verification code for a phone number and types it into the corresponding
+     * UI field
+     *
+     * @param number phone number to use
+     * @throws Exception
+     * @step. ^I commit verification code for phone number (.*)
+     */
+    @And("^I commit verification code for phone number (.*)")
+    public void ICommitVerificationCodeForPhoneNumber(String number) throws Exception {
+        number = usrMgr.replaceAliasesOccurences(number, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+        final String activationCode = BackendAPIWrappers.getActivationCodeByPhoneNumber(new PhoneNumber(
+                PhoneNumber.WIRE_COUNTRY_PREFIX, number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "")
+        ));
+        getSettingsPage().commitPhoneNumberVerificationCode(activationCode);
     }
 }

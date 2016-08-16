@@ -22,8 +22,12 @@ public class VideoCallPage extends WebPage {
     @FindBy(css = WebAppLocators.VideoCallPage.cssMinimizeVideoCallButton)
     private WebElement minimizeVideoCallButton;
 
+    @FindBy(css = WebAppLocators.VideoCallPage.cssMaximizeVideoCallButtonOnRemotevideo)
+    private WebElement maximizeVideoCallButtonOnRemoteVideo;
+
     @FindBy(css = WebAppLocators.VideoCallPage.cssMaximizeVideoCallButton)
     private WebElement maximizeVideoCallButton;
+
 
     @FindBy(css = WebAppLocators.VideoCallPage.cssCameraButton)
     private WebElement cameraButton;
@@ -107,7 +111,7 @@ public class VideoCallPage extends WebPage {
     }
 
     public boolean isMinimizeVideoCallButtonNotVisible() throws Exception {
-        WebCommonUtils.hoverOverElement(getDriver(), minimizeVideoCallButton);
+        //WebCommonUtils.hoverOverElement(getDriver(), minimizeVideoCallButton);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 By.cssSelector(WebAppLocators.VideoCallPage.cssMinimizeVideoCallButton));
     }
@@ -127,6 +131,11 @@ public class VideoCallPage extends WebPage {
     public void clickMaximizeVideoCallButton() throws Exception {
         WebCommonUtils.hoverOverElement(getDriver(), maximizeVideoCallButton);
         maximizeVideoCallButton.click();
+    }
+
+    public void clickMaximizeVideoCallButtonOnRemoteVideo() throws Exception {
+        WebCommonUtils.hoverOverElement(getDriver(), maximizeVideoCallButtonOnRemoteVideo);
+        maximizeVideoCallButtonOnRemoteVideo.click();
     }
 
     public boolean isVideoInPortrait() throws Exception {
@@ -155,6 +164,16 @@ public class VideoCallPage extends WebPage {
         By locator = By.cssSelector(WebAppLocators.VideoCallPage.cssCameraButtonNotPressed);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
+    
+    public boolean isDisabledVideoIconVisible() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.VideoCallPage.cssSelfVideoOff);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+    
+    public boolean isDisabledVideoIconInvisible() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.VideoCallPage.cssSelfVideoOff);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
 
     public Optional<BufferedImage> getSelfVideo() throws Exception {
         return getElementScreenshot(selfVideo);
@@ -175,5 +194,17 @@ public class VideoCallPage extends WebPage {
 
     public WebElement getLocalScreenShareVideoElement() throws Exception {
         return localScreenShareVideo;
+    }
+
+    public Point getLocalScreenShareVideoElementLocation() throws Exception {
+        Long top = (Long) getDriver().executeScript("return arguments[0].getBoundingClientRect().top", localScreenShareVideo);
+        Long left = (Long) getDriver().executeScript("return arguments[0].getBoundingClientRect().left", localScreenShareVideo);
+        return new Point(left.intValue(), top.intValue());
+    }
+
+    public Dimension getLocalScreenShareVideoElementSize() throws Exception {
+        Long width = (Long) getDriver().executeScript("return arguments[0].getBoundingClientRect().width", localScreenShareVideo);
+        Long height = (Long) getDriver().executeScript("return arguments[0].getBoundingClientRect().height", localScreenShareVideo);
+        return new Dimension(width.intValue(), height.intValue());
     }
 }

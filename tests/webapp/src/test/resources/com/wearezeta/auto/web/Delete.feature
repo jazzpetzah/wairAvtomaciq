@@ -20,8 +20,9 @@ Feature: Delete
     And I send picture <Picture2> to the current conversation
     And I see sent picture <Picture2> in the conversation view
     And I see 4 messages in conversation
-    And I click to delete the latest message
-    And I click confirm to delete message
+    And I open context menu of the latest message
+    And I click to delete message for me in context menu
+    And I click confirm to delete message for me
     Then I see text message <Message1>
     And I see sent picture <Picture1> in the conversation view
     And I see only 1 picture in the conversation
@@ -34,16 +35,18 @@ Feature: Delete
     And I send message
     And I see text message <YouTubeLink>
     And I see 3 messages in conversation
-    And I click to delete the latest message
-    And I click confirm to delete message
+    And I open context menu of the latest message
+    And I click to delete message for me in context menu
+    And I click confirm to delete message for me
     Then I do not see text message <YouTubeLink>
     And I see text message <Message1>
     And I see 2 messages in conversation
     When Contact <Contact> sends message <SpotifyLink> via device ContactDevice to user Myself
     And I see text message <SpotifyLink>
     And I see 3 messages in conversation
-    And I click to delete the latest message
-    And I click confirm to delete message
+    And I open context menu of the latest message
+    And I click to delete message for me in context menu
+    And I click confirm to delete message for me
     Then I do not see text message <SpotifyLink>
     And I see text message <Message1>
     And I see 2 messages in conversation
@@ -51,16 +54,18 @@ Feature: Delete
     And I send message
     And I see text message <SoundCloudLink>
     And I see 3 messages in conversation
-    And I click to delete the latest message
-    And I click confirm to delete message
+    And I open context menu of the latest message
+    And I click to delete message for me in context menu
+    And I click confirm to delete message for me
     Then I do not see text message <SoundCloudLink>
     And I see text message <Message1>
     And I see 2 messages in conversation
     When I click ping button
     And I see PING action in conversation
     And I see 3 messages in conversation
-    And I click to delete the latest message
-    And I click confirm to delete message
+    And I open context menu of the latest message
+    And I click to delete message for me in context menu
+    And I click confirm to delete message for me
     Then I do not see PING action in conversation
     And I see text message <Message1>
     And I see 2 messages in conversation
@@ -71,15 +76,17 @@ Feature: Delete
     And I click send button in Giphy popup
     And I see sent gif in the conversation view
     And I see 4 messages in conversation
-    And I click to delete the latest message
-    And I click confirm to delete message
+    And I open context menu of the latest message
+    And I click to delete message for me in context menu
+    And I click confirm to delete message for me
     Then I see text message <Message1>
     And I see 3 messages in conversation
     When I send 1KB sized file with name example.txt to the current conversation
     And I wait until file example.txt is uploaded completely
     And I see 4 messages in conversation
-    And I click to delete the latest message
-    And I click confirm to delete message
+    And I open context menu of the latest message
+    And I click to delete message for me in context menu
+    And I click confirm to delete message for me
     Then I do not see file transfer for file example.txt in the conversation view
     And I see text message <Message1>
     And I see 3 messages in conversation
@@ -108,8 +115,9 @@ Feature: Delete
     Then I see text message <Message_1>
     And I see text message <Message_2>
     And I see text message <Message_3>
-    When I click to delete the latest message
-    And I click confirm to delete message
+    When I open context menu of the latest message
+    And I click to delete message for me in context menu
+    And I click confirm to delete message for me
     And User Myself deletes the recent 1 message from user <Contact> via device Device1
     Then I see text message <Message_1>
     And I do not see text message <Message_2>
@@ -246,7 +254,7 @@ Feature: Delete
     When I write message MESSAGE1_NAME
     And I send message
     And I see text message MESSAGE1_NAME
-    And User <Contact1> sends message MESSAGE1_CONTACT to conversation GROUPCHAT
+    And Contact <Contact1> sends message MESSAGE1_CONTACT to group conversation GROUPCHAT
     And I see text message MESSAGE1_CONTACT
     And I write message MESSAGE2_NAME
     And I send message
@@ -256,8 +264,9 @@ Feature: Delete
     And I see text message MESSAGE1_CONTACT
     And I do not see text message MESSAGE2_NAME
     And I see 3 messages in conversation
-    When I click to delete the latest message
-    And I click confirm to delete message
+    When I open context menu of the latest message
+    And I click to delete message for me in context menu
+    And I click confirm to delete message for me
     And I see text message MESSAGE1_NAME
     And I do not see text message MESSAGE1_CONTACT
     And I see 2 messages in conversation

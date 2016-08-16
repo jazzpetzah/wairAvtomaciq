@@ -194,11 +194,11 @@ public class RegistrationPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidCode);
     }
 
-    public void clickChooseOwnPicButton() throws Exception {
+    public void tapChooseOwnPicButton() throws Exception {
         clickElementWithRetryIfNextElementAppears(nameChooseOwnPictureButton, nameChoosePhotoButton);
     }
 
-    public void clickChoosePhotoButton() throws Exception {
+    public void tapChoosePhotoButton() throws Exception {
         getElement(nameChoosePhotoButton, "Choose photo button is not visible").click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameChoosePhotoButton)) {
             throw new IllegalStateException("Confirm button is still visible");
@@ -213,7 +213,7 @@ public class RegistrationPage extends IOSPage {
         instantiatePage(FirstTimeOverlay.class).acceptIfVisible(2);
     }
 
-    public void clickKeepThisOneButton() throws Exception {
+    public void tapKeepThisOneButton() throws Exception {
         getElement(nameKeepThisOneButton).click();
     }
 

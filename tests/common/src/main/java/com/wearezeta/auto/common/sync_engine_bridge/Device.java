@@ -242,6 +242,34 @@ class Device extends RemoteEntity implements IDevice {
     }
 
     @Override
+    public void deleteMessageEveryWhere(String convId, MessageId messageId) throws Exception {
+        try{
+            askActor(this.ref(), new ActorMessage.RecallMessage(new RConvId(convId), messageId));
+        } catch (TimeoutException e) {
+            // recreate process and retry
+            respawn();
+            if (hasLoggedInUser()) {
+                logInWithUser(this.loggedInUser.get());
+                askActor(this.ref(), new ActorMessage.RecallMessage(new RConvId(convId), messageId));
+            }
+        }
+    }
+
+    @Override
+    public void updateMessage(MessageId messageId, String newMessage) throws Exception {
+        try{
+            askActor(this.ref(), new ActorMessage.UpdateText(messageId, newMessage));
+        } catch (TimeoutException e) {
+            // recreate process and retry
+            respawn();
+            if (hasLoggedInUser()) {
+                logInWithUser(this.loggedInUser.get());
+                askActor(this.ref(), new ActorMessage.UpdateText(messageId, newMessage));
+            }
+        }
+    }
+
+    @Override
     public ActorMessage.MessageInfo[] getConversationMessages(String convId) throws Exception {
         try {
             ActorMessage.ConvMessages convMessages = (ActorMessage.ConvMessages) askActor(this.ref(),

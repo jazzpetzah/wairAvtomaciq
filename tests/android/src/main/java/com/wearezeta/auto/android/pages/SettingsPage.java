@@ -1,8 +1,10 @@
 package com.wearezeta.auto.android.pages;
 
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import org.openqa.selenium.By;
 
@@ -32,15 +34,33 @@ public class SettingsPage extends AndroidPage {
 
     private static final By idEmailEdit = By.id("acet__preferences__email");
 
+    private static final By idCountryIdxInput = By.id("acet__preferences__country");
+
+    private static final By idPhoneNumberInput = By.id("acet__preferences__phone");
+
+    private static final By idEmailPasswordInput = By.id("acet__preferences__password");
+
+    // index starts from 1
+    private static final Function<Integer, String> idStrVerificationCodeDigitInput = idx ->
+            String.format("et__verification_code__%s", idx);
+
+    private static final int SCREEN_HEIGHT_THRESHOLD = 10;
+
     public SettingsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
     private boolean scrollUntilMenuElementVisible(By locator, int maxScrolls) throws Exception {
         int nScrolls = 0;
+        int screenHeight = AndroidCommonUtils.getScreenSize(getDriver()).getHeight();
+
         while (nScrolls < maxScrolls) {
             if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
-                return true;
+                WebElement menuElement = getElement(locator);
+                if (menuElement.getLocation().getY() + menuElement.getSize().getHeight()
+                        <= screenHeight + SCREEN_HEIGHT_THRESHOLD) {
+                    return true;
+                }
             }
             this.swipeUpCoordinates(500, 50);
             nScrolls++;
@@ -66,7 +86,7 @@ public class SettingsPage extends AndroidPage {
 
     public void enterConfirmationPassword(String password) throws Exception {
         final WebElement confirmationPasswordInput = getElement(idPasswordConfirmationInput);
-        confirmationPasswordInput.click();
+        Thread.sleep(3000);
         confirmationPasswordInput.sendKeys(password);
     }
 
@@ -100,14 +120,42 @@ public class SettingsPage extends AndroidPage {
     }
 
     public void commitNewEmail(String newValue) throws Exception {
+        commitNewEmailWithPassword(newValue, Optional.empty());
+    }
+
+    public void commitNewEmailWithPassword(String newValue, Optional<String> password) throws Exception {
         final WebElement emailEdit = getElement(idEmailEdit);
         emailEdit.clear();
         emailEdit.sendKeys(newValue);
+
+        if(password.isPresent()) {
+            getElement(idEmailPasswordInput, "The password input is not visible").sendKeys(password.get());
+        }
         getElement(xpathOKButton).click();
     }
 
     public void commitNewPhoneNumber(PhoneNumber phoneNumber) throws Exception {
-        // TODO: Implement phone number input
+        final WebElement countryIdxInput = getElement(idCountryIdxInput);
+        countryIdxInput.clear();
+        countryIdxInput.sendKeys(phoneNumber.getPrefix());
+        final WebElement phoneNumberInput = getElement(idPhoneNumberInput);
+        phoneNumberInput.clear();
+        phoneNumberInput.sendKeys(phoneNumber.withoutPrefix());
+        this.pressKeyboardSendButton();
+        Thread.sleep(1000);
         getElement(xpathOKButton).click();
+        // Confirm the alert
+        Thread.sleep(1000);
+        getElementIfDisplayed(xpathOKButton, 3).orElseGet(DummyElement::new).click();
+    }
+
+    public void commitPhoneNumberVerificationCode(String activationCode) throws Exception {
+        for (int charIdx = 0; charIdx < activationCode.length(); charIdx++) {
+            final By locator = By.id(idStrVerificationCodeDigitInput.apply(charIdx + 1));
+            getElement(locator).sendKeys(activationCode.substring(charIdx, charIdx + 1));
+        }
+        this.pressKeyboardSendButton();
+        Thread.sleep(1000);
+        this.pressKeyboardSendButton();
     }
 }

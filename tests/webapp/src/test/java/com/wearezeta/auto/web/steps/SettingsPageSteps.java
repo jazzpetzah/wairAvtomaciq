@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.web.common.TestContext;
-import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
+import com.wearezeta.auto.web.common.WebCommonUtils;
 import org.junit.Assert;
 
 import com.wearezeta.auto.web.pages.SettingsPage;
@@ -190,7 +190,8 @@ public class SettingsPageSteps {
 	@Then("^I( do not)? see device (.*) of user (.*) is verified in device section$")
 	public void ISeeVerifiedDevice(String donot, String deviceName, String userAlias) throws Exception {
 		ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
-		String id = context.getDeviceManager().getDeviceId(user, deviceName);
+		String id = context.getDeviceManager().getDeviceId(user, deviceName + context.getTestname().hashCode());
+                id = WebCommonUtils.removeDeviceIdPadding(id);
 		context.getPagesCollection().getPage(SettingsPage.class).waitForDevices();
 		List<String> devices = context.getPagesCollection().getPage(SettingsPage.class).getVerifiedDeviceIds();
 		if (donot != null) {

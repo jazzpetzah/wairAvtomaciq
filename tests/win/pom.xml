@@ -34,6 +34,7 @@
         <!--<com.wire.environment.url>https://wire-webapp-edge.zinfra.io/?env=staging</com.wire.environment.url>-->
         <pictureResultsPath>target</pictureResultsPath>
         <rcNotificationsRecepients>michael@wire.com,sven.jost@wire.com,nick@wire.com</rcNotificationsRecepients>
+        <com.wire.database.keep>false</com.wire.database.keep>
     </properties>
 
     <dependencies>
@@ -136,6 +137,7 @@
                         <com.wire.environment>${com.wire.environment}</com.wire.environment>
                         <com.wire.environment.url>${com.wire.environment.url}</com.wire.environment.url>
                         <extendedLoggingLevel>${extendedLoggingLevel}</extendedLoggingLevel>
+                        <com.wire.database.keep>${com.wire.database.keep}</com.wire.database.keep>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>

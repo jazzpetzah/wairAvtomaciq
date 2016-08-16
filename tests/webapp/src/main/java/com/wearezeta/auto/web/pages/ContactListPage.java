@@ -8,23 +8,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
-
-import com.google.common.base.Function;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -564,6 +557,11 @@ public class ContactListPage extends WebPage {
     public boolean isUnreadDotVisibleForConversation(String name) throws Exception {
         final By locator = By.xpath(WebAppLocators.ContactListPage.xpathUnreadDotByContactName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+    }
+    
+    public boolean isUnreadDotInvisibleForConversation(String name) throws Exception {
+        final By locator = By.xpath(WebAppLocators.ContactListPage.xpathUnreadDotByContactName.apply(name));
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
     }
 
     public AccentColor getCurrentUnreadDotAccentColor(String name) throws Exception {
