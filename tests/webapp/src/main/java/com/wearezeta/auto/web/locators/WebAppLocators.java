@@ -351,7 +351,7 @@ public final class WebAppLocators {
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] context-menu", text);
 
         public static final Function<String, String> cssDeleteEverywhereByMessageId = text -> String
-                .format("[data-uie-name='item-message'][data-uie-uid='%s'] context-menu [data-context-action='delete']", text);
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] context-menu [data-context-action='delete-everyone']", text);
 
         public static final Function<String, String> cssDeleteForMeByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] context-menu [data-context-action='delete']", text);
@@ -360,6 +360,8 @@ public final class WebAppLocators {
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='do-message-delete']", text);
 
         public static final String cssDoDelete = "[data-uie-name='do-delete']";
+
+        public static final String cssDoDeleteForEveryone = "[data-uie-name='do-delete-everyone']";
 
         // TODO: replace the bottom css with this, when implemented by developers
         //public static final Function<String, String> cssResetSessionByMessageId = text -> String
