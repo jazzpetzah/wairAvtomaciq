@@ -755,4 +755,44 @@ public final class CommonSteps {
         final ClientUser usr = usrMgr.findUserByNameOrNameAlias(nameAlias);
         BackendAPIWrappers.changeUserPassword(usr, usr.getPassword(), newPassword);
     }
+
+    private Map<String, Optional<String>> recentMessageIds = new HashMap<>();
+
+    private String generateConversationKey(String userFrom, String dstName, String deviceName) {
+        return String.format("%s:%s:%s", usrMgr.replaceAliasesOccurences(userFrom, ClientUsersManager.FindBy.NAME_ALIAS),
+                usrMgr.replaceAliasesOccurences(dstName, ClientUsersManager.FindBy.NAME_ALIAS), deviceName);
+    }
+
+    public void UserXRemembersLastMessage(String userNameAlias, boolean isGroup, String dstNameAlias, String deviceName)
+            throws Exception {
+        recentMessageIds.put(generateConversationKey(userNameAlias, dstNameAlias, deviceName),
+                UserGetRecentMessageId(userNameAlias, dstNameAlias, deviceName, isGroup));
+    }
+
+    public void UserXFoundLastMessageChanged(String userNameAlias, boolean isGroup, String dstNameAlias,
+                                             String deviceName, int durationSeconds) throws Exception {
+        final String convoKey = generateConversationKey(userNameAlias, dstNameAlias, deviceName);
+        if (!recentMessageIds.containsKey(convoKey)) {
+            throw new IllegalStateException("You should remember the recent message before you check it");
+        }
+        final String rememberedMessage = recentMessageIds.get(convoKey).orElse("");
+         final Optional<String> actualMessageId = CommonUtils.waitUntil(durationSeconds,
+                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
+                () -> {
+                    Optional<String> messageId = UserGetRecentMessageId(userNameAlias,
+                            dstNameAlias, deviceName, isGroup);
+
+                    String actualMessage = messageId.orElse("");
+                    // Try to wait for a different a message id
+                    if (actualMessage.equals(rememberedMessage)) {
+                        throw new IllegalStateException(
+                                String.format("The recent remembered message id %s and the current message id %s" +
+                                        " should be different", rememberedMessage, actualMessage));
+                    } else {
+                        return actualMessage;
+                    }
+                });
+        Assert.assertTrue(String.format("Actual message Id should not equal to '%s'", rememberedMessage),
+                actualMessageId.isPresent());
+    }
 }

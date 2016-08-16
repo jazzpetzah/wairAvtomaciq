@@ -1320,13 +1320,6 @@ public class CommonAndroidSteps {
         commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup, isDeleteEverywhere);
     }
 
-    private Map<String, Optional<String>> recentMessageIds = new HashMap<>();
-
-    private String generateConversationKey(String userFrom, String dstName, String deviceName) {
-        return String.format("%s:%s:%s", usrMgr.replaceAliasesOccurences(userFrom, ClientUsersManager.FindBy.NAME_ALIAS),
-                usrMgr.replaceAliasesOccurences(dstName, ClientUsersManager.FindBy.NAME_ALIAS), deviceName);
-    }
-
     /**
      * Remember the recent message Id
      *
@@ -1338,52 +1331,32 @@ public class CommonAndroidSteps {
      * @step. ^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$
      */
     @When("^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$")
-    public void UserXRemeberLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
+    public void UserXRemembersLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
             throws Exception {
-        final boolean isGroup = convoType.equals("group conversation");
-        recentMessageIds.put(generateConversationKey(userNameAlias, dstNameAlias, deviceName),
-                commonSteps.UserGetRecentMessageId(userNameAlias, dstNameAlias, deviceName, isGroup));
+        commonSteps.UserXRemembersLastMessage(userNameAlias, convoType.equals("group conversation"),
+                dstNameAlias, deviceName);
     }
 
     /**
-     * Check the rememberd message is changed
+     * Check the remembered message is changed
      *
      * @param userNameAlias user name/alias
      * @param convoType     either 'user' or 'group conversation'
      * @param dstNameAlias  destination user name/alias or group convo name
      * @param deviceName    source device name. Will be created if does not exist yet
      * @throws Exception
-     * @step. ^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed( in \\d+ seconds?)?$
+     * @step. ^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is
+     * changed( in \\d+ seconds?)?$
      */
-    @Then("^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed( in \\d+ seconds?)?$")
+    @Then("^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is " +
+            "changed( in \\d+ seconds?)?$")
     public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias,
                                              String deviceName, String waitDuration) throws Exception {
-        final String convoKey = generateConversationKey(userNameAlias, dstNameAlias, deviceName);
-        if (!recentMessageIds.containsKey(convoKey)) {
-            throw new IllegalStateException("You should remember the recent message befor you check it");
-        }
-        final String rememberedMessage = recentMessageIds.get(convoKey).orElse("");
-        final int timeout = (waitDuration == null) ? CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
+        final int durationSeconds = (waitDuration == null) ?
+                CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
                 : Integer.parseInt(waitDuration.replaceAll("[\\D]", ""));
-        final Optional<String> actualMessageId = CommonUtils.waitUntil(timeout,
-                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
-                () -> {
-                    Optional<String> messageId = commonSteps.UserGetRecentMessageId(userNameAlias,
-                            dstNameAlias, deviceName, convoType.equals("group conversation"));
-
-                    String actualMessage = messageId.orElse("");
-                    // Try to wait for a different a message id
-                    if (actualMessage.equals(rememberedMessage)) {
-                        throw new IllegalStateException(
-                                String.format("recent remembered message id %s, current message id %s, should be different",
-                                        rememberedMessage, actualMessage));
-                    } else {
-                        return actualMessage;
-                    }
-                });
-
-        Assert.assertTrue(String.format("Actual message Id should not equal to '%s'", rememberedMessage),
-                actualMessageId.isPresent());
+        commonSteps.UserXFoundLastMessageChanged(userNameAlias, convoType.equals("group conversation"), dstNameAlias,
+                deviceName, durationSeconds);
     }
 
     /**
@@ -1666,7 +1639,7 @@ public class CommonAndroidSteps {
     /**
      * Add email(s) into address book of a user and upload address book in backend
      *
-     * @param asUser name of the user where the address book is uploaded
+     * @param asUser   name of the user where the address book is uploaded
      * @param contacts list of email addresses seperated by comma
      * @throws Exception
      * @step. ^User (.*) has (?: emails?|phone numbers?) (.*) in address book$
