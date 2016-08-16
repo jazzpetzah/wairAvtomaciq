@@ -372,6 +372,18 @@ public final class CommonSteps {
         }
     }
 
+    public void UserUpdateLatestMessage(String msgFromUserNameAlias, String dstConversationName, String newMessage,
+                                        String deviceName, boolean isGroup) throws Exception {
+        ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
+        dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+
+        String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
+        ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
+        ActorMessage.MessageInfo lastMessage = messageInfos[messageInfos.length - 1];
+
+        seBridge.updateMessage(user, lastMessage.id(), newMessage, deviceName);
+    }
+
     /**
      * Note: if there is no message in conversation, it will return Optional.empty()
      */

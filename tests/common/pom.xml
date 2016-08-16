@@ -32,8 +32,7 @@
         <syncIsAutomated>False</syncIsAutomated>
         <syncIsMuted>False</syncIsMuted>
         <cachedOtrDevicesCount>3</cachedOtrDevicesCount>
-        <!-- http://192.168.10.18:8081/nexus/content/repositories/releases/com/wearezeta/zmessaging-actor/ -->
-        <zmessaging.actor.version>76.508</zmessaging.actor.version>
+        <zmessaging.actor.version>76.510</zmessaging.actor.version>
         <backendType>staging</backendType>
     </properties>
 
@@ -204,7 +203,7 @@
                 <version>2.19.1</version>
                 <configuration>
                     <skipTests>true</skipTests>
-                    <trimStackTrace>false</trimStackTrace>  
+                    <trimStackTrace>false</trimStackTrace>
                     <failIfNoSpecifiedTests>false</failIfNoSpecifiedTests>
                     <failIfNoTests>false</failIfNoTests>
                 </configuration>
@@ -213,7 +212,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>2.7</version>
-             </plugin>
+            </plugin>
         </plugins>
 
         <resources>
