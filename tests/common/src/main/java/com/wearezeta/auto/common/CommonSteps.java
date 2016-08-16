@@ -776,7 +776,7 @@ public final class CommonSteps {
             throw new IllegalStateException("You should remember the recent message before you check it");
         }
         final String rememberedMessage = recentMessageIds.get(convoKey).orElse("");
-         final Optional<String> actualMessageId = CommonUtils.waitUntil(durationSeconds,
+        final Optional<String> actualMessageId = CommonUtils.waitUntil(durationSeconds,
                 CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
                 () -> {
                     Optional<String> messageId = UserGetRecentMessageId(userNameAlias,
