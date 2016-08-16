@@ -123,5 +123,5 @@ Feature: Recall Message
     And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in 3 seconds
 
     Examples:
-      | Name      | Contact   | HisDevice | MySecondDevice |  FileName    | MIMEType  |
-      | user1Name | user2Name | device1   | device2        |  testing.mp4 | video/mp4 |
+      | Name      | Contact   | HisDevice | MySecondDevice |  FileName    |
+      | user1Name | user2Name | device1   | device2        |  testing.mp4 |
