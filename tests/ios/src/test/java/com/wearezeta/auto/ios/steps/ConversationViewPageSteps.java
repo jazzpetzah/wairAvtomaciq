@@ -1430,4 +1430,18 @@ public class ConversationViewPageSteps {
                     currentPercentage <= expectedPercentage);
         }
     }
+
+    /**
+     * Verify whether the Deleted on label is present for a message from a user
+     *
+     * @step. ^I see that Deleted label for a message from (.*) is present in the conversation view$
+     * @param nameAlias user name/alias
+     * @throws Exception
+     */
+    @Then("^I see that Deleted label for a message from (.*) is present in the conversation view$")
+    public void ISeeDeletedLabel(String nameAlias) throws Exception {
+        nameAlias = usrMgr.replaceAliasesOccurences(nameAlias, FindBy.NAME_ALIAS);
+        Assert.assertTrue("Deleted label is not present in the conversation view",
+                getConversationViewPage().isDeletedOnLabelPresent(nameAlias));
+    }
 }
