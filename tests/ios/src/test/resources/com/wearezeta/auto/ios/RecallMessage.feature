@@ -164,8 +164,8 @@ Feature: Recall Message
     And I select Delete for everyone item from Delete menu
     Then I do not see media container in the conversation view
     And I do not see the conversation view contains message <YouTubeLink>
-    And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in 15 seconds
-    And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in 3 seconds
+    And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in <Wait1> seconds
+    And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in <Wait2> seconds
     #SoundCloud
     When User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     Then I see media container in the conversation view
@@ -174,20 +174,20 @@ Feature: Recall Message
     When User <Name> deletes the recent message everywhere from user <Contact> via device <MySecondDevice>
     Then I do not see media container in the conversation view
     And I do not see the conversation view contains message <SoundCloudLink>
-    And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in 15 seconds
-    And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in 3 seconds
+    And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in <Wait1> seconds
+    And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in <Wait2> seconds
     #Vimeo
-    When User <Contact> sends encrypted message "<VimeoLink>" to user <Name>
+    When User <Contact> sends encrypted message "<VimeoLink>" to user Myself
     Then I see media container in the conversation view
     And User <Contact> remembers the recent message from user Myself via device <HisDevice>
     And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
     When User <Contact> deletes the recent message everywhere from user <Name> via device <HisDevice>
     Then I do not see media container in the conversation view
     And I do not see the conversation view contains message <VimeoLink>
-    And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in 15 seconds
-    And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in 3 seconds
+    And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in <Wait1> seconds
+    And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in <Wait2> seconds
 
 
     Examples:
-      | Name      | Contact   | YouTubeLink                                | SoundCloudLink                                   | VimeoLink                   | HisDevice | MySecondDevice |
-      | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU | https://soundcloud.com/sodab/256-ra-robag-wruhme | https://vimeo.com/129426512 | device1   | device2        |
+      | Name      | Contact   | YouTubeLink                                | SoundCloudLink                                   | VimeoLink                   | HisDevice | MySecondDevice | Wait1 | Wait2 |
+      | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU | https://soundcloud.com/sodab/256-ra-robag-wruhme | https://vimeo.com/129426512 | device1   | device2        | 15    | 3     |
