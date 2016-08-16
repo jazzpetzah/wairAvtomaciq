@@ -688,9 +688,9 @@ public class ConversationViewPageSteps {
     /**
      * Select the corresponding item from the modal menu, which appears after Delete badge is tapped
      *
-     * @step. ^I select (Delete only for me|Delete for everyone|Cancel) item from Delete menu$
      * @param name one of possible item names
      * @throws Exception
+     * @step. ^I select (Delete only for me|Delete for everyone|Cancel) item from Delete menu$
      */
     @And("^I select (Delete only for me|Delete for everyone|Cancel) item from Delete menu$")
     public void ISelectDeleteMenuItem(String name) throws Exception {
@@ -1155,8 +1155,8 @@ public class ConversationViewPageSteps {
      *                         Works with long tap only
      * @throws Exception
      * @step. ^I (long )?tap on " +
-    "(image|media container|file transfer placeholder|audio message placeholder|video message|location map|link preview) " +
-    "in conversation view$
+     * "(image|media container|file transfer placeholder|audio message placeholder|video message|location map|link preview) " +
+     * "in conversation view$
      */
     @When("^I (long )?tap on " +
             "(image|media container|file transfer placeholder|audio message placeholder|video message|location map|link preview) " +
@@ -1434,14 +1434,14 @@ public class ConversationViewPageSteps {
     /**
      * Verify whether the Deleted on label is present for a message from a user
      *
-     * @step. ^I see that Deleted label for a message from (.*) is present in the conversation view$
      * @param nameAlias user name/alias
      * @throws Exception
+     * @step. ^I see that Deleted label for a message from (.*) is present in the conversation view$
      */
     @Then("^I see that Deleted label for a message from (.*) is present in the conversation view$")
     public void ISeeDeletedLabel(String nameAlias) throws Exception {
         nameAlias = usrMgr.replaceAliasesOccurences(nameAlias, FindBy.NAME_ALIAS);
-        Assert.assertTrue("Deleted label is not present in the conversation view",
-                getConversationViewPage().isDeletedOnLabelPresent(nameAlias));
+        Assert.assertTrue(String.format("Deleted label is not present for a message from %s in the conversation view",
+                nameAlias), getConversationViewPage().isDeletedOnLabelPresent(nameAlias));
     }
 }
