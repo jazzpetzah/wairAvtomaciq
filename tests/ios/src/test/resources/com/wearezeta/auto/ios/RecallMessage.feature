@@ -156,8 +156,7 @@ Feature: Recall Message
     When I tap on contact name <Contact>
     #YouTube
     And I type the "<YouTubeLink>" message and send it
-    Then I see the conversation view contains message <YouTubeLink>
-    And I see media container in the conversation view
+    Then I see media container in the conversation view
     And User <Contact> remembers the recent message from user Myself via device <HisDevice>
     And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
     When I long tap on media container in conversation view
@@ -168,9 +167,8 @@ Feature: Recall Message
     And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in 15 seconds
     And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in 3 seconds
     #SoundCloud
-    When User <Name> sends encrypted message "<SoundCloudLink>" to user <Contact>
-    Then I see the conversation view contains message <SoundCloudLink>
-    And I see media container in the conversation view
+    When User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
+    Then I see media container in the conversation view
     And User <Contact> remembers the recent message from user Myself via device <HisDevice>
     And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
     When User <Name> deletes the recent message everywhere from user <Contact> via device <MySecondDevice>
@@ -180,8 +178,7 @@ Feature: Recall Message
     And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in 3 seconds
     #Vimeo
     When User <Contact> sends encrypted message "<VimeoLink>" to user <Name>
-    Then I see the conversation view contains message <VimeoLink>
-    And I see media container in the conversation view
+    Then I see media container in the conversation view
     And User <Contact> remembers the recent message from user Myself via device <HisDevice>
     And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
     When User <Contact> deletes the recent message everywhere from user <Name> via device <HisDevice>
