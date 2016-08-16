@@ -284,7 +284,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Message_1      | Message_2      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GC1      | Test_Message_1 | Test_Message_2 |
 
-  @C206250 @staging
+  @C206250 @staging @WEBAPP-3096
   Scenario Outline: Verify deleted messages remain deleted everywhere after I archive and unarchive a conversation
     Given There are 2 users where <Name> is me
     Given user <Name> adds a new device Device1 with label Label1
@@ -326,7 +326,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact   | Message_1      | Message_2      | Message_3      |
       | user1Email | user1Password | user1Name | user2Name | Test_Message_1 | Test_Message_2 | Test_Message_3 |
 
-  @C206249 @staging
+  @C206249 @staging @WEBAPP-3097
   Scenario Outline: Verify I see no unread dot if a message was deleted from someone in a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

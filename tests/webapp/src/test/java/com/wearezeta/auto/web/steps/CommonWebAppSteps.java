@@ -589,9 +589,9 @@ public class CommonWebAppSteps {
      * @param deviceName
      * @param deleteEverywhere
      * @throws Exception
-     * @step. ^User (.*) deletes? the recent (\\d+) messages? from (user|group conversation) (.*) (everywhere )via device (.*)$
+     * @step. ^User (.*) deletes? the recent (\\d+) messages? from (user|group conversation) (.*) (everywhere )?via device (.*)$
      */
-    @When("^User (.*) deletes? the recent (\\d+) messages? from (user|group conversation) (.*) (everywhere )via device (.*)$")
+    @When("^User (.*) deletes? the recent (\\d+) messages? from (user|group conversation) (.*) (everywhere )?via device (.*)$")
     public void UserXDeleteLastMessage(String userNameAlias, int amount, String convoType, String dstNameAlias, String deleteEverywhere, String deviceName)
             throws Exception {
         boolean isGroup = convoType.equals("group conversation");

@@ -22,7 +22,6 @@ public class SketchPage extends IOSPage {
     private static final Random rand = new Random();
 
     public void sketchRandomLines() throws Exception {
-        tapColorLabel();
         for (int i = 0; i < 2; i++) {
             int startX = 5 + rand.nextInt(90);
             int endX = 5 + rand.nextInt(90);
