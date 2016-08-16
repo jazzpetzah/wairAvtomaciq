@@ -29,27 +29,46 @@ Feature: Edit Message
       | user1Name | user2Name | YO      | Hello       |
 
   @C202363 @staging
-  Scenario Outline: Verify I can cancel editing a message by tap on something else
+  Scenario Outline: Verify I can cancel editing a message by tap on other action buttons
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
+    # Check for back button
     When I tap on conversation name <Contact1>
     And I type the message "<Message>" and send it
     And I long tap the Text message "<Message>" in the conversation view
     And I tap Edit button on the message bottom menu
     And I see edit message toolbar
-    And I clear cursor input
-    And I type the message "<EditMessage>"
-    And I tap on center of screen
+    And I tap Back button from top toolbar
+    Then I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     Then I do not see edit message toolbar
-    And I see the message "<Message>" in the conversation view
-    And I do not see the message "<EditMessage>" in the conversation view
+    # Check for audio call button
+    When I long tap the Text message "<Message>" in the conversation view
+    And I tap Edit button on the message bottom menu
+    And I tap Audio Call button from top toolbar
+    Then I see outgoing call
+    When I hang up outgoing call
+    Then I do not see edit message toolbar
+    # Check for video call button
+    When I long tap the Text message "<Message>" in the conversation view
+    And I tap Edit button on the message bottom menu
+    And I tap Video Call button from top toolbar
+    Then I see outgoing call
+    When I hang up outgoing call
+    Then I do not see edit message toolbar
+    # Check for top toolbar
+    When I long tap the Text message "<Message>" in the conversation view
+    And I tap Edit button on the message bottom menu
+    And I tap conversation name from top toolbar
+    And I press Back button
+    Then I do not see edit message toolbar
 
     Examples:
-      | Name      | Contact1  | Message | EditMessage |
-      | user1Name | user2Name | YO      | Hello       |
+      | Name      | Contact1  | Message |
+      | user1Name | user2Name | YO      |
 
   @C202361 @staging
   Scenario Outline: Verify I cannot edit another users message
