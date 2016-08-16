@@ -181,7 +181,7 @@ public class ConversationViewPage extends AndroidPage {
     private static final By idMessageBottomMenuCopyButton = By.id("message_bottom_menu_item_copy");
     private static final By idMessageBottomMenuEditButton = By.id("message_bottom_menu_item_edit");
 
-    private static final By idYoutubeContainer = By.id("fl__youtube_image_container");
+    private static final By idYoutubeContainer = By.id("iv__row_conversation__youtube_image");
 
     private static final By idSoundcloudContainer = By.id("mpv__row_conversation__message_media_player");
 
@@ -195,7 +195,7 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idAudioContainerButton = By.id("aab__row_conversation__audio_button");
 
-    private static final By idShareLocationContainer = By.id("cv__location_map_container");
+    private static final By idShareLocationContainer = By.id("fl__row_conversation__map_image_container");
 
     private static final By idLinkPreviewContainer = By.id("cv__row_conversation__link_preview__container");
 
