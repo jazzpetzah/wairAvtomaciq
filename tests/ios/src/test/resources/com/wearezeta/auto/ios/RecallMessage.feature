@@ -126,7 +126,7 @@ Feature: Recall Message
       | Name      | Contact   | HisDevice | MySecondDevice | FileName    |
       | user1Name | user2Name | device1   | device2        | testing.mp4 |
 
-  @С202309 @staging @fastLogin
+  @C202309 @staging @fastLogin
   Scenario Outline: Verify I see status message if other user deletes his message everywhere (group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
