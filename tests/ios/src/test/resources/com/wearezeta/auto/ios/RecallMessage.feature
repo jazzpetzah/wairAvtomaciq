@@ -119,8 +119,8 @@ Feature: Recall Message
     And User Myself sees the recent message from group conversation <Group> via device <MySecondDevice> is changed in <Wait2> seconds
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact1Device | Contact2Device | Group       | MySecondDevice | Wait1 | Wait2|
-      | user1Name | user2Name | user3Name | device1        | device2        | RecallGroup | device3        | 15    | 3    |
+      | Name      | Contact1  | Contact2  | Contact1Device | Contact2Device | Group       | MySecondDevice | Wait1 | Wait2 |
+      | user1Name | user2Name | user3Name | device1        | device2        | RecallGroup | device3        | 15    | 3     |
 
   @C202320 @regression @fastLogin
   Scenario Outline: Verify delete everywhere works for video messages
@@ -162,8 +162,8 @@ Feature: Recall Message
     And I see that Deleted label for a message from <Contact1> is present in the conversation view
 
     Examples:
-      | Name      | Contact1  |  Contact1Device |
-      | user1Name | user2Name |  device1        |
+      | Name      | Contact1  | Contact1Device |
+      | user1Name | user2Name | device1        |
 
   @C202309 @regression @fastLogin
   Scenario Outline: Verify I see status message if other user deletes his message everywhere (group)
@@ -251,8 +251,8 @@ Feature: Recall Message
     And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in 15 seconds
 
     Examples:
-      | Name      | Contact   | HisDevice |  GiphyTag |
-      | user1Name | user2Name | device1   |  cool     |
+      | Name      | Contact   | HisDevice | GiphyTag |
+      | user1Name | user2Name | device1   | cool     |
 
   @C202316 @staging @fastLogin
   Scenario Outline: Verify delete everywhere works for link preview
@@ -272,8 +272,8 @@ Feature: Recall Message
     And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in 15 seconds
 
     Examples:
-      | Name      | Contact   | HisDevice |  Link                  |
-      | user1Name | user2Name | device1   |  https://www.wire.com/ |
+      | Name      | Contact   | HisDevice | Link                  |
+      | user1Name | user2Name | device1   | https://www.wire.com/ |
 
   @C202317 @staging @fastLogin
   Scenario Outline: Verify delete everywhere works for location sharing
@@ -294,3 +294,24 @@ Feature: Recall Message
     Examples:
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
+
+  @C202319 @staging @fastLogin
+  Scenario Outline: Verify delete everywhere works for audio messages
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <DeviceName>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I record <Duration> seconds long audio message and send it using swipe up gesture
+    Then I see audio message container in the conversation view
+    And User <Contact> remembers the recent message from user Myself via device <DeviceName>
+    When I long tap on audio message placeholder in conversation view
+    And I tap on Delete badge item
+    And I select Delete for everyone item from Delete menu
+    Then I do not see audio message container in the conversation view
+    And User <Contact> sees the recent message from user Myself via device <DeviceName> is changed in 15 seconds
+
+    Examples:
+      | Name      | Contact   | DeviceName | Duration |
+      | user1Name | user2Name | device1    | 5        |
