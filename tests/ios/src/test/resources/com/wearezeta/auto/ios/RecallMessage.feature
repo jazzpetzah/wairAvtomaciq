@@ -232,3 +232,24 @@ Feature: Recall Message
     Examples:
       | Name      | Contact   | HisDevice |  GiphyTag |
       | user1Name | user2Name | device1   |  cool     |
+
+  @C202316 @staging @fastLogin
+  Scenario Outline: Verify delete everywhere works for link preview
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <HisDevice>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given User Myself sends encrypted message "Try this app <Link>" to user <Contact>
+    When I tap on contact name <Contact>
+    Then I see link preview container in the conversation view
+    And User <Contact> remembers the recent message from user Myself via device <HisDevice>
+    When I long tap on link preview in conversation view
+    And I tap on Delete badge item
+    And I select Delete for everyone item from Delete menu
+    Then I do not see link preview container in the conversation view
+    And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in 15 seconds
+
+    Examples:
+      | Name      | Contact   | HisDevice |  Link                  |
+      | user1Name | user2Name | device1   |  https://www.wire.com/ |
