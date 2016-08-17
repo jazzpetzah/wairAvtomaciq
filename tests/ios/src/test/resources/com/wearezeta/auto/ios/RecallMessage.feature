@@ -112,7 +112,7 @@ Feature: Recall Message
     When User <Contact1> remembers the recent message from group conversation <Group> via device <Contact1Device>
     And User <Contact2> remembers the recent message from group conversation <Group> via device <Contact2Device>
     And User Myself remembers the recent message from group conversation <Group> via device <MySecondDevice>
-    When User Myself delete the recent message everywhere from group conversation <Group> via device <MySecondDevice>
+    When User Myself deletes the recent message everywhere from group conversation <Group> via device <MySecondDevice>
     Then I see 0 default messages in the conversation view
     And User <Contact1> sees the recent message from group conversation <Group> via device <Contact1Device> is changed in <Wait1> seconds
     And User <Contact2> sees the recent message from group conversation <Group> via device <Contact2Device> is changed in <Wait2> seconds
