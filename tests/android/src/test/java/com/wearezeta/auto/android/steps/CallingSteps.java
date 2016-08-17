@@ -77,7 +77,6 @@ public class CallingSteps {
      *
      * @step. (.*) verifies that call status to (.*) is changed to (.*) in (\\d+) seconds?$
      *
-     * @param caller callers names/aliases
      * @param conversationName destination conversation
      * @param expectedStatuses comma-separated list of expected call statuses. See
      * com.wearezeta.auto.common.calling2.v1.model.CallStatus for more details
@@ -215,7 +214,6 @@ public class CallingSteps {
         final int flowWaitTime = 3;
         final List<String> calleeList = splitAliases(callees);
         final ConversationViewPageSteps convSteps = new ConversationViewPageSteps();
-        final CallIncomingPageSteps callIncomingPageSteps = new CallIncomingPageSteps();
         final CallOngoingAudioPageSteps callOngoingPageSteps = new CallOngoingAudioPageSteps();
         final CallOutgoingPageSteps callOutgoingPageSteps = new CallOutgoingPageSteps();
         final CommonAndroidSteps commonAndroidSteps = new CommonAndroidSteps();
@@ -231,6 +229,9 @@ public class CallingSteps {
                 }
 
                 callOngoingPageSteps.ISeeOngoingCall(null);
+
+                commonAndroidSteps.WaitForTime(callDurationMinutes * 60);
+
                 callOngoingPageSteps.IHangUp();
 
                 for (String callee : calleeList) {
@@ -240,16 +241,14 @@ public class CallingSteps {
                 callOngoingPageSteps.ISeeOngoingCall("do not");
                 commonAndroidSteps.WaitForTime(10);
 
-
-//            When <Contact> accepts next incoming call automatically
-//            Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-//            And I see ongoing call
-//            When I hang up ongoing call
-//            Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
-//            And I do not see ongoing call
-//                And I wait for 10 seconds
-
             } catch (Throwable t){
+                LOG.error("Can not stop waiting call " + i + " " + t);
+                try {
+                    callOngoingPageSteps.IHangUp();
+                    convSteps.ISeeVideoCallButtonInUpperToolbar(null, "audio");
+                } catch (Throwable ex) {
+                    LOG.error("Can not stop call " + i + " " + ex);
+                }
 
             }
 
