@@ -126,6 +126,24 @@ Feature: Recall Message
       | Name      | Contact   | HisDevice | MySecondDevice | FileName    |
       | user1Name | user2Name | device1   | device2        | testing.mp4 |
 
+  @C202308 @staging @fastLogin
+  Scenario Outline: Verify I see status message if other user deletes his message everywhere (1:1)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> adds new device <Contact1Device>
+    Given I sign in using my email or phone number
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given I see conversations list
+    When I tap on contact name <Contact1>
+    Then I see 1 default message in the conversation view
+    When User <Contact1> deletes the recent message everywhere from user <Name> via device <Contact1Device>
+    Then I see 0 default messages in the conversation view
+    And I see that Deleted label for a message from <Contact1> is present in the conversation view
+
+    Examples:
+      | Name      | Contact1  |  Contact1Device |
+      | user1Name | user2Name |  device1        |
+
   @C202309 @regression @fastLogin
   Scenario Outline: Verify I see status message if other user deletes his message everywhere (group)
     Given There are 3 users where <Name> is me
@@ -145,7 +163,7 @@ Feature: Recall Message
       | Name      | Contact1  | Contact2  | Contact1Device | Group       |
       | user1Name | user2Name | user3Name | device1        | RecallGroup |
 
-  @C202341 @C202311 @regression @fastLogin
+  @C202341 @C202311 @C202310 @regression @fastLogin
   Scenario Outline: Verify delete everywhere works for Soundcloud, YouTube, Vimeo
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -171,7 +189,7 @@ Feature: Recall Message
     Then I see media container in the conversation view
     And User <Contact> remembers the recent message from user Myself via device <HisDevice>
     And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
-    When User <Name> deletes the recent message everywhere from user <Contact> via device <MySecondDevice>
+    When User Myself deletes the recent message everywhere from user <Contact> via device <MySecondDevice>
     Then I do not see media container in the conversation view
     And I do not see the conversation view contains message <SoundCloudLink>
     And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in <Wait1> seconds
@@ -186,7 +204,6 @@ Feature: Recall Message
     And I do not see the conversation view contains message <VimeoLink>
     And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in <Wait1> seconds
     And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in <Wait2> seconds
-
 
     Examples:
       | Name      | Contact   | YouTubeLink                                | SoundCloudLink                                   | VimeoLink                   | HisDevice | MySecondDevice | Wait1 | Wait2 |
