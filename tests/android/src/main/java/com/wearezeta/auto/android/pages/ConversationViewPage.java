@@ -165,19 +165,21 @@ public class ConversationViewPage extends AndroidPage {
     private static final Function<String, String> xpathCursorHintByValue = value -> String
             .format("//*[@id='ctv__cursor' and @value='%s']", value);
 
-    private static final Function<String, String> xpathMoreActionButton = value -> String
-            .format("//*[@value='%s']", value);
-
     private static final Function<String, String> xpathLinkPreviewUrlByValue = value -> String
             .format("//*[@id='ttv__row_conversation__link_preview__url' and @value='%s']", value);
 
+    private static final String idStrSeparatorName = "ttv__row_conversation__separator__name";
+
     private static final Function<String, String> xpathTrashcanByName = name -> String
-            .format("//*[@id='ttv__row_conversation__separator__name' and @value='%s']" +
-                    "/following-sibling::*[@id='gtv__message_recalled']", name.toLowerCase());
+            .format("//*[@id='%s' and @value='%s']/following-sibling::*[@id='gtv__message_recalled']",
+                    idStrSeparatorName, name.toLowerCase());
 
     private static final Function<String, String> xpathPenByName = name -> String
-            .format("//*[@id='ttv__row_conversation__separator__name' and @value='%s']" +
-                    "/following-sibling::*[@id='gtv__message_edited']", name.toLowerCase());
+            .format("//*[@id='%s' and @value='%s']/following-sibling::*[@id='gtv__message_edited']",
+                    idStrSeparatorName, name.toLowerCase());
+
+    private static final Function<String, String> xpathMessageSeparator = name -> String
+            .format("//*[@id='%s' and @value='%s']", idStrSeparatorName, name.toLowerCase());
 
     private static final By idMessageBottomMenuForwardButton = By.id("message_bottom_menu_item_forward");
     private static final By idMessageBottomMenuDeleteLocalButton = By.id("message_bottom_menu_item_delete_local");
@@ -971,6 +973,16 @@ public class ConversationViewPage extends AndroidPage {
     public boolean waitUntilPenIconInvisible(String name) throws Exception {
         final By locator = By.xpath(xpathPenByName.apply(name));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public boolean waitUntilMessageSeparatorVisible(String name, int timeout) throws Exception {
+        final By locator = By.xpath(xpathMessageSeparator.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, timeout);
+    }
+
+    public boolean waitUntilMessageSeparatorInvisible(String name, int timeout) throws Exception {
+        final By locator = By.xpath(xpathMessageSeparator.apply(name));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, timeout);
     }
     //endregion
 }

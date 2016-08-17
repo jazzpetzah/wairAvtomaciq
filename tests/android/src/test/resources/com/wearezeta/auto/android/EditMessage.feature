@@ -199,6 +199,37 @@ Feature: Edit Message
       | Name      | Contact1  | Message | ContactDevice | NewMessage | NewMessage2 |
       | user1Name | user2Name | YO      | Device1       | Hello      | OK          |
 
+  @C206263 @staging
+  Scenario Outline: Verify the message is deleted everywhere when it is edited to empty or empty spaces
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> adds new device <ContactDevice>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
+    # Empty message
+    And I type the message "<Message>" and send it
+    And I long tap the Text message "<Message>" in the conversation view
+    And I tap Edit button on the message bottom menu
+    And I clear cursor input
+    And I tap Approve button in edit message toolbar
+    Then I do not see the message "<Message>" in the conversation view
+    And I do not see the message separator of Myself in 10 seconds
+    # Empty space message
+    When I type the message "<Message>" and send it
+    And I long tap the Text message "<Message>" in the conversation view
+    And I tap Edit button on the message bottom menu
+    And I clear cursor input
+    And I type the message "  "
+    And I tap Approve button in edit message toolbar
+    Then I do not see the message "<Message>" in the conversation view
+    And I do not see the message separator of Myself in 10 seconds
+
+    Examples:
+      | Name      | Contact1  | Message | ContactDevice |
+      | user1Name | user2Name | YO      | Device1       |
+
   @C202365 @staging
   Scenario Outline:  Verify I can switch to edit another message while editing a message
     Given There are 2 users where <Name> is me
