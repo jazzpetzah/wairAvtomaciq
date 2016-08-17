@@ -185,7 +185,7 @@ Feature: Delete Everywhere
     And Contact <Contact> sends message <Message_2> via device Device1 to user <Name>
     Then I see text message <Message_1>
     And I see text message <Message_2>
-    When User <Contact> deletes the recent 1 message from user <Name> everywhere via device Device1
+    When User <Contact> deletes the recent 1 message everywhere from user <Name> via device Device1
     Then I see text message <Message_1>
     And I do not see text message <Message_2>
     And I see 1 deleted messages in conversation
@@ -209,7 +209,7 @@ Feature: Delete Everywhere
     And Contact <Contact1> sends message <Message_2> via device Device1 to group conversation <ChatName>
     Then I see text message <Message_1>
     And I see text message <Message_2>
-    When User <Contact1> deletes the recent 1 message from group conversation <ChatName> everywhere via device Device1
+    When User <Contact1> deletes the recent 1 message everywhere from group conversation <ChatName> via device Device1
     Then I see text message <Message_1>
     And I do not see text message <Message_2>
     And I see 1 deleted messages in conversation
@@ -220,7 +220,7 @@ Feature: Delete Everywhere
     And I see 1 deleted messages in conversation
     And I see text message <Message_3>
     And I see text message <Message_4>
-    When User <Contact2> deletes the recent 1 message from group conversation <ChatName> everywhere via device Device2
+    When User <Contact2> deletes the recent 1 message everywhere from group conversation <ChatName> via device Device2
     Then I see text message <Message_1>
     And I do not see text message <Message_2>
     And I see text message <Message_3>
@@ -248,7 +248,7 @@ Feature: Delete Everywhere
     And I send message
     Then I see text message <Message_2>
     And I see text message <Message_2>
-    When User <Name> deletes the recent 1 message from user <Contact> everywhere via device Device1
+    When User <Name> deletes the recent 1 message everywhere from user <Contact> via device Device1
     Then I see text message <Message_1>
     And I do not see text message <Message_2>
     And I see 0 deleted messages in conversation
@@ -275,7 +275,7 @@ Feature: Delete Everywhere
     And I send message
     Then I see text message <Message_1>
     And I see text message <Message_2>
-    When User <Name> deletes the recent 1 message from group conversation <ChatName> everywhere via device Device1
+    When User <Name> deletes the recent 1 message everywhere from group conversation <ChatName> via device Device1
     Then I see text message <Message_1>
     And I do not see text message <Message_2>
     And I see 0 deleted messages in conversation
@@ -302,12 +302,12 @@ Feature: Delete Everywhere
     And I send message
     Then I see text message <Message_1>
     And I see text message <Message_2>
-    When User Myself deletes the recent 1 message from user <Contact> everywhere via device Device1
+    When User Myself deletes the recent 1 message everywhere from user <Contact> via device Device1
     Then I see text message <Message_1>
     And I do not see text message <Message_2>
     When Contact <Contact> sends message <Message_3> via device Device2 to user <Name>
     Then I see text message <Message_3>
-    When User <Contact> deletes the recent 1 message from user <Name> everywhere via device Device2
+    When User <Contact> deletes the recent 1 message everywhere from user <Name> via device Device2
     Then I do not see text message <Message_3>
     And I see 1 deleted messages in conversation
     When I archive conversation <Contact>
@@ -340,7 +340,7 @@ Feature: Delete Everywhere
     Then I see text message <Message_1>
     And I see text message <Message_2>
     When I open conversation with <Contact2>
-    And User <Contact1> deletes the recent 1 message from user <Name> everywhere via device Device1
+    And User <Contact1> deletes the recent 1 message everywhere from user <Name> via device Device1
     And I wait for 5 seconds
     Then I do not see unread dot in conversation <Contact1>
     When I open conversation with <Contact1>
