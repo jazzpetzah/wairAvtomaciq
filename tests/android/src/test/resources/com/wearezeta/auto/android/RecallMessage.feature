@@ -293,3 +293,74 @@ Feature: Recall Message
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName       | Message |
       | user1Name | user2Name | user3Name | RemoveFromGroupChat | YO      |
+
+  @C206264 @staging
+  Scenario Outline: Verify delete everywhere works for Soundcloud, YouTube
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <ContactDevice>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    # Youtube
+    When I type the message "<YoutubeLink>" and send it
+    And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    And I long tap Youtube container in the conversation view
+    And I tap Delete for everyone button on the message bottom menu
+    And I tap Delete button on the alert
+    Then I do not see Youtube container in the conversation view
+    And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
+    # Soundcloud
+    When I type the message "<SoundCloudLink>" and send it
+    And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    And I long tap Soundcloud container in the conversation view
+    And I tap Delete for everyone button on the message bottom menu
+    And I tap Delete button on the alert
+    Then I do not see Soundcloud container in the conversation view
+    And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
+
+    Examples:
+      | Name      | Contact   | YoutubeLink                                 | SoundCloudLink                                                      | ContactDevice |
+      | user1Name | user2Name | https://www.youtube.com/watch?v=gIQS9uUVmgk | https://soundcloud.com/scottisbell/scott-isbell-tonight-feat-adessi | Device1       |
+
+  @C206266 @C202361 @staging
+  Scenario Outline: Verify I cannot delete message everywhere/edit message for someone else message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given User <Contact> sends encrypted message "<Message>" to user Myself
+    Given I tap on conversation name <Contact>
+    When I long tap the Text message "<Message>" in the conversation view
+    Then I do not see Delete for everyone button on the message bottom menu
+    And I do not see Edit button on the message bottom menu
+
+    Examples:
+      | Name      | Contact   | Message |
+      | user1Name | user2Name | Yo      |
+
+  @C206265 @C206274 @staging
+  Scenario Outline: Verify deleted messages/edit message doesn't unarchive the "archived conversation"
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given Myself is connected to <Contact2>
+    Given User <Contact1> adds new device <ContactDevice>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User <Contact1> send encrypted message "<Message>" via device <ContactDevice> to user Myself
+    Given I see Conversations list with conversations
+    When I swipe right on a <Contact1>
+    And I select ARCHIVE from conversation settings menu
+    And I do not see Conversations list with name <Contact1>
+    And User <Contact1> edits the recent message to "<NewMessage>" from user Myself via device <ContactDevice>
+    # C206274
+    Then I do not see Conversations list with name <Contact1>
+    When User <Contact1> deletes the recent message everywhere from user Myself via device <ContactDevice>
+    # C206265
+    Then I do not see Conversations list with name <Contact1>
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Message | ContactDevice | NewMessage |
+      | user1Name | user2Name | user3Name | Yo      | Device1       | YoYo       |

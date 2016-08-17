@@ -70,22 +70,6 @@ Feature: Edit Message
       | Name      | Contact1  | Message |
       | user1Name | user2Name | YO      |
 
-  @C202361 @staging
-  Scenario Outline: Verify I cannot edit another users message
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I sign in using my email or phone number
-    Given User <Contact1> sends encrypted message "<Message>" to user Myself
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    When I tap on conversation name <Contact1>
-    And I long tap the Text message "<Message>" in the conversation view
-    Then I do not see Edit button on the message bottom menu
-
-    Examples:
-      | Name      | Contact1  | Message |
-      | user1Name | user2Name | YO      |
-
   @C202357 @staging
   Scenario Outline: Verify I can edit my message in 1:1 (from other view)
     Given There are 2 users where <Name> is me
