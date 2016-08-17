@@ -726,7 +726,7 @@ public class CommonIOSSteps {
         }
     }
 
-    @Given("^User (.*) sends (\\d+) encrypted messages? using device (.*) to (user|group conversation) (.*)$")
+    @Given("^User (.*) sends? (\\d+) encrypted messages? using device (.*) to (user|group conversation) (.*)$")
     public void UserSendXMessagesToConversationUsingDevice(String msgFromUserNameAlias,
                                                            int msgsCount, String deviceName,
                                                            String conversationType,

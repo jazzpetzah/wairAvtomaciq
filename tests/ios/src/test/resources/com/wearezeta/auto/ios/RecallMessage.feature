@@ -17,12 +17,20 @@ Feature: Recall Message
     And I tap on Delete badge item
     And I select Delete for everyone item from Delete menu
     Then I see 0 default messages in the conversation view
-    And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in 15 seconds
-    And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in 3 seconds
+    And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in <Wait1> seconds
+    And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in <Wait2> seconds
+    When User Myself send 1 encrypted message using device <MySecondDevice> to user <Contact>
+    And I see 1 default message in the conversation view
+    And User <Contact> remembers the recent message from user Myself via device <HisDevice>
+    And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
+    And User Myself delete the recent message everywhere from user <Contact> via device <MySecondDevice>
+    Then I see 0 default messages in the conversation view
+    And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in <Wait1> seconds
+    And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in <Wait2> seconds
 
     Examples:
-      | Name      | Contact   | HisDevice | MySecondDevice |
-      | user1Name | user2Name | device1   | device2        |
+      | Name      | Contact   | HisDevice | MySecondDevice | Wait1 | Wait2 |
+      | user1Name | user2Name | device1   | device2        | 15    | 3     |
 
   @C202318 @regression @fastLogin
   Scenario Outline: Verify delete everywhere works for file sharing
@@ -81,6 +89,7 @@ Feature: Recall Message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given User Myself adds new device <MySecondDevice>
     Given User <Contact1> adds new device <Contact1Device>
     Given User <Contact2> adds new device <Contact2Device>
     Given I sign in using my email or phone number
@@ -90,16 +99,28 @@ Feature: Recall Message
     Then I see 1 default message in the conversation view
     When User <Contact1> remembers the recent message from group conversation <Group> via device <Contact1Device>
     And User <Contact2> remembers the recent message from group conversation <Group> via device <Contact2Device>
+    And User Myself remembers the recent message from group conversation <Group> via device <MySecondDevice>
     And I long tap default message in conversation view
     And I tap on Delete badge item
     And I select Delete for everyone item from Delete menu
     Then I see 0 default messages in the conversation view
-    And User <Contact1> sees the recent message from group conversation <Group> via device <Contact1Device> is changed in 15 seconds
-    And User <Contact2> sees the recent message from group conversation <Group> via device <Contact2Device> is changed in 3 seconds
+    And User <Contact1> sees the recent message from group conversation <Group> via device <Contact1Device> is changed in <Wait1> seconds
+    And User <Contact2> sees the recent message from group conversation <Group> via device <Contact2Device> is changed in <Wait2> seconds
+    And User Myself sees the recent message from group conversation <Group> via device <MySecondDevice> is changed in <Wait2> seconds
+    When User Myself send 1 encrypted message using device <MySecondDevice> to group conversation <Group>
+    Then I see 1 default message in the conversation view
+    When User <Contact1> remembers the recent message from group conversation <Group> via device <Contact1Device>
+    And User <Contact2> remembers the recent message from group conversation <Group> via device <Contact2Device>
+    And User Myself remembers the recent message from group conversation <Group> via device <MySecondDevice>
+    When User Myself delete the recent message everywhere from group conversation <Group> via device <MySecondDevice>
+    Then I see 0 default messages in the conversation view
+    And User <Contact1> sees the recent message from group conversation <Group> via device <Contact1Device> is changed in <Wait1> seconds
+    And User <Contact2> sees the recent message from group conversation <Group> via device <Contact2Device> is changed in <Wait2> seconds
+    And User Myself sees the recent message from group conversation <Group> via device <MySecondDevice> is changed in <Wait2> seconds
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact1Device | Contact2Device | Group       |
-      | user1Name | user2Name | user3Name | device1        | device2        | RecallGroup |
+      | Name      | Contact1  | Contact2  | Contact1Device | Contact2Device | Group       | MySecondDevice | Wait1 | Wait2|
+      | user1Name | user2Name | user3Name | device1        | device2        | RecallGroup | device3        | 15    | 3    |
 
   @C202320 @regression @fastLogin
   Scenario Outline: Verify delete everywhere works for video messages
@@ -163,7 +184,7 @@ Feature: Recall Message
       | Name      | Contact1  | Contact2  | Contact1Device | Group       |
       | user1Name | user2Name | user3Name | device1        | RecallGroup |
 
-  @C202341 @C202311 @C202310 @regression @fastLogin
+  @C202341 @regression @fastLogin
   Scenario Outline: Verify delete everywhere works for Soundcloud, YouTube, Vimeo
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
