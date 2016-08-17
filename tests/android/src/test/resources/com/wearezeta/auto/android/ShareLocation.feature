@@ -1,6 +1,6 @@
 Feature: Share Location
 
-  @C150028 @rc @rc42 @regression
+  @C150028 @rc @rc42 @regression @torun
   Scenario Outline: Verify you can share your location
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -9,8 +9,6 @@ Feature: Share Location
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I tap Share location button from cursor toolbar
-    # Let it to find the location
-    And I wait for 5 seconds
     And I tap Send button on Share Location page
     Then I see Share Location container in the conversation view
 
