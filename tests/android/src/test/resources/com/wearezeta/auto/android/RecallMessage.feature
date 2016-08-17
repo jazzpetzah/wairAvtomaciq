@@ -4,9 +4,9 @@ Feature: Recall Message
   Scenario Outline: Verify I can delete my message everywhere (1:1) (myview and other view)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User <Contact1> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact1> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     # Delete from otherview
     When I tap on conversation name <Contact1>
@@ -37,9 +37,9 @@ Feature: Recall Message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given User <Contact1> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact1> adds new device <ContactDevice>
     Given I see Conversations list with conversations
    # Delete from otherview
     When I tap on conversation name <Group>
@@ -69,9 +69,9 @@ Feature: Recall Message
   Scenario Outline: Verify I can delete everywhere works for images
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap Add picture button from cursor toolbar
@@ -92,9 +92,9 @@ Feature: Recall Message
   Scenario Outline: Verify delete everywhere works for giphy
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap on text input
@@ -118,9 +118,9 @@ Feature: Recall Message
   Scenario Outline: Verify delete everywhere works for link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I type the message "<Link>" and send it
@@ -140,9 +140,9 @@ Feature: Recall Message
   Scenario Outline: Verify delete everywhere works for Share location
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I tap Share location button from cursor toolbar
@@ -162,10 +162,10 @@ Feature: Recall Message
   Scenario Outline: Verify delete everywhere works for file sharing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I push <FileSize> file having name "<FileName>.<FileExtension>" to the device
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I tap File button from cursor toolbar
@@ -185,9 +185,9 @@ Feature: Recall Message
   Scenario Outline: Verify delete everywhere works for audio messages
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I long tap Audio message button <TapDuration> seconds from cursor toolbar
@@ -209,10 +209,10 @@ Feature: Recall Message
   Scenario Outline: Verify delete everywhere works for video messages
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I push <FileSize> video file having name "<FileFullName>" to the device
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I tap Video message button from cursor toolbar
@@ -235,10 +235,10 @@ Feature: Recall Message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given User Myself adds new device <Device>
-    Given User <Contact1> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And User Myself send encrypted message "<Message>" via device <Device> to user <Contact1>
@@ -260,9 +260,9 @@ Feature: Recall Message
   Scenario Outline: Verify I do not see unread dot if a message was deleted from someone in a conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User <Contact1> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact1> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     When User <Contact1> sends 1 encrypted messages to user Myself
     And I tap on conversation name <Contact1>

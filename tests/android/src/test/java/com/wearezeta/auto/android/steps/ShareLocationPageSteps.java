@@ -6,6 +6,8 @@ import cucumber.api.java.en.When;
 public class ShareLocationPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
+    private static int LOAD_MAP_TIMEOUT_SECONDS = 5;
+
     private ShareLocationPage getShareLocationPage() throws Exception {
         return pagesCollection.getPage(ShareLocationPage.class);
     }
@@ -19,6 +21,10 @@ public class ShareLocationPageSteps {
      */
     @When("^I tap (Send) button on Share Location page$")
     public void ThenISeeFirstTimeOverlay(String buttonName) throws Exception {
-        getShareLocationPage().tapButton(buttonName);
+        if (buttonName.toLowerCase().equals("send")) {
+            getShareLocationPage().retryTapButtonUntilInvisible(buttonName, LOAD_MAP_TIMEOUT_SECONDS);
+        } else {
+            getShareLocationPage().tapButton(buttonName);
+        }
     }
 }
