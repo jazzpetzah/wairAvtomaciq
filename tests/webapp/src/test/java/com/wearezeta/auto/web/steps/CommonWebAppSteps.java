@@ -595,7 +595,7 @@ public class CommonWebAppSteps {
     public void UserXDeleteLastMessage(String userNameAlias, int amount, String deleteEverywhere, String convoType, String dstNameAlias, String deviceName)
             throws Exception {
         boolean isGroup = convoType.equals("group conversation");
-        boolean isDeleteEverywhere = deleteEverywhere.equals("everywhere ");
+        boolean isDeleteEverywhere = deleteEverywhere != null;
         for (int deleteCounter = 0; deleteCounter < amount; deleteCounter++) {
             context.getCommonSteps().UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName + context.getTestname().
                     hashCode(), isGroup, isDeleteEverywhere);
