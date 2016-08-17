@@ -178,9 +178,13 @@ public class ConversationPageSteps {
      * @throws Exception
      * @step. ^I see embedded youtube video of (.*)
      */
-    @Then("^I see embedded youtube video of (.*)")
-    public void ThenISeeEmbeddedYoutubeVideoOf(String url) throws Exception {
-        assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isYoutubeVideoEmbedded(url));
+    @Then("^I (do not )?see embedded youtube video of (.*)")
+    public void ThenISeeEmbeddedYoutubeVideoOf(String doNot, String url) throws Exception {
+        if (doNot == null) {
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isYoutubeVideoEmbedded(url));
+        } else {
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isYoutubeEmbeddedVideoNotShown(url));
+        }
     }
 
     /**

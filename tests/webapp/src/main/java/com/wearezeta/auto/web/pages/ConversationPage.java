@@ -417,6 +417,16 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
 
+    public boolean isYoutubeEmbeddedVideoNotShown(String url) throws Exception {
+        String pattern = "[\\w\\-\\_]{10,12}";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(url);
+        assert matcher.find() : "Could not find Youtube id in URL: " + url;
+        final String id = matcher.group();
+        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById.apply(id));
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
+    }
+
     public void clickPeopleButton() throws Exception {
         DriverUtils.waitUntilElementClickable(this.getDriver(),
                 showParticipants);
