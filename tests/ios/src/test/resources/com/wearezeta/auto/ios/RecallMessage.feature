@@ -208,3 +208,27 @@ Feature: Recall Message
     Examples:
       | Name      | Contact   | YouTubeLink                                | SoundCloudLink                                   | VimeoLink                   | HisDevice | MySecondDevice | Wait1 | Wait2 |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU | https://soundcloud.com/sodab/256-ra-robag-wruhme | https://vimeo.com/129426512 | device1   | device2        | 15    | 3     |
+
+  @C202315 @staging @fastLogin
+  Scenario Outline: Verify delete everywhere works for giphy
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <HisDevice>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I type tag for giphy preview <GiphyTag> and open preview overlay
+    # Wait for GIF picture to be downloaded
+    And I wait for 10 seconds
+    And I send gif from giphy preview page
+    Then I see 1 photo in the conversation view
+    And User <Contact> remembers the recent message from user Myself via device <HisDevice>
+    When I long tap on image in conversation view
+    And I tap on Delete badge item
+    And I select Delete for everyone item from Delete menu
+    Then I see 0 photos in the conversation view
+    And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in 15 seconds
+
+    Examples:
+      | Name      | Contact   | HisDevice |  GiphyTag |
+      | user1Name | user2Name | device1   |  cool     |
