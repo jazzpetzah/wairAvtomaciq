@@ -188,6 +188,36 @@ public class ConversationPageSteps {
     }
 
     /**
+     * Verifies whether Soundcloud is embedded
+     *
+     * @throws Exception
+     * @step. ^I see embedded Soundcloud message (.*) in the conversation view$
+     */
+    @Then("^I (do not )?see embedded Soundcloud message (.*)in the conversation view$")
+    public void ISeeEmbeddedSoundcloud(String doNot, String url) throws Exception {
+        if (doNot == null) {
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isSoundcloudEmbedded(url));
+        } else {
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isSoundcloudEmbeddedVideoNotShown(url));
+        }
+    }
+
+    /**
+     * Verifies whether Vimeo video is embedded
+     *
+     * @throws Exception
+     * @step. ^I see embedded vimeo message (.*) in the conversation view$
+     */
+    @Then("^I (do not )?see embedded vimeo message (.*)in the conversation view$")
+    public void ISeeEmbeddedVimeo(String doNot, String url) throws Exception {
+        if (doNot == null) {
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isVimeoEmbedded(url));
+        } else {
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isVimeoEmbeddedVideoNotShown(url));
+        }
+    }
+
+    /**
      * Click People button in 1:1 conversation
      *
      * @throws Exception

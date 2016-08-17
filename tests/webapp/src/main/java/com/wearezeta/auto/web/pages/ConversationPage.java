@@ -427,6 +427,48 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
     }
 
+    public boolean isSoundcloudEmbedded(String url) throws Exception {
+        String pattern = "[\\w\\-\\_]{10,12}";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(url);
+        assert matcher.find() : "Could not find Youtube id in URL: " + url;
+        final String id = matcher.group();
+
+        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedSoundcloudById.apply(id));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+    }
+
+    public boolean isSoundcloudEmbeddedVideoNotShown(String url) throws Exception {
+        String pattern = "[\\w\\-\\_]{10,12}";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(url);
+        assert matcher.find() : "Could not find Youtube id in URL: " + url;
+        final String id = matcher.group();
+        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedSoundcloudById.apply(id));
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
+    }
+
+    public boolean isVimeoEmbedded(String url) throws Exception {
+        String pattern = "[\\w\\-\\_]{10,12}";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(url);
+        assert matcher.find() : "Could not find Youtube id in URL: " + url;
+        final String id = matcher.group();
+
+        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedVimeoById.apply(id));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+    }
+
+    public boolean isVimeoEmbeddedVideoNotShown(String url) throws Exception {
+        String pattern = "[\\w\\-\\_]{10,12}";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(url);
+        assert matcher.find() : "Could not find Youtube id in URL: " + url;
+        final String id = matcher.group();
+        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedVimeoById.apply(id));
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
+    }
+
     public void clickPeopleButton() throws Exception {
         DriverUtils.waitUntilElementClickable(this.getDriver(),
                 showParticipants);

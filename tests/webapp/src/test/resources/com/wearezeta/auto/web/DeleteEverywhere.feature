@@ -373,18 +373,18 @@ Feature: Delete Everywhere
       Then I do not see embedded youtube video of <Youtubelink1>
       When I write message <Soundcloudlink>
       And I send message
-      #Then I see embedded message <Soundcloudlink> in the conversation view
+      Then I see embedded Soundcloud message <Soundcloudlink> in the conversation view
       And I open context menu of the latest message
       And I click to delete message for everyone in context menu
       And I click confirm to delete message for everyone
-      #Then I do not see embedded message <Soundcloudlink> in the conversation view
+      Then I do not see embedded Soundcloud message <Soundcloudlink> in the conversation view
       When I write message <Vimeolink>
       And I send message
-      #Then I see embedded video of <Vimeolink>
+      Then I see embedded vimeo message <Vimeolink> in the conversation view
       And I open context menu of the latest message
       And I click to delete message for everyone in context menu
       And I click confirm to delete message for everyone
-      #Then I do not see embedded message <Vimeolink> in the conversation view
+      Then I do not see embedded vimeo message <Vimeolink> in the conversation view
       And I write message <Spotifylink>
       And I send message
       #Then I see embedded message <Spotifylink> in the conversation view
@@ -412,7 +412,6 @@ Feature: Delete Everywhere
       When User <Contact> deletes the recent 1 message everywhere from user <Contact> via device Device1
       And I do not see text message <Spotifylink>
       And I see 4 deleted messages in conversation
-
 
       Examples:
         | Login      | Password      | Name      | Contact   | Youtubelink1                                | Youtubelink2                                | Soundcloudlink                                                      | Vimeolink                 | Spotifylink                                           |
