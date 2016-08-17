@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.misc.ElementState;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
@@ -51,12 +52,20 @@ public class ConversationViewPage extends AndroidPage {
     public static final By xpathCursorEditHint = By.xpath(
             String.format("//*[@id='ttv__cursor_hint' and contains(@value, '%s')]", CURSOR_EDIT_TOOLTIP));
 
+    private static final String idStrRowConversationMessage = "ltv__row_conversation__message";
+
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
-            .format("//*[@id='ltv__row_conversation__message' and @value='%s']", text);
+            .format("//*[@id='%s' and @value='%s']", idStrRowConversationMessage, text);
 
     private static final Function<String, String> xpathStrUnsentIndicatorByText = text -> String
             .format("%s/parent::*/parent::*//*[@id='v__row_conversation__error']",
                     xpathStrConversationMessageByText.apply(text));
+
+    private static final By xpathLastConversationMessage =
+            By.xpath(String.format("(//*[@id='%s'])[last()]", idStrRowConversationMessage));
+
+    private static final By xpathFirstConversationMessage =
+            By.xpath(String.format("(//*[@id='%s'])[1]", idStrRowConversationMessage));
 
     private static final By xpathUnsentIndicatorForImage = By
             .xpath("//*[@id='" + idStrConversationImages + "']/parent::*/parent::*//*[@id='v__row_conversation__error']");
@@ -140,9 +149,6 @@ public class ConversationViewPage extends AndroidPage {
             "//*[@id='ttv__otr_added_new_device__message' and @value='%s STARTED USING A NEW DEVICE']", value
                     .toUpperCase());
 
-    private static final By xpathLastConversationMessage = By.xpath("(//*[@id='ltv__row_conversation__message'])[last" +
-            "()]");
-
     public static final String idStrConversationRoot = "clv__conversation_list_view";
     public static final By idConversationRoot = By.id(idStrConversationRoot);
     private static final By xpathConversationContent = By.xpath("//*[@id='" + idStrConversationRoot + "']/*/*/*");
@@ -224,6 +230,21 @@ public class ConversationViewPage extends AndroidPage {
     private static final int SCROLL_TO_BOTTOM_INTERVAL_MILLISECONDS = 1000;
 
     private static final int DEFAULT_SWIPE_DURATION = 2000;
+
+    public enum MessageIndexLocator {
+        FIRST(xpathFirstConversationMessage),
+        LAST(xpathLastConversationMessage);
+
+        private final By locator;
+
+        MessageIndexLocator(By locator) {
+            this.locator = locator;
+        }
+
+        public By getLocator() {
+            return this.locator;
+        }
+    }
 
 
     public ConversationViewPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
@@ -650,22 +671,42 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean isLastMessageEqualTo(String expectedMessage, int timeoutSeconds) throws Exception {
-        final By locator = By.xpath(xpathStrConversationMessageByText.apply(expectedMessage));
-        final long millisecondsStarted = System.currentTimeMillis();
-        do {
-            final Optional<WebElement> msgElement = getElementIfDisplayed(locator);
-            if (msgElement.isPresent()) {
-                final String lastMessage = getElement(xpathLastConversationMessage,
-                        "Cannot find the last message in the dialog", 1).getText();
-                if (expectedMessage.equals(lastMessage)) {
-                    return true;
-                } else {
-                    Thread.sleep(500);
-                }
-            }
-        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
-        return false;
+        return isIndexMessageEqualsTo(expectedMessage, timeoutSeconds, MessageIndexLocator.LAST);
     }
+
+    public boolean isFirstMessageEqualTo(String expectedMessage, int timeoutSeconds) throws Exception {
+        return isIndexMessageEqualsTo(expectedMessage, timeoutSeconds, MessageIndexLocator.FIRST);
+    }
+
+    /**
+     * Compare the indexed message with expected message, such first or last, or N-th message, but you need to
+     * pass the correspondant locator.
+     *
+     * @param expectedMessage     expected message
+     * @param timeoutSeconds      time out in seconds
+     * @param messageIndexLocator the locator used for locating the N-th message
+     * @return true measn expected message in expected index
+     * @throws Exception
+     */
+    private boolean isIndexMessageEqualsTo(String expectedMessage, int timeoutSeconds,
+                                           MessageIndexLocator messageIndexLocator) throws Exception {
+        final By locator = By.xpath(xpathStrConversationMessageByText.apply(expectedMessage));
+        return CommonUtils.waitUntilTrue(
+                timeoutSeconds,
+                500,
+                () -> {
+                    final Optional<WebElement> msgElement = getElementIfDisplayed(locator, 1);
+                    if (msgElement.isPresent()) {
+                        final String indexMessage = getElement(messageIndexLocator.getLocator(),
+                                "Cannot find the indexed message in the conversation", 1).getText();
+                        return expectedMessage.equals(indexMessage);
+                    } else {
+                        return false;
+                    }
+                }
+        );
+    }
+
 
     public Optional<BufferedImage> getRecentPictureScreenshot() throws Exception {
         return this.getElementScreenshot(getElement(idConversationImages));
