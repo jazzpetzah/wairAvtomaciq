@@ -569,10 +569,4 @@ public abstract class IOSPage extends BasePage {
     public boolean isKeyboardInvisible() throws Exception {
         return this.onScreenKeyboard.isInvisible();
     }
-
-    public void installAddressbookHelper() {
-    }
-
-    public void launchAddressbookHelper() {
-    }
 }

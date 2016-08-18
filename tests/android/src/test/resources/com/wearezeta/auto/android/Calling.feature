@@ -476,7 +476,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
-  @torun @calling_autoAnswer
+  @calling_autoAnswer
   Scenario Outline: Auto Answer Call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
