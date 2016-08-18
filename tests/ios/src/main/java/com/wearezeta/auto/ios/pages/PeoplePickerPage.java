@@ -67,6 +67,10 @@ public class PeoplePickerPage extends IOSPage {
                     "%s/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]/UIAStaticText[last()]",
                     xpathStrMainWindow, idx);
 
+    private static final Function<String, String> xpathStrFirstSearchResultEntryByName = name ->
+            String.format("%s/UIACollectionView/UIACollectionCell[1]/UIAStaticText[@name='%s']",
+                    xpathStrMainWindow, name);
+
     private static final By nameNoResults = MobileBy.AccessibilityId("No results.");
 
     private static final By nameVideoCallButton = MobileBy.AccessibilityId("actionBarVideoCallButton");
@@ -253,5 +257,10 @@ public class PeoplePickerPage extends IOSPage {
 
     public boolean isShareContactsSettingsWarningShown() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameLaterButton);
+    }
+
+    public boolean isFirstItemInSearchResult(String name) throws Exception {
+        final By locator = By.xpath(xpathStrFirstSearchResultEntryByName.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 }

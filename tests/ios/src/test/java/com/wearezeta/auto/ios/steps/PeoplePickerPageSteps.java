@@ -116,14 +116,17 @@ public class PeoplePickerPageSteps {
     }
 
     /**
+     * Verifies that contact is the 1st item in search result
      *
-     * @param name
+     * @param name that should be the 1st item in search result
      * @throws Exception
+     * @step. ^I see first item in Search result is named (.*)$
      */
     @When("^I see first item in Search result is named (.*)$")
     public void ISeeConversationIsFirstSearchResult(String name) throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-
+        Assert.assertTrue("Contact is NOT first result in search",
+                getPeoplePickerPage().isFirstItemInSearchResult(name));
     }
 
     /**
