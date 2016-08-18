@@ -336,7 +336,7 @@ public class DriverUtils {
         final int endX = screenSize.width * endPercentX / 100;
         final int endY = screenSize.height * endPercentY / 100;
 
-        driver.swipe(startX, startY, endX, endY, time);
+        driver.swipe(startX, startY, endX-startX, endY-startY, time);
     }
 
     public static final int DEFAULT_SWIPE_DURATION = 1000; // milliseconds

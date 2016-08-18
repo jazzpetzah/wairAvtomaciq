@@ -4,14 +4,18 @@ import java.util.Random;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.DriverUtils;
 
 public class SketchPage extends IOSPage {
+
+    private static final Logger log = ZetaLogger.getLog(SketchPage.class.getSimpleName());
     private static final By nameSketchSendButton = MobileBy.AccessibilityId("SketchConfirmButton");
     private static final By xpathTapColorLabel = By.xpath("//UIAStaticText[contains(@name, 'TAP COLOR')]");
 
@@ -30,6 +34,8 @@ public class SketchPage extends IOSPage {
             if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
                 IOSSimulatorHelper.swipe(startX / 100.0, startY / 100.0, endX / 100.0, endY / 100.0);
             } else {
+                log.debug(getDriver().manage().window().getSize());
+                log.debug(startX + "/" + startY + "/" + endX + "/" + endY);
                 DriverUtils.swipeByCoordinates(getDriver(), 500, startX, startY, endX, endY);
             }
         }
