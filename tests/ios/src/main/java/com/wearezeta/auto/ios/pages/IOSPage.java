@@ -160,7 +160,7 @@ public abstract class IOSPage extends BasePage {
         final By locator = getBadgeLocatorByName(name);
         getElement(locator).click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, MAX_BADGE_VISIBILITY_TIMEOUT)) {
-            log.warn((String.format("%s badge still appears to be visible after %s secinds timeout", name,
+            log.warn((String.format("%s badge still appears to be visible after %s seconds timeout", name,
                     MAX_BADGE_VISIBILITY_TIMEOUT)));
         }
     }
