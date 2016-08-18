@@ -1357,6 +1357,10 @@ public class CommonIOSSteps {
         Thread.sleep(2000);
         //Pressing the accept OK button on the alert
         IOSSimulatorHelper.clickAt("0.68", "0.58", "1");
+        //To be sure its get pressed tap a second time, if it got pressed 1st time nothing will happen
+        //there is no ui in the app...sometimes it fails here, so the second press
+        IOSSimulatorHelper.clickAt("0.68", "0.58", "1");
+
     }
 
     /**
