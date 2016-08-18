@@ -317,3 +317,20 @@ Feature: Recall Message
     Examples:
       | Name      | Contact   | DeviceName | Duration |
       | user1Name | user2Name | device1    | 5        |
+
+  @C206257 @staging @fastLogin
+  Scenario Outline: Verify I cannot delete message everywhere for someone else message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    When I tap on contact name <Contact1>
+    Then I see 1 default message in the conversation view
+    When I long tap default message in conversation view
+    And I tap on Delete badge item
+    Then I do not see Delete for everyone item in Delete menu
+
+    Examples:
+      | Name      | Contact1  |
+      | user1Name | user2Name |

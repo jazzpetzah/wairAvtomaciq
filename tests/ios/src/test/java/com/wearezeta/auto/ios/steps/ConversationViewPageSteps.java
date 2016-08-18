@@ -698,6 +698,19 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Verify that relevant delete menu item is not displayed
+     *
+     * @param name item name
+     * @throws Exception
+     * @step. ^I do not see (Delete for everyone) item in Delete menu$
+     */
+    @Then("^I do not see (Delete for everyone) item in Delete menu$")
+    public void IDoNotSeeItemInDeleteMenu(String name) throws Exception {
+        Assert.assertTrue(String.format("%s delete menu item shouldn't be visible", name.toUpperCase()),
+                getConversationViewPage().deleteMenuItemNotVisible(name));
+    }
+
+    /**
      * Verify visibility of the corresponding badge item
      *
      * @param shouldNotSee equals to null if the corresponding item should be visible
