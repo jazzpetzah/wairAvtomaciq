@@ -1,6 +1,6 @@
 Feature: Recall Message
 
-  @C202326 @C202328 @staging
+  @C202326 @C202328 @regression
   Scenario Outline: Verify I can delete my message everywhere (1:1) (myview and other view)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -32,7 +32,7 @@ Feature: Recall Message
       | Name      | Contact1  | Message           | ContactDevice | MySecondDevice | Message2 |
       | user1Name | user2Name | DeleteTextMessage | Device2       | Device1        | Del2     |
 
-  @C202327 @C202329 @staging
+  @C202327 @C202329 @regression
   Scenario Outline: Verify I can delete my message everywhere (group) (myview and other view)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -65,7 +65,7 @@ Feature: Recall Message
       | Name      | Contact1  | Contact2  | Group  | Message           | ContactDevice | MySecondDevice | Message2 |
       | user1Name | user2Name | user3Name | TGroup | DeleteTextMessage | Device2       | Device1        | Del2     |
 
-  @C202332 @staging
+  @C202332 @regression
   Scenario Outline: Verify I can delete everywhere works for images
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -88,7 +88,7 @@ Feature: Recall Message
       | Name      | Contact   | ContactDevice |
       | user1Name | user2Name | Device1       |
 
-  @C202333 @staging
+  @C202333 @regression
   Scenario Outline: Verify delete everywhere works for giphy
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -114,7 +114,7 @@ Feature: Recall Message
       | Name      | Contact   | Message | ContactDevice |
       | user1Name | user2Name | Yo      | Device1       |
 
-  @C202334 @staging
+  @C202334 @regression
   Scenario Outline: Verify delete everywhere works for link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -136,7 +136,7 @@ Feature: Recall Message
       | Name      | Contact   | Link                    | ContactDevice |
       | user1Name | user2Name | http://www.facebook.com | Device1       |
 
-  @C202335 @staging
+  @C202335 @regression
   Scenario Outline: Verify delete everywhere works for Share location
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -158,7 +158,7 @@ Feature: Recall Message
       | Name      | Contact   | ContactDevice |
       | user1Name | user2Name | device1       |
 
-  @C202336 @staging
+  @C202336 @regression
   Scenario Outline: Verify delete everywhere works for file sharing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -181,7 +181,7 @@ Feature: Recall Message
       | Name      | Contact   | FileName  | FileExtension | FileSize | ContactDevice | UploadingTimeout |
       | user1Name | user2Name | qa_random | txt           | 1.00MB   | device1       | 20               |
 
-  @C202337 @staging
+  @C202337 @regression
   Scenario Outline: Verify delete everywhere works for audio messages
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -205,7 +205,7 @@ Feature: Recall Message
       | Name      | Contact   | TapDuration | ContactDevice |
       | user1Name | user2Name | 5           | Device1       |
 
-  @C202338 @staging
+  @C202338 @regression
   Scenario Outline: Verify delete everywhere works for video messages
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -230,7 +230,7 @@ Feature: Recall Message
       | Name      | Contact   | FileSize | FileFullName     | ContactDevice |
       | user1Name | user2Name | 26.00MB  | random_video.mp4 | Device1       |
 
-  @C202330 @C202331 @staging
+  @C202330 @C202331 @regression
   Scenario Outline: Verify deleting everywhere is synchronised across own devices when they are online (1:1 and group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -256,7 +256,7 @@ Feature: Recall Message
       | Name      | Contact1  | Contact2  | Message           | Device  | ContactDevice | GroupChatName |
       | user1Name | user2Name | user3Name | DeleteTextMessage | Device1 | Device2       | MyGroup       |
 
-  @C206251 @staging
+  @C206251 @regression
   Scenario Outline: Verify I do not see unread dot if a message was deleted from someone in a conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -276,7 +276,7 @@ Feature: Recall Message
       | Name      | Contact1  | ContactDevice |
       | user1Name | user2Name | Device1       |
 
-  @C206252 @staging
+  @C206252 @regression
   Scenario Outline: (AN-4394) Verify I cannot delete message everywhere when I was removed from group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -294,7 +294,7 @@ Feature: Recall Message
       | Name      | Contact1  | Contact2  | GroupChatName       | Message |
       | user1Name | user2Name | user3Name | RemoveFromGroupChat | YO      |
 
-  @C206264 @staging
+  @C206264 @regression
   Scenario Outline: Verify delete everywhere works for Soundcloud, YouTube
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -324,7 +324,7 @@ Feature: Recall Message
       | Name      | Contact   | YoutubeLink                                 | SoundCloudLink                                                      | ContactDevice |
       | user1Name | user2Name | https://www.youtube.com/watch?v=gIQS9uUVmgk | https://soundcloud.com/scottisbell/scott-isbell-tonight-feat-adessi | Device1       |
 
-  @C206266 @C202361 @staging
+  @C206266 @C202361 @regression
   Scenario Outline: Verify I cannot delete message everywhere/edit message for someone else message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -341,7 +341,7 @@ Feature: Recall Message
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @C206265 @C206274 @staging
+  @C206265 @C206274 @regression
   Scenario Outline: Verify deleted messages/edit message doesn't unarchive the "archived conversation"
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>

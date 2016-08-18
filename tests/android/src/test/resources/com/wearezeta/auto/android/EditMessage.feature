@@ -1,6 +1,6 @@
 Feature: Edit Message
 
-  @C202362 @C202366 @staging
+  @C202362 @C202366 @regression
   Scenario Outline: Verify I can cancel editing a message by button / I can reset my editing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -28,7 +28,7 @@ Feature: Edit Message
       | Name      | Contact1  | Message | EditMessage |
       | user1Name | user2Name | YO      | Hello       |
 
-  @C202363 @staging
+  @C202363 @regression
   Scenario Outline: Verify I can cancel editing a message by tap on other action buttons
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -70,7 +70,7 @@ Feature: Edit Message
       | Name      | Contact1  | Message |
       | user1Name | user2Name | YO      |
 
-  @C202357 @staging
+  @C202357 @regression
   Scenario Outline: Verify I can edit my message in 1:1 (from other view)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -89,7 +89,7 @@ Feature: Edit Message
       | Name      | Contact1  | Message | ContactDevice | NewMessage |
       | user1Name | user2Name | YO      | Device1       | Hello      |
 
-  @C202359 @staging
+  @C202359 @regression
   Scenario Outline: Verify I see changed message if message was edited from another device (1:1) (own device sync)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -108,7 +108,7 @@ Feature: Edit Message
       | Name      | Contact1  | Message | Device  | NewMessage |
       | user1Name | user2Name | Yo      | Device1 | Hello      |
 
-  @C202360 @staging
+  @C202360 @regression
   Scenario Outline: Verify I see changed message if message was edited from another device (group) (own device sync)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -128,7 +128,7 @@ Feature: Edit Message
       | Name      | Contact1  | Contact2  | Message | Device  | GroupChatName | NewMessage |
       | user1Name | user2Name | user3Name | Yo      | Device1 | MyGroup       | Hello      |
 
-  @C202358 @staging
+  @C202358 @regression
   Scenario Outline: Verify I can edit my message in Group (from my view)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -152,7 +152,7 @@ Feature: Edit Message
       | Name      | Contact1  | Message | ContactDevice | NewMessage |
       | user1Name | user2Name | YO      | Device1       | Hello      |
 
-  @C202364 @staging
+  @C202364 @regression
   Scenario Outline: Verify I can edit a message multiple times in a row (my view)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -183,7 +183,7 @@ Feature: Edit Message
       | Name      | Contact1  | Message | ContactDevice | NewMessage | NewMessage2 |
       | user1Name | user2Name | YO      | Device1       | Hello      | OK          |
 
-  @C206263 @staging
+  @C206263 @regression
   Scenario Outline: Verify the message is deleted everywhere when it is edited to empty or empty spaces
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -214,7 +214,7 @@ Feature: Edit Message
       | Name      | Contact1  | Message | ContactDevice |
       | user1Name | user2Name | YO      | Device1       |
 
-  @C202365 @staging
+  @C202365 @regression
   Scenario Outline:  Verify I can switch to edit another message while editing a message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -239,7 +239,7 @@ Feature: Edit Message
       | Name      | Contact1  | Message1 | Message2 | NewMessage |
       | user1Name | user2Name | YO       | Hello    | Nice       |
 
-  @C206259 @staging
+  @C206259 @regression
   Scenario Outline: Verify edited message stays in the same position as original message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -264,7 +264,7 @@ Feature: Edit Message
       | Name      | Contact1  | Message1 | Message2 | Message3 | NewMessage |
       | user1Name | user2Name | YO       | Hello    | Nice     | wow        |
 
-  @C206273 @staging
+  @C206273 @regression
   Scenario Outline:  Verify editing a message does not create unread dot
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
