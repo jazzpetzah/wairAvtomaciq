@@ -255,6 +255,31 @@ Feature: Edit Message
       | Name      | Contact1  | Message1 | Message2 | NewMessage |
       | user1Name | user2Name | YO       | Hello    | Nice       |
 
+  @C206259 @staging
+  Scenario Outline: Verify edited message stays in the same position as original message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
+    And I type the message "<Message1>" and send it without hiding keyboard
+    And I type the message "<Message2>" and send it without hiding keyboard
+    And I type the message "<Message3>" and send it
+    And I long tap the Text message "<Message2>" in the conversation view
+    And I tap Edit button on the message bottom menu
+    And I clear cursor input
+    And I type the message "<NewMessage>"
+    And I tap Approve button in edit message toolbar
+    Then I see the most top conversation message is "<Message1>"
+    And I see the most recent conversation message is "<Message3>"
+    And I see the message "<NewMessage>" in the conversation view
+    And I do not see the message "<Message2>" in the conversation view
+
+    Examples:
+      | Name      | Contact1  | Message1 | Message2 | Message3 | NewMessage |
+      | user1Name | user2Name | YO       | Hello    | Nice     | wow        |
+
   @C206273 @staging
   Scenario Outline:  Verify editing a message does not create unread dot
     Given There are 2 users where <Name> is me
