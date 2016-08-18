@@ -254,3 +254,23 @@ Feature: Edit Message
     Examples:
       | Name      | Contact1  | Message1 | Message2 | NewMessage |
       | user1Name | user2Name | YO       | Hello    | Nice       |
+
+  @C206273 @staging
+  Scenario Outline:  Verify editing a message does not create unread dot
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> adds new device <ContactDevice>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When User <Contact1> sends 1 encrypted messages to user Myself
+    And I tap on conversation name <Contact1>
+    And I scroll to the bottom of conversation view
+    And I navigate back from conversation
+    And I remember unread messages indicator state for conversation <Contact1>
+    And User <Contact1> edits the recent message to "<NewMessage>" from user Myself via device <ContactDevice>
+    Then I see unread messages indicator state is not changed for conversation <Contact1>
+
+    Examples:
+      | Name      | Contact1  | ContactDevice | NewMessage |
+      | user1Name | user2Name | Device1       | ohno       |
