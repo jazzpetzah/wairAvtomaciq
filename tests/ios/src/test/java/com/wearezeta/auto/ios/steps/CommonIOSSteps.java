@@ -726,7 +726,18 @@ public class CommonIOSSteps {
         }
     }
 
-    @Given("^User (.*) sends (\\d+) encrypted messages? using device (.*) to (user|group conversation) (.*)$")
+    /**
+     * Sends default message using device
+     *
+     * @param msgFromUserNameAlias username who sends message
+     * @param msgsCount            messages count
+     * @param deviceName           device name to send message from
+     * @param conversationType     user or group conversation
+     * @param conversationName     conversation name
+     * @throws Exception
+     * @step. ^User (.*) sends? (\d+) encrypted messages? using device (.*) to (user|group conversation) (.*)$
+     */
+    @Given("^User (.*) sends? (\\d+) encrypted messages? using device (.*) to (user|group conversation) (.*)$")
     public void UserSendXMessagesToConversationUsingDevice(String msgFromUserNameAlias,
                                                            int msgsCount, String deviceName,
                                                            String conversationType,
@@ -1091,7 +1102,8 @@ public class CommonIOSSteps {
      * @throws Exception
      * @step. ^User (.*) sends? file (.*) having MIME type (.*) to (single user|group) conversation (.*) using device (.*)
      */
-    @When("^User (.*) sends? (temporary )?file (.*) having MIME type (.*) to (single user|group) conversation (.*) using device (.*)")
+    @When("^User (.*) sends? (temporary )?file (.*) having MIME type (.*) to (single user|group) conversation (.*) using " +
+            "device (.*)")
     public void UserSendsFile(String sender, String isTemporary, String fileName, String mimeType, String convoType,
                               String convoName, String deviceName) throws Exception {
         String root;

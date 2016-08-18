@@ -78,7 +78,6 @@ public class ConversationViewPageSteps {
      * @step. ^I see conversation view$
      */
     @Then("^I see conversation view$")
-    //TODO : Refactory See dialog page,
     public void ISeeConversationPage() throws Exception {
         Assert.assertTrue("The cursor is not visible in the conversation view",
                 getConversationViewPage().isCursorViewVisible());
@@ -1429,6 +1428,26 @@ public class ConversationViewPageSteps {
         } else {
             Assert.assertTrue(String.format("The Pen icon next to the name '%s' should be invisible", name),
                     getConversationViewPage().waitUntilPenIconInvisible(name));
+        }
+    }
+
+    /**
+     * Verify I can see users's message separator
+     *
+     * @param shouldNotSee
+     * @param name         the user's name or name alias
+     * @throws Exception
+     * @step. ^I (do not )?see the message separator of (.*) in (\d+) seconds$
+     */
+    @Then("^I (do not )?see the message separator of (.*) in (\\d+) seconds$")
+    public void ISeeMessageFromUser(String shouldNotSee, String name, int timeOutSeconds) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("The message separator of user %s should be visible", name),
+                    getConversationViewPage().waitUntilMessageSeparatorVisible(name, timeOutSeconds));
+        } else {
+            Assert.assertTrue(String.format("The message separator of user %s should be invisible", name),
+                    getConversationViewPage().waitUntilMessageSeparatorInvisible(name, timeOutSeconds));
         }
     }
 }
