@@ -149,7 +149,7 @@ Feature: Recall Message
       | Name      | Contact   | HisDevice | MySecondDevice | FileName    |
       | user1Name | user2Name | device1   | device2        | testing.mp4 |
 
-  @C202308 @staging @fastLogin
+  @C202308 @regression @fastLogin
   Scenario Outline: Verify I see status message if other user deletes his message everywhere (1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -232,7 +232,7 @@ Feature: Recall Message
       | Name      | Contact   | YouTubeLink                                | SoundCloudLink                                   | VimeoLink                   | HisDevice | MySecondDevice | Wait1 | Wait2 |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU | https://soundcloud.com/sodab/256-ra-robag-wruhme | https://vimeo.com/129426512 | device1   | device2        | 15    | 3     |
 
-  @C202315 @staging @fastLogin
+  @C202315 @regression @fastLogin
   Scenario Outline: Verify delete everywhere works for giphy
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -297,7 +297,7 @@ Feature: Recall Message
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
 
-  @C202319 @staging @fastLogin
+  @C202319 @regression @fastLogin
   Scenario Outline: Verify delete everywhere works for audio messages
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
