@@ -355,3 +355,23 @@ Feature: Recall Message
     Examples:
       | Name      | Contact1  | DeviceName |
       | user1Name | user2Name | device1    |
+
+  @C206261 @staging @fastLogin
+  Scenario Outline: Verify I cannot delete message everywhere when I was removed from group
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given User <Contact1> adds new device <Contact1Device>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Group>
+    And I type the default message and send it
+    Then I see 1 default message in the conversation view
+    When <Contact1> removed <Name> from group chat <Group>
+    And I long tap default message in conversation view
+    And I tap on Delete badge item
+    Then I do not see Delete for everyone item in Delete menu
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact1Device | Group       |
+      | user1Name | user2Name | user3Name | device1        | RecallGroup |
