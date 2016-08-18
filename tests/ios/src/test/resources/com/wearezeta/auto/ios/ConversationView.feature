@@ -116,8 +116,8 @@ Feature: Conversation View
     When I switch to Log In tab
     And I have entered login <Text>
     And I tap and hold on Email input
-    And I click on popup SelectAll item
-    And I click on popup Copy item
+    And I tap on Select All badge item
+    And I tap on Copy badge item
     And I have entered login <Login>
     And I have entered password <Password>
     And I tap Login button
@@ -379,7 +379,7 @@ Feature: Conversation View
     And I tap on Copy badge item
     And I tap on text input
     And I tap and hold on message input
-    And I click on popup Paste item
+    And I tap on Paste badge item
     And I confirm my choice
     Then I see 2 photo in the conversation view
 

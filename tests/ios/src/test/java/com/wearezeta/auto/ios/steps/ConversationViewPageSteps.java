@@ -659,33 +659,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap on pointed badge item
-     *
-     * @param badgeItem the badge item name
-     * @throws Exception
-     * @step. ^I tap on (Select All|Copy|Delete|Paste) badge item$
-     */
-    @When("^I tap on (Select All|Copy|Delete|Paste) badge item$")
-    public void ITapBadge(String badgeItem) throws Exception {
-        switch (badgeItem) {
-            case "Select All":
-                getConversationViewPage().tapPopupSelectAllButton();
-                break;
-            case "Copy":
-                getConversationViewPage().tapPopupCopyButton();
-                break;
-            case "Delete":
-                getConversationViewPage().tapPopupDeleteButton();
-                break;
-            case "Paste":
-                getConversationViewPage().tapPopupPasteButton();
-                break;
-            default:
-                throw new IllegalArgumentException("Only (Select All|Copy|Delete|Paste) are allowed options");
-        }
-    }
-
-    /**
      * Select the corresponding item from the modal menu, which appears after Delete badge is tapped
      *
      * @param name one of possible item names
@@ -695,45 +668,6 @@ public class ConversationViewPageSteps {
     @And("^I select (Delete only for me|Delete for everyone|Cancel) item from Delete menu$")
     public void ISelectDeleteMenuItem(String name) throws Exception {
         getConversationViewPage().selectDeleteMenuItem(name);
-    }
-
-    /**
-     * Verify visibility of the corresponding badge item
-     *
-     * @param shouldNotSee equals to null if the corresponding item should be visible
-     * @param badgeItem    the badge item name
-     * @throws Exception
-     * @step. ^I (do not )?see (Select All|Copy|Delete|Paste|Save) badge item$
-     */
-    @Then("^I (do not )?see (Select All|Copy|Delete|Paste|Save) badge item$")
-    public void ISeeBadge(String shouldNotSee, String badgeItem) throws Exception {
-        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
-        switch (badgeItem) {
-            case "Select All":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupSelectAllButtonVisible :
-                        getConversationViewPage()::isPopupSelectAllButtonInvisible;
-                break;
-            case "Copy":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupCopyButtonVisible :
-                        getConversationViewPage()::isPopupCopyButtonInvisible;
-                break;
-            case "Delete":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupDeleteButtonVisible :
-                        getConversationViewPage()::isPopupDeleteButtonInvisible;
-                break;
-            case "Paste":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupPasteButtonVisible :
-                        getConversationViewPage()::isPopupPasteButtonInvisible;
-                break;
-            case "Save":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupSaveButtonVisible :
-                        getConversationViewPage()::isPopupSaveButtonInvisible;
-                break;
-            default:
-                throw new IllegalArgumentException("Only (Select All|Copy|Delete|Paste|Save) are allowed options");
-        }
-        Assert.assertTrue(String.format("The '%s' badge item is %s", badgeItem,
-                (shouldNotSee == null) ? "not visible" : "still visible"), verificationFunc.call());
     }
 
     /**

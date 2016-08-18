@@ -54,14 +54,11 @@ public abstract class IOSPage extends BasePage {
             "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']";
 
     protected static final By nameEditingItemSelectAll = MobileBy.AccessibilityId("Select All");
-
     protected static final By nameEditingItemCopy = MobileBy.AccessibilityId("Copy");
-
     protected static final By nameEditingItemDelete = MobileBy.AccessibilityId("Delete");
-
     protected static final By nameEditingItemPaste = MobileBy.AccessibilityId("Paste");
-
     protected static final By nameEditingItemSave = MobileBy.AccessibilityId("Save");
+    protected static final By nameEditingItemEdit = MobileBy.AccessibilityId("Edit");
 
     private static final Function<String, String> xpathStrAlertByText = text ->
             String.format("//UIAAlert[ .//*[contains(@name, '%s')] or contains(@name, '%s')]", text, text);
@@ -138,70 +135,44 @@ public abstract class IOSPage extends BasePage {
         this.getDriver().swipe(10, 220, 10, 200, 500);
     }
 
-    public void tapPopupSelectAllButton() throws Exception {
-        getElement(nameEditingItemSelectAll, "Select All popup is not visible").click();
-    }
-
-    public boolean isPopupSelectAllButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEditingItemSelectAll);
-    }
-
-    public boolean isPopupSelectAllButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemSelectAll);
-    }
-
-    public void tapPopupCopyButton() throws Exception {
-        getElement(nameEditingItemCopy, "Copy popup is not visible").click();
-    }
-
-    public boolean isPopupCopyButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEditingItemCopy);
-    }
-
-    public boolean isPopupCopyButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemCopy);
-    }
-
-    public void tapPopupDeleteButton() throws Exception {
-        getElement(nameEditingItemDelete, "Delete popup is not visible").click();
-    }
-
-    public boolean isPopupDeleteButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEditingItemDelete);
-    }
-
-    public boolean isPopupDeleteButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemDelete);
-    }
-
-    public void tapPopupPasteButton() throws Exception {
-        getElement(nameEditingItemPaste, "Paste popup is not visible").click();
-        final int popupVisibilityTimeoutSeconds = 10;
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemPaste, popupVisibilityTimeoutSeconds)) {
-            log.warn((String.format(
-                    "Paste popup is still appears to be visible after %s seconds timeout",
-                    popupVisibilityTimeoutSeconds)));
+    private By getBadgeLocatorByName(String name) {
+        switch (name.toLowerCase()) {
+            case "select all":
+                return nameEditingItemSelectAll;
+            case "edit":
+                return nameEditingItemEdit;
+            case "copy":
+                return nameEditingItemCopy;
+            case "delete":
+                return nameEditingItemDelete;
+            case "paste":
+                return nameEditingItemPaste;
+            case "save":
+                return nameEditingItemSave;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown badge name: '%s'", name));
         }
-        Thread.sleep(2000);
     }
 
-    public boolean isPopupPasteButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEditingItemPaste);
+    public void tapBadgeItem(String name) throws Exception {
+        final By locator = getBadgeLocatorByName(name);
+        getElement(locator).click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 10)) {
+            log.warn((String.format("%s popup is still appears to be visible after the timeout", name)));
+        }
     }
 
-    public boolean isPopupPasteButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemPaste);
+    public boolean isBadgeItemVisible(String name) throws Exception {
+        final By locator = getBadgeLocatorByName(name);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean isPopupSaveButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEditingItemSave);
+    public boolean isBadgeItemInvisible(String name) throws Exception {
+        final By locator = getBadgeLocatorByName(name);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public boolean isPopupSaveButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemSave);
-    }
-
-    private void clickAtSimulator(int x, int y) throws Exception {
+      private void clickAtSimulator(int x, int y) throws Exception {
         final Dimension windowSize = getDriver().manage().window().getSize();
         IOSSimulatorHelper.clickAt(String.format("%.2f", x * 1.0 / windowSize.width),
                 String.format("%.2f", y * 1.0 / windowSize.height),

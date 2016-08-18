@@ -1296,4 +1296,36 @@ public class CommonIOSSteps {
         commonSteps.UserXFoundLastMessageChanged(userNameAlias, convoType.equals("group conversation"), dstNameAlias,
                 deviceName, durationSeconds);
     }
+
+    /**
+     * Verify visibility of the corresponding badge item
+     *
+     * @param shouldNotSee equals to null if the corresponding item should be visible
+     * @param itemName    the badge item name
+     * @throws Exception
+     * @step. ^I (do not )?see (Select All|Copy|Delete|Paste|Save|Edit) badge item$
+     */
+    @Then("^I (do not )?see (Select All|Copy|Delete|Paste|Save|Edit) badge item$")
+    public void ISeeBadge(String shouldNotSee, String itemName) throws Exception {
+        boolean result;
+        if (shouldNotSee == null) {
+            result = pagesCollection.getCommonPage().isBadgeItemVisible(itemName);
+        } else {
+            result = pagesCollection.getCommonPage().isBadgeItemInvisible(itemName);
+        }
+        Assert.assertTrue(String.format("The '%s' badge item is %s", itemName,
+                (shouldNotSee == null) ? "not visible" : "still visible"), result);
+    }
+
+    /**
+     * Tap on pointed badge item
+     *
+     * @param itemName the badge item name
+     * @throws Exception
+     * @step. ^I tap on (Select All|Copy|Delete|Paste) badge item$
+     */
+    @When("^I tap on (Select All|Copy|Delete|Paste) badge item$")
+    public void ITapBadge(String itemName) throws Exception {
+        pagesCollection.getCommonPage().tapBadgeItem(itemName);
+    }
 }
