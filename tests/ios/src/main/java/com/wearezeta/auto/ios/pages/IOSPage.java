@@ -53,12 +53,12 @@ public abstract class IOSPage extends BasePage {
     protected static final String xpathStrMainWindow =
             "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']";
 
-    protected static final By nameEditingItemSelectAll = MobileBy.AccessibilityId("Select All");
-    protected static final By nameEditingItemCopy = MobileBy.AccessibilityId("Copy");
-    protected static final By nameEditingItemDelete = MobileBy.AccessibilityId("Delete");
-    protected static final By nameEditingItemPaste = MobileBy.AccessibilityId("Paste");
-    protected static final By nameEditingItemSave = MobileBy.AccessibilityId("Save");
-    protected static final By nameEditingItemEdit = MobileBy.AccessibilityId("Edit");
+    private static final By nameBadgeItemSelectAll = MobileBy.AccessibilityId("Select All");
+    private static final By nameBadgeItemCopy = MobileBy.AccessibilityId("Copy");
+    private static final By nameBadgeItemDelete = MobileBy.AccessibilityId("Delete");
+    private static final By nameBadgeItemPaste = MobileBy.AccessibilityId("Paste");
+    private static final By nameBadgeItemSave = MobileBy.AccessibilityId("Save");
+    private static final By nameBadgeItemEdit = MobileBy.AccessibilityId("Edit");
 
     private static final Function<String, String> xpathStrAlertByText = text ->
             String.format("//UIAAlert[ .//*[contains(@name, '%s')] or contains(@name, '%s')]", text, text);
@@ -138,17 +138,17 @@ public abstract class IOSPage extends BasePage {
     private By getBadgeLocatorByName(String name) {
         switch (name.toLowerCase()) {
             case "select all":
-                return nameEditingItemSelectAll;
+                return nameBadgeItemSelectAll;
             case "edit":
-                return nameEditingItemEdit;
+                return nameBadgeItemEdit;
             case "copy":
-                return nameEditingItemCopy;
+                return nameBadgeItemCopy;
             case "delete":
-                return nameEditingItemDelete;
+                return nameBadgeItemDelete;
             case "paste":
-                return nameEditingItemPaste;
+                return nameBadgeItemPaste;
             case "save":
-                return nameEditingItemSave;
+                return nameBadgeItemSave;
             default:
                 throw new IllegalArgumentException(String.format("Unknown badge name: '%s'", name));
         }
@@ -195,13 +195,13 @@ public abstract class IOSPage extends BasePage {
         final int tapY = elLocation.y + elSize.height / 2;
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             longClickAtSimulator(tapX, tapY);
-            getElement(nameEditingItemPaste).click();
+            getElement(nameBadgeItemPaste).click();
             if (shouldCommitInput) {
                 IOSSimulatorHelper.pressEnterKey();
             }
         } else {
             getDriver().tap(1, tapX, tapY, DriverUtils.LONG_TAP_DURATION);
-            getElement(nameEditingItemPaste, "Paste item is not visible", 15).click();
+            getElement(nameBadgeItemPaste, "Paste item is not visible", 15).click();
             if (shouldCommitInput) {
                 this.tapKeyboardCommitButton();
             }
