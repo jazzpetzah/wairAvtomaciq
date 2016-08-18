@@ -380,18 +380,18 @@ Feature: Delete Everywhere
       Then I do not see embedded Soundcloud message <Soundcloudlink> in the conversation view
       When I write message <Vimeolink>
       And I send message
-      Then I see embedded vimeo message <Vimeolink> in the conversation view
+      #Then I see embedded vimeo message <Vimeolink> in the conversation view
       And I open context menu of the latest message
       And I click to delete message for everyone in context menu
       And I click confirm to delete message for everyone
       Then I do not see embedded vimeo message <Vimeolink> in the conversation view
       And I write message <Spotifylink>
       And I send message
-      #Then I see embedded message <Spotifylink> in the conversation view
+      Then I see embedded spotify message <Spotifylink> in the conversation view
       And I open context menu of the latest message
       And I click to delete message for everyone in context menu
       And I click confirm to delete message for everyone
-      #Then I do not see embedded message <Spotifylink> in the conversation view
+      Then I do not see embedded spotify message <Spotifylink> in the conversation view
       When Contact <Contact> sends message <Youtubelink2> via device Device1 to user me
       Then I see embedded youtube video of <Youtubelink2>
       When User <Contact> deletes the recent 1 message everywhere from user <Contact> via device Device1

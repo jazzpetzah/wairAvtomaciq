@@ -412,7 +412,6 @@ public class ConversationPage extends WebPage {
         Matcher matcher = compiledPattern.matcher(url);
         assert matcher.find() : "Could not find Youtube id in URL: " + url;
         final String id = matcher.group();
-
         final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById.apply(id));
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
@@ -431,9 +430,8 @@ public class ConversationPage extends WebPage {
         String pattern = "[\\w\\-\\_]{10,12}";
         Pattern compiledPattern = Pattern.compile(pattern);
         Matcher matcher = compiledPattern.matcher(url);
-        assert matcher.find() : "Could not find Youtube id in URL: " + url;
+        assert matcher.find() : "Could not find Soundcloud id in URL: " + url;
         final String id = matcher.group();
-
         final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedSoundcloudById.apply(id));
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
@@ -442,7 +440,7 @@ public class ConversationPage extends WebPage {
         String pattern = "[\\w\\-\\_]{10,12}";
         Pattern compiledPattern = Pattern.compile(pattern);
         Matcher matcher = compiledPattern.matcher(url);
-        assert matcher.find() : "Could not find Youtube id in URL: " + url;
+        assert matcher.find() : "Could not find Soundcloud id in URL: " + url;
         final String id = matcher.group();
         final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedSoundcloudById.apply(id));
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
@@ -452,9 +450,8 @@ public class ConversationPage extends WebPage {
         String pattern = "[\\w\\-\\_]{10,12}";
         Pattern compiledPattern = Pattern.compile(pattern);
         Matcher matcher = compiledPattern.matcher(url);
-        assert matcher.find() : "Could not find Youtube id in URL: " + url;
+        assert matcher.find() : "Could not find Vimeo id in URL: " + url;
         final String id = matcher.group();
-
         final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedVimeoById.apply(id));
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
@@ -463,9 +460,30 @@ public class ConversationPage extends WebPage {
         String pattern = "[\\w\\-\\_]{10,12}";
         Pattern compiledPattern = Pattern.compile(pattern);
         Matcher matcher = compiledPattern.matcher(url);
-        assert matcher.find() : "Could not find Youtube id in URL: " + url;
+        assert matcher.find() : "Could not find Vimeo id in URL: " + url;
         final String id = matcher.group();
         final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedVimeoById.apply(id));
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
+    }
+
+    public boolean isSpotifyEmbedded(String url) throws Exception {
+        String pattern = "[\\w\\-\\_]{10,12}";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(url);
+        assert matcher.find() : "Could not find Spotify id in URL: " + url;
+        final String id = matcher.group();
+
+        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedSpotifyById.apply(id));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+    }
+
+    public boolean isSpotifyEmbeddedNotShown(String url) throws Exception {
+        String pattern = "[\\w\\-\\_]{10,12}";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(url);
+        assert matcher.find() : "Could not find Spotify id in URL: " + url;
+        final String id = matcher.group();
+        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedSpotifyById.apply(id));
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
     }
 

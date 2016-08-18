@@ -480,6 +480,9 @@ public final class WebAppLocators {
         public static final Function<String, String> xpathEmbeddedVimeoById = text -> String
                 .format("//iframe[contains(@class, 'vimeo') and contains(@src, '%s')]", text);
 
+        public static final Function<String, String> xpathEmbeddedSpotifyById = text -> String
+                .format("//iframe[contains(@class, 'spotify') and contains(@src, '%s')]", text);
+
         // input area (text input + buttons)
         // This is needed for IE workaround
         public static final String classNameShowParticipantsButton = "show-participants";

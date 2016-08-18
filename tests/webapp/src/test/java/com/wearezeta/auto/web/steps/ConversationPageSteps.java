@@ -217,6 +217,22 @@ public class ConversationPageSteps {
         }
     }
 
+
+    /**
+     * Verifies whether Vimeo video is embedded
+     *
+     * @throws Exception
+     * @step. ^I see embedded vimeo message (.*) in the conversation view$
+     */
+    @Then("^I (do not )?see embedded spotify message (.*)in the conversation view$")
+    public void ISeeEmbeddedSpotify(String doNot, String url) throws Exception {
+        if (doNot == null) {
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isSpotifyEmbedded(url));
+        } else {
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isSpotifyEmbeddedNotShown(url));
+        }
+    }
+
     /**
      * Click People button in 1:1 conversation
      *
