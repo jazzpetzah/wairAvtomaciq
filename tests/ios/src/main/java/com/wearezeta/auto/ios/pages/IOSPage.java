@@ -487,6 +487,11 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void installIpa(File ipaFile) throws Exception {
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            IOSSimulatorHelper.installIpa(ipaFile);
+        } else {
+            throw new NotImplementedException("Application install is only available for Simulator");
+        }
 
     }
 
