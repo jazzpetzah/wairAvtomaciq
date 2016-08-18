@@ -154,11 +154,14 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
+    private static final int MAX_BADGE_VISIBILITY_TIMEOUT = 10; // seconds
+
     public void tapBadgeItem(String name) throws Exception {
         final By locator = getBadgeLocatorByName(name);
         getElement(locator).click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 10)) {
-            log.warn((String.format("%s popup is still appears to be visible after the timeout", name)));
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, MAX_BADGE_VISIBILITY_TIMEOUT)) {
+            log.warn((String.format("%s badge still appears to be visible after %s secinds timeout", name,
+                    MAX_BADGE_VISIBILITY_TIMEOUT)));
         }
     }
 
