@@ -29,7 +29,7 @@
         <com.wire.winium.path>TODO</com.wire.winium.path>
         <com.wire.chromedriver.path>C:\Users\Michael\Desktop\chromedriver.exe</com.wire.chromedriver.path>
         <com.wire.driver.timeout.seconds>10</com.wire.driver.timeout.seconds>
-        <com.wire.environment>Staging</com.wire.environment>
+        <com.wire.environment>staging</com.wire.environment>
         <com.wire.environment.url>https://wire-webapp-staging.zinfra.io/?hl=en</com.wire.environment.url>
         <!--<com.wire.environment.url>https://wire-webapp-edge.zinfra.io/?env=staging</com.wire.environment.url>-->
         <pictureResultsPath>target</pictureResultsPath>

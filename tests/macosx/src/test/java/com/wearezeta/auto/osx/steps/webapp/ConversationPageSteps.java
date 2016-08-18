@@ -671,4 +671,26 @@ public class ConversationPageSteps {
     public void IMakeVideoCallToUser() throws Throwable {
         webappPagesCollection.getPage(ConversationPage.class).clickVideoCallButton();
     }
+    
+    /**
+     * Verifies that x messages are in the conversation
+     *
+     * @param x the amount of sent messages
+     * @step. ^I see (\\d+) messages in conversation$
+     */
+    @Then("^I see (\\d+) messages? in conversation$")
+    public void ISeeXMessagesInConversation(int x) throws Exception {
+        assertThat("Number of messages in the conversation", webappPagesCollection.getPage(ConversationPage.class)
+                .getNumberOfMessagesInCurrentConversation(), equalTo(x));
+    }
+    
+    @When("^I click confirm to delete message for everyone$")
+    public void IClickConfirmToDeleteForEveryone() throws Exception {
+        webappPagesCollection.getPage(ConversationPage.class).confirmDeleteForEveryone();
+    }
+
+    @When("^I click confirm to delete message for me$")
+    public void IClickConfirmToDelete() throws Exception {
+        webappPagesCollection.getPage(ConversationPage.class).confirmDelete();
+    }
 }
