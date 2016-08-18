@@ -89,6 +89,7 @@ Feature: Autoconnect
     And I wait for 120 seconds
     And I input in People picker search field first 1 letters of user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
+    Then I see first item in Search result is named <Contact>
 
     Examples:
       | Contact   | CEmail     | Name      |
@@ -111,9 +112,10 @@ Feature: Autoconnect
     And I tap Keep This One button
     And I tap Share Contacts button on Share Contacts overlay
     And I see conversations list
+    And I wait for 60 seconds
     When I open search UI
-    And I wait for 5 seconds
-    And I input in People picker search field first 4 letters of user name <Contact>
+    And I wait for 120 seconds
+    And I input in People picker search field first 1 letters of user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
 
     Examples:

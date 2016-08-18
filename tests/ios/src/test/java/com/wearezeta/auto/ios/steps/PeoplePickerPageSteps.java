@@ -116,6 +116,17 @@ public class PeoplePickerPageSteps {
     }
 
     /**
+     *
+     * @param name
+     * @throws Exception
+     */
+    @When("^I see first item in Search result is named (.*)$")
+    public void ISeeConversationIsFirstSearchResult(String name) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+
+    }
+
+    /**
      * Verify whether No Results label is visible in search results
      *
      * @throws Exception
