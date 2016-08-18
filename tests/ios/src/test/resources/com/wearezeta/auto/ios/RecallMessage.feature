@@ -254,7 +254,7 @@ Feature: Recall Message
       | Name      | Contact   | HisDevice | GiphyTag |
       | user1Name | user2Name | device1   | cool     |
 
-  @C202316 @staging @fastLogin
+  @C202316 @regression @fastLogin
   Scenario Outline: Verify delete everywhere works for link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -275,7 +275,7 @@ Feature: Recall Message
       | Name      | Contact   | HisDevice | Link                  |
       | user1Name | user2Name | device1   | https://www.wire.com/ |
 
-  @C202317 @staging @fastLogin
+  @C202317 @regression @fastLogin
   Scenario Outline: Verify delete everywhere works for location sharing
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
