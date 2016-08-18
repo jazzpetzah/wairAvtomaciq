@@ -297,7 +297,7 @@ Feature: Recall Message
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
 
-  @C202319 @regression @fastLogin
+  @C206257 @regression @fastLogin
   Scenario Outline: Verify delete everywhere works for audio messages
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -326,8 +326,7 @@ Feature: Recall Message
     Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact1>
-    Then I see 1 default message in the conversation view
-    When I long tap default message in conversation view
+    And I long tap default message in conversation view
     And I tap on Delete badge item
     Then I do not see Delete for everyone item in Delete menu
 
