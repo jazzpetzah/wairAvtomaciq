@@ -160,8 +160,8 @@ public abstract class IOSPage extends BasePage {
         final By locator = getBadgeLocatorByName(name);
         getElement(locator).click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, MAX_BADGE_VISIBILITY_TIMEOUT)) {
-            log.warn((String.format("%s badge still appears to be visible after %s seconds timeout", name,
-                    MAX_BADGE_VISIBILITY_TIMEOUT)));
+            log.warn(String.format("%s badge still appears to be visible after %s seconds timeout", name,
+                    MAX_BADGE_VISIBILITY_TIMEOUT));
         }
     }
 
@@ -175,7 +175,7 @@ public abstract class IOSPage extends BasePage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-      private void clickAtSimulator(int x, int y) throws Exception {
+    private void clickAtSimulator(int x, int y) throws Exception {
         final Dimension windowSize = getDriver().manage().window().getSize();
         IOSSimulatorHelper.clickAt(String.format("%.2f", x * 1.0 / windowSize.width),
                 String.format("%.2f", y * 1.0 / windowSize.height),
