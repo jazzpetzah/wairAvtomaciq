@@ -70,7 +70,7 @@ Feature: Keyboard Gallery
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C183905 @real @torun
+  @C183905 @real
   Scenario Outline: I can draw a sketch on camera photo
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
