@@ -36,7 +36,7 @@ public class SketchPage extends IOSPage {
             } else {
                 log.debug(getDriver().manage().window().getSize());
                 log.debug(startX + "/" + startY + "/" + endX + "/" + endY);
-                DriverUtils.swipeByCoordinates(getDriver(), 500, startX, startY, endX, endY);
+                DriverUtils.swipeByCoordinates(getDriver(), 0, startX, startY, endX, endY);
             }
         }
     }
