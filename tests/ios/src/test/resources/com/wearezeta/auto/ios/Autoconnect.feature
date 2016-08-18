@@ -1,5 +1,6 @@
 Feature: Autoconnect
 
+  #still needs the fix to upload +0 to BE, thats why no label to run yet, because it will fail
   @C2034 @C2035 @addressbookStart
   Scenario Outline: Verify autoconnect users by direct match phone numbers
     Given There are 2 users
@@ -24,6 +25,7 @@ Feature: Autoconnect
       | Contact1  | Contact2   | CPhone           | C2Phone          | Name      |
       | user1Name | user2Name  | user1PhoneNumber | user2PhoneNumber | user3Name |
 
+  #still needs the fix to upload +0 to BE, thats why no label to run yet, because it will fail
   @C202304 @addressbookStart
   Scenario Outline: Verify autoconnect users by direct match phone numbers - delayed
     Given There are 3 user where <Name> is me
@@ -45,35 +47,7 @@ Feature: Autoconnect
       | Contact1  | Contact2   | CPhone           | C2Phone          | Name      |
       | user3Name | user2Name  | user3PhoneNumber | user2PhoneNumber | user1Name |
 
-
-  #@C202304 @noAcceptAlert
-  #Scenario Outline: Verify autoconnect users by direct match phone numbers - delayed OLD TEST
-    #Given There are 3 user where <Name> is me
-    #Given I sign in using my email or phone number
-    #Given User Myself has phone numbers <PhonePrefix><APhone>,<PhonePrefix><A2Phone> in address book
-    #Given I see conversations list
-    #Then I see conversation <AName> in conversations list
-    #And I see conversation <A2Name> in conversations list
-
-    #Examples:
-      #| Name      | APhone     | PhonePrefix | A2Phone    | AName     | A2Name    |
-      #| user1Name | user2Phone | +0          | user3Phone | user2Name | user3Name |
-
-  #@C202303
-  #Scenario Outline: Verify direct matching email - delayed OLD TEST
-    #Given There are 2 users where <UserA> is me
-    #Given I sign in using my email
-    #Given User <UserB> has email <UserA> in address book
-    #When I open search UI
-    #And I wait for 10 seconds
-    #And I input in People picker search field first 5 letters of user name <UserB>
-    #Then I see the conversation "<UserB>" exists in Search results
-
-    #Examples:
-      #| UserA     | UserB     |
-      #| user1Name | user2Name |
-
-  @torun @C202303 @addressbookStart
+  @C202303 @staging @addressbookStart
   Scenario Outline: Verify direct matching email - delayed
     Given There are 2 user where <Name> is me
     Given I quit Wire
@@ -83,19 +57,20 @@ Feature: Autoconnect
     Given I add name <Contact> and email <CEmail> to Address Book
     Given I relaunch Wire
     Given I sign in using my email or phone number
-    And I wait for 60 seconds
+    #Wait to make sure user is in the backend
+    And I wait until <Contact> exists in backend search results
     When I open search UI
     And I accept alert
+    #Wait to be sure the match happend on the backend
     And I wait for 120 seconds
     And I input in People picker search field first 1 letters of user name <Contact>
-    Then I see the conversation "<Contact>" exists in Search results
     Then I see first item in Search result is named <Contact>
 
     Examples:
       | Contact   | CEmail     | Name      |
       | user2Name | user2Email | user1Name |
 
-  @C206254 @addressbookStart
+  @C206254 @staging @addressbookStart
   Scenario Outline: Verify direct matching of emails
     Given There is 1 user
     Given I quit Wire
@@ -112,11 +87,13 @@ Feature: Autoconnect
     And I tap Keep This One button
     And I tap Share Contacts button on Share Contacts overlay
     And I see conversations list
-    And I wait for 60 seconds
+    #Wait to make sure user is in the backend
+    And I wait until <Contact> exists in backend search results
     When I open search UI
+    #Wait to be sure the match happend on the backend
     And I wait for 120 seconds
     And I input in People picker search field first 1 letters of user name <Contact>
-    Then I see the conversation "<Contact>" exists in Search results
+    Then I see first item in Search result is named <Contact>
 
     Examples:
       | Contact   | CEmail     | Name      |
