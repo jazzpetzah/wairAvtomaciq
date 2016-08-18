@@ -9,9 +9,7 @@ import org.json.JSONArray;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This API presents https://github.com/wireapp/wire-automation-addressbook-ios/blob/master/README.md
@@ -21,13 +19,13 @@ import java.util.Map;
 public class ABProvisionerAPI {
     private static final Logger log = ZetaLogger.getLog(ABProvisionerAPI.class.getSimpleName());
 
-    private static final String hostName = "localhost";
-    private static final String portNumber = "8001";
+    private static final String HOST_NAME = "localhost";
+    private static final String PORT_NUMBER = "8001";
 
     private ABProvisionerRESTClient client;
 
     private ABProvisionerAPI() throws Exception {
-        this.client = new ABProvisionerRESTClient(hostName,portNumber);
+        this.client = new ABProvisionerRESTClient(HOST_NAME, PORT_NUMBER);
     }
 
     private static ABProvisionerAPI instance = null;
@@ -65,7 +63,7 @@ public class ABProvisionerAPI {
 
     public boolean isAlive() {
         try {
-            final URL siteURL = new URL(String.format("%s%s:%s/", ABProvisionerRESTClient.URL_PROTOCOL, hostName, portNumber));
+            final URL siteURL = new URL(String.format("%s%s:%s/", ABProvisionerRESTClient.URL_PROTOCOL, HOST_NAME, PORT_NUMBER));
             final HttpURLConnection connection = (HttpURLConnection) siteURL.openConnection();
             connection.setRequestMethod("HEAD");
             connection.connect();

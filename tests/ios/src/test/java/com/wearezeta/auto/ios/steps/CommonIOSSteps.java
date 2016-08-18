@@ -146,7 +146,7 @@ public class CommonIOSSteps {
                             "--loginemail=" + ((ClientUser) entry.getValue()).getEmail(),
                             "--loginpassword=" + ((ClientUser) entry.getValue()).getPassword()
                     ));
-                }else {
+                } else {
                     capabilities.setCapability(entry.getKey(), entry.getValue());
                 }
             }
@@ -206,7 +206,7 @@ public class CommonIOSSteps {
 
         String appPath = getAppPath();
         if (scenario.getSourceTagNames().contains("@upgrade") || scenario.getSourceTagNames().contains("@addressbookStart")) {
-            if(scenario.getSourceTagNames().contains("@upgrade")){
+            if (scenario.getSourceTagNames().contains("@upgrade")) {
                 appPath = getOldAppPath();
             }
             if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
@@ -1355,21 +1355,20 @@ public class CommonIOSSteps {
     public void ILaunchAddressbookHelperApp() throws Exception {
         IOSSimulatorHelper.launchApp(ADDRESSBOOK_APP_BUNDLE);
         Thread.sleep(2000);
-        //Pressing the accept OK button on the alert
-        IOSSimulatorHelper.clickAt("0.68", "0.58", "1");
         //To be sure its get pressed tap a second time, if it got pressed 1st time nothing will happen
         //there is no ui in the app...sometimes it fails here, so the second press
-        IOSSimulatorHelper.clickAt("0.68", "0.58", "1");
-
+        for (int i = 0; i <= 2; i++){
+            IOSSimulatorHelper.clickAt("0.68", "0.58", "1");
+        }
     }
 
     /**
-     * Addressbook helper app deletes all contacts from simulator addressbook
+     * Addressbook helper app deletes all contacts from simulator Address Book
      *
      * @throws Exception
-     * @step. ^I delete all contacts from addressbook$
+     * @step. ^I delete all contacts from Address Book$
      */
-    @Given("^I delete all contacts from addressbook$")
+    @Given("^I delete all contacts from Address Book$")
     public void IDeleteAllContactsFromAddressbook() throws Exception {
         addressbookProvisioner.clearContacts();
     }
@@ -1377,7 +1376,7 @@ public class CommonIOSSteps {
     /**
      * Uploads name and phone number of contact to the simulator addressbook
      *
-     * @param name name of contact to be added to addressbook
+     * @param name        name of contact to be added to addressbook
      * @param phoneNumber phone number of contact to be added to addressbook
      * @throws Exception
      * @step. ^I add name (.*) and phone (.*) to Address Book$
@@ -1385,10 +1384,10 @@ public class CommonIOSSteps {
     @Given("^I add name (.*) and phone (.*) to Address Book$")
     public void IAddNameAndPhoneToAddressBook(String name, String phoneNumber) throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        phoneNumber = usrMgr.replaceAliasesOccurences(phoneNumber,ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+        phoneNumber = usrMgr.replaceAliasesOccurences(phoneNumber, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
         List<String> phoneNumberList = new ArrayList<>();
         phoneNumberList.add(phoneNumber);
-        ABContact contact = new ABContact(name,Optional.empty(),Optional.of(phoneNumberList));
+        ABContact contact = new ABContact(name, Optional.empty(), Optional.of(phoneNumberList));
         List<ABContact> newContacts = new ArrayList<>();
         newContacts.add(contact);
         addressbookProvisioner.addContacts(newContacts);
@@ -1397,7 +1396,7 @@ public class CommonIOSSteps {
     /**
      * Uploads name and email of contact to the simulator addressbook
      *
-     * @param name name of contact to be added to addressbook
+     * @param name  name of contact to be added to addressbook
      * @param email email of contact to be added to addressbook
      * @throws Throwable
      * @step. ^I add name (.*) and email (.*) to Address Book$
@@ -1405,10 +1404,10 @@ public class CommonIOSSteps {
     @Given("^I add name (.*) and email (.*) to Address Book$")
     public void IAddNameAndEmailToAddressBook(String name, String email) throws Throwable {
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        email = usrMgr.replaceAliasesOccurences(email,ClientUsersManager.FindBy.EMAIL_ALIAS);
+        email = usrMgr.replaceAliasesOccurences(email, ClientUsersManager.FindBy.EMAIL_ALIAS);
         List<String> emailList = new ArrayList<>();
         emailList.add(email);
-        ABContact contact = new ABContact(name,Optional.of(emailList),Optional.empty());
+        ABContact contact = new ABContact(name, Optional.of(emailList), Optional.empty());
         List<ABContact> newContacts = new ArrayList<>();
         newContacts.add(contact);
         addressbookProvisioner.addContacts(newContacts);

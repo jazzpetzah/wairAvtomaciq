@@ -23,18 +23,17 @@ final class ABProvisionerRESTClient {
 
     public static final String URL_PROTOCOL = "http://";
 
-    private String ip;
+    private String hostname;
     private String port;
 
     public ABProvisionerRESTClient(String ip, String port) {
-        this.ip = ip;
+        this.hostname = ip;
         this.port = port;
     }
 
     public String getApiRoot() {
-        System.out.print(String.format("%s%s:%s/", URL_PROTOCOL, this.ip, this.port));
-        return String.format("%s%s:%s", URL_PROTOCOL, this.ip, this.port);
-
+        System.out.print(String.format("%s%s:%s/", URL_PROTOCOL, this.hostname, this.port));
+        return String.format("%s%s:%s", URL_PROTOCOL, this.hostname, this.port);
     }
 
     private static final CommonRESTHandlers restHandlers =

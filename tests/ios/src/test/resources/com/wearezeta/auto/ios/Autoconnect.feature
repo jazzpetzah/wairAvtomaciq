@@ -7,7 +7,7 @@ Feature: Autoconnect
     Given I quit Wire
     Given I install Addressbook helper app
     Given I launch Addressbook helper app
-    Given I delete all contacts from addressbook
+    Given I delete all contacts from Address Book
     Given I add name <Contact1> and phone <CPhone> to Address Book
     Given I add name <Contact2> and phone <C2Phone> to Address Book
     Given I relaunch Wire
@@ -32,7 +32,7 @@ Feature: Autoconnect
     Given I quit Wire
     Given I install Addressbook helper app
     Given I launch Addressbook helper app
-    Given I delete all contacts from addressbook
+    Given I delete all contacts from Address Book
     Given I add name <Contact1> and phone <CPhone> to Address Book
     Given I add name <Contact2> and phone <C2Phone> to Address Book
     Given I relaunch Wire
@@ -53,7 +53,7 @@ Feature: Autoconnect
     Given I quit Wire
     Given I install Addressbook helper app
     Given I launch Addressbook helper app
-    Given I delete all contacts from addressbook
+    Given I delete all contacts from Address Book
     Given I add name <Contact> and email <CEmail> to Address Book
     Given I relaunch Wire
     Given I sign in using my email or phone number
@@ -76,7 +76,7 @@ Feature: Autoconnect
     Given I quit Wire
     Given I install Addressbook helper app
     Given I launch Addressbook helper app
-    Given I delete all contacts from addressbook
+    Given I delete all contacts from Address Book
     Given I add name <Contact> and email <CEmail> to Address Book
     Given I relaunch Wire
     Given I see sign in screen
