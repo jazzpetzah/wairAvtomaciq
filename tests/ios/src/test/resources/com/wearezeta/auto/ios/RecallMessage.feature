@@ -153,8 +153,8 @@ Feature: Recall Message
     Given Myself is connected to <Contact1>
     Given User <Contact1> adds new device <Contact1Device>
     Given I sign in using my email or phone number
-    Given User <Contact1> sends 1 encrypted message to user Myself
     Given I see conversations list
+    Given User <Contact1> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact1>
     Then I see 1 default message in the conversation view
     When User <Contact1> deletes the recent message everywhere from user <Name> via device <Contact1Device>
@@ -172,8 +172,8 @@ Feature: Recall Message
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
     Given User <Contact1> adds new device <Contact1Device>
     Given I sign in using my email or phone number
-    Given User <Contact1> sends 1 encrypted message to group conversation <Group>
     Given I see conversations list
+    Given User <Contact1> sends 1 encrypted message to group conversation <Group>
     When I tap on contact name <Group>
     Then I see 1 default message in the conversation view
     When User <Contact1> deletes the recent message everywhere from group conversation <Group> via device <Contact1Device>
