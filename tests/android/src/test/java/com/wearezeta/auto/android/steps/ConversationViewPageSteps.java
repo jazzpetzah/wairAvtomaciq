@@ -1252,6 +1252,17 @@ public class ConversationViewPageSteps {
         }
     }
 
+    /**
+     * Tap on all resend button in current view
+     *
+     * @throws Exception
+     * @step. ^I resend all the visible messages in conversation view$
+     */
+    @When("^I resend all the visible messages in conversation view$")
+    public void ITapResendButton() throws Exception {
+        getConversationViewPage().tapAllResendButton();
+    }
+
     private static final double MIN_UPLOAD_TO_PLAY_SCORE = 0.75;
 
     /**
