@@ -646,19 +646,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify that input field contains expected text message
-     *
-     * @throws Exception
-     * @step. ^I see the default message in input field$
-     */
-    @When("^I see the default message in input field$")
-    public void WhenISeeMessageInInputField() throws Exception {
-        Assert.assertTrue(String.format("The text input field contain content, which is different from '%s'",
-                CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE),
-                getConversationViewPage().isCurrentInputTextEqualTo(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE));
-    }
-
-    /**
      * Select the corresponding item from the modal menu, which appears after Delete badge is tapped
      *
      * @param name one of possible item names
@@ -696,6 +683,24 @@ public class ConversationViewPageSteps {
     @When("^I clear conversation text input$")
     public void IClearConversationTextInput() throws Exception {
         getConversationViewPage().clearTextInput();
+    }
+
+    /**
+     * Verify whether particular message is present in the conversation input
+     *
+     * @param expectedMessage either 'default' or the expected message's text
+     * @throws Exception
+     * @step. ^I see the (default|".*") message in the conversation input$
+     */
+    @Then("^I see the (default|\".*\") message in the conversation input$")
+    public void ISeeMessageInTheInput(String expectedMessage) throws Exception {
+        if (expectedMessage.equals("default")) {
+            expectedMessage = CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE;
+        } else {
+            expectedMessage = expectedMessage.replaceAll("^\"|\"$", "");
+        }
+        Assert.assertTrue(String.format("The text '%s' is not present in the conversation input", expectedMessage),
+                getConversationViewPage().isCurrentInputTextEqualTo(expectedMessage));
     }
 
     /**
@@ -1390,5 +1395,18 @@ public class ConversationViewPageSteps {
     public void IDoNotSeeItemInDeleteMenu(String name) throws Exception {
         Assert.assertTrue(String.format("'%s' Delete menu item shouldn't be visible", name),
                 getConversationViewPage().deleteMenuItemNotVisible(name));
+    }
+
+    /**
+     * Tap the corresponding button on the control, which appears if I select
+     * Edit basge item for a conversation item
+     *
+     * @param btnName one of available button names
+     * @throws Exception
+     * @step. ^I tap (Undo|Confirm|Cancel) button on Edit control
+     */
+    @When("^I tap (Undo|Confirm|Cancel) button on Edit control")
+    public void ITapEditControlButton(String btnName) throws Exception {
+        getConversationViewPage().tapEditControlButton(btnName);
     }
 }

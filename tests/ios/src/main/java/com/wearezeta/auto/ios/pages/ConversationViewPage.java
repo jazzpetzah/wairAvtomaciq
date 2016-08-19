@@ -216,6 +216,14 @@ public class ConversationViewPage extends IOSPage {
             String.format("//UIATableCell[@name='%s']//UIAStaticText[starts-with(@label, 'Deleted on')]",
                     name.toUpperCase());
 
+    // TODO: Replace XPaths with IDs
+    private static final By xpathUndoEdit =
+            By.xpath("//UIAButton[@name='photoButton']/preceding-sibling::UIAButton[3]");
+    private static final By xpathConfirmEdit =
+            By.xpath("//UIAButton[@name='photoButton']/preceding-sibling::UIAButton[2]");
+    private static final By xpathCancelEdit =
+            By.xpath("//UIAButton[@name='photoButton']/preceding-sibling::UIAButton[1]");
+
     private static final int MAX_APPEARANCE_TIME = 20;
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
@@ -988,5 +996,23 @@ public class ConversationViewPage extends IOSPage {
     public boolean isDeletedOnLabelPresent(String name) throws Exception {
         final By locator = By.xpath(xpathStrDeleteOnLabelForUser.apply(name));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+    }
+
+    private By getEditControlByName(String name) {
+        switch (name.toLowerCase()) {
+            case "undo":
+                return xpathUndoEdit;
+            case "confirm":
+                return xpathConfirmEdit;
+            case "cancel":
+                return xpathCancelEdit;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown Edit control button '%s'", name));
+        }
+    }
+
+    public void tapEditControlButton(String name) throws Exception {
+        final By locator = getEditControlByName(name);
+        getElement(locator).click();
     }
 }

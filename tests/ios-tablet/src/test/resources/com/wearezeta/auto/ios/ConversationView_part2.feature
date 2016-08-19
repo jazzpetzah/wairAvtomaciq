@@ -251,7 +251,7 @@ Feature: Conversation View
     And I type the default message
     When I tap on contact name <Contact2>
     And I tap on contact name <Contact1>
-    Then I see the default message in input field
+    Then I see the default message in the conversation input
 
     Examples:
       | Name      | Contact1  | Contact2  |

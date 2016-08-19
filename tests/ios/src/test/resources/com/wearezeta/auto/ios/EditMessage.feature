@@ -36,3 +36,22 @@ Feature: Edit Message
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | RemoveToEdit  |
+
+  @C202354 @staging @fastLogin
+  Scenario Outline: Verify I can undo my editing
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I type the default message and send it
+    Then I see 1 default message in the conversation view
+    When I long tap default message in conversation view
+    And I tap on Edit badge item
+    And I type the "<Text>" message
+    And I tap Undo button on Edit control
+    Then I see the default message in the conversation input
+
+    Examples:
+      | Name      | Contact   | Text    |
+      | user1Name | user2Name | message |
