@@ -341,35 +341,22 @@ Feature: Recall Message
       | user1Name | user2Name | device1    |
 
   @C206262 @staging @fastLogin
-  Scenario Outline: Verify deleted messages remain deleted after I archive and unarchive a conversation
+  Scenario Outline: Verify deleted messages/edit message doesn't unarchive the "archived conversation"
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
     Given User <Contact1> adds new device <Contact1Device>
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact1> sends encrypted message "<Message1>" to group conversation <Group>
-    When I tap on contact name <Group>
-    Then I see the conversation view contains message <Message1>
-    When User <Contact1> deletes the recent message everywhere from group conversation <Group> via device <Contact1Device>
-    Then I do not see the conversation view contains message <Message1>
-    When I type the "<Message2>" message and send it
-    And I long tap "<Message2>" message in conversation view
-    And I tap on Delete badge item
-    And I select Delete for everyone item from Delete menu
-    Then I do not see the conversation view contains message <Message2>
-    And I navigate back to conversations list
+    Given User <Contact1> sends 1 encrypted message to group conversation <Group>
     When I swipe right on a <Group>
     And I tap Archive action button
-    And I do not see conversation <Group> in conversations list
-    And I open archived conversations
-    And I swipe right on a <Group>
-    And I tap Unarchive action button
-    And I tap close Archive page button
-    And I tap on contact name <Group>
-    Then I do not see the conversation view contains message <Message1>
-    And I do not see the conversation view contains message <Message2>
+    Then I do not see conversation <Group> in conversations list
+    When User <Contact1> edits the recent message to "<Message1>" from user Myself via device <Contact1Device>
+    Then I do not see conversation <Group> in conversations list
+    When User <Contact1> deletes the recent message everywhere from user <Name> via device <Contact1Device>
+    Then I do not see conversation <Group> in conversations list
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact1Device | Group       | Message1 | Message2 |
-      | user1Name | user2Name | user3Name | device1        | RecallGroup | test1    | test2    |
+      | Name      | Contact1  | Contact2  | Contact1Device | Group       | Message1 |
+      | user1Name | user2Name | user3Name | device1        | RecallGroup | test1    |
