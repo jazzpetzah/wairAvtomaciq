@@ -1,6 +1,6 @@
 Feature: Edit Message
 
-  @C202349 @staging @fastLogin
+  @C202349 @regression @fastLogin
   Scenario Outline: Verify I cannot edit/delete everywhere another users message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -18,7 +18,7 @@ Feature: Edit Message
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C206256 @staging @fastLogin
+  @C206256 @regression @fastLogin
   Scenario Outline: Verify impossibility of editing/deleting everywhere message after leaving/being removed from a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users

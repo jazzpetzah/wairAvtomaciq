@@ -318,7 +318,7 @@ Feature: Recall Message
       | Name      | Contact   | DeviceName | Duration |
       | user1Name | user2Name | device1    | 5        |
 
-  @C202342 @staging @fastLogin
+  @C202342 @regression @fastLogin
   Scenario Outline: Verify delete for everyone system message doesn't produce an unread dot
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
