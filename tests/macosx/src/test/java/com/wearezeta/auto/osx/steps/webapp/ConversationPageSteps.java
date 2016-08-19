@@ -384,16 +384,28 @@ public class ConversationPageSteps {
     /**
      * Verify a text message is visible in conversation.
      *
-     * @step. ^I( do not)? see text message (.*)
+     * @step. ^I see text message (.*)
      * @param message
      * @throws Exception
      */
-    @Then("^I( do not)? see text message (.*)")
-    public void ISeeTextMessage(String doNot, String message) throws Exception {
-        if (doNot == null) {
+    @Then("^I see text message (.*)")
+    public void ISeeTextMessage(String message) throws Exception {
             webappPagesCollection.getPage(ConversationPage.class)
                     .waitForTextMessageContains(message);
-        }
+    }
+    
+    /**
+     * Verify a text message is not visible in conversation
+     *
+     * @step. ^I do not see text message ?(.*)$
+     * @param message
+     * @throws Exception
+     */
+    @Then("^I do not see text message ?(.*)$")
+    public void IDontSeeTextMessage(String message) throws Exception {
+        Assert.assertTrue("Saw text message " + message,
+                webappPagesCollection.getPage(ConversationPage.class)
+                .isTextMessageInvisible(message == null ? "" : message));
     }
 
     private static String expandPattern(final String originalStr) {
@@ -450,20 +462,6 @@ public class ConversationPageSteps {
             throws Exception {
         assertThat(webappPagesCollection.getPage(ConversationPage.class)
                 .getSecondLastTextMessage(), equalTo(expectedMessage));
-    }
-
-    /**
-     * Verify a text message is not visible in conversation
-     *
-     * @step. ^I do not see text message (.*)
-     * @param message
-     * @throws Exception
-     */
-    @Then("^I do not see text message ?(.*)$")
-    public void IDontSeeTextMessage(String message) throws Exception {
-        Assert.assertTrue("Saw text message " + message,
-                webappPagesCollection.getPage(ConversationPage.class)
-                .isTextMessageInvisible(message == null ? "" : message));
     }
 
     /**
