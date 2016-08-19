@@ -15,7 +15,7 @@ Feature: Links Preview
     When I type the message "<ShortenUrl>" and send it
     # C169222
     Then I see Link Preview container in the conversation view
-    And I see the message "<ShortenUrl>" in the conversation view
+    And I do not see the message "<ShortenUrl>" in the conversation view
     When I type the message "<Link>" and send it
     # C165143
     Then I see Link Preview container in the conversation view
