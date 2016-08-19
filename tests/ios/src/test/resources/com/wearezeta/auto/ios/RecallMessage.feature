@@ -297,7 +297,7 @@ Feature: Recall Message
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
 
-  @C202319 @regression @fastLogin
+  @C206257 @regression @fastLogin
   Scenario Outline: Verify delete everywhere works for audio messages
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -317,3 +317,25 @@ Feature: Recall Message
     Examples:
       | Name      | Contact   | DeviceName | Duration |
       | user1Name | user2Name | device1    | 5        |
+
+  @C202342 @staging @fastLogin
+  Scenario Outline: Verify delete for everyone system message doesn't produce an unread dot
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> adds new device <DeviceName>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    When I remember the state of <Contact1> conversation item
+    And I tap on contact name <Contact1>
+    And I navigate back to conversations list
+    Then I see the state of <Contact1> conversation item is changed
+    And I remember the state of <Contact1> conversation item
+    And User <Contact1> remembers the recent message from user Myself via device <DeviceName>
+    When User <Contact1> deletes the recent message everywhere from user <Name> via device <DeviceName>
+    Then User <Contact1> sees the recent message from user Myself via device <DeviceName> is changed in 15 seconds
+    And I see the state of <Contact1> conversation item is not changed
+
+    Examples:
+      | Name      | Contact1  | DeviceName |
+      | user1Name | user2Name | device1    |
