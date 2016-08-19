@@ -192,7 +192,7 @@ public class ConversationViewPageSteps {
                     getConversationViewPage().isPartOfTextMessageVisible(expectedMsg));
         } else {
             Assert.assertTrue(
-                    String.format("The expected message '%s' is not visible in the conversation view", expectedMsg),
+                    String.format("The expected message '%s' is visible in the conversation view", expectedMsg),
                     getConversationViewPage().waitUntilPartOfTextMessageIsNotVisible(expectedMsg));
         }
     }
