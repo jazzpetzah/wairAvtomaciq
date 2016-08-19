@@ -483,13 +483,12 @@ public class CommonIOSSteps {
      * @param userToRemove       name of the user to be removed
      * @param chatName           name of the group conversation
      * @throws Exception
-     * @step. ^(.*) removed (.*) from group chat (.*)$
+     * @step. ^(.*) removes? (.*) from group chat (.*)$
      */
-    @Given("^(.*) removed (.*) from group chat (.*)$")
-    public void UserARemovedUserBFromGroupChat(String chatOwnerNameAlias,
+    @Given("^(.*) removes? (.*) from group chat (.*)$")
+    public void UserARemoveUserBFromGroupChat(String chatOwnerNameAlias,
                                                String userToRemove, String chatName) throws Exception {
-        commonSteps.UserXRemoveContactFromGroupChat(chatOwnerNameAlias,
-                userToRemove, chatName);
+        commonSteps.UserXRemoveContactFromGroupChat(chatOwnerNameAlias, userToRemove, chatName);
     }
 
     /**

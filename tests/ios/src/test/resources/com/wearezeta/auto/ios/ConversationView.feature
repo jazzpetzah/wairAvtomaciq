@@ -586,7 +586,7 @@ Feature: Conversation View
     When I tap on group chat with name <GroupChatName>
     And I see input placeholder text
     And I see conversation tools buttons
-    When <Contact> removed <Name> from group chat <GroupChatName>
+    When <Contact> removes Myself from group chat <GroupChatName>
     Then I do not see conversation tools buttons
     And I do not see text input in conversation view
     When User <Contact> adds user <Name> to group chat <GroupChatName>
