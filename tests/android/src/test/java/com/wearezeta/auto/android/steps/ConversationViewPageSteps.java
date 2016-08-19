@@ -559,6 +559,26 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Used once to check that the first message sent is the same as what is expected.
+     * Note! For current view, not means whole message, but the first message in current view!
+     *
+     * @param message the text of convo
+     * @param not     equals to null if the message should be visible
+     * @throws Exception
+     * @step. ^I see the most top conversation message is (not )?"(.*)"$"
+     */
+    @Then("^I see the most top conversation message is (not )?\"(.*)\"$")
+    public void ISeeFirstMessage(String not, String message) throws Exception {
+        if (not == null) {
+            Assert.assertTrue(String.format("The most top conversation message is not equal to '%s'", message),
+                    getConversationViewPage().isFirstMessageEqualTo(message, 30));
+        } else {
+            Assert.assertFalse(String.format("The most top conversation message should not be equal to '%s'", message),
+                    getConversationViewPage().isFirstMessageEqualTo(message, 5));
+        }
+    }
+
+    /**
      * Store the screenshot of current media control button state
      *
      * @throws Exception

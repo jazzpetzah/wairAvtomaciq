@@ -976,6 +976,11 @@ public class ConversationViewPage extends IOSPage {
         getElement(locator).click();
     }
 
+    public boolean deleteMenuItemNotVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathStrActionSheetBtnByName.apply(name));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
     public void longTapVideoMessage() throws Exception {
         this.getDriver().tap(1, getElement(nameVideoMessageActionButton), DriverUtils.LONG_TAP_DURATION);
     }

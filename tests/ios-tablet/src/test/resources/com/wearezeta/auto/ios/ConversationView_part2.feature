@@ -272,7 +272,7 @@ Feature: Conversation View
     And I tap on Copy badge item
     And I tap on text input
     And I tap and hold on message input
-    And I click on popup Paste item
+    And I tap on Paste badge item
     And I confirm my choice
     Then I see 2 photos in the conversation view
 
@@ -296,7 +296,7 @@ Feature: Conversation View
     And I tap on Copy badge item
     And I tap on text input
     And I tap and hold on message input
-    And I click on popup Paste item
+    And I tap on Paste badge item
     And I confirm my choice
     Then I see 2 photos in the conversation view
 

@@ -257,39 +257,6 @@ public class LoginPageSteps {
     }
 
     /**
-     * Taps "Select All" item in popup menu of an input field
-     *
-     * @throws Exception
-     * @step. I click on popup SelectAll item
-     */
-    @When("I click on popup SelectAll item")
-    public void IClickPopupSelectAll() throws Exception {
-        getLoginPage().tapPopupSelectAllButton();
-    }
-
-    /**
-     * Taps "Copy" item in popup menu of an input field
-     *
-     * @throws Exception
-     * @step. I click on popup Copy item
-     */
-    @When("I click on popup Copy item")
-    public void IClickPopupCopy() throws Exception {
-        getLoginPage().tapPopupCopyButton();
-    }
-
-    /**
-     * Taps "Paste" item in popup menu of an input field
-     *
-     * @throws Exception
-     * @step. ^I click on popup Paste item$
-     */
-    @When("^I click on popup Paste item$")
-    public void IClickPopupPaste() throws Exception {
-        getLoginPage().tapPopupPasteButton();
-    }
-
-    /**
      * Enters given text into email input field and taps password field
      *
      * @param wrongMail text to enter into email input field

@@ -1,6 +1,6 @@
 Feature: Share Location
 
-  @C150028 @rc @rc42 @regression @torun
+  @C150028 @rc @rc42 @regression
   Scenario Outline: Verify you can share your location
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
