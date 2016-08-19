@@ -263,7 +263,7 @@ Feature: Conversation View
     And I click delete everywhere in message context menu
     And I click confirm to delete message for everyone
     Then I do not see text message <Message>
-    Then I see 1 messages in conversation
+    And I see 1 messages in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Message   |

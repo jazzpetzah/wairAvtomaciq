@@ -273,7 +273,8 @@ Feature: Conversation View
     When I open context menu of the last message
     And I click delete everywhere in message context menu
     And I click confirm to delete message for everyone
-    Then I see 1 messages in conversation
+    Then I do not see text message <Message>
+    And I see 1 messages in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Message   |
@@ -294,7 +295,8 @@ Feature: Conversation View
     When I open context menu of the last message
     And I click delete in message context menu
     And I click confirm to delete message for me
-    Then I see 1 messages in conversation
+    Then I do not see text message <Message>
+    And I see 1 messages in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Message   |
@@ -316,7 +318,8 @@ Feature: Conversation View
 # as long as there is no entry for deleting everywhere this will select delete locally
     And I click delete everywhere in message context menu
     And I click confirm to delete message for me
-    Then I see 1 messages in conversation
+    Then I do not see text message <Message>
+    And I see 1 messages in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Message   |
