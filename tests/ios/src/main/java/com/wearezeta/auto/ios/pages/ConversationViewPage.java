@@ -751,10 +751,11 @@ public class ConversationViewPage extends IOSPage {
         }
     }
 
-    public void tapAndHoldTextMessageByText(String msg) throws Exception {
-        final WebElement lastMessage = getElement(By.xpath(xpathStrMessageByTextPart.apply(msg)));
+    public void tapMessageByText(boolean isLongTap, String msg) throws Exception {
+        final WebElement locator = getElement(By.xpath(xpathStrMessageByTextPart.apply(msg)));
+        final int tapDuration = isLongTap ? DriverUtils.LONG_TAP_DURATION : DriverUtils.SINGLE_TAP_DURATION;
         //Using this method because tap should be performed precisely on the text otherwise popup won't appear
-        DriverUtils.tapOnPercentOfElement(getDriver(), lastMessage, 10, 50, 1000);
+        DriverUtils.tapOnPercentOfElement(getDriver(), locator, 10, 50, tapDuration);
     }
 
     public void longTapMediaContainer() throws Exception {

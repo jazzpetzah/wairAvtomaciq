@@ -458,14 +458,14 @@ public class DriverUtils {
         driver.tap(1, x, y, SINGLE_TAP_DURATION);
     }
 
-    public static void tapOnPercentOfElement(
-            AppiumDriver<? extends WebElement> driver, WebElement element, int percentX, int percentY, int duration) {
+    public static void tapOnPercentOfElement(AppiumDriver<? extends WebElement> driver, WebElement element,
+                                             int percentX, int percentY, int durationMs) {
         final Point coords = element.getLocation();
         final Dimension size = element.getSize();
         final int x = coords.x + size.getWidth() * percentX / 100;
         final int y = coords.y + size.getHeight() * percentY / 100;
         log.info("Tap on " + x + ":" + y);
-        driver.tap(1, x, y, duration);
+        driver.tap(1, x, y, durationMs);
     }
 
     public static void tapOnPercentOfElement(

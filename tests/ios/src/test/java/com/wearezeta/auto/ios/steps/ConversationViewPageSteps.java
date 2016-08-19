@@ -1025,18 +1025,19 @@ public class ConversationViewPageSteps {
     /**
      * long tap on pointed text in conversation view
      *
-     * @param msg message text
+     * @param msg       message text
+     * @param isLongTap equals to null if normal tap should be performed
      * @throws Exception
-     * @step. ^I long tap last (default\".*\") message in conversation view$
+     * @step. ^I (long )?tap last (default\".*\") message in conversation view$
      */
-    @When("^I long tap (default|\".*\") message in conversation view$")
-    public void ITapAndHoldTextMessage(String msg) throws Exception {
+    @When("^I (long )?tap (default|\".*\") message in conversation view$")
+    public void ITapAndHoldTextMessage(String isLongTap, String msg) throws Exception {
         if (msg.equals("default")) {
-            getConversationViewPage().tapAndHoldTextMessageByText(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+            msg = CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE;
         } else {
             msg = msg.replaceAll("^\"|\"$", "");
-            getConversationViewPage().tapAndHoldTextMessageByText(msg);
         }
+        getConversationViewPage().tapMessageByText(isLongTap != null, msg);
     }
 
     /**
