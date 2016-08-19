@@ -1388,7 +1388,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I do not see (Delete for everyone) item in Delete menu$")
     public void IDoNotSeeItemInDeleteMenu(String name) throws Exception {
-        Assert.assertTrue(String.format("%s delete menu item shouldn't be visible", name.toUpperCase()),
+        Assert.assertTrue(String.format("'%s' Delete menu item shouldn't be visible", name),
                 getConversationViewPage().deleteMenuItemNotVisible(name));
     }
 }
