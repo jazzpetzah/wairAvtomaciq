@@ -1,6 +1,6 @@
 Feature: Recall Message
 
-  @C202326 @C202328 @regression
+  @C202326 @C202328 @regression @rc
   Scenario Outline: Verify I can delete my message everywhere (1:1) (myview and other view)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -32,7 +32,7 @@ Feature: Recall Message
       | Name      | Contact1  | Message           | ContactDevice | MySecondDevice | Message2 |
       | user1Name | user2Name | DeleteTextMessage | Device2       | Device1        | Del2     |
 
-  @C202327 @C202329 @regression
+  @C202327 @C202329 @regression @rc
   Scenario Outline: Verify I can delete my message everywhere (group) (myview and other view)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -65,7 +65,7 @@ Feature: Recall Message
       | Name      | Contact1  | Contact2  | Group  | Message           | ContactDevice | MySecondDevice | Message2 |
       | user1Name | user2Name | user3Name | TGroup | DeleteTextMessage | Device2       | Device1        | Del2     |
 
-  @C202332 @regression
+  @C202332 @regression @rc
   Scenario Outline: Verify I can delete everywhere works for images
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -88,7 +88,7 @@ Feature: Recall Message
       | Name      | Contact   | ContactDevice |
       | user1Name | user2Name | Device1       |
 
-  @C202333 @regression
+  @C202333 @regression @rc
   Scenario Outline: Verify delete everywhere works for giphy
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -114,7 +114,7 @@ Feature: Recall Message
       | Name      | Contact   | Message | ContactDevice |
       | user1Name | user2Name | Yo      | Device1       |
 
-  @C202334 @regression
+  @C202334 @regression @rc
   Scenario Outline: Verify delete everywhere works for link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -136,7 +136,7 @@ Feature: Recall Message
       | Name      | Contact   | Link                    | ContactDevice |
       | user1Name | user2Name | http://www.facebook.com | Device1       |
 
-  @C202335 @regression
+  @C202335 @regression @rc
   Scenario Outline: Verify delete everywhere works for Share location
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -158,7 +158,7 @@ Feature: Recall Message
       | Name      | Contact   | ContactDevice |
       | user1Name | user2Name | device1       |
 
-  @C202336 @regression
+  @C202336 @regression @rc
   Scenario Outline: Verify delete everywhere works for file sharing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -181,7 +181,7 @@ Feature: Recall Message
       | Name      | Contact   | FileName  | FileExtension | FileSize | ContactDevice | UploadingTimeout |
       | user1Name | user2Name | qa_random | txt           | 1.00MB   | device1       | 20               |
 
-  @C202337 @regression
+  @C202337 @regression @rc
   Scenario Outline: Verify delete everywhere works for audio messages
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -205,7 +205,7 @@ Feature: Recall Message
       | Name      | Contact   | TapDuration | ContactDevice |
       | user1Name | user2Name | 5           | Device1       |
 
-  @C202338 @regression
+  @C202338 @regression @rc
   Scenario Outline: Verify delete everywhere works for video messages
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -230,7 +230,7 @@ Feature: Recall Message
       | Name      | Contact   | FileSize | FileFullName     | ContactDevice |
       | user1Name | user2Name | 26.00MB  | random_video.mp4 | Device1       |
 
-  @C202330 @C202331 @regression
+  @C202330 @C202331 @regression @rc
   Scenario Outline: Verify deleting everywhere is synchronised across own devices when they are online (1:1 and group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -294,7 +294,7 @@ Feature: Recall Message
       | Name      | Contact1  | Contact2  | GroupChatName       | Message |
       | user1Name | user2Name | user3Name | RemoveFromGroupChat | YO      |
 
-  @C206264 @regression
+  @C206264 @regression @rc
   Scenario Outline: Verify delete everywhere works for Soundcloud, YouTube
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -324,7 +324,7 @@ Feature: Recall Message
       | Name      | Contact   | YoutubeLink                                 | SoundCloudLink                                                      | ContactDevice |
       | user1Name | user2Name | https://www.youtube.com/watch?v=gIQS9uUVmgk | https://soundcloud.com/scottisbell/scott-isbell-tonight-feat-adessi | Device1       |
 
-  @C206266 @C202361 @regression
+  @C206266 @C202361 @regression @rc
   Scenario Outline: Verify I cannot delete message everywhere/edit message for someone else message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
