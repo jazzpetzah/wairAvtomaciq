@@ -372,6 +372,18 @@ public final class CommonSteps {
         }
     }
 
+    public void UserXVerifiesRecentMessageType(String msgFromUserNameAlias, String dstConversationName,
+                                               String deviceName, String expectedType) throws Exception {
+        expectedType = expectedType.toUpperCase();
+        final ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
+        dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+        final String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
+        final ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
+        final String actualType = messageInfos[messageInfos.length - 1].tpe().toString().toUpperCase();
+        Assert.assertEquals(String.format("The type of the recent conversation message '%s' is not equal to the " +
+                "expected type '%s'", actualType, expectedType), actualType, expectedType);
+    }
+
     public void UserUpdateLatestMessage(String msgFromUserNameAlias, String dstConversationName, String newMessage,
                                         String deviceName, boolean isGroup) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
