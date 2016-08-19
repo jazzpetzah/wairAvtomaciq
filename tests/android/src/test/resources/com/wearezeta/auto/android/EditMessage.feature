@@ -1,6 +1,6 @@
 Feature: Edit Message
 
-  @C202362 @C202366 @regression
+  @C202362 @C202366 @regression @rc
   Scenario Outline: Verify I can cancel editing a message by button / I can reset my editing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -70,7 +70,7 @@ Feature: Edit Message
       | Name      | Contact1  | Message |
       | user1Name | user2Name | YO      |
 
-  @C202357 @regression
+  @C202357 @regression @rc
   Scenario Outline: Verify I can edit my message in 1:1 (from other view)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -89,7 +89,7 @@ Feature: Edit Message
       | Name      | Contact1  | Message | ContactDevice | NewMessage |
       | user1Name | user2Name | YO      | Device1       | Hello      |
 
-  @C202359 @regression
+  @C202359 @regression @rc
   Scenario Outline: Verify I see changed message if message was edited from another device (1:1) (own device sync)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -108,7 +108,7 @@ Feature: Edit Message
       | Name      | Contact1  | Message | Device  | NewMessage |
       | user1Name | user2Name | Yo      | Device1 | Hello      |
 
-  @C202360 @regression
+  @C202360 @regression @rc
   Scenario Outline: Verify I see changed message if message was edited from another device (group) (own device sync)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -128,7 +128,7 @@ Feature: Edit Message
       | Name      | Contact1  | Contact2  | Message | Device  | GroupChatName | NewMessage |
       | user1Name | user2Name | user3Name | Yo      | Device1 | MyGroup       | Hello      |
 
-  @C202358 @regression
+  @C202358 @regression @rc
   Scenario Outline: Verify I can edit my message in Group (from my view)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -183,7 +183,7 @@ Feature: Edit Message
       | Name      | Contact1  | Message | ContactDevice | NewMessage | NewMessage2 |
       | user1Name | user2Name | YO      | Device1       | Hello      | OK          |
 
-  @C206263 @regression
+  @C206263 @regression @rc
   Scenario Outline: Verify the message is deleted everywhere when it is edited to empty or empty spaces
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -239,7 +239,7 @@ Feature: Edit Message
       | Name      | Contact1  | Message1 | Message2 | NewMessage |
       | user1Name | user2Name | YO       | Hello    | Nice       |
 
-  @C206259 @regression
+  @C206259 @regression @rc
   Scenario Outline: Verify edited message stays in the same position as original message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
