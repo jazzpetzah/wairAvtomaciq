@@ -352,7 +352,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact1  | Contact2  | Message_1      | Message_2      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Test_Message_1 | Test_Message_2 |
 
-    @C206258 @staging @torun
+    @C206258 @staging
     Scenario Outline: Verify delete everywhere works for Soundcloud, Spotify, YouTube, Vimeo
       Given There are 2 users where <Name> is me
       Given Myself is connected to <Contact>
