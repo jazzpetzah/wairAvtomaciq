@@ -86,7 +86,7 @@ public class ConversationsListPage extends AndroidPage {
     }
 
     public String getFirstVisibleConversationName() throws Exception {
-        final int maxTries = 20;
+        final int maxTries = 35;
         final long millisecondsDelay = 20000;
         int ntry = 1;
         do {
