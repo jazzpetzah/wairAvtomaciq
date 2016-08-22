@@ -365,7 +365,7 @@ Feature: Recall Message
       | Name      | Contact1  | Contact2  | Message | ContactDevice | NewMessage |
       | user1Name | user2Name | user3Name | Yo      | Device1       | YoYo       |
 
-  @C206278 @staging
+  @C206278 @regression
   Scenario Outline: Verify delete message everywhere offline mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

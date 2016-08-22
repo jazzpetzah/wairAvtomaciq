@@ -284,7 +284,7 @@ Feature: Edit Message
       | Name      | Contact1  | ContactDevice | NewMessage |
       | user1Name | user2Name | Device1       | ohno       |
 
-  @C206277 @staging
+  @C206277 @regression
   Scenario Outline: Verify edit message offline mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
