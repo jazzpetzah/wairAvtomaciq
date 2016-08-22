@@ -129,6 +129,8 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By xpathToolbar = By.xpath(xpathStrConversationToolbar);
 
+    private static final By idResendButton = By.id("fl__row_conversation__message_error_container");
+
     private static final By xpathToolBarNavigation =
             By.xpath(String.format("%s/*[@value='' and count(*)=1]", xpathStrConversationToolbar));
 
@@ -1024,6 +1026,13 @@ public class ConversationViewPage extends AndroidPage {
     public boolean waitUntilMessageSeparatorInvisible(String name, int timeout) throws Exception {
         final By locator = By.xpath(xpathMessageSeparator.apply(name));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, timeout);
+    }
+
+    public void tapAllResendButton() throws Exception {
+        List<WebElement> resendButtonList = selectVisibleElements(idResendButton);
+        for (WebElement resendButton : resendButtonList) {
+            resendButton.click();
+        }
     }
     //endregion
 }

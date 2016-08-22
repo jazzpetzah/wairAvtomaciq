@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.steps;
 
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
+import java.util.Optional;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.ImageUtil;
@@ -146,13 +147,12 @@ public class ConversationViewPageSteps {
 
     @Then("^I see (\\d+) (default )?messages? in the conversation view$")
     public void ThenISeeMessageInTheDialog(int expectedCount, String isDefault) throws Exception {
-        int actualCount;
-        if (isDefault == null) {
-            actualCount = getConversationViewPage().getMessagesCount();
-        } else {
-            actualCount = getConversationViewPage().getMessagesCount(
-                    CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
-        }
+        // To speed up the verification if zero messages presence should be verified
+        final int timeoutSeconds = (expectedCount == 0) ?
+                1 : Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass()));
+        final Optional<String> expectedMsg = (isDefault == null) ?
+                Optional.empty() : Optional.of(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+        final int actualCount = getConversationViewPage().getMessagesCount(expectedMsg, timeoutSeconds);
         Assert.assertTrue(
                 String.format("The actual messages count is different " +
                                 "from the expected count: %s != %s",
@@ -192,7 +192,7 @@ public class ConversationViewPageSteps {
                     getConversationViewPage().isPartOfTextMessageVisible(expectedMsg));
         } else {
             Assert.assertTrue(
-                    String.format("The expected message '%s' is not visible in the conversation view", expectedMsg),
+                    String.format("The expected message '%s' is visible in the conversation view", expectedMsg),
                     getConversationViewPage().waitUntilPartOfTextMessageIsNotVisible(expectedMsg));
         }
     }
@@ -646,19 +646,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify that input field contains expected text message
-     *
-     * @throws Exception
-     * @step. ^I see the default message in input field$
-     */
-    @When("^I see the default message in input field$")
-    public void WhenISeeMessageInInputField() throws Exception {
-        Assert.assertTrue(String.format("The text input field contain content, which is different from '%s'",
-                CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE),
-                getConversationViewPage().isCurrentInputTextEqualTo(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE));
-    }
-
-    /**
      * Select the corresponding item from the modal menu, which appears after Delete badge is tapped
      *
      * @param name one of possible item names
@@ -696,6 +683,24 @@ public class ConversationViewPageSteps {
     @When("^I clear conversation text input$")
     public void IClearConversationTextInput() throws Exception {
         getConversationViewPage().clearTextInput();
+    }
+
+    /**
+     * Verify whether particular message is present in the conversation input
+     *
+     * @param expectedMessage either 'default' or the expected message's text
+     * @throws Exception
+     * @step. ^I see the (default|".*") message in the conversation input$
+     */
+    @Then("^I see the (default|\".*\") message in the conversation input$")
+    public void ISeeMessageInTheInput(String expectedMessage) throws Exception {
+        if (expectedMessage.equals("default")) {
+            expectedMessage = CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE;
+        } else {
+            expectedMessage = expectedMessage.replaceAll("^\"|\"$", "");
+        }
+        Assert.assertTrue(String.format("The text '%s' is not present in the conversation input", expectedMessage),
+                getConversationViewPage().isCurrentInputTextEqualTo(expectedMessage));
     }
 
     /**
@@ -1020,18 +1025,19 @@ public class ConversationViewPageSteps {
     /**
      * long tap on pointed text in conversation view
      *
-     * @param msg message text
+     * @param msg       message text
+     * @param isLongTap equals to null if normal tap should be performed
      * @throws Exception
-     * @step. ^I long tap last (default\".*\") message in conversation view$
+     * @step. ^I (long )?tap last (default\".*\") message in conversation view$
      */
-    @When("^I long tap (default|\".*\") message in conversation view$")
-    public void ITapAndHoldTextMessage(String msg) throws Exception {
+    @When("^I (long )?tap (default|\".*\") message in conversation view$")
+    public void ITapAndHoldTextMessage(String isLongTap, String msg) throws Exception {
         if (msg.equals("default")) {
-            getConversationViewPage().tapAndHoldTextMessageByText(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+            msg = CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE;
         } else {
             msg = msg.replaceAll("^\"|\"$", "");
-            getConversationViewPage().tapAndHoldTextMessageByText(msg);
         }
+        getConversationViewPage().tapMessageByText(isLongTap != null, msg);
     }
 
     /**
@@ -1390,5 +1396,18 @@ public class ConversationViewPageSteps {
     public void IDoNotSeeItemInDeleteMenu(String name) throws Exception {
         Assert.assertTrue(String.format("'%s' Delete menu item shouldn't be visible", name),
                 getConversationViewPage().deleteMenuItemNotVisible(name));
+    }
+
+    /**
+     * Tap the corresponding button on the control, which appears if I select
+     * Edit basge item for a conversation item
+     *
+     * @param btnName one of available button names
+     * @throws Exception
+     * @step. ^I tap (Undo|Confirm|Cancel) button on Edit control
+     */
+    @When("^I tap (Undo|Confirm|Cancel) button on Edit control")
+    public void ITapEditControlButton(String btnName) throws Exception {
+        getConversationViewPage().tapEditControlButton(btnName);
     }
 }
