@@ -339,3 +339,24 @@ Feature: Recall Message
     Examples:
       | Name      | Contact1  | DeviceName |
       | user1Name | user2Name | device1    |
+
+  @C206262 @staging @fastLogin
+  Scenario Outline: Verify deleted messages/edit message doesn't unarchive the "archived conversation"
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given User <Contact1> adds new device <Contact1Device>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given User <Contact1> sends 1 encrypted message to group conversation <Group>
+    When I swipe right on a <Group>
+    And I tap Archive action button
+    Then I do not see conversation <Group> in conversations list
+    When User <Contact1> edits the recent message to "<Message1>" from user Myself via device <Contact1Device>
+    Then I do not see conversation <Group> in conversations list
+    When User <Contact1> deletes the recent message everywhere from user <Name> via device <Contact1Device>
+    Then I do not see conversation <Group> in conversations list
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact1Device | Group       | Message1 |
+      | user1Name | user2Name | user3Name | device1        | RecallGroup | test1    |
