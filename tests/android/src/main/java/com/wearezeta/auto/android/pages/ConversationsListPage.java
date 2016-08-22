@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 
@@ -86,9 +87,10 @@ public class ConversationsListPage extends AndroidPage {
     }
 
     public String getFirstVisibleConversationName() throws Exception {
-        final int maxTries = 35;
+        final int maxTries = 30;
         final long millisecondsDelay = 20000;
         int ntry = 1;
+        final String packageId = AndroidCommonUtils.getAndroidPackageFromConfig(getClass());
         do {
             try {
                 final int itemsCount = getDriver().findElements(By.xpath(xpathStrNonEmptyContacts)).size();
@@ -109,6 +111,9 @@ public class ConversationsListPage extends AndroidPage {
             } catch (WebDriverException e) {
                 e.printStackTrace();
                 // Ignore silently
+            }
+            if (!AndroidCommonUtils.isAppInForeground(packageId, 5000)) {
+                break;
             }
             Thread.sleep(millisecondsDelay);
             ntry++;
