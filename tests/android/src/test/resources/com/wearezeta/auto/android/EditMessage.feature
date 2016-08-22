@@ -283,3 +283,30 @@ Feature: Edit Message
     Examples:
       | Name      | Contact1  | ContactDevice | NewMessage |
       | user1Name | user2Name | Device1       | ohno       |
+
+  @C206277 @staging
+  Scenario Outline: Verify edit message offline mode
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> adds new device <ContactDevice>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
+    And I type the message "<Message>" and send it
+    And I see the message "<Message>" in the conversation view
+    And User <Contact1> remembers the recent message from user Myself via device <ContactDevice>
+    And I enable Airplane mode on the device
+    And I long tap the Text message "<Message>" in the conversation view
+    And I tap Edit button on the message bottom menu
+    And I clear cursor input
+    And I type the message "<NewMessage>"
+    And I tap Approve button in edit message toolbar
+    And I disable Airplane mode on the device
+    And I do not see No Internet bar in <InternetTimeout> seconds
+    And I resend all the visible messages in conversation view
+    Then User <Contact1> sees the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
+
+    Examples:
+      | Name      | Contact1  | Message | ContactDevice | NewMessage | InternetTimeout |
+      | user1Name | user2Name | YO      | Device1       | Hello      | 15              |
