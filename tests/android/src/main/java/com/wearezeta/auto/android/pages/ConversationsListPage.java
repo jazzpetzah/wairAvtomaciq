@@ -90,7 +90,6 @@ public class ConversationsListPage extends AndroidPage {
         final int maxTries = 30;
         final long millisecondsDelay = 20000;
         int ntry = 1;
-        final String packageId = AndroidCommonUtils.getAndroidPackageFromConfig(getClass());
         do {
             try {
                 final int itemsCount = getDriver().findElements(By.xpath(xpathStrNonEmptyContacts)).size();
@@ -112,9 +111,7 @@ public class ConversationsListPage extends AndroidPage {
                 e.printStackTrace();
                 // Ignore silently
             }
-            if (!AndroidCommonUtils.isAppInForeground(packageId, 5000)) {
-                break;
-            }
+            AndroidCommonUtils.verifyWireIsInForeground();
             Thread.sleep(millisecondsDelay);
             ntry++;
         } while (ntry <= maxTries);
