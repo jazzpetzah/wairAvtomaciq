@@ -275,22 +275,6 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | ExpectedMessage                   |
       | user1Email | user1Password | user1Name | user2Name | ('a' * 100)('LF' * 10)('b' * 100) |
 
-  @C49977 @regression
-  Scenario Outline: Send a really long message to group conversation
-    Given I switch to Sign In page
-    Given I Sign in temporary using login <Login> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
-    Given I am signed in properly
-    When I open conversation with <ChatName>
-    And I paste message from file <File>
-    And I send message
-    Then I verify the last text message equals file <File>
-
-    Examples:
-      | Login                         | Password   | ChatName    | File           |
-      | smoketester+68b16b1c@wire.com | aqa123456! | Lorem ipsum | loremipsum.txt |
-
   @C131207 @regression
   Scenario Outline: Receive a really long message to group conversation
     Given There is a known user <Contact> with email <ContactEmail> and password <Password>
@@ -428,13 +412,24 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | READ | UNREAD |
       | user1Email | user1Password | user1Name | user2Name | Read | Unread |
 
-  @C149662 @regression @WEBAPP-2921
+  @C149662 @regression
   Scenario Outline: Verify maximum character limit dialog is shown when want to send a very long text message to group conversation
+    Given There are 1 users where <Name> is me
+    Given There is a known user 01e37ab8 with email smoketester+01e37ab8@wire.com and password aqa123456!
+    Given There is a known user c9a1c4e4 with email smoketester+c9a1c4e4@wire.com and password aqa123456!
+    Given There is a known user db76e9c3 with email smoketester+db76e9c3@wire.com and password aqa123456!
+    Given There is a known user 9c19f646 with email smoketester+9c19f646@wire.com and password aqa123456!
+    Given There is a known user b0ab77ca with email smoketester+b0ab77ca@wire.com and password aqa123456!
+    Given There is a known user b42c331f with email smoketester+b42c331f@wire.com and password aqa123456!
+    Given There is a known user 078d552b with email smoketester+078d552b@wire.com and password aqa123456!
+    Given There is a known user cac1a65c with email smoketester+cac1a65c@wire.com and password aqa123456!
+    Given There is a known user 078de6e4 with email smoketester+078de6e4@wire.com and password aqa123456!
+    Given There is a known user 928d0420 with email smoketester+928d0420@wire.com and password aqa123456!
+    Given Myself is connected to 01e37ab8,c9a1c4e4,db76e9c3,9c19f646,b0ab77ca,b42c331f,078d552b,cac1a65c,078de6e4,928d0420
+    Given Myself has group chat <ChatName> with 01e37ab8,c9a1c4e4,db76e9c3,9c19f646,b0ab77ca,b42c331f,078d552b,cac1a65c,078de6e4,928d0420
     Given I switch to Sign In page
-    Given I Sign in temporary using login <Login> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
-    Given I am signed in properly
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
     When I open conversation with <ChatName>
     And I paste message from file <File1>
     And I send message
@@ -452,16 +447,17 @@ Feature: Conversation View
     Then I verify the last text message equals file <File2>
 
     Examples:
-      | Login                         | Password   | ChatName    | File1          | File2              |
-      | smoketester+68b16b1c@wire.com | aqa123456! | Lorem ipsum | over8000ch.txt | lessThan8000ch.txt |
+      | Login      | Password      | Name      | ChatName |  File1         | File2              |
+      | user1Email | user1Password | user1Name | over8000 | over8000ch.txt | lessThan8000ch.txt |
 
   @C149661 @regression
   Scenario Outline: Verify maximum character limit dialog is shown when want to send a very long text message to 1:1 conversation
+    Given There are 1 users where <Name> is me
+    Given There is a known user <Contact> with email <ContactEmail> and password <ContactPassword>
+    Given Myself is connected to <Contact>
     Given I switch to Sign In page
-    Given I Sign in temporary using login <Login> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
-    Given I am signed in properly
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
     When I open conversation with <Contact>
     And I paste message from file <File1>
     And I send message
@@ -479,5 +475,5 @@ Feature: Conversation View
     Then I verify the last text message equals file <File2>
 
     Examples:
-      | Login                         | Password   | Contact  | File1          | File2              |
-      | smoketester+68b16b1c@wire.com | aqa123456! | 928d0420 | over8000ch.txt | lessThan8000ch.txt |
+      | Login      | Password      | Name      | Contact  | ContactEmail                  | ContactPassword | File1          | File2              |
+      | user1Email | user1Password | user1Name | 928d0420 | smoketester+928d0420@wire.com | aqa123456!      | over8000ch.txt | lessThan8000ch.txt |
