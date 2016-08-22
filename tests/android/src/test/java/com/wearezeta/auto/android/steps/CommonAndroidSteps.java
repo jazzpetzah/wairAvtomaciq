@@ -128,7 +128,7 @@ public class CommonAndroidSteps {
         pool.shutdown();
     }
 
-    private static final int DEVICE_PREPARATION_TIMEOUT_SECONDS = 20;
+    private static final int DEVICE_PREPARATION_TIMEOUT_SECONDS = 30;
 
     private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
 
