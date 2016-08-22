@@ -315,16 +315,12 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public int getMessagesCount() throws Exception {
-        return getMessagesCount(null);
-    }
-
-    public int getMessagesCount(String expectedMessage) throws Exception {
+    public int getMessagesCount(Optional<String> expectedMessage, int timeoutSeconds) throws Exception {
         By locator = xpathAllTextMessages;
-        if (expectedMessage != null) {
-            locator = By.xpath(xpathStrMessageByTextPart.apply(expectedMessage));
+        if (expectedMessage.isPresent()) {
+            locator = By.xpath(xpathStrMessageByTextPart.apply(expectedMessage.get()));
         }
-        return selectVisibleElements(locator).size();
+        return selectVisibleElements(locator, timeoutSeconds).size();
     }
 
     public int getCountOfImages() throws Exception {
