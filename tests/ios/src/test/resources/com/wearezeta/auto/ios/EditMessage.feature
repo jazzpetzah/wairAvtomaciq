@@ -37,7 +37,7 @@ Feature: Edit Message
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | RemoveToEdit  |
 
-  @C202354 @staging @fastLogin
+  @C202354 @regression @fastLogin
   Scenario Outline: Verify I can undo my editing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -55,7 +55,7 @@ Feature: Edit Message
       | Name      | Contact   | Text    |
       | user1Name | user2Name | message |
 
-  @C202350 @staging @fastLogin
+  @C202350 @regression @fastLogin
   Scenario Outline: Verify I can cancel editing a message by button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -74,7 +74,7 @@ Feature: Edit Message
       | Name      | Contact   | Text    |
       | user1Name | user2Name | message |
 
-  @C206271 @staging @fastLogin
+  @C206271 @regression @fastLogin
   Scenario Outline: Verify I can delete message for everyone editing it with nothing/space
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
