@@ -22,11 +22,11 @@ public class SketchPage extends IOSPage {
     private static final Random rand = new Random();
 
     public void sketchRandomLines() throws Exception {
+        final int startX = 10;
+        final int startY = 20;
         for (int i = 0; i < 2; i++) {
-            int startX = 5 + rand.nextInt(90);
-            int endX = 5 + rand.nextInt(90);
-            int startY = 30 + rand.nextInt(40);
-            int endY = 30 + rand.nextInt(40);
+            final int endX = startX + rand.nextInt(80);
+            final int endY = startY + rand.nextInt(30);
             if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
                 IOSSimulatorHelper.swipe(startX / 100.0, startY / 100.0, endX / 100.0, endY / 100.0);
             } else {
@@ -42,5 +42,4 @@ public class SketchPage extends IOSPage {
     private void tapColorLabel() throws Exception {
         getElement(xpathTapColorLabel).click();
     }
-
 }
