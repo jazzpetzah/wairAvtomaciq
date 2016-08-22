@@ -363,9 +363,9 @@ Feature: Delete Everywhere
       Given I click confirm on history info page
       Given I am signed in properly
       When I open conversation with <Contact>
-      When I write message <Youtubelink1>
+      When I write message <Youtubelink>
       And I send message
-      And I see embedded youtube message <Youtubelink1>
+      And I see embedded youtube message <Youtubelink>
       When I open context menu of the latest message
       And I click to delete message for everyone in context menu
       And I click confirm to delete message for everyone
@@ -392,10 +392,10 @@ Feature: Delete Everywhere
       And I click to delete message for everyone in context menu
       And I click confirm to delete message for everyone
       Then I do not see embedded spotify message <Spotifylink>
-      When Contact <Contact> sends message <Youtubelink2> via device Device1 to user me
-      Then I see embedded youtube message <Youtubelink2>
+      When Contact <Contact> sends message <Youtubelink> via device Device1 to user me
+      Then I see embedded youtube message <Youtubelink>
       When User <Contact> deletes the recent 1 message everywhere from user <Contact> via device Device1
-      And I do not see text message <Youtubelink2>
+      And I do not see text message <Youtubelink>
       And I see 1 deleted messages in conversation
       When Contact <Contact> sends message <Soundcloudlink> via device Device1 to user me
       Then I see text message <Soundcloudlink>
@@ -414,5 +414,5 @@ Feature: Delete Everywhere
       And I see 4 deleted messages in conversation
 
       Examples:
-        | Login      | Password      | Name      | Contact   | Youtubelink1                                | Youtubelink2                                | Soundcloudlink                                                      | Vimeolink                 | Spotifylink                                           |
-        | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=ncHd3sxpEbo | https://www.youtube.com/watch?v=a2K2l02C9As | https://soundcloud.com/nour-moukhtar/ludwig-van-beethoven-fur-elise | https://vimeo.com/7265982 | https://play.spotify.com/album/7buEcyw6fJF3WPgr06BomH |
+        | Login      | Password      | Name      | Contact   | Youtubelink                                 | Soundcloudlink                                                      | Vimeolink                 | Spotifylink                                           |
+        | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=ncHd3sxpEbo | https://soundcloud.com/nour-moukhtar/ludwig-van-beethoven-fur-elise | https://vimeo.com/7265982 | https://play.spotify.com/album/7buEcyw6fJF3WPgr06BomH |
