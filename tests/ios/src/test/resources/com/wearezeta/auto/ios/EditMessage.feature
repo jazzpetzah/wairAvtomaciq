@@ -134,3 +134,35 @@ Feature: Edit Message
     Examples:
       | Name      | Contact   | FacebookLink        | FacebookPrefix | WirePrefix | WireLink        |
       | user1Name | user2Name | http://facebook.com | Check FB       | Look for   | http://wire.com |
+
+  @C202352 @staging @fastLogin
+  Scenario Outline: Verify I can edit a message multiple times in a row
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given User <Contact1> adds new device <DeviceName>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    And I type the default message and send it
+    Then User <Contact1> remembers the recent message from group conversation <GroupChatName> via device <DeviceName>
+    When I long tap default message in conversation view
+    And I tap on Edit badge item
+    And I clear conversation text input
+    And I type the "<Text1>" message
+    And I tap Confirm button on Edit control
+    Then I see last message in the conversation view is expected message <Text1>
+    And User <Contact1> sees the recent message from group conversation <GroupChatName> via device <DeviceName> is changed in 15 seconds
+    And User <Contact1> remembers the recent message from group conversation <GroupChatName> via device <DeviceName>
+    When I long tap "<Text1>" message in conversation view
+    And I tap on Edit badge item
+    And I clear conversation text input
+    And I type the "<Text2>" message
+    And I tap Confirm button on Edit control
+    Then I see last message in the conversation view is expected message <Text2>
+    And I see 1 message in the conversation view
+    And User <Contact1> sees the recent message from group conversation <GroupChatName> via device <DeviceName> is changed in 15 seconds
+
+    Examples:
+      | Name      | Contact1  | DeviceName | Contact2  | GroupChatName | Text1  | Text2  |
+      | user1Name | user2Name | HisDevice  | user3Name | EditGroup     | Edit 1 | Edit 2 |
