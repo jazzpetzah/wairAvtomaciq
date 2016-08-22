@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.steps;
 
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
+import java.util.Optional;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.ImageUtil;
@@ -146,13 +147,12 @@ public class ConversationViewPageSteps {
 
     @Then("^I see (\\d+) (default )?messages? in the conversation view$")
     public void ThenISeeMessageInTheDialog(int expectedCount, String isDefault) throws Exception {
-        int actualCount;
-        if (isDefault == null) {
-            actualCount = getConversationViewPage().getMessagesCount();
-        } else {
-            actualCount = getConversationViewPage().getMessagesCount(
-                    CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
-        }
+        // To speed up the verification if zero messages presence should be verified
+        final int timeoutSeconds = (expectedCount == 0) ?
+                1 : Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass()));
+        final Optional<String> expectedMsg = (isDefault == null) ?
+                Optional.empty() : Optional.of(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+        final int actualCount = getConversationViewPage().getMessagesCount(expectedMsg, timeoutSeconds);
         Assert.assertTrue(
                 String.format("The actual messages count is different " +
                                 "from the expected count: %s != %s",
