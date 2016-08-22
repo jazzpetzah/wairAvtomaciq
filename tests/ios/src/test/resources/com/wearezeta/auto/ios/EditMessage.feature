@@ -114,3 +114,23 @@ Feature: Edit Message
     Examples:
       | Name      | Contact   | Text |
       | user1Name | user2Name | new  |
+
+  @C202372 @staging @fastLogin
+  Scenario Outline: Verify editing link with a preview
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I type the "<FacebookPrefix> <FacebookLink>" message and send it
+    And I long tap on link preview in conversation view
+    And I tap on Edit badge item
+    And I clear conversation text input
+    And I type the "<WirePrefix> <WireLink>" message
+    And I tap Confirm button on Edit control
+    Then I see link preview container in the conversation view
+    And I see link preview source is equal to <WireLink>
+
+    Examples:
+      | Name      | Contact   | FacebookLink        | FacebookPrefix | WirePrefix | WireLink        |
+      | user1Name | user2Name | http://facebook.com | Check FB       | Look for   | http://wire.com |
