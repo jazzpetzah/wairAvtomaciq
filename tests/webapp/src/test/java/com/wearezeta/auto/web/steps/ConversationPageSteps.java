@@ -184,26 +184,9 @@ public class ConversationPageSteps {
     @Then("^I (do not )?see embedded( soundcloud| youtube| vimeo| spotify)? message (.*)")
     public void ISeeEmbeddedMessage(String doNot, String typeOfMessage, String url) throws Exception {
         if (doNot == null) {
-            if (typeOfMessage.equals("soundcloud"))
-                assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isSoundcloudEmbedded(url));
-        } else if (typeOfMessage.equals("youtube")) {
-            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isYoutubeVideoEmbedded(url));
-        } else if (typeOfMessage.equals("vimeo")) {
-            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isVimeoEmbedded(url));
-        } else if (typeOfMessage.equals("spotify")) {
-            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isSpotifyEmbedded(url));
-        } else
-            //(if doNot != null)
-            if (typeOfMessage.equals("soundcloud")){
-            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isSoundcloudEmbeddedVideoNotShown(url));
-        }
-        else if (typeOfMessage.equals("youtube")) {
-            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isYoutubeEmbeddedVideoNotShown(url));
-        } else if (typeOfMessage.equals("vimeo")) {
-            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isVimeoEmbeddedVideoNotShown(url));
-        } else if (typeOfMessage.equals("spotify")) {
-            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isSpotifyEmbeddedNotShown(url));
-        }
+                assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isMessageEmbedded(typeOfMessage, url));}
+        else {
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isMessageNotEmbedded(typeOfMessage, url));}
     }
 
     /**

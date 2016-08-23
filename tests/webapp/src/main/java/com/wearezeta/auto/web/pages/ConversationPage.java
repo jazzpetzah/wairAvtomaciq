@@ -406,84 +406,41 @@ public class ConversationPage extends WebPage {
                 locator, 5);
     }
 
-    public boolean isYoutubeVideoEmbedded(String url) throws Exception {
+    public boolean isMessageEmbedded(String typeOfMessage, String url) throws Exception {
         String pattern = "[\\w\\-\\_]{10,12}";
         Pattern compiledPattern = Pattern.compile(pattern);
         Matcher matcher = compiledPattern.matcher(url);
-        assert matcher.find() : "Could not find Youtube id in URL: " + url;
+        assert matcher.find() : "Could not find " + typeOfMessage + "id in URL: " + url;
         final String id = matcher.group();
-        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById.apply(id));
+        By locator;
+        if (typeOfMessage.contains("youtube")) {
+            locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById.apply(id));
+        } else if (typeOfMessage.contains("soundcloud")) {
+            locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedSoundcloudById.apply(id));
+        } else if (typeOfMessage.contains("vimeo")) {
+            locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedVimeoById.apply(id));
+        } else if (typeOfMessage.contains("spotify")) {
+            locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedSpotifyById.apply(id));
+        }
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
 
-    public boolean isYoutubeEmbeddedVideoNotShown(String url) throws Exception {
+    public boolean isMessageNotEmbedded(String typeOfMessage, String url) throws Exception {
         String pattern = "[\\w\\-\\_]{10,12}";
         Pattern compiledPattern = Pattern.compile(pattern);
         Matcher matcher = compiledPattern.matcher(url);
-        assert matcher.find() : "Could not find Youtube id in URL: " + url;
+        assert matcher.find() : "Could not find " + typeOfMessage + "id in URL: " + url;
         final String id = matcher.group();
-        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById.apply(id));
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
-    }
-
-    public boolean isSoundcloudEmbedded(String url) throws Exception {
-        String pattern = "[\\w\\-\\_]{10,12}";
-        Pattern compiledPattern = Pattern.compile(pattern);
-        Matcher matcher = compiledPattern.matcher(url);
-        assert matcher.find() : "Could not find Soundcloud id in URL: " + url;
-        final String id = matcher.group();
-        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedSoundcloudById.apply(id));
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
-    }
-
-    public boolean isSoundcloudEmbeddedVideoNotShown(String url) throws Exception {
-        String pattern = "[\\w\\-\\_]{10,12}";
-        Pattern compiledPattern = Pattern.compile(pattern);
-        Matcher matcher = compiledPattern.matcher(url);
-        assert matcher.find() : "Could not find Soundcloud id in URL: " + url;
-        final String id = matcher.group();
-        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedSoundcloudById.apply(id));
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
-    }
-
-    public boolean isVimeoEmbedded(String url) throws Exception {
-        String pattern = "[\\w\\-\\_]{10,12}";
-        Pattern compiledPattern = Pattern.compile(pattern);
-        Matcher matcher = compiledPattern.matcher(url);
-        assert matcher.find() : "Could not find Vimeo id in URL: " + url;
-        final String id = matcher.group();
-        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedVimeoById.apply(id));
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
-    }
-
-    public boolean isVimeoEmbeddedVideoNotShown(String url) throws Exception {
-        String pattern = "[\\w\\-\\_]{10,12}";
-        Pattern compiledPattern = Pattern.compile(pattern);
-        Matcher matcher = compiledPattern.matcher(url);
-        assert matcher.find() : "Could not find Vimeo id in URL: " + url;
-        final String id = matcher.group();
-        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedVimeoById.apply(id));
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
-    }
-
-    public boolean isSpotifyEmbedded(String url) throws Exception {
-        String pattern = "[\\w\\-\\_]{10,12}";
-        Pattern compiledPattern = Pattern.compile(pattern);
-        Matcher matcher = compiledPattern.matcher(url);
-        assert matcher.find() : "Could not find Spotify id in URL: " + url;
-        final String id = matcher.group();
-
-        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedSpotifyById.apply(id));
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
-    }
-
-    public boolean isSpotifyEmbeddedNotShown(String url) throws Exception {
-        String pattern = "[\\w\\-\\_]{10,12}";
-        Pattern compiledPattern = Pattern.compile(pattern);
-        Matcher matcher = compiledPattern.matcher(url);
-        assert matcher.find() : "Could not find Spotify id in URL: " + url;
-        final String id = matcher.group();
-        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedSpotifyById.apply(id));
+        By locator;
+        if (typeOfMessage.contains("youtube")) {
+            locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById.apply(id));
+        } else if (typeOfMessage.contains("soundcloud")) {
+            locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedSoundcloudById.apply(id));
+        } else if (typeOfMessage.contains("vimeo")) {
+            locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedVimeoById.apply(id));
+        } else if (typeOfMessage.contains("spotify")) {
+            locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedSpotifyById.apply(id));
+        }
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
     }
 
