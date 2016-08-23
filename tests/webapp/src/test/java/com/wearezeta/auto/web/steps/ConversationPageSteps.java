@@ -173,14 +173,23 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Verifies whether YouTube video is visible
+     * Verifies whether soundcloud, youtube, vimeo or spotify message is embedded
      *
      * @throws Exception
-     * @step. ^I see embedded youtube video of (.*)
+     * @param typeOfMessage soundcloud| youtube| vimeo| spotify
+     * @param url link of soundcloud| youtube| vimeo| spotify message
+     *
+     * @step. ^I (do not )?see embedded( soundcloud| youtube| vimeo| spotify)? message (.*)
      */
-    @Then("^I see embedded youtube video of (.*)")
-    public void ThenISeeEmbeddedYoutubeVideoOf(String url) throws Exception {
-        assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isYoutubeVideoEmbedded(url));
+    @Then("^I (do not )?see embedded( soundcloud| youtube| vimeo| spotify)? message (.*)")
+    public void ISeeEmbeddedMessage(String doNot, String typeOfMessage, String url) throws Exception {
+        if (doNot == null) {
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isMessageEmbedded(true, typeOfMessage, url));
+        }
+        else
+        {
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isMessageEmbedded(false, typeOfMessage, url));
+        }
     }
 
     /**

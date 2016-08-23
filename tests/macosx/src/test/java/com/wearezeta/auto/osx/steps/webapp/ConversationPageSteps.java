@@ -152,7 +152,7 @@ public class ConversationPageSteps {
     @Then("^I see embedded youtube video of (.*)")
     public void ThenISeeEmbeddedYoutubeVideoOf(String url) throws Exception {
         Assert.assertTrue(webappPagesCollection.getPage(ConversationPage.class)
-                .isYoutubeVideoEmbedded(url));
+                .isMessageEmbedded(true, "youtube", url));
     }
 
     /**
