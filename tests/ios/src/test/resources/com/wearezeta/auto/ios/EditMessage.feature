@@ -166,3 +166,27 @@ Feature: Edit Message
     Examples:
       | Name      | Contact1  | DeviceName | Contact2  | GroupChatName | Text1  | Text2  |
       | user1Name | user2Name | HisDevice  | user3Name | EditGroup     | Edit 1 | Edit 2 |
+
+  @C202353 @staging @fastLogin
+  Scenario Outline: Verify I can switch to edit another message while editing a message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I type the default message and send it
+    And I type the "<Text2>" message and send it
+    And I long tap default message in conversation view
+    And I tap on Edit badge item
+    And I long tap "<Text2>" message in conversation view
+    And I tap on Edit badge item
+    And I clear conversation text input
+    And I type the "<Text2Changed>" message
+    And I tap Confirm button on Edit control
+    Then I see last message in the conversation view is expected message <Text2Changed>
+    And I see 1 default messages in the conversation view
+    And I do not see the conversation view contains message <Text2>
+
+    Examples:
+      | Name      | Contact   | Text2 | Text2Changed |
+      | user1Name | user2Name | msg2  | msgchg       |
