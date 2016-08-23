@@ -1,7 +1,7 @@
 Feature: Share Location
 
-  @C150025 @C150026 @rc @regression @fastLogin
-  Scenario Outline: Map is shown in the conversation view
+  @C150025 @rc @regression @fastLogin
+  Scenario Outline: Verify receiving shared location and opening map in the default Apple app
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
