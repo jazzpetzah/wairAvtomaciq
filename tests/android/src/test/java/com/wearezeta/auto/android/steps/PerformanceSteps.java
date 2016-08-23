@@ -40,7 +40,7 @@ public class PerformanceSteps {
     private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class.getSimpleName());
 
     private static final int DEFAULT_SWIPE_TIME = 500;
-    private static final int MAX_MSGS_IN_CONVO_WINDOW = 100;
+//    private static final int MAX_MSGS_IN_CONVO_WINDOW = 100;
 
     private ConversationsListPage getContactListPage() throws Exception {
         return pagesCollection.getPage(ConversationsListPage.class);
@@ -88,10 +88,10 @@ public class PerformanceSteps {
      */
     @Given("^I receive (\\d+) messages? from contact (.*)")
     public void IReceiveXMessagesFromContact(int msgsCount, String asContact) throws Exception {
-        assert msgsCount >= MAX_MSGS_IN_CONVO_WINDOW : String.format(
-                "The count of messages to send (%d) should be greater or equal to the max "
-                        + "count of messages in conversation window (%d)",
-                msgsCount, MAX_MSGS_IN_CONVO_WINDOW);
+//        assert msgsCount >= MAX_MSGS_IN_CONVO_WINDOW : String.format(
+//                "The count of messages to send (%d) should be greater or equal to the max "
+//                        + "count of messages in conversation window (%d)",
+//                msgsCount, MAX_MSGS_IN_CONVO_WINDOW);
         asContact = usrMgr.findUserByNameOrNameAlias(asContact).getName();
         perfCommon.sendMultipleMessagesIntoConversation(asContact, msgsCount);
     }
