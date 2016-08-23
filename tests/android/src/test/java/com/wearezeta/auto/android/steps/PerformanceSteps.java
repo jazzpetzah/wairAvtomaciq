@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.steps;
 import java.util.List;
 
 import com.wearezeta.auto.android.pages.ConversationsListPage;
+import com.wearezeta.auto.common.CommonUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriverException;
@@ -39,7 +40,7 @@ public class PerformanceSteps {
     private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class.getSimpleName());
 
     private static final int DEFAULT_SWIPE_TIME = 500;
-    private static final int MAX_MSGS_IN_CONVO_WINDOW = 100;
+//    private static final int MAX_MSGS_IN_CONVO_WINDOW = 100;
 
     private ConversationsListPage getContactListPage() throws Exception {
         return pagesCollection.getPage(ConversationsListPage.class);
@@ -87,10 +88,10 @@ public class PerformanceSteps {
      */
     @Given("^I receive (\\d+) messages? from contact (.*)")
     public void IReceiveXMessagesFromContact(int msgsCount, String asContact) throws Exception {
-        assert msgsCount >= MAX_MSGS_IN_CONVO_WINDOW : String.format(
-                "The count of messages to send (%d) should be greater or equal to the max "
-                        + "count of messages in conversation window (%d)",
-                msgsCount, MAX_MSGS_IN_CONVO_WINDOW);
+//        assert msgsCount >= MAX_MSGS_IN_CONVO_WINDOW : String.format(
+//                "The count of messages to send (%d) should be greater or equal to the max "
+//                        + "count of messages in conversation window (%d)",
+//                msgsCount, MAX_MSGS_IN_CONVO_WINDOW);
         asContact = usrMgr.findUserByNameOrNameAlias(asContact).getName();
         perfCommon.sendMultipleMessagesIntoConversation(asContact, msgsCount);
     }
@@ -108,6 +109,7 @@ public class PerformanceSteps {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            AndroidCommonUtils.verifyWireIsInForeground();
             Thread.sleep(millisecondsDelay);
         } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
         Assert.assertTrue(String.format(
@@ -118,12 +120,17 @@ public class PerformanceSteps {
     private void visitConversationWhenAvailable(final String destConvoName) throws Exception {
         final int timeoutSeconds = 15 * 60;
         final long millisecondsStarted = System.currentTimeMillis();
+        final String packageId = CommonUtils.getAndroidPackageFromConfig(getClass());
         do {
             try {
                 getContactListPage().tapOnName(destConvoName);
             } catch (IllegalStateException | WebDriverException e) {
                 e.printStackTrace();
             }
+            if (!AndroidCommonUtils.isAppInForeground(packageId, 5000)) {
+                throw new IllegalStateException("The application appears to be crashed");
+            }
+            AndroidCommonUtils.verifyWireIsInForeground();
             Thread.sleep(10000);
         } while (!getConversationViewPage().isConversationVisible() &&
                 System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
@@ -162,8 +169,8 @@ public class PerformanceSteps {
             } else {
                 Thread.sleep(millisecondsDelay);
             }
-            firstConvoName = getContactListPage()
-                    .getFirstVisibleConversationName();
+            AndroidCommonUtils.verifyWireIsInForeground();
+            firstConvoName = getContactListPage().getFirstVisibleConversationName();
             ntry++;
         } while (ntry <= maxRetries);
         assert destConvoName.equals(firstConvoName) : String

@@ -12,6 +12,7 @@ import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
+import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -1313,8 +1314,9 @@ public class ConversationViewPageSteps {
         final boolean condition = (shouldNotSee == null) ?
                 getConversationViewPage().isContainerVisible(containerType) :
                 getConversationViewPage().isContainerInvisible(containerType);
-        Assert.assertTrue(String.format("%s should be %s in the conversation view", containerType,
-                (shouldNotSee == null) ? "visible" : "invisible"), condition);
+        Assert.assertTrue(String.format("%s should be %s in the conversation view",
+                WordUtils.capitalize(containerType), (shouldNotSee == null) ? "visible" : "invisible"),
+                condition);
     }
 
     /**
@@ -1409,5 +1411,19 @@ public class ConversationViewPageSteps {
     @When("^I tap (Undo|Confirm|Cancel) button on Edit control")
     public void ITapEditControlButton(String btnName) throws Exception {
         getConversationViewPage().tapEditControlButton(btnName);
+    }
+
+    /**
+     * Verify whether the expectced URL is visible on link preview container
+     *
+     * @param expectedSrc the expected URL to check. Only host name will be extracted and transformed to
+     *                    lowercase for UI comparison
+     * @throws Exception
+     * @step. ^I see link preview source is equal to (.*)
+     */
+    @Then("^I see link preview source is equal to (.*)")
+    public void ISeeLinkPreviewSource(String expectedSrc) throws Exception {
+        Assert.assertTrue(String.format("The link preview source %s is not visible in the conversation view",
+                expectedSrc), getConversationViewPage().isLinkPreviewSourceVisible(expectedSrc));
     }
 }

@@ -1,6 +1,8 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
@@ -224,12 +226,28 @@ public class ConversationViewPage extends IOSPage {
     private static final By xpathCancelEdit =
             By.xpath("//UIAButton[@name='photoButton']/preceding-sibling::UIAButton[1]");
 
+    private static final Function<String, String> xpathStrLinkPreviewSrcByText = text ->
+            String.format("//UIAStaticText[@name='linkPreviewSource' and @value='%s']",
+                    getDomainName(text).toLowerCase());
+
     private static final int MAX_APPEARANCE_TIME = 20;
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
     public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
+    }
+
+    private static String getDomainName(String url) {
+        URI uri;
+        try {
+            uri = new URI(url);
+        } catch (URISyntaxException e) {
+            // e.printStackTrace();
+            return url;
+        }
+        final String domain = uri.getHost();
+        return domain.toLowerCase().startsWith("www.") ? domain.substring(4) : domain;
     }
 
     public boolean isPartOfTextMessageVisible(String msg) throws Exception {
@@ -1011,5 +1029,11 @@ public class ConversationViewPage extends IOSPage {
     public void tapEditControlButton(String name) throws Exception {
         final By locator = getEditControlByName(name);
         getElement(locator).click();
+    }
+
+    public boolean isLinkPreviewSourceVisible(String expectedSrc) throws Exception {
+        final By locator = By.xpath(xpathStrLinkPreviewSrcByText.apply(expectedSrc));
+        log.debug(String.format("Locating source text field on link preview: '%s'", locator));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 }
