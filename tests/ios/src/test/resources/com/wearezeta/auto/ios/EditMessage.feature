@@ -190,3 +190,27 @@ Feature: Edit Message
     Examples:
       | Name      | Contact   | Text2 | Text2Changed |
       | user1Name | user2Name | msg2  | msgchg       |
+
+  @C202371 @staging @fastLogin
+  Scenario Outline: Verify I can't edit picture/video/audio
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When User <Contact> sends file <VideoFileName> having MIME type <VideoMIMEType> to single user conversation <Name> using device <DeviceName>
+    And I wait for 10 seconds
+    When I long tap on video message in conversation view
+    Then I do not see Edit badge item
+    When User <Contact> sends file <AudioFileName> having MIME type <AudioMIMEType> to single user conversation <Name> using device <DeviceName>
+    And I wait for 5 seconds
+    And I long tap on audio message placeholder in conversation view
+    Then I do not see Edit badge item
+    When User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    And I wait for 5 seconds
+    And I long tap on image in conversation view
+    Then I do not see Edit badge item
+
+    Examples:
+      | Name      | Contact   | VideoFileName | VideoMIMEType | DeviceName | AudioFileName | AudioMIMEType | Picture     |
+      | user1Name | user2Name | testing.mp4   | video/mp4     | Device1    | test.m4a      | audio/mp4     | testing.jpg |
