@@ -9,20 +9,8 @@ Feature: Extended Cursor Camera
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I tap Add picture button from cursor toolbar
-    #C183865
     Then I see extended cursor camera overlay
-    #C183866
     And I see thumbnails in extended cursor camera overlay
-    And I see Take Photo button on Extended cursor camera overlay
-    And I see Switch Camera button on Extended cursor camera overlay
-    And I see Camera button on Extended cursor camera overlay
-    And I see External Video button on Extended cursor camera overlay
-    #C183867
-    When I swipe left on Extended cursor camera overlay
-    Then I see Back button on Extended cursor camera overlay
-    #C183869
-    When I tap Back button on Extended cursor camera overlay
-    Then I see thumbnails in extended cursor camera overlay
     And I see Take Photo button on Extended cursor camera overlay
     And I see Switch Camera button on Extended cursor camera overlay
     And I see Camera button on Extended cursor camera overlay
@@ -31,7 +19,6 @@ Feature: Extended Cursor Camera
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
-
 
   @C183870 @regression
   Scenario Outline: When select picture from thumbnail and tap cancel in preview -  Gallery Keyboard should be still opened
