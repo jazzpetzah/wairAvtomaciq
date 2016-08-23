@@ -412,7 +412,7 @@ public class ConversationPage extends WebPage {
         Matcher matcher = compiledPattern.matcher(url);
         assert matcher.find() : "Could not find " + typeOfMessage + "id in URL: " + url;
         final String id = matcher.group();
-        By locator;
+        By locator = null;
         if (typeOfMessage.contains("youtube")) {
             locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById.apply(id));
         } else if (typeOfMessage.contains("soundcloud")) {
@@ -431,7 +431,7 @@ public class ConversationPage extends WebPage {
         Matcher matcher = compiledPattern.matcher(url);
         assert matcher.find() : "Could not find " + typeOfMessage + "id in URL: " + url;
         final String id = matcher.group();
-        By locator;
+        By locator = null;
         if (typeOfMessage.contains("youtube")) {
             locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById.apply(id));
         } else if (typeOfMessage.contains("soundcloud")) {
