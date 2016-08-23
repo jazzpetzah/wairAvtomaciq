@@ -115,7 +115,7 @@ Feature: Edit Message
       | Name      | Contact   | Text |
       | user1Name | user2Name | new  |
 
-  @C202372 @staging @fastLogin
+  @C202372 @regression @fastLogin
   Scenario Outline: Verify editing link with a preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -135,7 +135,7 @@ Feature: Edit Message
       | Name      | Contact   | FacebookLink        | FacebookPrefix | WirePrefix | WireLink        |
       | user1Name | user2Name | http://facebook.com | Check FB       | Look for   | http://wire.com |
 
-  @C202352 @staging @fastLogin
+  @C202352 @regression @fastLogin
   Scenario Outline: Verify I can edit a message multiple times in a row
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
