@@ -5,17 +5,18 @@ Feature: Performance Tests
     Given There are <UsersNumber> shared users with name prefix <UserNamePrefix>
     Given User <Name> is Me
     Given Myself is connected to all other users
+    Given I select random contact for the performance test
     Given User Myself only keeps his 2 most recent OTR clients
     Given I sign in using my email with <LoginTimeout> seconds timeout
     Given I accept First Time overlay as soon as it is visible
-    Given User <Sender> removes all his registered OTR clients
-    Given I receive <MsgsCount> messages from contact <Sender>
-    When I start test cycle for <Time> minutes with messages received from <Sender>
+    Given The random performance contact removes all his registered OTR clients
+    Given I receive <MsgsCount> messages from the random performance contact
+    When I start test cycle for <Time> minutes with messages received from the random performance contact
     Then I generate performance report for <UsersNumber> users
 
     Examples:
-      | Name      | UsersNumber       | UserNamePrefix    | Time            | MsgsCount | Sender    | LoginTimeout |
-      | user1Name | ${perfUsersCount} | ${userNamePrefix} | ${perfDuration} | 51        | user2Name | 600          |
+      | Name      | UsersNumber       | UserNamePrefix    | Time            | MsgsCount | LoginTimeout |
+      | user1Name | ${perfUsersCount} | ${userNamePrefix} | ${perfDuration} | 101       | 600          |
 #      | user1Name | 11                | perf10user         | 2               | 101      | user2Name     | 600          |
 
   @battery_performance
@@ -28,7 +29,7 @@ Feature: Performance Tests
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     And <Contact> calls me
-    And I answer the call from the overlay bar
+    When I swipe to accept the call
     Then I see ongoing call
     When I lock the device
     When I initialize battery performance report
