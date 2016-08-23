@@ -1414,7 +1414,7 @@ public class CommonIOSSteps {
         Thread.sleep(2000);
         //To be sure its get pressed tap a second time, if it got pressed 1st time nothing will happen
         //there is no ui in the app...sometimes it fails here, so the second press
-        for (int i = 0; i <= 2; i++){
+        for (int i = 0; i <= 1; i++){
             IOSSimulatorHelper.clickAt("0.68", "0.58", "1");
         }
     }
