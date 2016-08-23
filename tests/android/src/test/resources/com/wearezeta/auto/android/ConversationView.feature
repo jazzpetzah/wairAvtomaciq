@@ -383,7 +383,7 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And the conversation title should be "<Contact1>"
-    And User <Contact2> send message "<Message1>" to user Myself
+    And User <Contact2> sends encrypted message "<Message1>" to user Myself
     And I tap new message notification "<Message1>"
     Then I see the message "<Message1>" in the conversation view
     And the conversation title should be "<Contact2>"
@@ -391,7 +391,7 @@ Feature: Conversation View
     And I press back button
     When I tap Back button from top toolbar
     And I tap on conversation name <Contact1>
-    And User <Contact2> send message "<Message2>" to user Myself
+    And User <Contact2> sends encrypted message "<Message2>" to user Myself
     And I see new message notification "<Message2>"
     Then the conversation title should be "<Contact1>"
 

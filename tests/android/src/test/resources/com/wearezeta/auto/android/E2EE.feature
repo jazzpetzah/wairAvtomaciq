@@ -1,7 +1,7 @@
 Feature: E2EE
 
   @C3226 @rc @regression
-  Scenario Outline: Verify you can receive encrypted and non-encrypted messages in 1:1 chat
+  Scenario Outline: Verify you can receive encrypted and cannot receive non-encrypted messages in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
     Given I sign in using my email or phone number
@@ -10,8 +10,8 @@ Feature: E2EE
     When User <Contact> sends encrypted message <EncryptedMessage> to user Myself
     And User <Contact> sends message <SimpleMessage> to user Myself
     And I tap on conversation name <Contact>
-    Then I see message <SimpleMessage> 1 time in the conversation view
-    And I see message <EncryptedMessage> 1 time in the conversation view
+    Then I see message <SimpleMessage> 0 times in the conversation view
+    And I see message <EncryptedMessage> 1 times in the conversation view
 
     Examples:
       | Name      | Contact   | EncryptedMessage | SimpleMessage |
@@ -89,7 +89,7 @@ Feature: E2EE
       | user1Name | user2Name | user3Name | Msg1     | Msg2     | testing.jpg | GroupConvo    |
 
   @C3241 @regression
-  Scenario Outline: Verify you can receive encrypted and non-encrypted messages in group chat
+  Scenario Outline: Verify you can receive encrypted and cannot receive non-encrypted messages in group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -99,8 +99,8 @@ Feature: E2EE
     When User <Contact1> sends encrypted message <EncryptedMessage> to group conversation <GroupChatName>
     And User <Contact2> sends message <SimpleMessage> to group conversation <GroupChatName>
     And I tap on conversation name <GroupChatName>
-    Then I see message <SimpleMessage> 1 time in the conversation view
-    And I see message <EncryptedMessage> 1 time in the conversation view
+    Then I see message <SimpleMessage> 0 times in the conversation view
+    And I see message <EncryptedMessage> 1 times in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | EncryptedMessage | SimpleMessage | GroupChatName |

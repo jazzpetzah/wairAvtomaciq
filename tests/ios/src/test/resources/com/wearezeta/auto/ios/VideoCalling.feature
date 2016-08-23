@@ -171,7 +171,8 @@ Feature: Video Calling
     Given Myself is connected to <Contact>,<Contact2>
     Given <Contact>,<Contact2> start instance using <VideoCallBackend>
     Given I sign in using my email or phone number
-    And <Contact>,<Contact2> start a video call to me
+    Given I see conversations list
+    When <Contact> start a video call to me
     And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds

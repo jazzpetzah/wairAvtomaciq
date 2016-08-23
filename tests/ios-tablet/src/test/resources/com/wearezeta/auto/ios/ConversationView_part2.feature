@@ -251,7 +251,7 @@ Feature: Conversation View
     And I type the default message
     When I tap on contact name <Contact2>
     And I tap on contact name <Contact1>
-    Then I see the default message in input field
+    Then I see the default message in the conversation input
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -272,7 +272,7 @@ Feature: Conversation View
     And I tap on Copy badge item
     And I tap on text input
     And I tap and hold on message input
-    And I click on popup Paste item
+    And I tap on Paste badge item
     And I confirm my choice
     Then I see 2 photos in the conversation view
 
@@ -296,7 +296,7 @@ Feature: Conversation View
     And I tap on Copy badge item
     And I tap on text input
     And I tap and hold on message input
-    And I click on popup Paste item
+    And I tap on Paste badge item
     And I confirm my choice
     Then I see 2 photos in the conversation view
 

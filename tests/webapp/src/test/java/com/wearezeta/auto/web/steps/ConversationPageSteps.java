@@ -308,7 +308,7 @@ public class ConversationPageSteps {
      * @param x the amount of deleted messages
      * @step. ^I see (\\d+) deleted messages in conversation$
      */
-    @Then("^I see (\\d+) deleted messages in conversation$")
+    @Then("^I see (\\d+) deleted messages? in conversation$")
     public void ISeeXDeletedMessagesInConversation(int x) throws Exception {
         assertThat("Number of deleted messages in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
                 .getNumberOfDeletedMessagesInCurrentConversation(), equalTo(x));
@@ -691,7 +691,7 @@ public class ConversationPageSteps {
 
     @When("^I click confirm to delete message for everyone$")
     public void IClickConfirmToDeleteForEveryone() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).confirmDelete();
+        context.getPagesCollection().getPage(ConversationPage.class).confirmDeleteForEveryone();
     }
 
     @When("^I click to delete the latest message$")

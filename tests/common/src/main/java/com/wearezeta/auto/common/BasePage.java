@@ -102,6 +102,18 @@ public abstract class BasePage {
         return result;
     }
 
+    protected List<WebElement> selectVisibleElements(By locator, int timeoutSeconds) throws Exception {
+        final List<WebElement> result = new ArrayList<>();
+        if (DriverUtils.waitUntilLocatorAppears(getDriver(), locator, timeoutSeconds)) {
+            for (WebElement el : getDriver().findElements(locator)) {
+                if (DriverUtils.isElementPresentAndDisplayed(getDriver(), el)) {
+                    result.add(el);
+                }
+            }
+        }
+        return result;
+    }
+
     protected WebElement getElement(By locator) throws Exception {
         return DriverUtils.verifyPresence(getDriver(), locator);
     }

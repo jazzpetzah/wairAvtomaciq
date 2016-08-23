@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 
@@ -86,7 +87,7 @@ public class ConversationsListPage extends AndroidPage {
     }
 
     public String getFirstVisibleConversationName() throws Exception {
-        final int maxTries = 20;
+        final int maxTries = 30;
         final long millisecondsDelay = 20000;
         int ntry = 1;
         do {
@@ -110,6 +111,7 @@ public class ConversationsListPage extends AndroidPage {
                 e.printStackTrace();
                 // Ignore silently
             }
+            AndroidCommonUtils.verifyWireIsInForeground();
             Thread.sleep(millisecondsDelay);
             ntry++;
         } while (ntry <= maxTries);

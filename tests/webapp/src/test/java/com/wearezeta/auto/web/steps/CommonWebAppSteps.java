@@ -589,13 +589,13 @@ public class CommonWebAppSteps {
      * @param deviceName
      * @param deleteEverywhere
      * @throws Exception
-     * @step. ^User (.*) deletes? the recent (\\d+) messages? from (user|group conversation) (.*) (everywhere )?via device (.*)$
+     * @step. ^User (.*) deletes? the recent (\\d+) messages? (everywhere )?from (user|group conversation) (.*) via device (.*)$
      */
-    @When("^User (.*) deletes? the recent (\\d+) messages? from (user|group conversation) (.*) (everywhere )?via device (.*)$")
-    public void UserXDeleteLastMessage(String userNameAlias, int amount, String convoType, String dstNameAlias, String deleteEverywhere, String deviceName)
+    @When("^User (.*) deletes? the recent (\\d+) messages? (everywhere )?from (user|group conversation) (.*) via device (.*)$")
+    public void UserXDeleteLastMessage(String userNameAlias, int amount, String deleteEverywhere, String convoType, String dstNameAlias, String deviceName)
             throws Exception {
         boolean isGroup = convoType.equals("group conversation");
-        boolean isDeleteEverywhere = deleteEverywhere.equals("everywhere ");
+        boolean isDeleteEverywhere = deleteEverywhere != null;
         for (int deleteCounter = 0; deleteCounter < amount; deleteCounter++) {
             context.getCommonSteps().UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName + context.getTestname().
                     hashCode(), isGroup, isDeleteEverywhere);

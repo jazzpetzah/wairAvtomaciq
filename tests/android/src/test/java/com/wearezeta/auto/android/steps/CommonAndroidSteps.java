@@ -63,8 +63,6 @@ public class CommonAndroidSteps {
             )
     );
 
-    private static Optional<String> recentMessageId = null;
-
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     public static final Platform CURRENT_PLATFORM = Platform.Android;
@@ -90,12 +88,8 @@ public class CommonAndroidSteps {
         return CommonUtils.getAndroidPackageFromConfig(CommonAndroidSteps.class);
     }
 
-    public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path) throws Exception {
-        return resetAndroidDriver(url, path, Optional.empty());
-    }
-
     @SuppressWarnings("unchecked")
-    public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path,
+    public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path, int retriesCount,
                                                         Optional<Map<String, Object>> additionalCaps) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
@@ -115,7 +109,7 @@ public class CommonAndroidSteps {
         devicePreparationThread.get(DEVICE_PREPARATION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
         return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance().resetDriver(url, capabilities,
-                AndroidPage.DRIVER_CREATION_RETRIES_COUNT, this::onDriverInitFinished, null);
+                retriesCount, this::onDriverInitFinished, null);
     }
 
     private static Void prepareDevice() throws Exception {
@@ -134,7 +128,7 @@ public class CommonAndroidSteps {
         pool.shutdown();
     }
 
-    private static final int DEVICE_PREPARATION_TIMEOUT_SECONDS = 20;
+    private static final int DEVICE_PREPARATION_TIMEOUT_SECONDS = 30;
 
     private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
 
@@ -232,8 +226,10 @@ public class CommonAndroidSteps {
 
         isAutoAnswerCallEnabled = scenario.getSourceTagNames().contains("@calling_autoAnswer");
 
+        int retriesCount = AndroidPage.DRIVER_CREATION_RETRIES_COUNT;
         if (scenario.getSourceTagNames().contains("@performance")) {
             AndroidLogListener.getInstance(ListenerType.PERF).start();
+            retriesCount++;
         } else if (scenario.getSourceTagNames().contains("@analytics")) {
             AndroidLogListener.getInstance(ListenerType.ANALYTICS).start();
         }
@@ -251,7 +247,7 @@ public class CommonAndroidSteps {
             additionalCapsMap.put("appActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
             additionalCapsMap.put("appWaitActivity", CommonUtils.getAndroidLoginActivityFromConfig(getClass()));
         }
-        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath,
+        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath, retriesCount,
                 additionalCapsMap.isEmpty() ? Optional.empty() : Optional.of(additionalCapsMap));
 
         updateDriver(lazyDriver, CommonUtils.getHasBackendSelection(getClass()));
@@ -341,7 +337,7 @@ public class CommonAndroidSteps {
         customCaps.put("fullReset", false);
         customCaps.put("skipUninstall", true);
         customCaps.put("appActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
-        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath, Optional.of(customCaps));
+        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath, 1, Optional.of(customCaps));
         updateDriver(lazyDriver, false);
     }
 
@@ -1319,11 +1315,28 @@ public class CommonAndroidSteps {
      * @step. ^User (.*) deletes? the recent message (everywhere )?from (user|group conversation) (.*) via device (.*)$
      */
     @When("^User (.*) deletes? the recent message (everywhere )?from (user|group conversation) (.*) via device (.*)$")
-    public void UserXDeleteLastMessage(String userNameAlias, String deleteEverywhere, String convoType, String dstNameAlias, String deviceName)
-            throws Exception {
+    public void UserXDeleteLastMessage(String userNameAlias, String deleteEverywhere, String convoType,
+                                       String dstNameAlias, String deviceName) throws Exception {
         boolean isGroup = convoType.equals("group conversation");
         boolean isDeleteEverywhere = deleteEverywhere != null;
         commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup, isDeleteEverywhere);
+    }
+
+    /**
+     * User X edit his own messages, be careful this message will not control the type of the message you edit.
+     *
+     * @param userNameAlias user name/alias
+     * @param newMessage    the message you want to update to
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  estination user name/alias or group convo name
+     * @param deviceName    source device name. Will be created if does not exist yet
+     * @throws Exception
+     */
+    @When("^User (.*) edits? the recent message to \"(.*)\" from (user|group conversation) (.*) via device (.*)$")
+    public void UserXEditLastMessage(String userNameAlias, String newMessage, String convoType,
+                                     String dstNameAlias, String deviceName) throws Exception {
+        boolean isGroup = convoType.equals("group conversation");
+        commonSteps.UserUpdateLatestMessage(userNameAlias, dstNameAlias, newMessage, deviceName, isGroup);
     }
 
     /**
@@ -1337,53 +1350,32 @@ public class CommonAndroidSteps {
      * @step. ^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$
      */
     @When("^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$")
-    public void UserXRemeberLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
+    public void UserXRemembersLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
             throws Exception {
-        boolean isGroup = convoType.equals("group conversation");
-        recentMessageId = commonSteps.UserGetRecentMessageId(userNameAlias, dstNameAlias, deviceName, isGroup);
+        commonSteps.UserXRemembersLastMessage(userNameAlias, convoType.equals("group conversation"),
+                dstNameAlias, deviceName);
     }
 
     /**
-     * Check the rememberd message is changed
+     * Check the remembered message is changed
      *
      * @param userNameAlias user name/alias
      * @param convoType     either 'user' or 'group conversation'
      * @param dstNameAlias  destination user name/alias or group convo name
      * @param deviceName    source device name. Will be created if does not exist yet
      * @throws Exception
-     * @step. ^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed( in \\d+ seconds?)?$
+     * @step. ^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is
+     * changed( in \\d+ seconds?)?$
      */
-    @Then("^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed( in \\d+ seconds?)?$")
+    @Then("^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is " +
+            "changed( in \\d+ seconds?)?$")
     public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias,
                                              String deviceName, String waitDuration) throws Exception {
-        if (recentMessageId == null) {
-            throw new IllegalStateException("You should remember the recent message befor you check it");
-        }
-
-        String rememberedMessage = recentMessageId.orElse("");
-
-        int timeout = (waitDuration == null) ? CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
+        final int durationSeconds = (waitDuration == null) ?
+                CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
                 : Integer.parseInt(waitDuration.replaceAll("[\\D]", ""));
-
-        final Optional<String> actualMessageId = CommonUtils.waitUntil(timeout,
-                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
-                () -> {
-                    Optional<String> messageId = commonSteps.UserGetRecentMessageId(userNameAlias,
-                            dstNameAlias, deviceName, convoType.equals("group conversation"));
-
-                    String actualMessage = messageId.orElse("");
-                    // Try to wait for a different a message id
-                    if (actualMessage.equals(rememberedMessage)) {
-                        throw new IllegalStateException(
-                                String.format("recent remembered message id %s, current message id %s, should be different",
-                                        rememberedMessage, actualMessage));
-                    } else {
-                        return actualMessage;
-                    }
-                });
-
-        Assert.assertTrue(String.format("Actual message Id should not equal to '%s'", rememberedMessage),
-                actualMessageId.isPresent());
+        commonSteps.UserXFoundLastMessageChanged(userNameAlias, convoType.equals("group conversation"), dstNameAlias,
+                deviceName, durationSeconds);
     }
 
     /**
@@ -1666,8 +1658,8 @@ public class CommonAndroidSteps {
     /**
      * Add email(s) into address book of a user and upload address book in backend
      *
-     * @param asUser name of the user where the address book is uploaded
-     * @param emails list of email addresses seperated by comma
+     * @param asUser   name of the user where the address book is uploaded
+     * @param contacts list of email addresses seperated by comma
      * @throws Exception
      * @step. ^User (.*) has (?: emails?|phone numbers?) (.*) in address book$
      */

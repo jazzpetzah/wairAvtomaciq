@@ -67,7 +67,7 @@ Feature: Screen Sharing
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | Chrome      | 20      |
 
-  @C183898 @smoke
+  @C183898 @smoke @WEBAPP-3094
   Scenario Outline: Verify I can share my screen in a 1:1 audio call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -90,7 +90,7 @@ Feature: Screen Sharing
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | Chrome      | 20      |
 
-  @C183897 @smoke
+  @C183897 @smoke @WEBAPP-3094
   Scenario Outline: Verify I can share my screen in a group audio call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

@@ -40,8 +40,7 @@ public class ContactContextMenuPageSteps {
                 .getPage(ContactListPage.class);
         Assert.assertTrue("No contact list loaded.",
                 contactListPage.waitForContactListVisible());
-        webappPagesCollection.getInstance().getPage(ContactListPage.class)
-                .openContextMenuForContact(name);
+        contactListPage.openContextMenuForContact(name);
     }
 
     /**

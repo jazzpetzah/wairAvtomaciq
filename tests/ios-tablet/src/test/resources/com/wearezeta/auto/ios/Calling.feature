@@ -204,6 +204,8 @@ Feature: Calling
     And <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
+    # Give it some time to finish initialization
+    And I wait for 5 seconds
     And <Contact> stops calling me
     And I do not see Calling overlay
 

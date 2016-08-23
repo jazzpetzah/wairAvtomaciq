@@ -1,6 +1,6 @@
 Feature: Delete Everywhere
 
-  @C206234 @staging
+  @C206234 @regression
   Scenario Outline: Verify I can delete my message everywhere (1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -22,7 +22,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact   | Message1 |
       | user1Email | user1Password | user1Name | user2Name | message1 |
 
-  @C206235 @staging
+  @C206235 @regression
   Scenario Outline: Verify I can delete my message everywhere (group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -45,7 +45,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Message1 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | New name | message1 |
 
-  @C206242 @staging
+  @C206242 @regression
   Scenario Outline: Verify delete everywhere works for images
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -66,7 +66,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
 
-  @C206244 @staging
+  @C206244 @regression
   Scenario Outline: Verify delete everywhere works for link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -87,7 +87,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact   | Link                           | LinkTitle   |
       | user1Email | user1Password | user1Name | user2Name | http://www.heise.de/newsticker | 7-Tage-News |
 
-  @C206245 @staging
+  @C206245 @regression
   Scenario Outline: Verify delete everywhere works for location sharing
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -109,7 +109,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Latitude  | Longitude   | LocationName |
       | user1Email | user1Password | user1Name | user2Name | user3Name | New name | 33.747252 | -112.633853 | Triangle     |
 
-  @C206246 @staging
+  @C206246 @regression
   Scenario Outline: Verify delete everywhere works for file sharing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -130,7 +130,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact   | File        | Size  |
       | user1Email | user1Password | user1Name | user2Name | C206246.zip | 512KB |
 
-  @C206247 @staging
+  @C206247 @regression
   Scenario Outline: Verify delete everywhere works for audio messages
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -151,7 +151,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact   | File        | Time  |
       | user1Email | user1Password | user1Name | user2Name | example.wav | 00:20 |
 
-  @C206248 @staging
+  @C206248 @regression
   Scenario Outline: Verify delete everywhere works for video messages
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -172,7 +172,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact   | File        | Size |
       | user1Email | user1Password | user1Name | user2Name | C206248.mp4 | 1MB  |
 
-  @C206236 @staging
+  @C206236 @regression
   Scenario Outline: Verify I see status message if other user deletes his message everywhere (1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -185,16 +185,16 @@ Feature: Delete Everywhere
     And Contact <Contact> sends message <Message_2> via device Device1 to user <Name>
     Then I see text message <Message_1>
     And I see text message <Message_2>
-    And User <Contact> deletes the recent 1 message from user <Name> everywhere via device Device1
+    When User <Contact> deletes the recent 1 message everywhere from user <Name> via device Device1
     Then I see text message <Message_1>
     And I do not see text message <Message_2>
-    Then I see 1 deleted messages in conversation
+    And I see 1 deleted messages in conversation
 
     Examples:
       | Login      | Password      | Name      | Contact   | Message_1      | Message_2      | Message_3      |
       | user1Email | user1Password | user1Name | user2Name | Test_Message_1 | Test_Message_2 | Test_Message_3 |
 
-  @C206237 @staging
+  @C206237 @regression
   Scenario Outline: Verify I see status message if other user deletes his message everywhere (group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -209,29 +209,29 @@ Feature: Delete Everywhere
     And Contact <Contact1> sends message <Message_2> via device Device1 to group conversation <ChatName>
     Then I see text message <Message_1>
     And I see text message <Message_2>
-    And User <Contact1> deletes the recent 1 message from group conversation <ChatName> everywhere via device Device1
+    When User <Contact1> deletes the recent 1 message everywhere from group conversation <ChatName> via device Device1
     Then I see text message <Message_1>
     And I do not see text message <Message_2>
-    Then I see 1 deleted messages in conversation
-    And Contact <Contact2> sends message <Message_3> via device Device2 to group conversation <ChatName>
+    And I see 1 deleted messages in conversation
+    When Contact <Contact2> sends message <Message_3> via device Device2 to group conversation <ChatName>
     And Contact <Contact2> sends message <Message_4> via device Device2 to group conversation <ChatName>
     Then I see text message <Message_1>
     And I do not see text message <Message_2>
-    Then I see 1 deleted messages in conversation
-    Then I see text message <Message_3>
+    And I see 1 deleted messages in conversation
+    And I see text message <Message_3>
     And I see text message <Message_4>
-    And User <Contact2> deletes the recent 1 message from group conversation <ChatName> everywhere via device Device2
+    When User <Contact2> deletes the recent 1 message everywhere from group conversation <ChatName> via device Device2
     Then I see text message <Message_1>
     And I do not see text message <Message_2>
-    Then I see text message <Message_3>
+    And I see text message <Message_3>
     And I do not see text message <Message_4>
-    Then I see 2 deleted messages in conversation
+    And I see 2 deleted messages in conversation
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Message_1      | Message_2      | Message_3      | Message_4      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GC1      | Test_Message_1 | Test_Message_2 | Test_Message_3 | Test_Message_4 |
 
-  @C206240 @staging
+  @C206240 @regression
   Scenario Outline: When I delete my message everywhere on a different device (1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -248,16 +248,16 @@ Feature: Delete Everywhere
     And I send message
     Then I see text message <Message_2>
     And I see text message <Message_2>
-    And User <Name> deletes the recent 1 message from user <Contact> everywhere via device Device1
+    When User <Name> deletes the recent 1 message everywhere from user <Contact> via device Device1
     Then I see text message <Message_1>
     And I do not see text message <Message_2>
-    Then I see 0 deleted messages in conversation
+    And I see 0 deleted messages in conversation
 
     Examples:
       | Login      | Password      | Name      | Contact   | Message_1      | Message_2      | Message_3      |
       | user1Email | user1Password | user1Name | user2Name | Test_Message_1 | Test_Message_2 | Test_Message_3 |
 
-  @C206241 @staging
+  @C206241 @regression
   Scenario Outline: When I delete my message everywhere on a different device (group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -275,16 +275,16 @@ Feature: Delete Everywhere
     And I send message
     Then I see text message <Message_1>
     And I see text message <Message_2>
-    And User <Name> deletes the recent 1 message from group conversation <ChatName> everywhere via device Device1
+    When User <Name> deletes the recent 1 message everywhere from group conversation <ChatName> via device Device1
     Then I see text message <Message_1>
     And I do not see text message <Message_2>
-    Then I see 0 deleted messages in conversation
+    And I see 0 deleted messages in conversation
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Message_1      | Message_2      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GC1      | Test_Message_1 | Test_Message_2 |
 
-  @C206250 @staging @WEBAPP-3096
+  @C206250 @regression
   Scenario Outline: Verify deleted messages remain deleted everywhere after I archive and unarchive a conversation
     Given There are 2 users where <Name> is me
     Given user <Name> adds a new device Device1 with label Label1
@@ -302,13 +302,13 @@ Feature: Delete Everywhere
     And I send message
     Then I see text message <Message_1>
     And I see text message <Message_2>
-    And User Myself deletes the recent 1 message from user <Contact> everywhere via device Device1
+    When User Myself deletes the recent 1 message everywhere from user <Contact> via device Device1
     Then I see text message <Message_1>
     And I do not see text message <Message_2>
-    And Contact <Contact> sends message <Message_3> via device Device2 to user <Name>
-    And I see text message <Message_3>
-    And User <Contact> deletes the recent 1 message from user <Name> everywhere via device Device2
-    And I do not see text message <Message_3>
+    When Contact <Contact> sends message <Message_3> via device Device2 to user <Name>
+    Then I see text message <Message_3>
+    When User <Contact> deletes the recent 1 message everywhere from user <Name> via device Device2
+    Then I do not see text message <Message_3>
     And I see 1 deleted messages in conversation
     When I archive conversation <Contact>
     And I do not see Contact list with name <Contact>
@@ -326,7 +326,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact   | Message_1      | Message_2      | Message_3      |
       | user1Email | user1Password | user1Name | user2Name | Test_Message_1 | Test_Message_2 | Test_Message_3 |
 
-  @C206249 @staging @WEBAPP-3097
+  @C206249 @regression
   Scenario Outline: Verify I see no unread dot if a message was deleted from someone in a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -336,16 +336,17 @@ Feature: Delete Everywhere
     Given I am signed in properly
     When I open conversation with <Contact1>
     And Contact <Contact1> sends message <Message_1> via device Device1 to user <Name>
-    Then I see text message <Message_1>
     And Contact <Contact1> sends message <Message_2> via device Device1 to user <Name>
+    Then I see text message <Message_1>
+    And I see text message <Message_2>
     When I open conversation with <Contact2>
-    And User <Contact1> deletes the recent 1 message from user <Name> everywhere via device Device1
+    And User <Contact1> deletes the recent 1 message everywhere from user <Name> via device Device1
     And I wait for 5 seconds
     Then I do not see unread dot in conversation <Contact1>
     When I open conversation with <Contact1>
     Then I see text message <Message_1>
     And I do not see text message <Message_2>
-    Then I see 1 deleted messages in conversation
+    And I see 1 deleted messages in conversation
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Message_1      | Message_2      | Message_3      |

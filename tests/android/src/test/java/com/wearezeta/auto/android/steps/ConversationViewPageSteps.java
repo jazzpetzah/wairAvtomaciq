@@ -78,7 +78,6 @@ public class ConversationViewPageSteps {
      * @step. ^I see conversation view$
      */
     @Then("^I see conversation view$")
-    //TODO : Refactory See dialog page,
     public void ISeeConversationPage() throws Exception {
         Assert.assertTrue("The cursor is not visible in the conversation view",
                 getConversationViewPage().isCursorViewVisible());
@@ -119,6 +118,30 @@ public class ConversationViewPageSteps {
     @When("^I type the message \"(.*)\"$")
     public void ITypeMessage(String msg) throws Exception {
         getConversationViewPage().typeMessage(expandMessage(msg));
+    }
+
+    /**
+     * Clear content in cursor input
+     *
+     * @throws Exception
+     * @step. ^I clear cursor input$
+     */
+    @When("^I clear cursor input$")
+    public void IClearCursorInput() throws Exception {
+        getConversationViewPage().clearMessageInCursorInput();
+    }
+
+    /**
+     * Verify the text message in cursor input is visible
+     *
+     * @param message the expected message
+     * @throws Exception
+     * @step. ^I see the message "(.*)" in cursor input$
+     */
+    @Then("^I see the message \"(.*)\" in cursor input$")
+    public void ISeeMessageInCursorInput(String message) throws Exception {
+        Assert.assertTrue(String.format("The expected message '%s' is not visible in cursor input", message),
+                getConversationViewPage().waitUntilCursorInputTextVisible(message));
     }
 
     /**
@@ -532,6 +555,26 @@ public class ConversationViewPageSteps {
         } else {
             Assert.assertFalse(String.format("The most recent conversation message should not be equal to '%s'", message),
                     getConversationViewPage().isLastMessageEqualTo(message, 5));
+        }
+    }
+
+    /**
+     * Used once to check that the first message sent is the same as what is expected.
+     * Note! For current view, not means whole message, but the first message in current view!
+     *
+     * @param message the text of convo
+     * @param not     equals to null if the message should be visible
+     * @throws Exception
+     * @step. ^I see the most top conversation message is (not )?"(.*)"$"
+     */
+    @Then("^I see the most top conversation message is (not )?\"(.*)\"$")
+    public void ISeeFirstMessage(String not, String message) throws Exception {
+        if (not == null) {
+            Assert.assertTrue(String.format("The most top conversation message is not equal to '%s'", message),
+                    getConversationViewPage().isFirstMessageEqualTo(message, 30));
+        } else {
+            Assert.assertFalse(String.format("The most top conversation message should not be equal to '%s'", message),
+                    getConversationViewPage().isFirstMessageEqualTo(message, 5));
         }
     }
 
@@ -1209,6 +1252,17 @@ public class ConversationViewPageSteps {
         }
     }
 
+    /**
+     * Tap on all resend button in current view
+     *
+     * @throws Exception
+     * @step. ^I resend all the visible messages in conversation view$
+     */
+    @When("^I resend all the visible messages in conversation view$")
+    public void ITapResendButton() throws Exception {
+        getConversationViewPage().tapAllResendButton();
+    }
+
     private static final double MIN_UPLOAD_TO_PLAY_SCORE = 0.75;
 
     /**
@@ -1378,13 +1432,53 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see the trashcan next to the name of (.*) in the conversation view$")
     public void ISeeTrashNextToName(String shouldNotSee, String name) throws Exception {
-        name = ClientUsersManager.getInstance().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("Cannot see the trashcan next to the name '%s'", name),
                     getConversationViewPage().waitUntilTrashIconVisible(name));
         } else {
             Assert.assertTrue(String.format("The trashcan next to the name '%s' should be invisible", name),
                     getConversationViewPage().waitUntilTrashIconInvisible(name));
+        }
+    }
+
+    /**
+     * Verify the pen is visible next to the expected name
+     *
+     * @param shouldNotSee equals null means the pen should be visible next to the expected name
+     * @param name         the contact name
+     * @throws Exception
+     * @step. ^I (do not )?see the pen icon next to the name of (.*) in the conversation view$
+     */
+    @Then("^I (do not )?see the pen icon next to the name of (.*) in the conversation view$")
+    public void ISeePenNextToName(String shouldNotSee, String name) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("Cannot see the Pen icon next to the name '%s'", name),
+                    getConversationViewPage().waitUntilPenIconVisible(name));
+        } else {
+            Assert.assertTrue(String.format("The Pen icon next to the name '%s' should be invisible", name),
+                    getConversationViewPage().waitUntilPenIconInvisible(name));
+        }
+    }
+
+    /**
+     * Verify I can see users's message separator
+     *
+     * @param shouldNotSee
+     * @param name         the user's name or name alias
+     * @throws Exception
+     * @step. ^I (do not )?see the message separator of (.*) in (\d+) seconds$
+     */
+    @Then("^I (do not )?see the message separator of (.*) in (\\d+) seconds$")
+    public void ISeeMessageFromUser(String shouldNotSee, String name, int timeOutSeconds) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("The message separator of user %s should be visible", name),
+                    getConversationViewPage().waitUntilMessageSeparatorVisible(name, timeOutSeconds));
+        } else {
+            Assert.assertTrue(String.format("The message separator of user %s should be invisible", name),
+                    getConversationViewPage().waitUntilMessageSeparatorInvisible(name, timeOutSeconds));
         }
     }
 }

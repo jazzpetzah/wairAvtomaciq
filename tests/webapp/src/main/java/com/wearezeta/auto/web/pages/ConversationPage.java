@@ -137,6 +137,9 @@ public class ConversationPage extends WebPage {
     @FindBy(css = WebAppLocators.ConversationPage.cssDoDelete)
     private WebElement doDeleteButton;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssDoDeleteForEveryone)
+    private WebElement doDeleteForEveryoneButton;
+
     @FindBy(css = WebAppLocators.ConversationPage.cssLongMessageDialog)
     private WebElement longMessageDialog;
 
@@ -1079,6 +1082,11 @@ public class ConversationPage extends WebPage {
     public void confirmDelete() throws Exception {
         DriverUtils.waitUntilElementClickable(this.getDriver(), doDeleteButton);
         doDeleteButton.click();
+    }
+
+    public void confirmDeleteForEveryone() throws Exception {
+        DriverUtils.waitUntilElementClickable(this.getDriver(), doDeleteForEveryoneButton);
+        doDeleteForEveryoneButton.click();
     }
 
     public boolean isDeleteButtonVisibleForLatestMessage() throws Exception {
