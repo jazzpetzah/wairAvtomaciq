@@ -59,6 +59,9 @@ public class CommonIOSSteps {
     // We keep this short and compatible with spell checker
     public static final String DEFAULT_AUTOMATION_MESSAGE = "1 message";
 
+    public static final String CAPABILITY_NAME_ADDRESSBOOK = "addressbookStart";
+    public static final String TAG_NAME_ADDRESSBOOK = "@" + CAPABILITY_NAME_ADDRESSBOOK;
+
     static {
         System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
         System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "warn");
@@ -131,9 +134,8 @@ public class CommonIOSSteps {
                 // https://wearezeta.atlassian.net/browse/ZIOS-5769
                 "--disable-autocorrection",
                 // https://wearezeta.atlassian.net/browse/ZIOS-5259
-                "-AnalyticsUserDefaultsDisabledKey", "0",
+                "-AnalyticsUserDefaultsDisabledKey", "0"
                 //"--debug-log-network",
-                "--addressbook-on-simulator"
         ));
 
         if (additionalCaps.isPresent()) {
@@ -145,6 +147,11 @@ public class CommonIOSSteps {
                             // https://wearezeta.atlassian.net/browse/ZIOS-6747
                             "--loginemail=" + ((ClientUser) entry.getValue()).getEmail(),
                             "--loginpassword=" + ((ClientUser) entry.getValue()).getPassword()
+                    ));
+                }
+                if (entry.getKey().equals(CAPABILITY_NAME_ADDRESSBOOK)) {
+                    processArgs.addAll(Arrays.asList(
+                            "--addressbook-on-simulator"
                     ));
                 } else {
                     capabilities.setCapability(entry.getKey(), entry.getValue());
@@ -205,9 +212,13 @@ public class CommonIOSSteps {
         }
 
         String appPath = getAppPath();
-        if (scenario.getSourceTagNames().contains("@upgrade") || scenario.getSourceTagNames().contains("@addressbookStart")) {
+        if (scenario.getSourceTagNames().contains("@upgrade") || scenario.getSourceTagNames().contains(TAG_NAME_ADDRESSBOOK)) {
             if (scenario.getSourceTagNames().contains("@upgrade")) {
                 appPath = getOldAppPath();
+            }
+
+            if (scenario.getSourceTagNames().contains(TAG_NAME_ADDRESSBOOK)){
+                additionalCaps.put(CAPABILITY_NAME_ADDRESSBOOK, true);
             }
             if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
                 PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
