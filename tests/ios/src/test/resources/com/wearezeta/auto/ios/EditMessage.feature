@@ -200,7 +200,7 @@ Feature: Edit Message
     Given I tap on contact name <Contact>
     When User <Contact> sends file <VideoFileName> having MIME type <VideoMIMEType> to single user conversation <Name> using device <DeviceName>
     And I wait for 10 seconds
-    When I long tap on video message in conversation view
+    And I long tap on video message in conversation view
     Then I do not see Edit badge item
     When User <Contact> sends file <AudioFileName> having MIME type <AudioMIMEType> to single user conversation <Name> using device <DeviceName>
     And I wait for 5 seconds
