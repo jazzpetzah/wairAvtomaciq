@@ -186,26 +186,6 @@ public class PerformanceSteps {
                 () -> new IllegalStateException("You need to set the random contact first")
         );
         final String destConvoName = usrMgr.findUserByNameOrNameAlias(fromContact).getName();
-        String firstConvoName = getContactListPage().getFirstVisibleConversationName();
-        final int maxRetries = 20;
-        final long millisecondsDelay = 10000;
-        int ntry = 1;
-        do {
-            // This contact, which received messages, should be the first
-            // contact in the visible convo list now
-            if (destConvoName.equals(firstConvoName)) {
-                break;
-            } else {
-                Thread.sleep(millisecondsDelay);
-            }
-            AndroidCommonUtils.verifyWireIsInForeground();
-            firstConvoName = getContactListPage().getFirstVisibleConversationName();
-            ntry++;
-        } while (ntry <= maxRetries);
-        assert destConvoName.equals(firstConvoName) : String
-                .format("The very first conversation name '%s' is not the same as expected one ('%s')",
-                        firstConvoName, destConvoName);
-
         // Visit the conversation for the first time
         visitConversationWhenAvailable(destConvoName);
         perfCommon.runPerformanceLoop(() -> visitConversationWhenAvailable(destConvoName), timeoutMinutes);
