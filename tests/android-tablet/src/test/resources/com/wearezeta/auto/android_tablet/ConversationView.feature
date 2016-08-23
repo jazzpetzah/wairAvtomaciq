@@ -305,6 +305,7 @@ Feature: Conversation View
     And I tap the conversation <Contact1>
     When I tap Add picture button from cursor toolbar
     And I tap Gallery Camera button on Take Picture view
+    And I tap Confirm button on Take Picture view
     # FIXME: Based on AN PR https://github.com/wearezeta/zclient-android/pull/3380, we will skip the image confirmation process
     And I see a new picture in the conversation view
     And I tap the recent picture in the conversation view
