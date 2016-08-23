@@ -11,6 +11,7 @@ import java.util.concurrent.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.waz.api.Opt;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver.SurfaceOrientation;
 import com.wearezeta.auto.common.video.SequenceEncoder;
@@ -617,7 +618,7 @@ public class CommonUtils {
         final StringBuilder result = new StringBuilder();
         final Matcher m = p.matcher(mac);
         if (m.find()) {
-            for(int groupNum = 1; groupNum <= MAC_GROUPS; groupNum++) {
+            for (int groupNum = 1; groupNum <= MAC_GROUPS; groupNum++) {
                 result.append(StringUtils.leftPad(m.group(groupNum), 2, "0").toLowerCase());
                 if (groupNum != MAC_GROUPS) {
                     result.append(":");
@@ -698,8 +699,8 @@ public class CommonUtils {
     /**
      * Create Random audio file in WAV format.
      *
-     * @param filePath          the path you want to save the output video
-     * @param length            length the length in format 00:00 (minutes:seconds) of the audio file.
+     * @param filePath the path you want to save the output video
+     * @param length   length the length in format 00:00 (minutes:seconds) of the audio file.
      * @throws Exception
      */
     public static void generateAudioFile(String filePath, String length) throws Exception {
@@ -772,5 +773,25 @@ public class CommonUtils {
             Thread.sleep(interval);
         } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
         return Optional.empty();
+    }
+
+    /**
+     * Wait until the block get true
+     *
+     * @param timeoutSeconds
+     * @param interval
+     * @param function
+     * @return
+     * @throws Exception
+     */
+    public static boolean waitUntilTrue(int timeoutSeconds, long interval, Callable<Boolean> function)
+            throws Exception {
+        final long millisecondsStarted = System.currentTimeMillis();
+        boolean result;
+        do {
+            result = function.call();
+            Thread.sleep(interval);
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000 && !result);
+        return result;
     }
 }

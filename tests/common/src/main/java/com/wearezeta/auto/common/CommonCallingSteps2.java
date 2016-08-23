@@ -372,7 +372,7 @@ public final class CommonCallingSteps2 {
         Map<Instance, CompletableFuture<Instance>> destroyTasks = new HashMap<>(instanceMapping.size());
         for (Map.Entry<String, Instance> entry : instanceMapping.entrySet()) {
             final Instance instance = entry.getValue();
-            final String url = callingServiceUrl + "/api/v1/instance/" + instance.getId() + "/";
+            final String url = callingServiceUrl + "/api/v1/instance/" + instance.getId();
             LOG.debug("---BROWSER LOG FOR INSTANCE:\n" + instance + "\n"
                     + "<a href="+url+"/log>"+instance.getId()+" LOGS</a>"+ "\n"
                     + "<a href="+url+"/screenshots>"+instance.getId()+" SCREENSHOTS</a>");

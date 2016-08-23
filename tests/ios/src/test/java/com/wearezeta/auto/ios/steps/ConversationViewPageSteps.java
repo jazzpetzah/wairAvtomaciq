@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.steps;
 
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
+import java.util.Optional;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.ImageUtil;
@@ -11,6 +12,7 @@ import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
+import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -146,13 +148,12 @@ public class ConversationViewPageSteps {
 
     @Then("^I see (\\d+) (default )?messages? in the conversation view$")
     public void ThenISeeMessageInTheDialog(int expectedCount, String isDefault) throws Exception {
-        int actualCount;
-        if (isDefault == null) {
-            actualCount = getConversationViewPage().getMessagesCount();
-        } else {
-            actualCount = getConversationViewPage().getMessagesCount(
-                    CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
-        }
+        // To speed up the verification if zero messages presence should be verified
+        final int timeoutSeconds = (expectedCount == 0) ?
+                1 : Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass()));
+        final Optional<String> expectedMsg = (isDefault == null) ?
+                Optional.empty() : Optional.of(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+        final int actualCount = getConversationViewPage().getMessagesCount(expectedMsg, timeoutSeconds);
         Assert.assertTrue(
                 String.format("The actual messages count is different " +
                                 "from the expected count: %s != %s",
@@ -192,7 +193,7 @@ public class ConversationViewPageSteps {
                     getConversationViewPage().isPartOfTextMessageVisible(expectedMsg));
         } else {
             Assert.assertTrue(
-                    String.format("The expected message '%s' is not visible in the conversation view", expectedMsg),
+                    String.format("The expected message '%s' is visible in the conversation view", expectedMsg),
                     getConversationViewPage().waitUntilPartOfTextMessageIsNotVisible(expectedMsg));
         }
     }
@@ -646,46 +647,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify that input field contains expected text message
-     *
-     * @throws Exception
-     * @step. ^I see the default message in input field$
-     */
-    @When("^I see the default message in input field$")
-    public void WhenISeeMessageInInputField() throws Exception {
-        Assert.assertTrue(String.format("The text input field contain content, which is different from '%s'",
-                CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE),
-                getConversationViewPage().isCurrentInputTextEqualTo(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE));
-    }
-
-    /**
-     * Tap on pointed badge item
-     *
-     * @param badgeItem the badge item name
-     * @throws Exception
-     * @step. ^I tap on (Select All|Copy|Delete|Paste) badge item$
-     */
-    @When("^I tap on (Select All|Copy|Delete|Paste) badge item$")
-    public void ITapBadge(String badgeItem) throws Exception {
-        switch (badgeItem) {
-            case "Select All":
-                getConversationViewPage().tapPopupSelectAllButton();
-                break;
-            case "Copy":
-                getConversationViewPage().tapPopupCopyButton();
-                break;
-            case "Delete":
-                getConversationViewPage().tapPopupDeleteButton();
-                break;
-            case "Paste":
-                getConversationViewPage().tapPopupPasteButton();
-                break;
-            default:
-                throw new IllegalArgumentException("Only (Select All|Copy|Delete|Paste) are allowed options");
-        }
-    }
-
-    /**
      * Select the corresponding item from the modal menu, which appears after Delete badge is tapped
      *
      * @param name one of possible item names
@@ -695,45 +656,6 @@ public class ConversationViewPageSteps {
     @And("^I select (Delete only for me|Delete for everyone|Cancel) item from Delete menu$")
     public void ISelectDeleteMenuItem(String name) throws Exception {
         getConversationViewPage().selectDeleteMenuItem(name);
-    }
-
-    /**
-     * Verify visibility of the corresponding badge item
-     *
-     * @param shouldNotSee equals to null if the corresponding item should be visible
-     * @param badgeItem    the badge item name
-     * @throws Exception
-     * @step. ^I (do not )?see (Select All|Copy|Delete|Paste|Save) badge item$
-     */
-    @Then("^I (do not )?see (Select All|Copy|Delete|Paste|Save) badge item$")
-    public void ISeeBadge(String shouldNotSee, String badgeItem) throws Exception {
-        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
-        switch (badgeItem) {
-            case "Select All":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupSelectAllButtonVisible :
-                        getConversationViewPage()::isPopupSelectAllButtonInvisible;
-                break;
-            case "Copy":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupCopyButtonVisible :
-                        getConversationViewPage()::isPopupCopyButtonInvisible;
-                break;
-            case "Delete":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupDeleteButtonVisible :
-                        getConversationViewPage()::isPopupDeleteButtonInvisible;
-                break;
-            case "Paste":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupPasteButtonVisible :
-                        getConversationViewPage()::isPopupPasteButtonInvisible;
-                break;
-            case "Save":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupSaveButtonVisible :
-                        getConversationViewPage()::isPopupSaveButtonInvisible;
-                break;
-            default:
-                throw new IllegalArgumentException("Only (Select All|Copy|Delete|Paste|Save) are allowed options");
-        }
-        Assert.assertTrue(String.format("The '%s' badge item is %s", badgeItem,
-                (shouldNotSee == null) ? "not visible" : "still visible"), verificationFunc.call());
     }
 
     /**
@@ -762,6 +684,24 @@ public class ConversationViewPageSteps {
     @When("^I clear conversation text input$")
     public void IClearConversationTextInput() throws Exception {
         getConversationViewPage().clearTextInput();
+    }
+
+    /**
+     * Verify whether particular message is present in the conversation input
+     *
+     * @param expectedMessage either 'default' or the expected message's text
+     * @throws Exception
+     * @step. ^I see the (default|".*") message in the conversation input$
+     */
+    @Then("^I see the (default|\".*\") message in the conversation input$")
+    public void ISeeMessageInTheInput(String expectedMessage) throws Exception {
+        if (expectedMessage.equals("default")) {
+            expectedMessage = CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE;
+        } else {
+            expectedMessage = expectedMessage.replaceAll("^\"|\"$", "");
+        }
+        Assert.assertTrue(String.format("The text '%s' is not present in the conversation input", expectedMessage),
+                getConversationViewPage().isCurrentInputTextEqualTo(expectedMessage));
     }
 
     /**
@@ -1086,18 +1026,19 @@ public class ConversationViewPageSteps {
     /**
      * long tap on pointed text in conversation view
      *
-     * @param msg message text
+     * @param msg       message text
+     * @param isLongTap equals to null if normal tap should be performed
      * @throws Exception
-     * @step. ^I long tap last (default\".*\") message in conversation view$
+     * @step. ^I (long )?tap last (default\".*\") message in conversation view$
      */
-    @When("^I long tap (default|\".*\") message in conversation view$")
-    public void ITapAndHoldTextMessage(String msg) throws Exception {
+    @When("^I (long )?tap (default|\".*\") message in conversation view$")
+    public void ITapAndHoldTextMessage(String isLongTap, String msg) throws Exception {
         if (msg.equals("default")) {
-            getConversationViewPage().tapAndHoldTextMessageByText(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+            msg = CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE;
         } else {
             msg = msg.replaceAll("^\"|\"$", "");
-            getConversationViewPage().tapAndHoldTextMessageByText(msg);
         }
+        getConversationViewPage().tapMessageByText(isLongTap != null, msg);
     }
 
     /**
@@ -1373,8 +1314,9 @@ public class ConversationViewPageSteps {
         final boolean condition = (shouldNotSee == null) ?
                 getConversationViewPage().isContainerVisible(containerType) :
                 getConversationViewPage().isContainerInvisible(containerType);
-        Assert.assertTrue(String.format("%s should be %s in the conversation view", containerType,
-                (shouldNotSee == null) ? "visible" : "invisible"), condition);
+        Assert.assertTrue(String.format("%s should be %s in the conversation view",
+                WordUtils.capitalize(containerType), (shouldNotSee == null) ? "visible" : "invisible"),
+                condition);
     }
 
     /**
@@ -1443,5 +1385,45 @@ public class ConversationViewPageSteps {
         nameAlias = usrMgr.replaceAliasesOccurences(nameAlias, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("Deleted label is not present for a message from %s in the conversation view",
                 nameAlias), getConversationViewPage().isDeletedOnLabelPresent(nameAlias));
+    }
+
+    /**
+     * Verify that relevant delete menu item is not displayed
+     *
+     * @param name item name
+     * @throws Exception
+     * @step. ^I do not see (Delete for everyone) item in Delete menu$
+     */
+    @Then("^I do not see (Delete for everyone) item in Delete menu$")
+    public void IDoNotSeeItemInDeleteMenu(String name) throws Exception {
+        Assert.assertTrue(String.format("'%s' Delete menu item shouldn't be visible", name),
+                getConversationViewPage().deleteMenuItemNotVisible(name));
+    }
+
+    /**
+     * Tap the corresponding button on the control, which appears if I select
+     * Edit basge item for a conversation item
+     *
+     * @param btnName one of available button names
+     * @throws Exception
+     * @step. ^I tap (Undo|Confirm|Cancel) button on Edit control
+     */
+    @When("^I tap (Undo|Confirm|Cancel) button on Edit control")
+    public void ITapEditControlButton(String btnName) throws Exception {
+        getConversationViewPage().tapEditControlButton(btnName);
+    }
+
+    /**
+     * Verify whether the expectced URL is visible on link preview container
+     *
+     * @param expectedSrc the expected URL to check. Only host name will be extracted and transformed to
+     *                    lowercase for UI comparison
+     * @throws Exception
+     * @step. ^I see link preview source is equal to (.*)
+     */
+    @Then("^I see link preview source is equal to (.*)")
+    public void ISeeLinkPreviewSource(String expectedSrc) throws Exception {
+        Assert.assertTrue(String.format("The link preview source %s is not visible in the conversation view",
+                expectedSrc), getConversationViewPage().isLinkPreviewSourceVisible(expectedSrc));
     }
 }

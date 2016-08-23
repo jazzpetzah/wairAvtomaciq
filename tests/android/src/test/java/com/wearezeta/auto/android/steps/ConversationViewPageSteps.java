@@ -78,7 +78,6 @@ public class ConversationViewPageSteps {
      * @step. ^I see conversation view$
      */
     @Then("^I see conversation view$")
-    //TODO : Refactory See dialog page,
     public void ISeeConversationPage() throws Exception {
         Assert.assertTrue("The cursor is not visible in the conversation view",
                 getConversationViewPage().isCursorViewVisible());
@@ -556,6 +555,26 @@ public class ConversationViewPageSteps {
         } else {
             Assert.assertFalse(String.format("The most recent conversation message should not be equal to '%s'", message),
                     getConversationViewPage().isLastMessageEqualTo(message, 5));
+        }
+    }
+
+    /**
+     * Used once to check that the first message sent is the same as what is expected.
+     * Note! For current view, not means whole message, but the first message in current view!
+     *
+     * @param message the text of convo
+     * @param not     equals to null if the message should be visible
+     * @throws Exception
+     * @step. ^I see the most top conversation message is (not )?"(.*)"$"
+     */
+    @Then("^I see the most top conversation message is (not )?\"(.*)\"$")
+    public void ISeeFirstMessage(String not, String message) throws Exception {
+        if (not == null) {
+            Assert.assertTrue(String.format("The most top conversation message is not equal to '%s'", message),
+                    getConversationViewPage().isFirstMessageEqualTo(message, 30));
+        } else {
+            Assert.assertFalse(String.format("The most top conversation message should not be equal to '%s'", message),
+                    getConversationViewPage().isFirstMessageEqualTo(message, 5));
         }
     }
 
@@ -1233,6 +1252,17 @@ public class ConversationViewPageSteps {
         }
     }
 
+    /**
+     * Tap on all resend button in current view
+     *
+     * @throws Exception
+     * @step. ^I resend all the visible messages in conversation view$
+     */
+    @When("^I resend all the visible messages in conversation view$")
+    public void ITapResendButton() throws Exception {
+        getConversationViewPage().tapAllResendButton();
+    }
+
     private static final double MIN_UPLOAD_TO_PLAY_SCORE = 0.75;
 
     /**
@@ -1429,6 +1459,26 @@ public class ConversationViewPageSteps {
         } else {
             Assert.assertTrue(String.format("The Pen icon next to the name '%s' should be invisible", name),
                     getConversationViewPage().waitUntilPenIconInvisible(name));
+        }
+    }
+
+    /**
+     * Verify I can see users's message separator
+     *
+     * @param shouldNotSee
+     * @param name         the user's name or name alias
+     * @throws Exception
+     * @step. ^I (do not )?see the message separator of (.*) in (\d+) seconds$
+     */
+    @Then("^I (do not )?see the message separator of (.*) in (\\d+) seconds$")
+    public void ISeeMessageFromUser(String shouldNotSee, String name, int timeOutSeconds) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("The message separator of user %s should be visible", name),
+                    getConversationViewPage().waitUntilMessageSeparatorVisible(name, timeOutSeconds));
+        } else {
+            Assert.assertTrue(String.format("The message separator of user %s should be invisible", name),
+                    getConversationViewPage().waitUntilMessageSeparatorInvisible(name, timeOutSeconds));
         }
     }
 }

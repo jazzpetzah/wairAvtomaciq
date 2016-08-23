@@ -69,7 +69,6 @@ Feature: Analytics
     Then I verify that <LogType> log contains string "ACTION=photo" 4 times
     # Location
     When I tap Share location button from cursor toolbar
-    And I wait for 5 seconds
     And I tap Send button on Share Location page
     And I see Share Location container in the conversation view
     Then I verify that <LogType> log contains string "ACTION=location"

@@ -83,8 +83,7 @@ public abstract class AndroidPage extends BasePage {
 
     @Override
     protected long getDriverInitializationTimeout() {
-        return (ZetaAndroidDriver.MAX_COMMAND_DURATION_MILLIS + AppiumServer.RESTART_TIMEOUT_MILLIS)
-                * DRIVER_CREATION_RETRIES_COUNT;
+        return ZetaAndroidDriver.MAX_COMMAND_DURATION_MILLIS * (DRIVER_CREATION_RETRIES_COUNT + 1);
     }
 
     public AndroidPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {

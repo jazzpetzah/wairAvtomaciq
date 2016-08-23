@@ -1,6 +1,6 @@
 Feature: Delete Everywhere
 
-  @C206234 @staging
+  @C206234 @regression
   Scenario Outline: Verify I can delete my message everywhere (1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -22,7 +22,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact   | Message1 |
       | user1Email | user1Password | user1Name | user2Name | message1 |
 
-  @C206235 @staging
+  @C206235 @regression
   Scenario Outline: Verify I can delete my message everywhere (group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -45,7 +45,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Message1 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | New name | message1 |
 
-  @C206242 @staging
+  @C206242 @regression
   Scenario Outline: Verify delete everywhere works for images
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -66,7 +66,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
 
-  @C206244 @staging
+  @C206244 @regression
   Scenario Outline: Verify delete everywhere works for link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -87,7 +87,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact   | Link                           | LinkTitle   |
       | user1Email | user1Password | user1Name | user2Name | http://www.heise.de/newsticker | 7-Tage-News |
 
-  @C206245 @staging
+  @C206245 @regression
   Scenario Outline: Verify delete everywhere works for location sharing
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -109,7 +109,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Latitude  | Longitude   | LocationName |
       | user1Email | user1Password | user1Name | user2Name | user3Name | New name | 33.747252 | -112.633853 | Triangle     |
 
-  @C206246 @staging
+  @C206246 @regression
   Scenario Outline: Verify delete everywhere works for file sharing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -130,7 +130,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact   | File        | Size  |
       | user1Email | user1Password | user1Name | user2Name | C206246.zip | 512KB |
 
-  @C206247 @staging
+  @C206247 @regression
   Scenario Outline: Verify delete everywhere works for audio messages
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -151,7 +151,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact   | File        | Time  |
       | user1Email | user1Password | user1Name | user2Name | example.wav | 00:20 |
 
-  @C206248 @staging
+  @C206248 @regression
   Scenario Outline: Verify delete everywhere works for video messages
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -172,7 +172,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact   | File        | Size |
       | user1Email | user1Password | user1Name | user2Name | C206248.mp4 | 1MB  |
 
-  @C206236 @staging
+  @C206236 @regression
   Scenario Outline: Verify I see status message if other user deletes his message everywhere (1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -194,7 +194,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact   | Message_1      | Message_2      | Message_3      |
       | user1Email | user1Password | user1Name | user2Name | Test_Message_1 | Test_Message_2 | Test_Message_3 |
 
-  @C206237 @staging
+  @C206237 @regression
   Scenario Outline: Verify I see status message if other user deletes his message everywhere (group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -231,7 +231,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Message_1      | Message_2      | Message_3      | Message_4      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GC1      | Test_Message_1 | Test_Message_2 | Test_Message_3 | Test_Message_4 |
 
-  @C206240 @staging
+  @C206240 @regression
   Scenario Outline: When I delete my message everywhere on a different device (1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -257,7 +257,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact   | Message_1      | Message_2      | Message_3      |
       | user1Email | user1Password | user1Name | user2Name | Test_Message_1 | Test_Message_2 | Test_Message_3 |
 
-  @C206241 @staging
+  @C206241 @regression
   Scenario Outline: When I delete my message everywhere on a different device (group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -284,7 +284,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Message_1      | Message_2      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GC1      | Test_Message_1 | Test_Message_2 |
 
-  @C206250 @staging @WEBAPP-3096
+  @C206250 @regression
   Scenario Outline: Verify deleted messages remain deleted everywhere after I archive and unarchive a conversation
     Given There are 2 users where <Name> is me
     Given user <Name> adds a new device Device1 with label Label1
@@ -326,7 +326,7 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact   | Message_1      | Message_2      | Message_3      |
       | user1Email | user1Password | user1Name | user2Name | Test_Message_1 | Test_Message_2 | Test_Message_3 |
 
-  @C206249 @staging @WEBAPP-3097
+  @C206249 @regression
   Scenario Outline: Verify I see no unread dot if a message was deleted from someone in a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
