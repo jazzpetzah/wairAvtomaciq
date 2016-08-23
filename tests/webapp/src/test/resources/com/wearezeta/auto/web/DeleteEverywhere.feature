@@ -369,8 +369,8 @@ Feature: Delete Everywhere
       When I open context menu of the latest message
       And I click to delete message for everyone in context menu
       And I click confirm to delete message for everyone
-      And I do not see text message <Youtubelink1>
-      Then I do not see embedded youtube message <Youtubelink1>
+      And I do not see text message <Youtubelink>
+      Then I do not see embedded youtube message <Youtubelink>
       When I write message <Soundcloudlink>
       And I send message
       Then I see embedded soundcloud message <Soundcloudlink>

@@ -406,11 +406,11 @@ public class ConversationPage extends WebPage {
                 locator, 5);
     }
 
-    public boolean isMessageEmbedded(String typeOfMessage, String url) throws Exception {
-        String pattern = "[\\w\\-\\_]{10,12}";
+    public boolean isMessageEmbedded(boolean embedded, String typeOfMessage, String url) throws Exception {
+        String pattern = "[\\w\\-\\_]{7,12}";
         Pattern compiledPattern = Pattern.compile(pattern);
         Matcher matcher = compiledPattern.matcher(url);
-        assert matcher.find() : "Could not find " + typeOfMessage + "id in URL: " + url;
+        assert matcher.find() : "Could not find " + typeOfMessage + " id in URL: " + url;
         final String id = matcher.group();
         By locator = null;
         if (typeOfMessage.contains("youtube")) {
@@ -422,26 +422,11 @@ public class ConversationPage extends WebPage {
         } else if (typeOfMessage.contains("spotify")) {
             locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedSpotifyById.apply(id));
         }
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
-    }
-
-    public boolean isMessageNotEmbedded(String typeOfMessage, String url) throws Exception {
-        String pattern = "[\\w\\-\\_]{10,12}";
-        Pattern compiledPattern = Pattern.compile(pattern);
-        Matcher matcher = compiledPattern.matcher(url);
-        assert matcher.find() : "Could not find " + typeOfMessage + "id in URL: " + url;
-        final String id = matcher.group();
-        By locator = null;
-        if (typeOfMessage.contains("youtube")) {
-            locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById.apply(id));
-        } else if (typeOfMessage.contains("soundcloud")) {
-            locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedSoundcloudById.apply(id));
-        } else if (typeOfMessage.contains("vimeo")) {
-            locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedVimeoById.apply(id));
-        } else if (typeOfMessage.contains("spotify")) {
-            locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedSpotifyById.apply(id));
+        if (embedded) {
+            return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+        } else {
+            return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
         }
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
     }
 
     public void clickPeopleButton() throws Exception {
