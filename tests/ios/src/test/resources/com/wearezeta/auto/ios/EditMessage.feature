@@ -95,7 +95,7 @@ Feature: Edit Message
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | HisDevice  |
 
-  @C202345 @staging @fastLogin
+  @C202345 @regression @fastLogin
   Scenario Outline: Verify I can edit my message in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

@@ -340,7 +340,7 @@ Feature: Recall Message
       | Name      | Contact1  | DeviceName |
       | user1Name | user2Name | device1    |
 
-  @C206262 @staging @fastLogin
+  @C206262 @regression @fastLogin
   Scenario Outline: Verify deleted messages/edit message doesn't unarchive the "archived conversation"
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
