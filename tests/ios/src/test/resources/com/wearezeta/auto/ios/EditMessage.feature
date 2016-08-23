@@ -56,7 +56,7 @@ Feature: Edit Message
       | user1Name | user2Name | message |
 
   @C202350 @regression @fastLogin
-  Scenario Outline: Verify I can cancel editing a message by button
+  Scenario Outline: Verify I can cancel editing a message by button, by click/tap on something else
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -67,7 +67,16 @@ Feature: Edit Message
     And I tap on Edit badge item
     And I type the "<Text>" message
     And I tap Cancel button on Edit control
-    Then I see 1 default message in the conversation view
+    Then I do not see Edit message toolbar
+    And I see 1 default message in the conversation view
+    And I see input placeholder text
+    When I long tap default message in conversation view
+    And I tap on Edit badge item
+    And I type the "<Text>" message
+    And I tap Audio Call button
+    And I tap Leave button on Calling overlay
+    Then I do not see Edit message toolbar
+    And I see 1 default message in the conversation view
     And I see input placeholder text
 
     Examples:

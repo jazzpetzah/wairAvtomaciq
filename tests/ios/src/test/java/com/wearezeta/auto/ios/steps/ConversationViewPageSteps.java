@@ -1426,4 +1426,19 @@ public class ConversationViewPageSteps {
         Assert.assertTrue(String.format("The link preview source %s is not visible in the conversation view",
                 expectedSrc), getConversationViewPage().isLinkPreviewSourceVisible(expectedSrc));
     }
+
+    /**
+     * Verify visibility of Edit message toolbar
+     *
+     * @param shouldNotSee equals to null if the toolbar should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see Edit message toolbar$
+     */
+    @Then("^I (do not )?see Edit message toolbar$")
+    public void VerifyVisibilityOfEditMessageToolbar(String shouldNotSee) throws Exception {
+        boolean condition = (shouldNotSee == null) ? getConversationViewPage().confirmEditButtonIsVisible() :
+                getConversationViewPage().confirmEditButtonIsNotVisible();
+        Assert.assertTrue(String.format("Edit toolbar should be %s", (shouldNotSee == null) ? "visible" : "invisible"),
+                condition);
+    }
 }
