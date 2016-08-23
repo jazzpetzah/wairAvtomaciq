@@ -1065,18 +1065,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Taps the video container to download and play video sent from a contact
-     *
-     * @throws Exception
-     * @step. ^I tap the video message container sent from (.*)$
-     */
-    @When("^I tap the video message container sent from (.*)$")
-    public void ITapTheVideoMessageContainer(String username) throws Exception {
-        username = usrMgr.findUserByNameOrNameAlias(username).getName();
-        getConversationViewPage().tapVideoMessageContainer(username);
-    }
-
-    /**
      * Tap on record audio button waits and swipe up to send audio message
      *
      * @param sec time in seconds
@@ -1125,7 +1113,8 @@ public class ConversationViewPageSteps {
                 tapFunc = (isLongTap == null) ? null : getConversationViewPage()::longTapAudioMessage;
                 break;
             case "video message":
-                tapFunc = (isLongTap == null) ? null : getConversationViewPage()::longTapVideoMessage;
+                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapVideoMessage :
+                        getConversationViewPage()::longTapVideoMessage;
                 break;
             case "link preview":
                 tapFunc = (isLongTap == null) ? getConversationViewPage()::tapLocationContainer :
