@@ -38,6 +38,7 @@ public final class PerformanceCommon {
     }
 
     public void sendMultipleMessagesIntoConversation(String convoName, int msgsCount) throws Exception {
+        convoName = usrMgr.replaceAliasesOccurences(convoName, ClientUsersManager.FindBy.NAME_ALIAS);
         final String convo_id = BackendAPIWrappers.getConversationIdByName(usrMgr.getSelfUserOrThrowError(), convoName);
         final List<String> msgsToSend = new ArrayList<>();
         for (int i = 0; i < msgsCount; i++) {
