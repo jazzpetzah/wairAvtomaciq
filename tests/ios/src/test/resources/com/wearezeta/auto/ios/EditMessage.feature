@@ -195,8 +195,8 @@ Feature: Edit Message
   Scenario Outline: Verify I see changed message if message was edited from another device (1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User Myself adds new device <Device>
     Given I sign in using my email or phone number
+    Given User Myself adds new device <Device>
     Given User Myself sends encrypted message "<Message>" to user <Contact1>
     Given I see conversations list
     When I tap on contact name <Contact1>
@@ -214,8 +214,8 @@ Feature: Edit Message
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User Myself adds new device <Device>
     Given I sign in using my email or phone number
+    Given User Myself adds new device <Device>
     Given User Myself sends encrypted message "<Message>" to group conversation <GroupChatName>
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
@@ -223,7 +223,7 @@ Feature: Edit Message
     When User Myself edits the recent message to "<NewMessage>" from group conversation <GroupChatName> via device <Device>
     Then I do not see the conversation view contains message <Message>
     And I see the conversation view contains message <NewMessage>
-    
+
     Examples:
       | Name      | Contact1  | Device    | Contact2  | GroupChatName | Message | NewMessage |
       | user1Name | user2Name | HisDevice | user3Name | EditGroup     | Hi      | Hello      |
