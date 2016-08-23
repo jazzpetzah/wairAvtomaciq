@@ -136,7 +136,7 @@ Feature: Edit Message
       | user1Name | user2Name | http://facebook.com | Check FB       | Look for   | http://wire.com |
 
   @C202352 @regression @fastLogin
-  Scenario Outline: Verify I can edit a message multiple times in a row
+  Scenario Outline: Verify I can edit a message multiple times in a row (group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given User <Contact1> adds new device <DeviceName>
@@ -190,3 +190,41 @@ Feature: Edit Message
     Examples:
       | Name      | Contact   | Text2 | Text2Changed |
       | user1Name | user2Name | msg2  | msgchg       |
+
+  @C202347 @staging @fastLogin
+  Scenario Outline: Verify I see changed message if message was edited from another device (1:1)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given User Myself adds new device <Device>
+    Given I see conversations list
+    When User Myself sends encrypted message "<Message>" to user <Contact1>
+    And I tap on contact name <Contact1>
+    Then I see the conversation view contains message <Message>
+    When User Myself edits the recent message to "<NewMessage>" from user <Contact1> via device <Device>
+    Then I do not see the conversation view contains message <Message>
+    And I see the conversation view contains message <NewMessage>
+
+    Examples:
+      | Name      | Contact1  | Message | Device  | NewMessage |
+      | user1Name | user2Name | Hi      | Device1 | Hello      |
+
+  @C202348 @staging @fastLogin
+  Scenario Outline: Verify I see changed message if message was edited from another device (group)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given User Myself adds new device <Device>
+    Given I see conversations list
+    When User Myself sends encrypted message "<Message>" to group conversation <GroupChatName>
+    And I tap on group chat with name <GroupChatName>
+    Then I see the conversation view contains message <Message>
+    When User Myself edits the recent message to "<NewMessage>" from group conversation <GroupChatName> via device <Device>
+    Then I do not see the conversation view contains message <Message>
+    And I see the conversation view contains message <NewMessage>
+
+    Examples:
+    Examples:
+      | Name      | Contact1  | Device    | Contact2  | GroupChatName | Message | NewMessage |
+      | user1Name | user2Name | HisDevice | user3Name | EditGroup     | Hi      | Hello      |
