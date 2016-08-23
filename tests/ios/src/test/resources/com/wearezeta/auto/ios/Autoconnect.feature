@@ -47,7 +47,7 @@ Feature: Autoconnect
       | Contact1  | Contact2   | CPhone           | C2Phone          | Name      |
       | user3Name | user2Name  | user3PhoneNumber | user2PhoneNumber | user1Name |
 
-  @C202303 @staging @addressbookStart
+  @torun @C202303 @staging @addressbookStart
   Scenario Outline: Verify direct matching email - delayed
     Given There are 2 user where <Name> is me
     Given I quit Wire
@@ -60,6 +60,7 @@ Feature: Autoconnect
     #Wait to make sure user is in the backend
     And I wait until <Contact> exists in backend search results
     When I open search UI
+    #Will keep that accept in, because the test is about accepting that contacts sharing alert
     And I accept alert
     #Wait to be sure the match happend on the backend
     And I wait for 120 seconds

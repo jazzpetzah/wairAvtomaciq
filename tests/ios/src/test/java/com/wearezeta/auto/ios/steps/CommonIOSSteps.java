@@ -1340,7 +1340,8 @@ public class CommonIOSSteps {
     @Given("^I install Addressbook helper app$")
     public void IInstallAddressbookHelperApp() throws Exception {
         final File app = new File(getiOSAddressbookAppPath());
-        IOSSimulatorHelper.installIpa(app);
+        pagesCollection.getCommonPage().installIpa(app);
+
     }
 
     private static final String ADDRESSBOOK_APP_BUNDLE = "com.wire.addressbookautomation";
