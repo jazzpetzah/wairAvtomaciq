@@ -1071,6 +1071,13 @@ public class ConversationPage extends WebPage {
         WebCommonUtils.hoverOverElement(getDriver(), element);
     }
 
+    public void clickEditInContextMenuOfLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssEditMessageId.apply(id));
+        getDriver().findElement(locator).click();
+    }
+
     public void clickToResetSessionOnLatestError() throws Exception {
         By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
         String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");

@@ -724,6 +724,11 @@ public class ConversationPageSteps {
                 .isDeleteButtonVisibleForLatestMessage());
     }
 
+    @When("^I click to edit message in context menu$")
+    public void IClickEditInContextMenuOfLatestMessage() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickEditInContextMenuOfLatestMessage();
+    }
+
     @When("^I click reset session on the latest decryption error")
     public void IClickToResetSession() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickToResetSessionOnLatestError();
