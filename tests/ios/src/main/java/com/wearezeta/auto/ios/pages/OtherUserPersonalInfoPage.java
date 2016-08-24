@@ -85,7 +85,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
         getElement(nameAlsoLeaveCheckerButton, "'Also Leave' checkbox is not present").click();
     }
 
-    public void clickCloseUserProfileButton() throws Exception {
+    public void tapCloseUserProfileButton() throws Exception {
         getElement(nameExitOtherUserPersonalInfoPageButton, "Close profile button is not visible").click();
     }
 

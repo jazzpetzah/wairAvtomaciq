@@ -75,9 +75,9 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact2>
-    And I click Remove
-    And I confirm remove
-    And I click close user profile page button
+    And I tap Remove From Conversation button
+    And I confirm removal from conversation
+    And I close user profile page
     Then I see that <Contact2> is not present on group chat info page
 
     Examples:
@@ -133,7 +133,7 @@ Feature: People View
     And I select participant <GroupCreator>
     And I verify username <GroupCreator> on Other User Profile page is displayed
     And I verify user email for <GroupCreator> on Other User Profile page is displayed
-    And I click close user profile page button
+    And I close user profile page
     And I select participant <NonConnectedContact>
     Then I verify username <NonConnectedContact> on Other User Profile page is displayed
 
@@ -233,7 +233,7 @@ Feature: People View
     And I see user <Contact2> on People picker page is NOT selected
     And I see user <Contact3> on People picker page is NOT selected
     And I click close button to dismiss people view
-    And I click close user profile page button
+    And I close user profile page
     And I navigate back to conversations list
     Then I don't see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 
@@ -253,7 +253,7 @@ Feature: People View
     And I open conversation details
     And I open conversation menu
     And I tap Mute action button
-    And I click close user profile page button
+    And I close user profile page
     And I navigate back to conversations list
     And I see conversations list
     Then I see the state of <Contact> conversation item is changed
@@ -275,7 +275,7 @@ Feature: People View
     And I open conversation details
     And I open conversation menu
     And I tap Unmute action button
-    And I click close user profile page button
+    And I close user profile page
     And I navigate back to conversations list
     And I see conversations list
     Then I see the state of <Contact> conversation item is changed
