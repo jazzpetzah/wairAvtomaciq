@@ -216,36 +216,42 @@ public class CallingSteps {
     @Then("^I call (\\d+) times for (\\d+) minutes with (.*)$")
     public void ICallXTimes(int times, int callDurationMinutes, String callees)
             throws Throwable {
-        final int flowWaitTime = 3;
+        final int timeBetweenCall = 10;
         final List<String> calleeList = splitAliases(callees);
         final ConversationViewPageSteps convSteps = new ConversationViewPageSteps();
         final CallPageSteps callPageSteps = new CallPageSteps();
         final CommonIOSSteps commonIOSSteps = new CommonIOSSteps();
         final Map<Integer, Throwable> failures = new HashMap<>();
         for (int i = 0; i < times; i++) {
+            LOG.info("\n\nSTARTING CALL " + i);
             try {
+                    convSteps.ITapCallButton("Audio");
 
-                convSteps.ITapCallButton("Audio");
+                    for (String callee : calleeList) {
+                        UserXAcceptsNextIncomingCallAutomatically(callee);
+                        UserXVerifesCallStatusToUserY(callee, "active", 20);
+                    }
+                    LOG.info("All instances are active");
 
-                for (String callee : calleeList) {
-                    UserXAcceptsNextIncomingCallAutomatically(callee);
-                    UserXVerifesCallStatusToUserY(callee,"active",20);
-                }
+                    callPageSteps.ISeeCallingOverlay(null);
+                    LOG.info("Calling overlay is visible");
 
-                callPageSteps.ISeeCallingOverlay(null);
+                    commonIOSSteps.WaitForTime(callDurationMinutes * 60);
 
-                commonIOSSteps.WaitForTime(callDurationMinutes * 60);
+                    callPageSteps.ITapButton("Leave");
 
-                callPageSteps.ITapButton("Leave");
+                    for (String callee : calleeList) {
+                        UserXVerifesCallStatusToUserY(callee, "destroyed", 20);
+                    }
+                    LOG.info("All instances are destroyed");
 
-                for (String callee : calleeList) {
-                    UserXVerifesCallStatusToUserY(callee,"destroyed",20);
-                }
-
-                callPageSteps.ISeeCallingOverlay("do not");
-                commonIOSSteps.WaitForTime(10);
+                    callPageSteps.ISeeCallingOverlay("do not");
+                    LOG.info("Calling overlay is NOT visible");
+                    LOG.info("CALL " + i + " SUCCESSFUL");
+                    commonIOSSteps.WaitForTime(timeBetweenCall);
 
             } catch (Throwable t){
+                LOG.info("CALL " + i + " FAILED");
                 LOG.error("Can not stop waiting call " + i + " " + t);
                 try {
                     callPageSteps.ITapButton("Leave");
@@ -253,7 +259,7 @@ public class CallingSteps {
                 } catch (Throwable ex) {
                     LOG.error("Can not stop call " + i + " " + ex);
                 }
-
+                failures.put(i, t);
             }
 
         }
@@ -269,7 +275,5 @@ public class CallingSteps {
             // test results
             throw entrySet.getValue();
         }
-        LOG.info(failures.size() + " failures happened during " + times
-                + " calls");
     }
 }

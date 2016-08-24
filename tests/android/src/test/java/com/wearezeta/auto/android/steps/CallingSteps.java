@@ -211,7 +211,7 @@ public class CallingSteps {
     @Then("^I call (\\d+) times for (\\d+) minutes with (.*)$")
     public void ICallXTimes(int times, int callDurationMinutes, String callees)
             throws Throwable {
-        final int flowWaitTime = 3;
+        final int timeBetweenCall = 10;
         final List<String> calleeList = splitAliases(callees);
         final ConversationViewPageSteps convSteps = new ConversationViewPageSteps();
         final CallOngoingAudioPageSteps callOngoingPageSteps = new CallOngoingAudioPageSteps();
@@ -219,6 +219,7 @@ public class CallingSteps {
         final CommonAndroidSteps commonAndroidSteps = new CommonAndroidSteps();
         final Map<Integer, Throwable> failures = new HashMap<>();
         for (int i = 0; i < times; i++) {
+            LOG.info("\n\nSTARTING CALL " + i);
             try {
                 convSteps.ITapTopToolbarButton("Audio Call");
                 callOutgoingPageSteps.ISeeOutgoingCall(null,null);
@@ -227,8 +228,10 @@ public class CallingSteps {
                     UserXAcceptsNextIncomingCallAutomatically(callee, null);
                     UserXVerifesCallStatusToUserY(callee,"active",20);
                 }
+                LOG.info("All instances are active");
 
                 callOngoingPageSteps.ISeeOngoingCall(null);
+                LOG.info("Calling overlay is visible");
 
                 commonAndroidSteps.WaitForTime(callDurationMinutes * 60);
 
@@ -237,11 +240,15 @@ public class CallingSteps {
                 for (String callee : calleeList) {
                     UserXVerifesCallStatusToUserY(callee,"destroyed",20);
                 }
+                LOG.info("All instances are destroyed");
 
                 callOngoingPageSteps.ISeeOngoingCall("do not");
-                commonAndroidSteps.WaitForTime(10);
+                LOG.info("Calling overlay is NOT visible");
+                LOG.info("CALL " + i + " SUCCESSFUL");
+                commonAndroidSteps.WaitForTime(timeBetweenCall);
 
             } catch (Throwable t){
+                LOG.info("CALL " + i + " FAILED");
                 LOG.error("Can not stop waiting call " + i + " " + t);
                 try {
                     callOngoingPageSteps.IHangUp();
@@ -249,7 +256,7 @@ public class CallingSteps {
                 } catch (Throwable ex) {
                     LOG.error("Can not stop call " + i + " " + ex);
                 }
-
+                failures.put(i, t);
             }
 
         }
@@ -265,7 +272,5 @@ public class CallingSteps {
             // test results
             throw entrySet.getValue();
         }
-        LOG.info(failures.size() + " failures happened during " + times
-                + " calls");
     }
 }
