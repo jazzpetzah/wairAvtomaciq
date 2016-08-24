@@ -16,9 +16,8 @@ Feature: Edit
     And I click to edit message in context menu
     And I delete 8 characters from the conversation input
     And I write message <Message2>
-    And I press enter to finish editing the message
+    And I send message
     Then I do not see text message <Message1>
-    And I do not see unread dot in conversation <Contact>
     And I see text message <Message2>
     And I see 2 messages in conversation
 
@@ -43,9 +42,8 @@ Feature: Edit
     And I click to edit message in context menu
     And I delete 8 characters from the conversation input
     And I write message <Message2>
-    And I press enter to finish editing the message
+    And I send message
     Then I do not see text message <Message1>
-    And I do not see unread dot in conversation <ChatName>
     And I see text message <Message2>
     And I see 2 messages in conversation
 

@@ -106,11 +106,6 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).writeNewMessage(message);
     }
 
-    @When("^I press enter to finish editing the message$")
-    public void IPressEnter() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).pressEnterToFinishEditing();
-    }
-
     @When("^I paste message from file (.*)$")
     public void IPasteMessageFromFile(String file) throws Exception {
         String s = WebCommonUtils.getTextFromFile(file);

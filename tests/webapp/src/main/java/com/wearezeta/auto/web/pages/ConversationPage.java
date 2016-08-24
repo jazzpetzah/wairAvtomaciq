@@ -197,10 +197,6 @@ public class ConversationPage extends WebPage {
         conversationInput.sendKeys(Keys.ENTER);
     }
 
-    public void pressEnterToFinishEditing()  {
-        conversationInput.sendKeys(Keys.ENTER);
-    }
-
     public String getLastActionMessage() throws Exception {
         final By locator = By
                 .cssSelector(WebAppLocators.ConversationPage.cssFirstAction);
