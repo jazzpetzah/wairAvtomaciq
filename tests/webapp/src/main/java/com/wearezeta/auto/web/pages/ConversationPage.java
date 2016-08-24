@@ -1029,7 +1029,7 @@ public class ConversationPage extends WebPage {
         return mappedMessages;
     }
 
-    public void openContextMenuOnLatestMessage() throws Exception {
+    public void clickContextMenuOnLatestMessage() throws Exception {
         By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
         String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
         hoverOverMessage(id);
@@ -1113,6 +1113,13 @@ public class ConversationPage extends WebPage {
         String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteButtonByMessageId.apply(id));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
+    }
+
+    public boolean isEditButtonInvisibleForLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssEditButtonByMessageId.apply(id));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3);
     }
 
     public void setCloseResetSessionDialog() throws Exception {

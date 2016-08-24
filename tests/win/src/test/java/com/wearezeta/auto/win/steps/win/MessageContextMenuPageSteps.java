@@ -20,15 +20,15 @@ public class MessageContextMenuPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     /**
-     * Opens the context menu for the last message in the current conversation
+     * Opens or closes the context menu for the last message in the current conversation
      *
-     * @step. ^I open context menu of the last message$
+     * @step. ^I click context menu of the last message$
      *
      * @throws java.lang.Exception
      */
-    @Given("^I open context menu of the last message$")
-    public void IOpenContextMenuOfLast() throws Exception {
-        webappPagesCollection.getPage(ConversationPage.class).openContextMenuOnLatestMessage();
+    @Given("^I click context menu of the last message$")
+    public void IClickContextMenuOfLast() throws Exception {
+        webappPagesCollection.getPage(ConversationPage.class).clickContextMenuOnLatestMessage();
     }
 
     /**

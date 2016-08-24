@@ -683,9 +683,9 @@ public class ConversationPageSteps {
         }
     }
 
-    @When("^I open context menu of the latest message$")
-    public void IOpenContextMenuOfLatestMessage() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).openContextMenuOnLatestMessage();
+    @When("^I click context menu of the latest message$")
+    public void IClickContextMenuOfLatestMessage() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnLatestMessage();
     }
 
     @When("^I click to delete message for everyone in context menu$")
@@ -722,6 +722,12 @@ public class ConversationPageSteps {
     public void IDoNotSeeDeleteButton() throws Exception {
         assertFalse("Delete button is visible", context.getPagesCollection().getPage(ConversationPage.class)
                 .isDeleteButtonVisibleForLatestMessage());
+    }
+
+    @When("^I do not see edit button in context menu for latest message$")
+    public void IDoNotSeeEditButton() throws Exception {
+        assertTrue("Edit button is visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isEditButtonInvisibleForLatestMessage());
     }
 
     @When("^I click to edit message in context menu$")

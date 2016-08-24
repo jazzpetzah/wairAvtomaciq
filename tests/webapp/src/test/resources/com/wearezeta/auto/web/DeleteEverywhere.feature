@@ -12,7 +12,7 @@ Feature: Delete Everywhere
     And I send message
     And I see text message <Message1>
     And I see 2 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for everyone in context menu
     And I click confirm to delete message for everyone
     Then I do not see text message <Message1>
@@ -35,7 +35,7 @@ Feature: Delete Everywhere
     And I send message
     And I see text message <Message1>
     And I see 2 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for everyone in context menu
     And I click confirm to delete message for everyone
     Then I do not see text message <Message1>
@@ -56,7 +56,7 @@ Feature: Delete Everywhere
     And I send picture <PictureName> to the current conversation
     And I see sent picture <PictureName> in the conversation view
     And I see 2 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for everyone in context menu
     And I click confirm to delete message for everyone
     Then I do not see any picture in the conversation view
@@ -77,7 +77,7 @@ Feature: Delete Everywhere
     And Contact Myself sends message <Link> via device Device1 to user <Contact>
     And I see a title <LinkTitle> in link preview in the conversation view
     And I see 2 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for everyone in context menu
     And I click confirm to delete message for everyone
     Then I do not see a title <LinkTitle> in link preview in the conversation view
@@ -99,7 +99,7 @@ Feature: Delete Everywhere
     And User Myself sends location <LocationName> with <Latitude> and <Longitude> to group conversation <ChatName> via device Device1
     And I see location message <LocationName> with <Latitude> and <Longitude> in the conversation view
     And I see 2 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for everyone in context menu
     And I click confirm to delete message for everyone
     Then I do not see location message <LocationName> with <Latitude> and <Longitude> in the conversation view
@@ -120,7 +120,7 @@ Feature: Delete Everywhere
     And I send <Size> sized file with name <File> to the current conversation
     And I wait until file <File> is uploaded completely
     And I see 2 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for everyone in context menu
     And I click confirm to delete message for everyone
     Then I do not see file transfer for file <File> in the conversation view
@@ -141,7 +141,7 @@ Feature: Delete Everywhere
     And I send audio file with length <Time> and name <File> to the current conversation
     And I wait until audio <File> is uploaded completely
     And I see 2 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for everyone in context menu
     And I click confirm to delete message for everyone
     Then I do not see audio message <File> in the conversation view
@@ -162,7 +162,7 @@ Feature: Delete Everywhere
     And I send <Size> sized video with name <File> to the current conversation
     And I wait until video <File> is uploaded completely
     And I see 2 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for everyone in context menu
     And I click confirm to delete message for everyone
     Then I do not see video message <File> in the conversation view
@@ -366,7 +366,7 @@ Feature: Delete Everywhere
       When I write message <Youtubelink>
       And I send message
       And I see embedded youtube message <Youtubelink>
-      When I open context menu of the latest message
+      When I click context menu of the latest message
       And I click to delete message for everyone in context menu
       And I click confirm to delete message for everyone
       And I do not see text message <Youtubelink>
@@ -374,21 +374,21 @@ Feature: Delete Everywhere
       When I write message <Soundcloudlink>
       And I send message
       Then I see embedded soundcloud message <Soundcloudlink>
-      And I open context menu of the latest message
+      And I click context menu of the latest message
       And I click to delete message for everyone in context menu
       And I click confirm to delete message for everyone
       Then I do not see embedded soundcloud message <Soundcloudlink>
       When I write message <Vimeolink>
       And I send message
       Then I see embedded vimeo message <Vimeolink>
-      And I open context menu of the latest message
+      And I click context menu of the latest message
       And I click to delete message for everyone in context menu
       And I click confirm to delete message for everyone
       Then I do not see embedded vimeo message <Vimeolink>
       And I write message <Spotifylink>
       And I send message
       And I see embedded spotify message <Spotifylink>
-      When I open context menu of the latest message
+      When I click context menu of the latest message
       And I click to delete message for everyone in context menu
       And I click confirm to delete message for everyone
       Then I do not see embedded spotify message <Spotifylink>

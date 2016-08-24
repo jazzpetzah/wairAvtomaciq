@@ -13,7 +13,7 @@ Feature: Edit
     And I send message
     And I see text message <Message1>
     And I see 2 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
 
     Examples:
       | Login      | Password      | Name      | Contact   | Message1 |
