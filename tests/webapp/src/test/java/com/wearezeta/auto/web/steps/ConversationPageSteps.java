@@ -106,6 +106,11 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).writeNewMessage(message);
     }
 
+    @When("^I press enter to finish editing the message$")
+    public void IPressEnter() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).pressEnterToFinishEditing();
+    }
+
     @When("^I paste message from file (.*)$")
     public void IPasteMessageFromFile(String file) throws Exception {
         String s = WebCommonUtils.getTextFromFile(file);
@@ -722,6 +727,11 @@ public class ConversationPageSteps {
     public void IDoNotSeeDeleteButton() throws Exception {
         assertFalse("Delete button is visible", context.getPagesCollection().getPage(ConversationPage.class)
                 .isDeleteButtonVisibleForLatestMessage());
+    }
+
+    @When("^I click to edit message in context menu$")
+    public void IClickEditInContextMenuOfLatestMessage() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickEditInContextMenuOfLatestMessage();
     }
 
     @When("^I click reset session on the latest decryption error")

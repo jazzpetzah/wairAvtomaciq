@@ -197,6 +197,10 @@ public class ConversationPage extends WebPage {
         conversationInput.sendKeys(Keys.ENTER);
     }
 
+    public void pressEnterToFinishEditing()  {
+        conversationInput.sendKeys(Keys.ENTER);
+    }
+
     public String getLastActionMessage() throws Exception {
         final By locator = By
                 .cssSelector(WebAppLocators.ConversationPage.cssFirstAction);
@@ -1069,6 +1073,13 @@ public class ConversationPage extends WebPage {
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssMessagesById.apply(id));
         WebElement element = getDriver().findElement(locator);
         WebCommonUtils.hoverOverElement(getDriver(), element);
+    }
+
+    public void clickEditInContextMenuOfLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssEditMessageId.apply(id));
+        getDriver().findElement(locator).click();
     }
 
     public void clickToResetSessionOnLatestError() throws Exception {
