@@ -33,6 +33,7 @@ import gherkin.formatter.model.Result;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
+import org.apache.xpath.operations.Bool;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -134,9 +135,9 @@ public class CommonIOSSteps {
                 // https://wearezeta.atlassian.net/browse/ZIOS-5769
                 "--disable-autocorrection",
                 // https://wearezeta.atlassian.net/browse/ZIOS-5259
-                "-AnalyticsUserDefaultsDisabledKey", "0",
+                "-AnalyticsUserDefaultsDisabledKey", "0"
                 //"--debug-log-network",
-                "--addressbook-on-simulator"
+                //"--addressbook-on-simulator"
         ));
 
         if (additionalCaps.isPresent()) {
@@ -149,7 +150,15 @@ public class CommonIOSSteps {
                             "--loginemail=" + ((ClientUser) entry.getValue()).getEmail(),
                             "--loginpassword=" + ((ClientUser) entry.getValue()).getPassword()
                     ));
+//                } else if (entry.getKey().equals(CAPABILITY_NAME_ADDRESSBOOK) &&
+//                        (entry.getValue() instanceof Boolean) && (Boolean) entry.getValue()) {
+//                    processArgs.add("--addressbook-on-simulator");
+//                }
                 } else {
+                    if (entry.getKey().equals(CAPABILITY_NAME_ADDRESSBOOK) &&
+                            (entry.getValue() instanceof Boolean) && (Boolean) entry.getValue()) {
+                        processArgs.add("--addressbook-on-simulator");
+                    }
                     capabilities.setCapability(entry.getKey(), entry.getValue());
                 }
             }
@@ -208,9 +217,14 @@ public class CommonIOSSteps {
         }
 
         String appPath = getAppPath();
-        if (scenario.getSourceTagNames().contains("@upgrade") || scenario.getSourceTagNames().contains(TAG_NAME_ADDRESSBOOK)) {
+        if (scenario.getSourceTagNames().contains("@upgrade") ||
+                scenario.getSourceTagNames().contains(TAG_NAME_ADDRESSBOOK)) {
             if (scenario.getSourceTagNames().contains("@upgrade")) {
                 appPath = getOldAppPath();
+            }
+
+            if (scenario.getSourceTagNames().contains(TAG_NAME_ADDRESSBOOK)) {
+                additionalCaps.put(CAPABILITY_NAME_ADDRESSBOOK, true);
             }
 
             if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
@@ -1430,7 +1444,7 @@ public class CommonIOSSteps {
         Thread.sleep(2000);
         //To be sure its get pressed tap a second time, if it got pressed 1st time nothing will happen
         //there is no ui in the app...sometimes it fails here, so the second press
-        for (int i = 0; i <= 1; i++){
+        for (int i = 0; i <= 1; i++) {
             IOSSimulatorHelper.clickAt("0.68", "0.58", "1");
         }
     }
@@ -1518,7 +1532,7 @@ public class CommonIOSSteps {
      */
     @Given("^I relaunch Wire$")
     public void IRelaunchWire() throws Exception {
-        if (savedCaps.isEmpty()){
+        if (savedCaps.isEmpty()) {
             throw new Exception("Capabilities are empty. Quit Wire first to set Capabilities");
         }
         savedCaps.put("noReset", true);
