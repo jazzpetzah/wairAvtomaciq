@@ -426,7 +426,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @torun @fastLogin
+  @call_loop @fastLogin
   Scenario Outline: Make 1:1 call loop to AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
