@@ -134,8 +134,9 @@ public class CommonIOSSteps {
                 // https://wearezeta.atlassian.net/browse/ZIOS-5769
                 "--disable-autocorrection",
                 // https://wearezeta.atlassian.net/browse/ZIOS-5259
-                "-AnalyticsUserDefaultsDisabledKey", "0"
+                "-AnalyticsUserDefaultsDisabledKey", "0",
                 //"--debug-log-network",
+                "--addressbook-on-simulator"
         ));
 
         if (additionalCaps.isPresent()) {
@@ -147,11 +148,6 @@ public class CommonIOSSteps {
                             // https://wearezeta.atlassian.net/browse/ZIOS-6747
                             "--loginemail=" + ((ClientUser) entry.getValue()).getEmail(),
                             "--loginpassword=" + ((ClientUser) entry.getValue()).getPassword()
-                    ));
-                }
-                if (entry.getKey().equals(CAPABILITY_NAME_ADDRESSBOOK)) {
-                    processArgs.addAll(Arrays.asList(
-                            "--addressbook-on-simulator"
                     ));
                 } else {
                     capabilities.setCapability(entry.getKey(), entry.getValue());
@@ -217,9 +213,6 @@ public class CommonIOSSteps {
                 appPath = getOldAppPath();
             }
 
-            if (scenario.getSourceTagNames().contains(TAG_NAME_ADDRESSBOOK)){
-                additionalCaps.put(CAPABILITY_NAME_ADDRESSBOOK, true);
-            }
             if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
                 PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
             }
@@ -852,6 +845,18 @@ public class CommonIOSSteps {
     public void UserWaitsUntilContactExistsInHisSearchResults(
             String searchByNameAlias, String query) throws Exception {
         commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
+    }
+
+    /**
+     * Wait until suggestions are in the backend for a certain user
+     *
+     * @param userNameAlias the name of the user
+     * @throws Exception
+     * @step. ^I wait until there are suggestions for user (.*) on backend$
+     */
+    @Given("^I wait until there are suggestions for user (.*) on backend$")
+    public void WaitsForSuggestionsOnBackend(String userNameAlias) throws Exception {
+        commonSteps.WaitUntilSuggestionFound(userNameAlias);
     }
 
     @Given("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)")
@@ -1513,9 +1518,13 @@ public class CommonIOSSteps {
      */
     @Given("^I relaunch Wire$")
     public void IRelaunchWire() throws Exception {
+        if (savedCaps.isEmpty()){
+            throw new Exception("Capabilities are empty. Quit Wire first to set Capabilities");
+        }
         savedCaps.put("noReset", true);
         savedCaps.put("fullReset", false);
         final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(getAppPath(), Optional.of(savedCaps), 1);
         updateDriver(lazyDriver);
+        savedCaps.clear();
     }
 }

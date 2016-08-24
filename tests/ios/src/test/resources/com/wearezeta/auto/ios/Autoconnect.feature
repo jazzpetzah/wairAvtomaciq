@@ -26,7 +26,7 @@ Feature: Autoconnect
       | user1Name | user2Name  | user1PhoneNumber | user2PhoneNumber | user3Name |
 
   #still needs the fix to upload +0 to BE, thats why no label to run yet, because it will fail
-  @torun @C202304 @addressbookStart
+  @C202304 @addressbookStart
   Scenario Outline: Verify autoconnect users by direct match phone numbers - delayed
     Given There are 3 user where <Name> is me
     Given I quit Wire
@@ -50,7 +50,7 @@ Feature: Autoconnect
       | Contact1  | Contact2   | CPhone           | C2Phone          | Name      |
       | user3Name | user2Name  | user3PhoneNumber | user2PhoneNumber | user1Name |
 
-  @C202303 @staging @addressbookStart
+  @torun @C202303 @staging @addressbookStart
   Scenario Outline: Verify direct matching email - delayed
     Given There are 2 user where <Name> is me
     Given I quit Wire
@@ -66,6 +66,7 @@ Feature: Autoconnect
     #Will keep that accept in, because the test is about accepting that contacts sharing alert
     And I accept alert
     #Wait to be sure the match happend on the backend
+    #And I wait until there are suggestions for user <Contact> on backend
     And I wait for 120 seconds
     And I input in People picker search field first 1 letters of user name <Contact>
     Then I see first item in Search result is named <Contact>
@@ -95,6 +96,7 @@ Feature: Autoconnect
     And I wait until <Contact> exists in backend search results
     When I open search UI
     #Wait to be sure the match happend on the backend
+    #And I wait until there are suggestions for user <Contact> on backend
     And I wait for 120 seconds
     And I input in People picker search field first 1 letters of user name <Contact>
     Then I see first item in Search result is named <Contact>
