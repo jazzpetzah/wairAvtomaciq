@@ -606,6 +606,11 @@ public final class CommonSteps {
                 true, BACKEND_USER_SYNC_TIMEOUT);
     }
 
+    public void WaitUntilContactIsFirstSearchResult(String searchByNameAlias,
+                                                    String contactAlias) throws Exception {
+
+    }
+
     public void WaitUntilContactIsFoundInSearchByEmail(String searchByNameAlias, String contactAlias) throws Exception {
         final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(contactAlias);
         String query = userAs.getEmail();

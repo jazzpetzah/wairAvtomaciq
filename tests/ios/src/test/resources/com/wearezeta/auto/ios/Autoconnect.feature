@@ -67,6 +67,7 @@ Feature: Autoconnect
     And I accept alert
     #Wait to be sure the match happend on the backend
     #And I wait until there are suggestions for user <Contact> on backend
+    And I wait until <Contact> is first search result on backend
     And I wait for 120 seconds
     And I input in People picker search field first 1 letters of user name <Contact>
     Then I see first item in Search result is named <Contact>

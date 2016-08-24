@@ -861,6 +861,11 @@ public class CommonIOSSteps {
         commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
     }
 
+    @Given("^(\\w+) waits? until (.*) is first search result on backend$")
+    public void UserWaitsUntilContactIsFirstSearchResult(String searchByNameAlias, String query) throws Exception {
+        commonSteps.WaitUntilContactIsFirstSearchResult(searchByNameAlias, query);
+    }
+
     /**
      * Wait until suggestions are in the backend for a certain user
      *
