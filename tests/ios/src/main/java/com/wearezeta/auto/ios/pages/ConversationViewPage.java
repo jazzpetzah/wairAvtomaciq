@@ -1,6 +1,8 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
@@ -37,7 +39,11 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameConversationInputAvatar = MobileBy.AccessibilityId("authorImage");
 
-    private static final By nameInputPlaceholderText = MobileBy.AccessibilityId("TYPE A MESSAGE");
+    private static final String DEFAULT_INPUT_PLACEHOLDER_TEXT = "TYPE A MESSAGE";
+    private static final By nameInputPlaceholderText = MobileBy.AccessibilityId(DEFAULT_INPUT_PLACEHOLDER_TEXT);
+    private static final By xpathEmptyInputField = By.xpath(
+            String.format("//*[@name='%s' or (@name='%s' and @value='')]",
+                    DEFAULT_INPUT_PLACEHOLDER_TEXT, nameStrConversationInputField));
 
     protected static final By nameYouRenamedConversation = MobileBy.AccessibilityId("YOU RENAMED THE CONVERSATION");
 
@@ -56,9 +62,6 @@ public class ConversationViewPage extends IOSPage {
 
     private static final Function<String, String> xpathStrLastMessageByExactText = text ->
             String.format("%s[1][@value='%s']", xpathStrAllTextMessages, text);
-
-    private static final Function<String, String> xpathTableCellFromUser = text ->
-            String.format("%s[@name='%s']", xpathStrAllEntries, text.toUpperCase());
 
     private static final Function<String, String> xpathStrMessageByTextPart = text ->
             String.format("%s[contains(@value, '%s')]", xpathStrAllTextMessages, text);
@@ -216,12 +219,36 @@ public class ConversationViewPage extends IOSPage {
             String.format("//UIATableCell[@name='%s']//UIAStaticText[starts-with(@label, 'Deleted on')]",
                     name.toUpperCase());
 
+    // TODO: Replace XPaths with IDs
+    private static final By xpathUndoEdit =
+            By.xpath("//UIAButton[@name='photoButton']/preceding-sibling::UIAButton[3]");
+    private static final By xpathConfirmEdit =
+            By.xpath("//UIAButton[@name='photoButton']/preceding-sibling::UIAButton[2]");
+    private static final By xpathCancelEdit =
+            By.xpath("//UIAButton[@name='photoButton']/preceding-sibling::UIAButton[1]");
+
+    private static final Function<String, String> xpathStrLinkPreviewSrcByText = text ->
+            String.format("//UIAStaticText[@name='linkPreviewSource' and @value='%s']",
+                    getDomainName(text).toLowerCase());
+
     private static final int MAX_APPEARANCE_TIME = 20;
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
     public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
+    }
+
+    private static String getDomainName(String url) {
+        URI uri;
+        try {
+            uri = new URI(url);
+        } catch (URISyntaxException e) {
+            // e.printStackTrace();
+            return url;
+        }
+        final String domain = uri.getHost();
+        return domain.toLowerCase().startsWith("www.") ? domain.substring(4) : domain;
     }
 
     public boolean isPartOfTextMessageVisible(String msg) throws Exception {
@@ -307,16 +334,12 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public int getMessagesCount() throws Exception {
-        return getMessagesCount(null);
-    }
-
-    public int getMessagesCount(String expectedMessage) throws Exception {
+    public int getMessagesCount(Optional<String> expectedMessage, int timeoutSeconds) throws Exception {
         By locator = xpathAllTextMessages;
-        if (expectedMessage != null) {
-            locator = By.xpath(xpathStrMessageByTextPart.apply(expectedMessage));
+        if (expectedMessage.isPresent()) {
+            locator = By.xpath(xpathStrMessageByTextPart.apply(expectedMessage.get()));
         }
-        return selectVisibleElements(locator).size();
+        return selectVisibleElements(locator, timeoutSeconds).size();
     }
 
     public int getCountOfImages() throws Exception {
@@ -474,7 +497,7 @@ public class ConversationViewPage extends IOSPage {
             Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
         }
         if (shouldSend) {
-            if (wasKeyboardInvisible) {
+            if (DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathEmptyInputField, 1)) {
                 // This is faster and allows to avoid autocorrection, but does not update input cursor position properly
                 ((IOSElement) convoInput).setValue(message);
             } else {
@@ -743,10 +766,11 @@ public class ConversationViewPage extends IOSPage {
         }
     }
 
-    public void tapAndHoldTextMessageByText(String msg) throws Exception {
-        final WebElement lastMessage = getElement(By.xpath(xpathStrMessageByTextPart.apply(msg)));
+    public void tapMessageByText(boolean isLongTap, String msg) throws Exception {
+        final WebElement locator = getElement(By.xpath(xpathStrMessageByTextPart.apply(msg)));
+        final int tapDuration = isLongTap ? DriverUtils.LONG_TAP_DURATION : DriverUtils.SINGLE_TAP_DURATION;
         //Using this method because tap should be performed precisely on the text otherwise popup won't appear
-        DriverUtils.tapOnPercentOfElement(getDriver(), lastMessage, 10, 50, 1000);
+        DriverUtils.tapOnPercentOfElement(getDriver(), locator, 10, 50, tapDuration);
     }
 
     public void longTapMediaContainer() throws Exception {
@@ -803,11 +827,6 @@ public class ConversationViewPage extends IOSPage {
         } else {
             clickElementWithRetryIfStillDisplayed(button);
         }
-    }
-
-    public void tapVideoMessageContainer(String username) throws Exception {
-        final By locator = By.xpath(xpathTableCellFromUser.apply(username));
-        getElement(locator).click();
     }
 
     public void tapAudioRecordWaitAndSwipe(int swipeDelaySeconds) throws Exception {
@@ -976,6 +995,11 @@ public class ConversationViewPage extends IOSPage {
         getElement(locator).click();
     }
 
+    public boolean deleteMenuItemNotVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathStrActionSheetBtnByName.apply(name));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
     public void longTapVideoMessage() throws Exception {
         this.getDriver().tap(1, getElement(nameVideoMessageActionButton), DriverUtils.LONG_TAP_DURATION);
     }
@@ -983,5 +1007,33 @@ public class ConversationViewPage extends IOSPage {
     public boolean isDeletedOnLabelPresent(String name) throws Exception {
         final By locator = By.xpath(xpathStrDeleteOnLabelForUser.apply(name));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+    }
+
+    private By getEditControlByName(String name) {
+        switch (name.toLowerCase()) {
+            case "undo":
+                return xpathUndoEdit;
+            case "confirm":
+                return xpathConfirmEdit;
+            case "cancel":
+                return xpathCancelEdit;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown Edit control button '%s'", name));
+        }
+    }
+
+    public void tapEditControlButton(String name) throws Exception {
+        final By locator = getEditControlByName(name);
+        getElement(locator).click();
+    }
+
+    public boolean isLinkPreviewSourceVisible(String expectedSrc) throws Exception {
+        final By locator = By.xpath(xpathStrLinkPreviewSrcByText.apply(expectedSrc));
+        log.debug(String.format("Locating source text field on link preview: '%s'", locator));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public void tapVideoMessage() throws Exception {
+        getElement(nameVideoMessageActionButton).click();
     }
 }

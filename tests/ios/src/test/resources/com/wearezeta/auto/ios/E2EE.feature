@@ -129,7 +129,7 @@ Feature: E2EE
     And I open details page of device number 1
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    And I click close user profile page button
+    And I close user profile page
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And User <Contact1> sends 1 encrypted message using device <DeviceName2> to user Myself
     Then I do not see shield icon next to conversation input field
@@ -155,7 +155,7 @@ Feature: E2EE
     And I open details page of device number 1
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    And I click close user profile page button
+    And I close user profile page
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And I type the default message and send it
     Then I see the label "<Contact1> <ExpectedSuffix>" on New Device overlay
@@ -258,7 +258,7 @@ Feature: E2EE
     And I open details page of device number 1
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    And I click close user profile page button
+    And I close user profile page
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And I type the default message and send it
     And I close New Device overlay
@@ -282,7 +282,7 @@ Feature: E2EE
     And I open details page of device number 1
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    And I click close user profile page button
+    And I close user profile page
     When User Myself adds a new device <DeviceName2> with label <DeviceLabel2>
     Then I do not see shield icon next to conversation input field
     # FIXME: Make it possible in the app to detect labels text with Appium
@@ -311,7 +311,7 @@ Feature: E2EE
     And I open details page of device number 2
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    And I click close user profile page button
+    And I close user profile page
     Then I see shield icon next to conversation input field
     # FIXME: Make it possible in the app to detect labels text with Appium
     # And I see last message in dialog is expected message <VerificationMsg>
@@ -346,7 +346,7 @@ Feature: E2EE
     When I select participant <Contact1>
     And I switch to Devices tab
     Then I see user <Contact1> device IDs are presented on participant devices tab
-    And I click close user profile page button
+    And I close user profile page
     When I select participant <Contact2>
     And I switch to Devices tab
     Then I see user <Contact2> device IDs are presented on participant devices tab
@@ -371,13 +371,13 @@ Feature: E2EE
     And I open details page of device number 1
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    And I click close user profile page button
+    And I close user profile page
     And I select participant <Contact2>
     And I switch to Devices tab
     And I open details page of device number 1
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    And I click close user profile page button
+    And I close user profile page
     And I close group info page
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And I type the default message and send it
@@ -444,7 +444,7 @@ Feature: E2EE
     And I open details page of device number 2
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    And I click close user profile page button
+    And I close user profile page
     And I do not see shield icon next to conversation input field
     # FIXME: Make it possible in the app to detect labels text with Appium
     # Then I do not see the conversation view contains message <ExpectedMessage>
@@ -491,7 +491,7 @@ Feature: E2EE
     And I open details page of device number 1
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    And I click close user profile page button
+    And I close user profile page
     Then I see shield icon next to conversation input field
     # FIXME: Make it possible in the app to detect labels text with Appium
     # Then I see last message in dialog is expected message <VerificationMsg>
@@ -501,7 +501,7 @@ Feature: E2EE
     And I open details page of device number 1
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    And I click close user profile page button
+    And I close user profile page
     Then I do not see shield icon next to conversation input field
     # FIXME: Make it possible in the app to detect labels text with Appium
     # Then I see last message in dialog contains expected message <UnverificationMsg>
@@ -524,7 +524,7 @@ Feature: E2EE
     And I open details page of device number 1
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    And I click close user profile page button
+    And I close user profile page
     Then I see shield icon next to conversation input field
     When I type the default message
     Then I do not see shield icon next to conversation input field

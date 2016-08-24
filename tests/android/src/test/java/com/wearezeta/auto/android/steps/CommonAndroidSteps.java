@@ -89,7 +89,7 @@ public class CommonAndroidSteps {
     }
 
     @SuppressWarnings("unchecked")
-    public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path,
+    public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path, int retriesCount,
                                                         Optional<Map<String, Object>> additionalCaps) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
@@ -109,7 +109,7 @@ public class CommonAndroidSteps {
         devicePreparationThread.get(DEVICE_PREPARATION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
         return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance().resetDriver(url, capabilities,
-                AndroidPage.DRIVER_CREATION_RETRIES_COUNT, this::onDriverInitFinished, null);
+                retriesCount, this::onDriverInitFinished, null);
     }
 
     private static Void prepareDevice() throws Exception {
@@ -128,7 +128,7 @@ public class CommonAndroidSteps {
         pool.shutdown();
     }
 
-    private static final int DEVICE_PREPARATION_TIMEOUT_SECONDS = 20;
+    private static final int DEVICE_PREPARATION_TIMEOUT_SECONDS = 30;
 
     private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
 
@@ -226,8 +226,10 @@ public class CommonAndroidSteps {
 
         isAutoAnswerCallEnabled = scenario.getSourceTagNames().contains("@calling_autoAnswer");
 
+        int retriesCount = AndroidPage.DRIVER_CREATION_RETRIES_COUNT;
         if (scenario.getSourceTagNames().contains("@performance")) {
             AndroidLogListener.getInstance(ListenerType.PERF).start();
+            retriesCount++;
         } else if (scenario.getSourceTagNames().contains("@analytics")) {
             AndroidLogListener.getInstance(ListenerType.ANALYTICS).start();
         }
@@ -245,7 +247,7 @@ public class CommonAndroidSteps {
             additionalCapsMap.put("appActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
             additionalCapsMap.put("appWaitActivity", CommonUtils.getAndroidLoginActivityFromConfig(getClass()));
         }
-        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath,
+        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath, retriesCount,
                 additionalCapsMap.isEmpty() ? Optional.empty() : Optional.of(additionalCapsMap));
 
         updateDriver(lazyDriver, CommonUtils.getHasBackendSelection(getClass()));
@@ -335,7 +337,7 @@ public class CommonAndroidSteps {
         customCaps.put("fullReset", false);
         customCaps.put("skipUninstall", true);
         customCaps.put("appActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
-        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath, Optional.of(customCaps));
+        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath, 1, Optional.of(customCaps));
         updateDriver(lazyDriver, false);
     }
 

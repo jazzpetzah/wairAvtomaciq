@@ -339,7 +339,7 @@ Feature: Conversation List
     Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I tap Delete action button
-    And I select Also Leave option on Delete conversation dialog
+    And I select Also Leave option on Delete conversation confirmation
     And I confirm delete conversation content
     And I open search UI
     And I input in People picker search field conversation name <GroupChatName>
@@ -358,7 +358,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given <Contact1> removed <Name> from group chat <GroupChatName>
+    Given <Contact1> removes Myself from group chat <GroupChatName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list

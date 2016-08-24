@@ -6,6 +6,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
@@ -13,7 +14,6 @@ import com.wearezeta.auto.common.driver.ZetaOSXWebAppDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAddressbookPermission;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAppData;
 
@@ -206,14 +206,6 @@ public class CommonOSXSteps {
         LOG.debug("Opening app");
         // necessary to enable the driver
         osxDriver.navigate().to(WIRE_APP_PATH);// open app
-        int numWireProcesses = 0;
-        int retry = 10;
-        do {
-            Thread.sleep(1000);
-            retry--;
-            numWireProcesses = OSXCommonUtils.getNumberOfWireProcesses();
-            LOG.debug(numWireProcesses + " Wire processes");
-        } while (numWireProcesses != 3 && retry >= 0);
     }
 
     @Before("~@performance")
@@ -221,7 +213,6 @@ public class CommonOSXSteps {
         try {
             startAppium4Mac();
             killAllApps();
-            Thread.sleep(5000);
             if (!KEEP_DATABASE) {
                 clearAppData();
             }
@@ -755,6 +746,42 @@ public class CommonOSXSteps {
     @Then("^I verify the app is not bigger than (\\d+) MB$")
     public void IVerifyAppIsNotTooBig(long expectedSize) throws Exception {
         assertThat(getSizeOfAppInMB(), lessThan(expectedSize));
+    }
+    
+    /**
+     * User A sends a simple text message (encrypted) to user B
+     *
+     * @param msgFromUserNameAlias the user who sends the message
+     * @param msg                  a message to send. Random string will be sent if it is empty
+     * @param dstConvoName         The user to receive the message
+     * @param convoType            either 'user' or 'group conversation'
+     * @throws Exception
+     * @step. ^Contact (.*) sends? (encrypted )?message "?(.*?)"?\s?(?:via device (.*)\s)?to (user|group conversation) (.*)$
+     */
+    @When("^Contact (.*) sends? message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
+    public void UserSendMessageToConversation(String msgFromUserNameAlias,
+                                              String msg, String deviceName, String convoType, String dstConvoName) throws Exception {
+        final String msgToSend = (msg == null || msg.trim().length() == 0)
+                ? CommonUtils.generateRandomString(10) : msg.trim();
+        if (convoType.equals("user")) {
+            commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
+        } else {
+            commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
+        }
+    }
+    
+    /**
+     * User adds a remote device to his list of devices
+     *
+     * @param userNameAlias user name/alias
+     * @param deviceName    unique name of the device
+     * @throws Exception
+     * @step. user (.*) adds a new device (.*)$
+     */
+    @When("user (.*) adds a new device (.*) with label (.*)$")
+    public void UserAddRemoteDeviceToAccount(String userNameAlias,
+                                             String deviceName, String label) throws Exception {
+        commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
     }
 
     @After

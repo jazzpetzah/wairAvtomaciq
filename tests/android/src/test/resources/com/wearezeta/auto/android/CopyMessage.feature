@@ -36,7 +36,7 @@ Feature: Copy Message
       | Name      | Contact   | Message                                     |
       | user1Name | user2Name | https://www.youtube.com/watch?v=gIQS9uUVmgk |
 
-  @C165146 @regression
+  @C165146 @regression @rc
   Scenario Outline: Verify copy link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

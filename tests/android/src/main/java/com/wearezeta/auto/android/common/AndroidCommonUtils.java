@@ -311,7 +311,7 @@ public class AndroidCommonUtils extends CommonUtils {
             if (deviceVersion.compareTo(new DefaultArtifactVersion("6.0")) >= 0) {
                 grantPermissionsTo("com.wire.testinggallery", "android.permission.READ_EXTERNAL_STORAGE");
             }
-         }
+        }
     }
 
     public static void enableAutoAnswerCall(Class<?> c) throws Exception {
@@ -799,6 +799,13 @@ public class AndroidCommonUtils extends CommonUtils {
     public static void revokePermissionsFrom(String bundleId, String... perms) throws Exception {
         for (String permissionName : perms) {
             executeAdb(String.format("shell pm revoke %s %s", bundleId, permissionName));
+        }
+    }
+
+    public static void verifyWireIsInForeground() throws Exception {
+        final String packageId = CommonUtils.getAndroidPackageFromConfig(AndroidCommonUtils.class);
+        if (!AndroidCommonUtils.isAppInForeground(packageId, 1000)) {
+            throw new IllegalStateException("Wire appears to have crashed");
         }
     }
 }

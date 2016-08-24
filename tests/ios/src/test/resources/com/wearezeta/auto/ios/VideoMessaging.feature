@@ -25,7 +25,7 @@ Feature: Video Messaging
     And User <Contact> sends file <FileName> having MIME type <MIMEType> to single user conversation <Name> using device <DeviceName>
     # Wait until video preview is generated
     And I wait for 10 seconds
-    When I tap the video message container sent from <Contact>
+    When I tap on video message in conversation view
     Then I see video message player page is opened
 
     Examples:

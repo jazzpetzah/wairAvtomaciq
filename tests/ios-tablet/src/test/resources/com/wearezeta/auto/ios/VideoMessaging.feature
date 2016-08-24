@@ -8,7 +8,7 @@ Feature: Video Messaging
     Given I Sign in on tablet using my email
     Given User <Contact> sends file <FileName> having MIME type <MIMEType> to single user conversation <Name> using device <DeviceName>
     Given I see conversations list
-    When I tap the video message container sent from <Contact>
+    When I tap on video message in conversation view
     #Wait to make sure video is downloaded
     And I wait for <DownloadTimeout> seconds
     Then I see video message player page is opened

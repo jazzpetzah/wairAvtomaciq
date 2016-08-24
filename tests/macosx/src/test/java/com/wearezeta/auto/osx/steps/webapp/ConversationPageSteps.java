@@ -152,7 +152,7 @@ public class ConversationPageSteps {
     @Then("^I see embedded youtube video of (.*)")
     public void ThenISeeEmbeddedYoutubeVideoOf(String url) throws Exception {
         Assert.assertTrue(webappPagesCollection.getPage(ConversationPage.class)
-                .isYoutubeVideoEmbedded(url));
+                .isMessageEmbedded(true, "youtube", url));
     }
 
     /**
@@ -384,16 +384,28 @@ public class ConversationPageSteps {
     /**
      * Verify a text message is visible in conversation.
      *
-     * @step. ^I( do not)? see text message (.*)
+     * @step. ^I see text message (.*)
      * @param message
      * @throws Exception
      */
-    @Then("^I( do not)? see text message (.*)")
-    public void ISeeTextMessage(String doNot, String message) throws Exception {
-        if (doNot == null) {
+    @Then("^I see text message (.*)")
+    public void ISeeTextMessage(String message) throws Exception {
             webappPagesCollection.getPage(ConversationPage.class)
                     .waitForTextMessageContains(message);
-        }
+    }
+    
+    /**
+     * Verify a text message is not visible in conversation
+     *
+     * @step. ^I do not see text message ?(.*)$
+     * @param message
+     * @throws Exception
+     */
+    @Then("^I do not see text message ?(.*)$")
+    public void IDontSeeTextMessage(String message) throws Exception {
+        Assert.assertTrue("Saw text message " + message,
+                webappPagesCollection.getPage(ConversationPage.class)
+                .isTextMessageInvisible(message == null ? "" : message));
     }
 
     private static String expandPattern(final String originalStr) {
@@ -450,20 +462,6 @@ public class ConversationPageSteps {
             throws Exception {
         assertThat(webappPagesCollection.getPage(ConversationPage.class)
                 .getSecondLastTextMessage(), equalTo(expectedMessage));
-    }
-
-    /**
-     * Verify a text message is not visible in conversation
-     *
-     * @step. ^I do not see text message (.*)
-     * @param message
-     * @throws Exception
-     */
-    @Then("^I do not see text message ?(.*)$")
-    public void IDontSeeTextMessage(String message) throws Exception {
-        Assert.assertTrue("Saw text message " + message,
-                webappPagesCollection.getPage(ConversationPage.class)
-                .isTextMessageInvisible(message == null ? "" : message));
     }
 
     /**
@@ -670,5 +668,27 @@ public class ConversationPageSteps {
     @When("^I start a video call$")
     public void IMakeVideoCallToUser() throws Throwable {
         webappPagesCollection.getPage(ConversationPage.class).clickVideoCallButton();
+    }
+    
+    /**
+     * Verifies that x messages are in the conversation
+     *
+     * @param x the amount of sent messages
+     * @step. ^I see (\\d+) messages in conversation$
+     */
+    @Then("^I see (\\d+) messages? in conversation$")
+    public void ISeeXMessagesInConversation(int x) throws Exception {
+        assertThat("Number of messages in the conversation", webappPagesCollection.getPage(ConversationPage.class)
+                .getNumberOfMessagesInCurrentConversation(), equalTo(x));
+    }
+    
+    @When("^I click confirm to delete message for everyone$")
+    public void IClickConfirmToDeleteForEveryone() throws Exception {
+        webappPagesCollection.getPage(ConversationPage.class).confirmDeleteForEveryone();
+    }
+
+    @When("^I click confirm to delete message for me$")
+    public void IClickConfirmToDelete() throws Exception {
+        webappPagesCollection.getPage(ConversationPage.class).confirmDelete();
     }
 }

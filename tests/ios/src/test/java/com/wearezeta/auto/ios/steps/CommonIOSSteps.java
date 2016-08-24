@@ -483,13 +483,12 @@ public class CommonIOSSteps {
      * @param userToRemove       name of the user to be removed
      * @param chatName           name of the group conversation
      * @throws Exception
-     * @step. ^(.*) removed (.*) from group chat (.*)$
+     * @step. ^(.*) removes? (.*) from group chat (.*)$
      */
-    @Given("^(.*) removed (.*) from group chat (.*)$")
-    public void UserARemovedUserBFromGroupChat(String chatOwnerNameAlias,
-                                               String userToRemove, String chatName) throws Exception {
-        commonSteps.UserXRemoveContactFromGroupChat(chatOwnerNameAlias,
-                userToRemove, chatName);
+    @Given("^(.*) removes? (.*) from group chat (.*)$")
+    public void UserARemoveUserBFromGroupChat(String chatOwnerNameAlias,
+                                              String userToRemove, String chatName) throws Exception {
+        commonSteps.UserXRemoveContactFromGroupChat(chatOwnerNameAlias, userToRemove, chatName);
     }
 
     /**
@@ -726,7 +725,18 @@ public class CommonIOSSteps {
         }
     }
 
-    @Given("^User (.*) sends (\\d+) encrypted messages? using device (.*) to (user|group conversation) (.*)$")
+    /**
+     * Sends default message using device
+     *
+     * @param msgFromUserNameAlias username who sends message
+     * @param msgsCount            messages count
+     * @param deviceName           device name to send message from
+     * @param conversationType     user or group conversation
+     * @param conversationName     conversation name
+     * @throws Exception
+     * @step. ^User (.*) sends? (\d+) encrypted messages? using device (.*) to (user|group conversation) (.*)$
+     */
+    @Given("^User (.*) sends? (\\d+) encrypted messages? using device (.*) to (user|group conversation) (.*)$")
     public void UserSendXMessagesToConversationUsingDevice(String msgFromUserNameAlias,
                                                            int msgsCount, String deviceName,
                                                            String conversationType,
@@ -1091,7 +1101,8 @@ public class CommonIOSSteps {
      * @throws Exception
      * @step. ^User (.*) sends? file (.*) having MIME type (.*) to (single user|group) conversation (.*) using device (.*)
      */
-    @When("^User (.*) sends? (temporary )?file (.*) having MIME type (.*) to (single user|group) conversation (.*) using device (.*)")
+    @When("^User (.*) sends? (temporary )?file (.*) having MIME type (.*) to (single user|group) conversation (.*) using " +
+            "device (.*)")
     public void UserSendsFile(String sender, String isTemporary, String fileName, String mimeType, String convoType,
                               String convoName, String deviceName) throws Exception {
         String root;
@@ -1283,5 +1294,72 @@ public class CommonIOSSteps {
                 : Integer.parseInt(waitDuration.replaceAll("[\\D]", ""));
         commonSteps.UserXFoundLastMessageChanged(userNameAlias, convoType.equals("group conversation"), dstNameAlias,
                 deviceName, durationSeconds);
+    }
+
+    /**
+     * Verify visibility of the corresponding badge item
+     *
+     * @param shouldNotSee equals to null if the corresponding item should be visible
+     * @param itemName     the badge item name
+     * @throws Exception
+     * @step. ^I (do not )?see (Select All|Copy|Delete|Paste|Save|Edit) badge item$
+     */
+    @Then("^I (do not )?see (Select All|Copy|Delete|Paste|Save|Edit) badge item$")
+    public void ISeeBadge(String shouldNotSee, String itemName) throws Exception {
+        boolean result;
+        if (shouldNotSee == null) {
+            result = pagesCollection.getCommonPage().isBadgeItemVisible(itemName);
+        } else {
+            result = pagesCollection.getCommonPage().isBadgeItemInvisible(itemName);
+        }
+        Assert.assertTrue(String.format("The '%s' badge item is %s", itemName,
+                (shouldNotSee == null) ? "not visible" : "still visible"), result);
+    }
+
+    /**
+     * Tap on pointed badge item
+     *
+     * @param itemName the badge item name
+     * @throws Exception
+     * @step. ^I tap on (Select All|Copy|Delete|Paste|Edit) badge item$
+     */
+    @When("^I tap on (Select All|Copy|Delete|Paste|Edit) badge item$")
+    public void ITapBadge(String itemName) throws Exception {
+        pagesCollection.getCommonPage().tapBadgeItem(itemName);
+    }
+
+    /**
+     * User X edit his own messages, be careful this message will not control the type of the message you edit.
+     *
+     * @param userNameAlias user name/alias
+     * @param newMessage    the message you want to update to
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  estination user name/alias or group convo name
+     * @param deviceName    source device name. Will be created if does not exist yet
+     * @throws Exception
+     */
+    @When("^User (.*) edits? the recent message to \"(.*)\" from (user|group conversation) (.*) via device (.*)$")
+    public void UserXEditLastMessage(String userNameAlias, String newMessage, String convoType,
+                                     String dstNameAlias, String deviceName) throws Exception {
+        boolean isGroup = convoType.equals("group conversation");
+        commonSteps.UserUpdateLatestMessage(userNameAlias, dstNameAlias, newMessage, deviceName, isGroup);
+    }
+
+    /**
+     * Verify the type of the recent message in the conversation
+     *
+     * @param msgFromUserNameAlias name/alias of message sender
+     * @param dstConversationName  destination conversation name
+     * @param expectedType         the expected conversation types. See the source of SE actors file, Type enumeration
+     *                             for more details
+     * @param deviceName           user's device name
+     * @throws Exception
+     */
+    @Then("^User (.*) verifies that the most recent message type from (?:user|group conversation) (.*) is " +
+            "(TEXT|TEXT_EMOJI_ONLY||ASSET|ANY_ASSET|VIDEO_ASSET|AUDIO_ASSET|KNOCK|MEMBER_JOIN|MEMBER_LEAVE|CONNECT_REQUEST|CONNECT_ACCEPTED|RENAME|MISSED_CALL|INCOMING_CALL|RICH_MEDIA|OTR_ERROR|OTR_IDENTITY_CHANGED|OTR_VERIFIED|OTR_UNVERIFIED|OTR_DEVICE_ADDED|STARTED_USING_DEVICE|HISTORY_LOST|LOCATION|UNKNOWN|RECALLED) " +
+            "via device (.*)")
+    public void UserXVerifiesRecentMessageType(String msgFromUserNameAlias, String dstConversationName,
+                                               String expectedType, String deviceName) throws Exception {
+        commonSteps.UserXVerifiesRecentMessageType(msgFromUserNameAlias, dstConversationName, deviceName, expectedType);
     }
 }

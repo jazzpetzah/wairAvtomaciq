@@ -124,7 +124,7 @@ public class AppiumServer {
             throw new WebDriverException(String.format(
                     "Appium server has failed to start after %s seconds timeout on server '%s'.\n" +
                             "Please make sure that NodeJS and Appium packages are installed properly on this machine.\n" +
-                            "Appium logs:\n\n%s\n\n\n", RESTART_TIMEOUT_MILLIS / 1000, hostname, getLog()));
+                            "Appium logs:\n\n%s\n\n\n", RESTART_TIMEOUT_MILLIS / 1000, hostname, getLog().orElse("")));
         }
 
         log.info(String.format("Appium server has been successfully (re)started after %.1f seconds " +

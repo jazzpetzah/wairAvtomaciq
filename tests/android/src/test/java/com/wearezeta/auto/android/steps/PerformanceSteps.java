@@ -1,8 +1,12 @@
 package com.wearezeta.auto.android.steps;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 import com.wearezeta.auto.android.pages.ConversationsListPage;
+import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.CommonUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriverException;
@@ -39,7 +43,6 @@ public class PerformanceSteps {
     private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class.getSimpleName());
 
     private static final int DEFAULT_SWIPE_TIME = 500;
-    private static final int MAX_MSGS_IN_CONVO_WINDOW = 100;
 
     private ConversationsListPage getContactListPage() throws Exception {
         return pagesCollection.getPage(ConversationsListPage.class);
@@ -55,6 +58,22 @@ public class PerformanceSteps {
 
     private WelcomePage getWelcomePage() throws Exception {
         return pagesCollection.getPage(WelcomePage.class);
+    }
+
+    private Optional<String> randomContactAlias = Optional.empty();
+
+    private static final Random rand = new Random();
+
+    /**
+     * Set a contact for  theperformance tests
+     *
+     * @throws Exception
+     * @step. ^I select random contact for the performance test$
+     */
+    @Given("^I select random contact for the performance test$")
+    public void ISelectRandomContact() throws Exception {
+        final int contactIndex = 2 + rand.nextInt(usrMgr.getCreatedUsers().size() - 1);
+        this.randomContactAlias = Optional.of(ClientUsersManager.NAME_ALIAS_TEMPLATE.apply(contactIndex));
     }
 
     /**
@@ -76,23 +95,32 @@ public class PerformanceSteps {
     }
 
     /**
+     * Remove all registered OTR clients for the particular user
+     *
+     * @throws Exception
+     * @step. ^The random performance contact removes all his registered OTR clients$
+     */
+    @Given("^The random performance contact removes all his registered OTR clients$")
+    public void UserRemovesAllRegisteredOtrClients() throws Exception {
+        CommonSteps.getInstance().UserRemovesAllRegisteredOtrClients(randomContactAlias.orElseThrow(
+                () -> new IllegalStateException("You need to set the random contact first")
+        ));
+    }
+
+    /**
      * Send multiple messages from one of my contacts using the backend
      *
      * @param msgsCount count of messages to send. This should be greater or equal to
      *                  the maximum count of messages in convo window (which is
      *                  currently equal to 100)
-     * @param asContact from which contact should we send these messages
      * @throws Exception
-     * @step. ^I receive (\\d+) messages? from contact (.*)
+     * @step. ^I receive (\d+) messages? from the random performance contact$
      */
-    @Given("^I receive (\\d+) messages? from contact (.*)")
-    public void IReceiveXMessagesFromContact(int msgsCount, String asContact) throws Exception {
-        assert msgsCount >= MAX_MSGS_IN_CONVO_WINDOW : String.format(
-                "The count of messages to send (%d) should be greater or equal to the max "
-                        + "count of messages in conversation window (%d)",
-                msgsCount, MAX_MSGS_IN_CONVO_WINDOW);
-        asContact = usrMgr.findUserByNameOrNameAlias(asContact).getName();
-        perfCommon.sendMultipleMessagesIntoConversation(asContact, msgsCount);
+    @Given("^I receive (\\d+) messages? from the random performance contact$")
+    public void IReceiveXMessagesFromContact(int msgsCount) throws Exception {
+        perfCommon.sendMultipleMessagesIntoConversation(randomContactAlias.orElseThrow(
+                () -> new IllegalStateException("You need to set the random contact first")
+        ), msgsCount);
     }
 
     private void waitUntilConversationsListIsFullyLoaded() throws Exception {
@@ -108,6 +136,7 @@ public class PerformanceSteps {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            AndroidCommonUtils.verifyWireIsInForeground();
             Thread.sleep(millisecondsDelay);
         } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
         Assert.assertTrue(String.format(
@@ -118,12 +147,17 @@ public class PerformanceSteps {
     private void visitConversationWhenAvailable(final String destConvoName) throws Exception {
         final int timeoutSeconds = 15 * 60;
         final long millisecondsStarted = System.currentTimeMillis();
+        final String packageId = CommonUtils.getAndroidPackageFromConfig(getClass());
         do {
             try {
                 getContactListPage().tapOnName(destConvoName);
             } catch (IllegalStateException | WebDriverException e) {
                 e.printStackTrace();
             }
+            if (!AndroidCommonUtils.isAppInForeground(packageId, 5000)) {
+                throw new IllegalStateException("The application appears to be crashed");
+            }
+            AndroidCommonUtils.verifyWireIsInForeground();
             Thread.sleep(10000);
         } while (!getConversationViewPage().isConversationVisible() &&
                 System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
@@ -140,39 +174,21 @@ public class PerformanceSteps {
      * Starts standard actions loop (read messages/send messages) to measure
      * application performance
      *
-     * @param timeout     number of minutes to run the loop
-     * @param fromContact contact name/alias, from which I received messages
+     * @param timeoutMinutes     number of minutes to run the loop
      * @throws Exception
      * @step. ^I start test cycle for (\\d+) minutes? with messages received
      * from (.*)
      */
-    @When("^I start test cycle for (\\d+) minutes? with messages received from (.*)")
-    public void IStartTestCycleForNMinutes(int timeout, String fromContact) throws Exception {
+    @When("^I start test cycle for (\\d+) minutes? with messages received from the random performance contact$")
+    public void IStartTestCycleForNMinutes(int timeoutMinutes) throws Exception {
         waitUntilConversationsListIsFullyLoaded();
+        final String fromContact = randomContactAlias.orElseThrow(
+                () -> new IllegalStateException("You need to set the random contact first")
+        );
         final String destConvoName = usrMgr.findUserByNameOrNameAlias(fromContact).getName();
-        String firstConvoName = getContactListPage().getFirstVisibleConversationName();
-        final int maxRetries = 20;
-        final long millisecondsDelay = 10000;
-        int ntry = 1;
-        do {
-            // This contact, which received messages, should be the first
-            // contact in the visible convo list now
-            if (destConvoName.equals(firstConvoName)) {
-                break;
-            } else {
-                Thread.sleep(millisecondsDelay);
-            }
-            firstConvoName = getContactListPage()
-                    .getFirstVisibleConversationName();
-            ntry++;
-        } while (ntry <= maxRetries);
-        assert destConvoName.equals(firstConvoName) : String
-                .format("The very first conversation name '%s' is not the same as expected one ('%s')",
-                        firstConvoName, destConvoName);
-
         // Visit the conversation for the first time
         visitConversationWhenAvailable(destConvoName);
-        perfCommon.runPerformanceLoop(() -> visitConversationWhenAvailable(destConvoName), timeout);
+        perfCommon.runPerformanceLoop(() -> visitConversationWhenAvailable(destConvoName), timeoutMinutes);
     }
 
     /**
@@ -218,10 +234,10 @@ public class PerformanceSteps {
     /**
      * Check whether a call is still in progress
      *
-     * @param caller          caller name/alias
+     * @param caller caller name/alias
      * @param durationMinutes for how long we have to check that the call is in progress
      * @throws Exception
-     * @step. ^I verify the call from (.*) is in progress for (\\d+) minutes?$
+     * @step. ^I verify the call from (.*) is in progress for (\d+) minutes?$
      */
     @And("^I verify the call from (.*) is in progress for (\\d+) minutes?$")
     public void IStartBatteryPerfTest(String caller, int durationMinutes) throws Exception {
@@ -261,7 +277,7 @@ public class PerformanceSteps {
      * @step. ^I generate battery performance report for (\\d+) minutes?$
      */
     @Then("^I generate battery performance report for (\\d+) minutes?$")
-    public void IGerenearetBatteryPerfReport(int durationMinutes) throws Exception {
+    public void IGenerateBatteryPerfReport(int durationMinutes) throws Exception {
         if (this.batteryPerfReport == null) {
             throw new IllegalStateException(
                     "You have to initialize the report first");

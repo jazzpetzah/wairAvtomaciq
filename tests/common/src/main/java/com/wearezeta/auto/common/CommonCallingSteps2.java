@@ -44,7 +44,7 @@ public final class CommonCallingSteps2 {
 
     private static final String CALL_BACKEND_VERSION_SEPARATOR = ":";
 
-    private static final String ZCALL_DEFAULT_VERSION = "2.7.26";
+    private static final String ZCALL_DEFAULT_VERSION = "2.8.6";
     private String zcallVersion = ZCALL_DEFAULT_VERSION;
 
     public String getZcallVersion() {
@@ -55,7 +55,7 @@ public final class CommonCallingSteps2 {
         this.zcallVersion = zcallVersion;
     }
 
-    private static final String AUTOCALL_DEFAULT_VERSION = "2.7.26";
+    private static final String AUTOCALL_DEFAULT_VERSION = "2.8.6";
     private String autocallVersion = AUTOCALL_DEFAULT_VERSION;
 
     public String getAutocallVersion() {
@@ -372,7 +372,7 @@ public final class CommonCallingSteps2 {
         Map<Instance, CompletableFuture<Instance>> destroyTasks = new HashMap<>(instanceMapping.size());
         for (Map.Entry<String, Instance> entry : instanceMapping.entrySet()) {
             final Instance instance = entry.getValue();
-            final String url = callingServiceUrl + "/api/v1/instance/" + instance.getId() + "/";
+            final String url = callingServiceUrl + "/api/v1/instance/" + instance.getId();
             LOG.debug("---BROWSER LOG FOR INSTANCE:\n" + instance + "\n"
                     + "<a href="+url+"/log>"+instance.getId()+" LOGS</a>"+ "\n"
                     + "<a href="+url+"/screenshots>"+instance.getId()+" SCREENSHOTS</a>");

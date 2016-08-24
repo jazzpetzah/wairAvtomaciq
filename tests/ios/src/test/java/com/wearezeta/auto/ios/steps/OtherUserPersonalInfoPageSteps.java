@@ -32,12 +32,12 @@ public class OtherUserPersonalInfoPageSteps {
         getOtherUserPersonalInfoPage().addContactToChat();
     }
 
-    @When("^I click Remove$")
-    public void IClickRemove() throws Exception {
+    @When("^I tap Remove From Conversation button$")
+    public void TapRemoveButton() throws Exception {
         getOtherUserPersonalInfoPage().removeFromConversation();
     }
 
-    @When("^I confirm remove$")
+    @When("^I confirm removal from conversation$")
     public void IConfirmRemove() throws Exception {
         getOtherUserPersonalInfoPage().confirmRemove();
     }
@@ -51,11 +51,11 @@ public class OtherUserPersonalInfoPageSteps {
      * Close other user personal info page by click on close button
      *
      * @throws Exception
-     * @step. ^I click close user profile page button$
+     * @step. ^I close user profile page$
      */
-    @When("^I click close user profile page button$")
+    @When("^I close user profile page$")
     public void ICloseUserProfileForDialog() throws Exception {
-        getOtherUserPersonalInfoPage().clickCloseUserProfileButton();
+        getOtherUserPersonalInfoPage().tapCloseUserProfileButton();
     }
 
     /**
@@ -234,6 +234,4 @@ public class OtherUserPersonalInfoPageSteps {
     public void ITapLink(String expectedLink) throws Exception {
         getOtherUserPersonalInfoPage().tapLink(expectedLink);
     }
-
-
 }

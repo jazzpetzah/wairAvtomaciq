@@ -1,12 +1,12 @@
 Feature: Recall Message
 
-  @C202326 @C202328 @staging
+  @C202326 @C202328 @regression @rc
   Scenario Outline: Verify I can delete my message everywhere (1:1) (myview and other view)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User <Contact1> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact1> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     # Delete from otherview
     When I tap on conversation name <Contact1>
@@ -32,14 +32,14 @@ Feature: Recall Message
       | Name      | Contact1  | Message           | ContactDevice | MySecondDevice | Message2 |
       | user1Name | user2Name | DeleteTextMessage | Device2       | Device1        | Del2     |
 
-  @C202327 @C202329 @staging
+  @C202327 @C202329 @regression @rc
   Scenario Outline: Verify I can delete my message everywhere (group) (myview and other view)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given User <Contact1> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact1> adds new device <ContactDevice>
     Given I see Conversations list with conversations
    # Delete from otherview
     When I tap on conversation name <Group>
@@ -65,13 +65,13 @@ Feature: Recall Message
       | Name      | Contact1  | Contact2  | Group  | Message           | ContactDevice | MySecondDevice | Message2 |
       | user1Name | user2Name | user3Name | TGroup | DeleteTextMessage | Device2       | Device1        | Del2     |
 
-  @C202332 @staging
+  @C202332 @regression @rc
   Scenario Outline: Verify I can delete everywhere works for images
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap Add picture button from cursor toolbar
@@ -88,13 +88,13 @@ Feature: Recall Message
       | Name      | Contact   | ContactDevice |
       | user1Name | user2Name | Device1       |
 
-  @C202333 @staging
+  @C202333 @regression @rc
   Scenario Outline: Verify delete everywhere works for giphy
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given User <Contact> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap on text input
@@ -114,13 +114,13 @@ Feature: Recall Message
       | Name      | Contact   | Message | ContactDevice |
       | user1Name | user2Name | Yo      | Device1       |
 
-  @C202334 @staging
+  @C202334 @regression @rc
   Scenario Outline: Verify delete everywhere works for link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I type the message "<Link>" and send it
@@ -136,13 +136,13 @@ Feature: Recall Message
       | Name      | Contact   | Link                    | ContactDevice |
       | user1Name | user2Name | http://www.facebook.com | Device1       |
 
-  @C202335 @staging
+  @C202335 @regression @rc
   Scenario Outline: Verify delete everywhere works for Share location
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I tap Share location button from cursor toolbar
@@ -158,14 +158,14 @@ Feature: Recall Message
       | Name      | Contact   | ContactDevice |
       | user1Name | user2Name | device1       |
 
-  @C202336 @staging
+  @C202336 @regression @rc
   Scenario Outline: Verify delete everywhere works for file sharing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I push <FileSize> file having name "<FileName>.<FileExtension>" to the device
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I tap File button from cursor toolbar
@@ -181,13 +181,13 @@ Feature: Recall Message
       | Name      | Contact   | FileName  | FileExtension | FileSize | ContactDevice | UploadingTimeout |
       | user1Name | user2Name | qa_random | txt           | 1.00MB   | device1       | 20               |
 
-  @C202337 @staging
+  @C202337 @regression @rc
   Scenario Outline: Verify delete everywhere works for audio messages
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I long tap Audio message button <TapDuration> seconds from cursor toolbar
@@ -205,14 +205,14 @@ Feature: Recall Message
       | Name      | Contact   | TapDuration | ContactDevice |
       | user1Name | user2Name | 5           | Device1       |
 
-  @C202338 @staging
+  @C202338 @regression @rc
   Scenario Outline: Verify delete everywhere works for video messages
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I push <FileSize> video file having name "<FileFullName>" to the device
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I tap Video message button from cursor toolbar
@@ -230,15 +230,15 @@ Feature: Recall Message
       | Name      | Contact   | FileSize | FileFullName     | ContactDevice |
       | user1Name | user2Name | 26.00MB  | random_video.mp4 | Device1       |
 
-  @C202330 @C202331 @staging
+  @C202330 @C202331 @regression @rc
   Scenario Outline: Verify deleting everywhere is synchronised across own devices when they are online (1:1 and group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given User Myself adds new device <Device>
-    Given User <Contact1> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And User Myself send encrypted message "<Message>" via device <Device> to user <Contact1>
@@ -256,13 +256,13 @@ Feature: Recall Message
       | Name      | Contact1  | Contact2  | Message           | Device  | ContactDevice | GroupChatName |
       | user1Name | user2Name | user3Name | DeleteTextMessage | Device1 | Device2       | MyGroup       |
 
-  @C206251 @staging
+  @C206251 @regression
   Scenario Outline: Verify I do not see unread dot if a message was deleted from someone in a conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User <Contact1> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact1> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     When User <Contact1> sends 1 encrypted messages to user Myself
     And I tap on conversation name <Contact1>
@@ -276,7 +276,7 @@ Feature: Recall Message
       | Name      | Contact1  | ContactDevice |
       | user1Name | user2Name | Device1       |
 
-  @C206252 @staging
+  @C206252 @regression
   Scenario Outline: (AN-4394) Verify I cannot delete message everywhere when I was removed from group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -293,3 +293,99 @@ Feature: Recall Message
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName       | Message |
       | user1Name | user2Name | user3Name | RemoveFromGroupChat | YO      |
+
+  @C206264 @regression @rc
+  Scenario Outline: Verify delete everywhere works for Soundcloud, YouTube
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <ContactDevice>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    # Youtube
+    When I type the message "<YoutubeLink>" and send it
+    And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    And I long tap Youtube container in the conversation view
+    And I tap Delete for everyone button on the message bottom menu
+    And I tap Delete button on the alert
+    Then I do not see Youtube container in the conversation view
+    And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
+    # Soundcloud
+    When I type the message "<SoundCloudLink>" and send it
+    And User <Contact> remember the recent message from user Myself via device <ContactDevice>
+    And I long tap Soundcloud container in the conversation view
+    And I tap Delete for everyone button on the message bottom menu
+    And I tap Delete button on the alert
+    Then I do not see Soundcloud container in the conversation view
+    And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
+
+    Examples:
+      | Name      | Contact   | YoutubeLink                                 | SoundCloudLink                                                      | ContactDevice |
+      | user1Name | user2Name | https://www.youtube.com/watch?v=gIQS9uUVmgk | https://soundcloud.com/scottisbell/scott-isbell-tonight-feat-adessi | Device1       |
+
+  @C206266 @C202361 @regression @rc
+  Scenario Outline: Verify I cannot delete message everywhere/edit message for someone else message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given User <Contact> sends encrypted message "<Message>" to user Myself
+    Given I tap on conversation name <Contact>
+    When I long tap the Text message "<Message>" in the conversation view
+    Then I do not see Delete for everyone button on the message bottom menu
+    And I do not see Edit button on the message bottom menu
+
+    Examples:
+      | Name      | Contact   | Message |
+      | user1Name | user2Name | Yo      |
+
+  @C206265 @C206274 @regression
+  Scenario Outline: Verify deleted messages/edit message doesn't unarchive the "archived conversation"
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given Myself is connected to <Contact2>
+    Given User <Contact1> adds new device <ContactDevice>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User <Contact1> send encrypted message "<Message>" via device <ContactDevice> to user Myself
+    Given I see Conversations list with conversations
+    When I swipe right on a <Contact1>
+    And I select ARCHIVE from conversation settings menu
+    And I do not see Conversations list with name <Contact1>
+    And User <Contact1> edits the recent message to "<NewMessage>" from user Myself via device <ContactDevice>
+    # C206274
+    Then I do not see Conversations list with name <Contact1>
+    When User <Contact1> deletes the recent message everywhere from user Myself via device <ContactDevice>
+    # C206265
+    Then I do not see Conversations list with name <Contact1>
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Message | ContactDevice | NewMessage |
+      | user1Name | user2Name | user3Name | Yo      | Device1       | YoYo       |
+
+  @C206278 @regression
+  Scenario Outline: Verify delete message everywhere offline mode
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> adds new device <ContactDevice>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
+    And I type the message "<Message>" and send it
+    And I see the message "<Message>" in the conversation view
+    And User <Contact1> remembers the recent message from user Myself via device <ContactDevice>
+    And I enable Airplane mode on the device
+    And I long tap the Text message "<Message>" in the conversation view
+    And I tap Delete for everyone button on the message bottom menu
+    And I tap Delete button on the alert
+    And I do not see the message "<Message>" in the conversation view
+    And I disable Airplane mode on the device
+    And I do not see No Internet bar in <InternetTimeout> seconds
+    Then User <Contact1> sees the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
+
+    Examples:
+      | Name      | Contact1  | Message | ContactDevice | InternetTimeout |
+      | user1Name | user2Name | YO      | Device1       | 15              |
