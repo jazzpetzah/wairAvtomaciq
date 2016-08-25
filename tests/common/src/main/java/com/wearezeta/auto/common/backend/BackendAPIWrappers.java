@@ -549,22 +549,6 @@ public final class BackendAPIWrappers {
         BackendREST.uploadAddressBook(receiveAuthToken(user), addressBook);
     }
 
-    public static void waitUntilSuggestionFound(ClientUser userFrom, int timeout)
-            throws Exception {
-        long startTimestamp = (new Date()).getTime();
-        while ((new Date()).getTime() <= startTimestamp + timeout * 1000) {
-            final JSONObject suggestions = BackendREST.getSuggestions(receiveAuthToken(userFrom));
-            log.debug("Suggestions: " + suggestions.toString());
-            if (suggestions.getInt("returned") > 0) {
-                return;
-            }
-            Thread.sleep(1000);
-        }
-        throw new NoContactsFoundException(String.format(
-                "%s suggestions were not found within %s second(s) timeout",
-                userFrom.getName(), timeout));
-    }
-
     public static String sendConversationPing(ClientUser userFrom, String convId) throws Exception {
         JSONObject response = BackendREST.sendConversationPing(receiveAuthToken(userFrom), convId);
         return response.getString("id");
@@ -728,6 +712,39 @@ public final class BackendAPIWrappers {
             Thread.sleep(1000);
         }
         throw new NoContactsFoundException(String.format("%s contact(s) '%s' were not found within %s second(s) timeout",
+                expectedCount, query, timeoutSeconds));
+    }
+
+    public static void waitUntilSuggestionFound(ClientUser searchByUser,
+                                                         String query, int expectedCount, boolean orMore,
+                                                         int timeoutSeconds) throws Exception {
+        final long startTimestamp = System.currentTimeMillis();
+        int currentCount;
+        AuthToken token = receiveAuthToken(searchByUser);
+        while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
+            JSONObject searchResult;
+            try {
+                searchResult = BackendREST.searchForSuggestionsForContact(token, query);
+            } catch (BackendRequestException e) {
+                if (e.getReturnCode() == 500) {
+                    Thread.sleep(1000);
+                    continue;
+                } else {
+                    throw e;
+                }
+            }
+            if (searchResult.has("documents") && (searchResult.get("documents") instanceof JSONArray)) {
+                currentCount = searchResult.getJSONArray("documents").length();
+            } else {
+                currentCount = 0;
+            }
+            if (currentCount == expectedCount || (orMore && currentCount >= expectedCount)) {
+                return;
+            }
+            Thread.sleep(1000);
+        }
+        throw new NoContactsFoundException(String.format("%s contact(s) '%s' no suggestions found " +
+                        "within %s second(s) timeout",
                 expectedCount, query, timeoutSeconds));
     }
 

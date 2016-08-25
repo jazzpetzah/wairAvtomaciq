@@ -573,6 +573,13 @@ final class BackendREST {
         return new JSONObject(output);
     }
 
+    public static JSONObject searchForSuggestionsForContact(AuthToken token, String query) throws Exception {
+        Builder webResource = buildDefaultRequestWithAuth(String.format("/search/contacts?q=%s&l=1&d=0", query),
+                MediaType.APPLICATION_JSON, token);
+        final String output = restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK});
+        return new JSONObject(output);
+    }
+
     public static JSONObject searchForTopPeopleContacts(AuthToken token, int size) throws Exception {
         // Changed this to make it look the same as in webapp
         // size [1..100]
@@ -615,12 +622,6 @@ final class BackendREST {
         Builder webResource = buildDefaultRequestWithAuth("onboarding/v3", MediaType.APPLICATION_JSON, token);
         final String output = restHandlers.httpPost(webResource, addressBook
                 .asJSONObject().toString(), new int[]{HttpStatus.SC_OK});
-        return new JSONObject(output);
-    }
-
-    public static JSONObject getSuggestions(AuthToken token) throws Exception {
-        Builder webResource = buildDefaultRequestWithAuth("search/suggestions", MediaType.APPLICATION_JSON, token);
-        final String output = restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK});
         return new JSONObject(output);
     }
 

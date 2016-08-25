@@ -30,7 +30,7 @@ public final class CommonSteps {
     public static final int DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS = 10;
 
     private static final int BACKEND_USER_SYNC_TIMEOUT = 180; // seconds
-    private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 90; // seconds
+    private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 180; // seconds
 
     private String pingId = null;
 
@@ -585,11 +585,6 @@ public final class CommonSteps {
         usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(nameAlias));
     }
 
-    public void WaitUntilSuggestionFound(String userAsNameAlias) throws Exception {
-        BackendAPIWrappers.waitUntilSuggestionFound(usrMgr.findUserByNameOrNameAlias(userAsNameAlias),
-                BACKEND_SUGGESTIONS_SYNC_TIMEOUT);
-    }
-
     public void WaitUntilContactIsNotFoundInSearch(String searchByNameAlias,
                                                    String contactAlias, int timeoutSeconds) throws Exception {
         String query = usrMgr.replaceAliasesOccurences(contactAlias, FindBy.NAME_ALIAS);
@@ -604,6 +599,13 @@ public final class CommonSteps {
         query = usrMgr.replaceAliasesOccurences(query, FindBy.EMAIL_ALIAS);
         BackendAPIWrappers.waitUntilContactsFound(usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query, 1,
                 true, BACKEND_USER_SYNC_TIMEOUT);
+    }
+
+    public void WaitUntilContactIsSuggestedInSearchResult(String searchByNameAlias,
+                                                    String contactAlias) throws Exception {
+        String query = usrMgr.replaceAliasesOccurences(contactAlias, FindBy.NAME_ALIAS);
+        BackendAPIWrappers.waitUntilSuggestionFound(usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query,
+                1, true, BACKEND_SUGGESTIONS_SYNC_TIMEOUT);
     }
 
     public void WaitUntilContactIsFoundInSearchByEmail(String searchByNameAlias, String contactAlias) throws Exception {

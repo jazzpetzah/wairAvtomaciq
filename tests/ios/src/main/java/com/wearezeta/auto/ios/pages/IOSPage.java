@@ -177,7 +177,7 @@ public abstract class IOSPage extends BasePage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    private void clickAtSimulator(int x, int y) throws Exception {
+    public void clickAtSimulator(int x, int y) throws Exception {
         final Dimension windowSize = getDriver().manage().window().getSize();
         IOSSimulatorHelper.clickAt(String.format("%.2f", x * 1.0 / windowSize.width),
                 String.format("%.2f", y * 1.0 / windowSize.height),
@@ -468,6 +468,7 @@ public abstract class IOSPage extends BasePage {
         } else {
             throw new NotImplementedException("Application install is only available for Simulator");
         }
+
     }
 
     public void tapConfirmButton() throws Exception {

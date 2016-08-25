@@ -469,7 +469,7 @@ Feature: Calling
     Then I see ongoing call
     When <Contact2> calls me
     Then I do not see incoming call
-#    Then I see incoming call
+    #Then I see incoming call
     And <Contact1>,<Contact2> stop calling me
 
     Examples:
@@ -486,6 +486,8 @@ Feature: Calling
     Given I see Conversations list with conversations
     When <Contact> calls me
     Then I see ongoing call
+    And I wait for 10 seconds
+    And I hang up ongoing call
 
     Examples:
       | Name      | Contact   | CallBackend |

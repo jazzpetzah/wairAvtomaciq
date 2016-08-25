@@ -9,9 +9,7 @@ import org.json.JSONArray;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This API presents https://github.com/wireapp/wire-automation-addressbook-ios/blob/master/README.md
@@ -21,26 +19,27 @@ import java.util.Map;
 public class ABProvisionerAPI {
     private static final Logger log = ZetaLogger.getLog(ABProvisionerAPI.class.getSimpleName());
 
-    private String deviceIP;
+    private static final String HOST_NAME = "localhost";
+    private static final String PORT_NUMBER = "8001";
+
     private ABProvisionerRESTClient client;
 
-    private ABProvisionerAPI(String deviceIP) throws Exception {
-        this.deviceIP = deviceIP;
-        this.client = new ABProvisionerRESTClient(this.deviceIP);
+    private ABProvisionerAPI() throws Exception {
+        this.client = new ABProvisionerRESTClient(HOST_NAME, PORT_NUMBER);
     }
 
-    private static Map<String, ABProvisionerAPI> instances = new HashMap<>();
+    private static ABProvisionerAPI instance = null;
 
-    public synchronized static ABProvisionerAPI getInstance(String deviceIP) {
-        if (!instances.containsKey(deviceIP)) {
+    public synchronized static ABProvisionerAPI getInstance() {
+        if (instance == null) {
             try {
-                instances.put(deviceIP, new ABProvisionerAPI(deviceIP));
+                instance = new ABProvisionerAPI();
             } catch (Exception e) {
                 e.printStackTrace();
                 Throwables.propagate(e);
             }
         }
-        return instances.get(deviceIP);
+        return instance;
     }
 
     public List<ABContact> getContacts() throws RESTError {
@@ -64,7 +63,7 @@ public class ABProvisionerAPI {
 
     public boolean isAlive() {
         try {
-            final URL siteURL = new URL(String.format("%s%s/", ABProvisionerRESTClient.URL_PROTOCOL, this.deviceIP));
+            final URL siteURL = new URL(String.format("%s%s:%s/", ABProvisionerRESTClient.URL_PROTOCOL, HOST_NAME, PORT_NUMBER));
             final HttpURLConnection connection = (HttpURLConnection) siteURL.openConnection();
             connection.setRequestMethod("HEAD");
             connection.connect();

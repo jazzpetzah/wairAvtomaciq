@@ -71,9 +71,9 @@ public class PeoplePickerPageSteps {
      * @param number amount of letters to be input
      * @param name   user name
      * @throws Exception
-     * @step. ^I input in People picker search field first (\\d+) letters of (?:user|conversation) name (.*)$
+     * @step. ^I input in People picker search field first (\\d+) letters? of (?:user|conversation) name (.*)$
      */
-    @When("^I input in People picker search field first (\\d+) letters of (?:user|conversation) name (.*)$")
+    @When("^I input in People picker search field first (\\d+) letters? of (?:user|conversation) name (.*)$")
     public void WhenIInputInPeoplePickerSearchFieldUserName(int number, String name) throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         if (name.length() > number) {
@@ -113,6 +113,20 @@ public class PeoplePickerPageSteps {
                     String.format("The conversation '%s' exists in Search results, but it should not", name),
                     getPeoplePickerPage().isElementNotFoundInSearch(name));
         }
+    }
+
+    /**
+     * Verifies that contact is the 1st item in search result
+     *
+     * @param name that should be the 1st item in search result
+     * @throws Exception
+     * @step. ^I see the first item in Search result is (.*)$
+     */
+    @When("^I see the first item in Search result is (.*)$")
+    public void ISeeConversationIsFirstSearchResult(String name) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("Contact %s is NOT first result in search", name),
+                getPeoplePickerPage().isFirstItemInSearchResult(name));
     }
 
     /**

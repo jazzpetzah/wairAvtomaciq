@@ -322,6 +322,10 @@ public class CommonUtils {
         return getValueFromConfig(c, "hasBackendSelection").toLowerCase().equals("true");
     }
 
+    public static String getiOSAddressbookAppPathFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "iosAddressbookAppPath");
+    }
+
     public static String getAndroidPackageFromConfig(Class<?> c) {
         try {
             return getValueFromConfig(c, "package");

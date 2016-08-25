@@ -18,6 +18,8 @@ import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
+import com.wearezeta.auto.ios.tools.ABProvisioner.ABContact;
+import com.wearezeta.auto.ios.tools.ABProvisioner.ABProvisionerAPI;
 import com.wearezeta.auto.ios.tools.FastLoginContainer;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
@@ -50,10 +52,14 @@ public class CommonIOSSteps {
     private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
+    private final ABProvisionerAPI addressbookProvisioner = ABProvisionerAPI.getInstance();
     private static Logger log = ZetaLogger.getLog(CommonIOSSteps.class.getSimpleName());
 
     // We keep this short and compatible with spell checker
     public static final String DEFAULT_AUTOMATION_MESSAGE = "1 message";
+
+    public static final String CAPABILITY_NAME_ADDRESSBOOK = "addressbookStart";
+    public static final String TAG_NAME_ADDRESSBOOK = "@" + CAPABILITY_NAME_ADDRESSBOOK;
 
     static {
         System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
@@ -76,6 +82,10 @@ public class CommonIOSSteps {
 
     private static String getOldAppPath() throws Exception {
         return getOldAppPathFromConfig(CommonIOSSteps.class);
+    }
+
+    private static String getiOSAddressbookAppPath() throws Exception {
+        return getiOSAddressbookAppPathFromConfig(CommonIOSSteps.class);
     }
 
     private static boolean isUseNativeInstrumentsEnabled() throws Exception {
@@ -124,7 +134,7 @@ public class CommonIOSSteps {
                 "--disable-autocorrection",
                 // https://wearezeta.atlassian.net/browse/ZIOS-5259
                 "-AnalyticsUserDefaultsDisabledKey", "0"
-                // ,"--debug-log-network"
+                //"--debug-log-network",
         ));
 
         if (additionalCaps.isPresent()) {
@@ -138,6 +148,10 @@ public class CommonIOSSteps {
                             "--loginpassword=" + ((ClientUser) entry.getValue()).getPassword()
                     ));
                 } else {
+                    if (entry.getKey().equals(CAPABILITY_NAME_ADDRESSBOOK) &&
+                            (entry.getValue() instanceof Boolean) && (Boolean) entry.getValue()) {
+                        processArgs.add("--addressbook-on-simulator");
+                    }
                     capabilities.setCapability(entry.getKey(), entry.getValue());
                 }
             }
@@ -196,8 +210,16 @@ public class CommonIOSSteps {
         }
 
         String appPath = getAppPath();
-        if (scenario.getSourceTagNames().contains("@upgrade")) {
-            appPath = getOldAppPath();
+        if (scenario.getSourceTagNames().contains("@upgrade") ||
+                scenario.getSourceTagNames().contains(TAG_NAME_ADDRESSBOOK)) {
+            if (scenario.getSourceTagNames().contains("@upgrade")) {
+                appPath = getOldAppPath();
+            }
+
+            if (scenario.getSourceTagNames().contains(TAG_NAME_ADDRESSBOOK)) {
+                additionalCaps.put(CAPABILITY_NAME_ADDRESSBOOK, true);
+            }
+
             if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
                 PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
             }
@@ -832,6 +854,19 @@ public class CommonIOSSteps {
         commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
     }
 
+    /**
+     * Waits until user becomes first search result
+     *
+     * @param searchByNameAlias user to search for
+     * @param query             to send to the BE
+     * @throws Exception
+     * @step. ^(\w+) waits? until (.*) is first search result on backend$
+     */
+    @Given("^(\\w+) waits? until (.*) is first search result on backend$")
+    public void UserWaitsUntilContactIsFirstSearchResult(String searchByNameAlias, String query) throws Exception {
+        commonSteps.WaitUntilContactIsSuggestedInSearchResult(searchByNameAlias, query);
+    }
+
     @Given("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)")
     public void ContactSendImageToConversation(String imageSenderUserNameAlias,
                                                String isEncrypted,
@@ -1361,5 +1396,135 @@ public class CommonIOSSteps {
     public void UserXVerifiesRecentMessageType(String msgFromUserNameAlias, String dstConversationName,
                                                String expectedType, String deviceName) throws Exception {
         commonSteps.UserXVerifiesRecentMessageType(msgFromUserNameAlias, dstConversationName, deviceName, expectedType);
+    }
+
+    /**
+     * Add email(s) into address book of a user and upload address book in backend
+     * This step is used to directly upload contacts data to the backend without touching SE
+     *
+     * @param asUser name of the user where the address book is uploaded
+     * @throws Exception
+     * @step. ^User (.*) has (?: emails?|phone numbers?) (.*) in Address Book$
+     */
+    @Given("^User (.*) has (?:emails?|phone numbers?) (.*) in Address Book$")
+    public void UserXHasEmailsInAddressBook(String asUser, String contacts)
+            throws Exception {
+        commonSteps.UserXHasContactsInAddressBook(asUser, contacts);
+    }
+
+    /**
+     * Installs the Addressbook helper app on to the simulator
+     *
+     * @throws Exception
+     * @step. ^I install Address Book Helper app$
+     */
+    @Given("^I install Address Book Helper app$")
+    public void IInstallAddressbookHelperApp() throws Exception {
+        final File app = new File(getiOSAddressbookAppPath());
+        pagesCollection.getCommonPage().installIpa(app);
+    }
+
+    private static final String ADDRESSBOOK_APP_BUNDLE = "com.wire.addressbookautomation";
+
+    /**
+     * Launches the Addressbook Helper App on to the simluator
+     *
+     * @throws Exception
+     * @step. ^I launch Address Book Helper app$
+     */
+    @Given("^I launch Address Book Helper app$")
+    public void ILaunchAddressbookHelperApp() throws Exception {
+        IOSSimulatorHelper.launchApp(ADDRESSBOOK_APP_BUNDLE);
+        Thread.sleep(2000);
+        //To be sure its get pressed tap a second time, if it got pressed 1st time nothing will happen
+        //there is no ui in the app...sometimes it fails here, so the second press
+        for (int i = 0; i <= 1; i++) {
+            IOSSimulatorHelper.clickAt("0.68", "0.58", "1");
+        }
+    }
+
+    /**
+     * Addressbook helper app deletes all contacts from simulator Address Book
+     *
+     * @throws Exception
+     * @step. ^I delete all contacts from Address Book$
+     */
+    @Given("^I delete all contacts from Address Book$")
+    public void IDeleteAllContactsFromAddressbook() throws Exception {
+        addressbookProvisioner.clearContacts();
+    }
+
+    /**
+     * Uploads name and phone number of contact to the simulator addressbook
+     *
+     * @param name        name of contact to be added to addressbook
+     * @param phoneNumber phone number of contact to be added to addressbook
+     * @throws Exception
+     * @step. ^I add name (.*) and phone (.*) to Address Book$
+     */
+    @Given("^I add name (.*) and phone (.*) to Address Book$")
+    public void IAddNameAndPhoneToAddressBook(String name, String phoneNumber) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        phoneNumber = usrMgr.replaceAliasesOccurences(phoneNumber, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+        ABContact contact = new ABContact(name, Optional.empty(), Optional.of(Arrays.asList(phoneNumber)));
+        addressbookProvisioner.addContacts(Arrays.asList(contact));
+    }
+
+    /**
+     * Uploads name and email of contact to the simulator addressbook
+     *
+     * @param name  name of contact to be added to addressbook
+     * @param email email of contact to be added to addressbook
+     * @throws Throwable
+     * @step. ^I add name (.*) and email (.*) to Address Book$
+     */
+    @Given("^I add name (.*) and email (.*) to Address Book$")
+    public void IAddNameAndEmailToAddressBook(String name, String email) throws Throwable {
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        email = usrMgr.replaceAliasesOccurences(email, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        ABContact contact = new ABContact(name, Optional.of(Arrays.asList(email)), Optional.empty());
+        addressbookProvisioner.addContacts(Arrays.asList(contact));
+    }
+
+    private final Map<String, Object> savedCaps = new HashMap<>();
+
+    /**
+     * Quits Wire on the simulator
+     *
+     * @throws Exception
+     * @step. ^I quit Wire$
+     */
+    @Given("^I quit Wire$")
+    public void IQuitWire() throws Exception {
+        if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+            final RemoteWebDriver currentDriver = PlatformDrivers.getInstance().getDriver(CURRENT_PLATFORM).get();
+            final Map<String, ?> currentCapabilities = currentDriver.getCapabilities().asMap();
+            for (Map.Entry<String, ?> capabilityItem : currentCapabilities.entrySet()) {
+                savedCaps.put(capabilityItem.getKey(), capabilityItem.getValue());
+            }
+            try {
+                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Relaunches Wire on the simulator
+     *
+     * @throws Exception
+     * @step. ^I relaunch Wire$
+     */
+    @Given("^I relaunch Wire$")
+    public void IRelaunchWire() throws Exception {
+        if (savedCaps.isEmpty()) {
+            throw new IllegalStateException("Quit Wire App first!");
+        }
+        savedCaps.put("noReset", true);
+        savedCaps.put("fullReset", false);
+        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(getAppPath(), Optional.of(savedCaps), 1);
+        updateDriver(lazyDriver);
+        savedCaps.clear();
     }
 }
