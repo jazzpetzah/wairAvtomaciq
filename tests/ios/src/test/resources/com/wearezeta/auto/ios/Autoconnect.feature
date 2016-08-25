@@ -8,8 +8,8 @@ Feature: Autoconnect
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
     Given I delete all contacts from Address Book
-    Given I add name <Contact1> and phone <CPhone> to Address Book
-    Given I add name <Contact2> and phone <C2Phone> to Address Book
+    Given I add name <Contact1> and phone <ContactPhone> to Address Book
+    Given I add name <Contact2> and phone <Contact2Phone> to Address Book
     Given I relaunch Wire
     Given I see sign in screen
     When I enter phone number for <Name>
@@ -22,8 +22,8 @@ Feature: Autoconnect
     And I see conversation <Contact2> in conversations list
 
     Examples:
-      | Contact1  | Contact2   | CPhone           | C2Phone          | Name      |
-      | user1Name | user2Name  | user1PhoneNumber | user2PhoneNumber | user3Name |
+      | Contact1  | Contact2   | ContactPhone       | Contact2Phone    | Name      |
+      | user1Name | user2Name  | user1PhoneNumber   | user2PhoneNumber | user3Name |
 
   #still needs the fix to upload +0 to BE, thats why no label to run yet, because it will fail
   @C202304 @addressbookStart
@@ -33,8 +33,8 @@ Feature: Autoconnect
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
     Given I delete all contacts from Address Book
-    Given I add name <Contact1> and phone <CPhone> to Address Book
-    Given I add name <Contact2> and phone <C2Phone> to Address Book
+    Given I add name <Contact1> and phone <ContactPhone> to Address Book
+    Given I add name <Contact2> and phone <Contact2Phone> to Address Book
     Given I relaunch Wire
     Given I sign in using my email or phone number
     #Wait to make sure user is in the backend
@@ -46,7 +46,7 @@ Feature: Autoconnect
     And I see conversation <Contact2> in conversations list
 
     Examples:
-      | Contact1  | Contact2   | CPhone           | C2Phone          | Name      |
+      | Contact1  | Contact2   | ContactPhone     | Contact2Phone    | Name      |
       | user3Name | user2Name  | user3PhoneNumber | user2PhoneNumber | user1Name |
 
   @torun @C202303 @staging @addressbookStart
@@ -56,7 +56,7 @@ Feature: Autoconnect
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
     Given I delete all contacts from Address Book
-    Given I add name <Contact> and email <CEmail> to Address Book
+    Given I add name <Contact> and email <ContactEmail> to Address Book
     Given I relaunch Wire
     Given I sign in using my email or phone number
     #Wait to make sure user is in the backend
@@ -64,12 +64,12 @@ Feature: Autoconnect
     When I open search UI
     #Wait to be sure the match happend on the backend
     And I wait until <Contact> is first search result on backend
-    And I input in People picker search field first 1 letters of user name <Contact>
+    And I input in People picker search field first 1 letter of user name <Contact>
     Then I see the first item in Search result is <Contact>
 
     Examples:
-      | Contact   | CEmail     | Name      |
-      | user2Name | user2Email | user1Name |
+      | Contact   | ContactEmail  | Name      |
+      | user2Name | user2Email    | user1Name |
 
   @C206254 @staging @addressbookStart
   Scenario Outline: Verify direct matching of emails
@@ -78,7 +78,7 @@ Feature: Autoconnect
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
     Given I delete all contacts from Address Book
-    Given I add name <Contact> and email <CEmail> to Address Book
+    Given I add name <Contact> and email <ContactEmail> to Address Book
     Given I relaunch Wire
     Given I see sign in screen
     When I enter phone number for <Name>
@@ -93,9 +93,9 @@ Feature: Autoconnect
     When I open search UI
     #Wait to be sure the match happend on the backend
     And I wait until <Contact> is first search result on backend
-    And I input in People picker search field first 1 letters of user name <Contact>
+    And I input in People picker search field first 1 letter of user name <Contact>
     Then I see the first item in Search result is <Contact>
 
     Examples:
-      | Contact   | CEmail     | Name      |
-      | user1Name | user1Email | user2Name |
+      | Contact   | ContactEmail | Name      |
+      | user1Name | user1Email   | user2Name |

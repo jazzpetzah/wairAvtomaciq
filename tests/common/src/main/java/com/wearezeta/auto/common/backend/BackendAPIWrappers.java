@@ -719,10 +719,11 @@ public final class BackendAPIWrappers {
                                                          int timeoutSeconds) throws Exception {
         final long startTimestamp = System.currentTimeMillis();
         int currentCount;
+        AuthToken token = receiveAuthToken(searchByUser);
         while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
             JSONObject searchResult;
             try {
-                searchResult = BackendREST.searchForSuggestionsForContact(receiveAuthToken(searchByUser), query);
+                searchResult = BackendREST.searchForSuggestionsForContact(token, query);
             } catch (BackendRequestException e) {
                 if (e.getReturnCode() == 500) {
                     Thread.sleep(1000);

@@ -17,7 +17,6 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
 import com.wearezeta.auto.ios.tools.ABProvisioner.ABContact;
 import com.wearezeta.auto.ios.tools.ABProvisioner.ABProvisionerAPI;
@@ -33,7 +32,6 @@ import gherkin.formatter.model.Result;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
-import org.apache.xpath.operations.Bool;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -857,7 +855,7 @@ public class CommonIOSSteps {
     }
 
     /**
-     * Waits until user becomes first search result after email match happend
+     * Waits until user becomes first search result
      *
      * @param searchByNameAlias user to search for
      * @param query             to send to the BE
@@ -1405,9 +1403,9 @@ public class CommonIOSSteps {
      *
      * @param asUser name of the user where the address book is uploaded
      * @throws Exception
-     * @step. ^User (.*) has (?: emails?|phone numbers?) (.*) in address book$
+     * @step. ^User (.*) has (?: emails?|phone numbers?) (.*) in Address Book$
      */
-    @Given("^User (.*) has (?:emails?|phone numbers?) (.*) in address book$")
+    @Given("^User (.*) has (?:emails?|phone numbers?) (.*) in Address Book$")
     public void UserXHasEmailsInAddressBook(String asUser, String contacts)
             throws Exception {
         commonSteps.UserXHasContactsInAddressBook(asUser, contacts);
@@ -1423,7 +1421,6 @@ public class CommonIOSSteps {
     public void IInstallAddressbookHelperApp() throws Exception {
         final File app = new File(getiOSAddressbookAppPath());
         pagesCollection.getCommonPage().installIpa(app);
-
     }
 
     private static final String ADDRESSBOOK_APP_BUNDLE = "com.wire.addressbookautomation";
@@ -1468,10 +1465,8 @@ public class CommonIOSSteps {
     public void IAddNameAndPhoneToAddressBook(String name, String phoneNumber) throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         phoneNumber = usrMgr.replaceAliasesOccurences(phoneNumber, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
-        List<String> phoneNumberList = Arrays.asList(phoneNumber);
-        ABContact contact = new ABContact(name, Optional.empty(), Optional.of(phoneNumberList));
-        List<ABContact> newContacts = Arrays.asList(contact);
-        addressbookProvisioner.addContacts(newContacts);
+        ABContact contact = new ABContact(name, Optional.empty(), Optional.of(Arrays.asList(phoneNumber)));
+        addressbookProvisioner.addContacts(Arrays.asList(contact));
     }
 
     /**
@@ -1486,10 +1481,8 @@ public class CommonIOSSteps {
     public void IAddNameAndEmailToAddressBook(String name, String email) throws Throwable {
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         email = usrMgr.replaceAliasesOccurences(email, ClientUsersManager.FindBy.EMAIL_ALIAS);
-        List<String> emailList = Arrays.asList(email);
-        ABContact contact = new ABContact(name, Optional.of(emailList), Optional.empty());
-        List<ABContact> newContacts = Arrays.asList(contact);
-        addressbookProvisioner.addContacts(newContacts);
+        ABContact contact = new ABContact(name, Optional.of(Arrays.asList(email)), Optional.empty());
+        addressbookProvisioner.addContacts(Arrays.asList(contact));
     }
 
     private final Map<String, Object> savedCaps = new HashMap<>();
