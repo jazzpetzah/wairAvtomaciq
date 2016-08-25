@@ -14,7 +14,8 @@ public class MessageContextMenuPage extends OSXPage {
     public static final Logger LOG = ZetaLogger.getLog(MessageContextMenuPage.class.getName());
 
     private static final int CONTEXT_DELETE_INDEX = 1;
-    private static final int CONTEXT_DELETE_EVERYWHERE_INDEX = 2;
+    private static final int CONTEXT_EDIT_INDEX = 1;
+    private static final int CONTEXT_DELETE_EVERYWHERE_INDEX = 3;
 
     // TODO hide behind driver impl
     private final Robot robot = new Robot();
@@ -31,6 +32,10 @@ public class MessageContextMenuPage extends OSXPage {
      */
     public void clickDelete() throws Exception {
         selectByIndex(CONTEXT_DELETE_INDEX, 2000);
+    }
+    
+    public void clickEdit() throws Exception {
+        selectByIndex(CONTEXT_EDIT_INDEX, 2000);
     }
     
     public void clickDeleteEverywhere() throws Exception {

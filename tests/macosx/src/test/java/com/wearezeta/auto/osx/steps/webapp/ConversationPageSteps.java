@@ -116,6 +116,21 @@ public class ConversationPageSteps {
         webappPagesCollection.getPage(ConversationPage.class).writeNewMessage(
                 message);
     }
+    
+    /**
+     * Deletes N characters from conversation input
+     *
+     * @param count count of characters
+     * @step. "^I delete (\d+) characters from the conversation input$"
+     */
+    @When("^I delete (\\d+) characters from the conversation input$")
+    public void IDeleteTypedMessage(int count) throws Exception {
+        int i = count;
+        while (i != 0) {
+            webappPagesCollection.getPage(ConversationPage.class).clearConversationInput();
+            i--;
+        }
+    }
 
     /**
      * Submits entered message for sending

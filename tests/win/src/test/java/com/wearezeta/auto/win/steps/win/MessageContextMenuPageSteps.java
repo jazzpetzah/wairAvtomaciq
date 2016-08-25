@@ -39,12 +39,22 @@ public class MessageContextMenuPageSteps {
      * @throws Exception
      */
     @When("^I click delete (everywhere )?in message context menu$")
-    public void IClickBlockButtonInContextMenu(String everywhere) throws Exception {
+    public void IClickDeleteButtonInContextMenu(String everywhere) throws Exception {
         if (everywhere == null) {
             winPagesCollection.getPage(MessageContextMenuPage.class).clickDelete();
         }else{
             winPagesCollection.getPage(MessageContextMenuPage.class).clickDeleteEverywhere();
         }
-        
+    }
+    
+    /**
+     * Click edit in message context menu
+     *
+     * @step. ^I click edit in message context menu$
+     * @throws Exception
+     */
+    @When("^I click edit in message context menu$")
+    public void IClickEditButtonInContextMenu() throws Exception {
+        winPagesCollection.getPage(MessageContextMenuPage.class).clickEdit();
     }
 }
