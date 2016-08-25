@@ -1400,6 +1400,7 @@ public class CommonIOSSteps {
 
     /**
      * Add email(s) into address book of a user and upload address book in backend
+     * This step is used to directly upload contacts data to the backend without touching SE
      *
      * @param asUser name of the user where the address book is uploaded
      * @throws Exception
