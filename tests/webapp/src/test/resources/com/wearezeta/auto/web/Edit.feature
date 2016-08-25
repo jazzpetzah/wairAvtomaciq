@@ -72,6 +72,30 @@ Feature: Edit
       | Login      | Password      | Name      | Contact1  |Contact2   | ChatName  | Message1 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | message1 |
 
+  @C206284 @staging
+  Scenario Outline: Verify I can edit my last message by pressing the up arrow key
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I write message <OriginalMessage>
+    Then I send message
+    And I see text message <OriginalMessage>
+    And I see 2 messages in conversation
+    When I press Up Arrow to edit message
+    And I delete 7 characters from the conversation input
+    And I write message <EditedMessage>
+    And I send message
+    Then I do not see text message <OriginalMessage>
+    And I see text message <EditedMessage>
+    And I see 2 messages in conversation
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | OriginalMessage | EditedMessage |
+      | user1Email | user1Password | user1Name | user2Name | edit me         | edited        |
+
   @C206269 @regression
   Scenario Outline: Verify I see changed message if message was edited from another device (1:1)
     Given There are 2 users where <Name> is me
@@ -96,7 +120,6 @@ Feature: Edit
     Examples:
       | Login      | Password      | Name      | Contact1   | OriginalMessage | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name  | edit me         | edited        |
-
 
   @C206270 @regression
   Scenario Outline: Verify I see changed message if message was edited from another device (group)
@@ -145,7 +168,6 @@ Feature: Edit
     Examples:
       | Login      | Password      | Name      | Contact1   | OriginalMessage | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name  | edit me         | edited        |
-
 
   @C225973 @regression
   Scenario Outline: Verify I see changed message if message was edited from another user (group)

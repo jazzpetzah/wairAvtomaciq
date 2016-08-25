@@ -1161,6 +1161,10 @@ public class ConversationPage extends WebPage {
         conversationInput.sendKeys(Keys.BACK_SPACE);
     }
 
+    public void pressUpArrow() throws Exception {
+        conversationInput.sendKeys(Keys.ARROW_UP);
+    }
+
     public String getLocationName() {
         return locationName.getText();
     }
