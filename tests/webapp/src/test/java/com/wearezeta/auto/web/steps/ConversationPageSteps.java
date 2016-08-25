@@ -1343,6 +1343,15 @@ public class ConversationPageSteps {
         }
     }
 
+    /**
+     * Clicks Up Arrow to edit message
+     *
+     * @step. "^I click Up Arrow to edit message$"
+     */
+    @When("^I click Up Arrow to edit message$")
+    public void IClickUpArrow() throws Exception {
+            context.getPagesCollection().getPage(ConversationPage.class).clickUpArrow();
+    }
 
     /**
      * Verifies whether location message is shown in the conversation view or not.
