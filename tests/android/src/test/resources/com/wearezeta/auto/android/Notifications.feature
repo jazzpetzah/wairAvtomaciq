@@ -23,8 +23,48 @@ Feature: Notifications
       | Name      | Contact   | Message |
       | user1Name | user2Name | hello   |
 
+  @C131187 @staging
+  Scenario Outline: (CM-1071) Verify push notifications after receiving any type of message
+    Given I am on Android 4.4 or better
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I minimize the application
+    # Txt Msg
+    When User <Contact> send encrypted message "<TxtMsg>" via device <DeviceName> to user Myself
+    Then I see the message "<TxtMsg>" in push notifications list
+    And I clear Wire push notifications
+    # Img Msg
+    When User <Contact> sends encrypted image <Image> to single user conversation Myself
+    Then I see the message "Shared a picture" in push notifications list
+    And I clear Wire push notifications
+    # Ping
+    When User <Contact> securely pings conversation Myself
+    Then I see the message "Pinged" in push notifications list
+    And I clear Wire push notifications
+    # Location
+    When User <Contact> shares his location to user Myself via device <DeviceName>
+    Then I see the message "Shared a location" in push notifications list
+    And I clear Wire push notifications
+    # File asset
+    When <Contact> sends <FileSize> file having name "<FileName>" and MIME type "<FileMIMEType>" via device <DeviceName> to user Myself
+    Then I see the message "Shared a file" in push notifications list
+    And I clear Wire push notifications
+    # Video msg
+    When <Contact> sends local file named "<VideoFileName>" and MIME type "<VideoMIMEType>" via device <DeviceName> to user Myself
+    Then I see the message "Shared a video message" in push notifications list
+    And I clear Wire push notifications
+    # Audio msg
+    When <Contact> sends local file named "<AudioFileName>" and MIME type "<AudioMIMEType>" via device <DeviceName> to user Myself
+    Then I see the message "Shared an audio message" in push notifications list
+
+    Examples:
+      | Name      | Contact   | VideoFileName | VideoMIMEType | DeviceName | AudioFileName | AudioMIMEType | TxtMsg | Image       | FileSize | FileName      | FileMIMEType |
+      | user1Name | user2Name | testing.mp4   | video/mp4     | Device1    | test.m4a      | audio/mp4     | OMG    | testing.jpg | 3.00MB   | qa_random.txt | text/plain   |
+
   @C165125 @regression @rc
-  Scenario Outline: CM-1023 Verify no GCM notifications are shown for muted chats
+  Scenario Outline: Verify no GCM notifications are shown for muted chats
     Given I am on Android 4.4 or better
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
