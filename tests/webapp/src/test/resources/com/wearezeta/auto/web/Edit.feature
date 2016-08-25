@@ -71,7 +71,7 @@ Feature: Edit
     Examples:
       | Login      | Password      | Name      | Contact1  |Contact2   | ChatName  | Message1 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | message1 |
-    
+
   @C206284 @staging
   Scenario Outline: Verify I can edit my last message by pressing the up arrow key
     Given There are 2 users where <Name> is me

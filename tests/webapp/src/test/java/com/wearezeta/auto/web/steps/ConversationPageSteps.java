@@ -1349,8 +1349,8 @@ public class ConversationPageSteps {
      * @step. "^I press Up Arrow to edit message$"
      */
     @When("^I press Up Arrow to edit message$")
-    public void IClickUpArrow() throws Exception {
-            context.getPagesCollection().getPage(ConversationPage.class).clickUpArrow();
+    public void IPressUpArrow() throws Exception {
+            context.getPagesCollection().getPage(ConversationPage.class).pressUpArrow();
     }
 
     /**

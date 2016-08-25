@@ -1161,7 +1161,7 @@ public class ConversationPage extends WebPage {
         conversationInput.sendKeys(Keys.BACK_SPACE);
     }
 
-    public void clickUpArrow() throws Exception {
+    public void pressUpArrow() throws Exception {
         conversationInput.sendKeys(Keys.ARROW_UP);
     }
 
