@@ -609,7 +609,7 @@ public final class CommonSteps {
     public void WaitUntilContactIsFirstSearchResult(String searchByNameAlias,
                                                     String contactAlias) throws Exception {
         String query = usrMgr.replaceAliasesOccurences(contactAlias, FindBy.NAME_ALIAS);
-        query = query.substring(0,1);
+        query = query.substring(0, 1);
         BackendAPIWrappers.waitUntilContactFirstSearchResult(usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query,
                 1, true, BACKEND_SUGGESTIONS_SYNC_TIMEOUT);
 

@@ -137,7 +137,6 @@ public class CommonIOSSteps {
                 // https://wearezeta.atlassian.net/browse/ZIOS-5259
                 "-AnalyticsUserDefaultsDisabledKey", "0"
                 //"--debug-log-network",
-                //"--addressbook-on-simulator"
         ));
 
         if (additionalCaps.isPresent()) {
@@ -150,10 +149,6 @@ public class CommonIOSSteps {
                             "--loginemail=" + ((ClientUser) entry.getValue()).getEmail(),
                             "--loginpassword=" + ((ClientUser) entry.getValue()).getPassword()
                     ));
-//                } else if (entry.getKey().equals(CAPABILITY_NAME_ADDRESSBOOK) &&
-//                        (entry.getValue() instanceof Boolean) && (Boolean) entry.getValue()) {
-//                    processArgs.add("--addressbook-on-simulator");
-//                }
                 } else {
                     if (entry.getKey().equals(CAPABILITY_NAME_ADDRESSBOOK) &&
                             (entry.getValue() instanceof Boolean) && (Boolean) entry.getValue()) {
@@ -861,6 +856,14 @@ public class CommonIOSSteps {
         commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
     }
 
+    /**
+     * Waits until user becomes first search result after email match happend
+     *
+     * @param searchByNameAlias user to search for
+     * @param query             to send to the BE
+     * @throws Exception
+     * @step. ^(\w+) waits? until (.*) is first search result on backend$
+     */
     @Given("^(\\w+) waits? until (.*) is first search result on backend$")
     public void UserWaitsUntilContactIsFirstSearchResult(String searchByNameAlias, String query) throws Exception {
         commonSteps.WaitUntilContactIsFirstSearchResult(searchByNameAlias, query);

@@ -758,7 +758,7 @@ public final class BackendAPIWrappers {
             Thread.sleep(1000);
         }
         throw new NoContactsFoundException(String.format("%s contact(s) '%s' is not first search result " +
-                "within %s second(s) timeout",
+                        "within %s second(s) timeout",
                 expectedCount, query, timeoutSeconds));
     }
 
