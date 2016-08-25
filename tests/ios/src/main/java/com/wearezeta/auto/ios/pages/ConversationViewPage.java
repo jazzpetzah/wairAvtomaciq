@@ -498,11 +498,11 @@ public class ConversationViewPage extends IOSPage {
         }
         if (shouldSend) {
             if (DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathEmptyInputField, 1)) {
-                // This is faster and allows to avoid autocorrection, but does not update input cursor position properly
-                ((IOSElement) convoInput).setValue(message);
-            } else {
                 // to keep the existing stuff inside the input field
                 convoInput.sendKeys(message);
+            } else {
+                // This is faster and allows to avoid autocorrection, but does not update input cursor position properly
+                ((IOSElement) convoInput).setValue(message);
             }
             this.tapKeyboardCommitButton();
         } else {
