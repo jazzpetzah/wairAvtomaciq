@@ -27,6 +27,7 @@ import org.openqa.selenium.*;
 import com.wearezeta.auto.ios.pages.keyboard.IOSKeyboard;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -105,7 +106,8 @@ public abstract class IOSPage extends BasePage {
         try {
             return (ZetaIOSDriver) super.getDriver();
         } catch (ExecutionException e) {
-            if ((e.getCause() instanceof TimeoutException) ||
+            if ((e.getCause() instanceof UnreachableBrowserException) ||
+                    (e.getCause() instanceof TimeoutException) ||
                     ((e.getCause() instanceof WebDriverException) &&
                             (e.getCause().getCause() instanceof TimeoutException))) {
                 throw new TimeoutException((AppiumServer.getInstance().getLog().orElse("Appium log is empty")) +
