@@ -49,7 +49,7 @@ Feature: Autoconnect
       | Contact1  | Contact2   | ContactPhone     | Contact2Phone    | Name      |
       | user3Name | user2Name  | user3PhoneNumber | user2PhoneNumber | user1Name |
 
-  @torun @C202303 @staging @addressbookStart
+  @C202303 @staging @addressbookStart
   Scenario Outline: Verify direct matching email - delayed
     Given There are 2 user where <Name> is me
     Given I quit Wire
