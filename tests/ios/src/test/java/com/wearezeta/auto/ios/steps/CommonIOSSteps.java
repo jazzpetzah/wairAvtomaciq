@@ -866,7 +866,7 @@ public class CommonIOSSteps {
      */
     @Given("^(\\w+) waits? until (.*) is first search result on backend$")
     public void UserWaitsUntilContactIsFirstSearchResult(String searchByNameAlias, String query) throws Exception {
-        commonSteps.WaitUntilContactIsFirstSearchResult(searchByNameAlias, query);
+        commonSteps.WaitUntilContactIsSuggestedInSearchResult(searchByNameAlias, query);
     }
 
     @Given("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)")

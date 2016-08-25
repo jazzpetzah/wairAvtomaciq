@@ -601,7 +601,7 @@ public final class CommonSteps {
                 true, BACKEND_USER_SYNC_TIMEOUT);
     }
 
-    public void WaitUntilContactIsFirstSearchResult(String searchByNameAlias,
+    public void WaitUntilContactIsSuggestedInSearchResult(String searchByNameAlias,
                                                     String contactAlias) throws Exception {
         String query = usrMgr.replaceAliasesOccurences(contactAlias, FindBy.NAME_ALIAS);
         BackendAPIWrappers.waitUntilSuggestionFound(usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query,

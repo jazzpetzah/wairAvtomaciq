@@ -41,7 +41,6 @@ Feature: Autoconnect
     And I wait until <Contact1> exists in backend search results
     And I wait until <Contact2> exists in backend search results
     When I open search UI
-    And I accept alert
     And I click clear button
     Then I see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
@@ -63,12 +62,10 @@ Feature: Autoconnect
     #Wait to make sure user is in the backend
     And I wait until <Contact> exists in backend search results
     When I open search UI
-    #Will keep that accept in, because the test is about accepting that contacts sharing alert
-    And I accept alert
     #Wait to be sure the match happend on the backend
     And I wait until <Contact> is first search result on backend
     And I input in People picker search field first 1 letters of user name <Contact>
-    Then I see first item in Search result is named <Contact>
+    Then I see the first item in Search result is <Contact>
 
     Examples:
       | Contact   | CEmail     | Name      |
@@ -97,7 +94,7 @@ Feature: Autoconnect
     #Wait to be sure the match happend on the backend
     And I wait until <Contact> is first search result on backend
     And I input in People picker search field first 1 letters of user name <Contact>
-    Then I see first item in Search result is named <Contact>
+    Then I see the first item in Search result is <Contact>
 
     Examples:
       | Contact   | CEmail     | Name      |
