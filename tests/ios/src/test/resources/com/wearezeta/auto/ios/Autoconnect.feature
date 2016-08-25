@@ -5,8 +5,8 @@ Feature: Autoconnect
   Scenario Outline: Verify autoconnect users by direct match phone numbers
     Given There are 2 users
     Given I quit Wire
-    Given I install Addressbook helper app
-    Given I launch Addressbook helper app
+    Given I install Address Book Helper app
+    Given I launch Address Book Helper app
     Given I delete all contacts from Address Book
     Given I add name <Contact1> and phone <CPhone> to Address Book
     Given I add name <Contact2> and phone <C2Phone> to Address Book
@@ -30,8 +30,8 @@ Feature: Autoconnect
   Scenario Outline: Verify autoconnect users by direct match phone numbers - delayed
     Given There are 3 user where <Name> is me
     Given I quit Wire
-    Given I install Addressbook helper app
-    Given I launch Addressbook helper app
+    Given I install Address Book Helper app
+    Given I launch Address Book Helper app
     Given I delete all contacts from Address Book
     Given I add name <Contact1> and phone <CPhone> to Address Book
     Given I add name <Contact2> and phone <C2Phone> to Address Book
@@ -54,8 +54,8 @@ Feature: Autoconnect
   Scenario Outline: Verify direct matching email - delayed
     Given There are 2 user where <Name> is me
     Given I quit Wire
-    Given I install Addressbook helper app
-    Given I launch Addressbook helper app
+    Given I install Address Book Helper app
+    Given I launch Address Book Helper app
     Given I delete all contacts from Address Book
     Given I add name <Contact> and email <CEmail> to Address Book
     Given I relaunch Wire
@@ -78,8 +78,8 @@ Feature: Autoconnect
   Scenario Outline: Verify direct matching of emails
     Given There is 1 user
     Given I quit Wire
-    Given I install Addressbook helper app
-    Given I launch Addressbook helper app
+    Given I install Address Book Helper app
+    Given I launch Address Book Helper app
     Given I delete all contacts from Address Book
     Given I add name <Contact> and email <CEmail> to Address Book
     Given I relaunch Wire

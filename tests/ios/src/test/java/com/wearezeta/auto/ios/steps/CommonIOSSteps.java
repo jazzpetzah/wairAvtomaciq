@@ -869,18 +869,6 @@ public class CommonIOSSteps {
         commonSteps.WaitUntilContactIsFirstSearchResult(searchByNameAlias, query);
     }
 
-    /**
-     * Wait until suggestions are in the backend for a certain user
-     *
-     * @param userNameAlias the name of the user
-     * @throws Exception
-     * @step. ^I wait until there are suggestions for user (.*) on backend$
-     */
-    @Given("^I wait until there are suggestions for user (.*) on backend$")
-    public void WaitsForSuggestionsOnBackend(String userNameAlias) throws Exception {
-        commonSteps.WaitUntilSuggestionFound(userNameAlias);
-    }
-
     @Given("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)")
     public void ContactSendImageToConversation(String imageSenderUserNameAlias,
                                                String isEncrypted,
@@ -1429,9 +1417,9 @@ public class CommonIOSSteps {
      * Installs the Addressbook helper app on to the simulator
      *
      * @throws Exception
-     * @step. ^I install Addressbook helper app$
+     * @step. ^I install Address Book Helper app$
      */
-    @Given("^I install Addressbook helper app$")
+    @Given("^I install Address Book Helper app$")
     public void IInstallAddressbookHelperApp() throws Exception {
         final File app = new File(getiOSAddressbookAppPath());
         pagesCollection.getCommonPage().installIpa(app);
@@ -1444,9 +1432,9 @@ public class CommonIOSSteps {
      * Launches the Addressbook Helper App on to the simluator
      *
      * @throws Exception
-     * @step. ^I launch Addressbook helper app$
+     * @step. ^I launch Address Book Helper app$
      */
-    @Given("^I launch Addressbook helper app$")
+    @Given("^I launch Address Book Helper app$")
     public void ILaunchAddressbookHelperApp() throws Exception {
         IOSSimulatorHelper.launchApp(ADDRESSBOOK_APP_BUNDLE);
         Thread.sleep(2000);
@@ -1541,7 +1529,7 @@ public class CommonIOSSteps {
     @Given("^I relaunch Wire$")
     public void IRelaunchWire() throws Exception {
         if (savedCaps.isEmpty()) {
-            throw new Exception("Capabilities are empty. Quit Wire first to set Capabilities");
+            throw new IllegalStateException("Quit Wire App first!");
         }
         savedCaps.put("noReset", true);
         savedCaps.put("fullReset", false);
