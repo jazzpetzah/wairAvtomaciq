@@ -11,7 +11,7 @@ Feature: Delete Message
     Then I see 1 default message in the conversation view
     When I long tap default message in conversation view
     And I tap on Delete badge item
-    And I select Delete only for me item from Delete menu
+    And I select Delete for Me item from Delete menu
     Then I see 0 default messages in the conversation view
 
     Examples:
@@ -29,7 +29,7 @@ Feature: Delete Message
     Then I see 1 default message in the conversation view
     When I long tap default message in conversation view
     And I tap on Delete badge item
-    And I select Delete only for me item from Delete menu
+    And I select Delete for Me item from Delete menu
     Then I see 0 default messages in the conversation view
 
     Examples:
@@ -47,7 +47,7 @@ Feature: Delete Message
     Then I see 1 photo in the conversation view
     When I long tap on image in conversation view
     And I tap on Delete badge item
-    And I select Delete only for me item from Delete menu
+    And I select Delete for Me item from Delete menu
     Then I see 0 photos in the conversation view
     And I type tag for giphy preview <GiphyTag> and open preview overlay
     # Wait for GIF picture to be downloaded
@@ -56,7 +56,7 @@ Feature: Delete Message
     Then I see 1 photo in the conversation view
     When I long tap on image in conversation view
     And I tap on Delete badge item
-    And I select Delete only for me item from Delete menu
+    And I select Delete for Me item from Delete menu
     Then I see 0 photos in the conversation view
 
     Examples:
@@ -72,7 +72,7 @@ Feature: Delete Message
     When I tap on contact name <Contact>
     And I long tap on media container in conversation view
     And I tap on Delete badge item
-    And I select Delete only for me item from Delete menu
+    And I select Delete for Me item from Delete menu
     Then I do not see media container in the conversation view
 
     Examples:
@@ -90,7 +90,7 @@ Feature: Delete Message
     Then I see link preview container in the conversation view
     When I long tap on link preview in conversation view
     And I tap on Delete badge item
-    And I select Delete only for me item from Delete menu
+    And I select Delete for Me item from Delete menu
     Then I do not see link preview container in the conversation view
 
     Examples:
@@ -110,7 +110,7 @@ Feature: Delete Message
     And I wait for 10 seconds
     And I long tap on file transfer placeholder in conversation view
     And I tap on Delete badge item
-    And I select Delete only for me item from Delete menu
+    And I select Delete for Me item from Delete menu
     Then I do not see file transfer placeholder
 
     Examples:

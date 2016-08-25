@@ -12,7 +12,7 @@ Feature: Edit Message
     When I long tap default message in conversation view
     Then I do not see Edit badge item
     And I tap on Delete badge item
-    And I do not see Delete for everyone item in Delete menu
+    And I do not see Delete for Everyone item in Delete menu
 
     Examples:
       | Name      | Contact   |
@@ -31,7 +31,7 @@ Feature: Edit Message
     And I long tap default message in conversation view
     Then I do not see Edit badge item
     And I tap on Delete badge item
-    And I do not see Delete for everyone item in Delete menu
+    And I do not see Delete for Everyone item in Delete menu
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -191,7 +191,7 @@ Feature: Edit Message
       | Name      | Contact   | Text2 | Text2Changed |
       | user1Name | user2Name | msg2  | msgchg       |
 
-  @C202347 @staging @fastLogin
+  @C202347 @regression @fastLogin
   Scenario Outline: Verify I see changed message if message was edited from another device (1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -209,7 +209,7 @@ Feature: Edit Message
       | Name      | Contact1  | Message | Device  | NewMessage |
       | user1Name | user2Name | Hi      | Device1 | Hello      |
 
-  @C202348 @staging @fastLogin
+  @C202348 @regression @fastLogin
   Scenario Outline: Verify I see changed message if message was edited from another device (group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -228,7 +228,7 @@ Feature: Edit Message
       | Name      | Contact1  | Device    | Contact2  | GroupChatName | Message | NewMessage |
       | user1Name | user2Name | HisDevice | user3Name | EditGroup     | Hi      | Hello      |
 
-  @C202371 @staging @fastLogin
+  @C202371 @regression @fastLogin
   Scenario Outline: Verify I can't edit picture/video/audio
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

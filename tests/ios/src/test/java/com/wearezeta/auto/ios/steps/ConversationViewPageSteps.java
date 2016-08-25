@@ -651,9 +651,9 @@ public class ConversationViewPageSteps {
      *
      * @param name one of possible item names
      * @throws Exception
-     * @step. ^I select (Delete only for me|Delete for everyone|Cancel) item from Delete menu$
+     * @step. ^I select (Delete for Me|Delete for Everyone|Cancel) item from Delete menu$
      */
-    @And("^I select (Delete only for me|Delete for everyone|Cancel) item from Delete menu$")
+    @And("^I select (Delete for Me|Delete for Everyone|Cancel) item from Delete menu$")
     public void ISelectDeleteMenuItem(String name) throws Exception {
         getConversationViewPage().selectDeleteMenuItem(name);
     }
@@ -1381,9 +1381,9 @@ public class ConversationViewPageSteps {
      *
      * @param name item name
      * @throws Exception
-     * @step. ^I do not see (Delete for everyone) item in Delete menu$
+     * @step. ^I do not see (Delete for Everyone|Delete for Me|Cancel) item in Delete menu$
      */
-    @Then("^I do not see (Delete for everyone) item in Delete menu$")
+    @Then("^I do not see (Delete for Everyone|Delete for Me|Cancel) item in Delete menu$")
     public void IDoNotSeeItemInDeleteMenu(String name) throws Exception {
         Assert.assertTrue(String.format("'%s' Delete menu item shouldn't be visible", name),
                 getConversationViewPage().deleteMenuItemNotVisible(name));

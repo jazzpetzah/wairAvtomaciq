@@ -15,7 +15,7 @@ Feature: Recall Message
     And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
     And I long tap default message in conversation view
     And I tap on Delete badge item
-    And I select Delete for everyone item from Delete menu
+    And I select Delete for Everyone item from Delete menu
     Then I see 0 default messages in the conversation view
     And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in <Wait1> seconds
     And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in <Wait2> seconds
@@ -51,7 +51,7 @@ Feature: Recall Message
     And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
     And I long tap on file transfer placeholder in conversation view
     And I tap on Delete badge item
-    And I select Delete for everyone item from Delete menu
+    And I select Delete for Everyone item from Delete menu
     Then I do not see file transfer placeholder
     And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in 15 seconds
     And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in 3 seconds
@@ -77,7 +77,7 @@ Feature: Recall Message
     And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
     And I long tap on image in conversation view
     And I tap on Delete badge item
-    And I select Delete for everyone item from Delete menu
+    And I select Delete for Everyone item from Delete menu
     Then I see 0 photos in the conversation view
     And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in 15 seconds
     And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in 3 seconds
@@ -104,7 +104,7 @@ Feature: Recall Message
     And User Myself remembers the recent message from group conversation <Group> via device <MySecondDevice>
     And I long tap default message in conversation view
     And I tap on Delete badge item
-    And I select Delete for everyone item from Delete menu
+    And I select Delete for Everyone item from Delete menu
     Then I see 0 default messages in the conversation view
     And User <Contact1> sees the recent message from group conversation <Group> via device <Contact1Device> is changed in <Wait1> seconds
     And User <Contact2> sees the recent message from group conversation <Group> via device <Contact2Device> is changed in <Wait2> seconds
@@ -140,7 +140,7 @@ Feature: Recall Message
     And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
     And I long tap on video message in conversation view
     And I tap on Delete badge item
-    And I select Delete for everyone item from Delete menu
+    And I select Delete for Everyone item from Delete menu
     Then I do not see video message container in the conversation view
     And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in 15 seconds
     And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in 3 seconds
@@ -202,7 +202,7 @@ Feature: Recall Message
     And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
     When I long tap on media container in conversation view
     And I tap on Delete badge item
-    And I select Delete for everyone item from Delete menu
+    And I select Delete for Everyone item from Delete menu
     Then I do not see media container in the conversation view
     And I do not see the conversation view contains message <YouTubeLink>
     And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in <Wait1> seconds
@@ -248,7 +248,7 @@ Feature: Recall Message
     And User <Contact> remembers the recent message from user Myself via device <HisDevice>
     When I long tap on image in conversation view
     And I tap on Delete badge item
-    And I select Delete for everyone item from Delete menu
+    And I select Delete for Everyone item from Delete menu
     Then I see 0 photos in the conversation view
     And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in 15 seconds
 
@@ -269,7 +269,7 @@ Feature: Recall Message
     And User <Contact> remembers the recent message from user Myself via device <HisDevice>
     When I long tap on link preview in conversation view
     And I tap on Delete badge item
-    And I select Delete for everyone item from Delete menu
+    And I select Delete for Everyone item from Delete menu
     Then I do not see link preview container in the conversation view
     And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in 15 seconds
 
@@ -310,7 +310,7 @@ Feature: Recall Message
     And User <Contact> remembers the recent message from user Myself via device <DeviceName>
     When I long tap on audio message placeholder in conversation view
     And I tap on Delete badge item
-    And I select Delete for everyone item from Delete menu
+    And I select Delete for Everyone item from Delete menu
     Then I do not see audio message container in the conversation view
     And User <Contact> sees the recent message from user Myself via device <DeviceName> is changed in 15 seconds
 
