@@ -1344,11 +1344,11 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Clicks Up Arrow to edit message
+     * Presses Up Arrow to edit message
      *
-     * @step. "^I click Up Arrow to edit message$"
+     * @step. "^I press Up Arrow to edit message$"
      */
-    @When("^I click Up Arrow to edit message$")
+    @When("^I press Up Arrow to edit message$")
     public void IClickUpArrow() throws Exception {
             context.getPagesCollection().getPage(ConversationPage.class).clickUpArrow();
     }

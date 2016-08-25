@@ -194,6 +194,8 @@ public class ConversationViewPage extends AndroidPage {
     private static final By idMessageBottomMenuDeleteGlobalButton = By.id("message_bottom_menu_item_delete_global");
     private static final By idMessageBottomMenuCopyButton = By.id("message_bottom_menu_item_copy");
     private static final By idMessageBottomMenuEditButton = By.id("message_bottom_menu_item_edit");
+    private static final By idMessageBottomMenuLikeButton = By.id("message_bottom_menu_item_like");
+    private static final By idMessageBottomMenuUnlikeButton = By.id("message_bottom_menu_item_unlike");
 
     private static final By idYoutubeContainer = By.id("iv__row_conversation__youtube_image");
 
@@ -975,6 +977,10 @@ public class ConversationViewPage extends AndroidPage {
                 return idMessageBottomMenuForwardButton;
             case "edit":
                 return idMessageBottomMenuEditButton;
+            case "like":
+                return idMessageBottomMenuLikeButton;
+            case "unlike":
+                return idMessageBottomMenuUnlikeButton;
             default:
                 throw new IllegalArgumentException(String.format("There is no '%s' button on Message Bottom Menu",
                         btnName));

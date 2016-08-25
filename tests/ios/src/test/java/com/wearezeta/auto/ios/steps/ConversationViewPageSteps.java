@@ -1415,4 +1415,24 @@ public class ConversationViewPageSteps {
         Assert.assertTrue(String.format("The link preview source %s is not visible in the conversation view",
                 expectedSrc), getConversationViewPage().isLinkPreviewSourceVisible(expectedSrc));
     }
+
+    /**
+     * Verify visibility of Edit message control buttton
+     *
+     * @param shouldNotSee equals to null if the toolbar should be visible
+     * @param buttonName   name of the button
+     * @throws Exception
+     * @step. ^I (do not )?see (Undo|Confirm|Cancel) button on Edit Message control$
+     */
+    @Then("^I (do not )?see (Undo|Confirm|Cancel) button on Edit Message control$")
+    public void VerifyVisibilityOfEditMessageControlButton(String shouldNotSee, String buttonName) throws Exception {
+        boolean condition;
+        if (shouldNotSee == null) {
+            condition = getConversationViewPage().editControlButtonIsVisible(buttonName);
+        } else {
+            condition = getConversationViewPage().editControlButtonIsNotVisible(buttonName);
+        }
+        Assert.assertTrue(String.format("Edit message control button '%s' should be %s", buttonName,
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
 }

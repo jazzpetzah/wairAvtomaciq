@@ -616,7 +616,8 @@ public class CommonWebAppSteps {
     public void UserXEditLastMessage(String userNameAlias, String newMessage, String convoType,
                                      String dstNameAlias, String deviceName) throws Exception {
         boolean isGroup = convoType.equals("group conversation");
-        context.getCommonSteps().UserUpdateLatestMessage(userNameAlias, dstNameAlias, newMessage, deviceName, isGroup);
+        context.getCommonSteps().UserUpdateLatestMessage(userNameAlias, dstNameAlias, newMessage, deviceName + context.getTestname().
+                    hashCode(), isGroup);
     }
 
     /**
