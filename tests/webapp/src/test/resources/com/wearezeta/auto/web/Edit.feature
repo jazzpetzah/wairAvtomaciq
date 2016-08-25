@@ -1,6 +1,6 @@
 Feature: Edit
 
-  @C206267 @staging
+  @C206267 @regression
   Scenario Outline: Verify I can edit my message in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -25,7 +25,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact   | Message1 | Message2       |
       | user1Email | user1Password | user1Name | user2Name | message1 | edited message |
 
-  @C206268 @staging
+  @C206268 @regression
   Scenario Outline: Verify I can edit my message in group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -51,7 +51,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact1  |Contact2   | ChatName  | Message1 | Message2       |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | message1 | edited message |
 
-  @C206280 @staging
+  @C206280 @regression
   Scenario Outline: Verify I cannot edit another users message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
