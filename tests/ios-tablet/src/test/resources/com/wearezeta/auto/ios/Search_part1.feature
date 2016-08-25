@@ -164,7 +164,7 @@ Feature: Search
     Given User <Contact> change name to <NewName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see conversations list
+    Given I see conversations list
     Then I wait until <LastName> exists in backend search results
     # FIXME: This is unstable on Jenkins
 #    When I open search UI
