@@ -709,7 +709,9 @@ Feature: People View
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
-    Then I see group chat page with users <Contact1>,<Contact2>
+    Then I see conversation view page
+    # TODO: There should be a system message there
+    And I see 0 conversation entries
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
@@ -737,7 +739,9 @@ Feature: People View
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
-    Then I see group chat page with users <Contact1>,<Contact2>
+    Then I see conversation view page
+    # TODO: There should be a system message there
+    And I see 0 conversation entries
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |

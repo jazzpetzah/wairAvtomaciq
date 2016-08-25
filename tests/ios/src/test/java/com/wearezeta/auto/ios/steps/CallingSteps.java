@@ -9,10 +9,16 @@ import com.wearezeta.auto.common.ZetaFormatter;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import com.wearezeta.auto.common.log.ZetaLogger;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CallingSteps {
 
@@ -191,6 +197,83 @@ public class CallingSteps {
         for (Call call : commonCallingSteps.getOutgoingCall(splitAliases(callees), conversation)) {
             assertNotNull("There are no metrics available for this call \n" + call, call.getMetrics());
             assertTrue("Call failed: \n" + call + "\n" + call.getMetrics(), call.getMetrics().isSuccess());
+        }
+    }
+
+    private static final Logger LOG = ZetaLogger.getLog(CallingSteps.class
+            .getName());
+
+    /**
+     * Executes consecutive calls without logging out etc.
+     *
+     * @step. ^I call (\\d+) times for (\\d+) minutes with (.*)$
+     *
+     * @param callDurationMinutes
+     * @param times number of consecutive calls
+     * @param callees participants which will wait for a call
+     * @throws java.lang.Throwable
+     */
+    @Then("^I call (\\d+) times for (\\d+) minutes with (.*)$")
+    public void ICallXTimes(int times, int callDurationMinutes, String callees)
+            throws Throwable {
+        final int timeBetweenCall = 10;
+        final List<String> calleeList = splitAliases(callees);
+        final ConversationViewPageSteps convSteps = new ConversationViewPageSteps();
+        final CallPageSteps callPageSteps = new CallPageSteps();
+        final CommonIOSSteps commonIOSSteps = new CommonIOSSteps();
+        final Map<Integer, Throwable> failures = new HashMap<>();
+        for (int i = 0; i < times; i++) {
+            LOG.info("\n\nSTARTING CALL " + i);
+            try {
+                    convSteps.ITapCallButton("Audio");
+
+                    for (String callee : calleeList) {
+                        UserXAcceptsNextIncomingCallAutomatically(callee);
+                        UserXVerifesCallStatusToUserY(callee, "active", 20);
+                    }
+                    LOG.info("All instances are active");
+
+                    callPageSteps.ISeeCallingOverlay(null);
+                    LOG.info("Calling overlay is visible");
+
+                    commonIOSSteps.WaitForTime(callDurationMinutes * 60);
+
+                    callPageSteps.ITapButton("Leave");
+
+                    for (String callee : calleeList) {
+                        UserXVerifesCallStatusToUserY(callee, "destroyed", 20);
+                    }
+                    LOG.info("All instances are destroyed");
+
+                    callPageSteps.ISeeCallingOverlay("do not");
+                    LOG.info("Calling overlay is NOT visible");
+                    LOG.info("CALL " + i + " SUCCESSFUL");
+                    commonIOSSteps.WaitForTime(timeBetweenCall);
+
+            } catch (Throwable t){
+                LOG.info("CALL " + i + " FAILED");
+                LOG.error("Can not stop waiting call " + i + " " + t);
+                try {
+                    callPageSteps.ITapButton("Leave");
+                    convSteps.IDonotSeeCallingButtonsOnUpperToolbar(null, "Audio Call");
+                } catch (Throwable ex) {
+                    LOG.error("Can not stop call " + i + " " + ex);
+                }
+                failures.put(i, t);
+            }
+
+        }
+
+        LOG.info(failures.size() + " failures happened during " + times
+                + " calls");
+        failures.forEach((Integer i, Throwable t) -> {
+            LOG.error(i + ": " + t.getMessage());
+        });
+
+        for (Map.Entry<Integer, Throwable> entrySet : failures.entrySet()) {
+            // will just throw the first exception to indicate failed calls in
+            // test results
+            throw entrySet.getValue();
         }
     }
 }

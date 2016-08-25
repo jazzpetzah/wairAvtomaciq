@@ -173,14 +173,23 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Verifies whether YouTube video is visible
+     * Verifies whether soundcloud, youtube, vimeo or spotify message is embedded
      *
      * @throws Exception
-     * @step. ^I see embedded youtube video of (.*)
+     * @param typeOfMessage soundcloud| youtube| vimeo| spotify
+     * @param url link of soundcloud| youtube| vimeo| spotify message
+     *
+     * @step. ^I (do not )?see embedded( soundcloud| youtube| vimeo| spotify)? message (.*)
      */
-    @Then("^I see embedded youtube video of (.*)")
-    public void ThenISeeEmbeddedYoutubeVideoOf(String url) throws Exception {
-        assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isYoutubeVideoEmbedded(url));
+    @Then("^I (do not )?see embedded( soundcloud| youtube| vimeo| spotify)? message (.*)")
+    public void ISeeEmbeddedMessage(String doNot, String typeOfMessage, String url) throws Exception {
+        if (doNot == null) {
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isMessageEmbedded(true, typeOfMessage, url));
+        }
+        else
+        {
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isMessageEmbedded(false, typeOfMessage, url));
+        }
     }
 
     /**
@@ -674,9 +683,9 @@ public class ConversationPageSteps {
         }
     }
 
-    @When("^I open context menu of the latest message$")
-    public void IOpenContextMenuOfLatestMessage() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).openContextMenuOnLatestMessage();
+    @When("^I click context menu of the latest message$")
+    public void IClickContextMenuOfLatestMessage() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnLatestMessage();
     }
 
     @When("^I click to delete message for everyone in context menu$")
@@ -713,6 +722,17 @@ public class ConversationPageSteps {
     public void IDoNotSeeDeleteButton() throws Exception {
         assertFalse("Delete button is visible", context.getPagesCollection().getPage(ConversationPage.class)
                 .isDeleteButtonVisibleForLatestMessage());
+    }
+
+    @When("^I do not see edit button in context menu for latest message$")
+    public void IDoNotSeeEditButton() throws Exception {
+        assertTrue("Edit button is visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isEditButtonInvisibleForLatestMessage());
+    }
+
+    @When("^I click to edit message in context menu$")
+    public void IClickEditInContextMenuOfLatestMessage() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickEditInContextMenuOfLatestMessage();
     }
 
     @When("^I click reset session on the latest decryption error")
@@ -1323,6 +1343,15 @@ public class ConversationPageSteps {
         }
     }
 
+    /**
+     * Presses Up Arrow to edit message
+     *
+     * @step. "^I press Up Arrow to edit message$"
+     */
+    @When("^I press Up Arrow to edit message$")
+    public void IPressUpArrow() throws Exception {
+            context.getPagesCollection().getPage(ConversationPage.class).pressUpArrow();
+    }
 
     /**
      * Verifies whether location message is shown in the conversation view or not.

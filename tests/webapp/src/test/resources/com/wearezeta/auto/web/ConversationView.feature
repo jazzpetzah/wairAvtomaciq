@@ -136,16 +136,16 @@ Feature: Conversation View
     And I open conversation with <Contact>
     When I write message <Youtubelink1>
     And I send message
-    Then I see embedded youtube video of <Youtubelink1>
+    Then I see embedded youtube message <Youtubelink1>
     When I write message <Youtubelink2>
     And I send message
-    Then I see embedded youtube video of <Youtubelink2>
+    Then I see embedded youtube message <Youtubelink2>
     When I write message <Youtubelink3>
     And I send message
-    Then I see embedded youtube video of <Youtubelink3>
+    Then I see embedded youtube message <Youtubelink3>
     When I write message <Youtubelink4>
     And I send message
-    Then I see embedded youtube video of <Youtubelink4>
+    Then I see embedded youtube message <Youtubelink4>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Youtubelink1                               | Youtubelink2                                                 | Youtubelink3                          | Youtubelink4                 |

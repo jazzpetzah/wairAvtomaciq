@@ -425,3 +425,17 @@ Feature: Calling
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @call_loop @fastLogin
+  Scenario Outline: Make 1:1 call loop to AVS <CallBackend>
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I call 3 times for 1 minutes with <Contact>
+
+    Examples:
+      | Name      | Contact   | CallBackend    |
+      | user1Name | user2Name | zcall:2.7.26   |

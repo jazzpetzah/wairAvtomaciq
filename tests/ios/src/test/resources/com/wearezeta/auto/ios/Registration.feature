@@ -38,7 +38,7 @@ Feature: Registration
       | Name      |
       | user1Name |
 
-  @C3166 @real
+  @C3166 @real @real_rc
   Scenario Outline: Verify taking photo with a front camera
     Given I see sign in screen
     When I enter phone number for <Name>

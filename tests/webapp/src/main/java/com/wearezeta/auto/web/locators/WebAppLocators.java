@@ -359,9 +359,15 @@ public final class WebAppLocators {
         public static final Function<String, String> cssDeleteButtonByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='do-message-delete']", text);
 
+        public static final Function<String, String> cssEditButtonByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='do-message-edit']", text);
+
         public static final String cssDoDelete = "[data-uie-name='do-delete']";
 
         public static final String cssDoDeleteForEveryone = "[data-uie-name='do-delete-everyone']";
+
+        public static final Function<String, String> cssEditMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] context-menu [data-context-action='edit']", text);
 
         // TODO: replace the bottom css with this, when implemented by developers
         //public static final Function<String, String> cssResetSessionByMessageId = text -> String
@@ -473,6 +479,15 @@ public final class WebAppLocators {
 
         public static final Function<String, String> xpathEmbeddedYoutubeVideoById = text -> String
                 .format("//iframe[contains(@src, '%s')]", text);
+
+        public static final Function<String, String> xpathEmbeddedSoundcloudById = text -> String
+                .format("//iframe[contains(@class, 'soundcloud') and contains(@src, '%s')]", text);
+
+        public static final Function<String, String> xpathEmbeddedVimeoById = text -> String
+                .format("//iframe[contains(@class, 'vimeo') and contains(@src, '%s')]", text);
+
+        public static final Function<String, String> xpathEmbeddedSpotifyById = text -> String
+                .format("//iframe[contains(@class, 'spotify') and contains(@src, '%s')]", text);
 
         // input area (text input + buttons)
         // This is needed for IE workaround

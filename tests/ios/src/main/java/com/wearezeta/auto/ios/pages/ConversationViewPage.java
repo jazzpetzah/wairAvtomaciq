@@ -39,7 +39,11 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameConversationInputAvatar = MobileBy.AccessibilityId("authorImage");
 
-    private static final By nameInputPlaceholderText = MobileBy.AccessibilityId("TYPE A MESSAGE");
+    private static final String DEFAULT_INPUT_PLACEHOLDER_TEXT = "TYPE A MESSAGE";
+    private static final By nameInputPlaceholderText = MobileBy.AccessibilityId(DEFAULT_INPUT_PLACEHOLDER_TEXT);
+    private static final By xpathEmptyInputField = By.xpath(
+            String.format("//*[@name='%s' or (@name='%s' and @value='')]",
+                    DEFAULT_INPUT_PLACEHOLDER_TEXT, nameStrConversationInputField));
 
     protected static final By nameYouRenamedConversation = MobileBy.AccessibilityId("YOU RENAMED THE CONVERSATION");
 
@@ -58,9 +62,6 @@ public class ConversationViewPage extends IOSPage {
 
     private static final Function<String, String> xpathStrLastMessageByExactText = text ->
             String.format("%s[1][@value='%s']", xpathStrAllTextMessages, text);
-
-    private static final Function<String, String> xpathTableCellFromUser = text ->
-            String.format("%s[@name='%s']", xpathStrAllEntries, text.toUpperCase());
 
     private static final Function<String, String> xpathStrMessageByTextPart = text ->
             String.format("%s[contains(@value, '%s')]", xpathStrAllTextMessages, text);
@@ -218,13 +219,9 @@ public class ConversationViewPage extends IOSPage {
             String.format("//UIATableCell[@name='%s']//UIAStaticText[starts-with(@label, 'Deleted on')]",
                     name.toUpperCase());
 
-    // TODO: Replace XPaths with IDs
-    private static final By xpathUndoEdit =
-            By.xpath("//UIAButton[@name='photoButton']/preceding-sibling::UIAButton[3]");
-    private static final By xpathConfirmEdit =
-            By.xpath("//UIAButton[@name='photoButton']/preceding-sibling::UIAButton[2]");
-    private static final By xpathCancelEdit =
-            By.xpath("//UIAButton[@name='photoButton']/preceding-sibling::UIAButton[1]");
+    private static final By nameUndoEdit = MobileBy.AccessibilityId("undoButton");
+    private static final By nameConfirmEdit = MobileBy.AccessibilityId("confirmButton");
+    private static final By nameCancelEdit = MobileBy.AccessibilityId("cancelButton");
 
     private static final Function<String, String> xpathStrLinkPreviewSrcByText = text ->
             String.format("//UIAStaticText[@name='linkPreviewSource' and @value='%s']",
@@ -496,12 +493,12 @@ public class ConversationViewPage extends IOSPage {
             Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
         }
         if (shouldSend) {
-            if (wasKeyboardInvisible) {
-                // This is faster and allows to avoid autocorrection, but does not update input cursor position properly
-                ((IOSElement) convoInput).setValue(message);
-            } else {
+            if (DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathEmptyInputField, 1)) {
                 // to keep the existing stuff inside the input field
                 convoInput.sendKeys(message);
+            } else {
+                // This is faster and allows to avoid autocorrection, but does not update input cursor position properly
+                ((IOSElement) convoInput).setValue(message);
             }
             this.tapKeyboardCommitButton();
         } else {
@@ -828,11 +825,6 @@ public class ConversationViewPage extends IOSPage {
         }
     }
 
-    public void tapVideoMessageContainer(String username) throws Exception {
-        final By locator = By.xpath(xpathTableCellFromUser.apply(username));
-        getElement(locator).click();
-    }
-
     public void tapAudioRecordWaitAndSwipe(int swipeDelaySeconds) throws Exception {
         //sometimes for such dynamic elements like record bar appium do not get the actual page source
         //in some cases this method helps to refresh elements tree.
@@ -1016,11 +1008,11 @@ public class ConversationViewPage extends IOSPage {
     private By getEditControlByName(String name) {
         switch (name.toLowerCase()) {
             case "undo":
-                return xpathUndoEdit;
+                return nameUndoEdit;
             case "confirm":
-                return xpathConfirmEdit;
+                return nameConfirmEdit;
             case "cancel":
-                return xpathCancelEdit;
+                return nameCancelEdit;
             default:
                 throw new IllegalArgumentException(String.format("Unknown Edit control button '%s'", name));
         }
@@ -1035,5 +1027,19 @@ public class ConversationViewPage extends IOSPage {
         final By locator = By.xpath(xpathStrLinkPreviewSrcByText.apply(expectedSrc));
         log.debug(String.format("Locating source text field on link preview: '%s'", locator));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public void tapVideoMessage() throws Exception {
+        getElement(nameVideoMessageActionButton).click();
+    }
+
+    public boolean editControlButtonIsVisible(String name) throws Exception {
+        final By locator = getEditControlByName(name);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean editControlButtonIsNotVisible(String name) throws Exception {
+        final By locator = getEditControlByName(name);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 }

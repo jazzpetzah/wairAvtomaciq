@@ -583,7 +583,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      |
 
-  @C77946 @videocalling @staging
+  @C77946 @videocalling @regression
   Scenario Outline: Verify I can start an audio call back after declining a video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -861,7 +861,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
-  @C183895 @videocalling @staging
+  @C183895 @videocalling @regression
   Scenario Outline: Verify my video is not shown if my audio call is declined but I got called back via video
     Given My browser supports calling
     Given There are 2 users where <Name> is me

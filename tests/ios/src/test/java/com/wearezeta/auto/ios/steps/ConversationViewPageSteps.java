@@ -651,9 +651,9 @@ public class ConversationViewPageSteps {
      *
      * @param name one of possible item names
      * @throws Exception
-     * @step. ^I select (Delete only for me|Delete for everyone|Cancel) item from Delete menu$
+     * @step. ^I select (Delete for Me|Delete for Everyone|Cancel) item from Delete menu$
      */
-    @And("^I select (Delete only for me|Delete for everyone|Cancel) item from Delete menu$")
+    @And("^I select (Delete for Me|Delete for Everyone|Cancel) item from Delete menu$")
     public void ISelectDeleteMenuItem(String name) throws Exception {
         getConversationViewPage().selectDeleteMenuItem(name);
     }
@@ -1065,18 +1065,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Taps the video container to download and play video sent from a contact
-     *
-     * @throws Exception
-     * @step. ^I tap the video message container sent from (.*)$
-     */
-    @When("^I tap the video message container sent from (.*)$")
-    public void ITapTheVideoMessageContainer(String username) throws Exception {
-        username = usrMgr.findUserByNameOrNameAlias(username).getName();
-        getConversationViewPage().tapVideoMessageContainer(username);
-    }
-
-    /**
      * Tap on record audio button waits and swipe up to send audio message
      *
      * @param sec time in seconds
@@ -1125,7 +1113,8 @@ public class ConversationViewPageSteps {
                 tapFunc = (isLongTap == null) ? null : getConversationViewPage()::longTapAudioMessage;
                 break;
             case "video message":
-                tapFunc = (isLongTap == null) ? null : getConversationViewPage()::longTapVideoMessage;
+                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapVideoMessage :
+                        getConversationViewPage()::longTapVideoMessage;
                 break;
             case "link preview":
                 tapFunc = (isLongTap == null) ? getConversationViewPage()::tapLocationContainer :
@@ -1392,9 +1381,9 @@ public class ConversationViewPageSteps {
      *
      * @param name item name
      * @throws Exception
-     * @step. ^I do not see (Delete for everyone) item in Delete menu$
+     * @step. ^I do not see (Delete for Everyone|Delete for Me|Cancel) item in Delete menu$
      */
-    @Then("^I do not see (Delete for everyone) item in Delete menu$")
+    @Then("^I do not see (Delete for Everyone|Delete for Me|Cancel) item in Delete menu$")
     public void IDoNotSeeItemInDeleteMenu(String name) throws Exception {
         Assert.assertTrue(String.format("'%s' Delete menu item shouldn't be visible", name),
                 getConversationViewPage().deleteMenuItemNotVisible(name));
@@ -1425,5 +1414,25 @@ public class ConversationViewPageSteps {
     public void ISeeLinkPreviewSource(String expectedSrc) throws Exception {
         Assert.assertTrue(String.format("The link preview source %s is not visible in the conversation view",
                 expectedSrc), getConversationViewPage().isLinkPreviewSourceVisible(expectedSrc));
+    }
+
+    /**
+     * Verify visibility of Edit message control buttton
+     *
+     * @param shouldNotSee equals to null if the toolbar should be visible
+     * @param buttonName   name of the button
+     * @throws Exception
+     * @step. ^I (do not )?see (Undo|Confirm|Cancel) button on Edit Message control$
+     */
+    @Then("^I (do not )?see (Undo|Confirm|Cancel) button on Edit Message control$")
+    public void VerifyVisibilityOfEditMessageControlButton(String shouldNotSee, String buttonName) throws Exception {
+        boolean condition;
+        if (shouldNotSee == null) {
+            condition = getConversationViewPage().editControlButtonIsVisible(buttonName);
+        } else {
+            condition = getConversationViewPage().editControlButtonIsNotVisible(buttonName);
+        }
+        Assert.assertTrue(String.format("Edit message control button '%s' should be %s", buttonName,
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }
 }

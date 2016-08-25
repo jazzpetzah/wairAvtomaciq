@@ -12,7 +12,7 @@ Feature: Delete Everywhere
     And I send message
     And I see text message <Message1>
     And I see 2 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for everyone in context menu
     And I click confirm to delete message for everyone
     Then I do not see text message <Message1>
@@ -35,7 +35,7 @@ Feature: Delete Everywhere
     And I send message
     And I see text message <Message1>
     And I see 2 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for everyone in context menu
     And I click confirm to delete message for everyone
     Then I do not see text message <Message1>
@@ -56,7 +56,7 @@ Feature: Delete Everywhere
     And I send picture <PictureName> to the current conversation
     And I see sent picture <PictureName> in the conversation view
     And I see 2 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for everyone in context menu
     And I click confirm to delete message for everyone
     Then I do not see any picture in the conversation view
@@ -77,7 +77,7 @@ Feature: Delete Everywhere
     And Contact Myself sends message <Link> via device Device1 to user <Contact>
     And I see a title <LinkTitle> in link preview in the conversation view
     And I see 2 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for everyone in context menu
     And I click confirm to delete message for everyone
     Then I do not see a title <LinkTitle> in link preview in the conversation view
@@ -99,7 +99,7 @@ Feature: Delete Everywhere
     And User Myself sends location <LocationName> with <Latitude> and <Longitude> to group conversation <ChatName> via device Device1
     And I see location message <LocationName> with <Latitude> and <Longitude> in the conversation view
     And I see 2 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for everyone in context menu
     And I click confirm to delete message for everyone
     Then I do not see location message <LocationName> with <Latitude> and <Longitude> in the conversation view
@@ -120,7 +120,7 @@ Feature: Delete Everywhere
     And I send <Size> sized file with name <File> to the current conversation
     And I wait until file <File> is uploaded completely
     And I see 2 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for everyone in context menu
     And I click confirm to delete message for everyone
     Then I do not see file transfer for file <File> in the conversation view
@@ -141,7 +141,7 @@ Feature: Delete Everywhere
     And I send audio file with length <Time> and name <File> to the current conversation
     And I wait until audio <File> is uploaded completely
     And I see 2 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for everyone in context menu
     And I click confirm to delete message for everyone
     Then I do not see audio message <File> in the conversation view
@@ -162,7 +162,7 @@ Feature: Delete Everywhere
     And I send <Size> sized video with name <File> to the current conversation
     And I wait until video <File> is uploaded completely
     And I see 2 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for everyone in context menu
     And I click confirm to delete message for everyone
     Then I do not see video message <File> in the conversation view
@@ -254,8 +254,8 @@ Feature: Delete Everywhere
     And I see 0 deleted messages in conversation
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Message_1      | Message_2      | Message_3      |
-      | user1Email | user1Password | user1Name | user2Name | Test_Message_1 | Test_Message_2 | Test_Message_3 |
+      | Login      | Password      | Name      | Contact   | Message_1      | Message_2      |
+      | user1Email | user1Password | user1Name | user2Name | Test_Message_1 | Test_Message_2 |
 
   @C206241 @regression
   Scenario Outline: When I delete my message everywhere on a different device (group)
@@ -349,5 +349,70 @@ Feature: Delete Everywhere
     And I see 1 deleted messages in conversation
 
     Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | Message_1      | Message_2      | Message_3      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | Test_Message_1 | Test_Message_2 | Test_Message_3 |
+      | Login      | Password      | Name      | Contact1  | Contact2  | Message_1      | Message_2      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | Test_Message_1 | Test_Message_2 |
+
+    @C206258 @regression
+    Scenario Outline: Verify delete everywhere works for Soundcloud, Spotify, YouTube, Vimeo
+      Given There are 2 users where <Name> is me
+      Given Myself is connected to <Contact>
+      Given user <Name> adds a new device Device1 with label Label1
+      Given I switch to Sign In page
+      Given I Sign in using login <Login> and password <Password>
+      Given I see the history info page
+      Given I click confirm on history info page
+      Given I am signed in properly
+      When I open conversation with <Contact>
+      When I write message <Youtubelink>
+      And I send message
+      And I see embedded youtube message <Youtubelink>
+      When I click context menu of the latest message
+      And I click to delete message for everyone in context menu
+      And I click confirm to delete message for everyone
+      And I do not see text message <Youtubelink>
+      Then I do not see embedded youtube message <Youtubelink>
+      When I write message <Soundcloudlink>
+      And I send message
+      Then I see embedded soundcloud message <Soundcloudlink>
+      And I click context menu of the latest message
+      And I click to delete message for everyone in context menu
+      And I click confirm to delete message for everyone
+      Then I do not see embedded soundcloud message <Soundcloudlink>
+      When I write message <Vimeolink>
+      And I send message
+      Then I see embedded vimeo message <Vimeolink>
+      And I click context menu of the latest message
+      And I click to delete message for everyone in context menu
+      And I click confirm to delete message for everyone
+      Then I do not see embedded vimeo message <Vimeolink>
+      And I write message <Spotifylink>
+      And I send message
+      And I see embedded spotify message <Spotifylink>
+      When I click context menu of the latest message
+      And I click to delete message for everyone in context menu
+      And I click confirm to delete message for everyone
+      Then I do not see embedded spotify message <Spotifylink>
+      When Contact <Contact> sends message <Youtubelink> via device Device1 to user me
+      Then I see embedded youtube message <Youtubelink>
+      When User <Contact> deletes the recent 1 message everywhere from user <Contact> via device Device1
+      And I do not see text message <Youtubelink>
+      And I see 1 deleted messages in conversation
+      When Contact <Contact> sends message <Soundcloudlink> via device Device1 to user me
+      Then I see text message <Soundcloudlink>
+      When User <Contact> deletes the recent 1 message everywhere from user <Contact> via device Device1
+      And I do not see text message <Soundcloudlink>
+      And I see 2 deleted messages in conversation
+      When Contact <Contact> sends message <Vimeolink> via device Device1 to user me
+      Then I see text message <Vimeolink>
+      When User <Contact> deletes the recent 1 message everywhere from user <Contact> via device Device1
+      And I do not see text message <Vimeolink>
+      And I see 3 deleted messages in conversation
+      When Contact <Contact> sends message <Spotifylink> via device Device1 to user me
+      Then I see text message <Spotifylink>
+      When User <Contact> deletes the recent 1 message everywhere from user <Contact> via device Device1
+      And I do not see text message <Spotifylink>
+      And I see 4 deleted messages in conversation
+
+      Examples:
+        | Login      | Password      | Name      | Contact   | Youtubelink                                 | Soundcloudlink                                                      | Vimeolink                 | Spotifylink                                           |
+        | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=ncHd3sxpEbo | https://soundcloud.com/nour-moukhtar/ludwig-van-beethoven-fur-elise | https://vimeo.com/7265982 | https://play.spotify.com/album/7buEcyw6fJF3WPgr06BomH |

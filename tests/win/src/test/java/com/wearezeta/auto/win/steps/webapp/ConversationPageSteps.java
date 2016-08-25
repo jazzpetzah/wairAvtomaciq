@@ -128,7 +128,7 @@ public class ConversationPageSteps {
     @Then("^I see embedded youtube video of (.*)")
     public void ThenISeeEmbeddedYoutubeVideoOf(String url) throws Exception {
         Assert.assertTrue(webappPagesCollection
-                .getPage(ConversationPage.class).isYoutubeVideoEmbedded(url));
+                .getPage(ConversationPage.class).isMessageEmbedded(true, "youtube", url));
     }
 
     /**
@@ -390,8 +390,8 @@ public class ConversationPageSteps {
      */
     @Then("^I do not see text message ?(.*)$")
     public void IDontSeeTextMessage(String message) throws Exception {
-        Assert.assertFalse("Saw text message " + message, webappPagesCollection.getPage(ConversationPage.class)
-                .isTextMessageVisible(message == null ? "" : message));
+        Assert.assertTrue("Saw text message " + message, webappPagesCollection.getPage(ConversationPage.class)
+                .isTextMessageInvisible(message == null ? "" : message));
     }
 
     /**

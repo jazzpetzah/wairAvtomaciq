@@ -27,7 +27,7 @@ Feature: Link Preview
     Then I see link preview container in the conversation view
     When I long tap on link preview in conversation view
     And I tap on Delete badge item
-    And I select Delete only for me item from Delete menu
+    And I select Delete for Me item from Delete menu
     Then I do not see link preview container in the conversation view
 
     Examples:

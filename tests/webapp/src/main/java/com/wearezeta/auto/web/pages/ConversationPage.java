@@ -406,15 +406,27 @@ public class ConversationPage extends WebPage {
                 locator, 5);
     }
 
-    public boolean isYoutubeVideoEmbedded(String url) throws Exception {
-        String pattern = "[\\w\\-\\_]{10,12}";
+    public boolean isMessageEmbedded(boolean embedded, String typeOfMessage, String url) throws Exception {
+        String pattern = "[\\w\\-\\_]{7,12}";
         Pattern compiledPattern = Pattern.compile(pattern);
         Matcher matcher = compiledPattern.matcher(url);
-        assert matcher.find() : "Could not find Youtube id in URL: " + url;
+        assert matcher.find() : "Could not find " + typeOfMessage + " id in URL: " + url;
         final String id = matcher.group();
-
-        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById.apply(id));
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+        By locator = null;
+        if (typeOfMessage.contains("youtube")) {
+            locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById.apply(id));
+        } else if (typeOfMessage.contains("soundcloud")) {
+            locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedSoundcloudById.apply(id));
+        } else if (typeOfMessage.contains("vimeo")) {
+            locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedVimeoById.apply(id));
+        } else if (typeOfMessage.contains("spotify")) {
+            locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedSpotifyById.apply(id));
+        }
+        if (embedded) {
+            return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+        } else {
+            return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
+        }
     }
 
     public void clickPeopleButton() throws Exception {
@@ -1017,7 +1029,7 @@ public class ConversationPage extends WebPage {
         return mappedMessages;
     }
 
-    public void openContextMenuOnLatestMessage() throws Exception {
+    public void clickContextMenuOnLatestMessage() throws Exception {
         By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
         String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
         hoverOverMessage(id);
@@ -1059,6 +1071,13 @@ public class ConversationPage extends WebPage {
         WebCommonUtils.hoverOverElement(getDriver(), element);
     }
 
+    public void clickEditInContextMenuOfLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssEditMessageId.apply(id));
+        getDriver().findElement(locator).click();
+    }
+
     public void clickToResetSessionOnLatestError() throws Exception {
         By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
         String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
@@ -1094,6 +1113,13 @@ public class ConversationPage extends WebPage {
         String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteButtonByMessageId.apply(id));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
+    }
+
+    public boolean isEditButtonInvisibleForLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssEditButtonByMessageId.apply(id));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3);
     }
 
     public void setCloseResetSessionDialog() throws Exception {
@@ -1133,6 +1159,10 @@ public class ConversationPage extends WebPage {
 
     public void clearConversationInput() throws Exception {
         conversationInput.sendKeys(Keys.BACK_SPACE);
+    }
+
+    public void pressUpArrow() throws Exception {
+        conversationInput.sendKeys(Keys.ARROW_UP);
     }
 
     public String getLocationName() {

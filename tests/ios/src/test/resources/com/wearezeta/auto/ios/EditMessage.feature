@@ -12,7 +12,7 @@ Feature: Edit Message
     When I long tap default message in conversation view
     Then I do not see Edit badge item
     And I tap on Delete badge item
-    And I do not see Delete for everyone item in Delete menu
+    And I do not see Delete for Everyone item in Delete menu
 
     Examples:
       | Name      | Contact   |
@@ -31,7 +31,7 @@ Feature: Edit Message
     And I long tap default message in conversation view
     Then I do not see Edit badge item
     And I tap on Delete badge item
-    And I do not see Delete for everyone item in Delete menu
+    And I do not see Delete for Everyone item in Delete menu
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -56,7 +56,7 @@ Feature: Edit Message
       | user1Name | user2Name | message |
 
   @C202350 @regression @fastLogin
-  Scenario Outline: Verify I can cancel editing a message by button
+  Scenario Outline: Verify I can cancel editing a message by button, by click/tap on something else
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -67,7 +67,16 @@ Feature: Edit Message
     And I tap on Edit badge item
     And I type the "<Text>" message
     And I tap Cancel button on Edit control
-    Then I see 1 default message in the conversation view
+    Then I do not see Confirm button on Edit Message control
+    And I see 1 default message in the conversation view
+    And I see input placeholder text
+    When I long tap default message in conversation view
+    And I tap on Edit badge item
+    And I type the "<Text>" message
+    And I tap Audio Call button
+    And I tap Leave button on Calling overlay
+    Then I do not see Confirm button on Edit Message control
+    And I see 1 default message in the conversation view
     And I see input placeholder text
 
     Examples:
@@ -115,7 +124,7 @@ Feature: Edit Message
       | Name      | Contact   | Text |
       | user1Name | user2Name | new  |
 
-  @C202372 @staging @fastLogin
+  @C202372 @regression @fastLogin
   Scenario Outline: Verify editing link with a preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -135,8 +144,8 @@ Feature: Edit Message
       | Name      | Contact   | FacebookLink        | FacebookPrefix | WirePrefix | WireLink        |
       | user1Name | user2Name | http://facebook.com | Check FB       | Look for   | http://wire.com |
 
-  @C202352 @staging @fastLogin
-  Scenario Outline: Verify I can edit a message multiple times in a row
+  @C202352 @regression @fastLogin
+  Scenario Outline: Verify I can edit a message multiple times in a row (group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given User <Contact1> adds new device <DeviceName>
@@ -166,3 +175,88 @@ Feature: Edit Message
     Examples:
       | Name      | Contact1  | DeviceName | Contact2  | GroupChatName | Text1  | Text2  |
       | user1Name | user2Name | HisDevice  | user3Name | EditGroup     | Edit 1 | Edit 2 |
+
+  @C202353 @staging @fastLogin
+  Scenario Outline: Verify I can switch to edit another message while editing a message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I type the default message and send it
+    And I type the "<Text2>" message and send it
+    And I long tap default message in conversation view
+    And I tap on Edit badge item
+    And I long tap "<Text2>" message in conversation view
+    And I tap on Edit badge item
+    And I clear conversation text input
+    And I type the "<Text2Changed>" message
+    And I tap Confirm button on Edit control
+    Then I see last message in the conversation view is expected message <Text2Changed>
+    And I see 1 default messages in the conversation view
+    And I do not see the conversation view contains message <Text2>
+
+    Examples:
+      | Name      | Contact   | Text2 | Text2Changed |
+      | user1Name | user2Name | msg2  | msgchg       |
+
+  @C202347 @regression @fastLogin
+  Scenario Outline: Verify I see changed message if message was edited from another device (1:1)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given User Myself adds new device <Device>
+    Given User Myself sends encrypted message "<Message>" to user <Contact1>
+    Given I see conversations list
+    When I tap on contact name <Contact1>
+    Then I see the conversation view contains message <Message>
+    When User Myself edits the recent message to "<NewMessage>" from user <Contact1> via device <Device>
+    Then I do not see the conversation view contains message <Message>
+    And I see the conversation view contains message <NewMessage>
+
+    Examples:
+      | Name      | Contact1  | Message | Device  | NewMessage |
+      | user1Name | user2Name | Hi      | Device1 | Hello      |
+
+  @C202348 @regression @fastLogin
+  Scenario Outline: Verify I see changed message if message was edited from another device (group)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given User Myself adds new device <Device>
+    Given User Myself sends encrypted message "<Message>" to group conversation <GroupChatName>
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    Then I see the conversation view contains message <Message>
+    When User Myself edits the recent message to "<NewMessage>" from group conversation <GroupChatName> via device <Device>
+    Then I do not see the conversation view contains message <Message>
+    And I see the conversation view contains message <NewMessage>
+
+    Examples:
+      | Name      | Contact1  | Device    | Contact2  | GroupChatName | Message | NewMessage |
+      | user1Name | user2Name | HisDevice | user3Name | EditGroup     | Hi      | Hello      |
+
+  @C202371 @regression @fastLogin
+  Scenario Outline: Verify I can't edit picture/video/audio
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When User <Contact> sends file <VideoFileName> having MIME type <VideoMIMEType> to single user conversation <Name> using device <DeviceName>
+    And I wait for 10 seconds
+    And I long tap on video message in conversation view
+    Then I do not see Edit badge item
+    When User <Contact> sends file <AudioFileName> having MIME type <AudioMIMEType> to single user conversation <Name> using device <DeviceName>
+    And I wait for 5 seconds
+    And I long tap on audio message placeholder in conversation view
+    Then I do not see Edit badge item
+    When User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    And I wait for 5 seconds
+    And I long tap on image in conversation view
+    Then I do not see Edit badge item
+
+    Examples:
+      | Name      | Contact   | VideoFileName | VideoMIMEType | DeviceName | AudioFileName | AudioMIMEType | Picture     |
+      | user1Name | user2Name | testing.mp4   | video/mp4     | Device1    | test.m4a      | audio/mp4     | testing.jpg |

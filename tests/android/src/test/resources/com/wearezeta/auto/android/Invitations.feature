@@ -83,14 +83,12 @@ Feature: Invitations
     And I open Search UI
     And I see user <Contact> in Contact list
     And I tap Invite button next to <Contact> in Contact list
-    And I select <ContactEmail> email on invitation sending alert
-    And I tap OK button on the alert
-    And I hide keyboard
-    When I press back button
+    And I press back button
+    And I press Clear button
     Then I see Conversations list with name <Contact>
     When I tap on conversation name <Contact>
     Then I see outgoing pending connection to <Contact>
 
     Examples:
-      | Name      | Contact   | ContactEmail |
-      | user1Name | user2Name | user2Email   |
+      | Name      | Contact   |
+      | user1Name | user2Name |

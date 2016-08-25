@@ -20,7 +20,7 @@ Feature: Delete
     And I send picture <Picture2> to the current conversation
     And I see sent picture <Picture2> in the conversation view
     And I see 4 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for me in context menu
     And I click confirm to delete message for me
     Then I see text message <Message1>
@@ -35,7 +35,7 @@ Feature: Delete
     And I send message
     And I see text message <YouTubeLink>
     And I see 3 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for me in context menu
     And I click confirm to delete message for me
     Then I do not see text message <YouTubeLink>
@@ -44,7 +44,7 @@ Feature: Delete
     When Contact <Contact> sends message <SpotifyLink> via device ContactDevice to user Myself
     And I see text message <SpotifyLink>
     And I see 3 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for me in context menu
     And I click confirm to delete message for me
     Then I do not see text message <SpotifyLink>
@@ -54,7 +54,7 @@ Feature: Delete
     And I send message
     And I see text message <SoundCloudLink>
     And I see 3 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for me in context menu
     And I click confirm to delete message for me
     Then I do not see text message <SoundCloudLink>
@@ -63,7 +63,7 @@ Feature: Delete
     When I click ping button
     And I see PING action in conversation
     And I see 3 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for me in context menu
     And I click confirm to delete message for me
     Then I do not see PING action in conversation
@@ -76,7 +76,7 @@ Feature: Delete
     And I click send button in Giphy popup
     And I see sent gif in the conversation view
     And I see 4 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for me in context menu
     And I click confirm to delete message for me
     Then I see text message <Message1>
@@ -84,7 +84,7 @@ Feature: Delete
     When I send 1KB sized file with name example.txt to the current conversation
     And I wait until file example.txt is uploaded completely
     And I see 4 messages in conversation
-    And I open context menu of the latest message
+    And I click context menu of the latest message
     And I click to delete message for me in context menu
     And I click confirm to delete message for me
     Then I do not see file transfer for file example.txt in the conversation view
@@ -115,7 +115,7 @@ Feature: Delete
     Then I see text message <Message_1>
     And I see text message <Message_2>
     And I see text message <Message_3>
-    When I open context menu of the latest message
+    When I click context menu of the latest message
     And I click to delete message for me in context menu
     And I click confirm to delete message for me
     And User Myself deletes the recent 1 message from user <Contact> via device Device1
@@ -264,7 +264,7 @@ Feature: Delete
     And I see text message MESSAGE1_CONTACT
     And I do not see text message MESSAGE2_NAME
     And I see 3 messages in conversation
-    When I open context menu of the latest message
+    When I click context menu of the latest message
     And I click to delete message for me in context menu
     And I click confirm to delete message for me
     And I see text message MESSAGE1_NAME

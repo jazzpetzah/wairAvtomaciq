@@ -7,7 +7,6 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 
@@ -48,12 +47,12 @@ public class ConversationsListPage extends AndroidPage {
 
     private static final By idConversationListFrame = By.id(idStrConversationListFrame);
 
-    private static final String xpathStrNonEmptyContacts =
-            String.format("%s[@value and string-length(@value) > 0 and not(starts-with(@value, '%s'))]",
-                    xpathStrConvoListNames, LOADING_CONVERSATION_NAME);
+//    private static final String xpathStrNonEmptyContacts =
+//            String.format("%s[@value and string-length(@value) > 0 and not(starts-with(@value, '%s'))]",
+//                    xpathStrConvoListNames, LOADING_CONVERSATION_NAME);
 
-    private static final Function<Integer, String> xpathStrNonEmptyContactByIdx = idx -> String
-            .format("(%s)[%d]", xpathStrNonEmptyContacts, idx);
+//    private static final Function<Integer, String> xpathStrNonEmptyContactByIdx = idx -> String
+//            .format("(%s)[%d]", xpathStrNonEmptyContacts, idx);
 
     private static final By idListSettingsButton = By.id("gtv__list_actions__settings");
 
@@ -84,39 +83,6 @@ public class ConversationsListPage extends AndroidPage {
         return this.getElementScreenshot(getElement(idListSettingsButton)).orElseThrow(
                 () -> new IllegalStateException("Cannot get a screenshot of new device indicator")
         );
-    }
-
-    public String getFirstVisibleConversationName() throws Exception {
-        final int maxTries = 30;
-        final long millisecondsDelay = 20000;
-        int ntry = 1;
-        do {
-            try {
-                final int itemsCount = getDriver().findElements(By.xpath(xpathStrNonEmptyContacts)).size();
-                for (int i = 1; i <= itemsCount; i++) {
-                    final By locator = By.xpath(xpathStrNonEmptyContactByIdx.apply(i));
-                    if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
-                        final WebElement elem = getDriver().findElement(locator);
-                        final String name = elem.getText();
-                        if (name != null && name.length() > 0) {
-                            if (DriverUtils.waitUntilElementClickable(getDriver(), elem)) {
-                                return name;
-                            } else {
-                                break;
-                            }
-                        }
-                    }
-                }
-            } catch (WebDriverException e) {
-                e.printStackTrace();
-                // Ignore silently
-            }
-            AndroidCommonUtils.verifyWireIsInForeground();
-            Thread.sleep(millisecondsDelay);
-            ntry++;
-        } while (ntry <= maxTries);
-        throw new AssertionError("There are no visible conversations in the list after "
-                + millisecondsDelay * maxTries / 1000 + " seconds");
     }
 
     public void tapOnName(final String name) throws Exception {

@@ -493,4 +493,19 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
+  @call_loop
+  Scenario Outline: Make 1:1 call loop to AVS <CallBackend>
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
+    And I call 100 times for 1 minutes with <Contact>
+
+    Examples:
+      | Name      | Contact   | CallBackend     |
+      | user1Name | user2Name | zcall:2.7.26    |
+
 

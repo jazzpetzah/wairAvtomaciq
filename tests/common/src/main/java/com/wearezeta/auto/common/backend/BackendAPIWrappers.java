@@ -535,6 +535,7 @@ public final class BackendAPIWrappers {
                                                    String convId, List<String> messages) throws Exception {
         for (String message : messages) {
             SEBridge.getInstance().sendConversationMessage(userFrom, convId, message);
+            Thread.sleep(50);
         }
     }
 
