@@ -730,6 +730,38 @@ public final class BackendAPIWrappers {
                 expectedCount, query, timeoutSeconds));
     }
 
+    public static void waitUntilContactFirstSearchResult(ClientUser searchByUser,
+                                                         String query, int expectedCount, boolean orMore,
+                                                         int timeoutSeconds) throws Exception {
+        final long startTimestamp = System.currentTimeMillis();
+        int currentCount;
+        while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
+            JSONObject searchResult;
+            try {
+                searchResult = BackendREST.searchForContactAsFirstSearchResult(receiveAuthToken(searchByUser), query);
+            } catch (BackendRequestException e) {
+                if (e.getReturnCode() == 500) {
+                    Thread.sleep(1000);
+                    continue;
+                } else {
+                    throw e;
+                }
+            }
+            if (searchResult.has("documents") && (searchResult.get("documents") instanceof JSONArray)) {
+                currentCount = searchResult.getJSONArray("documents").length();
+            } else {
+                currentCount = 0;
+            }
+            if (currentCount == expectedCount || (orMore && currentCount >= expectedCount)) {
+                return;
+            }
+            Thread.sleep(1000);
+        }
+        throw new NoContactsFoundException(String.format("%s contact(s) '%s' is not first search result " +
+                "within %s second(s) timeout",
+                expectedCount, query, timeoutSeconds));
+    }
+
     public static void waitUntilTopPeopleContactsFound(ClientUser searchByUser,
                                                        int size, int expectedCount, boolean orMore, int timeoutSeconds)
             throws Exception {

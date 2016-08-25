@@ -30,7 +30,7 @@ public final class CommonSteps {
     public static final int DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS = 10;
 
     private static final int BACKEND_USER_SYNC_TIMEOUT = 180; // seconds
-    private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 90; // seconds
+    private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 180; // seconds
 
     private String pingId = null;
 
@@ -608,6 +608,10 @@ public final class CommonSteps {
 
     public void WaitUntilContactIsFirstSearchResult(String searchByNameAlias,
                                                     String contactAlias) throws Exception {
+        String query = usrMgr.replaceAliasesOccurences(contactAlias, FindBy.NAME_ALIAS);
+        query = query.substring(0,1);
+        BackendAPIWrappers.waitUntilContactFirstSearchResult(usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query,
+                1, true, BACKEND_SUGGESTIONS_SYNC_TIMEOUT);
 
     }
 
