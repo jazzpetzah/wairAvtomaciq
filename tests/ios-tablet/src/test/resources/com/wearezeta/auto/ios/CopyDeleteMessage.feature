@@ -32,7 +32,7 @@ Feature: Copy/Delete Message
     And I see <MessagesCount> default messages in the conversation view
     When I long tap on image in conversation view
     And I tap on Delete badge item
-    And I select Delete only for me item from Delete menu
+    And I select Delete for Me item from Delete menu
     Then I see 0 photos in the conversation view
     And I see <MessagesCount> default messages in the conversation view
 

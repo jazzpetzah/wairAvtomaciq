@@ -12,7 +12,7 @@ Feature: Edit Message
     When I long tap default message in conversation view
     Then I do not see Edit badge item
     And I tap on Delete badge item
-    And I do not see Delete for everyone item in Delete menu
+    And I do not see Delete for Everyone item in Delete menu
 
     Examples:
       | Name      | Contact   |
@@ -31,7 +31,7 @@ Feature: Edit Message
     And I long tap default message in conversation view
     Then I do not see Edit badge item
     And I tap on Delete badge item
-    And I do not see Delete for everyone item in Delete menu
+    And I do not see Delete for Everyone item in Delete menu
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
