@@ -1417,17 +1417,22 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify visibility of Edit message toolbar
+     * Verify visibility of Edit message control buttton
      *
      * @param shouldNotSee equals to null if the toolbar should be visible
+     * @param buttonName   name of the button
      * @throws Exception
-     * @step. ^I (do not )?see Edit message toolbar$
+     * @step. ^I (do not )?see (Undo|Confirm|Cancel) Edit message control button$
      */
-    @Then("^I (do not )?see Edit message toolbar$")
-    public void VerifyVisibilityOfEditMessageToolbar(String shouldNotSee) throws Exception {
-        boolean condition = (shouldNotSee == null) ? getConversationViewPage().confirmEditButtonIsVisible() :
-                getConversationViewPage().confirmEditButtonIsNotVisible();
-        Assert.assertTrue(String.format("Edit toolbar should be %s", (shouldNotSee == null) ? "visible" : "invisible"),
-                condition);
+    @Then("^I (do not )?see (Undo|Confirm|Cancel) Edit message control button$")
+    public void VerifyVisibilityOfEditMessageToolbar(String shouldNotSee, String buttonName) throws Exception {
+        boolean condition;
+        if (shouldNotSee == null) {
+            condition = getConversationViewPage().editControlButtonIsVisible(buttonName);
+        } else {
+            condition = getConversationViewPage().editControlButtonIsNotVisible(buttonName);
+        }
+        Assert.assertTrue(String.format("Edit message control button '%s' should be %s", buttonName,
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }
 }

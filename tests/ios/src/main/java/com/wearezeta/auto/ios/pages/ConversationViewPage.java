@@ -1031,11 +1031,13 @@ public class ConversationViewPage extends IOSPage {
         getElement(nameVideoMessageActionButton).click();
     }
 
-    public boolean confirmEditButtonIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConfirmEdit);
+    public boolean editControlButtonIsVisible(String name) throws Exception {
+        final By locator = getEditControlByName(name);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean confirmEditButtonIsNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmEdit);
+    public boolean editControlButtonIsNotVisible(String name) throws Exception {
+        final By locator = getEditControlByName(name);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 }
