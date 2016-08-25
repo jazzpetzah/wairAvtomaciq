@@ -1468,11 +1468,9 @@ public class CommonIOSSteps {
     public void IAddNameAndPhoneToAddressBook(String name, String phoneNumber) throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         phoneNumber = usrMgr.replaceAliasesOccurences(phoneNumber, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
-        List<String> phoneNumberList = new ArrayList<>();
-        phoneNumberList.add(phoneNumber);
+        List<String> phoneNumberList = Arrays.asList(phoneNumber);
         ABContact contact = new ABContact(name, Optional.empty(), Optional.of(phoneNumberList));
-        List<ABContact> newContacts = new ArrayList<>();
-        newContacts.add(contact);
+        List<ABContact> newContacts = Arrays.asList(contact);
         addressbookProvisioner.addContacts(newContacts);
     }
 
@@ -1488,11 +1486,9 @@ public class CommonIOSSteps {
     public void IAddNameAndEmailToAddressBook(String name, String email) throws Throwable {
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         email = usrMgr.replaceAliasesOccurences(email, ClientUsersManager.FindBy.EMAIL_ALIAS);
-        List<String> emailList = new ArrayList<>();
-        emailList.add(email);
+        List<String> emailList = Arrays.asList(email);
         ABContact contact = new ABContact(name, Optional.of(emailList), Optional.empty());
-        List<ABContact> newContacts = new ArrayList<>();
-        newContacts.add(contact);
+        List<ABContact> newContacts = Arrays.asList(contact);
         addressbookProvisioner.addContacts(newContacts);
     }
 

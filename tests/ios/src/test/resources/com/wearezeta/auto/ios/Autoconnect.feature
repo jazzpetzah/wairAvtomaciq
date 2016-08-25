@@ -1,7 +1,7 @@
 Feature: Autoconnect
 
   #still needs the fix to upload +0 to BE, thats why no label to run yet, because it will fail
-  @C2034 @C2035 @addressbookStart
+  @C2034 @addressbookStart
   Scenario Outline: Verify autoconnect users by direct match phone numbers
     Given There are 2 users
     Given I quit Wire
@@ -49,7 +49,7 @@ Feature: Autoconnect
       | Contact1  | Contact2   | CPhone           | C2Phone          | Name      |
       | user3Name | user2Name  | user3PhoneNumber | user2PhoneNumber | user1Name |
 
-  @C202303 @staging @addressbookStart
+  @torun @C202303 @staging @addressbookStart
   Scenario Outline: Verify direct matching email - delayed
     Given There are 2 user where <Name> is me
     Given I quit Wire
