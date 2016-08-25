@@ -230,7 +230,7 @@ Feature: Edit
     And I see 2 messages in conversation
     When I click context menu of the latest message
     And I click to edit message in context menu
-    And I delete 8 characters from the conversation input
+    And I delete 7 characters from the conversation input
     And I write message <EditedMessage1>
     And I send message
     Then I do not see text message <OriginalMessage>
@@ -238,7 +238,7 @@ Feature: Edit
     And I see 2 messages in conversation
     When I click context menu of the latest message
     And I click to edit message in context menu
-    And I delete 8 characters from the conversation input
+    And I delete 7 characters from the conversation input
     And I write message <EditedMessage2>
     And I send message
     Then I do not see text message <EditedMessage1>
