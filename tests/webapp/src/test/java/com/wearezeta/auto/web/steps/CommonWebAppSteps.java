@@ -723,7 +723,9 @@ public class CommonWebAppSteps {
      */
     @Given("^There are suggestions for user (.*) on backend$")
     public void suggestions(String userNameAlias) throws Exception {
-        context.getCommonSteps().WaitUntilSuggestionFound(userNameAlias);
+        // TODO implement
+        throw new UnsupportedOperationException("Not implemented");
+//        context.getCommonSteps().WaitUntilSuggestionFound(userNameAlias);
     }
 
     /**

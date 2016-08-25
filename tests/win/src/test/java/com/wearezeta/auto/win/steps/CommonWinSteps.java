@@ -556,17 +556,6 @@ public class CommonWinSteps {
     }
 
     /**
-     * Wait until suggestions are in the backend for a certain user
-     *
-     * @param userNameAlias the name of the user
-     * @throws Exception
-     */
-    @Given("^There are suggestions for user (.*) on backend$")
-    public void suggestions(String userNameAlias) throws Exception {
-        commonSteps.WaitUntilSuggestionFound(userNameAlias);
-    }
-
-    /**
      * Add email(s) into address book of a user and upload address book in backend
      *
      * @param asUser name of the user where the address book is uploaded
