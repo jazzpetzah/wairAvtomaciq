@@ -412,7 +412,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | READ | UNREAD |
       | user1Email | user1Password | user1Name | user2Name | Read | Unread |
 
-  @C149662 @regression
+  @C149662 @regression @torun
   Scenario Outline: Verify maximum character limit dialog is shown when want to send a very long text message to group conversation
     Given There are 1 users where <Name> is me
     Given There is a known user 01e37ab8 with email smoketester+01e37ab8@wire.com and password aqa123456!
@@ -444,6 +444,7 @@ Feature: Conversation View
     And I delete 10 characters from the conversation input
     And I send message
     Then I do not see long message warning dialog
+And I wait for 60 seconds
     Then I verify the last text message equals file <File2>
 
     Examples:

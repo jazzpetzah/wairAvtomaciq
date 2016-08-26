@@ -270,7 +270,7 @@ Feature: Conversation View
     And I send message
     Then I verify the last text message equals to <Message>
     And I see 2 messages in conversation
-    When I open context menu of the last message
+    When I click context menu of the last message
     And I click delete everywhere in message context menu
     And I click confirm to delete message for everyone
     Then I do not see text message <Message>
@@ -337,7 +337,7 @@ Feature: Conversation View
     Then I send message
     And I see text message <Message1>
     And I see 2 messages in conversation
-    When I open context menu of the last message
+    When I click context menu of the last message
     And I click edit in message context menu
     And I delete 8 characters from the conversation input
     And I write message <Message2>
