@@ -152,6 +152,9 @@ public class ConversationPage extends WebPage {
     @FindBy(xpath = WebAppLocators.ConversationPage.xpathXButtonOnLongMWarning)
     private WebElement xButtonOnLongMWarning;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssXbuttonEdit)
+    private WebElement xButtonEdit;
+
     @FindBy(css = WebAppLocators.ConversationPage.cssSharedLocation)
     private WebElement locationName;
 
@@ -1155,6 +1158,10 @@ public class ConversationPage extends WebPage {
 
     public void clickXButtonOnLongMWarning() throws Exception {
         xButtonOnLongMWarning.click();
+    }
+
+    public void clickXButtonToCloseEdit() throws Exception {
+        xButtonEdit.click();
     }
 
     public void clearConversationInput() throws Exception {
