@@ -1464,4 +1464,15 @@ public class ConversationPageSteps {
     public void ISeeLinkInLinkPreview(String link) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).waitForLinkPreviewContains(link);
     }
+
+
+    /**
+     * Clicks x button to close edit mode
+     *
+     * @step. "^I click x button to close edit mode$"
+     */
+    @When("^I click x button to close edit mode$")
+    public void IClickXButoonToCancelEdit() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickXButtonToCloseEdit();
+    }
 }
