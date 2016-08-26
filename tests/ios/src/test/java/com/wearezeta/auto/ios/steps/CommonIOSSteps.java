@@ -1468,8 +1468,8 @@ public class CommonIOSSteps {
     public void IAddNameAndPhoneToAddressBook(String name, String phoneNumber) throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         phoneNumber = usrMgr.replaceAliasesOccurences(phoneNumber, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
-        ABContact contact = new ABContact(name, Optional.empty(), Optional.of(Arrays.asList(phoneNumber)));
-        addressbookProvisioner.addContacts(Arrays.asList(contact));
+        ABContact contact = new ABContact(name, Optional.empty(), Optional.of(Collections.singletonList(phoneNumber)));
+        addressbookProvisioner.addContacts(Collections.singletonList(contact));
     }
 
     /**
@@ -1484,8 +1484,8 @@ public class CommonIOSSteps {
     public void IAddNameAndEmailToAddressBook(String name, String email) throws Throwable {
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         email = usrMgr.replaceAliasesOccurences(email, ClientUsersManager.FindBy.EMAIL_ALIAS);
-        ABContact contact = new ABContact(name, Optional.of(Arrays.asList(email)), Optional.empty());
-        addressbookProvisioner.addContacts(Arrays.asList(contact));
+        ABContact contact = new ABContact(name, Optional.of(Collections.singletonList(email)), Optional.empty());
+        addressbookProvisioner.addContacts(Collections.singletonList(contact));
     }
 
     private final Map<String, Object> savedCaps = new HashMap<>();
