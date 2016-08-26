@@ -61,6 +61,8 @@ public class CommonIOSSteps {
     public static final String CAPABILITY_NAME_ADDRESSBOOK = "addressbookStart";
     public static final String TAG_NAME_ADDRESSBOOK = "@" + CAPABILITY_NAME_ADDRESSBOOK;
 
+    public static final String TAG_NAME_UPGRADE = "@upgrade";
+
     static {
         System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
         System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "warn");
@@ -210,9 +212,9 @@ public class CommonIOSSteps {
         }
 
         String appPath = getAppPath();
-        if (scenario.getSourceTagNames().contains("@upgrade") ||
+        if (scenario.getSourceTagNames().contains(TAG_NAME_UPGRADE) ||
                 scenario.getSourceTagNames().contains(TAG_NAME_ADDRESSBOOK)) {
-            if (scenario.getSourceTagNames().contains("@upgrade")) {
+            if (scenario.getSourceTagNames().contains(TAG_NAME_UPGRADE)) {
                 appPath = getOldAppPath();
             }
 
@@ -292,7 +294,7 @@ public class CommonIOSSteps {
             e.printStackTrace();
         }
 
-        if (scenario.getSourceTagNames().contains("@upgrade")) {
+        if (scenario.getSourceTagNames().contains(TAG_NAME_UPGRADE)) {
             try {
                 if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
                     IOSSimulatorHelper.kill();
