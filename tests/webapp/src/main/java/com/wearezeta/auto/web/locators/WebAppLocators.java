@@ -519,6 +519,8 @@ public final class WebAppLocators {
 
         public static final String cssGIFButton = "[data-uie-name='do-giphy-popover']";
 
+        public static final String cssXbuttonEdit = "[data-uie-name='do-cancel-edit']";
+
         // call controls
         public static String cssAcceptCallButton = "[data-uie-name='do-call-controls-call-accept']";
 
