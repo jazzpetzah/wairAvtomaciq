@@ -1566,6 +1566,17 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * Clear all push notifications.
+     *
+     * @throws Exception
+     * @step. ^I clear Wire push notifications$
+     */
+    @When("^I clear Wire push notifications$")
+    public void IClearNotification() throws Exception {
+        AndroidCommonUtils.clearWirePushNotifications();
+    }
+
+    /**
      * Tap chathead notification as soon as it appears on the screen
      *
      * @throws Exception
