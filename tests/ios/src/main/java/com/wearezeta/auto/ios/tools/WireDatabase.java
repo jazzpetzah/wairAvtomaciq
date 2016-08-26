@@ -21,55 +21,46 @@ public class WireDatabase {
         return DriverManager.getConnection(String.format("jdbc:sqlite:%s", dbFile.getAbsolutePath()));
     }
 
+    private ResultSet getQueryResult(Connection conn, String queryTpl, Object... params) throws SQLException {
+        final Statement st = conn.createStatement();
+        final String selectSQL = String.format(queryTpl, params);
+        return st.executeQuery(selectSQL);
+    }
+
     public Optional<Long> getRecentMessageId(ClientUser user) throws SQLException {
         Connection connection = null;
         try {
             connection = createConnection();
-            final String selectSQL = "SELECT ZMESSAGE.Z_PK AS MSG_ID " +
+            final String queryTpl = "SELECT ZMESSAGE.Z_PK AS MSG_ID " +
                     "FROM ZMESSAGE " +
                     "INNER JOIN ZUSER " +
                     "ON ZMESSAGE.ZSENDER=ZUSER.Z_PK " +
-                    "WHERE ZMESSAGE.ZISENCRYPTED=1 AND ZUSER.ZEMAILADDRESS=\"?\" " +
+                    "WHERE ZMESSAGE.ZISENCRYPTED=1 AND ZUSER.ZEMAILADDRESS=\"%s\" " +
                     "ORDER BY ZMESSAGE.ZUPDATEDTIMESTAMP DESC " +
                     "LIMIT 1";
-            final PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
-            preparedStatement.setString(1, user.getEmail());
-            final ResultSet rs = preparedStatement.executeQuery(selectSQL);
+            final ResultSet rs = getQueryResult(connection, queryTpl, user.getEmail());
             if (rs.next()) {
                 return Optional.of(rs.getLong("MSG_ID"));
             }
+            return Optional.empty();
         } finally {
             if (connection != null) {
                 connection.close();
             }
         }
-        return Optional.empty();
     }
 
-    public boolean isMessageFromUserDeleted(long recentMsgId) throws SQLException {
+    public boolean isMessageDeleted(final long msgId) throws SQLException {
         Connection connection = null;
-        boolean result = false;
         try {
             connection = createConnection();
-            final String zmessageQuery = "SELECT ZSENDERCLIENTID, ZSENDER " +
-                    "FROM ZMESSAGE " +
-                    "WHERE Z_PK=?";
-            final PreparedStatement zmessageStatement = connection.prepareStatement(zmessageQuery);
-            zmessageStatement.setLong(1, recentMsgId);
-            final ResultSet zmessageRS = zmessageStatement.executeQuery(zmessageQuery);
+            final String zmessageQueryTpl = "SELECT * FROM ZMESSAGE WHERE Z_PK=%s";
+            final ResultSet zmessageRS = getQueryResult(connection, zmessageQueryTpl, msgId);
             if (zmessageRS.next()) {
-                result = zmessageRS.getObject("ZSENDERCLIENTID") == null &&
-                        zmessageRS.getObject("ZSENDER") == null;
-            }
-            if (!result) {
                 return false;
             }
-            final String zmsgdataQuery = "SELECT * " +
-                    "FROM ZGENERICMESSAGEDATA " +
-                    "WHERE ZMESSAGE=?";
-            final PreparedStatement zmsgdataStatement = connection.prepareStatement(zmsgdataQuery);
-            zmsgdataStatement.setLong(1, recentMsgId);
-            final ResultSet zmsgdataRS = zmessageStatement.executeQuery(zmsgdataQuery);
+            final String zmsgdataQueryTpl = "SELECT * FROM ZGENERICMESSAGEDATA WHERE ZMESSAGE=%s";
+            final ResultSet zmsgdataRS = getQueryResult(connection, zmsgdataQueryTpl, msgId);
             return !zmsgdataRS.next();
         } finally {
             if (connection != null) {

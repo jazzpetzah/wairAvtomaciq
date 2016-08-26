@@ -1529,15 +1529,15 @@ public class CommonIOSSteps {
 
     private Long recentMsgId = null;
 
-    private File getWireDbClone() throws Exception {
+    private WireDatabase getWireDb() throws Exception {
         if (!CommonUtils.getIsSimulatorFromConfig(getClass())) {
             throw new IllegalStateException("This step is only supported on Simulator");
         }
-        final File wireDB = IOSSimulatorHelper.locateFileOnInternalFS(WireDatabase.DB_FILE_NAME)
-                .orElseThrow(() -> new IllegalStateException("The internal Wire database file cannot be located"));
-        final File tmpDB = File.createTempFile("wireddb", "sqlite");
-        Files.copy(wireDB.toPath(), tmpDB.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        return tmpDB;
+        final List<File> files = IOSSimulatorHelper.locateFilesOnInternalFS(WireDatabase.DB_FILE_NAME);
+        if (files.isEmpty()) {
+            throw new IllegalStateException("The internal Wire database file cannot be located");
+        }
+        return new WireDatabase(files.get(0));
     }
 
     /**
@@ -1549,18 +1549,13 @@ public class CommonIOSSteps {
      */
     @When("^I remember the state of the recent message from user (.*) in the local database$")
     public void IRememberMessageStateInLocalDatabase(String fromContact) throws Exception {
-        final File tmpDB = getWireDbClone();
         final ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(fromContact);
-        try {
-            final WireDatabase db = new WireDatabase(tmpDB);
-            this.recentMsgId = db.getRecentMessageId(dstUser).orElseThrow(
-                    () -> new IllegalStateException(
-                            String.format("No messages from user %s have been found in the local database",
-                                    dstUser.getName()))
-            );
-        } finally {
-            tmpDB.delete();
-        }
+        final WireDatabase db = getWireDb();
+        this.recentMsgId = db.getRecentMessageId(dstUser).orElseThrow(
+                () -> new IllegalStateException(
+                        String.format("No messages from user %s have been found in the local database",
+                                dstUser.getName()))
+        );
     }
 
     /**
@@ -1574,14 +1569,9 @@ public class CommonIOSSteps {
         if (this.recentMsgId == null) {
             throw new IllegalStateException("Please remember the message state first");
         }
-        final File tmpDB = getWireDbClone();
-        try {
-            final WireDatabase db = new WireDatabase(tmpDB);
-            Assert.assertTrue("The previously remembered message appears to be improperly deleted " +
-                            "from the local database",
-                    db.isMessageFromUserDeleted(this.recentMsgId));
-        } finally {
-            tmpDB.delete();
-        }
+        final WireDatabase db = getWireDb();
+        Assert.assertTrue("The previously remembered message appears to be improperly deleted " +
+                        "from the local database",
+                db.isMessageDeleted(this.recentMsgId));
     }
 }

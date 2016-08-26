@@ -5,10 +5,7 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -317,26 +314,28 @@ public class IOSSimulatorHelper {
         CommonUtils.pressCmdVByAppleScript();
     }
 
-    private static Optional<File> findFile(String name, File root) {
+    private static void findFiles(String name, File root, List<File> resultList) {
         final File[] list = root.listFiles();
-        if (list != null) {
-            for (File fil : list) {
-                if (fil.isDirectory()) {
-                    return findFile(name, fil);
-                } else if (name.equals(fil.getName())) {
-                    return Optional.of(fil);
-                }
+        if (list == null) {
+            return;
+        }
+        for (File fil : list) {
+            if (fil.isDirectory()) {
+                findFiles(name, fil, resultList);
+            } else if (name.equals(fil.getName())) {
+                resultList.add(fil);
             }
         }
-        return Optional.empty();
     }
 
-    public static Optional<File> locateFileOnInternalFS(String name) throws Exception {
+    public static List<File> locateFilesOnInternalFS(String name) throws Exception {
         final File root = new File(String.format("%s/Library/Developer/CoreSimulator/Devices/%s",
                 System.getProperty("user.home"), getId()));
         if (!root.exists()) {
-            return Optional.empty();
+            return Collections.emptyList();
         }
-        return findFile(name, root);
+        final List<File> resultList = new ArrayList<>();
+        findFiles(name, root, resultList);
+        return resultList;
     }
 }
