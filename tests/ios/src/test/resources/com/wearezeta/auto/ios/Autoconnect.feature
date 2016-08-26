@@ -1,7 +1,7 @@
 Feature: Autoconnect
 
-  #still needs the fix to upload +0 to BE, thats why no label to run yet, because it will fail
-  @C2034 @addressbookStart
+  # still needs the fix to upload +0 to BE, that is why no label to run yet, because it will fail
+  @C2034 @staging @addressbookStart
   Scenario Outline: Verify autoconnect users by direct match phone numbers
     Given There are 2 users
     Given I quit Wire
@@ -23,11 +23,11 @@ Feature: Autoconnect
     And I see conversation <Contact2> in conversations list
 
     Examples:
-      | Contact1  | Contact2   | ContactPhone       | Contact2Phone    | Name      |
-      | user1Name | user2Name  | user1PhoneNumber   | user2PhoneNumber | user3Name |
+      | Contact1  | Contact2  | ContactPhone     | Contact2Phone    | Name      |
+      | user1Name | user2Name | user1PhoneNumber | user2PhoneNumber | user3Name |
 
-  #still needs the fix to upload +0 to BE, thats why no label to run yet, because it will fail
-  @C202304 @addressbookStart
+  # still needs the fix to upload +0 to BE, that is why no label to run yet, because it will fail
+  @C202304 @staging @addressbookStart
   Scenario Outline: Verify autoconnect users by direct match phone numbers - delayed
     Given There are 3 users where <Name> is me
     Given I quit Wire
@@ -38,7 +38,6 @@ Feature: Autoconnect
     Given I add name <Contact2> and phone <Contact2Phone> to Address Book
     Given I relaunch Wire
     Given I sign in using my email or phone number
-    #Wait to make sure user is in the backend
     And I wait until <Contact1> exists in backend search results
     And I wait until <Contact2> exists in backend search results
     When I open search UI
@@ -47,8 +46,8 @@ Feature: Autoconnect
     And I see conversation <Contact2> in conversations list
 
     Examples:
-      | Contact1  | Contact2   | ContactPhone     | Contact2Phone    | Name      |
-      | user3Name | user2Name  | user3PhoneNumber | user2PhoneNumber | user1Name |
+      | Contact1  | Contact2  | ContactPhone     | Contact2Phone    | Name      |
+      | user3Name | user2Name | user3PhoneNumber | user2PhoneNumber | user1Name |
 
   @C202303 @staging @addressbookStart
   Scenario Outline: Verify direct matching email - delayed
@@ -60,17 +59,15 @@ Feature: Autoconnect
     Given I add name <Contact> and email <ContactEmail> to Address Book
     Given I relaunch Wire
     Given I sign in using my email or phone number
-    #Wait to make sure user is in the backend
     And I wait until <Contact> exists in backend search results
     When I open search UI
-    #Wait to be sure the match happend on the backend
     And I wait until <Contact> is first search result on backend
     And I input in People picker search field first 1 letter of user name <Contact>
     Then I see the first item in Search result is <Contact>
 
     Examples:
-      | Contact   | ContactEmail  | Name      |
-      | user2Name | user2Email    | user1Name |
+      | Contact   | ContactEmail | Name      |
+      | user2Name | user2Email   | user1Name |
 
   @C206254 @staging @addressbookStart
   Scenario Outline: Verify direct matching of emails
@@ -90,10 +87,8 @@ Feature: Autoconnect
     And I tap Share Contacts button on Share Contacts overlay
     And User <Name> is me
     And I see conversations list
-    #Wait to make sure user is in the backend
     And I wait until <Contact> exists in backend search results
     When I open search UI
-    #Wait to be sure the match happend on the backend
     And I wait until <Contact> is first search result on backend
     And I input in People picker search field first 1 letter of user name <Contact>
     Then I see the first item in Search result is <Contact>
