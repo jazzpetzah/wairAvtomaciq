@@ -263,7 +263,7 @@ Feature: Edit
     And I see 2 messages in conversation
     When I click context menu of the latest message
     And I click to edit message in context menu
-    And I delete 8 characters from the conversation input
+    And I delete 7 characters from the conversation input
     And I write message <EditedMessage>
     And I click x button to close edit mode
     Then I see text message <OriginalMessage>
