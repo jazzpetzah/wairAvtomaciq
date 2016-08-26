@@ -176,7 +176,7 @@ Feature: Edit Message
       | Name      | Contact1  | DeviceName | Contact2  | GroupChatName | Text1  | Text2  |
       | user1Name | user2Name | HisDevice  | user3Name | EditGroup     | Edit 1 | Edit 2 |
 
-  @C202353 @staging @fastLogin
+  @C202353 @regression @fastLogin
   Scenario Outline: Verify I can switch to edit another message while editing a message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
