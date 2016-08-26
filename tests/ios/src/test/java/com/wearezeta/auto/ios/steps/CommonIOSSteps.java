@@ -18,12 +18,9 @@ import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
+import com.wearezeta.auto.ios.tools.*;
 import com.wearezeta.auto.ios.tools.ABProvisioner.ABContact;
 import com.wearezeta.auto.ios.tools.ABProvisioner.ABProvisionerAPI;
-import com.wearezeta.auto.ios.tools.FastLoginContainer;
-import com.wearezeta.auto.ios.tools.IOSCommonUtils;
-import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
-import com.wearezeta.auto.ios.tools.RealDeviceHelpers;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
 import cucumber.api.java.en.And;
@@ -1528,5 +1525,63 @@ public class CommonIOSSteps {
         final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(getAppPath(), Optional.of(savedCaps), 1);
         updateDriver(lazyDriver);
         savedCaps.clear();
+    }
+
+    private Long recentMsgId = null;
+
+    private File getWireDbClone() throws Exception {
+        if (!CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            throw new IllegalStateException("This step is only supported on Simulator");
+        }
+        final File wireDB = IOSSimulatorHelper.locateFileOnInternalFS(WireDatabase.DB_FILE_NAME)
+                .orElseThrow(() -> new IllegalStateException("The internal Wire database file cannot be located"));
+        final File tmpDB = File.createTempFile("wireddb", "sqlite");
+        Files.copy(wireDB.toPath(), tmpDB.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        return tmpDB;
+    }
+
+    /**
+     * Store the id of the recent message into the local variable
+     *
+     * @param fromContact user name/alias
+     * @throws Exception
+     * @step. ^I remember the state of the recent message from user (.*) in the local database$
+     */
+    @When("^I remember the state of the recent message from user (.*) in the local database$")
+    public void IRememberMessageStateInLocalDatabase(String fromContact) throws Exception {
+        final File tmpDB = getWireDbClone();
+        final ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(fromContact);
+        try {
+            final WireDatabase db = new WireDatabase(tmpDB);
+            this.recentMsgId = db.getRecentMessageId(dstUser).orElseThrow(
+                    () -> new IllegalStateException(
+                            String.format("No messages from user %s have been found in the local database",
+                                    dstUser.getName()))
+            );
+        } finally {
+            tmpDB.delete();
+        }
+    }
+
+    /**
+     * Verify whether the previously saved message has been properly removed from the local DB
+     *
+     * @throws Exception
+     * @step. ^I verify the remembered message has been deleted from the local database$
+     */
+    @Then("^I verify the remembered message has been deleted from the local database$")
+    public void IVerifyMessageStateInLocalDB() throws Exception {
+        if (this.recentMsgId == null) {
+            throw new IllegalStateException("Please remember the message state first");
+        }
+        final File tmpDB = getWireDbClone();
+        try {
+            final WireDatabase db = new WireDatabase(tmpDB);
+            Assert.assertTrue("The previously remembered message appears to be improperly deleted " +
+                            "from the local database",
+                    db.isMessageFromUserDeleted(this.recentMsgId));
+        } finally {
+            tmpDB.delete();
+        }
     }
 }

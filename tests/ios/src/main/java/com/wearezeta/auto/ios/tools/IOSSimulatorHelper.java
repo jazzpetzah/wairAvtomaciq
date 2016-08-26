@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -154,7 +155,7 @@ public class IOSSimulatorHelper {
         if (!simIdsMapping.containsKey(deviceName)) {
             final String output = executeInstruments("-s");
             final Pattern linePattern = Pattern.compile(
-                            "([\\w\\s]+)\\(([0-9\\.]+)\\)\\s+\\[([\\w]{8}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{12})");
+                    "([\\w\\s]+)\\(([0-9\\.]+)\\)\\s+\\[([\\w]{8}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{12})");
             for (String line : output.split("\n")) {
                 if (!line.contains("unavailable")) {
                     final Matcher m = linePattern.matcher(line);
@@ -314,5 +315,28 @@ public class IOSSimulatorHelper {
     public static void copySystemClipboardToSimulatorClipboard() throws Exception {
         activateWindow();
         CommonUtils.pressCmdVByAppleScript();
+    }
+
+    private static Optional<File> findFile(String name, File root) {
+        final File[] list = root.listFiles();
+        if (list != null) {
+            for (File fil : list) {
+                if (fil.isDirectory()) {
+                    return findFile(name, fil);
+                } else if (name.equals(fil.getName())) {
+                    return Optional.of(fil);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    public static Optional<File> locateFileOnInternalFS(String name) throws Exception {
+        final File root = new File(String.format("%s/Library/Developer/CoreSimulator/Devices/%s",
+                System.getProperty("user.home"), getId()));
+        if (!root.exists()) {
+            return Optional.empty();
+        }
+        return findFile(name, root);
     }
 }

@@ -9,10 +9,12 @@ Feature: Delete Message
     When I tap on contact name <Contact>
     And I type the default message and send it
     Then I see 1 default message in the conversation view
+    And I remember the state of the recent message from user Myself in the local database
     When I long tap default message in conversation view
     And I tap on Delete badge item
     And I select Delete for Me item from Delete menu
     Then I see 0 default messages in the conversation view
+    And I verify the remembered message has been deleted from the local database
 
     Examples:
       | Name      | Contact   |
