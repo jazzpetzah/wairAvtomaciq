@@ -16,8 +16,8 @@ Feature: Link Preview
     Then I see link preview image in the conversation view
 
     Examples:
-      | Name      | Contact   | Link                                                                                  |
-      | user1Name | user2Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 |
+      | Name      | Contact   | Link                  |
+      | user1Name | user2Name | http://www.google.com |
 
   @C167030 @C167031 @C167032 @regression @fastLogin
   Scenario Outline: Verify preview is shown for mixed link and text
@@ -50,8 +50,8 @@ Feature: Link Preview
     And I see the conversation view contains message <Text1> <Link> <Text>
 
     Examples:
-      | Name      | Contact   | Link                                                                                  | Text       | Text1      |
-      | user1Name | user2Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 | My text    | Text first |
+      | Name      | Contact   | Link                                                                                  | Text    | Text1      |
+      | user1Name | user2Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 | My text | Text first |
 
   @C169224 @regression @fastLogin
   Scenario Outline: Verify preview is shown for shortened URL
