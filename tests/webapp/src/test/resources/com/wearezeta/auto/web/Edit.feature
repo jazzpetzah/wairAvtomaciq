@@ -72,7 +72,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact1  |Contact2   | ChatName  | Message1 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | message1 |
 
-  @C206284 @staging
+  @C206284 @regression
   Scenario Outline: Verify I can edit my last message by pressing the up arrow key
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -216,7 +216,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact1  | Contact2  | OriginalMessage | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | user3Name | edit me         | edited        |
 
-  @C206283 @staging
+  @C206283 @regression
   Scenario Outline: Verify I can edit a message multiple times in a row
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
