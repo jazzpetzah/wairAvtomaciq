@@ -139,6 +139,9 @@ public class ConversationPage extends WebPage {
 
     @FindBy(css = WebAppLocators.ConversationPage.cssDoDeleteForEveryone)
     private WebElement doDeleteForEveryoneButton;
+    
+    @FindBy(css = WebAppLocators.ConversationPage.cssDoEditMessage)
+    private WebElement doEditMessageButton;
 
     @FindBy(css = WebAppLocators.ConversationPage.cssLongMessageDialog)
     private WebElement longMessageDialog;
@@ -1039,6 +1042,14 @@ public class ConversationPage extends WebPage {
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssContextMenuButtonByMessageId.apply(id));
         getDriver().findElement(locator).click();
     }
+    
+    public void clickContextMenuOnSecondLastMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssSecondLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        hoverOverMessage(id);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssContextMenuButtonByMessageId.apply(id));
+        getDriver().findElement(locator).click();
+    }
 
     public void clickDeleteEverywhereInContextMenuOfLatestMessage() throws Exception {
         By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
@@ -1079,6 +1090,17 @@ public class ConversationPage extends WebPage {
         String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssEditMessageId.apply(id));
         getDriver().findElement(locator).click();
+    }
+    
+    public void clickEditInContextMenuOfSecondLastMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssSecondLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssEditMessageId.apply(id));
+        getDriver().findElement(locator).click();
+    }
+    
+    public void clickEditInMessageContextMenu() throws Exception {
+        doEditMessageButton.click();
     }
 
     public void clickToResetSessionOnLatestError() throws Exception {

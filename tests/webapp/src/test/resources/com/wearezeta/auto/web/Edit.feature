@@ -273,3 +273,36 @@ Feature: Edit
     Examples:
       | Login      | Password      | Name      | Contact   | OriginalMessage | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | edit me         | edited1       |
+
+  @C206285 @staging
+  Scenario Outline: Verify I can switch to edit another message while editing a message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I write message <OriginalMessage>
+    Then I send message
+    When I write message <OriginalMessage2>
+    Then I send message
+    And I see text message <OriginalMessage>
+    And I see text message <OriginalMessage2>
+    And I see 3 messages in conversation
+    When I click context menu of the latest message
+    And I click to edit message in context menu
+    And I delete 9 characters from the conversation input
+    And I write message <IntermediateMessage>
+    When I click context menu of the second last message
+    And I click to edit message in context menu
+    And I delete 7 characters from the conversation input
+    And I write message <EditedMessage>
+    When I send message
+    Then I see text message <OriginalMessage2>
+    And I do not see text message <OriginalMessage>
+    And I do not see text message <IntermediateMessage>
+    And I see 3 messages in conversation
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | OriginalMessage | OriginalMessage2 | IntermediateMessage | EditedMessage |
+      | user1Email | user1Password | user1Name | user2Name | edit me         | edit me 2        | abort edit          | edited1       |

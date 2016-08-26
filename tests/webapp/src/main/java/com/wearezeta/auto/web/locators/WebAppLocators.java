@@ -368,6 +368,8 @@ public final class WebAppLocators {
 
         public static final Function<String, String> cssEditMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] context-menu [data-context-action='edit']", text);
+        
+        public static final String cssDoEditMessage = "context-menu [data-context-action='edit']";
 
         // TODO: replace the bottom css with this, when implemented by developers
         //public static final Function<String, String> cssResetSessionByMessageId = text -> String

@@ -687,6 +687,11 @@ public class ConversationPageSteps {
     public void IClickContextMenuOfLatestMessage() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnLatestMessage();
     }
+    
+    @When("^I click context menu of the second last message$")
+    public void IClickContextMenuOfSecondLastMessage() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnSecondLastMessage();
+    }
 
     @When("^I click to delete message for everyone in context menu$")
     public void IClickDeleteEverywhereInContextMenuOfLatestMessage() throws Exception {
@@ -732,7 +737,7 @@ public class ConversationPageSteps {
 
     @When("^I click to edit message in context menu$")
     public void IClickEditInContextMenuOfLatestMessage() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clickEditInContextMenuOfLatestMessage();
+        context.getPagesCollection().getPage(ConversationPage.class).clickEditInMessageContextMenu();
     }
 
     @When("^I click reset session on the latest decryption error")
