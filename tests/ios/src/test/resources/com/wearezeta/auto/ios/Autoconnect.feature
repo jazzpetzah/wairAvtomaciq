@@ -18,6 +18,7 @@ Feature: Autoconnect
     And I input name <Name> and hit Enter
     And I tap Keep This One button
     And I tap Share Contacts button on Share Contacts overlay
+    And User <Name> is me
     Then I see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
 
@@ -28,7 +29,7 @@ Feature: Autoconnect
   #still needs the fix to upload +0 to BE, thats why no label to run yet, because it will fail
   @C202304 @addressbookStart
   Scenario Outline: Verify autoconnect users by direct match phone numbers - delayed
-    Given There are 3 user where <Name> is me
+    Given There are 3 users where <Name> is me
     Given I quit Wire
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
@@ -51,7 +52,7 @@ Feature: Autoconnect
 
   @C202303 @staging @addressbookStart
   Scenario Outline: Verify direct matching email - delayed
-    Given There are 2 user where <Name> is me
+    Given There are 2 users where <Name> is me
     Given I quit Wire
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
@@ -87,6 +88,7 @@ Feature: Autoconnect
     And I input name <Name> and hit Enter
     And I tap Keep This One button
     And I tap Share Contacts button on Share Contacts overlay
+    And User <Name> is me
     And I see conversations list
     #Wait to make sure user is in the backend
     And I wait until <Contact> exists in backend search results
