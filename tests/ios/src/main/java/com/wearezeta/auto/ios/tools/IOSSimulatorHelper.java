@@ -5,9 +5,7 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -154,7 +152,7 @@ public class IOSSimulatorHelper {
         if (!simIdsMapping.containsKey(deviceName)) {
             final String output = executeInstruments("-s");
             final Pattern linePattern = Pattern.compile(
-                            "([\\w\\s]+)\\(([0-9\\.]+)\\)\\s+\\[([\\w]{8}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{12})");
+                    "([\\w\\s]+)\\(([0-9\\.]+)\\)\\s+\\[([\\w]{8}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{12})");
             for (String line : output.split("\n")) {
                 if (!line.contains("unavailable")) {
                     final Matcher m = linePattern.matcher(line);
@@ -314,5 +312,30 @@ public class IOSSimulatorHelper {
     public static void copySystemClipboardToSimulatorClipboard() throws Exception {
         activateWindow();
         CommonUtils.pressCmdVByAppleScript();
+    }
+
+    private static void findFiles(String name, File root, List<File> resultList) {
+        final File[] list = root.listFiles();
+        if (list == null) {
+            return;
+        }
+        for (File fil : list) {
+            if (fil.isDirectory()) {
+                findFiles(name, fil, resultList);
+            } else if (name.equals(fil.getName())) {
+                resultList.add(fil);
+            }
+        }
+    }
+
+    public static List<File> locateFilesOnInternalFS(String name) throws Exception {
+        final File root = new File(String.format("%s/Library/Developer/CoreSimulator/Devices/%s",
+                System.getProperty("user.home"), getId()));
+        if (!root.exists()) {
+            return Collections.emptyList();
+        }
+        final List<File> resultList = new ArrayList<>();
+        findFiles(name, root, resultList);
+        return resultList;
     }
 }

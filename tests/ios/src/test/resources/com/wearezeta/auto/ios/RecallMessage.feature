@@ -11,12 +11,14 @@ Feature: Recall Message
     When I tap on contact name <Contact>
     And I type the default message and send it
     Then I see 1 default message in the conversation view
-    When User <Contact> remembers the recent message from user Myself via device <HisDevice>
+    When I remember the state of the recent message from user Myself in the local database
+    And User <Contact> remembers the recent message from user Myself via device <HisDevice>
     And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
     And I long tap default message in conversation view
     And I tap on Delete badge item
     And I select Delete for Everyone item from Delete menu
     Then I see 0 default messages in the conversation view
+    And I verify the remembered message has been deleted from the local database
     And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in <Wait1> seconds
     And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in <Wait2> seconds
     When User Myself send 1 encrypted message using device <MySecondDevice> to user <Contact>
