@@ -11,6 +11,7 @@ import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.SecurityAlertPage;
 import com.wearezeta.auto.android.pages.registration.BackendSelectPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
+import com.wearezeta.auto.android.tools.WireDatabase;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.AppiumServer;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -19,6 +20,7 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
@@ -1503,6 +1505,24 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * Verifyt the Wire build already enable debug mode.
+     * http://stackoverflow.com/questions/2409923/what-do-i-have-to-add-to-the-manifest-to-debug-an-android-application-on-an-actu
+     *
+     * @throws Exception
+     * @step. ^Wire has Debug mode enabled$
+     */
+    @Given("^Wire has Debug mode enabled$")
+    public void WireEnableDebugMode() throws Exception {
+        String packageName = CommonUtils.getAndroidPackageFromConfig(CommonAndroidSteps.class);
+        String output = AndroidCommonUtils.getAdbOutput(String.format("shell run-as %s ls", packageName));
+        final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("not debuggable") + "\\b");
+        if (pattern.matcher(output).find()) {
+            throw new PendingException(String.format("The current Wire build doesn't support debuggable mode: %s",
+                    packageName));
+        }
+    }
+
+    /**
      * Verify whether no internet bar is visible
      *
      * @param shouldNotSee   equals null means the "no internet bar" should be visible
@@ -1679,4 +1699,43 @@ public class CommonAndroidSteps {
             throws Exception {
         commonSteps.UserXHasContactsInAddressBook(asUser, contacts);
     }
+
+
+    private String recentMsgId = null;
+
+    /**
+     * Store the id of the recent message into the local variable
+     *
+     * @param fromContact user name/alias
+     * @throws Exception
+     * @step. ^I remember the state of the recent message from user (.*) in the local database$
+     */
+    @When("^I remember the state of the recent message from user (.*) in the local database$")
+    public void IRememberMessageStateInLocalDatabase(String fromContact) throws Exception {
+        final ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(fromContact);
+        final ClientUser myself = usrMgr.getSelfUserOrThrowError();
+        final WireDatabase db = new WireDatabase();
+        this.recentMsgId = db.getRecentMessageId(myself, dstUser).orElseThrow(
+                () -> new IllegalStateException(
+                        String.format("No messages from user %s have been found in the local database",
+                                dstUser.getName()))
+        );
+    }
+
+    /**
+     * Verify whether the previously saved message has been properly removed from the local DB
+     *
+     * @throws Exception
+     * @step. ^I verify the remembered message has been deleted from the local database$
+     */
+    @Then("^I verify the remembered message has been deleted from the local database$")
+    public void IVerifyMessageStateInLocalDB() throws Exception {
+        if (this.recentMsgId == null) {
+            throw new IllegalStateException("Please remember the message state first");
+        }
+        final WireDatabase db = new WireDatabase();
+        Assert.assertTrue(String.format("The previously remembered message [%s] appears to be improperly deleted " +
+                "from the local database", this.recentMsgId), db.isMessageDeleted(this.recentMsgId));
+    }
+
 }
