@@ -249,7 +249,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact   | OriginalMessage | EditedMessage1 | EditedMessage2 |
       | user1Email | user1Password | user1Name | user2Name | edit me         | edited1        | edited2        |
 
-  @C206281 @staging
+  @C206281 @regression
   Scenario Outline: Verify I can cancel editing a message by button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -274,7 +274,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact   | OriginalMessage | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | edit me         | edited1       |
 
-  @C206285 @staging
+  @C206285 @regression
   Scenario Outline: Verify I can switch to edit another message while editing a message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
