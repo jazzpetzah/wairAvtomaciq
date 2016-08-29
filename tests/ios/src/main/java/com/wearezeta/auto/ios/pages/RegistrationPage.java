@@ -3,9 +3,11 @@ package com.wearezeta.auto.ios.pages;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSElement;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -61,6 +63,9 @@ public class RegistrationPage extends IOSPage {
 
     private static final By xpathNoCodeShowingUpLabel = By.
             xpath("//UIAStaticText[contains(@name, 'NO CODE SHOWING UP?')]");
+
+    private static final Logger log = ZetaLogger.getLog(RegistrationPage.class.getSimpleName());
+
 
     private String name;
     private String email;
@@ -213,8 +218,15 @@ public class RegistrationPage extends IOSPage {
         instantiatePage(FirstTimeOverlay.class).acceptIfVisible(2);
     }
 
+    private static final int SELF_PICTURE_LOAD_TIMEOUT_SECONDS = 30;
+
     public void tapKeepThisOneButton() throws Exception {
         getElement(nameKeepThisOneButton).click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameKeepThisOneButton,
+                SELF_PICTURE_LOAD_TIMEOUT_SECONDS)) {
+            log.warn(String.format("The self picture has not been loaded within %s seconds timeout",
+                    SELF_PICTURE_LOAD_TIMEOUT_SECONDS));
+        }
     }
 
     public void tapTakePhotoButton() throws Exception {
