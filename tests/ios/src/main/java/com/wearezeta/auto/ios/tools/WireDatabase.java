@@ -57,7 +57,9 @@ public class WireDatabase {
             final String zmessageQueryTpl = "SELECT * FROM ZMESSAGE WHERE Z_PK=%s";
             final ResultSet zmessageRS = getQueryResult(connection, zmessageQueryTpl, msgId);
             if (zmessageRS.next()) {
-                return false;
+                if (zmessageRS.getString("ZSENDERCLIENTID") != null) {
+                    return false;
+                }
             }
             final String zmsgdataQueryTpl = "SELECT * FROM ZGENERICMESSAGEDATA WHERE ZMESSAGE=%s";
             final ResultSet zmsgdataRS = getQueryResult(connection, zmsgdataQueryTpl, msgId);
