@@ -186,7 +186,7 @@ Feature: Search
     Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I tap on Search input on People picker page
-    And I input in People picker search field first 5 letters of user name <Contact>
+    And I input in People picker search field first 7 letters of user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
 
     Examples:
