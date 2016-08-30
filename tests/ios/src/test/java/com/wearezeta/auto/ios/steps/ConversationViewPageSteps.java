@@ -1465,4 +1465,17 @@ public class ConversationViewPageSteps {
         Assert.assertTrue(String.format("Message '%s' is not presented on %s position in conversation view", message, position),
                 getConversationViewPage().isMessageByPositionDisplayed(message, position));
     }
+
+    /**
+     * Tap in the center of the most recent message cell for the particular contact
+     *
+     * @step. ^I tap on the recent message from (.*)
+     * @param sender sender name/alias
+     * @throws Exception
+     */
+    @When("^I tap on the recent message from (.*)")
+    public void ITapRecentMessage(String sender) throws Exception {
+        sender = usrMgr.replaceAliasesOccurences(sender, FindBy.NAME_ALIAS);
+        getConversationViewPage().tapRecentMessageFrom(sender);
+    }
 }

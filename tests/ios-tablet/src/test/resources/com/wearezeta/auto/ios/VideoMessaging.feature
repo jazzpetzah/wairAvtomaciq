@@ -9,9 +9,7 @@ Feature: Video Messaging
     Given User <Contact> sends file <FileName> having MIME type <MIMEType> to single user conversation <Name> using device <DeviceName>
     Given I see conversations list
     Given I tap on contact name <Contact>
-    # Wait to make sure video is downloaded
-    Given I wait for <DownloadTimeout> seconds
-    When I tap on video message in conversation view
+    When I tap on the recent message from <Contact>
     # Wait to make sure video is downloaded
     And I wait for <DownloadTimeout> seconds
     Then I see video message player page is opened

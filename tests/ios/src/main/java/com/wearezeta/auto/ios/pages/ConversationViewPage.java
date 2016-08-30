@@ -1034,18 +1034,6 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapVideoMessage() throws Exception {
-        int ntry = 0;
-        do {
-            final Optional<WebElement> actionBtn = getElementIfDisplayed(nameVideoMessageActionButton, 2);
-            if (actionBtn.isPresent()) {
-                actionBtn.get().click();
-                return;
-            }
-            // A workaround to refresh page tree
-            Thread.sleep(500);
-            printPageSource();
-            ntry++;
-        } while (ntry < 2);
         getElement(nameVideoMessageActionButton).click();
     }
 
@@ -1067,5 +1055,10 @@ public class ConversationViewPage extends IOSPage {
     public boolean isMessageByPositionDisplayed(String message, int position) throws Exception {
         final By locator = By.xpath(xpathMessageByTextAndIndex.apply(message, position));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public void tapRecentMessageFrom(String sender) throws Exception {
+        final By locator = By.xpath(xpathUserNameByText.apply(sender));
+        getElement(locator).click();
     }
 }
