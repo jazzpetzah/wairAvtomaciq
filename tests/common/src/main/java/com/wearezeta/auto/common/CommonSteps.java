@@ -30,7 +30,9 @@ public final class CommonSteps {
     public static final int DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS = 10;
 
     private static final int BACKEND_USER_SYNC_TIMEOUT = 180; // seconds
-    private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 180; // seconds
+
+    //increased timeout to make it stable on jenkins
+    private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 240; // seconds
 
     private String pingId = null;
 

@@ -1,6 +1,5 @@
 Feature: Autoconnect
 
-  # still needs the fix to upload +0 to BE, that is why no label to run yet, because it will fail
   @C2034 @staging @addressbookStart
   Scenario Outline: Verify autoconnect users by direct match phone numbers
     Given There are 2 users
@@ -26,7 +25,6 @@ Feature: Autoconnect
       | Contact1  | Contact2  | ContactPhone     | Contact2Phone    | Name      |
       | user1Name | user2Name | user1PhoneNumber | user2PhoneNumber | user3Name |
 
-  # still needs the fix to upload +0 to BE, that is why no label to run yet, because it will fail
   @C202304 @staging @addressbookStart
   Scenario Outline: Verify autoconnect users by direct match phone numbers - delayed
     Given There are 3 users where <Name> is me
