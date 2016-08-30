@@ -16,8 +16,8 @@ Feature: Link Preview
     Then I see link preview image in the conversation view
 
     Examples:
-      | Name      | Contact   | Link                  |
-      | user1Name | user2Name | http://www.google.com |
+      | Name      | Contact   | Link                 |
+      | user1Name | user2Name | https://www.wire.com |
 
   @C167030 @C167031 @C167032 @regression @fastLogin
   Scenario Outline: Verify preview is shown for mixed link and text
