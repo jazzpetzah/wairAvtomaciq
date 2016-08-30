@@ -1074,9 +1074,9 @@ public class ConversationViewPageSteps {
      *
      * @param name one of possible message bottom menu button name
      * @throws Exception
-     * @step. ^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit) button on the message bottom menu$
+     * @step. ^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike) button on the message bottom menu$
      */
-    @Then("^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit) button on the message bottom menu$")
+    @Then("^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike) button on the message bottom menu$")
     public void ISeeMessageBottomMenuButton(String shouldNotSee, String name) throws Exception {
         final boolean condition = (shouldNotSee == null) ?
                 getConversationViewPage().waitUntilMessageBottomMenuButtonVisible(name) :
@@ -1480,5 +1480,42 @@ public class ConversationViewPageSteps {
             Assert.assertTrue(String.format("The message separator of user %s should be invisible", name),
                     getConversationViewPage().waitUntilMessageSeparatorInvisible(name, timeOutSeconds));
         }
+    }
+
+    /**
+     * Verify I can see the Text msg meta item
+     *
+     * @param itemType       Message Meta Item type
+     * @param hasExpectedMsg equals null means you don't specify the expceted content for item
+     * @param expectedMsg    specified expected content for item
+     * @param message        the related message you send or received
+     * @throws Exception
+     * @step. ^I see (Like button|Like hint|Like description|Message status|First like avatar|Second like avatar) (with expected text "(.*)" )?under the Text message "(.*)"$
+     */
+    @Then("^I see (Like button|Like hint|Like description|Message status|First like avatar|Second like avatar)" +
+            " (with expected text \"(.*)\" )?under the Text message \"(.*)\"$")
+    public void ISeeMessagMetaForText(String itemType, String hasExpectedMsg, String expectedMsg, String message)
+            throws Exception {
+        boolean isVisible = (hasExpectedMsg == null)
+                ? getConversationViewPage().waitUntilTxtMessageMetaItemVisible(message, itemType)
+                : getConversationViewPage().waitUntilTxtMessageMetaItemVisible(message, itemType, expectedMsg);
+
+        Assert.assertTrue(
+                String.format("The %s should be visible under the message '%s'", itemType, message), isVisible);
+    }
+
+    /**
+     * Tap on Text msg meta item
+     *
+     * @param itemType Message Meta Item type
+     * @param message  Related text message
+     * @throws Exception
+     * @step. ^I tap (Like button|Like hint|Like description|Message status|First like avatar|Second like avatar) under the Text message "(.*)"$
+     */
+    @When("^I tap (Like button|Like hint|Like description|Message status|First like avatar|Second like avatar)" +
+            " under the Text message \"(.*)\"$")
+    public void ITapMessageMetaForText(String itemType, String message)
+            throws Exception {
+        getConversationViewPage().tapTxtMessageMetaItem(message, itemType);
     }
 }

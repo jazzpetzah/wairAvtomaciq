@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -218,6 +219,23 @@ public class ConversationViewPage extends AndroidPage {
     private static final By idAudioContainerSeekbar = By.id("sb__audio_progress");
 
     private static final By idAudioMessagePreviewSeekbar = By.id("sb__voice_message__recording__seekbar");
+
+    //region Message footer
+    private static final Function<String, String> xpathStrTemplateId = id -> String.format("//*[@id='%s']", id);
+    private static final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> xpathStrTemplateIdValue
+            = (id, value) -> String.format("//*[@id='%s' and @value='%s']", id, value);
+
+    private static final String strIdMessageMetaLikeButton = "gtv__footer__like__button";
+    private static final String strIdMessageMetaLikeHint = "gtv__footer__like__hint_arrow";
+    private static final String strIdMessageMetaLikeDescription = "tv__footer__like__description";
+    private static final String strIdMessageMetaStatus = "tv__footer__message_status";
+    private static final String strIdMessageMetaFirstLike = "cv__first_like_chathead";
+    private static final String strIdMessageMetaSecondLike = "cv__first_like_chathead";
+
+    private static final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> xpathStrTxtMsgMetaItem
+            = (txtMsg, subLocator) -> String.format("//*[@id='%s' and @value='%s']/../../following-sibling::*[1]%s",
+            idStrRowConversationMessage, txtMsg, subLocator);
+    //endregion
 
     private static final int MAX_CLICK_RETRIES = 5;
 
@@ -1039,6 +1057,48 @@ public class ConversationViewPage extends AndroidPage {
         for (WebElement resendButton : resendButtonList) {
             resendButton.click();
         }
+    }
+    //endregion
+
+    //region Message Meta
+    private String getMessageMetaLocatorIdString(String itemType) throws Exception {
+        switch (itemType.toLowerCase()) {
+            case "like button":
+                return strIdMessageMetaLikeButton;
+            case "like hint":
+                return strIdMessageMetaLikeHint;
+            case "like description":
+                return strIdMessageMetaLikeDescription;
+            case "message status":
+                return strIdMessageMetaStatus;
+            case "first like avatar":
+                return strIdMessageMetaFirstLike;
+            case "second like avatar":
+                return strIdMessageMetaSecondLike;
+            default:
+                throw new IllegalStateException(
+                        String.format("Cannot identify the item type '%s' in Message Meta", itemType));
+        }
+    }
+
+    public boolean waitUntilTxtMessageMetaItemVisible(String message, String itemType) throws Exception {
+        String locatorId = getMessageMetaLocatorIdString(itemType);
+        By locator = By.xpath(xpathStrTxtMsgMetaItem.apply(message, xpathStrTemplateId.apply(locatorId)));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitUntilTxtMessageMetaItemVisible(String message, String itemType, String expectedItemText)
+            throws Exception {
+        String locatorId = getMessageMetaLocatorIdString(itemType);
+        By locator = By.xpath(xpathStrTxtMsgMetaItem.apply(message,
+                xpathStrTemplateIdValue.apply(locatorId, expectedItemText)));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public void tapTxtMessageMetaItem(String message, String itemType) throws Exception {
+        String locatorId = getMessageMetaLocatorIdString(itemType);
+        By locator = By.xpath(xpathStrTxtMsgMetaItem.apply(message, xpathStrTemplateId.apply(locatorId)));
+        getElement(locator).click();
     }
     //endregion
 }
