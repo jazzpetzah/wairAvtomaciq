@@ -272,7 +272,7 @@ Feature: Edit Message
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap on text input
-    Then I see Myself username is presented in conversation view 1 time
+    Then I see Myself username exists in conversation view 1 time
     And I see message "<Message2>" is on 2 position in conversation view
     When I long tap "<Message2>" message in conversation view
     And I tap on Edit badge item
@@ -280,7 +280,7 @@ Feature: Edit Message
     And I type the "<EditMessage>" message
     And I tap Confirm button on Edit control
     Then I see message "<EditMessage>" is on 2 position in conversation view
-    And I see Myself username is presented in conversation view 2 times
+    And I see Myself username exists in conversation view 2 times
 
     Examples:
       | Name      | Contact   | Message1    | Message2    | Message3      | EditMessage    |

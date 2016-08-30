@@ -1442,9 +1442,9 @@ public class ConversationViewPageSteps {
      * @param nameAlias user name
      * @param count expected count user name is presented in conversation view
      * @throws Exception
-     * @step. ^I see (.*) username is presented in conversation view (\d+) times?
+     * @step. ^I see (.*) username exists in conversation view (\d+) times?
      */
-    @Then("^I see (.*) username is presented in conversation view (\\d+) times?$")
+    @Then("^I see (.*) username exists in conversation view (\\d+) times?$")
     public void ISeeUsernameIsPresentedInConversationXTimes(String nameAlias, int count) throws Exception {
         nameAlias = usrMgr.replaceAliasesOccurences(nameAlias, FindBy.NAME_ALIAS);
         int actualCount = getConversationViewPage().getCountOfUsernames(nameAlias);

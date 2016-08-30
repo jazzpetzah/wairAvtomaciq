@@ -228,8 +228,8 @@ public class ConversationViewPage extends IOSPage {
                     getDomainName(text).toLowerCase());
 
     private static final FunctionFor2Parameters<String, String, Integer> xpathMessageByTextAndIndex =
-            (messagetext, index) ->
-                    String.format("%s[%s]/UIATextView[@name='%s']", xpathStrAllEntries, index, messagetext);
+            (messageText, index) ->
+                    String.format("%s[%s]/UIATextView[@name='%s']", xpathStrAllEntries, index, messageText);
 
     private static final int MAX_APPEARANCE_TIME = 20;
 
@@ -1049,7 +1049,7 @@ public class ConversationViewPage extends IOSPage {
 
     public int getCountOfUsernames(String name) throws Exception {
         final By locator = By.xpath(xpathUserNameByText.apply(name));
-            return getElements(locator).size();
+        return getElements(locator).size();
     }
 
     public boolean isMessageByPositionDisplayed(String message, int position) throws Exception {
