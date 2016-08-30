@@ -1435,4 +1435,34 @@ public class ConversationViewPageSteps {
         Assert.assertTrue(String.format("Edit message control button '%s' should be %s", buttonName,
                 (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }
+
+    /**
+     * Verify that username is presented in conversation view X times
+     *
+     * @param nameAlias user name
+     * @param count expected count user name is presented in conversation view
+     * @throws Exception
+     * @step. ^I see (.*) username exists in conversation view (\d+) times?
+     */
+    @Then("^I see (.*) username exists in conversation view (\\d+) times?$")
+    public void ISeeUsernameIsPresentedInConversationXTimes(String nameAlias, int count) throws Exception {
+        nameAlias = usrMgr.replaceAliasesOccurences(nameAlias, FindBy.NAME_ALIAS);
+        int actualCount = getConversationViewPage().getCountOfUsernames(nameAlias);
+        Assert.assertEquals(String.format("Username %s should be presented in conversation view %s time(s) but it is " +
+                "presented %s time(s)", nameAlias, count, actualCount), count, actualCount);
+    }
+
+    /**
+     * Verify if pointed message is presented on relevant position in conversation view
+     *
+     * @param message message text to verify
+     * @param position expected index of message in conversation view (the last one message is index [1])
+     * @throws Exception
+     * @step. I see message "(.*)" is on (\d+) position in conversation view$
+     */
+    @Then("^I see message \"(.*)\" is on (\\d+) position in conversation view$")
+    public void ISeeMessageIsOnXPositionInConversation(String message, int position) throws Exception {
+        Assert.assertTrue(String.format("Message '%s' is not presented on %s position in conversation view", message, position),
+                getConversationViewPage().isMessageByPositionDisplayed(message, position));
+    }
 }
