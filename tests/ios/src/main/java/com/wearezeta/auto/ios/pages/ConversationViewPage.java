@@ -1004,7 +1004,7 @@ public class ConversationViewPage extends IOSPage {
             case "link preview":
                 return nameLinkPreviewSource;
             default:
-                throw new IllegalArgumentException(String.format("Unknown placeholder name '%s'", name));
+                throw new IllegalArgumentException(String.format("Unknown container name '%s'", name));
         }
     }
 
