@@ -47,9 +47,9 @@ public class ConversationViewPageSteps {
     @When("^I tap on text input$")
     public void WhenITapOnTextInput() throws Exception {
         getConversationViewPage().tapOnCursorInput();
-        if (CommonUtils.getIsSimulatorFromConfig(getClass()) && !getConversationViewPage().isKeyboardVisible()) {
-            IOSSimulatorHelper.toggleSoftwareKeyboard();
-        }
+//        if (CommonUtils.getIsSimulatorFromConfig(getClass()) && !getConversationViewPage().isKeyboardVisible()) {
+//            IOSSimulatorHelper.toggleSoftwareKeyboard();
+//        }
     }
 
     /**
@@ -1090,45 +1090,8 @@ public class ConversationViewPageSteps {
     @When("^I (long )?tap on " +
             "(image|media container|file transfer placeholder|audio message placeholder|video message|location map|link preview) " +
             "in conversation view$")
-    public void ITapAndHoldAudioMessagePlaceholder(String isLongTap, String conversationItem) throws Exception {
-        FunctionalInterfaces.RunnableWithException tapFunc;
-        switch (conversationItem) {
-            case "image":
-                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapImageToOpen :
-                        getConversationViewPage()::longTapImage;
-                break;
-            case "media container":
-                tapFunc = (isLongTap == null) ? getConversationViewPage()::startMediaContent :
-                        getConversationViewPage()::longTapMediaContainer;
-                break;
-            case "location map":
-                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapLocationContainer :
-                        getConversationViewPage()::longTapLocationContainer;
-                break;
-            case "file transfer placeholder":
-                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapFileTransferPlaceholder :
-                        getConversationViewPage()::longTapFileTransferPlaceholder;
-                break;
-            case "audio message placeholder":
-                tapFunc = (isLongTap == null) ? null : getConversationViewPage()::longTapAudioMessage;
-                break;
-            case "video message":
-                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapVideoMessage :
-                        getConversationViewPage()::longTapVideoMessage;
-                break;
-            case "link preview":
-                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapLocationContainer :
-                        getConversationViewPage()::longTapLinkPreviewContainer;
-                break;
-            default:
-                throw new IllegalArgumentException("Not known conversation item. Please use only items pointed in the step");
-        }
-        if (tapFunc == null) {
-            throw new IllegalArgumentException(
-                    String.format("Cannot perform%s tap on '%s' container, because it is not implemented",
-                            (isLongTap == null) ? "" : " long", conversationItem));
-        }
-        tapFunc.run();
+    public void ITapMessagePlaceholder(String isLongTap, String conversationItem) throws Exception {
+        getConversationViewPage().tapContainer(conversationItem, isLongTap != null);
     }
 
     /**
@@ -1440,7 +1403,7 @@ public class ConversationViewPageSteps {
      * Verify that username is presented in conversation view X times
      *
      * @param nameAlias user name
-     * @param count expected count user name is presented in conversation view
+     * @param count     expected count user name is presented in conversation view
      * @throws Exception
      * @step. ^I see (.*) username exists in conversation view (\d+) times?
      */
@@ -1455,7 +1418,7 @@ public class ConversationViewPageSteps {
     /**
      * Verify if pointed message is presented on relevant position in conversation view
      *
-     * @param message message text to verify
+     * @param message  message text to verify
      * @param position expected index of message in conversation view (the last one message is index [1])
      * @throws Exception
      * @step. I see message "(.*)" is on (\d+) position in conversation view$
@@ -1469,9 +1432,9 @@ public class ConversationViewPageSteps {
     /**
      * Tap in the center of the most recent message cell for the particular contact
      *
-     * @step. ^I tap on the recent message from (.*)
      * @param sender sender name/alias
      * @throws Exception
+     * @step. ^I tap on the recent message from (.*)
      */
     @When("^I tap on the recent message from (.*)")
     public void ITapRecentMessage(String sender) throws Exception {

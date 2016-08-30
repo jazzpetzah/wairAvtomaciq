@@ -26,7 +26,7 @@ Feature: Video Messaging
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    And I tap Video Message button from input tools
+    When I tap Video Message button from input tools
     Then I see video message container in the conversation view
 
     Examples:

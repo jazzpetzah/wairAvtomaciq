@@ -349,16 +349,6 @@ public class ConversationViewPage extends IOSPage {
         return 0;
     }
 
-    public void startMediaContent() throws Exception {
-        final Optional<WebElement> mediaLinkCell = getElementIfDisplayed(xpathMediaContainerCell, 3);
-        if (mediaLinkCell.isPresent()) {
-            mediaLinkCell.get().click();
-        } else {
-            final WebElement soundCloudButton = getElement(nameSoundCloudButton);
-            this.getDriver().tap(1, soundCloudButton.getLocation().x + 200, soundCloudButton.getLocation().y + 200, 1);
-        }
-    }
-
     public boolean scrollDownTillMediaBarAppears() throws Exception {
         final int maxScrolls = 2;
         int nTry = 0;
@@ -465,10 +455,6 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameTitle);
     }
 
-    public void tapImageToOpen() throws Exception {
-        getElement(xpathLastImageCell).click();
-    }
-
     public void tapHoldTextInput() throws Exception {
         final WebElement textInput = getElement(nameConversationInput);
         this.getDriver().tap(1, textInput, DriverUtils.LONG_TAP_DURATION);
@@ -535,10 +521,6 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isGiphyImageVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGiphyImage);
-    }
-
-    public void longTapImage() throws Exception {
-        this.getDriver().tap(1, getElement(xpathLastImageCell), DriverUtils.LONG_TAP_DURATION);
     }
 
     public boolean isUserAvatarNextToInputVisible() throws Exception {
@@ -773,14 +755,6 @@ public class ConversationViewPage extends IOSPage {
         DriverUtils.tapOnPercentOfElement(getDriver(), locator, 10, 50, tapDuration);
     }
 
-    public void longTapMediaContainer() throws Exception {
-        this.getDriver().tap(1, getElement(xpathMediaContainerCell), DriverUtils.LONG_TAP_DURATION);
-    }
-
-    public void longTapFileTransferPlaceholder() throws Exception {
-        this.getDriver().tap(1, getElement(nameFileTransferTopLabel), DriverUtils.LONG_TAP_DURATION);
-    }
-
     private WebElement locateCursorToolButton(By locator) throws Exception {
         final Optional<WebElement> toolButton = getElementIfDisplayed(locator, 3);
         if (toolButton.isPresent()) {
@@ -841,10 +815,6 @@ public class ConversationViewPage extends IOSPage {
                 .perform();
     }
 
-    public void longTapAudioMessage() throws Exception {
-        this.getDriver().tap(1, getElement(nameAudioActionButton), DriverUtils.LONG_TAP_DURATION);
-    }
-
     public void tapPlayAudioMessageButton(int placeholderIndex) throws Exception {
         final By locator = By.xpath(xpathStrAudioActionButtonByIndex.apply(placeholderIndex));
         getElement(locator).click();
@@ -852,18 +822,6 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapPlayAudioMessageButton() throws Exception {
         getElement(nameAudioActionButton).click();
-    }
-
-    public void longTapLocationContainer() throws Exception {
-        this.getDriver().tap(1, getElement(classNameShareLocationContainer), DriverUtils.LONG_TAP_DURATION);
-    }
-
-    public void tapLocationContainer() throws Exception {
-        getElement(classNameShareLocationContainer).click();
-    }
-
-    public void longTapLinkPreviewContainer() throws Exception {
-        this.getDriver().tap(1, getElement(nameLinkPreviewSource), DriverUtils.LONG_TAP_DURATION);
     }
 
     public BufferedImage getPlayAudioMessageButtonScreenshot(int placeholderIndex) throws Exception {
@@ -944,35 +902,6 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathDefaultMapApplication, 15);
     }
 
-    private By getContainerIdentifier(String name) {
-        switch (name.toLowerCase()) {
-            case "media":
-                return xpathMediaContainerCell;
-            case "video message":
-                return nameVideoMessageActionButton;
-            case "audio message recorder":
-                return nameAudioRecorderCancelButton;
-            case "audio message":
-                return nameAudioActionButton;
-            case "location map":
-                return classNameShareLocationContainer;
-            case "link preview":
-                return nameLinkPreviewSource;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown container %s", name));
-        }
-    }
-
-    public boolean isContainerVisible(String name) throws Exception {
-        final By locator = getContainerIdentifier(name);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, MAX_APPEARANCE_TIME);
-    }
-
-    public boolean isContainerInvisible(String name) throws Exception {
-        final By locator = getContainerIdentifier(name);
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
-    }
-
     public boolean isLinkPreviewImageVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameLinkPreviewImage);
     }
@@ -998,10 +927,6 @@ public class ConversationViewPage extends IOSPage {
     public boolean deleteMenuItemNotVisible(String name) throws Exception {
         final By locator = By.xpath(xpathStrActionSheetBtnByName.apply(name));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
-    }
-
-    public void longTapVideoMessage() throws Exception {
-        this.getDriver().tap(1, getElement(nameVideoMessageActionButton), DriverUtils.LONG_TAP_DURATION);
     }
 
     public boolean isDeletedOnLabelPresent(String name) throws Exception {
@@ -1033,10 +958,6 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public void tapVideoMessage() throws Exception {
-        getElement(nameVideoMessageActionButton).click();
-    }
-
     public boolean editControlButtonIsVisible(String name) throws Exception {
         final By locator = getEditControlByName(name);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
@@ -1060,5 +981,60 @@ public class ConversationViewPage extends IOSPage {
     public void tapRecentMessageFrom(String sender) throws Exception {
         final By locator = By.xpath(xpathUserNameByText.apply(sender));
         getElement(locator).click();
+    }
+
+    private By getContainerLocatorByName(String name) {
+        switch (name.toLowerCase()) {
+            case "image":
+                return xpathLastImageCell;
+            case "media container":
+            case "media":
+                return xpathMediaContainerCell;
+            case "location map":
+                return classNameShareLocationContainer;
+            case "file transfer placeholder":
+                return nameFileTransferBottomLabel;
+            case "audio message placeholder":
+            case "audio message":
+                return nameAudioActionButton;
+            case "audio message recorder":
+                return nameAudioRecorderCancelButton;
+            case "video message":
+                return nameVideoMessageActionButton;
+            case "link preview":
+                return nameLinkPreviewSource;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown container name '%s'", name));
+        }
+    }
+
+    public void tapContainer(String name, boolean isLongTap) throws Exception {
+        final By locator = getContainerLocatorByName(name);
+        WebElement dstElement;
+        if (locator.equals(xpathMediaContainerCell)) {
+            final Optional<WebElement> mediaLinkCell = getElementIfDisplayed(xpathMediaContainerCell, 3);
+            if (mediaLinkCell.isPresent()) {
+                dstElement = mediaLinkCell.get();
+            } else {
+                dstElement = getElement(nameSoundCloudButton);
+            }
+        } else {
+            dstElement = getElement(locator);
+        }
+        if (isLongTap) {
+            getDriver().tap(1, dstElement, DriverUtils.LONG_TAP_DURATION);
+        } else {
+            dstElement.click();
+        }
+    }
+
+    public boolean isContainerVisible(String name) throws Exception {
+        final By locator = getContainerLocatorByName(name);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, MAX_APPEARANCE_TIME);
+    }
+
+    public boolean isContainerInvisible(String name) throws Exception {
+        final By locator = getContainerLocatorByName(name);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 }
