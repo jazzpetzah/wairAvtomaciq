@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
@@ -45,5 +46,10 @@ public class CameraPage extends IOSPage {
             isTestImageUploaded = true;
         }
         getElement(getButtonByName(name)).click();
+    }
+
+    public boolean isButtonVisible(String name) throws Exception {
+        final By locator = getButtonByName(name);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 }

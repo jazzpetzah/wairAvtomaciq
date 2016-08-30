@@ -48,16 +48,15 @@ Feature: Registration
     And I tap Choose Own Picture button
     And I tap Take Photo button
     And I tap Take Photo button on Camera page
-    And I remember current screen state
     And I tap Confirm button on Picture preview page
     And I tap Share Contacts button on Share Contacts overlay
     And I tap settings gear button
     And I tap on personal screen
-    Then I verify that current screen similarity score is more than <Score> within <Timeout> seconds
+    Then I see Take Photo button on Camera page
 
     Examples:
-      | Name      | Score | Timeout |
-      | user1Name | 0.1   | 15      |
+      | Name      |
+      | user1Name |
 
   @C1009 @regression
   Scenario Outline: Verify registering new user with Arabic name
