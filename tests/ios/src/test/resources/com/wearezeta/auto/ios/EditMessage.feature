@@ -260,3 +260,28 @@ Feature: Edit Message
     Examples:
       | Name      | Contact   | VideoFileName | VideoMIMEType | DeviceName | AudioFileName | AudioMIMEType | Picture     |
       | user1Name | user2Name | testing.mp4   | video/mp4     | Device1    | test.m4a      | audio/mp4     | testing.jpg |
+
+  @C202355 @staging @fastLogin
+  Scenario Outline: Verify edited message has an additional name and avatar and save its position in the conversation
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given User Myself sends encrypted message "<Message1>" to user <Contact>
+    Given User Myself sends encrypted message "<Message2>" to user <Contact>
+    Given User Myself sends encrypted message "<Message3>" to user <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I tap on text input
+    Then I see Myself username exists in conversation view 1 time
+    And I see message "<Message2>" is on 2 position in conversation view
+    When I long tap "<Message2>" message in conversation view
+    And I tap on Edit badge item
+    And I clear conversation text input
+    And I type the "<EditMessage>" message
+    And I tap Confirm button on Edit control
+    Then I see message "<EditMessage>" is on 2 position in conversation view
+    And I see Myself username exists in conversation view 2 times
+
+    Examples:
+      | Name      | Contact   | Message1    | Message2    | Message3      | EditMessage    |
+      | user1Name | user2Name | message one | message two | message three | edited message |

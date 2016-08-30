@@ -227,6 +227,10 @@ public class ConversationViewPage extends IOSPage {
             String.format("//UIAStaticText[@name='linkPreviewSource' and @value='%s']",
                     getDomainName(text).toLowerCase());
 
+    private static final FunctionFor2Parameters<String, String, Integer> xpathMessageByTextAndIndex =
+            (messageText, index) ->
+                    String.format("%s[%s]/UIATextView[@name='%s']", xpathStrAllEntries, index, messageText);
+
     private static final int MAX_APPEARANCE_TIME = 20;
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
@@ -1053,5 +1057,15 @@ public class ConversationViewPage extends IOSPage {
     public boolean editControlButtonIsNotVisible(String name) throws Exception {
         final By locator = getEditControlByName(name);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public int getCountOfUsernames(String name) throws Exception {
+        final By locator = By.xpath(xpathUserNameByText.apply(name));
+        return getElements(locator).size();
+    }
+
+    public boolean isMessageByPositionDisplayed(String message, int position) throws Exception {
+        final By locator = By.xpath(xpathMessageByTextAndIndex.apply(message, position));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 }
