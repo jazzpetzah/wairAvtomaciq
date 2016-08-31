@@ -1453,6 +1453,44 @@ public class CommonIOSSteps {
         addressbookProvisioner.clearContacts();
     }
 
+    List<ABContact> contactsInAddressbook = new ArrayList<>();
+
+    /**
+     * Reads the list of contacts out of the Address Book
+     *
+     * @throws Exception
+     * @step. ^I read list of Contacts in Address Book$
+     */
+    @Given("^I read list of Contacts in Address Book$")
+    public void IReadListOfContactsInAddressbook() throws Exception {
+        contactsInAddressbook = addressbookProvisioner.getContacts();
+    }
+
+    List<List<ABContact>> conatctBatches = new ArrayList<>();
+    /**
+     * Separates the address book contacts list into number of chunks
+     *
+     * @param numberOfChunks number of chunks adressbook get divided into
+     * @throws Exception
+     * @step. ^I separate list of contacts into (\d+) chunks$
+     */
+    @Given("^I separate list of contacts into (\\d+) chunks$")
+    public void ISeparateListOfContactsIntoChunks(int numberOfChunks) throws Exception {
+        int sizeOfBatch = contactsInAddressbook.size()/numberOfChunks;
+        final int contactListSize = contactsInAddressbook.size();
+        for (int i = 0; i < contactListSize; i += sizeOfBatch) {
+            conatctBatches.add(contactsInAddressbook.subList(i, Math.min(contactListSize, i + sizeOfBatch)));
+        }
+    }
+
+    @Then("^I pick (\\d+) random contact of chunk (\\d+) to register at BE$")
+    public void IPickRandomContactOfChunkToRegisterAtBE(int numberContactsToRegister, int numberOfChunk)
+            throws Exception {
+        int randomNumber = new Random().nextInt(conatctBatches.get(numberOfChunk-1).size());
+        ABContact contactToRegister = conatctBatches.get(numberOfChunk-1).get(randomNumber);
+        //TODO: make out of that ABContact a user I can reg at the BE
+    }
+
     /**
      * Uploads name and phone number of contact to the simulator addressbook
      *
@@ -1483,6 +1521,13 @@ public class CommonIOSSteps {
         email = usrMgr.replaceAliasesOccurences(email, ClientUsersManager.FindBy.EMAIL_ALIAS);
         ABContact contact = new ABContact(name, Optional.of(Collections.singletonList(email)), Optional.empty());
         addressbookProvisioner.addContacts(Collections.singletonList(contact));
+    }
+
+
+    @Given("^I add all precreated users to Address Book$")
+    public void iAddAllPrecreatedUsersToAddressBook() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
     }
 
     private final Map<String, Object> savedCaps = new HashMap<>();
