@@ -5,6 +5,7 @@ import com.waz.provision.ActorMessage;
 import com.wearezeta.auto.common.backend.*;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.sync_engine_bridge.MessageReactionType;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.*;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -357,6 +358,28 @@ public final class CommonSteps {
         UserDeleteLatestMessage(msgFromUserNameAlias, dstConversationName, deviceName, isGroup, false);
     }
 
+    public void UserLikeLatestMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName)
+            throws Exception {
+        userReactLatestMessage(msgFromUserNameAlias, dstConversationName, deviceName, MessageReactionType.LIKE);
+    }
+
+    public void UserUnlikeLatestMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName)
+            throws Exception {
+        userReactLatestMessage(msgFromUserNameAlias, dstConversationName, deviceName, MessageReactionType.UNLIKE);
+    }
+
+    private void userReactLatestMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName,
+                                        MessageReactionType reactionType) throws Exception {
+        ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
+        dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+
+        String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
+        ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
+        ActorMessage.MessageInfo lastMessage = messageInfos[messageInfos.length - 1];
+
+        seBridge.reactMessage(user, dstConvId, lastMessage.id(), reactionType, deviceName);
+    }
+
     public void UserDeleteLatestMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName,
                                         boolean isGroup, boolean isDeleteEverywhere) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
@@ -604,7 +627,7 @@ public final class CommonSteps {
     }
 
     public void WaitUntilContactIsSuggestedInSearchResult(String searchByNameAlias,
-                                                    String contactAlias) throws Exception {
+                                                          String contactAlias) throws Exception {
         String query = usrMgr.replaceAliasesOccurences(contactAlias, FindBy.NAME_ALIAS);
         BackendAPIWrappers.waitUntilSuggestionFound(usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query,
                 1, true, BACKEND_SUGGESTIONS_SYNC_TIMEOUT);
