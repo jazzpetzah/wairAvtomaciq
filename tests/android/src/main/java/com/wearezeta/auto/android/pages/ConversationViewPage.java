@@ -1100,5 +1100,15 @@ public class ConversationViewPage extends AndroidPage {
         By locator = By.xpath(xpathStrTxtMsgMetaItem.apply(message, xpathStrTemplateId.apply(locatorId)));
         getElement(locator).click();
     }
+
+    public BufferedImage getTextMessageLikeButtonState(String message) throws Exception {
+        String relativeLocatorStr = xpathStrTemplateId.apply(strIdMessageMetaLikeButton);
+        By absoluteLocator = By.xpath(xpathStrTxtMsgMetaItem.apply(message, relativeLocatorStr));
+
+        return this.getElementScreenshot(getElement(absoluteLocator)).orElseThrow(
+                () -> new IllegalStateException(
+                        String.format("Cannot get a screenshot for like button under message '%s'", message))
+        );
+    }
     //endregion
 }
