@@ -2,6 +2,7 @@ Feature: Share Location
 
   @C150028 @rc @rc42 @regression
   Scenario Outline: Verify you can share your location
+    Given I am on Android with Google Location Service
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -18,6 +19,7 @@ Feature: Share Location
 
   @C150029 @rc @rc42 @regression
   Scenario Outline: Verify you can receive location sharing message
+    Given I am on Android with Google Location Service
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number

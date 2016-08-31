@@ -24,6 +24,7 @@ Feature: Analytics
 
   @C167026 @analytics @regression
   Scenario Outline: Verify media statistics is sent
+    Given I am on Android with Google Location Service
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number

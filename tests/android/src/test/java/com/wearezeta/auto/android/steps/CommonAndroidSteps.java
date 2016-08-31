@@ -1346,20 +1346,20 @@ public class CommonAndroidSteps {
      * User X react(like or unlike) the recent message in 1:1 conversation or group conversation
      *
      * @param userNameAlias User X's name or alias
-     * @param reactionType User X's reaction , could be like or unlike, be careful you should use like before unlike
-     * @param dstNameAlias the conversation which message is belong to
-     * @param deviceName User X's device
+     * @param reactionType  User X's reaction , could be like or unlike, be careful you should use like before unlike
+     * @param dstNameAlias  the conversation which message is belong to
+     * @param deviceName    User X's device
      * @throws Exception
      * @step. ^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$
      */
     @When("^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$")
     public void UserReactLastMessage(String userNameAlias, String reactionType, String dstNameAlias, String deviceName)
             throws Exception {
-        switch (reactionType.toLowerCase()){
-            case "likes" :
+        switch (reactionType.toLowerCase()) {
+            case "likes":
                 commonSteps.UserLikeLatestMessage(userNameAlias, dstNameAlias, deviceName);
                 break;
-            case "unlikes" :
+            case "unlikes":
                 commonSteps.UserUnlikeLatestMessage(userNameAlias, dstNameAlias, deviceName);
                 break;
             default:
@@ -1541,6 +1541,19 @@ public class CommonAndroidSteps {
     public void WireEnableDebugMode() throws Exception {
         if (!AndroidCommonUtils.isWireDebugModeEnabled()) {
             throw new PendingException("The current Wire build doesn't support debuggable mode");
+        }
+    }
+
+    /**
+     * Verify whether Android with Google Location Service, if not installed, it will throw a Pending Exception
+     *
+     * @throws Exception
+     * @step. ^I am on Android with Google Location Service$
+     */
+    @Given("^I am on Android with Google Location Service$")
+    public void IAmOnAndroidWithGoogleService() throws Exception {
+        if(!AndroidCommonUtils.verifyGoogleLocationServiceInstalled()) {
+            throw new PendingException("The current Android doesn't install Google Location Service");
         }
     }
 

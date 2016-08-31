@@ -308,6 +308,7 @@ Feature: Delete Message
 
   @C150030 @regression
   Scenario Outline: Verify you can delete Share Location placeholder from conversation view
+    Given I am on Android with Google Location Service
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
