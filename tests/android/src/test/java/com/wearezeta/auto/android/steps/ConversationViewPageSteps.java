@@ -1527,9 +1527,13 @@ public class ConversationViewPageSteps {
             " (with expected text \"(.*)\" )?under the Text message \"(.*)\"$")
     public void ISeeMessagMetaForText(String itemType, String hasExpectedMsg, String expectedMsg, String message)
             throws Exception {
-        boolean isVisible = (hasExpectedMsg == null)
-                ? getConversationViewPage().waitUntilTxtMessageMetaItemVisible(message, itemType)
-                : getConversationViewPage().waitUntilTxtMessageMetaItemVisible(message, itemType, expectedMsg);
+        boolean isVisible;
+        if (hasExpectedMsg == null) {
+            isVisible = getConversationViewPage().waitUntilTxtMessageMetaItemVisible(message, itemType);
+        } else {
+            expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
+            isVisible = getConversationViewPage().waitUntilTxtMessageMetaItemVisible(message, itemType, expectedMsg);
+        }
 
         Assert.assertTrue(
                 String.format("The %s should be visible under the message '%s'", itemType, message), isVisible);
