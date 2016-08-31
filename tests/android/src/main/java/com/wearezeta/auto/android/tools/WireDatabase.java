@@ -24,18 +24,18 @@ public class WireDatabase {
     private String dbFileName;
     private String packageName;
 
-    private final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> enableDbFile
+    private static final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> enableDbFile
             = (packageName, dbFile) -> String.format("shell \"run-as %s chmod 666 /data/data/%s/databases/%s\"",
             packageName, packageName, dbFile);
 
-    private final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> disableDbFile
+    private static final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> disableDbFile
             = (packageName, dbFile) -> String.format("shell \"run-as %s chmod 600 /data/data/%s/databases/%s\"",
             packageName, packageName, dbFile);
 
-    private final Function<String, String> guessDbFile = packageName
+    private static final Function<String, String> guessDbFile = packageName
             -> String.format("shell \"run-as %s ls /data/data/%s/databases/\"", packageName, packageName);
 
-    private final FunctionalInterfaces.FunctionFor3Parameters<String, String, String, String> copyRemoteDb
+    private static final FunctionalInterfaces.FunctionFor3Parameters<String, String, String, String> copyRemoteDb
             = (packageName, dbFile, outputDir)
             -> String.format("pull /data/data/%s/databases/%s %s", packageName, dbFile, outputDir);
 
@@ -105,7 +105,10 @@ public class WireDatabase {
      */
     private File syncDBWithLocalFS() throws Exception {
         File outputDir = Files.createTempDir();
-        for (String fileName : new String[]{dbFileName, SHM_FILENAME.apply(dbFileName), WAL_FILENAME.apply(dbFileName)}) {
+        for (String fileName : new String[]{
+                dbFileName,
+                SHM_FILENAME.apply(dbFileName),
+                WAL_FILENAME.apply(dbFileName)}) {
             AndroidCommonUtils.executeAdb(enableDbFile.apply(packageName, fileName));
             AndroidCommonUtils.executeAdb(copyRemoteDb.apply(packageName, fileName, outputDir.getAbsolutePath()));
             AndroidCommonUtils.executeAdb(disableDbFile.apply(packageName, fileName));
@@ -114,7 +117,8 @@ public class WireDatabase {
     }
 
     private Connection createConnection(String outputDirAbsolutePath) throws SQLException {
-        return DriverManager.getConnection(String.format("jdbc:sqlite:%s", Paths.get(outputDirAbsolutePath, dbFileName)));
+        return DriverManager.getConnection(String.format("jdbc:sqlite:%s",
+                Paths.get(outputDirAbsolutePath, dbFileName)));
     }
 
     private ResultSet getQueryResult(Connection conn, String queryTpl, Object... params) throws SQLException {
@@ -124,7 +128,7 @@ public class WireDatabase {
     }
 
     private Optional<String> guessDBFileName() throws Exception {
-        String fileList = AndroidCommonUtils.getAdbOutput(guessDbFile.apply(packageName));
+        final String fileList = AndroidCommonUtils.getAdbOutput(guessDbFile.apply(packageName));
 
         final Pattern p = Pattern.compile(SE_DB_FILENAME_PATTERN, Pattern.MULTILINE);
         final Matcher m = p.matcher(fileList);

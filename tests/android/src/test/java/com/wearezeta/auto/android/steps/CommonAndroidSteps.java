@@ -1539,12 +1539,8 @@ public class CommonAndroidSteps {
      */
     @Given("^Wire has Debug mode enabled$")
     public void WireEnableDebugMode() throws Exception {
-        String packageName = CommonUtils.getAndroidPackageFromConfig(CommonAndroidSteps.class);
-        String output = AndroidCommonUtils.getAdbOutput(String.format("shell run-as %s ls", packageName));
-        final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("not debuggable") + "\\b");
-        if (pattern.matcher(output).find()) {
-            throw new PendingException(String.format("The current Wire build doesn't support debuggable mode: %s",
-                    packageName));
+        if (!AndroidCommonUtils.isWireDebugModeEnabled()) {
+            throw new PendingException("The current Wire build doesn't support debuggable mode");
         }
     }
 

@@ -808,4 +808,11 @@ public class AndroidCommonUtils extends CommonUtils {
             throw new IllegalStateException("Wire appears to have crashed");
         }
     }
+
+    public static boolean isWireDebugModeEnabled() throws Exception {
+        final String packageName = CommonUtils.getAndroidPackageFromConfig(AndroidCommonUtils.class);
+        final String output = AndroidCommonUtils.getAdbOutput(String.format("shell run-as %s ls", packageName));
+        final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("not debuggable") + "\\b");
+        return !pattern.matcher(output).find();
+    }
 }
