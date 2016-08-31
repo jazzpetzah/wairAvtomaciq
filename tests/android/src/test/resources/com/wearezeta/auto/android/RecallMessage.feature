@@ -32,6 +32,26 @@ Feature: Recall Message
       | Name      | Contact1  | Message           | ContactDevice | MySecondDevice | Message2 |
       | user1Name | user2Name | DeleteTextMessage | Device2       | Device1        | Del2     |
 
+  @C225997 @staging
+  Scenario Outline: Verify the message deleted everywhere in local Wire database
+    Given Wire has Debug mode enabled
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When I type the message "<Text>" and send it
+    And I remember the state of the recent message from user <Contact> in the local database
+    And I long tap the Text message "<Text>" in the conversation view
+    And I tap Delete for everyone button on the message bottom menu
+    And I tap Delete button on the alert
+    Then I verify the remembered message has been deleted from the local database
+
+    Examples:
+      | Name      | Contact   | Text |
+      | user1Name | user2Name | Hi   |
+
   @C202327 @C202329 @regression @rc
   Scenario Outline: Verify I can delete my message everywhere (group) (myview and other view)
     Given There are 3 users where <Name> is me
