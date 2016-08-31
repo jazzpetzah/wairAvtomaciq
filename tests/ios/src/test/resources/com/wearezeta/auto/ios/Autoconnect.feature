@@ -1,6 +1,6 @@
 Feature: Autoconnect
 
-  @C2034 @staging @addressbookStart
+  @C2034 @regression @addressbookStart
   Scenario Outline: Verify autoconnect users by direct match phone numbers
     Given There are 2 users
     Given I quit Wire
@@ -25,7 +25,7 @@ Feature: Autoconnect
       | Contact1  | Contact2  | ContactPhone     | Contact2Phone    | Name      |
       | user1Name | user2Name | user1PhoneNumber | user2PhoneNumber | user3Name |
 
-  @C202304 @staging @addressbookStart
+  @C202304 @regression @addressbookStart
   Scenario Outline: Verify autoconnect users by direct match phone numbers - delayed
     Given There are 3 users where <Name> is me
     Given I quit Wire
@@ -47,7 +47,7 @@ Feature: Autoconnect
       | Contact1  | Contact2  | ContactPhone     | Contact2Phone    | Name      |
       | user3Name | user2Name | user3PhoneNumber | user2PhoneNumber | user1Name |
 
-  @C202303 @staging @addressbookStart
+  @C202303 @regression @addressbookStart
   Scenario Outline: Verify direct matching email - delayed
     Given There are 2 users where <Name> is me
     Given I quit Wire
@@ -67,7 +67,7 @@ Feature: Autoconnect
       | Contact   | ContactEmail | Name      |
       | user2Name | user2Email   | user1Name |
 
-  @C206254 @staging @addressbookStart
+  @C206254 @regression @addressbookStart
   Scenario Outline: Verify direct matching of emails
     Given There is 1 user
     Given I quit Wire
