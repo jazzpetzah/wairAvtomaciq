@@ -302,8 +302,6 @@ class Device extends RemoteEntity implements IDevice {
                         .SetMessageReaction(new RConvId(convId), messageId, action.getAction()));
             }
         }
-
-        new ActorMessage.SetMessageReaction(new RConvId(convId), messageId, action.getAction());
     }
 
     @Override
