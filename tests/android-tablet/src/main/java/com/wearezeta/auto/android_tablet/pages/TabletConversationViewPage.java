@@ -188,12 +188,14 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getConversationViewPage().tapTopToolbarTitle();
     }
 
+    // TODO: Refactoring Tap text message
     public void tapMessage(String msg) throws Exception {
-        getConversationViewPage().tapMessage(msg);
+        getConversationViewPage().tapMessage("text", msg, "tap");
     }
 
+    // TODO: Refactoring Tap text message
     public void longTapMessage(String msg) throws Exception {
-        getConversationViewPage().longTapMessage(msg);
+        getConversationViewPage().tapMessage("text", msg, "long tap");
     }
 
     //region Message Bottom Menu

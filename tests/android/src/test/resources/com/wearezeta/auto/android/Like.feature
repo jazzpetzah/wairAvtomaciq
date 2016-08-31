@@ -35,6 +35,27 @@ Feature: Like
       | Name      | Contact   | Txt |
       | user1Name | user2Name | Hi  |
 
+  @C226036 @staging
+  Scenario Outline: I can double tap on txt to like and unlike
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
+    And I type the message "<Txt>" and send it
+    And I double tap the Text message "<Txt>" in the conversation view
+    Then I see Like button under the Text message "<Txt>"
+    And I see Like description with expected text "<Name>" under the Text message "<Txt>"
+    When I remember the state of like button for Text message "<Txt>"
+    And I double tap the Text message "<Txt>" in the conversation view
+    Then I verify the state of like button item is changed
+    And I see Like description with expected text "<LikeDescription>" under the Text message "<Txt>"
+
+    Examples:
+      | Name      | Contact   | Txt | LikeDescription |
+      | user1Name | user2Name | Hi  | Sent            |
+
   @C226040 @C226033 @staging
   Scenario Outline: If message was liked by somebody - like icon is visible and liker name next to the like icon, and I could like it.
     Given There are 2 users where <Name> is me
