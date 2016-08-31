@@ -36,6 +36,8 @@ public class ConversationViewPageSteps {
     private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
     private static final int TOP_TOOLBAR_STATE_CHANGE_TIMEOUT = 15;
     private static final double TOP_TOOLBAR_MIN_SIMILARITY_SCORE = 0.97;
+    private static final int LIKE_BUTTON_CHANGE_TIMEOUT = 15;
+    private static final double LIKE_BUTTON_MIN_SIMILARITY_SCORE = 0.6;
     private static final double FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE = 0.4;
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -55,6 +57,8 @@ public class ConversationViewPageSteps {
             () -> getConversationViewPage().getAudioMessagePreviewSeekbarState());
     private final ElementState audiomessageSlideMicrophoneButtonState = new ElementState(
             () -> getConversationViewPage().getAudioMessagePreviewMicrophoneButtonState());
+    private ElementState messageLikeButtonState;
+
     private Boolean wasShieldVisible = null;
 
     private static String expandMessage(String message) {
@@ -601,6 +605,21 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Remember the state of like button for specified text message
+     *
+     * @param message Specified message
+     * @throws Exception
+     * @step. ^I remember the state of like button for Text message "(.*)"$
+     */
+    @When("^I remember the state of like button for Text message \"(.*)\"$")
+    public void IRememberLikeButtonForTextMessage(String message) throws Exception {
+        messageLikeButtonState = new ElementState(
+                () -> getConversationViewPage().getTextMessageLikeButtonState(message)
+        );
+        messageLikeButtonState.remember();
+    }
+
+    /**
      * Store the screenshot of current file placeholder action button
      *
      * @throws Exception
@@ -715,6 +734,18 @@ public class ConversationViewPageSteps {
     public void IVerifyStateOfUpperToolbarIsNotChanged() throws Exception {
         Assert.assertTrue("State of upper toolbar has changed",
                 topToolbarState.isNotChanged(TOP_TOOLBAR_STATE_CHANGE_TIMEOUT, TOP_TOOLBAR_MIN_SIMILARITY_SCORE));
+    }
+
+    /**
+     * Verify the current state of like button has been changed since the last snapshot was made
+     *
+     * @throws Exception
+     * @step. ^I verify the state of like button item is changed$
+     */
+    @Then("^I verify the state of like button item is changed$")
+    public void IVerifyStateOfLikeButtonChanged() throws Exception {
+        Assert.assertTrue("State of like button doesn't change",
+                messageLikeButtonState.isChanged(LIKE_BUTTON_CHANGE_TIMEOUT, LIKE_BUTTON_MIN_SIMILARITY_SCORE));
     }
 
     /**
