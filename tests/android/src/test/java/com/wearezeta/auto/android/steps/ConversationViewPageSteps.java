@@ -1137,32 +1137,10 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I (long )?tap the (Ping|Text) message "(.*)" in the conversation view
      */
-    @When("^I (long )?tap the (Ping|Text) message \"(.*)\" in the conversation view$")
-    public void ITapTheNonTextMessage(String isLongTap, String messageType, String message) throws Exception {
+    @When("^I (long tap|double tap|tap) the (Ping|Text) message \"(.*)\" in the conversation view$")
+    public void ITapTheNonTextMessage(String tapType, String messageType, String message) throws Exception {
         message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
-        if (isLongTap == null) {
-            switch (messageType.toLowerCase()) {
-                case "ping":
-                    getConversationViewPage().tapPingMessage(message);
-                    break;
-                case "text":
-                    getConversationViewPage().tapMessage(message);
-                    break;
-                default:
-                    throw new IllegalStateException(String.format("Cannot tap on %s message", messageType));
-            }
-        } else {
-            switch (messageType.toLowerCase()) {
-                case "ping":
-                    getConversationViewPage().longTapPingMessage(message);
-                    break;
-                case "text":
-                    getConversationViewPage().longTapMessage(message);
-                    break;
-                default:
-                    throw new IllegalStateException(String.format("Cannot long tap on %s message", messageType));
-            }
-        }
+        getConversationViewPage().tapMessage(messageType, message, tapType);
     }
 
     /**

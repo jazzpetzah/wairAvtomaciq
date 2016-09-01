@@ -866,16 +866,6 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public void longTapMessage(String msg) throws Exception {
-        final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
-        getDriver().longTap(getElement(locator), DriverUtils.LONG_TAP_DURATION);
-    }
-
-    public void tapMessage(String msg) throws Exception {
-        final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
-        getElement(locator).click();
-    }
-
     private By getContainerLocatorByName(String containerType) {
         switch (containerType.toLowerCase()) {
             case "youtube":
@@ -929,13 +919,32 @@ public class ConversationViewPage extends AndroidPage {
         }
     }
 
-    public void tapPingMessage(String message) throws Exception {
-        getElement(By.xpath(xpathStrPingMessageByText.apply(message))).click();
+    private By getTextLocatorByTextMessageType(String messageType, String message) {
+        switch (messageType.toLowerCase()) {
+            case "ping":
+                return By.xpath(xpathStrPingMessageByText.apply(message));
+            case "text":
+                return By.xpath(xpathStrConversationMessageByText.apply(message));
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify the type '%s'", messageType));
+        }
     }
 
-    public void longTapPingMessage(String message) throws Exception {
-        getDriver().longTap(getElement(By.xpath(xpathStrPingMessageByText.apply(message))),
-                DriverUtils.LONG_TAP_DURATION);
+    public void tapMessage(String messageType, String message, String tapType) throws Exception {
+        By locator = getTextLocatorByTextMessageType(messageType, message);
+        switch (tapType.toLowerCase()) {
+            case "tap":
+                getElement(locator).click();
+                break;
+            case "long tap":
+                getDriver().longTap(getElement(locator), DriverUtils.LONG_TAP_DURATION);
+                break;
+            case "double tap":
+                getDriver().doubleTap(getElement(locator));
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify the tap type '%s'", tapType));
+        }
     }
 
     public void longTapRecentImage() throws Exception {
