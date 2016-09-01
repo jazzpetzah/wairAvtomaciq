@@ -1509,23 +1509,27 @@ public class ConversationViewPageSteps {
         if(shouldNotSee == null) {
             boolean isVisible;
             if (hasExpectedMsg == null) {
+                expectedMsg = "*Any message*";
                 isVisible = getConversationViewPage().waitUntilTxtMessageMetaItemVisible(message, itemType);
             } else {
                 expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
                 isVisible = getConversationViewPage().waitUntilTxtMessageMetaItemVisible(message, itemType, expectedMsg);
             }
             Assert.assertTrue(
-                    String.format("The %s should be visible under the message '%s'", itemType, message), isVisible);
+                    String.format("The %s should be visible under the message '%s' with expected text '%s'",
+                            itemType, message, expectedMsg), isVisible);
         } else {
             boolean isInvisible;
             if (hasExpectedMsg == null) {
+                expectedMsg = "*Any message*";
                 isInvisible = getConversationViewPage().waitUntilTxtMessageMetaItemInvisible(message, itemType);
             } else {
                 expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
                 isInvisible = getConversationViewPage().waitUntilTxtMessageMetaItemInvisible(message, itemType, expectedMsg);
             }
             Assert.assertTrue(
-                    String.format("The %s should be invisible under the message '%s'", itemType, message), isInvisible);
+                    String.format("The %s should be invisible under the message '%s' with expected text '%s'",
+                            itemType, message, expectedMsg), isInvisible);
         }
     }
 

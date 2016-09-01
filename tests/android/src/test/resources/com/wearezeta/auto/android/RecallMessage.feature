@@ -364,8 +364,8 @@ Feature: Recall Message
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @C206265 @C206274 @regression
-  Scenario Outline: Verify deleted messages/edit message doesn't unarchive the "archived conversation"
+  @C206265 @C206274 @C226039 @regression
+  Scenario Outline: Verify like/unlike and deleted messages/edit message doesn't unarchive the "archived conversation"
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given Myself is connected to <Contact2>
@@ -374,14 +374,19 @@ Feature: Recall Message
     Given I accept First Time overlay as soon as it is visible
     Given User <Contact1> send encrypted message "<Message>" via device <ContactDevice> to user Myself
     Given I see Conversations list with conversations
-    When I swipe right on a <Contact1>
-    And I select ARCHIVE from conversation settings menu
-    And I do not see Conversations list with name <Contact1>
-    And User <Contact1> edits the recent message to "<NewMessage>" from user Myself via device <ContactDevice>
-    # C206274
+    Given I swipe right on a <Contact1>
+    Given I select ARCHIVE from conversation settings menu
+    Given I do not see Conversations list with name <Contact1>
+    # C226039
+    When User <Contact1> likes the recent message from user Myself via device <ContactDevice>
     Then I do not see Conversations list with name <Contact1>
-    When User <Contact1> deletes the recent message everywhere from user Myself via device <ContactDevice>
+    When User <Contact1> unlikes the recent message from user Myself via device <ContactDevice>
+    Then I do not see Conversations list with name <Contact1>
+    # C206274
+    When User <Contact1> edits the recent message to "<NewMessage>" from user Myself via device <ContactDevice>
+    Then I do not see Conversations list with name <Contact1>
     # C206265
+    When User <Contact1> deletes the recent message everywhere from user Myself via device <ContactDevice>
     Then I do not see Conversations list with name <Contact1>
 
     Examples:
