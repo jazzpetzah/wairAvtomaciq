@@ -1096,12 +1096,26 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
+    public boolean waitUntilTxtMessageMetaItemInvisible(String message, String itemType) throws Exception {
+        String locatorId = getMessageMetaLocatorIdString(itemType);
+        By locator = By.xpath(xpathStrTxtMsgMetaItem.apply(message, xpathStrTemplateId.apply(locatorId)));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
     public boolean waitUntilTxtMessageMetaItemVisible(String message, String itemType, String expectedItemText)
             throws Exception {
         String locatorId = getMessageMetaLocatorIdString(itemType);
         By locator = By.xpath(xpathStrTxtMsgMetaItem.apply(message,
                 xpathStrTemplateIdValue.apply(locatorId, expectedItemText)));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitUntilTxtMessageMetaItemInvisible(String message, String itemType, String expectedItemText)
+            throws Exception {
+        String locatorId = getMessageMetaLocatorIdString(itemType);
+        By locator = By.xpath(xpathStrTxtMsgMetaItem.apply(message,
+                xpathStrTemplateIdValue.apply(locatorId, expectedItemText)));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     public void tapTxtMessageMetaItem(String message, String itemType) throws Exception {

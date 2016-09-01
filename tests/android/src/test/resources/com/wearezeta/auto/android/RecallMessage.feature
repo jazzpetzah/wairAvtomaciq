@@ -297,8 +297,8 @@ Feature: Recall Message
       | Name      | Contact1  | ContactDevice |
       | user1Name | user2Name | Device1       |
 
-  @C206252 @regression
-  Scenario Outline: (AN-4394) Verify I cannot delete message everywhere when I was removed from group
+  @C206252 @C226046 @staging
+  Scenario Outline: (AN-4394) Verify I cannot delete message everywhere/like message when I was removed from group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -308,7 +308,9 @@ Feature: Recall Message
     When I tap on conversation name <GroupChatName>
     And I type the message "<Message>" and send it
     And <Contact1> removes Myself from group <GroupChatName>
-    And I long tap the Text message "<Message>" in the conversation view
+    And I tap the Text message "<Message>" in the conversation view
+    Then I do not see Like button under the Text message "<Message>"
+    When I long tap the Text message "<Message>" in the conversation view
     Then I do not see Delete for everyone button on the message bottom menu
 
     Examples:
