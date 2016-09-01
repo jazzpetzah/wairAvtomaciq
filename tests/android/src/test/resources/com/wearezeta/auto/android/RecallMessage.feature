@@ -158,6 +158,7 @@ Feature: Recall Message
 
   @C202335 @regression @rc
   Scenario Outline: Verify delete everywhere works for Share location
+    Given I am on Android with Google Location Service
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User <Contact> adds new device <ContactDevice>

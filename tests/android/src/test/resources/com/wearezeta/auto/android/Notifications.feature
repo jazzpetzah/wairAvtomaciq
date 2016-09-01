@@ -25,6 +25,7 @@ Feature: Notifications
 
   @C131187 @staging
   Scenario Outline: (CM-1071) Verify push notifications after receiving any type of message
+    Given I am on Android with Google Location Service
     Given I am on Android 4.4 or better
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

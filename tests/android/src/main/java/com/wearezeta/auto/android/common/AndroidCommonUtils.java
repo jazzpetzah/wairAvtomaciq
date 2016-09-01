@@ -815,4 +815,10 @@ public class AndroidCommonUtils extends CommonUtils {
         final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("not debuggable") + "\\b");
         return !pattern.matcher(output).find();
     }
+
+    public static boolean verifyGoogleLocationServiceInstalled() throws Exception {
+        String output = AndroidCommonUtils.getAdbOutput("shell 'pm list packages'");
+        final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("com.google.android.location") + "\\b");
+        return pattern.matcher(output).find();
+    }
 }
