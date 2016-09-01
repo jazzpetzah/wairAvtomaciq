@@ -15,6 +15,7 @@ import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -46,6 +47,7 @@ import org.openqa.selenium.safari.SafariOptions;
 public class Lifecycle {
 
     public static final int SAFARI_DRIVER_CREATION_RETRY = 3;
+    private final static List<LogEntry> BROWSER_LOG = new ArrayList<>();
     private TestContext context;
     private TestContext compatContext;
 
@@ -280,7 +282,8 @@ public class Lifecycle {
 
     @SuppressWarnings("unchecked")
     public static List<LogEntry> getBrowserLog(RemoteWebDriver driver) {
-        return IteratorUtils.toList((Iterator<LogEntry>) driver.manage().logs().get(LogType.BROWSER).iterator());
+        BROWSER_LOG.addAll(IteratorUtils.toList((Iterator<LogEntry>) driver.manage().logs().get(LogType.BROWSER).iterator()));
+        return BROWSER_LOG;
     }
 
     private static void setCustomChromeProfile(DesiredCapabilities capabilities)
