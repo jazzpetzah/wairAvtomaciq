@@ -223,7 +223,7 @@ public class ConversationViewPage extends AndroidPage {
     //region Message footer
     private static final Function<String, String> xpathStrTemplateId = id -> String.format("//*[@id='%s']", id);
     private static final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> xpathStrTemplateIdValue
-            = (id, value) -> String.format("//*[@id='%s' and @value='%s']", id, value);
+            = (id, value) -> String.format("//*[@id='%s' and contains(@value,'%s')]", id, value);
 
     private static final String strIdMessageMetaLikeButton = "gtv__footer__like__button";
     private static final String strIdMessageMetaLikeHint = "gtv__footer__like__hint_arrow";
