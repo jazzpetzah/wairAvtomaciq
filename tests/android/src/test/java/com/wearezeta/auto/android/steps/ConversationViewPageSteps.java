@@ -1492,29 +1492,41 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify I can see the Text msg meta item
+     * Verify I can see/cannot see the Text msg meta item
      *
+     * @param shouldNotSee
      * @param itemType       Message Meta Item type
      * @param hasExpectedMsg equals null means you don't specify the expceted content for item
      * @param expectedMsg    specified expected content for item
      * @param message        the related message you send or received
      * @throws Exception
-     * @step. ^I see (Like button|Like hint|Like description|Message status|First like avatar|Second like avatar) (with expected text "(.*)" )?under the Text message "(.*)"$
+     * @step. ^I (do not )?see (Like button|Like hint|Like description|Message status|First like avatar|Second like avatar) (with expected text "(.*)" )?under the Text message "(.*)"$
      */
-    @Then("^I see (Like button|Like hint|Like description|Message status|First like avatar|Second like avatar)" +
+    @Then("^I (do not )?see (Like button|Like hint|Like description|Message status|First like avatar|Second like avatar)" +
             " (with expected text \"(.*)\" )?under the Text message \"(.*)\"$")
-    public void ISeeMessagMetaForText(String itemType, String hasExpectedMsg, String expectedMsg, String message)
+    public void ISeeMessagMetaForText(String shouldNotSee, String itemType, String hasExpectedMsg, String expectedMsg, String message)
             throws Exception {
-        boolean isVisible;
-        if (hasExpectedMsg == null) {
-            isVisible = getConversationViewPage().waitUntilTxtMessageMetaItemVisible(message, itemType);
+        if(shouldNotSee == null) {
+            boolean isVisible;
+            if (hasExpectedMsg == null) {
+                isVisible = getConversationViewPage().waitUntilTxtMessageMetaItemVisible(message, itemType);
+            } else {
+                expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
+                isVisible = getConversationViewPage().waitUntilTxtMessageMetaItemVisible(message, itemType, expectedMsg);
+            }
+            Assert.assertTrue(
+                    String.format("The %s should be visible under the message '%s'", itemType, message), isVisible);
         } else {
-            expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
-            isVisible = getConversationViewPage().waitUntilTxtMessageMetaItemVisible(message, itemType, expectedMsg);
+            boolean isInvisible;
+            if (hasExpectedMsg == null) {
+                isInvisible = getConversationViewPage().waitUntilTxtMessageMetaItemInvisible(message, itemType);
+            } else {
+                expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
+                isInvisible = getConversationViewPage().waitUntilTxtMessageMetaItemInvisible(message, itemType, expectedMsg);
+            }
+            Assert.assertTrue(
+                    String.format("The %s should be invisible under the message '%s'", itemType, message), isInvisible);
         }
-
-        Assert.assertTrue(
-                String.format("The %s should be visible under the message '%s'", itemType, message), isVisible);
     }
 
     /**
