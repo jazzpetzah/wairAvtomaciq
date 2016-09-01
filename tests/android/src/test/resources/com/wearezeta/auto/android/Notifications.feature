@@ -84,3 +84,23 @@ Feature: Notifications
     Examples:
       | Name      | Contact   | Message |
       | user1Name | user2Name | hello   |
+
+  @C226044 @staging
+  Scenario Outline: When somebody likes my message - I receive notification (app in background)
+    Given I am on Android 4.4 or better
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds new devices <ContactDevice>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When I type the message "<Message>" and send it
+    And I minimize the application
+    And User <Contact> likes the recent message from user Myself via device <ContactDevice>
+# TODO: No spec for exact notification message for Android
+    Then I see the message "<Notification>" in push notifications list
+
+    Examples:
+      | Name      | Contact   | Message | ContactDevice | Notification |
+      | user1Name | user2Name | Hi      | Device1       | like message |

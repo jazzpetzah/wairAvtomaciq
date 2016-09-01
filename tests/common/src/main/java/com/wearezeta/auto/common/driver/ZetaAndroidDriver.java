@@ -169,6 +169,11 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
         this.swipe(x, y, x, y, durationMilliseconds);
     }
 
+    public void doubleTap(WebElement el) {
+        final TouchActions ta = new TouchActions(this);
+        ta.doubleTap(el).perform();
+    }
+
     public DefaultArtifactVersion getOSVersion() {
         return new DefaultArtifactVersion(this.androidOSVersion);
     }

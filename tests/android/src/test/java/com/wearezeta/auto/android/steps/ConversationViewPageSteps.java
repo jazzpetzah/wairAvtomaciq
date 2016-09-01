@@ -36,6 +36,8 @@ public class ConversationViewPageSteps {
     private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
     private static final int TOP_TOOLBAR_STATE_CHANGE_TIMEOUT = 15;
     private static final double TOP_TOOLBAR_MIN_SIMILARITY_SCORE = 0.97;
+    private static final int LIKE_BUTTON_CHANGE_TIMEOUT = 15;
+    private static final double LIKE_BUTTON_MIN_SIMILARITY_SCORE = 0.6;
     private static final double FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE = 0.4;
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -55,6 +57,8 @@ public class ConversationViewPageSteps {
             () -> getConversationViewPage().getAudioMessagePreviewSeekbarState());
     private final ElementState audiomessageSlideMicrophoneButtonState = new ElementState(
             () -> getConversationViewPage().getAudioMessagePreviewMicrophoneButtonState());
+    private ElementState messageLikeButtonState;
+
     private Boolean wasShieldVisible = null;
 
     private static String expandMessage(String message) {
@@ -601,6 +605,21 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Remember the state of like button for specified text message
+     *
+     * @param message Specified message
+     * @throws Exception
+     * @step. ^I remember the state of like button for Text message "(.*)"$
+     */
+    @When("^I remember the state of like button for Text message \"(.*)\"$")
+    public void IRememberLikeButtonForTextMessage(String message) throws Exception {
+        messageLikeButtonState = new ElementState(
+                () -> getConversationViewPage().getTextMessageLikeButtonState(message)
+        );
+        messageLikeButtonState.remember();
+    }
+
+    /**
      * Store the screenshot of current file placeholder action button
      *
      * @throws Exception
@@ -715,6 +734,18 @@ public class ConversationViewPageSteps {
     public void IVerifyStateOfUpperToolbarIsNotChanged() throws Exception {
         Assert.assertTrue("State of upper toolbar has changed",
                 topToolbarState.isNotChanged(TOP_TOOLBAR_STATE_CHANGE_TIMEOUT, TOP_TOOLBAR_MIN_SIMILARITY_SCORE));
+    }
+
+    /**
+     * Verify the current state of like button has been changed since the last snapshot was made
+     *
+     * @throws Exception
+     * @step. ^I verify the state of like button item is changed$
+     */
+    @Then("^I verify the state of like button item is changed$")
+    public void IVerifyStateOfLikeButtonChanged() throws Exception {
+        Assert.assertTrue("State of like button doesn't change",
+                messageLikeButtonState.isChanged(LIKE_BUTTON_CHANGE_TIMEOUT, LIKE_BUTTON_MIN_SIMILARITY_SCORE));
     }
 
     /**
@@ -1074,9 +1105,9 @@ public class ConversationViewPageSteps {
      *
      * @param name one of possible message bottom menu button name
      * @throws Exception
-     * @step. ^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit) button on the message bottom menu$
+     * @step. ^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike) button on the message bottom menu$
      */
-    @Then("^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit) button on the message bottom menu$")
+    @Then("^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike) button on the message bottom menu$")
     public void ISeeMessageBottomMenuButton(String shouldNotSee, String name) throws Exception {
         final boolean condition = (shouldNotSee == null) ?
                 getConversationViewPage().waitUntilMessageBottomMenuButtonVisible(name) :
@@ -1106,32 +1137,10 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I (long )?tap the (Ping|Text) message "(.*)" in the conversation view
      */
-    @When("^I (long )?tap the (Ping|Text) message \"(.*)\" in the conversation view$")
-    public void ITapTheNonTextMessage(String isLongTap, String messageType, String message) throws Exception {
+    @When("^I (long tap|double tap|tap) the (Ping|Text) message \"(.*)\" in the conversation view$")
+    public void ITapTheNonTextMessage(String tapType, String messageType, String message) throws Exception {
         message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
-        if (isLongTap == null) {
-            switch (messageType.toLowerCase()) {
-                case "ping":
-                    getConversationViewPage().tapPingMessage(message);
-                    break;
-                case "text":
-                    getConversationViewPage().tapMessage(message);
-                    break;
-                default:
-                    throw new IllegalStateException(String.format("Cannot tap on %s message", messageType));
-            }
-        } else {
-            switch (messageType.toLowerCase()) {
-                case "ping":
-                    getConversationViewPage().longTapPingMessage(message);
-                    break;
-                case "text":
-                    getConversationViewPage().longTapMessage(message);
-                    break;
-                default:
-                    throw new IllegalStateException(String.format("Cannot long tap on %s message", messageType));
-            }
-        }
+        getConversationViewPage().tapMessage(messageType, message, tapType);
     }
 
     /**
@@ -1480,5 +1489,46 @@ public class ConversationViewPageSteps {
             Assert.assertTrue(String.format("The message separator of user %s should be invisible", name),
                     getConversationViewPage().waitUntilMessageSeparatorInvisible(name, timeOutSeconds));
         }
+    }
+
+    /**
+     * Verify I can see the Text msg meta item
+     *
+     * @param itemType       Message Meta Item type
+     * @param hasExpectedMsg equals null means you don't specify the expceted content for item
+     * @param expectedMsg    specified expected content for item
+     * @param message        the related message you send or received
+     * @throws Exception
+     * @step. ^I see (Like button|Like hint|Like description|Message status|First like avatar|Second like avatar) (with expected text "(.*)" )?under the Text message "(.*)"$
+     */
+    @Then("^I see (Like button|Like hint|Like description|Message status|First like avatar|Second like avatar)" +
+            " (with expected text \"(.*)\" )?under the Text message \"(.*)\"$")
+    public void ISeeMessagMetaForText(String itemType, String hasExpectedMsg, String expectedMsg, String message)
+            throws Exception {
+        boolean isVisible;
+        if (hasExpectedMsg == null) {
+            isVisible = getConversationViewPage().waitUntilTxtMessageMetaItemVisible(message, itemType);
+        } else {
+            expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
+            isVisible = getConversationViewPage().waitUntilTxtMessageMetaItemVisible(message, itemType, expectedMsg);
+        }
+
+        Assert.assertTrue(
+                String.format("The %s should be visible under the message '%s'", itemType, message), isVisible);
+    }
+
+    /**
+     * Tap on Text msg meta item
+     *
+     * @param itemType Message Meta Item type
+     * @param message  Related text message
+     * @throws Exception
+     * @step. ^I tap (Like button|Like hint|Like description|Message status|First like avatar|Second like avatar) under the Text message "(.*)"$
+     */
+    @When("^I tap (Like button|Like hint|Like description|Message status|First like avatar|Second like avatar)" +
+            " under the Text message \"(.*)\"$")
+    public void ITapMessageMetaForText(String itemType, String message)
+            throws Exception {
+        getConversationViewPage().tapTxtMessageMetaItem(message, itemType);
     }
 }
