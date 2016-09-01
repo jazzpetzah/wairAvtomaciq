@@ -17,6 +17,8 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
+import com.wearezeta.auto.common.usrmgmt.RegistrationStrategy;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
 import com.wearezeta.auto.ios.tools.*;
 import com.wearezeta.auto.ios.tools.ABProvisioner.ABContact;
@@ -1477,9 +1479,9 @@ public class CommonIOSSteps {
     @Given("^I separate list of contacts into (\\d+) chunks$")
     public void ISeparateListOfContactsIntoChunks(int numberOfChunks) throws Exception {
         int sizeOfBatch = contactsInAddressbook.size()/numberOfChunks;
-        final int contactListSize = contactsInAddressbook.size();
-        for (int i = 0; i < contactListSize; i += sizeOfBatch) {
-            conatctBatches.add(contactsInAddressbook.subList(i, Math.min(contactListSize, i + sizeOfBatch)));
+        //final int contactListSize = contactsInAddressbook.size();
+        for (int i = 0; i < contactsInAddressbook.size(); i += sizeOfBatch) {
+            conatctBatches.add(contactsInAddressbook.subList(i, Math.min(i + sizeOfBatch, contactsInAddressbook.size())));
         }
     }
 
@@ -1488,7 +1490,8 @@ public class CommonIOSSteps {
             throws Exception {
         int randomNumber = new Random().nextInt(conatctBatches.get(numberOfChunk-1).size());
         ABContact contactToRegister = conatctBatches.get(numberOfChunk-1).get(randomNumber);
-        //TODO: make out of that ABContact a user I can reg at the BE
+        ClientUser userToRegsiter = usrMgr.findUserByNameOrNameAlias(contactToRegister.name);
+        usrMgr.createSpecificUsersOnBackend(Collections.singletonList(userToRegsiter), RegistrationStrategy.ByPhoneNumberOnly);
     }
 
     /**
@@ -1524,10 +1527,15 @@ public class CommonIOSSteps {
     }
 
 
-    @Given("^I add all precreated users to Address Book$")
-    public void iAddAllPrecreatedUsersToAddressBook() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    @Given("^I add all pre created users to Address Book$")
+    public void iAddAllPrecreatedUsersToAddressBook() throws Exception {
+        for (int i = 2; i <= usrMgr.MAX_USERS; i++){
+            ClientUser user = usrMgr.findUserByNameOrNameAlias(String.format("user%sName",i));
+            String name = user.getName();
+            String phoneNumber = user.getPhoneNumber().toString();
+            ABContact contact = new ABContact(name, Optional.empty(), Optional.of(Collections.singletonList(phoneNumber)));
+            addressbookProvisioner.addContacts(Collections.singletonList(contact));
+        }
     }
 
     private final Map<String, Object> savedCaps = new HashMap<>();

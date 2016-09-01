@@ -41,7 +41,7 @@ public class ClientUsersManager {
             .format("user%dEmail", idx);
     public static final Function<Integer, String> PHONE_NUMBER_ALIAS_TEMPLATE = idx -> String
             .format("user%dPhoneNumber", idx);
-    private static final int MAX_USERS = 3001;
+    public static final int MAX_USERS = 3001;
 
     private static final Logger log = ZetaLogger.getLog(ClientUsersManager.class.getSimpleName());
 
@@ -346,6 +346,14 @@ public class ClientUsersManager {
         }
         this.resetClientsList(MAX_USERS);
         generateUsers(syncCreatedState(countToCreate), strategy);
+    }
+
+    public void createSpecificUsersOnBackend(List<ClientUser> usersToCreate,
+                                             final RegistrationStrategy strategy) throws Exception {
+        for (ClientUser user : usersToCreate){
+            appendCustomUser(user);
+            generateUsers(Collections.singletonList(user), strategy);
+        }
     }
 
     public void createAndAppendUsers(int countToAppend, RegistrationStrategy strategy) throws Exception {
