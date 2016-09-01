@@ -25,25 +25,28 @@ Feature: Like
       | Name      | Contact   | Txt | MessageStatus |
       | user1Name | user2Name | Hi  | Delivered     |
 
-  @C226018 @C226020 @C226034 @staging
+  #TODO : Merge all those TR test into one
+  @C226018 @C226020 @C226034 @C226037 @staging
   Scenario Outline: I can unlike/like message by tap on like icon & I can like text message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    When I tap on conversation name <Contact>
-    And I type the message "<Txt>" and send it
-    And I tap the Text message "<Txt>" in the conversation view
-    And I remember the state of like button for Text message "<Txt>"
+    Given I tap on conversation name <Contact>
+    Given I type the message "<Txt>" and send it
+    # C226037
+    When I tap the Text message "<Txt>" in the conversation view
+    Then I see Like hint with expected text "Tap to like" under the Text message "<Txt>"
     # C226018
+    When I remember the state of like button for Text message "<Txt>"
     Then I see Like button under the Text message "<Txt>"
-    When I tap Like button under the Text message "<Txt>"
     # C226020
+    When I tap Like button under the Text message "<Txt>"
     Then I verify the state of like button item is changed
+    # C226034
     When I remember the state of like button for Text message "<Txt>"
     And I tap Like button under the Text message "<Txt>"
-    # C226034
     Then I verify the state of like button item is changed
     And I see Message status with expected text "<MessageStatus>" under the Text message "<Txt>"
 
