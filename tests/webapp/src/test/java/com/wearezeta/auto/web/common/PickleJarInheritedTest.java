@@ -15,6 +15,9 @@ import com.wire.picklejar.gherkin.model.Step;
 import cucumber.api.PendingException;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -23,10 +26,12 @@ import org.junit.Test;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.logging.LogEntry;
 
 @RunWith(Parameterized.class)
 public class PickleJarInheritedTest extends PickleJarTest {
 
+    private final int MAX_LOG_TAIL_SIZE = 20;
     private Lifecycle lifecycle;
 
     @Parameters(name = "{0}: {1} {2}")
@@ -76,12 +81,13 @@ public class PickleJarInheritedTest extends PickleJarTest {
                 if (ex instanceof StepNotExecutableException) {
                     execTime = ((StepNotExecutableException) e).getExecutionTime();
                     ex = PickleExecutor.getLastCause(e);
-                } 
-                if(ex instanceof PendingException){
+                }
+                if (ex instanceof PendingException) {
                     setResult(reportStep, new Result(execTime, SKIPPED, PickleExecutor.getThrowableStacktraceString(ex)));
                     break;
                 }
-                setResult(reportStep, new Result(execTime, FAILED, PickleExecutor.getThrowableStacktraceString(ex)));
+                setResult(reportStep, new Result(execTime, FAILED,
+                        PickleExecutor.getThrowableStacktraceString(ex) + "\n" + tailBrowserLog(MAX_LOG_TAIL_SIZE)));
             }
             try {
                 byte[] screenshot = lifecycle.getContext().getDriver().getScreenshotAs(OutputType.BYTES);
@@ -110,6 +116,16 @@ public class PickleJarInheritedTest extends PickleJarTest {
     private void setResult(Step reportStep, Result result) {
         LOG.info("\n::          {}", result.getStatus().toUpperCase());
         reportStep.setResult(result);
+    }
+
+    private String tailBrowserLog(int maxLogTailSize) throws InterruptedException, ExecutionException, TimeoutException {
+        List<LogEntry> browserLog = Lifecycle.getBrowserLog(lifecycle.getContext().getDriver());
+        if (browserLog.size() >= maxLogTailSize) {
+            browserLog = browserLog.subList(browserLog.size() - maxLogTailSize, browserLog.size());
+        }
+        return browserLog.stream()
+                .map((l) -> l.getMessage().replaceAll("^.*z\\.", "z\\."))
+                .collect(Collectors.joining("\n"));
     }
 
 }
