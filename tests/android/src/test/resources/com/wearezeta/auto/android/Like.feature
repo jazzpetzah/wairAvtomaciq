@@ -75,7 +75,7 @@ Feature: Like
       | Name      | Contact   | Txt | MessageStatus |
       | user1Name | user2Name | Hi  | Delivered     |
 
-  @C226040 @C226033 @staging
+  @C226040 @C226033 @C226043 @staging
   Scenario Outline: If message was liked by somebody - like icon is visible and liker name next to the like icon, and I could like it.
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -93,6 +93,7 @@ Feature: Like
     And I tap Like button under the Text message "<Message>"
     # C226033
     Then I verify the state of like button item is changed
+    # C226043
     And I see Like description with expected text "<Name>, <Contact>" under the Text message "<Message>"
 
     Examples:
@@ -196,3 +197,29 @@ Feature: Like
     Examples:
       | Name      | Contact   | Message | Device  |
       | user1Name | user2Name | Yo      | Device1 |
+
+  @C226041 @staging
+  Scenario Outline: I see likers count instead of names (example: 5 People)
+    Given There are 5 users where <Name> is me
+    Given <Contact1> is connected to Myself,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact1> has group chat <Group> with Myself,<Contact2>,<Contact3>,<Contact4>
+    Given User <Contact1> adds new device <D1>
+    Given User <Contact2> adds new device <D2>
+    Given User <Contact3> adds new device <D3>
+    Given User <Contact4> adds new device <D4>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Group>
+    Given I type the message "<Message>" and send it
+    When User <Contact1> likes the recent message from group conversation <Group> via device <D1>
+    And User <Contact2> likes the recent message from group conversation <Group> via device <D2>
+    And User <Contact3> likes the recent message from group conversation <Group> via device <D3>
+    And User <Contact4> likes the recent message from group conversation <Group> via device <D4>
+    Then I see Like description with expected text "4 people" under the Text message "<Message>"
+    And I see First like avatar under the Text message "<Message>"
+    And I see Second like avatar under the Text message "<Message>"
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Group     | Message | D1 | D2 | D3 | D4 |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | LikeGroup | Hi      | D1 | D2 | D3 | D4 |
