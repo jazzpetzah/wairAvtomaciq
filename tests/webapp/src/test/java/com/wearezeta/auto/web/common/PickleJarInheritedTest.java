@@ -119,7 +119,7 @@ public class PickleJarInheritedTest extends PickleJarTest {
     }
 
     private String tailBrowserLog(int maxLogTailSize) throws InterruptedException, ExecutionException, TimeoutException {
-        List<LogEntry> browserLog = Lifecycle.getBrowserLog(lifecycle.getContext().getDriver());
+        List<LogEntry> browserLog = lifecycle.getContext().getBrowserLog();
         if (browserLog.size() >= maxLogTailSize) {
             browserLog = browserLog.subList(browserLog.size() - maxLogTailSize, browserLog.size());
         }

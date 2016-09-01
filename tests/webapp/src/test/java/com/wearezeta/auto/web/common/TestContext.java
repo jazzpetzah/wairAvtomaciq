@@ -8,11 +8,17 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import org.apache.commons.collections.IteratorUtils;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class TestContext {
@@ -21,6 +27,7 @@ public class TestContext {
     
     // IDLE_TIMEOUT 90s https://www.browserstack.com/automate/timeouts
     private static final long DRIVER_INIT_TIMEOUT = 360; //seconds
+    private final List<LogEntry> BROWSER_LOG = new ArrayList<>();
     
     static Future<ZetaWebAppDriver> COMPAT_WEB_DRIVER;
 
@@ -108,6 +115,12 @@ public class TestContext {
     }
     public void stopPinging() {
         pinger.stopPinging();
+    }
+    
+    @SuppressWarnings("unchecked")
+    public List<LogEntry> getBrowserLog() throws InterruptedException, ExecutionException, TimeoutException {
+        BROWSER_LOG.addAll(IteratorUtils.toList((Iterator<LogEntry>) getDriver().manage().logs().get(LogType.BROWSER).iterator()));
+        return BROWSER_LOG;
     }
     
 }

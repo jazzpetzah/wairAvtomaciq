@@ -13,7 +13,6 @@ import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.Message;
-import com.wearezeta.auto.web.common.Lifecycle;
 
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
@@ -807,7 +806,7 @@ public class CommonWebAppSteps {
             try {
                 if (WebAppExecutionContext.getBrowser()
                         .isSupportingConsoleLogManagement()) {
-                    List<LogEntry> browserLog = Lifecycle.getBrowserLog(context.getDriver());
+                    List<LogEntry> browserLog = context.getBrowserLog();
 
                     StringBuilder bLog = new StringBuilder("\n");
                     browserLog.stream().forEach(
