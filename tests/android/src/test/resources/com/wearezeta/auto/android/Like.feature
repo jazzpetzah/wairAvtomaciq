@@ -19,11 +19,11 @@ Feature: Like
     And I tap Unlike button on the message bottom menu
     # C226035
     Then I verify the state of like button item is changed
-    And I see Like description with expected text "<LikeDescription>" under the Text message "<Txt>"
+    And I see Message status with expected text "<MessageStatus>" under the Text message "<Txt>"
 
     Examples:
-      | Name      | Contact   | Txt | LikeDescription |
-      | user1Name | user2Name | Hi  | Delivered       |
+      | Name      | Contact   | Txt | MessageStatus |
+      | user1Name | user2Name | Hi  | Delivered     |
 
   @C226018 @C226020 @C226034 @staging
   Scenario Outline: I can unlike/like message by tap on like icon & I can like text message
@@ -45,11 +45,11 @@ Feature: Like
     And I tap Like button under the Text message "<Txt>"
     # C226034
     Then I verify the state of like button item is changed
-    And I see Like description with expected text "<LikeDescription>" under the Text message "<Txt>"
+    And I see Message status with expected text "<MessageStatus>" under the Text message "<Txt>"
 
     Examples:
-      | Name      | Contact   | Txt | LikeDescription |
-      | user1Name | user2Name | Hi  | Delivered       |
+      | Name      | Contact   | Txt | MessageStatus |
+      | user1Name | user2Name | Hi  | Delivered     |
 
   @C226036 @staging
   Scenario Outline: I can double tap on txt to like and unlike
@@ -66,11 +66,11 @@ Feature: Like
     When I remember the state of like button for Text message "<Txt>"
     And I double tap the Text message "<Txt>" in the conversation view
     Then I verify the state of like button item is changed
-    And I see Like description with expected text "<LikeDescription>" under the Text message "<Txt>"
+    And I see Message status with expected text "<MessageStatus>" under the Text message "<Txt>"
 
     Examples:
-      | Name      | Contact   | Txt | LikeDescription |
-      | user1Name | user2Name | Hi  | Sent            |
+      | Name      | Contact   | Txt | MessageStatus |
+      | user1Name | user2Name | Hi  | Delivered     |
 
   @C226040 @C226033 @staging
   Scenario Outline: If message was liked by somebody - like icon is visible and liker name next to the like icon, and I could like it.
@@ -95,3 +95,27 @@ Feature: Like
     Examples:
       | Name      | Contact   | Message | ContactDevice |
       | user1Name | user2Name | Hi      | Device1       |
+
+  @C226045 @staging
+  Scenario Outline: Likes should be reset if I edited message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User Myself adds new device <Device>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
+    And I type the message "<Message>" and send it
+    And I tap the Text message "<Message>" in the conversation view
+    And I tap Like button under the Text message "<Message>"
+    And I remember the state of like button for Text message "<Message>"
+    Then I see Like description with expected text "<Name>" under the Text message "<Message>"
+    When User Myself edits the recent message to "<NewMessage>" from user <Contact1> via device <Device>
+    Then I see the message "<NewMessage>" in the conversation view
+    And I see Message status with expected text "<MessageStatus>" under the Text message "<NewMessage>"
+    When I tap the Text message "<NewMessage>" in the conversation view
+    Then I verify the state of like button item is changed
+
+    Examples:
+      | Name      | Contact1  | Message | Device  | NewMessage | MessageStatus |
+      | user1Name | user2Name | Yo      | Device1 | Hello      | Delivered     |
