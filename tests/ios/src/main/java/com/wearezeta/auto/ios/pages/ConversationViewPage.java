@@ -86,7 +86,7 @@ public class ConversationViewPage extends IOSPage {
             .xpath(xpathStrAllTextMessages + "[@name='via giphy.com']/following::UIATableCell[@name='ImageCell']");
 
     private static final By xpathLastMessageResendButton =
-            By.xpath(xpathStrAllTextMessages + "[1]/parent::*/UIAButton");
+            By.xpath(xpathStrAllTextMessages + "[1]/parent::*/UIAElement");
 
     private static final By namePlayButton = MobileBy.AccessibilityId("mediaBarPlayButton");
 
