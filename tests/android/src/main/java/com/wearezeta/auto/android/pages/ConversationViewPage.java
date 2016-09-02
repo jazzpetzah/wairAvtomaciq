@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -24,66 +26,88 @@ import org.openqa.selenium.interactions.touch.TouchActions;
 public class ConversationViewPage extends AndroidPage {
 
     public static final By xpathConfirmOKButton = By.xpath("//*[@id='ttv__confirmation__confirm' and @value='OK']");
-
-    public static final String idStrConversationImages = "iv__row_conversation__message_image";
-    public static final By idConversationImages = By.id(idStrConversationImages);
-
     private static final By idClickedImageSendingIndicator = By.id("v__row_conversation__pending");
 
-    private static final By xpathLastPicture = By.xpath(String.format("(//*[@id='%s'])[last()]", idStrConversationImages));
-
-    public static final By idCursorCamera = By.id("cursor_menu_item_camera");
-
-    public static final By idCursorPing = By.id("cursor_menu_item_ping");
-
-    private static final By idCursorMore = By.id("cursor_menu_item_more");
-
-    private static final By idCursorLess = By.id("cursor_menu_item_less");
-
-    public static final By idCursorVideoMessage = By.id("cursor_menu_item_video");
-
-    private static final By idCursorShareLocation = By.id("cursor_menu_item_location");
-
-    public static final By idCursorView = By.id("cal__cursor");
-
-    public static final By idCursorSelfAvatar = By.id("civ__cursor__self_avatar");
-
-    public static final String CURSOR_EDIT_TOOLTIP = "TYPE A MESSAGE";
-
-    public static final By xpathCursorEditHint = By.xpath(
-            String.format("//*[@id='ttv__cursor_hint' and contains(@value, '%s')]", CURSOR_EDIT_TOOLTIP));
-
-    private static final String idStrRowConversationMessage = "ltv__row_conversation__message";
-
+    //region Conversation Row Locators
+    // Text
+    private static final String idStrRowConversationMessage = "tmltv__row_conversation__message";
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
             .format("//*[@id='%s' and @value='%s']", idStrRowConversationMessage, text);
-
     private static final Function<String, String> xpathStrUnsentIndicatorByText = text -> String
             .format("%s/parent::*/parent::*//*[@id='v__row_conversation__error']",
                     xpathStrConversationMessageByText.apply(text));
-
     private static final By xpathLastConversationMessage =
             By.xpath(String.format("(//*[@id='%s'])[last()]", idStrRowConversationMessage));
-
     private static final By xpathFirstConversationMessage =
             By.xpath(String.format("(//*[@id='%s'])[1]", idStrRowConversationMessage));
 
+    // Image
+    private static final String idStrConversationImages = "fl__row_conversation__message_image_container";
+    private static final By idConversationImages = By.id(idStrConversationImages);
+    private static final String xpathStrLastImage = String.format("(//*[@id='%s'])[last()]", idStrConversationImages);
+    private static final By xpathLastImage = By.xpath(xpathStrLastImage);
     private static final By xpathUnsentIndicatorForImage = By
             .xpath("//*[@id='" + idStrConversationImages + "']/parent::*/parent::*//*[@id='v__row_conversation__error']");
 
-    public static final String idStrCursorEditText = "cet__cursor";
-
-    public static final By idCursorEditText = By.id(idStrCursorEditText);
-
-    public static Function<String, String> xpathCurosrEditTextByValue = value ->
-            String.format("//*[@id='%s' and @value='%s']", idStrCursorEditText, value);
-
+    // System message
     private static final String idStrMissedCallMesage = "ttv__row_conversation__missed_call";
     private static final Function<String, String> xpathStrMissedCallMesageByText = text -> String
             .format("//*[@id='%s' and @value='%s']", idStrMissedCallMesage, text.toUpperCase());
 
+    // Ping
     public static final Function<String, String> xpathStrPingMessageByText = text -> String
             .format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']", text.toUpperCase());
+
+    //endregion
+
+    //region Conversation Cursor locators
+    public static final String idStrCursorEditText = "cet__cursor";
+    private static final By idCursorCamera = By.id("cursor_menu_item_camera");
+    private static final By idCursorPing = By.id("cursor_menu_item_ping");
+    private static final By idCursorMore = By.id("cursor_menu_item_more");
+    private static final By idCursorLess = By.id("cursor_menu_item_less");
+    private static final By idCursorVideoMessage = By.id("cursor_menu_item_video");
+    private static final By idCursorShareLocation = By.id("cursor_menu_item_location");
+    private static final By idCursorView = By.id("cal__cursor");
+    private static final By idCursorSelfAvatar = By.id("civ__cursor__self_avatar");
+    private static final String CURSOR_EDIT_TOOLTIP = "TYPE A MESSAGE";
+    private static final By xpathCursorEditHint = By.xpath(
+            String.format("//*[@id='ttv__cursor_hint' and contains(@value, '%s')]", CURSOR_EDIT_TOOLTIP));
+    public static final By idCursorEditText = By.id(idStrCursorEditText);
+    public static Function<String, String> xpathCurosrEditTextByValue = value ->
+            String.format("//*[@id='%s' and @value='%s']", idStrCursorEditText, value);
+    //endregion
+
+    //region Message footer
+    private static final Function<String, String> xpathStrTemplateId = id -> String.format("//*[@id='%s']", id);
+    private static final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> xpathStrTemplateIdValue
+            = (id, value) -> String.format("//*[@id='%s' and contains(@value,'%s')]", id, value);
+
+    private static final String strIdMessageMetaLikeButton = "gtv__footer__like__button";
+    private static final String strIdMessageMetaLikeHint = "gtv__footer__like__hint_arrow";
+    private static final String strIdMessageMetaLikeDescription = "tv__footer__like__description";
+    private static final String strIdMessageMetaStatus = "tv__footer__message_status";
+    private static final String strIdMessageMetaFirstLike = "cv__first_like_chathead";
+    private static final String strIdMessageMetaSecondLike = "cv__first_like_chathead";
+
+    private static final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> xpathStrTxtMsgMetaItem
+            = (txtMsg, subLocator) -> String.format("//*[@id='%s' and @value='%s']/../../following-sibling::*[1]%s",
+            idStrRowConversationMessage, txtMsg, subLocator);
+
+    private static final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> xpathStrContainerMsgMetaItem
+            = (containerRowLocator, subLocator) -> String.format("%sfollowing-sibling::*[1]%s",
+            containerRowLocator, subLocator);
+    //endregion
+
+    //region Message Bottom Menu
+    private static final By idMessageBottomMenuForwardButton = By.id("message_bottom_menu_item_forward");
+    private static final By idMessageBottomMenuDeleteLocalButton = By.id("message_bottom_menu_item_delete_local");
+    private static final By idMessageBottomMenuDeleteGlobalButton = By.id("message_bottom_menu_item_delete_global");
+    private static final By idMessageBottomMenuCopyButton = By.id("message_bottom_menu_item_copy");
+    private static final By idMessageBottomMenuEditButton = By.id("message_bottom_menu_item_edit");
+    private static final By idMessageBottomMenuLikeButton = By.id("message_bottom_menu_item_like");
+    private static final By idMessageBottomMenuUnlikeButton = By.id("message_bottom_menu_item_unlike");
+    //endregion
 
     private static final By idFullScreenImage = By.id("tiv__single_image_message__image");
 
@@ -190,14 +214,6 @@ public class ConversationViewPage extends AndroidPage {
     private static final Function<String, String> xpathMessageSeparator = name -> String
             .format("//*[@id='%s' and @value='%s']", idStrSeparatorName, name.toLowerCase());
 
-    private static final By idMessageBottomMenuForwardButton = By.id("message_bottom_menu_item_forward");
-    private static final By idMessageBottomMenuDeleteLocalButton = By.id("message_bottom_menu_item_delete_local");
-    private static final By idMessageBottomMenuDeleteGlobalButton = By.id("message_bottom_menu_item_delete_global");
-    private static final By idMessageBottomMenuCopyButton = By.id("message_bottom_menu_item_copy");
-    private static final By idMessageBottomMenuEditButton = By.id("message_bottom_menu_item_edit");
-    private static final By idMessageBottomMenuLikeButton = By.id("message_bottom_menu_item_like");
-    private static final By idMessageBottomMenuUnlikeButton = By.id("message_bottom_menu_item_unlike");
-
     private static final By idYoutubeContainer = By.id("iv__row_conversation__youtube_image");
 
     private static final By idSoundcloudContainer = By.id("mpv__row_conversation__message_media_player");
@@ -219,23 +235,6 @@ public class ConversationViewPage extends AndroidPage {
     private static final By idAudioContainerSeekbar = By.id("sb__audio_progress");
 
     private static final By idAudioMessagePreviewSeekbar = By.id("sb__voice_message__recording__seekbar");
-
-    //region Message footer
-    private static final Function<String, String> xpathStrTemplateId = id -> String.format("//*[@id='%s']", id);
-    private static final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> xpathStrTemplateIdValue
-            = (id, value) -> String.format("//*[@id='%s' and contains(@value,'%s')]", id, value);
-
-    private static final String strIdMessageMetaLikeButton = "gtv__footer__like__button";
-    private static final String strIdMessageMetaLikeHint = "gtv__footer__like__hint_arrow";
-    private static final String strIdMessageMetaLikeDescription = "tv__footer__like__description";
-    private static final String strIdMessageMetaStatus = "tv__footer__message_status";
-    private static final String strIdMessageMetaFirstLike = "cv__first_like_chathead";
-    private static final String strIdMessageMetaSecondLike = "cv__first_like_chathead";
-
-    private static final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> xpathStrTxtMsgMetaItem
-            = (txtMsg, subLocator) -> String.format("//*[@id='%s' and @value='%s']/../../following-sibling::*[1]%s",
-            idStrRowConversationMessage, txtMsg, subLocator);
-    //endregion
 
     private static final int MAX_CLICK_RETRIES = 5;
 
@@ -273,6 +272,7 @@ public class ConversationViewPage extends AndroidPage {
         super(lazyDriver);
     }
 
+    // region Screeshot buffer
     public BufferedImage getConvoViewStateScreenshot() throws Exception {
         return this.getElementScreenshot(getElement(idConversationRoot)).orElseThrow(
                 () -> new IllegalStateException("Cannot get a screenshot of conversation view")
@@ -321,6 +321,7 @@ public class ConversationViewPage extends AndroidPage {
                 () -> new IllegalStateException("Cannot get a screenshot of Audio message recording slide microphone button")
         );
     }
+    //endregion
 
     //region Cursor
     public boolean isCursorViewVisible() throws Exception {
@@ -527,7 +528,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public void tapRecentImage() throws Exception {
-        getElement(xpathLastPicture).click();
+        getElement(xpathLastImage).click();
     }
 
     public boolean waitForConversationNameChangedMessage(String expectedName) throws Exception {
@@ -948,7 +949,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public void longTapRecentImage() throws Exception {
-        getDriver().longTap(getElement(xpathLastPicture), DriverUtils.LONG_TAP_DURATION);
+        getDriver().longTap(getElement(xpathLastImage), DriverUtils.LONG_TAP_DURATION);
     }
 
     public void tapVideoMessageButton() throws Exception {
@@ -1070,6 +1071,45 @@ public class ConversationViewPage extends AndroidPage {
     //endregion
 
     //region Message Meta
+    public boolean waitUntilMessageMetaItemVisible(String messageType, String itemType) throws Exception {
+        String locatorId = getMessageMetaLocatorIdString(itemType);
+        return checkMessageMetaItemVisibility(messageType, xpathStrTemplateId.apply(locatorId), itemType, true);
+    }
+
+    public boolean waitUntilMessageMetaItemInvisible(String messageType, String itemType) throws Exception {
+        String locatorId = getMessageMetaLocatorIdString(itemType);
+        return checkMessageMetaItemVisibility(messageType, xpathStrTemplateId.apply(locatorId), itemType, false);
+    }
+
+    public boolean waitUntilMessageMetaItemVisible(String messageType, String itemType, String expectedItemText)
+            throws Exception {
+        String locatorId = getMessageMetaLocatorIdString(itemType);
+        return checkMessageMetaItemVisibility(messageType,
+                xpathStrTemplateIdValue.apply(locatorId, expectedItemText), itemType, true);
+    }
+
+    public boolean waitUntilMessageMetaItemInvisible(String messageType, String itemType, String expectedItemText)
+            throws Exception {
+        String locatorId = getMessageMetaLocatorIdString(itemType);
+        return checkMessageMetaItemVisibility(messageType,
+                xpathStrTemplateIdValue.apply(locatorId, expectedItemText), itemType, false);
+    }
+
+    public void tapMessageMetaItem(String messageType, String itemType) throws Exception {
+        String locatorId = getMessageMetaLocatorIdString(itemType);
+        By locator = getMessageMetaLocator(messageType, xpathStrTemplateId.apply(locatorId));
+        getElement(locator).click();
+    }
+
+    public BufferedImage getMessageLikeButtonState(String messageType) throws Exception {
+        By locator = getMessageMetaLocator(messageType, xpathStrTemplateId.apply(strIdMessageMetaLikeButton));
+
+        return this.getElementScreenshot(getElement(locator)).orElseThrow(
+                () -> new IllegalStateException(
+                        String.format("Cannot get a screenshot for like button under message '%s'", messageType))
+        );
+    }
+
     private String getMessageMetaLocatorIdString(String itemType) throws Exception {
         switch (itemType.toLowerCase()) {
             case "like button":
@@ -1090,48 +1130,44 @@ public class ConversationViewPage extends AndroidPage {
         }
     }
 
-    public boolean waitUntilTxtMessageMetaItemVisible(String message, String itemType) throws Exception {
-        String locatorId = getMessageMetaLocatorIdString(itemType);
-        By locator = By.xpath(xpathStrTxtMsgMetaItem.apply(message, xpathStrTemplateId.apply(locatorId)));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    private String getContainerMessageMetaParentLocator(String messageType, String childLocator) throws Exception {
+        switch (messageType.toLowerCase()) {
+            case "image":
+                return xpathStrContainerMsgMetaItem.apply(String.format("%s/../", xpathStrLastImage), childLocator);
+            default:
+                throw new IllegalStateException(String.format("Cannot identify the message type '%s'", messageType));
+        }
     }
 
-    public boolean waitUntilTxtMessageMetaItemInvisible(String message, String itemType) throws Exception {
-        String locatorId = getMessageMetaLocatorIdString(itemType);
-        By locator = By.xpath(xpathStrTxtMsgMetaItem.apply(message, xpathStrTemplateId.apply(locatorId)));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    private By getMessageMetaLocator(String messageType, String childLocator) throws Exception {
+        String parentLocator;
+        if (messageType.matches(".*\".*\"")) {
+            String textMessage = retrieveTextMessage(messageType)
+                    .orElseThrow(() -> new IllegalArgumentException("Should specify the text message contnent"));
+            parentLocator = xpathStrTxtMsgMetaItem.apply(textMessage, childLocator);
+        } else {
+            parentLocator = getContainerMessageMetaParentLocator(messageType, childLocator);
+        }
+        return By.xpath(parentLocator);
     }
 
-    public boolean waitUntilTxtMessageMetaItemVisible(String message, String itemType, String expectedItemText)
-            throws Exception {
-        String locatorId = getMessageMetaLocatorIdString(itemType);
-        By locator = By.xpath(xpathStrTxtMsgMetaItem.apply(message,
-                xpathStrTemplateIdValue.apply(locatorId, expectedItemText)));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    private boolean checkMessageMetaItemVisibility(String messageType, String childLocator, String itemType, boolean shouldVisible) throws Exception {
+        By locator = getMessageMetaLocator(messageType, childLocator);
+        if (shouldVisible) {
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        } else {
+            return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+        }
     }
 
-    public boolean waitUntilTxtMessageMetaItemInvisible(String message, String itemType, String expectedItemText)
-            throws Exception {
-        String locatorId = getMessageMetaLocatorIdString(itemType);
-        By locator = By.xpath(xpathStrTxtMsgMetaItem.apply(message,
-                xpathStrTemplateIdValue.apply(locatorId, expectedItemText)));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
-    }
+    private Optional<String> retrieveTextMessage(String messageType) {
+        Pattern p = Pattern.compile("\"(.*)\"");
+        Matcher m = p.matcher(messageType);
+        if (m.find()) {
+            return Optional.of(m.group(1));
+        }
+        return Optional.empty();
 
-    public void tapTxtMessageMetaItem(String message, String itemType) throws Exception {
-        String locatorId = getMessageMetaLocatorIdString(itemType);
-        By locator = By.xpath(xpathStrTxtMsgMetaItem.apply(message, xpathStrTemplateId.apply(locatorId)));
-        getElement(locator).click();
-    }
-
-    public BufferedImage getTextMessageLikeButtonState(String message) throws Exception {
-        String relativeLocatorStr = xpathStrTemplateId.apply(strIdMessageMetaLikeButton);
-        By absoluteLocator = By.xpath(xpathStrTxtMsgMetaItem.apply(message, relativeLocatorStr));
-
-        return this.getElementScreenshot(getElement(absoluteLocator)).orElseThrow(
-                () -> new IllegalStateException(
-                        String.format("Cannot get a screenshot for like button under message '%s'", message))
-        );
     }
     //endregion
 }
