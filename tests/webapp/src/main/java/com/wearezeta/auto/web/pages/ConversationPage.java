@@ -1043,6 +1043,96 @@ public class ConversationPage extends WebPage {
         getDriver().findElement(locator).click();
     }
     
+    public void clickLikeLatestMessageWithoutOtherLikes() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        hoverOverMessage(id);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeWithoutOtherLikesByMessageId.apply(id));
+        getDriver().findElement(locator).click();
+    }
+    
+    public void clickUnlikeLatestMessageWithoutOtherLikes() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        hoverOverMessage(id);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssUnlikeWithoutOtherLikesByMessageId.apply(id));
+        getDriver().findElement(locator).click();
+    }
+    
+    public boolean isUnlikeWithOtherLikesVisibleForLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssUnlikeWithOtherLikesByMessageId.apply(id));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
+    }
+    
+    public boolean isLikeWithOtherLikesVisibleForLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeWithOtherLikesByMessageId.apply(id));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
+    }
+    
+    public boolean isLikeWithoutOtherLikesVisibleForLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeWithoutOtherLikesByMessageId.apply(id));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
+    }
+    
+    public boolean isUnlikeWithoutOtherLikesVisibleForLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssUnlikeWithoutOtherLikesByMessageId.apply(id));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
+    }
+    
+    public boolean isUnlikeWithoutOtherLikesInvisibleForLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssUnlikeWithoutOtherLikesByMessageId.apply(id));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3);
+    }
+    
+    public boolean isLikeLineVisibleForLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssFooterByMessageId.apply(id));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
+    }
+
+    public boolean isLikeLineInvisibleForLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssFooterByMessageId.apply(id));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3);
+    }
+    
+    public void clickLikeLatestMessageWithOtherLikes() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        hoverOverMessage(id);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeWithoutOtherLikesByMessageId.apply(id));
+        getDriver().findElement(locator).click();
+    }
+    
+    public void clickUnlikeLatestMessageWithOtherLikes() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        hoverOverMessage(id);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssUnlikeWithOtherLikesByMessageId.apply(id));
+        getDriver().findElement(locator).click();
+    }
+    
+    public List<String> getLikeCountForLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeTextElementByMessageId.apply(id));
+        String userIds = getDriver().findElement(locator).getAttribute("TODO");
+        String[] userIdArray = userIds.split(",");
+        return Arrays.asList(userIdArray);
+    }
+    
     public void clickContextMenuOnSecondLastMessage() throws Exception {
         By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssSecondLastMessage);
         String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");

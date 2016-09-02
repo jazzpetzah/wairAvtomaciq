@@ -63,6 +63,16 @@ public class CommonWebAppSteps {
     public CommonWebAppSteps(TestContext context) {
         this.context = context;
     }
+    
+    /**
+     * Step for preparing and debugging testcases while the feature in not implemented completely
+     * 
+     * @throws Exception 
+     */
+    @Then("^I fail the test$")
+    public void IFailTheTest() throws Exception {
+        throw new Exception("The test is supposed to fail here");
+    }
 
     /**
      * This step will throw special PendingException whether the current browser does support calling or not. This will cause
@@ -617,6 +627,33 @@ public class CommonWebAppSteps {
         boolean isGroup = convoType.equals("group conversation");
         context.getCommonSteps().UserUpdateLatestMessage(userNameAlias, dstNameAlias, newMessage, deviceName + context.getTestname().
                     hashCode(), isGroup);
+    }
+    
+    /**
+     * User X react(like or unlike) the recent message in 1:1 conversation or group conversation
+     *
+     * @param userNameAlias User X's name or alias
+     * @param reactionType User X's reaction , could be like or unlike, be careful you should use like before unlike
+     * @param dstNameAlias the conversation which message is belong to
+     * @param deviceName User X's device
+     * @throws Exception
+     * @step. ^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$
+     */
+    @When("^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$")
+    public void UserReactLastMessage(String userNameAlias, String reactionType, String dstNameAlias, String deviceName)
+            throws Exception {
+        switch (reactionType.toLowerCase()){
+            case "likes" :
+                context.getCommonSteps().UserLikeLatestMessage(userNameAlias, dstNameAlias, deviceName + context.getTestname().
+                    hashCode());
+                break;
+            case "unlikes" :
+                context.getCommonSteps().UserUnlikeLatestMessage(userNameAlias, dstNameAlias, deviceName + context.getTestname().
+                    hashCode());
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify the reaction type '%s'", reactionType));
+        }
     }
 
     /**

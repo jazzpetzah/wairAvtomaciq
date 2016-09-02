@@ -346,6 +346,24 @@ public final class WebAppLocators {
 
         public static final Function<String, String> cssMessagesById = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s']", text);
+        
+        public static final Function<String, String> cssLikeWithoutOtherLikesByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-body-like:not(.text-red)", text);
+        
+        public static final Function<String, String> cssUnlikeWithoutOtherLikesByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-body-like.text-red", text);
+        
+        public static final Function<String, String> cssFooterByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-footer", text);
+        
+        public static final Function<String, String> cssLikeWithOtherLikesByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-footer .icon-liked.text-graphite", text);
+        
+        public static final Function<String, String> cssUnlikeWithOtherLikesByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-footer .icon-liked.text-red:not(.text-graphite)", text);
+        
+        public static final Function<String, String> cssLikeTextElementByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-footer-label span", text);//TODO
 
         public static final Function<String, String> cssContextMenuButtonByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] context-menu", text);
