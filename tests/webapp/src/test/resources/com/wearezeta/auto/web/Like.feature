@@ -388,6 +388,25 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Message1 |
       | user1Email | user1Password | user1Name | user2Name | like me  |
 
+  @C234614 @staging
+  Scenario Outline: Verify message that is not in my history can be liked by others
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    And Contact <Contact> sends message <Message1> via device Device1 to user me
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    Then I do not see text message <Message1>
+    And I see 1 messages in conversation
+    When User <Contact> likes the recent message from user <Name> via device Device1
+    And I see 1 messages in conversation
+    And I verify browser log does not have errors
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | Message1 |
+      | user1Email | user1Password | user1Name | user2Name | like me  |
+
   @C226443 @staging
   Scenario Outline: Verify likes are reset if you edited message
     Given There are 2 users where <Name> is me
