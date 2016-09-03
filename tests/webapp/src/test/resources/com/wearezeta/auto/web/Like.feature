@@ -35,7 +35,7 @@ Feature: Like
   @C226472 @staging
   Scenario Outline: Verify you can like someone's message in group
     Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -186,13 +186,51 @@ Feature: Like
     When I open conversation with <Contact>
     And User <Contact> sends location <LocationName> with <Latitude> and <Longitude> to user Myself via device Device1
     Then I see location message <LocationName> with <Latitude> and <Longitude> in the conversation view
+# No likes
     And I do not see likes below the latest message
+# Only liked by me
     When I click to like the latest message without other likes
-    And I wait for 5 seconds
+    And I do not see likes below the latest message
+    Then I see the latest message is only liked by me
+# Liked by others and me
+    When User <Contact> likes the recent message from user <Name> via device Device1
     And I see likes below the latest message
-    And I fail the test
+    And I see the latest message is liked by others and me
+# Only liked by others
+    When I click to unlike the latest message with other likes
+    Then I see likes below the latest message
+    And I see the latest message is only liked by others
+# Everything unliked
+    When User <Contact> unlikes the recent message from user <Name> via device Device1
+    And I do not see likes below the latest message
+    And I verify browser log does not have errors
 
     Examples:
       | Login      | Password      | Name      | Contact   | Latitude | Longitude | LocationName |
       | user1Email | user1Password | user1Name | user2Name | 12.94    | 54.29     | Stralsund    |
 
+  @C234612 @staging
+  Scenario Outline: Verify locally deleted message can be liked by others
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And Contact <Contact> sends message <Message1> via device Device1 to user me
+    Then I see text message <Message1>
+    And I see 2 messages in conversation
+    And I do not see likes below the latest message
+    When I click context menu of the latest message
+    And I click to delete message for me in context menu
+    And I click confirm to delete message for me
+    Then I do not see text message <Message1>
+    And I see 1 messages in conversation
+    When User <Contact> likes the recent message from user <Name> via device Device1
+    Then I do not see likes below the latest message
+    And I see 1 messages in conversation
+    And I verify browser log does not have errors
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | Message1 |
+      | user1Email | user1Password | user1Name | user2Name | like me  |

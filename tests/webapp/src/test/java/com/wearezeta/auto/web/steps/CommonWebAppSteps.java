@@ -9,7 +9,6 @@ import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.Message;
@@ -30,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
 
 import org.apache.log4j.Logger;
 
@@ -832,32 +832,40 @@ public class CommonWebAppSteps {
     }
 
     /**
-     * Verifies whether current browser log is empty or not
+     * Verifies whether current browser log has errors or not
      *
      * @throws Exception
-     * @step. ^I verify browser log is empty$
+     * @step. ^I verify browser log does not have errors$
      */
-    @Then("^I verify browser log is empty$")
+    @Then("^I verify browser log does not have errors$")
     public void VerifyBrowserLogIsEmpty() throws Exception {
-        if (PlatformDrivers.getInstance().hasDriver(context.getCurrentPlatform())) {
-            try {
-                if (WebAppExecutionContext.getBrowser()
-                        .isSupportingConsoleLogManagement()) {
-                    List<LogEntry> browserLog = context.getBrowserLog();
+        try {
+            if (WebAppExecutionContext.getBrowser()
+                    .isSupportingConsoleLogManagement()) {
+                List<LogEntry> browserLog = context.getBrowserLog();
 
-                    StringBuilder bLog = new StringBuilder("\n");
-                    browserLog.stream().forEach(
-                            (entry) -> {
-                                bLog.append(entry.getLevel()).append(":")
-                                        .append(entry.getMessage())
-                                        .append("\n");
-                            });
-                    assertTrue("BrowserLog is not empty: " + bLog.toString(),
-                            browserLog.isEmpty());
-                }
-            } catch (ExecutionException e) {
-                e.printStackTrace();
+                StringBuilder bLog = new StringBuilder("\n");
+                browserLog.stream()
+                        .filter((entry) -> 
+                                entry.getLevel().intValue() >= Level.SEVERE.intValue())
+                        // filter auto login attempts
+                        .filter((entry) -> 
+                                !entry.getMessage().contains("/access"))
+                        .filter((entry) -> 
+                                !entry.getMessage().contains("/self"))
+                        .filter((entry) -> 
+                                !entry.getMessage().contains("attempt"))
+                        .forEach((entry) -> {
+                            bLog.append(entry.getLevel()).append(":")
+                            .append(entry.getMessage())
+                            .append("\n");
+                        });
+
+                assertTrue("BrowserLog does have errors: " + bLog.toString(),
+                        browserLog.isEmpty());
             }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
     }
 
