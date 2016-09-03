@@ -387,3 +387,101 @@ Feature: Like
     Examples:
       | Login      | Password      | Name      | Contact   | Message1 |
       | user1Email | user1Password | user1Name | user2Name | like me  |
+
+  @C226443 @staging
+  Scenario Outline: Verify likes are reset if you edited message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    When I write message <Message1>
+    And I send message
+    Then I see text message <Message1>
+# No likes
+    And I do not see likes below the latest message
+# Only liked by me
+    When I click to like the latest message without other likes
+    And I do not see likes below the latest message
+    Then I see the latest message is only liked by me
+# Liked by others and me
+    When User <Contact> likes the recent message from user <Name> via device Device1
+    And I see likes below the latest message
+    And I see the latest message is liked by others and me
+# Edit
+    When I click context menu of the latest message
+    And I click to edit message in context menu
+    And I delete 7 characters from the conversation input
+    And I write message <EditedMessage>
+    And I send message
+    Then I see text message <EditedMessage>
+# Everything unliked
+    And I do not see likes below the latest message
+# Only liked by me
+    When I click to like the latest message without other likes
+    And I do not see likes below the latest message
+    Then I see the latest message is only liked by me
+# Liked by others and me
+    When User <Contact> likes the recent message from user <Name> via device Device1
+    And I see likes below the latest message
+    And I see the latest message is liked by others and me
+# Only liked by others
+    When I click to unlike the latest message with other likes
+    Then I see likes below the latest message
+    And I see the latest message is only liked by others
+# Everything unliked
+    When User <Contact> unlikes the recent message from user <Name> via device Device1
+    And I do not see likes below the latest message
+    And I verify browser log does not have errors
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | Message1 | EditedMessage |
+      | user1Email | user1Password | user1Name | user2Name | like me  | edited        |
+
+  @C234613 @staging
+  Scenario Outline: Verify likes are reset if sender edits his message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And Contact <Contact> sends message <Message1> via device Device1 to user me
+    Then I see text message <Message1>
+# No likes
+    And I do not see likes below the latest message
+# Only liked by me
+    When I click to like the latest message without other likes
+    And I do not see likes below the latest message
+    Then I see the latest message is only liked by me
+# Liked by others and me
+    When User <Contact> likes the recent message from user <Name> via device Device1
+    And I see likes below the latest message
+    And I see the latest message is liked by others and me
+# Edit
+    When User <Contact> edits the recent message to "<EditedMessage>" from user <Name> via device Device1
+    Then I see text message <EditedMessage>
+# Everything unliked
+    And I do not see likes below the latest message
+# Only liked by me
+    When I click to like the latest message without other likes
+    And I do not see likes below the latest message
+    Then I see the latest message is only liked by me
+# Liked by others and me
+    When User <Contact> likes the recent message from user <Name> via device Device1
+    And I see likes below the latest message
+    And I see the latest message is liked by others and me
+# Only liked by others
+    When I click to unlike the latest message with other likes
+    Then I see likes below the latest message
+    And I see the latest message is only liked by others
+# Everything unliked
+    When User <Contact> unlikes the recent message from user <Name> via device Device1
+    And I do not see likes below the latest message
+    And I verify browser log does not have errors
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | Message1 | EditedMessage |
+      | user1Email | user1Password | user1Name | user2Name | like me  | edited        |
