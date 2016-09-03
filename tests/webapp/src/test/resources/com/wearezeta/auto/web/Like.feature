@@ -149,11 +149,23 @@ Feature: Like
     And <Contact> sends <Size> sized video with name <File> via device Device1 to user me
     Then I see video message <File> in the conversation view
     And I wait until video <File> is uploaded completely
+# No likes
     And I do not see likes below the latest message
+# Only liked by me
     When I click to like the latest message without other likes
-    And I wait for 5 seconds
+    And I do not see likes below the latest message
+    Then I see the latest message is only liked by me
+# Liked by others and me
+    When User <Contact> likes the recent message from user <Name> via device Device1
     And I see likes below the latest message
-    And I fail the test
+    And I see the latest message is liked by others and me
+# Only liked by others
+    When I click to unlike the latest message with other likes
+    Then I see likes below the latest message
+    And I see the latest message is only liked by others
+# Everything unliked
+    When User <Contact> unlikes the recent message from user <Name> via device Device1
+    And I do not see likes below the latest message
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size  |
