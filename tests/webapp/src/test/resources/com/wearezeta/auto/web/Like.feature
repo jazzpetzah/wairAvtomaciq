@@ -79,15 +79,28 @@ Feature: Like
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given user <Contact> adds a new device Device1 with label Label1
     Given I am signed in properly
     When I open conversation with <Contact>
-    When User <Contact> sends image <ImageName> to single user conversation Myself
+    When User <Contact> sends image <ImageName> to single user conversation <Name>
     And I see sent picture <ImageName> in the conversation view
+# No likes
     And I do not see likes below the latest message
+# Only liked by me
     When I click to like the latest message without other likes
-    And I wait for 5 seconds
+    And I do not see likes below the latest message
+    Then I see the latest message is only liked by me
+# Liked by others and me
+    When User <Contact> likes the recent message from user <Name> via device Device1
     And I see likes below the latest message
-    And I fail the test
+    And I see the latest message is liked by others and me
+# Only liked by others
+    When I click to unlike the latest message with other likes
+    Then I see likes below the latest message
+    And I see the latest message is only liked by others
+# Everything unliked
+    When User <Contact> unlikes the recent message from user <Name> via device Device1
+    And I do not see likes below the latest message
 
     Examples:
       | Login      | Password      | Name      | Contact   | ImageName                |
@@ -103,11 +116,23 @@ Feature: Like
     When I open conversation with <Contact>
     And <Contact> sends audio file <File> via device Device1 to user Myself
     Then I wait until audio <File> is uploaded completely
+# No likes
     And I do not see likes below the latest message
+# Only liked by me
     When I click to like the latest message without other likes
-    And I wait for 5 seconds
+    And I do not see likes below the latest message
+    Then I see the latest message is only liked by me
+# Liked by others and me
+    When User <Contact> likes the recent message from user <Name> via device Device1
     And I see likes below the latest message
-    And I fail the test
+    And I see the latest message is liked by others and me
+# Only liked by others
+    When I click to unlike the latest message with other likes
+    Then I see likes below the latest message
+    And I see the latest message is only liked by others
+# Everything unliked
+    When User <Contact> unlikes the recent message from user <Name> via device Device1
+    And I do not see likes below the latest message
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        |
