@@ -179,11 +179,85 @@ Feature: Like
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I open conversation with <Contact>
-    And I fail the test
+    When Contact <Contact> sends message <Youtubelink> via device Device1 to user me
+    Then I see embedded youtube message <Youtubelink>
+# No likes
+    And I do not see likes below the latest message
+# Only liked by me
+    When I click to like the latest message without other likes
+    And I do not see likes below the latest message
+    Then I see the latest message is only liked by me
+# Liked by others and me
+    When User <Contact> likes the recent message from user <Name> via device Device1
+    And I see likes below the latest message
+    And I see the latest message is liked by others and me
+# Only liked by others
+    When I click to unlike the latest message with other likes
+    Then I see likes below the latest message
+    And I see the latest message is only liked by others
+# Everything unliked
+    When User <Contact> unlikes the recent message from user <Name> via device Device1
+    And I do not see likes below the latest message
+    When Contact <Contact> sends message <Soundcloudlink> via device Device1 to user me
+# No likes
+    And I do not see likes below the latest message
+# Only liked by me
+    When I click to like the latest message without other likes
+    And I do not see likes below the latest message
+    Then I see the latest message is only liked by me
+# Liked by others and me
+    When User <Contact> likes the recent message from user <Name> via device Device1
+    And I see likes below the latest message
+    And I see the latest message is liked by others and me
+# Only liked by others
+    When I click to unlike the latest message with other likes
+    Then I see likes below the latest message
+    And I see the latest message is only liked by others
+# Everything unliked
+    When User <Contact> unlikes the recent message from user <Name> via device Device1
+    And I do not see likes below the latest message
+    When Contact <Contact> sends message <Vimeolink> via device Device1 to user me
+    Then I see text message <Vimeolink>
+# No likes
+    And I do not see likes below the latest message
+# Only liked by me
+    When I click to like the latest message without other likes
+    And I do not see likes below the latest message
+    Then I see the latest message is only liked by me
+# Liked by others and me
+    When User <Contact> likes the recent message from user <Name> via device Device1
+    And I see likes below the latest message
+    And I see the latest message is liked by others and me
+# Only liked by others
+    When I click to unlike the latest message with other likes
+    Then I see likes below the latest message
+    And I see the latest message is only liked by others
+# Everything unliked
+    When User <Contact> unlikes the recent message from user <Name> via device Device1
+    And I do not see likes below the latest message
+    When Contact <Contact> sends message <Spotifylink> via device Device1 to user me
+    Then I see text message <Spotifylink>
+# No likes
+    And I do not see likes below the latest message
+# Only liked by me
+    When I click to like the latest message without other likes
+    And I do not see likes below the latest message
+    Then I see the latest message is only liked by me
+# Liked by others and me
+    When User <Contact> likes the recent message from user <Name> via device Device1
+    And I see likes below the latest message
+    And I see the latest message is liked by others and me
+# Only liked by others
+    When I click to unlike the latest message with other likes
+    Then I see likes below the latest message
+    And I see the latest message is only liked by others
+# Everything unliked
+    When User <Contact> unlikes the recent message from user <Name> via device Device1
+    And I do not see likes below the latest message
 
     Examples:
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | Youtubelink                                 | Soundcloudlink                                                      | Vimeolink                 | Spotifylink                                           |
+      | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=ncHd3sxpEbo | https://soundcloud.com/nour-moukhtar/ludwig-van-beethoven-fur-elise | https://vimeo.com/7265982 | https://play.spotify.com/album/7buEcyw6fJF3WPgr06BomH |
 
   @C226433 @staging
   Scenario Outline: Verify liking someone's shared file
@@ -195,7 +269,7 @@ Feature: Like
     When I open conversation with <Contact>
     When <Contact> sends <Size> sized file with name <File> via device Device1 to user <Name>
     When I wait until placeholder for file <File> disappears
-    # No likes
+# No likes
     And I do not see likes below the latest message
 # Only liked by me
     When I click to like the latest message without other likes
