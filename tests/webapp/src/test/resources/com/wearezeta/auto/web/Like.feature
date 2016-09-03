@@ -171,7 +171,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | File        | Size  |
       | user1Email | user1Password | user1Name | user2Name | C226430.mp4 | 15MB  |
 
-  @C226431 @staging
+  @C226431 @staging @WEBAPP-3040
   Scenario Outline: Verify liking someone's Soundcloud, youtube, vimeo and spotify
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
