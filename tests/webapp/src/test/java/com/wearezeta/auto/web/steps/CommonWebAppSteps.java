@@ -855,6 +855,9 @@ public class CommonWebAppSteps {
                                 !entry.getMessage().contains("/self"))
                         .filter((entry) -> 
                                 !entry.getMessage().contains("attempt"))
+                        // filter encryption precondition
+                        .filter((entry) -> 
+                                !entry.getMessage().contains("412 (Precondition Failed)"))
                         .forEach((entry) -> {
                             bLog.append(entry.getLevel()).append(":")
                             .append(entry.getMessage())
