@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
@@ -844,8 +845,8 @@ public class CommonWebAppSteps {
                     .isSupportingConsoleLogManagement()) {
                 List<LogEntry> browserLog = context.getBrowserLog();
 
-                StringBuilder bLog = new StringBuilder("\n");
-                browserLog.stream()
+                StringBuilder bLog = new StringBuilder();
+                browserLog = browserLog.stream()
                         .filter((entry) -> 
                                 entry.getLevel().intValue() >= Level.SEVERE.intValue())
                         // filter auto login attempts
@@ -858,13 +859,15 @@ public class CommonWebAppSteps {
                         // filter encryption precondition
                         .filter((entry) -> 
                                 !entry.getMessage().contains("412 (Precondition Failed)"))
-                        .forEach((entry) -> {
+                        .collect(Collectors.toList());
+                
+                browserLog.forEach((entry) -> {
                             bLog.append(entry.getLevel()).append(":")
                             .append(entry.getMessage())
                             .append("\n");
                         });
 
-                assertTrue("BrowserLog does have errors: " + bLog.toString(),
+                assertTrue("BrowserLog does have errors: \n" + bLog.toString(),
                         browserLog.isEmpty());
             }
         } catch (ExecutionException e) {
