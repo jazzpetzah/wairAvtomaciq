@@ -168,13 +168,37 @@ Feature: Like
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given user <Contact> adds a new device Device1 with label Label1
     Given I am signed in properly
     When I open conversation with <Contact>
-    And I fail the test
+    When I write message <Message>
+    And I click GIF button
+    Then I see Giphy popup
+    And I see gif image in Giphy popup
+    When I click send button in Giphy popup
+    Then I see sent gif in the conversation view
+    And I verify the second last text message equals to <ExpectedMessage>
+# No likes
+    And I do not see likes below the latest message
+# Only liked by me
+    When I click to like the latest message without other likes
+    And I do not see likes below the latest message
+    Then I see the latest message is only liked by me
+# Liked by others and me
+    When User <Contact> likes the recent message from user <Name> via device Device1
+    And I see likes below the latest message
+    And I see the latest message is liked by others and me
+# Only liked by others
+    When I click to unlike the latest message with other likes
+    Then I see likes below the latest message
+    And I see the latest message is only liked by others
+# Everything unliked
+    When User <Contact> unlikes the recent message from user <Name> via device Device1
+    And I do not see likes below the latest message
 
     Examples:
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | Message | ExpectedMessage     |
+      | user1Email | user1Password | user1Name | user2Name | cat     | cat • via giphy.com |
 
   @C226435 @staging
   Scenario Outline: Verify liking someone's location
