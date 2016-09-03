@@ -193,14 +193,32 @@ Feature: Like
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I open conversation with <Contact>
-    And I fail the test
+    When <Contact> sends <Size> sized file with name <File> via device Device1 to user <Name>
+    When I wait until placeholder for file <File> disappears
+    # No likes
+    And I do not see likes below the latest message
+# Only liked by me
+    When I click to like the latest message without other likes
+    And I do not see likes below the latest message
+    Then I see the latest message is only liked by me
+# Liked by others and me
+    When User <Contact> likes the recent message from user <Name> via device Device1
+    And I see likes below the latest message
+    And I see the latest message is liked by others and me
+# Only liked by others
+    When I click to unlike the latest message with other likes
+    Then I see likes below the latest message
+    And I see the latest message is only liked by others
+# Everything unliked
+    When User <Contact> unlikes the recent message from user <Name> via device Device1
+    And I do not see likes below the latest message
 
     Examples:
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | File       | Size | Type |
+      | user1Email | user1Password | user1Name | user2Name | C87933.txt | 15MB | TXT  |
 
   @C226434 @staging
-  Scenario Outline: Verify liking someone's gif from GIPHY
+  Scenario Outline: Verify liking gif from GIPHY
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
