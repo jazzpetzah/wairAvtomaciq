@@ -260,7 +260,7 @@ Feature: Conversation View
     Then I verify the last text message equals to <Message>
     And I see 2 messages in conversation
     When I open context menu of the last message
-    And I click delete everywhere in message context menu
+    And I click delete everywhere in message context menu for my own message
     And I click confirm to delete message for everyone
     Then I do not see text message <Message>
     And I see 1 messages in conversation
@@ -282,7 +282,7 @@ Feature: Conversation View
     Then I verify the last text message equals to <Message>
     And I see 2 messages in conversation
     When I open context menu of the last message
-    And I click delete in message context menu
+    And I click delete in message context menu for my own message
     And I click confirm to delete message for me
     Then I do not see text message <Message>
     And I see 1 messages in conversation
@@ -305,7 +305,8 @@ Feature: Conversation View
     And I see 2 messages in conversation
     When I open context menu of the last message
 # as long as there is no entry for deleting everywhere this will select delete locally
-    And I click delete everywhere in message context menu
+    And I click delete everywhere in message context menu for my own message
+# following step will fail if it's NOT local delete
     And I click confirm to delete message for me
     Then I do not see text message <Message>
     And I see 1 messages in conversation
@@ -327,7 +328,7 @@ Feature: Conversation View
     And I see text message <Message1>
     And I see 2 messages in conversation
     When I open context menu of the last message
-    And I click edit in message context menu
+    And I click edit in message context menu for my own message
     And I delete 8 characters from the conversation input
     And I write message <Message2>
     And I send message
