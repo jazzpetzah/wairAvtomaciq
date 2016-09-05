@@ -362,7 +362,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Latitude | Longitude | LocationName |
       | user1Email | user1Password | user1Name | user2Name | 12.94    | 54.29     | Stralsund    |
 
-  @C234612 @staging
+  @C234612 @regression
   Scenario Outline: Verify locally deleted message can be liked by others
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -388,7 +388,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Message1 |
       | user1Email | user1Password | user1Name | user2Name | like me  |
 
-  @C234614 @staging
+  @C234614 @regression
   Scenario Outline: Verify message that is not in my history can be liked by others
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
