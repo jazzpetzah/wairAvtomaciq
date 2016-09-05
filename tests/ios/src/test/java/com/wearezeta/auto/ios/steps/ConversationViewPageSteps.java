@@ -630,20 +630,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap on the sent link to open it
-     * There is no way to simply detect the position of the link in the message cell
-     * That is why we assume it is located at the beginning of the string
-     *
-     * @param msgStartingWithLink the message containing a clickable link at the beginning
-     * @throws Exception
-     * @step. ^I tap on message "(.*)"$
-     */
-    @When("^I tap on message \"(.*)\"$")
-    public void ITapOnLink(String msgStartingWithLink) throws Exception {
-        getConversationViewPage().tapMessage(msgStartingWithLink);
-    }
-
-    /**
      * Select the corresponding item from the modal menu, which appears after Delete badge is tapped
      *
      * @param name one of possible item names
@@ -1485,5 +1471,24 @@ public class ConversationViewPageSteps {
     @And("^I tap (?:Like|Unlike) icon in the conversation$")
     public void ITapLikeIcon() throws Exception {
         getConversationViewPage().tapLikeIcon();
+    }
+
+    /**
+     * Verify visibility of the Like/Unlike icon
+     *
+     * @param shouldNotSee eqauls to null if the icon should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see (?:Like|Unlike) icon in the conversation$
+     */
+    @Then("^I (do not )?see (?:Like|Unlike) icon in the conversation$")
+    public void ISeeLikeIcon(String shouldNotSee) throws Exception {
+        boolean condition;
+        if (shouldNotSee == null) {
+            condition = getConversationViewPage().isLikeIconVisible();
+        } else {
+            condition = getConversationViewPage().isLikeIconInvisible();
+        }
+        Assert.assertTrue(String.format("The Like/Unlike icon is expected to be %s",
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }
 }

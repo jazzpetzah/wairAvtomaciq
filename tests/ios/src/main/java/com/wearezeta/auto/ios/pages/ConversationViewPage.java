@@ -70,9 +70,6 @@ public class ConversationViewPage extends IOSPage {
     private static final Function<String, String> xpathStrMessageByExactText = text ->
             String.format("%s[@value='%s']", xpathStrAllTextMessages, text);
 
-    private static final Function<String, String> xpathStrMessageCellByTextPart = text ->
-            String.format("%s[contains(@value, '%s')]/parent::*", xpathStrAllTextMessages, text);
-
     private static final Function<String, String> xpathStrSystemMessageByText = text ->
             String.format("//UIATableCell[@name='%s']", text.toUpperCase());
 
@@ -534,12 +531,6 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConversationInputAvatar);
     }
 
-    public void tapMessage(String expectedLink) throws Exception {
-        final By locator = By.xpath(xpathStrMessageCellByTextPart.apply(expectedLink));
-        // TODO: Find a better way to calculate these click coordinates
-        DriverUtils.tapByCoordinatesWithPercentOffcet(getDriver(), getElement(locator), 20, 70);
-    }
-
     public boolean isShieldIconVisibleNextToInputField() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameShieldIconNextToInput);
     }
@@ -617,11 +608,10 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapFileTransferMenuItem(String itemName) throws Exception {
-        Optional <WebElement> element = getElementIfDisplayed(MobileBy.AccessibilityId(itemName), MAX_APPEARANCE_TIME);
+        Optional<WebElement> element = getElementIfDisplayed(MobileBy.AccessibilityId(itemName), MAX_APPEARANCE_TIME);
         if (element.isPresent()) {
             element.get().click();
-        }
-        else {
+        } else {
             Assert.fail(String.format("'%s' file transfer item didn't appear in %s seconds", itemName, MAX_APPEARANCE_TIME));
         }
     }
@@ -1055,5 +1045,13 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapLikeIcon() throws Exception {
         getElement(nameLikeButton).click();
+    }
+
+    public boolean isLikeIconVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameLikeButton);
+    }
+
+    public boolean isLikeIconInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameLikeButton);
     }
 }
