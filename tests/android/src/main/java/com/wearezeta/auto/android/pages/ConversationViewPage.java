@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
@@ -897,7 +898,7 @@ public class ConversationViewPage extends AndroidPage {
     public void tapContainer(String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
         final WebElement el = getElement(locator);
-        if (locator.equals(idAudioMessageContainer) || locator.equals(idVideoMessageContainer)) {
+        if (Arrays.asList(idAudioMessageContainer, idVideoMessageContainer, idYoutubeContainer).contains(locator)) {
             // To avoid to tap on play button and play bar
             final Point location = el.getLocation();
             final Dimension size = el.getSize();
