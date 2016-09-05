@@ -19,7 +19,7 @@ Feature: Edit Message
       | user1Name | user2Name |
 
   @C206256 @regression @fastLogin
-  Scenario Outline: Verify impossibility of editing/deleting everywhere message after leaving/being removed from a conversation
+  Scenario Outline: ZIOS-7203 Verify impossibility of editing/deleting everywhere message after leaving/being removed from a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
