@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
@@ -89,6 +90,7 @@ public class ConversationViewPage extends AndroidPage {
     //endregion
 
     //region Message Bottom Menu
+    private static final By idMessageBottomMenu = By.id("action_bar_root");
     private static final By idMessageBottomMenuForwardButton = By.id("message_bottom_menu_item_forward");
     private static final By idMessageBottomMenuDeleteLocalButton = By.id("message_bottom_menu_item_delete_local");
     private static final By idMessageBottomMenuDeleteGlobalButton = By.id("message_bottom_menu_item_delete_global");
@@ -1026,7 +1028,28 @@ public class ConversationViewPage extends AndroidPage {
 
     public void tapMessageBottomMenuButton(String name) throws Exception {
         final By locator = getMessageBottomMenuButtonLocatorByName(name);
+        assert scrollUntilMessageMenuElementVisible(locator, 5) : String
+                .format("Message Menu item '%s' is not present", name);
         getElement(locator, String.format("Message bottom menu %s button is invisible", name)).click();
+    }
+
+    private boolean scrollUntilMessageMenuElementVisible(By locator, int maxScrolls) throws Exception {
+        final int offset = 20;
+        int nScrolls = 0;
+        int screenHeight = AndroidCommonUtils.getScreenSize(getDriver()).getHeight();
+        int containerHeight = getElement(idMessageBottomMenu).getSize().getHeight();
+        int endHeightPercentage = (screenHeight - containerHeight) / screenHeight;
+
+        while (nScrolls < maxScrolls) {
+            Optional<WebElement> el = getElementIfDisplayed(locator, 1);
+            if (el.isPresent() &&
+                    el.get().getLocation().getY() + el.get().getSize().getHeight() - offset <= screenHeight) {
+                return true;
+            }
+            swipeByCoordinates(500, 50, 95, 50, endHeightPercentage);
+            nScrolls++;
+        }
+        return false;
     }
 
     public boolean waitUntilMessageBottomMenuButtonVisible(String btnNAme) throws Exception {
