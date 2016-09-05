@@ -81,7 +81,6 @@ public class ConversationViewPage extends AndroidPage {
             = (id, value) -> String.format("//*[@id='%s' and contains(@value,'%s')]", id, value);
 
     private static final String strIdMessageMetaLikeButton = "gtv__footer__like__button";
-    private static final String strIdMessageMetaLikeHint = "gtv__footer__like__hint_arrow";
     private static final String strIdMessageMetaLikeDescription = "tv__footer__like__description";
     private static final String strIdMessageMetaStatus = "tv__footer__message_status";
     private static final String strIdMessageMetaFirstLike = "cv__first_like_chathead";
@@ -897,7 +896,15 @@ public class ConversationViewPage extends AndroidPage {
 
     public void tapContainer(String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
-        getElement(locator).click();
+        final WebElement el = getElement(locator);
+        if (locator.equals(idAudioMessageContainer) || locator.equals(idVideoMessageContainer)) {
+            // To avoid to tap on play button and play bar
+            final Point location = el.getLocation();
+            final Dimension size = el.getSize();
+            getDriver().tap(1, location.x + size.width / 5, location.y + size.height / 5, DriverUtils.SINGLE_TAP_DURATION);
+        } else {
+            el.click();
+        }
     }
 
     public void longTapContainer(String name) throws Exception {
@@ -1120,8 +1127,6 @@ public class ConversationViewPage extends AndroidPage {
         switch (itemType.toLowerCase()) {
             case "like button":
                 return strIdMessageMetaLikeButton;
-            case "like hint":
-                return strIdMessageMetaLikeHint;
             case "like description":
                 return strIdMessageMetaLikeDescription;
             case "message status":

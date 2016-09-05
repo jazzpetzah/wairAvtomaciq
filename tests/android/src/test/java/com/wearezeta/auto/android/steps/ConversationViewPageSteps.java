@@ -1509,10 +1509,10 @@ public class ConversationViewPageSteps {
      * @param expectedMsg    specified expected content for item
      * @param messageType    the message type
      * @throws Exception
-     * @step. ^I (do not )?see (Like button|Like hint|Like description|Message status|First like avatar|Second like avatar)
+     * @step. ^I (do not )?see (Like button|Like description|Message status|First like avatar|Second like avatar)
      * (with expected text "(.*)" )?in conversation view$
      */
-    @Then("^I (do not )?see (Like button|Like hint|Like description|Message status|First like avatar|Second like avatar)" +
+    @Then("^I (do not )?see (Like button|Like description|Message status|First like avatar|Second like avatar)" +
             " (with expected text \"(.*)\" )?in conversation view$")
     public void ISeeMessagMetaForText(String shouldNotSee, String itemType, String hasExpectedMsg,
                                       String expectedMsg) throws Exception {
@@ -1549,10 +1549,10 @@ public class ConversationViewPageSteps {
      * @param itemType    Message Meta Item type
      * @param messageType The message type
      * @throws Exception
-     * @step. ^^I tap (Like button|Like hint|Like description|Message status|First like avatar|Second like avatar)
+     * @step. ^^I tap (Like button|Like description|Message status|First like avatar|Second like avatar)
      * in conversation view$
      */
-    @When("^I tap (Like button|Like hint|Like description|Message status|First like avatar|Second like avatar)" +
+    @When("^I tap (Like button|Like description|Message status|First like avatar|Second like avatar)" +
             " in conversation view$")
     public void ITapMessageMeta(String itemType) throws Exception {
         getConversationViewPage().tapMessageMetaItem(itemType);
