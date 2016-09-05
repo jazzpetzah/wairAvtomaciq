@@ -240,7 +240,7 @@ Feature: Like
     And I remember the state of like button for recent Image
     And I tap Like button under the recent Image
     Then I verify the state of like button item is changed
-    Then I see Like description with expected text "<Name>" under the recent Image
+    And I see Like description with expected text "<Name>" under the recent Image
 
     Examples:
       | Name      | Contact   | Picture     |
