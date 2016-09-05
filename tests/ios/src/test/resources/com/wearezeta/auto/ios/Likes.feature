@@ -19,7 +19,7 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C225980 @staging @fastLogin
+  @C225980 @C225995 @staging @fastLogin
   Scenario Outline: Verify liking/unliking a message from a message menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
