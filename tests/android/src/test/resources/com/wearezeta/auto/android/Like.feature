@@ -198,7 +198,7 @@ Feature: Like
       | Name      | Contact   | Message | Device  |
       | user1Name | user2Name | Yo      | Device1 |
 
-  @C226041 @staging
+  @C226041 @C226581 @staging
   Scenario Outline: I see likers count instead of names (example: 5 People)
     Given There are 5 users where <Name> is me
     Given <Contact1> is connected to Myself,<Contact2>,<Contact3>,<Contact4>
@@ -216,10 +216,32 @@ Feature: Like
     And User <Contact2> likes the recent message from group conversation <Group> via device <D2>
     And User <Contact3> likes the recent message from group conversation <Group> via device <D3>
     And User <Contact4> likes the recent message from group conversation <Group> via device <D4>
+    # C226041
     Then I see Like description with expected text "4 people" under the Text message "<Message>"
+    # C226581
     And I see First like avatar under the Text message "<Message>"
     And I see Second like avatar under the Text message "<Message>"
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Group     | Message | D1 | D2 | D3 | D4 |
       | user1Name | user2Name | user3Name | user4Name | user5Name | LikeGroup | Hi      | D1 | D2 | D3 | D4 |
+
+  @C226022 @staging
+  Scenario Outline: I can like a picture
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
+    And I see a picture in the conversation view
+    And I tap the recent picture in the conversation view
+    And I remember the state of like button for recent Image
+    And I tap Like button under the recent Image
+    Then I verify the state of like button item is changed
+    Then I see Like description with expected text "<Name>" under the recent Image
+
+    Examples:
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
