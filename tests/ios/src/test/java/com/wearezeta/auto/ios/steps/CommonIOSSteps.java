@@ -440,11 +440,11 @@ public class CommonIOSSteps {
     /**
      * click the corresponding on-screen keyboard button
      *
-     * @param btnName button name, either Space or Hide or Done
+     * @param btnName button name
      * @throws Exception
-     * @step. ^I click (\\w+) keyboard button$
+     * @step. ^I click (hide|space|done) keyboard button$
      */
-    @When("^I click (\\w+) keyboard button$")
+    @When("^I click (hide|space|done) keyboard button$")
     public void IClickHideKeyboardBtn(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
             case "hide":
