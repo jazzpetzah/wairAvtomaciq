@@ -343,7 +343,7 @@ Feature: Conversation View
       | user1Name | user2Name | https://vimeo.com/129426512 |
 
   @C845 @regression @fastLogin
-  Scenario Outline: Verify posting in a 1-to-1 conversation without content
+  Scenario Outline: ZIOS-7205 Verify posting in a 1-to-1 conversation without content
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -357,10 +357,9 @@ Feature: Conversation View
     And I open search UI
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
-    And I tap Open conversation action button on People picker page
-    Then I see conversation view page
+    When I tap Open conversation action button on People picker page
     And I type the default message and send it
-    And I see 1 default message in the conversation view
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact1  |
