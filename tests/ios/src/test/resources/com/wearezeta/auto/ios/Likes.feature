@@ -107,8 +107,7 @@ Feature: Likes
     Given User Myself sends 1 encrypted message to user <Contact>
     Given I see conversations list
     Given I tap on contact name <Contact>
-    When I tap default message in conversation view
-    And I tap Like icon in the conversation
+    When I tap Like icon in the conversation
     And I remember the state of Like icon in the conversation
     And I long tap default message in conversation view
     And I tap on Edit badge item
