@@ -19,6 +19,7 @@ import io.appium.java_client.TouchAction;
 import io.appium.java_client.ios.IOSElement;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -614,7 +615,13 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapFileTransferMenuItem(String itemName) throws Exception {
-        getElement(MobileBy.AccessibilityId(itemName)).click();
+        Optional <WebElement> element = getElementIfDisplayed(MobileBy.AccessibilityId(itemName), MAX_APPEARANCE_TIME);
+        if (element.isPresent()) {
+            element.get().click();
+        }
+        else {
+            Assert.fail(String.format("'%s' file transfer item didn't appear in %s seconds", itemName, MAX_APPEARANCE_TIME));
+        }
     }
 
     public boolean isFileTransferTopLabelVisible() throws Exception {
