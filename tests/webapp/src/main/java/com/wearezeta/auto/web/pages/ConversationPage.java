@@ -1155,6 +1155,13 @@ public class ConversationPage extends WebPage {
         getDriver().findElement(locator).click();
     }
 
+    public void clickReactInContextMenuOfLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssReactByMessageId.apply(id));
+        getDriver().findElement(locator).click();
+    }
+
     public void clickToDeleteLatestMessage() throws Exception {
         By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
         String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
@@ -1235,6 +1242,16 @@ public class ConversationPage extends WebPage {
         String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssEditButtonByMessageId.apply(id));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3);
+    }
+
+    public boolean isLikeButtonInContextMenuVisible() throws Exception {
+        By locator = By.xpath(WebAppLocators.ConversationPage.xpathLikeInContext);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
+    }
+
+    public boolean isUnlikeButtonInContextMenuVisible() throws Exception {
+        By locator = By.xpath(WebAppLocators.ConversationPage.xpathUnlikeInContext);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
     }
 
     public void setCloseResetSessionDialog() throws Exception {

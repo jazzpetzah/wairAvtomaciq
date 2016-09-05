@@ -504,3 +504,37 @@ Feature: Like
     Examples:
       | Login      | Password      | Name      | Contact   | Message1 | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | like me  | edited        |
+
+    @C226439 @staging
+    Scenario Outline: Verify you can like someone's message from message context menu
+      Given There are 2 users where <Name> is me
+      Given Myself is connected to <Contact>
+      Given I switch to Sign In page
+      Given I Sign in using login <Login> and password <Password>
+      Given I am signed in properly
+      When I open conversation with <Contact>
+      And Contact <Contact> sends message <Message1> via device Device1 to user me
+      Then I see text message <Message1>
+# No likes
+      And I do not see likes below the latest message
+# Only liked by me
+      When I click context menu of the latest message
+      And I click like button in context menu for latest message
+      And I do not see likes below the latest message
+      Then I see the latest message is only liked by me
+# Liked by others and me
+      When User <Contact> likes the recent message from user <Name> via device Device1
+      And I see likes below the latest message
+      And I see the latest message is liked by others and me
+# Only liked by others
+      When I click context menu of the latest message
+      And I click unlike button in context menu for latest message
+      Then I see likes below the latest message
+      And I see the latest message is only liked by others
+# Everything unliked
+      When User <Contact> unlikes the recent message from user <Name> via device Device1
+      And I do not see likes below the latest message
+
+      Examples:
+        | Login      | Password      | Name      | Contact   | Message1 |
+        | user1Email | user1Password | user1Name | user2Name | like me  |

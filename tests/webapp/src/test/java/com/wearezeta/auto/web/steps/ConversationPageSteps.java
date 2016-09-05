@@ -747,6 +747,20 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).clickEditInMessageContextMenu();
     }
 
+    @When("^I click (like|unlike) button in context menu for latest message$")
+    public void IClickToLikeInContextMenuOfLatestMessage(String like) throws Exception {
+        boolean isLike = "like".equals(like);
+        if (isLike) {
+            assertTrue("Like button is not visible", context.getPagesCollection().getPage(ConversationPage.class)
+                    .isLikeButtonInContextMenuVisible());
+            context.getPagesCollection().getPage(ConversationPage.class).clickReactInContextMenuOfLatestMessage();
+        } else {
+            assertTrue("Unlike button is not visible", context.getPagesCollection().getPage(ConversationPage.class)
+                    .isUnlikeButtonInContextMenuVisible());
+            context.getPagesCollection().getPage(ConversationPage.class).clickReactInContextMenuOfLatestMessage();
+        }
+    }
+
     @When("^I click to (like|unlike) the latest message with(out)? other likes$")
     public void IClickToLikeLatestMessageWithoutOtherLikes(String like, String out) throws Exception {
         boolean isWithout = "out".equals(out);
