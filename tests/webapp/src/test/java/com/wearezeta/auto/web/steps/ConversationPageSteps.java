@@ -808,6 +808,19 @@ public class ConversationPageSteps {
                 .isUnlikeWithOtherLikesVisibleForLatestMessage());
     }
 
+    @Then("^I see the latest message is liked by (.*)$")
+    public void ThenISeeLatestMessageIsLikedBy(String usersToNameAliases) throws Exception {
+        List<String> likers = context.getPagesCollection().getPage(ConversationPage.class).getUsersThatLikeTheLatestMessage();
+        List<String> aliases = CommonSteps.splitAliases(usersToNameAliases);
+        String[] users = new String[aliases.size()];
+        for(int i = 0; i < aliases.size(); i++) {
+            ClientUser userTo = context.getUserManager().findUserByNameOrNameAlias(aliases.get(i));
+            users[i] = userTo.getName();
+        }
+        assertThat("User not found in like message", likers, hasItems(users));
+        assertThat("Wrong number of likes", likers, hasSize(users.length));
+    }
+
     @When("^I click reset session on the latest decryption error")
     public void IClickToResetSession() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickToResetSessionOnLatestError();

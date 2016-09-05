@@ -346,7 +346,10 @@ public final class WebAppLocators {
 
         public static final Function<String, String> cssMessagesById = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s']", text);
-        
+
+        public static final Function<String, String> cssUserThatLikeByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] span.text-graphite:not(.text-red)", text);
+
         public static final Function<String, String> cssLikeWithoutOtherLikesByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-body-like:not(.text-red)", text);
         
