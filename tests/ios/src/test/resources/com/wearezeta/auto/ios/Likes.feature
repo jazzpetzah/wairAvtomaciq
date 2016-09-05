@@ -78,3 +78,23 @@ Feature: Likes
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C225999 @staging @fastLogin
+  Scenario Outline: Verify deleted for myself my message doesn't reappear after someone liked it
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given User Myself sends 1 encrypted message to user <Contact>
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I long tap default message in conversation view
+    And I tap on Delete badge item
+    And I select Delete for Me item from Delete menu
+    Then I see 0 default messages in the conversation view
+    When User <Contact> likes the recent message from user Myself
+    Then I see 0 default messages in the conversation view
+    And I do not see Like icon in the conversation
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
