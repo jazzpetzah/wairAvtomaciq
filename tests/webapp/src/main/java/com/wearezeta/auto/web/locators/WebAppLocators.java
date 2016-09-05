@@ -348,7 +348,7 @@ public final class WebAppLocators {
                 .format("[data-uie-name='item-message'][data-uie-uid='%s']", text);
 
         public static final Function<String, String> cssUserThatLikeByMessageId = text -> String
-                .format("[data-uie-name='item-message'][data-uie-uid='%s'] span.text-graphite:not(.text-red)", text);
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='message-liked-names']", text);
 
         public static final Function<String, String> cssLikeWithoutOtherLikesByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-body-like:not(.text-red)", text);
