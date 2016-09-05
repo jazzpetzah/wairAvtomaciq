@@ -747,11 +747,23 @@ public class ConversationViewPage extends IOSPage {
         }
     }
 
-    public void tapMessageByText(boolean isLongTap, String msg) throws Exception {
-        final WebElement locator = getElement(By.xpath(xpathStrMessageByTextPart.apply(msg)));
-        final int tapDuration = isLongTap ? DriverUtils.LONG_TAP_DURATION : DriverUtils.SINGLE_TAP_DURATION;
-        //Using this method because tap should be performed precisely on the text otherwise popup won't appear
-        DriverUtils.tapOnPercentOfElement(getDriver(), locator, 10, 50, tapDuration);
+    public void tapMessageByText(boolean isLongTap, boolean isDoubleTap, String msg) throws Exception {
+        final WebElement el = getElement(By.xpath(xpathStrMessageByTextPart.apply(msg)));
+        // The tap should be performed precisely on the text
+        final int tapPercentX = 10;
+        final int tapPercentY = 50;
+        if (isDoubleTap) {
+            final Point coords = el.getLocation();
+            final Dimension size = el.getSize();
+            final int x = coords.x + size.getWidth() * tapPercentX / 100;
+            final int y = coords.y + size.getHeight() * tapPercentY / 100;
+            for (int i = 0; i < 2; i++) {
+                getDriver().tap(1, x, y, 25);
+            }
+        } else {
+            final int tapDuration = isLongTap ? DriverUtils.LONG_TAP_DURATION : DriverUtils.SINGLE_TAP_DURATION;
+            DriverUtils.tapOnPercentOfElement(getDriver(), el, tapPercentX, tapPercentY, tapDuration);
+        }
     }
 
     private WebElement locateCursorToolButton(By locator) throws Exception {
