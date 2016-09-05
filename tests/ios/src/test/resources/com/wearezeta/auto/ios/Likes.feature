@@ -98,3 +98,28 @@ Feature: Likes
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C225998 @C226001 @staging @fastLogin
+  Scenario Outline: Verify editing already liked message and like after edit
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given User Myself sends 1 encrypted message to user <Contact>
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I tap default message in conversation view
+    And I tap Like icon in the conversation
+    And I remember the state of Like icon in the conversation
+    And I long tap default message in conversation view
+    And I tap on Edit badge item
+    And I clear conversation text input
+    And I type the "<Text>" message
+    And I tap Confirm button on Edit control
+    Then I see last message in the conversation view is expected message <Text>
+    And I see the state of Like icon is changed in the conversation
+    When I tap Like icon in the conversation
+    Then I see the state of Like icon is not changed in the conversation
+
+    Examples:
+      | Name      | Contact   | Text  |
+      | user1Name | user2Name | aloha |
