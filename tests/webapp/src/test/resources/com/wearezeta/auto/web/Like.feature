@@ -19,11 +19,11 @@ Feature: Like
 # Liked by others and me
     When User <Contact> likes the recent message from user <Name> via device Device1
     And I see likes below the latest message
-    And I see the latest message is liked by others and me
+    And I see the latest message is liked by Myself,<Contact>
 # Only liked by others
     When I click to unlike the latest message with other likes
     Then I see likes below the latest message
-    And I see the latest message is only liked by others
+    And I see the latest message is liked by <Contact>
 # Everything unliked
     When User <Contact> unlikes the recent message from user <Name> via device Device1
     And I do not see likes below the latest message
