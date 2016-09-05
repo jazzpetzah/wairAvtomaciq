@@ -1440,7 +1440,7 @@ public class ConversationViewPageSteps {
     }
 
     private static final int LIKE_ICON_STATE_CHANGE_TIMEOUT = 7; //seconds
-    private static final double LIKE_ICON_MIN_SIMILARITY = 0.7;
+    private static final double LIKE_ICON_MIN_SIMILARITY = 0.9;
     private ElementState likeIconState = new ElementState(
             () -> getConversationViewPage().getLikeIconState()
     );
