@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -79,7 +77,6 @@ public class ConversationViewPage extends AndroidPage {
     //endregion
 
     //region Message footer
-    private static final Function<String, String> xpathStrTemplateId = id -> String.format("//*[@id='%s']", id);
     private static final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> xpathStrTemplateIdValue
             = (id, value) -> String.format("//*[@id='%s' and contains(@value,'%s')]", id, value);
 
@@ -89,14 +86,6 @@ public class ConversationViewPage extends AndroidPage {
     private static final String strIdMessageMetaStatus = "tv__footer__message_status";
     private static final String strIdMessageMetaFirstLike = "cv__first_like_chathead";
     private static final String strIdMessageMetaSecondLike = "cv__first_like_chathead";
-
-    private static final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> xpathStrTxtMsgMetaItem
-            = (txtMsg, subLocator) -> String.format("//*[@id='%s' and @value='%s']/../../following-sibling::*[1]%s",
-            idStrRowConversationMessage, txtMsg, subLocator);
-
-    private static final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> xpathStrContainerMsgMetaItem
-            = (containerRowLocator, subLocator) -> String.format("%sfollowing-sibling::*[1]%s",
-            containerRowLocator, subLocator);
     //endregion
 
     //region Message Bottom Menu
@@ -235,6 +224,10 @@ public class ConversationViewPage extends AndroidPage {
     private static final By idAudioContainerSeekbar = By.id("sb__audio_progress");
 
     private static final By idAudioMessagePreviewSeekbar = By.id("sb__voice_message__recording__seekbar");
+
+    private static final By idImageContainerSketchButton = By.id("gtv__row_conversation__image_sketch");
+
+    private static final By idImageContainerFullScreenButton = By.id("gtv__row_conversation__image_fullscreen");
 
     private static final int MAX_CLICK_RETRIES = 5;
 
@@ -960,6 +953,22 @@ public class ConversationViewPage extends AndroidPage {
         getElement(idAudioContainerButton).click();
     }
 
+    private By getImageContainerButtonLocator(String buttonName) {
+        switch (buttonName.toLowerCase()) {
+            case "sketch":
+                return idImageContainerSketchButton;
+            case "fullscreen":
+                return idImageContainerFullScreenButton;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify the button type '%s'", buttonName));
+        }
+    }
+
+    public void tapImageContainerButton(String buttonName) throws Exception {
+        By locator = getImageContainerButtonLocator(buttonName);
+        getElement(locator).click();
+    }
+
     public boolean isVideoMessageButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idVideoContainerButton);
     }
@@ -1071,42 +1080,39 @@ public class ConversationViewPage extends AndroidPage {
     //endregion
 
     //region Message Meta
-    public boolean waitUntilMessageMetaItemVisible(String messageType, String itemType) throws Exception {
+    public boolean waitUntilMessageMetaItemVisible(String itemType) throws Exception {
         String locatorId = getMessageMetaLocatorIdString(itemType);
-        return checkMessageMetaItemVisibility(messageType, xpathStrTemplateId.apply(locatorId), itemType, true);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(locatorId));
     }
 
-    public boolean waitUntilMessageMetaItemInvisible(String messageType, String itemType) throws Exception {
+    public boolean waitUntilMessageMetaItemInvisible(String itemType) throws Exception {
         String locatorId = getMessageMetaLocatorIdString(itemType);
-        return checkMessageMetaItemVisibility(messageType, xpathStrTemplateId.apply(locatorId), itemType, false);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(locatorId));
     }
 
-    public boolean waitUntilMessageMetaItemVisible(String messageType, String itemType, String expectedItemText)
+    public boolean waitUntilMessageMetaItemVisible(String itemType, String expectedItemText)
             throws Exception {
         String locatorId = getMessageMetaLocatorIdString(itemType);
-        return checkMessageMetaItemVisibility(messageType,
-                xpathStrTemplateIdValue.apply(locatorId, expectedItemText), itemType, true);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(xpathStrTemplateIdValue.apply(locatorId, expectedItemText)));
     }
 
-    public boolean waitUntilMessageMetaItemInvisible(String messageType, String itemType, String expectedItemText)
+    public boolean waitUntilMessageMetaItemInvisible(String itemType, String expectedItemText)
             throws Exception {
         String locatorId = getMessageMetaLocatorIdString(itemType);
-        return checkMessageMetaItemVisibility(messageType,
-                xpathStrTemplateIdValue.apply(locatorId, expectedItemText), itemType, false);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.xpath(xpathStrTemplateIdValue.apply(locatorId, expectedItemText)));
     }
 
-    public void tapMessageMetaItem(String messageType, String itemType) throws Exception {
+    public void tapMessageMetaItem(String itemType) throws Exception {
         String locatorId = getMessageMetaLocatorIdString(itemType);
-        By locator = getMessageMetaLocator(messageType, xpathStrTemplateId.apply(locatorId));
-        getElement(locator).click();
+        getElement(By.id(locatorId)).click();
     }
 
-    public BufferedImage getMessageLikeButtonState(String messageType) throws Exception {
-        By locator = getMessageMetaLocator(messageType, xpathStrTemplateId.apply(strIdMessageMetaLikeButton));
-
+    public BufferedImage getMessageLikeButtonState() throws Exception {
+        By locator = By.id(strIdMessageMetaLikeButton);
         return this.getElementScreenshot(getElement(locator)).orElseThrow(
-                () -> new IllegalStateException(
-                        String.format("Cannot get a screenshot for like button under message '%s'", messageType))
+                () -> new IllegalStateException("Cannot get a screenshot for like button")
         );
     }
 
@@ -1128,46 +1134,6 @@ public class ConversationViewPage extends AndroidPage {
                 throw new IllegalStateException(
                         String.format("Cannot identify the item type '%s' in Message Meta", itemType));
         }
-    }
-
-    private String getContainerMessageMetaParentLocator(String messageType, String childLocator) throws Exception {
-        switch (messageType.toLowerCase()) {
-            case "image":
-                return xpathStrContainerMsgMetaItem.apply(String.format("%s/../", xpathStrLastImage), childLocator);
-            default:
-                throw new IllegalStateException(String.format("Cannot identify the message type '%s'", messageType));
-        }
-    }
-
-    private By getMessageMetaLocator(String messageType, String childLocator) throws Exception {
-        String parentLocator;
-        if (messageType.matches(".*\".*\"")) {
-            String textMessage = retrieveTextMessage(messageType)
-                    .orElseThrow(() -> new IllegalArgumentException("Should specify the text message contnent"));
-            parentLocator = xpathStrTxtMsgMetaItem.apply(textMessage, childLocator);
-        } else {
-            parentLocator = getContainerMessageMetaParentLocator(messageType, childLocator);
-        }
-        return By.xpath(parentLocator);
-    }
-
-    private boolean checkMessageMetaItemVisibility(String messageType, String childLocator, String itemType, boolean shouldVisible) throws Exception {
-        By locator = getMessageMetaLocator(messageType, childLocator);
-        if (shouldVisible) {
-            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-        } else {
-            return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
-        }
-    }
-
-    private Optional<String> retrieveTextMessage(String messageType) {
-        Pattern p = Pattern.compile("\"(.*)\"");
-        Matcher m = p.matcher(messageType);
-        if (m.find()) {
-            return Optional.of(m.group(1));
-        }
-        return Optional.empty();
-
     }
     //endregion
 }
