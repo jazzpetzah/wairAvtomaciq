@@ -43,7 +43,7 @@ public class ConversationViewPage extends AndroidPage {
 
     // Image
     private static final String idStrConversationImages = "fl__row_conversation__message_image_container";
-    private static final By idConversationImages = By.id(idStrConversationImages);
+    public static final By idConversationImages = By.id(idStrConversationImages);
     private static final String xpathStrLastImage = String.format("(//*[@id='%s'])[last()]", idStrConversationImages);
     private static final By xpathLastImage = By.xpath(xpathStrLastImage);
     private static final By xpathUnsentIndicatorForImage = By
