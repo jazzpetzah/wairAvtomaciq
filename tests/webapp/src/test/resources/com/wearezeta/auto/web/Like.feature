@@ -1,6 +1,6 @@
 Feature: Like
 
-  @C226471 @staging
+  @C226438 @regression
   Scenario Outline: Verify you can like someone's message in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -106,7 +106,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | ImageName                |
       | user1Email | user1Password | user1Name | user2Name | userpicture_portrait.jpg |
 
-  @C226429 @staging
+  @C226429 @regression
   Scenario Outline: Verify liking someone's audio message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -259,7 +259,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Youtubelink                                 | Soundcloudlink                                                      | Vimeolink                 | Spotifylink                                           |
       | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=ncHd3sxpEbo | https://soundcloud.com/nour-moukhtar/ludwig-van-beethoven-fur-elise | https://vimeo.com/7265982 | https://play.spotify.com/album/7buEcyw6fJF3WPgr06BomH |
 
-  @C226433 @staging
+  @C226433 @regression
   Scenario Outline: Verify liking someone's shared file
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -329,7 +329,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Message | ExpectedMessage     |
       | user1Email | user1Password | user1Name | user2Name | cat     | cat • via giphy.com |
 
-  @C226435 @staging
+  @C226435 @regression
   Scenario Outline: Verify liking someone's location
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -407,7 +407,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Message1 |
       | user1Email | user1Password | user1Name | user2Name | like me  |
 
-  @C226443 @staging
+  @C226443 @regression
   Scenario Outline: Verify likes are reset if you edited message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -459,7 +459,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Message1 | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | like me  | edited        |
 
-  @C234613 @staging
+  @C234613 @regression
   Scenario Outline: Verify likes are reset if sender edits his message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
