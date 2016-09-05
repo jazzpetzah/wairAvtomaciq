@@ -1441,4 +1441,9 @@ public class ConversationViewPageSteps {
         sender = usrMgr.replaceAliasesOccurences(sender, FindBy.NAME_ALIAS);
         getConversationViewPage().tapRecentMessageFrom(sender);
     }
+
+    @When("^I tap on (sketch|fullscreen) button on image$")
+    public void ITapOnImageButtons(String buttonName) throws Exception {
+        getConversationViewPage().tapImageButton(buttonName);
+    }
 }

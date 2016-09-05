@@ -396,6 +396,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see 1 photo in the conversation view
     And I tap on image in conversation view
+    And I tap on fullscreen button on image
     And I see Full Screen Page opened
     And I see download button shown on fullscreen page
     And I tap download button on fullscreen page

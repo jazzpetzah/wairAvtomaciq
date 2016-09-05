@@ -232,9 +232,13 @@ public class ConversationViewPage extends IOSPage {
             (messageText, index) ->
                     String.format("%s[%s]/UIATextView[@name='%s']", xpathStrAllEntries, index, messageText);
 
+    private static final By nameSketchOnImageButton = MobileBy.AccessibilityId("sketchOnImageButton");
+    private static final By nameFullScreenOnImageButton = MobileBy.AccessibilityId("openFullScreenButton");
+
     private static final int MAX_APPEARANCE_TIME = 20;
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
+
 
     public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -615,11 +619,10 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapFileTransferMenuItem(String itemName) throws Exception {
-        Optional <WebElement> element = getElementIfDisplayed(MobileBy.AccessibilityId(itemName), MAX_APPEARANCE_TIME);
+        Optional<WebElement> element = getElementIfDisplayed(MobileBy.AccessibilityId(itemName), MAX_APPEARANCE_TIME);
         if (element.isPresent()) {
             element.get().click();
-        }
-        else {
+        } else {
             Assert.fail(String.format("'%s' file transfer item didn't appear in %s seconds", itemName, MAX_APPEARANCE_TIME));
         }
     }
@@ -794,7 +797,8 @@ public class ConversationViewPage extends IOSPage {
             case "play":
                 return namePlayAudioRecorderButton;
             default:
-                throw new IllegalArgumentException(String.format("Button '%s' is not known as a record control button", buttonName));
+                throw new IllegalArgumentException(String.format("Button '%s' is not known as a record control button",
+                        buttonName));
         }
     }
 
@@ -1043,5 +1047,22 @@ public class ConversationViewPage extends IOSPage {
     public boolean isContainerInvisible(String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public void tapImageButton(String buttonName) throws Exception {
+        this.printPageSource();
+        By locator = getImageButtonByName(buttonName);
+        getElement(locator).click();
+    }
+
+    private By getImageButtonByName(String buttonName) throws Exception {
+        switch (buttonName) {
+            case "sketch":
+                return nameSketchOnImageButton;
+            case "fullscreen":
+                return nameFullScreenOnImageButton;
+            default:
+                throw new Exception("Not recognized button name. Available 'sketch', 'fullscreen'");
+        }
     }
 }
