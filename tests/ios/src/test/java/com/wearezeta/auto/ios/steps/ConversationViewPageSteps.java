@@ -47,9 +47,6 @@ public class ConversationViewPageSteps {
     @When("^I tap on text input$")
     public void WhenITapOnTextInput() throws Exception {
         getConversationViewPage().tapOnCursorInput();
-//        if (CommonUtils.getIsSimulatorFromConfig(getClass()) && !getConversationViewPage().isKeyboardVisible()) {
-//            IOSSimulatorHelper.toggleSoftwareKeyboard();
-//        }
     }
 
     /**
@@ -1440,5 +1437,53 @@ public class ConversationViewPageSteps {
     public void ITapRecentMessage(String sender) throws Exception {
         sender = usrMgr.replaceAliasesOccurences(sender, FindBy.NAME_ALIAS);
         getConversationViewPage().tapRecentMessageFrom(sender);
+    }
+
+    private static final int LIKE_ICON_STATE_CHANGE_TIMEOUT = 7; //seconds
+    private static final double LIKE_ICON_MIN_SIMILARITY = 0.7;
+    private ElementState likeIconState = new ElementState(
+            () -> getConversationViewPage().getLikeIconState()
+    );
+
+    /**
+     * Store the current state of Like icon
+     *
+     * @throws Exception
+     * @step. ^I remember the state of (?:Like|Unlike) icon in the conversation$
+     */
+    @When("^I remember the state of (?:Like|Unlike) icon in the conversation$")
+    public void IRememberLikeIconState() throws Exception {
+        this.likeIconState.remember();
+    }
+
+    /**
+     * Verify whether the current state of Like icon differs from the previously remembered one
+     *
+     * @param shouldNotChange equals to null if the state should be changed
+     * @throws Exception
+     * @step. ^I see the state of (?:Like|Unlike) icon is (not )?changed in the conversation$
+     */
+    @Then("^I see the state of (?:Like|Unlike) icon is (not )?changed in the conversation$")
+    public void IVerifyLikeIconState(String shouldNotChange) throws Exception {
+        boolean condition;
+        if (shouldNotChange == null) {
+            condition = this.likeIconState.isChanged(LIKE_ICON_STATE_CHANGE_TIMEOUT, LIKE_ICON_MIN_SIMILARITY);
+        } else {
+            condition = this.likeIconState.isNotChanged(LIKE_ICON_STATE_CHANGE_TIMEOUT, LIKE_ICON_MIN_SIMILARITY);
+        }
+        Assert.assertTrue(String.format("Like icon state is expected %s in %s seconds",
+                (shouldNotChange == null) ? "to be changed" : "to be not changed", LIKE_ICON_STATE_CHANGE_TIMEOUT),
+                condition);
+    }
+
+    /**
+     * Tap Like/Unlike icon in the conversation
+     *
+     * @throws Exception
+     * @step. ^I tap (?:Like|Unlike) icon in the conversation$
+     */
+    @And("^I tap (?:Like|Unlike) icon in the conversation$")
+    public void ITapLikeIcon() throws Exception {
+        getConversationViewPage().tapLikeIcon();
     }
 }

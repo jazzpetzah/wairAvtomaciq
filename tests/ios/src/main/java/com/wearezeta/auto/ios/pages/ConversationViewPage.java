@@ -232,6 +232,8 @@ public class ConversationViewPage extends IOSPage {
             (messageText, index) ->
                     String.format("%s[%s]/UIATextView[@name='%s']", xpathStrAllEntries, index, messageText);
 
+    private static final By nameLikeButton = MobileBy.AccessibilityId("likeButton");
+
     private static final int MAX_APPEARANCE_TIME = 20;
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
@@ -1043,5 +1045,15 @@ public class ConversationViewPage extends IOSPage {
     public boolean isContainerInvisible(String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public BufferedImage getLikeIconState() throws Exception {
+        return getElementScreenshot(getElement(nameLikeButton)).orElseThrow(
+                () -> new IllegalStateException("Cannot take a screenshot of Like/Unlike button")
+        );
+    }
+
+    public void tapLikeIcon() throws Exception {
+        getElement(nameLikeButton).click();
     }
 }
