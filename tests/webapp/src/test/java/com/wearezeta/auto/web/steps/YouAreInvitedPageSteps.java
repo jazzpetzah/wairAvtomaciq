@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
@@ -13,7 +14,7 @@ import static org.hamcrest.Matchers.*;
 public class YouAreInvitedPageSteps {
 	
 	String code = "hello";
-        private final TestContext context;
+	private final TestContext context;
         
     public YouAreInvitedPageSteps() {
         this.context = new TestContext();
@@ -65,9 +66,8 @@ public class YouAreInvitedPageSteps {
 	 */
 	@When("^I use generic invitation link for invitation for (.*)$")
 	public void IUseGenericInvitationLinkForInvitation(String agent) throws Exception {
-		//String code = "hello";
-		context.getPagesCollection().getPage(YouAreInvitedPage.class).setUrl(
-				WebAppConstants.STAGING_SITE_ROOT + "/c/" + code + "/%3Fagent=" + agent);
+		final String website = CommonUtils.getWebsitePathFromConfig(YouAreInvitedPageSteps.class);
+		context.getPagesCollection().getPage(YouAreInvitedPage.class).setUrl(website + "/c/" + code + "/%3Fagent=" + agent);
 		context.getPagesCollection().getPage(YouAreInvitedPage.class).navigateTo();
 	}
 

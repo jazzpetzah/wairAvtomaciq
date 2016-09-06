@@ -1,7 +1,7 @@
 Feature: Like
 
-  @C226019 @C226035 @staging
-  Scenario Outline: I can like message from message tool menu
+  @C226019 @staging
+  Scenario Outline: I can like/unlike message from message tool menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User <Contact> adds new devices <ContactDevice>
@@ -24,10 +24,9 @@ Feature: Like
 
     Examples:
       | Name      | Contact   | Txt | MessageStatus | ContactDevice |
-      | user1Name | user2Name | Hi  | Delivered     | D1            |
+      | user1Name | user2Name | Hi  | Sent          | D1            |
 
-  #TODO : Merge all those TR test into one
-  @C226018 @C226020 @C226034 @staging
+  @C226018 @C226020 @staging
   Scenario Outline: I can unlike/like message by tap on like icon & I can like text message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -52,7 +51,7 @@ Feature: Like
 
     Examples:
       | Name      | Contact   | Txt | MessageStatus | ContactDevice |
-      | user1Name | user2Name | Hi  | Delivered     | D1            |
+      | user1Name | user2Name | Hi  | Sent          | D1            |
 
   @C226036 @staging
   Scenario Outline: I can double tap on txt to like and unlike
@@ -74,10 +73,10 @@ Feature: Like
 
     Examples:
       | Name      | Contact   | Txt | MessageStatus | ContactDevice |
-      | user1Name | user2Name | Hi  | Delivered     | D1            |
+      | user1Name | user2Name | Hi  | Sent          | D1            |
 
-  @C226040 @C226033 @C226043 @staging
-  Scenario Outline: If message was liked by somebody - like icon is visible and liker name next to the like icon, and I could like it.
+  @C226040 @staging
+  Scenario Outline: If message was liked by somebody, like icon is visible and sorted liker name next to the like icon, and I could like it.
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User <Contact> adds new devices <ContactDevice>
@@ -128,9 +127,9 @@ Feature: Like
 
     Examples:
       | Name      | Contact1  | Message | Device | NewMessage | MessageStatus | ContactDevice |
-      | user1Name | user2Name | Yo      | D1     | Hello      | Delivered     | D2            |
+      | user1Name | user2Name | Yo      | D1     | Hello      | Sent          | D2            |
 
-  @C226049 @C226050 @C226037 @staging
+  @C226049 @C226037 @staging
   Scenario Outline: Verify local delete for my/others message doesn't reappear after someone liked it (negative)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -202,8 +201,8 @@ Feature: Like
       | Name      | Contact   | Message | Device  |
       | user1Name | user2Name | Yo      | Device1 |
 
-  @C226041 @С232581 @C226042 @staging
-  Scenario Outline: I see likers count instead of names (example: 5 People)
+  @C226041 @C226042 @staging
+  Scenario Outline: I see likers count instead of names with first/second liker avatars, and could open likers list
     Given There are 5 users where <Name> is me
     Given <Contact1> is connected to Myself,<Contact2>,<Contact3>,<Contact4>
     Given <Contact1> has group chat <Group> with Myself,<Contact2>,<Contact3>,<Contact4>
@@ -393,3 +392,41 @@ Feature: Like
     Examples:
       | Name      | Contact   | YoutubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
+
+  @C226027 @staging
+  Scenario Outline: I can like Soundcloud
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
+    And I type the message "<SoundCloudLink>" and send it
+    And I tap Soundcloud container in the conversation view
+    And I remember the state of like button
+    And I tap Like button in conversation view
+    Then I verify the state of like button item is changed
+    And I see Like description with expected text "<Name>" in conversation view
+
+    Examples:
+      | Name      | Contact   | SoundCloudLink                                   |
+      | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
+
+  @C226051 @staging
+  Scenario Outline: Verify receiving like from a blocked person in a group conversation
+    Given There are 3 users where <Name> is me
+    Given User <Contact1> adds new device <ContactDevice>
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given User Myself blocks user <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Group>
+    And I type the message "<Message>" and send it
+    And User <Contact1> likes the recent message from group conversation <Group> via device <ContactDevice>
+    Then I see Like description with expected text "<Contact1>" in conversation view
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Message | Group      | ContactDevice |
+      | user1Name | user2Name | user3Name | M1      | BlockGroup | D1            |

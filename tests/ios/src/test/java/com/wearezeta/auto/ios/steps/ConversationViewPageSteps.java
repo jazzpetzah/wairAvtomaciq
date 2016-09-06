@@ -923,7 +923,8 @@ public class ConversationViewPageSteps {
         getConversationViewPage().tapFileTransferPlaceholder();
     }
 
-    /**Tap on file transfer action button to download/preview file
+    /**
+     * Tap on file transfer action button to download/preview file
      *
      * @throws Exception
      * @step. ^I tap file transfer action button
@@ -1076,16 +1077,17 @@ public class ConversationViewPageSteps {
      * @param conversationItem item name
      * @param isLongTap        equals to null if simple tap should be performed
      *                         Works with long tap only
+     * @param isDoubleTap      os not equal to null if double tap should be performed
      * @throws Exception
-     * @step. ^I (long )?tap on " +
+     * @step. ^I (long )?(double )?tap on " +
      * "(image|media container|file transfer placeholder|audio message placeholder|video message|location map|link preview) " +
      * "in conversation view$
      */
-    @When("^I (long )?tap on " +
+    @When("^I (long )?(double )?tap on " +
             "(image|media container|file transfer placeholder|audio message placeholder|video message|location map|link preview) " +
             "in conversation view$")
-    public void ITapMessagePlaceholder(String isLongTap, String conversationItem) throws Exception {
-        getConversationViewPage().tapContainer(conversationItem, isLongTap != null);
+    public void ITapMessagePlaceholder(String isLongTap, String isDoubleTap, String conversationItem) throws Exception {
+        getConversationViewPage().tapContainer(conversationItem, isLongTap != null, isDoubleTap != null);
     }
 
     /**

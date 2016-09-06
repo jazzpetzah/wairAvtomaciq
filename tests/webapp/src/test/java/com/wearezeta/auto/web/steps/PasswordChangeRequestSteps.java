@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -48,8 +49,8 @@ public class PasswordChangeRequestSteps {
 
 	@When("^I go to Password Change Reset page for (.*)")
 	public void IGoToPasswordChangeResetPageFor(String agent) throws Exception {
-		context.getPagesCollection().getPage(PasswordChangePage.class).setUrl(
-				WebAppConstants.STAGING_SITE_ROOT + "/forgot/?agent=" + agent);
+		final String website = CommonUtils.getWebsitePathFromConfig(PasswordChangeRequestSteps.class);
+		context.getPagesCollection().getPage(PasswordChangePage.class).setUrl(website + "/forgot/?agent=" + agent);
 		context.getPagesCollection().getPage(PasswordChangePage.class).navigateTo();
 	}
 	

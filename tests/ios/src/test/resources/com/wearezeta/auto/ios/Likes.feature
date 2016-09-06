@@ -148,3 +148,22 @@ Feature: Likes
     Examples:
       | Name      | Contact1  | Contact2  | Picture     | Group        |
       | user1Name | user2Name | user3Name | testing.jpg | DeletedGroup |
+
+  @C226005 @staging @fastLogin
+  Scenario Outline: Verify receiving like from a blocked person
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given User <Contact1> adds a new device <Contact1Device> with label <Contact1DeviceLabel>
+    Given User Myself blocks user <Contact1>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given User Myself sends file <FileName> having MIME type <FileMIME> to group conversation <Group> using device <MyDevice>
+    Given I tap on contact name <Group>
+    When I do not see Like icon in the conversation
+    And User <Contact1> likes the recent message from group conversation <Group>
+    Then I see Like icon in the conversation
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Group            | FileName | FileMIME  | Contact1Device | Contact1DeviceLabel | MyDevice |
+      | user1Name | user2Name | user3Name | BlockedContGroup | test.m4a | audio/mp4 | C1Device       | C1DeviceLabel       | MyDev    |

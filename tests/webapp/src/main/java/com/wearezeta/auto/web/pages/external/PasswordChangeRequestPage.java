@@ -2,6 +2,9 @@ package com.wearezeta.auto.web.pages.external;
 
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,9 +16,8 @@ import com.wearezeta.auto.web.locators.ExternalLocators;
 import com.wearezeta.auto.web.pages.WebPage;
 
 public class PasswordChangeRequestPage extends WebPage {
-	// FIXME: Works for staging backend only
-	private static final String STAGING_URL = WebAppConstants.STAGING_SITE_ROOT
-			+ "/forgot/";
+
+    private static final Logger LOG = ZetaLogger.getLog(PasswordChangeRequestPage.class.getName());
 
 	@FindBy(id = ExternalLocators.PasswordChangeRequestPage.idEmailInput)
 	private WebElement emailField;
@@ -25,7 +27,10 @@ public class PasswordChangeRequestPage extends WebPage {
 
 	public PasswordChangeRequestPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
-		super(lazyDriver, STAGING_URL);
+		super(lazyDriver);
+		final String website = CommonUtils.getWebsitePathFromConfig(DownloadPage.class) + "/forgot/";
+        LOG.info(website);
+		super.setUrl(website);
 	}
 
 	public void setEmail(String email) {
