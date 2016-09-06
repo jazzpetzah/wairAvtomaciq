@@ -202,7 +202,7 @@ Feature: Like
       | Name      | Contact   | Message | Device  |
       | user1Name | user2Name | Yo      | Device1 |
 
-  @C226041 @C226581 @C226042 @staging
+  @C226041 @С232581 @C226042 @staging
   Scenario Outline: I see likers count instead of names (example: 5 People)
     Given There are 5 users where <Name> is me
     Given <Contact1> is connected to Myself,<Contact2>,<Contact3>,<Contact4>
@@ -222,7 +222,7 @@ Feature: Like
     And User <Contact4> likes the recent message from group conversation <Group> via device <D4>
     # C226041
     Then I see Like description with expected text "4 people" in conversation view
-    # C226581
+    # С232581
     And I see First like avatar in conversation view
     And I see Second like avatar in conversation view
     When I tap First like avatar in conversation view
