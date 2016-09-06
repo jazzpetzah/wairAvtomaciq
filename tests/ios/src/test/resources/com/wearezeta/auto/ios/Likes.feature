@@ -69,7 +69,8 @@ Feature: Likes
     Given I see conversations list
     Given User <Contact> likes the recent message from user Myself
     Given I tap on contact name <Contact>
-    When I remember the state of Like icon in the conversation
+    When I tap default message in conversation view
+    And I remember the state of Like icon in the conversation
     And I tap Like icon in the conversation
     Then I see the state of Like icon is changed in the conversation
     When I tap Unlike icon in the conversation
@@ -107,7 +108,8 @@ Feature: Likes
     Given User Myself sends 1 encrypted message to user <Contact>
     Given I see conversations list
     Given I tap on contact name <Contact>
-    When I tap Like icon in the conversation
+    When I tap default message in conversation view
+    And I tap Like icon in the conversation
     And I remember the state of Like icon in the conversation
     And I long tap default message in conversation view
     And I tap on Edit badge item
