@@ -157,8 +157,8 @@ Feature: Likes
     Given User <Contact1> adds a new device <Contact1Device> with label <Contact1DeviceLabel>
     Given User Myself blocks user <Contact1>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User Myself sends file <FileName> having MIME type <FileMIME> to group conversation <Group> using device <MyDevice>
+    Given I see conversations list
     Given I tap on contact name <Group>
     When I do not see Like icon in the conversation
     And User <Contact1> likes the recent message from group conversation <Group>
@@ -167,3 +167,22 @@ Feature: Likes
     Examples:
       | Name      | Contact1  | Contact2  | Group            | FileName | FileMIME  | Contact1Device | Contact1DeviceLabel | MyDevice |
       | user1Name | user2Name | user3Name | BlockedContGroup | test.m4a | audio/mp4 | C1Device       | C1DeviceLabel       | MyDev    |
+
+  @C225987 @staging @fastLogin
+  Scenario Outline: Verify liking a shared file
+    Given There are 3 users where <Name> is me
+    Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given User <Contact1> sends temporary file <FileName>.<FileExt> having MIME type <FileMIME> to group conversation <Group> using device <Contact1Device>
+    Given I see conversations list
+    Given I tap on contact name <Group>
+    When I tap file transfer placeholder
+    And I remember the state of Like icon in the conversation
+    And I tap Like icon in the conversation
+    Then I see the state of Like icon is changed in the conversation
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Group         | FileName | FileExt | FileSize | FileMIME                 | Contact1Device |
+      | user1Name | user2Name | user3Name | FileLikeGroup | testing  | tmp     | 240 KB   | application/octet-stream | C1Device       |
