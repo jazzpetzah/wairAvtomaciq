@@ -124,3 +124,26 @@ Feature: Likes
     Examples:
       | Name      | Contact   | Text  |
       | user1Name | user2Name | aloha |
+
+  @C226004 @staging @fastLogin
+  Scenario Outline: Verify receiving a like in a conversation which was removed
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given User <Contact1> sends encrypted image <Picture> to group conversation <Group>
+    When I swipe right on a <Group>
+    And I tap Delete action button
+    And I confirm delete conversation content
+    And User <Contact1> likes the recent message from group conversation <Group>
+    Then I do not see conversation <Group> in conversations list
+    When I open search UI
+    And I input in People picker search field conversation name <Group>
+    And I tap on conversation <Group> in search result
+    Then I see 0 photos in the conversation view
+    And I do not see Like icon in the conversation
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Picture     | Group        |
+      | user1Name | user2Name | user3Name | testing.jpg | DeletedGroup |
