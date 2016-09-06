@@ -39,7 +39,7 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C226008 @staging @fastLogin
+  @C226008 @staging @fastLogin @torun
   Scenario Outline: Verify impossibility of liking the message after leaving (being removed) from a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -78,3 +78,23 @@ Feature: Likes
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C225992 @C225996 @staging @fastLogin
+  Scenario Outline: Verify liking/unliking a message by double tapping
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given User <Contact> sends 1 encrypted message to user Myself
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    Given I tap default message in conversation view
+    Given I remember the state of Like icon in the conversation
+    When I double tap default message in conversation view
+    Then I see the state of Like icon is changed in the conversation
+    And I double tap default message in conversation view
+    Then I see the state of Like icon is changed in the conversation
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
