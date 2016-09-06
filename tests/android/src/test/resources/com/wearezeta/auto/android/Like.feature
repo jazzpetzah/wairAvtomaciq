@@ -1,7 +1,7 @@
 Feature: Like
 
-  @C226019 @C226035 @staging
-  Scenario Outline: I can like message from message tool menu
+  @C226019 @staging
+  Scenario Outline: I can like/unlike message from message tool menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User <Contact> adds new devices <ContactDevice>
@@ -26,8 +26,7 @@ Feature: Like
       | Name      | Contact   | Txt | MessageStatus | ContactDevice |
       | user1Name | user2Name | Hi  | Sent          | D1            |
 
-  #TODO : Merge all those TR test into one
-  @C226018 @C226020 @C226034 @staging
+  @C226018 @C226020 @staging
   Scenario Outline: I can unlike/like message by tap on like icon & I can like text message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -76,8 +75,8 @@ Feature: Like
       | Name      | Contact   | Txt | MessageStatus | ContactDevice |
       | user1Name | user2Name | Hi  | Sent          | D1            |
 
-  @C226040 @C226033 @C226043 @staging
-  Scenario Outline: If message was liked by somebody - like icon is visible and liker name next to the like icon, and I could like it.
+  @C226040 @staging
+  Scenario Outline: If message was liked by somebody, like icon is visible and sorted liker name next to the like icon, and I could like it.
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User <Contact> adds new devices <ContactDevice>
@@ -130,7 +129,7 @@ Feature: Like
       | Name      | Contact1  | Message | Device | NewMessage | MessageStatus | ContactDevice |
       | user1Name | user2Name | Yo      | D1     | Hello      | Sent          | D2            |
 
-  @C226049 @C226050 @C226037 @staging
+  @C226049 @C226037 @staging
   Scenario Outline: Verify local delete for my/others message doesn't reappear after someone liked it (negative)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -202,8 +201,8 @@ Feature: Like
       | Name      | Contact   | Message | Device  |
       | user1Name | user2Name | Yo      | Device1 |
 
-  @C226041 @С232581 @C226042 @staging
-  Scenario Outline: I see likers count instead of names (example: 5 People)
+  @C226041 @C226042 @staging
+  Scenario Outline: I see likers count instead of names with first/second liker avatars, and could open likers list
     Given There are 5 users where <Name> is me
     Given <Contact1> is connected to Myself,<Contact2>,<Contact3>,<Contact4>
     Given <Contact1> has group chat <Group> with Myself,<Contact2>,<Contact3>,<Contact4>
