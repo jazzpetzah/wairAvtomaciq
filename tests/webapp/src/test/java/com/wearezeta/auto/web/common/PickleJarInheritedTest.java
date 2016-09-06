@@ -119,13 +119,17 @@ public class PickleJarInheritedTest extends PickleJarTest {
     }
 
     private String tailBrowserLog(int maxLogTailSize) throws InterruptedException, ExecutionException, TimeoutException {
-        List<LogEntry> browserLog = lifecycle.getContext().getBrowserLog();
-        if (browserLog.size() >= maxLogTailSize) {
-            browserLog = browserLog.subList(browserLog.size() - maxLogTailSize, browserLog.size());
+        try {
+            List<LogEntry> browserLog = lifecycle.getContext().getBrowserLog();
+            if (browserLog.size() >= maxLogTailSize) {
+                browserLog = browserLog.subList(browserLog.size() - maxLogTailSize, browserLog.size());
+            }
+            return browserLog.stream()
+                    .map((l) -> l.getMessage().replaceAll("^.*z\\.", "z\\."))
+                    .collect(Collectors.joining("\n"));
+        } catch (Exception e) {
+            return "No tailed log available";
         }
-        return browserLog.stream()
-                .map((l) -> l.getMessage().replaceAll("^.*z\\.", "z\\."))
-                .collect(Collectors.joining("\n"));
     }
 
 }
