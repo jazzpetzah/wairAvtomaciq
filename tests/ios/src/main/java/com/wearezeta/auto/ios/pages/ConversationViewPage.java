@@ -991,9 +991,14 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public void tapRecentMessageFrom(String sender) throws Exception {
+    public void tapRecentMessageFrom(boolean isLongTap, String sender) throws Exception {
         final By locator = By.xpath(xpathUserNameByText.apply(sender));
-        getElement(locator).click();
+        final WebElement dstElement = getElement(locator);
+        if (isLongTap) {
+            getDriver().tap(1, dstElement, DriverUtils.LONG_TAP_DURATION);
+        } else {
+            dstElement.click();
+        }
     }
 
     private By getContainerLocatorByName(String name) {

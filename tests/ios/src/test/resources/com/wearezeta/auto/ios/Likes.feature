@@ -167,3 +167,21 @@ Feature: Likes
     Examples:
       | Name      | Contact1  | Contact2  | Group            | FileName | FileMIME  | Contact1Device | Contact1DeviceLabel | MyDevice |
       | user1Name | user2Name | user3Name | BlockedContGroup | test.m4a | audio/mp4 | C1Device       | C1DeviceLabel       | MyDev    |
+
+  @C225984 @staging @fastLogin
+  Scenario Outline: Verify liking a video message
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given User <Contact1> sends file <FileName> having MIME type <MIMEType> to group conversation <Group> using device <Contact1Device>
+    Given I see conversations list
+    Given I tap on contact name <Group>
+    When I do not see Like icon in the conversation
+    And I long tap on the recent message from <Contact1>
+    And I tap on Like badge item
+    Then I see Like icon in the conversation
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Group           | FileName    | MIMEType  | Contact1Device |
+      | user1Name | user2Name | user3Name | VideoLiketGroup | testing.mp4 | video/mp4 | C1Device       |
