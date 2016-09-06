@@ -32,7 +32,7 @@ Feature: Recall Message
       | Name      | Contact1  | Message           | ContactDevice | MySecondDevice | Message2 |
       | user1Name | user2Name | DeleteTextMessage | Device2       | Device1        | Del2     |
 
-  @C225997 @staging
+  @C225997 @regression
   Scenario Outline: Verify the message deleted everywhere in local Wire database
     Given Wire has Debug mode enabled
     Given There are 2 users where <Name> is me
