@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.pages.external.DownloadPage;
@@ -30,8 +31,8 @@ public class DownloadPageSteps {
 	 */
 	@When("^I navigate to download page$")
 	public void INavigateToDownloadPage() throws Exception {
-		context.getPagesCollection().getPage(DownloadPage.class).setUrl(
-				WebAppConstants.STAGING_SITE_ROOT + "/download/");
+		final String website = CommonUtils.getWebsitePathFromConfig(DownloadPageSteps.class);
+		context.getPagesCollection().getPage(DownloadPage.class).setUrl(website + "/download/");
 		context.getPagesCollection().getPage(DownloadPage.class).navigateTo();
 	}
 	

@@ -290,6 +290,27 @@ public class CommonUtils {
         }
     }
 
+    public static String getWebsitePathFromConfig(Class<?> c) throws Exception {
+        String path = System.getProperty("websitePath");
+        if (path != null) {
+            return path;
+        } else {
+            final String currentBackendType = getBackendType(c);
+            switch (currentBackendType.toLowerCase()) {
+                case "edge":
+                    return getValueFromConfig(c, "websiteEdgePath");
+                case "dev":
+                    return getValueFromConfig(c, "websiteDevPath");
+                case "staging":
+                    return getValueFromConfig(c, "websiteStagingPath");
+                case "production":
+                    return getValueFromConfig(c, "websiteProductionPath");
+                default:
+                    return getValueFromConfig(c, "websiteProductionPath");
+            }
+        }
+    }
+
     public static String getAndroidApplicationPathFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "androidApplicationPath");
     }
