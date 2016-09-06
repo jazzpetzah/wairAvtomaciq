@@ -121,8 +121,7 @@ Feature: Like
     When I tap the Text message "<NewMessage>" in the conversation view
     Then I see Message status with expected text "<MessageStatus>" in conversation view
     # C226048
-    When I tap the Text message "<NewMessage>" in the conversation view
-    And I remember the state of like button
+    When I remember the state of like button
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed
     And I see Like description with expected text "<Name>" in conversation view
