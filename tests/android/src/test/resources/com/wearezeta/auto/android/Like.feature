@@ -412,3 +412,22 @@ Feature: Like
     Examples:
       | Name      | Contact   | SoundCloudLink                                   |
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
+
+  @C226051 @staging
+  Scenario Outline: Verify receiving like from a blocked person in a group conversation
+    Given There are 3 users where <Name> is me
+    Given User <Contact1> adds new device <ContactDevice>
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given User Myself blocks user <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Group>
+    And I type the message "<Message>" and send it
+    And User <Contact1> likes the recent message from group conversation <Group> via device <ContactDevice>
+    Then I see Like description with expected text "<Contact1>" in conversation view
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Message | Group      | ContactDevice |
+      | user1Name | user2Name | user3Name | M1      | BlockGroup | D1            |
