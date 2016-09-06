@@ -292,7 +292,7 @@ public class CommonUtils {
 
     public static String getWebsitePathFromConfig(Class<?> c) throws Exception {
         String path = System.getProperty("websitePath");
-        if (path != null) {
+        if (path != null && !path.isEmpty()) {
             return path;
         } else {
             final String currentBackendType = getBackendType(c);
