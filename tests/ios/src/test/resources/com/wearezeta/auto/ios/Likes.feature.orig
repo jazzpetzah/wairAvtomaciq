@@ -39,7 +39,11 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
+<<<<<<< HEAD
+  @C226008 @staging @fastLogin @torun
+=======
   @C226008 @regression @fastLogin
+>>>>>>> master
   Scenario Outline: Verify impossibility of liking the message after leaving (being removed) from a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -80,6 +84,22 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
+<<<<<<< HEAD
+  @C225992 @C225996 @staging @fastLogin
+  Scenario Outline: Verify liking/unliking a message by double tapping
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given User <Contact> sends 1 encrypted message to user Myself
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    Given I tap default message in conversation view
+    Given I remember the state of Like icon in the conversation
+    When I double tap default message in conversation view
+    Then I see the state of Like icon is changed in the conversation
+    And I double tap default message in conversation view
+    Then I see the state of Like icon is changed in the conversation
+=======
   @C225999 @regression @fastLogin
   Scenario Outline: Verify deleted for myself my message doesn't reappear after someone liked it
     Given There are 2 users where <Name> is me
@@ -95,11 +115,14 @@ Feature: Likes
     When User <Contact> likes the recent message from user Myself
     Then I see 0 default messages in the conversation view
     And I do not see Like icon in the conversation
+>>>>>>> master
 
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
+<<<<<<< HEAD
+=======
   @C225998 @C226001 @staging @fastLogin
   Scenario Outline: Verify editing already liked message and like after edit
     Given There are 2 users where <Name> is me
@@ -167,22 +190,4 @@ Feature: Likes
     Examples:
       | Name      | Contact1  | Contact2  | Group            | FileName | FileMIME  | Contact1Device | Contact1DeviceLabel | MyDevice |
       | user1Name | user2Name | user3Name | BlockedContGroup | test.m4a | audio/mp4 | C1Device       | C1DeviceLabel       | MyDev    |
-  @C225992 @C225996 @staging @fastLogin
-  Scenario Outline: Verify liking/unliking a message by double tapping
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given User <Contact> sends 1 encrypted message to user Myself
-    Given I see conversations list
-    Given I tap on contact name <Contact>
-    Given I tap default message in conversation view
-    Given I remember the state of Like icon in the conversation
-    When I double tap default message in conversation view
-    Then I see the state of Like icon is changed in the conversation
-    And I double tap default message in conversation view
-    Then I see the state of Like icon is changed in the conversation
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
+>>>>>>> master

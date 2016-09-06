@@ -41,3 +41,28 @@ Feature: Link Preview
     Examples:
       | Login      | Password      | Name      | Contact   | Link             | LinkInPreview | LinkTitle                             | LinkPreviewImage |
       | user1Email | user1Password | user1Name | user2Name | https://wire.com | wire.com      | Wire — modern, private communication. | linkpreview0.png |
+
+  @C234615 @staging
+  Scenario Outline: Verify sender can edit link preview
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    Given I see Contact list with name <Contact>
+    When I open conversation with <Contact>
+    And Contact <Contact> sends message <Link> via device Device1 to user me
+    Then I see link <LinkInPreview> in link preview message
+    When User <Contact> edits the recent message to "<EditedMessage>" from user me via device Device1
+    And I see text message <EditedMessage>
+    Then I do not see latest message is link preview message
+    And I write message <Message>
+    And I send message
+    Then I see text message <Message>
+    When User <Contact> edits the second last message to "<Link>" from user me via device Device1
+    Then I see link <LinkInPreview> in link preview message
+    Then I do not see latest message is link preview message
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | Message       | EditedMessage | Link             | LinkInPreview |
+      | user1Email | user1Password | user1Name | user2Name | other message | edited        | https://wire.com | wire.com      |

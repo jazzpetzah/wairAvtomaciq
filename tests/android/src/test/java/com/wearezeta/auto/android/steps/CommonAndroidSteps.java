@@ -1485,6 +1485,28 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * Press back button until Wire app is in foreground
+     *
+     * @param timeoutSeconds timeout in seconds for try process
+     * @throws Exception
+     * @step. ^I press [Bb]ack button until Wire app is in foreground in (\d+) seconds$
+     */
+    @When("^I press [Bb]ack button until Wire app is in foreground in (\\d+) seconds$")
+    public void IPressBackButtonUntilWireAppInForeground(int timeoutSeconds) throws Exception {
+        final String packageId = AndroidCommonUtils.getAndroidPackageFromConfig(getClass());
+        CommonUtils.waitUntilTrue(
+                timeoutSeconds,
+                1000,
+                () -> {
+                    if (AndroidCommonUtils.isAppNotInForeground(packageId, FOREGROUND_TIMEOUT_MILLIS)) {
+                        pagesCollection.getCommonPage().navigateBack();
+                    }
+                    return AndroidCommonUtils.isAppInForeground(packageId, FOREGROUND_TIMEOUT_MILLIS);
+                }
+        );
+    }
+
+    /**
      * Tap Accept/Deny button on Marshmallow's security alert
      *
      * @param action            either accept or dismiss
@@ -1552,7 +1574,7 @@ public class CommonAndroidSteps {
      */
     @Given("^I am on Android with Google Location Service$")
     public void IAmOnAndroidWithGoogleService() throws Exception {
-        if(!AndroidCommonUtils.verifyGoogleLocationServiceInstalled()) {
+        if (!AndroidCommonUtils.verifyGoogleLocationServiceInstalled()) {
             throw new PendingException("The current Android doesn't install Google Location Service");
         }
     }

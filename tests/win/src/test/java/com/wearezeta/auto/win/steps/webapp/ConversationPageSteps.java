@@ -22,10 +22,10 @@ import cucumber.api.java.en.When;
 
 import org.apache.log4j.Logger;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ConversationPageSteps {
 

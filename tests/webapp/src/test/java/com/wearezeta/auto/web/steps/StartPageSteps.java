@@ -3,7 +3,6 @@ package com.wearezeta.auto.web.steps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.TestContext;
-import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.WebPage;
 import com.wearezeta.auto.web.pages.external.StartPage;
@@ -40,40 +39,34 @@ public class StartPageSteps {
 	 */
 	@When("^I navigate to (.*) page for (.*)$")
 	public void INavigateToPage(String page, String agent) throws Exception {
+		final String website = CommonUtils.getWebsitePathFromConfig(StartPageSteps.class);
 		switch (page) {
 			case "start":
-				context.getPagesCollection().getPage(StartPage.class).setUrl(
-						WebAppConstants.STAGING_SITE_ROOT + "/%3Fagent=" + agent);
+				context.getPagesCollection().getPage(StartPage.class).setUrl(website + "/%3Fagent=" + agent);
 				context.getPagesCollection().getPage(StartPage.class).navigateTo();
 				break;
 			case "privacy":
-				context.getPagesCollection().getPage(StartPage.class).setUrl(
-						WebAppConstants.STAGING_SITE_ROOT + "/privacy/%3Fagent=" + agent);
+				context.getPagesCollection().getPage(StartPage.class).setUrl(website + "/privacy/%3Fagent=" + agent);
 				context.getPagesCollection().getPage(StartPage.class).navigateTo();
 				break;
 			case "legal":
-				context.getPagesCollection().getPage(StartPage.class).setUrl(
-						WebAppConstants.STAGING_SITE_ROOT + "/legal/%3Fagent=" + agent);
+				context.getPagesCollection().getPage(StartPage.class).setUrl(website + "/legal/%3Fagent=" + agent);
 				context.getPagesCollection().getPage(StartPage.class).navigateTo();
 				break;
 			case "job":
-				context.getPagesCollection().getPage(StartPage.class).setUrl(
-						WebAppConstants.STAGING_SITE_ROOT + "/jobs/%3Fagent=" + agent);
+				context.getPagesCollection().getPage(StartPage.class).setUrl(website + "/jobs/%3Fagent=" + agent);
 				context.getPagesCollection().getPage(StartPage.class).navigateTo();
 				break;
 			case "download":
-				context.getPagesCollection().getPage(StartPage.class).setUrl(
-						WebAppConstants.STAGING_SITE_ROOT + "/download/%3Fagent=" + agent);
+				context.getPagesCollection().getPage(StartPage.class).setUrl(website + "/download/%3Fagent=" + agent);
 				context.getPagesCollection().getPage(StartPage.class).navigateTo();
 				break;
 			case "forgot":
-				context.getPagesCollection().getPage(StartPage.class).setUrl(
-						WebAppConstants.STAGING_SITE_ROOT + "/forgot/%3Fagent=" + agent);
+				context.getPagesCollection().getPage(StartPage.class).setUrl(website + "/forgot/%3Fagent=" + agent);
 				context.getPagesCollection().getPage(StartPage.class).navigateTo();
 				break;
 			case "unsupported":
-				context.getPagesCollection().getPage(StartPage.class).setUrl(
-						WebAppConstants.STAGING_SITE_ROOT + "/unsupported/%3Fagent=" + agent);
+				context.getPagesCollection().getPage(StartPage.class).setUrl(website + "/unsupported/%3Fagent=" + agent);
 				context.getPagesCollection().getPage(StartPage.class).navigateTo();
 				break;
 			case "login":
@@ -88,8 +81,8 @@ public class StartPageSteps {
 	
 	@When("^I open german start page for (.*)$")
 	public void IOpenGermanStartPage(String agent) throws Exception {
-		context.getPagesCollection().getPage(StartPage.class).setUrl(
-				WebAppConstants.STAGING_SITE_ROOT + "/%3Fagent=" + agent);
+		final String website = CommonUtils.getWebsitePathFromConfig(StartPageSteps.class);
+		context.getPagesCollection().getPage(StartPage.class).setUrl(website + "/%3Fagent=" + agent);
 		context.getPagesCollection().getPage(StartPage.class).navigateTo();
 		context.getPagesCollection().getPage(StartPage.class).changeLanguageTo("german");
 	}

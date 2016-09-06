@@ -154,8 +154,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameFileTransferBottomLabel = MobileBy.AccessibilityId(nameStrFileTransferBottomLabel);
     private static final Function<String, String> xpathTransferBottomLabelByExpr = expr ->
             String.format("//UIAStaticText[@name='%s' and %s]", nameStrFileTransferBottomLabel, expr);
-
-//    private static final By nameFileTransferActionButton = MobileBy.AccessibilityId("FileTransferActionButton");
+    private static final By nameFileTransferActionButton = MobileBy.AccessibilityId("FileTransferActionButton");
 
     private static final Function<String, String> xpathStrFilePreviewByFileName = fileName ->
             String.format("//UIANavigationBar[@name='%s']", fileName);
@@ -628,6 +627,10 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileTransferBottomLabel);
     }
 
+    public void tapFileTransferActionButton() throws Exception {
+        getElement(nameFileTransferActionButton).click();
+    }
+
     private By getInputToolButtonByName(String btnName) {
         switch (btnName.toLowerCase()) {
             case "add picture":
@@ -757,9 +760,8 @@ public class ConversationViewPage extends IOSPage {
             final Dimension size = el.getSize();
             final int x = coords.x + size.getWidth() * tapPercentX / 100;
             final int y = coords.y + size.getHeight() * tapPercentY / 100;
-            for (int i = 0; i < 2; i++) {
-                getDriver().tap(1, x, y, 25);
-            }
+            // https://github.com/appium/appium/issues/3420
+            new TouchAction(getDriver()).press(x, y).perform().release().press(0, 0).perform();
         } else {
             final int tapDuration = isLongTap ? DriverUtils.LONG_TAP_DURATION : DriverUtils.SINGLE_TAP_DURATION;
             DriverUtils.tapOnPercentOfElement(getDriver(), el, tapPercentX, tapPercentY, tapDuration);

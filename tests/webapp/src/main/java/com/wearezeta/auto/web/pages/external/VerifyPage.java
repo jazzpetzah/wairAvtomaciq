@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.CommonUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -33,9 +34,6 @@ public class VerifyPage extends WebPage {
 	
 	private static final String ERROR_TEXT = "Something went wrong.";
 	
-	// FIXME: Works for staging backend only
-	private static final String SITE_ROOT = WebAppConstants.STAGING_SITE_ROOT;
-	
 	public VerifyPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -46,7 +44,7 @@ public class VerifyPage extends WebPage {
 		// To make sure that we are redirected to staging site
 		try {
 			super.setUrl(transformSiteUrl(url));
-		} catch (URISyntaxException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -57,9 +55,10 @@ public class VerifyPage extends WebPage {
 	}
 	
 	private static String transformSiteUrl(String url)
-			throws URISyntaxException {
+			throws Exception {
 		final URI uri = new URI(url);
-		return SITE_ROOT + uri.getPath();
+		final String website = CommonUtils.getWebsitePathFromConfig(DownloadPage.class);
+		return website + uri.getPath();
 	}
 
 	public String getDownloadUrl(String agent) {

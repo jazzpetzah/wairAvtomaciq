@@ -1,12 +1,14 @@
 package com.wearezeta.auto.android.pages;
 
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
@@ -81,7 +83,6 @@ public class ConversationViewPage extends AndroidPage {
             = (id, value) -> String.format("//*[@id='%s' and contains(@value,'%s')]", id, value);
 
     private static final String strIdMessageMetaLikeButton = "gtv__footer__like__button";
-    private static final String strIdMessageMetaLikeHint = "gtv__footer__like__hint_arrow";
     private static final String strIdMessageMetaLikeDescription = "tv__footer__like__description";
     private static final String strIdMessageMetaStatus = "tv__footer__message_status";
     private static final String strIdMessageMetaFirstLike = "cv__first_like_chathead";
@@ -89,6 +90,7 @@ public class ConversationViewPage extends AndroidPage {
     //endregion
 
     //region Message Bottom Menu
+    private static final By idMessageBottomMenu = By.id("action_bar_root");
     private static final By idMessageBottomMenuForwardButton = By.id("message_bottom_menu_item_forward");
     private static final By idMessageBottomMenuDeleteLocalButton = By.id("message_bottom_menu_item_delete_local");
     private static final By idMessageBottomMenuDeleteGlobalButton = By.id("message_bottom_menu_item_delete_global");
@@ -897,7 +899,15 @@ public class ConversationViewPage extends AndroidPage {
 
     public void tapContainer(String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
-        getElement(locator).click();
+        final WebElement el = getElement(locator);
+        if (Arrays.asList(idAudioMessageContainer, idVideoMessageContainer, idYoutubeContainer).contains(locator)) {
+            // To avoid to tap on play button and play bar
+            final Point location = el.getLocation();
+            final Dimension size = el.getSize();
+            getDriver().tap(1, location.x + size.width / 5, location.y + size.height / 5, DriverUtils.SINGLE_TAP_DURATION);
+        } else {
+            el.click();
+        }
     }
 
     public void longTapContainer(String name) throws Exception {
@@ -1026,7 +1036,28 @@ public class ConversationViewPage extends AndroidPage {
 
     public void tapMessageBottomMenuButton(String name) throws Exception {
         final By locator = getMessageBottomMenuButtonLocatorByName(name);
+        assert scrollUntilMessageMenuElementVisible(locator, 5) : String
+                .format("Message Menu item '%s' is not present", name);
         getElement(locator, String.format("Message bottom menu %s button is invisible", name)).click();
+    }
+
+    private boolean scrollUntilMessageMenuElementVisible(By locator, int maxScrolls) throws Exception {
+        final int offset = 20;
+        int nScrolls = 0;
+        int screenHeight = AndroidCommonUtils.getScreenSize(getDriver()).getHeight();
+        int containerHeight = getElement(idMessageBottomMenu).getSize().getHeight();
+        int endHeightPercentage = (screenHeight - containerHeight) / screenHeight;
+
+        while (nScrolls < maxScrolls) {
+            Optional<WebElement> el = getElementIfDisplayed(locator, 1);
+            if (el.isPresent() &&
+                    el.get().getLocation().getY() + el.get().getSize().getHeight() - offset <= screenHeight) {
+                return true;
+            }
+            swipeByCoordinates(500, 50, 95, 50, endHeightPercentage);
+            nScrolls++;
+        }
+        return false;
     }
 
     public boolean waitUntilMessageBottomMenuButtonVisible(String btnNAme) throws Exception {
@@ -1120,8 +1151,6 @@ public class ConversationViewPage extends AndroidPage {
         switch (itemType.toLowerCase()) {
             case "like button":
                 return strIdMessageMetaLikeButton;
-            case "like hint":
-                return strIdMessageMetaLikeHint;
             case "like description":
                 return strIdMessageMetaLikeDescription;
             case "message status":
