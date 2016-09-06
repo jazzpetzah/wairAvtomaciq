@@ -24,7 +24,7 @@ Feature: Like
 
     Examples:
       | Name      | Contact   | Txt | MessageStatus | ContactDevice |
-      | user1Name | user2Name | Hi  | Delivered     | D1            |
+      | user1Name | user2Name | Hi  | Sent          | D1            |
 
   #TODO : Merge all those TR test into one
   @C226018 @C226020 @C226034 @staging
@@ -52,7 +52,7 @@ Feature: Like
 
     Examples:
       | Name      | Contact   | Txt | MessageStatus | ContactDevice |
-      | user1Name | user2Name | Hi  | Delivered     | D1            |
+      | user1Name | user2Name | Hi  | Sent          | D1            |
 
   @C226036 @staging
   Scenario Outline: I can double tap on txt to like and unlike
@@ -74,7 +74,7 @@ Feature: Like
 
     Examples:
       | Name      | Contact   | Txt | MessageStatus | ContactDevice |
-      | user1Name | user2Name | Hi  | Delivered     | D1            |
+      | user1Name | user2Name | Hi  | Sent          | D1            |
 
   @C226040 @C226033 @C226043 @staging
   Scenario Outline: If message was liked by somebody - like icon is visible and liker name next to the like icon, and I could like it.
@@ -128,7 +128,7 @@ Feature: Like
 
     Examples:
       | Name      | Contact1  | Message | Device | NewMessage | MessageStatus | ContactDevice |
-      | user1Name | user2Name | Yo      | D1     | Hello      | Delivered     | D2            |
+      | user1Name | user2Name | Yo      | D1     | Hello      | Sent          | D2            |
 
   @C226049 @C226050 @C226037 @staging
   Scenario Outline: Verify local delete for my/others message doesn't reappear after someone liked it (negative)
@@ -393,3 +393,22 @@ Feature: Like
     Examples:
       | Name      | Contact   | YoutubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
+
+  @C226027 @staging
+  Scenario Outline: I can like Soundcloud
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
+    And I type the message "<SoundCloudLink>" and send it
+    And I tap Soundcloud container in the conversation view
+    And I remember the state of like button
+    And I tap Like button in conversation view
+    Then I verify the state of like button item is changed
+    And I see Like description with expected text "<Name>" in conversation view
+
+    Examples:
+      | Name      | Contact   | SoundCloudLink                                   |
+      | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
