@@ -27,7 +27,7 @@ Feature: Like
       | user1Name | user2Name | Hi  | Delivered     | D1            |
 
   #TODO : Merge all those TR test into one
-  @C226018 @C226020 @C226034 @C226037 @staging
+  @C226018 @C226020 @C226034 @staging
   Scenario Outline: I can unlike/like message by tap on like icon & I can like text message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -37,11 +37,9 @@ Feature: Like
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     Given I type the message "<Txt>" and send it
-    # C226037
-    When I tap the Text message "<Txt>" in the conversation view
-    Then I see Like hint with expected text "Tap to like" in conversation view
     # C226018
-    When I remember the state of like button
+    When I tap the Text message "<Txt>" in the conversation view
+    And I remember the state of like button
     Then I see Like button in conversation view
     # C226020
     When I tap Like button in conversation view
@@ -132,7 +130,7 @@ Feature: Like
       | Name      | Contact1  | Message | Device | NewMessage | MessageStatus | ContactDevice |
       | user1Name | user2Name | Yo      | D1     | Hello      | Delivered     | D2            |
 
-  @C226049 @C226050 @staging
+  @C226049 @C226050 @C226037 @staging
   Scenario Outline: Verify local delete for my/others message doesn't reappear after someone liked it (negative)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -148,9 +146,11 @@ Feature: Like
     And I tap Delete button on the alert
     And User <Contact> likes the recent message from user Myself via device <Device>
     Then I do not see the message "<Message>" in the conversation view
-    # C226050
+    # C226037
     When User <Contact> sends encrypted message "<OtherMessage>" via device <Device> to user Myself
-    And I long tap the Text message "<OtherMessage>" in the conversation view
+    Then I see Like description with expected text "Tap to like" in conversation view
+    # C226050
+    When I long tap the Text message "<OtherMessage>" in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And User <Contact> likes the recent message from user Myself via device <Device>
@@ -286,7 +286,7 @@ Feature: Like
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap Share Location container in the conversation view
-    And I press Back button 2 times
+    And I press Back button until Wire app is in foreground in 10 seconds
     And I remember the state of like button
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed
@@ -295,3 +295,101 @@ Feature: Like
     Examples:
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
+
+  @C226021 @staging
+  Scenario Outline: I can like link
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
+    And I type the message "<Url>" and send it
+    And I tap Link Preview container in the conversation view
+    And I press Back button until Wire app is in foreground in 10 seconds
+    And I remember the state of like button
+    And I tap Like button in conversation view
+    Then I verify the state of like button item is changed
+    And I see Like description with expected text "<Name>" in conversation view
+
+    Examples:
+      | Name      | Contact   | Url                     |
+      | user1Name | user2Name | http://www.facebook.com |
+
+  @C226030 @staging
+  Scenario Outline: I can like audio message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
+    And I remember the state of like button
+    And I tap Like button in conversation view
+    Then I verify the state of like button item is changed
+    And I see Like description with expected text "<Name>" in conversation view
+
+    Examples:
+      | Name      | Contact   | FileName | MIMEType  | DeviceName |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
+
+  @C226031 @staging
+  Scenario Outline: I can like video message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
+    And I scroll to the bottom of conversation view
+    And I remember the state of like button
+    And I tap Like button in conversation view
+    Then I verify the state of like button item is changed
+    And I see Like description with expected text "<Name>" in conversation view
+
+    Examples:
+      | Name      | Contact   | FileName    | MIMEType  | DeviceName |
+      | user1Name | user2Name | testing.mp4 | video/mp4 | Device1    |
+
+  @C226032 @staging
+  Scenario Outline: I can like file transfer
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I push <FileSize> file having name "<FileName>.<FileExtension>" to the device
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
+    And I tap File button from cursor toolbar
+    # Wait for file uploaded
+    And I wait for 5 seconds
+    And I tap File Upload container in the conversation view
+    And I remember the state of like button
+    And I tap Like button in conversation view
+    Then I verify the state of like button item is changed
+    And I see Like description with expected text "<Name>" in conversation view
+
+    Examples:
+      | Name      | Contact   | FileName  | FileSize | FileExtension |
+      | user1Name | user2Name | qa_random | 1.00MB   | txt           |
+
+  @C226027 @staging
+  Scenario Outline: I can like youtube
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
+    And I type the message "<YoutubeLink>" and send it
+    And I tap Youtube container in the conversation view
+    And I remember the state of like button
+    And I tap Like button in conversation view
+    Then I verify the state of like button item is changed
+    And I see Like description with expected text "<Name>" in conversation view
+
+    Examples:
+      | Name      | Contact   | YoutubeLink                                 |
+      | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
