@@ -43,7 +43,7 @@ Feature: Like
     # C226020
     When I tap Like button in conversation view
     Then I verify the state of like button item is changed
-    # C226034
+    # C226018
     When I remember the state of like button
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed
@@ -147,6 +147,8 @@ Feature: Like
     Then I do not see the message "<Message>" in the conversation view
     # C226037
     When User <Contact> sends encrypted message "<OtherMessage>" via device <Device> to user Myself
+    # TODO: Remove following 1 lines once the message present automatic when receive a message.
+    And I tap the Text message "<OtherMessage>" in the conversation view
     Then I see Like description with expected text "Tap to like" in conversation view
     # C226050
     When I long tap the Text message "<OtherMessage>" in the conversation view
@@ -252,7 +254,7 @@ Feature: Like
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C226024 @staging
+  @C226024 @staging @torun
   Scenario Outline: I can like a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -324,6 +326,10 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
+    # TODO: Remove following 3 lines once the message present automatic when receive a message.
+    And I scroll to the bottom of conversation view
+    And I tap Audio Message container in the conversation view
+    And I scroll to the bottom of conversation view
     And I remember the state of like button
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed
@@ -342,6 +348,9 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
+    # TODO: Remove following 3 lines once the message present automatic when receive a message.
+    And I scroll to the bottom of conversation view
+    And I tap Video Message container in the conversation view
     And I scroll to the bottom of conversation view
     And I remember the state of like button
     And I tap Like button in conversation view
