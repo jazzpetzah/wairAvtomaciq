@@ -178,10 +178,10 @@ Feature: Likes
     Given User <Contact1> sends temporary file <FileName>.<FileExt> having MIME type <FileMIME> to group conversation <Group> using device <Contact1Device>
     Given I see conversations list
     Given I tap on contact name <Group>
-    When I tap file transfer placeholder
-    And I remember the state of Like icon in the conversation
-    And I tap Like icon in the conversation
-    Then I see the state of Like icon is changed in the conversation
+    When I do not see Like icon in the conversation
+    And I long tap on file transfer placeholder in conversation view
+    And I tap on Like badge item
+    Then I see Like icon in the conversation
 
     Examples:
       | Name      | Contact1  | Contact2  | Group         | FileName | FileExt | FileSize | FileMIME                 | Contact1Device |

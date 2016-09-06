@@ -912,17 +912,6 @@ public class ConversationViewPageSteps {
         }
     }
 
-    /**
-     * Tap the most recent visible transfer placeholder
-     *
-     * @throws Exception
-     * @step. ^I tap file transfer placeholder$
-     */
-    @When("^I tap file transfer placeholder$")
-    public void ITapFileTransferPlaceholder() throws Exception {
-        getConversationViewPage().tapFileTransferPlaceholder();
-    }
-
     /**Tap on file transfer action button to download/preview file
      *
      * @throws Exception

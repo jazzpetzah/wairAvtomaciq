@@ -701,10 +701,6 @@ public class ConversationViewPage extends IOSPage {
                 DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), bottomLabelLocator, timeoutSeconds);
     }
 
-    public void tapFileTransferPlaceholder() throws Exception {
-        getElement(nameFileTransferBottomLabel).click();
-    }
-
     public boolean waitUntilFilePreviewIsVisible(int secondsTimeout, String expectedFileName) throws Exception {
         final By locator = By.xpath(xpathStrFilePreviewByFileName.apply(expectedFileName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, secondsTimeout);
