@@ -1021,7 +1021,7 @@ public class ConversationViewPage extends IOSPage {
         }
     }
 
-    public void tapContainer(String name, boolean isLongTap) throws Exception {
+    public void tapContainer(String name, boolean isLongTap, boolean isdoubleTap) throws Exception {
         final By locator = getContainerLocatorByName(name);
         WebElement dstElement;
         if (locator.equals(xpathMediaContainerCell)) {
@@ -1034,7 +1034,9 @@ public class ConversationViewPage extends IOSPage {
         } else {
             dstElement = getElement(locator);
         }
-        if (isLongTap) {
+        if (isdoubleTap) {
+            new TouchAction(getDriver()).tap(dstElement).waitAction(30).tap(dstElement).perform();
+        } else if (isLongTap) {
             getDriver().tap(1, dstElement, DriverUtils.LONG_TAP_DURATION);
         } else {
             dstElement.click();
