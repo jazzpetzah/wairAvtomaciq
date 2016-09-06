@@ -151,7 +151,6 @@ Feature: Recall Message
     Then I do not see Link Preview container in the conversation view
     And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
 
-
     Examples:
       | Name      | Contact   | Link                    | ContactDevice |
       | user1Name | user2Name | http://www.facebook.com | Device1       |
