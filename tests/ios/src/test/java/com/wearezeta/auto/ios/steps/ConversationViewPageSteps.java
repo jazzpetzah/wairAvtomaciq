@@ -1442,6 +1442,13 @@ public class ConversationViewPageSteps {
         getConversationViewPage().tapRecentMessageFrom(sender);
     }
 
+    /**
+     * Tap on relevant button on image
+     *
+     * @param buttonName sketch ot fullscreen button names allowed
+     * @throws Exception
+     * @step. ^I tap on (sketch|fullscreen) button on image$
+     */
     @When("^I tap on (sketch|fullscreen) button on image$")
     public void ITapOnImageButtons(String buttonName) throws Exception {
         getConversationViewPage().tapImageButton(buttonName);
