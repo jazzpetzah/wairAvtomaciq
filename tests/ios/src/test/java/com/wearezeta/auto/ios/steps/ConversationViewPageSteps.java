@@ -923,6 +923,16 @@ public class ConversationViewPageSteps {
         getConversationViewPage().tapFileTransferPlaceholder();
     }
 
+    /**Tap on file transfer action button to download/preview file
+     *
+     * @throws Exception
+     * @step. ^I tap file transfer action button
+     */
+    @When("^I tap file transfer action button$")
+    public void ITapFileTransferActionButton() throws Exception {
+        getConversationViewPage().tapFileTransferActionButton();
+    }
+
     /**
      * Verify whether File Transfer placeholder is visible in the conversation view
      *

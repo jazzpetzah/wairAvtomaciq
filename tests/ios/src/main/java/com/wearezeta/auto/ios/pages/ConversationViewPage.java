@@ -154,8 +154,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameFileTransferBottomLabel = MobileBy.AccessibilityId(nameStrFileTransferBottomLabel);
     private static final Function<String, String> xpathTransferBottomLabelByExpr = expr ->
             String.format("//UIAStaticText[@name='%s' and %s]", nameStrFileTransferBottomLabel, expr);
-
-//    private static final By nameFileTransferActionButton = MobileBy.AccessibilityId("FileTransferActionButton");
+    private static final By nameFileTransferActionButton = MobileBy.AccessibilityId("FileTransferActionButton");
 
     private static final Function<String, String> xpathStrFilePreviewByFileName = fileName ->
             String.format("//UIANavigationBar[@name='%s']", fileName);
@@ -626,6 +625,10 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isFileTransferBottomLabelVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileTransferBottomLabel);
+    }
+
+    public void tapFileTransferActionButton() throws Exception {
+        getElement(nameFileTransferActionButton).click();
     }
 
     private By getInputToolButtonByName(String btnName) {
