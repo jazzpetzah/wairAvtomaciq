@@ -374,3 +374,22 @@ Feature: Like
     Examples:
       | Name      | Contact   | FileName  | FileSize | FileExtension |
       | user1Name | user2Name | qa_random | 1.00MB   | txt           |
+
+  @C226027 @staging
+  Scenario Outline: I can like youtube
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
+    And I type the message "<YoutubeLink>" and send it
+    And I tap Youtube container in the conversation view
+    And I remember the state of like button
+    And I tap Like button in conversation view
+    Then I verify the state of like button item is changed
+    And I see Like description with expected text "<Name>" in conversation view
+
+    Examples:
+      | Name      | Contact   | YoutubeLink                                 |
+      | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
