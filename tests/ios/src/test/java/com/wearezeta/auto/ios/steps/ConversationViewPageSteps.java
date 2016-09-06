@@ -1416,14 +1416,15 @@ public class ConversationViewPageSteps {
     /**
      * Tap in the center of the most recent message cell for the particular contact
      *
-     * @param sender sender name/alias
+     * @param isLongTap is not equal to null if long tap is going to be performed
+     * @param sender    sender name/alias
      * @throws Exception
-     * @step. ^I tap on the recent message from (.*)
+     * @step. ^I (long )?tap on the recent message from (.*)
      */
-    @When("^I tap on the recent message from (.*)")
-    public void ITapRecentMessage(String sender) throws Exception {
+    @When("^I (long )?tap on the recent message from (.*)")
+    public void ITapRecentMessage(String isLongTap, String sender) throws Exception {
         sender = usrMgr.replaceAliasesOccurences(sender, FindBy.NAME_ALIAS);
-        getConversationViewPage().tapRecentMessageFrom(sender);
+        getConversationViewPage().tapRecentMessageFrom(isLongTap != null, sender);
     }
 
     private static final int LIKE_ICON_STATE_CHANGE_TIMEOUT = 7; //seconds
