@@ -100,9 +100,13 @@ public class StartPageSteps {
         for (WebElement element : context.getPagesCollection().getPage(StartPage.class).getAllLinkElements()) {
             String href = element.getAttribute("href");
 			log.info("Check URL " + href);
-            int statusCode = context.getPagesCollection().getPage(StartPage.class).getStatusCode(href);
-			log.info("Status Code " + statusCode);
-            assertThat("Tested URL: " + href,statusCode, lessThan(400));
+			if(href != null) {
+				int statusCode = context.getPagesCollection().getPage(StartPage.class).getStatusCode(href);
+				log.info("Status Code " + statusCode);
+				assertThat("Tested URL: " + href, statusCode, lessThan(400));
+			} else {
+				log.info("skip check because attribute is null");
+			}
         }
 		for (WebElement element : context.getPagesCollection().getPage(StartPage.class).getAllImageElements()) {
 			String src = element.getAttribute("src");
