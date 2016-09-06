@@ -900,7 +900,8 @@ public class ConversationViewPage extends AndroidPage {
     public void tapContainer(String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
         final WebElement el = getElement(locator);
-        if (Arrays.asList(idAudioMessageContainer, idVideoMessageContainer, idYoutubeContainer).contains(locator)) {
+        if (Arrays.asList(idAudioMessageContainer, idVideoMessageContainer, idYoutubeContainer, idSoundcloudContainer)
+                .contains(locator)) {
             // To avoid to tap on play button and play bar
             final Point location = el.getLocation();
             final Dimension size = el.getSize();
