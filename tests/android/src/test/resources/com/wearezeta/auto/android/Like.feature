@@ -117,7 +117,9 @@ Feature: Like
     Then I see Like description with expected text "<Name>" in conversation view
     When User Myself edits the recent message to "<NewMessage>" from user <Contact1> via device <Device>
     Then I see the message "<NewMessage>" in the conversation view
-    And I see Message status with expected text "<MessageStatus>" in conversation view
+    # TODO : remove it once msg meta show automatic
+    When I tap the Text message "<NewMessage>" in the conversation view
+    Then I see Message status with expected text "<MessageStatus>" in conversation view
     # C226048
     When I tap the Text message "<NewMessage>" in the conversation view
     And I remember the state of like button
@@ -411,7 +413,9 @@ Feature: Like
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I type the message "<SoundCloudLink>" and send it
+    And I scroll to the bottom of conversation view
     And I tap Soundcloud container in the conversation view
+    And I scroll to the bottom of conversation view
     And I remember the state of like button
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed
