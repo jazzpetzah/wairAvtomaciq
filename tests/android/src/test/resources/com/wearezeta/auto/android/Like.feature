@@ -1,6 +1,6 @@
 Feature: Like
 
-  @C226019 @regression
+  @C226019 @regression @rc
   Scenario Outline: I can like/unlike message from message tool menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -26,7 +26,7 @@ Feature: Like
       | Name      | Contact   | Txt | MessageStatus | ContactDevice |
       | user1Name | user2Name | Hi  | Sent          | D1            |
 
-  @C226018 @C226020 @regression
+  @C226018 @C226020 @regression @rc
   Scenario Outline: I can unlike/like message by tap on like icon & I can like text message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -53,7 +53,7 @@ Feature: Like
       | Name      | Contact   | Txt | MessageStatus | ContactDevice |
       | user1Name | user2Name | Hi  | Sent          | D1            |
 
-  @C226036 @regression
+  @C226036 @regression @rc
   Scenario Outline: I can double tap on txt to like and unlike
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -75,7 +75,7 @@ Feature: Like
       | Name      | Contact   | Txt | MessageStatus | ContactDevice |
       | user1Name | user2Name | Hi  | Sent          | D1            |
 
-  @C226040 @regression
+  @C226040 @regression @rc
   Scenario Outline: If message was liked by somebody, like icon is visible and sorted liker name next to the like icon, and I could like it.
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -100,7 +100,7 @@ Feature: Like
       | Name      | Contact   | Message | ContactDevice |
       | user1Name | user2Name | Hi      | Device1       |
 
-  @C226045 @C226048 @regression
+  @C226045 @C226048 @regression @rc
   Scenario Outline: Likes should be reset if I edited message / also could like again
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -130,7 +130,7 @@ Feature: Like
       | Name      | Contact1  | Message | Device | NewMessage | MessageStatus | ContactDevice |
       | user1Name | user2Name | Yo      | D1     | Hello      | Sent          | D2            |
 
-  @C226049 @C226037 @regression
+  @C226049 @C226037 @regression @rc
   Scenario Outline: Verify local delete for my/others message doesn't reappear after someone liked it (negative)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -204,7 +204,7 @@ Feature: Like
       | Name      | Contact   | Message | Device  |
       | user1Name | user2Name | Yo      | Device1 |
 
-  @C226041 @C226042 @regression
+  @C226041 @C226042 @regression @rc
   Scenario Outline: I see likers count instead of names with first/second liker avatars, and could open likers list
     Given There are 5 users where <Name> is me
     Given <Contact1> is connected to Myself,<Contact2>,<Contact3>,<Contact4>
@@ -235,7 +235,7 @@ Feature: Like
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Group     | Message | D1 | D2 | D3 | D4 |
       | user1Name | user2Name | user3Name | user4Name | user5Name | LikeGroup | Hi      | D1 | D2 | D3 | D4 |
 
-  @C226022 @regression
+  @C226022 @regression @rc
   Scenario Outline: I can like a picture
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -255,7 +255,7 @@ Feature: Like
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C226024 @regression
+  @C226024 @regression @rc
   Scenario Outline: I can like a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -298,7 +298,7 @@ Feature: Like
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
 
-  @C226021 @regression
+  @C226021 @regression @rc
   Scenario Outline: I can like link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -318,7 +318,7 @@ Feature: Like
       | Name      | Contact   | Url                     |
       | user1Name | user2Name | http://www.facebook.com |
 
-  @C226030 @regression
+  @C226030 @regression @rc
   Scenario Outline: I can like audio message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -340,7 +340,7 @@ Feature: Like
       | Name      | Contact   | FileName | MIMEType  | DeviceName |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
 
-  @C226031 @regression
+  @C226031 @regression @rc
   Scenario Outline: I can like video message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -362,7 +362,7 @@ Feature: Like
       | Name      | Contact   | FileName    | MIMEType  | DeviceName |
       | user1Name | user2Name | testing.mp4 | video/mp4 | Device1    |
 
-  @C226032 @regression
+  @C226032 @regression @rc
   Scenario Outline: I can like file transfer
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -384,7 +384,7 @@ Feature: Like
       | Name      | Contact   | FileName  | FileSize | FileExtension |
       | user1Name | user2Name | qa_random | 1.00MB   | txt           |
 
-  @C226027 @regression
+  @C226027 @regression @rc
   Scenario Outline: I can like youtube
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -403,7 +403,7 @@ Feature: Like
       | Name      | Contact   | YoutubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
-  @C226027 @regression
+  @C226026 @regression @rc
   Scenario Outline: I can like Soundcloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -424,7 +424,7 @@ Feature: Like
       | Name      | Contact   | SoundCloudLink                                   |
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
-  @C226051 @regression
+  @C226051 @regression @rc
   Scenario Outline: Verify receiving like from a blocked person in a group conversation
     Given There are 3 users where <Name> is me
     Given User <Contact1> adds new device <ContactDevice>
