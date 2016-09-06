@@ -1557,4 +1557,20 @@ public class ConversationViewPageSteps {
     public void ITapMessageMeta(String itemType) throws Exception {
         getConversationViewPage().tapMessageMetaItem(itemType);
     }
+
+    /**
+     * Verify the count of Message status within current conversation
+     *
+     * @param expectedCount expect apperance count
+     * @param expectedText  the expected text within Message Status
+     * @throws Exception
+     * @step. ^I see (\d+) Message statu(?:s|ses) with expected text "(.*)" in conversation view$
+     */
+    @Then("^I see (\\d+) Message statu(?:s|ses) in conversation view$")
+    public void ISeeMessageStatus(int expectedCount) throws Exception {
+        int actualCount = getConversationViewPage().getMessageStatusCount();
+        Assert.assertTrue(
+                String.format("The expect count is not equal to actual count, actual: %d, expect: %d",
+                        actualCount, expectedCount), actualCount == expectedCount);
+    }
 }

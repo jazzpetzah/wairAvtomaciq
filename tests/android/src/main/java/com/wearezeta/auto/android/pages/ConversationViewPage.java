@@ -1116,6 +1116,11 @@ public class ConversationViewPage extends AndroidPage {
         );
     }
 
+    public int getMessageStatusCount() throws Exception {
+        By locator = By.id(strIdMessageMetaStatus);
+        return selectVisibleElements(locator).size();
+    }
+
     private String getMessageMetaLocatorIdString(String itemType) throws Exception {
         switch (itemType.toLowerCase()) {
             case "like button":
