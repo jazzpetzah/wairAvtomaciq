@@ -135,7 +135,8 @@ Feature: Likes
     And I tap Delete action button
     And I confirm delete conversation content
     And User <Contact1> likes the recent message from group conversation <Group>
-    And I open search UI
+    Then I do not see conversation <Group> in conversations list
+    When I open search UI
     And I input in People picker search field conversation name <Group>
     And I tap on conversation <Group> in search result
     Then I see 0 photos in the conversation view
