@@ -160,7 +160,7 @@ Feature: Like
       | Name      | Contact   | Message | Device  | OtherMessage |
       | user1Name | user2Name | Yo      | Device1 | OMG          |
 
-  @C226047 @staging
+  @C234618 @staging
   Scenario Outline: Verify receiving a like in a conversation which history was removed (negative)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
