@@ -376,7 +376,7 @@ public final class CommonSteps {
 
         String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
         ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
-        
+
         seBridge.reactMessage(user, dstConvId, getFilteredLastMessageId(messageInfos), reactionType, deviceName);
     }
 
@@ -417,6 +417,17 @@ public final class CommonSteps {
         ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
 
         seBridge.updateMessage(user, getFilteredLastMessageId(messageInfos), newMessage, deviceName);
+    }
+
+    public void UserUpdateSecondLastMessage(String msgFromUserNameAlias, String dstConversationName, String newMessage,
+            String deviceName, boolean isGroup) throws Exception {
+        ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
+        dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+
+        String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
+        ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
+
+        seBridge.updateMessage(user, getFilteredSecondLastMessageId(messageInfos), newMessage, deviceName);
     }
 
     /**
@@ -847,11 +858,25 @@ public final class CommonSteps {
         Assert.assertTrue(String.format("Actual message Id should not equal to '%s'", rememberedMessage),
                 actualMessageId.isPresent());
     }
-    
+
     private MessageId getFilteredLastMessageId(ActorMessage.MessageInfo[] messageInfos) throws Exception {
         for (int i = messageInfos.length - 1; i >= 0; i--) {
             if (!messageInfos[i].tpe().equals(Message.Type.UNKNOWN)) {
                 return messageInfos[i].id();
+            }
+        }
+        throw new Exception("Could not find any valid message");
+    }
+
+    private MessageId getFilteredSecondLastMessageId(ActorMessage.MessageInfo[] messageInfos) throws Exception {
+        MessageId latestMessage = null;
+        for (int i = messageInfos.length - 1; i >= 0; i--) {
+            if (!messageInfos[i].tpe().equals(Message.Type.UNKNOWN)) {
+                if (latestMessage == null) {
+                    latestMessage = messageInfos[i].id();
+                } else {
+                    return messageInfos[i].id();
+                }
             }
         }
         throw new Exception("Could not find any valid message");

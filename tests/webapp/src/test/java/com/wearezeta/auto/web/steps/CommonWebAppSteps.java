@@ -631,6 +631,24 @@ public class CommonWebAppSteps {
     }
     
     /**
+     * User X edit his own messages, be careful this message will not control the type of the message you edit.
+     *
+     * @param userNameAlias user name/alias
+     * @param newMessage    the message you want to update to
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  destination user name/alias or group convo name
+     * @param deviceName    source device name. Will be created if does not exist yet
+     * @throws Exception
+     */
+    @When("^User (.*) edits? the second last message to \"(.*)\" from (user|group conversation) (.*) via device (.*)$")
+    public void UserXEditSecondLastMessage(String userNameAlias, String newMessage, String convoType,
+                                     String dstNameAlias, String deviceName) throws Exception {
+        boolean isGroup = convoType.equals("group conversation");
+        context.getCommonSteps().UserUpdateSecondLastMessage(userNameAlias, dstNameAlias, newMessage, deviceName + context.getTestname().
+                    hashCode(), isGroup);
+    }
+    
+    /**
      * User X react(like or unlike) the recent message in 1:1 conversation or group conversation
      *
      * @param userNameAlias User X's name or alias

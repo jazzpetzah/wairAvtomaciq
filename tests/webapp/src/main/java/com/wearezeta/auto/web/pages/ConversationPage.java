@@ -1068,6 +1068,20 @@ public class ConversationPage extends WebPage {
         getDriver().findElement(locator).click();
     }
     
+    public boolean isLinkPreviewLinkVisibleForLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLinkPreviewLinkByMessageId.apply(id));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
+    }
+    
+    public boolean isLinkPreviewLinkInvisibleForLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLinkPreviewLinkByMessageId.apply(id));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3);
+    }
+    
     public boolean isUnlikeWithOtherLikesVisibleForLatestMessage() throws Exception {
         By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
         String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
