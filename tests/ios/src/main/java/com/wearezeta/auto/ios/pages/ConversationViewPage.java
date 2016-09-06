@@ -156,8 +156,6 @@ public class ConversationViewPage extends IOSPage {
             String.format("//UIAStaticText[@name='%s' and %s]", nameStrFileTransferBottomLabel, expr);
     private static final By nameFileTransferActionButton = MobileBy.AccessibilityId("FileTransferActionButton");
 
-//    private static final By nameFileTransferActionButton = MobileBy.AccessibilityId("FileTransferActionButton");
-
     private static final Function<String, String> xpathStrFilePreviewByFileName = fileName ->
             String.format("//UIANavigationBar[@name='%s']", fileName);
 
