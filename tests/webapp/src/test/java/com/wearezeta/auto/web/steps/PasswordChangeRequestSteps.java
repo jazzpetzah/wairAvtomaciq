@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -210,4 +211,18 @@ public class PasswordChangeRequestSteps {
 		context.getPagesCollection().getPage(PasswordChangePage.class).navigateTo();
 	}
 
+	@When("^I see password change mail in (.*) with (.*)$")
+	public void ISeePasswordChangeMailInLanguage(String language, String message) throws Exception {
+		final String content = BackendAPIWrappers
+				.getMessageContent(this.passwordChangeMessage);
+		switch (language) {
+			case "de":
+				assertThat("E-Mail is not German.", content, containsString(message));
+				break;
+			case "en":
+				assertThat("E-Mail is not English.", content, containsString(message));
+				break;
+			default: break;
+		}
+	}
 }
