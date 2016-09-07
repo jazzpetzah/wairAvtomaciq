@@ -60,6 +60,8 @@ public abstract class IOSPage extends BasePage {
     private static final By nameBadgeItemPaste = MobileBy.AccessibilityId("Paste");
     private static final By nameBadgeItemSave = MobileBy.AccessibilityId("Save");
     private static final By nameBadgeItemEdit = MobileBy.AccessibilityId("Edit");
+    private static final By nameBadgeItemLike = MobileBy.AccessibilityId("Like");
+    private static final By nameBadgeItemUnlike = MobileBy.AccessibilityId("Unlike");
 
     private static final Function<String, String> xpathStrAlertByText = text ->
             String.format("//UIAAlert[ .//*[contains(@name, '%s')] or contains(@name, '%s')]", text, text);
@@ -151,6 +153,10 @@ public abstract class IOSPage extends BasePage {
                 return nameBadgeItemPaste;
             case "save":
                 return nameBadgeItemSave;
+            case "like":
+                return nameBadgeItemLike;
+            case "unlike":
+                return nameBadgeItemUnlike;
             default:
                 throw new IllegalArgumentException(String.format("Unknown badge name: '%s'", name));
         }

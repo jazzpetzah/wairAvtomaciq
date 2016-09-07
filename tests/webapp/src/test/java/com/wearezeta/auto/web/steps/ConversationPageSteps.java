@@ -1,7 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 import java.awt.image.BufferedImage;
@@ -33,6 +32,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -747,6 +747,20 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).clickEditInMessageContextMenu();
     }
 
+    @When("^I click (like|unlike) button in context menu for latest message$")
+    public void IClickToLikeInContextMenuOfLatestMessage(String like) throws Exception {
+        boolean isLike = "like".equals(like);
+        if (isLike) {
+            assertTrue("Like button is not visible", context.getPagesCollection().getPage(ConversationPage.class)
+                    .isLikeButtonInContextMenuVisible());
+            context.getPagesCollection().getPage(ConversationPage.class).clickReactInContextMenuOfLatestMessage();
+        } else {
+            assertTrue("Unlike button is not visible", context.getPagesCollection().getPage(ConversationPage.class)
+                    .isUnlikeButtonInContextMenuVisible());
+            context.getPagesCollection().getPage(ConversationPage.class).clickReactInContextMenuOfLatestMessage();
+        }
+    }
+
     @When("^I click to (like|unlike) the latest message with(out)? other likes$")
     public void IClickToLikeLatestMessageWithoutOtherLikes(String like, String out) throws Exception {
         boolean isWithout = "out".equals(out);
@@ -792,6 +806,19 @@ public class ConversationPageSteps {
     public void ThenISeeLatestMessageIsLikedByOthersMe() throws Exception {
         assertTrue("Message is NOT liked by others and you", context.getPagesCollection().getPage(ConversationPage.class)
                 .isUnlikeWithOtherLikesVisibleForLatestMessage());
+    }
+
+    @Then("^I see the latest message is liked by (.*)$")
+    public void ThenISeeLatestMessageIsLikedBy(String usersToNameAliases) throws Exception {
+        List<String> likers = context.getPagesCollection().getPage(ConversationPage.class).getUsersThatLikeTheLatestMessage();
+        List<String> aliases = CommonSteps.splitAliases(usersToNameAliases);
+        String[] users = new String[aliases.size()];
+        for(int i = 0; i < aliases.size(); i++) {
+            ClientUser userTo = context.getUserManager().findUserByNameOrNameAlias(aliases.get(i));
+            users[i] = userTo.getName();
+        }
+        assertThat("User not found in like message", likers, hasItems(users));
+        assertThat("Wrong number of likes", likers, hasSize(users.length));
     }
 
     @When("^I click reset session on the latest decryption error")
@@ -1528,6 +1555,23 @@ public class ConversationPageSteps {
     @Then("^I see link (.*) in link preview message")
     public void ISeeLinkInLinkPreview(String link) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).waitForLinkPreviewContains(link);
+    }
+    
+    /**
+     * Verify latest message is a link preview.
+     *
+     * @param not is set to null if "do not" part does not exist
+     * @throws Exception
+     * @step. I (do not )?see latest message is link preview message$
+     */
+    @Then("^I (do not )?see latest message is link preview message$")
+    public void ISeeLatestMessageIsLinkPreview(String not) throws Exception {
+        if (not == null) {
+            assertTrue("latest message is no link preview", context.getPagesCollection().getPage(ConversationPage.class).
+                    isLinkPreviewLinkVisibleForLatestMessage());
+        } else {
+            assertTrue("latest message is a link preview", context.getPagesCollection().getPage(ConversationPage.class).isLinkPreviewLinkInvisibleForLatestMessage());
+        }
     }
 
     /**

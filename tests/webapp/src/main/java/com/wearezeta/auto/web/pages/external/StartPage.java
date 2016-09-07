@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import com.wearezeta.auto.common.CommonUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.*;
 import org.apache.http.client.methods.HttpGet;
@@ -28,9 +29,7 @@ import com.wearezeta.auto.web.pages.WebPage;
 import org.openqa.selenium.support.ui.Wait;
 
 public class StartPage extends WebPage {
-	
-	// FIXME: Works for staging backend only
-	private static final String SITE_ROOT = WebAppConstants.STAGING_SITE_ROOT;
+
 	private static final String UNSUPPORTED_TEXT = "This browser is not supported.";
 
 	@FindBy(css = ExternalLocators.StartPage.cssGermanButton)
@@ -49,7 +48,7 @@ public class StartPage extends WebPage {
 		// To make sure that we are redirected to staging site
 		try {
 			super.setUrl(transformSiteUrl(url));
-		} catch (URISyntaxException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -60,9 +59,10 @@ public class StartPage extends WebPage {
 	}
 
 	private static String transformSiteUrl(String url)
-			throws URISyntaxException {
+			throws Exception {
 		final URI uri = new URI(url);
-		return SITE_ROOT + uri.getPath();
+		final String website = CommonUtils.getWebsitePathFromConfig(DownloadPage.class);
+		return website + uri.getPath();
 	}
 
 	public void switchToSupportPageTab() throws Exception {

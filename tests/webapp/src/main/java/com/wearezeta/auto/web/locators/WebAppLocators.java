@@ -346,7 +346,10 @@ public final class WebAppLocators {
 
         public static final Function<String, String> cssMessagesById = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s']", text);
-        
+
+        public static final Function<String, String> cssUserThatLikeByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='message-liked-names']", text);
+
         public static final Function<String, String> cssLikeWithoutOtherLikesByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-body-like:not(.text-red)", text);
         
@@ -373,6 +376,16 @@ public final class WebAppLocators {
 
         public static final Function<String, String> cssDeleteForMeByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] context-menu [data-context-action='delete']", text);
+
+        public static final Function<String, String> cssReactByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] context-menu [data-context-action='react']", text);
+        
+        public static final Function<String, String> cssLinkPreviewLinkByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .link-preview-site", text);
+
+        public static final String xpathLikeInContext = "//li[contains(@data-context-action, 'react') and text()='Like']";
+
+        public static final String xpathUnlikeInContext = "//li[contains(@data-context-action, 'react') and text()='Unlike']";
 
         public static final Function<String, String> cssDeleteButtonByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='do-message-delete']", text);

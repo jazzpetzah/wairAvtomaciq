@@ -375,6 +375,18 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Tap on Image container button
+     *
+     * @param buttonName which could be Sketch or Fullscreen
+     * @throws Exception
+     * @step. ^I tap on (Sketch|Fullscreen) button on the recent (?:image|picture) in the conversation view$
+     */
+    @When("^I tap on (Sketch|Fullscreen) button on the recent (?:image|picture) in the conversation view$")
+    public void ITapImageContainerButton(String buttonName) throws Exception {
+        getConversationViewPage().tapImageContainerButton(buttonName);
+    }
+
+    /**
      * Scroll the content of conversation view
      *
      * @param swipeDirection either up or down
@@ -602,16 +614,16 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Remember the state of like button for specified text message
+     * Remember the state of like button
      *
-     * @param message Specified message
+     * @param messageType Specified message type
      * @throws Exception
-     * @step. ^I remember the state of like button for Text message "(.*)"$
+     * @step. ^I remember the state of like button$
      */
-    @When("^I remember the state of like button for (?:recent |)(Text message \".*\"|Image)$")
-    public void IRememberLikeButtonForTextMessage(String messageType) throws Exception {
+    @When("^I remember the state of like button$")
+    public void IRememberLikeButton() throws Exception {
         messageLikeButtonState = new ElementState(
-                () -> getConversationViewPage().getMessageLikeButtonState(messageType)
+                () -> getConversationViewPage().getMessageLikeButtonState()
         );
         messageLikeButtonState.remember();
     }
@@ -1497,36 +1509,37 @@ public class ConversationViewPageSteps {
      * @param expectedMsg    specified expected content for item
      * @param messageType    the message type
      * @throws Exception
-     * @step. ^I (do not )?see (Like button|Like hint|Like description|Message status|First like avatar|Second like avatar) (with expected text "(.*)" )?under the (?:recent |)(Text message ".*"|Image)$$
+     * @step. ^I (do not )?see (Like button|Like description|Message status|First like avatar|Second like avatar)
+     * (with expected text "(.*)" )?in conversation view$
      */
-    @Then("^I (do not )?see (Like button|Like hint|Like description|Message status|First like avatar|Second like avatar)" +
-            " (with expected text \"(.*)\" )?under the (?:recent |)(Text message \".*\"|Image)$")
+    @Then("^I (do not )?see (Like button|Like description|Message status|First like avatar|Second like avatar)" +
+            " (with expected text \"(.*)\" )?in conversation view$")
     public void ISeeMessagMetaForText(String shouldNotSee, String itemType, String hasExpectedMsg,
-                                      String expectedMsg, String messageType) throws Exception {
+                                      String expectedMsg) throws Exception {
         if (shouldNotSee == null) {
             boolean isVisible;
             if (hasExpectedMsg == null) {
                 expectedMsg = "*Any message*";
-                isVisible = getConversationViewPage().waitUntilMessageMetaItemVisible(messageType, itemType);
+                isVisible = getConversationViewPage().waitUntilMessageMetaItemVisible(itemType);
             } else {
                 expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
-                isVisible = getConversationViewPage().waitUntilMessageMetaItemVisible(messageType, itemType, expectedMsg);
+                isVisible = getConversationViewPage().waitUntilMessageMetaItemVisible(itemType, expectedMsg);
             }
             Assert.assertTrue(
-                    String.format("The %s should be visible under the '%s' with expected text '%s'",
-                            itemType, messageType, expectedMsg), isVisible);
+                    String.format("The %s should be visible with expected text '%s'",
+                            itemType, expectedMsg), isVisible);
         } else {
             boolean isInvisible;
             if (hasExpectedMsg == null) {
                 expectedMsg = "*Any message*";
-                isInvisible = getConversationViewPage().waitUntilMessageMetaItemInvisible(messageType, itemType);
+                isInvisible = getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType);
             } else {
                 expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
-                isInvisible = getConversationViewPage().waitUntilMessageMetaItemInvisible(messageType, itemType, expectedMsg);
+                isInvisible = getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType, expectedMsg);
             }
             Assert.assertTrue(
-                    String.format("The %s should be invisible under the '%s' with expected text '%s'",
-                            itemType, messageType, expectedMsg), isInvisible);
+                    String.format("The %s should be invisible with expected text '%s'",
+                            itemType, expectedMsg), isInvisible);
         }
     }
 
@@ -1536,12 +1549,28 @@ public class ConversationViewPageSteps {
      * @param itemType    Message Meta Item type
      * @param messageType The message type
      * @throws Exception
-     * @step. ^^I tap (Like button|Like hint|Like description|Message status|First like avatar|Second like avatar) under the (?:recent |)(Text message ".*"|Image)$
+     * @step. ^^I tap (Like button|Like description|Message status|First like avatar|Second like avatar)
+     * in conversation view$
      */
-    @When("^I tap (Like button|Like hint|Like description|Message status|First like avatar|Second like avatar)" +
-            " under the (?:recent |)(Text message \".*\"|Image)$")
-    public void ITapMessageMetaForText(String itemType, String messageType)
-            throws Exception {
-        getConversationViewPage().tapMessageMetaItem(messageType, itemType);
+    @When("^I tap (Like button|Like description|Message status|First like avatar|Second like avatar)" +
+            " in conversation view$")
+    public void ITapMessageMeta(String itemType) throws Exception {
+        getConversationViewPage().tapMessageMetaItem(itemType);
+    }
+
+    /**
+     * Verify the count of Message status within current conversation
+     *
+     * @param expectedCount expect apperance count
+     * @param expectedText  the expected text within Message Status
+     * @throws Exception
+     * @step. ^I see (\d+) Message statu(?:s|ses) with expected text "(.*)" in conversation view$
+     */
+    @Then("^I see (\\d+) Message statu(?:s|ses) in conversation view$")
+    public void ISeeMessageStatus(int expectedCount) throws Exception {
+        int actualCount = getConversationViewPage().getMessageStatusCount();
+        Assert.assertTrue(
+                String.format("The expect count is not equal to actual count, actual: %d, expect: %d",
+                        actualCount, expectedCount), actualCount == expectedCount);
     }
 }

@@ -1,6 +1,6 @@
 Feature: Like
 
-  @C226471 @staging
+  @C226438 @regression
   Scenario Outline: Verify you can like someone's message in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -19,11 +19,11 @@ Feature: Like
 # Liked by others and me
     When User <Contact> likes the recent message from user <Name> via device Device1
     And I see likes below the latest message
-    And I see the latest message is liked by others and me
+    And I see the latest message is liked by Myself,<Contact>
 # Only liked by others
     When I click to unlike the latest message with other likes
     Then I see likes below the latest message
-    And I see the latest message is only liked by others
+    And I see the latest message is liked by <Contact>
 # Everything unliked
     When User <Contact> unlikes the recent message from user <Name> via device Device1
     And I do not see likes below the latest message
@@ -106,7 +106,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | ImageName                |
       | user1Email | user1Password | user1Name | user2Name | userpicture_portrait.jpg |
 
-  @C226429 @staging
+  @C226429 @regression
   Scenario Outline: Verify liking someone's audio message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -259,7 +259,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Youtubelink                                 | Soundcloudlink                                                      | Vimeolink                 | Spotifylink                                           |
       | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=ncHd3sxpEbo | https://soundcloud.com/nour-moukhtar/ludwig-van-beethoven-fur-elise | https://vimeo.com/7265982 | https://play.spotify.com/album/7buEcyw6fJF3WPgr06BomH |
 
-  @C226433 @staging
+  @C226433 @regression
   Scenario Outline: Verify liking someone's shared file
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -329,7 +329,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Message | ExpectedMessage     |
       | user1Email | user1Password | user1Name | user2Name | cat     | cat • via giphy.com |
 
-  @C226435 @staging
+  @C226435 @regression
   Scenario Outline: Verify liking someone's location
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -362,7 +362,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Latitude | Longitude | LocationName |
       | user1Email | user1Password | user1Name | user2Name | 12.94    | 54.29     | Stralsund    |
 
-  @C234612 @staging
+  @C234612 @regression
   Scenario Outline: Verify locally deleted message can be liked by others
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -388,7 +388,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Message1 |
       | user1Email | user1Password | user1Name | user2Name | like me  |
 
-  @C234614 @staging
+  @C234614 @regression
   Scenario Outline: Verify message that is not in my history can be liked by others
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -407,7 +407,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Message1 |
       | user1Email | user1Password | user1Name | user2Name | like me  |
 
-  @C226443 @staging
+  @C226443 @regression
   Scenario Outline: Verify likes are reset if you edited message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -459,7 +459,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Message1 | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | like me  | edited        |
 
-  @C234613 @staging
+  @C234613 @regression
   Scenario Outline: Verify likes are reset if sender edits his message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -504,3 +504,37 @@ Feature: Like
     Examples:
       | Login      | Password      | Name      | Contact   | Message1 | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | like me  | edited        |
+
+    @C226439 @staging
+    Scenario Outline: Verify you can like someone's message from message context menu
+      Given There are 2 users where <Name> is me
+      Given Myself is connected to <Contact>
+      Given I switch to Sign In page
+      Given I Sign in using login <Login> and password <Password>
+      Given I am signed in properly
+      When I open conversation with <Contact>
+      And Contact <Contact> sends message <Message1> via device Device1 to user me
+      Then I see text message <Message1>
+# No likes
+      And I do not see likes below the latest message
+# Only liked by me
+      When I click context menu of the latest message
+      And I click like button in context menu for latest message
+      And I do not see likes below the latest message
+      Then I see the latest message is only liked by me
+# Liked by others and me
+      When User <Contact> likes the recent message from user <Name> via device Device1
+      And I see likes below the latest message
+      And I see the latest message is liked by others and me
+# Only liked by others
+      When I click context menu of the latest message
+      And I click unlike button in context menu for latest message
+      Then I see likes below the latest message
+      And I see the latest message is only liked by others
+# Everything unliked
+      When User <Contact> unlikes the recent message from user <Name> via device Device1
+      And I do not see likes below the latest message
+
+      Examples:
+        | Login      | Password      | Name      | Contact   | Message1 |
+        | user1Email | user1Password | user1Name | user2Name | like me  |

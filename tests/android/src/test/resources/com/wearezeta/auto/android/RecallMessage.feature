@@ -32,7 +32,7 @@ Feature: Recall Message
       | Name      | Contact1  | Message           | ContactDevice | MySecondDevice | Message2 |
       | user1Name | user2Name | DeleteTextMessage | Device2       | Device1        | Del2     |
 
-  @C225997 @staging
+  @C225997 @regression
   Scenario Outline: Verify the message deleted everywhere in local Wire database
     Given Wire has Debug mode enabled
     Given There are 2 users where <Name> is me
@@ -150,7 +150,6 @@ Feature: Recall Message
     And I tap Delete button on the alert
     Then I do not see Link Preview container in the conversation view
     And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
-
 
     Examples:
       | Name      | Contact   | Link                    | ContactDevice |
@@ -309,7 +308,9 @@ Feature: Recall Message
     And I type the message "<Message>" and send it
     And <Contact1> removes Myself from group <GroupChatName>
     And I tap the Text message "<Message>" in the conversation view
-    Then I do not see Like button under the Text message "<Message>"
+    # C226046
+    Then I do not see Like button in conversation view
+    # C206252
     When I long tap the Text message "<Message>" in the conversation view
     Then I do not see Delete for everyone button on the message bottom menu
 

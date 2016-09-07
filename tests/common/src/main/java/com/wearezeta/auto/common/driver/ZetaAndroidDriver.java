@@ -4,7 +4,6 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.common.ocr.OnScreenKeyboardScanner;
 import io.appium.java_client.MobileCommand;
 import io.appium.java_client.android.AndroidDriver;

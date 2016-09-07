@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.pages.external.VerifyPage;
@@ -30,15 +31,15 @@ public class VerifyPageSteps {
 	 */
 	@When("^I go to verify page for (.*)$")
 	public void IGoToVerifyPage(String agent) throws Exception {
-		context.getPagesCollection().getPage(VerifyPage.class).setUrl(
-				WebAppConstants.STAGING_SITE_ROOT + "/verify/%3Fsuccess%26agent=" + agent);
+		final String website = CommonUtils.getWebsitePathFromConfig(VerifyPageSteps.class);
+		context.getPagesCollection().getPage(VerifyPage.class).setUrl(website + "/verify/%3Fsuccess%26agent=" + agent);
 		context.getPagesCollection().getPage(VerifyPage.class).navigateTo();		
 	}
 	
 	@When("^I go to broken verify page for (.*)$")
 	public void IGoToBrokenVerifyPage(String agent) throws Exception {
-		context.getPagesCollection().getPage(VerifyPage.class).setUrl(
-				WebAppConstants.STAGING_SITE_ROOT + "/verify/%3Fagent=" + agent);
+		final String website = CommonUtils.getWebsitePathFromConfig(VerifyPageSteps.class);
+		context.getPagesCollection().getPage(VerifyPage.class).setUrl(website + "/verify/%3Fagent=" + agent);
 		context.getPagesCollection().getPage(VerifyPage.class).navigateTo();		
 	}
 	
@@ -56,7 +57,8 @@ public class VerifyPageSteps {
 				downloadLink = "https://itunes.apple.com/app/wire/id931134707?mt=12";
 				break;
 			case "windows":
-				downloadLink = "https://staging-website.zinfra.io/download/";
+				final String website = CommonUtils.getWebsitePathFromConfig(VerifyPageSteps.class);
+				downloadLink = website + "download/";
 				break;
 			default: break;
 		}
