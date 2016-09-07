@@ -43,14 +43,14 @@ Feature: Offline Mode
     And I type the message "<Message>" in the conversation view
     And I send the typed message in the conversation view
     Then I see the message "<Message>" in the conversation view
-    And I see unsent indicator next to the message "<Message>" in the conversation view
+    And I see Message status with expected text "Sending failed. Resend" in conversation view
     When I hide keyboard
     And I tap Add picture button from cursor toolbar
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
     And I scroll to the bottom of the conversation view
-    And I see unsent indicator next to new picture in the conversation view
+    And I see Message status with expected text "Sending failed. Resend" in conversation view
 
     Examples:
       | Name      | Contact   | Message    |

@@ -17,6 +17,7 @@ public class ConversationViewPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
+    private static final String ANY_MESSAGE = "*ANY MESSAGE*";
 
     private TabletConversationViewPage getConversationViewPage() throws Exception {
         return pagesCollection.getPage(TabletConversationViewPage.class);
@@ -367,37 +368,6 @@ public class ConversationViewPageSteps {
                         avgThreshold <= MAX_SIMILARITY_THRESHOLD);
                 break;
         }
-    }
-
-    /**
-     * Verify whether unsent indicator is visible next to the particular message
-     *
-     * @param msg the expected message text
-     * @throws Exception
-     * @step. ^I see unsent indicator next to the message \"(.*)\" in the
-     * [Cc]onversation view$
-     */
-    @Then("^I see unsent indicator next to the message \"(.*)\" in the [Cc]onversation view$")
-    public void ISeeUnsentIndicatorNextTo(String msg) throws Exception {
-        Assert.assertTrue(
-                String.format(
-                        "Unsent indicator is not visible next to the '%s' message",
-                        msg), getConversationViewPage()
-                        .waitUntilUnsentIndicatorIsVisible(msg));
-    }
-
-    /**
-     * Verify whether unsent indicator is visible next to a picture
-     *
-     * @throws Exception
-     * @step. ^I see unsent indicator next to new picture in the [Cc]onversation
-     * view$
-     */
-    @Then("^I see unsent indicator next to new picture in the [Cc]onversation view$")
-    public void ISeeUnsentIndicatorNextToAPicture() throws Exception {
-        Assert.assertTrue("Unsent indicator is not visible next to a picture",
-                getConversationViewPage()
-                        .waitUntilUnsentIndicatorIsVisibleForAPicture());
     }
 
     /**
@@ -754,5 +724,45 @@ public class ConversationViewPageSteps {
     @When("^I tap Sketch Image Paint button on Picture preview overlay$")
     public void ITapSketchOnPictureView() throws Exception {
         getConversationViewPage().tapSketchOnPicturePreviewOverlay();
+    }
+
+    /**
+     * Verify I can see/cannot see the Any msg meta item
+     *
+     * @param shouldNotSee
+     * @param itemType       Message Meta Item type
+     * @param hasExpectedMsg equals null means you don't specify the expceted content for item
+     * @param expectedMsg    specified expected content for item
+     * @param messageType    the message type
+     * @throws Exception
+     * @step. ^I (do not )?see (Like button|Like description|Message status|First like avatar|Second like avatar)
+     * (with expected text "(.*)" )?in conversation view$
+     */
+    @Then("^I (do not )?see (Like button|Like description|Message status|First like avatar|Second like avatar)" +
+            " (with expected text \"(.*)\" )?in conversation view$")
+    public void ISeeMessagMeta(String shouldNotSee, String itemType, String hasExpectedMsg,
+                               String expectedMsg) throws Exception {
+        boolean isVisible;
+        boolean shouldBeVisible = (shouldNotSee == null);
+        if (shouldBeVisible) {
+            if (hasExpectedMsg == null) {
+                expectedMsg = ANY_MESSAGE;
+                isVisible = getConversationViewPage().waitUntilMessageMetaItemVisible(itemType);
+            } else {
+                expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
+                isVisible = getConversationViewPage().waitUntilMessageMetaItemVisible(itemType, expectedMsg);
+            }
+        } else {
+            if (hasExpectedMsg == null) {
+                expectedMsg = ANY_MESSAGE;
+                isVisible = !getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType);
+            } else {
+                expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
+                isVisible = !getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType, expectedMsg);
+            }
+        }
+        Assert.assertEquals(
+                String.format("The %s should be %s with expected text '%s'",
+                        itemType, shouldBeVisible ? "visible" : "invisible", expectedMsg), shouldBeVisible, isVisible);
     }
 }

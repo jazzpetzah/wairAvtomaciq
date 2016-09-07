@@ -22,6 +22,7 @@ public class ConversationViewPageSteps {
 
     private static final String ANDROID_LONG_MESSAGE = CommonUtils.generateRandomString(300);
     private static final String LONG_MESSAGE_ALIAS = "LONG_MESSAGE";
+    private static final String ANY_MESSAGE = "*ANY MESSAGE*";
     private static final int SWIPE_DURATION_MILLISECONDS = 1300;
     private static final int MAX_SWIPES = 5;
     private static final int MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = 15;
@@ -338,6 +339,27 @@ public class ConversationViewPageSteps {
             Assert.assertTrue(
                     String.format("The message '%s' is still visible in the conversation view, but should be hidden", msg),
                     getConversationViewPage().isMessageInvisible(msg));
+        }
+    }
+
+    /**
+     * Checks to see that a link preview message that has been sent appears in the chat history
+     *
+     * @param shouldNotSee equals to null if the message should be visible
+     * @param msg          the expected message
+     * @throws Exception
+     * @step. ^I (do not )?see the message "(.*)" in the conversation view$
+     */
+    @Then("^I (do not )?see the link preview message \"(.*)\" in the conversation view$")
+    public void ISeeLinkPreviewMessage(String shouldNotSee, String msg) throws Exception {
+        msg = expandMessage(msg);
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("The link preview message '%s' is not visible in the conversation view", msg),
+                    getConversationViewPage().waitUntilLinkPreviewMessageVisible(msg));
+        } else {
+            Assert.assertTrue(
+                    String.format("The link preview message '%s' is still visible in the conversation view", msg),
+                    getConversationViewPage().waitUntilLinkPreviewMessageInvisible(msg));
         }
     }
 
@@ -804,18 +826,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Check whether unsent indicator is shown next to a new picture in the convo view
-     *
-     * @throws Exception
-     * @step. ^I see unsent indicator next to new picture in the conversation
-     */
-    @Then("^I see unsent indicator next to new picture in the conversation")
-    public void ISeeUnsentIndictatorNextToAPicture() throws Exception {
-        Assert.assertTrue("There is no unsent indicator next to a picture in the conversation view",
-                getConversationViewPage().waitForAPictureWithUnsentIndicator());
-    }
-
-    /**
      * Verifies that after deleting there is no content in the conversation view
      *
      * @throws Exception
@@ -917,20 +927,6 @@ public class ConversationViewPageSteps {
                 throw e;
             }
         }
-    }
-
-    /**
-     * Checks to see that an unsent indicator is present next to the particular message in the chat history
-     *
-     * @param msg the expected conversation message
-     * @throws Exception
-     * @step. ^I see unsent indicator next to "(.*)" in the conversation view$
-     */
-    @Then("^I see unsent indicator next to \"(.*)\" in the conversation view$")
-    public void ISeeUnsentIndicatorNextToTheMessage(String msg) throws Exception {
-        Assert.assertTrue(String.format(
-                "Unsent indicator has not been shown next to the '%s' message in the conversation view", msg),
-                getConversationViewPage().waitForUnsentIndicator(msg));
     }
 
     private enum PictureDestination {
@@ -1516,31 +1512,28 @@ public class ConversationViewPageSteps {
             " (with expected text \"(.*)\" )?in conversation view$")
     public void ISeeMessagMetaForText(String shouldNotSee, String itemType, String hasExpectedMsg,
                                       String expectedMsg) throws Exception {
-        if (shouldNotSee == null) {
-            boolean isVisible;
+        boolean isVisible;
+        boolean shouldBeVisible = (shouldNotSee == null);
+        if (shouldBeVisible) {
             if (hasExpectedMsg == null) {
-                expectedMsg = "*Any message*";
+                expectedMsg = ANY_MESSAGE;
                 isVisible = getConversationViewPage().waitUntilMessageMetaItemVisible(itemType);
             } else {
                 expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
                 isVisible = getConversationViewPage().waitUntilMessageMetaItemVisible(itemType, expectedMsg);
             }
-            Assert.assertTrue(
-                    String.format("The %s should be visible with expected text '%s'",
-                            itemType, expectedMsg), isVisible);
         } else {
-            boolean isInvisible;
             if (hasExpectedMsg == null) {
-                expectedMsg = "*Any message*";
-                isInvisible = getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType);
+                expectedMsg = ANY_MESSAGE;
+                isVisible = !getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType);
             } else {
                 expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
-                isInvisible = getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType, expectedMsg);
+                isVisible = !getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType, expectedMsg);
             }
-            Assert.assertTrue(
-                    String.format("The %s should be invisible with expected text '%s'",
-                            itemType, expectedMsg), isInvisible);
         }
+        Assert.assertEquals(
+                String.format("The %s should be %s with expected text '%s'",
+                        itemType, shouldBeVisible ? "visible" : "invisible", expectedMsg), shouldBeVisible, isVisible);
     }
 
     /**

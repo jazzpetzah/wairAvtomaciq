@@ -136,14 +136,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idConversationImages);
     }
 
-    public boolean waitUntilUnsentIndicatorIsVisible(String msg) throws Exception {
-        return getConversationViewPage().waitForUnsentIndicatorVisible(msg);
-    }
-
-    public boolean waitUntilUnsentIndicatorIsVisibleForAPicture() throws Exception {
-        return getConversationViewPage().waitForAPictureWithUnsentIndicator();
-    }
-
     public void tapPlayPauseButton() throws Exception {
         getConversationViewPage().tapPlayPauseBtn();
     }
@@ -270,5 +262,23 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
     public void tapSketchOnPicturePreviewOverlay() throws Exception {
         getElement(idSketchButtonOnPicturePreviewOverlay).click();
+    }
+
+    public boolean waitUntilMessageMetaItemVisible(String itemType) throws Exception {
+        return getConversationViewPage().waitUntilMessageMetaItemVisible(itemType);
+    }
+
+    public boolean waitUntilMessageMetaItemInvisible(String itemType) throws Exception {
+        return getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType);
+    }
+
+    public boolean waitUntilMessageMetaItemVisible(String itemType, String expectedItemText)
+            throws Exception {
+        return getConversationViewPage().waitUntilMessageMetaItemVisible(itemType, expectedItemText);
+    }
+
+    public boolean waitUntilMessageMetaItemInvisible(String itemType, String expectedItemText)
+            throws Exception {
+        return getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType, expectedItemText);
     }
 }
