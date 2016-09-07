@@ -182,7 +182,6 @@ Feature: Recall Message
     Then I see 1 default message in the conversation view
     When User <Contact1> deletes the recent message everywhere from group conversation <Group> via device <Contact1Device>
     Then I see 0 default messages in the conversation view
-    And I see that Deleted label for a message from <Contact1> is present in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact1Device | Group       |
