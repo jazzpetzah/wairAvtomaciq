@@ -99,8 +99,8 @@ public class YouAreInvitedPageSteps {
 	@Then("^I see 'Open Wire' button$")
 	public void ISeeOpenWireButton() throws Exception {
 		//String code = "hello";
-		final String website = CommonUtils.getWebsitePathFromConfig(YouAreInvitedPageSteps.class);
-		String url = website + "/auth/?connect=" + code;
+		final String website = CommonUtils.getWebAppApplicationPathFromConfig(YouAreInvitedPageSteps.class);
+		String url = website + "auth/?connect=" + code;
 		assertThat(context.getPagesCollection().getPage(YouAreInvitedPage.class).getOpenHref(), equalTo(url));
 	}
 	
