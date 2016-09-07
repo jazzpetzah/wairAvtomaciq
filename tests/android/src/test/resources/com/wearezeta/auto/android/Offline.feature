@@ -39,13 +39,12 @@ Feature: Offline
     And I enable Airplane mode on the device
     When I tap on text input
     And I type the message "<Message>" and send it
-    Then I see unsent indicator next to "<Message>" in the conversation view
-    When I hide keyboard
-    And I tap Add picture button from cursor toolbar
+    Then I see Message status with expected text "Sending failed. Resend" in conversation view
+    When I tap Add picture button from cursor toolbar
     And I tap Take Photo button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
     And I scroll to the bottom of conversation view
-    Then I see unsent indicator next to new picture in the conversation
+    Then I see Message status with expected text "Sending failed. Resend" in conversation view
 
     Examples:
       | Name      | Contact   | Message    |
