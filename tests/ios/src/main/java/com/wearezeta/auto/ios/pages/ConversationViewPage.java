@@ -1052,7 +1052,12 @@ public class ConversationViewPage extends IOSPage {
     public void tapImageButton(String buttonName) throws Exception {
         this.printPageSource();
         By locator = getImageButtonByName(buttonName);
-        getElement(locator).click();
+        Optional<WebElement> element = DriverUtils.getElementIfPresentInDOM(getDriver(),locator);
+        if (element.isPresent()) {
+            DriverUtils.tapInTheCenterOfTheElement(getDriver(), element.get());
+        } else {
+            throw new IllegalArgumentException(buttonName + "button can't be found");
+        }
     }
 
     private By getImageButtonByName(String buttonName) throws Exception {
