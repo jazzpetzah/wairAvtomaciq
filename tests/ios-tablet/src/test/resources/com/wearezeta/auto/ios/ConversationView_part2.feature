@@ -93,7 +93,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I type the "<YouTubeLink>" message and send it
-    And I click hide keyboard button
+    And I click Hide keyboard button
     And I click video container for the first time
     And I wait for 5 seconds
     Then I see video player page is opened
