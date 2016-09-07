@@ -793,7 +793,7 @@ public class ConversationPageSteps {
     @Then("^I see the latest message is only liked by me$")
     public void ThenISeeLatestMessageIsOnlyLikedByMe() throws Exception {
         assertTrue("The message is NOT only liked by you", context.getPagesCollection().getPage(ConversationPage.class)
-                .isLikeWithoutOtherLikesVisibleForLatestMessage());
+                .isUnlikeWithoutOtherLikesVisibleForLatestMessage());
     }
     
     @Then("^I see the latest message is only liked by others$")
