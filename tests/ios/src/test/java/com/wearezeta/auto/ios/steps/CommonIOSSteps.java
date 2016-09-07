@@ -150,8 +150,6 @@ public class CommonIOSSteps {
                     if (entry.getKey().equals(CAPABILITY_NAME_ADDRESSBOOK) &&
                             (entry.getValue() instanceof Boolean) && (Boolean) entry.getValue()) {
                         processArgs.add("--addressbook-on-simulator");
-                        // TODO: Just to track crashes. Remove this later
-                        processArgs.add("--debug-log-network");
                     }
                     capabilities.setCapability(entry.getKey(), entry.getValue());
                 }
