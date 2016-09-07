@@ -197,10 +197,10 @@ Feature: Likes
     Given I see conversations list
     Given I tap on contact name <Group>
     When I do not see Like icon in the conversation
-    And I long tap on the recent message from <Contact1>
+    And I long tap on video message in conversation view
     And I tap on Like badge item
     Then I see Like icon in the conversation
 
     Examples:
-      | Name      | Contact1  | Contact2  | Group           | FileName    | MIMEType  | Contact1Device |
-      | user1Name | user2Name | user3Name | VideoLiketGroup | testing.mp4 | video/mp4 | C1Device       |
+      | Name      | Contact1  | Contact2  | Group          | FileName    | MIMEType  | Contact1Device |
+      | user1Name | user2Name | user3Name | VideoLikeGroup | testing.mp4 | video/mp4 | C1Device       |
