@@ -96,7 +96,7 @@ Feature: Sign In
     And I have entered login <Email>
     And I start activation email monitoring
     And I have entered password <Password>
-    And I click DONE keyboard button
+    And I click Done keyboard button
     And I see email verification reminder
     And I verify registration address
     And I dismiss settings warning
@@ -120,7 +120,7 @@ Feature: Sign In
     And I see set email/password suggesstion page
     And I have entered login <Email>
     And I have entered password <Password>
-    And I click DONE keyboard button
+    And I click Done keyboard button
     Then I see already registered email alert
 
     Examples:
@@ -139,7 +139,7 @@ Feature: Sign In
     And I see set email/password suggesstion page
     And I have entered login <Email>
     And I have entered password <Password>
-    And I click DONE keyboard button
+    And I click Done keyboard button
     Then I see invalid email alert
 
     Examples:

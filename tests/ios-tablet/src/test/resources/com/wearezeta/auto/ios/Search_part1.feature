@@ -147,7 +147,7 @@ Feature: Search
     And I wait until <Contact> exists in backend search results
     And I open search UI
     And I input in People picker search field user name <Contact>
-    And I click hide keyboard button
+    And I click Hide keyboard button
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
     And I type the default message and send it
