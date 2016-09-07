@@ -245,7 +245,7 @@ Feature: Like
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I see a picture in the conversation view
-    And I tap the recent picture in the conversation view
+    And I tap Image container in the conversation view
     And I remember the state of like button
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed
@@ -267,7 +267,7 @@ Feature: Like
     And I draw a sketch with 1 colors
     And I send my sketch
     And I do not see Message status with expected text "Sending" in conversation view
-    And I tap the recent picture in the conversation view
+    And I tap Image container in the conversation view
     And I remember the state of like button
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed

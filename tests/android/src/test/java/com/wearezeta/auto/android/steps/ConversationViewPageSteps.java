@@ -381,22 +381,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Selects the last picture sent in a conversation view dialog
-     *
-     * @param isLogTap equals to null if it should be simple tap
-     * @throws Exception
-     * @step. ^I (long )?tap the recent (?:image|picture) in the conversation view$
-     */
-    @When("^I (long )?tap the recent (?:image|picture) in the conversation view$")
-    public void ITapRecentImage(String isLogTap) throws Exception {
-        if (isLogTap == null) {
-            getConversationViewPage().tapRecentImage();
-        } else {
-            getConversationViewPage().longTapRecentImage();
-        }
-    }
-
-    /**
      * Tap on Image container button
      *
      * @param buttonName which could be Sketch or Fullscreen
@@ -1154,9 +1138,9 @@ public class ConversationViewPageSteps {
      * @param shouldNotSee  equals to null if the container should be visible
      * @param containerType euiter Youtube or Soundcloud or File Upload or Video Message
      * @throws Exception
-     * @step. ^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
+     * @step. ^I (do not )?see (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
      */
-    @Then("^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
+    @Then("^I (do not )?see (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
             "container in the conversation view$")
     public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
         final boolean condition = (shouldNotSee == null) ?
@@ -1182,19 +1166,15 @@ public class ConversationViewPageSteps {
     /**
      * Tap container
      *
-     * @param isLongTap     equals to null if this should be ordinary single tap
+     * @param tapType       Tap type
      * @param containerType one of available container types
      * @throws Exception
-     * @step. ^I (long )?tap (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
+     * @step. ^I (long tap|double tap|tap) (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
      */
-    @When("^I (long )?tap (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
+    @When("^I (long tap|double tap|tap) (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
             "container in the conversation view$")
-    public void ITapContainer(String isLongTap, String containerType) throws Exception {
-        if (isLongTap == null) {
-            getConversationViewPage().tapContainer(containerType);
-        } else {
-            getConversationViewPage().longTapContainer(containerType);
-        }
+    public void ITapContainer(String tapType, String containerType) throws Exception {
+        getConversationViewPage().tapContainer(tapType, containerType);
     }
 
 
