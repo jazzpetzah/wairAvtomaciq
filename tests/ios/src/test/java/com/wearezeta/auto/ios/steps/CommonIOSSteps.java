@@ -135,7 +135,7 @@ public class CommonIOSSteps {
                 "--disable-autocorrection",
                 // https://wearezeta.atlassian.net/browse/ZIOS-5259
                 "-AnalyticsUserDefaultsDisabledKey", "0"
-                //"--debug-log-network",
+                //"--debug-log-network"
         ));
 
         if (additionalCaps.isPresent()) {
@@ -151,7 +151,11 @@ public class CommonIOSSteps {
                 } else {
                     if (entry.getKey().equals(CAPABILITY_NAME_ADDRESSBOOK) &&
                             (entry.getValue() instanceof Boolean) && (Boolean) entry.getValue()) {
-                        processArgs.add("--addressbook-on-simulator");
+                        processArgs.addAll(Arrays.asList(
+                                "--debug-log-network",
+                                "--addressbook-on-simulator",
+                                "--addressbook-search-delay=2"
+                        ));
                     }
                     capabilities.setCapability(entry.getKey(), entry.getValue());
                 }
@@ -1479,7 +1483,6 @@ public class CommonIOSSteps {
     @Given("^I separate list of contacts into (\\d+) chunks$")
     public void ISeparateListOfContactsIntoChunks(int numberOfChunks) throws Exception {
         int sizeOfBatch = contactsInAddressbook.size()/numberOfChunks;
-        //final int contactListSize = contactsInAddressbook.size();
         for (int i = 0; i < contactsInAddressbook.size(); i += sizeOfBatch) {
             conatctBatches.add(contactsInAddressbook.subList(i, Math.min(i + sizeOfBatch, contactsInAddressbook.size())));
         }
@@ -1488,10 +1491,12 @@ public class CommonIOSSteps {
     @Then("^I pick (\\d+) random contact of chunk (\\d+) to register at BE$")
     public void IPickRandomContactOfChunkToRegisterAtBE(int numberContactsToRegister, int numberOfChunk)
             throws Exception {
-        int randomNumber = new Random().nextInt(conatctBatches.get(numberOfChunk-1).size());
-        ABContact contactToRegister = conatctBatches.get(numberOfChunk-1).get(randomNumber);
-        ClientUser userToRegsiter = usrMgr.findUserByNameOrNameAlias(contactToRegister.name);
-        usrMgr.createSpecificUsersOnBackend(Collections.singletonList(userToRegsiter), RegistrationStrategy.ByPhoneNumberOnly);
+        for (int i = 1; i<=numberContactsToRegister;i++){
+            int randomNumber = new Random().nextInt(conatctBatches.get(numberOfChunk-1).size());
+            ABContact contactToRegister = conatctBatches.get(numberOfChunk-1).get(randomNumber);
+            ClientUser userToRegsiter = usrMgr.findUserByNameOrNameAlias(contactToRegister.name);
+            usrMgr.createSpecificUsersOnBackend(Collections.singletonList(userToRegsiter), RegistrationStrategy.ByPhoneNumberOnly);
+        }
     }
 
     /**

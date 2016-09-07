@@ -41,7 +41,7 @@ public class ClientUsersManager {
             .format("user%dEmail", idx);
     public static final Function<Integer, String> PHONE_NUMBER_ALIAS_TEMPLATE = idx -> String
             .format("user%dPhoneNumber", idx);
-    public static final int MAX_USERS = 3001;
+    public static final int MAX_USERS = 2001;
 
     private static final Logger log = ZetaLogger.getLog(ClientUsersManager.class.getSimpleName());
 

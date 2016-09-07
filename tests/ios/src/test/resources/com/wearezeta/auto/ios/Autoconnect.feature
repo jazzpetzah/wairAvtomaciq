@@ -104,33 +104,25 @@ Feature: Autoconnect
     Given I delete all contacts from Address Book
     Given I add all pre created users to Address Book
     Given I read list of Contacts in Address Book
-    Given I separate list of contacts into 3 chunks
+    Given I separate list of contacts into 2 chunks
     Given I pick 1 random contact of chunk 1 to register at BE
     Given I pick 1 random contact of chunk 2 to register at BE
-    Given I pick 1 random contact of chunk 3 to register at BE
+    #Given I pick 1 random contact of chunk 3 to register at BE
     Given I relaunch Wire
     Given I sign in using my email or phone number
     When I open search UI
     And I click clear button
     #Then I see conversation <Contact1> in conversations list
-    #And I restart Wire
     Given I quit Wire
     Given I relaunch Wire
-    And I sign in using my email or phone number
-    When I open search UI
-    And I click clear button
     #Then I see conversation <Contact2> in conversations list
-    And I restart Wire
-    #And I sign in using my email or phone number
-    When I open search UI
-    And I click clear button
+    Given I quit Wire
+    Given I relaunch Wire
     #Then I see conversation <Contact3> in conversations list
-    And I restart Wire
     And I pick 1 random contact of chunk 1 to register at BE
-    #And I sign in using my email or phone number
-    #And I wait until <Contact4> exists in backend search results
-    When I open search UI
-    And I click clear button
+    Given I quit Wire
+    Given I relaunch Wire
+    And I wait for 5 seconds
     Then I see conversation <Contact4> in conversations list
 
     Examples:
