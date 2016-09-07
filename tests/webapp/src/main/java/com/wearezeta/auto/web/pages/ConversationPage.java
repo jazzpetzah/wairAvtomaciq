@@ -1267,6 +1267,11 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3);
     }
 
+    public boolean isDeleteForEveryoneButtonInContextMenuInvisible() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteForEveryoneInContext);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
+    }
+
     public boolean isLikeButtonInContextMenuVisible() throws Exception {
         By locator = By.xpath(WebAppLocators.ConversationPage.xpathLikeInContext);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
