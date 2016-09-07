@@ -29,10 +29,10 @@ Feature: Likes
     Given I tap on contact name <Contact>
     When I long tap default message in conversation view
     And I tap on Like badge item
-    Then I see Like icon in the conversation
-    When I long tap default message in conversation view
+    When I remember the state of Like icon in the conversation
+    And I long tap default message in conversation view
     And I tap on Unlike badge item
-    Then I do not see Like icon in the conversation
+    Then I see the state of Like icon is changed in the conversation
     And I see 1 default message in the conversation view
 
     Examples:
