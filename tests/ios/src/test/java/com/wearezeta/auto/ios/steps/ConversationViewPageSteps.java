@@ -1493,4 +1493,16 @@ public class ConversationViewPageSteps {
         Assert.assertTrue(String.format("The Like/Unlike icon is expected to be %s",
                 (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }
+
+    /**
+     * Tap relevant button on image
+     *
+     * @param buttonName Sketch ot Fullscreen button names allowed
+     * @throws Exception
+     * @step. ^I tap (Sketch|Fullscreen) button on image$
+     */
+    @When("^I tap (Sketch|Fullscreen) button on image$")
+    public void ITapOnImageButtons(String buttonName) throws Exception {
+        getConversationViewPage().tapImageButton(buttonName);
+    }
 }

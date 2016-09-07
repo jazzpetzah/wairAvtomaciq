@@ -163,13 +163,8 @@ Feature: Conversation View
     And I tap Confirm button on Picture preview page
     And I see 1 photo in the conversation view
     And I tap on image in conversation view
+    And I tap Fullscreen button on image
     And I see Full Screen Page opened
-    And I see sender first name <Name> on fullscreen page
-    And I see send date on fullscreen page
-    And I see download button shown on fullscreen page
-    And I tap on fullscreen page
-    And I verify image caption and download button are not shown
-    And I tap on fullscreen page
     And I tap close fullscreen page button
     Then I see 1 photo in the conversation view
 
@@ -187,6 +182,7 @@ Feature: Conversation View
     And I tap on contact name <Contact>
     And I see 1 photo in the conversation view
     And I tap on image in conversation view
+    And I tap Fullscreen button on image
     And I see Full Screen Page opened
     When I rotate UI to landscape
     Then I see Full Screen Page opened
@@ -276,26 +272,6 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
       | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
 
-  @C954 @regression @fastLogin
-  Scenario Outline: Verify drawing on image from single view
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    When I tap on contact name <Contact>
-    And I see 1 photo in the conversation view
-    And I tap on image in conversation view
-    And I see Full Screen Page opened
-    And I tap Sketch button on image fullscreen page
-    And I draw a random sketch
-    And I send my sketch
-    Then I see 2 photos in the conversation view
-
-    Examples:
-      | Name      | Contact   | Picture     |
-      | user1Name | user2Name | testing.jpg |
-
   @C952 @173061 @rc @regression @fastLogin
   Scenario Outline: Verify drawing on the image from gallery
     Given There are 2 users where <Name> is me
@@ -381,29 +357,6 @@ Feature: Conversation View
     And I tap on Paste badge item
     And I confirm my choice
     Then I see 2 photo in the conversation view
-
-    Examples:
-      | Name      | Contact   | Picture     |
-      | user1Name | user2Name | testing.jpg |
-
-  @C911 @regression @fastLogin
-  Scenario Outline: Verify downloading images in fullscreen
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    When I tap on contact name <Contact>
-    And I see 1 photo in the conversation view
-    And I tap on image in conversation view
-    And I see Full Screen Page opened
-    And I see download button shown on fullscreen page
-    And I tap download button on fullscreen page
-    And I tap close fullscreen page button
-    And I tap Add Picture button from input tools
-    And I select the first picture from Keyboard Gallery
-    And I tap Confirm button on Picture preview page
-    And I see 2 photos in the conversation view
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -563,12 +516,13 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     Then I see 1 photo in the conversation view
     When I tap on image in conversation view
+    And I tap Fullscreen button on image
     Then I see Full Screen Page opened
     And I tap close fullscreen page button
-    When I tap on image in conversation view
+    When I tap Fullscreen button on image
     Then I see Full Screen Page opened
     And I tap close fullscreen page button
-    When I tap on image in conversation view
+    When I tap Fullscreen button on image
     Then I see Full Screen Page opened
 
     Examples:

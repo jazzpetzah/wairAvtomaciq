@@ -230,6 +230,9 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameLikeButton = MobileBy.AccessibilityId("likeButton");
 
+    private static final By nameSketchOnImageButton = MobileBy.AccessibilityId("sketchOnImageButton");
+    private static final By nameFullScreenOnImageButton = MobileBy.AccessibilityId("openFullScreenButton");
+
     private static final int MAX_APPEARANCE_TIME = 20;
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
@@ -796,7 +799,8 @@ public class ConversationViewPage extends IOSPage {
             case "play":
                 return namePlayAudioRecorderButton;
             default:
-                throw new IllegalArgumentException(String.format("Button '%s' is not known as a record control button", buttonName));
+                throw new IllegalArgumentException(String.format("Button '%s' is not known as a record control button",
+                        buttonName));
         }
     }
 
@@ -1070,5 +1074,22 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isLikeIconInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameLikeButton);
+    }
+
+    public void tapImageButton(String buttonName) throws Exception {
+        By locator = getImageButtonByName(buttonName);
+        DriverUtils.tapInTheCenterOfTheElement(getDriver(), DriverUtils.getElementIfPresentInDOM(getDriver(), locator).
+                orElseThrow(() -> new IllegalStateException(buttonName + "button can't be found")));
+    }
+
+    private By getImageButtonByName(String buttonName) throws Exception {
+        switch (buttonName.toLowerCase()) {
+            case "sketch":
+                return nameSketchOnImageButton;
+            case "fullscreen":
+                return nameFullScreenOnImageButton;
+            default:
+                throw new Exception("Not recognized button name. Available 'sketch', 'fullscreen'");
+        }
     }
 }
