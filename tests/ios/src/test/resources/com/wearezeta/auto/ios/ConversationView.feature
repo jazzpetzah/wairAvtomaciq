@@ -163,7 +163,7 @@ Feature: Conversation View
     And I tap Confirm button on Picture preview page
     And I see 1 photo in the conversation view
     And I tap on image in conversation view
-    And I tap on fullscreen button on image
+    And I tap Fullscreen button on image
     And I see Full Screen Page opened
     And I tap close fullscreen page button
     Then I see 1 photo in the conversation view
@@ -182,7 +182,7 @@ Feature: Conversation View
     And I tap on contact name <Contact>
     And I see 1 photo in the conversation view
     And I tap on image in conversation view
-    And I tap on fullscreen button on image
+    And I tap Fullscreen button on image
     And I see Full Screen Page opened
     When I rotate UI to landscape
     Then I see Full Screen Page opened
@@ -516,13 +516,13 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     Then I see 1 photo in the conversation view
     When I tap on image in conversation view
-    And I tap on fullscreen button on image
+    And I tap Fullscreen button on image
     Then I see Full Screen Page opened
     And I tap close fullscreen page button
-    When I tap on fullscreen button on image
+    When I tap Fullscreen button on image
     Then I see Full Screen Page opened
     And I tap close fullscreen page button
-    When I tap on fullscreen button on image
+    When I tap Fullscreen button on image
     Then I see Full Screen Page opened
 
     Examples:

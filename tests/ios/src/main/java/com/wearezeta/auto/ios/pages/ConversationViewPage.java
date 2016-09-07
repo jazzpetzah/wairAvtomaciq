@@ -239,7 +239,6 @@ public class ConversationViewPage extends IOSPage {
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
-
     public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -1050,18 +1049,15 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapImageButton(String buttonName) throws Exception {
-        this.printPageSource();
         By locator = getImageButtonByName(buttonName);
-        Optional<WebElement> element = DriverUtils.getElementIfPresentInDOM(getDriver(),locator);
-        if (element.isPresent()) {
-            DriverUtils.tapInTheCenterOfTheElement(getDriver(), element.get());
-        } else {
-            throw new IllegalArgumentException(buttonName + "button can't be found");
-        }
+        DriverUtils.getElementIfPresentInDOM(getDriver(), locator).
+                orElseThrow(() -> new IllegalStateException(buttonName + "button can't be found")).
+                click();
+
     }
 
     private By getImageButtonByName(String buttonName) throws Exception {
-        switch (buttonName) {
+        switch (buttonName.toLowerCase()) {
             case "sketch":
                 return nameSketchOnImageButton;
             case "fullscreen":
