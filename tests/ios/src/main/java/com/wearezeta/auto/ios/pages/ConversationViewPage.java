@@ -98,8 +98,6 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameGifButton = MobileBy.AccessibilityId("gifButton");
 
-    private static final By nameSoundCloudButton = MobileBy.AccessibilityId("soundcloud");
-
     public static final Function<String, String> xpathStrMissedCallButtonByContact = name -> String.format(
             "//UIATableCell[.//*[@name='%s CALLED']]/UIAButton[@name='ConversationMissedCallButton']",
             name.toUpperCase());
@@ -1028,17 +1026,7 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapContainer(String name, boolean isLongTap, boolean isdoubleTap) throws Exception {
         final By locator = getContainerLocatorByName(name);
-        WebElement dstElement;
-        if (locator.equals(xpathMediaContainerCell)) {
-            final Optional<WebElement> mediaLinkCell = getElementIfDisplayed(xpathMediaContainerCell, 3);
-            if (mediaLinkCell.isPresent()) {
-                dstElement = mediaLinkCell.get();
-            } else {
-                dstElement = getElement(nameSoundCloudButton);
-            }
-        } else {
-            dstElement = getElement(locator);
-        }
+        final WebElement dstElement = getElement(locator);
         if (isdoubleTap) {
             new TouchAction(getDriver()).tap(dstElement).waitAction(30).tap(dstElement).perform();
         } else if (isLongTap) {
@@ -1074,6 +1062,11 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isLikeIconInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameLikeButton);
+    }
+
+    public void tapAtRecentMessage(int pWidth, int pHeight, String from) throws Exception {
+        final By locator = By.xpath(xpathUserNameByText.apply(from));
+        DriverUtils.tapOnPercentOfElement(getDriver(), getElement(locator), pWidth, pHeight);
     }
 
     public void tapImageButton(String buttonName) throws Exception {

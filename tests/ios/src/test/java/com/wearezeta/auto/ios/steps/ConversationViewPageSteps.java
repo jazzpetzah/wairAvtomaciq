@@ -912,7 +912,8 @@ public class ConversationViewPageSteps {
         }
     }
 
-    /**Tap on file transfer action button to download/preview file
+    /**
+     * Tap on file transfer action button to download/preview file
      *
      * @throws Exception
      * @step. ^I tap file transfer action button
@@ -1492,6 +1493,21 @@ public class ConversationViewPageSteps {
         }
         Assert.assertTrue(String.format("The Like/Unlike icon is expected to be %s",
                 (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
+
+    /**
+     * Tap the recent media container to show/hide like icon
+     *
+     * @param pWidth   destination cell X tap point (in percent 0-100)
+     * @param pHeight  destination cell Y tap point (in percent 0-100)
+     * @param fromName message sender name/alias
+     * @throws Exception
+     * @step. I tap at (\d+)% of width and (\d+)% of height of the recent message from (.*)
+     */
+    @When("^I tap at (\\d+)% of width and (\\d+)% of height of the recent message from (.*)")
+    public void ITapAtContainerCorner(int pWidth, int pHeight, String fromName) throws Exception {
+        fromName = usrMgr.replaceAliasesOccurences(fromName, FindBy.NAME_ALIAS);
+        getConversationViewPage().tapAtRecentMessage(pWidth, pHeight, fromName);
     }
 
     /**

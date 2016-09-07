@@ -204,3 +204,22 @@ Feature: Likes
     Examples:
       | Name      | Contact1  | Contact2  | Group          | FileName    | MIMEType  | Contact1Device |
       | user1Name | user2Name | user3Name | VideoLikeGroup | testing.mp4 | video/mp4 | C1Device       |
+
+  @C225985 @staging @fastLogin
+  Scenario Outline: Verify liking Soundcloud
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given User <Contact> sends encrypted message "<SCLink>" to user Myself
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I tap at 90% of width and 90% of height of the recent message from <Contact>
+    And I remember the state of Like icon in the conversation
+    And I tap Like icon in the conversation
+    Then I see the state of Like icon is changed in the conversation
+    When I tap Unlike icon in the conversation
+    Then I see the state of Like icon is not changed in the conversation
+
+    Examples:
+      | Name      | Contact   | SCLink                                                           |
+      | user1Name | user2Name | https://soundcloud.com/trevorjasper14/lateef-two-birds-one-stone |
