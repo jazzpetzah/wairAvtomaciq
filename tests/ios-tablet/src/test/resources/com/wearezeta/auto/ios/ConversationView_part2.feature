@@ -27,13 +27,8 @@ Feature: Conversation View
     And I tap Confirm button on Picture preview page
     And I see 1 photo in the conversation view
     And I tap on image in conversation view
+    And I tap Fullscreen button on image
     And I see Full Screen Page opened
-    And I see sender first name <Name> on fullscreen page
-    And I see send date on fullscreen page
-    And I see download button shown on fullscreen page
-    And I tap on fullscreen page
-    And I verify image caption and download button are not shown
-    And I tap on fullscreen page
     And I tap close fullscreen page button
     Then I see 1 photo in the conversation view
 
@@ -54,13 +49,8 @@ Feature: Conversation View
     And I tap Confirm button on Picture preview page
     And I see 1 photo in the conversation view
     And I tap on image in conversation view
+    And I tap Fullscreen button on image
     And I see Full Screen Page opened
-    And I see sender first name <Name> on fullscreen page
-    And I see send date on fullscreen page
-    And I see download button shown on fullscreen page
-    And I tap on fullscreen page
-    And I verify image caption and download button are not shown
-    And I tap on fullscreen page
     And I tap close fullscreen page button
     Then I see 1 photo in the conversation view
 
