@@ -28,14 +28,6 @@ public class ImageFullScreenPageSteps {
         getImageFullScreenPage().tapOnFullScreenPage();
     }
 
-    @When("I see sender first name (.*) on fullscreen page")
-    public void ISeeSenderName(String sender) throws Exception {
-        String senderFirstName = usrMgr.findUserByNameOrNameAlias(sender)
-                .getName().split(" ")[0].toUpperCase();
-        Assert.assertTrue(String.format("Sender name '%s' does not exist on the page", senderFirstName),
-                getImageFullScreenPage().isSenderNameVisible(senderFirstName));
-    }
-
     @When("I tap close fullscreen page button")
     public void ITapCloseFullscreenButton() throws Exception {
         getImageFullScreenPage().tapCloseButton();
