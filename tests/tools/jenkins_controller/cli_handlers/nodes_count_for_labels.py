@@ -18,7 +18,8 @@ import xml.etree.ElementTree as ET
 from cli_handlers.cli_handler_base import CliHandlerBase
 
 MAX_NODES_PER_HOST = 5
-VERIFICATION_JOB_TIMEOUT = 60 * 2 #seconds
+DEFAULT_VERIFICATION_JOB_TIMEOUT = 60 * 2 # seconds
+IOS_VERIFICATION_JOB_TIMEOUT = 30 # seconds
 MAX_VERIFICATION_JOBS = 4
 
 normalize_labels = lambda labels_list: set(map(lambda x: x.strip(), labels_list))
@@ -85,14 +86,14 @@ class NodesCountForLabels(CliHandlerBase):
             for verifier in verifiers_chunk:
                 verifier.start()
             for verifier in verifiers_chunk:
-                verifier.join(timeout=VERIFICATION_JOB_TIMEOUT)
+                verifier.join(timeout=verifier.get_timeout())
                 if verifier.is_alive():
                     sys.stderr.write(
-                        'Verifier process for the node "{}" timed out. Assuming the node as ready by default...\n'.\
+                        '\nVerifier process for the node "{}" timed out. Assuming the node as ready by default...\n'.\
                          format(verifier.node.name))
                     # broken_nodes_queue.put_nowait(verifier.node)
                 else:
-                    sys.stderr.write('Finished verification for the node "{}"\n'.format(verifier.node.name))
+                    sys.stderr.write('\nFinished verification for the node "{}"\n'.format(verifier.node.name))
         ready_nodes = []
         while not ready_nodes_queue.empty():
             ready_nodes.append(ready_nodes_queue.get_nowait().name)
@@ -143,6 +144,9 @@ class BaseNodeVerifier(Process):
 
     def _is_verification_passed(self):
         return True
+
+    def get_timeout(self):
+        return DEFAULT_VERIFICATION_JOB_TIMEOUT
 
     def run(self):
         MAX_TRY_COUNT = 2
@@ -223,6 +227,9 @@ class IOSSimulator(BaseNodeVerifier):
             for match in matches:
                 result[match[0].strip()] = match[1].strip()
         return result
+
+    def get_timeout(self):
+        return IOS_VERIFICATION_JOB_TIMEOUT
 
     def _adjust_simulator_size(self, ssh_client, scale_factor):
         """
