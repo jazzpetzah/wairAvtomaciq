@@ -91,7 +91,6 @@ class NodesCountForLabels(CliHandlerBase):
                         'Verifier process for the node "{}" timed out. Assuming the node as ready by default...\n'.\
                          format(verifier.node.name))
                     # broken_nodes_queue.put_nowait(verifier.node)
-                    verifier.terminate()
                 else:
                     sys.stderr.write('Finished verification for the node "{}"\n'.format(verifier.node.name))
         ready_nodes = []
@@ -100,6 +99,9 @@ class NodesCountForLabels(CliHandlerBase):
         broken_nodes = []
         while not broken_nodes_queue.empty():
             broken_nodes.append(broken_nodes_queue.get_nowait().name)
+        for verifier in verifiers:
+            if verifier.is_alive():
+                verifier.terminate()
         return '{}|{}'.format(','.join(ready_nodes), ','.join(broken_nodes))
 
 
