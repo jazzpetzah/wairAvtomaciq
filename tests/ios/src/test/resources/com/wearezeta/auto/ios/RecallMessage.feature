@@ -1,6 +1,6 @@
 Feature: Recall Message
 
-  @C202306 @regression @fastLogin
+  @C202306 @rc @regression @fastLogin
   Scenario Outline: Verify I can delete my message everywhere (1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -36,7 +36,7 @@ Feature: Recall Message
       | Name      | Contact   | HisDevice | MySecondDevice | Wait1 | Wait2 |
       | user1Name | user2Name | device1   | device2        | 15    | 3     |
 
-  @C202318 @regression @fastLogin
+  @C202318 @rc @regression @fastLogin
   Scenario Outline: Verify delete everywhere works for file sharing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -62,7 +62,7 @@ Feature: Recall Message
       | Name      | Contact   | HisDevice | MySecondDevice | FileName                   |
       | user1Name | user2Name | device1   | device2        | FTRANSFER_MENU_DEFAULT_PNG |
 
-  @C202314 @regression @fastLogin
+  @C202314 @rc @regression @fastLogin
   Scenario Outline: Verify delete everywhere works for images
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -169,7 +169,7 @@ Feature: Recall Message
       | Name      | Contact1  | Contact1Device |
       | user1Name | user2Name | device1        |
 
-  @C202309 @regression @fastLogin
+  @C202309 @rc @regression @fastLogin
   Scenario Outline: Verify I see status message if other user deletes his message everywhere (group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -187,7 +187,7 @@ Feature: Recall Message
       | Name      | Contact1  | Contact2  | Contact1Device | Group       |
       | user1Name | user2Name | user3Name | device1        | RecallGroup |
 
-  @C202341 @regression @fastLogin
+  @C202341 @rc @regression @fastLogin
   Scenario Outline: Verify delete everywhere works for Soundcloud, YouTube, Vimeo
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

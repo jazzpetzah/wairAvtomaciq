@@ -1,6 +1,6 @@
 Feature: Edit Message
 
-  @C202349 @regression @fastLogin
+  @C202349 @rc @regression @fastLogin
   Scenario Outline: Verify I cannot edit/delete everywhere another users message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -18,7 +18,7 @@ Feature: Edit Message
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C206256 @regression @fastLogin
+  @C206256 @rc @regression @fastLogin
   Scenario Outline: ZIOS-7203 Verify impossibility of editing/deleting everywhere message after leaving/being removed from a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -83,7 +83,7 @@ Feature: Edit Message
       | Name      | Contact   | Text    |
       | user1Name | user2Name | message |
 
-  @C206271 @regression @fastLogin
+  @C206271 @rc @regression @fastLogin
   Scenario Outline: Verify I can delete message for everyone editing it with nothing/space
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -104,7 +104,7 @@ Feature: Edit Message
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | HisDevice  |
 
-  @C202345 @regression @fastLogin
+  @C202345 @rc @regression @fastLogin
   Scenario Outline: Verify I can edit my message in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -124,7 +124,7 @@ Feature: Edit Message
       | Name      | Contact   | Text |
       | user1Name | user2Name | new  |
 
-  @C202372 @regression @fastLogin
+  @C202372 @rc @regression @fastLogin
   Scenario Outline: Verify editing link with a preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

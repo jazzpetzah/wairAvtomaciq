@@ -17,7 +17,7 @@ Feature: Rich Media
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
-  @C3210 @regression @IPv6 @fastLogin
+  @C3210 @rc @regression @IPv6 @fastLogin
   Scenario Outline: (MediaBar disappears on Simulator) Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
