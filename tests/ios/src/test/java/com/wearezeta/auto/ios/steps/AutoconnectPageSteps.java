@@ -8,7 +8,6 @@ import com.wearezeta.auto.ios.pages.ConversationsListPage;
 import com.wearezeta.auto.ios.tools.ABProvisioner.ABContact;
 import com.wearezeta.auto.ios.tools.ABProvisioner.ABProvisionerAPI;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
@@ -70,6 +69,7 @@ public class AutoconnectPageSteps {
         addressbookProvisioner.clearContacts();
     }
 
+    //save all contacts that are in AB
     List<ABContact> contactsInAddressbook = new ArrayList<>();
 
     /**
@@ -83,7 +83,9 @@ public class AutoconnectPageSteps {
         contactsInAddressbook = addressbookProvisioner.getContacts();
     }
 
+    //save the batches of users they get devided in to
     List<List<ABContact>> conatctBatches = new ArrayList<>();
+
     /**
      * Separates the address book contacts list into number of chunks
      *
@@ -93,26 +95,28 @@ public class AutoconnectPageSteps {
      */
     @Given("^I separate list of contacts into (\\d+) chunks$")
     public void ISeparateListOfContactsIntoChunks(int numberOfChunks) throws Exception {
-        int sizeOfBatch = contactsInAddressbook.size()/numberOfChunks;
+        int sizeOfBatch = contactsInAddressbook.size() / numberOfChunks;
         for (int i = 0; i < contactsInAddressbook.size(); i += sizeOfBatch) {
             conatctBatches.add(contactsInAddressbook.subList(i, Math.min(i + sizeOfBatch, contactsInAddressbook.size())));
         }
     }
 
+    //save the users that are registered at BE to verify they get autoconnected
     List<ClientUser> usersToAutoconnect = new ArrayList<>();
+
     /**
      * Picks a number of random user of a specific batch to register at the BE
      *
      * @param numberContactsToRegister number of contacts to register
-     * @param numberOfChunk number of the batch to register from
+     * @param numberOfChunk            number of the batch to register from
      * @throws Exception
      */
     @Then("^I pick (\\d+) random contact of chunk (\\d+) to register at BE$")
     public void IPickRandomContactOfChunkToRegisterAtBE(int numberContactsToRegister, int numberOfChunk)
             throws Exception {
-        for (int i = 1; i<=numberContactsToRegister;i++){
-            int randomNumber = new Random().nextInt(conatctBatches.get(numberOfChunk-1).size());
-            ABContact contactToRegister = conatctBatches.get(numberOfChunk-1).get(randomNumber);
+        for (int i = 1; i <= numberContactsToRegister; i++) {
+            int randomNumber = new Random().nextInt(conatctBatches.get(numberOfChunk - 1).size());
+            ABContact contactToRegister = conatctBatches.get(numberOfChunk - 1).get(randomNumber);
             ClientUser userToRegsiter = usrMgr.findUserByNameOrNameAlias(contactToRegister.name);
             usrMgr.createSpecificUsersOnBackend(Collections.singletonList(userToRegsiter), RegistrationStrategy.ByPhoneNumberOnly);
             usersToAutoconnect.add(userToRegsiter);
@@ -151,11 +155,16 @@ public class AutoconnectPageSteps {
         addressbookProvisioner.addContacts(Collections.singletonList(contact));
     }
 
-
+    /**
+     * Adds all pre created users to the simulator Address Book
+     *
+     * @throws Exception
+     * @step. ^I add all pre created users to Address Book$
+     */
     @Given("^I add all pre created users to Address Book$")
     public void IAddAllPrecreatedUsersToAddressBook() throws Exception {
-        for (int i = 2; i <= usrMgr.MAX_USERS; i++){
-            ClientUser user = usrMgr.findUserByNameOrNameAlias(String.format("user%sName",i));
+        for (int i = 2; i <= usrMgr.MAX_USERS; i++) {
+            ClientUser user = usrMgr.findUserByNameOrNameAlias(String.format("user%sName", i));
             String name = user.getName();
             String phoneNumber = user.getPhoneNumber().toString();
             ABContact contact = new ABContact(name, Optional.empty(), Optional.of(Collections.singletonList(phoneNumber)));
@@ -163,11 +172,16 @@ public class AutoconnectPageSteps {
         }
     }
 
-
+    /**
+     * Checks how many conversations should be seen in list
+     *
+     * @param numberOfUserToGetAutoconnected the number of the user that gets autoconnected and should appear at the list
+     * @throws Exception
+     * @step. ^I see (\d+) autoconnected conversations? in conversations list$
+     */
     @Then("^I see (\\d+) autoconnected conversations? in conversations list$")
-    public void ISeeAutoconnectedConversationInConversationsList(int numberOfAutoconnection) throws Throwable {
-        //String user = usersToAutoconnect.get(numberOfAutoconnection-1).toString();
-        String user = usrMgr.replaceAliasesOccurences(usersToAutoconnect.get(numberOfAutoconnection-1).toString(),
+    public void ISeeAutoconnectedConversationInConversationsList(int numberOfUserToGetAutoconnected) throws Exception {
+        String user = usrMgr.replaceAliasesOccurences(usersToAutoconnect.get(numberOfUserToGetAutoconnected - 1).toString(),
                 ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("The conversation '%s' is not visible in the conversation list",
                 user), getConversationsListPage().isConversationInList(user));
