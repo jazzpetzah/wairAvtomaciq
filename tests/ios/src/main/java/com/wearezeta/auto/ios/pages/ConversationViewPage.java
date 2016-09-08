@@ -231,6 +231,8 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameSketchOnImageButton = MobileBy.AccessibilityId("sketchOnImageButton");
     private static final By nameFullScreenOnImageButton = MobileBy.AccessibilityId("openFullScreenButton");
 
+    private static final By nameRecentMessageToolbox = MobileBy.AccessibilityId("MessageToolbox");
+
     private static final int MAX_APPEARANCE_TIME = 20;
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
@@ -1084,5 +1086,9 @@ public class ConversationViewPage extends IOSPage {
             default:
                 throw new Exception("Not recognized button name. Available 'sketch', 'fullscreen'");
         }
+    }
+
+    public void tapRecentMessageToolbox() throws Exception {
+        getElement(nameRecentMessageToolbox).click();
     }
 }

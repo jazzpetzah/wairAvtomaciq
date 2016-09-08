@@ -162,7 +162,8 @@ Feature: Likes
     Given I tap on contact name <Group>
     When I do not see Like icon in the conversation
     And User <Contact1> likes the recent message from group conversation <Group>
-    Then I see Like icon in the conversation
+    And I tap toolbox of the recent message
+    Then I see <Contact1> in likers list
 
     Examples:
       | Name      | Contact1  | Contact2  | Group            | FileName | FileMIME  | Contact1Device | Contact1DeviceLabel | MyDevice |
@@ -181,7 +182,8 @@ Feature: Likes
     When I do not see Like icon in the conversation
     And I long tap on file transfer placeholder in conversation view
     And I tap on Like badge item
-    Then I see Like icon in the conversation
+    And I tap toolbox of the recent message
+    Then I see <Contact1> in likers list
 
     Examples:
       | Name      | Contact1  | Contact2  | Group         | FileName | FileExt | FileSize | FileMIME                 | Contact1Device |
@@ -199,7 +201,8 @@ Feature: Likes
     When I do not see Like icon in the conversation
     And I long tap on video message in conversation view
     And I tap on Like badge item
-    Then I see Like icon in the conversation
+    And I tap toolbox of the recent message
+    Then I see <Contact1> in likers list
 
     Examples:
       | Name      | Contact1  | Contact2  | Group          | FileName    | MIMEType  | Contact1Device |
