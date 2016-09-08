@@ -17,9 +17,6 @@ public class ImageFullScreenPage extends IOSPage {
 
     private static final By nameFullScreenCloseButton = MobileBy.AccessibilityId("fullScreenCloseButton");
 
-    private static final Function<String, String> xpathStrFullScreenSenderByName = name ->
-            String.format("//*[@name='fullScreenSenderName' and contains(@value, '%s')]", name);
-
     private static final By xpathFullScreenImage =
             By.xpath("//UIAScrollView[@name='fullScreenPage']/UIAImage[@visible='true']");
 
@@ -41,11 +38,6 @@ public class ImageFullScreenPage extends IOSPage {
 
     public void tapOnFullScreenPage() throws Exception {
         getElement(nameImageFullScreenPage).click();
-    }
-
-    public boolean isSenderNameVisible(String expectedName) throws Exception {
-        final By locator = By.xpath(xpathStrFullScreenSenderByName.apply(expectedName));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public Optional<BufferedImage> getPreviewPictureScreenshot() throws Exception {
