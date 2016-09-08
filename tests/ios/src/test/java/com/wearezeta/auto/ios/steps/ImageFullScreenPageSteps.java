@@ -36,46 +36,9 @@ public class ImageFullScreenPageSteps {
                 getImageFullScreenPage().isSenderNameVisible(senderFirstName));
     }
 
-    @When("I see send date on fullscreen page")
-    public void ISeeSendDate() throws Exception {
-        final String actualTimestamp = getImageFullScreenPage().getTimeStamp().trim();
-        // TODO: Probably, the verification regex could be improved?
-        Assert.assertTrue(String.format("The actual timestamp '%s' seems to be incorrect", actualTimestamp),
-                actualTimestamp.length() > 0 && actualTimestamp.matches(".*\\b\\d+:\\d+\\b.*"));
-    }
-
-    @When("I see download button shown on fullscreen page")
-    public void ISeeDownloadButtonOnFullscreenPage() throws Exception {
-        Assert.assertTrue(getImageFullScreenPage().isDownloadButtonVisible());
-    }
-
-    @When("I tap download button on fullscreen page")
-    public void ITapDownloadButtonOnFullscreenPage() throws Exception {
-        getImageFullScreenPage().tapDownloadButton();
-    }
-
-    @When("I verify image caption and download button are not shown")
-    public void IDontSeeImageCaptionAndDownloadButton() throws Exception {
-        Assert.assertTrue("Image download button is visible, but should be hidden",
-                getImageFullScreenPage().isDownloadButtonInvisible());
-        Assert.assertTrue("Image timestamp label is visible, but should be hidden",
-                getImageFullScreenPage().isSentTimeInvisible());
-    }
-
     @When("I tap close fullscreen page button")
     public void ITapCloseFullscreenButton() throws Exception {
         getImageFullScreenPage().tapCloseButton();
-    }
-
-    /**
-     * Presses the sketch button on the image fullscreen page
-     *
-     * @throws Exception
-     * @step. ^I tap Sketch button on image fullscreen page$
-     */
-    @When("^I tap Sketch button on image fullscreen page$")
-    public void ITapSketchButtonOnImageFullscreenPage() throws Exception {
-        getImageFullScreenPage().tapSketchButton();
     }
 
     private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
