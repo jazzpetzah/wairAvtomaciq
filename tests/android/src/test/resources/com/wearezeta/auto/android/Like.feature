@@ -245,7 +245,7 @@ Feature: Like
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I see a picture in the conversation view
-    And I tap the recent picture in the conversation view
+    And I tap Image container in the conversation view
     And I remember the state of like button
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed
@@ -256,7 +256,7 @@ Feature: Like
       | user1Name | user2Name | testing.jpg |
 
   @C226024 @regression @rc
-  Scenario Outline: I can like a sketch
+  Scenario Outline: I can like/unlike a sketch by tap on heart button/long tap/double tap
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -267,15 +267,38 @@ Feature: Like
     And I draw a sketch with 1 colors
     And I send my sketch
     And I do not see Message status with expected text "Sending" in conversation view
-    And I tap the recent picture in the conversation view
+    And I tap Image container in the conversation view
     And I remember the state of like button
+    # Tap heart like
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed
     And I see Like description with expected text "<Name>" in conversation view
+    # Tap heart unlike
+    When I tap Like button in conversation view
+    Then I see Message status with expected text "<MessageStatus>" in conversation view
+    And I verify the state of like button item is not changed
+    # Double tap to like
+    When I double tap Image container in the conversation view
+    Then I see Like description with expected text "<Name>" in conversation view
+    And I verify the state of like button item is changed
+    # Doulbe tap to unlike
+    When I double tap Image container in the conversation view
+    Then I see Message status with expected text "<MessageStatus>" in conversation view
+    And I verify the state of like button item is not changed
+    # Long tap to like
+    When I long tap Image container in the conversation view
+    And I tap Like button on the message bottom menu
+    Then I see Like description with expected text "<Name>" in conversation view
+    And I verify the state of like button item is changed
+    # Long tap to unlike
+    When I long tap Image container in the conversation view
+    And I tap Unlike button on the message bottom menu
+    Then I see Message status with expected text "<MessageStatus>" in conversation view
+    And I verify the state of like button item is not changed
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | MessageStatus |
+      | user1Name | user2Name | Sent          |
 
   @C226029 @regression
   Scenario Outline: I can like a shared location

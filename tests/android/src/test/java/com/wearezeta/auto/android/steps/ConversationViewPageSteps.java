@@ -22,6 +22,7 @@ public class ConversationViewPageSteps {
 
     private static final String ANDROID_LONG_MESSAGE = CommonUtils.generateRandomString(300);
     private static final String LONG_MESSAGE_ALIAS = "LONG_MESSAGE";
+    private static final String ANY_MESSAGE = "*ANY MESSAGE*";
     private static final int SWIPE_DURATION_MILLISECONDS = 1300;
     private static final int MAX_SWIPES = 5;
     private static final int MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = 15;
@@ -35,6 +36,7 @@ public class ConversationViewPageSteps {
     private static final double TOP_TOOLBAR_MIN_SIMILARITY_SCORE = 0.97;
     private static final int LIKE_BUTTON_CHANGE_TIMEOUT = 15;
     private static final double LIKE_BUTTON_MIN_SIMILARITY_SCORE = 0.6;
+    private static final double LIKE_BUTTON_NOT_CHANGED_MIN_SCORE = -0.5;
     private static final double FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE = 0.4;
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -342,6 +344,27 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Checks to see that a link preview message that has been sent appears in the chat history
+     *
+     * @param shouldNotSee equals to null if the message should be visible
+     * @param msg          the expected message
+     * @throws Exception
+     * @step. ^I (do not )?see the message "(.*)" in the conversation view$
+     */
+    @Then("^I (do not )?see the link preview message \"(.*)\" in the conversation view$")
+    public void ISeeLinkPreviewMessage(String shouldNotSee, String msg) throws Exception {
+        msg = expandMessage(msg);
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("The link preview message '%s' is not visible in the conversation view", msg),
+                    getConversationViewPage().waitUntilLinkPreviewMessageVisible(msg));
+        } else {
+            Assert.assertTrue(
+                    String.format("The link preview message '%s' is still visible in the conversation view", msg),
+                    getConversationViewPage().waitUntilLinkPreviewMessageInvisible(msg));
+        }
+    }
+
+    /**
      * Checks to see that a photo exists in the chat history. Does not check which photo though
      *
      * @param shouldNotSee equals to null if 'do not' part does not exist
@@ -355,22 +378,6 @@ public class ConversationViewPageSteps {
         } else {
             Assert.assertTrue("A photo is present in the chat, but it should not be vivible",
                     getConversationViewPage().isImageInvisible());
-        }
-    }
-
-    /**
-     * Selects the last picture sent in a conversation view dialog
-     *
-     * @param isLogTap equals to null if it should be simple tap
-     * @throws Exception
-     * @step. ^I (long )?tap the recent (?:image|picture) in the conversation view$
-     */
-    @When("^I (long )?tap the recent (?:image|picture) in the conversation view$")
-    public void ITapRecentImage(String isLogTap) throws Exception {
-        if (isLogTap == null) {
-            getConversationViewPage().tapRecentImage();
-        } else {
-            getConversationViewPage().longTapRecentImage();
         }
     }
 
@@ -749,12 +756,17 @@ public class ConversationViewPageSteps {
      * Verify the current state of like button has been changed since the last snapshot was made
      *
      * @throws Exception
-     * @step. ^I verify the state of like button item is changed$
+     * @step. ^I verify the state of like button item is (not )?changed$
      */
-    @Then("^I verify the state of like button item is changed$")
-    public void IVerifyStateOfLikeButtonChanged() throws Exception {
-        Assert.assertTrue("State of like button doesn't change",
-                messageLikeButtonState.isChanged(LIKE_BUTTON_CHANGE_TIMEOUT, LIKE_BUTTON_MIN_SIMILARITY_SCORE));
+    @Then("^I verify the state of like button item is (not )?changed$")
+    public void IVerifyStateOfLikeButtonChanged(String notChanged) throws Exception {
+        if (notChanged == null) {
+            Assert.assertTrue("The state of Like button is expected to be changed",
+                    messageLikeButtonState.isChanged(LIKE_BUTTON_CHANGE_TIMEOUT, LIKE_BUTTON_MIN_SIMILARITY_SCORE));
+        } else {
+            Assert.assertTrue("The state of Like button is expected to be changed",
+                    messageLikeButtonState.isNotChanged(LIKE_BUTTON_CHANGE_TIMEOUT, LIKE_BUTTON_NOT_CHANGED_MIN_SCORE));
+        }
     }
 
     /**
@@ -801,18 +813,6 @@ public class ConversationViewPageSteps {
                         avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
                 break;
         }
-    }
-
-    /**
-     * Check whether unsent indicator is shown next to a new picture in the convo view
-     *
-     * @throws Exception
-     * @step. ^I see unsent indicator next to new picture in the conversation
-     */
-    @Then("^I see unsent indicator next to new picture in the conversation")
-    public void ISeeUnsentIndictatorNextToAPicture() throws Exception {
-        Assert.assertTrue("There is no unsent indicator next to a picture in the conversation view",
-                getConversationViewPage().waitForAPictureWithUnsentIndicator());
     }
 
     /**
@@ -917,20 +917,6 @@ public class ConversationViewPageSteps {
                 throw e;
             }
         }
-    }
-
-    /**
-     * Checks to see that an unsent indicator is present next to the particular message in the chat history
-     *
-     * @param msg the expected conversation message
-     * @throws Exception
-     * @step. ^I see unsent indicator next to "(.*)" in the conversation view$
-     */
-    @Then("^I see unsent indicator next to \"(.*)\" in the conversation view$")
-    public void ISeeUnsentIndicatorNextToTheMessage(String msg) throws Exception {
-        Assert.assertTrue(String.format(
-                "Unsent indicator has not been shown next to the '%s' message in the conversation view", msg),
-                getConversationViewPage().waitForUnsentIndicator(msg));
     }
 
     private enum PictureDestination {
@@ -1158,9 +1144,9 @@ public class ConversationViewPageSteps {
      * @param shouldNotSee  equals to null if the container should be visible
      * @param containerType euiter Youtube or Soundcloud or File Upload or Video Message
      * @throws Exception
-     * @step. ^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
+     * @step. ^I (do not )?see (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
      */
-    @Then("^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
+    @Then("^I (do not )?see (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
             "container in the conversation view$")
     public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
         final boolean condition = (shouldNotSee == null) ?
@@ -1186,19 +1172,15 @@ public class ConversationViewPageSteps {
     /**
      * Tap container
      *
-     * @param isLongTap     equals to null if this should be ordinary single tap
+     * @param tapType       Tap type
      * @param containerType one of available container types
      * @throws Exception
-     * @step. ^I (long )?tap (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
+     * @step. ^I (long tap|double tap|tap) (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
      */
-    @When("^I (long )?tap (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
+    @When("^I (long tap|double tap|tap) (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
             "container in the conversation view$")
-    public void ITapContainer(String isLongTap, String containerType) throws Exception {
-        if (isLongTap == null) {
-            getConversationViewPage().tapContainer(containerType);
-        } else {
-            getConversationViewPage().longTapContainer(containerType);
-        }
+    public void ITapContainer(String tapType, String containerType) throws Exception {
+        getConversationViewPage().tapContainer(tapType, containerType);
     }
 
 
@@ -1516,31 +1498,28 @@ public class ConversationViewPageSteps {
             " (with expected text \"(.*)\" )?in conversation view$")
     public void ISeeMessagMetaForText(String shouldNotSee, String itemType, String hasExpectedMsg,
                                       String expectedMsg) throws Exception {
-        if (shouldNotSee == null) {
-            boolean isVisible;
+        boolean isVisible;
+        boolean shouldBeVisible = (shouldNotSee == null);
+        if (shouldBeVisible) {
             if (hasExpectedMsg == null) {
-                expectedMsg = "*Any message*";
+                expectedMsg = ANY_MESSAGE;
                 isVisible = getConversationViewPage().waitUntilMessageMetaItemVisible(itemType);
             } else {
                 expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
                 isVisible = getConversationViewPage().waitUntilMessageMetaItemVisible(itemType, expectedMsg);
             }
-            Assert.assertTrue(
-                    String.format("The %s should be visible with expected text '%s'",
-                            itemType, expectedMsg), isVisible);
         } else {
-            boolean isInvisible;
             if (hasExpectedMsg == null) {
-                expectedMsg = "*Any message*";
-                isInvisible = getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType);
+                expectedMsg = ANY_MESSAGE;
+                isVisible = !getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType);
             } else {
                 expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
-                isInvisible = getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType, expectedMsg);
+                isVisible = !getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType, expectedMsg);
             }
-            Assert.assertTrue(
-                    String.format("The %s should be invisible with expected text '%s'",
-                            itemType, expectedMsg), isInvisible);
         }
+        Assert.assertEquals(
+                String.format("The %s should be %s with expected text '%s'",
+                        itemType, shouldBeVisible ? "visible" : "invisible", expectedMsg), shouldBeVisible, isVisible);
     }
 
     /**

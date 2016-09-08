@@ -28,16 +28,6 @@ public class ImageFullScreenPageSteps {
         getImageFullScreenPage().tapOnFullScreenPage();
     }
 
-    @When("I see download button shown on fullscreen page")
-    public void ISeeDownloadButtonOnFullscreenPage() throws Exception {
-        Assert.assertTrue(getImageFullScreenPage().isDownloadButtonVisible());
-    }
-
-    @When("I tap download button on fullscreen page")
-    public void ITapDownloadButtonOnFullscreenPage() throws Exception {
-        getImageFullScreenPage().tapDownloadButton();
-    }
-
     @When("I tap close fullscreen page button")
     public void ITapCloseFullscreenButton() throws Exception {
         getImageFullScreenPage().tapCloseButton();

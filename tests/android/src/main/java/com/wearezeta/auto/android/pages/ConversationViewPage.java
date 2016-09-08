@@ -33,21 +33,18 @@ public class ConversationViewPage extends AndroidPage {
     private static final String idStrRowConversationMessage = "tmltv__row_conversation__message";
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
             .format("//*[@id='%s' and @value='%s']", idStrRowConversationMessage, text);
-    private static final Function<String, String> xpathStrUnsentIndicatorByText = text -> String
-            .format("%s/parent::*/parent::*//*[@id='v__row_conversation__error']",
-                    xpathStrConversationMessageByText.apply(text));
     private static final By xpathLastConversationMessage =
             By.xpath(String.format("(//*[@id='%s'])[last()]", idStrRowConversationMessage));
     private static final By xpathFirstConversationMessage =
             By.xpath(String.format("(//*[@id='%s'])[1]", idStrRowConversationMessage));
+    private static final Function<String, String> xpathStrLinkPreviewTextMessage = text -> String
+            .format(String.format("//*[@id='cv__row_conversation__link_preview__text_message' and @value='%s']", text));
 
     // Image
     private static final String idStrConversationImages = "fl__row_conversation__message_image_container";
-    public static final By idConversationImages = By.id(idStrConversationImages);
+    public static final By idConversationImageContainer = By.id(idStrConversationImages);
     private static final String xpathStrLastImage = String.format("(//*[@id='%s'])[last()]", idStrConversationImages);
     private static final By xpathLastImage = By.xpath(xpathStrLastImage);
-    private static final By xpathUnsentIndicatorForImage = By
-            .xpath("//*[@id='" + idStrConversationImages + "']/parent::*/parent::*//*[@id='v__row_conversation__error']");
 
     // System message
     private static final String idStrMissedCallMesage = "ttv__row_conversation__missed_call";
@@ -522,10 +519,6 @@ public class ConversationViewPage extends AndroidPage {
         getElement(idCursorCloseButton, "Close cursor button is not visible").click();
     }
 
-    public void tapRecentImage() throws Exception {
-        getElement(xpathLastImage).click();
-    }
-
     public boolean waitForConversationNameChangedMessage(String expectedName) throws Exception {
         final By locator = By.xpath(xpathStrNewConversationNameByValue.apply(expectedName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
@@ -549,6 +542,16 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
+    public boolean waitUntilLinkPreviewMessageVisible(String text) throws Exception {
+        final By locator = By.xpath(xpathStrLinkPreviewTextMessage.apply(text));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitUntilLinkPreviewMessageInvisible(String text) throws Exception {
+        final By locator = By.xpath(xpathStrLinkPreviewTextMessage.apply(text));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
     public boolean waitForPeopleMessage(String text) throws Exception {
         final By locator = By.xpath(xpathConversationPeopleChangedByExp.apply(String.format("contains(@value, '%s')",
                 text.toUpperCase())));
@@ -563,13 +566,8 @@ public class ConversationViewPage extends AndroidPage {
         return getElements(locator).stream().collect(Collectors.toList()).size() == times;
     }
 
-    public boolean waitForUnsentIndicatorVisible(String text) throws Exception {
-        final By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(text));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
     public boolean isImageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idConversationImages) &&
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idConversationImageContainer) &&
                 DriverUtils.waitUntilLocatorDissapears(getDriver(), idClickedImageSendingIndicator, 20);
     }
 
@@ -727,7 +725,7 @@ public class ConversationViewPage extends AndroidPage {
 
 
     public Optional<BufferedImage> getRecentPictureScreenshot() throws Exception {
-        return this.getElementScreenshot(getElement(idConversationImages));
+        return this.getElementScreenshot(getElement(idConversationImageContainer));
     }
 
     public Optional<BufferedImage> getPreviewPictureScreenshot() throws Exception {
@@ -735,11 +733,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean isImageInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idConversationImages);
-    }
-
-    public boolean waitForAPictureWithUnsentIndicator() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathUnsentIndicatorForImage);
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idConversationImageContainer);
     }
 
     public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries) throws Exception {
@@ -762,24 +756,19 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean waitForXImages(int expectedCount) throws Exception {
         assert expectedCount >= 0;
-        final Optional<WebElement> imgElement = getElementIfDisplayed(idConversationImages);
+        final Optional<WebElement> imgElement = getElementIfDisplayed(idConversationImageContainer);
         if (expectedCount <= 1) {
             return (expectedCount == 0 && !imgElement.isPresent()) || (expectedCount == 1 && imgElement.isPresent());
         }
         final long msStarted = System.currentTimeMillis();
         do {
-            int actualCnt = getElements(idConversationImages).size();
+            int actualCnt = getElements(idConversationImageContainer).size();
             if (actualCnt >= expectedCount) {
                 return true;
             }
             Thread.sleep(500);
         } while (System.currentTimeMillis() - msStarted <= IMAGES_VISIBILITY_TIMEOUT);
         return false;
-    }
-
-    public boolean waitForUnsentIndicator(String text) throws Exception {
-        final By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(text));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean waitForMessageNotification(String message) throws Exception {
@@ -864,6 +853,9 @@ public class ConversationViewPage extends AndroidPage {
 
     private By getContainerLocatorByName(String containerType) {
         switch (containerType.toLowerCase()) {
+            case "picture":
+            case "image":
+                return idConversationImageContainer;
             case "youtube":
                 return idYoutubeContainer;
             case "soundcloud":
@@ -897,30 +889,16 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathLinkPreviewUrlByValue.apply(url)));
     }
 
-    public void tapContainer(String name) throws Exception {
+    public void tapContainer(String tapType, String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
-        final WebElement el = getElement(locator);
-        if (Arrays.asList(idAudioMessageContainer, idVideoMessageContainer, idYoutubeContainer, idSoundcloudContainer)
-                .contains(locator)) {
-            // To avoid to tap on play button and play bar
-            final Point location = el.getLocation();
-            final Dimension size = el.getSize();
-            getDriver().tap(1, location.x + size.width / 5, location.y + size.height / 5, DriverUtils.SINGLE_TAP_DURATION);
-        } else {
-            el.click();
-        }
-    }
-
-    public void longTapContainer(String name) throws Exception {
-        final By locator = getContainerLocatorByName(name);
-        if (locator.equals(idAudioMessageContainer) || locator.equals(idVideoMessageContainer)) {
+        if (Arrays.asList(idAudioMessageContainer, idVideoMessageContainer, idYoutubeContainer).contains(locator)) {
             // To avoid to tap on play button in Video message and Audio message container.
             final WebElement el = getElement(locator);
             final Point location = el.getLocation();
             final Dimension size = el.getSize();
-            getDriver().longTap(location.x + size.width / 5, location.y + size.height / 5, DriverUtils.LONG_TAP_DURATION);
+            getDriver().tap(tapType, location.x + size.width / 5, location.y + size.height / 5);
         } else {
-            getDriver().longTap(getElement(locator), DriverUtils.LONG_TAP_DURATION);
+            getDriver().tap(tapType, getElement(locator));
         }
     }
 
@@ -950,10 +928,6 @@ public class ConversationViewPage extends AndroidPage {
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify the tap type '%s'", tapType));
         }
-    }
-
-    public void longTapRecentImage() throws Exception {
-        getDriver().longTap(getElement(xpathLastImage), DriverUtils.LONG_TAP_DURATION);
     }
 
     public void tapVideoMessageButton() throws Exception {

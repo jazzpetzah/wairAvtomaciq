@@ -35,7 +35,7 @@ Feature: Links Preview
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     Then I see Link Preview container in the conversation view
-    And I see the message "<Message>" in the conversation view
+    And I see the link preview message "<Message>" in the conversation view
 
     Examples:
       | Name      | Contact   | Message                                                                                                       |
