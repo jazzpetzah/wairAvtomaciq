@@ -181,11 +181,11 @@ Feature: Conversation View
     And I tap Gallery button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
-    And I tap the recent picture in the conversation view
+    And I tap Image container in the conversation view
     And I rotate UI to landscape
     And I scroll down the conversation view
     And I rotate UI to portrait
-    Then I tap the recent picture in the conversation view
+    Then I tap Image container in the conversation view
     And I rotate UI to landscape
     And I tap Image Close button on Take Picture view
     Then I rotate UI to portrait
@@ -207,7 +207,7 @@ Feature: Conversation View
     And I tap Sketch button from cursor toolbar
     And I draw a sketch with <NumColors> colors
     And I send my sketch
-    And I tap the recent picture in the conversation view
+    And I tap Image container in the conversation view
 
     Examples:
       | Name      | Contact1  | NumColors |
@@ -226,7 +226,7 @@ Feature: Conversation View
     And I tap Sketch Image Paint button on Take Picture view
     And I draw a sketch on image with <NumColors> colors
     Then I send my sketch
-    And I tap the recent picture in the conversation view
+    And I tap Image container in the conversation view
 
     Examples:
       | Name      | Contact1  | NumColors |
@@ -245,7 +245,7 @@ Feature: Conversation View
     And I tap Sketch Image Paint button on Take Picture view
     And I draw a sketch on image with <NumColors> colors
     Then I send my sketch
-    And I tap the recent picture in the conversation view
+    And I tap Image container in the conversation view
 
     Examples:
       | Name      | Contact1  | NumColors |
@@ -283,7 +283,7 @@ Feature: Conversation View
     And I scroll to the bottom of conversation view
     Then I see a picture in the conversation view
     And I see the picture in the conversation is animated
-    When I tap the recent picture in the conversation view
+    When I tap Image container in the conversation view
     And I tap on Fullscreen button on the recent image in the conversation view
     Then I see the picture in the preview is animated
 

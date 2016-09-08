@@ -97,7 +97,7 @@ Feature: Recall Message
     And I tap Add picture button from cursor toolbar
     And I tap Gallery button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
-    And I long tap the recent picture in the conversation view
+    And I long tap Image container in the conversation view
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
@@ -122,7 +122,7 @@ Feature: Recall Message
     And I click on the GIF button
     Then I see giphy preview page
     When I click on the giphy send button
-    And I long tap the recent picture in the conversation view
+    And I long tap Image container in the conversation view
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
