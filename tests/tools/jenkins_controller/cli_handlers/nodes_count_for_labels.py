@@ -81,8 +81,8 @@ class NodesCountForLabels(CliHandlerBase):
                                                 node_user=args.node_user, node_password=args.node_password,
                                                 ios_simulator_name=args.ios_simulator_name,
                                                 notification_receivers=args.notification_receivers))
-        ready_nodes = set()
-        broken_nodes = set()
+        ready_node_names = set()
+        broken_node_names = set()
         for verifiers_chunk in chunks(verifiers, MAX_VERIFICATION_JOBS):
             for verifier in verifiers_chunk:
                 verifier.start()
@@ -97,13 +97,13 @@ class NodesCountForLabels(CliHandlerBase):
                 else:
                     sys.stderr.write('\nFinished verification for the node "{}"\n'.format(verifier.node.name))
                 if verifier.is_node_ready():
-                    ready_nodes.add(verifier.node)
+                    ready_node_names.add(verifier.node.name)
                 else:
-                    broken_nodes.add(verifier.node)
+                    broken_node_names.add(verifier.node.name)
         for verifier in verifiers:
             if verifier.is_alive():
                 verifier.terminate()
-        return '{}|{}'.format(','.join(ready_nodes), ','.join(broken_nodes))
+        return '{}|{}'.format(','.join(ready_node_names), ','.join(broken_node_names))
 
 
 class BaseNodeVerifier(Process):
