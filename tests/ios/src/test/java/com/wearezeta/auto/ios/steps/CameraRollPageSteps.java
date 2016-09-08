@@ -26,13 +26,37 @@ public class CameraRollPageSteps {
         getCameraRollPage().selectFirstPicture();
     }
 
-    @When("I remember count of the photos in Camera Roll")
+    /**
+     * Remember count of photos in Camera roll folder
+     *
+     * @throws Exception
+     * @step. ^I remember count of the photos in Camera Roll$
+     */
+    @When("^I remember count of the photos in Camera Roll$")
     public void IRememberCountInCameraRoll() throws Exception {
         cameraRollPhotoCountSave = getCameraRollPage().getCameraRollPhotoCount();
     }
 
-    @Then("I see count of the photos in Camera Roll is increased by (\\d+)")
+    /**
+     * Verify that photo count in Camera Roll is increased by pointed incrementation comparing to remembered value
+     *
+     * @param increment expected difference between remembered value and current
+     * @throws Exception
+     * @step. ^I see count of the photos in Camera Roll is increased by (\d+)$
+     */
+    @Then("^I see count of the photos in Camera Roll is increased by (\\d+)$")
     public void ISeePhotoCountIsIncreasedByX(int increment) throws Exception {
         Assert.assertEquals(getCameraRollPage().getCameraRollPhotoCount() - increment, cameraRollPhotoCountSave);
+    }
+
+    /**
+     *Tap Cancel button on Camera Roll page
+     *
+     * @throws Exception
+     * @step. ^I tap Cancel button on Camera Roll page$
+     */
+    @When("^I tap Cancel button on Camera Roll page$")
+    public void IClickCancelButtonCameraRoll() throws Exception {
+        getCameraRollPage().tapCancelButton();
     }
 }

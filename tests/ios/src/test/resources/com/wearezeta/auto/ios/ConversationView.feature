@@ -578,14 +578,13 @@ Feature: Conversation View
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     When I tap on contact name <Contact>
     And I see 1 photo in the conversation view
-    When I tap Add Picture button from input tools
+    And I tap Add Picture button from input tools
     And I tap Camera Roll button on Keyboard Gallery overlay
     And I remember count of the photos in Camera Roll
-    And I tap Add Picture button from input tools
+    And I tap Cancel button on Camera Roll page
     And I long tap on image in conversation view
     And I tap on Save badge item
-    Then I do not see Save badge item
-    When I tap Add Picture button from input tools
+    And I do not see Save badge item
     And I tap Camera Roll button on Keyboard Gallery overlay
     Then I see count of the photos in Camera Roll is increased by 1
 

@@ -16,6 +16,8 @@ public class CameraRollPage extends IOSPage {
 
     private static final By xpathCameraRolCell = By.xpath("//UIATableCell[@name='Camera Roll']");
 
+    private static final By nameCancelButton = MobileBy.AccessibilityId("Cancel");
+
     public CameraRollPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
 
@@ -50,7 +52,11 @@ public class CameraRollPage extends IOSPage {
 
     public int getCameraRollPhotoCount() throws Exception {
         String countToParse = getCameraRollCellValue();
-        String[] count = countToParse.split("[a-zA-Z]+");
+        String[] count = countToParse.split(" ");
         return Integer.valueOf(count[0]);
+    }
+
+    public void tapCancelButton() throws Exception {
+        getElement(nameCancelButton).click();
     }
 }
