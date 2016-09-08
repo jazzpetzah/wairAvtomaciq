@@ -36,6 +36,7 @@ public class ConversationViewPageSteps {
     private static final double TOP_TOOLBAR_MIN_SIMILARITY_SCORE = 0.97;
     private static final int LIKE_BUTTON_CHANGE_TIMEOUT = 15;
     private static final double LIKE_BUTTON_MIN_SIMILARITY_SCORE = 0.6;
+    private static final double LIKE_BUTTON_NOT_CHANGED_MIN_SCORE = -0.5;
     private static final double FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE = 0.4;
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -755,12 +756,17 @@ public class ConversationViewPageSteps {
      * Verify the current state of like button has been changed since the last snapshot was made
      *
      * @throws Exception
-     * @step. ^I verify the state of like button item is changed$
+     * @step. ^I verify the state of like button item is (not )?changed$
      */
-    @Then("^I verify the state of like button item is changed$")
-    public void IVerifyStateOfLikeButtonChanged() throws Exception {
-        Assert.assertTrue("State of like button doesn't change",
-                messageLikeButtonState.isChanged(LIKE_BUTTON_CHANGE_TIMEOUT, LIKE_BUTTON_MIN_SIMILARITY_SCORE));
+    @Then("^I verify the state of like button item is (not )?changed$")
+    public void IVerifyStateOfLikeButtonChanged(String notChanged) throws Exception {
+        if (notChanged == null) {
+            Assert.assertTrue("The state of Like button is expected to be changed",
+                    messageLikeButtonState.isChanged(LIKE_BUTTON_CHANGE_TIMEOUT, LIKE_BUTTON_MIN_SIMILARITY_SCORE));
+        } else {
+            Assert.assertTrue("The state of Like button is expected to be changed",
+                    messageLikeButtonState.isNotChanged(LIKE_BUTTON_CHANGE_TIMEOUT, LIKE_BUTTON_NOT_CHANGED_MIN_SCORE));
+        }
     }
 
     /**
