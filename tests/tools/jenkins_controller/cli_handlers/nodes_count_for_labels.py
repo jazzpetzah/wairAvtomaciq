@@ -251,6 +251,7 @@ class IOSSimulator(BaseNodeVerifier):
                 sftp.close()
             ssh_client.exec_command('/bin/chmod u+x ' + dst_path)
             ssh_client.exec_command('/usr/bin/open -a Terminal ' + dst_path)
+            time.sleep(5)
         finally:
             os.unlink(path)
 
