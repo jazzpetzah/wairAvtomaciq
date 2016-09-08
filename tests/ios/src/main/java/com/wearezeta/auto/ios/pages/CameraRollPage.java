@@ -50,10 +50,10 @@ public class CameraRollPage extends IOSPage {
         return getElement(xpathCameraRolCell).getAttribute("value");
     }
 
-    public int getCameraRollPhotoCount() throws Exception {
+    public Integer getCameraRollPhotoCount() throws Exception {
         String countToParse = getCameraRollCellValue();
-        String[] count = countToParse.split(" ");
-        return Integer.valueOf(count[0]);
+        String count = countToParse.replaceAll("[\\D]", "");
+        return Integer.valueOf(count);
     }
 
     public void tapCancelButton() throws Exception {
