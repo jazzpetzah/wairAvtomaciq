@@ -151,7 +151,6 @@ public class CommonIOSSteps {
                     if (entry.getKey().equals(CAPABILITY_NAME_ADDRESSBOOK) &&
                             (entry.getValue() instanceof Boolean) && (Boolean) entry.getValue()) {
                         processArgs.addAll(Arrays.asList(
-                                "--debug-log-network",
                                 "--addressbook-on-simulator",
                                 "--addressbook-search-delay=2"
                         ));

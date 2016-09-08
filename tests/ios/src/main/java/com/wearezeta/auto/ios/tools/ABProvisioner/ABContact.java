@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class ABContact {
-    public String name;
+    private String name;
     private List<String> emails = new ArrayList<>();
     public List<String> phoneNumbers = new ArrayList<>();
 
@@ -21,6 +21,10 @@ public class ABContact {
         if (phoneNumbers.isPresent()) {
             this.phoneNumbers = phoneNumbers.get();
         }
+    }
+
+    public String getName() {
+        return name;
     }
 
     private static List<String> toStringList(JSONArray arr) {

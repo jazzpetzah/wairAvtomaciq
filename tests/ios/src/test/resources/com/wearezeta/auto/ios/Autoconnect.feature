@@ -95,15 +95,15 @@ Feature: Autoconnect
       | Contact   | ContactEmail | Name      |
       | user1Name | user1Email   | user2Name |
 
-  @C226448 @addressbookStart
+  @C226448 @addressbookStart @torun
   Scenario Outline: Verify Address Book is uploaded in batches
     Given There is 1 user where <Name> is me
     Given I quit Wire
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
     Given I delete all contacts from Address Book
-    Given I add all pre created users to Address Book
-    Given I read list of Contacts in Address Book
+    Given I add 3000 users to Address Book
+    Given I read list of contacts in Address Book
     Given I separate list of contacts into 3 chunks
     Given I pick 1 random contact of chunk 1 to register at BE
     Given I pick 1 random contact of chunk 2 to register at BE
@@ -112,22 +112,18 @@ Feature: Autoconnect
     Given I sign in using my email or phone number
     When I open search UI
     And I click clear button
-    Then I see 1 autoconnected conversation in conversations list
+    Then I see 1. autoconnected conversation in conversations list
     Given I quit Wire
     Given I relaunch Wire
-    Then I see 2 autoconnected conversations in conversations list
+    Then I see 2. autoconnected conversations in conversations list
     Given I quit Wire
     Given I relaunch Wire
-    Then I see 3 autoconnected conversations in conversations list
+    Then I see 3. autoconnected conversations in conversations list
     And I pick 1 random contact of chunk 1 to register at BE
     Given I quit Wire
     Given I relaunch Wire
-    And I wait for 5 seconds
-    Then I see 4 autoconnected conversations in conversations list
+    Then I see 4. autoconnected conversations in conversations list
 
     Examples:
       | Name      |
       | user1Name |
-
-
-
