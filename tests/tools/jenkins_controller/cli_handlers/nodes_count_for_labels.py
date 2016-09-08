@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import inspect
-from multiprocessing import Process, Queue, Lock
+from multiprocessing import Process, Lock
 import paramiko
 from pprint import pformat
 import random
@@ -64,8 +64,6 @@ class NodesCountForLabels(CliHandlerBase):
         args = parser.parse_args()
         expected_labels = normalize_labels(args.labels.split(','))
         verifier_class = self._get_verifier_class(args.apply_verification)
-        ready_nodes_queue = Queue()
-        broken_nodes_queue = Queue()
         verifiers = []
         for _, node in self._jenkins.get_nodes().iteritems():
             if node.is_online():
@@ -79,10 +77,12 @@ class NodesCountForLabels(CliHandlerBase):
                     node_labels = set()
                 if not expected_labels.issubset(node_labels):
                     continue
-                verifiers.append(verifier_class(node, et.find('.//host').text, ready_nodes_queue, broken_nodes_queue,
+                verifiers.append(verifier_class(node, et.find('.//host').text,
                                                 node_user=args.node_user, node_password=args.node_password,
                                                 ios_simulator_name=args.ios_simulator_name,
                                                 notification_receivers=args.notification_receivers))
+        ready_nodes = set()
+        broken_nodes = set()
         for verifiers_chunk in chunks(verifiers, MAX_VERIFICATION_JOBS):
             for verifier in verifiers_chunk:
                 verifier.start()
@@ -93,37 +93,33 @@ class NodesCountForLabels(CliHandlerBase):
                         '\nVerifier process for the node "{}" timed out after {} seconds. '
                         'Assuming the node as ready by default...\n'.format(verifier.node.name,
                                                                              verifier.get_timeout()))
-                    ready_nodes_queue.put_nowait(verifier.node)
                     # broken_nodes_queue.put_nowait(verifier.node)
                 else:
                     sys.stderr.write('\nFinished verification for the node "{}"\n'.format(verifier.node.name))
-        ready_nodes = set()
-        while not ready_nodes_queue.empty():
-            ready_nodes.add(ready_nodes_queue.get_nowait().name)
-        broken_nodes = set()
-        while not broken_nodes_queue.empty():
-            broken_nodes.add(broken_nodes_queue.get_nowait().name)
+                if verifier.is_node_ready():
+                    ready_nodes.add(verifier.node)
+                else:
+                    broken_nodes.add(verifier.node)
         for verifier in verifiers:
             if verifier.is_alive():
                 verifier.terminate()
-        # just to make sure the same node does not exist in both lists because of
-        # concurrency issues
-        ready_nodes -= broken_nodes
         return '{}|{}'.format(','.join(ready_nodes), ','.join(broken_nodes))
 
 
 class BaseNodeVerifier(Process):
-    def __init__(self, node, node_hostname, ready_nodes_queue, broken_nodes_queue, **kwargs):
+    def __init__(self, node, node_hostname, **kwargs):
         super(BaseNodeVerifier, self).__init__()
         self._node = node
         self._node_hostname = node_hostname
-        self._ready_nodes_queue = ready_nodes_queue
-        self._broken_nodes_queue = broken_nodes_queue
+        self._is_node_ready = False
         self._verification_kwargs = kwargs
 
     @property
     def node(self):
         return self._node
+
+    def is_node_ready(self):
+        return self._is_node_ready
 
     def _send_email_notification(self, subject, body):
         if 'notification_receivers' not in self._verification_kwargs or \
@@ -157,23 +153,17 @@ class BaseNodeVerifier(Process):
     def run(self):
         MAX_TRY_COUNT = 2
         try_num = 0
-        is_passed = False
         while True:
             try:
-                is_passed = self._is_verification_passed()
+                self._is_node_ready = self._is_verification_passed()
                 break
             except Exception as e:
                 traceback.print_exc()
                 try_num += 1
                 if try_num >= MAX_TRY_COUNT:
-                    self._broken_nodes_queue.put_nowait(self._node)
                     raise e
                 sys.stderr.write('Sleeping a while before retry #{} of {}...\n'.format(try_num, MAX_TRY_COUNT))
                 time.sleep(random.randint(2, 10))
-        if is_passed:
-            self._ready_nodes_queue.put_nowait(self._node)
-        else:
-            self._broken_nodes_queue.put_nowait(self._node)
 
 
 class RealAndroidDevice(BaseNodeVerifier):
@@ -221,14 +211,22 @@ class RealAndroidDevice(BaseNodeVerifier):
 
 
 class IOSSimulator(BaseNodeVerifier):
+    def __init__(self, node, node_hostname, **kwargs):
+        super(IOSSimulator, self).__init__(node, node_hostname, **kwargs)
+        self._is_node_ready = True
+
     def _get_installed_simulators(self, ssh_client):
-        _, stdout, _ = ssh_client.exec_command('/usr/bin/instruments -s')
-        matches = re.findall(r'([\w\s\(\)\.]+)\[(\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12})\]', stdout.read())
-        result = {}
-        if matches:
-            for match in matches:
-                result[match[0].strip()] = match[1].strip()
-        return result
+        try:
+            _, stdout, _ = ssh_client.exec_command('/usr/bin/instruments -s', timeout=10)
+            matches = re.findall(r'([\w\s\(\)\.]+)\[(\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12})\]', stdout.read())
+            result = {}
+            if matches:
+                for match in matches:
+                    result[match[0].strip()] = match[1].strip()
+            return result
+        except Exception:
+            traceback.print_exc()
+        return ''
 
     def get_timeout(self):
         return IOS_SIM_VERIFICATION_JOB_TIMEOUT
