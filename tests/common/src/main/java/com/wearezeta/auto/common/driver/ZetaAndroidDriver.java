@@ -174,8 +174,8 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
     }
 
     public void doubleTap(int x, int y) {
-        final TouchActions ta = new TouchActions(this);
-        ta.move(x, y).doubleClick().perform();
+        tap(1, x, y, 50);
+        tap(1, x, y, 100);
     }
 
     public void tap(String tapType, int x, int y) {
