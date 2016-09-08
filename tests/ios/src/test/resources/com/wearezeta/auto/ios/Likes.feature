@@ -183,7 +183,7 @@ Feature: Likes
     And I long tap on file transfer placeholder in conversation view
     And I tap on Like badge item
     And I tap toolbox of the recent message
-    Then I see <Contact1> in likers list
+    Then I see Myself in likers list
 
     Examples:
       | Name      | Contact1  | Contact2  | Group         | FileName | FileExt | FileSize | FileMIME                 | Contact1Device |
@@ -202,7 +202,7 @@ Feature: Likes
     And I long tap on video message in conversation view
     And I tap on Like badge item
     And I tap toolbox of the recent message
-    Then I see <Contact1> in likers list
+    Then I see Myself in likers list
 
     Examples:
       | Name      | Contact1  | Contact2  | Group          | FileName    | MIMEType  | Contact1Device |
