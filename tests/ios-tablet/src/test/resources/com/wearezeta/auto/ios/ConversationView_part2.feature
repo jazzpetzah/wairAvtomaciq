@@ -327,7 +327,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     Given I see conversations list
-    When I tap on contact name <Contact>
+    Given I tap on contact name <Contact>
     When I long tap on image in conversation view
     Then I see Save badge item
     When I tap on Save badge item
