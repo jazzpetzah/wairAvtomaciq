@@ -60,7 +60,7 @@ Feature: Likes
       | Name      | Contact1  | Contact2  | Group            |
       | user1Name | user2Name | user3Name | RemovedFromGroup |
 
-  @C225993 @staging @fastLogin
+  @C225993 @regression @fastLogin
   Scenario Outline: Verify liking a message tapping on like icon, when someone liked this message before
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -100,7 +100,7 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C225998 @C226001 @staging @fastLogin
+  @C225998 @C226001 @regression @fastLogin
   Scenario Outline: Verify editing already liked message and like after edit
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -126,7 +126,7 @@ Feature: Likes
       | Name      | Contact   | Text  |
       | user1Name | user2Name | aloha |
 
-  @C226004 @staging @fastLogin
+  @C226004 @regression @fastLogin
   Scenario Outline: Verify receiving a like in a conversation which was removed
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -149,7 +149,7 @@ Feature: Likes
       | Name      | Contact1  | Contact2  | Picture     | Group        |
       | user1Name | user2Name | user3Name | testing.jpg | DeletedGroup |
 
-  @C226005 @staging @fastLogin
+  @C226005 @regression @fastLogin
   Scenario Outline: Verify receiving like from a blocked person
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -208,7 +208,7 @@ Feature: Likes
       | Name      | Contact1  | Contact2  | Group          | FileName    | MIMEType  | Contact1Device |
       | user1Name | user2Name | user3Name | VideoLikeGroup | testing.mp4 | video/mp4 | C1Device       |
 
-  @C225985 @staging @fastLogin
+  @C225985 @regression @fastLogin
   Scenario Outline: Verify liking Soundcloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
