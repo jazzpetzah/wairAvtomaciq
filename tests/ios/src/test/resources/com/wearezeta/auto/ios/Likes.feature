@@ -189,7 +189,7 @@ Feature: Likes
       | Name      | Contact1  | Contact2  | Group         | FileName | FileExt | FileSize | FileMIME                 | Contact1Device |
       | user1Name | user2Name | user3Name | FileLikeGroup | testing  | tmp     | 240 KB   | application/octet-stream | C1Device       |
 
-  @C225984 @staging @fastLogin
+  @C225984 @regression @fastLogin
   Scenario Outline: Verify liking a video message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
