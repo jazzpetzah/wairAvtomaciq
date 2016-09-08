@@ -106,6 +106,9 @@ class NodesCountForLabels(CliHandlerBase):
         for verifier in verifiers:
             if verifier.is_alive():
                 verifier.terminate()
+        # just to make sure the same node does not exist in both lists because of
+        # concurrency issues
+        ready_nodes -= broken_nodes
         return '{}|{}'.format(','.join(ready_nodes), ','.join(broken_nodes))
 
 
