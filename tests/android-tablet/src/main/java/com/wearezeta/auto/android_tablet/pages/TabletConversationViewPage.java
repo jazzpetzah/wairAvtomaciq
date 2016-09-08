@@ -76,7 +76,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilAPictureAppears() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idConversationImages);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idConversationImageContainer);
     }
 
     public boolean waitUntilGCNIsVisible() throws Exception {
@@ -113,8 +113,9 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return getConversationViewPage().getPreviewPictureScreenshot();
     }
 
+    // TODO: It's time to do a big refactoring of tablet!
     public void tapRecentImage() throws Exception {
-        getConversationViewPage().tapRecentImage();
+        getConversationViewPage().tapContainer("tap", "image");
     }
 
     public boolean waitForSystemConnectionMessageContains(String expectedMessage) throws Exception {
@@ -133,7 +134,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilPicturesNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idConversationImages);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idConversationImageContainer);
     }
 
     public void tapPlayPauseButton() throws Exception {
