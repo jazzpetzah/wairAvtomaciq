@@ -1,6 +1,6 @@
 Feature: Likes
 
-  @C225979 @C225994 @regression @fastLogin
+  @C225979 @regression @fastLogin
   Scenario Outline: Verify liking/unliking a message by tapping on like icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -19,7 +19,7 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C225980 @C225995 @regression @fastLogin
+  @C225980 @regression @fastLogin
   Scenario Outline: Verify liking/unliking a message from a message menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
