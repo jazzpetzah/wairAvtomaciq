@@ -300,7 +300,7 @@ from brainstem.stem import USBHub2x4
 stem = USBHub2x4()
 spec = discover.find_first_module(Spec.USB)
 if spec is None:
-     raise RuntimeError("No USBHub is connected!")
+    raise RuntimeError("No USBHub is connected!")
 stem.connect_from_spec(spec)
 stem.usb.setPowerDisable({0})
 time.sleep(1)
