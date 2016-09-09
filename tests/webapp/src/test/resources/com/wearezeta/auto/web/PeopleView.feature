@@ -91,8 +91,8 @@ Feature: People View
     Then I see conversation with <UnknownContact> is selected in conversations list
 
     Examples: 
-      | Login      | Password      | Name      | KnownContact | UnknownContact | ChatName               | Message   |
-      | user1Email | user1Password | user1Name | user2Name    | user3Name      | PeoplePopoverGroupChat | YOU ADDED |
+      | Login      | Password      | Name      | KnownContact | UnknownContact | ChatName               |
+      | user1Email | user1Password | user1Name | user2Name    | user3Name      | PeoplePopoverGroupChat |
 
   @C1778 @regression
   Scenario Outline: Verify I can see participant profile of user who has requested to connect with you in a group conversation
@@ -122,8 +122,8 @@ Feature: People View
     Then I see conversation with <UnknownContact> is selected in conversations list
 
     Examples: 
-      | Login      | Password      | Name      | KnownContact | UnknownContact | UnknownContactMail | ChatName               | Message   |
-      | user1Email | user1Password | user1Name | user2Name    | user3Name      | user3Email         | PeoplePopoverGroupChat | YOU ADDED |
+      | Login      | Password      | Name      | KnownContact | UnknownContact | UnknownContactMail | ChatName               |
+      | user1Email | user1Password | user1Name | user2Name    | user3Name      | user3Email         | PeoplePopoverGroupChat |
 
   @C1779 @regression
   Scenario Outline: Verify I can see participant profile of connected user in a group conversation
@@ -145,8 +145,8 @@ Feature: People View
     Then I see conversation with <KnownContact> is selected in conversations list
 
     Examples: 
-      | Login      | Password      | Name      | KnownContact | KnownContactMail | UnknownContact | ChatName               | Message   |
-      | user1Email | user1Password | user1Name | user2Name    | user2Email       | user3Name      | PeoplePopoverGroupChat | YOU ADDED |
+      | Login      | Password      | Name      | KnownContact | KnownContactMail | UnknownContact | ChatName               |
+      | user1Email | user1Password | user1Name | user2Name    | user2Email       | user3Name      | PeoplePopoverGroupChat |
 
   @C1780 @regression
   Scenario Outline: Verify I can see participant profile of user I blocked in a group conversation
@@ -175,8 +175,8 @@ Feature: People View
     Then I see Contact list with name <KnownContact>
 
     Examples: 
-      | Login      | Password      | Name      | KnownContact | KnownContactMail | UnknownContact | ChatName               | Message   |
-      | user1Email | user1Password | user1Name | user2Name    | user2Email       | user3Name      | PeoplePopoverGroupChat | YOU ADDED |
+      | Login      | Password      | Name      | KnownContact | KnownContactMail | UnknownContact | ChatName               |
+      | user1Email | user1Password | user1Name | user2Name    | user2Email       | user3Name      | PeoplePopoverGroupChat |
 
   @C1693 @regression
   Scenario Outline: Verify I can ignore connection request in a group conversation
@@ -201,8 +201,8 @@ Feature: People View
     Then I do not see connection request from one user
 
     Examples: 
-      | Login      | Password      | Name      | KnownContact | UnknownContact | UnknownContactMail | ChatName               | Message   |
-      | user1Email | user1Password | user1Name | user2Name    | user3Name      | user3Email         | PeoplePopoverGroupChat | YOU ADDED |
+      | Login      | Password      | Name      | KnownContact | UnknownContact | UnknownContactMail | ChatName               |
+      | user1Email | user1Password | user1Name | user2Name    | user3Name      | user3Email         | PeoplePopoverGroupChat |
 
   @C1715 @regression
   Scenario Outline: Verify users can properly leave a group conversation on the other end

@@ -478,3 +478,53 @@ And I wait for 60 seconds
     Examples:
       | Login      | Password      | Name      | Contact  | ContactEmail                  | ContactPassword | File1          | File2              |
       | user1Email | user1Password | user1Name | 928d0420 | smoketester+928d0420@wire.com | aqa123456!      | over8000ch.txt | lessThan8000ch.txt |
+
+  @C221139 @staging
+  Scenario Outline: Verify after user was removed from group he cannot do some actions
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <ChatName>
+    And Contact <Contact1> sends message <Message2> via device Device1 to group conversation <ChatName>
+    And I write message <Message1>
+    And I send message
+    Then I see text message <Message1>
+    Then I see text message <Message2>
+    And I see 3 messages in conversation
+    When <Contact1> removes Myself from group conversation <ChatName>
+    Then I see <MessageAction> action for <Contact1> in conversation
+    When I see 4 messages in conversation
+    #general actions in group
+    When I click People button in group conversation
+    Then I see Group Participants popover
+    And I see <Contact1>,<Contact2> displayed on Group Participants popover
+    And I do not see Add People button on Group Participants popover
+    And I do not see Leave button on Group Participants popover
+    And I input user name <Contact1> in search field on Group Participants popover
+    And I select user <Contact1> from Group Participants popover search results
+    And I do not see Remove button on Group Participants popover
+    And I verify that conversation input and buttons are not visible
+    #check another user message
+    When I click context menu of the message <Message2>
+    And I do not see like button in context menu
+    And I see delete for me button in context menu
+    And I cannot unlike <Message2>
+    #check own message
+    And I cannot like <Message1>
+    And I click context menu of the the message <Message1>
+    And I do not see delete for everyone button in context menu
+    And I do not see like button in context menu
+    And I do not see edit button in context menu
+    And I see delete for me button in context menu
+    #editing group name - should be disabled, but not implemented yet. So for now the name stays the same as before editing
+    And I see titlebar with <ChatName>
+    And I change group conversation title to <ChatNameEdit> on Group Participants popover
+    And I see titlebar with <ChatName>
+
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName     | Message1 | MessageAction | Message2 | ChatNameEdit |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | OldGroupName | message1 | REMOVED YOU   | message2 | NewGroupName |

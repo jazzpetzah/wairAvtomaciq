@@ -44,6 +44,16 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 		leaveButton.click();
 	}
 
+	public boolean isLeaveButtonInvisible() throws Exception{
+		final By locator = By.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xpathLeaveGroupChat);
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator, 3);
+	}
+
+	public boolean isAddPeopleButtonInvisible() throws Exception{
+		final By locator = By.xpath(PopoverLocators.Shared.xpathAddButton);
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator, 3);
+	}
+
 	public void clickOnParticipant(String name) throws Exception {
 		final By locator = By
 				.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xpathParticipantByName

@@ -416,26 +416,3 @@ Feature: Delete Everywhere
       Examples:
         | Login      | Password      | Name      | Contact   | Youtubelink                                 | Soundcloudlink                                                      | Vimeolink                 | Spotifylink                                           |
         | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=ncHd3sxpEbo | https://soundcloud.com/nour-moukhtar/ludwig-van-beethoven-fur-elise | https://vimeo.com/7265982 | https://play.spotify.com/album/7buEcyw6fJF3WPgr06BomH |
-
-  @C221139 @staging
-  Scenario Outline: Verify I can not delete my message everywhere when I was removed from group
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given <Name> has group chat <ChatName> with <Contact1>,<Contact2>
-    Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    Given I am signed in properly
-    When I open conversation with <ChatName>
-    And I write message <Message>
-    And I send message
-    Then I see text message <Message>
-    And I see 2 messages in conversation
-    When <Contact1> removes Myself from group conversation <ChatName>
-    Then I see <MessageAction> action for <Contact1> in conversation
-    When I see 3 messages in conversation
-    And I click context menu of the second last message
-    And I do not see delete for everyone button in context menu for latest message
-
-    Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Message | MessageAction |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | New name | message | REMOVED YOU   |

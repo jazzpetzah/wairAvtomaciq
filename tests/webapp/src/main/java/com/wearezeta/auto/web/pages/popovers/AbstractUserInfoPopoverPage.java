@@ -65,6 +65,10 @@ abstract class AbstractUserInfoPopoverPage extends AbstractPopoverPage {
 		return removeButton.isDisplayed();
 	}
 
+	public boolean isRemoveButtonInvisible() {
+		return removeButton.isDisplayed();
+	}
+
 	public boolean isAvatarVisible() {
 		return avatar.isDisplayed();
 	}

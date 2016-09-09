@@ -73,6 +73,14 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		this.participantsListPopoverPage.clickLeaveGroupChat();
 	}
 
+	public boolean isLeaveButtonOnGroupPopoverInvisible() throws Exception  {
+		return this.participantsListPopoverPage.isLeaveButtonInvisible();
+	}
+
+	public boolean isAddPeopleButtonOnGroupPopoverInvisible() throws Exception  {
+		return this.participantsListPopoverPage.isAddPeopleButtonInvisible();
+	}
+
 	public String getPeopleCountInfo() throws Exception {
 		return this.participantsListPopoverPage.getPeopleCountInfo();
 	}
@@ -100,6 +108,10 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 
 	public boolean isRemoveButtonVisible() throws Exception {
 		return getCurrentUserInfoPage().isRemoveButtonVisible();
+	}
+
+	public boolean isRemoveButtonInvisible() throws Exception {
+		return getCurrentUserInfoPage().isRemoveButtonInvisible();
 	}
 
 	public String getLeaveGroupChatButtonToolTip() throws Exception {
