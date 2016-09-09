@@ -913,17 +913,7 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap the most recent visible transfer placeholder
-     *
-     * @throws Exception
-     * @step. ^I tap file transfer placeholder$
-     */
-    @When("^I tap file transfer placeholder$")
-    public void ITapFileTransferPlaceholder() throws Exception {
-        getConversationViewPage().tapFileTransferPlaceholder();
-    }
-
-    /**Tap on file transfer action button to download/preview file
+     * Tap on file transfer action button to download/preview file
      *
      * @throws Exception
      * @step. ^I tap file transfer action button
@@ -1076,16 +1066,17 @@ public class ConversationViewPageSteps {
      * @param conversationItem item name
      * @param isLongTap        equals to null if simple tap should be performed
      *                         Works with long tap only
+     * @param isDoubleTap      os not equal to null if double tap should be performed
      * @throws Exception
-     * @step. ^I (long )?tap on " +
+     * @step. ^I (long )?(double )?tap on " +
      * "(image|media container|file transfer placeholder|audio message placeholder|video message|location map|link preview) " +
      * "in conversation view$
      */
-    @When("^I (long )?tap on " +
+    @When("^I (long )?(double )?tap on " +
             "(image|media container|file transfer placeholder|audio message placeholder|video message|location map|link preview) " +
             "in conversation view$")
-    public void ITapMessagePlaceholder(String isLongTap, String conversationItem) throws Exception {
-        getConversationViewPage().tapContainer(conversationItem, isLongTap != null);
+    public void ITapMessagePlaceholder(String isLongTap, String isDoubleTap, String conversationItem) throws Exception {
+        getConversationViewPage().tapContainer(conversationItem, isLongTap != null, isDoubleTap != null);
     }
 
     /**
@@ -1426,14 +1417,15 @@ public class ConversationViewPageSteps {
     /**
      * Tap in the center of the most recent message cell for the particular contact
      *
-     * @param sender sender name/alias
+     * @param isLongTap is not equal to null if long tap is going to be performed
+     * @param sender    sender name/alias
      * @throws Exception
-     * @step. ^I tap on the recent message from (.*)
+     * @step. ^I (long )?tap on the recent message from (.*)
      */
-    @When("^I tap on the recent message from (.*)")
-    public void ITapRecentMessage(String sender) throws Exception {
+    @When("^I (long )?tap on the recent message from (.*)")
+    public void ITapRecentMessage(String isLongTap, String sender) throws Exception {
         sender = usrMgr.replaceAliasesOccurences(sender, FindBy.NAME_ALIAS);
-        getConversationViewPage().tapRecentMessageFrom(sender);
+        getConversationViewPage().tapRecentMessageFrom(isLongTap != null, sender);
     }
 
     private static final int LIKE_ICON_STATE_CHANGE_TIMEOUT = 7; //seconds
@@ -1501,5 +1493,43 @@ public class ConversationViewPageSteps {
         }
         Assert.assertTrue(String.format("The Like/Unlike icon is expected to be %s",
                 (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
+
+    /**
+     * Tap the toolbox of the recent message to open likers list
+     *
+     * @throws Exception
+     * @step. ^I tap toolbox of the recent message$
+     */
+    @When("^I tap toolbox of the recent message$")
+    public void ITapMessageToolbox() throws Exception {
+        getConversationViewPage().tapRecentMessageToolbox();
+    }
+
+    /**
+     * Tap the recent media container to show/hide like icon
+     *
+     * @param pWidth   destination cell X tap point (in percent 0-100)
+     * @param pHeight  destination cell Y tap point (in percent 0-100)
+     * @param fromName message sender name/alias
+     * @throws Exception
+     * @step. I tap at (\d+)% of width and (\d+)% of height of the recent message from (.*)
+     */
+    @When("^I tap at (\\d+)% of width and (\\d+)% of height of the recent message from (.*)")
+    public void ITapAtContainerCorner(int pWidth, int pHeight, String fromName) throws Exception {
+        fromName = usrMgr.replaceAliasesOccurences(fromName, FindBy.NAME_ALIAS);
+        getConversationViewPage().tapAtRecentMessage(pWidth, pHeight, fromName);
+    }
+
+    /**
+     * Tap relevant button on image
+     *
+     * @param buttonName Sketch ot Fullscreen button names allowed
+     * @throws Exception
+     * @step. ^I tap (Sketch|Fullscreen) button on image$
+     */
+    @When("^I tap (Sketch|Fullscreen) button on image$")
+    public void ITapOnImageButtons(String buttonName) throws Exception {
+        getConversationViewPage().tapImageButton(buttonName);
     }
 }

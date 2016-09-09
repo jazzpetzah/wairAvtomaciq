@@ -173,6 +173,43 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
         ta.doubleTap(el).perform();
     }
 
+    public void doubleTap(int x, int y) {
+        tap(1, x, y, 50);
+        tap(1, x, y, 100);
+    }
+
+    public void tap(String tapType, int x, int y) {
+        switch (tapType.toLowerCase()) {
+            case "long tap":
+                longTap(x, y, DriverUtils.LONG_TAP_DURATION);
+                break;
+            case "double tap":
+                doubleTap(x, y);
+                break;
+            case "tap":
+                tap(1, x, y, DriverUtils.SINGLE_TAP_DURATION);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Invalid tap type '%s'", tapType));
+        }
+    }
+
+    public void tap(String tapType, WebElement el) {
+        switch (tapType.toLowerCase()) {
+            case "long tap":
+                longTap(el, DriverUtils.LONG_TAP_DURATION);
+                break;
+            case "double tap":
+                doubleTap(el);
+                break;
+            case "tap":
+                el.click();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Invalid tap type '%s'", tapType));
+        }
+    }
+
     public DefaultArtifactVersion getOSVersion() {
         return new DefaultArtifactVersion(this.androidOSVersion);
     }

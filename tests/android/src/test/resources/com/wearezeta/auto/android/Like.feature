@@ -1,7 +1,7 @@
 Feature: Like
 
-  @C226019 @C226035 @staging
-  Scenario Outline: I can like message from message tool menu
+  @C226019 @regression @rc
+  Scenario Outline: I can like/unlike message from message tool menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User <Contact> adds new devices <ContactDevice>
@@ -24,10 +24,9 @@ Feature: Like
 
     Examples:
       | Name      | Contact   | Txt | MessageStatus | ContactDevice |
-      | user1Name | user2Name | Hi  | Delivered     | D1            |
+      | user1Name | user2Name | Hi  | Sent          | D1            |
 
-  #TODO : Merge all those TR test into one
-  @C226018 @C226020 @C226034 @staging
+  @C226018 @C226020 @regression @rc
   Scenario Outline: I can unlike/like message by tap on like icon & I can like text message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -44,7 +43,7 @@ Feature: Like
     # C226020
     When I tap Like button in conversation view
     Then I verify the state of like button item is changed
-    # C226034
+    # C226018
     When I remember the state of like button
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed
@@ -52,9 +51,9 @@ Feature: Like
 
     Examples:
       | Name      | Contact   | Txt | MessageStatus | ContactDevice |
-      | user1Name | user2Name | Hi  | Delivered     | D1            |
+      | user1Name | user2Name | Hi  | Sent          | D1            |
 
-  @C226036 @staging
+  @C226036 @regression @rc
   Scenario Outline: I can double tap on txt to like and unlike
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -74,10 +73,10 @@ Feature: Like
 
     Examples:
       | Name      | Contact   | Txt | MessageStatus | ContactDevice |
-      | user1Name | user2Name | Hi  | Delivered     | D1            |
+      | user1Name | user2Name | Hi  | Sent          | D1            |
 
-  @C226040 @C226033 @C226043 @staging
-  Scenario Outline: If message was liked by somebody - like icon is visible and liker name next to the like icon, and I could like it.
+  @C226040 @regression @rc
+  Scenario Outline: If message was liked by somebody, like icon is visible and sorted liker name next to the like icon, and I could like it.
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User <Contact> adds new devices <ContactDevice>
@@ -101,7 +100,7 @@ Feature: Like
       | Name      | Contact   | Message | ContactDevice |
       | user1Name | user2Name | Hi      | Device1       |
 
-  @C226045 @C226048 @staging
+  @C226045 @C226048 @regression @rc
   Scenario Outline: Likes should be reset if I edited message / also could like again
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -118,19 +117,20 @@ Feature: Like
     Then I see Like description with expected text "<Name>" in conversation view
     When User Myself edits the recent message to "<NewMessage>" from user <Contact1> via device <Device>
     Then I see the message "<NewMessage>" in the conversation view
-    And I see Message status with expected text "<MessageStatus>" in conversation view
-    # C226048
+    # TODO : remove it once msg meta show automatic
     When I tap the Text message "<NewMessage>" in the conversation view
-    And I remember the state of like button
+    Then I see Message status with expected text "<MessageStatus>" in conversation view
+    # C226048
+    When I remember the state of like button
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed
     And I see Like description with expected text "<Name>" in conversation view
 
     Examples:
       | Name      | Contact1  | Message | Device | NewMessage | MessageStatus | ContactDevice |
-      | user1Name | user2Name | Yo      | D1     | Hello      | Delivered     | D2            |
+      | user1Name | user2Name | Yo      | D1     | Hello      | Sent          | D2            |
 
-  @C226049 @C226050 @C226037 @staging
+  @C226049 @C226037 @regression @rc
   Scenario Outline: Verify local delete for my/others message doesn't reappear after someone liked it (negative)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -148,6 +148,8 @@ Feature: Like
     Then I do not see the message "<Message>" in the conversation view
     # C226037
     When User <Contact> sends encrypted message "<OtherMessage>" via device <Device> to user Myself
+    # TODO: Remove following 1 lines once the message present automatic when receive a message.
+    And I tap the Text message "<OtherMessage>" in the conversation view
     Then I see Like description with expected text "Tap to like" in conversation view
     # C226050
     When I long tap the Text message "<OtherMessage>" in the conversation view
@@ -160,7 +162,7 @@ Feature: Like
       | Name      | Contact   | Message | Device  | OtherMessage |
       | user1Name | user2Name | Yo      | Device1 | OMG          |
 
-  @C234618 @staging
+  @C234618 @regression
   Scenario Outline: Verify receiving a like in a conversation which history was removed (negative)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -181,7 +183,7 @@ Feature: Like
       | Name      | Contact   | Message | Device  |
       | user1Name | user2Name | Yo      | Device1 |
 
-  @C226047 @staging
+  @C226047 @regression
   Scenario Outline: Verify sending like to a person who block me in a 1:1 conversation (negative)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -202,8 +204,8 @@ Feature: Like
       | Name      | Contact   | Message | Device  |
       | user1Name | user2Name | Yo      | Device1 |
 
-  @C226041 @С232581 @C226042 @staging
-  Scenario Outline: I see likers count instead of names (example: 5 People)
+  @C226041 @C226042 @regression @rc
+  Scenario Outline: I see likers count instead of names with first/second liker avatars, and could open likers list
     Given There are 5 users where <Name> is me
     Given <Contact1> is connected to Myself,<Contact2>,<Contact3>,<Contact4>
     Given <Contact1> has group chat <Group> with Myself,<Contact2>,<Contact3>,<Contact4>
@@ -233,7 +235,7 @@ Feature: Like
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Group     | Message | D1 | D2 | D3 | D4 |
       | user1Name | user2Name | user3Name | user4Name | user5Name | LikeGroup | Hi      | D1 | D2 | D3 | D4 |
 
-  @C226022 @staging
+  @C226022 @regression @rc
   Scenario Outline: I can like a picture
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -243,7 +245,7 @@ Feature: Like
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I see a picture in the conversation view
-    And I tap the recent picture in the conversation view
+    And I tap Image container in the conversation view
     And I remember the state of like button
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed
@@ -253,8 +255,8 @@ Feature: Like
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C226024 @staging
-  Scenario Outline: I can like a sketch
+  @C226024 @regression @rc
+  Scenario Outline: I can like/unlike a sketch by tap on heart button/long tap/double tap
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -265,17 +267,40 @@ Feature: Like
     And I draw a sketch with 1 colors
     And I send my sketch
     And I do not see Message status with expected text "Sending" in conversation view
-    And I tap the recent picture in the conversation view
+    And I tap Image container in the conversation view
     And I remember the state of like button
+    # Tap heart like
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed
     And I see Like description with expected text "<Name>" in conversation view
+    # Tap heart unlike
+    When I tap Like button in conversation view
+    Then I see Message status with expected text "<MessageStatus>" in conversation view
+    And I verify the state of like button item is not changed
+    # Double tap to like
+    When I double tap Image container in the conversation view
+    Then I see Like description with expected text "<Name>" in conversation view
+    And I verify the state of like button item is changed
+    # Doulbe tap to unlike
+    When I double tap Image container in the conversation view
+    Then I see Message status with expected text "<MessageStatus>" in conversation view
+    And I verify the state of like button item is not changed
+    # Long tap to like
+    When I long tap Image container in the conversation view
+    And I tap Like button on the message bottom menu
+    Then I see Like description with expected text "<Name>" in conversation view
+    And I verify the state of like button item is changed
+    # Long tap to unlike
+    When I long tap Image container in the conversation view
+    And I tap Unlike button on the message bottom menu
+    Then I see Message status with expected text "<MessageStatus>" in conversation view
+    And I verify the state of like button item is not changed
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | MessageStatus |
+      | user1Name | user2Name | Sent          |
 
-  @C226029 @staging
+  @C226029 @regression
   Scenario Outline: I can like a shared location
     Given I am on Android with Google Location Service
     Given There are 2 users where <Name> is me
@@ -296,7 +321,7 @@ Feature: Like
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
 
-  @C226021 @staging
+  @C226021 @regression @rc
   Scenario Outline: I can like link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -316,7 +341,7 @@ Feature: Like
       | Name      | Contact   | Url                     |
       | user1Name | user2Name | http://www.facebook.com |
 
-  @C226030 @staging
+  @C226030 @regression @rc
   Scenario Outline: I can like audio message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -325,6 +350,10 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
+    # TODO: Remove following 3 lines once the message present automatic when receive a message.
+    And I scroll to the bottom of conversation view
+    And I tap Audio Message container in the conversation view
+    And I scroll to the bottom of conversation view
     And I remember the state of like button
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed
@@ -334,7 +363,7 @@ Feature: Like
       | Name      | Contact   | FileName | MIMEType  | DeviceName |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
 
-  @C226031 @staging
+  @C226031 @regression @rc
   Scenario Outline: I can like video message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -343,6 +372,9 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
+    # TODO: Remove following 3 lines once the message present automatic when receive a message.
+    And I scroll to the bottom of conversation view
+    And I tap Video Message container in the conversation view
     And I scroll to the bottom of conversation view
     And I remember the state of like button
     And I tap Like button in conversation view
@@ -353,7 +385,7 @@ Feature: Like
       | Name      | Contact   | FileName    | MIMEType  | DeviceName |
       | user1Name | user2Name | testing.mp4 | video/mp4 | Device1    |
 
-  @C226032 @staging
+  @C226032 @regression @rc
   Scenario Outline: I can like file transfer
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -375,7 +407,7 @@ Feature: Like
       | Name      | Contact   | FileName  | FileSize | FileExtension |
       | user1Name | user2Name | qa_random | 1.00MB   | txt           |
 
-  @C226027 @staging
+  @C226027 @regression @rc
   Scenario Outline: I can like youtube
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -393,3 +425,43 @@ Feature: Like
     Examples:
       | Name      | Contact   | YoutubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
+
+  @C226026 @regression @rc
+  Scenario Outline: I can like Soundcloud
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
+    And I type the message "<SoundCloudLink>" and send it
+    And I scroll to the bottom of conversation view
+    And I tap Soundcloud container in the conversation view
+    And I scroll to the bottom of conversation view
+    And I remember the state of like button
+    And I tap Like button in conversation view
+    Then I verify the state of like button item is changed
+    And I see Like description with expected text "<Name>" in conversation view
+
+    Examples:
+      | Name      | Contact   | SoundCloudLink                                   |
+      | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
+
+  @C226051 @regression @rc
+  Scenario Outline: Verify receiving like from a blocked person in a group conversation
+    Given There are 3 users where <Name> is me
+    Given User <Contact1> adds new device <ContactDevice>
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given User Myself blocks user <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Group>
+    And I type the message "<Message>" and send it
+    And User <Contact1> likes the recent message from group conversation <Group> via device <ContactDevice>
+    Then I see Like description with expected text "<Contact1>" in conversation view
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Message | Group      | ContactDevice |
+      | user1Name | user2Name | user3Name | M1      | BlockGroup | D1            |

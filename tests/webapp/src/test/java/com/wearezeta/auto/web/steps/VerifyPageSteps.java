@@ -57,7 +57,8 @@ public class VerifyPageSteps {
 				downloadLink = "https://itunes.apple.com/app/wire/id931134707?mt=12";
 				break;
 			case "windows":
-				downloadLink = "https://staging-website.zinfra.io/download/";
+				final String website = CommonUtils.getWebsitePathFromConfig(VerifyPageSteps.class);
+				downloadLink = website + "download/";
 				break;
 			default: break;
 		}

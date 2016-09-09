@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import inspect
-from multiprocessing import Process, Queue, Lock
+from threading import Thread, Lock
 import paramiko
 from pprint import pformat
 import random
@@ -18,15 +18,17 @@ import xml.etree.ElementTree as ET
 from cli_handlers.cli_handler_base import CliHandlerBase
 
 MAX_NODES_PER_HOST = 5
-VERIFICATION_JOB_TIMEOUT = 60 * 2 #seconds
+DEFAULT_VERIFICATION_JOB_TIMEOUT = 60 * 2  # seconds
+IOS_SIM_VERIFICATION_JOB_TIMEOUT = 30  # seconds
 MAX_VERIFICATION_JOBS = 4
 
 normalize_labels = lambda labels_list: set(map(lambda x: x.strip(), labels_list))
 
+
 def chunks(l, n):
     """Yield successive n-sized chunks from l."""
     for i in xrange(0, len(l), n):
-        yield l[i:i+n]
+        yield l[i:i + n]
 
 
 class NodesCountForLabels(CliHandlerBase):
@@ -45,8 +47,8 @@ class NodesCountForLabels(CliHandlerBase):
         parser.add_argument('--node_password', default=None,
                             help='Jenkins node password')
         parser.add_argument('--notification_receivers', default=None,
-                            help='The comma-separated list of people to notify about problems on nodes. '\
-                            'No notifications will be sent if this parameter is empty')
+                            help='The comma-separated list of people to notify about problems on nodes. ' \
+                                 'No notifications will be sent if this parameter is empty')
 
     def _get_verifier_class(self, name):
         clsmembers = inspect.getmembers(sys.modules[__name__], inspect.isclass)
@@ -62,13 +64,11 @@ class NodesCountForLabels(CliHandlerBase):
         args = parser.parse_args()
         expected_labels = normalize_labels(args.labels.split(','))
         verifier_class = self._get_verifier_class(args.apply_verification)
-        ready_nodes_queue = Queue()
-        broken_nodes_queue = Queue()
         verifiers = []
         for _, node in self._jenkins.get_nodes().iteritems():
             if node.is_online():
                 response = node.jenkins.requester.get_and_confirm_status(
-                                            "%(baseurl)s/config.xml" % node.__dict__)
+                    "%(baseurl)s/config.xml" % node.__dict__)
                 et = ET.fromstring(response.text)
                 node_labels_str = et.find('label').text
                 if node_labels_str:
@@ -77,48 +77,54 @@ class NodesCountForLabels(CliHandlerBase):
                     node_labels = set()
                 if not expected_labels.issubset(node_labels):
                     continue
-                verifiers.append(verifier_class(node, et.find('.//host').text, ready_nodes_queue, broken_nodes_queue,
+                verifiers.append(verifier_class(node, et.find('.//host').text,
                                                 node_user=args.node_user, node_password=args.node_password,
                                                 ios_simulator_name=args.ios_simulator_name,
                                                 notification_receivers=args.notification_receivers))
+        ready_node_names = set()
+        broken_node_names = set()
         for verifiers_chunk in chunks(verifiers, MAX_VERIFICATION_JOBS):
             for verifier in verifiers_chunk:
                 verifier.start()
             for verifier in verifiers_chunk:
-                verifier.join(timeout=VERIFICATION_JOB_TIMEOUT)
+                verifier.join(timeout=verifier.get_timeout())
                 if verifier.is_alive():
                     sys.stderr.write(
-                        'Verifier process for the node "{}" timed out. Assuming the node as ready by default...\n'.\
-                         format(verifier.node.name))
+                        '\nVerifier process for the node "{}" timed out after {} seconds. '
+                        'Assuming the node as ready by default...\n'.format(verifier.node.name,
+                                                                            verifier.get_timeout()))
                     # broken_nodes_queue.put_nowait(verifier.node)
-                    verifier.terminate()
                 else:
-                    sys.stderr.write('Finished verification for the node "{}"\n'.format(verifier.node.name))
-        ready_nodes = []
-        while not ready_nodes_queue.empty():
-            ready_nodes.append(ready_nodes_queue.get_nowait().name)
-        broken_nodes = []
-        while not broken_nodes_queue.empty():
-            broken_nodes.append(broken_nodes_queue.get_nowait().name)
-        return '{}|{}'.format(','.join(ready_nodes), ','.join(broken_nodes))
+                    sys.stderr.write('\nFinished verification for the node "{}"\n'.format(verifier.node.name))
+                if verifier.is_node_ready():
+                    ready_node_names.add(verifier.node.name)
+                else:
+                    broken_node_names.add(verifier.node.name)
+        for verifier in verifiers:
+            if verifier.is_alive():
+                verifier.terminate()
+        return '{}|{}'.format(','.join(ready_node_names), ','.join(broken_node_names))
 
 
-class BaseNodeVerifier(Process):
-    def __init__(self, node, node_hostname, ready_nodes_queue, broken_nodes_queue, **kwargs):
-        super(BaseNodeVerifier, self).__init__()
+class BaseNodeVerifier(Thread):
+    def __init__(self, node, node_hostname, **kwargs):
+        super(BaseNodeVerifier, self).__init__(group=None, target=None, name=None,
+                                               args=(), kwargs=None, verbose=None)
         self._node = node
         self._node_hostname = node_hostname
-        self._ready_nodes_queue = ready_nodes_queue
-        self._broken_nodes_queue = broken_nodes_queue
+        self._is_node_ready = False
         self._verification_kwargs = kwargs
 
     @property
     def node(self):
         return self._node
 
+    def is_node_ready(self):
+        return self._is_node_ready
+
     def _send_email_notification(self, subject, body):
         if 'notification_receivers' not in self._verification_kwargs or \
-           self._verification_kwargs['notification_receivers'] is None:
+                        self._verification_kwargs['notification_receivers'] is None:
             return
         TO = map(lambda x: x.strip(),
                  self._verification_kwargs['notification_receivers'].split(','))
@@ -142,26 +148,23 @@ class BaseNodeVerifier(Process):
     def _is_verification_passed(self):
         return True
 
+    def get_timeout(self):
+        return DEFAULT_VERIFICATION_JOB_TIMEOUT
+
     def run(self):
         MAX_TRY_COUNT = 2
         try_num = 0
-        is_passed = False
         while True:
             try:
-                is_passed = self._is_verification_passed()
+                self._is_node_ready = self._is_verification_passed()
                 break
             except Exception as e:
                 traceback.print_exc()
                 try_num += 1
                 if try_num >= MAX_TRY_COUNT:
-                    self._broken_nodes_queue.put_nowait(self._node)
-                    raise e
+                    return
                 sys.stderr.write('Sleeping a while before retry #{} of {}...\n'.format(try_num, MAX_TRY_COUNT))
                 time.sleep(random.randint(2, 10))
-        if is_passed:
-            self._ready_nodes_queue.put_nowait(self._node)
-        else:
-            self._broken_nodes_queue.put_nowait(self._node)
 
 
 class RealAndroidDevice(BaseNodeVerifier):
@@ -191,15 +194,15 @@ class RealAndroidDevice(BaseNodeVerifier):
             output = stdout.read()
             result = output.find('device:') > 0 and output.find('offline') < 0
             if not result:
-                msg = 'The device connected to node "{}" seems to be not accessible:\n{}'.\
-                                 format(self._node.name, output)
+                msg = 'The device connected to node "{}" seems to be not accessible:\n{}'. \
+                    format(self._node.name, output)
                 sys.stderr.write(msg)
                 self._send_email_notification('"{}" node is broken'.format(self._node.name), msg)
                 return False
             result, output = self._is_connected_to_internet(client)
             if not result:
-                msg = 'The device connected to node "{}" seems to be offline:\n{}'.\
-                                 format(self._node.name, output)
+                msg = 'The device connected to node "{}" seems to be offline:\n{}'. \
+                    format(self._node.name, output)
                 sys.stderr.write(msg)
                 self._send_email_notification('"{}" node is broken'.format(self._node.name), msg)
                 return False
@@ -208,19 +211,22 @@ class RealAndroidDevice(BaseNodeVerifier):
             client.close()
 
 
-IOS_SIMULATOR_BOOT_TIMEOUT = 60 * 2 # seconds
-IOS_SIMULATOR_EXECUTABLE_NAME = 'Simulator'
-IOS_SIMULATOR_AGENT_NAME = 'launchd_sim'
-
 class IOSSimulator(BaseNodeVerifier):
     def _get_installed_simulators(self, ssh_client):
-        _, stdout, _ = ssh_client.exec_command('/usr/bin/instruments -s')
-        matches = re.findall(r'([\w\s\(\)\.]+)\[(\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12})\]', stdout.read())
-        result = {}
-        if matches:
-            for match in matches:
-                result[match[0].strip()] = match[1].strip()
-        return result
+        try:
+            _, stdout, _ = ssh_client.exec_command('/usr/bin/instruments -s', timeout=10)
+            matches = re.findall(r'([\w\s\(\)\.]+)\[(\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12})\]', stdout.read())
+            result = {}
+            if matches:
+                for match in matches:
+                    result[match[0].strip()] = match[1].strip()
+            return result
+        except Exception:
+            traceback.print_exc()
+        return ''
+
+    def get_timeout(self):
+        return IOS_SIM_VERIFICATION_JOB_TIMEOUT
 
     def _adjust_simulator_size(self, ssh_client, scale_factor):
         """
@@ -229,28 +235,24 @@ class IOSSimulator(BaseNodeVerifier):
         :return:
         """
         simulator_size_setter_script = \
-        """#!/bin/bash
-        /usr/bin/osascript -e "tell application \\"System Events\\"" \\
-                    -e "tell application \\"Simulator\\" to activate" \\
-                    -e "do shell script \\"/bin/sleep 3\\"" \\
-                    -e "tell application \\"System Events\\" to keystroke \\"{}\\" using {{command down}}" \\
-                    -e "tell application \\"System Events\\" to keystroke \\"q\\" using {{command down}}" \\
-                    -e "end tell"
-        """.format(scale_factor)
+            """#!/bin/bash
+            /usr/bin/osascript -e "tell application \\"System Events\\"" \\
+                        -e "tell application \\"Simulator\\" to activate" \\
+                        -e "do shell script \\"/bin/sleep 3\\"" \\
+                        -e "tell application \\"System Events\\" to keystroke \\"{}\\" using {{command down}}" \\
+                        -e "end tell"
+            """.format(scale_factor)
         _, path = tempfile.mkstemp(suffix=".sh")
+        with open(path, 'w') as f:
+            f.write(simulator_size_setter_script)
+        sftp = ssh_client.open_sftp()
         try:
-            with open(path, 'w') as f:
-                f.write(simulator_size_setter_script)
-            sftp = ssh_client.open_sftp()
-            try:
-                dst_path = '/tmp/simscale.sh'
-                sftp.put(path, dst_path)
-            finally:
-                sftp.close()
-            ssh_client.exec_command('/bin/chmod u+x ' + dst_path)
-            ssh_client.exec_command('/usr/bin/open -a Terminal ' + dst_path)
+            dst_path = '/tmp/simscale.sh'
+            sftp.put(path, dst_path)
         finally:
-            os.unlink(path)
+            sftp.close()
+        ssh_client.exec_command('/bin/chmod u+x ' + dst_path)
+        ssh_client.exec_command('/usr/bin/open -a Terminal ' + dst_path)
 
     def _is_verification_passed(self):
         result = super(IOSSimulator, self)._is_verification_passed()
@@ -264,18 +266,14 @@ class IOSSimulator(BaseNodeVerifier):
                            password=self._verification_kwargs['node_password'])
             simulator_name = self._verification_kwargs['ios_simulator_name']
 
-            client.exec_command('/usr/bin/killall -9 {}'.format(' '.join([IOS_SIMULATOR_EXECUTABLE_NAME,
-                                                                          IOS_SIMULATOR_AGENT_NAME])))
-            time.sleep(1)
-
             available_simulators = self._get_installed_simulators(client)
             dst_name = filter(lambda x: x.lower().find(simulator_name.lower()) >= 0, available_simulators.iterkeys())
             result = True
             if dst_name:
                 simulator_name = dst_name[0]
             else:
-                msg = 'There is no "{}" simulator available. The list of available simulators for the node "{}":\n{}\n'.\
-                                 format(simulator_name, self._node.name, pformat(available_simulators))
+                msg = 'There is no "{}" simulator available. The list of available simulators for the node "{}":\n{}\n'. \
+                    format(simulator_name, self._node.name, pformat(available_simulators))
                 sys.stderr.write(msg)
                 self._send_email_notification('Non-existing simulator name "{}" has been provided'.
                                               format(simulator_name), msg)
@@ -291,8 +289,7 @@ class IOSSimulator(BaseNodeVerifier):
             client.close()
 
 
-POWER_CYCLE_SCRIPT = lambda devnum: \
-"""
+POWER_CYCLE_SCRIPT = lambda devnum: """
 import time
 
 from brainstem import discover

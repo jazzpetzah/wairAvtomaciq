@@ -98,8 +98,6 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameGifButton = MobileBy.AccessibilityId("gifButton");
 
-    private static final By nameSoundCloudButton = MobileBy.AccessibilityId("soundcloud");
-
     public static final Function<String, String> xpathStrMissedCallButtonByContact = name -> String.format(
             "//UIATableCell[.//*[@name='%s CALLED']]/UIAButton[@name='ConversationMissedCallButton']",
             name.toUpperCase());
@@ -229,6 +227,11 @@ public class ConversationViewPage extends IOSPage {
                     String.format("%s[%s]/UIATextView[@name='%s']", xpathStrAllEntries, index, messageText);
 
     private static final By nameLikeButton = MobileBy.AccessibilityId("likeButton");
+
+    private static final By nameSketchOnImageButton = MobileBy.AccessibilityId("sketchOnImageButton");
+    private static final By nameFullScreenOnImageButton = MobileBy.AccessibilityId("openFullScreenButton");
+
+    private static final By nameRecentMessageToolbox = MobileBy.AccessibilityId("MessageToolbox");
 
     private static final int MAX_APPEARANCE_TIME = 20;
 
@@ -701,10 +704,6 @@ public class ConversationViewPage extends IOSPage {
                 DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), bottomLabelLocator, timeoutSeconds);
     }
 
-    public void tapFileTransferPlaceholder() throws Exception {
-        getElement(nameFileTransferBottomLabel).click();
-    }
-
     public boolean waitUntilFilePreviewIsVisible(int secondsTimeout, String expectedFileName) throws Exception {
         final By locator = By.xpath(xpathStrFilePreviewByFileName.apply(expectedFileName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, secondsTimeout);
@@ -756,12 +755,7 @@ public class ConversationViewPage extends IOSPage {
         final int tapPercentX = 10;
         final int tapPercentY = 50;
         if (isDoubleTap) {
-            final Point coords = el.getLocation();
-            final Dimension size = el.getSize();
-            final int x = coords.x + size.getWidth() * tapPercentX / 100;
-            final int y = coords.y + size.getHeight() * tapPercentY / 100;
-            // https://github.com/appium/appium/issues/3420
-            new TouchAction(getDriver()).press(x, y).perform().release().press(0, 0).perform();
+            doubleClickAt(el, tapPercentX, tapPercentY);
         } else {
             final int tapDuration = isLongTap ? DriverUtils.LONG_TAP_DURATION : DriverUtils.SINGLE_TAP_DURATION;
             DriverUtils.tapOnPercentOfElement(getDriver(), el, tapPercentX, tapPercentY, tapDuration);
@@ -800,7 +794,8 @@ public class ConversationViewPage extends IOSPage {
             case "play":
                 return namePlayAudioRecorderButton;
             default:
-                throw new IllegalArgumentException(String.format("Button '%s' is not known as a record control button", buttonName));
+                throw new IllegalArgumentException(String.format("Button '%s' is not known as a record control button",
+                        buttonName));
         }
     }
 
@@ -991,9 +986,14 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public void tapRecentMessageFrom(String sender) throws Exception {
+    public void tapRecentMessageFrom(boolean isLongTap, String sender) throws Exception {
         final By locator = By.xpath(xpathUserNameByText.apply(sender));
-        getElement(locator).click();
+        final WebElement dstElement = getElement(locator);
+        if (isLongTap) {
+            getDriver().tap(1, dstElement, DriverUtils.LONG_TAP_DURATION);
+        } else {
+            dstElement.click();
+        }
     }
 
     private By getContainerLocatorByName(String name) {
@@ -1021,20 +1021,12 @@ public class ConversationViewPage extends IOSPage {
         }
     }
 
-    public void tapContainer(String name, boolean isLongTap) throws Exception {
+    public void tapContainer(String name, boolean isLongTap, boolean isdoubleTap) throws Exception {
         final By locator = getContainerLocatorByName(name);
-        WebElement dstElement;
-        if (locator.equals(xpathMediaContainerCell)) {
-            final Optional<WebElement> mediaLinkCell = getElementIfDisplayed(xpathMediaContainerCell, 3);
-            if (mediaLinkCell.isPresent()) {
-                dstElement = mediaLinkCell.get();
-            } else {
-                dstElement = getElement(nameSoundCloudButton);
-            }
-        } else {
-            dstElement = getElement(locator);
-        }
-        if (isLongTap) {
+        final WebElement dstElement = getElement(locator);
+        if (isdoubleTap) {
+            doubleClickAt(dstElement);
+        } else if (isLongTap) {
             getDriver().tap(1, dstElement, DriverUtils.LONG_TAP_DURATION);
         } else {
             dstElement.click();
@@ -1067,5 +1059,31 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isLikeIconInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameLikeButton);
+    }
+
+    public void tapAtRecentMessage(int pWidth, int pHeight, String from) throws Exception {
+        final By locator = By.xpath(xpathUserNameByText.apply(from));
+        DriverUtils.tapOnPercentOfElement(getDriver(), getElement(locator), pWidth, pHeight);
+    }
+
+    public void tapImageButton(String buttonName) throws Exception {
+        By locator = getImageButtonByName(buttonName);
+        DriverUtils.tapInTheCenterOfTheElement(getDriver(), DriverUtils.getElementIfPresentInDOM(getDriver(), locator).
+                orElseThrow(() -> new IllegalStateException(buttonName + "button can't be found")));
+    }
+
+    private By getImageButtonByName(String buttonName) throws Exception {
+        switch (buttonName.toLowerCase()) {
+            case "sketch":
+                return nameSketchOnImageButton;
+            case "fullscreen":
+                return nameFullScreenOnImageButton;
+            default:
+                throw new Exception("Not recognized button name. Available 'sketch', 'fullscreen'");
+        }
+    }
+
+    public void tapRecentMessageToolbox() throws Exception {
+        getElement(nameRecentMessageToolbox).click();
     }
 }

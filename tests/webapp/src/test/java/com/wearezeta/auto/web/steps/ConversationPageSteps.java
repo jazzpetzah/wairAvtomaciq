@@ -793,7 +793,7 @@ public class ConversationPageSteps {
     @Then("^I see the latest message is only liked by me$")
     public void ThenISeeLatestMessageIsOnlyLikedByMe() throws Exception {
         assertTrue("The message is NOT only liked by you", context.getPagesCollection().getPage(ConversationPage.class)
-                .isLikeWithoutOtherLikesVisibleForLatestMessage());
+                .isUnlikeWithoutOtherLikesVisibleForLatestMessage());
     }
     
     @Then("^I see the latest message is only liked by others$")
@@ -970,6 +970,19 @@ public class ConversationPageSteps {
     @Then("^I see text message (.*)")
     public void ISeeTextMessage(String message) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).waitForPresentMessageContains(message);
+    }
+    
+    /**
+     * Verify latest text message is visible in conversation.
+     *
+     * @param message
+     * @throws Exception
+     * @step. ^I see text message (.*)
+     */
+    @Then("^I see latest text message (.*)")
+    public void ISeeLatestTextMessage(String message) throws Exception {
+        assertTrue(String.format("Last message is NOT visible with text '%s'", message), 
+                context.getPagesCollection().getPage(ConversationPage.class).isLatestMessageWithTextVisible(message));
     }
 
     /**

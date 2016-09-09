@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.locators;
 
+import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
 import java.util.function.Function;
 
 public final class WebAppLocators {
@@ -346,24 +347,27 @@ public final class WebAppLocators {
 
         public static final Function<String, String> cssMessagesById = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s']", text);
+        
+        public static final FunctionFor2Parameters<String, String, String> xpathMessageTextByMessageId = (messageId, text) -> String
+                .format("//*[@data-uie-name='item-message' and @data-uie-uid='%s']//*[contains(@class, 'text') and text()='%s']", messageId, text);
 
         public static final Function<String, String> cssUserThatLikeByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='message-liked-names']", text);
 
         public static final Function<String, String> cssLikeWithoutOtherLikesByMessageId = text -> String
-                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-body-like:not(.text-red)", text);
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-body-like-icon:not(.like-button-liked)", text);
         
         public static final Function<String, String> cssUnlikeWithoutOtherLikesByMessageId = text -> String
-                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-body-like.text-red", text);
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-body-like-icon.like-button-liked", text);
         
         public static final Function<String, String> cssFooterByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-footer", text);
         
         public static final Function<String, String> cssLikeWithOtherLikesByMessageId = text -> String
-                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-footer .icon-liked.text-graphite", text);
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-footer .like-button:not(.like-button-liked)", text);
         
         public static final Function<String, String> cssUnlikeWithOtherLikesByMessageId = text -> String
-                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-footer .icon-liked.text-red:not(.text-graphite)", text);
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-footer .like-button.like-button-liked", text);
         
         public static final Function<String, String> cssLikeTextElementByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-footer-label span", text);//TODO
