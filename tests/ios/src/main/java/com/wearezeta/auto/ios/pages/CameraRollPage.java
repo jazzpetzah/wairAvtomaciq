@@ -12,7 +12,7 @@ import java.util.concurrent.Future;
 public class CameraRollPage extends IOSPage {
     private static final By xpathCameraLibraryFirstFolder = By.xpath("(//Table)[last()]/Cell");
 
-    private static final By xpathLibraryFirstPicture = By.xpath("//Collection/Cell");
+    private static final By xpathLibraryFirstPicture = By.xpath("//CollectionView/Cell");
 
     private static final By xpathCameraRolCell = By.xpath("//Cell[@name='Camera Roll']");
 

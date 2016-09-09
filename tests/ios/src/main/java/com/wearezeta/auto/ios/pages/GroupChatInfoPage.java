@@ -38,7 +38,7 @@ public class GroupChatInfoPage extends IOSPage {
     private static final By nameLeaveConversationAlert = MobileBy.AccessibilityId("Leave conversation?");
 
     private static final Function<String, String> xpathStrUserNameLabelByText = text ->
-            String.format("//Collection[preceding-sibling::TextView[@name='ParticipantsView_GroupName']]" +
+            String.format("//CollectionView[preceding-sibling::TextView[@name='ParticipantsView_GroupName']]" +
                     "/Cell/StaticText[last() and @name='%s']", text);
 
     private static final Function<Integer, String> nameStrNumberPeopleByCount =
@@ -46,7 +46,7 @@ public class GroupChatInfoPage extends IOSPage {
 
     private static final Function<String, String> xpathPeopleViewCollectionCellByName = name ->
             String.format("//Button[@name='metaControllerCancelButton']/following-sibling::" +
-                    "Collection/Cell/StaticText[@name='%s']", name.toUpperCase());
+                    "CollectionView/Cell/StaticText[@name='%s']", name.toUpperCase());
 
     private static final By classNameParticipantAvatarCell = By.className("Cell");
     

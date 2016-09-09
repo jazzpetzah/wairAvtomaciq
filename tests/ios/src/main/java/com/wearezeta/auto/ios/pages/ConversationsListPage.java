@@ -22,7 +22,7 @@ public class ConversationsListPage extends IOSPage {
 
     private static final By nameOpenArchiveButton = MobileBy.AccessibilityId("bottomBarArchivedButton");
 
-    private static final String xpathStrContactListRoot = String.format("(%s//Collection)[1]", xpathStrMainWindow);
+    private static final String xpathStrContactListRoot = String.format("(%s//CollectionView)[1]", xpathStrMainWindow);
 
     protected static final String xpathStrContactListItems = xpathStrContactListRoot + "/Cell";
     private static final Function<String, String> xpathStrContactListItemByExpr = xpathExpr ->
