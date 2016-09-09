@@ -171,7 +171,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | File        | Size  |
       | user1Email | user1Password | user1Name | user2Name | C226430.mp4 | 15MB  |
 
-  @C226431 @staging @WEBAPP-3040
+  @C226431 @staging
   Scenario Outline: Verify liking someone's Soundcloud, youtube, vimeo and spotify
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -256,8 +256,8 @@ Feature: Like
     And I do not see likes below the latest message
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Youtubelink                                 | Soundcloudlink                                                      | Vimeolink                 | Spotifylink                                           |
-      | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=ncHd3sxpEbo | https://soundcloud.com/nour-moukhtar/ludwig-van-beethoven-fur-elise | https://vimeo.com/7265982 | https://play.spotify.com/album/7buEcyw6fJF3WPgr06BomH |
+      | Login      | Password      | Name      | Contact   | Youtubelink                                 | Soundcloudlink                                                      | Vimeolink                  | Spotifylink                                           |
+      | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=ncHd3sxpEbo | https://soundcloud.com/nour-moukhtar/ludwig-van-beethoven-fur-elise | https://vimeo.com/51350323 | https://play.spotify.com/album/7buEcyw6fJF3WPgr06BomH |
 
   @C226433 @like @regression
   Scenario Outline: Verify liking someone's shared file
