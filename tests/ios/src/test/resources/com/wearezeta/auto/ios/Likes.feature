@@ -236,12 +236,12 @@ Feature: Likes
     Given User <Contact> sends 1 encrypted message to user Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
-    Given I tap default message in conversation view
-    Given I remember the state of Like icon in the conversation
+    When I tap default message in conversation view
+    And I remember the state of Like icon in the conversation
     When I double tap default message in conversation view
     Then I see the state of Like icon is changed in the conversation
     And I double tap default message in conversation view
-    Then I see the state of Like icon is changed in the conversation
+    Then I see the state of Like icon is not changed in the conversation
 
     Examples:
       | Name      | Contact   |
