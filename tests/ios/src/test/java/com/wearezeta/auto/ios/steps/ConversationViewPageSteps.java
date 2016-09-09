@@ -1496,6 +1496,17 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Tap the toolbox of the recent message to open likers list
+     *
+     * @throws Exception
+     * @step. ^I tap toolbox of the recent message$
+     */
+    @When("^I tap toolbox of the recent message$")
+    public void ITapMessageToolbox() throws Exception {
+        getConversationViewPage().tapRecentMessageToolbox();
+    }
+
+    /**
      * Tap the recent media container to show/hide like icon
      *
      * @param pWidth   destination cell X tap point (in percent 0-100)

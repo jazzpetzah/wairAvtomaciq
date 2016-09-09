@@ -442,9 +442,9 @@ public class CommonIOSSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I click (hide|space|done) keyboard button$
+     * @step. ^I click (Hide|Space|Done) keyboard button$
      */
-    @When("^I click (hide|space|done) keyboard button$")
+    @When("^I click (Hide|Space|Done) keyboard button$")
     public void IClickHideKeyboardBtn(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
             case "hide":
@@ -1355,9 +1355,9 @@ public class CommonIOSSteps {
      *
      * @param itemName the badge item name
      * @throws Exception
-     * @step. ^I tap on (Select All|Copy|Delete|Paste|Edit|Like|Unlike) badge item$
+     * @step. ^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike) badge item$
      */
-    @When("^I tap on (Select All|Copy|Delete|Paste|Edit|Like|Unlike) badge item$")
+    @When("^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike) badge item$")
     public void ITapBadge(String itemName) throws Exception {
         pagesCollection.getCommonPage().tapBadgeItem(itemName);
     }

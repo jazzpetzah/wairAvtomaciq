@@ -99,7 +99,7 @@ Feature: Localization
       | user1Email | user1Password | user1Name | de       | Wenn du kein Wire-Benutzerkonto mit dieser E-Mail-Adresse erstellt hast |
       | user1Email | user1Password | user1Name | en       | If you didn't create a Wire account using this email address            |
     
-  @C234619 @staging
+  @C234619 @regression
   Scenario Outline: Verify password reset email is <Language>
     Given I see Registration page
     When I switch language to <Language>

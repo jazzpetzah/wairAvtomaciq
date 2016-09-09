@@ -60,7 +60,7 @@ Feature: Likes
       | Name      | Contact1  | Contact2  | Group            |
       | user1Name | user2Name | user3Name | RemovedFromGroup |
 
-  @C225993 @staging @fastLogin
+  @C225993 @regression @fastLogin
   Scenario Outline: Verify liking a message tapping on like icon, when someone liked this message before
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -100,7 +100,7 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C225998 @C226001 @staging @fastLogin
+  @C225998 @C226001 @regression @fastLogin
   Scenario Outline: Verify editing already liked message and like after edit
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -126,7 +126,7 @@ Feature: Likes
       | Name      | Contact   | Text  |
       | user1Name | user2Name | aloha |
 
-  @C226004 @staging @fastLogin
+  @C226004 @regression @fastLogin
   Scenario Outline: Verify receiving a like in a conversation which was removed
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -149,7 +149,7 @@ Feature: Likes
       | Name      | Contact1  | Contact2  | Picture     | Group        |
       | user1Name | user2Name | user3Name | testing.jpg | DeletedGroup |
 
-  @C226005 @staging @fastLogin
+  @C226005 @regression @fastLogin
   Scenario Outline: Verify receiving like from a blocked person
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -162,13 +162,14 @@ Feature: Likes
     Given I tap on contact name <Group>
     When I do not see Like icon in the conversation
     And User <Contact1> likes the recent message from group conversation <Group>
-    Then I see Like icon in the conversation
+    And I tap toolbox of the recent message
+    Then I see <Contact1> in likers list
 
     Examples:
       | Name      | Contact1  | Contact2  | Group            | FileName | FileMIME  | Contact1Device | Contact1DeviceLabel | MyDevice |
       | user1Name | user2Name | user3Name | BlockedContGroup | test.m4a | audio/mp4 | C1Device       | C1DeviceLabel       | MyDev    |
 
-  @C225987 @staging @fastLogin
+  @C225987 @regression @fastLogin
   Scenario Outline: Verify liking a shared file
     Given There are 3 users where <Name> is me
     Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
@@ -181,13 +182,14 @@ Feature: Likes
     When I do not see Like icon in the conversation
     And I long tap on file transfer placeholder in conversation view
     And I tap on Like badge item
-    Then I see Like icon in the conversation
+    And I tap toolbox of the recent message
+    Then I see Myself in likers list
 
     Examples:
       | Name      | Contact1  | Contact2  | Group         | FileName | FileExt | FileSize | FileMIME                 | Contact1Device |
       | user1Name | user2Name | user3Name | FileLikeGroup | testing  | tmp     | 240 KB   | application/octet-stream | C1Device       |
 
-  @C225984 @staging @fastLogin
+  @C225984 @regression @fastLogin
   Scenario Outline: Verify liking a video message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -199,13 +201,14 @@ Feature: Likes
     When I do not see Like icon in the conversation
     And I long tap on video message in conversation view
     And I tap on Like badge item
-    Then I see Like icon in the conversation
+    And I tap toolbox of the recent message
+    Then I see Myself in likers list
 
     Examples:
       | Name      | Contact1  | Contact2  | Group          | FileName    | MIMEType  | Contact1Device |
       | user1Name | user2Name | user3Name | VideoLikeGroup | testing.mp4 | video/mp4 | C1Device       |
 
-  @C225985 @staging @fastLogin
+  @C225985 @regression @fastLogin
   Scenario Outline: Verify liking Soundcloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

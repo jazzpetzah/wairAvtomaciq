@@ -76,7 +76,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilAPictureAppears() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idConversationImages);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idConversationImageContainer);
     }
 
     public boolean waitUntilGCNIsVisible() throws Exception {
@@ -113,8 +113,9 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return getConversationViewPage().getPreviewPictureScreenshot();
     }
 
+    // TODO: It's time to do a big refactoring of tablet!
     public void tapRecentImage() throws Exception {
-        getConversationViewPage().tapRecentImage();
+        getConversationViewPage().tapContainer("tap", "image");
     }
 
     public boolean waitForSystemConnectionMessageContains(String expectedMessage) throws Exception {
@@ -133,15 +134,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilPicturesNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idConversationImages);
-    }
-
-    public boolean waitUntilUnsentIndicatorIsVisible(String msg) throws Exception {
-        return getConversationViewPage().waitForUnsentIndicatorVisible(msg);
-    }
-
-    public boolean waitUntilUnsentIndicatorIsVisibleForAPicture() throws Exception {
-        return getConversationViewPage().waitForAPictureWithUnsentIndicator();
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idConversationImageContainer);
     }
 
     public void tapPlayPauseButton() throws Exception {
@@ -270,5 +263,23 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
     public void tapSketchOnPicturePreviewOverlay() throws Exception {
         getElement(idSketchButtonOnPicturePreviewOverlay).click();
+    }
+
+    public boolean waitUntilMessageMetaItemVisible(String itemType) throws Exception {
+        return getConversationViewPage().waitUntilMessageMetaItemVisible(itemType);
+    }
+
+    public boolean waitUntilMessageMetaItemInvisible(String itemType) throws Exception {
+        return getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType);
+    }
+
+    public boolean waitUntilMessageMetaItemVisible(String itemType, String expectedItemText)
+            throws Exception {
+        return getConversationViewPage().waitUntilMessageMetaItemVisible(itemType, expectedItemText);
+    }
+
+    public boolean waitUntilMessageMetaItemInvisible(String itemType, String expectedItemText)
+            throws Exception {
+        return getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType, expectedItemText);
     }
 }
