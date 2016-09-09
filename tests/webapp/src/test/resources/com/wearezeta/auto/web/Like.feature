@@ -505,7 +505,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Message1 | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | like me  | edited        |
 
-    @C226439 @staging
+    @C226439 @regression
     Scenario Outline: Verify you can like someone's message from message context menu
       Given There are 2 users where <Name> is me
       Given Myself is connected to <Contact>
