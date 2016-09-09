@@ -289,25 +289,24 @@ class IOSSimulator(BaseNodeVerifier):
             client.close()
 
 
-POWER_CYCLE_SCRIPT = lambda devnum: \
-    """
-    import time
+POWER_CYCLE_SCRIPT = lambda devnum: """
+import time
 
-    from brainstem import discover
-    from brainstem.link import Spec
-    from brainstem.stem import USBHub2x4
+from brainstem import discover
+from brainstem.link import Spec
+from brainstem.stem import USBHub2x4
 
 
-    stem = USBHub2x4()
-    spec = discover.find_first_module(Spec.USB)
-    if spec is None:
-        raise RuntimeError("No USBHub is connected!")
-    stem.connect_from_spec(spec)
-    stem.usb.setPowerDisable({0})
-    time.sleep(1)
-    stem.usb.setPowerEnable({0})
-    time.sleep(1)
-    """.format(devnum)
+stem = USBHub2x4()
+spec = discover.find_first_module(Spec.USB)
+if spec is None:
+     raise RuntimeError("No USBHub is connected!")
+stem.connect_from_spec(spec)
+stem.usb.setPowerDisable({0})
+time.sleep(1)
+stem.usb.setPowerEnable({0})
+time.sleep(1)
+""".format(devnum)
 
 
 class IOSRealDevice(BaseNodeVerifier):
