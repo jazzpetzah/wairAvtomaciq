@@ -226,3 +226,21 @@ Feature: Likes
     Examples:
       | Name      | Contact   | SCLink                                                           |
       | user1Name | user2Name | https://soundcloud.com/trevorjasper14/lateef-two-birds-one-stone |
+
+  @C226006 @staging @fastLogin
+  Scenario Outline: Verify archived conversation stays in archive after receiving like for the message
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <Group> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given User <Contact1> sends encrypted image <Picture> to group conversation <Group>
+    When I swipe right on a <Group>
+    And I tap Archive action button
+    Then I do not see conversation <Group> in conversations list
+    When User <Contact1> likes the recent message from group conversation <Group>
+    Then I do not see conversation <Group> in conversations list
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Picture     | Group        |
+      | user1Name | user2Name | user3Name | testing.jpg | DeletedGroup |
