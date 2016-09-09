@@ -755,12 +755,7 @@ public class ConversationViewPage extends IOSPage {
         final int tapPercentX = 10;
         final int tapPercentY = 50;
         if (isDoubleTap) {
-            final Point coords = el.getLocation();
-            final Dimension size = el.getSize();
-            final int x = coords.x + size.getWidth() * tapPercentX / 100;
-            final int y = coords.y + size.getHeight() * tapPercentY / 100;
-            // https://github.com/appium/appium/issues/3420
-            new TouchAction(getDriver()).press(x, y).perform().release().press(0, 0).perform();
+            doubleClickAt(el, tapPercentX, tapPercentY);
         } else {
             final int tapDuration = isLongTap ? DriverUtils.LONG_TAP_DURATION : DriverUtils.SINGLE_TAP_DURATION;
             DriverUtils.tapOnPercentOfElement(getDriver(), el, tapPercentX, tapPercentY, tapDuration);
@@ -1030,7 +1025,7 @@ public class ConversationViewPage extends IOSPage {
         final By locator = getContainerLocatorByName(name);
         final WebElement dstElement = getElement(locator);
         if (isdoubleTap) {
-            new TouchAction(getDriver()).tap(dstElement).waitAction(30).tap(dstElement).perform();
+            doubleClickAt(dstElement);
         } else if (isLongTap) {
             getDriver().tap(1, dstElement, DriverUtils.LONG_TAP_DURATION);
         } else {
