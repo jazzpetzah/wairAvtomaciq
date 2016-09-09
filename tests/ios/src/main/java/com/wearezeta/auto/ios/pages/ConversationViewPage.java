@@ -51,7 +51,7 @@ public class ConversationViewPage extends IOSPage {
     /**
      * !!! The actual message order in DOM is reversed relatively to the messages order in the conversation view
      */
-    private static final String xpathStrAllEntries = xpathStrMainWindow + "/TableView/Cell";
+    private static final String xpathStrAllEntries = xpathStrMainWindow + "//Table/Cell";
     private static final By xpathAllEntries = By.xpath(xpathStrAllEntries);
     private static final By xpathFirstEntry = By.xpath(xpathStrAllEntries + "[1]");
 
@@ -90,7 +90,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By namePauseButton = MobileBy.AccessibilityId("mediaBarPauseButton");
 
-    private static final By xpathConversationPage = By.xpath(xpathStrMainWindow + "/TableView[1]");
+    private static final By xpathConversationPage = By.xpath("(" + xpathStrMainWindow + "//Table)[1]");
 
     private static final By nameMediaBarCloseButton = MobileBy.AccessibilityId("mediabarCloseButton");
 

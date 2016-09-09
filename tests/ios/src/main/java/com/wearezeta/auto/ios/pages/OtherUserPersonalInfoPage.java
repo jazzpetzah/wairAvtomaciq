@@ -30,8 +30,8 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     private static final By nameAlsoLeaveCheckerButton = MobileBy.AccessibilityId("ALSO LEAVE THE CONVERSATION");
 
-    private static final Function<String, String> xpathStrOtherPersonalInfoPageNameFieldByName = name -> String.format(
-        "%s/StaticText[@name='%s']", xpathStrMainWindow, name);
+    private static final Function<String, String> xpathStrOtherPersonalInfoPageNameFieldByName = name ->
+            String.format("StaticText[@name='%s']", name);
 
     private static final Function<String, String> xpathStrOtherPersonalInfoPageEmailFieldByEmail = name -> String.format(
         "//Button[@name='OtherUserProfileCloseButton']/following-sibling::TextView[@name='%s']", name.toUpperCase());
@@ -45,7 +45,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final By xpathActionMenu = By
         .xpath("//StaticText[following-sibling::Button[@name='CANCEL'] and @visible='true']");
 
-    private static final String xpathStrDevicesList = xpathStrMainWindow + "/TableView[1]/Cell";
+    private static final String xpathStrDevicesList = "(" + xpathStrMainWindow + "//Table)[1]/Cell";
     private static final By xpathDevicesList = By.xpath(xpathStrDevicesList);
     private static final Function<Integer, String> xpathStrDeviceByIndex = idx -> String.format("%s[%s]", xpathStrDevicesList,
         idx);
@@ -53,8 +53,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final Function<String, String> xpathStrUserProfileNameByValue = value -> String.format(
         "//*[@name='%s' and @visible='true']", value);
 
-    // FIXME: replace this with MobileBy.AccessibilityId("VerifiedShield") when available
-    private static final By xpathVerifiedShield = By.xpath(xpathStrMainWindow + "/Image[@width='16' and @height='16']");
+    private static final By xpathVerifiedShield = MobileBy.AccessibilityId("VerifiedShield");
 
     private static final Function<String, String> xpathStrDeviceId = id -> String.format(
         "//StaticText[contains(@name, '%s')]", id);

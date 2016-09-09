@@ -22,8 +22,7 @@ public class ConversationsListPage extends IOSPage {
 
     private static final By nameOpenArchiveButton = MobileBy.AccessibilityId("bottomBarArchivedButton");
 
-    private static final String xpathStrContactListRoot = xpathStrMainWindow + "/CollectionView[1]";
-//    private static final By xpathContactListRoot = By.xpath(xpathStrContactListRoot);
+    private static final String xpathStrContactListRoot = String.format("(%s//Collection)[1]", xpathStrMainWindow);
 
     protected static final String xpathStrContactListItems = xpathStrContactListRoot + "/Cell";
     private static final Function<String, String> xpathStrContactListItemByExpr = xpathExpr ->
@@ -56,7 +55,7 @@ public class ConversationsListPage extends IOSPage {
             String.format("//Cell[@name='%s']/Button[@name='mediaCellButton']", name);
 
     private static final Function<String, String> xpathStrSelectedConversationEntryByName = name ->
-            String.format("%s/CollectionView[1]/Cell[@name='%s']", xpathStrMainWindow, name);
+            String.format("%s/Cell[@name='%s']", xpathStrContactListRoot, name);
 
     private static final Function<String, String> xpathStrActionMenuByConversationName = name ->
             String.format("//StaticText[@name='%s' and @visible='true']", name.toUpperCase());

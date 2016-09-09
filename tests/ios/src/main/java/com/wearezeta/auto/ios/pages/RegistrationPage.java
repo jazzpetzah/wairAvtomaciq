@@ -17,9 +17,9 @@ import java.util.function.Function;
 
 public class RegistrationPage extends IOSPage {
 
-    private static final By xpathYourName = By.xpath(xpathStrMainWindow + "/TextField[@value='YOUR FULL NAME']");
+    private static final By xpathYourName = By.xpath("//TextField[@value='YOUR FULL NAME']");
 
-    private static final By xpathNameField = By.xpath(xpathStrMainWindow + "/TextField[1]");
+    private static final By xpathNameField = By.xpath("//TextField");
 
     private static final By nameYourEmail = MobileBy.AccessibilityId("EmailField");
 
@@ -36,7 +36,7 @@ public class RegistrationPage extends IOSPage {
 
     private static final By namePhoneNumberField = MobileBy.AccessibilityId("PhoneNumberField");
 
-    public static final By xpathVerificationCodeInput = By.xpath(xpathStrMainWindow + "//TextField");
+    public static final By xpathVerificationCodeInput = By.xpath("//TextField");
 
     private static final By nameCountryPickerButton = MobileBy.AccessibilityId("CountryPickerButton");
 

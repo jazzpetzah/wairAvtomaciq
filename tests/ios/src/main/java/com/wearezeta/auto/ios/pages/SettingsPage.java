@@ -13,8 +13,8 @@ import java.util.function.Function;
 
 public class SettingsPage extends IOSPage {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private static final String xpathStrMenuContainer = "//TableView";
-    private static final By xpathMenuContainer = By.xpath(xpathStrMenuContainer);
+    private static final String xpathStrMenuContainer = "//Table";
+    // private static final By xpathMenuContainer = By.xpath(xpathStrMenuContainer);
 
     public static final By xpathSettingsPage = By.xpath("//NavigationBar[@name='Settings']");
 
@@ -40,7 +40,7 @@ public class SettingsPage extends IOSPage {
             (deviceName, verificationLabel) -> String.format(
                     "//Cell[@name='%s']/StaticText[@name='%s']", deviceName, verificationLabel);
 
-    private static final String xpathStrCurrentDevice = xpathStrMainWindow + "/TableView[1]/Cell[1]";
+    private static final String xpathStrCurrentDevice = "(" + xpathStrMainWindow + "//Table)[1]/Cell[1]";
     private static final By xpathCurrentDevices = By.xpath(xpathStrCurrentDevice);
 
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {

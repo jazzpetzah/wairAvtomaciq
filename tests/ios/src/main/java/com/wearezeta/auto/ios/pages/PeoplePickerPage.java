@@ -32,7 +32,7 @@ public class PeoplePickerPage extends IOSPage {
     private static final By nameUnblockButton = MobileBy.AccessibilityId("UNBLOCK");
 
     private static final By xpathSelectedTopPeople =
-            By.xpath("//Cell/CollectionView/Cell[@value='1']");
+            By.xpath("//Cell/Collection/Cell[@value='1']");
 
     public static final By xpathInviteCopyButton = By.xpath("//Cell[@name='Copy']");
 
@@ -56,18 +56,17 @@ public class PeoplePickerPage extends IOSPage {
             name -> String.format("//*[@name='%s' and @visible='true']", name);
 
     private static final Function<Integer, String> xpathStrPeoplePickerTopConnectionsAvatarByIdx = idx ->
-            String.format("%s/CollectionView/Cell/CollectionView/Cell[%s]",
-                    xpathStrMainWindow, idx);
+            String.format("%s//Collection/Cell/Collection/Cell[%s]", xpathStrMainWindow, idx);
 
     private static final Function<String, String> xpathStrPeoplePickerSelectedCellByName = name ->
-            String.format("%s/TableView[1]/Cell[@name='%s']", xpathStrMainWindow, name);
+            String.format("(%s//Table)[1]/Cell[@name='%s']", xpathStrMainWindow, name);
 
     private static final Function<Integer, String> xpathStrPeoplePickerTopConnectionsItemByIdx = idx ->
-            String.format("%s/CollectionView/Cell/CollectionView/Cell[%d]/StaticText[last()]",
+            String.format("%s//Collection/Cell/Collection/Cell[%d]/StaticText[last()]",
                     xpathStrMainWindow, idx);
 
     private static final Function<String, String> xpathStrFirstSearchResultEntryByName = name ->
-            String.format("%s/CollectionView/Cell[1]/StaticText[@name='%s']", xpathStrMainWindow, name);
+            String.format("%s//Collection/Cell[1]/StaticText[@name='%s']", xpathStrMainWindow, name);
 
     private static final By nameNoResults = MobileBy.AccessibilityId("No results.");
 
