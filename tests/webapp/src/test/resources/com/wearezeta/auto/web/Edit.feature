@@ -158,16 +158,27 @@ Feature: Edit
     When I open conversation with <Contact1>
     And Contact <Contact1> sends message <OriginalMessage> via device Device1 to user <Name>
     Then I see text message <OriginalMessage>
-    And I see 2 messages in conversation
-    When User <Contact1> edits the recent message to "<EditedMessage>" from user <Name> via device Device1
+    And Contact <Contact1> sends message <AnotherMessage> via device Device1 to user <Name>
+    Then I see text message <AnotherMessage>
+    And I see 3 messages in conversation
+    When User <Contact1> edits the second last message to "<EditedMessage>" from user <Name> via device Device1
     Then I do not see text message <OriginalMessage>
+    And I see text message <AnotherMessage>
     And I see text message <EditedMessage>
-    And I see 2 messages in conversation
+    And I see 3 messages in conversation
+    And I see latest text message <AnotherMessage>
+    And I do not see unread dot in conversation <Contact1>
+    When I refresh page
+    Then I do not see text message <OriginalMessage>
+    And I see text message <AnotherMessage>
+    And I see text message <EditedMessage>
+    And I see 3 messages in conversation
+    And I see latest text message <AnotherMessage>
     And I do not see unread dot in conversation <Contact1>
 
     Examples:
-      | Login      | Password      | Name      | Contact1   | OriginalMessage | EditedMessage |
-      | user1Email | user1Password | user1Name | user2Name  | edit me         | edited        |
+      | Login      | Password      | Name      | Contact1   | AnotherMessage | OriginalMessage | EditedMessage |
+      | user1Email | user1Password | user1Name | user2Name  | something      | edit me         | edited        |
 
   @C225973 @regression
   Scenario Outline: Verify I see changed message if message was edited from another user (group)
