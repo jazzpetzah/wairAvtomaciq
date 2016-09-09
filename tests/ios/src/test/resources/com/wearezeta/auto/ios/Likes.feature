@@ -167,7 +167,8 @@ Feature: Likes
     Examples:
       | Name      | Contact1  | Contact2  | Group            | FileName | FileMIME  | Contact1Device | Contact1DeviceLabel | MyDevice |
       | user1Name | user2Name | user3Name | BlockedContGroup | test.m4a | audio/mp4 | C1Device       | C1DeviceLabel       | MyDev    |
-  @C225992 @C225996 @staging @fastLogin
+
+  @C225992 @C225996 @staging @fastLogin @torun
   Scenario Outline: Verify liking/unliking a message by double tapping
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
