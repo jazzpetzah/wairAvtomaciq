@@ -10,11 +10,11 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 
 public class CameraRollPage extends IOSPage {
-    private static final By xpathCameraLibraryFirstFolder = By.xpath("(//UIATableView)[last()]/UIATableCell");
+    private static final By xpathCameraLibraryFirstFolder = By.xpath("(//TableView)[last()]/Cell");
 
-    private static final By xpathLibraryFirstPicture = By.xpath("//UIACollectionView/UIACollectionCell");
+    private static final By xpathLibraryFirstPicture = By.xpath("//CollectionView/Cell");
 
-    private static final By xpathCameraRolCell = By.xpath("//UIATableCell[@name='Camera Roll']");
+    private static final By xpathCameraRolCell = By.xpath("//Cell[@name='Camera Roll']");
 
     private static final By nameCancelButton = MobileBy.AccessibilityId("Cancel");
 

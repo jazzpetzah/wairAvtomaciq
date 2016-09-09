@@ -36,7 +36,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameConversationInput = MobileBy.AccessibilityId(nameStrConversationInputField);
 
     private static final Function<String, String> xpathStrConversationInputByValue = value ->
-            String.format("//UIATextView[@name='%s' and @value='%s']", nameStrConversationInputField, value);
+            String.format("//TextView[@name='%s' and @value='%s']", nameStrConversationInputField, value);
 
     private static final By nameConversationInputAvatar = MobileBy.AccessibilityId("authorImage");
 
@@ -51,11 +51,11 @@ public class ConversationViewPage extends IOSPage {
     /**
      * !!! The actual message order in DOM is reversed relatively to the messages order in the conversation view
      */
-    private static final String xpathStrAllEntries = xpathStrMainWindow + "/UIATableView/UIATableCell";
+    private static final String xpathStrAllEntries = xpathStrMainWindow + "/TableView/Cell";
     private static final By xpathAllEntries = By.xpath(xpathStrAllEntries);
     private static final By xpathFirstEntry = By.xpath(xpathStrAllEntries + "[1]");
 
-    private static final String xpathStrAllTextMessages = xpathStrAllEntries + "/UIATextView[boolean(string(@value))]";
+    private static final String xpathStrAllTextMessages = xpathStrAllEntries + "/TextView[boolean(string(@value))]";
     private static final By xpathAllTextMessages = By.xpath(xpathStrAllTextMessages);
 
     private static final Function<String, String> xpathStrLastMessageByTextPart = text ->
@@ -71,26 +71,26 @@ public class ConversationViewPage extends IOSPage {
             String.format("%s[@value='%s']", xpathStrAllTextMessages, text);
 
     private static final Function<String, String> xpathStrSystemMessageByText = text ->
-            String.format("//UIATableCell[@name='%s']", text.toUpperCase());
+            String.format("//Cell[@name='%s']", text.toUpperCase());
 
     private static final String xpathStrImageCells = xpathStrAllEntries + "[@name='ImageCell']";
     private static final By xpathImageCell = By.xpath(xpathStrImageCells);
     private static final By xpathLastImageCell = By.xpath(String.format("(%s)[1]", xpathStrImageCells));
 
     private static final By xpathMediaContainerCell =
-            By.xpath(xpathStrAllTextMessages + "[contains(@value, '://')]/following-sibling::UIAButton");
+            By.xpath(xpathStrAllTextMessages + "[contains(@value, '://')]/following-sibling::Button");
 
     private static final By xpathGiphyImage = By
-            .xpath(xpathStrAllTextMessages + "[@name='via giphy.com']/following::UIATableCell[@name='ImageCell']");
+            .xpath(xpathStrAllTextMessages + "[@name='via giphy.com']/following::Cell[@name='ImageCell']");
 
     private static final By xpathLastMessageResendButton =
-            By.xpath(xpathStrAllTextMessages + "[1]/parent::*/UIAElement");
+            By.xpath(xpathStrAllTextMessages + "[1]/parent::*/Element");
 
     private static final By namePlayButton = MobileBy.AccessibilityId("mediaBarPlayButton");
 
     private static final By namePauseButton = MobileBy.AccessibilityId("mediaBarPauseButton");
 
-    private static final By xpathConversationPage = By.xpath(xpathStrMainWindow + "/UIATableView[1]");
+    private static final By xpathConversationPage = By.xpath(xpathStrMainWindow + "/TableView[1]");
 
     private static final By nameMediaBarCloseButton = MobileBy.AccessibilityId("mediabarCloseButton");
 
@@ -99,14 +99,14 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameGifButton = MobileBy.AccessibilityId("gifButton");
 
     public static final Function<String, String> xpathStrMissedCallButtonByContact = name -> String.format(
-            "//UIATableCell[.//*[@name='%s CALLED']]/UIAButton[@name='ConversationMissedCallButton']",
+            "//Cell[.//*[@name='%s CALLED']]/Button[@name='ConversationMissedCallButton']",
             name.toUpperCase());
 
     public static final By xpathStrMissedCallButtonByYourself =
-            By.xpath("//UIATableCell[.//*[@name='YOU CALLED']]/UIAButton[@name='ConversationMissedCallButton']");
+            By.xpath("//Cell[.//*[@name='YOU CALLED']]/Button[@name='ConversationMissedCallButton']");
 
     public static final Function<String, String> xpathStrConnectingToUserLabelByName = name -> String.format(
-            "//UIAStaticText[contains(@name, 'CONNECTING TO %s.')]", name.toUpperCase());
+            "//StaticText[contains(@name, 'CONNECTING TO %s.')]", name.toUpperCase());
 
     private static final By nameShieldIconNextToInput = MobileBy.AccessibilityId("verifiedConversationIndicator");
 
@@ -124,42 +124,42 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameAudioMessageButton = MobileBy.AccessibilityId("audioButton");
     private static final By nameShareLocationButton = MobileBy.AccessibilityId("locationButton");
 
-    private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[./UIAButton[@name='Back']]";
+    private static final String xpathStrConversationViewTopBar = "//NavigationBar[./Button[@name='Back']]";
     private static final By xpathConversationViewTopBar = By.xpath(xpathStrConversationViewTopBar);
     private static Function<String, String> xpathStrToolbarByConversationName = name ->
-            String.format("%s/UIAButton[starts-with(@name, '%s')]", xpathStrConversationViewTopBar, name.toUpperCase());
+            String.format("%s/Button[starts-with(@name, '%s')]", xpathStrConversationViewTopBar, name.toUpperCase());
     private static Function<String, String> xpathStrToolbarByExpr = expr ->
-            String.format("%s/UIAButton[%s]", xpathStrConversationViewTopBar, expr);
+            String.format("%s/Button[%s]", xpathStrConversationViewTopBar, expr);
 
     private static final By nameEllipsisButton = MobileBy.AccessibilityId("showOtherRowButton");
     private static final By xpathAudioCallButton = MobileBy.AccessibilityId("audioCallBarButton");
     private static final By xpathVideoCallButton = MobileBy.AccessibilityId("videoCallBarButton");
     private static final By xpathConversationDetailsButton = By.xpath(xpathStrConversationViewTopBar +
-            "/UIAButton[@name='Back']/following-sibling::" +
-            "UIAButton[not(@name='ConversationBackButton') and boolean(string(@label))]");
+            "/Button[@name='Back']/following-sibling::" +
+            "Button[not(@name='ConversationBackButton') and boolean(string(@label))]");
 
     private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("Too many people to call");
 
     private static final Function<String, String> xpathStrUserNameInUpperToolbar = text ->
-            String.format("%s/UIAButton[contains(@name, '%s')]", xpathStrConversationViewTopBar, text.toUpperCase());
+            String.format("%s/Button[contains(@name, '%s')]", xpathStrConversationViewTopBar, text.toUpperCase());
 
     private static final String nameStrFileTransferTopLabel = "FileTransferTopLabel";
     private static final By nameFileTransferTopLabel = MobileBy.AccessibilityId(nameStrFileTransferTopLabel);
     private static final Function<String, String> xpathTransferTopLabelByFileName = name ->
-            String.format("//UIAStaticText[@name='%s' and @value='%s']", nameStrFileTransferTopLabel, name.toUpperCase());
+            String.format("//StaticText[@name='%s' and @value='%s']", nameStrFileTransferTopLabel, name.toUpperCase());
 
     private static final String nameStrFileTransferBottomLabel = "FileTransferBottomLabel";
     private static final By nameFileTransferBottomLabel = MobileBy.AccessibilityId(nameStrFileTransferBottomLabel);
     private static final Function<String, String> xpathTransferBottomLabelByExpr = expr ->
-            String.format("//UIAStaticText[@name='%s' and %s]", nameStrFileTransferBottomLabel, expr);
+            String.format("//StaticText[@name='%s' and %s]", nameStrFileTransferBottomLabel, expr);
     private static final By nameFileTransferActionButton = MobileBy.AccessibilityId("FileTransferActionButton");
 
     private static final Function<String, String> xpathStrFilePreviewByFileName = fileName ->
-            String.format("//UIANavigationBar[@name='%s']", fileName);
+            String.format("//NavigationBar[@name='%s']", fileName);
 
     private static final By nameGenericFileShareMenu = MobileBy.AccessibilityId("ActivityListView");
 
-    private static final By xpathFileUploadingLabel = By.xpath("//UIAStaticText[contains(@value,'UPLOADING…')]");
+    private static final By xpathFileUploadingLabel = By.xpath("//StaticText[contains(@value,'UPLOADING…')]");
 
     private static final By nameShareButton = MobileBy.AccessibilityId("Share");
 
@@ -168,7 +168,7 @@ public class ConversationViewPage extends IOSPage {
 //    private static final By nameVideoMessageSizeLabel = MobileBy.AccessibilityId("VideoSizeLabel");
 
     private static final Function<String, String> xpathUserNameByText = text ->
-            String.format("//UIATableCell[@name='%s']", text.toUpperCase());
+            String.format("//Cell[@name='%s']", text.toUpperCase());
 
     private static final By nameAudioRecorderCancelButton = MobileBy.AccessibilityId("audioRecorderCancel");
 
@@ -179,7 +179,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By namePlayAudioRecorderButton = MobileBy.AccessibilityId(strNamePlayAudioRecorderButton);
 
     private static final Function<String, String> recordControlButtonWithState = state ->
-            String.format("//UIAButton[@name='%s' and @value='%s']", strNamePlayAudioRecorderButton, state);
+            String.format("//Button[@name='%s' and @value='%s']", strNamePlayAudioRecorderButton, state);
 
     private static final By nameAudioRecordTimeLabel = MobileBy.AccessibilityId("audioRecorderTimeLabel");
 
@@ -193,25 +193,25 @@ public class ConversationViewPage extends IOSPage {
 
     private static final FunctionFor2Parameters<String, String, Integer> placeholderAudioMessageButtonStateByIndex =
             (buttonState, index) ->
-                    String.format("(//UIAButton[@name='%s'])[%s][@value='%s']", strNameAudioActionButton, index, buttonState);
+                    String.format("(//Button[@name='%s'])[%s][@value='%s']", strNameAudioActionButton, index, buttonState);
 
-    private static final By classNameShareLocationContainer = MobileBy.className("UIAMapView");
+    private static final By classNameShareLocationContainer = MobileBy.className("MapView");
 
     private static final By nameDefaultRecievedLocationAddress = MobileBy.AccessibilityId(Constants.DEFAULT_GMAP_ADDRESS);
 
     private static final By nameDefaultSentLocationAddress = MobileBy.AccessibilityId("1800 Ellis St, San Francisco, CA  94102");
 
-    private static final By xpathDefaultMapApplication = By.xpath("//UIAApplication[@name='Maps']");
+    private static final By xpathDefaultMapApplication = By.xpath("//Application[@name='Maps']");
 
     private static final By nameLinkPreviewSource = MobileBy.AccessibilityId("linkPreviewSource");
 
     private static final By nameLinkPreviewImage = MobileBy.AccessibilityId("linkPreviewImage");
 
     private static final Function<String, String> xpathStrActionSheetBtnByName = name ->
-            String.format("//UIAActionSheet//UIAButton[@name='%s']", name);
+            String.format("//ActionSheet//Button[@name='%s']", name);
 
     private static final Function<String, String> xpathStrDeleteOnLabelForUser = name ->
-            String.format("//UIATableCell[@name='%s']//UIAStaticText[starts-with(@label, 'Deleted on')]",
+            String.format("//Cell[@name='%s']//StaticText[starts-with(@label, 'Deleted on')]",
                     name.toUpperCase());
 
     private static final By nameUndoEdit = MobileBy.AccessibilityId("undoButton");
@@ -219,12 +219,12 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameCancelEdit = MobileBy.AccessibilityId("cancelButton");
 
     private static final Function<String, String> xpathStrLinkPreviewSrcByText = text ->
-            String.format("//UIAStaticText[@name='linkPreviewSource' and @value='%s']",
+            String.format("//StaticText[@name='linkPreviewSource' and @value='%s']",
                     getDomainName(text).toLowerCase());
 
     private static final FunctionFor2Parameters<String, String, Integer> xpathMessageByTextAndIndex =
             (messageText, index) ->
-                    String.format("%s[%s]/UIATextView[@name='%s']", xpathStrAllEntries, index, messageText);
+                    String.format("%s[%s]/TextView[@name='%s']", xpathStrAllEntries, index, messageText);
 
     private static final By nameLikeButton = MobileBy.AccessibilityId("likeButton");
 

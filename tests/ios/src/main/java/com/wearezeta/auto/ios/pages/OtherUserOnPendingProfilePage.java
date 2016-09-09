@@ -10,10 +10,10 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class OtherUserOnPendingProfilePage extends IOSPage {
 
-    private static final By xpathOtherProfileCancelRequestButton = By.xpath("//UIAButton[@label='CANCEL REQUEST']");
+    private static final By xpathOtherProfileCancelRequestButton = By.xpath("//Button[@label='CANCEL REQUEST']");
 
     private static final By xpathCancelRequestYesButton = By.xpath(
-            "//UIAStaticText[@name='Cancel Request?']/following-sibling::UIAButton[@name='YES']");
+            "//StaticText[@name='Cancel Request?']/following-sibling::Button[@name='YES']");
 
     private static final By nameRightActionButton = MobileBy.AccessibilityId("OtherUserMetaControllerRightButton");
 

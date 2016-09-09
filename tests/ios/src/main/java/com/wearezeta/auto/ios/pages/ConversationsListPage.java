@@ -22,28 +22,28 @@ public class ConversationsListPage extends IOSPage {
 
     private static final By nameOpenArchiveButton = MobileBy.AccessibilityId("bottomBarArchivedButton");
 
-    private static final String xpathStrContactListRoot = xpathStrMainWindow + "/UIACollectionView[1]";
+    private static final String xpathStrContactListRoot = xpathStrMainWindow + "/CollectionView[1]";
 //    private static final By xpathContactListRoot = By.xpath(xpathStrContactListRoot);
 
-    protected static final String xpathStrContactListItems = xpathStrContactListRoot + "/UIACollectionCell";
+    protected static final String xpathStrContactListItems = xpathStrContactListRoot + "/Cell";
     private static final Function<String, String> xpathStrContactListItemByExpr = xpathExpr ->
-            String.format("%s/UIAStaticText[%s]", xpathStrContactListItems, xpathExpr);
+            String.format("%s/StaticText[%s]", xpathStrContactListItems, xpathExpr);
     protected static final Function<String, String> xpathStrConvoListEntryByName = name ->
-            String.format("%s/UIAStaticText[@value='%s']/parent::*", xpathStrContactListItems, name);
+            String.format("%s/StaticText[@value='%s']/parent::*", xpathStrContactListItems, name);
     private static final Function<Integer, String> xpathStrConvoListEntryByIdx = idx ->
             String.format("%s[%s]", xpathStrContactListItems, idx);
     private static final Function<String, String> xpathStrFirstConversationEntryByName = name ->
-            String.format("%s[1]/UIAStaticText[@value='%s']", xpathStrContactListItems, name);
+            String.format("%s[1]/StaticText[@value='%s']", xpathStrContactListItems, name);
 
     private static final String strNameContactsButton = "bottomBarContactsButton";
 
     public static final By nameContactsButton = MobileBy.AccessibilityId(strNameContactsButton);
 
-    protected static final By xpathContactsLabel = By.xpath(String.format("//UIAButton[@name='%s' and @label='CONTACTS']",
+    protected static final By xpathContactsLabel = By.xpath(String.format("//Button[@name='%s' and @label='CONTACTS']",
             strNameContactsButton));
 
     private static final By xpathPendingRequest =
-            By.xpath("//UIACollectionCell[contains(@name,' waiting')]/UIAStaticText[1]");
+            By.xpath("//Cell[contains(@name,' waiting')]/StaticText[1]");
 
     private static final By nameMuteCallButton = MobileBy.AccessibilityId("MuteVoiceButton");
 
@@ -53,13 +53,13 @@ public class ConversationsListPage extends IOSPage {
 
 
     private static final Function<String, String> xpathStrContactListPlayPauseButtonByConvoName = name ->
-            String.format("//UIACollectionCell[@name='%s']/UIAButton[@name='mediaCellButton']", name);
+            String.format("//Cell[@name='%s']/Button[@name='mediaCellButton']", name);
 
     private static final Function<String, String> xpathStrSelectedConversationEntryByName = name ->
-            String.format("%s/UIACollectionView[1]/UIACollectionCell[@name='%s']", xpathStrMainWindow, name);
+            String.format("%s/CollectionView[1]/Cell[@name='%s']", xpathStrMainWindow, name);
 
     private static final Function<String, String> xpathStrActionMenuByConversationName = name ->
-            String.format("//UIAStaticText[@name='%s' and @visible='true']", name.toUpperCase());
+            String.format("//StaticText[@name='%s' and @visible='true']", name.toUpperCase());
 
     private static final By nameEmptyConversationsListMessage = MobileBy.AccessibilityId(
             "NO ACTIVE CONVERSATIONS TAP CONTACTS TO START A CONVERSATION");

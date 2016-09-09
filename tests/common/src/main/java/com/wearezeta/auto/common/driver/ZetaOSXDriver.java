@@ -4,7 +4,6 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
 import org.openqa.selenium.*;
 import org.openqa.selenium.remote.RemoteWebElement;
 

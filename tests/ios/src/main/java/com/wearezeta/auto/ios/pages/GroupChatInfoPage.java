@@ -38,17 +38,17 @@ public class GroupChatInfoPage extends IOSPage {
     private static final By nameLeaveConversationAlert = MobileBy.AccessibilityId("Leave conversation?");
 
     private static final Function<String, String> xpathStrUserNameLabelByText = text ->
-            String.format("//UIACollectionView[preceding-sibling::UIATextView[@name='ParticipantsView_GroupName']]" +
-                    "/UIACollectionCell/UIAStaticText[last() and @name='%s']", text);
+            String.format("//CollectionView[preceding-sibling::TextView[@name='ParticipantsView_GroupName']]" +
+                    "/Cell/StaticText[last() and @name='%s']", text);
 
     private static final Function<Integer, String> nameStrNumberPeopleByCount =
             count -> String.format("%s PEOPLE", count);
 
     private static final Function<String, String> xpathPeopleViewCollectionCellByName = name ->
-            String.format("//UIAButton[@name='metaControllerCancelButton']/following-sibling::" +
-                    "UIACollectionView/UIACollectionCell/UIAStaticText[@name='%s']", name.toUpperCase());
+            String.format("//Button[@name='metaControllerCancelButton']/following-sibling::" +
+                    "CollectionView/Cell/StaticText[@name='%s']", name.toUpperCase());
 
-    private static final By classNameParticipantAvatarCell = By.className("UIACollectionCell");
+    private static final By classNameParticipantAvatarCell = By.className("Cell");
     
     public GroupChatInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);

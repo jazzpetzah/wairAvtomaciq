@@ -29,6 +29,7 @@ import gherkin.formatter.model.Result;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -156,7 +157,9 @@ public class CommonIOSSteps {
                 }
             }
         }
-        capabilities.setCapability("processArguments", String.join(" ", processArgs));
+        final JSONObject argsValue = new JSONObject();
+        argsValue.put("args", processArgs);
+        capabilities.setCapability("processArguments", argsValue.toString());
 
         if (!CommonUtils.getIsSimulatorFromConfig(getClass()) &&
                 (capabilities.is("noReset") && !((Boolean) capabilities.getCapability("noReset")) ||

@@ -10,7 +10,7 @@ import java.util.function.Function;
 
 public class NewDeviceOverlay extends IOSPage {
     private static final Function<String, String> xpathStrLabelByText = text ->
-            String.format("//UIAStaticText[contains(@name, '%s')]", text);
+            String.format("//StaticText[contains(@name, '%s')]", text);
 
     private static final By nameSendAnywayButton = MobileBy.AccessibilityId("SEND ANYWAY");
 

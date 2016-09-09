@@ -38,13 +38,13 @@ public class CallingOverlayPage extends IOSPage {
     private static final By nameAnswerCallAlertButton = MobileBy.AccessibilityId("Answer");
 
     private static final By xpathGroupCallAvatars = By.xpath(
-            "//UIAWindow[@name='ZClientNotificationWindow']//UIACollectionCell");
+            "//Window[@name='ZClientNotificationWindow']//Cell");
 
-    private static final By xpathMuteButtonSelected = By.xpath("//UIAButton[@name='CallMuteButton' and @value='1']");
+    private static final By xpathMuteButtonSelected = By.xpath("//Button[@name='CallMuteButton' and @value='1']");
 
-    private static final By xpathMuteButtonNotSelected = By.xpath("//UIAButton[@name='CallMuteButton' and @value='']");
+    private static final By xpathMuteButtonNotSelected = By.xpath("//Button[@name='CallMuteButton' and @value='']");
 
-    private static final By xpathGroupCallFullMessage = By.xpath("//UIAAlert[@name='The call is full']");
+    private static final By xpathGroupCallFullMessage = By.xpath("//Alert[@name='The call is full']");
 
     private static final Integer WAIT_FOR_GROUPCALL_FULL_MSG  = 20;
 

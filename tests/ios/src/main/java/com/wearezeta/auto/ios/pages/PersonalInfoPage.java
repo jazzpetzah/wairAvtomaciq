@@ -14,20 +14,19 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class PersonalInfoPage extends IOSPage {
     private static final Function<String, String> xpathStrEmailFieldByValue = value ->
-            String.format("//UIAStaticText[contains(@name, '%s')]", value);
+            String.format("//StaticText[contains(@name, '%s')]", value);
 
     private static final By nameProfileSettingsButton = MobileBy.AccessibilityId("SettingsButton");
 
-    private static final By xpathSettingsAboutButton = By.xpath("//UIAButton[@name='ABOUT' or @name='About']");
+    private static final By xpathSettingsAboutButton = By.xpath("//Button[@name='ABOUT' or @name='About']");
 
     private static final By nameTermsOfUseButton = MobileBy.AccessibilityId("Terms of Use");
 
-    private static final By xpathProfileNameEditField =
-            By.xpath("//UIAElement[@name='ProfileSelfNameField']/UIATextView");
+    private static final By xpathProfileNameEditField = By.xpath("//Element[@name='ProfileSelfNameField']/TextView");
 
     private static final By nameSelfNameTooShortError = MobileBy.AccessibilityId("AT LEAST 2 CHARACTERS ");
 
-    private static final By xpathOptionsSettingsButton = By.xpath("//UIAButton[@name='SETTINGS' or @name='Settings']");
+    private static final By xpathOptionsSettingsButton = By.xpath("//Button[@name='SETTINGS' or @name='Settings']");
 
     private static final By nameOptionsHelpButton = MobileBy.AccessibilityId("HELP");
 
@@ -42,7 +41,7 @@ public class PersonalInfoPage extends IOSPage {
     public static final By namePrivacyPolicyButton = MobileBy.AccessibilityId("Privacy Policy");
 
     private static final By xpathBuildNumberText = By.xpath(
-            "//UIAApplication/UIAWindow/UIAStaticText[contains(@name, 'Wire Swiss GmbH • version')]");
+            "//Application/Window/StaticText[contains(@name, 'Wire Swiss GmbH • version')]");
 
     private static final By nameCloseLegalPageButton = MobileBy.AccessibilityId("WebViewCloseButton");
 
@@ -55,12 +54,11 @@ public class PersonalInfoPage extends IOSPage {
     private static final By nameThemeSwitcherButton = MobileBy.AccessibilityId("ThemeButton");
 
     private static final Function<String, String> xpathStrPhoneEmailFieldByValue =
-            value -> String.format("//UIAStaticText[contains(@name, '%s')]", value);
+            value -> String.format("//StaticText[contains(@name, '%s')]", value);
 
     private static final By nameProfileName = MobileBy.AccessibilityId("ProfileSelfNameField");
 
-    private static final By xpathChangePasswordPageChangePasswordButton =
-            By.xpath("//UIAButton[@name='RESET PASSWORD']");
+    private static final By xpathChangePasswordPageChangePasswordButton = By.xpath("//Button[@name='RESET PASSWORD']");
 
     private static final By xpathTermsAndConditions = By.xpath("//*[@name='Basic Information']");
     private static final By xpathPrivacyPolicy = By.xpath("//*[@name='Our Privacy Commitment']");

@@ -8,11 +8,11 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 
 public class DeviceDetailsPage extends IOSPage {
-    private final static By nameVerifySwitcher = By.xpath("//UIASwitch");
+    private final static By nameVerifySwitcher = By.xpath("//Switch");
 
-    private static final By xpathBackButton = By.xpath(xpathStrMainWindow + "/UIAButton[4]");
+    private static final By xpathBackButton = By.xpath(xpathStrMainWindow + "/Button[4]");
     
-    private static final By xpathKeyFingerprintValue = By.xpath("//UIATableCell[@name='Key Fingerprint']/UIAStaticText[2]");
+    private static final By xpathKeyFingerprintValue = By.xpath("//Cell[@name='Key Fingerprint']/StaticText[2]");
 
     private static final By nameRemoveDevice = MobileBy.AccessibilityId("Remove Device");
 

@@ -16,11 +16,11 @@ public class GiphyPreviewPage extends IOSPage {
     private static final By nameGiphyTitleButton = MobileBy.AccessibilityId("centerButton");
 
     // TODO: assign a name to Giphy image element
-    private static final By xpathGiphyImage = By.xpath("//UIAImage[@visible='true']");
+    private static final By xpathGiphyImage = By.xpath("//Image[@visible='true']");
 
     private static final By nameGiphyCancelRequestButton = MobileBy.AccessibilityId("rejectButton");
 
-    public static final By xpathGiphySendButton = By.xpath("//UIAButton[@label='SEND']");
+    public static final By xpathGiphySendButton = By.xpath("//Button[@label='SEND']");
 
     private static final By nameGiphyGrid = MobileBy.AccessibilityId("giphyCollectionView");
 

@@ -13,34 +13,34 @@ import java.util.function.Function;
 
 public class SettingsPage extends IOSPage {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private static final String xpathStrMenuContainer = "//UIATableView";
+    private static final String xpathStrMenuContainer = "//TableView";
     private static final By xpathMenuContainer = By.xpath(xpathStrMenuContainer);
 
-    public static final By xpathSettingsPage = By.xpath("//UIANavigationBar[@name='Settings']");
+    public static final By xpathSettingsPage = By.xpath("//NavigationBar[@name='Settings']");
 
     private static final By nameBackButton = MobileBy.AccessibilityId("Back");
 
     private static final By xpathAllSoundAlertsButton =
-            By.xpath("//UIATableCell[@name='Sound Alerts']/*[@value='All']");
+            By.xpath("//Cell[@name='Sound Alerts']/*[@value='All']");
 
     private static final By nameEditButton = MobileBy.AccessibilityId("Edit");
 
     private static final Function<String, String> xpathDeleteDeviceButtonByName = devicename ->
-            String.format("//UIAButton[contains(@name,'Delete %s')]", devicename);
+            String.format("//Button[contains(@name,'Delete %s')]", devicename);
 
     private static final Function<String, String> xpathDeviceListEntry = device ->
-            String.format("//UIATableCell[contains(@name,'%s')]", device);
+            String.format("//Cell[contains(@name,'%s')]", device);
 
     private static final By nameDeleteButton = MobileBy.AccessibilityId("Delete");
 
     private static final By xpathDeleteDevicePasswordField =
-            By.xpath("//UIASecureTextField[contains(@value,'Password')]");
+            By.xpath("//SecureTextField[contains(@value,'Password')]");
 
     private static final FunctionFor2Parameters<String, String, String> xpathStrDeviceVerificationLabel =
             (deviceName, verificationLabel) -> String.format(
-                    "//UIATableCell[@name='%s']/UIAStaticText[@name='%s']", deviceName, verificationLabel);
+                    "//Cell[@name='%s']/StaticText[@name='%s']", deviceName, verificationLabel);
 
-    private static final String xpathStrCurrentDevice = xpathStrMainWindow + "/UIATableView[1]/UIATableCell[1]";
+    private static final String xpathStrCurrentDevice = xpathStrMainWindow + "/TableView[1]/Cell[1]";
     private static final By xpathCurrentDevices = By.xpath(xpathStrCurrentDevice);
 
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {

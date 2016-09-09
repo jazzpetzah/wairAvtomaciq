@@ -11,7 +11,7 @@ import java.util.function.Function;
 public class LikersPage extends IOSPage {
 
     private static final Function<String, String> xpathStrContactAvatarByName = name ->
-            String.format("//UIACollectionCell[./UIAStaticText[@name='%s']]", name);
+            String.format("//Cell[./StaticText[@name='%s']]", name);
 
     private static final By nameCloseButton = MobileBy.AccessibilityId("BackButton");
 
