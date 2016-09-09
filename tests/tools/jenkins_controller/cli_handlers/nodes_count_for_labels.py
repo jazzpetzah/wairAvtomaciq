@@ -212,10 +212,6 @@ class RealAndroidDevice(BaseNodeVerifier):
 
 
 class IOSSimulator(BaseNodeVerifier):
-    # def __init__(self, node, node_hostname, **kwargs):
-    #     super(IOSSimulator, self).__init__(node, node_hostname, **kwargs)
-    #     self._is_node_ready = True
-
     def _get_installed_simulators(self, ssh_client):
         try:
             _, stdout, _ = ssh_client.exec_command('/usr/bin/instruments -s', timeout=10)
