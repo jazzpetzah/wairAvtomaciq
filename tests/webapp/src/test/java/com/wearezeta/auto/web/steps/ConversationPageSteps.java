@@ -744,7 +744,7 @@ public class ConversationPageSteps {
 
     @When("^I do not see delete for everyone button in context menu for latest message$")
     public void IDoNotSeeDeleteForEveryoneButton() throws Exception {
-        assertTrue("Edit button is visible", context.getPagesCollection().getPage(ConversationPage.class)
+        assertTrue("Delete for everyone button is visible", context.getPagesCollection().getPage(ConversationPage.class)
                 .isDeleteForEveryoneButtonInContextMenuInvisible());
     }
 

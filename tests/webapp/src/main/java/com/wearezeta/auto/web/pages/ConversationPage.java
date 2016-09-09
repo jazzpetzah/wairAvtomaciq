@@ -1269,7 +1269,7 @@ public class ConversationPage extends WebPage {
 
     public boolean isDeleteForEveryoneButtonInContextMenuInvisible() throws Exception {
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteForEveryoneInContext);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     public boolean isLikeButtonInContextMenuVisible() throws Exception {

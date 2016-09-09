@@ -110,6 +110,15 @@ public final class CommonSteps {
         usrMgr.appendCustomUser(groupUser);
     }
 
+    public void UserRemovesAnotherUserFromGroupConversation(String userWhoRemovesAlias, String userToRemoveAlias, String chatName)
+            throws Exception {
+        ClientUser userWhoRemoves = usrMgr.findUserByNameOrNameAlias(userWhoRemovesAlias);
+        ClientUser userToRemove = usrMgr.findUserByNameOrNameAlias(userToRemoveAlias);
+
+        chatName = usrMgr.replaceAliasesOccurences(chatName, ClientUsersManager.FindBy.NAME_ALIAS);
+        BackendAPIWrappers.removeUserFromGroupConversation(userWhoRemoves, userToRemove, chatName);
+    }
+
     public void UserIsConnectedTo(String userFromNameAlias,
             String usersToNameAliases) throws Exception {
         ClientUser usrFrom = usrMgr

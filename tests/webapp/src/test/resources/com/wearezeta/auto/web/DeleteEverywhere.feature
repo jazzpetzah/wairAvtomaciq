@@ -417,7 +417,7 @@ Feature: Delete Everywhere
         | Login      | Password      | Name      | Contact   | Youtubelink                                 | Soundcloudlink                                                      | Vimeolink                 | Spotifylink                                           |
         | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=ncHd3sxpEbo | https://soundcloud.com/nour-moukhtar/ludwig-van-beethoven-fur-elise | https://vimeo.com/7265982 | https://play.spotify.com/album/7buEcyw6fJF3WPgr06BomH |
 
-  @C221139 @staging @torun
+  @C221139 @staging
   Scenario Outline: Verify I can not delete my message everywhere when I was removed from group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -426,37 +426,16 @@ Feature: Delete Everywhere
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I open conversation with <ChatName>
-    And I write message <Message1>
+    And I write message <Message>
     And I send message
-    Then I see text message <Message1>
+    Then I see text message <Message>
     And I see 2 messages in conversation
-    Given I open self profile
-    Given I click gear button on self profile page
-    Given I select Log out menu item on self profile page
-    Given I see the clear data dialog
-    Given I click Logout button on clear data dialog
-    Given I see Sign In page
-    Given I Sign in using login <Login2> and password <Password2>
-    Given I am signed in properly
-    When I open conversation with <ChatName>
-    When I click People button in group conversation
-    Then I see Group Participants popover
-    When I click on participant <Name> on Group Participants popover
-    And I click Remove button on Group Participants popover
-    And I confirm remove from group chat on Group Participants popover
-    Given I open self profile
-    Given I click gear button on self profile page
-    Given I select Log out menu item on self profile page
-    Given I see the clear data dialog
-    Given I click Logout button on clear data dialog
-    Given I see Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    Given I am signed in properly
-    When I open conversation with <ChatName>
+    When <Contact1> removes Myself from group conversation <ChatName>
+    Then I see <MessageAction> action for <Contact1> in conversation
+    When I see 3 messages in conversation
     And I click context menu of the second last message
     And I do not see delete for everyone button in context menu for latest message
-    And I see 3 message in conversation
 
     Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Message1 | Login2     | Password2     |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | New name | message1 | user2Email | user2Password |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Message | MessageAction |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | New name | message | REMOVED YOU   |
