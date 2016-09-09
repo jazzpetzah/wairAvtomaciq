@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import inspect
-from multiprocessing import Process, Lock
+from threading import Thread, Lock
 import paramiko
 from pprint import pformat
 import random
@@ -92,7 +92,7 @@ class NodesCountForLabels(CliHandlerBase):
                     sys.stderr.write(
                         '\nVerifier process for the node "{}" timed out after {} seconds. '
                         'Assuming the node as ready by default...\n'.format(verifier.node.name,
-                                                                             verifier.get_timeout()))
+                                                                            verifier.get_timeout()))
                     # broken_nodes_queue.put_nowait(verifier.node)
                 else:
                     sys.stderr.write('\nFinished verification for the node "{}"\n'.format(verifier.node.name))
@@ -106,9 +106,10 @@ class NodesCountForLabels(CliHandlerBase):
         return '{}|{}'.format(','.join(ready_node_names), ','.join(broken_node_names))
 
 
-class BaseNodeVerifier(Process):
+class BaseNodeVerifier(Thread):
     def __init__(self, node, node_hostname, **kwargs):
-        super(BaseNodeVerifier, self).__init__()
+        super(BaseNodeVerifier, self).__init__(group=None, target=None, name=None,
+                                               args=(), kwargs=None, verbose=None)
         self._node = node
         self._node_hostname = node_hostname
         self._is_node_ready = False
@@ -161,7 +162,7 @@ class BaseNodeVerifier(Process):
                 traceback.print_exc()
                 try_num += 1
                 if try_num >= MAX_TRY_COUNT:
-                    raise e
+                    return
                 sys.stderr.write('Sleeping a while before retry #{} of {}...\n'.format(try_num, MAX_TRY_COUNT))
                 time.sleep(random.randint(2, 10))
 
@@ -211,9 +212,9 @@ class RealAndroidDevice(BaseNodeVerifier):
 
 
 class IOSSimulator(BaseNodeVerifier):
-    def __init__(self, node, node_hostname, **kwargs):
-        super(IOSSimulator, self).__init__(node, node_hostname, **kwargs)
-        self._is_node_ready = True
+    # def __init__(self, node, node_hostname, **kwargs):
+    #     super(IOSSimulator, self).__init__(node, node_hostname, **kwargs)
+    #     self._is_node_ready = True
 
     def _get_installed_simulators(self, ssh_client):
         try:
@@ -293,24 +294,24 @@ class IOSSimulator(BaseNodeVerifier):
 
 
 POWER_CYCLE_SCRIPT = lambda devnum: \
-"""
-import time
+    """
+    import time
 
-from brainstem import discover
-from brainstem.link import Spec
-from brainstem.stem import USBHub2x4
+    from brainstem import discover
+    from brainstem.link import Spec
+    from brainstem.stem import USBHub2x4
 
 
-stem = USBHub2x4()
-spec = discover.find_first_module(Spec.USB)
-if spec is None:
-    raise RuntimeError("No USBHub is connected!")
-stem.connect_from_spec(spec)
-stem.usb.setPowerDisable({0})
-time.sleep(1)
-stem.usb.setPowerEnable({0})
-time.sleep(1)
-""".format(devnum)
+    stem = USBHub2x4()
+    spec = discover.find_first_module(Spec.USB)
+    if spec is None:
+        raise RuntimeError("No USBHub is connected!")
+    stem.connect_from_spec(spec)
+    stem.usb.setPowerDisable({0})
+    time.sleep(1)
+    stem.usb.setPowerEnable({0})
+    time.sleep(1)
+    """.format(devnum)
 
 
 class IOSRealDevice(BaseNodeVerifier):
