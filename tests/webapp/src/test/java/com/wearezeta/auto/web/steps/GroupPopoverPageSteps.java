@@ -364,7 +364,7 @@ public class GroupPopoverPageSteps {
 	 *
 	 * @throws Exception
 	 */
-	@When("^I (do not )? see Remove button on Group Participants popover$")
+	@When("^I (do not )?see Remove button on Group Participants popover$")
 	public void ISeeRemoveUserFromGroupChat(String doNot) throws Exception {
 		if (doNot == null)
 		{

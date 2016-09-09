@@ -395,6 +395,9 @@ public final class WebAppLocators {
         public static final Function<String, String> cssEditButtonByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='do-message-edit']", text);
 
+        public static final Function<String, String> cssLikeButtonByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='do-message-react']", text);
+
         public static final String cssDoDelete = "[data-uie-name='do-delete']";
 
         public static final String cssDoDeleteForEveryone = "[data-uie-name='do-delete-everyone']";

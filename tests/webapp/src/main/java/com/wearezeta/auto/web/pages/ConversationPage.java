@@ -1267,6 +1267,13 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3);
     }
 
+    public boolean isLikeButtonInvisibleForLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeButtonByMessageId.apply(id));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3);
+    }
+
     public boolean isDeleteForEveryoneButtonInContextMenuInvisible() throws Exception {
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteForEveryoneInContext);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);

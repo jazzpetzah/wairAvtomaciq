@@ -737,15 +737,21 @@ public class ConversationPageSteps {
     }
 
     @When("^I do not see edit button in context menu$")
-    public void IDoNotSeeEditButton() throws Exception {
+    public void IDoNotSeeEditButtonInContext() throws Exception {
         assertTrue("Edit button is visible", context.getPagesCollection().getPage(ConversationPage.class)
                 .isEditButtonInvisibleForLatestMessage());
     }
 
     @When("^I do not see delete for everyone button in context menu$")
-    public void IDoNotSeeDeleteForEveryoneButton() throws Exception {
+    public void IDoNotSeeDeleteForEveryoneButtonInContext() throws Exception {
         assertTrue("Delete for everyone button is visible", context.getPagesCollection().getPage(ConversationPage.class)
                 .isDeleteForEveryoneButtonInContextMenuInvisible());
+    }
+
+    @When("^I do not see like button in context menu$")
+    public void IDoNotSeeLikeButtonInContext() throws Exception {
+        assertTrue("Like button is visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isLikeButtonInContextMenuInvisible());
     }
 
 

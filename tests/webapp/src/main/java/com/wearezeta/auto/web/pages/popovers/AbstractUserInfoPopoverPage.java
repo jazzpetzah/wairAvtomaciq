@@ -11,6 +11,7 @@ import com.wearezeta.auto.web.locators.PopoverLocators;
 import static com.wearezeta.auto.web.locators.WebAppLocators.Common.HREF_ATTRIBUTE_LOCATOR;
 import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -65,8 +66,9 @@ abstract class AbstractUserInfoPopoverPage extends AbstractPopoverPage {
 		return removeButton.isDisplayed();
 	}
 
-	public boolean isRemoveButtonInvisible() {
-		return removeButton.isDisplayed();
+	public boolean isRemoveButtonInvisible() throws Exception{
+		final By locator = By.xpath(PopoverLocators.GroupPopover.ParticipantInfoPage.xpathRemoveButton);
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
 	}
 
 	public boolean isAvatarVisible() {
