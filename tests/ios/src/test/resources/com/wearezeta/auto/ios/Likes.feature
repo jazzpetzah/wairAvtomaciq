@@ -239,8 +239,10 @@ Feature: Likes
     And I tap Archive action button
     Then I do not see conversation <Group> in conversations list
     When User <Contact1> likes the recent message from group conversation <Group>
+    #Lets wait a bit to give a chance to Like action
+    And I wait for 5 seconds
     Then I do not see conversation <Group> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | Picture     | Group        |
-      | user1Name | user2Name | user3Name | testing.jpg | DeletedGroup |
+      | user1Name | user2Name | user3Name | testing.jpg | ArchiveGroup |
