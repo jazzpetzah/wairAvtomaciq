@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableMap;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.ocr.OnScreenKeyboardScanner;
-import io.appium.java_client.MobileCommand;
 import io.appium.java_client.android.AndroidDriver;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
@@ -326,7 +325,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
             return future.get(MAX_COMMAND_DURATION_MILLIS, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             if (e instanceof ExecutionException) {
-                if (driverCommand.equals(MobileCommand.HIDE_KEYBOARD)) {
+                if (driverCommand.equals(HIDE_KEYBOARD_COMMAND)) {
                     log.debug("The keyboard seems to be already hidden.");
                     final Response response = new Response();
                     response.setSessionId(this.getSessionId().toString());

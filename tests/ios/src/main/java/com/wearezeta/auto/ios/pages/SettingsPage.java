@@ -52,7 +52,7 @@ public class SettingsPage extends IOSPage {
     }
 
     public void selectItem(String itemName) throws Exception {
-        ((IOSElement) getElement(xpathMenuContainer)).scrollTo(itemName).click();
+        getDriver().scrollTo(itemName).click();
     }
 
     public void goBack() throws Exception {

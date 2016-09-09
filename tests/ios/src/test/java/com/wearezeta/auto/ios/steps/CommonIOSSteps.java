@@ -110,6 +110,7 @@ public class CommonIOSSteps {
         capabilities.setCapability("nativeInstrumentsLib", isUseNativeInstrumentsEnabled());
         capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
+        capabilities.setCapability("automationName", "XCUITest");
         capabilities.setCapability("app", ipaPath);
         capabilities.setCapability("fullReset", true);
         capabilities.setCapability("appName", getAppName());

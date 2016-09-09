@@ -10,6 +10,8 @@ import com.google.common.collect.ImmutableMap;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import io.appium.java_client.MobileCommand;
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.ios.IOSElement;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpStatus;
@@ -93,6 +95,15 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
         return (e instanceof UnreachableBrowserException) || (e instanceof SessionNotFoundException);
     }
 
+    public IOSElement scrollTo(String text) {
+        return (IOSElement) findElementByIosUIAutomation(
+                ".scrollToElementWithPredicate(\"name CONTAINS '" + text + "'\")");
+    }
+
+    public IOSElement scrollToExact(String text) {
+        return (IOSElement) findElementByIosUIAutomation(".scrollToElementWithName(\"" + text + "\")");
+    }
+
     @Override
     protected Response execute(String command) {
         return this.execute(command, ImmutableMap.<String, Object>of());
@@ -114,7 +125,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
             return future.get(MAX_COMMAND_DURATION_MILLIS, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             if (e instanceof ExecutionException) {
-                if (driverCommand.equals(MobileCommand.HIDE_KEYBOARD) && (e.getCause() instanceof WebDriverException)) {
+                if (driverCommand.equals(HIDE_KEYBOARD_COMMAND) && (e.getCause() instanceof WebDriverException)) {
                     log.debug("The keyboard seems to be already hidden.");
                     final Response response = new Response();
                     response.setSessionId(this.getSessionId().toString());

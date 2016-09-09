@@ -368,7 +368,7 @@ public abstract class IOSPage extends BasePage {
             IOSSimulatorHelper.swipeRight();
             Thread.sleep(2000);
         } else {
-            this.getDriver().lockScreen(timeSeconds);
+            this.getDriver().lockDevice(timeSeconds);
         }
     }
 
@@ -386,7 +386,7 @@ public abstract class IOSPage extends BasePage {
          */
         final ZetaIOSDriver driver = this.getDriver();
         final Callable callable = () -> {
-            driver.lockScreen(20);
+            driver.lockDevice(20);
             return true;
         };
         ExecutorService executor = Executors.newSingleThreadExecutor();

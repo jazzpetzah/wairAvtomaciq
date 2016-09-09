@@ -87,7 +87,7 @@ public class RegistrationPage extends IOSPage {
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCountryPickerButton, 5)) {
             countryPickerBtn.click();
         }
-        ((IOSElement) getElement(xpathCountryList)).scrollTo(WIRE_COUNTRY_NAME).click();
+        getDriver().scrollTo(WIRE_COUNTRY_NAME).click();
         // Wait for animation
         Thread.sleep(2000);
     }

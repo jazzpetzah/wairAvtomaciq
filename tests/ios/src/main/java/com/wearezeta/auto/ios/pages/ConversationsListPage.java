@@ -10,7 +10,6 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DummyElement;
 import com.wearezeta.auto.ios.tools.FastLoginContainer;
 import io.appium.java_client.MobileBy;
-import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.*;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -24,7 +23,7 @@ public class ConversationsListPage extends IOSPage {
     private static final By nameOpenArchiveButton = MobileBy.AccessibilityId("bottomBarArchivedButton");
 
     private static final String xpathStrContactListRoot = xpathStrMainWindow + "/UIACollectionView[1]";
-    private static final By xpathContactListRoot = By.xpath(xpathStrContactListRoot);
+//    private static final By xpathContactListRoot = By.xpath(xpathStrContactListRoot);
 
     protected static final String xpathStrContactListItems = xpathStrContactListRoot + "/UIACollectionCell";
     private static final Function<String, String> xpathStrContactListItemByExpr = xpathExpr ->
@@ -109,8 +108,7 @@ public class ConversationsListPage extends IOSPage {
             return contactCell;
         } else {
             try {
-                return Optional.of(((IOSElement) getElement(xpathContactListRoot, "Conversations list is not visible",
-                        timeoutSeconds)).scrollToExact(name));
+                return Optional.of(getDriver().scrollToExact(name));
             } catch (WebDriverException e) {
                 return Optional.empty();
             }
