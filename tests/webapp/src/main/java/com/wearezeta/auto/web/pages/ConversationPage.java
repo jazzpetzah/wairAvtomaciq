@@ -1284,6 +1284,11 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
     }
 
+    public boolean isLikeButtonInContextMenuInvisible() throws Exception {
+        By locator = By.xpath(WebAppLocators.ConversationPage.xpathLikeInContext);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3);
+    }
+
     public boolean isUnlikeButtonInContextMenuVisible() throws Exception {
         By locator = By.xpath(WebAppLocators.ConversationPage.xpathUnlikeInContext);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
