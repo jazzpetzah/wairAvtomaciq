@@ -1034,6 +1034,13 @@ public class ConversationPage extends WebPage {
         }
         return mappedMessages;
     }
+    
+    public boolean isLatestMessageWithTextVisible(String text) throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.xpath(WebAppLocators.ConversationPage.xpathMessageTextByMessageId.apply(id, text));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
+    }
 
     public void clickContextMenuOnLatestMessage() throws Exception {
         By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
