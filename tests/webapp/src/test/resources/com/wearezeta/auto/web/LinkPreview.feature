@@ -42,7 +42,7 @@ Feature: Link Preview
       | Login      | Password      | Name      | Contact   | Link             | LinkInPreview | LinkTitle                             | LinkPreviewImage |
       | user1Email | user1Password | user1Name | user2Name | https://wire.com | wire.com      | Wire — modern, private communication. | linkpreview0.png |
 
-  @C234615 @staging
+  @C234615 @regression @WEBAPP-3179
   Scenario Outline: Verify sender can edit link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
