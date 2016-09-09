@@ -14,9 +14,11 @@ import static com.wire.picklejar.gherkin.model.Result.SKIPPED;
 import com.wire.picklejar.gherkin.model.Step;
 import cucumber.api.PendingException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -99,6 +101,16 @@ public class PickleJarInheritedTest extends PickleJarTest {
                 throw ex;
             }
         }
+        try {
+            checkLogForErrors();
+        } catch (Exception e) {
+            if (!getSteps().isEmpty()) {
+                Step lastStep = reportSteps.get(getSteps().size() - 1);
+                setResult(lastStep, new Result(lastStep.getResult().getDuration(), FAILED,
+                        PickleExecutor.getThrowableStacktraceString(e) + "\n" + tailBrowserLog(MAX_LOG_TAIL_SIZE)));
+            }
+            throw e;
+        }
     }
 
     @After
@@ -128,8 +140,79 @@ public class PickleJarInheritedTest extends PickleJarTest {
                     .map((l) -> l.getMessage().replaceAll("^.*z\\.", "z\\."))
                     .collect(Collectors.joining("\n"));
         } catch (Exception e) {
+            LOG.warn("No tailed log available");
             return "No tailed log available";
         }
     }
 
+    private void checkLogForErrors() throws Exception {
+        List<LogEntry> browserLog = new ArrayList<>();
+        try {
+            browserLog = lifecycle.getContext().getBrowserLog();
+            browserLog = browserLog.stream()
+                    .filter((entry)
+                            -> entry.getLevel().intValue() >= Level.SEVERE.intValue())
+                    // filter auto login attempts
+                    .filter((entry)
+                            -> !entry.getMessage().contains("/access") && !entry.getMessage().contains("403"))
+                    .filter((entry)
+                            -> !entry.getMessage().contains("/self") && !entry.getMessage().contains("401"))
+                    .filter((entry)
+                            -> !entry.getMessage().contains("attempt"))
+                    // filter failed logins
+                    .filter((entry)
+                            -> !entry.getMessage().contains("/login") && !entry.getMessage().contains("403"))
+                    // filter already used email on registration
+                    .filter((entry)
+                            -> !entry.getMessage().contains("/register?challenge_cookie=true") && !entry.getMessage().contains("409"))
+                    // filter ignored image previews
+                    .filter((entry)
+                            -> !entry.getMessage().contains("Ignored image preview"))
+                    // filter ignored hot knocks
+                    .filter((entry)
+                            -> !entry.getMessage().contains("Ignored hot knock"))
+                    // filter youtube cast_sender
+                    .filter((entry)
+                            -> !entry.getMessage().contains("cast_sender.js"))
+                    // filter spotify
+                    .filter((entry)
+                            -> !entry.getMessage().contains("/service/version.json") && !entry.getMessage().contains("Failed to load resource"))
+                    // filter removed temporary devices
+                    .filter((entry)
+                            -> !entry.getMessage().contains("Caused by: Local client does not exist on backend"))
+                    // filter too many clients
+                    .filter((entry)
+                            -> !entry.getMessage().contains("/clients") && !entry.getMessage().contains("403"))
+                    .filter((entry)
+                            -> !entry.getMessage().contains("User has reached the maximum of allowed clients"))
+                    // filter broken sessions
+                    .filter((entry)
+                            -> !entry.getMessage().contains("broken or out of sync. Reset the session and decryption is likely to work again."))
+                    .filter((entry)
+                            -> !entry.getMessage().contains("and we have client ID"))
+                    .filter((entry)
+                            -> !entry.getMessage().contains("Unhandled event type"))
+                    // filter full call
+                    .filter((entry)
+                            -> !entry.getMessage().contains("/call/state") && !entry.getMessage().contains("409"))
+                    .filter((entry)
+                            -> !entry.getMessage().contains("failed: the voice channel is full"))
+                    .filter((entry)
+                            -> !entry.getMessage().contains("Too many participants in call"))
+                    // filter failed asset download
+                    .filter((entry)
+                            -> !entry.getMessage().contains("Failed to download asset"))
+                    // filter encryption precondition
+                    .filter((entry)
+                            -> !entry.getMessage().contains("otr") && !entry.getMessage().contains("412 (Precondition Failed)"))
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            LOG.warn("No error log check available", e);
+        }
+        if (!browserLog.isEmpty()) {
+            throw new Exception("BrowserLog does have errors: \n" + browserLog.stream()
+                    .map((entry) -> String.format("%s: %s", entry.getLevel(), entry.getMessage()))
+                    .collect(Collectors.joining("\n")));
+        }
+    }
 }
