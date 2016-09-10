@@ -984,6 +984,19 @@ public class ConversationPageSteps {
     public void ISeeTextMessage(String message) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).waitForPresentMessageContains(message);
     }
+    
+    /**
+     * Verify latest text message is visible in conversation.
+     *
+     * @param message
+     * @throws Exception
+     * @step. ^I see text message (.*)
+     */
+    @Then("^I see latest text message (.*)")
+    public void ISeeLatestTextMessage(String message) throws Exception {
+        assertTrue(String.format("Last message is NOT visible with text '%s'", message), 
+                context.getPagesCollection().getPage(ConversationPage.class).isLatestMessageWithTextVisible(message));
+    }
 
     /**
      * Verify a text message is visible in conversation.

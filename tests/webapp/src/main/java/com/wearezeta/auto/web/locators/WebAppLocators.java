@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.locators;
 
+import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
 import java.util.function.Function;
 
 public final class WebAppLocators {
@@ -346,6 +347,9 @@ public final class WebAppLocators {
 
         public static final Function<String, String> cssMessagesById = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s']", text);
+        
+        public static final FunctionFor2Parameters<String, String, String> xpathMessageTextByMessageId = (messageId, text) -> String
+                .format("//*[@data-uie-name='item-message' and @data-uie-uid='%s']//*[contains(@class, 'text') and text()='%s']", messageId, text);
 
         public static final Function<String, String> cssUserThatLikeByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='message-liked-names']", text);
