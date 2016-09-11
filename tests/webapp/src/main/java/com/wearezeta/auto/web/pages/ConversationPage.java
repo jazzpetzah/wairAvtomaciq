@@ -1171,6 +1171,16 @@ public class ConversationPage extends WebPage {
         getDriver().findElement(locator).click();
     }
 
+    public void clickContextMenuOnTheMessage(message) throws Exception {
+        By messageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssSecondLastMessage);
+        String id = getDriver().findElement(messageLocator).getAttribute("data-uie-uid");
+        hoverOverMessage(id);
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssContextMenu, message));
+        getDriver().findElement(locator).click();
+    }
+
+
+
     public void clickDeleteEverywhereInContextMenuOfLatestMessage() throws Exception {
         By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
         String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
@@ -1294,6 +1304,11 @@ public class ConversationPage extends WebPage {
     public boolean isLikeButtonInContextMenuInvisible() throws Exception {
         By locator = By.xpath(WebAppLocators.ConversationPage.xpathLikeInContext);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3);
+    }
+
+    public boolean isDeleteForMeButtonInContextMenuVisible() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteForMeInContext);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
     }
 
     public boolean isUnlikeButtonInContextMenuVisible() throws Exception {

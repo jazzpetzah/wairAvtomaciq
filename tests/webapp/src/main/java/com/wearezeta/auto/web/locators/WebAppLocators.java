@@ -387,6 +387,8 @@ public final class WebAppLocators {
         public static final Function<String, String> cssLinkPreviewLinkByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] .link-preview-site", text);
 
+        public static final String cssDeleteForMeInContext = "[data-context-action='delete']";
+
         public static final String cssDeleteForEveryoneInContext = "[data-context-action='delete-everyone']";
 
         public static final String xpathLikeInContext = "//li[contains(@data-context-action, 'react') and text()='Like']";

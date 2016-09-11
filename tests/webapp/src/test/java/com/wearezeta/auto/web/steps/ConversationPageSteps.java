@@ -700,6 +700,11 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnSecondLastMessage();
     }
 
+    @When("^I click context menu of the message (.*)$")
+    public void IClickContextMenuOfMessageX(String message) throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnTheMessage(message);
+    }
+
     @When("^I click to delete message for everyone in context menu$")
     public void IClickDeleteEverywhereInContextMenuOfLatestMessage() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickDeleteEverywhereInContextMenuOfLatestMessage();
@@ -754,6 +759,11 @@ public class ConversationPageSteps {
                 .isLikeButtonInContextMenuInvisible());
     }
 
+    @When("^I see delete for me button in context menu$")
+    public void ISeeDeleteForMeButtonInContext() throws Exception {
+        assertTrue("Delete For Me button is not visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isDeleteForMeButtonInContextMenuVisible());
+    }
 
     @When("^I click to edit message in context menu$")
     public void IClickEditInContextMenuOfLatestMessage() throws Exception {

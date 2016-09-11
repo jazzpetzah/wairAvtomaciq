@@ -514,7 +514,7 @@ And I wait for 60 seconds
     And I cannot unlike <Message2>
     #check own message
     And I cannot like <Message1>
-    And I click context menu of the the message <Message1>
+    And I click context menu of the message <Message1>
     And I do not see delete for everyone button in context menu
     And I do not see like button in context menu
     And I do not see edit button in context menu
@@ -523,7 +523,6 @@ And I wait for 60 seconds
     And I see titlebar with <ChatName>
     And I change group conversation title to <ChatNameEdit> on Group Participants popover
     And I see titlebar with <ChatName>
-
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName     | Message1 | MessageAction | Message2 | ChatNameEdit |
