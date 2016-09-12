@@ -206,20 +206,6 @@ public class RegistrationPageSteps {
 				.submitRegistration();
 	}
 
-
-	/**
-	 *Verifies if Create Account button is disabled
-	 *
-	 * @step. ^I see create account button is disabled$
-	 *
-	 * @throws Exception
-	 */
-	@When("^I see create account button is disabled$")
-	public void ISeeCreateAccountButton() throws Exception {
-		Assert.assertTrue("Create account button is active",
-				context.getPagesCollection().getPage(RegistrationPage.class).isCreateAccountButtonDisabled());
-	}
-
 	/**
 	 * Start monitoring thread for activation email. Please put this step BEFORE
 	 * you submit the registration form

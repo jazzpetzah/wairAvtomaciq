@@ -710,8 +710,6 @@ public final class WebAppLocators {
 
         public static final String cssCreateButton = "[data-uie-name='do-register']";
 
-        public static final String cssCreateAccountButtonDisabled = "[data-uie-name='do-register']:disabled";
-
         public static final String cssVerificationEmail = "#wire-resend";
 
         public static final String cssPendingEmail = "#wire-pending-resend";
