@@ -246,3 +246,22 @@ Feature: Likes
     Examples:
       | Name      | Contact1  | Contact2  | Picture     | Group        |
       | user1Name | user2Name | user3Name | testing.jpg | ArchiveGroup |
+
+  @C226011 @staging @fastLogin
+  Scenario Outline: Verify Like list with many likers
+    Given There are 6 users where <Name> is me
+    Given Myself is connected to all other
+    Given Myself has group chat <Group> with all other
+    Given I sign in using my email or phone number
+    Given User Myself sends 1 encrypted message to group conversation <Group>
+    Given I see conversations list
+    When User <Contact1> likes the recent message from group conversation <Group>
+    And User <Contact2> likes the recent message from group conversation <Group>
+    And User <Contact3> likes the recent message from group conversation <Group>
+    And User <Contact4> likes the recent message from group conversation <Group>
+    And User <Contact5> likes the recent message from group conversation <Group>
+    And I tap on group chat with name <Group>
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Group        |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | LikersGroup  |
