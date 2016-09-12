@@ -92,7 +92,7 @@ public class LoginPage extends WebPage {
     }
 
     public boolean isSignInButtonDisabled() throws Exception {
-        DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
                 By.xpath(WebAppLocators.LoginPage.xpathSignInButton));
         return !signInButton.isEnabled();
     }
