@@ -15,9 +15,9 @@ Feature: Link Preview
     And I see a picture <LinkPreviewImage> from link preview
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Link                                                                                                               | LinkInPreview                                                                                           | LinkTitle                                                              | LinkPreviewImage |
-      | user1Email | user1Password | user1Name | user2Name | https://wire.com                                                                                                   | wire.com                                                                                                | Wire — modern, private communication.                                  | linkpreview0.png |
-      | user1Email | user1Password | user1Name | user2Name | http://www.heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | Wire: Neuer WebRTC-Messenger soll WhatsApp &amp; Co. Konkurrenz machen | linkpreview1.png |
+      | Login      | Password      | Name      | Contact   | Link                                                                                                               | LinkInPreview                                                                                           | LinkTitle                                                                           | LinkPreviewImage |
+      | user1Email | user1Password | user1Name | user2Name | https://wire.com                                                                                                   | wire.com                                                                                                | Wire · Modern communication, full privacy. For iOS, Android, OS X, Windows and web. | linkpreview0.png |
+      | user1Email | user1Password | user1Name | user2Name | http://www.heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | Wire: Neuer WebRTC-Messenger soll WhatsApp &amp; Co. Konkurrenz machen              | linkpreview1.png |
 
   @C169235 @regression @WEBAPP-2998
   Scenario Outline: Verify you can delete link preview
@@ -39,10 +39,10 @@ Feature: Link Preview
     And I do not see a picture <LinkPreviewImage> from link preview
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Link             | LinkInPreview | LinkTitle                             | LinkPreviewImage |
-      | user1Email | user1Password | user1Name | user2Name | https://wire.com | wire.com      | Wire — modern, private communication. | linkpreview0.png |
+      | Login      | Password      | Name      | Contact   | Link             | LinkInPreview | LinkTitle                                                                           | LinkPreviewImage |
+      | user1Email | user1Password | user1Name | user2Name | https://wire.com | wire.com      | Wire · Modern communication, full privacy. For iOS, Android, OS X, Windows and web. | linkpreview0.png |
 
-  @C234615 @staging
+  @C234615 @regression @WEBAPP-3179
   Scenario Outline: Verify sender can edit link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -66,3 +66,22 @@ Feature: Link Preview
     Examples:
       | Login      | Password      | Name      | Contact   | Message       | EditedMessage | Link             | LinkInPreview |
       | user1Email | user1Password | user1Name | user2Name | other message | edited        | https://wire.com | wire.com      |
+
+  @C169238 @staging
+  Scenario Outline: I see link preview for link mixed with text
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    Given I see Contact list with name <Contact>
+    When I open conversation with <Contact>
+    And Contact <Contact> sends message <TextWithLink> via device Device1 to user me
+    Then I see link <LinkInPreview> in link preview message
+    And I see a title <LinkTitle> in link preview in the conversation view
+    And I see a picture <LinkPreviewImage> from link preview
+    And I see text message <TextWithLink>
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | TextWithLink                                          | LinkInPreview | LinkTitle                                                                           | LinkPreviewImage |
+      | user1Email | user1Password | user1Name | user2Name | You can go to wire.com and download the best app ever | wire.com      | Wire · Modern communication, full privacy. For iOS, Android, OS X, Windows and web. | linkpreview0.png |
