@@ -103,16 +103,7 @@ public class ConversationsListPage extends IOSPage {
 
     private Optional<WebElement> findNameInContactList(String name, int timeoutSeconds) throws Exception {
         final By locator = By.xpath(xpathStrConvoListEntryByName.apply(name));
-        final Optional<WebElement> contactCell = getElementIfDisplayed(locator, timeoutSeconds);
-        if (contactCell.isPresent()) {
-            return contactCell;
-        } else {
-            try {
-                return Optional.of(getDriver().scrollToExact(name));
-            } catch (WebDriverException e) {
-                return Optional.empty();
-            }
-        }
+        return getElementIfDisplayed(locator, timeoutSeconds);
     }
 
     private Optional<WebElement> findNameInContactList(String name) throws Exception {
