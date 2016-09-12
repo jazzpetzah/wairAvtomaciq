@@ -12,7 +12,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 public class PendingOutgoingConnectionPage extends IOSPage {
 
     private static final By xpathConnectOtherUserButton =
-            By.xpath("//Button[@name='CONNECT' or @name='OtherUserMetaControllerLeftButton']");
+            By.xpath("//XCUIElementTypeButton[@name='CONNECT' or @name='OtherUserMetaControllerLeftButton']");
 
     public PendingOutgoingConnectionPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);

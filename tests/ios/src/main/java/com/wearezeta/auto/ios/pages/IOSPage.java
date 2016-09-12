@@ -51,7 +51,7 @@ public abstract class IOSPage extends BasePage {
     protected static final String nameStrMainWindow = "ZClientMainWindow";
     protected static final By nameMainWindow = MobileBy.AccessibilityId(nameStrMainWindow);
 
-    protected static final String xpathStrMainWindow = "//Window[@name='ZClientMainWindow']";
+    protected static final String xpathStrMainWindow = "//XCUIElementTypeWindow[@name='ZClientMainWindow']";
 
     private static final By nameBadgeItemSelectAll = MobileBy.AccessibilityId("Select All");
     private static final By nameBadgeItemCopy = MobileBy.AccessibilityId("Copy");
@@ -63,22 +63,22 @@ public abstract class IOSPage extends BasePage {
     private static final By nameBadgeItemUnlike = MobileBy.AccessibilityId("Unlike");
 
     private static final Function<String, String> xpathStrAlertByText = text ->
-            String.format("//Alert[ .//*[contains(@name, '%s')] or contains(@name, '%s')]", text, text);
+            String.format("//XCUIElementTypeAlert[ .//*[contains(@name, '%s')] or contains(@name, '%s')]", text, text);
 
-    protected static final By xpathBrowserURLButton = By.xpath("//Button[@name='URL']");
+    protected static final By xpathBrowserURLButton = By.xpath("//XCUIElementTypeButton[@name='URL']");
 
     protected static final By nameBackToWireBrowserButton = MobileBy.AccessibilityId("Back to Wire");
 
-    protected static final By xpathConfirmButton = By.xpath("//Button[@name='OK' and @visible='true']");
+    protected static final By xpathConfirmButton = By.xpath("//XCUIElementTypeButton[@name='OK' and @visible='true']");
 
-    protected static final By xpathCancelButton = By.xpath("//Button[@name='Cancel' and @visible='true']");
+    protected static final By xpathCancelButton = By.xpath("//XCUIElementTypeButton[@name='Cancel' and @visible='true']");
 
     private static final By nameDoneButton = MobileBy.AccessibilityId("Done");
 
     private static final By classAlert = By.className("Alert");
 
     protected static final Function<String, String> xpathStrAlertButtonByCaption = caption ->
-            String.format("//Alert//Button[@label='%s']", caption);
+            String.format("//XCUIElementTypeAlert//XCUIElementTypeButton[@label='%s']", caption);
 
     private IOSKeyboard onScreenKeyboard;
 

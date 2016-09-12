@@ -17,7 +17,7 @@ import org.openqa.selenium.WebElement;
 
 public class IOSKeyboard extends BasePage {
     private static final KeyboardState UNKNOWN_STATE = new KeyboardStateUnknown();
-    private static final String xpathStrKeyboard = "//Keyboard";
+    private static final String xpathStrKeyboard = "//XCUIElementTypeKeyboard";
     private static By classNameKeyboard = By.className("Keyboard");
     private static final By xpathCommitKey = By.xpath(xpathStrKeyboard +
                     "//*[@name='Go' or @name='Send' or @name='Done' or @name='return' or @name='Return']");

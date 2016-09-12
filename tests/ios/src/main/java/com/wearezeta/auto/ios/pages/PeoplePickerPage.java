@@ -12,14 +12,15 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class PeoplePickerPage extends IOSPage {
-    private static final By xpathPickerSearch = By.xpath("//TextView[@name='textViewSearch' and @visible='true']");
+    private static final By xpathPickerSearch =
+            By.xpath("//XCUIElementTypeTextView[@name='textViewSearch' and @visible='true']");
 
     public static final By xpathPickerClearButton =
             By.xpath("//*[@name='PeoplePickerClearButton' or @name='ContactsViewCloseButton']");
 
     private static final By nameKeyboardEnterButton = MobileBy.AccessibilityId("Return");
 
-    private static final By xpathCreateConversationButton = By.xpath("//Button[@name='CREATE GROUP']");
+    private static final By xpathCreateConversationButton = By.xpath("//XCUIElementTypeButton[@name='CREATE GROUP']");
 
     private static final By namePeoplePickerTopPeopleLabel = MobileBy.AccessibilityId("TOP PEOPLE");
 
@@ -32,14 +33,15 @@ public class PeoplePickerPage extends IOSPage {
     private static final By nameUnblockButton = MobileBy.AccessibilityId("UNBLOCK");
 
     private static final By xpathSelectedTopPeople =
-            By.xpath("//Cell/CollectionView/Cell[@value='1']");
+            By.xpath("//XCUIElementTypeCell/XCUIElementTypeCollectionView/XCUIElementTypeCell[@value='1']");
 
-    public static final By xpathInviteCopyButton = By.xpath("//Cell[@name='Copy']");
+    public static final By xpathInviteCopyButton = By.xpath("//XCUIElementTypeCell[@name='Copy']");
 
-    private static final By xpathInviteMorePeopleButton = By.xpath("//Button[@name='INVITE MORE PEOPLE']");
+    private static final By xpathInviteMorePeopleButton = By.xpath("//XCUIElementTypeButton[@name='INVITE MORE PEOPLE']");
 
     private static final Function<String, String> xpathStrInstantConnectButtonByUserName = name -> String.format(
-            "//Cell[ ./StaticText[@name='%s'] ]/Button[@name='instantPlusConnectButton']", name);
+            "//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s'] ]/XCUIElementTypeButton[@name='instantPlusConnectButton']",
+            name);
 
     private static final By nameLaterButton = MobileBy.AccessibilityId("MAYBE LATER");
 
@@ -56,17 +58,19 @@ public class PeoplePickerPage extends IOSPage {
             name -> String.format("//*[@name='%s' and @visible='true']", name);
 
     private static final Function<Integer, String> xpathStrPeoplePickerTopConnectionsAvatarByIdx = idx ->
-            String.format("%s//CollectionView/Cell/CollectionView/Cell[%s]", xpathStrMainWindow, idx);
-
-    private static final Function<String, String> xpathStrPeoplePickerSelectedCellByName = name ->
-            String.format("(%s//Table)[1]/Cell[@name='%s']", xpathStrMainWindow, name);
-
-    private static final Function<Integer, String> xpathStrPeoplePickerTopConnectionsItemByIdx = idx ->
-            String.format("%s//CollectionView/Cell/CollectionView/Cell[%d]/StaticText[last()]",
+            String.format("%s//XCUIElementTypeCollectionView/XCUIElementTypeCell/XCUIElementTypeCollectionView/XCUIElementTypeCell[%s]",
                     xpathStrMainWindow, idx);
 
+    private static final Function<String, String> xpathStrPeoplePickerSelectedCellByName = name ->
+            String.format("(%s//XCUIElementTypeTable)[1]/XCUIElementTypeCell[@name='%s']", xpathStrMainWindow, name);
+
+    private static final Function<Integer, String> xpathStrPeoplePickerTopConnectionsItemByIdx = idx ->
+            String.format("%s//XCUIElementTypeCollectionView/XCUIElementTypeCell/XCUIElementTypeCollectionView/" +
+                    "XCUIElementTypeCell[%d]/XCUIElementTypeStaticText[last()]", xpathStrMainWindow, idx);
+
     private static final Function<String, String> xpathStrFirstSearchResultEntryByName = name ->
-            String.format("%s//CollectionView/Cell[1]/StaticText[@name='%s']", xpathStrMainWindow, name);
+            String.format("%s//XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeStaticText[@name='%s']",
+                    xpathStrMainWindow, name);
 
     private static final By nameNoResults = MobileBy.AccessibilityId("No results.");
 

@@ -17,26 +17,26 @@ import java.util.function.Function;
 
 public class RegistrationPage extends IOSPage {
 
-    private static final By xpathYourName = By.xpath("//TextField[@value='YOUR FULL NAME']");
+    private static final By xpathYourName = By.xpath("//XCUIElementTypeTextField[@value='YOUR FULL NAME']");
 
-    private static final By xpathNameField = By.xpath("//TextField");
+    private static final By xpathNameField = By.xpath("//XCUIElementTypeTextField");
 
     private static final By nameYourEmail = MobileBy.AccessibilityId("EmailField");
 
     private static final By nameYourPassword = MobileBy.AccessibilityId("PasswordField");
 
     private static final By xpathCreateAccountButton = By
-            .xpath("//SecureTextField[contains(@name, 'PasswordField')]/Button");
+            .xpath("//XCUIElementTypeSecureTextField[contains(@name, 'PasswordField')]/XCUIElementTypeButton");
 
     private static final Function<String, String> xpathStrConfirmationByMessage = msg -> String.format(
-            "//StaticText[contains(@name, 'We sent an email to %s')]", msg);
+            "//XCUIElementTypeStaticText[contains(@name, 'We sent an email to %s')]", msg);
 
     private static final By xpathEmailVerifPrompt =
-            By.xpath("//StaticText[contains(@name, 'We sent an email to ')]");
+            By.xpath("//XCUIElementTypeStaticText[contains(@name, 'We sent an email to ')]");
 
     private static final By namePhoneNumberField = MobileBy.AccessibilityId("PhoneNumberField");
 
-    public static final By xpathVerificationCodeInput = By.xpath("//TextField");
+    public static final By xpathVerificationCodeInput = By.xpath("//XCUIElementTypeTextField");
 
     private static final By nameCountryPickerButton = MobileBy.AccessibilityId("CountryPickerButton");
 
@@ -47,7 +47,7 @@ public class RegistrationPage extends IOSPage {
     private static final By nameTakePhotoButton = MobileBy.AccessibilityId("Take photo");
 
     private static final By xpathVerificationPage = By
-            .xpath("//StaticText[contains(@name, 'Enter the verification code we sent to')]");
+            .xpath("//XCUIElementTypeStaticText[contains(@name, 'Enter the verification code we sent to')]");
 
     private static final By nameResendCodeButton = MobileBy.AccessibilityId("RESEND");
 
@@ -60,7 +60,7 @@ public class RegistrationPage extends IOSPage {
     private static final By nameKeepThisOneButton = MobileBy.AccessibilityId("KeepDefaultPictureButton");
 
     private static final By xpathNoCodeShowingUpLabel = By.
-            xpath("//StaticText[contains(@name, 'NO CODE SHOWING UP?')]");
+            xpath("//XCUIElementTypeStaticText[contains(@name, 'NO CODE SHOWING UP?')]");
 
     private static final Logger log = ZetaLogger.getLog(RegistrationPage.class.getSimpleName());
 

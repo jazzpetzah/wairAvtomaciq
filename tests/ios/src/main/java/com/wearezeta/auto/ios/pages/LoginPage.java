@@ -34,7 +34,7 @@ public class LoginPage extends IOSPage {
     private static final By nameMaybeLater = MobileBy.AccessibilityId("MAYBE LATER");
 
     private static final By xpathSetEmailPasswordSuggestionLabel = By.xpath(
-            "//StaticText[contains(@name, 'Add your email and password.')]");
+            "//XCUIElementTypeStaticText[contains(@name, 'Add your email and password.')]");
 
 
     public static final By nameResentIn10min = MobileBy.AccessibilityId(

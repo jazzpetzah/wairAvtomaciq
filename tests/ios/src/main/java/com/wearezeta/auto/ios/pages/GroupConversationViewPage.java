@@ -16,7 +16,8 @@ public class GroupConversationViewPage extends ConversationViewPage {
     private static final By nameYouLeftMessage = MobileBy.AccessibilityId("YOU LEFT");
 
     private static final Function<String, String> xpathStrYouAddedToGroupChatMessageByName =
-            name -> String.format("//StaticText[starts-with(@name,'YOU ADDED %s')]", name.toUpperCase());
+            name -> String.format("//XCUIElementTypeStaticText[starts-with(@name,'YOU ADDED %s')]",
+                    name.toUpperCase());
 
     public GroupConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);

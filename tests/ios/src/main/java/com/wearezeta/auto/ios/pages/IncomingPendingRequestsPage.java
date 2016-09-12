@@ -10,12 +10,14 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class IncomingPendingRequestsPage extends IOSPage {
 
-    private static final By xpathPendingRequestIgnoreButton = By.xpath("(//Button[@name='IGNORE'])[last()]");
+    private static final By xpathPendingRequestIgnoreButton =
+            By.xpath("(//XCUIElementTypeButton[@name='IGNORE'])[last()]");
 
-    private static final By xpathPendingRequestConnectButton = By.xpath("(//Button[@name='CONNECT'])[last()]");
+    private static final By xpathPendingRequestConnectButton =
+            By.xpath("(//XCUIElementTypeButton[@name='CONNECT'])[last()]");
 
     private static final Function<String, String> xpathStrPendingRequesterByName = name ->
-            String.format("//StaticText[contains(@name, 'Connect to %s')]", name);
+            String.format("//XCUIElementTypeStaticText[contains(@name, 'Connect to %s')]", name);
 
     public IncomingPendingRequestsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
