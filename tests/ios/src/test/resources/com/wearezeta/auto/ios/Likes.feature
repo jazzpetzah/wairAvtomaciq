@@ -227,7 +227,7 @@ Feature: Likes
       | Name      | Contact   | SCLink                                                           |
       | user1Name | user2Name | https://soundcloud.com/trevorjasper14/lateef-two-birds-one-stone |
 
-  @C226006 @staging @fastLogin
+  @C226006 @regression @fastLogin
   Scenario Outline: Verify archived conversation stays in archive after receiving like for the message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
