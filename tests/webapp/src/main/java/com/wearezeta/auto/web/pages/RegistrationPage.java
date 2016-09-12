@@ -112,6 +112,12 @@ public class RegistrationPage extends WebPage {
         createAccount.click();
     }
 
+    public boolean isCreateAccountButtonDisabled() throws Exception {
+            DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+                    By.cssSelector(WebAppLocators.RegistrationPage.cssCreateButton));
+            return !createAccount.isEnabled();
+    }
+
     public boolean isEnvelopeShown() throws Exception {
         return DriverUtils.waitUntilElementClickable(getDriver(),
                 verificationEnvelope);

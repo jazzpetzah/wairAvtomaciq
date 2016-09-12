@@ -207,6 +207,20 @@ public class RegistrationPageSteps {
 	}
 
 	/**
+	 * Checks if Create Account button on the corresponding page is disabled
+	 *
+	 * @step. ^Create Account button is disabled$
+	 *
+	 * @throws Exception
+	 *             if Selenium fails to wait until sign in action completes
+	 */
+	@When("^Create Account button is disabled$")
+	public void CreateAccountButtonIsDisabled() throws Exception {
+		Assert.assertTrue(context.getPagesCollection().getPage(RegistrationPage.class)
+				.isCreateAccountButtonDisabled());
+	}
+
+	/**
 	 * Start monitoring thread for activation email. Please put this step BEFORE
 	 * you submit the registration form
 	 * 
