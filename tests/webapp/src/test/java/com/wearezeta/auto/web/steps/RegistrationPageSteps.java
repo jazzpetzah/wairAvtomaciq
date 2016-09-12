@@ -224,7 +224,7 @@ public class RegistrationPageSteps {
 				.getMessage(expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
 	}
 
-	@When("^(.*) starts listening for new device mail$")
+	@When("^(.*) starts? listening for new device mail$")
 	public void IStartListeningForNewDeviceMail(String emailOrName) throws Exception {
 		ClientUser user;
 		try {
