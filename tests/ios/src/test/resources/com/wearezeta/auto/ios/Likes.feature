@@ -169,7 +169,7 @@ Feature: Likes
       | Name      | Contact1  | Contact2  | Group            | FileName | FileMIME  | Contact1Device | Contact1DeviceLabel | MyDevice |
       | user1Name | user2Name | user3Name | BlockedContGroup | test.m4a | audio/mp4 | C1Device       | C1DeviceLabel       | MyDev    |
 
-  @C225987 @regression @fastLogin
+  @C225987 @C226012 @regression @fastLogin
   Scenario Outline: Verify liking a shared file
     Given There are 3 users where <Name> is me
     Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
