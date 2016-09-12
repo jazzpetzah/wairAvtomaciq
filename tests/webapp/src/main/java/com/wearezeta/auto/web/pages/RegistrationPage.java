@@ -112,7 +112,7 @@ public class RegistrationPage extends WebPage {
         createAccount.click();
     }
 
-    public boolean isCreateAccountButtonInactive() throws Exception {
+    public boolean isCreateAccountButtonDisabled() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.
                 cssSelector(WebAppLocators.RegistrationPage.cssCreateAccountButtonDisabled));
     }

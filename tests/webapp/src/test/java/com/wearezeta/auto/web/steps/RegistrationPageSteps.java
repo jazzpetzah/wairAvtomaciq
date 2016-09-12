@@ -208,16 +208,16 @@ public class RegistrationPageSteps {
 
 
 	/**
-	 *Verifies if Create Account button is inactive
+	 *Verifies if Create Account button is disabled
 	 *
-	 * @step. ^I see create account button is inactive$
+	 * @step. ^I see create account button is disabled$
 	 *
 	 * @throws Exception
 	 */
-	@When("^I see create account button is inactive$")
+	@When("^I see create account button is disabled$")
 	public void ISeeCreateAccountButton() throws Exception {
 		Assert.assertTrue("Create account button is active",
-				context.getPagesCollection().getPage(RegistrationPage.class).isCreateAccountButtonInactive());
+				context.getPagesCollection().getPage(RegistrationPage.class).isCreateAccountButtonDisabled());
 	}
 
 	/**
