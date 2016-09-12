@@ -13,7 +13,8 @@ Feature: Rich Media
     When I scroll to the bottom of the conversation view
     Then I see a new picture in the conversation view
     And I see the picture in the conversation view is animated
-    When I tap the recent picture in the conversation view
+    When I tap Image container in the conversation view
+    And I tap on Fullscreen button on the recent image in the conversation view
     Then I see the picture in the preview is animated
 
     Examples:
@@ -33,7 +34,8 @@ Feature: Rich Media
     When I scroll to the bottom of the conversation view
     Then I see a new picture in the conversation view
     And I see the picture in the conversation view is animated
-    When I tap the recent picture in the conversation view
+    When I tap Image container in the conversation view
+    And I tap on Fullscreen button on the recent image in the conversation view
     Then I see the picture in the preview is animated
 
     Examples:

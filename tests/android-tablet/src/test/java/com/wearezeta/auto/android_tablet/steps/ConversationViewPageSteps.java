@@ -246,15 +246,31 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap the recent picture in the conversation view to open a preview
+     * Tap container
      *
+     * @param tapType       Tap type
+     * @param containerType one of available container types
      * @throws Exception
-     * @step. ^I tap the recent (?:image|picture) in the conversation view
+     * @step. ^I (long tap|double tap|tap) (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
      */
-    @When("^I tap the recent (?:image|picture) in the conversation view$")
-    public void ITapRecentImage() throws Exception {
-        getConversationViewPage().tapRecentImage();
+    @When("^I (long tap|double tap|tap) (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
+            "container in the conversation view$")
+    public void ITapContainer(String tapType, String containerType) throws Exception {
+        getConversationViewPage().tapContainer(tapType, containerType);
     }
+
+    /**
+     * Tap on Image container button
+     *
+     * @param buttonName which could be Sketch or Fullscreen
+     * @throws Exception
+     * @step. ^I tap on (Sketch|Fullscreen) button on the recent (?:image|picture) in the conversation view$
+     */
+    @When("^I tap on (Sketch|Fullscreen) button on the recent (?:image|picture) in the conversation view$")
+    public void ITapImageContainerButton(String buttonName) throws Exception {
+        getConversationViewPage().tapImageContainerButton(buttonName);
+    }
+
 
     /**
      * Verify whether ping message is visible in the current conversation view
@@ -515,20 +531,18 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap the corresponding message in the conversation
+     * Long tap an existing conversation message
      *
-     * @param isLongTap equals to null if this should be regular tap
-     * @param msg       message to tap
+     * @param message     the message to tap
+     * @param messageType the type of message which could be Ping or Text
+     * @param isLongTap   equals to null if the tap should be simple tap
      * @throws Exception
-     * @step. ^I (long )?tap the message "(.*)" in the conversation view$
+     * @step. ^I (long )?tap the (Ping|Text) message "(.*)" in the conversation view
      */
-    @When("^I (long )?tap the message \"(.*)\" in the conversation view$")
-    public void ITapMessage(String isLongTap, String msg) throws Exception {
-        if (isLongTap == null) {
-            getConversationViewPage().tapMessage(msg);
-        } else {
-            getConversationViewPage().longTapMessage(msg);
-        }
+    @When("^I (long tap|double tap|tap) the (Ping|Text) message \"(.*)\" in the conversation view$")
+    public void ITapTheNonTextMessage(String tapType, String messageType, String message) throws Exception {
+        message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
+        getConversationViewPage().tapMessage(messageType, message, tapType);
     }
 
     /**
