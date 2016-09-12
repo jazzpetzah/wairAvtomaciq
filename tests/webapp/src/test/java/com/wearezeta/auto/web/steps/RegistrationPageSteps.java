@@ -206,6 +206,20 @@ public class RegistrationPageSteps {
 				.submitRegistration();
 	}
 
+
+	/**
+	 *Verifies if Create Account button is inactive
+	 *
+	 * @step. ^I see create account button is inactive$
+	 *
+	 * @throws Exception
+	 */
+	@When("^I see create account button is inactive$")
+	public void ISeeCreateAccountButton() throws Exception {
+		Assert.assertTrue("Create account button is active",
+				context.getPagesCollection().getPage(RegistrationPage.class).isCreateAccountButtonInactive());
+	}
+
 	/**
 	 * Start monitoring thread for activation email. Please put this step BEFORE
 	 * you submit the registration form
