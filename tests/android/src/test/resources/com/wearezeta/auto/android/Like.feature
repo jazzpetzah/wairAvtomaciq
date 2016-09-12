@@ -255,7 +255,7 @@ Feature: Like
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C226024 @regression @rc
+  @C226024 @C226038 @regression @rc
   Scenario Outline: I can like/unlike a sketch by tap on heart button/long tap/double tap
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
