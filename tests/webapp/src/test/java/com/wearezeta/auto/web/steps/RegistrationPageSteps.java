@@ -37,6 +37,8 @@ public class RegistrationPageSteps {
 
 	private Future<String> activationMessage;
 
+	private Future<String> newDeviceMessage;
+
 	public static final int maxCheckCnt = 2;
 
 	private static final Logger LOG = ZetaLogger
@@ -222,6 +224,21 @@ public class RegistrationPageSteps {
 				.getMessage(expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
 	}
 
+	@When("^(.*) starts? listening for new device mail$")
+	public void IStartListeningForNewDeviceMail(String emailOrName) throws Exception {
+		ClientUser user;
+		try {
+			user = context.getUserManager().findUserByEmailOrEmailAlias(emailOrName);
+		} catch (NoSuchUserException e) {
+			user = context.getUserManager().findUserByNameOrNameAlias(emailOrName);
+		}
+		IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
+		Map<String, String> expectedHeaders = new HashMap<>();
+		expectedHeaders.put("Delivered-To", user.getEmail());
+		this.newDeviceMessage = mbox.getMessage(expectedHeaders,
+				BackendAPIWrappers.ACTIVATION_TIMEOUT, System.currentTimeMillis());
+	}
+
 	/**
 	 * Verify whether email address, which is visible on email confirmation page
 	 * is the same as the expected one
@@ -374,6 +391,22 @@ public class RegistrationPageSteps {
 				assertThat("E-Mail is not English.", content, containsString(message));
 				break;
 			default: break;
+		}
+	}
+
+	@Then("^I see new device mail in (.*) with (.*)$")
+	public void ISeeNewDeviceMailInLanguage(String language, String message) throws Exception {
+		final String content = BackendAPIWrappers
+				.getMessageContent(this.newDeviceMessage);
+		switch (language) {
+			case "de":
+				assertThat("E-Mail is not German.", content, containsString(message));
+				break;
+			case "en":
+				assertThat("E-Mail is not English.", content, containsString(message));
+				break;
+			default:
+				break;
 		}
 	}
 
