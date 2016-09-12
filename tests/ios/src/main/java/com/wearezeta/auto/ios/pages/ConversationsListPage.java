@@ -25,7 +25,7 @@ public class ConversationsListPage extends IOSPage {
     private static final String xpathStrContactListRoot = String.format("(%s//XCUIElementTypeCollectionView)[1]",
             xpathStrMainWindow);
 
-    protected static final String xpathStrContactListItems = xpathStrContactListRoot + "/Cell";
+    protected static final String xpathStrContactListItems = xpathStrContactListRoot + "/XCUIElementTypeCell";
     private static final Function<String, String> xpathStrContactListItemByExpr = xpathExpr ->
             String.format("%s/XCUIElementTypeStaticText[%s]", xpathStrContactListItems, xpathExpr);
     protected static final Function<String, String> xpathStrConvoListEntryByName = name ->
