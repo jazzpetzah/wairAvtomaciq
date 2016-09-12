@@ -114,21 +114,24 @@ Feature: Sign In
       | Email      | Password      |
       | user1Email | user1Password |
 
-  @C1787 @mute
-  Scenario Outline: Verify you can sign in with a phone number with correct credentials
+  @C246200 @staging
+  Scenario Outline: Verify you can sign in by phone number with already set password and temporary device
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
     When I switch to phone number sign in page
     When I sign in using phone number of user <Name>
     And I click on sign in button on phone number sign in
-    And I enter phone verification code for user <Name>
+    And I enter password <Password> on phone login page
+    And I press Sign In button on phone login page
+    And I see the history info page
+    And I click confirm on history info page
     Then I am signed in properly
     And I see user name on self profile page <Name>
     And I see user phone number on self profile page <PhoneNumber>
 
     Examples: 
-      | Name      | PhoneNumber      |
-      | user1Name | user1PhoneNumber |
+      | Name      | PhoneNumber      | Password   |
+      | user1Name | user1PhoneNumber | aqa123456! |
 
   @C1788 @mute
   Scenario Outline: Verify you see correct error message when sign in with incorrect phone number
