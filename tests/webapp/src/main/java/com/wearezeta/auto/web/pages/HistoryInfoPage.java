@@ -11,10 +11,9 @@ import java.util.concurrent.Future;
 public class HistoryInfoPage extends WebPage {
 
     @FindBy(css = WebAppLocators.HistoryInfoPage.cssConfirmButton)
-    WebElement confirmButton;
+    private WebElement confirmButton;
 
-    public HistoryInfoPage(Future<ZetaWebAppDriver> lazyDriver)
-            throws Exception {
+    public HistoryInfoPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 

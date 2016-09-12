@@ -670,16 +670,12 @@ public class ContactListPageSteps {
     /**
      * Types shortcut combination to mute or unmute the conversation
      *
-     * @param contact
      * @throws Exception
-     * @step. ^I type shortcut combination to mute the conversation (.*)$
+     * @step. ^I type shortcut combination to mute$
      */
-    @When("^I type shortcut combination to mute or unmute the conversation (.*)$")
-    public void ITypeShortcutCombinationToMuteOrUnmute(String contact)
-            throws Exception {
-        contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-        context.getPagesCollection().getPage(ContactListPage.class)
-                .pressShortCutToMuteOrUnmute(contact);
+    @When("^I type shortcut combination to mute or unmute$")
+    public void ITypeShortcutCombinationToMuteOrUnmute() throws Exception {
+        context.getPagesCollection().getPage(ContactListPage.class).pressShortCutToMuteOrUnmute();
 
     }
 
