@@ -279,4 +279,16 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     public void tapImageContainerButton(String buttonName) throws Exception {
         getConversationViewPage().tapImageContainerButton(buttonName);
     }
+
+    public BufferedImage getMessageLikeButtonState() throws Exception {
+        return getConversationViewPage().getMessageLikeButtonState();
+    }
+
+    public void tapMessageMetaItem(String itemType) throws Exception {
+        getConversationViewPage().tapMessageMetaItem(itemType);
+    }
+
+    public int getMessageStatusCount() throws Exception {
+        return getConversationViewPage().getMessageStatusCount();
+    }
 }
