@@ -112,17 +112,17 @@ Feature: Autoconnect
     Given I sign in using my email or phone number
     When I open search UI
     And I click clear button
-    Then I see 1. autoconnected conversation in conversations list
+    Then I see 1st autoconnection in conversations list
     Given I quit Wire
     Given I relaunch Wire
-    Then I see 2. autoconnected conversations in conversations list
+    Then I see 2nd autoconnection in conversations list
     Given I quit Wire
     Given I relaunch Wire
-    Then I see 3. autoconnected conversations in conversations list
+    Then I see 3rd autoconnection in conversations list
     And I pick 1 random contact of chunk 1 to register at BE
     Given I quit Wire
     Given I relaunch Wire
-    Then I see 4. autoconnected conversations in conversations list
+    Then I see 4th autoconnection in conversations list
 
     Examples:
       | Name      |
