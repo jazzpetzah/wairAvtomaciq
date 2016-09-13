@@ -18,6 +18,11 @@ public class ConversationViewPageSteps {
 
     private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
     private static final String ANY_MESSAGE = "*ANY MESSAGE*";
+    private static final int LIKE_BUTTON_CHANGE_TIMEOUT = 15;
+    private static final double LIKE_BUTTON_MIN_SIMILARITY_SCORE = 0.6;
+    private static final double LIKE_BUTTON_NOT_CHANGED_MIN_SCORE = -0.5;
+
+    private ElementState messageLikeButtonState;
 
     private TabletConversationViewPage getConversationViewPage() throws Exception {
         return pagesCollection.getPage(TabletConversationViewPage.class);
@@ -204,7 +209,7 @@ public class ConversationViewPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Ping|Add picture|Sketch|File|Share location|Audio message|Video message) button$ from cursor toolbar$
+     * @step. ^I tap (Ping|Add picture|Sketch|File|Share location|Audio message|Video message) button from cursor toolbar$
      */
     @When("^I (long )?tap (Ping|Add picture|Sketch|File|Share location|Audio message|Video message) " +
             "button from cursor toolbar( for \\d+ seconds?)?$")
@@ -550,9 +555,10 @@ public class ConversationViewPageSteps {
      *
      * @param name one of possible message bottom menu button name
      * @throws Exception
-     * @step. ^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit) button on the message bottom menu$
+     * @step. ^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike) button on the message bottom menu$
      */
-    @When("^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit) button on the message bottom menu$")
+    @When("^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike) " +
+            "button on the message bottom menu$")
     public void ITapMessageBottomMenuButton(String name) throws Exception {
         getConversationViewPage().tapMessageBottomMenuButton(name);
     }
@@ -778,5 +784,68 @@ public class ConversationViewPageSteps {
         Assert.assertEquals(
                 String.format("The %s should be %s with expected text '%s'",
                         itemType, shouldBeVisible ? "visible" : "invisible", expectedMsg), shouldBeVisible, isVisible);
+    }
+
+    /**
+     * Remember the state of like button
+     *
+     * @param messageType Specified message type
+     * @throws Exception
+     * @step. ^I remember the state of like button$
+     */
+    @When("^I remember the state of like button$")
+    public void IRememberLikeButton() throws Exception {
+        messageLikeButtonState = new ElementState(
+                () -> getConversationViewPage().getMessageLikeButtonState()
+        );
+        messageLikeButtonState.remember();
+    }
+
+    /**
+     * Verify the current state of like button has been changed since the last snapshot was made
+     *
+     * @throws Exception
+     * @step. ^I verify the state of like button item is (not )?changed$
+     */
+    @Then("^I verify the state of like button item is (not )?changed$")
+    public void IVerifyStateOfLikeButtonChanged(String notChanged) throws Exception {
+        if (notChanged == null) {
+            Assert.assertTrue("The state of Like button is expected to be changed",
+                    messageLikeButtonState.isChanged(LIKE_BUTTON_CHANGE_TIMEOUT, LIKE_BUTTON_MIN_SIMILARITY_SCORE));
+        } else {
+            Assert.assertTrue("The state of Like button is expected to be changed",
+                    messageLikeButtonState.isNotChanged(LIKE_BUTTON_CHANGE_TIMEOUT, LIKE_BUTTON_NOT_CHANGED_MIN_SCORE));
+        }
+    }
+
+    /**
+     * Tap on Any msg meta item
+     *
+     * @param itemType    Message Meta Item type
+     * @param messageType The message type
+     * @throws Exception
+     * @step. ^^I tap (Like button|Like description|Message status|First like avatar|Second like avatar)
+     * in conversation view$
+     */
+    @When("^I tap (Like button|Like description|Message status|First like avatar|Second like avatar)" +
+            " in conversation view$")
+    public void ITapMessageMeta(String itemType) throws Exception {
+        getConversationViewPage().tapMessageMetaItem(itemType);
+    }
+
+    /**
+     * Verify the count of Message status within current conversation
+     *
+     * @param expectedCount expect apperance count
+     * @param expectedText  the expected text within Message Status
+     * @throws Exception
+     * @step. ^I see (\d+) Message statu(?:s|ses) with expected text "(.*)" in conversation view$
+     */
+    @Then("^I see (\\d+) Message statu(?:s|ses) in conversation view$")
+    public void ISeeMessageStatus(int expectedCount) throws Exception {
+        int actualCount = getConversationViewPage().getMessageStatusCount();
+        Assert.assertTrue(
+                String.format("The expect count is not equal to actual count, actual: %d, expect: %d",
+                        actualCount, expectedCount), actualCount == expectedCount);
     }
 }

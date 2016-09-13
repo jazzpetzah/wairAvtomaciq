@@ -1,6 +1,6 @@
 Feature: Likes
 
-  @C225979 @regression @fastLogin
+  @C225979 @rc @regression @fastLogin
   Scenario Outline: Verify liking/unliking a message by tapping on like icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -19,7 +19,7 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C225980 @regression @fastLogin
+  @C225980 @rc @regression @fastLogin
   Scenario Outline: Verify liking/unliking a message from a message menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -39,7 +39,7 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C226008 @regression @fastLogin
+  @C226008 @rc @regression @fastLogin
   Scenario Outline: Verify impossibility of liking the message after leaving (being removed) from a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -60,7 +60,7 @@ Feature: Likes
       | Name      | Contact1  | Contact2  | Group            |
       | user1Name | user2Name | user3Name | RemovedFromGroup |
 
-  @C225993 @regression @fastLogin
+  @C225993 @rc @regression @fastLogin
   Scenario Outline: Verify liking a message tapping on like icon, when someone liked this message before
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -100,7 +100,7 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C225998 @C226001 @regression @fastLogin
+  @C225998 @rc @regression @fastLogin
   Scenario Outline: Verify editing already liked message and like after edit
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -126,7 +126,7 @@ Feature: Likes
       | Name      | Contact   | Text  |
       | user1Name | user2Name | aloha |
 
-  @C226004 @regression @fastLogin
+  @C226004 @rc @regression @fastLogin
   Scenario Outline: Verify receiving a like in a conversation which was removed
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -189,7 +189,7 @@ Feature: Likes
       | Name      | Contact1  | Contact2  | Group         | FileName | FileExt | FileSize | FileMIME                 | Contact1Device |
       | user1Name | user2Name | user3Name | FileLikeGroup | testing  | tmp     | 240 KB   | application/octet-stream | C1Device       |
 
-  @C225984 @regression @fastLogin
+  @C225984 @rc @regression @fastLogin
   Scenario Outline: Verify liking a video message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -208,7 +208,7 @@ Feature: Likes
       | Name      | Contact1  | Contact2  | Group          | FileName    | MIMEType  | Contact1Device |
       | user1Name | user2Name | user3Name | VideoLikeGroup | testing.mp4 | video/mp4 | C1Device       |
 
-  @C225985 @regression @fastLogin
+  @C225985 @rc @regression @fastLogin
   Scenario Outline: Verify liking Soundcloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
