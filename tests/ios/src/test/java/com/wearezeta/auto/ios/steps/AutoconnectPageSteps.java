@@ -22,7 +22,6 @@ public class AutoconnectPageSteps {
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
     private final ABProvisionerAPI addressbookProvisioner = ABProvisionerAPI.getInstance();
-    final CommonIOSSteps commonIOSSteps = new CommonIOSSteps();
     private final CommonSteps commonSteps = CommonSteps.getInstance();
 
     private ConversationsListPage getConversationsListPage() throws Exception {
@@ -37,7 +36,7 @@ public class AutoconnectPageSteps {
      */
     @Given("^I install Address Book Helper app$")
     public void IInstallAddressbookHelperApp() throws Exception {
-        final File app = new File(commonIOSSteps.getiOSAddressbookAppPath());
+        final File app = new File(CommonIOSSteps.getiOSAddressbookAppPath());
         pagesCollection.getCommonPage().installIpa(app);
     }
 
@@ -97,6 +96,9 @@ public class AutoconnectPageSteps {
      */
     @Given("^I separate list of contacts into (\\d+) chunks$")
     public void ISeparateListOfContactsIntoChunks(int numberOfChunks) throws Exception {
+        if (contactsInAddressbook.isEmpty()) {
+            throw new IllegalStateException("Read list of contacts in Address Book first!");
+        }
         int sizeOfBatch = contactsInAddressbook.size() / numberOfChunks;
         for (int i = 0; i < contactsInAddressbook.size(); i += sizeOfBatch) {
             contactBatches.add(contactsInAddressbook.subList(i, Math.min(i + sizeOfBatch, contactsInAddressbook.size())));
@@ -116,6 +118,9 @@ public class AutoconnectPageSteps {
     @Then("^I pick (\\d+) random contact of chunk (\\d+) to register at BE$")
     public void IPickRandomContactOfChunkToRegisterAtBE(int numberContactsToRegister, int numberOfChunk)
             throws Exception {
+        if (contactBatches.isEmpty()) {
+            throw new IllegalStateException("Separate the list of contacts into batches first!");
+        }
         for (int i = 1; i <= numberContactsToRegister; i++) {
             int randomNumber = new Random().nextInt(contactBatches.get(numberOfChunk - 1).size());
             ABContact contactToRegister = contactBatches.get(numberOfChunk - 1).get(randomNumber);
@@ -174,16 +179,18 @@ public class AutoconnectPageSteps {
         }
     }
 
-    //TODO: richtige reg expresion damit ich st/nd/rd/th sagen kann
     /**
      * Checks that the i-th autoconnected user is seen in list
      *
      * @param numberOfUserToGetAutoconnected the number of the user that gets autoconnected and should appear at the list
      * @throws Exception
-     * @step. ^I see (\d+) autoconnected conversations? in conversations list$
+     * @step. ^I see (\d+) autoconnection in conversations list$
      */
-    @Then("^I see (\\d+). autoconnected conversations? in conversations list$")
-    public void ISeeAutoconnectedConversationInConversationsList(int numberOfUserToGetAutoconnected) throws Exception {
+    @Then("^I see (\\d+)(?:st|nd|rd|th) autoconnection in conversations list$")
+    public void ISeeAutoconnectionInConversationsList(int numberOfUserToGetAutoconnected) throws Exception {
+        if (usersToAutoconnect.isEmpty()) {
+            throw new IllegalStateException("Pick a contact first from a batch to register at BE to get autoconnected!");
+        }
         String user = usrMgr.replaceAliasesOccurences(usersToAutoconnect.get(numberOfUserToGetAutoconnected - 1).toString(),
                 ClientUsersManager.FindBy.NAME_ALIAS);
         commonSteps.WaitUntilContactIsFoundInSearch(usrMgr.getSelfUserOrThrowError().getName(), user);
