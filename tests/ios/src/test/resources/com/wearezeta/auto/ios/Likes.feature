@@ -270,11 +270,11 @@ Feature: Likes
     #And I tap on group chat with name <Group>
     And I tap toolbox of the recent message
     Then I see Likers page
-    And I see user <Contact1> in likers list at position number 5
-    And I see user <Contact2> in likers list at position number 4
-    And I see user <Contact3> in likers list at position number 3
-    And I see user <Contact4> in likers list at position number 2
     And I see user <Contact5> in likers list at position number 1
+    And I see user <Contact4> in likers list at position number 2
+    And I see user <Contact3> in likers list at position number 3
+    And I see user <Contact2> in likers list at position number 4
+    And I see user <Contact1> in likers list at position number 5
 
 
     Examples:
