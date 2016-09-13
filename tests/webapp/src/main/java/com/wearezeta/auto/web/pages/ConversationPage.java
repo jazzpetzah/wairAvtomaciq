@@ -980,6 +980,13 @@ public class ConversationPage extends WebPage {
         getDriver().findElement(locator).click();
     }
 
+    public boolean isLikeSymbolVisible() throws Exception {
+        By lastMessage = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String lastMessageId = getDriver().findElement(lastMessage).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeSymbol.apply(lastMessageId));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
     public void clickLikeLatestMessageWithoutOtherLikes() throws Exception {
         String latestMessageId = getLatestMessageId();
         hoverOverMessage(latestMessageId);

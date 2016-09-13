@@ -387,6 +387,9 @@ public final class WebAppLocators {
         public static final Function<String, String> cssLinkPreviewLinkByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] .link-preview-site", text);
 
+        public static final Function<String, String> cssLikeSymbol = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-body-like", text);
+
         public static final String xpathLikeInContext = "//li[contains(@data-context-action, 'react') and text()='Like']";
 
         public static final String xpathUnlikeInContext = "//li[contains(@data-context-action, 'react') and text()='Unlike']";
