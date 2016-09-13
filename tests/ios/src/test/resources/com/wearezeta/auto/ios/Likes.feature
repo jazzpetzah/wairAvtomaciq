@@ -202,7 +202,7 @@ Feature: Likes
     And I long tap on video message in conversation view
     And I tap on Like badge item
     And I tap toolbox of the recent message
-    Then I see Myself in likers list
+    Then I see user Myself in likers list
 
     Examples:
       | Name      | Contact1  | Contact2  | Group          | FileName    | MIMEType  | Contact1Device |
@@ -280,8 +280,8 @@ Feature: Likes
     Given I sign in using my email or phone number
     Given User Myself sends 1 encrypted message to group conversation <Group>
     Given I see conversations list
-    And I tap on group chat with name <Group>
-    And I see 1 default message in the conversation view
+    Given I tap on group chat with name <Group>
+    Given I see 1 default message in the conversation view
     When User <Contact1> likes the recent message from group conversation <Group>
     And User <Contact2> likes the recent message from group conversation <Group>
     And User <Contact3> likes the recent message from group conversation <Group>

@@ -18,7 +18,7 @@ public class LikersPage extends IOSPage {
 
     private static final By nameLikersPageLabel = MobileBy.AccessibilityId("LIKED BY");
 
-    private static final FunctionFor2Parameters<String, Integer, String> xpathStrLkerByNameAndIndex = (index, name) ->
+    private static final FunctionFor2Parameters<String, Integer, String> xpathStrLikerByNameAndIndex = (index, name) ->
             String.format("//UIACollectionCell[%s][./UIAStaticText[@name='%s']]", index, name);
 
     public LikersPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -38,8 +38,8 @@ public class LikersPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameLikersPageLabel);
     }
 
-    public boolean isLikerByPositionVisible(String name, Integer position) throws Exception {
-        final By locator = By.xpath(xpathStrLkerByNameAndIndex.apply(position, name));
+    public boolean isLikerByPositionVisible(String name, int position) throws Exception {
+        final By locator = By.xpath(xpathStrLikerByNameAndIndex.apply(position, name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 }

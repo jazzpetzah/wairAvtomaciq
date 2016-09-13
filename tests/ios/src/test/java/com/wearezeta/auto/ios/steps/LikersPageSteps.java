@@ -27,7 +27,7 @@ public class LikersPageSteps {
     }
 
     /**
-     * Verify whether the particular liker name is present in likers list and optoinaly on particular position
+     * Verify whether the particular liker name is present in likers list and optionally on particular position
      *
      * @param name     user name/alias
      * @param position optional parameter representing position of user in likers list
@@ -35,7 +35,7 @@ public class LikersPageSteps {
      * @step. ^I see user (.*) in likers list(?:at position number)?( \d+)?
      */
     @Then("^I see user (.*) in likers list(?: at position number )?(\\d+)?")
-    public void ISeeXInLikeersList(String name, Integer position) throws Exception {
+    public void ISeeUserInLikersListAtPosition(String name, Integer position) throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         if (position == null) {
             Assert.assertTrue(String.format("User name '%s' is not visible in Likers list", name),
