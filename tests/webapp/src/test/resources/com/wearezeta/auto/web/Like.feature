@@ -138,7 +138,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | File        |
       | user1Email | user1Password | user1Name | user2Name | example.m4a |
 
-  @C226430 @staging
+  @C226430 @regression
   Scenario Outline: Verify liking someone's video message
     Given my browser supports video message feature
     Given There are 2 users where <Name> is me
