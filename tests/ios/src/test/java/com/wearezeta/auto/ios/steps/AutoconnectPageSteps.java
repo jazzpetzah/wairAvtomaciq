@@ -36,8 +36,8 @@ public class AutoconnectPageSteps {
      */
     @Given("^I install Address Book Helper app$")
     public void IInstallAddressbookHelperApp() throws Exception {
-        final File app = new File(CommonIOSSteps.getiOSAddressbookAppPath());
-        pagesCollection.getCommonPage().installIpa(app);
+        final File ipaFile = new File(CommonIOSSteps.getiOSAddressbookAppPath());
+        pagesCollection.getCommonPage().installIpa(ipaFile);
     }
 
     private static final String ADDRESSBOOK_APP_BUNDLE = "com.wire.addressbookautomation";
@@ -114,9 +114,10 @@ public class AutoconnectPageSteps {
      * @param numberContactsToRegister number of contacts to register
      * @param numberOfChunk            number of the batch to register from. the index starts at 0
      * @throws Exception
+     * @step. ^I pick (\d+) random contact? from chunk (\d+) to register at BE$
      */
-    @Then("^I pick (\\d+) random contact of chunk (\\d+) to register at BE$")
-    public void IPickRandomContactOfChunkToRegisterAtBE(int numberContactsToRegister, int numberOfChunk)
+    @Then("^I pick (\\d+) random contact? from chunk (\\d+) to register at BE$")
+    public void IPickRandomContactFromChunkToRegisterAtBE(int numberContactsToRegister, int numberOfChunk)
             throws Exception {
         if (contactBatches.isEmpty()) {
             throw new IllegalStateException("Separate the list of contacts into batches first!");
@@ -170,6 +171,8 @@ public class AutoconnectPageSteps {
      */
     @Given("^I add (\\d+) users to Address Book$")
     public void IAddXUsersToAddressBook(int numberOfUsers) throws Exception {
+        Assert.assertTrue("Number of users is bigger than allowed maximum user count",
+                numberOfUsers <= usrMgr.MAX_USERS);
         for (int i = 2; i <= numberOfUsers+1 ; i++) {
             ClientUser user = usrMgr.findUserByNameOrNameAlias(String.format("user%sName", i));
             String name = user.getName();

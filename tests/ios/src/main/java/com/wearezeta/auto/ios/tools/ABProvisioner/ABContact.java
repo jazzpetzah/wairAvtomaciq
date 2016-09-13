@@ -11,7 +11,7 @@ import java.util.Optional;
 public class ABContact {
     private String name;
     private List<String> emails = new ArrayList<>();
-    public List<String> phoneNumbers = new ArrayList<>();
+    private List<String> phoneNumbers = new ArrayList<>();
 
     public ABContact(String name, Optional<List<String>> emails, Optional<List<String>> phoneNumbers) {
         this.name = name;

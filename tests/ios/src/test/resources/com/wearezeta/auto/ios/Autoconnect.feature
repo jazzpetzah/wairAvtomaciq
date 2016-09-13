@@ -102,28 +102,28 @@ Feature: Autoconnect
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
     Given I delete all contacts from Address Book
-    Given I add 3000 users to Address Book
+    Given I add <NumberOfUsers> users to Address Book
     Given I read list of contacts in Address Book
-    Given I separate list of contacts into 3 chunks
-    Given I pick 1 random contact of chunk 1 to register at BE
-    Given I pick 1 random contact of chunk 2 to register at BE
-    Given I pick 1 random contact of chunk 3 to register at BE
+    Given I separate list of contacts into <NumberOfChunks> chunks
+    Given I pick 1 random contact from chunk 1 to register at BE
+    Given I pick 1 random contact from chunk 2 to register at BE
+    Given I pick 1 random contact from chunk 3 to register at BE
     Given I relaunch Wire
     Given I sign in using my email or phone number
     When I open search UI
     And I click clear button
     Then I see 1st autoconnection in conversations list
-    Given I quit Wire
-    Given I relaunch Wire
+    When I quit Wire
+    And I relaunch Wire
     Then I see 2nd autoconnection in conversations list
-    Given I quit Wire
-    Given I relaunch Wire
+    When I quit Wire
+    And I relaunch Wire
     Then I see 3rd autoconnection in conversations list
-    And I pick 1 random contact of chunk 1 to register at BE
-    Given I quit Wire
-    Given I relaunch Wire
+    When I pick 1 random contact from chunk 1 to register at BE
+    And I quit Wire
+    And I relaunch Wire
     Then I see 4th autoconnection in conversations list
 
     Examples:
-      | Name      |
-      | user1Name |
+      | Name      | NumberOfUsers | NumberOfChunks |
+      | user1Name | 3000          | 3              |
