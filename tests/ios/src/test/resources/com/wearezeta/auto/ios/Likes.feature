@@ -246,7 +246,6 @@ Feature: Likes
     Examples:
       | Name      | Contact1  | Contact2  | Picture     | Group        |
       | user1Name | user2Name | user3Name | testing.jpg | ArchiveGroup |
-      | user1Name | user2Name | user3Name | BlockedContGroup | test.m4a | audio/mp4 | C1Device       | C1DeviceLabel       | MyDev    |
 
   @C225992 @C225996 @staging @fastLogin
   Scenario Outline: Verify liking/unliking a message by double tapping
