@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
@@ -25,8 +24,6 @@ import com.wearezeta.suite_splitter.CucumberTestcase;
 import com.wearezeta.suite_splitter.Testcase;
 
 public class GherkinFile extends TestcasesStorage {
-    private static Logger LOG = Logger.getLogger(GherkinFile.class.getSimpleName());
-
     public GherkinFile(String path) {
         super(path);
     }
@@ -136,14 +133,7 @@ public class GherkinFile extends TestcasesStorage {
         JSONArray resultJSON = new JSONArray(json);
         syncJSONTestcases(testcases, resultJSON);
 
-        String gherkin;
-        try {
-            gherkin = JSONtoGherkin(resultJSON.toString());
-        } catch (Exception e) {
-            LOG.severe(String.format("Gherkin transformer has failed to handle source JSON:\n\n%s",
-                    resultJSON.toString()));
-            throw e;
-        }
+        final String gherkin = JSONtoGherkin(resultJSON.toString());
         FileUtils.writeStringToFile(new File(dstPath), gherkin, "UTF-8");
     }
 }
