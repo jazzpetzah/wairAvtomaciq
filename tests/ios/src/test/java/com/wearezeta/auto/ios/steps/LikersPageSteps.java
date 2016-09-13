@@ -32,9 +32,9 @@ public class LikersPageSteps {
      * @param name     user name/alias
      * @param position optional parameter representing position of user in likers list
      * @throws Exception
-     * @step. ^I see user (.*) in likers list(?:at position number)?( \d+)?
+     * @step. ^I see user (.*) in likers list(?: at position number )?(\d+)?$
      */
-    @Then("^I see user (.*) in likers list(?: at position number )?(\\d+)?")
+    @Then("^I see user (.*) in likers list(?: at position number )?(\\d+)?$")
     public void ISeeUserInLikersListAtPosition(String name, Integer position) throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         if (position == null) {
