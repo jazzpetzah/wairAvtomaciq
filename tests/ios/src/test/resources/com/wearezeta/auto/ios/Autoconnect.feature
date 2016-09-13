@@ -96,7 +96,7 @@ Feature: Autoconnect
       | user1Name | user1Email   | user2Name |
 
   @C226448 @addressbookStart @staging
-  Scenario Outline: Verify Address Book is uploaded in batches
+  Scenario Outline: (MEC-1557) Verify Address Book is uploaded in batches
     Given There is 1 user where <Name> is me
     Given I quit Wire
     Given I install Address Book Helper app
