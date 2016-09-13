@@ -505,7 +505,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Message1 | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | like me  | edited        |
 
-  @C226437 @like @staging
+  @C226437 @like @staging @torun
   Scenario Outline: Verify you cannot like a system message
     Given There are 3 user where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -516,6 +516,7 @@ Feature: Like
     When I open conversation with <ChatName>
     Then I see YOU STARTED A CONVERSATION WITH action for <Contact1>,<Contact2> in conversation
     And I do not see like symbol for latest message
+    And I do not see likes below the latest message
     When I write random message
     And I send message
     And I see random message in conversation
@@ -528,17 +529,28 @@ Feature: Like
     And I open conversation with <ChatName>
     Then I see YOU REMOVED action for <Contact1> in conversation
     And I do not see like symbol for latest message
-    When I write random message
-    And I send message
-    And I see random message in conversation
-    Then I see like symbol for latest message
+    And I do not see likes below the latest message
     When I add <Contact1> to group chat
     Then I see YOU ADDED action for <Contact1> in conversation
     And I do not see like symbol for latest message
+    And I do not see likes below the latest message
+    When I click People button in group conversation
+    And I see Group Participants popover
+    And I change group conversation title to <NewName> on Group Participants popover
+    And I click People button in group conversation
+    And I see RENAMED action in conversation
+    And I do not see like symbol for latest message
+    And I do not see likes below the latest message
+    When I call
+    And I wait for 5 seconds
+    And I hang up call with conversation <NewName>
+    And I see CALLED action in conversation
+    Then I do not see like symbol for latest message
+    And I do not see likes below the latest message
 
     Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GROUPCHAT |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | NewName |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GROUPCHAT | NEWNAME |
 
     @C226439 @regression
     Scenario Outline: Verify you can like someone's message from message context menu

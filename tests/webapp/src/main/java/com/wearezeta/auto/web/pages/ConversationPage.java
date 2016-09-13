@@ -981,9 +981,7 @@ public class ConversationPage extends WebPage {
     }
 
     public boolean isLikeSymbolVisible() throws Exception {
-        By lastMessage = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
-        String lastMessageId = getDriver().findElement(lastMessage).getAttribute("data-uie-uid");
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeSymbol.apply(lastMessageId));
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeSymbol.apply(getLatestMessageId()));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
@@ -1302,7 +1300,7 @@ public class ConversationPage extends WebPage {
     }
 
     private String getLatestMessageId() throws Exception {
-        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssSecondLastMessage);
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
         return getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
     }
 
