@@ -99,7 +99,7 @@ Feature: Localization
       | user1Email | user1Password | user1Name | de       | Wenn du kein Wire-Benutzerkonto mit dieser E-Mail-Adresse erstellt hast |
       | user1Email | user1Password | user1Name | en       | If you didn't create a Wire account using this email address            |
 
-  @C165102 @staging
+  @C165102 @regression
   Scenario Outline: Verify new device email is <Language>
     Given I see Registration page
     When I switch language to <Language>
