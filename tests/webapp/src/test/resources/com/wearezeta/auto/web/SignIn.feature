@@ -133,6 +133,24 @@ Feature: Sign In
       | Name      | PhoneNumber      | Password   |
       | user1Name | user1PhoneNumber | aqa123456! |
 
+  @C246197 @staging
+  Scenario Outline: Verify you can sign in by phone number with already set password and permanent device
+    Given There is 1 user where <Name> is me
+    Given I switch to sign in page
+    When I switch to phone number sign in page
+    And I check option to remember me on phone login page
+    And I sign in using phone number of user <Name>
+    And I click on sign in button on phone number sign in
+    And I enter password <Password> on phone login page
+    And I press Sign In button on phone login page
+    Then I am signed in properly
+    And I see user name on self profile page <Name>
+    And I see user phone number on self profile page <PhoneNumber>
+
+    Examples: 
+      | Name      | PhoneNumber      | Password   |
+      | user1Name | user1PhoneNumber | aqa123456! |
+
   @C1788 @mute
   Scenario Outline: Verify you see correct error message when sign in with incorrect phone number
     Given I switch to sign in page

@@ -23,6 +23,9 @@ public class PhoneNumberLoginPage extends WebPage {
 
     @FindBy(css = WebAppLocators.PhoneNumberLoginPage.cssErrorMessage)
     private WebElement errorMessage;
+    
+    @FindBy(css = WebAppLocators.PhoneNumberLoginPage.cssRememberMe)
+    private WebElement rememberMe;
 
     public PhoneNumberLoginPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -54,5 +57,17 @@ public class PhoneNumberLoginPage extends WebPage {
                 getDriver(),
                 By.cssSelector(WebAppLocators.PhoneNumberLoginPage.cssErrorMessage));
         return errorMessage.getText();
+    }
+    
+    public void checkRememberMe() {
+        if (!rememberMe.isSelected()) {
+            rememberMe.click();
+        }
+    }
+
+    public void uncheckRememberMe() {
+        if (rememberMe.isSelected()) {
+            rememberMe.click();
+        }
     }
 }
