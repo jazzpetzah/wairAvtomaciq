@@ -154,6 +154,7 @@ Feature: Registration
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password "<Password>" on Registration page
+    And I accept the Terms of Use
     And I submit registration form
     Then I verify that the email field on the registration form is marked as error
     And I see error "Please enter a valid email address." on Verification page
