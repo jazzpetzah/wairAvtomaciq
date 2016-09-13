@@ -1295,7 +1295,7 @@ public class ConversationPage extends WebPage {
     }
 
     private String getLatestMessageId() throws Exception {
-        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage);
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
         return getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
     }
 
