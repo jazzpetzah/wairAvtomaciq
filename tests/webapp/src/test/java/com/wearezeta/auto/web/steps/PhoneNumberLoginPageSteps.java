@@ -100,4 +100,13 @@ public class PhoneNumberLoginPageSteps {
 				context.getPagesCollection().getPage(PhoneNumberLoginPage.class)
 						.getErrorMessage(), equalTo(message));
 	}
+        
+        @When("I (un)?check option to remember me on phone login page")
+	public void ICheckOptionToRememberMe(String uncheck) throws Exception {
+		if (uncheck == null) {
+			context.getPagesCollection().getPage(PhoneNumberLoginPage.class).checkRememberMe();
+		} else {
+			context.getPagesCollection().getPage(PhoneNumberLoginPage.class).uncheckRememberMe();
+		}
+	}
 }

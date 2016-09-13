@@ -30,8 +30,7 @@ import cucumber.api.PendingException;
 
 public class ContactListPage extends WebPage {
 
-    private static final Logger log = ZetaLogger.getLog(ContactListPage.class
-            .getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(ContactListPage.class.getSimpleName());
 
     @FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssSelfProfileButton)
     private WebElement selfProfileButton;
@@ -47,7 +46,7 @@ public class ContactListPage extends WebPage {
 
     @FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenArchivedConvosButton)
     private WebElement openArchivedConvosButton;
-    
+
     @FindBy(css = WebAppLocators.ContactListPage.cssCloseArchivedConvosButton)
     private WebElement closeArchivedConvosButton;
 
@@ -58,10 +57,9 @@ public class ContactListPage extends WebPage {
     private WebElement conversationInput;
 
     // options popover bubble
-
     @FindBy(css = WebAppLocators.ContactListPage.cssArchiveButton)
     private WebElement archiveButton;
-    
+
     @FindBy(css = WebAppLocators.ContactListPage.cssMuteButton)
     private WebElement muteButton;
 
@@ -81,7 +79,6 @@ public class ContactListPage extends WebPage {
     private WebElement cancelRequestButton;
 
     // leave warning
-
     @FindBy(css = WebAppLocators.ContactListPage.cssLeaveModalCancelButton)
     private WebElement leaveModalCancelButton;
 
@@ -89,7 +86,6 @@ public class ContactListPage extends WebPage {
     private WebElement leaveModalActionButton;
 
     // block warning
-
     @FindBy(css = WebAppLocators.ContactListPage.cssBlockModalCancelButton)
     private WebElement blockModalCancelButton;
 
@@ -97,7 +93,6 @@ public class ContactListPage extends WebPage {
     private WebElement blockModalActionButton;
 
     // delete warning
-
     @FindBy(css = WebAppLocators.ContactListPage.cssDeleteModalCancelButtonGroup)
     private WebElement deleteModalCancelButtonGroup;
 
@@ -113,25 +108,22 @@ public class ContactListPage extends WebPage {
     @FindBy(css = WebAppLocators.ContactListPage.cssDeleteModalCancelButtonSingle)
     private WebElement deleteModalCancelButtonSingle;
 
-    public ContactListPage(Future<ZetaWebAppDriver> lazyDriver)
-            throws Exception {
+    public ContactListPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
     private static final String DEFAULT_GROUP_CONVO_NAMES_SEPARATOR = ",";
 
     /**
-     * Fixes default group conversation name, because we never know the original
-     * order of participant names in group convo name
+     * Fixes default group conversation name, because we never know the original order of participant names in group convo name
      *
      * @param conversationName the initial name
-     * @return fixed group convo name, as it is displayed in conversation list.
-     * 'conversationName' is not going to be changed if there are no
-     * comma character(s)
+     * @return fixed group convo name, as it is displayed in conversation list. 'conversationName' is not going to be changed if
+     * there are no comma character(s)
      * @throws Exception
      */
     protected String fixDefaultGroupConvoName(String conversationName,
-                                              boolean includeArchived, boolean throwOnError) throws Exception {
+            boolean includeArchived, boolean throwOnError) throws Exception {
         if (conversationName.contains(DEFAULT_GROUP_CONVO_NAMES_SEPARATOR)) {
             final Set<String> initialNamesSet = new HashSet<String>(
                     Arrays.asList(conversationName.split(","))).stream()
@@ -174,7 +166,7 @@ public class ContactListPage extends WebPage {
     }
 
     protected String fixDefaultGroupConvoName(String conversationName,
-                                            boolean includeArchived) throws Exception {
+            boolean includeArchived) throws Exception {
         return fixDefaultGroupConvoName(conversationName, includeArchived, true);
     }
 
@@ -301,14 +293,14 @@ public class ContactListPage extends WebPage {
     public void openArchive() throws Exception {
         this.getWait().until(
                 ExpectedConditions
-                        .elementToBeClickable(openArchivedConvosButton));
+                .elementToBeClickable(openArchivedConvosButton));
         openArchivedConvosButton.click();
     }
-    
+
     public void closeArchive() throws Exception {
         this.getWait().until(
                 ExpectedConditions
-                        .elementToBeClickable(closeArchivedConvosButton));
+                .elementToBeClickable(closeArchivedConvosButton));
         closeArchivedConvosButton.click();
     }
 
@@ -321,19 +313,19 @@ public class ContactListPage extends WebPage {
     }
 
     public boolean isMuteButtonClickable() throws Exception {
-        return DriverUtils.waitUntilElementClickable(this.getDriver(),muteButton);
+        return DriverUtils.waitUntilElementClickable(this.getDriver(), muteButton);
     }
 
     public boolean isUnmuteButtonClickable() throws Exception {
-        return DriverUtils.waitUntilElementClickable(this.getDriver(),unmuteButton);
+        return DriverUtils.waitUntilElementClickable(this.getDriver(), unmuteButton);
     }
 
     public boolean isDeleteButtonClickable() throws Exception {
-        return DriverUtils.waitUntilElementClickable(this.getDriver(),deleteButton);
+        return DriverUtils.waitUntilElementClickable(this.getDriver(), deleteButton);
     }
 
     public boolean isLeaveButtonClickable() throws Exception {
-        return DriverUtils.waitUntilElementClickable(this.getDriver(),leaveButton);
+        return DriverUtils.waitUntilElementClickable(this.getDriver(), leaveButton);
     }
 
     public boolean isArchiveButtonClickable() throws Exception {
@@ -553,12 +545,12 @@ public class ContactListPage extends WebPage {
         final WebElement entry = getDriver().findElement(locator);
         return AccentColor.getByRgba(entry.getCssValue("color"));
     }
-    
+
     public boolean isUnreadDotVisibleForConversation(String name) throws Exception {
         final By locator = By.xpath(WebAppLocators.ContactListPage.xpathUnreadDotByContactName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
-    
+
     public boolean isUnreadDotInvisibleForConversation(String name) throws Exception {
         final By locator = By.xpath(WebAppLocators.ContactListPage.xpathUnreadDotByContactName.apply(name));
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
@@ -584,9 +576,8 @@ public class ContactListPage extends WebPage {
         return muteButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
     }
 
-    public void pressShortCutToMuteOrUnmute(String conversationName)
+    public void pressShortCutToMuteOrUnmute()
             throws Exception {
-        conversationName = fixDefaultGroupConvoName(conversationName, false);
         if (WebAppExecutionContext.isCurrentPlatformWindows()) {
             conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "s"));
         } else {
@@ -675,7 +666,7 @@ public class ContactListPage extends WebPage {
         blockButton.click();
     }
 
-        // only for Wrapper
+    // only for Wrapper
     public void openContextMenuForContact(String name)
             throws Exception {
         if (name == null) {

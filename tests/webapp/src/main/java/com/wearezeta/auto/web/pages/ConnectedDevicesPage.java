@@ -22,8 +22,7 @@ public class ConnectedDevicesPage extends WebPage {
     @FindBy(how = How.CSS, using = "[data-uie-name='modal-conntected-device'] [data-uie-name='go-manage-devices']")
     private WebElement manageButton;
 
-    public ConnectedDevicesPage(Future<ZetaWebAppDriver> lazyDriver)
-            throws Exception {
+    public ConnectedDevicesPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 

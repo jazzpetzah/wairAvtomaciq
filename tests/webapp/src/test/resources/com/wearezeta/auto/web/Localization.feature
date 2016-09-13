@@ -98,7 +98,31 @@ Feature: Localization
       | Email      | Password      | Name      | Language | Message                                                                 |
       | user1Email | user1Password | user1Name | de       | Wenn du kein Wire-Benutzerkonto mit dieser E-Mail-Adresse erstellt hast |
       | user1Email | user1Password | user1Name | en       | If you didn't create a Wire account using this email address            |
-    
+
+  @C165102 @staging
+  Scenario Outline: Verify new device email is <Language>
+    Given I see Registration page
+    When I switch language to <Language>
+    And I enter user name <Name> on Registration page
+    And I enter user email <Email> on Registration page
+    And I enter user password "<Password>" on Registration page
+    And I accept the Terms of Use
+    And I start activation email monitoring
+    And I submit registration form
+    Then I verify that an envelope icon is shown
+    And I see email <Email> on Verification page
+    When I activate user by URL
+    And I confirm keeping picture on Welcome page
+    And I switch language to en
+    And <Name> starts listening for new device mail
+    And user <Name> adds a new device Device with label Label
+    Then I see new device mail in <Language> with <Message>
+
+    Examples:
+      | Email      | Password      | Name      | Language    | Message                                                     |
+      | user1Email | user1Password | user1Name | de          | Ein neues Gerät wurde deinem Wire-Benutzerkonto hinzugefügt |
+      | user1Email | user1Password | user1Name | en          | Your Wire account was used on                               |
+
   @C234619 @regression
   Scenario Outline: Verify password reset email is <Language>
     Given I see Registration page

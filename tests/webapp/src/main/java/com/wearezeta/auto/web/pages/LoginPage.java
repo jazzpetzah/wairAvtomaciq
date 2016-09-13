@@ -27,7 +27,6 @@ public class LoginPage extends WebPage {
 
     private static final int TIMEOUT_SIGNED_IN_PROPERLY = 40; // seconds
 
-
     @FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathCreateAccountButton)
     private WebElement createAccountButton;
 
@@ -64,12 +63,6 @@ public class LoginPage extends WebPage {
     @FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssDescriptionText)
     private WebElement descriptionText;
 
-    @FindBy(css = WebAppLocators.LoginPage.errorMarkedEmailField)
-    private WebElement redDotOnEmailField;
-
-    @FindBy(css = WebAppLocators.LoginPage.errorMarkedPasswordField)
-    private WebElement redDotOnPasswordField;
-
     public LoginPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -88,14 +81,14 @@ public class LoginPage extends WebPage {
         return DriverUtils.waitUntilElementClickable(this.getDriver(),
                 createAccountButton)
                 && DriverUtils.waitUntilElementClickable(this.getDriver(),
-                forgotPasswordButton);
+                        forgotPasswordButton);
     }
 
     public boolean isSignInFormVisible() throws Exception {
         return DriverUtils.waitUntilElementClickable(this.getDriver(),
                 switchToRegisterButton)
                 && DriverUtils.waitUntilElementClickable(this.getDriver(),
-                forgotPasswordButton);
+                        forgotPasswordButton);
     }
 
     public boolean isSignInButtonDisabled() throws Exception {
@@ -136,8 +129,8 @@ public class LoginPage extends WebPage {
     }
 
     private boolean waitForHistoryPageDisappearance() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.cssSelector(WebAppLocators.HistoryInfoPage
-                .cssConfirmButton));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.cssSelector(
+                WebAppLocators.HistoryInfoPage.cssConfirmButton));
     }
 
     public boolean waitForLogin() throws Exception {
@@ -185,8 +178,8 @@ public class LoginPage extends WebPage {
     }
 
     public void visitSessionExpiredPage(String langKey) throws Exception {
-        getDriver().get(CommonUtils.getWebAppApplicationPathFromConfig(LoginPage.class) + "auth/?expired&hl=" + langKey +
-                "#login");
+        getDriver().get(CommonUtils.getWebAppApplicationPathFromConfig(LoginPage.class) + "auth/?expired&hl=" + langKey
+                + "#login");
     }
 
     public String getSessionExpiredErrorMessage() throws Exception {
