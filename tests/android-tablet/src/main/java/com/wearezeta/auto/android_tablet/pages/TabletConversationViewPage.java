@@ -31,7 +31,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     private static final By idSketchButtonOnPicturePreviewOverlay = By.id("gtv__single_image_message__sketch");
 
     public static final Function<String, String> xpathConversationMessageByValue = value -> String
-            .format("//*[@id='ltv__row_conversation__message' and @value='%s']", value);
+            .format("//*[@id='tmltv__row_conversation__message' and @value='%s']", value);
 
     public TabletConversationViewPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -291,4 +291,13 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     public int getMessageStatusCount() throws Exception {
         return getConversationViewPage().getMessageStatusCount();
     }
+
+    public boolean waitUntilTrashIconVisible(String name) throws Exception {
+        return getConversationViewPage().waitUntilTrashIconVisible(name);
+    }
+
+    public boolean waitUntilTrashIconInvisible(String name) throws Exception {
+        return getConversationViewPage().waitUntilTrashIconInvisible(name);
+    }
+
 }
