@@ -19,6 +19,7 @@ import io.appium.java_client.TouchAction;
 import io.appium.java_client.ios.IOSElement;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -69,9 +70,6 @@ public class ConversationViewPage extends IOSPage {
     private static final Function<String, String> xpathStrMessageByExactText = text ->
             String.format("%s[@value='%s']", xpathStrAllTextMessages, text);
 
-    private static final Function<String, String> xpathStrMessageCellByTextPart = text ->
-            String.format("%s[contains(@value, '%s')]/parent::*", xpathStrAllTextMessages, text);
-
     private static final Function<String, String> xpathStrSystemMessageByText = text ->
             String.format("//UIATableCell[@name='%s']", text.toUpperCase());
 
@@ -86,7 +84,7 @@ public class ConversationViewPage extends IOSPage {
             .xpath(xpathStrAllTextMessages + "[@name='via giphy.com']/following::UIATableCell[@name='ImageCell']");
 
     private static final By xpathLastMessageResendButton =
-            By.xpath(xpathStrAllTextMessages + "[1]/parent::*/UIAButton");
+            By.xpath(xpathStrAllTextMessages + "[1]/parent::*/UIAElement");
 
     private static final By namePlayButton = MobileBy.AccessibilityId("mediaBarPlayButton");
 
@@ -99,8 +97,6 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameTitle = MobileBy.AccessibilityId("playingMediaTitle");
 
     private static final By nameGifButton = MobileBy.AccessibilityId("gifButton");
-
-    private static final By nameSoundCloudButton = MobileBy.AccessibilityId("soundcloud");
 
     public static final Function<String, String> xpathStrMissedCallButtonByContact = name -> String.format(
             "//UIATableCell[.//*[@name='%s CALLED']]/UIAButton[@name='ConversationMissedCallButton']",
@@ -156,8 +152,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameFileTransferBottomLabel = MobileBy.AccessibilityId(nameStrFileTransferBottomLabel);
     private static final Function<String, String> xpathTransferBottomLabelByExpr = expr ->
             String.format("//UIAStaticText[@name='%s' and %s]", nameStrFileTransferBottomLabel, expr);
-
-//    private static final By nameFileTransferActionButton = MobileBy.AccessibilityId("FileTransferActionButton");
+    private static final By nameFileTransferActionButton = MobileBy.AccessibilityId("FileTransferActionButton");
 
     private static final Function<String, String> xpathStrFilePreviewByFileName = fileName ->
             String.format("//UIANavigationBar[@name='%s']", fileName);
@@ -230,6 +225,13 @@ public class ConversationViewPage extends IOSPage {
     private static final FunctionFor2Parameters<String, String, Integer> xpathMessageByTextAndIndex =
             (messageText, index) ->
                     String.format("%s[%s]/UIATextView[@name='%s']", xpathStrAllEntries, index, messageText);
+
+    private static final By nameLikeButton = MobileBy.AccessibilityId("likeButton");
+
+    private static final By nameSketchOnImageButton = MobileBy.AccessibilityId("sketchOnImageButton");
+    private static final By nameFullScreenOnImageButton = MobileBy.AccessibilityId("openFullScreenButton");
+
+    private static final By nameRecentMessageToolbox = MobileBy.AccessibilityId("MessageToolbox");
 
     private static final int MAX_APPEARANCE_TIME = 20;
 
@@ -531,12 +533,6 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConversationInputAvatar);
     }
 
-    public void tapMessage(String expectedLink) throws Exception {
-        final By locator = By.xpath(xpathStrMessageCellByTextPart.apply(expectedLink));
-        // TODO: Find a better way to calculate these click coordinates
-        DriverUtils.tapByCoordinatesWithPercentOffcet(getDriver(), getElement(locator), 20, 70);
-    }
-
     public boolean isShieldIconVisibleNextToInputField() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameShieldIconNextToInput);
     }
@@ -614,7 +610,12 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapFileTransferMenuItem(String itemName) throws Exception {
-        getElement(MobileBy.AccessibilityId(itemName)).click();
+        Optional<WebElement> element = getElementIfDisplayed(MobileBy.AccessibilityId(itemName), MAX_APPEARANCE_TIME);
+        if (element.isPresent()) {
+            element.get().click();
+        } else {
+            Assert.fail(String.format("'%s' file transfer item didn't appear in %s seconds", itemName, MAX_APPEARANCE_TIME));
+        }
     }
 
     public boolean isFileTransferTopLabelVisible() throws Exception {
@@ -627,6 +628,10 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isFileTransferBottomLabelVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileTransferBottomLabel);
+    }
+
+    public void tapFileTransferActionButton() throws Exception {
+        getElement(nameFileTransferActionButton).click();
     }
 
     private By getInputToolButtonByName(String btnName) {
@@ -699,10 +704,6 @@ public class ConversationViewPage extends IOSPage {
                 DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), bottomLabelLocator, timeoutSeconds);
     }
 
-    public void tapFileTransferPlaceholder() throws Exception {
-        getElement(nameFileTransferBottomLabel).click();
-    }
-
     public boolean waitUntilFilePreviewIsVisible(int secondsTimeout, String expectedFileName) throws Exception {
         final By locator = By.xpath(xpathStrFilePreviewByFileName.apply(expectedFileName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, secondsTimeout);
@@ -748,11 +749,17 @@ public class ConversationViewPage extends IOSPage {
         }
     }
 
-    public void tapMessageByText(boolean isLongTap, String msg) throws Exception {
-        final WebElement locator = getElement(By.xpath(xpathStrMessageByTextPart.apply(msg)));
-        final int tapDuration = isLongTap ? DriverUtils.LONG_TAP_DURATION : DriverUtils.SINGLE_TAP_DURATION;
-        //Using this method because tap should be performed precisely on the text otherwise popup won't appear
-        DriverUtils.tapOnPercentOfElement(getDriver(), locator, 10, 50, tapDuration);
+    public void tapMessageByText(boolean isLongTap, boolean isDoubleTap, String msg) throws Exception {
+        final WebElement el = getElement(By.xpath(xpathStrMessageByTextPart.apply(msg)));
+        // The tap should be performed precisely on the text
+        final int tapPercentX = 10;
+        final int tapPercentY = 50;
+        if (isDoubleTap) {
+            doubleClickAt(el, tapPercentX, tapPercentY);
+        } else {
+            final int tapDuration = isLongTap ? DriverUtils.LONG_TAP_DURATION : DriverUtils.SINGLE_TAP_DURATION;
+            DriverUtils.tapOnPercentOfElement(getDriver(), el, tapPercentX, tapPercentY, tapDuration);
+        }
     }
 
     private WebElement locateCursorToolButton(By locator) throws Exception {
@@ -787,7 +794,8 @@ public class ConversationViewPage extends IOSPage {
             case "play":
                 return namePlayAudioRecorderButton;
             default:
-                throw new IllegalArgumentException(String.format("Button '%s' is not known as a record control button", buttonName));
+                throw new IllegalArgumentException(String.format("Button '%s' is not known as a record control button",
+                        buttonName));
         }
     }
 
@@ -978,9 +986,14 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public void tapRecentMessageFrom(String sender) throws Exception {
+    public void tapRecentMessageFrom(boolean isLongTap, String sender) throws Exception {
         final By locator = By.xpath(xpathUserNameByText.apply(sender));
-        getElement(locator).click();
+        final WebElement dstElement = getElement(locator);
+        if (isLongTap) {
+            getDriver().tap(1, dstElement, DriverUtils.LONG_TAP_DURATION);
+        } else {
+            dstElement.click();
+        }
     }
 
     private By getContainerLocatorByName(String name) {
@@ -1008,20 +1021,12 @@ public class ConversationViewPage extends IOSPage {
         }
     }
 
-    public void tapContainer(String name, boolean isLongTap) throws Exception {
+    public void tapContainer(String name, boolean isLongTap, boolean isdoubleTap) throws Exception {
         final By locator = getContainerLocatorByName(name);
-        WebElement dstElement;
-        if (locator.equals(xpathMediaContainerCell)) {
-            final Optional<WebElement> mediaLinkCell = getElementIfDisplayed(xpathMediaContainerCell, 3);
-            if (mediaLinkCell.isPresent()) {
-                dstElement = mediaLinkCell.get();
-            } else {
-                dstElement = getElement(nameSoundCloudButton);
-            }
-        } else {
-            dstElement = getElement(locator);
-        }
-        if (isLongTap) {
+        final WebElement dstElement = getElement(locator);
+        if (isdoubleTap) {
+            doubleClickAt(dstElement);
+        } else if (isLongTap) {
             getDriver().tap(1, dstElement, DriverUtils.LONG_TAP_DURATION);
         } else {
             dstElement.click();
@@ -1036,5 +1041,49 @@ public class ConversationViewPage extends IOSPage {
     public boolean isContainerInvisible(String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public BufferedImage getLikeIconState() throws Exception {
+        return getElementScreenshot(getElement(nameLikeButton)).orElseThrow(
+                () -> new IllegalStateException("Cannot take a screenshot of Like/Unlike button")
+        );
+    }
+
+    public void tapLikeIcon() throws Exception {
+        getElement(nameLikeButton).click();
+    }
+
+    public boolean isLikeIconVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameLikeButton);
+    }
+
+    public boolean isLikeIconInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameLikeButton);
+    }
+
+    public void tapAtRecentMessage(int pWidth, int pHeight, String from) throws Exception {
+        final By locator = By.xpath(xpathUserNameByText.apply(from));
+        DriverUtils.tapOnPercentOfElement(getDriver(), getElement(locator), pWidth, pHeight);
+    }
+
+    public void tapImageButton(String buttonName) throws Exception {
+        By locator = getImageButtonByName(buttonName);
+        DriverUtils.tapInTheCenterOfTheElement(getDriver(), DriverUtils.getElementIfPresentInDOM(getDriver(), locator).
+                orElseThrow(() -> new IllegalStateException(buttonName + "button can't be found")));
+    }
+
+    private By getImageButtonByName(String buttonName) throws Exception {
+        switch (buttonName.toLowerCase()) {
+            case "sketch":
+                return nameSketchOnImageButton;
+            case "fullscreen":
+                return nameFullScreenOnImageButton;
+            default:
+                throw new Exception("Not recognized button name. Available 'sketch', 'fullscreen'");
+        }
+    }
+
+    public void tapRecentMessageToolbox() throws Exception {
+        getElement(nameRecentMessageToolbox).click();
     }
 }

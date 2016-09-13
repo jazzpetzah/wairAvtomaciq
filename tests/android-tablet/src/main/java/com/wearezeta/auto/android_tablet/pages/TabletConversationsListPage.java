@@ -26,7 +26,6 @@ public class TabletConversationsListPage extends AndroidTabletPage {
         return this.getAndroidPageInstance(ConversationsListPage.class);
     }
 
-    // TODO: no self profile view anymore, should refactoring this function
     public void verifyConversationsListIsLoaded() throws Exception {
         if (ScreenOrientationHelper.getInstance().fixOrientation(getDriver()) == ScreenOrientation.PORTRAIT) {
             try {

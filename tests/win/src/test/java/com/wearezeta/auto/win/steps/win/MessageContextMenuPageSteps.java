@@ -4,7 +4,8 @@ package com.wearezeta.auto.win.steps.win;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
-import com.wearezeta.auto.win.pages.win.MessageContextMenuPage;
+import com.wearezeta.auto.win.pages.win.ForeignMessageContextMenuPage;
+import com.wearezeta.auto.win.pages.win.OwnMessageContextMenuPage;
 import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 
 import cucumber.api.java.en.Given;
@@ -35,26 +36,37 @@ public class MessageContextMenuPageSteps {
      * Click delete local or delete everywhere in message context menu
      *
      * @param everywhere whether to click local delete or delete everywhere
-     * @step. ^I click delete (everywhere )?in message context menu$
+     * @step. ^I click delete (everywhere )?in message context menu for my own message$
      * @throws Exception
      */
-    @When("^I click delete (everywhere )?in message context menu$")
+    @When("^I click delete (everywhere )?in message context menu for my own message$")
     public void IClickDeleteButtonInContextMenu(String everywhere) throws Exception {
         if (everywhere == null) {
-            winPagesCollection.getPage(MessageContextMenuPage.class).clickDelete();
+            winPagesCollection.getPage(OwnMessageContextMenuPage.class).clickDelete();
         }else{
-            winPagesCollection.getPage(MessageContextMenuPage.class).clickDeleteEverywhere();
+            winPagesCollection.getPage(OwnMessageContextMenuPage.class).clickDeleteEverywhere();
         }
+    }
+    
+    /**
+     * Click delete local or delete everywhere in message context menu
+     *
+     * @step. ^I click delete in message context menu for foreign message$
+     * @throws Exception
+     */
+    @When("^I click delete in message context menu for foreign message$")
+    public void IClickDeleteButtonInForeignContextMenu() throws Exception {
+        winPagesCollection.getPage(ForeignMessageContextMenuPage.class).clickDelete();
     }
     
     /**
      * Click edit in message context menu
      *
-     * @step. ^I click edit in message context menu$
+     * @step. ^I click edit in message context menu for my own message$
      * @throws Exception
      */
-    @When("^I click edit in message context menu$")
+    @When("^I click edit in message context menu for my own message$")
     public void IClickEditButtonInContextMenu() throws Exception {
-        winPagesCollection.getPage(MessageContextMenuPage.class).clickEdit();
+        winPagesCollection.getPage(OwnMessageContextMenuPage.class).clickEdit();
     }
 }

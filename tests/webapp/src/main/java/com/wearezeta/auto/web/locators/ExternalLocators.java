@@ -22,7 +22,7 @@ public final class ExternalLocators {
 
 	public static final class PasswordChangePage {
 		public final static String idPasswordInput = "password";
-		public final static String cssSubmitButton = "button.btn-lg";
+		public final static String cssSubmitButton = "button.wbtn";
 	}
 
 	public static final class PasswordChangeRequestPage {

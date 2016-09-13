@@ -17,18 +17,18 @@ import cucumber.api.java.Before;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
-import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriverException;
@@ -40,7 +40,6 @@ import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
 public class Lifecycle {
@@ -97,7 +96,7 @@ public class Lifecycle {
         final String url = CommonUtils
                 .getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
         final ExecutorService pool = Executors.newFixedThreadPool(1);
-
+        
         Callable<ZetaWebAppDriver> callableWebAppDriver = new Callable<ZetaWebAppDriver>() {
 
             @Override
@@ -197,12 +196,12 @@ public class Lifecycle {
         return stepResultMap;
     }
 
-    public void tearDown() {
+    public void tearDown() throws Exception {
         try {
             ZetaWebAppDriver driver = (ZetaWebAppDriver) context.getDriver();
             // save browser console if possible
             if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
-                writeBrowserLogsIntoMainLog(driver);
+                writeBrowserLogsIntoMainLog(context);
             }
             if (driver instanceof ZetaWebAppDriver) {
                 // logout with JavaScript because otherwise backend will block
@@ -267,8 +266,8 @@ public class Lifecycle {
         }
     }
 
-    private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
-        List<LogEntry> logEntries = getBrowserLog(driver);
+    private void writeBrowserLogsIntoMainLog(TestContext context) throws InterruptedException, ExecutionException, TimeoutException {
+        List<LogEntry> logEntries = context.getBrowserLog();
         if (!logEntries.isEmpty()) {
             log.debug("BROWSER CONSOLE LOGS:");
             for (LogEntry logEntry : logEntries) {
@@ -276,11 +275,6 @@ public class Lifecycle {
             }
             log.debug("--- END OF LOG ---");
         }
-    }
-
-    @SuppressWarnings("unchecked")
-    public static List<LogEntry> getBrowserLog(RemoteWebDriver driver) {
-        return IteratorUtils.toList((Iterator<LogEntry>) driver.manage().logs().get(LogType.BROWSER).iterator());
     }
 
     private static void setCustomChromeProfile(DesiredCapabilities capabilities)

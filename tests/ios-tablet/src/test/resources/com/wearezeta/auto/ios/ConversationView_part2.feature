@@ -27,13 +27,8 @@ Feature: Conversation View
     And I tap Confirm button on Picture preview page
     And I see 1 photo in the conversation view
     And I tap on image in conversation view
+    And I tap Fullscreen button on image
     And I see Full Screen Page opened
-    And I see sender first name <Name> on fullscreen page
-    And I see send date on fullscreen page
-    And I see download button shown on fullscreen page
-    And I tap on fullscreen page
-    And I verify image caption and download button are not shown
-    And I tap on fullscreen page
     And I tap close fullscreen page button
     Then I see 1 photo in the conversation view
 
@@ -54,13 +49,8 @@ Feature: Conversation View
     And I tap Confirm button on Picture preview page
     And I see 1 photo in the conversation view
     And I tap on image in conversation view
+    And I tap Fullscreen button on image
     And I see Full Screen Page opened
-    And I see sender first name <Name> on fullscreen page
-    And I see send date on fullscreen page
-    And I see download button shown on fullscreen page
-    And I tap on fullscreen page
-    And I verify image caption and download button are not shown
-    And I tap on fullscreen page
     And I tap close fullscreen page button
     Then I see 1 photo in the conversation view
 
@@ -93,6 +83,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I type the "<YouTubeLink>" message and send it
+    And I click Hide keyboard button
     And I click video container for the first time
     And I wait for 5 seconds
     Then I see video player page is opened
@@ -114,6 +105,7 @@ Feature: Conversation View
     And I tap Confirm button on Picture preview page
     And I see 1 photo in the conversation view
     And I tap on image in conversation view
+    And I tap Fullscreen button on image
     And I see Full Screen Page opened
     And I rotate UI to portrait
     Then I see Full Screen Page opened
@@ -333,19 +325,14 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
-    When I tap on contact name <Contact>
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I long tap on image in conversation view
+    Then I see Save badge item
+    When I tap on Save badge item
+    Then I do not see Save badge item
     And I see 1 photo in the conversation view
-    And I tap on image in conversation view
-    And I see Full Screen Page opened
-    And I see download button shown on fullscreen page
-    And I tap download button on fullscreen page
-    And I tap close fullscreen page button
-    And I tap Add Picture button from input tools
-    And I select the first picture from Keyboard Gallery
-    And I tap Confirm button on Picture preview page
-    And I see 2 photos in the conversation view
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -357,18 +344,13 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
+    Given I see conversations list
+    When I long tap on image in conversation view
+    Then I see Save badge item
+    When I tap on Save badge item
+    Then I do not see Save badge item
     And I see 1 photo in the conversation view
-    And I tap on image in conversation view
-    And I see Full Screen Page opened
-    And I see download button shown on fullscreen page
-    And I tap download button on fullscreen page
-    And I tap close fullscreen page button
-    And I tap Add Picture button from input tools
-    And I select the first picture from Keyboard Gallery
-    When I tap Confirm button on Picture preview page
-    Then I see 2 photos in the conversation view
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -424,6 +406,7 @@ Feature: Conversation View
     Then I see 1 photo in the conversation view
     And I see the picture in the conversation view is animated
     When I tap on image in conversation view
+    And I tap Fullscreen button on image
     Then I see the picture on image fullscreen page is animated
 
     Examples:

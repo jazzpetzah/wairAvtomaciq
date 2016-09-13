@@ -10,6 +10,11 @@ public interface FunctionalInterfaces {
     }
 
     @FunctionalInterface
+    interface FunctionFor3Parameters<A, B, C, D> {
+        A apply(B b, C c, D d);
+    }
+
+    @FunctionalInterface
     interface StateGetter {
         BufferedImage getState() throws Exception;
     }

@@ -267,36 +267,38 @@ Feature: Connect
     And I see my avatar on top of Contact list
     When I open conversation with <Contact1>
     And I click People button in one to one conversation
-    And I see Single User Profile popover
+    Then I see Single User Profile popover
     And I see Block button on Single User Profile popover
-    And I click Block button on Single User Profile popover
+    When I click Block button on Single User Profile popover
     And I confirm user blocking on Single User Profile popover
     And I open conversation with <ChatName>
     And I write random message
     And I send message
-    And I open self profile
+    Then I see random message in conversation
+    When I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
-    And I see Sign In page
+    Then I see Sign In page
     And User <Name2> is me
-    And I Sign in using login <Login2> and password <Password2>
+    When I Sign in using login <Login2> and password <Password2>
     And I am signed in properly
     And I open conversation with <ChatName>
     Then I see random message in conversation
     And I write random message
     And I send message
-    And I open self profile
+    Then I see random message in conversation
+    When I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
-    And I see Sign In page
-    And I Sign in using login <Login> and password <Password>
+    Then I see Sign In page
+    When I Sign in using login <Login> and password <Password>
     And User <Name> is me
     And I open conversation with <ChatName>
-    And I see random message in conversation
+    Then I see random message in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | Login2     | Password2     | Name2     | ChatName                 |

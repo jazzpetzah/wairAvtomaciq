@@ -11,6 +11,7 @@ import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.SecurityAlertPage;
 import com.wearezeta.auto.android.pages.registration.BackendSelectPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
+import com.wearezeta.auto.android.tools.WireDatabase;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.AppiumServer;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -19,6 +20,7 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
@@ -1331,12 +1333,38 @@ public class CommonAndroidSteps {
      * @param dstNameAlias  estination user name/alias or group convo name
      * @param deviceName    source device name. Will be created if does not exist yet
      * @throws Exception
+     * @step. ^User (.*) edits? the recent message to "(.*)" from (user|group conversation) (.*) via device (.*)$
      */
     @When("^User (.*) edits? the recent message to \"(.*)\" from (user|group conversation) (.*) via device (.*)$")
     public void UserXEditLastMessage(String userNameAlias, String newMessage, String convoType,
                                      String dstNameAlias, String deviceName) throws Exception {
         boolean isGroup = convoType.equals("group conversation");
         commonSteps.UserUpdateLatestMessage(userNameAlias, dstNameAlias, newMessage, deviceName, isGroup);
+    }
+
+    /**
+     * User X react(like or unlike) the recent message in 1:1 conversation or group conversation
+     *
+     * @param userNameAlias User X's name or alias
+     * @param reactionType  User X's reaction , could be like or unlike, be careful you should use like before unlike
+     * @param dstNameAlias  the conversation which message is belong to
+     * @param deviceName    User X's device
+     * @throws Exception
+     * @step. ^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$
+     */
+    @When("^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$")
+    public void UserReactLastMessage(String userNameAlias, String reactionType, String dstNameAlias, String deviceName)
+            throws Exception {
+        switch (reactionType.toLowerCase()) {
+            case "likes":
+                commonSteps.UserLikeLatestMessage(userNameAlias, dstNameAlias, deviceName);
+                break;
+            case "unlikes":
+                commonSteps.UserUnlikeLatestMessage(userNameAlias, dstNameAlias, deviceName);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify the reaction type '%s'", reactionType));
+        }
     }
 
     /**
@@ -1457,6 +1485,28 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * Press back button until Wire app is in foreground
+     *
+     * @param timeoutSeconds timeout in seconds for try process
+     * @throws Exception
+     * @step. ^I press [Bb]ack button until Wire app is in foreground in (\d+) seconds$
+     */
+    @When("^I press [Bb]ack button until Wire app is in foreground in (\\d+) seconds$")
+    public void IPressBackButtonUntilWireAppInForeground(int timeoutSeconds) throws Exception {
+        final String packageId = AndroidCommonUtils.getAndroidPackageFromConfig(getClass());
+        CommonUtils.waitUntilTrue(
+                timeoutSeconds,
+                1000,
+                () -> {
+                    if (AndroidCommonUtils.isAppNotInForeground(packageId, FOREGROUND_TIMEOUT_MILLIS)) {
+                        pagesCollection.getCommonPage().navigateBack();
+                    }
+                    return AndroidCommonUtils.isAppInForeground(packageId, FOREGROUND_TIMEOUT_MILLIS);
+                }
+        );
+    }
+
+    /**
      * Tap Accept/Deny button on Marshmallow's security alert
      *
      * @param action            either accept or dismiss
@@ -1499,6 +1549,33 @@ public class CommonAndroidSteps {
         if (currentOsVersion.compareTo(new DefaultArtifactVersion(minVersion)) < 0) {
             throw new PendingException(String.format("The current Android OS version %s is too low to run this test." +
                     "%s version is expected.", currentOsVersion, minVersion));
+        }
+    }
+
+    /**
+     * Verifyt the Wire build already enable debug mode.
+     * http://stackoverflow.com/questions/2409923/what-do-i-have-to-add-to-the-manifest-to-debug-an-android-application-on-an-actu
+     *
+     * @throws Exception
+     * @step. ^Wire has Debug mode enabled$
+     */
+    @Given("^Wire has Debug mode enabled$")
+    public void WireEnableDebugMode() throws Exception {
+        if (!AndroidCommonUtils.isWireDebugModeEnabled()) {
+            throw new PendingException("The current Wire build doesn't support debuggable mode");
+        }
+    }
+
+    /**
+     * Verify whether Android with Google Location Service, if not installed, it will throw a Pending Exception
+     *
+     * @throws Exception
+     * @step. ^I am on Android with Google Location Service$
+     */
+    @Given("^I am on Android with Google Location Service$")
+    public void IAmOnAndroidWithGoogleService() throws Exception {
+        if (!AndroidCommonUtils.verifyGoogleLocationServiceInstalled()) {
+            throw new PendingException("The current Android doesn't install Google Location Service");
         }
     }
 
@@ -1679,4 +1756,43 @@ public class CommonAndroidSteps {
             throws Exception {
         commonSteps.UserXHasContactsInAddressBook(asUser, contacts);
     }
+
+
+    private String recentMsgId = null;
+
+    /**
+     * Store the id of the recent message into the local variable
+     *
+     * @param fromContact user name/alias
+     * @throws Exception
+     * @step. ^I remember the state of the recent message from user (.*) in the local database$
+     */
+    @When("^I remember the state of the recent message from user (.*) in the local database$")
+    public void IRememberMessageStateInLocalDatabase(String fromContact) throws Exception {
+        final ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(fromContact);
+        final ClientUser myself = usrMgr.getSelfUserOrThrowError();
+        final WireDatabase db = new WireDatabase();
+        this.recentMsgId = db.getRecentMessageId(myself, dstUser).orElseThrow(
+                () -> new IllegalStateException(
+                        String.format("No messages from user %s have been found in the local database",
+                                dstUser.getName()))
+        );
+    }
+
+    /**
+     * Verify whether the previously saved message has been properly removed from the local DB
+     *
+     * @throws Exception
+     * @step. ^I verify the remembered message has been deleted from the local database$
+     */
+    @Then("^I verify the remembered message has been deleted from the local database$")
+    public void IVerifyMessageStateInLocalDB() throws Exception {
+        if (this.recentMsgId == null) {
+            throw new IllegalStateException("Please remember the message state first");
+        }
+        final WireDatabase db = new WireDatabase();
+        Assert.assertTrue(String.format("The previously remembered message [%s] appears to be improperly deleted " +
+                "from the local database", this.recentMsgId), db.isMessageDeleted(this.recentMsgId));
+    }
+
 }

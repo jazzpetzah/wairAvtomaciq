@@ -30,6 +30,10 @@ public class Result implements Serializable {
     public String getStatus() {
         return status;
     }
+
+    public Long getDuration() {
+        return duration;
+    }
     
     @Override
     public String toString() {

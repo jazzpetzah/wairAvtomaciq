@@ -19,6 +19,9 @@ import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class SettingsPage extends WebPage {
+
+    private static final int SLIDER_CIRCLE_SIZE = 20;
+
     @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssSettingsCloseButton)
     private WebElement settingsCloseButton;
 
@@ -81,7 +84,7 @@ public class SettingsPage extends WebPage {
         }
 
         private SoundAlertsLevel(String stringRepresentation,
-                                 int intRepresentation) {
+                int intRepresentation) {
             this.stringRepresentation = stringRepresentation;
             this.intRepresentation = intRepresentation;
         }
@@ -112,8 +115,6 @@ public class SettingsPage extends WebPage {
         }
     }
 
-    private static final int SLIDER_CIRCLE_SIZE = 20;
-
     public void setSoundAlertsLevel(SoundAlertsLevel newLevel) throws Exception {
         assert SoundAlertsLevel.values().length > 1;
         if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
@@ -127,18 +128,16 @@ public class SettingsPage extends WebPage {
             builder.clickAndHold(soundAlertsLevel)
                     .moveToElement(soundAlertsLevel, dstX, dstY).release()
                     .build().perform();
+        } else if (WebAppExecutionContext.getBrowser().isSupportingAccessToJavascriptContext()) {
+            // Workaround for browsers, which don't support native events
+            final String[] sliderMoveCode = new String[]{"$(\"" + WebAppLocators.SettingsPage.cssSoundAlertsLevel + "\")"
+                + ".val(" + newLevel.getIntRepresenation() + ");", "wire.app.view.content.self_profile.user_repository"
+                + ".save_property_sound_alerts('" + newLevel.toString().toLowerCase() + "');"};
+            this.getDriver().executeScript(
+                    StringUtils.join(sliderMoveCode, "\n"));
         } else {
-            if (WebAppExecutionContext.getBrowser().isSupportingAccessToJavascriptContext()) {
-                // Workaround for browsers, which don't support native events
-                final String[] sliderMoveCode = new String[]{"$(\"" + WebAppLocators.SettingsPage.cssSoundAlertsLevel + "\")" +
-                        ".val(" + newLevel.getIntRepresenation() + ");", "wire.app.view.content.self_profile.user_repository" +
-                        ".save_property_sound_alerts('" + newLevel.toString().toLowerCase() + "');"};
-                this.getDriver().executeScript(
-                        StringUtils.join(sliderMoveCode, "\n"));
-            } else {
-                throw new Exception("Geckodriver is unable to access script context in Firefox < 48. See https://bugzilla" +
-                        ".mozilla.org/show_bug.cgi?id=1123506");
-            }
+            throw new Exception("Geckodriver is unable to access script context in Firefox < 48. See https://bugzilla"
+                    + ".mozilla.org/show_bug.cgi?id=1123506");
         }
     }
 
@@ -208,7 +207,7 @@ public class SettingsPage extends WebPage {
         List<WebElement> deviceList = getDriver().findElements(useElement);
         List<String> idList = new ArrayList<>();
 
-        for (int i=0; i < deviceList.size(); i++) {
+        for (int i = 0; i < deviceList.size(); i++) {
             if ("user-device-verified".equals(deviceList.get(i).getAttribute("data-uie-name"))) {
                 WebElement parent = deviceList.get(i).findElement(By.xpath("parent::*"));
                 idList.add(parent.getAttribute("data-uie-value").toUpperCase());

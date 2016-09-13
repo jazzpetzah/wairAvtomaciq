@@ -1,14 +1,17 @@
 package com.wearezeta.auto.android.pages;
 
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -23,66 +26,76 @@ import org.openqa.selenium.interactions.touch.TouchActions;
 public class ConversationViewPage extends AndroidPage {
 
     public static final By xpathConfirmOKButton = By.xpath("//*[@id='ttv__confirmation__confirm' and @value='OK']");
-
-    public static final String idStrConversationImages = "iv__row_conversation__message_image";
-    public static final By idConversationImages = By.id(idStrConversationImages);
-
     private static final By idClickedImageSendingIndicator = By.id("v__row_conversation__pending");
 
-    private static final By xpathLastPicture = By.xpath(String.format("(//*[@id='%s'])[last()]", idStrConversationImages));
-
-    public static final By idCursorCamera = By.id("cursor_menu_item_camera");
-
-    public static final By idCursorPing = By.id("cursor_menu_item_ping");
-
-    private static final By idCursorMore = By.id("cursor_menu_item_more");
-
-    private static final By idCursorLess = By.id("cursor_menu_item_less");
-
-    public static final By idCursorVideoMessage = By.id("cursor_menu_item_video");
-
-    private static final By idCursorShareLocation = By.id("cursor_menu_item_location");
-
-    public static final By idCursorView = By.id("cal__cursor");
-
-    public static final By idCursorSelfAvatar = By.id("civ__cursor__self_avatar");
-
-    public static final String CURSOR_EDIT_TOOLTIP = "TYPE A MESSAGE";
-
-    public static final By xpathCursorEditHint = By.xpath(
-            String.format("//*[@id='ttv__cursor_hint' and contains(@value, '%s')]", CURSOR_EDIT_TOOLTIP));
-
-    private static final String idStrRowConversationMessage = "ltv__row_conversation__message";
-
+    //region Conversation Row Locators
+    // Text
+    private static final String idStrRowConversationMessage = "tmltv__row_conversation__message";
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
             .format("//*[@id='%s' and @value='%s']", idStrRowConversationMessage, text);
-
-    private static final Function<String, String> xpathStrUnsentIndicatorByText = text -> String
-            .format("%s/parent::*/parent::*//*[@id='v__row_conversation__error']",
-                    xpathStrConversationMessageByText.apply(text));
-
     private static final By xpathLastConversationMessage =
             By.xpath(String.format("(//*[@id='%s'])[last()]", idStrRowConversationMessage));
-
     private static final By xpathFirstConversationMessage =
             By.xpath(String.format("(//*[@id='%s'])[1]", idStrRowConversationMessage));
+    private static final Function<String, String> xpathStrLinkPreviewTextMessage = text -> String
+            .format(String.format("//*[@id='cv__row_conversation__link_preview__text_message' and @value='%s']", text));
 
-    private static final By xpathUnsentIndicatorForImage = By
-            .xpath("//*[@id='" + idStrConversationImages + "']/parent::*/parent::*//*[@id='v__row_conversation__error']");
+    // Image
+    private static final String idStrConversationImages = "fl__row_conversation__message_image_container";
+    public static final By idConversationImageContainer = By.id(idStrConversationImages);
+    private static final String xpathStrLastImage = String.format("(//*[@id='%s'])[last()]", idStrConversationImages);
+    private static final By xpathLastImage = By.xpath(xpathStrLastImage);
 
-    public static final String idStrCursorEditText = "cet__cursor";
-
-    public static final By idCursorEditText = By.id(idStrCursorEditText);
-
-    public static Function<String, String> xpathCurosrEditTextByValue = value ->
-            String.format("//*[@id='%s' and @value='%s']", idStrCursorEditText, value);
-
+    // System message
     private static final String idStrMissedCallMesage = "ttv__row_conversation__missed_call";
     private static final Function<String, String> xpathStrMissedCallMesageByText = text -> String
             .format("//*[@id='%s' and @value='%s']", idStrMissedCallMesage, text.toUpperCase());
 
+    // Ping
     public static final Function<String, String> xpathStrPingMessageByText = text -> String
             .format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']", text.toUpperCase());
+
+    //endregion
+
+    //region Conversation Cursor locators
+    public static final String idStrCursorEditText = "cet__cursor";
+    private static final By idCursorCamera = By.id("cursor_menu_item_camera");
+    private static final By idCursorPing = By.id("cursor_menu_item_ping");
+    private static final By idCursorMore = By.id("cursor_menu_item_more");
+    private static final By idCursorLess = By.id("cursor_menu_item_less");
+    private static final By idCursorVideoMessage = By.id("cursor_menu_item_video");
+    private static final By idCursorShareLocation = By.id("cursor_menu_item_location");
+    private static final By idCursorView = By.id("cal__cursor");
+    private static final By idCursorSelfAvatar = By.id("civ__cursor__self_avatar");
+    private static final String CURSOR_EDIT_TOOLTIP = "TYPE A MESSAGE";
+    private static final By xpathCursorEditHint = By.xpath(
+            String.format("//*[@id='ttv__cursor_hint' and contains(@value, '%s')]", CURSOR_EDIT_TOOLTIP));
+    public static final By idCursorEditText = By.id(idStrCursorEditText);
+    public static Function<String, String> xpathCurosrEditTextByValue = value ->
+            String.format("//*[@id='%s' and @value='%s']", idStrCursorEditText, value);
+    //endregion
+
+    //region Message footer
+    private static final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> xpathStrTemplateIdValue
+            = (id, value) -> String.format("//*[@id='%s' and contains(@value,'%s')]", id, value);
+
+    private static final String strIdMessageMetaLikeButton = "gtv__footer__like__button";
+    private static final String strIdMessageMetaLikeDescription = "tv__footer__like__description";
+    private static final String strIdMessageMetaStatus = "tv__footer__message_status";
+    private static final String strIdMessageMetaFirstLike = "cv__first_like_chathead";
+    private static final String strIdMessageMetaSecondLike = "cv__first_like_chathead";
+    //endregion
+
+    //region Message Bottom Menu
+    private static final By idMessageBottomMenu = By.id("action_bar_root");
+    private static final By idMessageBottomMenuForwardButton = By.id("message_bottom_menu_item_forward");
+    private static final By idMessageBottomMenuDeleteLocalButton = By.id("message_bottom_menu_item_delete_local");
+    private static final By idMessageBottomMenuDeleteGlobalButton = By.id("message_bottom_menu_item_delete_global");
+    private static final By idMessageBottomMenuCopyButton = By.id("message_bottom_menu_item_copy");
+    private static final By idMessageBottomMenuEditButton = By.id("message_bottom_menu_item_edit");
+    private static final By idMessageBottomMenuLikeButton = By.id("message_bottom_menu_item_like");
+    private static final By idMessageBottomMenuUnlikeButton = By.id("message_bottom_menu_item_unlike");
+    //endregion
 
     private static final By idFullScreenImage = By.id("tiv__single_image_message__image");
 
@@ -189,14 +202,6 @@ public class ConversationViewPage extends AndroidPage {
     private static final Function<String, String> xpathMessageSeparator = name -> String
             .format("//*[@id='%s' and @value='%s']", idStrSeparatorName, name.toLowerCase());
 
-    private static final By idMessageBottomMenuForwardButton = By.id("message_bottom_menu_item_forward");
-    private static final By idMessageBottomMenuDeleteLocalButton = By.id("message_bottom_menu_item_delete_local");
-    private static final By idMessageBottomMenuDeleteGlobalButton = By.id("message_bottom_menu_item_delete_global");
-    private static final By idMessageBottomMenuCopyButton = By.id("message_bottom_menu_item_copy");
-    private static final By idMessageBottomMenuEditButton = By.id("message_bottom_menu_item_edit");
-    private static final By idMessageBottomMenuLikeButton = By.id("message_bottom_menu_item_like");
-    private static final By idMessageBottomMenuUnlikeButton = By.id("message_bottom_menu_item_unlike");
-
     private static final By idYoutubeContainer = By.id("iv__row_conversation__youtube_image");
 
     private static final By idSoundcloudContainer = By.id("mpv__row_conversation__message_media_player");
@@ -218,6 +223,10 @@ public class ConversationViewPage extends AndroidPage {
     private static final By idAudioContainerSeekbar = By.id("sb__audio_progress");
 
     private static final By idAudioMessagePreviewSeekbar = By.id("sb__voice_message__recording__seekbar");
+
+    private static final By idImageContainerSketchButton = By.id("gtv__row_conversation__image_sketch");
+
+    private static final By idImageContainerFullScreenButton = By.id("gtv__row_conversation__image_fullscreen");
 
     private static final int MAX_CLICK_RETRIES = 5;
 
@@ -255,6 +264,7 @@ public class ConversationViewPage extends AndroidPage {
         super(lazyDriver);
     }
 
+    // region Screeshot buffer
     public BufferedImage getConvoViewStateScreenshot() throws Exception {
         return this.getElementScreenshot(getElement(idConversationRoot)).orElseThrow(
                 () -> new IllegalStateException("Cannot get a screenshot of conversation view")
@@ -303,6 +313,7 @@ public class ConversationViewPage extends AndroidPage {
                 () -> new IllegalStateException("Cannot get a screenshot of Audio message recording slide microphone button")
         );
     }
+    //endregion
 
     //region Cursor
     public boolean isCursorViewVisible() throws Exception {
@@ -508,10 +519,6 @@ public class ConversationViewPage extends AndroidPage {
         getElement(idCursorCloseButton, "Close cursor button is not visible").click();
     }
 
-    public void tapRecentImage() throws Exception {
-        getElement(xpathLastPicture).click();
-    }
-
     public boolean waitForConversationNameChangedMessage(String expectedName) throws Exception {
         final By locator = By.xpath(xpathStrNewConversationNameByValue.apply(expectedName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
@@ -535,6 +542,16 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
+    public boolean waitUntilLinkPreviewMessageVisible(String text) throws Exception {
+        final By locator = By.xpath(xpathStrLinkPreviewTextMessage.apply(text));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitUntilLinkPreviewMessageInvisible(String text) throws Exception {
+        final By locator = By.xpath(xpathStrLinkPreviewTextMessage.apply(text));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
     public boolean waitForPeopleMessage(String text) throws Exception {
         final By locator = By.xpath(xpathConversationPeopleChangedByExp.apply(String.format("contains(@value, '%s')",
                 text.toUpperCase())));
@@ -549,13 +566,8 @@ public class ConversationViewPage extends AndroidPage {
         return getElements(locator).stream().collect(Collectors.toList()).size() == times;
     }
 
-    public boolean waitForUnsentIndicatorVisible(String text) throws Exception {
-        final By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(text));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
     public boolean isImageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idConversationImages) &&
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idConversationImageContainer) &&
                 DriverUtils.waitUntilLocatorDissapears(getDriver(), idClickedImageSendingIndicator, 20);
     }
 
@@ -713,7 +725,7 @@ public class ConversationViewPage extends AndroidPage {
 
 
     public Optional<BufferedImage> getRecentPictureScreenshot() throws Exception {
-        return this.getElementScreenshot(getElement(idConversationImages));
+        return this.getElementScreenshot(getElement(idConversationImageContainer));
     }
 
     public Optional<BufferedImage> getPreviewPictureScreenshot() throws Exception {
@@ -721,11 +733,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean isImageInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idConversationImages);
-    }
-
-    public boolean waitForAPictureWithUnsentIndicator() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathUnsentIndicatorForImage);
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idConversationImageContainer);
     }
 
     public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries) throws Exception {
@@ -748,24 +756,19 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean waitForXImages(int expectedCount) throws Exception {
         assert expectedCount >= 0;
-        final Optional<WebElement> imgElement = getElementIfDisplayed(idConversationImages);
+        final Optional<WebElement> imgElement = getElementIfDisplayed(idConversationImageContainer);
         if (expectedCount <= 1) {
             return (expectedCount == 0 && !imgElement.isPresent()) || (expectedCount == 1 && imgElement.isPresent());
         }
         final long msStarted = System.currentTimeMillis();
         do {
-            int actualCnt = getElements(idConversationImages).size();
+            int actualCnt = getElements(idConversationImageContainer).size();
             if (actualCnt >= expectedCount) {
                 return true;
             }
             Thread.sleep(500);
         } while (System.currentTimeMillis() - msStarted <= IMAGES_VISIBILITY_TIMEOUT);
         return false;
-    }
-
-    public boolean waitForUnsentIndicator(String text) throws Exception {
-        final By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(text));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean waitForMessageNotification(String message) throws Exception {
@@ -848,18 +851,11 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public void longTapMessage(String msg) throws Exception {
-        final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
-        getDriver().longTap(getElement(locator), DriverUtils.LONG_TAP_DURATION);
-    }
-
-    public void tapMessage(String msg) throws Exception {
-        final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
-        getElement(locator).click();
-    }
-
     private By getContainerLocatorByName(String containerType) {
         switch (containerType.toLowerCase()) {
+            case "picture":
+            case "image":
+                return idConversationImageContainer;
             case "youtube":
                 return idYoutubeContainer;
             case "soundcloud":
@@ -893,35 +889,45 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathLinkPreviewUrlByValue.apply(url)));
     }
 
-    public void tapContainer(String name) throws Exception {
+    public void tapContainer(String tapType, String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
-        getElement(locator).click();
-    }
-
-    public void longTapContainer(String name) throws Exception {
-        final By locator = getContainerLocatorByName(name);
-        if (locator.equals(idAudioMessageContainer) || locator.equals(idVideoMessageContainer)) {
+        if (Arrays.asList(idAudioMessageContainer, idVideoMessageContainer, idYoutubeContainer).contains(locator)) {
             // To avoid to tap on play button in Video message and Audio message container.
             final WebElement el = getElement(locator);
             final Point location = el.getLocation();
             final Dimension size = el.getSize();
-            getDriver().longTap(location.x + size.width / 5, location.y + size.height / 5, DriverUtils.LONG_TAP_DURATION);
+            getDriver().tap(tapType, location.x + size.width / 5, location.y + size.height / 5);
         } else {
-            getDriver().longTap(getElement(locator), DriverUtils.LONG_TAP_DURATION);
+            getDriver().tap(tapType, getElement(locator));
         }
     }
 
-    public void tapPingMessage(String message) throws Exception {
-        getElement(By.xpath(xpathStrPingMessageByText.apply(message))).click();
+    private By getTextLocatorByTextMessageType(String messageType, String message) {
+        switch (messageType.toLowerCase()) {
+            case "ping":
+                return By.xpath(xpathStrPingMessageByText.apply(message));
+            case "text":
+                return By.xpath(xpathStrConversationMessageByText.apply(message));
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify the type '%s'", messageType));
+        }
     }
 
-    public void longTapPingMessage(String message) throws Exception {
-        getDriver().longTap(getElement(By.xpath(xpathStrPingMessageByText.apply(message))),
-                DriverUtils.LONG_TAP_DURATION);
-    }
-
-    public void longTapRecentImage() throws Exception {
-        getDriver().longTap(getElement(xpathLastPicture), DriverUtils.LONG_TAP_DURATION);
+    public void tapMessage(String messageType, String message, String tapType) throws Exception {
+        By locator = getTextLocatorByTextMessageType(messageType, message);
+        switch (tapType.toLowerCase()) {
+            case "tap":
+                getElement(locator).click();
+                break;
+            case "long tap":
+                getDriver().longTap(getElement(locator), DriverUtils.LONG_TAP_DURATION);
+                break;
+            case "double tap":
+                getDriver().doubleTap(getElement(locator));
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify the tap type '%s'", tapType));
+        }
     }
 
     public void tapVideoMessageButton() throws Exception {
@@ -930,6 +936,22 @@ public class ConversationViewPage extends AndroidPage {
 
     public void tapAudioMessageButton() throws Exception {
         getElement(idAudioContainerButton).click();
+    }
+
+    private By getImageContainerButtonLocator(String buttonName) {
+        switch (buttonName.toLowerCase()) {
+            case "sketch":
+                return idImageContainerSketchButton;
+            case "fullscreen":
+                return idImageContainerFullScreenButton;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify the button type '%s'", buttonName));
+        }
+    }
+
+    public void tapImageContainerButton(String buttonName) throws Exception {
+        By locator = getImageContainerButtonLocator(buttonName);
+        getElement(locator).click();
     }
 
     public boolean isVideoMessageButtonVisible() throws Exception {
@@ -989,7 +1011,28 @@ public class ConversationViewPage extends AndroidPage {
 
     public void tapMessageBottomMenuButton(String name) throws Exception {
         final By locator = getMessageBottomMenuButtonLocatorByName(name);
+        assert scrollUntilMessageMenuElementVisible(locator, 5) : String
+                .format("Message Menu item '%s' is not present", name);
         getElement(locator, String.format("Message bottom menu %s button is invisible", name)).click();
+    }
+
+    private boolean scrollUntilMessageMenuElementVisible(By locator, int maxScrolls) throws Exception {
+        final int offset = 20;
+        int nScrolls = 0;
+        int screenHeight = AndroidCommonUtils.getScreenSize(getDriver()).getHeight();
+        int containerHeight = getElement(idMessageBottomMenu).getSize().getHeight();
+        int endHeightPercentage = (screenHeight - containerHeight) / screenHeight;
+
+        while (nScrolls < maxScrolls) {
+            Optional<WebElement> el = getElementIfDisplayed(locator, 1);
+            if (el.isPresent() &&
+                    el.get().getLocation().getY() + el.get().getSize().getHeight() - offset <= screenHeight) {
+                return true;
+            }
+            swipeByCoordinates(500, 50, 95, 50, endHeightPercentage);
+            nScrolls++;
+        }
+        return false;
     }
 
     public boolean waitUntilMessageBottomMenuButtonVisible(String btnNAme) throws Exception {
@@ -1038,6 +1081,67 @@ public class ConversationViewPage extends AndroidPage {
         List<WebElement> resendButtonList = selectVisibleElements(idResendButton);
         for (WebElement resendButton : resendButtonList) {
             resendButton.click();
+        }
+    }
+    //endregion
+
+    //region Message Meta
+    public boolean waitUntilMessageMetaItemVisible(String itemType) throws Exception {
+        String locatorId = getMessageMetaLocatorIdString(itemType);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(locatorId));
+    }
+
+    public boolean waitUntilMessageMetaItemInvisible(String itemType) throws Exception {
+        String locatorId = getMessageMetaLocatorIdString(itemType);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(locatorId));
+    }
+
+    public boolean waitUntilMessageMetaItemVisible(String itemType, String expectedItemText)
+            throws Exception {
+        String locatorId = getMessageMetaLocatorIdString(itemType);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(xpathStrTemplateIdValue.apply(locatorId, expectedItemText)));
+    }
+
+    public boolean waitUntilMessageMetaItemInvisible(String itemType, String expectedItemText)
+            throws Exception {
+        String locatorId = getMessageMetaLocatorIdString(itemType);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.xpath(xpathStrTemplateIdValue.apply(locatorId, expectedItemText)));
+    }
+
+    public void tapMessageMetaItem(String itemType) throws Exception {
+        String locatorId = getMessageMetaLocatorIdString(itemType);
+        getElement(By.id(locatorId)).click();
+    }
+
+    public BufferedImage getMessageLikeButtonState() throws Exception {
+        By locator = By.id(strIdMessageMetaLikeButton);
+        return this.getElementScreenshot(getElement(locator)).orElseThrow(
+                () -> new IllegalStateException("Cannot get a screenshot for like button")
+        );
+    }
+
+    public int getMessageStatusCount() throws Exception {
+        By locator = By.id(strIdMessageMetaStatus);
+        return selectVisibleElements(locator).size();
+    }
+
+    private String getMessageMetaLocatorIdString(String itemType) throws Exception {
+        switch (itemType.toLowerCase()) {
+            case "like button":
+                return strIdMessageMetaLikeButton;
+            case "like description":
+                return strIdMessageMetaLikeDescription;
+            case "message status":
+                return strIdMessageMetaStatus;
+            case "first like avatar":
+                return strIdMessageMetaFirstLike;
+            case "second like avatar":
+                return strIdMessageMetaSecondLike;
+            default:
+                throw new IllegalStateException(
+                        String.format("Cannot identify the item type '%s' in Message Meta", itemType));
         }
     }
     //endregion

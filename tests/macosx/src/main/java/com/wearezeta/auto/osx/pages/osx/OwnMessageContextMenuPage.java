@@ -1,6 +1,6 @@
-package com.wearezeta.auto.win.pages.win;
+package com.wearezeta.auto.osx.pages.osx;
 
-import com.wearezeta.auto.common.driver.ZetaWinDriver;
+import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 import java.util.concurrent.Future;
@@ -9,18 +9,19 @@ import java.awt.event.KeyEvent;
 
 import org.apache.log4j.Logger;
 
-public class MessageContextMenuPage extends WinPage {
+public class OwnMessageContextMenuPage extends OSXPage {
 
-    public static final Logger LOG = ZetaLogger.getLog(MessageContextMenuPage.class.getName());
+    public static final Logger LOG = ZetaLogger.getLog(OwnMessageContextMenuPage.class.getName());
 
-    private static final int CONTEXT_DELETE_INDEX = 1;
-    private static final int CONTEXT_EDIT_INDEX = 1;
-    private static final int CONTEXT_DELETE_EVERYWHERE_INDEX = 3;
+    private static final int CONTEXT_LIKE_INDEX = 1;
+    private static final int CONTEXT_EDIT_INDEX = 2;
+    private static final int CONTEXT_DELETE_INDEX = 3;
+    private static final int CONTEXT_DELETE_EVERYWHERE_INDEX = 4;
 
     // TODO hide behind driver impl
     private final Robot robot = new Robot();
 
-    public MessageContextMenuPage(Future<ZetaWinDriver> lazyDriver)
+    public OwnMessageContextMenuPage(Future<ZetaOSXDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
     }
@@ -30,12 +31,16 @@ public class MessageContextMenuPage extends WinPage {
      *
      * @throws Exception
      */
-    public void clickDelete() throws Exception {
-        selectByIndex(CONTEXT_DELETE_INDEX, 2000);
+    public void clickLike() throws Exception {
+        selectByIndex(CONTEXT_LIKE_INDEX, 2000);
     }
     
     public void clickEdit() throws Exception {
         selectByIndex(CONTEXT_EDIT_INDEX, 2000);
+    }
+    
+    public void clickDelete() throws Exception {
+        selectByIndex(CONTEXT_DELETE_INDEX, 2000);
     }
     
     public void clickDeleteEverywhere() throws Exception {

@@ -10,7 +10,7 @@ Feature: Copy Message
     Given User <Contact> sends encrypted message <Message> to user Myself
     Given I see the conversations list with conversations
     Given I tap the conversation <Contact>
-    When I long tap the message "<Message>" in the conversation view
+    When I long tap the Text message "<Message>" in the conversation view
     Then I see Copy button on the message bottom menu
     And I see Delete only for me button on the message bottom menu
 

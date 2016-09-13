@@ -9,11 +9,9 @@ import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.Message;
-import com.wearezeta.auto.web.common.Lifecycle;
 
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
@@ -31,6 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
@@ -63,6 +63,16 @@ public class CommonWebAppSteps {
 
     public CommonWebAppSteps(TestContext context) {
         this.context = context;
+    }
+    
+    /**
+     * Step for preparing and debugging testcases while the feature in not implemented completely
+     * 
+     * @throws Exception 
+     */
+    @Then("^I fail the test$")
+    public void IFailTheTest() throws Exception {
+        throw new Exception("The test is supposed to fail here");
     }
 
     /**
@@ -619,6 +629,51 @@ public class CommonWebAppSteps {
         context.getCommonSteps().UserUpdateLatestMessage(userNameAlias, dstNameAlias, newMessage, deviceName + context.getTestname().
                     hashCode(), isGroup);
     }
+    
+    /**
+     * User X edit his own messages, be careful this message will not control the type of the message you edit.
+     *
+     * @param userNameAlias user name/alias
+     * @param newMessage    the message you want to update to
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  destination user name/alias or group convo name
+     * @param deviceName    source device name. Will be created if does not exist yet
+     * @throws Exception
+     */
+    @When("^User (.*) edits? the second last message to \"(.*)\" from (user|group conversation) (.*) via device (.*)$")
+    public void UserXEditSecondLastMessage(String userNameAlias, String newMessage, String convoType,
+                                     String dstNameAlias, String deviceName) throws Exception {
+        boolean isGroup = convoType.equals("group conversation");
+        context.getCommonSteps().UserUpdateSecondLastMessage(userNameAlias, dstNameAlias, newMessage, deviceName + context.getTestname().
+                    hashCode(), isGroup);
+    }
+    
+    /**
+     * User X react(like or unlike) the recent message in 1:1 conversation or group conversation
+     *
+     * @param userNameAlias User X's name or alias
+     * @param reactionType User X's reaction , could be like or unlike, be careful you should use like before unlike
+     * @param dstNameAlias the conversation which message is belong to
+     * @param deviceName User X's device
+     * @throws Exception
+     * @step. ^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$
+     */
+    @When("^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$")
+    public void UserReactLastMessage(String userNameAlias, String reactionType, String dstNameAlias, String deviceName)
+            throws Exception {
+        switch (reactionType.toLowerCase()){
+            case "likes" :
+                context.getCommonSteps().UserLikeLatestMessage(userNameAlias, dstNameAlias, deviceName + context.getTestname().
+                    hashCode());
+                break;
+            case "unlikes" :
+                context.getCommonSteps().UserUnlikeLatestMessage(userNameAlias, dstNameAlias, deviceName + context.getTestname().
+                    hashCode());
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify the reaction type '%s'", reactionType));
+        }
+    }
 
     /**
      * Send personal invitation over the backend
@@ -796,32 +851,45 @@ public class CommonWebAppSteps {
     }
 
     /**
-     * Verifies whether current browser log is empty or not
+     * Verifies whether current browser log has errors or not
      *
      * @throws Exception
-     * @step. ^I verify browser log is empty$
+     * @step. ^I verify browser log does not have errors$
      */
-    @Then("^I verify browser log is empty$")
+    @Then("^I verify browser log does not have errors$")
     public void VerifyBrowserLogIsEmpty() throws Exception {
-        if (PlatformDrivers.getInstance().hasDriver(context.getCurrentPlatform())) {
-            try {
-                if (WebAppExecutionContext.getBrowser()
-                        .isSupportingConsoleLogManagement()) {
-                    List<LogEntry> browserLog = Lifecycle.getBrowserLog(context.getDriver());
+        try {
+            if (WebAppExecutionContext.getBrowser()
+                    .isSupportingConsoleLogManagement()) {
+                List<LogEntry> browserLog = context.getBrowserLog();
 
-                    StringBuilder bLog = new StringBuilder("\n");
-                    browserLog.stream().forEach(
-                            (entry) -> {
-                                bLog.append(entry.getLevel()).append(":")
-                                        .append(entry.getMessage())
-                                        .append("\n");
-                            });
-                    assertTrue("BrowserLog is not empty: " + bLog.toString(),
-                            browserLog.isEmpty());
-                }
-            } catch (ExecutionException e) {
-                e.printStackTrace();
+                StringBuilder bLog = new StringBuilder();
+                browserLog = browserLog.stream()
+                        .filter((entry) -> 
+                                entry.getLevel().intValue() >= Level.SEVERE.intValue())
+                        // filter auto login attempts
+                        .filter((entry) -> 
+                                !entry.getMessage().contains("/access"))
+                        .filter((entry) -> 
+                                !entry.getMessage().contains("/self"))
+                        .filter((entry) -> 
+                                !entry.getMessage().contains("attempt"))
+                        // filter encryption precondition
+                        .filter((entry) -> 
+                                !entry.getMessage().contains("412 (Precondition Failed)"))
+                        .collect(Collectors.toList());
+                
+                browserLog.forEach((entry) -> {
+                            bLog.append(entry.getLevel()).append(":")
+                            .append(entry.getMessage())
+                            .append("\n");
+                        });
+
+                assertTrue("BrowserLog does have errors: \n" + bLog.toString(),
+                        browserLog.isEmpty());
             }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
     }
 

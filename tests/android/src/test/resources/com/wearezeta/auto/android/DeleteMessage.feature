@@ -209,7 +209,7 @@ Feature: Delete Message
     Then I see giphy preview page
     When I click on the giphy send button
     Then I see a picture in the conversation view
-    When I long tap the recent picture in the conversation view
+    When I long tap Image container in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see any pictures in the conversation view
@@ -308,6 +308,7 @@ Feature: Delete Message
 
   @C150030 @regression
   Scenario Outline: Verify you can delete Share Location placeholder from conversation view
+    Given I am on Android with Google Location Service
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number

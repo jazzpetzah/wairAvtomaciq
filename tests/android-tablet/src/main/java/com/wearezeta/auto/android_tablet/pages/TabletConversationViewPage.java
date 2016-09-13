@@ -76,7 +76,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilAPictureAppears() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idConversationImages);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idConversationImageContainer);
     }
 
     public boolean waitUntilGCNIsVisible() throws Exception {
@@ -113,8 +113,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return getConversationViewPage().getPreviewPictureScreenshot();
     }
 
-    public void tapRecentImage() throws Exception {
-        getConversationViewPage().tapRecentImage();
+    public void tapContainer(String tapType, String containerName) throws Exception {
+        getConversationViewPage().tapContainer(tapType, containerName);
     }
 
     public boolean waitForSystemConnectionMessageContains(String expectedMessage) throws Exception {
@@ -133,15 +133,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilPicturesNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idConversationImages);
-    }
-
-    public boolean waitUntilUnsentIndicatorIsVisible(String msg) throws Exception {
-        return getConversationViewPage().waitForUnsentIndicatorVisible(msg);
-    }
-
-    public boolean waitUntilUnsentIndicatorIsVisibleForAPicture() throws Exception {
-        return getConversationViewPage().waitForAPictureWithUnsentIndicator();
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idConversationImageContainer);
     }
 
     public void tapPlayPauseButton() throws Exception {
@@ -188,12 +180,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getConversationViewPage().tapTopToolbarTitle();
     }
 
-    public void tapMessage(String msg) throws Exception {
-        getConversationViewPage().tapMessage(msg);
-    }
-
-    public void longTapMessage(String msg) throws Exception {
-        getConversationViewPage().longTapMessage(msg);
+    public void tapMessage(String messageType, String message, String tapType) throws Exception {
+        getConversationViewPage().tapMessage(messageType, message, tapType);
     }
 
     //region Message Bottom Menu
@@ -268,5 +256,39 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
     public void tapSketchOnPicturePreviewOverlay() throws Exception {
         getElement(idSketchButtonOnPicturePreviewOverlay).click();
+    }
+
+    public boolean waitUntilMessageMetaItemVisible(String itemType) throws Exception {
+        return getConversationViewPage().waitUntilMessageMetaItemVisible(itemType);
+    }
+
+    public boolean waitUntilMessageMetaItemInvisible(String itemType) throws Exception {
+        return getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType);
+    }
+
+    public boolean waitUntilMessageMetaItemVisible(String itemType, String expectedItemText)
+            throws Exception {
+        return getConversationViewPage().waitUntilMessageMetaItemVisible(itemType, expectedItemText);
+    }
+
+    public boolean waitUntilMessageMetaItemInvisible(String itemType, String expectedItemText)
+            throws Exception {
+        return getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType, expectedItemText);
+    }
+
+    public void tapImageContainerButton(String buttonName) throws Exception {
+        getConversationViewPage().tapImageContainerButton(buttonName);
+    }
+
+    public BufferedImage getMessageLikeButtonState() throws Exception {
+        return getConversationViewPage().getMessageLikeButtonState();
+    }
+
+    public void tapMessageMetaItem(String itemType) throws Exception {
+        getConversationViewPage().tapMessageMetaItem(itemType);
+    }
+
+    public int getMessageStatusCount() throws Exception {
+        return getConversationViewPage().getMessageStatusCount();
     }
 }

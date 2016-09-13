@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.locators;
 
+import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
 import java.util.function.Function;
 
 public final class WebAppLocators {
@@ -47,6 +48,7 @@ public final class WebAppLocators {
         public static final String errorMarkedPasswordField = "#form-account-login " +
                 ".input-error[data-uie-name='enter-password']";
 
+        // TODO change to '#wire-login-password-remember label' when gregor merges his phone login changes
         public static final String cssRememberMe = "#remember-me label";
 
         public static final String cssForgotPassword = "[data-uie-name='go-forgot-password']";
@@ -346,6 +348,30 @@ public final class WebAppLocators {
 
         public static final Function<String, String> cssMessagesById = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s']", text);
+        
+        public static final FunctionFor2Parameters<String, String, String> xpathMessageTextByMessageId = (messageId, text) -> String
+                .format("//*[@data-uie-name='item-message' and @data-uie-uid='%s']//*[contains(@class, 'text') and text()='%s']", messageId, text);
+
+        public static final Function<String, String> cssUserThatLikeByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='message-liked-names']", text);
+
+        public static final Function<String, String> cssLikeWithoutOtherLikesByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-body-like-icon:not(.like-button-liked)", text);
+        
+        public static final Function<String, String> cssUnlikeWithoutOtherLikesByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-body-like-icon.like-button-liked", text);
+        
+        public static final Function<String, String> cssFooterByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-footer", text);
+        
+        public static final Function<String, String> cssLikeWithOtherLikesByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-footer .like-button:not(.like-button-liked)", text);
+        
+        public static final Function<String, String> cssUnlikeWithOtherLikesByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-footer .like-button.like-button-liked", text);
+        
+        public static final Function<String, String> cssLikeTextElementByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-footer-label span", text);//TODO
 
         public static final Function<String, String> cssContextMenuButtonByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] context-menu", text);
@@ -355,6 +381,16 @@ public final class WebAppLocators {
 
         public static final Function<String, String> cssDeleteForMeByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] context-menu [data-context-action='delete']", text);
+
+        public static final Function<String, String> cssReactByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] context-menu [data-context-action='react']", text);
+        
+        public static final Function<String, String> cssLinkPreviewLinkByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .link-preview-site", text);
+
+        public static final String xpathLikeInContext = "//li[contains(@data-context-action, 'react') and text()='Like']";
+
+        public static final String xpathUnlikeInContext = "//li[contains(@data-context-action, 'react') and text()='Unlike']";
 
         public static final Function<String, String> cssDeleteButtonByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='do-message-delete']", text);
@@ -697,9 +733,6 @@ public final class WebAppLocators {
 
         public static final String cssChooseYourOwnInput = "[data-uie-name=do-select-picture]";
 
-        public static final String xpathConfirmPictureSelectionButton = xpathRootDiv
-                + "//*[@data-uie-name='do-set-picture']";
-
         public static final String xpathNextCarouselImageBtn = xpathRootDiv
                 + "//div[contains(@class, 'carousel-arrows')]//span[contains(@class, 'carousel-arrow-right')]";
 
@@ -869,6 +902,8 @@ public final class WebAppLocators {
     public static final class PhoneNumberLoginPage {
 
         public static final String cssErrorMessage = "#login-method-phone [data-uie-name='status-error']";
+        
+        public static final String cssRememberMe = "#wire-login-phone-remember label";
     }
 
     public static final class HistoryInfoPage {

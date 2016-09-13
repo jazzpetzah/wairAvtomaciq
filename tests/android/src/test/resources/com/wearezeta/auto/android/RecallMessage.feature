@@ -32,6 +32,26 @@ Feature: Recall Message
       | Name      | Contact1  | Message           | ContactDevice | MySecondDevice | Message2 |
       | user1Name | user2Name | DeleteTextMessage | Device2       | Device1        | Del2     |
 
+  @C225997 @regression
+  Scenario Outline: Verify the message deleted everywhere in local Wire database
+    Given Wire has Debug mode enabled
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When I type the message "<Text>" and send it
+    And I remember the state of the recent message from user <Contact> in the local database
+    And I long tap the Text message "<Text>" in the conversation view
+    And I tap Delete for everyone button on the message bottom menu
+    And I tap Delete button on the alert
+    Then I verify the remembered message has been deleted from the local database
+
+    Examples:
+      | Name      | Contact   | Text |
+      | user1Name | user2Name | Hi   |
+
   @C202327 @C202329 @regression @rc
   Scenario Outline: Verify I can delete my message everywhere (group) (myview and other view)
     Given There are 3 users where <Name> is me
@@ -77,7 +97,7 @@ Feature: Recall Message
     And I tap Add picture button from cursor toolbar
     And I tap Gallery button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
-    And I long tap the recent picture in the conversation view
+    And I long tap Image container in the conversation view
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
@@ -102,7 +122,7 @@ Feature: Recall Message
     And I click on the GIF button
     Then I see giphy preview page
     When I click on the giphy send button
-    And I long tap the recent picture in the conversation view
+    And I long tap Image container in the conversation view
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
@@ -131,13 +151,13 @@ Feature: Recall Message
     Then I do not see Link Preview container in the conversation view
     And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
 
-
     Examples:
       | Name      | Contact   | Link                    | ContactDevice |
       | user1Name | user2Name | http://www.facebook.com | Device1       |
 
   @C202335 @regression @rc
   Scenario Outline: Verify delete everywhere works for Share location
+    Given I am on Android with Google Location Service
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User <Contact> adds new device <ContactDevice>
@@ -276,8 +296,8 @@ Feature: Recall Message
       | Name      | Contact1  | ContactDevice |
       | user1Name | user2Name | Device1       |
 
-  @C206252 @regression
-  Scenario Outline: (AN-4394) Verify I cannot delete message everywhere when I was removed from group
+  @C206252 @C226046 @staging
+  Scenario Outline: (AN-4394) Verify I cannot delete message everywhere/like message when I was removed from group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -287,7 +307,11 @@ Feature: Recall Message
     When I tap on conversation name <GroupChatName>
     And I type the message "<Message>" and send it
     And <Contact1> removes Myself from group <GroupChatName>
-    And I long tap the Text message "<Message>" in the conversation view
+    And I tap the Text message "<Message>" in the conversation view
+    # C226046
+    Then I do not see Like button in conversation view
+    # C206252
+    When I long tap the Text message "<Message>" in the conversation view
     Then I do not see Delete for everyone button on the message bottom menu
 
     Examples:
@@ -341,8 +365,8 @@ Feature: Recall Message
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @C206265 @C206274 @regression
-  Scenario Outline: Verify deleted messages/edit message doesn't unarchive the "archived conversation"
+  @C206265 @C206274 @C226039 @regression
+  Scenario Outline: Verify like/unlike and deleted messages/edit message doesn't unarchive the "archived conversation"
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given Myself is connected to <Contact2>
@@ -351,14 +375,19 @@ Feature: Recall Message
     Given I accept First Time overlay as soon as it is visible
     Given User <Contact1> send encrypted message "<Message>" via device <ContactDevice> to user Myself
     Given I see Conversations list with conversations
-    When I swipe right on a <Contact1>
-    And I select ARCHIVE from conversation settings menu
-    And I do not see Conversations list with name <Contact1>
-    And User <Contact1> edits the recent message to "<NewMessage>" from user Myself via device <ContactDevice>
-    # C206274
+    Given I swipe right on a <Contact1>
+    Given I select ARCHIVE from conversation settings menu
+    Given I do not see Conversations list with name <Contact1>
+    # C226039
+    When User <Contact1> likes the recent message from user Myself via device <ContactDevice>
     Then I do not see Conversations list with name <Contact1>
-    When User <Contact1> deletes the recent message everywhere from user Myself via device <ContactDevice>
+    When User <Contact1> unlikes the recent message from user Myself via device <ContactDevice>
+    Then I do not see Conversations list with name <Contact1>
+    # C206274
+    When User <Contact1> edits the recent message to "<NewMessage>" from user Myself via device <ContactDevice>
+    Then I do not see Conversations list with name <Contact1>
     # C206265
+    When User <Contact1> deletes the recent message everywhere from user Myself via device <ContactDevice>
     Then I do not see Conversations list with name <Contact1>
 
     Examples:

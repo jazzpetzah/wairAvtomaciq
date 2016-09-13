@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -47,8 +49,8 @@ public class PasswordChangeRequestSteps {
 
 	@When("^I go to Password Change Reset page for (.*)")
 	public void IGoToPasswordChangeResetPageFor(String agent) throws Exception {
-		context.getPagesCollection().getPage(PasswordChangePage.class).setUrl(
-				WebAppConstants.STAGING_SITE_ROOT + "/forgot/?agent=" + agent);
+		final String website = CommonUtils.getWebsitePathFromConfig(PasswordChangeRequestSteps.class);
+		context.getPagesCollection().getPage(PasswordChangePage.class).setUrl(website + "/forgot/?agent=" + agent);
 		context.getPagesCollection().getPage(PasswordChangePage.class).navigateTo();
 	}
 	
@@ -210,4 +212,18 @@ public class PasswordChangeRequestSteps {
 		context.getPagesCollection().getPage(PasswordChangePage.class).navigateTo();
 	}
 
+	@When("^I see password change mail in (.*) with (.*)$")
+	public void ISeePasswordChangeMailInLanguage(String language, String message) throws Exception {
+		final String content = BackendAPIWrappers
+				.getMessageContent(this.passwordChangeMessage);
+		switch (language) {
+			case "de":
+				assertThat("E-Mail is not German.", content, containsString(message));
+				break;
+			case "en":
+				assertThat("E-Mail is not English.", content, containsString(message));
+				break;
+			default: break;
+		}
+	}
 }

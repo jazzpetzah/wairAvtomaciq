@@ -2,7 +2,8 @@ package com.wearezeta.auto.osx.steps.osx;
 
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.osx.pages.osx.MessageContextMenuPage;
+import com.wearezeta.auto.osx.pages.osx.ForeignMessageContextMenuPage;
+import com.wearezeta.auto.osx.pages.osx.OwnMessageContextMenuPage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
@@ -35,27 +36,38 @@ public class MessageContextMenuPageSteps {
      * Click delete local or delete everywhere in message context menu
      *
      * @param everywhere whether to click local delete or delete everywhere
-     * @step. ^I click delete (everywhere )?in message context menu$
+     * @step. ^I click delete (everywhere )?in message context menu for my own message$
      * @throws Exception
      */
-    @When("^I click delete (everywhere )?in message context menu$")
-    public void IClickDeleteButtonInContextMenu(String everywhere) throws Exception {
+    @When("^I click delete (everywhere )?in message context menu for my own message$")
+    public void IClickDeleteButtonInOwnContextMenu(String everywhere) throws Exception {
         if (everywhere == null) {
-            osxPagesCollection.getPage(MessageContextMenuPage.class).clickDelete();
+            osxPagesCollection.getPage(OwnMessageContextMenuPage.class).clickDelete();
         }else{
-            osxPagesCollection.getPage(MessageContextMenuPage.class).clickDeleteEverywhere();
+            osxPagesCollection.getPage(OwnMessageContextMenuPage.class).clickDeleteEverywhere();
         }
         
     }
     
     /**
-     * Click edit in message context menu
+     * Click delete local or delete everywhere in message context menu
      *
-     * @step. ^I click edit in message context menu$
+     * @step. ^I click delete in message context menu for foreign message$
      * @throws Exception
      */
-    @When("^I click edit in message context menu$")
-    public void IClickEditButtonInContextMenu() throws Exception {
-            osxPagesCollection.getPage(MessageContextMenuPage.class).clickEdit();
+    @When("^I click delete in message context menu for foreign message$")
+    public void IClickDeleteButtonInForeignContextMenu() throws Exception {
+        osxPagesCollection.getPage(ForeignMessageContextMenuPage.class).clickDelete();
+    }
+    
+    /**
+     * Click edit in own messages context menu
+     *
+     * @step. ^I click edit in message context menu for my own message$
+     * @throws Exception
+     */
+    @When("^I click edit in message context menu for my own message$")
+    public void IClickEditButtonInOwnContextMenu() throws Exception {
+            osxPagesCollection.getPage(OwnMessageContextMenuPage.class).clickEdit();
     }
 }

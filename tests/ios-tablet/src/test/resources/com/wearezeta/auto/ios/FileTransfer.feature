@@ -30,7 +30,7 @@ Feature: File Transfer
     # Wait for the placeholder to be loaded
     And I wait for 5 seconds
     Then I wait up to <Timeout> seconds until the file <FileName>.<FileExt> with size <FileSize> is ready for download from conversation view
-    When I tap file transfer placeholder
+    When I tap file transfer action button
     Then I wait up to <Timeout> seconds until I see a preview of the file named "<FileName>"
 
     Examples:

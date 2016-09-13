@@ -40,6 +40,8 @@ public interface IDevice extends IRemoteEntity {
 
     ActorMessage.MessageInfo[] getConversationMessages(String convId) throws Exception;
 
+    void reactMessage(String convId, MessageId messageId, MessageReactionType reactionType) throws Exception;
+
     void shareLocation(String convId, float lon, float lat, String address, int zoom) throws Exception;
 
     void shareLocation(String convId) throws Exception;

@@ -150,11 +150,26 @@ public class SEBridge {
         getOrAddRandomDevice(userFrom).updateMessage(messageId, message);
     }
 
-    public void updateMessage(ClientUser userFrom, MessageId messageId, String newMessage, String deviceName) throws Exception {
+    public void updateMessage(ClientUser userFrom, MessageId messageId, String newMessage, String deviceName)
+            throws Exception {
         if(deviceName == null) {
             updateMessage(userFrom, messageId, newMessage);
         } else {
             getOrAddDevice(userFrom, deviceName).updateMessage(messageId, newMessage);
+        }
+    }
+
+    public void reactMessage(ClientUser userFrom, String convId, MessageId messageId, MessageReactionType reactionType)
+            throws Exception {
+        getOrAddRandomDevice(userFrom).reactMessage(convId, messageId, reactionType);
+    }
+
+    public void reactMessage(ClientUser userFrom, String convId, MessageId messageId,
+                             MessageReactionType reactionType, String deviceName) throws Exception {
+        if (deviceName == null) {
+            reactMessage(userFrom, convId, messageId, reactionType);
+        } else {
+            getOrAddDevice(userFrom, deviceName).reactMessage(convId, messageId, reactionType);
         }
     }
 

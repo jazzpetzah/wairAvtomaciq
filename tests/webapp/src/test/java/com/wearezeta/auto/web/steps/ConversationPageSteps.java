@@ -1,7 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 import java.awt.image.BufferedImage;
@@ -33,6 +32,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -90,7 +90,8 @@ public class ConversationPageSteps {
      */
     @Then("^I verify that message \"(.*)\" was typed$")
     public void IVerifyThatMessageWasTyped(String message) throws Exception {
-        assertThat("Message in input field", context.getPagesCollection().getPage(ConversationPage.class).getMessageFromInputField(),
+        assertThat("Message in input field", context.getPagesCollection().getPage(ConversationPage.class).
+                getMessageFromInputField(),
                 equalTo(message));
     }
 
@@ -185,9 +186,7 @@ public class ConversationPageSteps {
     public void ISeeEmbeddedMessage(String doNot, String typeOfMessage, String url) throws Exception {
         if (doNot == null) {
             assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isMessageEmbedded(true, typeOfMessage, url));
-        }
-        else
-        {
+        } else {
             assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isMessageEmbedded(false, typeOfMessage, url));
         }
     }
@@ -311,6 +310,7 @@ public class ConversationPageSteps {
         assertThat("Number of messages in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
                 .getNumberOfMessagesInCurrentConversation(), equalTo(x));
     }
+
     /**
      * Verifies that x deleted messages are in the conversation
      *
@@ -319,7 +319,8 @@ public class ConversationPageSteps {
      */
     @Then("^I see (\\d+) deleted messages? in conversation$")
     public void ISeeXDeletedMessagesInConversation(int x) throws Exception {
-        assertThat("Number of deleted messages in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
+        assertThat("Number of deleted messages in the conversation", context.getPagesCollection().
+                getPage(ConversationPage.class)
                 .getNumberOfDeletedMessagesInCurrentConversation(), equalTo(x));
     }
 
@@ -369,7 +370,7 @@ public class ConversationPageSteps {
     /**
      * Generate and send a file with a specific size into current conversation
      *
-     * @param size     the size of a file.
+     * @param size the size of a file.
      * @param fileName the name of the file
      * @throws Exception
      */
@@ -393,7 +394,7 @@ public class ConversationPageSteps {
     /**
      * Generate and send a video with a specific size into current conversation
      *
-     * @param size     the size of the video file.
+     * @param size the size of the video file.
      * @param fileName the name of the file
      * @throws Exception
      */
@@ -409,7 +410,7 @@ public class ConversationPageSteps {
     /**
      * Generate and send a audio file with a specific size into current conversation
      *
-     * @param length   the length in format 00:00 (minutes:seconds) of the audio file.
+     * @param length the length in format 00:00 (minutes:seconds) of the audio file.
      * @param fileName the name of the file
      * @throws Exception
      */
@@ -432,7 +433,8 @@ public class ConversationPageSteps {
     @Then("^I (do not )?see file transfer for file (.*) in the conversation view$")
     public void ISeeFileTransferOfFile(String doNot, String fileName) throws Exception {
         if (doNot == null) {
-            assertThat("Could not find file transfer for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+            assertThat("Could not find file transfer for " + fileName, context.getPagesCollection().getPage(
+                    ConversationPage.class)
                     .isFileTransferDisplayed(fileName));
             String fileNameWithoutExtension = null;
             if (fileName.substring(fileName.length() - 7).equalsIgnoreCase(".tar.gz")) {
@@ -513,7 +515,7 @@ public class ConversationPageSteps {
      * Verifies if the file transfer placeholder contains correct file status
      *
      * @param fileName the name of a file
-     * @param status   the status of the transfer
+     * @param status the status of the transfer
      * @throws Exception
      * @step. ^I verify status of file (.*) is (.*) in the conversation view$
      */
@@ -524,11 +526,11 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Verifies if the file transfer placeholder contains correct file status only if the file status is shown at all. This
-     * is helpful in cases of UPLOADING... and DOWNLOADING... status.
+     * Verifies if the file transfer placeholder contains correct file status only if the file status is shown at all. This is
+     * helpful in cases of UPLOADING... and DOWNLOADING... status.
      *
      * @param fileName the name of a file
-     * @param status   the status of the transfer
+     * @param status the status of the transfer
      * @throws Exception
      * @step. ^I verify status of file (.*) is (.*) in the conversation view$
      */
@@ -545,7 +547,7 @@ public class ConversationPageSteps {
      * Verifies if the file transfer placeholder contains correct file type
      *
      * @param fileName the name of a file
-     * @param type     the type of the file
+     * @param type the type of the file
      * @throws Exception
      * @step. ^I verify status of file (.*) is (.*) in the conversation view$
      */
@@ -557,13 +559,15 @@ public class ConversationPageSteps {
 
     @Then("^I wait until file (.*) is (uploaded|downloaded) completely$")
     public void IWaitUntilFileUploaded(String fileName, String downloadType) throws Exception {
-        assertThat("Upload still not finished for file " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+        assertThat("Upload still not finished for file " + fileName, context.getPagesCollection().
+                getPage(ConversationPage.class)
                 .waitUntilFileUploaded(fileName));
     }
 
     @Then("^I wait until placeholder for file (.*) disappears$")
     public void IWaitUntilFilePlaceholderDisappears(String fileName) throws Exception {
-        assertThat("Upload still not finished for file " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+        assertThat("Upload still not finished for file " + fileName, context.getPagesCollection().
+                getPage(ConversationPage.class)
                 .waitUntilFilePlaceholderDisappears(fileName));
     }
 
@@ -582,11 +586,11 @@ public class ConversationPageSteps {
     @Then("^I wait until video (.*) is uploaded completely$")
     public void IWaitUntilVideoIsUploaded(String fileName) throws Exception {
         if (WebAppExecutionContext.getBrowser().isSupportingInlineVideo()) {
-            assertThat("Upload still not finished for video " + fileName, context.getPagesCollection().getPage
-                    (ConversationPage.class).waitUntilVideoUploaded(fileName));
+            assertThat("Upload still not finished for video " + fileName, context.getPagesCollection().getPage(
+                    ConversationPage.class).waitUntilVideoUploaded(fileName));
         } else {
-            assertThat("Upload still not finished for file " + fileName, context.getPagesCollection().getPage
-                    (ConversationPage.class).waitUntilFileUploaded(fileName));
+            assertThat("Upload still not finished for file " + fileName, context.getPagesCollection().getPage(
+                    ConversationPage.class).waitUntilFileUploaded(fileName));
         }
     }
 
@@ -614,7 +618,8 @@ public class ConversationPageSteps {
 
     @Then("^I wait until video (.*) is downloaded and starts to play$")
     public void IWaitUntilVideoStartsPlaying(String fileName) throws Exception {
-        assertThat("Download still not finished for video " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+        assertThat("Download still not finished for video " + fileName, context.getPagesCollection().getPage(
+                ConversationPage.class)
                 .waitUntilVideoPlays(fileName));
     }
 
@@ -642,7 +647,8 @@ public class ConversationPageSteps {
 
     @Then("^I wait until audio (.*) is uploaded completely$")
     public void IWaitUntilAudioIsUploaded(String fileName) throws Exception {
-        assertThat("Upload still not finished for audio " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+        assertThat("Upload still not finished for audio " + fileName, context.getPagesCollection().getPage(
+                ConversationPage.class)
                 .waitUntilAudioUploaded(fileName));
     }
 
@@ -653,7 +659,8 @@ public class ConversationPageSteps {
 
     @Then("^I wait until audio (.*) is downloaded and starts to play$")
     public void IWaitUntilAudioStartsPlaying(String fileName) throws Exception {
-        assertThat("Download still not finished for audio " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+        assertThat("Download still not finished for audio " + fileName, context.getPagesCollection().getPage(
+                ConversationPage.class)
                 .waitUntilAudioPlays(fileName));
     }
 
@@ -687,7 +694,7 @@ public class ConversationPageSteps {
     public void IClickContextMenuOfLatestMessage() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnLatestMessage();
     }
-    
+
     @When("^I click context menu of the second last message$")
     public void IClickContextMenuOfSecondLastMessage() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnSecondLastMessage();
@@ -740,6 +747,80 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).clickEditInMessageContextMenu();
     }
 
+    @When("^I click (like|unlike) button in context menu for latest message$")
+    public void IClickToLikeInContextMenuOfLatestMessage(String like) throws Exception {
+        boolean isLike = "like".equals(like);
+        if (isLike) {
+            assertTrue("Like button is not visible", context.getPagesCollection().getPage(ConversationPage.class)
+                    .isLikeButtonInContextMenuVisible());
+            context.getPagesCollection().getPage(ConversationPage.class).clickReactInContextMenuOfLatestMessage();
+        } else {
+            assertTrue("Unlike button is not visible", context.getPagesCollection().getPage(ConversationPage.class)
+                    .isUnlikeButtonInContextMenuVisible());
+            context.getPagesCollection().getPage(ConversationPage.class).clickReactInContextMenuOfLatestMessage();
+        }
+    }
+
+    @When("^I click to (like|unlike) the latest message with(out)? other likes$")
+    public void IClickToLikeLatestMessageWithoutOtherLikes(String like, String out) throws Exception {
+        boolean isWithout = "out".equals(out);
+        boolean isLike = "like".equals(like);
+        if (isWithout) {
+            if (isLike) {
+                context.getPagesCollection().getPage(ConversationPage.class).clickLikeLatestMessageWithoutOtherLikes();
+            } else {
+                context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeLatestMessageWithoutOtherLikes();
+            }
+        } else if (isLike) {
+            context.getPagesCollection().getPage(ConversationPage.class).clickLikeLatestMessageWithOtherLikes();
+        } else {
+            context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeLatestMessageWithOtherLikes();
+        }
+    }
+
+    @Then("^I (do not )?see likes below the latest message$")
+    public void ThenISeeLikesForLatestMessage(String not) throws Exception {
+        if (not == null) {
+            assertTrue("Likes of others are NOT visible for message", context.getPagesCollection().getPage(
+                    ConversationPage.class)
+                    .isLikeLineVisibleForLatestMessage());
+        } else {
+            assertTrue("Likes of others are visible for message", context.getPagesCollection().getPage(ConversationPage.class)
+                    .isLikeLineInvisibleForLatestMessage());
+        }
+    }
+
+    @Then("^I see the latest message is only liked by me$")
+    public void ThenISeeLatestMessageIsOnlyLikedByMe() throws Exception {
+        assertTrue("The message is NOT only liked by you", context.getPagesCollection().getPage(ConversationPage.class)
+                .isUnlikeWithoutOtherLikesVisibleForLatestMessage());
+    }
+    
+    @Then("^I see the latest message is only liked by others$")
+    public void ThenISeeLatestMessageIsOnlyLikedByOthers() throws Exception {
+        assertTrue("The message is liked by you", context.getPagesCollection().getPage(ConversationPage.class)
+                .isLikeWithOtherLikesVisibleForLatestMessage());
+    }
+
+    @Then("^I see the latest message is liked by others and me$")
+    public void ThenISeeLatestMessageIsLikedByOthersMe() throws Exception {
+        assertTrue("Message is NOT liked by others and you", context.getPagesCollection().getPage(ConversationPage.class)
+                .isUnlikeWithOtherLikesVisibleForLatestMessage());
+    }
+
+    @Then("^I see the latest message is liked by (.*)$")
+    public void ThenISeeLatestMessageIsLikedBy(String usersToNameAliases) throws Exception {
+        List<String> likers = context.getPagesCollection().getPage(ConversationPage.class).getUsersThatLikeTheLatestMessage();
+        List<String> aliases = CommonSteps.splitAliases(usersToNameAliases);
+        String[] users = new String[aliases.size()];
+        for(int i = 0; i < aliases.size(); i++) {
+            ClientUser userTo = context.getUserManager().findUserByNameOrNameAlias(aliases.get(i));
+            users[i] = userTo.getName();
+        }
+        assertThat("User not found in like message", likers, hasItems(users));
+        assertThat("Wrong number of likes", likers, hasSize(users.length));
+    }
+
     @When("^I click reset session on the latest decryption error")
     public void IClickToResetSession() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickToResetSessionOnLatestError();
@@ -757,7 +838,8 @@ public class ConversationPageSteps {
      */
     @Then("^I see correct people button tool tip$")
     public void ThenISeeCorrectPeopleButtonToolTip() throws Exception {
-        assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isPeopleButtonToolTipCorrect());
+        assertTrue("Tooltip NOT visible for people button", context.getPagesCollection().getPage(ConversationPage.class).
+                isPeopleButtonToolTipCorrect());
     }
 
     @Then("^I see connecting message for (.*) in conversation$")
@@ -781,7 +863,7 @@ public class ConversationPageSteps {
     /**
      * Checks action message (e.g. you left, etc.) appear in conversation
      *
-     * @param doNot   if not null, checks if the action message does not display
+     * @param doNot if not null, checks if the action message does not display
      * @param message constant part of the system message
      * @throws Exception
      * @throws AssertionError if action message did not appear in conversation
@@ -800,7 +882,7 @@ public class ConversationPageSteps {
      * Checks action message (e.g. you left, etc.) appear in conversation
      *
      * @param message constant part of the system message
-     * @param times   number of times the message appears
+     * @param times number of times the message appears
      * @throws Exception
      * @throws AssertionError if action message did not appear in conversation
      * @step. ^I see (.*) action in conversation$
@@ -814,8 +896,8 @@ public class ConversationPageSteps {
     /**
      * Checks action message (e.g. you left, etc.) appear in conversation
      *
-     * @param doNot    if not null, checks if the action message does not display
-     * @param message  constant part of the system message
+     * @param doNot if not null, checks if the action message does not display
+     * @param message constant part of the system message
      * @param contacts list of comma separated contact names/aliases
      * @throws AssertionError if action message did not appear in conversation
      * @throws Exception
@@ -833,8 +915,8 @@ public class ConversationPageSteps {
     /**
      * Checks action message (e.g. you left, etc.) appear in conversation
      *
-     * @param message  constant part of the system message
-     * @param times    number of times the message appears
+     * @param message constant part of the system message
+     * @param times number of times the message appears
      * @param contacts list of comma separated contact names/aliases
      * @throws AssertionError if action message did not appear in conversation
      * @throws Exception
@@ -888,6 +970,19 @@ public class ConversationPageSteps {
     @Then("^I see text message (.*)")
     public void ISeeTextMessage(String message) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).waitForPresentMessageContains(message);
+    }
+    
+    /**
+     * Verify latest text message is visible in conversation.
+     *
+     * @param message
+     * @throws Exception
+     * @step. ^I see text message (.*)
+     */
+    @Then("^I see latest text message (.*)")
+    public void ISeeLatestTextMessage(String message) throws Exception {
+        assertTrue(String.format("Last message is NOT visible with text '%s'", message), 
+                context.getPagesCollection().getPage(ConversationPage.class).isLatestMessageWithTextVisible(message));
     }
 
     /**
@@ -956,7 +1051,8 @@ public class ConversationPageSteps {
      */
     @Then("^I verify the second last text message equals to (.*)")
     public void IVerifySecondLastTextMessage(String expectedMessage) throws Exception {
-        assertThat(context.getPagesCollection().getPage(ConversationPage.class).getSecondLastTextMessage(), equalTo(expectedMessage));
+        assertThat(context.getPagesCollection().getPage(ConversationPage.class).getSecondLastTextMessage(), equalTo(
+                expectedMessage));
     }
 
     /**
@@ -1193,7 +1289,8 @@ public class ConversationPageSteps {
     @Then("^I see correct video call button tooltip$")
     public void ISeeCorrectVideoCallButtonTooltip() throws Exception {
         String tooltip = TOOLTIP_VIDEO_CALL;
-        assertThat("Video Call button tooltip", context.getPagesCollection().getPage(ConversationPage.class).getVideoCallButtonToolTip(),
+        assertThat("Video Call button tooltip", context.getPagesCollection().getPage(ConversationPage.class).
+                getVideoCallButtonToolTip(),
                 equalTo(tooltip));
     }
 
@@ -1220,7 +1317,8 @@ public class ConversationPageSteps {
 
     @Then("^I see cancel pending request button in the conversation view$")
     public void ISeeCancelRequestButton() throws Exception {
-        assertTrue("Cancel request is NOT visible in conversation list", context.getPagesCollection().getPage(ConversationPage.class).isCancelRequestButtonVisible());
+        assertTrue("Cancel request is NOT visible in conversation list", context.getPagesCollection().getPage(
+                ConversationPage.class).isCancelRequestButtonVisible());
     }
 
     @Then("^I click cancel pending request button in the conversation view$")
@@ -1259,7 +1357,8 @@ public class ConversationPageSteps {
     @When("^I verify all remembered messages are present in conversation (.*)$")
     public void IVerifyAllRememberedMessages(String conversation) throws Exception {
         SortedSet<Message> processedMessages = new TreeSet<>();
-        SortedSet<Message> chunkedActualMessages = context.getPagesCollection().getPage(ConversationPage.class).getAllLoadedMessages();
+        SortedSet<Message> chunkedActualMessages = context.getPagesCollection().getPage(ConversationPage.class).
+                getAllLoadedMessages();
         SortedSet<Message> rememberedMessages = context.getConversationStates().getAllMessages(conversation);
 
         //DEBUG ON
@@ -1355,18 +1454,19 @@ public class ConversationPageSteps {
      */
     @When("^I press Up Arrow to edit message$")
     public void IPressUpArrow() throws Exception {
-            context.getPagesCollection().getPage(ConversationPage.class).pressUpArrow();
+        context.getPagesCollection().getPage(ConversationPage.class).pressUpArrow();
     }
 
     /**
      * Verifies whether location message is shown in the conversation view or not.
      *
-     * @param doNot        is set to null if "do not" part does not exist
+     * @param doNot is set to null if "do not" part does not exist
      * @param locationName name of the shared location
-     * @param longitude    longitude of the shared location, float
-     * @param latitude     latitude of the shared location, float
+     * @param longitude longitude of the shared location, float
+     * @param latitude latitude of the shared location, float
      * @throws java.lang.Exception
-     * @step. ^I (do not )?see location message (.*) with ([-+]?[0-9]*\.?[0-9]+) and ([-+]?[0-9]*\.?[0-9]+) in the conversation view$
+     * @step. ^I (do not )?see location message (.*) with ([-+]?[0-9]*\.?[0-9]+) and ([-+]?[0-9]*\.?[0-9]+) in the conversation
+     * view$
      */
     @Then("^I (do not )?see location message (.*) with ([-+]?[0-9]*\\.?[0-9]+) and ([-+]?[0-9]*\\.?[0-9]+) in the conversation view$")
     public void ISeeLocationMessage(String doNot, String locationName, float longitude, float latitude) throws Exception {
@@ -1389,7 +1489,6 @@ public class ConversationPageSteps {
                     context.getPagesCollection().getPage(ConversationPage.class).isLocationNotShownInConversationView());
         }
     }
-
 
     /**
      * Cancel video download
@@ -1419,7 +1518,7 @@ public class ConversationPageSteps {
      * Verifies whether link title is shown in the conversation view or not.
      *
      * @param linkTitle title of the link in link preview
-     * @param doNot     is set to null if "do not" part does not exist
+     * @param doNot is set to null if "do not" part does not exist
      * @throws java.lang.Exception
      * @step. ^I see a title (.*) in link preview in the conversation view$
      */
@@ -1449,7 +1548,8 @@ public class ConversationPageSteps {
 
             final String picturePath = WebCommonUtils.getFullPicturePath(pictureName);
             BufferedImage originalImage = ImageUtil.readImageFromFile(picturePath);
-            BufferedImage linkPreviewScreenshot = context.getPagesCollection().getPage(ConversationPage.class).getImageFromLastLinkPreview();
+            BufferedImage linkPreviewScreenshot = context.getPagesCollection().getPage(ConversationPage.class).
+                    getImageFromLastLinkPreview();
 
             assertThat("Not enough good matches", ImageUtil.getMatches(originalImage, linkPreviewScreenshot), greaterThan(100));
         } else {
@@ -1469,7 +1569,23 @@ public class ConversationPageSteps {
     public void ISeeLinkInLinkPreview(String link) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).waitForLinkPreviewContains(link);
     }
-
+    
+    /**
+     * Verify latest message is a link preview.
+     *
+     * @param not is set to null if "do not" part does not exist
+     * @throws Exception
+     * @step. I (do not )?see latest message is link preview message$
+     */
+    @Then("^I (do not )?see latest message is link preview message$")
+    public void ISeeLatestMessageIsLinkPreview(String not) throws Exception {
+        if (not == null) {
+            assertTrue("latest message is no link preview", context.getPagesCollection().getPage(ConversationPage.class).
+                    isLinkPreviewLinkVisibleForLatestMessage());
+        } else {
+            assertTrue("latest message is a link preview", context.getPagesCollection().getPage(ConversationPage.class).isLinkPreviewLinkInvisibleForLatestMessage());
+        }
+    }
 
     /**
      * Clicks x button to close edit mode

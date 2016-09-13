@@ -444,11 +444,11 @@ public class CommonIOSSteps {
     /**
      * click the corresponding on-screen keyboard button
      *
-     * @param btnName button name, either Space or Hide or Done
+     * @param btnName button name
      * @throws Exception
-     * @step. ^I click (\\w+) keyboard button$
+     * @step. ^I click (Hide|Space|Done) keyboard button$
      */
-    @When("^I click (\\w+) keyboard button$")
+    @When("^I click (Hide|Space|Done) keyboard button$")
     public void IClickHideKeyboardBtn(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
             case "hide":
@@ -1340,9 +1340,9 @@ public class CommonIOSSteps {
      * @param shouldNotSee equals to null if the corresponding item should be visible
      * @param itemName     the badge item name
      * @throws Exception
-     * @step. ^I (do not )?see (Select All|Copy|Delete|Paste|Save|Edit) badge item$
+     * @step. ^I (do not )?see (Select All|Copy|Delete|Paste|Save|Edit|Like|Unlike) badge item$
      */
-    @Then("^I (do not )?see (Select All|Copy|Delete|Paste|Save|Edit) badge item$")
+    @Then("^I (do not )?see (Select All|Copy|Delete|Paste|Save|Edit|Like|Unlike) badge item$")
     public void ISeeBadge(String shouldNotSee, String itemName) throws Exception {
         boolean result;
         if (shouldNotSee == null) {
@@ -1359,9 +1359,9 @@ public class CommonIOSSteps {
      *
      * @param itemName the badge item name
      * @throws Exception
-     * @step. ^I tap on (Select All|Copy|Delete|Paste|Edit) badge item$
+     * @step. ^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike) badge item$
      */
-    @When("^I tap on (Select All|Copy|Delete|Paste|Edit) badge item$")
+    @When("^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike) badge item$")
     public void ITapBadge(String itemName) throws Exception {
         pagesCollection.getCommonPage().tapBadgeItem(itemName);
     }
@@ -1503,5 +1503,29 @@ public class CommonIOSSteps {
         Assert.assertTrue("The previously remembered message appears to be improperly deleted " +
                         "from the local database",
                 db.isMessageDeleted(this.recentMsgId));
+    }
+
+    /**
+     * User X react(like or unlike) the recent message in 1:1 conversation or group conversation
+     *
+     * @param userNameAlias User X's name or alias
+     * @param reactionType  User X's reaction , could be like or unlike, be careful you should use like before unlike
+     * @param dstNameAlias  the conversation which message is belong to
+     * @throws Exception
+     * @step. ^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*))$
+     */
+    @When("^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*)$")
+    public void UserReactLastMessage(String userNameAlias, String reactionType, String dstNameAlias) throws Exception {
+        switch (reactionType.toLowerCase()) {
+            case "likes":
+                commonSteps.UserLikeLatestMessage(userNameAlias, dstNameAlias, null);
+                break;
+            case "unlikes":
+                commonSteps.UserUnlikeLatestMessage(userNameAlias, dstNameAlias, null);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify the reaction type '%s'",
+                        reactionType));
+        }
     }
 }

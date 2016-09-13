@@ -1,10 +1,7 @@
 package com.wearezeta.auto.android.steps;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.ConversationViewPage;
@@ -25,6 +22,7 @@ public class ConversationViewPageSteps {
 
     private static final String ANDROID_LONG_MESSAGE = CommonUtils.generateRandomString(300);
     private static final String LONG_MESSAGE_ALIAS = "LONG_MESSAGE";
+    private static final String ANY_MESSAGE = "*ANY MESSAGE*";
     private static final int SWIPE_DURATION_MILLISECONDS = 1300;
     private static final int MAX_SWIPES = 5;
     private static final int MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = 15;
@@ -36,6 +34,9 @@ public class ConversationViewPageSteps {
     private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
     private static final int TOP_TOOLBAR_STATE_CHANGE_TIMEOUT = 15;
     private static final double TOP_TOOLBAR_MIN_SIMILARITY_SCORE = 0.97;
+    private static final int LIKE_BUTTON_CHANGE_TIMEOUT = 15;
+    private static final double LIKE_BUTTON_MIN_SIMILARITY_SCORE = 0.6;
+    private static final double LIKE_BUTTON_NOT_CHANGED_MIN_SCORE = -0.5;
     private static final double FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE = 0.4;
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -55,6 +56,8 @@ public class ConversationViewPageSteps {
             () -> getConversationViewPage().getAudioMessagePreviewSeekbarState());
     private final ElementState audiomessageSlideMicrophoneButtonState = new ElementState(
             () -> getConversationViewPage().getAudioMessagePreviewMicrophoneButtonState());
+    private ElementState messageLikeButtonState;
+
     private Boolean wasShieldVisible = null;
 
     private static String expandMessage(String message) {
@@ -341,6 +344,27 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Checks to see that a link preview message that has been sent appears in the chat history
+     *
+     * @param shouldNotSee equals to null if the message should be visible
+     * @param msg          the expected message
+     * @throws Exception
+     * @step. ^I (do not )?see the message "(.*)" in the conversation view$
+     */
+    @Then("^I (do not )?see the link preview message \"(.*)\" in the conversation view$")
+    public void ISeeLinkPreviewMessage(String shouldNotSee, String msg) throws Exception {
+        msg = expandMessage(msg);
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("The link preview message '%s' is not visible in the conversation view", msg),
+                    getConversationViewPage().waitUntilLinkPreviewMessageVisible(msg));
+        } else {
+            Assert.assertTrue(
+                    String.format("The link preview message '%s' is still visible in the conversation view", msg),
+                    getConversationViewPage().waitUntilLinkPreviewMessageInvisible(msg));
+        }
+    }
+
+    /**
      * Checks to see that a photo exists in the chat history. Does not check which photo though
      *
      * @param shouldNotSee equals to null if 'do not' part does not exist
@@ -358,19 +382,15 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Selects the last picture sent in a conversation view dialog
+     * Tap on Image container button
      *
-     * @param isLogTap equals to null if it should be simple tap
+     * @param buttonName which could be Sketch or Fullscreen
      * @throws Exception
-     * @step. ^I (long )?tap the recent (?:image|picture) in the conversation view$
+     * @step. ^I tap on (Sketch|Fullscreen) button on the recent (?:image|picture) in the conversation view$
      */
-    @When("^I (long )?tap the recent (?:image|picture) in the conversation view$")
-    public void ITapRecentImage(String isLogTap) throws Exception {
-        if (isLogTap == null) {
-            getConversationViewPage().tapRecentImage();
-        } else {
-            getConversationViewPage().longTapRecentImage();
-        }
+    @When("^I tap on (Sketch|Fullscreen) button on the recent (?:image|picture) in the conversation view$")
+    public void ITapImageContainerButton(String buttonName) throws Exception {
+        getConversationViewPage().tapImageContainerButton(buttonName);
     }
 
     /**
@@ -601,6 +621,21 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Remember the state of like button
+     *
+     * @param messageType Specified message type
+     * @throws Exception
+     * @step. ^I remember the state of like button$
+     */
+    @When("^I remember the state of like button$")
+    public void IRememberLikeButton() throws Exception {
+        messageLikeButtonState = new ElementState(
+                () -> getConversationViewPage().getMessageLikeButtonState()
+        );
+        messageLikeButtonState.remember();
+    }
+
+    /**
      * Store the screenshot of current file placeholder action button
      *
      * @throws Exception
@@ -718,6 +753,23 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Verify the current state of like button has been changed since the last snapshot was made
+     *
+     * @throws Exception
+     * @step. ^I verify the state of like button item is (not )?changed$
+     */
+    @Then("^I verify the state of like button item is (not )?changed$")
+    public void IVerifyStateOfLikeButtonChanged(String notChanged) throws Exception {
+        if (notChanged == null) {
+            Assert.assertTrue("The state of Like button is expected to be changed",
+                    messageLikeButtonState.isChanged(LIKE_BUTTON_CHANGE_TIMEOUT, LIKE_BUTTON_MIN_SIMILARITY_SCORE));
+        } else {
+            Assert.assertTrue("The state of Like button is expected to be changed",
+                    messageLikeButtonState.isNotChanged(LIKE_BUTTON_CHANGE_TIMEOUT, LIKE_BUTTON_NOT_CHANGED_MIN_SCORE));
+        }
+    }
+
+    /**
      * Verify that Conversation contains missed call from contact
      *
      * @param contact contact name string
@@ -761,18 +813,6 @@ public class ConversationViewPageSteps {
                         avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
                 break;
         }
-    }
-
-    /**
-     * Check whether unsent indicator is shown next to a new picture in the convo view
-     *
-     * @throws Exception
-     * @step. ^I see unsent indicator next to new picture in the conversation
-     */
-    @Then("^I see unsent indicator next to new picture in the conversation")
-    public void ISeeUnsentIndictatorNextToAPicture() throws Exception {
-        Assert.assertTrue("There is no unsent indicator next to a picture in the conversation view",
-                getConversationViewPage().waitForAPictureWithUnsentIndicator());
     }
 
     /**
@@ -877,20 +917,6 @@ public class ConversationViewPageSteps {
                 throw e;
             }
         }
-    }
-
-    /**
-     * Checks to see that an unsent indicator is present next to the particular message in the chat history
-     *
-     * @param msg the expected conversation message
-     * @throws Exception
-     * @step. ^I see unsent indicator next to "(.*)" in the conversation view$
-     */
-    @Then("^I see unsent indicator next to \"(.*)\" in the conversation view$")
-    public void ISeeUnsentIndicatorNextToTheMessage(String msg) throws Exception {
-        Assert.assertTrue(String.format(
-                "Unsent indicator has not been shown next to the '%s' message in the conversation view", msg),
-                getConversationViewPage().waitForUnsentIndicator(msg));
     }
 
     private enum PictureDestination {
@@ -1074,9 +1100,9 @@ public class ConversationViewPageSteps {
      *
      * @param name one of possible message bottom menu button name
      * @throws Exception
-     * @step. ^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit) button on the message bottom menu$
+     * @step. ^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike) button on the message bottom menu$
      */
-    @Then("^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit) button on the message bottom menu$")
+    @Then("^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike) button on the message bottom menu$")
     public void ISeeMessageBottomMenuButton(String shouldNotSee, String name) throws Exception {
         final boolean condition = (shouldNotSee == null) ?
                 getConversationViewPage().waitUntilMessageBottomMenuButtonVisible(name) :
@@ -1106,32 +1132,10 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I (long )?tap the (Ping|Text) message "(.*)" in the conversation view
      */
-    @When("^I (long )?tap the (Ping|Text) message \"(.*)\" in the conversation view$")
-    public void ITapTheNonTextMessage(String isLongTap, String messageType, String message) throws Exception {
+    @When("^I (long tap|double tap|tap) the (Ping|Text) message \"(.*)\" in the conversation view$")
+    public void ITapTheNonTextMessage(String tapType, String messageType, String message) throws Exception {
         message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
-        if (isLongTap == null) {
-            switch (messageType.toLowerCase()) {
-                case "ping":
-                    getConversationViewPage().tapPingMessage(message);
-                    break;
-                case "text":
-                    getConversationViewPage().tapMessage(message);
-                    break;
-                default:
-                    throw new IllegalStateException(String.format("Cannot tap on %s message", messageType));
-            }
-        } else {
-            switch (messageType.toLowerCase()) {
-                case "ping":
-                    getConversationViewPage().longTapPingMessage(message);
-                    break;
-                case "text":
-                    getConversationViewPage().longTapMessage(message);
-                    break;
-                default:
-                    throw new IllegalStateException(String.format("Cannot long tap on %s message", messageType));
-            }
-        }
+        getConversationViewPage().tapMessage(messageType, message, tapType);
     }
 
     /**
@@ -1140,9 +1144,9 @@ public class ConversationViewPageSteps {
      * @param shouldNotSee  equals to null if the container should be visible
      * @param containerType euiter Youtube or Soundcloud or File Upload or Video Message
      * @throws Exception
-     * @step. ^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
+     * @step. ^I (do not )?see (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
      */
-    @Then("^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
+    @Then("^I (do not )?see (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
             "container in the conversation view$")
     public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
         final boolean condition = (shouldNotSee == null) ?
@@ -1168,19 +1172,15 @@ public class ConversationViewPageSteps {
     /**
      * Tap container
      *
-     * @param isLongTap     equals to null if this should be ordinary single tap
+     * @param tapType       Tap type
      * @param containerType one of available container types
      * @throws Exception
-     * @step. ^I (long )?tap (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
+     * @step. ^I (long tap|double tap|tap) (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
      */
-    @When("^I (long )?tap (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
+    @When("^I (long tap|double tap|tap) (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
             "container in the conversation view$")
-    public void ITapContainer(String isLongTap, String containerType) throws Exception {
-        if (isLongTap == null) {
-            getConversationViewPage().tapContainer(containerType);
-        } else {
-            getConversationViewPage().longTapContainer(containerType);
-        }
+    public void ITapContainer(String tapType, String containerType) throws Exception {
+        getConversationViewPage().tapContainer(tapType, containerType);
     }
 
 
@@ -1480,5 +1480,76 @@ public class ConversationViewPageSteps {
             Assert.assertTrue(String.format("The message separator of user %s should be invisible", name),
                     getConversationViewPage().waitUntilMessageSeparatorInvisible(name, timeOutSeconds));
         }
+    }
+
+    /**
+     * Verify I can see/cannot see the Any msg meta item
+     *
+     * @param shouldNotSee
+     * @param itemType       Message Meta Item type
+     * @param hasExpectedMsg equals null means you don't specify the expceted content for item
+     * @param expectedMsg    specified expected content for item
+     * @param messageType    the message type
+     * @throws Exception
+     * @step. ^I (do not )?see (Like button|Like description|Message status|First like avatar|Second like avatar)
+     * (with expected text "(.*)" )?in conversation view$
+     */
+    @Then("^I (do not )?see (Like button|Like description|Message status|First like avatar|Second like avatar)" +
+            " (with expected text \"(.*)\" )?in conversation view$")
+    public void ISeeMessagMetaForText(String shouldNotSee, String itemType, String hasExpectedMsg,
+                                      String expectedMsg) throws Exception {
+        boolean isVisible;
+        boolean shouldBeVisible = (shouldNotSee == null);
+        if (shouldBeVisible) {
+            if (hasExpectedMsg == null) {
+                expectedMsg = ANY_MESSAGE;
+                isVisible = getConversationViewPage().waitUntilMessageMetaItemVisible(itemType);
+            } else {
+                expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
+                isVisible = getConversationViewPage().waitUntilMessageMetaItemVisible(itemType, expectedMsg);
+            }
+        } else {
+            if (hasExpectedMsg == null) {
+                expectedMsg = ANY_MESSAGE;
+                isVisible = !getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType);
+            } else {
+                expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
+                isVisible = !getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType, expectedMsg);
+            }
+        }
+        Assert.assertEquals(
+                String.format("The %s should be %s with expected text '%s'",
+                        itemType, shouldBeVisible ? "visible" : "invisible", expectedMsg), shouldBeVisible, isVisible);
+    }
+
+    /**
+     * Tap on Any msg meta item
+     *
+     * @param itemType    Message Meta Item type
+     * @param messageType The message type
+     * @throws Exception
+     * @step. ^^I tap (Like button|Like description|Message status|First like avatar|Second like avatar)
+     * in conversation view$
+     */
+    @When("^I tap (Like button|Like description|Message status|First like avatar|Second like avatar)" +
+            " in conversation view$")
+    public void ITapMessageMeta(String itemType) throws Exception {
+        getConversationViewPage().tapMessageMetaItem(itemType);
+    }
+
+    /**
+     * Verify the count of Message status within current conversation
+     *
+     * @param expectedCount expect apperance count
+     * @param expectedText  the expected text within Message Status
+     * @throws Exception
+     * @step. ^I see (\d+) Message statu(?:s|ses) with expected text "(.*)" in conversation view$
+     */
+    @Then("^I see (\\d+) Message statu(?:s|ses) in conversation view$")
+    public void ISeeMessageStatus(int expectedCount) throws Exception {
+        int actualCount = getConversationViewPage().getMessageStatusCount();
+        Assert.assertTrue(
+                String.format("The expect count is not equal to actual count, actual: %d, expect: %d",
+                        actualCount, expectedCount), actualCount == expectedCount);
     }
 }

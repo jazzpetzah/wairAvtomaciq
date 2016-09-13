@@ -38,6 +38,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.io.File;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -362,9 +363,9 @@ public class CommonAndroidTabletSteps {
      *
      * @param orientation either landscape or portrait
      * @throws Exception
-     * @step. ^I rotate UI to (landscape|portrait$)
+     * @step. ^I rotate UI to (landscape|portrait)$
      */
-    @When("^I rotate UI to (landscape|portrait$)$")
+    @When("^I rotate UI to (landscape|portrait)$")
     public void WhenIRotateUILandscape(String orientation) throws Exception {
         switch (orientation.toLowerCase()) {
             case "landscape":
@@ -595,6 +596,23 @@ public class CommonAndroidTabletSteps {
         } else {
             commonSteps.UserHotPingedConversationOtr(hotPingFromUserNameAlias, dstConversationName);
         }
+    }
+
+    /**
+     * Send location sharing message
+     *
+     * @param userNameAlias sender name/alias
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  user name/alias or group conversation name
+     * @param deviceName    destination device
+     * @throws Exception
+     * @step. ^User (.*) shares? his location to (user|group conversation) (.*) via device (.*)
+     */
+    @When("^User (.*) shares? his location to (user|group conversation) (.*) via device (.*)")
+    public void UserXSharesLocationTo(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
+            throws Exception {
+        commonSteps.UserSharesLocationTo(userNameAlias, dstNameAlias, convoType.equals("group conversation"),
+                deviceName);
     }
 
     /**
@@ -942,5 +960,77 @@ public class CommonAndroidTabletSteps {
     @Given("^I push local file named \"(.*)\" to the device$")
     public void IPushLocalFileNamedYToDevice(String fileFullName) throws Exception {
         AndroidCommonUtils.pushLocalFileToSdcardDownload(fileFullName);
+    }
+
+    /**
+     * Press back button until Wire app is in foreground
+     *
+     * @param timeoutSeconds timeout in seconds for try process
+     * @throws Exception
+     * @step. ^I press [Bb]ack button until Wire app is in foreground in (\d+) seconds$
+     */
+    @When("^I press [Bb]ack button until Wire app is in foreground in (\\d+) seconds$")
+    public void IPressBackButtonUntilWireAppInForeground(int timeoutSeconds) throws Exception {
+        final String packageId = AndroidCommonUtils.getAndroidPackageFromConfig(getClass());
+        CommonUtils.waitUntilTrue(
+                timeoutSeconds,
+                1000,
+                () -> {
+                    if (AndroidCommonUtils.isAppNotInForeground(packageId, FOREGROUND_TIMEOUT_MILLIS)) {
+                        pagesCollection.getCommonPage().navigateBack();
+                    }
+                    return AndroidCommonUtils.isAppInForeground(packageId, FOREGROUND_TIMEOUT_MILLIS);
+                }
+        );
+    }
+
+    /**
+     * Send a local file from SE
+     *
+     * @param contact      user name/alias
+     * @param fileFullName the name of an existing file
+     * @param mimeType     MIME type of the file, for example text/plain. Check
+     *                     http://www.freeformatter.com/mime-types-list.html to get the full list of available MIME
+     *                     types
+     * @param convoType    either 'single user' or 'group'
+     * @param dstConvoName conversation name
+     * @param deviceName   the name of user device. The device will be created automatically if it does not exist yet
+     * @throws Exception
+     * @step. ^(.*) sends local file named "(.*)" and MIME type "(.*)" via device (.*) to (user|group conversation) (.*)$
+     */
+    @When("^(.*) sends local file named \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) (.*)$")
+    public void ContactSendsXLocalFileFromSE(String contact, String fileFullName, String mimeType,
+                                             String deviceName, String convoType, String dstConvoName) throws Exception {
+        String basePath = AndroidCommonUtils.getImagesPath(AndroidCommonUtils.class);
+        String sourceFilePath = basePath + File.separator + fileFullName;
+
+        boolean isGroup = convoType.equals("group conversation");
+        commonSteps.UserSentFileToConversation(contact, dstConvoName, sourceFilePath,
+                mimeType, deviceName, isGroup);
+    }
+
+    /**
+     * User X react(like or unlike) the recent message in 1:1 conversation or group conversation
+     *
+     * @param userNameAlias User X's name or alias
+     * @param reactionType  User X's reaction , could be like or unlike, be careful you should use like before unlike
+     * @param dstNameAlias  the conversation which message is belong to
+     * @param deviceName    User X's device
+     * @throws Exception
+     * @step. ^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$
+     */
+    @When("^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$")
+    public void UserReactLastMessage(String userNameAlias, String reactionType, String dstNameAlias, String deviceName)
+            throws Exception {
+        switch (reactionType.toLowerCase()) {
+            case "likes":
+                commonSteps.UserLikeLatestMessage(userNameAlias, dstNameAlias, deviceName);
+                break;
+            case "unlikes":
+                commonSteps.UserUnlikeLatestMessage(userNameAlias, dstNameAlias, deviceName);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify the reaction type '%s'", reactionType));
+        }
     }
 }

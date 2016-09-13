@@ -138,12 +138,13 @@ public class PeoplePickerPageSteps {
 
     /**
      * Wait for a user/group in the search result/contact list
+     * Liker list is same to Search result list
      *
      * @param contact user name/alias
      * @throws Exception
-     * @step. ^I( do not)? see (user|group)? (.*) in (Search result|Contact)? list$
+     * @step. ^I( do not)? see (user|group)? (.*) in (Liker|Search result|Contact)? list$
      */
-    @When("^I( do not)? see (user|group)? (.*) in (Search result|Contact)? list$")
+    @When("^I( do not)? see (user|group)? (.*) in (Liker|Search result|Contact)? list$")
     public void ISeeUser(String shouldNotSee, String group, String contact, String listType) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         boolean isGroup = group.toLowerCase().equals("group");

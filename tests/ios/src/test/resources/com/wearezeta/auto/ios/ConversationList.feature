@@ -360,7 +360,7 @@ Feature: Conversation List
       | user1Name | user2Name | user3Name | ForDeletion   |
 
   @C846 @rc @regression @fastLogin
-  Scenario Outline: Verify posting in a group conversation without content
+  Scenario Outline: (ZIOS-7205) Verify posting in a group conversation without content
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>

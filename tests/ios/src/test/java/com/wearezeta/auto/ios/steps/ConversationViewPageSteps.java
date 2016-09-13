@@ -47,9 +47,6 @@ public class ConversationViewPageSteps {
     @When("^I tap on text input$")
     public void WhenITapOnTextInput() throws Exception {
         getConversationViewPage().tapOnCursorInput();
-//        if (CommonUtils.getIsSimulatorFromConfig(getClass()) && !getConversationViewPage().isKeyboardVisible()) {
-//            IOSSimulatorHelper.toggleSoftwareKeyboard();
-//        }
     }
 
     /**
@@ -633,20 +630,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap on the sent link to open it
-     * There is no way to simply detect the position of the link in the message cell
-     * That is why we assume it is located at the beginning of the string
-     *
-     * @param msgStartingWithLink the message containing a clickable link at the beginning
-     * @throws Exception
-     * @step. ^I tap on message "(.*)"$
-     */
-    @When("^I tap on message \"(.*)\"$")
-    public void ITapOnLink(String msgStartingWithLink) throws Exception {
-        getConversationViewPage().tapMessage(msgStartingWithLink);
-    }
-
-    /**
      * Select the corresponding item from the modal menu, which appears after Delete badge is tapped
      *
      * @param name one of possible item names
@@ -930,14 +913,14 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap the most recent visible transfer placeholder
+     * Tap on file transfer action button to download/preview file
      *
      * @throws Exception
-     * @step. ^I tap file transfer placeholder$
+     * @step. ^I tap file transfer action button
      */
-    @When("^I tap file transfer placeholder$")
-    public void ITapFileTransferPlaceholder() throws Exception {
-        getConversationViewPage().tapFileTransferPlaceholder();
+    @When("^I tap file transfer action button$")
+    public void ITapFileTransferActionButton() throws Exception {
+        getConversationViewPage().tapFileTransferActionButton();
     }
 
     /**
@@ -1026,19 +1009,20 @@ public class ConversationViewPageSteps {
     /**
      * long tap on pointed text in conversation view
      *
-     * @param msg       message text
-     * @param isLongTap equals to null if normal tap should be performed
+     * @param msg         message text
+     * @param isLongTap   equals to null if normal tap should be performed
+     * @param isDoubleTap equals to null if non-double tap should be performed
      * @throws Exception
      * @step. ^I (long )?tap last (default\".*\") message in conversation view$
      */
-    @When("^I (long )?tap (default|\".*\") message in conversation view$")
-    public void ITapAndHoldTextMessage(String isLongTap, String msg) throws Exception {
+    @When("^I (long )?(double )?tap (default|\".*\") message in conversation view$")
+    public void ITapAndHoldTextMessage(String isLongTap, String isDoubleTap, String msg) throws Exception {
         if (msg.equals("default")) {
             msg = CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE;
         } else {
             msg = msg.replaceAll("^\"|\"$", "");
         }
-        getConversationViewPage().tapMessageByText(isLongTap != null, msg);
+        getConversationViewPage().tapMessageByText(isLongTap != null, isDoubleTap != null, msg);
     }
 
     /**
@@ -1082,16 +1066,17 @@ public class ConversationViewPageSteps {
      * @param conversationItem item name
      * @param isLongTap        equals to null if simple tap should be performed
      *                         Works with long tap only
+     * @param isDoubleTap      os not equal to null if double tap should be performed
      * @throws Exception
-     * @step. ^I (long )?tap on " +
+     * @step. ^I (long )?(double )?tap on " +
      * "(image|media container|file transfer placeholder|audio message placeholder|video message|location map|link preview) " +
      * "in conversation view$
      */
-    @When("^I (long )?tap on " +
+    @When("^I (long )?(double )?tap on " +
             "(image|media container|file transfer placeholder|audio message placeholder|video message|location map|link preview) " +
             "in conversation view$")
-    public void ITapMessagePlaceholder(String isLongTap, String conversationItem) throws Exception {
-        getConversationViewPage().tapContainer(conversationItem, isLongTap != null);
+    public void ITapMessagePlaceholder(String isLongTap, String isDoubleTap, String conversationItem) throws Exception {
+        getConversationViewPage().tapContainer(conversationItem, isLongTap != null, isDoubleTap != null);
     }
 
     /**
@@ -1432,13 +1417,119 @@ public class ConversationViewPageSteps {
     /**
      * Tap in the center of the most recent message cell for the particular contact
      *
-     * @param sender sender name/alias
+     * @param isLongTap is not equal to null if long tap is going to be performed
+     * @param sender    sender name/alias
      * @throws Exception
-     * @step. ^I tap on the recent message from (.*)
+     * @step. ^I (long )?tap on the recent message from (.*)
      */
-    @When("^I tap on the recent message from (.*)")
-    public void ITapRecentMessage(String sender) throws Exception {
+    @When("^I (long )?tap on the recent message from (.*)")
+    public void ITapRecentMessage(String isLongTap, String sender) throws Exception {
         sender = usrMgr.replaceAliasesOccurences(sender, FindBy.NAME_ALIAS);
-        getConversationViewPage().tapRecentMessageFrom(sender);
+        getConversationViewPage().tapRecentMessageFrom(isLongTap != null, sender);
+    }
+
+    private static final int LIKE_ICON_STATE_CHANGE_TIMEOUT = 7; //seconds
+    private static final double LIKE_ICON_MIN_SIMILARITY = 0.9;
+    private ElementState likeIconState = new ElementState(
+            () -> getConversationViewPage().getLikeIconState()
+    );
+
+    /**
+     * Store the current state of Like icon
+     *
+     * @throws Exception
+     * @step. ^I remember the state of (?:Like|Unlike) icon in the conversation$
+     */
+    @When("^I remember the state of (?:Like|Unlike) icon in the conversation$")
+    public void IRememberLikeIconState() throws Exception {
+        this.likeIconState.remember();
+    }
+
+    /**
+     * Verify whether the current state of Like icon differs from the previously remembered one
+     *
+     * @param shouldNotChange equals to null if the state should be changed
+     * @throws Exception
+     * @step. ^I see the state of (?:Like|Unlike) icon is (not )?changed in the conversation$
+     */
+    @Then("^I see the state of (?:Like|Unlike) icon is (not )?changed in the conversation$")
+    public void IVerifyLikeIconState(String shouldNotChange) throws Exception {
+        boolean condition;
+        if (shouldNotChange == null) {
+            condition = this.likeIconState.isChanged(LIKE_ICON_STATE_CHANGE_TIMEOUT, LIKE_ICON_MIN_SIMILARITY);
+        } else {
+            condition = this.likeIconState.isNotChanged(LIKE_ICON_STATE_CHANGE_TIMEOUT, LIKE_ICON_MIN_SIMILARITY);
+        }
+        Assert.assertTrue(String.format("Like icon state is expected %s in %s seconds",
+                (shouldNotChange == null) ? "to be changed" : "to be not changed", LIKE_ICON_STATE_CHANGE_TIMEOUT),
+                condition);
+    }
+
+    /**
+     * Tap Like/Unlike icon in the conversation
+     *
+     * @throws Exception
+     * @step. ^I tap (?:Like|Unlike) icon in the conversation$
+     */
+    @And("^I tap (?:Like|Unlike) icon in the conversation$")
+    public void ITapLikeIcon() throws Exception {
+        getConversationViewPage().tapLikeIcon();
+    }
+
+    /**
+     * Verify visibility of the Like/Unlike icon
+     *
+     * @param shouldNotSee eqauls to null if the icon should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see (?:Like|Unlike) icon in the conversation$
+     */
+    @Then("^I (do not )?see (?:Like|Unlike) icon in the conversation$")
+    public void ISeeLikeIcon(String shouldNotSee) throws Exception {
+        boolean condition;
+        if (shouldNotSee == null) {
+            condition = getConversationViewPage().isLikeIconVisible();
+        } else {
+            condition = getConversationViewPage().isLikeIconInvisible();
+        }
+        Assert.assertTrue(String.format("The Like/Unlike icon is expected to be %s",
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
+
+    /**
+     * Tap the toolbox of the recent message to open likers list
+     *
+     * @throws Exception
+     * @step. ^I tap toolbox of the recent message$
+     */
+    @When("^I tap toolbox of the recent message$")
+    public void ITapMessageToolbox() throws Exception {
+        getConversationViewPage().tapRecentMessageToolbox();
+    }
+
+    /**
+     * Tap the recent media container to show/hide like icon
+     *
+     * @param pWidth   destination cell X tap point (in percent 0-100)
+     * @param pHeight  destination cell Y tap point (in percent 0-100)
+     * @param fromName message sender name/alias
+     * @throws Exception
+     * @step. I tap at (\d+)% of width and (\d+)% of height of the recent message from (.*)
+     */
+    @When("^I tap at (\\d+)% of width and (\\d+)% of height of the recent message from (.*)")
+    public void ITapAtContainerCorner(int pWidth, int pHeight, String fromName) throws Exception {
+        fromName = usrMgr.replaceAliasesOccurences(fromName, FindBy.NAME_ALIAS);
+        getConversationViewPage().tapAtRecentMessage(pWidth, pHeight, fromName);
+    }
+
+    /**
+     * Tap relevant button on image
+     *
+     * @param buttonName Sketch ot Fullscreen button names allowed
+     * @throws Exception
+     * @step. ^I tap (Sketch|Fullscreen) button on image$
+     */
+    @When("^I tap (Sketch|Fullscreen) button on image$")
+    public void ITapOnImageButtons(String buttonName) throws Exception {
+        getConversationViewPage().tapImageButton(buttonName);
     }
 }

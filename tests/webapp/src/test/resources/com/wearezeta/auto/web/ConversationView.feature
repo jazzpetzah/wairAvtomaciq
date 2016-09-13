@@ -412,7 +412,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | READ | UNREAD |
       | user1Email | user1Password | user1Name | user2Name | Read | Unread |
 
-  @C149662 @regression @torun
+  @C149662 @regression
   Scenario Outline: Verify maximum character limit dialog is shown when want to send a very long text message to group conversation
     Given There are 1 users where <Name> is me
     Given There is a known user 01e37ab8 with email smoketester+01e37ab8@wire.com and password aqa123456!

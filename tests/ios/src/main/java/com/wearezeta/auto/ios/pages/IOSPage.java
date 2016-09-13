@@ -60,6 +60,8 @@ public abstract class IOSPage extends BasePage {
     private static final By nameBadgeItemPaste = MobileBy.AccessibilityId("Paste");
     private static final By nameBadgeItemSave = MobileBy.AccessibilityId("Save");
     private static final By nameBadgeItemEdit = MobileBy.AccessibilityId("Edit");
+    private static final By nameBadgeItemLike = MobileBy.AccessibilityId("Like");
+    private static final By nameBadgeItemUnlike = MobileBy.AccessibilityId("Unlike");
 
     private static final Function<String, String> xpathStrAlertByText = text ->
             String.format("//UIAAlert[ .//*[contains(@name, '%s')] or contains(@name, '%s')]", text, text);
@@ -151,6 +153,10 @@ public abstract class IOSPage extends BasePage {
                 return nameBadgeItemPaste;
             case "save":
                 return nameBadgeItemSave;
+            case "like":
+                return nameBadgeItemLike;
+            case "unlike":
+                return nameBadgeItemUnlike;
             default:
                 throw new IllegalArgumentException(String.format("Unknown badge name: '%s'", name));
         }
@@ -287,6 +293,22 @@ public abstract class IOSPage extends BasePage {
             // https://discuss.appium.io/t/runappinbackground-does-not-work-for-ios9/6201
             this.getDriver().runAppInBackground(timeSeconds);
         }
+    }
+
+    protected void doubleClickAt(WebElement el, int percentX, int percentY) throws Exception {
+        if (!CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            throw new IllegalStateException("This method works for iOS Simulator only");
+        }
+        final Dimension elSize = el.getSize();
+        final Point elLocation = el.getLocation();
+        final Dimension windowSize = getDriver().manage().window().getSize();
+        IOSSimulatorHelper.doubleClickAt(
+                String.format("%.2f", (elLocation.x + elSize.width * percentX / 100.0) / windowSize.width),
+                String.format("%.2f", (elLocation.y + elSize.height * percentY / 100.0) / windowSize.height));
+    }
+
+    protected void doubleClickAt(WebElement el) throws Exception {
+        doubleClickAt(el, 50, 50);
     }
 
     @SuppressWarnings("unused")
