@@ -252,15 +252,30 @@ Feature: Likes
     Given There are 6 users where <Name> is me
     Given Myself is connected to all other
     Given Myself has group chat <Group> with all other
+    Given User <Contact1> adds a new device Contact1Device with label Contact1DeviceLabel
+    Given User <Contact2> adds a new device Contact2Device with label Contact2DeviceLabel
+    Given User <Contact3> adds a new device Contact3Device with label Contact3DeviceLabel
+    Given User <Contact4> adds a new device Contact4Device with label Contact4DeviceLabel
+    Given User <Contact5> adds a new device Contact5Device with label Contact5DeviceLabel
     Given I sign in using my email or phone number
     Given User Myself sends 1 encrypted message to group conversation <Group>
     Given I see conversations list
+    And I tap on group chat with name <Group>
+    And I see 1 default message in the conversation view
     When User <Contact1> likes the recent message from group conversation <Group>
     And User <Contact2> likes the recent message from group conversation <Group>
     And User <Contact3> likes the recent message from group conversation <Group>
     And User <Contact4> likes the recent message from group conversation <Group>
     And User <Contact5> likes the recent message from group conversation <Group>
-    And I tap on group chat with name <Group>
+    #And I tap on group chat with name <Group>
+    And I tap toolbox of the recent message
+    Then I see Likers page
+    And I see user <Contact1> in likers list at position number 5
+    And I see user <Contact2> in likers list at position number 4
+    And I see user <Contact3> in likers list at position number 3
+    And I see user <Contact4> in likers list at position number 2
+    And I see user <Contact5> in likers list at position number 1
+
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Group        |
