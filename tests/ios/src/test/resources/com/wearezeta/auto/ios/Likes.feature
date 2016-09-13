@@ -247,8 +247,8 @@ Feature: Likes
       | Name      | Contact1  | Contact2  | Picture     | Group        |
       | user1Name | user2Name | user3Name | testing.jpg | ArchiveGroup |
 
-  @C226011 @staging @fastLogin
-  Scenario Outline: Verify Like list with many likers
+  @C226014 @staging @fastLogin
+  Scenario Outline: Likes list is sorted by like time, most recent liker is on the top
     Given There are 6 users where <Name> is me
     Given Myself is connected to all other
     Given Myself has group chat <Group> with all other
@@ -267,7 +267,6 @@ Feature: Likes
     And User <Contact3> likes the recent message from group conversation <Group>
     And User <Contact4> likes the recent message from group conversation <Group>
     And User <Contact5> likes the recent message from group conversation <Group>
-    #And I tap on group chat with name <Group>
     And I tap toolbox of the recent message
     Then I see Likers page
     And I see user <Contact5> in likers list at position number 1
@@ -275,8 +274,7 @@ Feature: Likes
     And I see user <Contact3> in likers list at position number 3
     And I see user <Contact2> in likers list at position number 4
     And I see user <Contact1> in likers list at position number 5
-
-
+    
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Group        |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | LikersGroup  |
