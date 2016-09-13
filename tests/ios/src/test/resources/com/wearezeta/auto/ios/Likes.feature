@@ -1,6 +1,6 @@
 Feature: Likes
 
-  @C225979 @regression @fastLogin
+  @C225979 @rc @regression @fastLogin
   Scenario Outline: Verify liking/unliking a message by tapping on like icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -19,7 +19,7 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C225980 @regression @fastLogin
+  @C225980 @rc @regression @fastLogin
   Scenario Outline: Verify liking/unliking a message from a message menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -39,7 +39,7 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C226008 @regression @fastLogin
+  @C226008 @rc @regression @fastLogin
   Scenario Outline: Verify impossibility of liking the message after leaving (being removed) from a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -60,7 +60,7 @@ Feature: Likes
       | Name      | Contact1  | Contact2  | Group            |
       | user1Name | user2Name | user3Name | RemovedFromGroup |
 
-  @C225993 @regression @fastLogin
+  @C225993 @rc @regression @fastLogin
   Scenario Outline: Verify liking a message tapping on like icon, when someone liked this message before
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -100,7 +100,7 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C225998 @C226001 @regression @fastLogin
+  @C225998 @rc @regression @fastLogin
   Scenario Outline: Verify editing already liked message and like after edit
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -126,7 +126,7 @@ Feature: Likes
       | Name      | Contact   | Text  |
       | user1Name | user2Name | aloha |
 
-  @C226004 @regression @fastLogin
+  @C226004 @rc @regression @fastLogin
   Scenario Outline: Verify receiving a like in a conversation which was removed
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -163,7 +163,7 @@ Feature: Likes
     When I do not see Like icon in the conversation
     And User <Contact1> likes the recent message from group conversation <Group>
     And I tap toolbox of the recent message
-    Then I see <Contact1> in likers list
+    Then I see user <Contact1> in likers list
 
     Examples:
       | Name      | Contact1  | Contact2  | Group            | FileName | FileMIME  | Contact1Device | Contact1DeviceLabel | MyDevice |
@@ -183,13 +183,13 @@ Feature: Likes
     And I long tap on file transfer placeholder in conversation view
     And I tap on Like badge item
     And I tap toolbox of the recent message
-    Then I see Myself in likers list
+    Then I see user Myself in likers list
 
     Examples:
       | Name      | Contact1  | Contact2  | Group         | FileName | FileExt | FileSize | FileMIME                 | Contact1Device |
       | user1Name | user2Name | user3Name | FileLikeGroup | testing  | tmp     | 240 KB   | application/octet-stream | C1Device       |
 
-  @C225984 @regression @fastLogin
+  @C225984 @rc @regression @fastLogin
   Scenario Outline: Verify liking a video message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -202,13 +202,13 @@ Feature: Likes
     And I long tap on video message in conversation view
     And I tap on Like badge item
     And I tap toolbox of the recent message
-    Then I see Myself in likers list
+    Then I see user Myself in likers list
 
     Examples:
       | Name      | Contact1  | Contact2  | Group          | FileName    | MIMEType  | Contact1Device |
       | user1Name | user2Name | user3Name | VideoLikeGroup | testing.mp4 | video/mp4 | C1Device       |
 
-  @C225985 @regression @fastLogin
+  @C225985 @rc @regression @fastLogin
   Scenario Outline: Verify liking Soundcloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -246,7 +246,6 @@ Feature: Likes
     Examples:
       | Name      | Contact1  | Contact2  | Picture     | Group        |
       | user1Name | user2Name | user3Name | testing.jpg | ArchiveGroup |
-      | user1Name | user2Name | user3Name | BlockedContGroup | test.m4a | audio/mp4 | C1Device       | C1DeviceLabel       | MyDev    |
 
   @C225992 @C225996 @staging @fastLogin
   Scenario Outline: Verify liking/unliking a message by double tapping
@@ -267,3 +266,35 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
+
+  @C226014 @staging @fastLogin
+  Scenario Outline: Likes list is sorted by like time, most recent liker is on the top
+    Given There are 6 users where <Name> is me
+    Given Myself is connected to all other
+    Given Myself has group chat <Group> with all other
+    Given User <Contact1> adds a new device Contact1Device with label Contact1DeviceLabel
+    Given User <Contact2> adds a new device Contact2Device with label Contact2DeviceLabel
+    Given User <Contact3> adds a new device Contact3Device with label Contact3DeviceLabel
+    Given User <Contact4> adds a new device Contact4Device with label Contact4DeviceLabel
+    Given User <Contact5> adds a new device Contact5Device with label Contact5DeviceLabel
+    Given I sign in using my email or phone number
+    Given User Myself sends 1 encrypted message to group conversation <Group>
+    Given I see conversations list
+    Given I tap on group chat with name <Group>
+    Given I see 1 default message in the conversation view
+    When User <Contact1> likes the recent message from group conversation <Group>
+    And User <Contact2> likes the recent message from group conversation <Group>
+    And User <Contact3> likes the recent message from group conversation <Group>
+    And User <Contact4> likes the recent message from group conversation <Group>
+    And User <Contact5> likes the recent message from group conversation <Group>
+    And I tap toolbox of the recent message
+    Then I see Likers page
+    And I see user <Contact5> in likers list at position number 1
+    And I see user <Contact4> in likers list at position number 2
+    And I see user <Contact3> in likers list at position number 3
+    And I see user <Contact2> in likers list at position number 4
+    And I see user <Contact1> in likers list at position number 5
+    
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Group        |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | LikersGroup  |

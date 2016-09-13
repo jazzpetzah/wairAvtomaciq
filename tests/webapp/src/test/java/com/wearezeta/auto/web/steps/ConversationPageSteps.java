@@ -747,6 +747,17 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).clickEditInMessageContextMenu();
     }
 
+    @When("^I( do not)? see like symbol for latest message$")
+    public void ISeeLikeButton(String doNot) throws Exception {
+        if (doNot == null) {
+            assertTrue("Like symbol is not visible", context.getPagesCollection().getPage(ConversationPage.class)
+                    .isLikeSymbolVisible());
+        } else {
+            assertFalse("Like symbol is visible", context.getPagesCollection().getPage(ConversationPage.class)
+                    .isLikeSymbolVisible());
+        }
+    }
+
     @When("^I click (like|unlike) button in context menu for latest message$")
     public void IClickToLikeInContextMenuOfLatestMessage(String like) throws Exception {
         boolean isLike = "like".equals(like);
