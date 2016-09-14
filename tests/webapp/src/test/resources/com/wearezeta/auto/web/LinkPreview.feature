@@ -67,7 +67,7 @@ Feature: Link Preview
       | Login      | Password      | Name      | Contact   | Message       | EditedMessage | Link             | LinkInPreview |
       | user1Email | user1Password | user1Name | user2Name | other message | edited        | https://wire.com | wire.com      |
 
-  @C169238 @staging
+  @C169238 @regression
   Scenario Outline: I see link preview for link mixed with text
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
