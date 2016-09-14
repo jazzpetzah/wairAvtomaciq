@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.openqa.selenium.By;
@@ -22,11 +23,14 @@ public class SketchPage extends AndroidPage {
 
     private static final By idSendButton = By.id("tv__send_button");
 
+    private static final Function<String, String> xpathStrEmojiKey = emojiKey -> String
+            .format("//*[@id='emoji_keyboard_item' and @value='%s']", emojiKey);
+
     // Colors should be in the order they appear in the color picker
-    public static final String[] colors = {"white", "black", "blue", "green",
+    public static final String[] colors = {"emoji","white", "black", "blue", "green",
             "yellow", "red", "orange", "pink", "purple"};
 
-    private int selectedColorIndex = 0; // default to white
+    private int selectedColorIndex = 1; // default to white
 
     /**
      * The padding value on either sides of the color picker. Taken from the
@@ -108,5 +112,14 @@ public class SketchPage extends AndroidPage {
 
     public Optional<BufferedImage> getCanvasScreenshot() throws Exception {
         return this.getElementScreenshot(getElement(idCanvas));
+    }
+
+    public void pickEmoji() throws Exception {
+        final WebElement emojiKey = getElement(By.xpath(xpathStrEmojiKey.apply("\uD83D\uDE00")));
+        DriverUtils.tapInTheCenterOfTheElement(getDriver(), emojiKey);
+    }
+
+    public void drawEmojiOnCanvas() throws Exception {
+            DriverUtils.tapInTheCenterOfTheElement(getDriver(),getElement(idCanvas));
     }
 }
