@@ -12,6 +12,7 @@ Feature: Sketch
     And I draw a sketch with <NumColors> colors
     And I send my sketch
     And I tap Image container in the conversation view
+    Then I see a picture in the conversation view
 
     Examples:
       | Name      | Contact1  | NumColors |
@@ -31,6 +32,7 @@ Feature: Sketch
     And I draw a sketch on image with <NumColors> colors
     Then I send my sketch
     And I tap Image container in the conversation view
+    Then I see a picture in the conversation view
 
     Examples:
       | Name      | Contact1  | NumColors |
@@ -50,6 +52,7 @@ Feature: Sketch
     And I draw a sketch on image with <NumColors> colors
     Then I send my sketch
     And I tap Image container in the conversation view
+    Then I see a picture in the conversation view
 
     Examples:
       | Name      | Contact1  | NumColors |
@@ -67,6 +70,7 @@ Feature: Sketch
     And I draw an emoji sketch
     And I send my sketch
     And I tap Image container in the conversation view
+    Then I see a picture in the conversation view
 
     Examples:
       | Name      | Contact1  |
