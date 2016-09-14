@@ -585,9 +585,9 @@ public class ConversationViewPageSteps {
      * @param shouldNotSee  equals to null if the container should be visible
      * @param containerType euiter Youtube or Soundcloud or File Upload or Video Message
      * @throws Exception
-     * @step. ^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location) container in the conversation view$
+     * @step. ^I (do not )?see (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
      */
-    @Then("^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location) " +
+    @Then("^I (do not )?see (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
             "container in the conversation view$")
     public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
         final boolean condition = (shouldNotSee == null) ?
@@ -847,5 +847,25 @@ public class ConversationViewPageSteps {
         Assert.assertTrue(
                 String.format("The expect count is not equal to actual count, actual: %d, expect: %d",
                         actualCount, expectedCount), actualCount == expectedCount);
+    }
+
+    /**
+     * Verify the trashcan is visible next the expected name
+     *
+     * @param shouldNotSee equals null means the trashcan should be visible next to the expected name
+     * @param name         the contact name
+     * @throws Exception
+     * @step. ^I see the trashcan next to the name of (.*) in the conversation view$
+     */
+    @Then("^I (do not )?see the trashcan next to the name of (.*) in the conversation view$")
+    public void ISeeTrashNextToName(String shouldNotSee, String name) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("Cannot see the trashcan next to the name '%s'", name),
+                    getConversationViewPage().waitUntilTrashIconVisible(name));
+        } else {
+            Assert.assertTrue(String.format("The trashcan next to the name '%s' should be invisible", name),
+                    getConversationViewPage().waitUntilTrashIconInvisible(name));
+        }
     }
 }
