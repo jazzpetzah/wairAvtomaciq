@@ -868,4 +868,48 @@ public class ConversationViewPageSteps {
                     getConversationViewPage().waitUntilTrashIconInvisible(name));
         }
     }
+
+    /**
+     * Verify the pen is visible next to the expected name
+     *
+     * @param shouldNotSee equals null means the pen should be visible next to the expected name
+     * @param name         the contact name
+     * @throws Exception
+     * @step. ^I (do not )?see the pen icon next to the name of (.*) in the conversation view$
+     */
+    @Then("^I (do not )?see the pen icon next to the name of (.*) in the conversation view$")
+    public void ISeePenNextToName(String shouldNotSee, String name) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("Cannot see the Pen icon next to the name '%s'", name),
+                    getConversationViewPage().waitUntilPenIconVisible(name));
+        } else {
+            Assert.assertTrue(String.format("The Pen icon next to the name '%s' should be invisible", name),
+                    getConversationViewPage().waitUntilPenIconInvisible(name));
+        }
+    }
+
+    /**
+     * Clear content in cursor input
+     *
+     * @throws Exception
+     * @step. ^I clear cursor input$
+     */
+    @When("^I clear cursor input$")
+    public void IClearCursorInput() throws Exception {
+        getConversationViewPage().clearMessageInCursorInput();
+    }
+
+    /**
+     * Verify the text message in cursor input is visible
+     *
+     * @param message the expected message
+     * @throws Exception
+     * @step. ^I see the message "(.*)" in cursor input$
+     */
+    @Then("^I see the message \"(.*)\" in cursor input$")
+    public void ISeeMessageInCursorInput(String message) throws Exception {
+        Assert.assertTrue(String.format("The expected message '%s' is not visible in cursor input", message),
+                getConversationViewPage().waitUntilCursorInputTextVisible(message));
+    }
 }

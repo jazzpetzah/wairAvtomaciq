@@ -300,4 +300,20 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return getConversationViewPage().waitUntilTrashIconInvisible(name);
     }
 
+    public boolean waitUntilPenIconVisible(String name) throws Exception {
+        return getConversationViewPage().waitUntilPenIconVisible(name);
+    }
+
+    public boolean waitUntilPenIconInvisible(String name) throws Exception {
+        return getConversationViewPage().waitUntilPenIconInvisible(name);
+    }
+
+    public void clearMessageInCursorInput() throws Exception {
+        getConversationViewPage().clearMessageInCursorInput();
+    }
+
+    public boolean waitUntilCursorInputTextVisible(String text) throws Exception {
+        return getConversationViewPage().waitUntilCursorInputTextVisible(text);
+    }
+
 }

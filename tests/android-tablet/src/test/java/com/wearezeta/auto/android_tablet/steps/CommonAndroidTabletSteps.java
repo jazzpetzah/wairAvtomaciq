@@ -1095,4 +1095,22 @@ public class CommonAndroidTabletSteps {
         commonSteps.UserXFoundLastMessageChanged(userNameAlias, convoType.equals("group conversation"), dstNameAlias,
                 deviceName, durationSeconds);
     }
+
+    /**
+     * User X edit his own messages, be careful this message will not control the type of the message you edit.
+     *
+     * @param userNameAlias user name/alias
+     * @param newMessage    the message you want to update to
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  estination user name/alias or group convo name
+     * @param deviceName    source device name. Will be created if does not exist yet
+     * @throws Exception
+     * @step. ^User (.*) edits? the recent message to "(.*)" from (user|group conversation) (.*) via device (.*)$
+     */
+    @When("^User (.*) edits? the recent message to \"(.*)\" from (user|group conversation) (.*) via device (.*)$")
+    public void UserXEditLastMessage(String userNameAlias, String newMessage, String convoType,
+                                     String dstNameAlias, String deviceName) throws Exception {
+        boolean isGroup = convoType.equals("group conversation");
+        commonSteps.UserUpdateLatestMessage(userNameAlias, dstNameAlias, newMessage, deviceName, isGroup);
+    }
 }
