@@ -20,8 +20,8 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C246224 @C246225 @C246229 @staging @fastLogin @torun
-  Scenario Outline: Verify liking image, link and youtube [LANDSCAPE]
+  @C246224 @C246225 @staging @fastLogin @torun
+  Scenario Outline: Verify liking image and link [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
@@ -38,12 +38,7 @@ Feature: Likes
     And I tap on Like badge item
     And I long tap on link preview in conversation view
     And I tap on Unlike badge item
-    When User <Contact> sends encrypted message "<YouTubeLink>" to user Myself
-    And I long tap on media container in conversation view
-    And I tap on Like badge item
-    And I double tap on media container in conversation view
-    Then I tap on Unlike badge item
 
     Examples:
-      | Name      | Contact   | Picture     | ConversationType | Link                                               | YouTubeLink                                |
-      | user1Name | user2Name | testing.jpg | single user      | https://twitter.com/wire/status/752800171608535040 | http://www.youtube.com/watch?v=Bb1RhktcugU |
+      | Name      | Contact   | Picture     | ConversationType | Link                                               |
+      | user1Name | user2Name | testing.jpg | single user      | https://twitter.com/wire/status/752800171608535040 |
