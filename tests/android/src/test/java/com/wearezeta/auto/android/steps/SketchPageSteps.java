@@ -2,6 +2,7 @@ package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.android.pages.SketchPage;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import cucumber.api.java.en.When;
 
 public class SketchPageSteps {
@@ -25,7 +26,7 @@ public class SketchPageSteps {
 	public void IDrawASketchWithXColors(String onImage, int numColors)
 			throws Exception {
 		SketchPage page = getSketchPage();
-		for (int i = 0; i < numColors; i++) {
+		for (int i = 1; i <= numColors; i++) {
 			page.setColor(i);
 			page.drawRandomLines(1);
 		}
@@ -41,6 +42,21 @@ public class SketchPageSteps {
 	@When("^I send my sketch$")
 	public void ISendMySketch() throws Exception {
 		getSketchPage().tapSendButton();
+	}
+
+	/**
+	 * Draws the first emoji of the keyboard on to the center of the canvas
+	 *
+	 * @step. ^I draw an emoji sketch$
+	 *
+	 * @throws Exception
+     */
+	@When("^I draw an emoji sketch$")
+	public void IDrawAnEmojiSketch() throws Exception {
+		SketchPage page = getSketchPage();
+		page.setColor(0);
+		page.pickEmoji();
+		page.drawEmojiOnCanvas();
 	}
 
 }
