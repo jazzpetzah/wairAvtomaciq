@@ -506,7 +506,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Message1 | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | like me  | edited        |
 
-  @C226437 @like @staging
+  @C226437 @like @regression
   Scenario Outline: Verify you cannot like a system message
     Given There are 3 user where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
