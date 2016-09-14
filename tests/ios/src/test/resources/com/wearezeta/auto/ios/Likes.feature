@@ -247,7 +247,7 @@ Feature: Likes
       | Name      | Contact1  | Contact2  | Picture     | Group        |
       | user1Name | user2Name | user3Name | testing.jpg | ArchiveGroup |
 
-  @C225992 @C225996 @staging @fastLogin
+  @C225992 @C225996 @regression @fastLogin
   Scenario Outline: Verify liking/unliking a message by double tapping
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -265,7 +265,6 @@ Feature: Likes
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
-
 
   @C226014 @staging @fastLogin
   Scenario Outline: Likes list is sorted by like time, most recent liker is on the top
