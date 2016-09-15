@@ -114,7 +114,7 @@ Feature: Sign In
       | Email      | Password      |
       | user1Email | user1Password |
 
-  @C246200 @staging
+  @C246200 @regression
   Scenario Outline: Verify you can sign in by phone number with already set password and temporary device
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
@@ -133,7 +133,7 @@ Feature: Sign In
       | Name      | PhoneNumber      | Password   |
       | user1Name | user1PhoneNumber | aqa123456! |
 
-  @C246197 @staging
+  @C246197 @regression
   Scenario Outline: Verify you can sign in by phone number with already set password and permanent device
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
