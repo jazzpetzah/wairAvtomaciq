@@ -127,3 +127,27 @@ Feature: Autoconnect
     Examples:
       | Name      | NumberOfUsers | NumberOfChunks |
       | user1Name | 3000          | 3              |
+
+  @C79 @addressbookStart @staging @torun
+  Scenario Outline: Verify name from the address book is shown as a subtitle
+    Given There are 2 users where <Name> is me
+    Given I quit Wire
+    Given I install Address Book Helper app
+    Given I launch Address Book Helper app
+    Given I delete all contacts from Address Book
+    Given I add name <Contact> and phone <ContactPhone> to Address Book
+    Given I relaunch Wire
+    Given I remember the users <Contact> Address Book name
+    Given User <Contact> changes name to <NewName>
+    Given I sign in using my email or phone number
+    Given I wait until <Contact> exists in backend search results
+    When I open search UI
+    And I click clear button
+    And I tap on contact name <Contact>
+    And I open conversation details
+    Then I verify username <Contact> on Other User Profile page is displayed
+    Then I verify users Address Book name on Other User Profile page is displayed
+
+    Examples:
+      | Name      | Contact   | ContactPhone     | NewName |
+      | user1Name | user2Name | user2PhoneNumber | Beyonce |
