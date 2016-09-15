@@ -2,13 +2,16 @@ package com.wearezeta.auto.common.driver;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 import java.util.concurrent.TimeoutException;
 
 import com.google.common.collect.ImmutableMap;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.rest.RESTError;
 import io.appium.java_client.MobileCommand;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
@@ -23,15 +26,18 @@ import org.openqa.selenium.remote.SessionNotFoundException;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 
 
-public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
+public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, FindsByFBPredicate,
+        FindsByFBAccessibilityId, FindsByFBXPath, FindsByFBClassName {
     public static final long MAX_COMMAND_DURATION_MILLIS = 150000;
 
     private static final Logger log = ZetaLogger.getLog(ZetaIOSDriver.class.getSimpleName());
 
     private volatile boolean isSessionLost = false;
+    private FBDriverAPI fbDriverAPI;
 
     public ZetaIOSDriver(URL remoteAddress, Capabilities desiredCapabilities) {
         super(remoteAddress, desiredCapabilities);
+        this.fbDriverAPI = new FBDriverAPI();
     }
 
     @Override
@@ -154,4 +160,75 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
         }
     }
 
+    @Override
+    public FBElement findElementByFBPredicate(String value) {
+        try {
+            return fbDriverAPI.findElementByFBPredicate(value);
+        } catch (RESTError e) {
+            throw new NotFoundException(e);
+        }
+    }
+
+    @Override
+    public List<FBElement> findElementsByFBPredicate(String value) {
+        try {
+            return fbDriverAPI.findElementsByFBPredicate(value);
+        } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
+    @Override
+    public FBElement findElementByFBAccessibilityId(String value) {
+        try {
+            return fbDriverAPI.findElementByFBAccessibilityId(value);
+        } catch (RESTError e) {
+            throw new NotFoundException(e);
+        }
+    }
+
+    @Override
+    public List<FBElement> findElementsByFBAccessibilityId(String value) {
+        try {
+            return fbDriverAPI.findElementsByFBAccessibilityId(value);
+        } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
+    @Override
+    public FBElement findElementByFBClassName(String value) {
+        try {
+            return fbDriverAPI.findElementByFBClassName(value);
+        } catch (RESTError e) {
+            throw new NotFoundException(e);
+        }
+    }
+
+    @Override
+    public List<FBElement> findElementsByFBClassName(String value) {
+        try {
+            return fbDriverAPI.findElementsByFBClassName(value);
+        } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
+    @Override
+    public FBElement findElementByFBXPath(String value) {
+        try {
+            return fbDriverAPI.findElementByFBXPath(value);
+        } catch (RESTError e) {
+            throw new NotFoundException(e);
+        }
+    }
+
+    @Override
+    public List<FBElement> findElementsByFBXPath(String value) {
+        try {
+            return fbDriverAPI.findElementsByFBXPath(value);
+        } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
+    }
 }
