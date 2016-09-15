@@ -19,7 +19,7 @@ Feature: Link Preview
       | user1Email | user1Password | user1Name | user2Name | https://wire.com                                                                                                   | wire.com                                                                                                | Wire · Modern communication, full privacy. For iOS, Android, OS X, Windows and web. | linkpreview0.png |
       | user1Email | user1Password | user1Name | user2Name | http://www.heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | Wire: Neuer WebRTC-Messenger soll WhatsApp &amp; Co. Konkurrenz machen              | linkpreview1.png |
 
-  @C169235 @regression @WEBAPP-2998
+  @C169235 @regression
   Scenario Outline: Verify you can delete link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
