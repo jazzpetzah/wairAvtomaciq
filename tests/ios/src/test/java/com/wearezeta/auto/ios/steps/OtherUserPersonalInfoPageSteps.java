@@ -155,7 +155,7 @@ public class OtherUserPersonalInfoPageSteps {
         Assert.assertTrue(String.format("User Address Book name '%s' is not visible", userAddressBookName),
                 getOtherUserPersonalInfoPage().isUserAddressBookNameVisible(userAddressBookName));
     }
-    
+
     /**
      * Verify that user email on Other User Profile page is displayed and correct
      *
