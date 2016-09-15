@@ -32,7 +32,7 @@ public class DeviceLimitPage extends WebPage {
     @FindBy(css = "[data-uie-name='do-manage-devices']")
     private WebElement manageDevicesButton;
 
-    @FindBy(css = "[data-uie-name='go-sign-out']")
+    @FindBy(css = "#section-limit [data-uie-name='go-sign-out']")
     private WebElement signOutButton;
 
     @FindBy(css = "[data-uie-name='device-header-model']")

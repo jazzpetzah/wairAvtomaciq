@@ -225,7 +225,7 @@ public class PickleExecutor {
 
     public static String replaceExampleOccurences(String rawStep, Map<String, String> exampleParams) {
         for (String key : exampleParams.keySet()) {
-            rawStep = rawStep.replaceAll("<" + key + ">", exampleParams.get(key));
+            rawStep = rawStep.replaceAll(Matcher.quoteReplacement("<" + key + ">"), Matcher.quoteReplacement(exampleParams.get(key)));
         }
         return rawStep;
     }
