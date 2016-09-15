@@ -48,8 +48,7 @@ public final class WebAppLocators {
         public static final String errorMarkedPasswordField = "#form-account-login " +
                 ".input-error[data-uie-name='enter-password']";
 
-        // TODO change to '#wire-login-password-remember label' when gregor merges his phone login changes
-        public static final String cssRememberMe = "#remember-me label";
+        public static final String cssRememberMe = "#wire-login-password-remember label";
 
         public static final String cssForgotPassword = "[data-uie-name='go-forgot-password']";
     }
