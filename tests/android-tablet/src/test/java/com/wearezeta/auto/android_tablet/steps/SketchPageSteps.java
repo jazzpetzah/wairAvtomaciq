@@ -23,7 +23,7 @@ public class SketchPageSteps {
     @When("^I draw a sketch with (\\d+) colors? on [Ss]ketch page$")
     public void IDrawSketch(int colorsCount) throws Exception {
         for (int i = 0; i < colorsCount; i++) {
-            getSketchPage().setColor(i);
+            getSketchPage().setColor(i + 1);
             getSketchPage().drawRandomLines(1);
         }
     }

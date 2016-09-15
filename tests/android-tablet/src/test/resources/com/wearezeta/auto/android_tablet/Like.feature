@@ -89,7 +89,7 @@ Feature: Like
       | user1Name | user2Name | testing.jpg |
 
   @C246207 @staging
-  Scenario Outline: I can like sketch bz heart/long tap/double tap (portrait)
+  Scenario Outline: I can like sketch by heart/long tap/double tap (portrait)
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
     Given Myself is connected to <Contact>
