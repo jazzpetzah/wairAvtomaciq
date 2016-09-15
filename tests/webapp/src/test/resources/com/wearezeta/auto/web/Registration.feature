@@ -119,7 +119,7 @@ Feature: Registration
       | Name      | Email              | Password      |
       | user1Name | nope@wearezeta.com | user1Password |
 
-  @C3219 @smoke
+  @C3219 @mute
   Scenario Outline: I want to see an error message if Terms of Use are not accepted
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
