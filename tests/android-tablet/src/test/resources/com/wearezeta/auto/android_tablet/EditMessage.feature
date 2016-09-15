@@ -1,6 +1,6 @@
 Feature: Edit message
 
-  @C246279 @staging
+  @C246279 @regression
   Scenario Outline: Verify I can edit my message in 1:1 (from other view)
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -20,7 +20,7 @@ Feature: Edit message
       | Name      | Contact1  | Message | ContactDevice | NewMessage |
       | user1Name | user2Name | YO      | Device1       | Hello      |
 
-  @C246280 @staging
+  @C246280 @regression
   Scenario Outline: Verify I can edit my message in Group (from my view)
     Given There are 3 users where <Name> is me
     Given I rotate UI to portrait
@@ -47,7 +47,7 @@ Feature: Edit message
       | Name      | Contact1  | Contact2  | Message | ContactDevice | NewMessage | GroupChatName |
       | user1Name | user2Name | user3Name | YO      | Device1       | Hello      | EditGroup     |
 
-  @C246281 @staging
+  @C246281 @regression
   Scenario Outline: Verify I cannot dit message for someone else message
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -64,7 +64,7 @@ Feature: Edit message
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @C246282 @C246283 @staging
+  @C246282 @C246283 @regression
   Scenario Outline: Verify I can cancel editing a message by button / I can reset my editing
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
