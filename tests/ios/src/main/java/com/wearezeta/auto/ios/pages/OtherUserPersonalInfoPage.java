@@ -33,6 +33,9 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final Function<String, String> xpathStrOtherPersonalInfoPageNameFieldByName = name -> String.format(
         "%s/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
 
+    private static final Function<String, String> xpathStrOtherPersonalInfoPageAddressBookNameFieldByName = name ->
+            String.format("%s/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
+
     private static final Function<String, String> xpathStrOtherPersonalInfoPageEmailFieldByEmail = name -> String.format(
         "//UIAButton[@name='OtherUserProfileCloseButton']/following-sibling:: UIATextView[@name='%s']", name.toUpperCase());
 
@@ -120,6 +123,11 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public boolean isUserNameVisible(String name) throws Exception {
         final By locator = By.xpath(xpathStrOtherPersonalInfoPageNameFieldByName.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isUserAddressBookNameVisible(String addressbookName) throws Exception {
+        final By locator = By.xpath(xpathStrOtherPersonalInfoPageAddressBookNameFieldByName.apply(addressbookName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
