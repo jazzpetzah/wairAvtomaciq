@@ -130,6 +130,7 @@ Feature: Recall Message
     Given I tap the conversation <Contact>
     When I type the message "<Link>" in the Conversation view
     And I send the typed message in the Conversation view
+    And I hide keyboard
     And I long tap Link Preview container in the conversation view
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I tap Delete for everyone button on the message bottom menu
