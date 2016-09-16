@@ -208,6 +208,10 @@ public class FBDriverAPI {
         return parseResponseWithStatus(client.getIsAccessible(getSessionId(), uuid)).equals(OBJC_YES);
     }
 
+    public String getWindowSize(String uuid) throws RESTError {
+        return parseResponseWithStatus(client.getWindowSize(getSessionId(), uuid));
+    }
+
     public enum ScrollingDirection {
         UP, DOWN, LEFT, RIGHT
     }

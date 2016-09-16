@@ -40,10 +40,15 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
         this.fbDriverAPI = new FBDriverAPI();
     }
 
+    public boolean isXCUIModeEnabled() {
+        final Capabilities caps = this.getCapabilities();
+        return caps.is("automationName") && caps.getCapability("automationName").equals("XCUITest");
+    }
+
     @Override
     public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException {
         try {
-            if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            if (CommonUtils.getIsSimulatorFromConfig(this.getClass()) && !isXCUIModeEnabled()) {
                 final Object result = takeFullScreenShot();
                 final String base64EncodedPng = new String((byte[]) result);
                 return outputType.convertFromBase64Png(base64EncodedPng);

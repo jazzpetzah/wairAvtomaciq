@@ -205,4 +205,9 @@ final class FBDriverRESTClient {
         final Builder webResource = buildDefaultRequest(String.format("element/%s/accessible", uuid), sessionId);
         return new JSONObject(restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK}));
     }
+
+    public JSONObject getWindowSize(String sessionId, String uuid) throws RESTError {
+        final Builder webResource = buildDefaultRequest(String.format("window/%s/size", uuid), sessionId);
+        return new JSONObject(restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK}));
+    }
 }

@@ -154,7 +154,7 @@ public class ZetaFormatter implements Formatter, Reporter {
                 index++;
             } while (tmpScreenshot.exists());
             final File resultScreenshot = tmpScreenshot;
-            if (driver instanceof IOSDriver && CommonUtils.getIsSimulatorFromConfig(ZetaFormatter.class)) {
+            if ((driver instanceof IOSDriver) && CommonUtils.getIsSimulatorFromConfig(ZetaFormatter.class)) {
                 try {
                     CommonUtils.takeIOSSimulatorScreenshot(resultScreenshot);
                 } catch (Exception e) {

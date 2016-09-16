@@ -187,6 +187,15 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
         }
     }
 
+    public Dimension getWindowSize() {
+        try {
+            final JSONObject rect = new JSONObject(fbDriverAPI.getWindowSize(this.uuid));
+            return new Dimension(rect.getInt("width"), rect.getInt("height"));
+        } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
     @Override
     public String getCssValue(String s) {
         throw new NotImplementedException(String.format(
