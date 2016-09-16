@@ -4,6 +4,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rest.RESTError;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -23,6 +24,8 @@ public class FBDriverAPI {
     private static final String BY_XPATH_STRING = "xpath";
     private static final String BY_ACCESSIBILITY_ID_STRING = "accessibility id";
 
+    private static final String OBJC_YES = "YES";
+
     private FBDriverRESTClient client;
     private Optional<String> sessionId = Optional.empty();
 
@@ -32,37 +35,41 @@ public class FBDriverAPI {
 
     private String getSessionId() throws RESTError {
         if (!this.sessionId.isPresent()) {
+            if (!this.isAlive()) {
+                throw new IllegalStateException(String.format("Facebook Driver service listener at %s:%s is dead",
+                        HOST_NAME, PORT_NUMBER));
+            }
             this.sessionId = Optional.of(this.client.getSession().getString("sessionId"));
         }
         return this.sessionId.get();
     }
 
-    public FBElement findElementByFBAccessibilityId(String query) throws RESTError {
-        return new FBElement(client.findElement(getSessionId(), BY_ACCESSIBILITY_ID_STRING, query));
+    public Optional<FBElement> findElementByFBAccessibilityId(String query) throws RESTError {
+        return parseFindElementOutput(client.findElement(getSessionId(), BY_ACCESSIBILITY_ID_STRING, query));
     }
 
     public List<FBElement> findElementsByFBAccessibilityId(String query) throws RESTError {
         return parseFindElementsOutput(client.findElements(getSessionId(), BY_ACCESSIBILITY_ID_STRING, query));
     }
 
-    public FBElement findElementByFBXPath(String query) throws RESTError {
-        return new FBElement(client.findElement(getSessionId(), BY_XPATH_STRING, query));
+    public Optional<FBElement> findElementByFBXPath(String query) throws RESTError {
+        return parseFindElementOutput(client.findElement(getSessionId(), BY_XPATH_STRING, query));
     }
 
     public List<FBElement> findElementsByFBXPath(String query) throws RESTError {
         return parseFindElementsOutput(client.findElements(getSessionId(), BY_XPATH_STRING, query));
     }
 
-    public FBElement findElementByFBPredicate(String query) throws RESTError {
-        return new FBElement(client.findElement(getSessionId(), BY_PREDICATE_STRING, query));
+    public Optional<FBElement> findElementByFBPredicate(String query) throws RESTError {
+        return parseFindElementOutput(client.findElement(getSessionId(), BY_PREDICATE_STRING, query));
     }
 
     public List<FBElement> findElementsByFBPredicate(String query) throws RESTError {
         return parseFindElementsOutput(client.findElements(getSessionId(), BY_PREDICATE_STRING, query));
     }
 
-    public FBElement findElementByFBClassName(String query) throws RESTError {
-        return new FBElement(client.findElement(getSessionId(), BY_CLASS_NAME_STRING, query));
+    public Optional<FBElement> findElementByFBClassName(String query) throws RESTError {
+        return parseFindElementOutput(client.findElement(getSessionId(), BY_CLASS_NAME_STRING, query));
     }
 
     public List<FBElement> findElementsByFBClassName(String query) throws RESTError {
@@ -85,8 +92,15 @@ public class FBDriverAPI {
         return false;
     }
 
-    public FBElement findChildElementByFBAccessibilityId(String uuid, String value) throws RESTError {
-        return new FBElement(client.findElement(getSessionId(), uuid, BY_ACCESSIBILITY_ID_STRING, value));
+    public Optional<FBElement> findChildElementByFBAccessibilityId(String uuid, String value) throws RESTError {
+        return parseFindElementOutput(client.findElement(getSessionId(), uuid, BY_ACCESSIBILITY_ID_STRING, value));
+    }
+
+    private static Optional<FBElement> parseFindElementOutput(JSONObject output) {
+        if (output.has("ELEMENT")) {
+            return Optional.of(new FBElement(output.getString("ELEMENT")));
+        }
+        return Optional.empty();
     }
 
     private static List<FBElement> parseFindElementsOutput(JSONArray output) {
@@ -101,24 +115,24 @@ public class FBDriverAPI {
         return parseFindElementsOutput(client.findElements(getSessionId(), uuid, BY_ACCESSIBILITY_ID_STRING, value));
     }
 
-    public FBElement findChildElementByFBClassName(String uuid, String value) throws RESTError {
-        return new FBElement(client.findElement(getSessionId(), uuid, BY_CLASS_NAME_STRING, value));
+    public Optional<FBElement> findChildElementByFBClassName(String uuid, String value) throws RESTError {
+        return parseFindElementOutput(client.findElement(getSessionId(), uuid, BY_CLASS_NAME_STRING, value));
     }
 
     public List<FBElement> findChildElementsByFBClassName(String uuid, String value) throws RESTError {
         return parseFindElementsOutput(client.findElements(getSessionId(), uuid, BY_CLASS_NAME_STRING, value));
     }
 
-    public FBElement findChildElementByFBXPath(String uuid, String value) throws RESTError {
-        return new FBElement(client.findElement(getSessionId(), uuid, BY_XPATH_STRING, value));
+    public Optional<FBElement> findChildElementByFBXPath(String uuid, String value) throws RESTError {
+        return parseFindElementOutput(client.findElement(getSessionId(), uuid, BY_XPATH_STRING, value));
     }
 
     public List<FBElement> findChildElementsByFBXPath(String uuid, String value) throws RESTError {
         return parseFindElementsOutput(client.findElements(getSessionId(), uuid, BY_XPATH_STRING, value));
     }
 
-    public FBElement findChildElementByFBPredicate(String uuid, String value) throws RESTError {
-        return new FBElement(client.findElement(getSessionId(), uuid, BY_PREDICATE_STRING, value));
+    public Optional<FBElement> findChildElementByFBPredicate(String uuid, String value) throws RESTError {
+        return parseFindElementOutput(client.findElement(getSessionId(), uuid, BY_PREDICATE_STRING, value));
     }
 
     public List<FBElement> findChildElementsByFBPredicate(String uuid, String value) throws RESTError {
@@ -137,11 +151,64 @@ public class FBDriverAPI {
         client.clear(getSessionId(), uuid);
     }
 
+    private static String parseResponseWithStatus(JSONObject status) {
+        return status.getString("value");
+    }
+
     public String getTagName(String uuid) throws RESTError {
-        return client.getTagName(getSessionId(), uuid);
+        return parseResponseWithStatus(client.getTagName(getSessionId(), uuid));
     }
 
     public String getAttribute(String uuid, String attrName) throws RESTError {
-        return client.getAttribute(getSessionId(), uuid, attrName);
+        return parseResponseWithStatus(client.getAttribute(getSessionId(), uuid, attrName));
+    }
+
+    public boolean isEnabled(String uuid) throws RESTError {
+        return parseResponseWithStatus(client.isEnabled(getSessionId(), uuid)).equals(OBJC_YES);
+    }
+
+    public String getText(String uuid) throws RESTError {
+        return parseResponseWithStatus(client.getText(getSessionId(), uuid));
+    }
+
+    public boolean getIsDisplayed(String uuid) throws RESTError {
+        return parseResponseWithStatus(client.getIsDisplayed(getSessionId(), uuid)).equals(OBJC_YES);
+    }
+
+    public String getRect(String uuid) throws RESTError {
+        return parseResponseWithStatus(client.getRect(getSessionId(), uuid));
+    }
+
+    public void doubleTap(String uuid) throws RESTError {
+        client.doubleTap(getSessionId(), uuid);
+    }
+
+    public void touchAndHold(String uuid, double durationSeconds) throws RESTError {
+        client.touchAndHold(getSessionId(), uuid, durationSeconds);
+    }
+
+    public void scroll(String uuid, Optional<String> toChildNamed, Optional<ScrollingDirection> direction,
+                       Optional<String> predicateString, Optional<Boolean> toVisible) throws RESTError {
+        Optional<String> strDirection = Optional.empty();
+        if (direction.isPresent()) {
+            strDirection = Optional.of(direction.get().toString().toLowerCase());
+        }
+        client.scroll(getSessionId(), uuid, toChildNamed, strDirection, predicateString, toVisible);
+    }
+
+    public void tap(String uuid, double x, double y) throws RESTError {
+        client.tap(getSessionId(), uuid, x, y);
+    }
+
+    public void sendKeys(String value) throws RESTError {
+        client.sendKeys(getSessionId(), value);
+    }
+
+    public boolean isAccessible(String uuid) throws RESTError {
+        return parseResponseWithStatus(client.getIsAccessible(getSessionId(), uuid)).equals(OBJC_YES);
+    }
+
+    public enum ScrollingDirection {
+        UP, DOWN, LEFT, RIGHT
     }
 }

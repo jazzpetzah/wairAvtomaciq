@@ -2,9 +2,11 @@ package com.wearezeta.auto.common.driver.facebook_ios_driver;
 
 import com.wearezeta.auto.common.rest.RESTError;
 import org.apache.commons.lang3.NotImplementedException;
+import org.json.JSONObject;
 import org.openqa.selenium.*;
 
 import java.util.List;
+import java.util.Optional;
 
 public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByFBClassName,
         FindsByFBPredicate, FindsByFBXPath {
@@ -26,6 +28,42 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
         }
     }
 
+    public void tap(double x, double y) {
+        try {
+            fbDriverAPI.tap(this.uuid, x, y);
+        } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
+    public void doubleTap() {
+        try {
+            fbDriverAPI.doubleTap(this.uuid);
+        } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
+    public void touchAndHold(double durationSeconds) {
+        try {
+            fbDriverAPI.touchAndHold(this.uuid, durationSeconds);
+        } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
+    /**
+     * https://github.com/facebook/WebDriverAgent/blob/master/WebDriverAgentLib/Commands/FBElementCommands.m
+     */
+    public void scroll(Optional<FBDriverAPI.ScrollingDirection> direction, Optional<String> toChildNamed,
+                       Optional<String> predicateString, Optional<Boolean> toVisible) {
+        try {
+            fbDriverAPI.scroll(this.uuid, toChildNamed, direction, predicateString, toVisible);
+        } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
     @Override
     public void submit() {
         throw new NotImplementedException(String.format(
@@ -35,7 +73,15 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     @Override
     public void sendKeys(CharSequence... charSequences) {
         try {
-            fbDriverAPI.setValue(this.uuid, String.join("", charSequences));
+            fbDriverAPI.sendKeys(String.join("", charSequences));
+        } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
+    public void setValue(String value) {
+        try {
+            fbDriverAPI.setValue(this.uuid, String.join("", value));
         } catch (RESTError e) {
             throw new WebDriverException(e);
         }
@@ -74,14 +120,30 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
                 "This method is not implemented for %s instances", this.getClass().getSimpleName()));
     }
 
+    public boolean isAccessible() {
+        try {
+            return fbDriverAPI.isAccessible(this.uuid);
+        } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
     @Override
     public boolean isEnabled() {
-        return false;
+        try {
+            return fbDriverAPI.isEnabled(this.uuid);
+        } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
     }
 
     @Override
     public String getText() {
-        return null;
+        try {
+            return fbDriverAPI.getText(this.uuid);
+        } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
     }
 
     @Override
@@ -96,17 +158,33 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
 
     @Override
     public boolean isDisplayed() {
-        return false;
+        try {
+            return fbDriverAPI.getIsDisplayed(this.uuid);
+        } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
     }
 
     @Override
     public Point getLocation() {
-        return null;
+        try {
+            final JSONObject rect = new JSONObject(fbDriverAPI.getRect(this.uuid));
+            return new Point(rect.getJSONObject("origin").getInt("x"),
+                    rect.getJSONObject("origin").getInt("y"));
+        } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
     }
 
     @Override
     public Dimension getSize() {
-        return null;
+        try {
+            final JSONObject rect = new JSONObject(fbDriverAPI.getRect(this.uuid));
+            return new Dimension(rect.getJSONObject("size").getInt("width"),
+                    rect.getJSONObject("size").getInt("height"));
+        } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
     }
 
     @Override
@@ -124,9 +202,12 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     @Override
     public FBElement findElementByFBAccessibilityId(String value) {
         try {
-            return fbDriverAPI.findChildElementByFBAccessibilityId(this.uuid, value);
+            return fbDriverAPI.findChildElementByFBAccessibilityId(this.uuid, value)
+                    .orElseThrow(() -> new NotFoundException(
+                            String.format("Cannot find nested %s using accessibility id '%s'",
+                                    getClass().getSimpleName(), value)));
         } catch (RESTError e) {
-            throw new NotFoundException(e);
+            throw new WebDriverException(e);
         }
     }
 
@@ -142,9 +223,12 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     @Override
     public FBElement findElementByFBClassName(String value) {
         try {
-            return fbDriverAPI.findChildElementByFBClassName(this.uuid, value);
+            return fbDriverAPI.findChildElementByFBClassName(this.uuid, value)
+                    .orElseThrow(() -> new NotFoundException(
+                            String.format("Cannot find nested %s using class name '%s'",
+                                    getClass().getSimpleName(), value)));
         } catch (RESTError e) {
-            throw new NotFoundException(e);
+            throw new WebDriverException(e);
         }
     }
 
@@ -160,9 +244,12 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     @Override
     public FBElement findElementByFBPredicate(String value) {
         try {
-            return fbDriverAPI.findChildElementByFBPredicate(this.uuid, value);
+            return fbDriverAPI.findChildElementByFBPredicate(this.uuid, value)
+                    .orElseThrow(() -> new NotFoundException(
+                            String.format("Cannot find nested %s using predicate '%s'",
+                                    getClass().getSimpleName(), value)));
         } catch (RESTError e) {
-            throw new NotFoundException(e);
+            throw new WebDriverException(e);
         }
     }
 
@@ -178,9 +265,12 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     @Override
     public FBElement findElementByFBXPath(String value) {
         try {
-            return fbDriverAPI.findChildElementByFBXPath(this.uuid, value);
+            return fbDriverAPI.findChildElementByFBXPath(this.uuid, value)
+                    .orElseThrow(() -> new NotFoundException(
+                            String.format("Cannot find nested %s using XPath '%s'",
+                                    getClass().getSimpleName(), value)));
         } catch (RESTError e) {
-            throw new NotFoundException(e);
+            throw new WebDriverException(e);
         }
     }
 

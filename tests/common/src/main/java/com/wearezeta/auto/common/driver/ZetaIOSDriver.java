@@ -163,9 +163,11 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     @Override
     public FBElement findElementByFBPredicate(String value) {
         try {
-            return fbDriverAPI.findElementByFBPredicate(value);
+            return fbDriverAPI.findElementByFBPredicate(value)
+                    .orElseThrow(() -> new NotFoundException(String.format("Cannot find %s using predicate '%s'",
+                            FBElement.class.getSimpleName(), value)));
         } catch (RESTError e) {
-            throw new NotFoundException(e);
+            throw new WebDriverException(e);
         }
     }
 
@@ -181,9 +183,11 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     @Override
     public FBElement findElementByFBAccessibilityId(String value) {
         try {
-            return fbDriverAPI.findElementByFBAccessibilityId(value);
+            return fbDriverAPI.findElementByFBAccessibilityId(value)
+                    .orElseThrow(() -> new NotFoundException(String.format("Cannot find %s using accessibility id '%s'",
+                    FBElement.class.getSimpleName(), value)));
         } catch (RESTError e) {
-            throw new NotFoundException(e);
+            throw new WebDriverException(e);
         }
     }
 
@@ -199,9 +203,11 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     @Override
     public FBElement findElementByFBClassName(String value) {
         try {
-            return fbDriverAPI.findElementByFBClassName(value);
+            return fbDriverAPI.findElementByFBClassName(value)
+                    .orElseThrow(() -> new NotFoundException(String.format("Cannot find %s using class name '%s'",
+                    FBElement.class.getSimpleName(), value)));
         } catch (RESTError e) {
-            throw new NotFoundException(e);
+            throw new WebDriverException(e);
         }
     }
 
@@ -217,9 +223,11 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     @Override
     public FBElement findElementByFBXPath(String value) {
         try {
-            return fbDriverAPI.findElementByFBXPath(value);
+            return fbDriverAPI.findElementByFBXPath(value)
+                    .orElseThrow(() -> new NotFoundException(String.format("Cannot find %s using XPath '%s'",
+                            FBElement.class.getSimpleName(), value)));
         } catch (RESTError e) {
-            throw new NotFoundException(e);
+            throw new WebDriverException(e);
         }
     }
 
