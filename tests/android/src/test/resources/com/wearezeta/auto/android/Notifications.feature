@@ -85,6 +85,28 @@ Feature: Notifications
       | Name      | Contact   | Message |
       | user1Name | user2Name | hello   |
 
+  @C248344 @staging @GCMToken
+  Scenario Outline: Verify unregister push token at backend and see if client can resume getting notifications by itself
+    Given I am on Android 4.4 or better
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I minimize the application
+    And I unregister GCM push token in 10 seconds
+    And User <Contact> sends encrypted message "<Message>" to user Myself
+    Then I do not see the message "<Message>" in push notifications list
+    When I restore the application
+    And I wait for 2 seconds
+    And I minimize the application
+    And User <Contact> sends encrypted message "<Message2>" to user Myself
+    Then I see the message "<Message2>" in push notifications list
+
+    Examples:
+      | Name      | Contact   | Message | Message2 |
+      | user1Name | user2Name | Yo      | Nop      |
+
   @C226044 @staging
   Scenario Outline: When somebody likes my message - I receive notification (app in background)
     Given I am on Android 4.4 or better
