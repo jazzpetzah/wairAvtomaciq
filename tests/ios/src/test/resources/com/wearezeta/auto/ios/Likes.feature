@@ -266,7 +266,7 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C226000 @staging @fastLogin
+  @C226000 @regression @fastLogin
   Scenario Outline: Verify deleted for myself someone else message doesn't reappear after someone liked it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
