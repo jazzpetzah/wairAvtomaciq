@@ -151,8 +151,8 @@ Feature: Sign In
       | Name      | PhoneNumber      | Password   |
       | user1Name | user1PhoneNumber | aqa123456! |
 
-  @C1788 @mute
-  Scenario Outline: Verify you see correct error message when sign in with incorrect phone number
+  @C246201 @staging
+  Scenario Outline: Verify I see a proper error when I try to sign in with invalid phone number
     Given I switch to sign in page
     When I switch to phone number sign in page
     And I enter country code <CountryCode> on phone number sign in
@@ -161,10 +161,10 @@ Feature: Sign In
     Then I see invalid phone number error message saying <Error>
 
     Examples: 
-      | CountryCode | PhoneNumber | Error                |
-      | +49         | 9999999999  | Unknown Phone Number |
-      | +49         | qwerqwer    | Invalid Phone Number |
-      | +49         | !@$!@$      | Invalid Phone Number |
+      | CountryCode | PhoneNumber | Error                                  |
+      | +49         | 9999999999  | Sorry. This phone number is forbidden. |
+      | +49         | 1qwerqwer   | Invalid Phone Number                   |
+      | +49         | 1!@$!@$     | Invalid Phone Number                   |
 
   @C1789 @mute
   Scenario Outline: Verify you see correct error message when sign in with a phone number with incorrect code

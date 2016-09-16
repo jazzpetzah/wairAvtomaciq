@@ -18,12 +18,12 @@ public class PhoneNumberLoginPage extends WebPage {
     @FindBy(css = "[data-uie-name='enter-phone']")
     private WebElement phoneNumberField;
 
-    @FindBy(id = "wire-phone-login")
+    @FindBy(css = "[data-uie-name='do-sign-in-phone']")
     private WebElement signInButton;
 
     @FindBy(css = WebAppLocators.PhoneNumberLoginPage.cssErrorMessage)
     private WebElement errorMessage;
-    
+
     @FindBy(css = WebAppLocators.PhoneNumberLoginPage.cssRememberMe)
     private WebElement rememberMe;
 
@@ -42,31 +42,35 @@ public class PhoneNumberLoginPage extends WebPage {
         countryCodeField.sendKeys(countryCode);
     }
 
-    public void enterPhoneNumber(String phoneNumber) {
+    public void enterPhoneNumber(String phoneNumber) throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), phoneNumberField);
         phoneNumberField.click();
         phoneNumberField.clear();
         phoneNumberField.sendKeys(phoneNumber);
     }
 
     public void clickSignInButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(this.getDriver(), signInButton);
         signInButton.click();
     }
 
     public String getErrorMessage() throws Exception {
-        DriverUtils.waitUntilLocatorAppears(
+        DriverUtils.waitUntilLocatorIsDisplayed(
                 getDriver(),
                 By.cssSelector(WebAppLocators.PhoneNumberLoginPage.cssErrorMessage));
         return errorMessage.getText();
     }
-    
-    public void checkRememberMe() {
+
+    public void checkRememberMe() throws Exception {
         if (!rememberMe.isSelected()) {
+            DriverUtils.waitUntilElementClickable(getDriver(), rememberMe);
             rememberMe.click();
         }
     }
 
-    public void uncheckRememberMe() {
+    public void uncheckRememberMe() throws Exception {
         if (rememberMe.isSelected()) {
+            DriverUtils.waitUntilElementClickable(getDriver(), rememberMe);
             rememberMe.click();
         }
     }
