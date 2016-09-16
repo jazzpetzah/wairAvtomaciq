@@ -14,32 +14,31 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 
 public class DeviceLimitPage extends WebPage {
 
-    private final Function<String, String> cssGoRemoveLocator = deviceName -> String.format
-            ("[data-uie-name='go-remove-device'][data-uie-value='%s']", deviceName);
+    private final Function<String, String> cssGoRemoveLocator = deviceName -> String.format(
+            "[data-uie-name='go-remove-device'][data-uie-value='%s']", deviceName);
 
-    private final Function<String, String> cssPwdFieldLocator = deviceName -> String.format
-            (".device-remove-form[data-uie-value='%s'] [data-uie-name='remove-device-password']", deviceName);
+    private final Function<String, String> cssPwdFieldLocator = deviceName -> String.format(
+            ".device-remove-form[data-uie-value='%s'] [data-uie-name='remove-device-password']", deviceName);
 
-    private final Function<String, String> cssDoRemoveLocator = deviceName -> String.format
-            (".device-remove-form[data-uie-value='%s'] [data-uie-name='do-remove-device']", deviceName);
+    private final Function<String, String> cssDoRemoveLocator = deviceName -> String.format(
+            ".device-remove-form[data-uie-value='%s'] [data-uie-name='do-remove-device']", deviceName);
 
-    private final Function<String, String> cssCancelRemoveLocator = deviceName -> String.format
-            (".device-remove-form[data-uie-value='%s'] [data-uie-name='remove-device-cancel']", deviceName);
+    private final Function<String, String> cssCancelRemoveLocator = deviceName -> String.format(
+            ".device-remove-form[data-uie-value='%s'] [data-uie-name='remove-device-cancel']", deviceName);
 
     @FindBy(css = "#section-limit")
-    WebElement deviceLimitInfo;
+    private WebElement deviceLimitInfo;
 
     @FindBy(css = "[data-uie-name='do-manage-devices']")
-    WebElement manageDevicesButton;
+    private WebElement manageDevicesButton;
 
-    @FindBy(css = "[data-uie-name='go-sign-out']")
-    WebElement signOutButton;
+    @FindBy(css = "#section-limit [data-uie-name='go-sign-out']")
+    private WebElement signOutButton;
 
     @FindBy(css = "[data-uie-name='device-header-model']")
-    List<WebElement> deviceNames;
+    private List<WebElement> deviceNames;
 
-    public DeviceLimitPage(Future<ZetaWebAppDriver> lazyDriver)
-            throws Exception {
+    public DeviceLimitPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
@@ -52,8 +51,7 @@ public class DeviceLimitPage extends WebPage {
     }
 
     public boolean isDeviceLimitInfoShown() throws Exception {
-        return DriverUtils.waitUntilElementClickable(getDriver(),
-                deviceLimitInfo);
+        return DriverUtils.waitUntilElementClickable(getDriver(), deviceLimitInfo);
     }
 
     public List<String> getDevicesNames() {

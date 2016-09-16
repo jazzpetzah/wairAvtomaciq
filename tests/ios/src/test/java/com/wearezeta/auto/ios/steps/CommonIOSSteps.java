@@ -19,8 +19,6 @@ import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
 import com.wearezeta.auto.ios.tools.*;
-import com.wearezeta.auto.ios.tools.ABProvisioner.ABContact;
-import com.wearezeta.auto.ios.tools.ABProvisioner.ABProvisionerAPI;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
 import cucumber.api.java.en.And;
@@ -50,7 +48,6 @@ public class CommonIOSSteps {
     private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-    private final ABProvisionerAPI addressbookProvisioner = ABProvisionerAPI.getInstance();
     private static Logger log = ZetaLogger.getLog(CommonIOSSteps.class.getSimpleName());
 
     // We keep this short and compatible with spell checker
@@ -84,7 +81,7 @@ public class CommonIOSSteps {
         return getOldAppPathFromConfig(CommonIOSSteps.class);
     }
 
-    private static String getiOSAddressbookAppPath() throws Exception {
+    public static String getiOSAddressbookAppPath() throws Exception {
         return getiOSAddressbookAppPathFromConfig(CommonIOSSteps.class);
     }
 
@@ -135,7 +132,7 @@ public class CommonIOSSteps {
                 "--disable-autocorrection",
                 // https://wearezeta.atlassian.net/browse/ZIOS-5259
                 "-AnalyticsUserDefaultsDisabledKey", "0"
-                //"--debug-log-network",
+                // ,"--debug-log-network"
         ));
 
         if (additionalCaps.isPresent()) {
@@ -151,7 +148,10 @@ public class CommonIOSSteps {
                 } else {
                     if (entry.getKey().equals(CAPABILITY_NAME_ADDRESSBOOK) &&
                             (entry.getValue() instanceof Boolean) && (Boolean) entry.getValue()) {
-                        processArgs.add("--addressbook-on-simulator");
+                        processArgs.addAll(Arrays.asList(
+                                "--addressbook-on-simulator",
+                                "--addressbook-search-delay=2"
+                        ));
                     }
                     capabilities.setCapability(entry.getKey(), entry.getValue());
                 }
@@ -1413,80 +1413,6 @@ public class CommonIOSSteps {
     public void UserXHasEmailsInAddressBook(String asUser, String contacts)
             throws Exception {
         commonSteps.UserXHasContactsInAddressBook(asUser, contacts);
-    }
-
-    /**
-     * Installs the Addressbook helper app on to the simulator
-     *
-     * @throws Exception
-     * @step. ^I install Address Book Helper app$
-     */
-    @Given("^I install Address Book Helper app$")
-    public void IInstallAddressbookHelperApp() throws Exception {
-        final File app = new File(getiOSAddressbookAppPath());
-        pagesCollection.getCommonPage().installIpa(app);
-    }
-
-    private static final String ADDRESSBOOK_APP_BUNDLE = "com.wire.addressbookautomation";
-
-    /**
-     * Launches the Addressbook Helper App on to the simluator
-     *
-     * @throws Exception
-     * @step. ^I launch Address Book Helper app$
-     */
-    @Given("^I launch Address Book Helper app$")
-    public void ILaunchAddressbookHelperApp() throws Exception {
-        IOSSimulatorHelper.launchApp(ADDRESSBOOK_APP_BUNDLE);
-        Thread.sleep(2000);
-        //To be sure its get pressed tap a second time, if it got pressed 1st time nothing will happen
-        //there is no ui in the app...sometimes it fails here, so the second press
-        for (int i = 0; i <= 1; i++) {
-            IOSSimulatorHelper.clickAt("0.68", "0.58", "1");
-        }
-    }
-
-    /**
-     * Addressbook helper app deletes all contacts from simulator Address Book
-     *
-     * @throws Exception
-     * @step. ^I delete all contacts from Address Book$
-     */
-    @Given("^I delete all contacts from Address Book$")
-    public void IDeleteAllContactsFromAddressbook() throws Exception {
-        addressbookProvisioner.clearContacts();
-    }
-
-    /**
-     * Uploads name and phone number of contact to the simulator addressbook
-     *
-     * @param name        name of contact to be added to addressbook
-     * @param phoneNumber phone number of contact to be added to addressbook
-     * @throws Exception
-     * @step. ^I add name (.*) and phone (.*) to Address Book$
-     */
-    @Given("^I add name (.*) and phone (.*) to Address Book$")
-    public void IAddNameAndPhoneToAddressBook(String name, String phoneNumber) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        phoneNumber = usrMgr.replaceAliasesOccurences(phoneNumber, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
-        ABContact contact = new ABContact(name, Optional.empty(), Optional.of(Collections.singletonList(phoneNumber)));
-        addressbookProvisioner.addContacts(Collections.singletonList(contact));
-    }
-
-    /**
-     * Uploads name and email of contact to the simulator addressbook
-     *
-     * @param name  name of contact to be added to addressbook
-     * @param email email of contact to be added to addressbook
-     * @throws Throwable
-     * @step. ^I add name (.*) and email (.*) to Address Book$
-     */
-    @Given("^I add name (.*) and email (.*) to Address Book$")
-    public void IAddNameAndEmailToAddressBook(String name, String email) throws Throwable {
-        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        email = usrMgr.replaceAliasesOccurences(email, ClientUsersManager.FindBy.EMAIL_ALIAS);
-        ABContact contact = new ABContact(name, Optional.of(Collections.singletonList(email)), Optional.empty());
-        addressbookProvisioner.addContacts(Collections.singletonList(contact));
     }
 
     private final Map<String, Object> savedCaps = new HashMap<>();

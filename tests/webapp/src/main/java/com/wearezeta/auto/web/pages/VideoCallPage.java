@@ -28,7 +28,6 @@ public class VideoCallPage extends WebPage {
     @FindBy(css = WebAppLocators.VideoCallPage.cssMaximizeVideoCallButton)
     private WebElement maximizeVideoCallButton;
 
-
     @FindBy(css = WebAppLocators.VideoCallPage.cssCameraButton)
     private WebElement cameraButton;
 
@@ -47,8 +46,7 @@ public class VideoCallPage extends WebPage {
     @FindBy(css = WebAppLocators.VideoCallPage.cssLocalScreenShareVideo)
     private WebElement localScreenShareVideo;
 
-    public VideoCallPage(Future<ZetaWebAppDriver> lazyDriver)
-            throws Exception {
+    public VideoCallPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
@@ -164,12 +162,12 @@ public class VideoCallPage extends WebPage {
         By locator = By.cssSelector(WebAppLocators.VideoCallPage.cssCameraButtonNotPressed);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
-    
+
     public boolean isDisabledVideoIconVisible() throws Exception {
         By locator = By.cssSelector(WebAppLocators.VideoCallPage.cssSelfVideoOff);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
-    
+
     public boolean isDisabledVideoIconInvisible() throws Exception {
         By locator = By.cssSelector(WebAppLocators.VideoCallPage.cssSelfVideoOff);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
@@ -203,8 +201,10 @@ public class VideoCallPage extends WebPage {
     }
 
     public Dimension getLocalScreenShareVideoElementSize() throws Exception {
-        Long width = (Long) getDriver().executeScript("return arguments[0].getBoundingClientRect().width", localScreenShareVideo);
-        Long height = (Long) getDriver().executeScript("return arguments[0].getBoundingClientRect().height", localScreenShareVideo);
+        Long width = (Long) getDriver().
+                executeScript("return arguments[0].getBoundingClientRect().width", localScreenShareVideo);
+        Long height = (Long) getDriver().executeScript("return arguments[0].getBoundingClientRect().height",
+                localScreenShareVideo);
         return new Dimension(width.intValue(), height.intValue());
     }
 }

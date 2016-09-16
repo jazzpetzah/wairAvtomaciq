@@ -88,9 +88,9 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Presses Sign In button on the corresponding page
+	 * Checks if Sign In button on the corresponding page is disabled
 	 *
-	 * @step. ^I press Sign In button$
+	 * @step. ^Sign In button is disabled$
 	 *
 	 * @throws Exception
 	 *             if Selenium fails to wait until sign in action completes

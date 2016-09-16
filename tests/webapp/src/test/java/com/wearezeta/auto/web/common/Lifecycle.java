@@ -196,7 +196,7 @@ public class Lifecycle {
         return stepResultMap;
     }
 
-    public void tearDown() {
+    public void tearDown() throws Exception {
         try {
             ZetaWebAppDriver driver = (ZetaWebAppDriver) context.getDriver();
             // save browser console if possible

@@ -128,5 +128,23 @@ Feature: Links Preview
     Then I see Link Preview URL <Link2Url>
 
     Examples:
-      | Name      | Contact   | Link1               | Link2                    | Link3                    | LinkUrl      | Link4                        | Link2Url         |
-      | user1Name | user2Name | http://facebook.com | https://www.facebook.com | http://www.facebook.com/ | facebook.com | HTTP://WWW.FRANCE24.COM/FR/  | france24.com/FR  |
+      | Name      | Contact   | Link1               | Link2                    | Link3                    | LinkUrl      | Link4                       | Link2Url        |
+      | user1Name | user2Name | http://facebook.com | https://www.facebook.com | http://www.facebook.com/ | facebook.com | HTTP://WWW.FRANCE24.COM/FR/ | france24.com/FR |
+
+  @C169223 @staging
+  Scenario Outline: Verify resend icon appears for unsent link
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
+    And I enable Airplane mode on the device
+    And I see No Internet bar in 10 seconds
+    And I type the message "<LinkUrl>" and send it
+    Then I see Message status with expected text "<MessageStatus>" in conversation view
+    And I disable Airplane mode on the device
+
+    Examples:
+      | Name      | Contact   | LinkUrl             | MessageStatus          |
+      | user1Name | user2Name | http://facebook.com | Sending failed. Resend |

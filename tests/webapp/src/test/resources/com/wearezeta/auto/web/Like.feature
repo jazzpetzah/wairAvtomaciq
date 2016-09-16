@@ -138,8 +138,9 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | File        |
       | user1Email | user1Password | user1Name | user2Name | example.m4a |
 
-  @C226430 @staging
+  @C226430 @regression
   Scenario Outline: Verify liking someone's video message
+    Given my browser supports video message feature
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -171,7 +172,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | File        | Size  |
       | user1Email | user1Password | user1Name | user2Name | C226430.mp4 | 15MB  |
 
-  @C226431 @staging @WEBAPP-3040
+  @C226431 @staging
   Scenario Outline: Verify liking someone's Soundcloud, youtube, vimeo and spotify
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -256,8 +257,8 @@ Feature: Like
     And I do not see likes below the latest message
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Youtubelink                                 | Soundcloudlink                                                      | Vimeolink                 | Spotifylink                                           |
-      | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=ncHd3sxpEbo | https://soundcloud.com/nour-moukhtar/ludwig-van-beethoven-fur-elise | https://vimeo.com/7265982 | https://play.spotify.com/album/7buEcyw6fJF3WPgr06BomH |
+      | Login      | Password      | Name      | Contact   | Youtubelink                                 | Soundcloudlink                                                      | Vimeolink                  | Spotifylink                                           |
+      | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=ncHd3sxpEbo | https://soundcloud.com/nour-moukhtar/ludwig-van-beethoven-fur-elise | https://vimeo.com/51350323 | https://play.spotify.com/album/7buEcyw6fJF3WPgr06BomH |
 
   @C226433 @like @regression
   Scenario Outline: Verify liking someone's shared file
@@ -504,6 +505,53 @@ Feature: Like
     Examples:
       | Login      | Password      | Name      | Contact   | Message1 | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | like me  | edited        |
+
+  @C226437 @like @regression
+  Scenario Outline: Verify you cannot like a system message
+    Given There are 3 user where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <ChatName>
+    Then I see YOU STARTED A CONVERSATION WITH action for <Contact1>,<Contact2> in conversation
+    And I do not see like symbol for latest message
+    And I do not see likes below the latest message
+    When I write random message
+    And I send message
+    And I see random message in conversation
+    Then I see like symbol for latest message
+    When I click People button in group conversation
+    And I see Group Participants popover
+    And I click on participant <Contact1> on Group Participants popover
+    And I click Remove button on Group Participants popover
+    And I confirm remove from group chat on Group Participants popover
+    And I open conversation with <ChatName>
+    Then I see YOU REMOVED action for <Contact1> in conversation
+    And I do not see like symbol for latest message
+    And I do not see likes below the latest message
+    When I add <Contact1> to group chat
+    Then I see YOU ADDED action for <Contact1> in conversation
+    And I do not see like symbol for latest message
+    And I do not see likes below the latest message
+    When I click People button in group conversation
+    And I see Group Participants popover
+    And I change group conversation title to <NewName> on Group Participants popover
+    And I click People button in group conversation
+    And I see RENAMED action in conversation
+    And I do not see like symbol for latest message
+    And I do not see likes below the latest message
+    When I call
+    And I wait for 5 seconds
+    And I hang up call with conversation <NewName>
+    And I see CALLED action in conversation
+    Then I do not see like symbol for latest message
+    And I do not see likes below the latest message
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | NewName |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GROUPCHAT | NEWNAME |
 
     @C226439 @regression
     Scenario Outline: Verify you can like someone's message from message context menu

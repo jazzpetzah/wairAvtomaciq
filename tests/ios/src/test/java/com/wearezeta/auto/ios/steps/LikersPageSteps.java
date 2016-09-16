@@ -27,16 +27,33 @@ public class LikersPageSteps {
     }
 
     /**
-     * Verify whether the particular liker name is present in likers list
+     * Verify whether the particular liker name is present in likers list and optionally on particular position
      *
-     * @param name user name/alias
+     * @param name     user name/alias
+     * @param position optional parameter representing position of user in likers list
      * @throws Exception
-     * @step. ^I see (.*) in likers list$
+     * @step. ^I see user (.*) in likers list(?: at position number )?(\d+)?$
      */
-    @Then("^I see (.*) in likers list$")
-    public void ISeeXInLikeersList(String name) throws Exception {
+    @Then("^I see user (.*) in likers list(?: at position number )?(\\d+)?$")
+    public void ISeeUserInLikersListAtPosition(String name, Integer position) throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        Assert.assertTrue(String.format("User name '%s' is not visible in Likers list", name),
-                getLikersPage().isLikerVisible(name));
+        if (position == null) {
+            Assert.assertTrue(String.format("User name '%s' is not visible in Likers list", name),
+                    getLikersPage().isLikerVisible(name));
+        } else {
+            Assert.assertTrue(String.format("User %s is not presented on position nubmer %s", name, position),
+                    getLikersPage().isLikerByPositionVisible(name, position));
+        }
+    }
+
+    /**
+     * Verify Likers page is opened
+     *
+     * @throws Exception
+     * @step. ^I see Likers page$
+     */
+    @Then("^I see Likers page$")
+    public void ISeeLikersPage() throws Exception {
+        Assert.assertTrue("Likers page is not visible", getLikersPage().likersPageIsVisible());
     }
 }

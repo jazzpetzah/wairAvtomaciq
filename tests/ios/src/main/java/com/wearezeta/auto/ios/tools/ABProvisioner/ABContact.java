@@ -23,6 +23,10 @@ public class ABContact {
         }
     }
 
+    public String getName() {
+        return name;
+    }
+
     private static List<String> toStringList(JSONArray arr) {
         final List<String> result = new ArrayList<>();
         for (int i = 0; i < arr.length(); i++) {

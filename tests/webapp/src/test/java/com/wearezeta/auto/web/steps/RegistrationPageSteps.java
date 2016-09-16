@@ -37,6 +37,8 @@ public class RegistrationPageSteps {
 
 	private Future<String> activationMessage;
 
+	private Future<String> newDeviceMessage;
+
 	public static final int maxCheckCnt = 2;
 
 	private static final Logger LOG = ZetaLogger
@@ -207,6 +209,20 @@ public class RegistrationPageSteps {
 	}
 
 	/**
+	 * Checks if Create Account button on the corresponding page is disabled
+	 *
+	 * @step. ^Create Account button is disabled$
+	 *
+	 * @throws Exception
+	 *             if Selenium fails to wait until sign in action completes
+	 */
+	@When("^Create Account button is disabled$")
+	public void CreateAccountButtonIsDisabled() throws Exception {
+		Assert.assertTrue(context.getPagesCollection().getPage(RegistrationPage.class)
+				.isCreateAccountButtonDisabled());
+	}
+
+	/**
 	 * Start monitoring thread for activation email. Please put this step BEFORE
 	 * you submit the registration form
 	 * 
@@ -220,6 +236,21 @@ public class RegistrationPageSteps {
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.activationMessage = IMAPSMailbox.getInstance(userToRegister.getEmail(), userToRegister.getPassword())
 				.getMessage(expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
+	}
+
+	@When("^(.*) starts? listening for new device mail$")
+	public void IStartListeningForNewDeviceMail(String emailOrName) throws Exception {
+		ClientUser user;
+		try {
+			user = context.getUserManager().findUserByEmailOrEmailAlias(emailOrName);
+		} catch (NoSuchUserException e) {
+			user = context.getUserManager().findUserByNameOrNameAlias(emailOrName);
+		}
+		IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
+		Map<String, String> expectedHeaders = new HashMap<>();
+		expectedHeaders.put("Delivered-To", user.getEmail());
+		this.newDeviceMessage = mbox.getMessage(expectedHeaders,
+				BackendAPIWrappers.ACTIVATION_TIMEOUT, System.currentTimeMillis());
 	}
 
 	/**
@@ -374,6 +405,22 @@ public class RegistrationPageSteps {
 				assertThat("E-Mail is not English.", content, containsString(message));
 				break;
 			default: break;
+		}
+	}
+
+	@Then("^I see new device mail in (.*) with (.*)$")
+	public void ISeeNewDeviceMailInLanguage(String language, String message) throws Exception {
+		final String content = BackendAPIWrappers
+				.getMessageContent(this.newDeviceMessage);
+		switch (language) {
+			case "de":
+				assertThat("E-Mail is not German.", content, containsString(message));
+				break;
+			case "en":
+				assertThat("E-Mail is not English.", content, containsString(message));
+				break;
+			default:
+				break;
 		}
 	}
 
