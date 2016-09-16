@@ -996,7 +996,7 @@ public class ConversationPage extends WebPage {
         String latestMessageId = getLatestMessageId();
         hoverOverMessage(latestMessageId);
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssUserThatLikeByMessageId.apply(latestMessageId));
-        String text = getDriver().findElement(locator).getText();
+        String text = getDriver().findElement(locator).getAttribute("data-uie-value");
         return Arrays.asList(text.split("\\s*,\\s*"));
     }
 
