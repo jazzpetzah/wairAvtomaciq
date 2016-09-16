@@ -8,22 +8,22 @@ import org.openqa.selenium.WebElement;
 import java.io.Serializable;
 import java.util.List;
 
-public abstract class FBFindBy extends MobileBy {
-    public FBFindBy() {
+public abstract class FBBy extends MobileBy {
+    protected FBBy() {
     }
 
     public static By FBAccessibilityId(String id) {
         if (id == null) {
             throw new IllegalArgumentException("Must supply a valid accessibility id string");
         } else {
-            return new FBFindBy.FBAccessibilityId(id);
+            return new ByFBAccessibilityId(id);
         }
     }
 
-    public static class FBAccessibilityId extends By implements Serializable {
+    public static class ByFBAccessibilityId extends By implements Serializable {
         private final String id;
 
-        public FBAccessibilityId(String uiautomatorText) {
+        public ByFBAccessibilityId(String uiautomatorText) {
             this.id = uiautomatorText;
         }
 
@@ -49,7 +49,7 @@ public abstract class FBFindBy extends MobileBy {
 
         @Override
         public String toString() {
-            return "By.FBAccessibilityId: " + this.id;
+            return "By.ByFBAccessibilityId: " + this.id;
         }
     }
 
@@ -57,14 +57,14 @@ public abstract class FBFindBy extends MobileBy {
         if (name == null) {
             throw new IllegalArgumentException("Must supply a valid class xpath string");
         } else {
-            return new FBFindBy.FBClassName(name);
+            return new ByFBClassName(name);
         }
     }
 
-    public static class FBClassName extends By implements Serializable {
+    public static class ByFBClassName extends By implements Serializable {
         private final String name;
 
-        public FBClassName(String uiautomatorText) {
+        public ByFBClassName(String uiautomatorText) {
             this.name = uiautomatorText;
         }
 
@@ -90,7 +90,7 @@ public abstract class FBFindBy extends MobileBy {
 
         @Override
         public String toString() {
-            return "By.FBClassName: " + this.name;
+            return "By.ByFBClassName: " + this.name;
         }
     }
 
@@ -98,14 +98,14 @@ public abstract class FBFindBy extends MobileBy {
         if (xpath == null) {
             throw new IllegalArgumentException("Must supply a valid XPath string");
         } else {
-            return new FBFindBy.FBClassName(xpath);
+            return new ByFBClassName(xpath);
         }
     }
 
-    public static class FBXPath extends By implements Serializable {
+    public static class ByFBXPath extends By implements Serializable {
         private final String xpath;
 
-        public FBXPath(String uiautomatorText) {
+        public ByFBXPath(String uiautomatorText) {
             this.xpath = uiautomatorText;
         }
 
@@ -131,7 +131,7 @@ public abstract class FBFindBy extends MobileBy {
 
         @Override
         public String toString() {
-            return "By.FBClassName: " + this.xpath;
+            return "By.ByFBClassName: " + this.xpath;
         }
     }
 
@@ -139,14 +139,14 @@ public abstract class FBFindBy extends MobileBy {
         if (predicate == null) {
             throw new IllegalArgumentException("Must supply a valid predicate string");
         } else {
-            return new FBFindBy.FBPredicate(predicate);
+            return new ByFBPredicate(predicate);
         }
     }
 
-    public static class FBPredicate extends By implements Serializable {
+    public static class ByFBPredicate extends By implements Serializable {
         private final String predicateText;
 
-        public FBPredicate(String uiautomatorText) {
+        public ByFBPredicate(String uiautomatorText) {
             this.predicateText = uiautomatorText;
         }
 
@@ -172,7 +172,7 @@ public abstract class FBFindBy extends MobileBy {
 
         @Override
         public String toString() {
-            return "By.FBPredicate: " + this.predicateText;
+            return "By.ByFBPredicate: " + this.predicateText;
         }
     }
 }

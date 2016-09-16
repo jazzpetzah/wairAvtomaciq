@@ -6,7 +6,6 @@ import com.wearezeta.auto.common.rest.RESTError;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.ws.rs.client.Client;
@@ -77,12 +76,12 @@ final class FBDriverRESTClient {
         return new JSONObject(restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONArray findElements(String sessionId, String using, String value) throws RESTError {
+    public JSONObject findElements(String sessionId, String using, String value) throws RESTError {
         final Builder webResource = buildDefaultRequest("elements", sessionId);
         final JSONObject body = new JSONObject();
         body.put("using", using);
         body.put("value", value);
-        return new JSONArray(restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
+        return new JSONObject(restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
     public JSONObject findElement(String sessionId, String parentUUID, String using, String value) throws RESTError {
@@ -93,12 +92,12 @@ final class FBDriverRESTClient {
         return new JSONObject(restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONArray findElements(String sessionId, String parentUUID, String using, String value) throws RESTError {
+    public JSONObject findElements(String sessionId, String parentUUID, String using, String value) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("element/%s/elements", parentUUID), sessionId);
         final JSONObject body = new JSONObject();
         body.put("using", using);
         body.put("value", value);
-        return new JSONArray(restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
+        return new JSONObject(restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
     public void click(String sessionId, String uuid) throws RESTError {

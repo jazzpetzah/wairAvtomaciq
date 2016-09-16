@@ -48,7 +48,7 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
         try {
             fbDriverAPI.touchAndHold(this.uuid, durationSeconds);
             if (shouldBlock) {
-                Thread.sleep((long)(durationSeconds * 1000));
+                Thread.sleep((long) (durationSeconds * 1000));
             }
         } catch (RESTError | InterruptedException e) {
             throw new WebDriverException(e);
@@ -103,7 +103,7 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     public String getTagName() {
         try {
             return fbDriverAPI.getTagName(this.uuid);
-        } catch (RESTError e) {
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }
@@ -112,7 +112,7 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     public String getAttribute(String attrName) {
         try {
             return fbDriverAPI.getAttribute(this.uuid, attrName);
-        } catch (RESTError e) {
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }
@@ -126,7 +126,7 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     public boolean isAccessible() {
         try {
             return fbDriverAPI.isAccessible(this.uuid);
-        } catch (RESTError e) {
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }
@@ -135,7 +135,7 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     public boolean isEnabled() {
         try {
             return fbDriverAPI.isEnabled(this.uuid);
-        } catch (RESTError e) {
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }
@@ -144,7 +144,7 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     public String getText() {
         try {
             return fbDriverAPI.getText(this.uuid);
-        } catch (RESTError e) {
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }
@@ -163,7 +163,7 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     public boolean isDisplayed() {
         try {
             return fbDriverAPI.getIsDisplayed(this.uuid);
-        } catch (RESTError e) {
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }
@@ -174,7 +174,7 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
             final JSONObject rect = new JSONObject(fbDriverAPI.getRect(this.uuid));
             return new Point(rect.getJSONObject("origin").getInt("x"),
                     rect.getJSONObject("origin").getInt("y"));
-        } catch (RESTError e) {
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }
@@ -185,7 +185,7 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
             final JSONObject rect = new JSONObject(fbDriverAPI.getRect(this.uuid));
             return new Dimension(rect.getJSONObject("size").getInt("width"),
                     rect.getJSONObject("size").getInt("height"));
-        } catch (RESTError e) {
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }
@@ -194,7 +194,7 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
         try {
             final JSONObject rect = new JSONObject(fbDriverAPI.getWindowSize(this.uuid));
             return new Dimension(rect.getInt("width"), rect.getInt("height"));
-        } catch (RESTError e) {
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }
