@@ -44,10 +44,13 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
         }
     }
 
-    public void touchAndHold(double durationSeconds) {
+    public void touchAndHold(double durationSeconds, boolean shouldBlock) {
         try {
             fbDriverAPI.touchAndHold(this.uuid, durationSeconds);
-        } catch (RESTError e) {
+            if (shouldBlock) {
+                Thread.sleep((long)(durationSeconds * 1000));
+            }
+        } catch (RESTError | InterruptedException e) {
             throw new WebDriverException(e);
         }
     }
