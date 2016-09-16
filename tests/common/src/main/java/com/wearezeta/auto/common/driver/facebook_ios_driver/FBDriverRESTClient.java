@@ -6,6 +6,7 @@ import com.wearezeta.auto.common.rest.RESTError;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.ws.rs.client.Client;
@@ -105,10 +106,14 @@ final class FBDriverRESTClient {
         return new JSONObject(restHandlers.httpPost(webResource, EMPTY_JSON_BODY, new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject setValue(String sessionId, String uuid, String newValue) throws RESTError {
+    public JSONObject setValue(String sessionId, String uuid, CharSequence... charSequences) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("element/%s/value", uuid), sessionId);
         final JSONObject body = new JSONObject();
-        body.put("value", newValue);
+        final JSONArray value = new JSONArray();
+        for (CharSequence item: charSequences) {
+            value.put(item.toString());
+        }
+        body.put("value", value);
         return new JSONObject(restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
@@ -193,9 +198,13 @@ final class FBDriverRESTClient {
         return new JSONObject(restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject sendKeys(String sessionId, String value) throws RESTError {
+    public JSONObject sendKeys(String sessionId, CharSequence... charSequences) throws RESTError {
         final Builder webResource = buildDefaultRequest("keys", sessionId);
         final JSONObject body = new JSONObject();
+        final JSONArray value = new JSONArray();
+        for (CharSequence item: charSequences) {
+            value.put(item.toString());
+        }
         body.put("value", value);
         return new JSONObject(restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }

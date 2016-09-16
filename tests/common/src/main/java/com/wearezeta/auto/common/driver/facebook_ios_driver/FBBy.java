@@ -100,7 +100,7 @@ public abstract class FBBy extends MobileBy {
         if (xpath == null) {
             throw new IllegalArgumentException("Must supply a valid XPath string");
         } else {
-            return new ByFBClassName(xpath);
+            return new ByFBXPath(xpath);
         }
     }
 

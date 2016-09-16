@@ -76,15 +76,15 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     @Override
     public void sendKeys(CharSequence... charSequences) {
         try {
-            fbDriverAPI.sendKeys(String.join("", charSequences));
+            fbDriverAPI.sendKeys(charSequences);
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }
 
-    public void setValue(String value) {
+    public void setValue(CharSequence... charSequences) {
         try {
-            fbDriverAPI.setValue(this.uuid, value);
+            fbDriverAPI.setValue(this.uuid, charSequences);
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }

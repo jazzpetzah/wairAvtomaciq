@@ -154,8 +154,8 @@ public class FBDriverAPI {
         parseResponseWithStatus(client.click(getSessionId(), uuid));
     }
 
-    public void setValue(String uuid, String newValue) throws RESTError, StatusNotZeroError {
-        parseResponseWithStatus(client.setValue(getSessionId(), uuid, newValue));
+    public void setValue(String uuid, CharSequence... charSequences) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.setValue(getSessionId(), uuid, charSequences));
     }
 
     public void clear(String uuid) throws RESTError, StatusNotZeroError {
@@ -223,8 +223,8 @@ public class FBDriverAPI {
         parseResponseWithStatus(client.tap(getSessionId(), uuid, x, y));
     }
 
-    public void sendKeys(String value) throws RESTError, StatusNotZeroError {
-        parseResponseWithStatus(client.sendKeys(getSessionId(), value));
+    public void sendKeys(CharSequence... charSequences) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.sendKeys(getSessionId(), charSequences));
     }
 
     public boolean isAccessible(String uuid) throws RESTError, StatusNotZeroError {
