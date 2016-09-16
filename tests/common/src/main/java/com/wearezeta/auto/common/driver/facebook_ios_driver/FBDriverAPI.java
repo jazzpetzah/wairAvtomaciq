@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +25,7 @@ public class FBDriverAPI {
     private static final String BY_XPATH_STRING = "xpath";
     private static final String BY_ACCESSIBILITY_ID_STRING = "accessibility id";
 
-    private static final String OBJC_YES = "YES";
+    private static final String OBJC_YES = "true";
 
     private FBDriverRESTClient client;
     private Optional<String> sessionId = Optional.empty();
@@ -97,16 +98,26 @@ public class FBDriverAPI {
     }
 
     private static Optional<FBElement> parseFindElementOutput(JSONObject output) {
-        if (output.has("ELEMENT")) {
-            return Optional.of(new FBElement(output.getString("ELEMENT")));
+        String value;
+        try {
+            value = parseResponseWithStatus(output);
+        } catch (StatusNotZeroError statusNotZeroError) {
+            return Optional.empty();
         }
-        return Optional.empty();
+        return Optional.of(new FBElement(new JSONObject(value).getString("ELEMENT")));
     }
 
-    private static List<FBElement> parseFindElementsOutput(JSONArray output) {
+    private static List<FBElement> parseFindElementsOutput(JSONObject output) {
+        String value;
+        try {
+            value = parseResponseWithStatus(output);
+        } catch (StatusNotZeroError statusNotZeroError) {
+            return Collections.emptyList();
+        }
+        final JSONArray elementsList = new JSONArray(value);
         final List<FBElement> result = new ArrayList<>();
-        for (int i = 0; i < output.length(); i++) {
-            result.add(new FBElement(output.getJSONObject(i).getString("ELEMENT")));
+        for (int i = 0; i < elementsList.length(); i++) {
+            result.add(new FBElement(elementsList.getJSONObject(i).getString("ELEMENT")));
         }
         return result;
     }
@@ -151,31 +162,41 @@ public class FBDriverAPI {
         client.clear(getSessionId(), uuid);
     }
 
-    private static String parseResponseWithStatus(JSONObject status) {
-        return status.getString("value");
+    public static class StatusNotZeroError extends Exception {
+        public StatusNotZeroError(String message) {
+            super(message);
+        }
     }
 
-    public String getTagName(String uuid) throws RESTError {
+    private static String parseResponseWithStatus(JSONObject response) throws StatusNotZeroError {
+        if (response.getInt("status") == 0) {
+            return response.get("value").toString();
+        } else {
+            throw new StatusNotZeroError(response.get("value").toString());
+        }
+    }
+
+    public String getTagName(String uuid) throws RESTError, StatusNotZeroError {
         return parseResponseWithStatus(client.getTagName(getSessionId(), uuid));
     }
 
-    public String getAttribute(String uuid, String attrName) throws RESTError {
+    public String getAttribute(String uuid, String attrName) throws RESTError, StatusNotZeroError {
         return parseResponseWithStatus(client.getAttribute(getSessionId(), uuid, attrName));
     }
 
-    public boolean isEnabled(String uuid) throws RESTError {
+    public boolean isEnabled(String uuid) throws RESTError, StatusNotZeroError {
         return parseResponseWithStatus(client.isEnabled(getSessionId(), uuid)).equals(OBJC_YES);
     }
 
-    public String getText(String uuid) throws RESTError {
+    public String getText(String uuid) throws RESTError, StatusNotZeroError {
         return parseResponseWithStatus(client.getText(getSessionId(), uuid));
     }
 
-    public boolean getIsDisplayed(String uuid) throws RESTError {
+    public boolean getIsDisplayed(String uuid) throws RESTError, StatusNotZeroError {
         return parseResponseWithStatus(client.getIsDisplayed(getSessionId(), uuid)).equals(OBJC_YES);
     }
 
-    public String getRect(String uuid) throws RESTError {
+    public String getRect(String uuid) throws RESTError, StatusNotZeroError {
         return parseResponseWithStatus(client.getRect(getSessionId(), uuid));
     }
 
@@ -204,11 +225,11 @@ public class FBDriverAPI {
         client.sendKeys(getSessionId(), value);
     }
 
-    public boolean isAccessible(String uuid) throws RESTError {
+    public boolean isAccessible(String uuid) throws RESTError, StatusNotZeroError {
         return parseResponseWithStatus(client.getIsAccessible(getSessionId(), uuid)).equals(OBJC_YES);
     }
 
-    public String getWindowSize(String uuid) throws RESTError {
+    public String getWindowSize(String uuid) throws RESTError, StatusNotZeroError {
         return parseResponseWithStatus(client.getWindowSize(getSessionId(), uuid));
     }
 

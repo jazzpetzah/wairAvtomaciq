@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
@@ -16,7 +17,7 @@ public class GiphyPreviewPage extends IOSPage {
     private static final By nameGiphyTitleButton = MobileBy.AccessibilityId("centerButton");
 
     // TODO: assign a name to Giphy image element
-    private static final By xpathGiphyImage = By.xpath("//XCUIElementTypeImage[@visible='true']");
+    private static final By predicateGiphyImage = FBBy.FBClassName("XCUIElementTypeImage");
 
     private static final By nameGiphyCancelRequestButton = MobileBy.AccessibilityId("rejectButton");
 
@@ -45,7 +46,7 @@ public class GiphyPreviewPage extends IOSPage {
     }
 
     public boolean isGiphyImageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGiphyImage);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), predicateGiphyImage);
     }
 
     public boolean isGiphyRejectButtonVisible() throws Exception {
