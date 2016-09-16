@@ -95,7 +95,7 @@ Feature: Autoconnect
       | Contact   | ContactEmail | Name      |
       | user1Name | user1Email   | user2Name |
 
-  @C226448 @addressbookStart @staging
+  @C226448 @addressbookStart @regression
   Scenario Outline: (MEC-1557) Verify Address Book is uploaded in batches
     Given There is 1 user where <Name> is me
     Given I quit Wire
