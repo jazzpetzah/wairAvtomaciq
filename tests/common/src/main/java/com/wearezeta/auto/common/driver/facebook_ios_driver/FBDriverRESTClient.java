@@ -100,21 +100,21 @@ final class FBDriverRESTClient {
         return new JSONObject(restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
-    public void click(String sessionId, String uuid) throws RESTError {
+    public JSONObject click(String sessionId, String uuid) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("element/%s/click", uuid), sessionId);
-        restHandlers.httpPost(webResource, EMPTY_JSON_BODY, new int[]{HttpStatus.SC_OK});
+        return new JSONObject(restHandlers.httpPost(webResource, EMPTY_JSON_BODY, new int[]{HttpStatus.SC_OK}));
     }
 
-    public void setValue(String sessionId, String uuid, String newValue) throws RESTError {
+    public JSONObject setValue(String sessionId, String uuid, String newValue) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("element/%s/value", uuid), sessionId);
         final JSONObject body = new JSONObject();
         body.put("value", newValue);
-        restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK});
+        return new JSONObject(restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
-    public void clear(String sessionId, String uuid) throws RESTError {
+    public JSONObject clear(String sessionId, String uuid) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("element/%s/clear", uuid), sessionId);
-        restHandlers.httpPost(webResource, EMPTY_JSON_BODY, new int[]{HttpStatus.SC_OK});
+        return new JSONObject(restHandlers.httpPost(webResource, EMPTY_JSON_BODY, new int[]{HttpStatus.SC_OK}));
     }
 
     public JSONObject getTagName(String sessionId, String uuid) throws RESTError {
@@ -153,19 +153,19 @@ final class FBDriverRESTClient {
         return new JSONObject(restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK}));
     }
 
-    public void doubleTap(String sessionId, String uuid) throws RESTError {
+    public JSONObject doubleTap(String sessionId, String uuid) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("uiaElement/%s/doubleTap", uuid), sessionId);
-        restHandlers.httpPost(webResource, EMPTY_JSON_BODY, new int[]{HttpStatus.SC_OK});
+        return new JSONObject(restHandlers.httpPost(webResource, EMPTY_JSON_BODY, new int[]{HttpStatus.SC_OK}));
     }
 
-    public void touchAndHold(String sessionId, String uuid, double durationSeconds) throws RESTError {
+    public JSONObject touchAndHold(String sessionId, String uuid, double durationSeconds) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("uiaElement/%s/touchAndHold", uuid), sessionId);
         final JSONObject body = new JSONObject();
         body.put("duration", durationSeconds);
-        restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK});
+        return new JSONObject(restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
-    public void scroll(String sessionId, String uuid, Optional<String> toChildNamed,
+    public JSONObject scroll(String sessionId, String uuid, Optional<String> toChildNamed,
                        Optional<String> direction, Optional<String> predicateString,
                        Optional<Boolean> toVisible) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("uiaElement/%s/scroll", uuid), sessionId);
@@ -182,22 +182,22 @@ final class FBDriverRESTClient {
         if (toVisible.isPresent()) {
             body.put("toVisible", toVisible.get());
         }
-        restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK});
+        return new JSONObject(restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
-    public void tap(String sessionId, String uuid, double x, double y) throws RESTError {
+    public JSONObject tap(String sessionId, String uuid, double x, double y) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("tap/%s", uuid), sessionId);
         final JSONObject body = new JSONObject();
         body.put("x", x);
         body.put("y", y);
-        restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK});
+        return new JSONObject(restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
-    public void sendKeys(String sessionId, String value) throws RESTError {
+    public JSONObject sendKeys(String sessionId, String value) throws RESTError {
         final Builder webResource = buildDefaultRequest("keys", sessionId);
         final JSONObject body = new JSONObject();
         body.put("value", value);
-        restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK});
+        return new JSONObject(restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
     public JSONObject getIsAccessible(String sessionId, String uuid) throws RESTError {

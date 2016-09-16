@@ -23,7 +23,7 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     public void click() {
         try {
             fbDriverAPI.click(this.uuid);
-        } catch (RESTError e) {
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }
@@ -31,7 +31,7 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     public void tap(double x, double y) {
         try {
             fbDriverAPI.tap(this.uuid, x, y);
-        } catch (RESTError e) {
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }
@@ -39,7 +39,7 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     public void doubleTap() {
         try {
             fbDriverAPI.doubleTap(this.uuid);
-        } catch (RESTError e) {
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }
@@ -50,7 +50,7 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
             if (shouldBlock) {
                 Thread.sleep((long) (durationSeconds * 1000));
             }
-        } catch (RESTError | InterruptedException e) {
+        } catch (RESTError | InterruptedException | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }
@@ -62,7 +62,7 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
                        Optional<String> predicateString, Optional<Boolean> toVisible) {
         try {
             fbDriverAPI.scroll(this.uuid, toChildNamed, direction, predicateString, toVisible);
-        } catch (RESTError e) {
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }
@@ -77,15 +77,15 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     public void sendKeys(CharSequence... charSequences) {
         try {
             fbDriverAPI.sendKeys(String.join("", charSequences));
-        } catch (RESTError e) {
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }
 
     public void setValue(String value) {
         try {
-            fbDriverAPI.setValue(this.uuid, String.join("", value));
-        } catch (RESTError e) {
+            fbDriverAPI.setValue(this.uuid, value);
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }
@@ -94,7 +94,7 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     public void clear() {
         try {
             fbDriverAPI.clear(this.uuid);
-        } catch (RESTError e) {
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }

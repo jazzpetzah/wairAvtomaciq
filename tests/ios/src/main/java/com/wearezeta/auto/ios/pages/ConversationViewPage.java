@@ -10,6 +10,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
 import com.wearezeta.auto.common.sync_engine_bridge.Constants;
@@ -33,7 +35,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final String nameStrConversationInputField = "inputField";
 
-    private static final By nameConversationInput = MobileBy.AccessibilityId(nameStrConversationInputField);
+    private static final By nameConversationInput = FBBy.FBAccessibilityId(nameStrConversationInputField);
 
     private static final Function<String, String> xpathStrConversationInputByValue = value ->
             String.format("//XCUIElementTypeTextView[@name='%s' and @value='%s']", nameStrConversationInputField, value);
@@ -484,7 +486,7 @@ public class ConversationViewPage extends IOSPage {
     private static final long KEYBOARD_OPEN_ANIMATION_DURATION = 5500; // milliseconds
 
     public void typeMessage(String message, boolean shouldSend) throws Exception {
-        final WebElement convoInput = getElement(nameConversationInput,
+        final FBElement convoInput = (FBElement) getElement(nameConversationInput,
                 "Conversation input is not visible after the timeout");
         final boolean wasKeyboardInvisible = this.isKeyboardInvisible(2);
         if (wasKeyboardInvisible) {
@@ -498,7 +500,7 @@ public class ConversationViewPage extends IOSPage {
                 convoInput.sendKeys(message);
             } else {
                 // This is faster and allows to avoid autocorrection, but does not update input cursor position properly
-                ((IOSElement) convoInput).setValue(message);
+                convoInput.setValue(message);
             }
             this.tapKeyboardCommitButton();
         } else {

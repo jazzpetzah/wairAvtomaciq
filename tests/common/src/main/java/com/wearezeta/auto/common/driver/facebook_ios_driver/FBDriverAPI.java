@@ -150,16 +150,16 @@ public class FBDriverAPI {
         return parseFindElementsOutput(client.findElements(getSessionId(), uuid, BY_PREDICATE_STRING, value));
     }
 
-    public void click(String uuid) throws RESTError {
-        client.click(getSessionId(), uuid);
+    public void click(String uuid) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.click(getSessionId(), uuid));
     }
 
-    public void setValue(String uuid, String newValue) throws RESTError {
-        client.setValue(getSessionId(), uuid, newValue);
+    public void setValue(String uuid, String newValue) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.setValue(getSessionId(), uuid, newValue));
     }
 
-    public void clear(String uuid) throws RESTError {
-        client.clear(getSessionId(), uuid);
+    public void clear(String uuid) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.clear(getSessionId(), uuid));
     }
 
     public static class StatusNotZeroError extends Exception {
@@ -200,29 +200,31 @@ public class FBDriverAPI {
         return parseResponseWithStatus(client.getRect(getSessionId(), uuid));
     }
 
-    public void doubleTap(String uuid) throws RESTError {
-        client.doubleTap(getSessionId(), uuid);
+    public void doubleTap(String uuid) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.doubleTap(getSessionId(), uuid));
     }
 
-    public void touchAndHold(String uuid, double durationSeconds) throws RESTError {
-        client.touchAndHold(getSessionId(), uuid, durationSeconds);
+    public void touchAndHold(String uuid, double durationSeconds) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.touchAndHold(getSessionId(), uuid, durationSeconds));
     }
 
     public void scroll(String uuid, Optional<String> toChildNamed, Optional<ScrollingDirection> direction,
-                       Optional<String> predicateString, Optional<Boolean> toVisible) throws RESTError {
+                       Optional<String> predicateString, Optional<Boolean> toVisible)
+            throws RESTError, StatusNotZeroError {
         Optional<String> strDirection = Optional.empty();
         if (direction.isPresent()) {
             strDirection = Optional.of(direction.get().toString().toLowerCase());
         }
-        client.scroll(getSessionId(), uuid, toChildNamed, strDirection, predicateString, toVisible);
+        parseResponseWithStatus(
+                client.scroll(getSessionId(), uuid, toChildNamed, strDirection, predicateString, toVisible));
     }
 
-    public void tap(String uuid, double x, double y) throws RESTError {
-        client.tap(getSessionId(), uuid, x, y);
+    public void tap(String uuid, double x, double y) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.tap(getSessionId(), uuid, x, y));
     }
 
-    public void sendKeys(String value) throws RESTError {
-        client.sendKeys(getSessionId(), value);
+    public void sendKeys(String value) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.sendKeys(getSessionId(), value));
     }
 
     public boolean isAccessible(String uuid) throws RESTError, StatusNotZeroError {
