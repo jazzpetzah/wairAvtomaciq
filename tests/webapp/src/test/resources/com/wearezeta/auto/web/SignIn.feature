@@ -167,7 +167,7 @@ Feature: Sign In
       | Name      | Email      | PhoneNumber      | Password   |
       | user1Name | user1Email | user1PhoneNumber | aqa123456! |
 
-  @C246201 @staging
+  @C246201 @regression
   Scenario Outline: Verify I see a proper error when I try to sign in with invalid phone number
     Given I switch to sign in page
     When I switch to phone number sign in page
