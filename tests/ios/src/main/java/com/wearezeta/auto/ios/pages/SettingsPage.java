@@ -115,4 +115,10 @@ public class SettingsPage extends IOSPage {
     public boolean isItemInvisible(String itemName) throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), MobileBy.AccessibilityId(itemName));
     }
+
+    public void tapNavigationButton(String name) throws Exception {
+        getElement(MobileBy.AccessibilityId(name));
+        // Wait for transition animation
+        Thread.sleep(1000);
+    }
 }

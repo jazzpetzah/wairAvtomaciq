@@ -43,11 +43,6 @@ public class PersonalInfoPageSteps {
                 .isTooShortNameErrorMessage());
     }
 
-    @When("I click on Settings button on personal page")
-    public void WhenIClickOnSettingsButtonOnPersonalPage() throws Exception {
-        getPersonalInfoPage().clickOnSettingsButton();
-    }
-
 
     @When("I click on About button on personal page")
     public void WhenIClickOnAboutButtonOnPersonalPage() throws Exception {
@@ -63,8 +58,7 @@ public class PersonalInfoPageSteps {
      */
     @Then("^I see About page$")
     public void ThenISeeAboutPage() throws Exception {
-        Assert.assertTrue("About page not shown", getPersonalInfoPage()
-                .isAboutPageVisible());
+        Assert.assertTrue("About page not shown", getPersonalInfoPage().isAboutPageVisible());
     }
 
     /**
@@ -220,34 +214,7 @@ public class PersonalInfoPageSteps {
         getPersonalInfoPage().tapOnScreenCenter();
     }
 
-    private ElementState previousProfilePictureScreenshot = new ElementState(
-            () -> getPersonalInfoPage().takeScreenshot().
-                    orElseThrow(() -> new IllegalStateException("Cannot take a screenshot of self profile page"))
-    );
 
-    /**
-     * Take a screenshot of self profile page and save it into internal var
-     *
-     * @throws Exception
-     * @step. ^I remember my current profile picture$
-     */
-    @When("^I remember my current profile picture$")
-    public void IRememberMyProfilePicture() throws Exception {
-        Assert.assertTrue("Profile page is not currently visible", getPersonalInfoPage().waitUntilVisible());
-        previousProfilePictureScreenshot.remember();
-    }
-
-
-    @Then("I wait up to (\\d+) seconds? until my profile picture is changed")
-    public void IWaitUntilProfilePictureIsChanged(int secondsTimeout) throws Exception {
-        Assert.assertTrue("Profile page is not currently visible", getPersonalInfoPage().waitUntilVisible());
-        if (previousProfilePictureScreenshot == null) {
-            throw new IllegalStateException("Please take a screenshot of previous profile picture first");
-        }
-        final double minScore = 0.87;
-        Assert.assertTrue("The previous and the current profile pictures seem to be the same",
-                this.previousProfilePictureScreenshot.isChanged(secondsTimeout, minScore));
-    }
 
     @When("I see email (.*) on Personal page")
     public void ISeeMyEmailOnPersonalPage(String email) throws Exception {

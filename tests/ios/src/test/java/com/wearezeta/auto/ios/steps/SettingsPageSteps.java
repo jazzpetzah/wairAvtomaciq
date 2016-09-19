@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.steps;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.AccountDeletionMessage;
 import com.wearezeta.auto.common.email.WireMessage;
+import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.SettingsPage;
@@ -201,5 +202,43 @@ public class SettingsPageSteps {
             throw new IllegalStateException("Please init email confirmation listener first");
         }
         new AccountDeletionMessage(accountRemovalConfirmation.get());
+    }
+
+    private ElementState previousProfilePictureScreenshot = new ElementState(
+            () -> getSettingsPage().takeScreenshot().
+                    orElseThrow(() -> new IllegalStateException("Cannot take a screenshot of self profile page"))
+    );
+
+    /**
+     * Take a screenshot of self profile page and save it into internal var
+     *
+     * @throws Exception
+     * @step. ^I remember my current profile picture$
+     */
+    @When("^I remember my current profile picture$")
+    public void IRememberMyProfilePicture() throws Exception {
+        previousProfilePictureScreenshot.remember();
+    }
+
+    @Then("I wait up to (\\d+) seconds? until my profile picture is changed")
+    public void IWaitUntilProfilePictureIsChanged(int secondsTimeout) throws Exception {
+        if (previousProfilePictureScreenshot == null) {
+            throw new IllegalStateException("Please take a screenshot of previous profile picture first");
+        }
+        final double minScore = 0.87;
+        Assert.assertTrue("The previous and the current profile pictures seem to be the same",
+                this.previousProfilePictureScreenshot.isChanged(secondsTimeout, minScore));
+    }
+
+    /**
+     * Tap navigation button on Setitngs page
+     *
+     * @step. ^I tap (Done|Back) navigation button on Settings page$
+     * @param name name of the button
+     * @throws Exception
+     */
+    @And("^I tap (Done|Back) navigation button on Settings page$")
+    public void ITapNavigationButton(String name) throws Exception {
+        getSettingsPage().tapNavigationButton(name);
     }
 }

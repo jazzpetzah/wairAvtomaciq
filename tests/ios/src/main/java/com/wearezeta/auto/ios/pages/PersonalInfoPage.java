@@ -16,8 +16,6 @@ public class PersonalInfoPage extends IOSPage {
     private static final Function<String, String> xpathStrEmailFieldByValue = value ->
             String.format("//UIAStaticText[contains(@name, '%s')]", value);
 
-    private static final By nameProfileSettingsButton = MobileBy.AccessibilityId("SettingsButton");
-
     private static final By xpathSettingsAboutButton = By.xpath("//UIAButton[@name='ABOUT' or @name='About']");
 
     private static final By nameTermsOfUseButton = MobileBy.AccessibilityId("Terms of Use");
@@ -77,10 +75,6 @@ public class PersonalInfoPage extends IOSPage {
         getElement(nameCloseButton).click();
     }
 
-    public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameProfileSettingsButton);
-    }
-
     public String getUserNameValue() throws Exception {
         return getElement(xpathProfileNameEditField).getText();
     }
@@ -88,12 +82,6 @@ public class PersonalInfoPage extends IOSPage {
     public boolean isEmailVisible(String expectedEmail) throws Exception {
         final By locator = By.xpath(xpathStrEmailFieldByValue.apply(expectedEmail));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public void clickOnSettingsButton() throws Exception {
-        getElement(nameProfileSettingsButton).click();
-        // Wait for animation
-        Thread.sleep(2000);
     }
 
     public void clickOnAboutButton() throws Exception {
