@@ -10,7 +10,11 @@ import com.wearezeta.auto.web.pages.external.SupportPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.openqa.selenium.WebElement;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -97,23 +101,41 @@ public class StartPageSteps {
 	 */
 	@Then("^I can see no dead links$")
 	public void ICanSeeNoDeadLinks() throws Exception {
-        for (WebElement element : context.getPagesCollection().getPage(StartPage.class).getAllLinkElements()) {
-            String href = element.getAttribute("href");
+		List<String> links = new ArrayList<>();
+		List<String> pictures = new ArrayList<>();
+		for (WebElement element : context.getPagesCollection().getPage(StartPage.class).getAllLinkElements()) {
+			String href = element.getAttribute("href");
 			log.info("Check URL " + href);
-			if(href != null) {
+			if (href != null) {
 				int statusCode = context.getPagesCollection().getPage(StartPage.class).getStatusCode(href);
 				log.info("Status Code " + statusCode);
-				assertThat("Tested URL: " + href, statusCode, lessThan(400));
+				if (statusCode >= 400) {
+					links.add(href);
+				}
 			} else {
 				log.info("skip check because attribute is null");
 			}
-        }
+		}
 		for (WebElement element : context.getPagesCollection().getPage(StartPage.class).getAllImageElements()) {
 			String src = element.getAttribute("src");
 			log.info("Check Image " + src);
 			int statusCode = context.getPagesCollection().getPage(StartPage.class).getStatusCode(src);
 			log.info("Status Code " + statusCode);
-			assertThat("Tested Image: " + src,statusCode, lessThan(400));
+			if (statusCode >= 400) {
+				pictures.add(src);
+			}
+		}
+		if (!links.isEmpty() || !pictures.isEmpty()) {
+			System.out.println("");
+			for (String href : links) {
+				int statusCode = context.getPagesCollection().getPage(StartPage.class).getStatusCode(href);
+				System.out.println("Failed connection to " + href + " with statuscode " + statusCode);
+			}
+			for (String src : pictures) {
+				int statusCode = context.getPagesCollection().getPage(StartPage.class).getStatusCode(src);
+				System.out.println("Failed connection to " + src + " with statuscode " + statusCode);
+			}
+			Assert.fail("Statuscode is greater than 400 for one or more links/pictures: " + links + " | " + pictures);
 		}
 	}
 
