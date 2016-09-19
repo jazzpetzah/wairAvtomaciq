@@ -14,11 +14,11 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.driver.*;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -270,28 +270,28 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void minimizeApplication(int timeSeconds) throws Exception {
-        assert getDriver() != null : "WebDriver is not ready";
-        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            IOSSimulatorHelper.goHome();
-            Thread.sleep(timeSeconds * 1000);
-            final String autPath = (String) getDriver().getCapabilities().getCapability("app");
-            String bundleId;
-            if (autPath.endsWith(".app")) {
-                bundleId = IOSCommonUtils.getBundleId(new File(autPath + "/Info.plist"));
-            } else {
-                final File appPath = IOSCommonUtils.extractAppFromIpa(new File(autPath));
-                try {
-                    bundleId = IOSCommonUtils.getBundleId(new File(appPath.getCanonicalPath() + "/Info.plist"));
-                } finally {
-                    FileUtils.deleteDirectory(appPath);
-                }
-            }
-            IOSSimulatorHelper.launchApp(bundleId);
-            Thread.sleep(1000);
-        } else {
-            // https://discuss.appium.io/t/runappinbackground-does-not-work-for-ios9/6201
-            this.getDriver().runAppInBackground(timeSeconds);
-        }
+//        assert getDriver() != null : "WebDriver is not ready";
+//        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+//            IOSSimulatorHelper.goHome();
+//            Thread.sleep(timeSeconds * 1000);
+//            final String autPath = (String) getDriver().getCapabilities().getCapability("app");
+//            String bundleId;
+//            if (autPath.endsWith(".app")) {
+//                bundleId = IOSCommonUtils.getBundleId(new File(autPath + "/Info.plist"));
+//            } else {
+//                final File appPath = IOSCommonUtils.extractAppFromIpa(new File(autPath));
+//                try {
+//                    bundleId = IOSCommonUtils.getBundleId(new File(appPath.getCanonicalPath() + "/Info.plist"));
+//                } finally {
+//                    FileUtils.deleteDirectory(appPath);
+//                }
+//            }
+//            IOSSimulatorHelper.launchApp(bundleId);
+//            Thread.sleep(1000);
+//        } else {
+//            // https://discuss.appium.io/t/runappinbackground-does-not-work-for-ios9/6201
+        this.getDriver().runAppInBackground(timeSeconds);
+//        }
     }
 
     protected void doubleClickAt(WebElement el, int percentX, int percentY) throws Exception {
@@ -343,35 +343,27 @@ public abstract class IOSPage extends BasePage {
         this.getDriver().rotate(ScreenOrientation.PORTRAIT);
     }
 
-    public void tapOnCenterOfScreen() throws Exception {
-        DriverUtils.genericTap(this.getDriver());
-    }
-
-    public void tapOnTopLeftScreen() throws Exception {
-        DriverUtils.genericTap(this.getDriver(), 1, 1);
-    }
-
     public void lockScreen(int timeSeconds) throws Exception {
-        assert getDriver() != null : "WebDriver is not ready";
-        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            final long millisecondsStarted = System.currentTimeMillis();
-            IOSSimulatorHelper.lock();
-            final long lockDuration = (System.currentTimeMillis() - millisecondsStarted) / 1000;
-            if (timeSeconds > lockDuration + 1) {
-                Thread.sleep((timeSeconds - lockDuration) * 1000);
-            } else {
-                Thread.sleep(2000);
-            }
-            // this is to show the unlock label if not visible yet
-            IOSSimulatorHelper.goHome();
-            IOSSimulatorHelper.swipeRight();
-            Thread.sleep(2000);
-        } else {
-            this.getDriver().lockDevice(timeSeconds);
-        }
+//        assert getDriver() != null : "WebDriver is not ready";
+//        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+//            final long millisecondsStarted = System.currentTimeMillis();
+//            IOSSimulatorHelper.lock();
+//            final long lockDuration = (System.currentTimeMillis() - millisecondsStarted) / 1000;
+//            if (timeSeconds > lockDuration + 1) {
+//                Thread.sleep((timeSeconds - lockDuration) * 1000);
+//            } else {
+//                Thread.sleep(2000);
+//            }
+//            // this is to show the unlock label if not visible yet
+//            IOSSimulatorHelper.goHome();
+//            IOSSimulatorHelper.swipeRight();
+//            Thread.sleep(2000);
+//        } else {
+        this.getDriver().lockDevice(timeSeconds);
+//        }
     }
 
-    public void lockScreenOnRealDevice() throws Exception {
+    public Future<?> lockScreenOnRealDevice() throws Exception {
         /*
         this method can return the future itself, so you have more control over execution.
         Also, it might come in handy to pass timeout as a parameter.
@@ -388,8 +380,7 @@ public abstract class IOSPage extends BasePage {
             driver.lockDevice(20);
             return true;
         };
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(callable);
+        return Executors.newSingleThreadExecutor().submit(callable);
     }
 
     public void clickElementWithRetryIfStillDisplayed(By locator, int retryCount) throws Exception {
@@ -551,8 +542,26 @@ public abstract class IOSPage extends BasePage {
                 (int) Double.parseDouble(attributes.getNamedItem("height").getNodeValue())));
     }
 
+    public void tapByPercentOfElementSize(FBBy locator, int percentX, int percentY) throws Exception {
+        final FBElement el = (FBElement) getElement(locator);
+        tapByPercentOfElementSize(el, percentX, percentY);
+    }
+
+    public void tapByPercentOfElementSize(FBElement el, int percentX, int percentY) throws Exception {
+        final Dimension size = el.getSize();
+        el.tap(percentX * size.getWidth() / 100, percentY * size.getHeight() / 100);
+    }
+
+    public void tapAtTheCenterOfElement(FBBy locator) throws Exception {
+        tapByPercentOfElementSize(locator, 50, 50);
+    }
+
+    public void tapAtTheCenterOfElement(FBElement el) throws Exception {
+        tapByPercentOfElementSize(el, 50, 50);
+    }
+
     public void tapOnScreenCenter() throws Exception {
-        DriverUtils.genericTap(getDriver(), 50, 50);
+        tapByPercentOfElementSize((FBBy) FBBy.FBAccessibilityId(nameStrMainWindow), 50, 50);
     }
 
     public boolean waitUntilAlertAppears() throws Exception {

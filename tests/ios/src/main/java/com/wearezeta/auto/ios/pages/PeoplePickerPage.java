@@ -5,6 +5,8 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.DummyElement;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
 
@@ -17,6 +19,9 @@ public class PeoplePickerPage extends IOSPage {
 
     public static final By xpathPickerClearButton =
             By.xpath("//*[@name='PeoplePickerClearButton' or @name='ContactsViewCloseButton']");
+
+    public static final By fbXpathPickerClearButton =
+            FBBy.FBXPath("//*[@name='PeoplePickerClearButton' or @name='ContactsViewCloseButton']");
 
     private static final By nameKeyboardEnterButton = MobileBy.AccessibilityId("Return");
 
@@ -93,10 +98,10 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void tapOnPeoplePickerClearBtn() throws Exception {
-        final WebElement closeButton = getElement(xpathPickerClearButton);
-        DriverUtils.tapByCoordinates(getDriver(), closeButton);
+        final FBElement closeButton = (FBElement) getElement(fbXpathPickerClearButton);
+        this.tapAtTheCenterOfElement(closeButton);
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathPickerClearButton, 5)) {
-            DriverUtils.tapByCoordinates(getDriver(), closeButton);
+            this.tapAtTheCenterOfElement(closeButton);
         }
     }
 
@@ -166,7 +171,11 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     private void unblockButtonDoubleClick() throws Exception {
-        DriverUtils.multiTap(getDriver(), getDriver().findElement(nameUnblockButton), 2);
+        final WebElement dstElement = getElement(nameUnblockButton);
+        for (int nClicks = 0; nClicks < 2; nClicks++) {
+            dstElement.click();
+            Thread.sleep(1000);
+        }
     }
 
     public void unblockUser() throws Exception {

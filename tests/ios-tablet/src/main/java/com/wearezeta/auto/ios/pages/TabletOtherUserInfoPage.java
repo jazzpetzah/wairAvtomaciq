@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -51,7 +52,7 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
     }
 
     public void exitOtherUserGroupChatPopover() throws Exception {
-        DriverUtils.tapByCoordinates(getDriver(), getElement(nameOtherUserConversationMenu), 50, 50);
+        this.tapAtTheCenterOfElement((FBBy) fbNameOtherUserConversationMenu);
     }
 
     public boolean isNameVisible(String user) throws Exception {

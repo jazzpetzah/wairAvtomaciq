@@ -6,6 +6,7 @@ import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.DummyElement;
 
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -16,6 +17,8 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 public class OtherUserPersonalInfoPage extends IOSPage {
 
     private static final By nameRemoveFromConversation = MobileBy.AccessibilityId("OtherUserMetaControllerRightButton");
+    private static final By fbNameRemoveFromConversation = FBBy.FBAccessibilityId("OtherUserMetaControllerRightButton");
+
 
     private static final By nameConfirmRemoveButton = MobileBy.AccessibilityId("REMOVE");
 
@@ -40,6 +43,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final By nameAddContactToChatButton = MobileBy.AccessibilityId("metaControllerLeftButton");
 
     protected static final By nameOtherUserConversationMenu = MobileBy.AccessibilityId("OtherUserMetaControllerRightButton");
+    protected static final By fbNameOtherUserConversationMenu = FBBy.FBAccessibilityId("OtherUserMetaControllerRightButton");
 
     private static final By nameConversationMenu = MobileBy.AccessibilityId("metaControllerRightButton");
 
@@ -103,7 +107,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public void removeFromConversation() throws Exception {
-        DriverUtils.tapByCoordinates(this.getDriver(), getElement(nameRemoveFromConversation));
+        this.tapAtTheCenterOfElement((FBBy) fbNameRemoveFromConversation);
         // Wait for animation
         Thread.sleep(1000);
     }

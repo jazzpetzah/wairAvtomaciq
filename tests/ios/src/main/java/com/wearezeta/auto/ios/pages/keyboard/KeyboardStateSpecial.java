@@ -5,8 +5,8 @@ import org.openqa.selenium.WebElement;
 
 class KeyboardStateSpecial extends KeyboardState {
 
-    public KeyboardStateSpecial(ZetaIOSDriver driver, WebElement keyboard) {
-        super(driver, keyboard);
+    public KeyboardStateSpecial(WebElement keyboard) {
+        super(keyboard);
     }
 
     @Override

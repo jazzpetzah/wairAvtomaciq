@@ -2,10 +2,8 @@ package com.wearezeta.auto.ios.pages.keyboard;
 
 import java.util.regex.Pattern;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import io.appium.java_client.MobileBy;
-import org.openqa.selenium.By;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import org.openqa.selenium.WebElement;
 
 abstract class KeyboardState {
@@ -13,10 +11,8 @@ abstract class KeyboardState {
     public static final String MORE_LETTERS = "more, letters";
     public static final String SHIFT = "shift";
     private WebElement keyboard;
-    private ZetaIOSDriver driver;
 
-    protected KeyboardState(ZetaIOSDriver driver, WebElement keyboard) {
-        this.driver = driver;
+    protected KeyboardState(WebElement keyboard) {
         this.keyboard = keyboard;
     }
 
@@ -24,9 +20,8 @@ abstract class KeyboardState {
 
     protected void tapSpecialKey(String keyName) throws InterruptedException {
         if (keyName.equals(SHIFT) || keyName.equals(MORE_LETTERS) || keyName.equals(MORE_NUMBERS)) {
-            final WebElement el = keyboard.findElement(MobileBy.AccessibilityId(keyName));
-            // el.click freezes here
-            DriverUtils.tapByCoordinates(driver, el);
+            final FBElement el = (FBElement) keyboard.findElement(FBBy.FBAccessibilityId(keyName));
+            el.click();
             Thread.sleep(1500);
         } else {
             throw new IllegalArgumentException(String.format("The key '%s' is not recognized as special", keyName));

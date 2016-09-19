@@ -901,28 +901,6 @@ public class CommonIOSSteps {
     }
 
     /**
-     * Tap in center of the screen
-     *
-     * @throws Exception
-     * @step. ^I tap on center of the screen$
-     */
-    @When("^I tap on center of the screen$")
-    public void ITapOnCenterOfTheScreen() throws Exception {
-        pagesCollection.getCommonPage().tapOnCenterOfScreen();
-    }
-
-    /**
-     * Tap in top left corner of the screen
-     *
-     * @throws Exception
-     * @step. ^I tap on top left corner of the screen$
-     */
-    @When("^I tap on top left corner of the screen$")
-    public void ITapOnTopLeftCornerOfTheScreen() throws Exception {
-        pagesCollection.getCommonPage().tapOnTopLeftScreen();
-    }
-
-    /**
      * A user adds another user to a group chat
      *
      * @param user          that adds someone to a chat

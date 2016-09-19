@@ -5,6 +5,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
@@ -116,10 +117,9 @@ public class GroupChatInfoPage extends IOSPage {
         getElement(nameLeaveConversationButton).click();
     }
 
-    public void selectParticipant(String name)
-            throws Exception {
-        final By locator = By.xpath(xpathPeopleViewCollectionCellByName.apply(name));
-        DriverUtils.tapByCoordinates(this.getDriver(), getElement(locator));
+    public void selectParticipant(String name) throws Exception {
+        final By locator = FBBy.FBXPath(xpathPeopleViewCollectionCellByName.apply(name));
+        this.tapAtTheCenterOfElement((FBBy) locator);
     }
 
     public boolean isLeaveConversationAlertVisible() throws Exception {

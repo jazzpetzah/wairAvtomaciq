@@ -339,25 +339,6 @@ public class DriverUtils {
         driver.swipe(startX, startY, endX, endY, time);
     }
 
-    public static final int DEFAULT_SWIPE_DURATION = 1000; // milliseconds
-    public static final int DEFAULT_FINGERS = 1;
-
-    public static void genericTap(AppiumDriver<? extends WebElement> driver) {
-        genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS, DEFAULT_PERCENTAGE, DEFAULT_PERCENTAGE);
-    }
-
-    public static void genericTap(AppiumDriver<? extends WebElement> driver, int percentX, int percentY) {
-        genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS, percentX, percentY);
-    }
-
-    public static void genericTap(AppiumDriver<? extends WebElement> driver,
-                                  int time, int fingers, int percentX, int percentY) {
-        final Dimension screenSize = driver.manage().window().getSize();
-        final int xCoords = screenSize.width * percentX / 100;
-        final int yCoords = screenSize.height * percentY / 100;
-        driver.tap(fingers, xCoords, yCoords, time);
-    }
-
     public static void tapByCoordinates(AppiumDriver<? extends WebElement> driver, WebElement element,
                                         int offsetX, int offsetY) {
         final Point coords = element.getLocation();
@@ -369,24 +350,6 @@ public class DriverUtils {
 
     public static void tapByCoordinates(AppiumDriver<? extends WebElement> driver, WebElement element) {
         tapByCoordinates(driver, element, 0, 0);
-    }
-
-    public static void tapByCoordinatesWithPercentOffcet(AppiumDriver<? extends WebElement> driver, WebElement element,
-                                                         int offsetX, int offsetY) {
-        final Point coords = element.getLocation();
-        final Dimension elementSize = element.getSize();
-        driver.tap(1, (coords.x + elementSize.width * offsetX / 100), (coords.y + elementSize.height * offsetY / 100),
-                SINGLE_TAP_DURATION);
-    }
-
-    public static void multiTap(AppiumDriver<? extends WebElement> driver,
-                                WebElement element, int tapCount) {
-        final Point coords = element.getLocation();
-        final Dimension elementSize = element.getSize();
-        for (int i = 0; i < tapCount; i++) {
-            driver.tap(1, coords.x + elementSize.width / 2, coords.y + elementSize.height / 2,
-                    SINGLE_TAP_DURATION);
-        }
     }
 
     public static void addClass(RemoteWebDriver driver, WebElement element,

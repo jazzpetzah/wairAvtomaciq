@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -24,6 +26,9 @@ public class PersonalInfoPage extends IOSPage {
 
     private static final By xpathProfileNameEditField =
             By.xpath("//XCUIElementTypeOther[@name='ProfileSelfNameField']/XCUIElementTypeTextView");
+
+    private static final By fbXpathProfileNameEditField =
+            FBBy.FBXPath("//XCUIElementTypeOther[@name='ProfileSelfNameField']/XCUIElementTypeTextView");
 
     private static final By nameSelfNameTooShortError = MobileBy.AccessibilityId("AT LEAST 2 CHARACTERS ");
 
@@ -177,14 +182,16 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public void enterNameInNameField(String username) throws Exception {
-        final WebElement profileNameEditField = getElement(xpathProfileNameEditField, "Edit name field is not visible");
-        DriverUtils.tapByCoordinates(this.getDriver(), profileNameEditField);
+        final FBElement profileNameEditField =
+                (FBElement) getElement(fbXpathProfileNameEditField, "Edit name field is not visible");
+        this.tapAtTheCenterOfElement(profileNameEditField);
         profileNameEditField.sendKeys(username);
     }
 
     public void pressEnterInNameField() throws Exception {
-        final WebElement profileNameEditField = getElement(xpathProfileNameEditField, "Edit name field is not visible");
-        DriverUtils.tapByCoordinates(this.getDriver(), profileNameEditField);
+        final FBElement profileNameEditField =
+                (FBElement) getElement(fbXpathProfileNameEditField, "Edit name field is not visible");
+        this.tapAtTheCenterOfElement(profileNameEditField);
         profileNameEditField.sendKeys("\n");
     }
 

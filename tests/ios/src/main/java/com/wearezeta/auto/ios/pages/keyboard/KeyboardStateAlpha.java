@@ -1,12 +1,11 @@
 package com.wearezeta.auto.ios.pages.keyboard;
 
-import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import org.openqa.selenium.WebElement;
 
 class KeyboardStateAlpha extends KeyboardState {
 
-	public KeyboardStateAlpha(ZetaIOSDriver driver, WebElement keyboard) {
-		super(driver, keyboard);
+	public KeyboardStateAlpha(WebElement keyboard) {
+		super(keyboard);
 	}
 
 	@Override

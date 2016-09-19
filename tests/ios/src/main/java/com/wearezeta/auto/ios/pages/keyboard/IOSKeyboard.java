@@ -103,10 +103,10 @@ public class IOSKeyboard extends BasePage {
     public void typeString(String message) throws Exception {
         final WebElement keyboard = DriverUtils.verifyPresence(getDriver(), xpathKeyboard);
 
-        final KeyboardStateAlpha keyboardStateAlpha = new KeyboardStateAlpha(getDriver(), keyboard);
+        final KeyboardStateAlpha keyboardStateAlpha = new KeyboardStateAlpha(keyboard);
         final KeyboardStateAlphaCaps keyboardStateAlphaCaps = new KeyboardStateAlphaCaps(getDriver(), keyboard);
-        final KeyboardStateNumbers keyboardStateNumbers = new KeyboardStateNumbers(getDriver(), keyboard);
-        final KeyboardStateSpecial keyboardStateSpecial = new KeyboardStateSpecial(getDriver(), keyboard);
+        final KeyboardStateNumbers keyboardStateNumbers = new KeyboardStateNumbers(keyboard);
+        final KeyboardStateSpecial keyboardStateSpecial = new KeyboardStateSpecial(keyboard);
         final List<KeyboardState> statesList = new ArrayList<>();
         Collections.addAll(statesList,
                 keyboardStateAlpha, keyboardStateAlphaCaps, keyboardStateNumbers, keyboardStateSpecial);
