@@ -46,6 +46,8 @@ public class SettingsPage extends IOSPage {
     private static final By xpathChangePasswordPageChangePasswordButton =
             By.xpath("//UIAButton[@name='RESET PASSWORD']");
 
+    private static final By xpathAskSupport = By.xpath("//*[@name='Ask Support']");
+
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -127,5 +129,9 @@ public class SettingsPage extends IOSPage {
 
     public boolean isResetPasswordPageVisible() throws Exception {
         return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathChangePasswordPageChangePasswordButton);
+    }
+
+    public boolean isSupportWebPageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathAskSupport, 15);
     }
 }

@@ -23,12 +23,6 @@ public class PersonalInfoPage extends IOSPage {
 
     private static final By nameSelfNameTooShortError = MobileBy.AccessibilityId("AT LEAST 2 CHARACTERS ");
 
-    private static final By xpathOptionsSettingsButton = By.xpath("//UIAButton[@name='SETTINGS' or @name='Settings']");
-
-    private static final By nameOptionsHelpButton = MobileBy.AccessibilityId("HELP");
-
-    private static final By xpathAskSupport = By.xpath("//*[@name='Ask Support']");
-
     private static final By nameAccentColorPicker = MobileBy.AccessibilityId("AccentColorPickerView");
 
     private static final By nameCloseButton = MobileBy.AccessibilityId("CloseButton");
@@ -96,18 +90,6 @@ public class PersonalInfoPage extends IOSPage {
         final WebElement profileNameEditField = getElement(xpathProfileNameEditField, "Edit name field is not visible");
         DriverUtils.tapByCoordinates(this.getDriver(), profileNameEditField);
         profileNameEditField.sendKeys("\n");
-    }
-
-    public void tapOnSettingsButton() throws Exception {
-        getElement(xpathOptionsSettingsButton).click();
-    }
-
-    public void clickOnHelpButton() throws Exception {
-        getElement(nameOptionsHelpButton, "Help button is not visible in Options").click();
-    }
-
-    public boolean isSupportWebPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathAskSupport, 15);
     }
 
     public boolean waitSelfProfileVisible() throws Exception {

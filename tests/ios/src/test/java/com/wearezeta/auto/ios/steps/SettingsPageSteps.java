@@ -253,4 +253,15 @@ public class SettingsPageSteps {
     public void ISeeResetPasswordPage() throws Exception {
         Assert.assertTrue("Change Password button is not shown", getSettingsPage().isResetPasswordPageVisible());
     }
+
+    /**
+     * Verifies that it sees the Support web page
+     *
+     * @throws Exception
+     * @step. ^I see Support web page$
+     */
+    @Then("^I see Support web page$")
+    public void ISeeSupportWebPage() throws Exception {
+        Assert.assertTrue("Customer support page has not been loaded", getSettingsPage().isSupportWebPageVisible());
+    }
 }

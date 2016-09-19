@@ -76,11 +76,6 @@ public class PersonalInfoPageSteps {
         getPersonalInfoPage().tapOnScreenCenter();
     }
 
-    @When("I click on Settings button from the options menu")
-    public void WhenIClickOnSettingsButtonFromOptionsMenu() throws Exception {
-        getPersonalInfoPage().tapOnSettingsButton();
-    }
-
     /**
      * I change name in textfield
      *
@@ -106,29 +101,6 @@ public class PersonalInfoPageSteps {
         String actualName = getPersonalInfoPage().getUserNameValue()
                 .toLowerCase();
         Assert.assertTrue(actualName.contains(name.toLowerCase()));
-    }
-
-    /**
-     * It clicks the Help button in the settings option menu
-     *
-     * @throws Exception
-     * @step. ^I click on Help button from the options menu$
-     */
-    @When("^I click on Help button from the options menu$")
-    public void IClickOnHelpButtonFromTheOptionsMenu() throws Exception {
-        getPersonalInfoPage().clickOnHelpButton();
-    }
-
-    /**
-     * Verifies that it sees the Support web page
-     *
-     * @throws Exception
-     * @step. ^I see Support web page$
-     */
-    @Then("^I see Support web page$")
-    public void ISeeSupportWebPage() throws Exception {
-        Assert.assertTrue("Customer support page has not been loaded",
-                getPersonalInfoPage().isSupportWebPageVisible());
     }
 
     /**

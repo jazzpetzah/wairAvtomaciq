@@ -62,8 +62,9 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I tap settings gear button
-    When I click on Help button from the options menu
+    When I tap settings gear button
+    And I select settings item Support
+    And I select settings item Wire Support Website
     And I wait for 4 seconds
     Then I see Support web page
 

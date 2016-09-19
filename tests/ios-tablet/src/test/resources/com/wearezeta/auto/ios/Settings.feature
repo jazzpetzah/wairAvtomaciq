@@ -68,7 +68,8 @@ Feature: Settings
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap settings gear button
-    And I click on Help button from the options menu
+    And I select settings item Support
+    And I select settings item Wire Support Website
     Then I see Support web page
 
     Examples:
