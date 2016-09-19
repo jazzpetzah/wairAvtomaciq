@@ -248,28 +248,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void minimizeApplication(int timeSeconds) throws Exception {
-//        assert getDriver() != null : "WebDriver is not ready";
-//        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-//            IOSSimulatorHelper.goHome();
-//            Thread.sleep(timeSeconds * 1000);
-//            final String autPath = (String) getDriver().getCapabilities().getCapability("app");
-//            String bundleId;
-//            if (autPath.endsWith(".app")) {
-//                bundleId = IOSCommonUtils.getBundleId(new File(autPath + "/Info.plist"));
-//            } else {
-//                final File appPath = IOSCommonUtils.extractAppFromIpa(new File(autPath));
-//                try {
-//                    bundleId = IOSCommonUtils.getBundleId(new File(appPath.getCanonicalPath() + "/Info.plist"));
-//                } finally {
-//                    FileUtils.deleteDirectory(appPath);
-//                }
-//            }
-//            IOSSimulatorHelper.launchApp(bundleId);
-//            Thread.sleep(1000);
-//        } else {
-//            // https://discuss.appium.io/t/runappinbackground-does-not-work-for-ios9/6201
         this.getDriver().runAppInBackground(timeSeconds);
-//        }
     }
 
     protected void doubleClickAt(WebElement el, int percentX, int percentY) throws Exception {
