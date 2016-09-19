@@ -54,7 +54,7 @@ Feature: Settings
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap settings gear button
-    And I select settings item Advanced
+    And I select settings item Privacy & Security
     Then I verify sound alerts settings are set to default values
 
     Examples:

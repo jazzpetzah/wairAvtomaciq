@@ -50,7 +50,7 @@ Feature: Settings
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap settings gear button
-    And I select settings item Alerts
+    And I select settings item Privacy & Security
     Then I verify sound alerts settings are set to default values
 
     Examples:
