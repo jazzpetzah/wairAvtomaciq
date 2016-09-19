@@ -241,4 +241,16 @@ public class SettingsPageSteps {
     public void ITapNavigationButton(String name) throws Exception {
         getSettingsPage().tapNavigationButton(name);
     }
+
+    /**
+     * Verify whether Reset Password page is opened in browser
+     *
+     * @step. ^I see Reset Password page$
+     *
+     * @throws Exception
+     */
+    @Then("^I see Reset Password page$")
+    public void ISeeResetPasswordPage() throws Exception {
+        Assert.assertTrue("Change Password button is not shown", getSettingsPage().isResetPasswordPageVisible());
+    }
 }

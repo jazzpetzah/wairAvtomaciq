@@ -41,7 +41,7 @@ Feature: Settings
     And I select settings item Account
     And I select settings item Reset Password
     And I wait for 4 seconds
-    Then I see reset password page
+    Then I see Reset Password page
 
     Examples:
       | Name      |
@@ -74,35 +74,6 @@ Feature: Settings
     Examples:
       | Name      |
       | user1Name |
-
-  @C2911 @regression @fastLogin
-  Scenario Outline: Verify about screen contains all the required information [LANDSCAPE]
-    Given There is 1 user where <Name> is me
-    Given User me change accent color to <Color>
-    Given I Sign in on tablet using my email
-    Given I rotate UI to landscape
-    Given I see conversations list
-    When I tap settings gear button
-    And I select settings item About
-    Then I see About page
-    And I see WireWebsiteButton
-    And I see TermsButton
-    And I see PrivacyPolicyButton
-    And I see BuildNumberText
-    And I open PrivacyPolicyPage
-    And I see PrivacyPolicyPage
-    And I close legal page
-    Then I see About page
-    And I open TermsOfUsePage
-    And I see TermsOfUsePage
-    And I close legal page
-    Then I see About page
-    And I open WireWebsite
-    Then I see WireWebsitePage
-
-    Examples:
-      | Name      | Color  |
-      | user1Name | Violet |
 
   @C145961 @rc @regression @useSpecialEmail
   Scenario Outline: Verify deleting the account registered by email [LANDSCAPE]

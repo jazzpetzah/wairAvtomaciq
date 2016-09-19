@@ -43,6 +43,9 @@ public class SettingsPage extends IOSPage {
     private static final String xpathStrCurrentDevice = xpathStrMainWindow + "/UIATableView[1]/UIATableCell[1]";
     private static final By xpathCurrentDevices = By.xpath(xpathStrCurrentDevice);
 
+    private static final By xpathChangePasswordPageChangePasswordButton =
+            By.xpath("//UIAButton[@name='RESET PASSWORD']");
+
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -117,8 +120,12 @@ public class SettingsPage extends IOSPage {
     }
 
     public void tapNavigationButton(String name) throws Exception {
-        getElement(MobileBy.AccessibilityId(name));
+        getElement(MobileBy.AccessibilityId(name)).click();
         // Wait for transition animation
         Thread.sleep(1000);
+    }
+
+    public boolean isResetPasswordPageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathChangePasswordPageChangePasswordButton);
     }
 }

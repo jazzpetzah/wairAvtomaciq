@@ -18,8 +18,6 @@ public class PersonalInfoPage extends IOSPage {
 
     private static final By xpathSettingsAboutButton = By.xpath("//UIAButton[@name='ABOUT' or @name='About']");
 
-    private static final By nameTermsOfUseButton = MobileBy.AccessibilityId("Terms of Use");
-
     private static final By xpathProfileNameEditField =
             By.xpath("//UIAElement[@name='ProfileSelfNameField']/UIATextView");
 
@@ -35,19 +33,6 @@ public class PersonalInfoPage extends IOSPage {
 
     private static final By nameCloseButton = MobileBy.AccessibilityId("CloseButton");
 
-    private static final By nameWireWebsiteButton = MobileBy.AccessibilityId("wire.com");
-
-    public static final By namePrivacyPolicyButton = MobileBy.AccessibilityId("Privacy Policy");
-
-    private static final By xpathBuildNumberText = By.xpath(
-            "//UIAApplication/UIAWindow/UIAStaticText[contains(@name, 'Wire Swiss GmbH • version')]");
-
-    private static final By nameCloseLegalPageButton = MobileBy.AccessibilityId("WebViewCloseButton");
-
-    private static final By xpathWireWebsiteUrl = MobileBy.AccessibilityId("URL");
-
-    private static final By nameAboutCloseButton = MobileBy.AccessibilityId("aboutCloseButton");
-
     private static final By nameAddPhoneNumberButton = MobileBy.AccessibilityId("ADD PHONE NUMBER");
 
     private static final By nameThemeSwitcherButton = MobileBy.AccessibilityId("ThemeButton");
@@ -57,11 +42,6 @@ public class PersonalInfoPage extends IOSPage {
 
     private static final By nameProfileName = MobileBy.AccessibilityId("ProfileSelfNameField");
 
-    private static final By xpathChangePasswordPageChangePasswordButton =
-            By.xpath("//UIAButton[@name='RESET PASSWORD']");
-
-    private static final By xpathTermsAndConditions = By.xpath("//*[@name='Basic Information']");
-    private static final By xpathPrivacyPolicy = By.xpath("//*[@name='Our Privacy Commitment']");
 
     private static final By nameAddEmailAddressButton = MobileBy.AccessibilityId("ADD EMAIL ADDRESS AND PASSWORD");
 
@@ -86,62 +66,6 @@ public class PersonalInfoPage extends IOSPage {
 
     public void clickOnAboutButton() throws Exception {
         getElement(xpathSettingsAboutButton).click();
-    }
-
-    public boolean isAboutPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameTermsOfUseButton);
-    }
-
-    public void clickAboutCloseButton() throws Exception {
-        getElement(nameAboutCloseButton).click();
-    }
-
-    public boolean isWireWebsiteButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameWireWebsiteButton);
-    }
-
-    public boolean isTermsButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameTermsOfUseButton);
-    }
-
-    public boolean isPrivacyPolicyButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), namePrivacyPolicyButton);
-    }
-
-    public boolean isBuildNumberTextVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathBuildNumberText);
-    }
-
-    public void openTermsOfUsePage() throws Exception {
-        getElement(nameTermsOfUseButton).click();
-    }
-
-    public void openPrivacyPolicyPage() throws Exception {
-        getElement(namePrivacyPolicyButton).click();
-    }
-
-    public void openWireWebsite() throws Exception {
-        getElement(nameWireWebsiteButton).click();
-    }
-
-    public boolean isWireWebsitePageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathWireWebsiteUrl, 30);
-    }
-
-    public void closeLegalPage() throws Exception {
-        getElement(nameCloseLegalPageButton).click();
-    }
-
-    public boolean isTermsOfUsePageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathTermsAndConditions, 15);
-    }
-
-    public boolean isPrivacyPolicyPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathPrivacyPolicy, 15);
-    }
-
-    public boolean isResetPasswordPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathChangePasswordPageChangePasswordButton);
     }
 
     public void tapOnEditNameField() throws Exception {

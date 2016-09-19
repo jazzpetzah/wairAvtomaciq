@@ -12,7 +12,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C1099 @regression @rc @fastLogin @torun
+  @C1099 @regression @rc @fastLogin
   Scenario Outline: Attempt to open About screen in settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -38,7 +38,7 @@ Feature: Settings
     And I select settings item Account
     And I select settings item Reset Password
     And I wait for 4 seconds
-    Then I see reset password page
+    Then I see Reset Password page
 
     Examples:
       | Name      |
@@ -70,34 +70,6 @@ Feature: Settings
     Examples:
       | Name      |
       | user1Name |
-
-  @C1100 @regression @fastLogin
-  Scenario Outline: Verify about screen contains all the required information
-    Given There is 1 user where <Name> is me
-    Given User me change accent color to <Color>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap settings gear button
-    And I click on About button on personal page
-    Then I see About page
-    And I see WireWebsiteButton
-    And I see TermsButton
-    And I see PrivacyPolicyButton
-    And I see BuildNumberText
-    And I open PrivacyPolicyPage
-    And I see PrivacyPolicyPage
-    And I close legal page
-    Then I see About page
-    And I open TermsOfUsePage
-    And I see TermsOfUsePage
-    And I close legal page
-    Then I see About page
-    And I open WireWebsite
-    Then I see WireWebsitePage
-
-    Examples:
-      | Name      | Color  |
-      | user1Name | Violet |
 
   @C3247 @regression @rc @useSpecialEmail @fastLogin
   Scenario Outline: Verify deleting the account registered by email
