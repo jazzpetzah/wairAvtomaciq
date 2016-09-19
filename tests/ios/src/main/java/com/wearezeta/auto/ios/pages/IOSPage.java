@@ -1,9 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.StringReader;
 import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.concurrent.TimeoutException;
@@ -28,18 +26,7 @@ import com.wearezeta.auto.ios.pages.keyboard.IOSKeyboard;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.remote.UnreachableBrowserException;
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
 
 public abstract class IOSPage extends BasePage {
     private static final Logger log = ZetaLogger.getLog(IOSPage.class.getSimpleName());
@@ -87,19 +74,10 @@ public abstract class IOSPage extends BasePage {
                 * DRIVER_CREATION_RETRIES_COUNT;
     }
 
-    private DocumentBuilder documentBuilder;
-    private XPath xpath;
-
     public IOSPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
 
         this.onScreenKeyboard = new IOSKeyboard(driver);
-
-        final DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-        domFactory.setNamespaceAware(true);
-        this.documentBuilder = domFactory.newDocumentBuilder();
-        final XPathFactory factory = XPathFactory.newInstance();
-        this.xpath = factory.newXPath();
     }
 
     @Override
@@ -344,23 +322,23 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void lockScreen(int timeSeconds) throws Exception {
-//        assert getDriver() != null : "WebDriver is not ready";
-//        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-//            final long millisecondsStarted = System.currentTimeMillis();
-//            IOSSimulatorHelper.lock();
-//            final long lockDuration = (System.currentTimeMillis() - millisecondsStarted) / 1000;
-//            if (timeSeconds > lockDuration + 1) {
-//                Thread.sleep((timeSeconds - lockDuration) * 1000);
-//            } else {
-//                Thread.sleep(2000);
-//            }
-//            // this is to show the unlock label if not visible yet
-//            IOSSimulatorHelper.goHome();
-//            IOSSimulatorHelper.swipeRight();
-//            Thread.sleep(2000);
-//        } else {
-        this.getDriver().lockDevice(timeSeconds);
-//        }
+        assert getDriver() != null : "WebDriver is not ready";
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            final long millisecondsStarted = System.currentTimeMillis();
+            IOSSimulatorHelper.lock();
+            final long lockDuration = (System.currentTimeMillis() - millisecondsStarted) / 1000;
+            if (timeSeconds > lockDuration + 1) {
+                Thread.sleep((timeSeconds - lockDuration) * 1000);
+            } else {
+                Thread.sleep(2000);
+            }
+            // this is to show the unlock label if not visible yet
+            IOSSimulatorHelper.goHome();
+            IOSSimulatorHelper.swipeRight();
+            Thread.sleep(2000);
+        } else {
+            this.getDriver().lockDevice(timeSeconds);
+        }
     }
 
     public Future<?> lockScreenOnRealDevice() throws Exception {
@@ -522,24 +500,6 @@ public abstract class IOSPage extends BasePage {
         } else {
             throw new NotImplementedException("Application install is only available for Simulator");
         }
-    }
-
-    protected Optional<Rectangle> getElementBounds(String xpathExpr) throws Exception {
-        final String docStr = getDriver().getPageSource();
-        final Document doc = documentBuilder.parse(new InputSource(new StringReader(docStr)));
-        final XPathExpression expr = xpath.compile(xpathExpr);
-        final NodeList result = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
-        if (result.getLength() == 0) {
-            log.debug(xpathExpr);
-            log.debug(docStr);
-            return Optional.empty();
-        }
-        final Node node = result.item(0);
-        final NamedNodeMap attributes = node.getAttributes();
-        return Optional.of(new Rectangle((int) Double.parseDouble(attributes.getNamedItem("x").getNodeValue()),
-                (int) Double.parseDouble(attributes.getNamedItem("y").getNodeValue()),
-                (int) Double.parseDouble(attributes.getNamedItem("width").getNodeValue()),
-                (int) Double.parseDouble(attributes.getNamedItem("height").getNodeValue())));
     }
 
     public void tapByPercentOfElementSize(FBBy locator, int percentX, int percentY) throws Exception {

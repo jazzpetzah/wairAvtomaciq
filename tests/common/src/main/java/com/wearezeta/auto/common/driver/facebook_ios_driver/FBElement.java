@@ -14,9 +14,9 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
 
     private String uuid;
 
-    public FBElement(String uuid) {
+    public FBElement(String uuid, FBDriverAPI api) {
         this.uuid = uuid;
-        this.fbDriverAPI = new FBDriverAPI();
+        this.fbDriverAPI = api;
     }
 
     @Override

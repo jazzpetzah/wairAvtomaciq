@@ -12,8 +12,6 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rest.RESTError;
-import io.appium.java_client.MobileCommand;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.ios.IOSElement;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
@@ -201,7 +199,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
         try {
             return fbDriverAPI.findElementByFBAccessibilityId(value)
                     .orElseThrow(() -> new NotFoundException(String.format("Cannot find %s using accessibility id '%s'",
-                    FBElement.class.getSimpleName(), value)));
+                            FBElement.class.getSimpleName(), value)));
         } catch (RESTError e) {
             throw new WebDriverException(e);
         }
@@ -221,7 +219,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
         try {
             return fbDriverAPI.findElementByFBClassName(value)
                     .orElseThrow(() -> new NotFoundException(String.format("Cannot find %s using class name '%s'",
-                    FBElement.class.getSimpleName(), value)));
+                            FBElement.class.getSimpleName(), value)));
         } catch (RESTError e) {
             throw new WebDriverException(e);
         }
@@ -252,6 +250,15 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
         try {
             return fbDriverAPI.findElementsByFBXPath(value);
         } catch (RESTError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
+    @Override
+    public void runAppInBackground(int seconds) {
+        try {
+            fbDriverAPI.deactivateApp(seconds);
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }

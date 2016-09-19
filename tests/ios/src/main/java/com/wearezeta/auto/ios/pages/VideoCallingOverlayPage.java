@@ -2,8 +2,10 @@ package com.wearezeta.auto.ios.pages;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
+import org.openqa.selenium.WebElement;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Optional;
 import java.util.concurrent.Future;
@@ -14,30 +16,24 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
         super(lazyDriver);
     }
 
-    private Optional<Rectangle> makeOverlayButtonVisible(String name) throws Exception {
-        final String invisibleXpath = String.format("//*[@name='%s' and @visible='false']",
-                getButtonAccessibilityIdByName(name));
-        final Optional<Rectangle> bounds = getElementBounds(invisibleXpath);
-        if (bounds.isPresent()) {
-            getDriver().tap(1,
-                    (int) bounds.get().getX() + (int) bounds.get().getWidth() / 2,
-                    (int) bounds.get().getY() + (int) bounds.get().getHeight() / 2,
-                    DriverUtils.SINGLE_TAP_DURATION);
-            Thread.sleep(300);
+    private WebElement makeOverlayButtonVisible(String name) throws Exception {
+        final Optional<WebElement> dstBtn = DriverUtils.getElementIfPresentInDOM(getDriver(),
+                FBBy.FBAccessibilityId(getButtonAccessibilityIdByName(name)));
+        if (dstBtn.isPresent()) {
+            if (!dstBtn.get().isDisplayed()) {
+                this.tapAtTheCenterOfElement((FBElement) dstBtn.get());
+                Thread.sleep(300);
+            }
+        } else {
+            throw new IllegalStateException(String.format("the button identified by '%s' is expected to be present",
+                    name));
         }
-        final String xpath = String.format("//*[@name='%s' and @visible='true']",
-                getButtonAccessibilityIdByName(name));
-        return getElementBounds(xpath);
+        return dstBtn.get();
     }
 
     private void tapOverlayButton(String name) throws Exception {
-        final Rectangle bounds = makeOverlayButtonVisible(name).orElseThrow(
-                () -> new IllegalStateException(String.format("'%s' button is not visible", name))
-        );
-        getDriver().tap(1,
-                (int) bounds.getX() + (int) bounds.getWidth() / 2,
-                (int) bounds.getY() + (int) bounds.getHeight() / 2,
-                DriverUtils.SINGLE_TAP_DURATION);
+        final WebElement btn = makeOverlayButtonVisible(name);
+        btn.click();
     }
 
     @Override
@@ -47,31 +43,21 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
 
     @Override
     public boolean isButtonVisible(String buttonName) throws Exception {
-        return makeOverlayButtonVisible(buttonName).isPresent();
+        return makeOverlayButtonVisible(buttonName).isDisplayed();
     }
 
     @Override
     public BufferedImage getMuteButtonScreenshot() throws Exception {
-        final Rectangle bounds = makeOverlayButtonVisible("Mute").orElseThrow(
-                () -> new IllegalStateException("Mute button is not visible")
-        );
-        final BufferedImage screenshot = takeScreenshot().orElseThrow(
+        final WebElement btn = makeOverlayButtonVisible("Mute");
+        return getElementScreenshot(btn).orElseThrow(
                 () -> new IllegalStateException("Cannot make a screenshot")
         );
-        return screenshot.getSubimage(
-                (int) bounds.getX(), (int) bounds.getY(),
-                (int) bounds.getWidth(), (int) bounds.getHeight());
     }
 
     public BufferedImage getVideoButtonScreenshot() throws Exception {
-        final Rectangle bounds = makeOverlayButtonVisible("Call Video").orElseThrow(
-                () -> new IllegalStateException("Video button is not visible")
-        );
-        final BufferedImage screenshot = takeScreenshot().orElseThrow(
+        final WebElement btn = makeOverlayButtonVisible("Call Video");
+        return getElementScreenshot(btn).orElseThrow(
                 () -> new IllegalStateException("Cannot make a screenshot")
         );
-        return screenshot.getSubimage(
-                (int) bounds.getX(), (int) bounds.getY(),
-                (int) bounds.getWidth(), (int) bounds.getHeight());
     }
 }

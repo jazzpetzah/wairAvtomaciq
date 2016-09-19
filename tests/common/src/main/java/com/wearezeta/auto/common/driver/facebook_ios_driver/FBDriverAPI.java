@@ -97,27 +97,27 @@ public class FBDriverAPI {
         return parseFindElementOutput(client.findElement(getSessionId(), uuid, BY_ACCESSIBILITY_ID_STRING, value));
     }
 
-    private static Optional<FBElement> parseFindElementOutput(JSONObject output) {
+    private Optional<FBElement> parseFindElementOutput(JSONObject output) {
         String value;
         try {
             value = parseResponseWithStatus(output);
-        } catch (StatusNotZeroError statusNotZeroError) {
+        } catch (StatusNotZeroError e) {
             return Optional.empty();
         }
-        return Optional.of(new FBElement(new JSONObject(value).getString("ELEMENT")));
+        return Optional.of(new FBElement(new JSONObject(value).getString("ELEMENT"), this));
     }
 
-    private static List<FBElement> parseFindElementsOutput(JSONObject output) {
+    private List<FBElement> parseFindElementsOutput(JSONObject output) {
         String value;
         try {
             value = parseResponseWithStatus(output);
-        } catch (StatusNotZeroError statusNotZeroError) {
+        } catch (StatusNotZeroError e) {
             return Collections.emptyList();
         }
         final JSONArray elementsList = new JSONArray(value);
         final List<FBElement> result = new ArrayList<>();
         for (int i = 0; i < elementsList.length(); i++) {
-            result.add(new FBElement(elementsList.getJSONObject(i).getString("ELEMENT")));
+            result.add(new FBElement(elementsList.getJSONObject(i).getString("ELEMENT"), this));
         }
         return result;
     }
@@ -160,6 +160,10 @@ public class FBDriverAPI {
 
     public void clear(String uuid) throws RESTError, StatusNotZeroError {
         parseResponseWithStatus(client.clear(getSessionId(), uuid));
+    }
+
+    public void deactivateApp(double durationSeconds) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.deactivateApp(getSessionId(), durationSeconds));
     }
 
     public static class StatusNotZeroError extends Exception {
@@ -237,5 +241,9 @@ public class FBDriverAPI {
 
     public enum ScrollingDirection {
         UP, DOWN, LEFT, RIGHT
+    }
+
+    public void switchToHomescreen() throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.switchToHomescreen(getSessionId()));
     }
 }

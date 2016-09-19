@@ -110,7 +110,7 @@ final class FBDriverRESTClient {
         final Builder webResource = buildDefaultRequest(String.format("element/%s/value", uuid), sessionId);
         final JSONObject body = new JSONObject();
         final JSONArray value = new JSONArray();
-        for (CharSequence item: charSequences) {
+        for (CharSequence item : charSequences) {
             value.put(item.toString());
         }
         body.put("value", value);
@@ -171,8 +171,8 @@ final class FBDriverRESTClient {
     }
 
     public JSONObject scroll(String sessionId, String uuid, Optional<String> toChildNamed,
-                       Optional<String> direction, Optional<String> predicateString,
-                       Optional<Boolean> toVisible) throws RESTError {
+                             Optional<String> direction, Optional<String> predicateString,
+                             Optional<Boolean> toVisible) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("uiaElement/%s/scroll", uuid), sessionId);
         final JSONObject body = new JSONObject();
         if (toChildNamed.isPresent()) {
@@ -202,7 +202,7 @@ final class FBDriverRESTClient {
         final Builder webResource = buildDefaultRequest("keys", sessionId);
         final JSONObject body = new JSONObject();
         final JSONArray value = new JSONArray();
-        for (CharSequence item: charSequences) {
+        for (CharSequence item : charSequences) {
             value.put(item.toString());
         }
         body.put("value", value);
@@ -217,5 +217,18 @@ final class FBDriverRESTClient {
     public JSONObject getWindowSize(String sessionId, String uuid) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("window/%s/size", uuid), sessionId);
         return new JSONObject(restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK}));
+    }
+
+    public JSONObject deactivateApp(String sessionId, double durationSeconds) throws RESTError {
+        final Builder webResource = buildDefaultRequest("deactivateApp", sessionId);
+        final JSONObject body = new JSONObject();
+        body.put("duration", durationSeconds);
+        return new JSONObject(restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
+    }
+
+    public JSONObject switchToHomescreen(String sessionId) throws RESTError {
+        final Builder webResource = buildDefaultRequest("switchToHomescreen", sessionId);
+        return new JSONObject(restHandlers.httpPost(webResource, new JSONObject().toString(),
+                new int[]{HttpStatus.SC_OK}));
     }
 }

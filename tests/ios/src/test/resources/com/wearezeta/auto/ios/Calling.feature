@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @C2079 @calling_basic @fastLogin @torun
+  @C2079 @calling_basic @fastLogin
   Scenario Outline: Verify calling from missed call indicator in conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -126,7 +126,7 @@ Feature: Calling
       | Name      | Contact   | Contact1  | Number | CallBackend |
       | user1Name | user2Name | user3Name | 2      | chrome      |
 
-  @C2080 @calling_basic @fastLogin
+  @C2080 @calling_basic @fastLogin @torun
   Scenario Outline: Screenlock device when in the call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
