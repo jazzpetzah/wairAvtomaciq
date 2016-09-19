@@ -151,6 +151,22 @@ Feature: Sign In
       | Name      | PhoneNumber      | Password   |
       | user1Name | user1PhoneNumber | aqa123456! |
 
+  @C246199 @staging
+  Scenario Outline: Verify you can sign by phone number on email signin page
+    Given There is 1 user where <Name> is me
+    Given I switch to sign in page
+    When I enter phone number "<PhoneNumber>"
+    And I enter password "<Password>"
+    And I check option to remember me
+    And I press Sign In button
+    Then I am signed in properly
+    And I see user name on self profile page <Name>
+    And I see user phone number on self profile page <PhoneNumber>
+
+    Examples: 
+      | Name      | Email      | PhoneNumber      | Password   |
+      | user1Name | user1Email | user1PhoneNumber | aqa123456! |
+
   @C246201 @staging
   Scenario Outline: Verify I see a proper error when I try to sign in with invalid phone number
     Given I switch to sign in page
