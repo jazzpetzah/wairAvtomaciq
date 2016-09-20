@@ -283,7 +283,7 @@ public class CommonWebAppSteps {
      * @param chatName                    group chat name
      * @param userToRemove username to be removed from the group conversation
      * @throws Exception
-     * @step. ^^(.*) removes? (.*) from group conversation (.*)
+     * @step. ^(.*) removes? (.*) from group conversation (.*)
      */
     @Given("^(.*) removes? (.*) from group conversation (.*)")
     public void UserRemovesContactFromGroup(String userWhoRemoves, String userToRemove, String chatName)

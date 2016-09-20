@@ -479,7 +479,7 @@ And I wait for 60 seconds
       | Login      | Password      | Name      | Contact  | ContactEmail                  | ContactPassword | File1          | File2              |
       | user1Email | user1Password | user1Name | 928d0420 | smoketester+928d0420@wire.com | aqa123456!      | over8000ch.txt | lessThan8000ch.txt |
 
-  @C221139 @staging
+  @C221139 @staging @torun
   Scenario Outline: Verify after user was removed from group he cannot do some actions
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -488,8 +488,11 @@ And I wait for 60 seconds
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I open conversation with <ChatName>
-    And Contact <Contact1> sends message <Message2> via device Device1 to group conversation <ChatName>
-    And I write message <Message1>
+    And Contact <Contact1> sends message <Message1> via device Device1 to group conversation <ChatName>
+    When I click to like the latest message without other likes
+    And I do not see likes below the latest message
+    Then I see the latest message is only liked by me
+    And I write message <Message2>
     And I send message
     Then I see text message <Message1>
     Then I see text message <Message2>
@@ -503,18 +506,17 @@ And I wait for 60 seconds
     And I see <Contact1>,<Contact2> displayed on Group Participants popover
     And I do not see Add People button on Group Participants popover
     And I do not see Leave button on Group Participants popover
-    And I input user name <Contact1> in search field on Group Participants popover
-    And I select user <Contact1> from Group Participants popover search results
+    And I click on participant <Contact1> on Group Participants popover
     And I do not see Remove button on Group Participants popover
     And I verify that conversation input and buttons are not visible
-    #check another user message
-    When I click context menu of the message <Message2>
+    #check another user message\
+    #And I cannot unlike <Message1>
+    When I click context menu of the third last message
     And I do not see like button in context menu
     And I see delete for me button in context menu
-    And I cannot unlike <Message2>
     #check own message
-    And I cannot like <Message1>
-    And I click context menu of the message <Message1>
+    #And I do not see like symbol for second latest message
+    And I click context menu of the second last message
     And I do not see delete for everyone button in context menu
     And I do not see like button in context menu
     And I do not see edit button in context menu

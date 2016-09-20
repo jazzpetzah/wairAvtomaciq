@@ -690,19 +690,17 @@ public class ConversationPageSteps {
         }
     }
 
-    @When("^I click context menu of the latest message$")
-    public void IClickContextMenuOfLatestMessage() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnLatestMessage();
-    }
+    @When("^I click context menu of the (latest |second last |third last )?message$")
+    public void IClickContextMenuOfThirdLastMessage(String indexNumber) throws Exception {
+        if (indexNumber.equals("latest ")) {
+            context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnLatestMessage();}
+        else if (indexNumber.equals("second last ")) {
+            context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnSecondLastMessage();
+        }
+        else if (indexNumber.equals("third last ")) {
+            context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnThirdLastMessage();}
 
-    @When("^I click context menu of the second last message$")
-    public void IClickContextMenuOfSecondLastMessage() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnSecondLastMessage();
-    }
-
-    @When("^I click context menu of the message (.*)$")
-    public void IClickContextMenuOfMessageX(String message) throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnTheMessage(message);
+        //else context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnLatestMessage();
     }
 
     @When("^I click to delete message for everyone in context menu$")
@@ -776,8 +774,8 @@ public class ConversationPageSteps {
             assertTrue("Like symbol is not visible", context.getPagesCollection().getPage(ConversationPage.class)
                     .isLikeSymbolVisible());
         } else {
-            assertFalse("Like symbol is visible", context.getPagesCollection().getPage(ConversationPage.class)
-                    .isLikeSymbolVisible());
+            assertTrue("Like symbol is visible", context.getPagesCollection().getPage(ConversationPage.class)
+                    .isLikeSymbolInvisible());
         }
     }
 
