@@ -18,18 +18,19 @@ import java.util.function.Function;
 
 public class SettingsPage extends IOSPage {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private static final String xpathStrMenuContainer = "//XCUIElementTypeTable";
+    private static final String xpathStrMenuContainer = "//XCUIElementTypeTableView";
     private static final By xpathMenuContainer = FBBy.FBXPath(xpathStrMenuContainer);
 
     public static final By xpathSettingsPage = By.xpath("//XCUIElementTypeNavigationBar[@name='Settings']");
 
     private static final FunctionFor2Parameters<String, String, String> xpathStrSettingsValue =
-            (itemName, expectedValue) -> String.format("//UIATableCell[@name='%s']/*[@value='%s']",
+            (itemName, expectedValue) -> String.format("//XCUIElementTypeCell[@name='%s']/*[@value='%s']",
                     itemName, expectedValue);
 
     private static final By nameEditButton = MobileBy.AccessibilityId("Edit");
 
-    private static final By nameSelfNameEditField = By.xpath("//UIATableCell[@name='Name']/UIATextField[last()]");
+    private static final By nameSelfNameEditField =
+            By.xpath("//XCUIElementTypeCell[@name='Name']/XCUIElementTypeTextField[last()]");
 
     private static final Function<String, String> xpathDeleteDeviceButtonByName = devicename ->
             String.format("//XCUIElementTypeButton[contains(@name,'Delete %s')]", devicename);
@@ -52,16 +53,16 @@ public class SettingsPage extends IOSPage {
     private static final By xpathCurrentDevices = By.xpath(xpathStrCurrentDevice);
 
     private static final By xpathChangePasswordPageChangePasswordButton =
-            By.xpath("//UIAButton[@name='RESET PASSWORD']");
+            By.xpath("//XCUIElementTypeButton[@name='RESET PASSWORD']");
 
     private static final By xpathAskSupport = By.xpath("//*[@name='Ask Support']");
 
-    private static final String xpathStrColorPicker = "//*[@name='COLOR']/following-sibling::UIATableView";
+    private static final String xpathStrColorPicker = "//*[@name='COLOR']/following-sibling::XCUIElementTypeTableView";
     private static final By xpathColorPicker = By.xpath(xpathStrColorPicker);
 
     // indexation starts from 1
     private static final Function<Integer, String> xpathSreColorByIdx = idx ->
-            String.format("%s/UIATableCell[%s]", xpathStrColorPicker, idx);
+            String.format("%s/XCUIElementTypeCell[%s]", xpathStrColorPicker, idx);
 
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);

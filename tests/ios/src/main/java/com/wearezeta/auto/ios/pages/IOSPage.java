@@ -12,7 +12,6 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.driver.*;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
@@ -481,26 +480,13 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
-    public void tapByPercentOfElementSize(FBBy locator, int percentX, int percentY) throws Exception {
-        final FBElement el = (FBElement) getElement(locator);
-        tapByPercentOfElementSize(el, percentX, percentY);
-    }
-
     public void tapByPercentOfElementSize(FBElement el, int percentX, int percentY) throws Exception {
         final Dimension size = el.getSize();
         el.tap(percentX * size.getWidth() / 100, percentY * size.getHeight() / 100);
     }
 
-    public void tapAtTheCenterOfElement(FBBy locator) throws Exception {
-        tapByPercentOfElementSize(locator, 50, 50);
-    }
-
     public void tapAtTheCenterOfElement(FBElement el) throws Exception {
         tapByPercentOfElementSize(el, 50, 50);
-    }
-
-    public void tapOnScreenCenter() throws Exception {
-        tapByPercentOfElementSize((FBBy) FBBy.FBAccessibilityId(nameStrMainWindow), 50, 50);
     }
 
     public boolean waitUntilAlertAppears() throws Exception {

@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
@@ -12,7 +13,7 @@ import java.util.concurrent.Future;
 public class VoiceFiltersOverlay extends IOSPage {
     private static final By nameRecordButton = MobileBy.AccessibilityId("record");
     private static final By nameStopRecordButton = MobileBy.AccessibilityId("stopRecording");
-    private static final By fbNameConfirmRecordButton = FBBy.AccessibilityId("confirmRecording");
+    private static final By fbNameConfirmRecordButton = FBBy.FBAccessibilityId("confirmRecording");
     private static final By nameConfirmRecordButton = MobileBy.AccessibilityId("confirmRecording");
     private static final By nameRedoRecordButton = MobileBy.AccessibilityId("redoRecording");
     private static final By nameCancelRecordButton = MobileBy.AccessibilityId("cancelRecording");
@@ -68,7 +69,7 @@ public class VoiceFiltersOverlay extends IOSPage {
     public void tapButton(String name) throws Exception {
         final By locator = getButtonLocatorByName(name);
         if (locator.equals(nameConfirmRecordButton)) {
-            this.tapByPercentOfElementSize((FBBy) fbNameConfirmRecordButton, 50, 50);
+            this.tapAtTheCenterOfElement((FBElement) getElement(fbNameConfirmRecordButton));
         } else {
             getElement(locator).click();
         }
