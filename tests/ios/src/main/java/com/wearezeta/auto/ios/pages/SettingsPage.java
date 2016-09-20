@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -8,6 +9,8 @@ import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.*;
 
+import java.awt.image.BufferedImage;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -48,6 +51,13 @@ public class SettingsPage extends IOSPage {
             By.xpath("//UIAButton[@name='RESET PASSWORD']");
 
     private static final By xpathAskSupport = By.xpath("//*[@name='Ask Support']");
+
+    private static final String xpathStrColorPicker = "//*[@name='COLOR']/following-sibling::UIATableView";
+    private static final By xpathColorPicker = By.xpath(xpathStrColorPicker);
+
+    // indexation starts from 1
+    private static final Function<Integer, String> xpathSreColorByIdx = idx ->
+            String.format("%s/UIATableCell[%s]", xpathStrColorPicker, idx);
 
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -140,5 +150,16 @@ public class SettingsPage extends IOSPage {
 
     public void setSelfName(String newName) throws Exception {
         getElement(nameSelfNameEditField).sendKeys(newName);
+    }
+
+    public BufferedImage getColorPickerStateScreenshot() throws Exception {
+        return this.getElementScreenshot(getElement(xpathColorPicker)).orElseThrow(
+                () -> new IllegalStateException("Cannot make a screenshot of Color Picker control")
+        );
+    }
+
+    public void selectAccentColor(AccentColor byName) throws Exception {
+        final By locator = By.xpath(xpathSreColorByIdx.apply(byName.getId()));
+        getElement(locator).click();
     }
 }

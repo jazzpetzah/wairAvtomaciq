@@ -48,7 +48,7 @@ Feature: E2EE
     When I tap settings gear button
     Then I verify the alert contains text <DeviceName>
     When I accept alert
-    And I close self profile
+    And I tap Done navigation button on Settings page
     Then I wait until settings gear is not changed
     When I tap settings gear button
     And I select settings item Privacy & Security

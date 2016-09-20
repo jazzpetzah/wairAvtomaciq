@@ -77,7 +77,7 @@ Feature: Sign In
     When I have entered login <Email>
     And I start activation email monitoring
     And I have entered password <Password>
-    When I click DONE keyboard button
+    When I tap Return button on the keyboard
     Then I see email verification reminder
     When I verify registration address
     And I dismiss settings warning
@@ -144,13 +144,14 @@ Feature: Sign In
     And I have entered login <Email>
     And I start activation email monitoring
     And I have entered password <Password>
-    And I click DONE keyboard button
+    And I tap Return button on the keyboard
     And I see email verification reminder
     And I verify registration address
     And I dismiss settings warning
     Then I see conversations list
     When I tap settings gear button
-    Then I see email <Email> on Personal page
+    And I select settings item Account
+    Then I verify the value of settings item Email equals to "<Email>"
 
     Examples:
       | Email      | Password      | Name      |
@@ -169,7 +170,7 @@ Feature: Sign In
     And I see set email/password suggesstion page
     When I have entered login <Email>
     And I have entered password <Password>
-    When I click DONE keyboard button
+    When I tap Return button on the keyboard
     Then I see already registered email alert
 
     Examples:

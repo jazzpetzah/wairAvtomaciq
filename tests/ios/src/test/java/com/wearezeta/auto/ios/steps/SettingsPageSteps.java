@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.AccountDeletionMessage;
 import com.wearezeta.auto.common.email.WireMessage;
@@ -280,5 +281,49 @@ public class SettingsPageSteps {
     public void ISetSelfName(String newValue) throws Exception {
         newValue = usrMgr.replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.NAME_ALIAS);
         getSettingsPage().setSelfName(newValue);
+    }
+
+    private ElementState colorPickerState = new ElementState(
+            () -> getSettingsPage().getColorPickerStateScreenshot()
+    );
+
+    private static final int COLOR_PICKER_STATE_CHANGE_TIMEOUT = 10;
+    private static final double MIN_COLOR_PICKER_SIMILARITY_SCORE = 0.999;
+
+    /**
+     * Get and remember the screenshot of People Picker
+     *
+     * @throws Exception
+     * @step. ^I remember the state of Color Picker$
+     */
+    @When("^I remember the state of Color Picker$")
+    public void IRememberColorPickerState() throws Exception {
+        colorPickerState.remember();
+    }
+
+    /**
+     * Verify that color picker state has been changed
+     *
+     * @throws Exception
+     * @step. ^I verify the state of Color Picker is changed$
+     */
+    @Then("^I verify the state of Color Picker is changed$")
+    public void IVerifyColorPickerState() throws Exception {
+        Assert.assertTrue("Color Picker state has not been changed",
+                colorPickerState.isChanged(COLOR_PICKER_STATE_CHANGE_TIMEOUT, MIN_COLOR_PICKER_SIMILARITY_SCORE));
+    }
+
+    /**
+     * Changes the accent color by clicking the color picker
+     *
+     * @param color one of possible color values
+     * @throws Exception
+     * @step. ^I set my accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)
+     * on Settings page$$
+     */
+    @When("^I set my accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)" +
+            " on Settings page$")
+    public void IChangeMyAccentColor(String color) throws Exception {
+        getSettingsPage().selectAccentColor(AccentColor.getByName(color));
     }
 }
