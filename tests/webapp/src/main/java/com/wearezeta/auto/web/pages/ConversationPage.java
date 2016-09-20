@@ -184,15 +184,21 @@ public class ConversationPage extends WebPage {
     private String getMessageId(int messageIndex) throws Exception{
         String messageId = null;
         switch (messageIndex) {
-            case 1:
-                messageId = getLatestMessageId();
+            case 1: {
+                By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+                messageId=getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
                 break;
-            case 2:
-                messageId = getSecondLastMessageId();
+            }
+            case 2: {
+                By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssSecondLastMessage);
+                messageId = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
                 break;
-            case 3:
-                messageId = getThirdLastMessageId();
+            }
+            case 3: {
+                By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssThirdLastMessage);
+                messageId = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
                 break;
+            }
             default: break;
         }
         return messageId;
@@ -1063,8 +1069,8 @@ public class ConversationPage extends WebPage {
         getDriver().findElement(locator).click();
     }
 
-    public List<String> getUsersThatLikeTheLatestMessage() throws Exception {
-        String latestMessageId = getLatestMessageId();
+    public List<String> getUsersThatLikeTheLastMessage() throws Exception {
+        String latestMessageId = getMessageId(1);
         hoverOverMessage(latestMessageId);
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssUserThatLikeByMessageId.apply(latestMessageId));
         String text = getDriver().findElement(locator).getAttribute("data-uie-value");
@@ -1072,8 +1078,9 @@ public class ConversationPage extends WebPage {
     }
 
     public boolean isUnlikeWithOtherLikesVisibleForLastMessage() throws Exception {
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssUnlikeWithOtherLikesByMessageId.apply(
-                getLatestMessageId()));
+        String latestMessageId = getMessageId(1);
+        hoverOverMessage(latestMessageId);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssUnlikeWithOtherLikesByMessageId.apply(latestMessageId));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
@@ -1100,15 +1107,16 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public void clickToDeleteLatestMessage() throws Exception {
-        String latestMessageId = getLatestMessageId();
-        hoverOverMessage(latestMessageId);
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteButtonByMessageId.apply(latestMessageId));
+    public void clickToDeleteLastMessage() throws Exception {
+        String messageId = getMessageId(1);
+        hoverOverMessage(messageId);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteButtonByMessageId.apply(messageId));
         getDriver().findElement(locator).click();
     }
 
     public void hoverOverLatestMessage() throws Exception {
-        hoverOverMessage(getLatestMessageId());
+        String messageId = getMessageId(1);
+        hoverOverMessage(messageId);
     }
 
     public void clickEditInMessageContextMenu() throws Exception {
@@ -1134,7 +1142,7 @@ public class ConversationPage extends WebPage {
     }
 
     public void clickToResetSessionOnLatestError() throws Exception {
-        String latestMessageId = getLatestMessageId();
+        String latestMessageId = getMessageId(1);
         hoverOverMessage(latestMessageId);
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssResetSessionByMessageId.apply(latestMessageId));
         getDriver().findElement(locator).click();
@@ -1151,19 +1159,23 @@ public class ConversationPage extends WebPage {
     }
 
     public boolean isDeleteButtonVisibleForLastMessage() throws Exception {
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteButtonByMessageId.apply(getLatestMessageId()));
+        String messageId = getMessageId(1);
+        hoverOverMessage(messageId);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteButtonByMessageId.apply(messageId));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isEditButtonInvisibleForLastMessage() throws Exception {
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssEditButtonByMessageId.apply(getLatestMessageId()));
+        String messageId = getMessageId(1);
+        hoverOverMessage(messageId);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssEditButtonByMessageId.apply(messageId));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     //context menu
 
     public void clickContextMenuOnLatestMessage() throws Exception {
-        String latestMessageId = getLatestMessageId();
+        String latestMessageId = getMessageId(1);
         hoverOverMessage(latestMessageId);
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssContextMenuButtonByMessageId.apply(latestMessageId));
         getDriver().findElement(locator).click();
@@ -1195,33 +1207,34 @@ public class ConversationPage extends WebPage {
     }
 
     public void clickContextMenuOnSecondLastMessage() throws Exception {
-        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssSecondLastMessage);
-        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        String id = getMessageId(2);
         hoverOverMessage(id);
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssContextMenuButtonByMessageId.apply(id));
         getDriver().findElement(locator).click();
     }
 
     public void clickContextMenuOnThirdLastMessage() throws Exception {
-        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssThirdLastMessage);
-        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        String id = getMessageId(3);
         hoverOverMessage(id);
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssContextMenuButtonByMessageId.apply(id));
         getDriver().findElement(locator).click();
     }
 
     public void clickDeleteEverywhereInContextMenuOfLatestMessage() throws Exception {
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteEverywhereByMessageId.apply(getLatestMessageId()));
+        String id = getMessageId(1);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteEverywhereByMessageId.apply(id));
         getDriver().findElement(locator).click();
     }
 
     public void clickDeleteForMeInContextMenuOfLatestMessage() throws Exception {
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteForMeByMessageId.apply(getLatestMessageId()));
+        String id = getMessageId(1);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteForMeByMessageId.apply(id));
         getDriver().findElement(locator).click();
     }
 
     public void clickReactInContextMenuOfLatestMessage() throws Exception {
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssReactByMessageId.apply(getLatestMessageId()));
+        String id = getMessageId(1);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssReactByMessageId.apply(id));
         getDriver().findElement(locator).click();
     }
 
@@ -1382,6 +1395,8 @@ public class ConversationPage extends WebPage {
     }
 
     private String getLatestMessageId() throws Exception {
+        int messageIndex = 1;
+        getMessageId(messageIndex);
         By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
         return getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
     }

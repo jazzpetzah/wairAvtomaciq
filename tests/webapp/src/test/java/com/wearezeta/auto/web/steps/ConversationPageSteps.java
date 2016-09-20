@@ -693,14 +693,17 @@ public class ConversationPageSteps {
         }
     }
 
-    @When("^I click context menu of the (latest |second last |third last )?message$")
+    @When("^I click context menu of the (second |third )?last message$")
     public void IClickContextMenuOfThirdLastMessage(String indexNumber) throws Exception {
-        if (indexNumber.equals("latest ")) {
-            context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnLatestMessage();}
-        else if (indexNumber.equals("second last ")) {
-            context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnSecondLastMessage();}
-        else if (indexNumber.equals("third last ")) {
-            context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnThirdLastMessage();}
+        if (indexNumber.equals("second ")) {
+            context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnSecondLastMessage();
+        }
+        else if (indexNumber.equals("third ")) {
+            context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnThirdLastMessage();
+        }
+        else {
+            context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnLatestMessage();
+        }
     }
 
     @When("^I click to delete message for everyone in context menu$")
@@ -720,7 +723,7 @@ public class ConversationPageSteps {
 
     @When("^I click to delete the latest message$")
     public void IClickToDelete() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clickToDeleteLatestMessage();
+        context.getPagesCollection().getPage(ConversationPage.class).clickToDeleteLastMessage();
     }
 
     @When("^I click confirm to delete message for me$")
@@ -931,7 +934,7 @@ public class ConversationPageSteps {
 
     @Then("^I see the last message is liked by (.*)$")
     public void ISeeLastMessageIsLikedBy(String usersToNameAliases) throws Exception {
-        List<String> likers = context.getPagesCollection().getPage(ConversationPage.class).getUsersThatLikeTheLatestMessage();
+        List<String> likers = context.getPagesCollection().getPage(ConversationPage.class).getUsersThatLikeTheLastMessage();
         List<String> aliases = CommonSteps.splitAliases(usersToNameAliases);
         String[] users = new String[aliases.size()];
         for(int i = 0; i < aliases.size(); i++) {
