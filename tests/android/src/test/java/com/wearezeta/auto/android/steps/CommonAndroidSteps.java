@@ -1585,6 +1585,19 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * Verify whether Android with GCM Service, if not supported, it will throw a Pending Exception
+     *
+     * @throws Exception
+     * @step. ^I am on Android with GCM Service$
+     */
+    @Given("^I am on Android with GCM Service$")
+    public void IAmOnAndroidWithGCM() throws Exception {
+        if (!AndroidCommonUtils.verifyGoogleGCMServiceInstalled()) {
+            throw new PendingException("The current Android doesn't support GCM service");
+        }
+    }
+
+    /**
      * Verify whether no internet bar is visible
      *
      * @param shouldNotSee   equals null means the "no internet bar" should be visible
