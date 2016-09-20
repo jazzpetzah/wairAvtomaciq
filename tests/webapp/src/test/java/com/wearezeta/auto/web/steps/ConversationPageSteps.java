@@ -736,13 +736,13 @@ public class ConversationPageSteps {
     @When("^I do not see delete button for latest message$")
     public void IDoNotSeeDeleteButton() throws Exception {
         assertFalse("Delete button is visible", context.getPagesCollection().getPage(ConversationPage.class)
-                .isDeleteButtonVisibleForLatestMessage());
+                .isDeleteButtonVisibleForLastMessage());
     }
 
     @When("^I do not see edit button in context menu$")
     public void IDoNotSeeEditButtonInContext() throws Exception {
         assertTrue("Edit button is visible", context.getPagesCollection().getPage(ConversationPage.class)
-                .isEditButtonInvisibleForLatestMessage());
+                .isEditButtonInvisibleForLastMessage());
     }
 
     @When("^I do not see delete for everyone button in context menu$")
@@ -773,9 +773,9 @@ public class ConversationPageSteps {
         boolean isSecond = " second".equals(second);
         if (!isSecond) {
             if (doNot == null) {
-                assertTrue("Like symbol is not visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolVisibleForLatestMessage());
+                assertTrue("Like symbol is not visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolVisibleForLastMessage());
             } else {
-                assertTrue("Like symbol is visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolInvisibleForLatestMessage());
+                assertTrue("Like symbol is visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolInvisibleForLastMessage());
             }
         } else {
             if (doNot == null) {
@@ -920,13 +920,13 @@ public class ConversationPageSteps {
     @Then("^I see the last message is only liked by others$")
     public void ISeeLastMessageIsOnlyLikedByOthers() throws Exception {
         assertTrue("The message is liked by you", context.getPagesCollection().getPage(ConversationPage.class)
-                .isLikeWithOtherLikesVisibleForLatestMessage());
+                .isLikeWithOtherLikesVisibleForLastMessage());
     }
 
     @Then("^I see the last message is liked by others and me$")
     public void ISeeLastMessageIsLikedByOthersMe() throws Exception {
         assertTrue("Message is NOT liked by others and you", context.getPagesCollection().getPage(ConversationPage.class)
-                .isUnlikeWithOtherLikesVisibleForLatestMessage());
+                .isUnlikeWithOtherLikesVisibleForLastMessage());
     }
 
     @Then("^I see the last message is liked by (.*)$")
