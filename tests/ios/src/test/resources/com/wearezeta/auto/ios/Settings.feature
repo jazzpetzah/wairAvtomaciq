@@ -90,8 +90,6 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-Feature: Self Profile
-
   @C3211 @regression @fastLogin
   Scenario Outline: Change your profile picture
     Given There is 1 user where <Name> is me

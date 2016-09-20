@@ -95,8 +95,6 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-Feature: Self Profile
-
   @C2883 @regression @fastLogin
   Scenario Outline: Self profile. Verify max limit in 64 chars [LANDSCAPE]
     Given There is 1 user where <Name> is me
