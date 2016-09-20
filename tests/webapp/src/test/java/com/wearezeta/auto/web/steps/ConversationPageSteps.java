@@ -768,7 +768,7 @@ public class ConversationPageSteps {
     @When("^I( do not)? see like symbol for (second )?last message$")
     public void ISeeLikeButton(String doNot, String second) throws Exception {
         boolean isSecond = " second".equals(second);
-        if (isSecond) {
+        if (!isSecond) {
                 if (doNot == null) {
                     assertTrue("Like symbol is not visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolVisibleForLatestMessage());
                 } else {
@@ -799,43 +799,47 @@ public class ConversationPageSteps {
     }
 
     @When("^I click to (like|unlike) the (third |second )?last message with(out)? other likes$")
-    public void IClickToLikeLatestMessageWithoutOtherLikes(String like, String indexNumber, String out) throws Exception {
+    public void IClickToLikeLatestMessageWithoutOtherLikes(String like, String index, String out) throws Exception {
         boolean isWithout = "out".equals(out);
         boolean isLike = "like".equals(like);
         int indexNummer = 1;
             if (isWithout) {
                 if (isLike) {
-                    if (indexNumber.equals("third ")) {
+                    if ("third ".equals(index)) {
                         indexNummer = 3;
                     }
-                    if (indexNumber.equals("second ")) {
+                    else if ("second ".equals(index)) {
                         indexNummer = 2;
                     }
+                    else indexNummer = 1;
                     context.getPagesCollection().getPage(ConversationPage.class).clickLikeMessageWithoutOtherLikes(indexNummer);
                 } else {
-                    if (indexNumber.equals("third ")) {
+                    if ("third ".equals(index)) {
                         indexNummer = 3;
                     }
-                    if (indexNumber.equals("second ")) {
+                    else if ("second ".equals(index)) {
                         indexNummer = 2;
                     }
+                    else indexNummer = 1;
                     context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeMessageWithoutOtherLikes(indexNummer);
                 }
             } else if (isLike) {
-                if (indexNumber.equals("third ")) {
+                if ("third ".equals(index)) {
                     indexNummer = 3;
                 }
-                if (indexNumber.equals("second ")) {
+                else if ("second ".equals(index)) {
                     indexNummer = 2;
                 }
+                else indexNummer = 1;
                 context.getPagesCollection().getPage(ConversationPage.class).clickLikeMessageWithOtherLikes(indexNummer);
             } else {
-                if (indexNumber.equals("third ")) {
+                if ("third ".equals(index)) {
                     indexNummer = 3;
                 }
-                if (indexNumber.equals("second ")) {
+                else if ("second ".equals(index)) {
                     indexNummer = 2;
                 }
+                else indexNummer = 1;
                 context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeMessageWithOtherLikes(indexNummer);
             }
     }
@@ -852,10 +856,18 @@ public class ConversationPageSteps {
         }
     }
 
-    @Then("^I see the latest message is only liked by me$")
-    public void ThenISeeLatestMessageIsOnlyLikedByMe() throws Exception {
+    @Then("^I see the (third |second )?last message is only liked by me$")
+    public void ThenISeeLatestMessageIsOnlyLikedByMe(String messageIndex) throws Exception {
+        int indexNumber = 1;
+        if ("third ".equals(messageIndex)) {
+            indexNumber = 3;
+        }
+        else if ("second ".equals(messageIndex)) {
+            indexNumber = 2;
+        }
+        else indexNumber = 1;
         assertTrue("The message is NOT only liked by you", context.getPagesCollection().getPage(ConversationPage.class)
-                .isUnlikeWithoutOtherLikesVisibleForLatestMessage());
+                .isUnlikeWithoutOtherLikesVisibleForMessage(indexNumber));
     }
     
     @Then("^I see the latest message is only liked by others$")
