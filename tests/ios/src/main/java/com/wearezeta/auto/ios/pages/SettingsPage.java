@@ -145,8 +145,8 @@ public class SettingsPage extends IOSPage {
 
     public boolean isSettingItemValueEqualTo(String itemName, String expectedValue) throws Exception {
         final By locator = By.xpath(xpathStrSettingsValue.apply(itemName, expectedValue));
-        ((FBElement) getElement(xpathMenuContainer)).scroll(Optional.empty(),
-                Optional.of(itemName), Optional.empty(), Optional.empty());
+        ((FBElement) getElement(xpathMenuContainer)).scroll(Optional.empty(), Optional.of(itemName),
+                Optional.empty(), Optional.empty());
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
