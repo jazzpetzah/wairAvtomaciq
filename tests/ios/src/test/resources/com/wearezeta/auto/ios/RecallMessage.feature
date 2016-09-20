@@ -112,6 +112,8 @@ Feature: Recall Message
     And User <Contact2> sees the recent message from group conversation <Group> via device <Contact2Device> is changed in <Wait2> seconds
     And User Myself sees the recent message from group conversation <Group> via device <MySecondDevice> is changed in <Wait2> seconds
     When User Myself send 1 encrypted message using device <MySecondDevice> to group conversation <Group>
+    # Wait until the message is delivered
+    And I wait for 5 seconds
     Then I see 1 default message in the conversation view
     When User <Contact1> remembers the recent message from group conversation <Group> via device <Contact1Device>
     And User <Contact2> remembers the recent message from group conversation <Group> via device <Contact2Device>

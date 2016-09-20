@@ -676,6 +676,10 @@ public final class BackendAPIWrappers {
         BackendREST.changeConversationName(receiveAuthToken(asUser), conversationIDToRename, newConversationName);
     }
 
+    public static void unregisterPushToken(ClientUser asUser, String pushToken) throws Exception {
+        BackendREST.unregisterPushToken(receiveAuthToken(asUser), pushToken);
+    }
+
     public static class NoContactsFoundException extends Exception {
         private static final long serialVersionUID = -7682778364420522320L;
 
@@ -716,8 +720,8 @@ public final class BackendAPIWrappers {
     }
 
     public static void waitUntilSuggestionFound(ClientUser searchByUser,
-                                                         String query, int expectedCount, boolean orMore,
-                                                         int timeoutSeconds) throws Exception {
+                                                String query, int expectedCount, boolean orMore,
+                                                int timeoutSeconds) throws Exception {
         final long startTimestamp = System.currentTimeMillis();
         int currentCount;
         AuthToken token = receiveAuthToken(searchByUser);

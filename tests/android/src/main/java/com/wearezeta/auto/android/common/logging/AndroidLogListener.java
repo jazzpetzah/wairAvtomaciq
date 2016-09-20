@@ -16,6 +16,7 @@ public final class AndroidLogListener {
     public enum ListenerType {
         DEFAULT(null),
         PERF("LoadTimeLoggerController"),
+        GCMToken("InstanceID"),
         ANALYTICS("TrackingController");
 
         // https://developer.android.com/studio/command-line/logcat.html

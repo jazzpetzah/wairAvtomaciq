@@ -1,6 +1,6 @@
 Feature: Like
 
-  @C246204 @staging
+  @C246204 @regression
   Scenario Outline: I can like/unlike text message by heart/long tap/double tap
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -44,7 +44,7 @@ Feature: Like
       | Name      | Contact   | MessageStatus | Message |
       | user1Name | user2Name | Sent          | OMG     |
 
-  @C246205 @staging
+  @C246205 @regression
   Scenario Outline: I can like link by heart (Portrait)
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
@@ -66,7 +66,7 @@ Feature: Like
       | Name      | Contact   | Url                     |
       | user1Name | user2Name | http://www.facebook.com |
 
-  @C246206 @staging
+  @C246206 @regression
   Scenario Outline: I can like a picture by heart
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -88,7 +88,7 @@ Feature: Like
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C246207 @staging
+  @C246207 @regression
   Scenario Outline: I can like sketch by heart/long tap/double tap (portrait)
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
@@ -134,7 +134,7 @@ Feature: Like
       | Name      | Contact   | MessageStatus |
       | user1Name | user2Name | Sent          |
 
-  @C246208 @staging
+  @C246208 @regression
   Scenario Outline: I can like Soundcloud
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -157,7 +157,7 @@ Feature: Like
       | Name      | Contact   | SoundCloudLink                                   |
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
-  @C246209 @staging
+  @C246209 @regression
   Scenario Outline: I can like youtube (portrait)
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
@@ -179,7 +179,7 @@ Feature: Like
       | Name      | Contact   | YoutubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
-  @C246210 @staging
+  @C246210 @regression
   Scenario Outline: I can like location
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -200,7 +200,7 @@ Feature: Like
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
 
-  @C246211 @staging
+  @C246211 @regression
   Scenario Outline: I can like audio message
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -222,7 +222,7 @@ Feature: Like
       | Name      | Contact   | FileName | MIMEType  | DeviceName |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
 
-  @C246212 @staging
+  @C246212 @regression
   Scenario Outline: I can like video message
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -245,7 +245,7 @@ Feature: Like
       | Name      | Contact   | FileSize | FileFullName     |
       | user1Name | user2Name | 1.00MB   | random_video.mp4 |
 
-  @C246213 @staging
+  @C246213 @regression
   Scenario Outline: I can like file transfer
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -268,7 +268,7 @@ Feature: Like
       | Name      | Contact   | FileName  | FileSize | FileExtension |
       | user1Name | user2Name | qa_random | 1.00MB   | txt           |
 
-  @C246214 @staging
+  @C246214 @regression
   Scenario Outline: Verify like icon is visible and sorted liker name next to the like icon, and I could like it.
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -292,7 +292,7 @@ Feature: Like
       | Name      | Contact   | Message | ContactDevice |
       | user1Name | user2Name | Hi      | Device1       |
 
-  @C246215 @staging
+  @C246215 @regression
   Scenario Outline: I see likers count instead of names and first/second likes avatars
     Given There are 5 users where <Name> is me
     Given I rotate UI to landscape

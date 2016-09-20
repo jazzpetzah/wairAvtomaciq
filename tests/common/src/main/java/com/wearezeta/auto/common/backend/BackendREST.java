@@ -656,6 +656,13 @@ final class BackendREST {
                 HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT});
     }
 
+    public static void unregisterPushToken(AuthToken token, String pushToken) throws Exception {
+        Builder webResource = buildDefaultRequestWithAuth(
+                String.format("push/tokens/%s", pushToken),
+                MediaType.APPLICATION_JSON, token);
+        restHandlers.httpDelete(webResource, "{}", new int[]{HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT});
+    }
+
     public static void setDefaultBackendURL(String url) {
         backendUrl = url;
     }

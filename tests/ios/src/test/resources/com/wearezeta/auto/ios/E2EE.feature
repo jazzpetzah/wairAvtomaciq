@@ -48,11 +48,9 @@ Feature: E2EE
     When I tap settings gear button
     Then I verify the alert contains text <DeviceName>
     When I accept alert
-    And I close self profile
+    And I tap Done navigation button on Settings page
     Then I wait until settings gear is not changed
     When I tap settings gear button
-    And I click on Settings button on personal page
-    And I click on Settings button from the options menu
     And I select settings item Privacy & Security
     And I select settings item Manage devices
     Then I see settings item <DeviceName>
@@ -188,8 +186,6 @@ Feature: E2EE
     And User Myself adds new devices <DeviceName>
     When I tap settings gear button
     And I tap OK button on the alert
-    And I click on Settings button on personal page
-    And I click on Settings button from the options menu
     And I select settings item Privacy & Security
     And I select settings item Manage devices
     And I tap Edit button
@@ -209,17 +205,15 @@ Feature: E2EE
     And User Myself adds a new device <DeviceName> with label <DeviceLabel>
     When I tap settings gear button
     And I tap OK button on the alert
-    And I click on Settings button on personal page
-    And I click on Settings button from the options menu
     And I select settings item Privacy & Security
     And I select settings item Manage devices
     When I open details page of device number 2
     And I tap Verify switcher on Device Details page
-    And I switch to the previous settings page
+    And I tap Back navigation button on Settings page
     Then I see the label Verified is shown for the device <DeviceName>
     When I open details page of device number 2
     And I tap Verify switcher on Device Details page
-    And I switch to the previous settings page
+    And I tap Back navigation button on Settings page
     Then I see the label Not Verified is shown for the device <DeviceName>
 
     Examples:
@@ -395,8 +389,6 @@ Feature: E2EE
     Given I sign in using my email
     Given I see conversations list
     And I tap settings gear button
-    And I click on Settings button on personal page
-    And I click on Settings button from the options menu
     And I select settings item Privacy & Security
     And I select settings item Manage devices
     When I tap on current device
@@ -417,8 +409,6 @@ Feature: E2EE
     And User Myself adds new device <DeviceName>
     When I tap settings gear button
     And I tap OK button on the alert
-    And I click on Settings button on personal page
-    And I click on Settings button from the options menu
     And I select settings item Privacy & Security
     And I select settings item Manage devices
     And I open details page of device number 2

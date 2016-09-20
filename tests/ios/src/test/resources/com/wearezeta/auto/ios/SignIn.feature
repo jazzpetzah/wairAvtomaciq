@@ -102,7 +102,8 @@ Feature: Sign In
     And I dismiss settings warning
     Then I see conversations list
     When I tap settings gear button
-    Then I see email <Email> on Personal page
+    And I select settings item Account
+    Then I verify the value of settings item Email equals to "<Email>"
 
     Examples:
       | Email      | Password      | Name      |

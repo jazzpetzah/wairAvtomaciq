@@ -30,7 +30,7 @@ public class SketchPage extends IOSPage {
             if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
                 IOSSimulatorHelper.swipe(startX / 100.0, startY / 100.0, endX / 100.0, endY / 100.0);
             } else {
-                DriverUtils.swipeByCoordinates(getDriver(), 0, startX, startY, endX, endY);
+                DriverUtils.swipeByCoordinates(getDriver(), 1000, startX, startY, endX, endY);
             }
         }
     }

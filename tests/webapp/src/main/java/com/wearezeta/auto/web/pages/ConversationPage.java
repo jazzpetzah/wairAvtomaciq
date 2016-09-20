@@ -125,6 +125,12 @@ public class ConversationPage extends WebPage {
     @FindBy(css = WebAppLocators.ConversationPage.cssDoEditMessage)
     private WebElement doEditMessageButton;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssLastEditTimestamp)
+    private WebElement lastEditTimestamp;
+
+    @FindBy(css = WebAppLocators.ConversationPage.cssSecondLastEditTimestamp)
+    private WebElement secondLastEditTimestamp;
+
     @FindBy(css = WebAppLocators.ConversationPage.cssLongMessageDialog)
     private WebElement longMessageDialog;
 
@@ -996,7 +1002,7 @@ public class ConversationPage extends WebPage {
         String latestMessageId = getLatestMessageId();
         hoverOverMessage(latestMessageId);
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssUserThatLikeByMessageId.apply(latestMessageId));
-        String text = getDriver().findElement(locator).getText();
+        String text = getDriver().findElement(locator).getAttribute("data-uie-value");
         return Arrays.asList(text.split("\\s*,\\s*"));
     }
 
@@ -1118,6 +1124,14 @@ public class ConversationPage extends WebPage {
 
     public void clickEditInMessageContextMenu() throws Exception {
         doEditMessageButton.click();
+    }
+
+    public String getLastEditTimestamp() throws Exception {
+        return lastEditTimestamp.getAttribute("title");
+    }
+
+    public String getSecondLastEditTimestamp() throws Exception {
+        return secondLastEditTimestamp.getAttribute("title");
     }
 
     public void clickToResetSessionOnLatestError() throws Exception {
