@@ -51,7 +51,7 @@ Feature: Settings
     Given I see conversations list
     When I tap settings gear button
     And I select settings item Privacy & Security
-    Then I verify sound alerts settings are set to default values
+    Then I verify the value of settings item Sound Alerts equals to All
 
     Examples:
       | Name      |

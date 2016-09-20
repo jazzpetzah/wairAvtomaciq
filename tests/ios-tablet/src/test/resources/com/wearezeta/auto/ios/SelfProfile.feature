@@ -7,14 +7,15 @@ Feature: Self Profile
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap settings gear button
+    And I select settings item Account
     And I tap to edit my name
     And I change my name to <NewUsername>
-    Then I see my new name <NewUsername1>
+    Then I verify the value of settings item Name equals to <NewUsername>
     When I close self profile
     And I tap settings gear button
     And I tap to edit my name
-    And I change my name to <NewUsername>
-    Then I see my new name <NewUsername1>
+    And I change my name to <NewUsername1>
+    Then I verify the value of settings item Name equals to <NewUsername1>
 
     Examples:
       | Name      | NewUsername                                                          | NewUsername1                                                     |

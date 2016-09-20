@@ -69,7 +69,8 @@ Feature: Registration
     When I tap Not Now button on Share Contacts overlay
     Then I see conversations list
     When I tap settings gear button
-    Then I see my new name <ArabicName>
+    And I select settings item Account
+    Then I verify the value of settings item Name equals to <ArabicName>
 
     Examples:
       | Name      | ArabicName |

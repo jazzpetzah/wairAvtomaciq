@@ -64,7 +64,8 @@ Feature: Self Profile
     And I close self profile
     And I see conversations list
     And I tap settings gear button
-    Then I see my new name <NewUsername>
+    And I select settings item Account
+    Then I verify the value of settings item Name equals to <NewUsername>
 
     Examples:
       | Name      | NewUsername |
