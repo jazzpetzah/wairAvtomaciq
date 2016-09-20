@@ -97,7 +97,7 @@ Feature: Edit
       | user1Email | user1Password | user1Name | user2Name | edit me         | edited        |
 
   @C206287 @staging
-  Scenario Outline: Verify desing is correct if I edit a message in between other messages from me
+  Scenario Outline: Verify design is correct if I edit a message in between other messages from me
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
