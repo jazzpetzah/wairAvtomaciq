@@ -774,6 +774,27 @@ public class ConversationPageSteps {
         assertEquals("The timestamps are not equal", rememberedEditTimeStamp, editTimeStamp);
     }
 
+    @Then("^I( do not)? see message header for( second)? last message$")
+    public void ISeeMessageHeader(String doNot, String second) throws Exception {
+        boolean isDoNot = " do not".equals(doNot);
+        boolean isSecond = " second".equals(second);
+        if (isDoNot) {
+            if (isSecond) {
+                assertFalse("Second last message header is VISIBLE",
+                        context.getPagesCollection().getPage(ConversationPage.class).isSecondLastMsgHeaderVisible());
+            } else {
+                assertFalse("Last message header is VISIBLE",
+                        context.getPagesCollection().getPage(ConversationPage.class).isLastMsgHeaderVisible());
+            }
+        } else if (isSecond) {
+            assertTrue("Second last message header is NOT VISIBLE",
+                    context.getPagesCollection().getPage(ConversationPage.class).isSecondLastMsgHeaderVisible());
+        } else {
+            assertTrue("Last message header NOT VISIBLE",
+                    context.getPagesCollection().getPage(ConversationPage.class).isLastMsgHeaderVisible());
+        }
+    }
+
     @When("^I( do not)? see like symbol for latest message$")
     public void ISeeLikeButton(String doNot) throws Exception {
         if (doNot == null) {

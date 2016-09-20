@@ -436,6 +436,10 @@ public final class WebAppLocators {
 
         public static final String cssSecondLastEditTimestamp = cssSecondLastMessage + " .icon-edit";
 
+        public static final String cssLastMsgHeader = cssLastMessage + " .message-header-label";
+
+        public static final String cssSecondLastMsgHeader = cssSecondLastMessage + " .message-header-label";
+
         //Link preview
 
         public static final String cssLinkTitle = ".link-preview-title";
