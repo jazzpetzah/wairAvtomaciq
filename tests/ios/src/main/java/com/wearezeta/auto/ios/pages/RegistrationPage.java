@@ -21,7 +21,7 @@ import java.util.function.Function;
 public class RegistrationPage extends IOSPage {
     private static final String WIRE_COUNTRY_NAME = "Wirestan";
 
-    private static final By fbXpathMCountriesContainer = FBBy.FBXPath("//XCUIElementTypeTableView");
+    private static final By fbXpathMCountriesContainer = FBBy.FBXPath("//XCUIElementTypeTable");
 
     private static final By xpathWireCountry =
             By.xpath(String.format("//*[starts-with(@name, '%s')]", WIRE_COUNTRY_NAME));

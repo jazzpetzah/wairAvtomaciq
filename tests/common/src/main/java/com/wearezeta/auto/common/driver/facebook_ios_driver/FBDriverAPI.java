@@ -27,11 +27,10 @@ public class FBDriverAPI {
 
     private static final String OBJC_YES = "true";
 
-    private FBDriverRESTClient client;
+    private static final FBDriverRESTClient client = new FBDriverRESTClient(HOST_NAME, PORT_NUMBER);
     private Optional<String> sessionId = Optional.empty();
 
     public FBDriverAPI() {
-        this.client = new FBDriverRESTClient(HOST_NAME, PORT_NUMBER);
     }
 
     private String getSessionId() throws RESTError {
@@ -40,7 +39,7 @@ public class FBDriverAPI {
                 throw new IllegalStateException(String.format("Facebook Driver service listener at %s:%s is dead",
                         HOST_NAME, PORT_NUMBER));
             }
-            this.sessionId = Optional.of(this.client.getSession().getString("sessionId"));
+            this.sessionId = Optional.of(client.getSession().getString("sessionId"));
         }
         return this.sessionId.get();
     }

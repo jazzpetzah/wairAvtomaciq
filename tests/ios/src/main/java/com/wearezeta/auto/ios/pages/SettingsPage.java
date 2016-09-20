@@ -18,7 +18,7 @@ import java.util.function.Function;
 
 public class SettingsPage extends IOSPage {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private static final String xpathStrMenuContainer = "//XCUIElementTypeTableView";
+    private static final String xpathStrMenuContainer = "//XCUIElementTypeTable";
     private static final By fbXpathMenuContainer = FBBy.FBXPath(xpathStrMenuContainer);
 
     private static final Function<String, String> xpathStrMenuItemByName = namePrefix ->
@@ -60,7 +60,7 @@ public class SettingsPage extends IOSPage {
 
     private static final By xpathAskSupport = By.xpath("//*[@name='Ask Support']");
 
-    private static final String xpathStrColorPicker = "//*[@name='COLOR']/following-sibling::XCUIElementTypeTableView";
+    private static final String xpathStrColorPicker = "//*[@name='COLOR']/following-sibling::XCUIElementTypeTable";
     private static final By xpathColorPicker = By.xpath(xpathStrColorPicker);
 
     // indexation starts from 1

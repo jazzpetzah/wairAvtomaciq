@@ -80,7 +80,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By xpathLastImageCell = By.xpath(String.format("(%s)[1]", xpathStrImageCells));
 
     private static final By xpathMediaContainerCell =
-            By.xpath(xpathStrAllTextMessages + "[contains(@value, '://')]/following-sibling::Button");
+            By.xpath(xpathStrAllTextMessages + "[contains(@value, '://')]/following-sibling::XCUIElementTypeButton");
 
     private static final By xpathGiphyImage = By
             .xpath(xpathStrAllTextMessages + "[@name='via giphy.com']/following::XCUIElementTypeCell[@name='ImageCell']");
