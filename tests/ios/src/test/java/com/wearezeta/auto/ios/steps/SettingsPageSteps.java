@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.steps;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.AccountDeletionMessage;
 import com.wearezeta.auto.common.email.WireMessage;
+import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.SettingsPage;
@@ -50,26 +51,20 @@ public class SettingsPageSteps {
     }
 
     /**
-     * Tap back button on settings page
+     * Verify the current value of a setting
      *
+     * @param itemName      setting option name
+     * @param expectedValue the expected value. Can be user name/email/phone number alias
      * @throws Exception
-     * @step. ^I switch to the previous settings page$
+     * @step. ^I verify the value of settings item (.*) equals to (.*)
      */
-    @And("^I switch to the previous settings page$")
-    public void ISwitchToThePreviousSettingsPage() throws Exception {
-        getSettingsPage().goBack();
-    }
-
-    /**
-     * Verify that alert settings are set to default values
-     *
-     * @throws Exception
-     * @step. ^I verify sound alerts settings are set to default values$
-     */
-    @When("^I verify sound alerts settings are set to default values$")
-    public void IVerifyAllIsDefaultValue() throws Exception {
-        Assert.assertTrue("Sound alerts settings are NOT set to their default values",
-                getSettingsPage().isSoundAlertsSetToDefault());
+    @Then("^I verify the value of settings item (.*) equals to (.*)")
+    public void IVerifySettingsItemValue(String itemName, String expectedValue) throws Exception {
+        expectedValue = usrMgr.replaceAliasesOccurences(expectedValue, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        expectedValue = usrMgr.replaceAliasesOccurences(expectedValue, ClientUsersManager.FindBy.NAME_ALIAS);
+        expectedValue = usrMgr.replaceAliasesOccurences(expectedValue, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+        Assert.assertTrue(String.format("The value of '%s' setting item is not equal to '%s'", itemName, expectedValue),
+                getSettingsPage().isSettingItemValueEqualTo(itemName, expectedValue));
     }
 
     /**
@@ -201,5 +196,65 @@ public class SettingsPageSteps {
             throw new IllegalStateException("Please init email confirmation listener first");
         }
         new AccountDeletionMessage(accountRemovalConfirmation.get());
+    }
+
+    private ElementState previousProfilePictureScreenshot = new ElementState(
+            () -> getSettingsPage().takeScreenshot().
+                    orElseThrow(() -> new IllegalStateException("Cannot take a screenshot of self profile page"))
+    );
+
+    /**
+     * Take a screenshot of self profile page and save it into internal var
+     *
+     * @throws Exception
+     * @step. ^I remember my current profile picture$
+     */
+    @When("^I remember my current profile picture$")
+    public void IRememberMyProfilePicture() throws Exception {
+        previousProfilePictureScreenshot.remember();
+    }
+
+    @Then("I wait up to (\\d+) seconds? until my profile picture is changed")
+    public void IWaitUntilProfilePictureIsChanged(int secondsTimeout) throws Exception {
+        if (previousProfilePictureScreenshot == null) {
+            throw new IllegalStateException("Please take a screenshot of previous profile picture first");
+        }
+        final double minScore = 0.87;
+        Assert.assertTrue("The previous and the current profile pictures seem to be the same",
+                this.previousProfilePictureScreenshot.isChanged(secondsTimeout, minScore));
+    }
+
+    /**
+     * Tap navigation button on Setitngs page
+     *
+     * @param name name of the button
+     * @throws Exception
+     * @step. ^I tap (Done|Back) navigation button on Settings page$
+     */
+    @And("^I tap (Done|Back) navigation button on Settings page$")
+    public void ITapNavigationButton(String name) throws Exception {
+        getSettingsPage().tapNavigationButton(name);
+    }
+
+    /**
+     * Verify whether Reset Password page is opened in browser
+     *
+     * @throws Exception
+     * @step. ^I see Reset Password page$
+     */
+    @Then("^I see Reset Password page$")
+    public void ISeeResetPasswordPage() throws Exception {
+        Assert.assertTrue("Change Password button is not shown", getSettingsPage().isResetPasswordPageVisible());
+    }
+
+    /**
+     * Verifies that it sees the Support web page
+     *
+     * @throws Exception
+     * @step. ^I see Support web page$
+     */
+    @Then("^I see Support web page$")
+    public void ISeeSupportWebPage() throws Exception {
+        Assert.assertTrue("Customer support page has not been loaded", getSettingsPage().isSupportWebPageVisible());
     }
 }

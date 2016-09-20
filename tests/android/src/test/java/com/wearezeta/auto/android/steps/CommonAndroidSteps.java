@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CommonAndroidSteps {
@@ -73,6 +74,7 @@ public class CommonAndroidSteps {
     public static final int DEFAULT_SWIPE_TIME = 1500;
     public static final int FIRST_TIME_OVERLAY_TIMEOUT = 3; // seconds
     private static final String DEFAULT_USER_AVATAR = "aqaPictureContact600_800.jpg";
+    private static final String GCM_TOKEN_PATTERN = "token:\\s+(.*)$";
 
     private static String getUrl() throws Exception {
         return CommonUtils.getAndroidAppiumUrlFromConfig(CommonAndroidSteps.class);
@@ -228,12 +230,15 @@ public class CommonAndroidSteps {
 
         isAutoAnswerCallEnabled = scenario.getSourceTagNames().contains("@calling_autoAnswer");
 
+        //Start Listenter
         int retriesCount = AndroidPage.DRIVER_CREATION_RETRIES_COUNT;
         if (scenario.getSourceTagNames().contains("@performance")) {
             AndroidLogListener.getInstance(ListenerType.PERF).start();
             retriesCount++;
         } else if (scenario.getSourceTagNames().contains("@analytics")) {
             AndroidLogListener.getInstance(ListenerType.ANALYTICS).start();
+        } else if (scenario.getSourceTagNames().contains("@GCMToken")) {
+            AndroidLogListener.getInstance(ListenerType.GCMToken).start();
         }
         if (isLogcatEnabled) {
             AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
@@ -1793,6 +1798,34 @@ public class CommonAndroidSteps {
         final WireDatabase db = new WireDatabase();
         Assert.assertTrue(String.format("The previously remembered message [%s] appears to be improperly deleted " +
                 "from the local database", this.recentMsgId), db.isMessageDeleted(this.recentMsgId));
+    }
+
+    /**
+     * Unregister GCM Token, the step should be called after You already login device.
+     *
+     * @throws Exception
+     * @step. I unregister GCM push token in (\d+) seconds$
+     */
+    @When("^I unregister GCM push token in (\\d+) seconds$")
+    public void IUnresgisterGCMToekn(int timeoutSeconds) throws Exception {
+        Optional<String> pushToken = CommonUtils.waitUntil(
+                timeoutSeconds,
+                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
+                () -> {
+                    String GCMTokenOutput = AndroidLogListener.getInstance(ListenerType.GCMToken).getStdOut();
+                    final Pattern p = Pattern.compile(GCM_TOKEN_PATTERN, Pattern.MULTILINE);
+                    final Matcher m = p.matcher(GCMTokenOutput);
+                    if (m.find()) {
+                        return m.group(1);
+                    } else {
+                        throw new IllegalStateException(String.format("Cannot find GCM Token from Logcat: %s",GCMTokenOutput));
+                    }
+                }
+        );
+        // Wait for 10 seconds until SE register TOKEN on BE
+        // Because we still need to wait several seconds after it retrieve the GCM InstanceID from device.
+        Thread.sleep(10000);
+        commonSteps.UnregisterPushToken(pushToken.orElseThrow(() -> new IllegalStateException("Cannot find GCM Token from logcat")));
     }
 
 }

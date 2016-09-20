@@ -43,176 +43,10 @@ public class PersonalInfoPageSteps {
                 .isTooShortNameErrorMessage());
     }
 
-    @When("I click on Settings button on personal page")
-    public void WhenIClickOnSettingsButtonOnPersonalPage() throws Exception {
-        getPersonalInfoPage().clickOnSettingsButton();
-    }
-
 
     @When("I click on About button on personal page")
     public void WhenIClickOnAboutButtonOnPersonalPage() throws Exception {
         getPersonalInfoPage().clickOnAboutButton();
-    }
-
-    /**
-     * Verifies the about page in settings is shown
-     *
-     * @throws Exception
-     * @throws AssertionError about page is not shown
-     * @step. ^I see About page
-     */
-    @Then("^I see About page$")
-    public void ThenISeeAboutPage() throws Exception {
-        Assert.assertTrue("About page not shown", getPersonalInfoPage()
-                .isAboutPageVisible());
-    }
-
-    /**
-     * Close About page
-     *
-     * @throws Exception
-     * @step. I close About page
-     */
-    @When("^I close About page$")
-    public void ICloseAboutPage() throws Exception {
-        getPersonalInfoPage().clickAboutCloseButton();
-    }
-
-    /**
-     * Verifies the wire.com button is shown
-     *
-     * @throws Exception
-     * @throws AssertionError the wire.com button is not shown
-     * @step. ^I see WireWebsiteButton$
-     */
-    @Then("^I see WireWebsiteButton$")
-    public void ThenISeeWireWebsiteButton() throws Exception {
-        Assert.assertTrue("wire.com button on \"about\" page is missing",
-                getPersonalInfoPage().isWireWebsiteButtonVisible());
-    }
-
-    /**
-     * Verifies the terms of use button is shown
-     *
-     * @throws Exception
-     * @throws AssertionError the terms of use button is not shown
-     * @step. ^I see TermsButton$
-     */
-    @Then("^I see TermsButton$")
-    public void ThenISeeTermsButton() throws Exception {
-        Assert.assertTrue("Terms of use button missing", getPersonalInfoPage()
-                .isTermsButtonVisible());
-    }
-
-    /**
-     * Verifies the privacy policy button is shown
-     *
-     * @throws Exception
-     * @throws AssertionError the privacy policy button is not shown
-     * @step. ^I see PrivacyPolicyButton$
-     */
-    @Then("^I see PrivacyPolicyButton$")
-    public void ThenISeePrivacyPolicyButton() throws Exception {
-        Assert.assertTrue("Privacy policy button missing",
-                getPersonalInfoPage().isPrivacyPolicyButtonVisible());
-    }
-
-    /**
-     * Verifies the build number text is shown
-     *
-     * @throws Exception
-     * @throws AssertionError the build number info is not shown
-     * @step. ^I see BuildNumberText$
-     */
-    @Then("^I see BuildNumberText$")
-    public void ThenISeeBuildNumberText() throws Exception {
-        Assert.assertTrue("Build number info not shown", getPersonalInfoPage()
-                .isBuildNumberTextVisible());
-    }
-
-    /**
-     * Opens the terms of use page from the about page
-     *
-     * @throws Exception
-     * @step. ^I open TermsOfUsePage$
-     */
-    @When("^I open TermsOfUsePage$")
-    public void IClickOnTermsOfUse() throws Exception {
-        getPersonalInfoPage().openTermsOfUsePage();
-    }
-
-    /**
-     * Opens the privacy policy page from the about page
-     *
-     * @throws Exception
-     * @step. ^I open PrivacyPolicyPage$
-     */
-    @When("^I open PrivacyPolicyPage$")
-    public void IClickOnPrivacyPolicy() throws Exception {
-        getPersonalInfoPage().openPrivacyPolicyPage();
-    }
-
-    /**
-     * Opens the wire.com website from the about page
-     *
-     * @throws Exception
-     * @step. ^I open WireWebsite$
-     */
-    @When("^I open WireWebsite$")
-    public void IClickOnWireWebsite() throws Exception {
-        getPersonalInfoPage().openWireWebsite();
-    }
-
-    /**
-     * Verifies that wire.com website is shown
-     *
-     * @throws Exception
-     * @throws AssertionError the wire.com website is not shown
-     * @step. ^I see WireWebsitePage$
-     */
-    @Then("^I see WireWebsitePage$")
-    public void ThenISeeWireWebsite() throws Exception {
-        Assert.assertTrue("wire.com is not shown or website element has changed",
-                getPersonalInfoPage().isWireWebsitePageVisible());
-    }
-
-    /**
-     * Closes a legal page from the about page
-     *
-     * @throws Exception
-     * @step. ^I close legal page$
-     */
-    @When("^I close legal page$")
-    public void IClickToCloseLegalPage() throws Exception {
-        getPersonalInfoPage().closeLegalPage();
-    }
-
-    /**
-     * Verifies the terms of use page is shown
-     *
-     * @throws Exception
-     * @throws AssertionError the terms of use page is not shown
-     * @step. ^I see TermsOfUsePage$
-     */
-    @Then("^I see TermsOfUsePage$")
-    public void ThenISeeTermsOfUsePage() throws Exception {
-        Assert.assertTrue(
-                "Terms of use page not visible or text element has changed",
-                getPersonalInfoPage().isTermsOfUsePageVisible());
-    }
-
-    /**
-     * Verifies the privacy policy page is shown
-     *
-     * @throws Exception
-     * @throws AssertionError the privacy policy page is not shown
-     * @step. ^I see PrivacyPolicyPage$
-     */
-    @Then("^I see PrivacyPolicyPage$")
-    public void ThenISeePrivacyPolicyPage() throws Exception {
-        Assert.assertTrue(
-                "Privacy Policy page is not visible or text element has changed",
-                getPersonalInfoPage().isPrivacyPolicyPageVisible());
     }
 
     @When("^I tap on personal screen$")
@@ -220,34 +54,6 @@ public class PersonalInfoPageSteps {
         getPersonalInfoPage().tapOnScreenCenter();
     }
 
-    private ElementState previousProfilePictureScreenshot = new ElementState(
-            () -> getPersonalInfoPage().takeScreenshot().
-                    orElseThrow(() -> new IllegalStateException("Cannot take a screenshot of self profile page"))
-    );
-
-    /**
-     * Take a screenshot of self profile page and save it into internal var
-     *
-     * @throws Exception
-     * @step. ^I remember my current profile picture$
-     */
-    @When("^I remember my current profile picture$")
-    public void IRememberMyProfilePicture() throws Exception {
-        Assert.assertTrue("Profile page is not currently visible", getPersonalInfoPage().waitUntilVisible());
-        previousProfilePictureScreenshot.remember();
-    }
-
-
-    @Then("I wait up to (\\d+) seconds? until my profile picture is changed")
-    public void IWaitUntilProfilePictureIsChanged(int secondsTimeout) throws Exception {
-        Assert.assertTrue("Profile page is not currently visible", getPersonalInfoPage().waitUntilVisible());
-        if (previousProfilePictureScreenshot == null) {
-            throw new IllegalStateException("Please take a screenshot of previous profile picture first");
-        }
-        final double minScore = 0.87;
-        Assert.assertTrue("The previous and the current profile pictures seem to be the same",
-                this.previousProfilePictureScreenshot.isChanged(secondsTimeout, minScore));
-    }
 
     @When("I see email (.*) on Personal page")
     public void ISeeMyEmailOnPersonalPage(String email) throws Exception {
@@ -268,17 +74,6 @@ public class PersonalInfoPageSteps {
         getPersonalInfoPage().clearNameField();
         getPersonalInfoPage().enterNameInNameField(username);
         getPersonalInfoPage().tapOnScreenCenter();
-    }
-
-    @When("I click on Settings button from the options menu")
-    public void WhenIClickOnSettingsButtonFromOptionsMenu() throws Exception {
-        getPersonalInfoPage().tapOnSettingsButton();
-    }
-
-    @Then("I see reset password page")
-    public void ISeeResetPasswordPage() throws Exception {
-        Assert.assertTrue("Change Password button is not shown",
-                getPersonalInfoPage().isResetPasswordPageVisible());
     }
 
     /**
@@ -306,29 +101,6 @@ public class PersonalInfoPageSteps {
         String actualName = getPersonalInfoPage().getUserNameValue()
                 .toLowerCase();
         Assert.assertTrue(actualName.contains(name.toLowerCase()));
-    }
-
-    /**
-     * It clicks the Help button in the settings option menu
-     *
-     * @throws Exception
-     * @step. ^I click on Help button from the options menu$
-     */
-    @When("^I click on Help button from the options menu$")
-    public void IClickOnHelpButtonFromTheOptionsMenu() throws Exception {
-        getPersonalInfoPage().clickOnHelpButton();
-    }
-
-    /**
-     * Verifies that it sees the Support web page
-     *
-     * @throws Exception
-     * @step. ^I see Support web page$
-     */
-    @Then("^I see Support web page$")
-    public void ISeeSupportWebPage() throws Exception {
-        Assert.assertTrue("Customer support page has not been loaded",
-                getPersonalInfoPage().isSupportWebPageVisible());
     }
 
     /**

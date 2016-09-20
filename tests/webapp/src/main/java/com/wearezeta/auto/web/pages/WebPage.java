@@ -18,9 +18,6 @@ import org.openqa.selenium.WebElement;
 public class WebPage extends BasePage {
 
     private static final Logger log = ZetaLogger.getLog(WebPage.class.getSimpleName());
-    
-    private static final int WIRE_LOADED_MAX_RETRY = 20;
-    private static final int WIRE_LOADED_WAIT_MS = 100;
 
     @Override
     protected ZetaWebAppDriver getDriver() throws Exception {
@@ -165,13 +162,13 @@ public class WebPage extends BasePage {
      */
     public void breakSession(String deviceId) throws Exception {
         if (WebAppExecutionContext.getBrowser().isSupportingAccessToJavascriptContext()) {
-            String breakSession = "s = wire.app.repository.cryptography.cryptobox.store.sessions;\n" +
-                    "cs = s[Object.keys(s).filter((x) => x.endsWith(\"" + deviceId + "\"))[0]];\n" +
-                    "cs.session_states = {};";
+            String breakSession = "s = wire.app.repository.cryptography.cryptobox.store.sessions;\n"
+                    + "cs = s[Object.keys(s).filter((x) => x.endsWith(\"" + deviceId + "\"))[0]];\n"
+                    + "cs.session_states = {};";
             getDriver().executeScript(breakSession);
         } else {
-            throw new Exception("Geckodriver is unable to access script context in Firefox < 48. See https://bugzilla.mozilla" +
-                    ".org/show_bug.cgi?id=1123506");
+            throw new Exception("Geckodriver is unable to access script context in Firefox < 48. See https://bugzilla.mozilla"
+                    + ".org/show_bug.cgi?id=1123506");
         }
     }
 }

@@ -31,7 +31,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     private static final By idSketchButtonOnPicturePreviewOverlay = By.id("gtv__single_image_message__sketch");
 
     public static final Function<String, String> xpathConversationMessageByValue = value -> String
-            .format("//*[@id='ltv__row_conversation__message' and @value='%s']", value);
+            .format("//*[@id='tmltv__row_conversation__message' and @value='%s']", value);
 
     public TabletConversationViewPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -113,9 +113,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return getConversationViewPage().getPreviewPictureScreenshot();
     }
 
-    // TODO: It's time to do a big refactoring of tablet!
-    public void tapRecentImage() throws Exception {
-        getConversationViewPage().tapContainer("tap", "image");
+    public void tapContainer(String tapType, String containerName) throws Exception {
+        getConversationViewPage().tapContainer(tapType, containerName);
     }
 
     public boolean waitForSystemConnectionMessageContains(String expectedMessage) throws Exception {
@@ -181,14 +180,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getConversationViewPage().tapTopToolbarTitle();
     }
 
-    // TODO: Refactoring Tap text message
-    public void tapMessage(String msg) throws Exception {
-        getConversationViewPage().tapMessage("text", msg, "tap");
-    }
-
-    // TODO: Refactoring Tap text message
-    public void longTapMessage(String msg) throws Exception {
-        getConversationViewPage().tapMessage("text", msg, "long tap");
+    public void tapMessage(String messageType, String message, String tapType) throws Exception {
+        getConversationViewPage().tapMessage(messageType, message, tapType);
     }
 
     //region Message Bottom Menu
@@ -282,4 +275,45 @@ public class TabletConversationViewPage extends AndroidTabletPage {
             throws Exception {
         return getConversationViewPage().waitUntilMessageMetaItemInvisible(itemType, expectedItemText);
     }
+
+    public void tapImageContainerButton(String buttonName) throws Exception {
+        getConversationViewPage().tapImageContainerButton(buttonName);
+    }
+
+    public BufferedImage getMessageLikeButtonState() throws Exception {
+        return getConversationViewPage().getMessageLikeButtonState();
+    }
+
+    public void tapMessageMetaItem(String itemType) throws Exception {
+        getConversationViewPage().tapMessageMetaItem(itemType);
+    }
+
+    public int getMessageStatusCount() throws Exception {
+        return getConversationViewPage().getMessageStatusCount();
+    }
+
+    public boolean waitUntilTrashIconVisible(String name) throws Exception {
+        return getConversationViewPage().waitUntilTrashIconVisible(name);
+    }
+
+    public boolean waitUntilTrashIconInvisible(String name) throws Exception {
+        return getConversationViewPage().waitUntilTrashIconInvisible(name);
+    }
+
+    public boolean waitUntilPenIconVisible(String name) throws Exception {
+        return getConversationViewPage().waitUntilPenIconVisible(name);
+    }
+
+    public boolean waitUntilPenIconInvisible(String name) throws Exception {
+        return getConversationViewPage().waitUntilPenIconInvisible(name);
+    }
+
+    public void clearMessageInCursorInput() throws Exception {
+        getConversationViewPage().clearMessageInCursorInput();
+    }
+
+    public boolean waitUntilCursorInputTextVisible(String text) throws Exception {
+        return getConversationViewPage().waitUntilCursorInputTextVisible(text);
+    }
+
 }

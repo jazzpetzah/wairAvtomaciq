@@ -18,6 +18,11 @@ public class ConversationViewPageSteps {
 
     private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
     private static final String ANY_MESSAGE = "*ANY MESSAGE*";
+    private static final int LIKE_BUTTON_CHANGE_TIMEOUT = 15;
+    private static final double LIKE_BUTTON_MIN_SIMILARITY_SCORE = 0.6;
+    private static final double LIKE_BUTTON_NOT_CHANGED_MIN_SCORE = -0.5;
+
+    private ElementState messageLikeButtonState;
 
     private TabletConversationViewPage getConversationViewPage() throws Exception {
         return pagesCollection.getPage(TabletConversationViewPage.class);
@@ -204,7 +209,7 @@ public class ConversationViewPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Ping|Add picture|Sketch|File|Share location|Audio message|Video message) button$ from cursor toolbar$
+     * @step. ^I tap (Ping|Add picture|Sketch|File|Share location|Audio message|Video message) button from cursor toolbar$
      */
     @When("^I (long )?tap (Ping|Add picture|Sketch|File|Share location|Audio message|Video message) " +
             "button from cursor toolbar( for \\d+ seconds?)?$")
@@ -246,15 +251,31 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap the recent picture in the conversation view to open a preview
+     * Tap container
      *
+     * @param tapType       Tap type
+     * @param containerType one of available container types
      * @throws Exception
-     * @step. ^I tap the recent (?:image|picture) in the conversation view
+     * @step. ^I (long tap|double tap|tap) (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
      */
-    @When("^I tap the recent (?:image|picture) in the conversation view$")
-    public void ITapRecentImage() throws Exception {
-        getConversationViewPage().tapRecentImage();
+    @When("^I (long tap|double tap|tap) (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
+            "container in the conversation view$")
+    public void ITapContainer(String tapType, String containerType) throws Exception {
+        getConversationViewPage().tapContainer(tapType, containerType);
     }
+
+    /**
+     * Tap on Image container button
+     *
+     * @param buttonName which could be Sketch or Fullscreen
+     * @throws Exception
+     * @step. ^I tap on (Sketch|Fullscreen) button on the recent (?:image|picture) in the conversation view$
+     */
+    @When("^I tap on (Sketch|Fullscreen) button on the recent (?:image|picture) in the conversation view$")
+    public void ITapImageContainerButton(String buttonName) throws Exception {
+        getConversationViewPage().tapImageContainerButton(buttonName);
+    }
+
 
     /**
      * Verify whether ping message is visible in the current conversation view
@@ -515,20 +536,18 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap the corresponding message in the conversation
+     * Long tap an existing conversation message
      *
-     * @param isLongTap equals to null if this should be regular tap
-     * @param msg       message to tap
+     * @param message     the message to tap
+     * @param messageType the type of message which could be Ping or Text
+     * @param isLongTap   equals to null if the tap should be simple tap
      * @throws Exception
-     * @step. ^I (long )?tap the message "(.*)" in the conversation view$
+     * @step. ^I (long )?tap the (Ping|Text) message "(.*)" in the conversation view
      */
-    @When("^I (long )?tap the message \"(.*)\" in the conversation view$")
-    public void ITapMessage(String isLongTap, String msg) throws Exception {
-        if (isLongTap == null) {
-            getConversationViewPage().tapMessage(msg);
-        } else {
-            getConversationViewPage().longTapMessage(msg);
-        }
+    @When("^I (long tap|double tap|tap) the (Ping|Text) message \"(.*)\" in the conversation view$")
+    public void ITapTheNonTextMessage(String tapType, String messageType, String message) throws Exception {
+        message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
+        getConversationViewPage().tapMessage(messageType, message, tapType);
     }
 
     /**
@@ -536,9 +555,10 @@ public class ConversationViewPageSteps {
      *
      * @param name one of possible message bottom menu button name
      * @throws Exception
-     * @step. ^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit) button on the message bottom menu$
+     * @step. ^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike) button on the message bottom menu$
      */
-    @When("^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit) button on the message bottom menu$")
+    @When("^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike) " +
+            "button on the message bottom menu$")
     public void ITapMessageBottomMenuButton(String name) throws Exception {
         getConversationViewPage().tapMessageBottomMenuButton(name);
     }
@@ -565,9 +585,9 @@ public class ConversationViewPageSteps {
      * @param shouldNotSee  equals to null if the container should be visible
      * @param containerType euiter Youtube or Soundcloud or File Upload or Video Message
      * @throws Exception
-     * @step. ^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location) container in the conversation view$
+     * @step. ^I (do not )?see (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
      */
-    @Then("^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location) " +
+    @Then("^I (do not )?see (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
             "container in the conversation view$")
     public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
         final boolean condition = (shouldNotSee == null) ?
@@ -764,5 +784,132 @@ public class ConversationViewPageSteps {
         Assert.assertEquals(
                 String.format("The %s should be %s with expected text '%s'",
                         itemType, shouldBeVisible ? "visible" : "invisible", expectedMsg), shouldBeVisible, isVisible);
+    }
+
+    /**
+     * Remember the state of like button
+     *
+     * @param messageType Specified message type
+     * @throws Exception
+     * @step. ^I remember the state of like button$
+     */
+    @When("^I remember the state of like button$")
+    public void IRememberLikeButton() throws Exception {
+        messageLikeButtonState = new ElementState(
+                () -> getConversationViewPage().getMessageLikeButtonState()
+        );
+        messageLikeButtonState.remember();
+    }
+
+    /**
+     * Verify the current state of like button has been changed since the last snapshot was made
+     *
+     * @throws Exception
+     * @step. ^I verify the state of like button item is (not )?changed$
+     */
+    @Then("^I verify the state of like button item is (not )?changed$")
+    public void IVerifyStateOfLikeButtonChanged(String notChanged) throws Exception {
+        if (notChanged == null) {
+            Assert.assertTrue("The state of Like button is expected to be changed",
+                    messageLikeButtonState.isChanged(LIKE_BUTTON_CHANGE_TIMEOUT, LIKE_BUTTON_MIN_SIMILARITY_SCORE));
+        } else {
+            Assert.assertTrue("The state of Like button is expected to be changed",
+                    messageLikeButtonState.isNotChanged(LIKE_BUTTON_CHANGE_TIMEOUT, LIKE_BUTTON_NOT_CHANGED_MIN_SCORE));
+        }
+    }
+
+    /**
+     * Tap on Any msg meta item
+     *
+     * @param itemType    Message Meta Item type
+     * @param messageType The message type
+     * @throws Exception
+     * @step. ^^I tap (Like button|Like description|Message status|First like avatar|Second like avatar)
+     * in conversation view$
+     */
+    @When("^I tap (Like button|Like description|Message status|First like avatar|Second like avatar)" +
+            " in conversation view$")
+    public void ITapMessageMeta(String itemType) throws Exception {
+        getConversationViewPage().tapMessageMetaItem(itemType);
+    }
+
+    /**
+     * Verify the count of Message status within current conversation
+     *
+     * @param expectedCount expect apperance count
+     * @param expectedText  the expected text within Message Status
+     * @throws Exception
+     * @step. ^I see (\d+) Message statu(?:s|ses) with expected text "(.*)" in conversation view$
+     */
+    @Then("^I see (\\d+) Message statu(?:s|ses) in conversation view$")
+    public void ISeeMessageStatus(int expectedCount) throws Exception {
+        int actualCount = getConversationViewPage().getMessageStatusCount();
+        Assert.assertTrue(
+                String.format("The expect count is not equal to actual count, actual: %d, expect: %d",
+                        actualCount, expectedCount), actualCount == expectedCount);
+    }
+
+    /**
+     * Verify the trashcan is visible next the expected name
+     *
+     * @param shouldNotSee equals null means the trashcan should be visible next to the expected name
+     * @param name         the contact name
+     * @throws Exception
+     * @step. ^I see the trashcan next to the name of (.*) in the conversation view$
+     */
+    @Then("^I (do not )?see the trashcan next to the name of (.*) in the conversation view$")
+    public void ISeeTrashNextToName(String shouldNotSee, String name) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("Cannot see the trashcan next to the name '%s'", name),
+                    getConversationViewPage().waitUntilTrashIconVisible(name));
+        } else {
+            Assert.assertTrue(String.format("The trashcan next to the name '%s' should be invisible", name),
+                    getConversationViewPage().waitUntilTrashIconInvisible(name));
+        }
+    }
+
+    /**
+     * Verify the pen is visible next to the expected name
+     *
+     * @param shouldNotSee equals null means the pen should be visible next to the expected name
+     * @param name         the contact name
+     * @throws Exception
+     * @step. ^I (do not )?see the pen icon next to the name of (.*) in the conversation view$
+     */
+    @Then("^I (do not )?see the pen icon next to the name of (.*) in the conversation view$")
+    public void ISeePenNextToName(String shouldNotSee, String name) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("Cannot see the Pen icon next to the name '%s'", name),
+                    getConversationViewPage().waitUntilPenIconVisible(name));
+        } else {
+            Assert.assertTrue(String.format("The Pen icon next to the name '%s' should be invisible", name),
+                    getConversationViewPage().waitUntilPenIconInvisible(name));
+        }
+    }
+
+    /**
+     * Clear content in cursor input
+     *
+     * @throws Exception
+     * @step. ^I clear cursor input$
+     */
+    @When("^I clear cursor input$")
+    public void IClearCursorInput() throws Exception {
+        getConversationViewPage().clearMessageInCursorInput();
+    }
+
+    /**
+     * Verify the text message in cursor input is visible
+     *
+     * @param message the expected message
+     * @throws Exception
+     * @step. ^I see the message "(.*)" in cursor input$
+     */
+    @Then("^I see the message \"(.*)\" in cursor input$")
+    public void ISeeMessageInCursorInput(String message) throws Exception {
+        Assert.assertTrue(String.format("The expected message '%s' is not visible in cursor input", message),
+                getConversationViewPage().waitUntilCursorInputTextVisible(message));
     }
 }

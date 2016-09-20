@@ -6,8 +6,6 @@ Feature: Settings
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap settings gear button
-    And I click on Settings button on personal page
-    And I click on Settings button from the options menu
     Then I see settings page
 
     Examples:
@@ -20,11 +18,11 @@ Feature: Settings
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap settings gear button
-    And I click on Settings button on personal page
-    And I click on About button on personal page
-    Then I see About page
-    And I close About page
-    And I close self profile
+    And I select settings item About
+    Then I see settings item Privacy Policy
+    And I see settings item Terms of Use
+    And I see settings item License Information
+    When I tap Done navigation button on Settings page
     Then I see conversations list
 
     Examples:
@@ -37,12 +35,10 @@ Feature: Settings
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap settings gear button
-    And I click on Settings button on personal page
-    And I click on Settings button from the options menu
     And I select settings item Account
     And I select settings item Reset Password
     And I wait for 4 seconds
-    Then I see reset password page
+    Then I see Reset Password page
 
     Examples:
       | Name      |
@@ -54,9 +50,7 @@ Feature: Settings
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap settings gear button
-    And I click on Settings button on personal page
-    And I click on Settings button from the options menu
-    And I select settings item Alerts
+    And I select settings item Privacy & Security
     Then I verify sound alerts settings are set to default values
 
     Examples:
@@ -68,9 +62,9 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I tap settings gear button
-    And I click on Settings button on personal page
-    When I click on Help button from the options menu
+    When I tap settings gear button
+    And I select settings item Support
+    And I select settings item Wire Support Website
     And I wait for 4 seconds
     Then I see Support web page
 
@@ -78,43 +72,12 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C1100 @regression @fastLogin
-  Scenario Outline: Verify about screen contains all the required information
-    Given There is 1 user where <Name> is me
-    Given User me change accent color to <Color>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap settings gear button
-    And I click on Settings button on personal page
-    And I click on About button on personal page
-    Then I see About page
-    And I see WireWebsiteButton
-    And I see TermsButton
-    And I see PrivacyPolicyButton
-    And I see BuildNumberText
-    And I open PrivacyPolicyPage
-    And I see PrivacyPolicyPage
-    And I close legal page
-    Then I see About page
-    And I open TermsOfUsePage
-    And I see TermsOfUsePage
-    And I close legal page
-    Then I see About page
-    And I open WireWebsite
-    Then I see WireWebsitePage
-
-    Examples:
-      | Name      | Color  |
-      | user1Name | Violet |
-
   @C3247 @regression @rc @useSpecialEmail @fastLogin
   Scenario Outline: Verify deleting the account registered by email
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap settings gear button
-    And I click on Settings button on personal page
-    And I click on Settings button from the options menu
     And I select settings item Account
     And I start waiting for <Name> account removal notification
     And I select settings item Delete Account

@@ -18,10 +18,9 @@ public class SettingsPage extends IOSPage {
 
     public static final By xpathSettingsPage = By.xpath("//UIANavigationBar[@name='Settings']");
 
-    private static final By nameBackButton = MobileBy.AccessibilityId("Back");
-
-    private static final By xpathAllSoundAlertsButton =
-            By.xpath("//UIATableCell[@name='Sound Alerts']/*[@value='All']");
+    private static final FunctionFor2Parameters<String, String, String> xpathStrSettingsValue =
+            (itemName, expectedValue) -> String.format("//UIATableCell[@name='%s']/*[@value='%s']",
+                    itemName, expectedValue);
 
     private static final By nameEditButton = MobileBy.AccessibilityId("Edit");
 
@@ -43,6 +42,11 @@ public class SettingsPage extends IOSPage {
     private static final String xpathStrCurrentDevice = xpathStrMainWindow + "/UIATableView[1]/UIATableCell[1]";
     private static final By xpathCurrentDevices = By.xpath(xpathStrCurrentDevice);
 
+    private static final By xpathChangePasswordPageChangePasswordButton =
+            By.xpath("//UIAButton[@name='RESET PASSWORD']");
+
+    private static final By xpathAskSupport = By.xpath("//*[@name='Ask Support']");
+
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -53,14 +57,6 @@ public class SettingsPage extends IOSPage {
 
     public void selectItem(String itemName) throws Exception {
         ((IOSElement) getElement(xpathMenuContainer)).scrollTo(itemName).click();
-    }
-
-    public void goBack() throws Exception {
-        getElement(nameBackButton).click();
-    }
-
-    public boolean isSoundAlertsSetToDefault() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathAllSoundAlertsButton);
     }
 
     public boolean isItemVisible(String itemName) throws Exception {
@@ -114,5 +110,24 @@ public class SettingsPage extends IOSPage {
 
     public boolean isItemInvisible(String itemName) throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), MobileBy.AccessibilityId(itemName));
+    }
+
+    public void tapNavigationButton(String name) throws Exception {
+        getElement(MobileBy.AccessibilityId(name)).click();
+        // Wait for transition animation
+        Thread.sleep(1000);
+    }
+
+    public boolean isResetPasswordPageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathChangePasswordPageChangePasswordButton);
+    }
+
+    public boolean isSupportWebPageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathAskSupport, 15);
+    }
+
+    public boolean isSettingItemValueEqualTo(String itemName, String expectedValue) throws Exception {
+        final By locator = By.xpath(xpathStrSettingsValue.apply(itemName, expectedValue));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 }

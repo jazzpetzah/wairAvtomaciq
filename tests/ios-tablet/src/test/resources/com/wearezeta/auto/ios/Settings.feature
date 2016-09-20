@@ -7,8 +7,6 @@ Feature: Settings
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap settings gear button
-    And I click on Settings button on personal page
-    And I click on Settings button from the options menu
     Then I see settings page
 
     Examples:
@@ -22,11 +20,12 @@ Feature: Settings
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap settings gear button
-    And I click on Settings button on personal page
-    And I click on About button on personal page
-    Then I see About page
-    And I close About page
-    Then I see self profile page
+    And I select settings item About
+    Then I see settings item Privacy Policy
+    And I see settings item Terms of Use
+    And I see settings item License Information
+    When I tap Done navigation button on Settings page
+    Then I see conversations list
 
     Examples:
       | Name      |
@@ -39,12 +38,10 @@ Feature: Settings
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap settings gear button
-    And I click on Settings button on personal page
-    And I click on Settings button from the options menu
     And I select settings item Account
     And I select settings item Reset Password
     And I wait for 4 seconds
-    Then I see reset password page
+    Then I see Reset Password page
 
     Examples:
       | Name      |
@@ -57,10 +54,8 @@ Feature: Settings
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap settings gear button
-    And I click on Settings button on personal page
-    And I click on Settings button from the options menu
-    And I select settings item Alerts
-    Then I verify sound alerts settings are set to default values
+    And I select settings item Privacy & Security
+    Then I verify the value of setting item Sound Alerts equals to All
 
     Examples:
       | Name      |
@@ -73,43 +68,13 @@ Feature: Settings
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap settings gear button
-    And I click on Settings button on personal page
-    And I click on Help button from the options menu
+    And I select settings item Support
+    And I select settings item Wire Support Website
     Then I see Support web page
 
     Examples:
       | Name      |
       | user1Name |
-
-  @C2911 @regression @fastLogin
-  Scenario Outline: Verify about screen contains all the required information [LANDSCAPE]
-    Given There is 1 user where <Name> is me
-    Given User me change accent color to <Color>
-    Given I Sign in on tablet using my email
-    Given I rotate UI to landscape
-    Given I see conversations list
-    When I tap settings gear button
-    And I click on Settings button on personal page
-    And I click on About button on personal page
-    Then I see About page
-    And I see WireWebsiteButton
-    And I see TermsButton
-    And I see PrivacyPolicyButton
-    And I see BuildNumberText
-    And I open PrivacyPolicyPage
-    And I see PrivacyPolicyPage
-    And I close legal page
-    Then I see About page
-    And I open TermsOfUsePage
-    And I see TermsOfUsePage
-    And I close legal page
-    Then I see About page
-    And I open WireWebsite
-    Then I see WireWebsitePage
-
-    Examples:
-      | Name      | Color  |
-      | user1Name | Violet |
 
   @C145961 @rc @regression @useSpecialEmail
   Scenario Outline: Verify deleting the account registered by email [LANDSCAPE]
@@ -118,8 +83,6 @@ Feature: Settings
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap settings gear button
-    And I click on Settings button on personal page
-    And I click on Settings button from the options menu
     And I select settings item Account
     And I start waiting for <Name> account removal notification
     And I select settings item Delete Account

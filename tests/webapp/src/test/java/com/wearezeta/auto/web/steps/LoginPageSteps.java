@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.LoginPage;
@@ -88,9 +89,9 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Presses Sign In button on the corresponding page
+	 * Checks if Sign In button on the corresponding page is disabled
 	 *
-	 * @step. ^I press Sign In button$
+	 * @step. ^Sign In button is disabled$
 	 *
 	 * @throws Exception
 	 *             if Selenium fails to wait until sign in action completes
@@ -175,6 +176,21 @@ public class LoginPageSteps {
 		}
 		context.getPagesCollection().getPage(LoginPage.class).inputEmail(email);
 	}
+    
+    /**
+     * Types phone number string into the corresponding email input field on sign in page
+     *
+     * @throws java.lang.Exception
+     * @step. ^I enter phone number \"([^\"]*)\"$
+     *
+     * @param phoneNumber user phoneNumber string
+     */
+    @When("^I enter phone number \"([^\"]*)\"$")
+    public void IEnterPhoneNumber(String phoneNumber) throws Exception {
+        phoneNumber = context.getUserManager().replaceAliasesOccurences(phoneNumber,
+                ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+        context.getPagesCollection().getPage(LoginPage.class).inputEmail(phoneNumber);
+    }
 
 	/**
 	 * Types password string into the corresponding input field on sign in page
