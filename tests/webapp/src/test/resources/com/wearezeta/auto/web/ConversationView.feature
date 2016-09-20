@@ -489,7 +489,7 @@ And I wait for 60 seconds
     Given I am signed in properly
     When I open conversation with <ChatName>
     And Contact <Contact1> sends message <Message1> via device Device1 to group conversation <ChatName>
-    When I click to like the latest message without other likes
+    When I click to like the last message without other likes
     And I do not see likes below the latest message
     Then I see the latest message is only liked by me
     And I write message <Message2>
@@ -511,7 +511,7 @@ And I wait for 60 seconds
     And I verify that conversation input and buttons are not visible
     #check another user message <Message1>
     When I click to unlike the third last message without other likes
-    And I see the third last message is only liked by me
+    #And I see the third last message is only liked by me
     When I click context menu of the third last message
     And I do not see like button in context menu
     And I see delete for me button in context menu

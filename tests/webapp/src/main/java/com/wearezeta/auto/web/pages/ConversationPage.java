@@ -1002,11 +1002,12 @@ public class ConversationPage extends WebPage {
 
     //I edited this step
     public void clickLikeMessageWithoutOtherLikes(int messageIndex) throws Exception {
-        String messageId = getLatestMessageId();
-        if (messageIndex == 2) {
-            messageId = getSecondLastMessageId();
-        } else if (messageIndex == 3) {
-            messageId = getThirdLastMessageId();
+        String messageId = null;
+        switch (messageIndex) {
+            case 1: messageId = getLatestMessageId();
+            case 2: messageId = getSecondLastMessageId();
+            case 3: messageId = getThirdLastMessageId();
+            default: break;
         }
         hoverOverMessage(messageId);
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeWithoutOtherLikesByMessageId.apply(messageId));

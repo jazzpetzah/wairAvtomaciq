@@ -805,40 +805,39 @@ public class ConversationPageSteps {
         int indexNummer = 1;
             if (isWithout) {
                 if (isLike) {
-                    if (indexNumber == "third ") {
+                    if (indexNumber.equals("third ")) {
                         indexNummer = 3;
                     }
-                    if (indexNumber == "second ") {
+                    if (indexNumber.equals("second ")) {
                         indexNummer = 2;
                     }
                     context.getPagesCollection().getPage(ConversationPage.class).clickLikeMessageWithoutOtherLikes(indexNummer);
                 } else {
-                    if (indexNumber == "third ") {
+                    if (indexNumber.equals("third ")) {
                         indexNummer = 3;
                     }
-                    if (indexNumber == "second ") {
+                    if (indexNumber.equals("second ")) {
                         indexNummer = 2;
                     }
                     context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeMessageWithoutOtherLikes(indexNummer);
                 }
             } else if (isLike) {
-                if (indexNumber == "third ") {
+                if (indexNumber.equals("third ")) {
                     indexNummer = 3;
                 }
-                if (indexNumber == "second ") {
+                if (indexNumber.equals("second ")) {
                     indexNummer = 2;
                 }
                 context.getPagesCollection().getPage(ConversationPage.class).clickLikeMessageWithOtherLikes(indexNummer);
             } else {
-                if (indexNumber == "third ") {
+                if (indexNumber.equals("third ")) {
                     indexNummer = 3;
                 }
-                if (indexNumber == "second ") {
+                if (indexNumber.equals("second ")) {
                     indexNummer = 2;
                 }
                 context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeMessageWithOtherLikes(indexNummer);
             }
-
     }
 
     @Then("^I (do not )?see likes below the latest message$")
