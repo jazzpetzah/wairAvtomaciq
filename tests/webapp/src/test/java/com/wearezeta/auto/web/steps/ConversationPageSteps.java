@@ -695,12 +695,9 @@ public class ConversationPageSteps {
         if (indexNumber.equals("latest ")) {
             context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnLatestMessage();}
         else if (indexNumber.equals("second last ")) {
-            context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnSecondLastMessage();
-        }
+            context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnSecondLastMessage();}
         else if (indexNumber.equals("third last ")) {
             context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnThirdLastMessage();}
-
-        //else context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnLatestMessage();
     }
 
     @When("^I click to delete message for everyone in context menu$")
@@ -768,15 +765,23 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).clickEditInMessageContextMenu();
     }
 
-    @When("^I( do not)? see like symbol for latest message$")
-    public void ISeeLikeButton(String doNot) throws Exception {
-        if (doNot == null) {
-            assertTrue("Like symbol is not visible", context.getPagesCollection().getPage(ConversationPage.class)
-                    .isLikeSymbolVisible());
-        } else {
-            assertTrue("Like symbol is visible", context.getPagesCollection().getPage(ConversationPage.class)
-                    .isLikeSymbolInvisible());
-        }
+    @When("^I( do not)? see like symbol for (second )?last message$")
+    public void ISeeLikeButton(String doNot, String second) throws Exception {
+        boolean isSecond = " second".equals(second);
+        if (isSecond) {
+                if (doNot == null) {
+                    assertTrue("Like symbol is not visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolVisibleForLatestMessage());
+                } else {
+                    assertTrue("Like symbol is visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolInvisibleForLatestMessage());
+                }
+            }
+            else {
+                if (doNot == null) {
+                    assertTrue("Like symbol is not visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolVisibleForSecondLastMessage());
+                } else {
+                    assertTrue("Like symbol is visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolInvisibleForSecondLastMessage());
+                }
+            }
     }
 
     @When("^I click (like|unlike) button in context menu for latest message$")

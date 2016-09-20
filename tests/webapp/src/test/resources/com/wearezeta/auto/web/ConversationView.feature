@@ -509,13 +509,13 @@ And I wait for 60 seconds
     And I click on participant <Contact1> on Group Participants popover
     And I do not see Remove button on Group Participants popover
     And I verify that conversation input and buttons are not visible
-    #check another user message\
-    #And I cannot unlike <Message1>
+    #check another user message <Message1>
+    And I cannot click like button for the third last message
     When I click context menu of the third last message
     And I do not see like button in context menu
     And I see delete for me button in context menu
     #check own message
-    #And I do not see like symbol for second latest message
+    And I do not see like symbol for second last message
     And I click context menu of the second last message
     And I do not see delete for everyone button in context menu
     And I do not see like button in context menu
