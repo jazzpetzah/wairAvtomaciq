@@ -352,67 +352,67 @@ Feature: Delete Everywhere
       | Login      | Password      | Name      | Contact1  | Contact2  | Message_1      | Message_2      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Test_Message_1 | Test_Message_2 |
 
-    @C206258 @regression @WEBAPP-3040
-    Scenario Outline: Verify delete everywhere works for Soundcloud, Spotify, YouTube, Vimeo
-      Given There are 2 users where <Name> is me
-      Given Myself is connected to <Contact>
-      Given user <Name> adds a new device Device1 with label Label1
-      Given I switch to Sign In page
-      Given I Sign in using login <Login> and password <Password>
-      Given I see the history info page
-      Given I click confirm on history info page
-      Given I am signed in properly
-      When I open conversation with <Contact>
-      When I write message <Youtubelink>
-      And I send message
-      And I see embedded youtube message <Youtubelink>
-      When I click context menu of the latest message
-      And I click to delete message for everyone in context menu
-      And I click confirm to delete message for everyone
-      And I do not see text message <Youtubelink>
-      Then I do not see embedded youtube message <Youtubelink>
-      When I write message <Soundcloudlink>
-      And I send message
-      Then I see embedded soundcloud message <Soundcloudlink>
-      And I click context menu of the latest message
-      And I click to delete message for everyone in context menu
-      And I click confirm to delete message for everyone
-      Then I do not see embedded soundcloud message <Soundcloudlink>
-      When I write message <Vimeolink>
-      And I send message
-      Then I see embedded vimeo message <Vimeolink>
-      And I click context menu of the latest message
-      And I click to delete message for everyone in context menu
-      And I click confirm to delete message for everyone
-      Then I do not see embedded vimeo message <Vimeolink>
-      And I write message <Spotifylink>
-      And I send message
-      And I see embedded spotify message <Spotifylink>
-      When I click context menu of the latest message
-      And I click to delete message for everyone in context menu
-      And I click confirm to delete message for everyone
-      Then I do not see embedded spotify message <Spotifylink>
-      When Contact <Contact> sends message <Youtubelink> via device Device1 to user me
-      Then I see embedded youtube message <Youtubelink>
-      When User <Contact> deletes the recent 1 message everywhere from user <Contact> via device Device1
-      And I do not see text message <Youtubelink>
-      And I see 1 deleted messages in conversation
-      When Contact <Contact> sends message <Soundcloudlink> via device Device1 to user me
-      Then I see text message <Soundcloudlink>
-      When User <Contact> deletes the recent 1 message everywhere from user <Contact> via device Device1
-      And I do not see text message <Soundcloudlink>
-      And I see 2 deleted messages in conversation
-      When Contact <Contact> sends message <Vimeolink> via device Device1 to user me
-      Then I see text message <Vimeolink>
-      When User <Contact> deletes the recent 1 message everywhere from user <Contact> via device Device1
-      And I do not see text message <Vimeolink>
-      And I see 3 deleted messages in conversation
-      When Contact <Contact> sends message <Spotifylink> via device Device1 to user me
-      Then I see text message <Spotifylink>
-      When User <Contact> deletes the recent 1 message everywhere from user <Contact> via device Device1
-      And I do not see text message <Spotifylink>
-      And I see 4 deleted messages in conversation
+  @C206258 @regression @WEBAPP-3040
+  Scenario Outline: Verify delete everywhere works for Soundcloud, Spotify, YouTube, Vimeo
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given user <Name> adds a new device Device1 with label Label1
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    When I write message <Youtubelink>
+    And I send message
+    And I see embedded youtube message <Youtubelink>
+    When I click context menu of the latest message
+    And I click to delete message for everyone in context menu
+    And I click confirm to delete message for everyone
+    And I do not see text message <Youtubelink>
+    Then I do not see embedded youtube message <Youtubelink>
+    When I write message <Soundcloudlink>
+    And I send message
+    Then I see embedded soundcloud message <Soundcloudlink>
+    And I click context menu of the latest message
+    And I click to delete message for everyone in context menu
+    And I click confirm to delete message for everyone
+    Then I do not see embedded soundcloud message <Soundcloudlink>
+    When I write message <Vimeolink>
+    And I send message
+    Then I see embedded vimeo message <Vimeolink>
+    And I click context menu of the latest message
+    And I click to delete message for everyone in context menu
+    And I click confirm to delete message for everyone
+    Then I do not see embedded vimeo message <Vimeolink>
+    And I write message <Spotifylink>
+    And I send message
+    And I see embedded spotify message <Spotifylink>
+    When I click context menu of the latest message
+    And I click to delete message for everyone in context menu
+    And I click confirm to delete message for everyone
+    Then I do not see embedded spotify message <Spotifylink>
+    When Contact <Contact> sends message <Youtubelink> via device Device1 to user me
+    Then I see embedded youtube message <Youtubelink>
+    When User <Contact> deletes the recent 1 message everywhere from user <Contact> via device Device1
+    And I do not see text message <Youtubelink>
+    And I see 1 deleted messages in conversation
+    When Contact <Contact> sends message <Soundcloudlink> via device Device1 to user me
+    Then I see text message <Soundcloudlink>
+    When User <Contact> deletes the recent 1 message everywhere from user <Contact> via device Device1
+    And I do not see text message <Soundcloudlink>
+    And I see 2 deleted messages in conversation
+    When Contact <Contact> sends message <Vimeolink> via device Device1 to user me
+    Then I see text message <Vimeolink>
+    When User <Contact> deletes the recent 1 message everywhere from user <Contact> via device Device1
+    And I do not see text message <Vimeolink>
+    And I see 3 deleted messages in conversation
+    When Contact <Contact> sends message <Spotifylink> via device Device1 to user me
+    Then I see text message <Spotifylink>
+    When User <Contact> deletes the recent 1 message everywhere from user <Contact> via device Device1
+    And I do not see text message <Spotifylink>
+    And I see 4 deleted messages in conversation
 
-      Examples:
-        | Login      | Password      | Name      | Contact   | Youtubelink                                 | Soundcloudlink                                                      | Vimeolink                 | Spotifylink                                           |
-        | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=ncHd3sxpEbo | https://soundcloud.com/nour-moukhtar/ludwig-van-beethoven-fur-elise | https://vimeo.com/7265982 | https://play.spotify.com/album/7buEcyw6fJF3WPgr06BomH |
+    Examples:
+      | Login      | Password      | Name      | Contact   | Youtubelink                                 | Soundcloudlink                                                      | Vimeolink                 | Spotifylink                                           |
+      | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=ncHd3sxpEbo | https://soundcloud.com/nour-moukhtar/ludwig-van-beethoven-fur-elise | https://vimeo.com/7265982 | https://play.spotify.com/album/7buEcyw6fJF3WPgr06BomH |
