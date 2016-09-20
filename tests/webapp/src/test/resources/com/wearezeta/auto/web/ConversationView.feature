@@ -514,6 +514,7 @@ And I wait for 60 seconds
     And I do not see edit button in context menu
     And I see delete for me button in context menu
     #general actions in group
+    And I verify that conversation input and buttons are not visible
     When I click People button in group conversation
     #editing group name - should be disabled, but not implemented yet. So for now the name stays the same as before editing
     And I see titlebar with <ChatName>
@@ -525,7 +526,6 @@ And I wait for 60 seconds
     And I do not see Leave button on Group Participants popover
     And I click on participant <Contact1> on Group Participants popover
     And I do not see Remove button on Group Participants popover
-    And I verify that conversation input and buttons are not visible
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName     | Message1 | MessageAction | Message2 | ChatNameEdit |

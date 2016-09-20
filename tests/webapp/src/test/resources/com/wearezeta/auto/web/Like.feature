@@ -13,15 +13,15 @@ Feature: Like
 # No likes
     And I do not see likes below the latest message
 # Only liked by me
-    When I click to like the latest message without other likes
+    When I click to like the last message without other likes
     And I do not see likes below the latest message
-    Then I see the latest message is only liked by me
+    Then I see the last message is only liked by me
 # Liked by others and me
     When User <Contact> likes the recent message from user <Name> via device Device1
     And I see likes below the latest message
     And I see the latest message is liked by Myself,<Contact>
 # Only liked by others
-    When I click to unlike the latest message with other likes
+    When I click to unlike the last message with other likes
     Then I see likes below the latest message
     And I see the latest message is liked by <Contact>
 # Everything unliked
@@ -370,7 +370,7 @@ Feature: Like
 # Only liked by me
     When I click to like the last message without other likes
     And I do not see likes below the latest message
-    Then I see the latest message is only liked by me
+    Then I see the last message is only liked by me
 # Liked by others and me
     When User <Contact> likes the recent message from user <Name> via device Device1
     And I see likes below the latest message
@@ -450,7 +450,7 @@ Feature: Like
 # Only liked by me
     When I click to like the last message without other likes
     And I do not see likes below the latest message
-    Then I see the latest message is only liked by me
+    Then I see the last message is only liked by me
 # Liked by others and me
     When User <Contact> likes the recent message from user <Name> via device Device1
     And I see likes below the latest message
@@ -467,7 +467,7 @@ Feature: Like
 # Only liked by me
     When I click to like the last message without other likes
     And I do not see likes below the latest message
-    Then I see the latest message is only liked by me
+    Then I see the last message is only liked by me
 # Liked by others and me
     When User <Contact> likes the recent message from user <Name> via device Device1
     And I see likes below the latest message
@@ -500,7 +500,7 @@ Feature: Like
 # Only liked by me
     When I click to like the last message without other likes
     And I do not see likes below the latest message
-    Then I see the latest message is only liked by me
+    Then I see the last message is only liked by me
 # Liked by others and me
     When User <Contact> likes the recent message from user <Name> via device Device1
     And I see likes below the latest message
@@ -513,7 +513,7 @@ Feature: Like
 # Only liked by me
     When I click to like the last message without other likes
     And I do not see likes below the latest message
-    Then I see the latest message is only liked by me
+    Then I see the last message is only liked by me
 # Liked by others and me
     When User <Contact> likes the recent message from user <Name> via device Device1
     And I see likes below the latest message
@@ -594,7 +594,7 @@ Feature: Like
     When I click context menu of the latest message
     And I click like button in context menu for latest message
     And I do not see likes below the latest message
-    Then I see the latest message is only liked by me
+    Then I see the last message is only liked by me
 # Liked by others and me
     When User <Contact> likes the recent message from user <Name> via device Device1
     And I see likes below the latest message
