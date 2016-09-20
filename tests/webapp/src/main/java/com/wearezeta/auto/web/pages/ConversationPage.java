@@ -1032,7 +1032,7 @@ public class ConversationPage extends WebPage {
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeSymbol.apply(getSecondLastMessageId()));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
-    
+
     public void clickLikeMessageWithoutOtherLikes(int messageIndex) throws Exception {
         String messageId = getMessageId(messageIndex);
         hoverOverMessage(messageId);
@@ -1099,29 +1099,25 @@ public class ConversationPage extends WebPage {
     }
 
     public boolean isUnlikeWithoutOtherLikesVisibleForMessage(int messageIndex) throws Exception {
-        String messageId = getLatestMessageId();
-        if (messageIndex == 2) {
-            messageId = getSecondLastMessageId();
-        } else if (messageIndex == 3) {
-            messageId = getThirdLastMessageId();
-        }
+        String messageId = getMessageId(messageIndex);
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssUnlikeWithoutOtherLikesByMessageId.apply(
                 messageId));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean isUnlikeWithoutOtherLikesInvisibleForLatestMessage() throws Exception {
+    public boolean isUnlikeWithoutOtherLikesInvisibleForMessage(int messageIndex) throws Exception {
+        String messageId = getMessageId(messageIndex);
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssUnlikeWithoutOtherLikesByMessageId.apply(
-                getLatestMessageId()));
+                messageId));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public boolean isLikeLineVisibleForLatestMessage() throws Exception {
+    public boolean isLikeLineVisibleForLastMessage() throws Exception {
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssFooterByMessageId.apply(getLatestMessageId()));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean isLikeLineInvisibleForLatestMessage() throws Exception {
+    public boolean isLikeLineInvisibleForLastMessage() throws Exception {
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssFooterByMessageId.apply(getLatestMessageId()));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
@@ -1168,7 +1164,7 @@ public class ConversationPage extends WebPage {
         hoverOverMessage(getLatestMessageId());
     }
 
-    public void clickEditInContextMenuOfLatestMessage() throws Exception {
+    public void clickEditInContextMenuOfLastMessage() throws Exception {
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssEditMessageId.apply(getLatestMessageId()));
         getDriver().findElement(locator).click();
     }
@@ -1227,7 +1223,7 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public boolean isLikeButtonInvisibleForLatestMessage() throws Exception {
+    public boolean isLikeButtonInvisibleForLastMessage() throws Exception {
         By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
         String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeButtonByMessageId.apply(id));
@@ -1306,6 +1302,8 @@ public class ConversationPage extends WebPage {
         conversationInput.sendKeys(Keys.ARROW_UP);
     }
 
+    //location sharing
+
     public String getLocationName() {
         return locationName.getText();
     }
@@ -1328,6 +1326,8 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.cssSelector(
                 WebAppLocators.ConversationPage.cssBroadcastIndicatorVideo));
     }
+
+    //link preview
 
     public String getLinkTitle() {
         return linkTitle.getText();

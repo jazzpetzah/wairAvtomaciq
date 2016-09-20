@@ -891,15 +891,14 @@ public class ConversationPageSteps {
             }
     }
 
-    @Then("^I (do not )?see likes below the latest message$")
+    @Then("^I (do not )?see likes below the last message$")
     public void ThenISeeLikesForLatestMessage(String not) throws Exception {
         if (not == null) {
-            assertTrue("Likes of others are NOT visible for message", context.getPagesCollection().getPage(
-                    ConversationPage.class)
-                    .isLikeLineVisibleForLatestMessage());
+            assertTrue("Likes of others are NOT visible for last message", context.getPagesCollection().getPage(
+                    ConversationPage.class).isLikeLineVisibleForLastMessage());
         } else {
-            assertTrue("Likes of others are visible for message", context.getPagesCollection().getPage(ConversationPage.class)
-                    .isLikeLineInvisibleForLatestMessage());
+            assertTrue("Likes of others are visible for last message", context.getPagesCollection().getPage(ConversationPage.class)
+                    .isLikeLineInvisibleForLastMessage());
         }
     }
 
