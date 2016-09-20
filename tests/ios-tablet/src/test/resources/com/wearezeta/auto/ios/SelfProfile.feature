@@ -10,12 +10,12 @@ Feature: Self Profile
     And I select settings item Account
     And I tap to edit my name
     And I change my name to <NewUsername>
-    Then I verify the value of settings item Name equals to <NewUsername>
+    Then I verify the value of settings item Name equals to "<NewUsername>"
     When I close self profile
     And I tap settings gear button
     And I tap to edit my name
     And I change my name to <NewUsername1>
-    Then I verify the value of settings item Name equals to <NewUsername1>
+    Then I verify the value of settings item Name equals to "<NewUsername1>"
 
     Examples:
       | Name      | NewUsername                                                          | NewUsername1                                                     |
@@ -62,61 +62,48 @@ Feature: Self Profile
       | Name      | Timeout |
       | user1Name | 60      |
 
-  @C2878 @regression @fastLogin
-  Scenario Outline: Attempt to enter a name with 0 chars [PORTRAIT]
+  @C2878 @C2886 @regression @fastLogin
+  Scenario Outline: Attempt to enter a name with 0/1 chars [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap settings gear button
-    And I tap to edit my name
-    And I attempt to input an empty name and press return
-    And I see error message asking for more characters
-    And I attempt to input an empty name and tap the screen
-    And I see error message asking for more characters
+    Given I tap settings gear button
+    Given I select settings item Account
+    Given I select settings item Name
+    When I clear Name input field on Settings page
+    And I tap Return button on the keyboard
+    Then I verify the alert contains text <ExpectedAlertText>
+    And I tap OK button on the alert
+    When I clear Name input field on Settings page
+    And I set "<OneCharName>" value to Name input field on Settings page
+    And I tap Return button on the keyboard
+    Then I verify the alert contains text <ExpectedAlertText>
 
     Examples:
-      | Name      |
-      | user1Name |
-
-  @C2886 @regression @fastLogin
-  Scenario Outline: Verify 2 chars limit [LANDSCAPE]
-    Given There is 1 user where <Name> is me
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I tap settings gear button
-    # This alert is sometimes not accepted automatically
-    And I accept alert
-    And I tap to edit my name
-    And I attempt to enter <username1char> and press return
-    Then I see error message asking for more characters
-
-    Examples:
-      | Name      | username1char |
-      | user1Name | c             |
+      | Name      | ExpectedAlertText     | OneCharName |
+      | user1Name | AT LEAST 2 CHARACTERS | c           |
 
   @C2888 @rc @regression @fastLogin
   Scenario Outline: Verify name change [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There are 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User <Name> sends 1 encrypted message to user <Contact>
-    When I tap settings gear button
-    # This alert is sometimes not accepted automatically
-    And I tap OK button on the alert
-    And I tap to edit my name
-    And I change my name to <NewUsername>
-    And I close self profile
-    And I tap on contact name <Contact>
-    # Wait for conversation view to be loaded
-    And I wait for 3 seconds
-    Then I see my user name <NewUsername> in conversation
+    Given I tap settings gear button
+    Given I select settings item Account
+    Given I select settings item Name
+    When I clear Name input field on Settings page
+    And I set "<NewUsername>" value to Name input field on Settings page
+    And I tap Return button on the keyboard
+    And I tap Done navigation button on Settings page
+    And I see conversations list
+    And I tap settings gear button
+    And I select settings item Account
+    Then I verify the value of settings item Name equals to "<NewUsername>"
 
     Examples:
-      | Name      | NewUsername | Contact   |
-      | user1Name | NewName     | user2Name |
+      | Name      | NewUsername |
+      | user1Name | NewName     |
 
   @C2856 @regression @fastLogin
   Scenario Outline: Verify changing and applying accent color [PORTRAIT]

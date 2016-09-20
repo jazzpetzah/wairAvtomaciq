@@ -56,9 +56,9 @@ public class SettingsPageSteps {
      * @param itemName      setting option name
      * @param expectedValue the expected value. Can be user name/email/phone number alias
      * @throws Exception
-     * @step. ^I verify the value of settings item (.*) equals to (.*)
+     * @step. ^I verify the value of settings item (.*) equals to "(.*)"
      */
-    @Then("^I verify the value of settings item (.*) equals to (.*)")
+    @Then("^I verify the value of settings item (.*) equals to \"(.*)\"")
     public void IVerifySettingsItemValue(String itemName, String expectedValue) throws Exception {
         expectedValue = usrMgr.replaceAliasesOccurences(expectedValue, ClientUsersManager.FindBy.EMAIL_ALIAS);
         expectedValue = usrMgr.replaceAliasesOccurences(expectedValue, ClientUsersManager.FindBy.NAME_ALIAS);
@@ -256,5 +256,29 @@ public class SettingsPageSteps {
     @Then("^I see Support web page$")
     public void ISeeSupportWebPage() throws Exception {
         Assert.assertTrue("Customer support page has not been loaded", getSettingsPage().isSupportWebPageVisible());
+    }
+
+    /**
+     * Resets the content of Self Name input
+     *
+     * @throws Exception
+     * @step. ^I clear Name input field on Settings page$
+     */
+    @When("^I clear Name input field on Settings page$")
+    public void IClearSelfName() throws Exception {
+        getSettingsPage().clearSelfName();
+    }
+
+    /**
+     * Sets the value of Self Name input to a new one
+     *
+     * @param newValue can be also an alias
+     * @throws Exception
+     * @step. ^I set "(.*)" value to Name input field on Settings page$
+     */
+    @When("^I set \"(.*)\" value to Name input field on Settings page$")
+    public void ISetSelfName(String newValue) throws Exception {
+        newValue = usrMgr.replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.NAME_ALIAS);
+        getSettingsPage().setSelfName(newValue);
     }
 }

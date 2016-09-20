@@ -72,7 +72,7 @@ Feature: Registration
     Then I see conversations list
     When I tap settings gear button
     And I select settings item Account
-    Then I verify the value of settings item Name equals to <ArabicName>
+    Then I verify the value of settings item Name equals to "<ArabicName>"
 
     Examples:
       | Name      | ArabicName |

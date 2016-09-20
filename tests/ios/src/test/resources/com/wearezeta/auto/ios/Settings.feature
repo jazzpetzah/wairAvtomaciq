@@ -51,11 +51,11 @@ Feature: Settings
     Given I see conversations list
     When I tap settings gear button
     And I select settings item Privacy & Security
-    Then I verify the value of settings item Sound Alerts equals to All
+    Then I verify the value of settings item Sound Alerts equals to "<ExpectedValue>"
 
     Examples:
-      | Name      |
-      | user1Name |
+      | Name      | ExpectedValue |
+      | user1Name | All           |
 
   @C1109 @regression @fastLogin
   Scenario Outline: Verify you can access Help site within the app

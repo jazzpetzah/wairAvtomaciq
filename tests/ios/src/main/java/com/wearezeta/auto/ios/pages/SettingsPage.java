@@ -24,6 +24,8 @@ public class SettingsPage extends IOSPage {
 
     private static final By nameEditButton = MobileBy.AccessibilityId("Edit");
 
+    private static final By nameSelfNameEditField = By.xpath("//UIATableCell[@name='Name']/UIATextField[last()]");
+
     private static final Function<String, String> xpathDeleteDeviceButtonByName = devicename ->
             String.format("//UIAButton[contains(@name,'Delete %s')]", devicename);
 
@@ -130,5 +132,13 @@ public class SettingsPage extends IOSPage {
         final By locator = By.xpath(xpathStrSettingsValue.apply(itemName, expectedValue));
         ((IOSElement) getElement(xpathMenuContainer)).scrollTo(itemName);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public void clearSelfName() throws Exception {
+        getElement(nameSelfNameEditField).clear();
+    }
+
+    public void setSelfName(String newName) throws Exception {
+        getElement(nameSelfNameEditField).sendKeys(newName);
     }
 }

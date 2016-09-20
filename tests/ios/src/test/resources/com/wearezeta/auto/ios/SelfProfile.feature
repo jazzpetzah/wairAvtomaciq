@@ -1,16 +1,16 @@
 Feature: Self Profile
 
-  @C3211 @regression @fastLogin @torun
+  @C3211 @regression @fastLogin
   Scenario Outline: Change your profile picture
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap settings gear button
+    Given I tap settings gear button
     # Wait until profile picture is fully loaded
-    And I wait for 7 seconds
-    And I select settings item Account
-    And I select settings item Picture
-    And I remember my current profile picture
+    Given I wait for 7 seconds
+    Given I select settings item Account
+    Given I select settings item Picture
+    When I remember my current profile picture
     And I tap Camera Roll button on Camera page
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
@@ -20,53 +20,43 @@ Feature: Self Profile
       | Name      | Timeout |
       | user1Name | 60      |
 
-  @C1092 @regression @fastLogin
-  Scenario Outline: Attempt to enter a name with 0 chars
+  @C1092 @C1093 @regression @fastLogin @torun
+  Scenario Outline: Attempt to enter a name with 0/1 chars
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap settings gear button
-    And I tap to edit my name
-    And I attempt to input an empty name and press return
-    And I see error message asking for more characters
-    And I attempt to input an empty name and tap the screen
-    And I see error message asking for more characters
+    Given I tap settings gear button
+    Given I select settings item Account
+    Given I select settings item Name
+    When I clear Name input field on Settings page
+    And I tap Return button on the keyboard
+    Then I verify the alert contains text <ExpectedAlertText>
+    And I tap OK button on the alert
+    When I clear Name input field on Settings page
+    And I set "<OneCharName>" value to Name input field on Settings page
+    And I tap Return button on the keyboard
+    Then I verify the alert contains text <ExpectedAlertText>
 
     Examples:
-      | Name      |
-      | user1Name |
-
-  @C1093 @regression @fastLogin
-  Scenario Outline: Attempt to enter a name with 1 char
-    Given There is 1 user where <Name> is me
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap settings gear button
-    And I tap to edit my name
-    And I attempt to enter <username> and press return
-    And I see error message asking for more characters
-    And I attempt to enter <username> and tap the screen
-    And I see error message asking for more characters
-
-    Examples:
-      | Name      | username |
-      | user1Name | c        |
+      | Name      | ExpectedAlertText     | OneCharName |
+      | user1Name | AT LEAST 2 CHARACTERS | c           |
 
   @C1097 @regression @rc @clumsy @fastLogin
   Scenario Outline: Verify name change
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap settings gear button
-    And I tap to edit my name
-    And I attempt to input an empty name and press return
-    And I see error message asking for more characters
-    And I change my name to <NewUsername>
-    And I close self profile
+    Given I tap settings gear button
+    Given I select settings item Account
+    Given I select settings item Name
+    When I clear Name input field on Settings page
+    And I set "<NewUsername>" value to Name input field on Settings page
+    And I tap Return button on the keyboard
+    And I tap Done navigation button on Settings page
     And I see conversations list
     And I tap settings gear button
     And I select settings item Account
-    Then I verify the value of settings item Name equals to <NewUsername>
+    Then I verify the value of settings item Name equals to "<NewUsername>"
 
     Examples:
       | Name      | NewUsername |
