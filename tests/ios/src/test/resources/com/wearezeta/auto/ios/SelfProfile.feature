@@ -70,15 +70,16 @@ Feature: Self Profile
     Given I accept First Time overlay if it is visible
     Given I dismiss settings warning
     Given I see conversations list
-    When I tap settings gear button
-    And I tap to add my phone number
+    Given I tap settings gear button
+    Given I select settings item Account
+    When I select settings item Add phone number
     And I enter phone number for Myself
     And I enter registration verification code for Myself
-    Then I see phone number attached to profile
+    Then I verify the value of settings item Phone equals to "<MyPhoneNumber>"
 
     Examples:
-      | Name      |
-      | user1Name |
+      | Name      | MyPhoneNumber    |
+      | user1Name | user1PhoneNumber |
 
   @C1087 @regression
   Scenario Outline: Verify error message appears in case of entering a not valid phone number
@@ -89,13 +90,14 @@ Feature: Self Profile
     Given I accept First Time overlay if it is visible
     Given I dismiss settings warning
     Given I see conversations list
-    When I tap settings gear button
-    And I tap to add my phone number
-    Then I enter 5 digits phone number and expect no commit button
+    Given I tap settings gear button
+    Given I select settings item Account
+    When I select settings item Add phone number
+    Then I enter <DigitsCount> digits phone number and expect no commit button
 
     Examples:
-      | Name      |
-      | user1Name |
+      | Name      | DigitsCount |
+      | user1Name | 5           |
 
   @C1088 @regression @noAcceptAlert
   Scenario Outline: Verify error message appears in case of registering already taken phone number
