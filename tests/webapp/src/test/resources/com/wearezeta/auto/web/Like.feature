@@ -433,7 +433,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Message1 |
       | user1Email | user1Password | user1Name | user2Name | like me  |
 
-  @C226443 @like @regression
+  @C226443 @like @edit @regression
   Scenario Outline: Verify likes are reset if you edited message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

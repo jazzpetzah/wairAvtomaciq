@@ -1,6 +1,6 @@
 Feature: Edit
 
-  @C206267 @regression
+  @C206267 @edit @regression
   Scenario Outline: Verify I can edit my message in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -25,7 +25,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact   | Message1 | Message2       |
       | user1Email | user1Password | user1Name | user2Name | message1 | edited message |
 
-  @C206268 @regression
+  @C206268 @edit @regression
   Scenario Outline: Verify I can edit my message in group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -51,7 +51,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact1  |Contact2   | ChatName  | Message1 | Message2       |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | message1 | edited message |
 
-  @C206280 @regression
+  @C206280 @edit @regression
   Scenario Outline: Verify I cannot edit another users message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -72,7 +72,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact1  |Contact2   | ChatName  | Message1 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | message1 |
 
-  @C206284 @regression
+  @C206284 @edit @regression
   Scenario Outline: Verify I can edit my last message by pressing the up arrow key
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -96,7 +96,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact   | OriginalMessage | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | edit me         | edited        |
 
-  @C206287 @staging
+  @C206287 @edit @staging
   Scenario Outline: Verify design is correct if I edit a message in between other messages from me
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -130,7 +130,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact   | OriginalMessage | EditedMessage |
       | user1Email | user2Password | user1Name | user2Name | edit me         | edited        |
 
-  @C206269 @regression
+  @C206269 @edit @regression
   Scenario Outline: Verify I see changed message if message was edited from another device (1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -155,7 +155,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact1   | OriginalMessage | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name  | edit me         | edited        |
 
-  @C206270 @regression
+  @C206270 @edit @regression
   Scenario Outline: Verify I see changed message if message was edited from another device (group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -181,7 +181,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact1   | Contact2   | ChatName | OriginalMessage | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | GC1      | edit me         | edited        |
 
-  @C225972 @regression
+  @C225972 @edit @regression
   Scenario Outline: Verify I see changed message if message was edited from another user (1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -214,7 +214,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact1   | AnotherMessage | OriginalMessage | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name  | something      | edit me         | edited        |
 
-  @C225973 @regression
+  @C225973 @edit @regression
   Scenario Outline: Verify I see changed message if message was edited from another user (group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -237,7 +237,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact1   | Contact2   | ChatName | OriginalMessage | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | GC1      | edit me         | edited        |
 
-  @C223070 @staging
+  @C223070 @edit @staging
   Scenario Outline: Verify position and date of edited message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -287,7 +287,7 @@ Feature: Edit
       | Login      | Password      | Login2     | Password2     | Name      | Contact   | OriginalMessage | EditedMessage |
       | user1Email | user1Password | user2Email | user2Password | user1Name | user2Name | edit me         | edited        |
 
-  @C223071 @regression
+  @C223071 @edit @regression
   Scenario Outline: Verify editing a message does not create unread dot on receiver side
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -311,7 +311,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact1  | Contact2  | OriginalMessage | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | user3Name | edit me         | edited        |
 
-  @C206283 @regression
+  @C206283 @edit @regression
   Scenario Outline: Verify I can edit a message multiple times in a row
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -344,7 +344,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact   | OriginalMessage | EditedMessage1 | EditedMessage2 |
       | user1Email | user1Password | user1Name | user2Name | edit me         | edited1        | edited2        |
 
-  @C206281 @regression
+  @C206281 @edit @regression
   Scenario Outline: Verify I can cancel editing a message by button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -369,7 +369,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact   | OriginalMessage | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | edit me         | edited1       |
 
-  @C206285 @regression
+  @C206285 @edit @regression
   Scenario Outline: Verify I can switch to edit another message while editing a message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
