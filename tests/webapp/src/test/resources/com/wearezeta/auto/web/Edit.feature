@@ -96,6 +96,40 @@ Feature: Edit
       | Login      | Password      | Name      | Contact   | OriginalMessage | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | edit me         | edited        |
 
+  @C206287 @staging
+  Scenario Outline: Verify design is correct if I edit a message in between other messages from me
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I write random message
+    And I send message
+    And I see random message in conversation
+    And I write message <OriginalMessage>
+    And I send message
+    And I see text message <OriginalMessage>
+    And I write random message
+    And I send message
+    And I see random message in conversation
+    Then I see 4 messages in conversation
+    And I do not see message header for second last message
+    When I click context menu of the second last message
+    And I click to edit message in context menu
+    And I delete 7 characters from the conversation input
+    And I write message <EditedMessage>
+    And I send message
+    Then I do not see text message <OriginalMessage>
+    And I see text message <EditedMessage>
+    And I see 4 messages in conversation
+    And I see message header for second last message
+    And I do not see message header for last message
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | OriginalMessage | EditedMessage |
+      | user1Email | user2Password | user1Name | user2Name | edit me         | edited        |
+
   @C206269 @regression
   Scenario Outline: Verify I see changed message if message was edited from another device (1:1)
     Given There are 2 users where <Name> is me
@@ -202,6 +236,56 @@ Feature: Edit
     Examples:
       | Login      | Password      | Name      | Contact1   | Contact2   | ChatName | OriginalMessage | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | GC1      | edit me         | edited        |
+
+  @C223070 @staging
+  Scenario Outline: Verify position and date of edited message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login2> and password <Password2>
+    Given I see Welcome page
+    Given I confirm keeping picture on Welcome page
+    Given I am signed in properly
+    Given I open self profile
+    Given I click gear button on self profile page
+    Given I select Log out menu item on self profile page
+    Given I see the clear data dialog
+    Given I click Logout button on clear data dialog
+    When I see Sign In page
+    And I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact>
+    And I write message <OriginalMessage>
+    And I send message
+    Then I see text message <OriginalMessage>
+    When I write message last message
+    And I send message
+    Then I see text message last message
+    When I click context menu of the second last message
+    And I click to edit message in context menu
+    And I delete 7 characters from the conversation input
+    And I write message <EditedMessage>
+    And I send message
+    Then I do not see text message <OriginalMessage>
+    And I see text message <EditedMessage>
+    And I see 3 messages in conversation
+    And I see latest text message last message
+    When I remember edit timestamp of second latest message
+    And I open self profile
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    Then I click Logout button on clear data dialog
+    When I see Sign In page
+    And I Sign in using login <Login2> and password <Password2>
+    And I am signed in properly
+    And I open conversation with <Name>
+    Then I see latest text message last message
+    And I verify the edit timestamp of second latest message equals the remembered timestamp
+
+    Examples:
+      | Login      | Password      | Login2     | Password2     | Name      | Contact   | OriginalMessage | EditedMessage |
+      | user1Email | user1Password | user2Email | user2Password | user1Name | user2Name | edit me         | edited        |
 
   @C223071 @regression
   Scenario Outline: Verify editing a message does not create unread dot on receiver side

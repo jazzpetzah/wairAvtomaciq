@@ -33,6 +33,7 @@ import org.junit.Assert;
 import org.openqa.selenium.Keys;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -51,6 +52,8 @@ public class ConversationPageSteps {
     private static final String VIDEO_MESSAGE_IMAGE = "example.png";
 
     private String randomMessage;
+
+    private String rememberedEditTimeStamp;
 
     private final TestContext context;
 
@@ -769,19 +772,63 @@ public class ConversationPageSteps {
     public void ISeeLikeButton(String doNot, String second) throws Exception {
         boolean isSecond = " second".equals(second);
         if (!isSecond) {
-                if (doNot == null) {
-                    assertTrue("Like symbol is not visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolVisibleForLatestMessage());
-                } else {
-                    assertTrue("Like symbol is visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolInvisibleForLatestMessage());
-                }
+            if (doNot == null) {
+                assertTrue("Like symbol is not visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolVisibleForLatestMessage());
+            } else {
+                assertTrue("Like symbol is visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolInvisibleForLatestMessage());
             }
-            else {
-                if (doNot == null) {
-                    assertTrue("Like symbol is not visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolVisibleForSecondLastMessage());
-                } else {
-                    assertTrue("Like symbol is visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolInvisibleForSecondLastMessage());
-                }
+        } else {
+            if (doNot == null) {
+                assertTrue("Like symbol is not visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolVisibleForSecondLastMessage());
+            } else {
+                assertTrue("Like symbol is visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolInvisibleForSecondLastMessage());
             }
+        }
+    }
+
+    @When("^I remember edit timestamp of( second)? latest message$")
+    public void IRememberEditTimestamp(String second) throws Exception {
+        if (second == null) {
+            rememberedEditTimeStamp = context.getPagesCollection().getPage(ConversationPage.class)
+                    .getLastEditTimestamp();
+        } else {
+            rememberedEditTimeStamp = context.getPagesCollection().getPage(ConversationPage.class)
+                    .getSecondLastEditTimestamp();
+        }
+    }
+
+    @Then("^I verify the edit timestamp of( second)? latest message equals the remembered timestamp$")
+    public void ICompareTimestamps(String second) throws Exception {
+        String editTimeStamp;
+        if (second == null) {
+            editTimeStamp = context.getPagesCollection().getPage(ConversationPage.class)
+                    .getLastEditTimestamp();
+        } else {
+            editTimeStamp = context.getPagesCollection().getPage(ConversationPage.class)
+                    .getSecondLastEditTimestamp();
+        }
+        assertEquals("The timestamps are not equal", rememberedEditTimeStamp, editTimeStamp);
+    }
+
+    @Then("^I( do not)? see message header for( second)? last message$")
+    public void ISeeMessageHeader(String doNot, String second) throws Exception {
+        boolean isDoNot = " do not".equals(doNot);
+        boolean isSecond = " second".equals(second);
+        if (isDoNot) {
+            if (isSecond) {
+                assertFalse("Second last message header is VISIBLE",
+                        context.getPagesCollection().getPage(ConversationPage.class).isSecondLastMsgHeaderVisible());
+            } else {
+                assertFalse("Last message header is VISIBLE",
+                        context.getPagesCollection().getPage(ConversationPage.class).isLastMsgHeaderVisible());
+            }
+        } else if (isSecond) {
+            assertTrue("Second last message header is NOT VISIBLE",
+                    context.getPagesCollection().getPage(ConversationPage.class).isSecondLastMsgHeaderVisible());
+        } else {
+            assertTrue("Last message header NOT VISIBLE",
+                    context.getPagesCollection().getPage(ConversationPage.class).isLastMsgHeaderVisible());
+        }
     }
 
     @When("^I click (like|unlike) button in context menu for latest message$")

@@ -7,6 +7,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -152,32 +153,52 @@ public class IOSSimulatorHelper {
         }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 
+    private static final String SUBSECTION_MARKER = "--";
+    private static final String SECTION_MARKER = "==";
+    private static final String DEVICES_SECTION_START = SECTION_MARKER + " Devices " + SECTION_MARKER;
+    private static final Function<String, String> IOS_SECTION_START_TEMPLATE =
+            version -> String.format(SUBSECTION_MARKER + " iOS %s " + SUBSECTION_MARKER, version);
+    private static final Pattern ID_PATTERN =
+            Pattern.compile(".*([\\w]{8}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{12}).*");
+
+    private static Optional<String> parseSimulatorId(String simctlOutput, String deviceName, String platformVersion) {
+        final String subSectionStartMarker = IOS_SECTION_START_TEMPLATE.apply(platformVersion);
+        boolean isInDeviceSection = false;
+        boolean isInIOSSubsection = false;
+        for (String line : simctlOutput.split("\n")) {
+            if (line.startsWith(DEVICES_SECTION_START)) {
+                isInDeviceSection = true;
+            } else if (isInDeviceSection && line.startsWith(SECTION_MARKER)) {
+                isInDeviceSection = false;
+            }
+            if (isInDeviceSection && line.startsWith(subSectionStartMarker)) {
+                isInIOSSubsection = true;
+            } else if (isInIOSSubsection && (line.startsWith(SUBSECTION_MARKER) || line.startsWith(SECTION_MARKER))) {
+                isInIOSSubsection = false;
+            }
+            if (isInIOSSubsection && line.trim().startsWith(deviceName)) {
+                final Matcher m = ID_PATTERN.matcher(line);
+                if (m.find()) {
+                    return Optional.of(m.group(1));
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
     private static Map<String, String> simIdsMapping = new HashMap<>();
 
     public static String getId() throws Exception {
         final String deviceName = getDeviceName(IOSSimulatorHelper.class);
         final String platformVersion = CommonUtils.getPlatformVersionFromConfig(IOSSimulatorHelper.class);
         if (!simIdsMapping.containsKey(deviceName)) {
-            final String output = executeInstruments("-s");
-            final Pattern linePattern = Pattern.compile(
-                    "([\\w\\s]+)\\(([0-9\\.]+)\\)\\s+\\[([\\w]{8}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{12})");
-            for (String line : output.split("\n")) {
-                if (!line.contains("unavailable")) {
-                    final Matcher m = linePattern.matcher(line);
-                    if (m.find()) {
-                        final String actualDeviceName = m.group(1).trim();
-                        final String actualPlatformVersion = m.group(2).trim();
-                        final String actualSimId = m.group(3).trim();
-                        if (deviceName.equals(actualDeviceName) && platformVersion.startsWith(actualPlatformVersion)) {
-                            simIdsMapping.put(deviceName, actualSimId);
-                            break;
-                        }
-                    }
-                }
-            }
-            if (!simIdsMapping.containsKey(deviceName)) {
-                throw new IllegalStateException(String.format("Cannot get an id for %s Simulator", deviceName));
-            }
+            final String output = executeSimctl("list");
+            simIdsMapping.put(deviceName, parseSimulatorId(output, deviceName, platformVersion).orElseThrow(
+                    () -> new IllegalStateException(
+                            String.format("Cannot get an id for %s (%s) Simulator from simctl output:\n%s",
+                                    deviceName, platformVersion, output)
+                    )
+            ));
         }
         return simIdsMapping.get(deviceName);
     }
@@ -230,7 +251,6 @@ public class IOSSimulatorHelper {
     }
 
     private static final String XCRUN_PATH = "/usr/bin/xcrun";
-    private static final String INSTRUMENTS_PATH = "/usr/bin/instruments";
 
     private static final int COMMAND_TIMEOUT_SECONDS = 60;
 
@@ -255,13 +275,7 @@ public class IOSSimulatorHelper {
         return getCommandOutput(fullCmd);
     }
 
-    private static String executeInstruments(String... args) throws Exception {
-        final String[] firstCmdPart = new String[]{INSTRUMENTS_PATH};
-        final String[] fullCmd = ArrayUtils.addAll(firstCmdPart, args);
-        return getCommandOutput(fullCmd);
-    }
-
-    private static String executeSimctl(String[] cmd) throws Exception {
+    private static String executeSimctl(String... cmd) throws Exception {
         return executeXcRun("simctl", cmd);
     }
 
@@ -272,19 +286,19 @@ public class IOSSimulatorHelper {
     }
 
     public static void shutdown() throws Exception {
-        executeSimctl(new String[]{"shutdown", getId()});
+        executeSimctl("shutdown", getId());
     }
 
     public static void reset() throws Exception {
         shutdown();
         kill();
-        executeSimctl(new String[]{"erase", getId()});
+        executeSimctl("erase", getId());
     }
 
     private static final long INSTALL_SYNC_TIMEOUT = 15; // seconds
 
     public static void installApp(File appPath) throws Exception {
-        executeSimctl(new String[]{"install", "booted", appPath.getCanonicalPath()});
+        executeSimctl("install", "booted", appPath.getCanonicalPath());
         log.debug(String.format("Sleeping %s seconds to sync application install...", INSTALL_SYNC_TIMEOUT));
         Thread.sleep(INSTALL_SYNC_TIMEOUT * 1000);
     }
@@ -299,7 +313,7 @@ public class IOSSimulatorHelper {
     }
 
     public static void launchApp(String bundleId) throws Exception {
-        executeSimctl(new String[]{"launch", "booted", bundleId});
+        executeSimctl("launch", "booted", bundleId);
     }
 
     public static void uploadImage(File img) throws Exception {
@@ -308,7 +322,7 @@ public class IOSSimulatorHelper {
                     "Please make sure the image %s exists and is accessible", img.getCanonicalPath()
             ));
         }
-        executeSimctl(new String[]{"addphoto", "booted", img.getCanonicalPath()});
+        executeSimctl("addphoto", "booted", img.getCanonicalPath());
         // Let Simulator to update the lib
         Thread.sleep(3000);
     }

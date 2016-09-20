@@ -125,6 +125,18 @@ public class ConversationPage extends WebPage {
     @FindBy(css = WebAppLocators.ConversationPage.cssDoEditMessage)
     private WebElement doEditMessageButton;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssLastEditTimestamp)
+    private WebElement lastEditTimestamp;
+
+    @FindBy(css = WebAppLocators.ConversationPage.cssSecondLastEditTimestamp)
+    private WebElement secondLastEditTimestamp;
+
+    @FindBy(css = WebAppLocators.ConversationPage.cssLastMsgHeader)
+    private WebElement lastMsgHeader;
+
+    @FindBy(css = WebAppLocators.ConversationPage.cssSecondLastMsgHeader)
+    private WebElement secondLastMsgHeader;
+
     @FindBy(css = WebAppLocators.ConversationPage.cssLongMessageDialog)
     private WebElement longMessageDialog;
 
@@ -1169,6 +1181,24 @@ public class ConversationPage extends WebPage {
 
     public void clickEditInMessageContextMenu() throws Exception {
         doEditMessageButton.click();
+    }
+
+    public String getLastEditTimestamp() throws Exception {
+        return lastEditTimestamp.getAttribute("title");
+    }
+
+    public String getSecondLastEditTimestamp() throws Exception {
+        return secondLastEditTimestamp.getAttribute("title");
+    }
+
+    public boolean isLastMsgHeaderVisible() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMsgHeader);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isSecondLastMsgHeaderVisible() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssSecondLastMsgHeader);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public void clickToResetSessionOnLatestError() throws Exception {

@@ -51,7 +51,8 @@ Feature: Registration
     And I tap Confirm button on Picture preview page
     And I tap Share Contacts button on Share Contacts overlay
     And I tap settings gear button
-    And I tap on personal screen
+    And I select settings item Account
+    And I select settings item Picture
     Then I see Take Photo button on Camera page
 
     Examples:
@@ -69,7 +70,8 @@ Feature: Registration
     When I tap Not Now button on Share Contacts overlay
     Then I see conversations list
     When I tap settings gear button
-    Then I see my new name <ArabicName>
+    And I select settings item Account
+    Then I verify the value of settings item Name equals to "<ArabicName>"
 
     Examples:
       | Name      | ArabicName |
