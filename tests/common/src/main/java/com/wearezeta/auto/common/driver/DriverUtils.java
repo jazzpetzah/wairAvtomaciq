@@ -266,17 +266,17 @@ public class DriverUtils {
     public static final int SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL = 100;
 
     public static void swipeRight(AppiumDriver<? extends WebElement> driver,
-                                  WebElement element, int time, int percentX, int percentY) {
+                                  WebElement element, int timeMillis, int percentX, int percentY) {
         final Point coords = element.getLocation();
         final Dimension elementSize = element.getSize();
         final int xOffset = elementSize.width * percentX / 100;
         final int yOffset = elementSize.height * percentY / 100;
         driver.swipe(coords.x, coords.y + yOffset, coords.x + xOffset, coords.y
-                + yOffset, time);
+                + yOffset, timeMillis);
     }
 
     public static void swipeRight(AppiumDriver<? extends WebElement> driver,
-                                  WebElement element, int time, int startPercentX, int startPercentY,
+                                  WebElement element, int timeMillis, int startPercentX, int startPercentY,
                                   int endPercentX, int endPercentY) {
         final Point coords = element.getLocation();
         final Dimension elementSize = element.getSize();
@@ -287,17 +287,17 @@ public class DriverUtils {
         final int yEndOffset = elementSize.height * endPercentY / 100;
 
         driver.swipe(coords.x + xStartOffset, coords.y + yStartOffset, coords.x
-                + xEndOffset, coords.y + yEndOffset, time);
+                + xEndOffset, coords.y + yEndOffset, timeMillis);
 
     }
 
-    public static void swipeRight(AppiumDriver<? extends WebElement> driver, WebElement element, int time) {
-        swipeRight(driver, element, time, SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, DEFAULT_PERCENTAGE);
+    public static void swipeRight(AppiumDriver<? extends WebElement> driver, WebElement element, int timeMillis) {
+        swipeRight(driver, element, timeMillis, SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, DEFAULT_PERCENTAGE);
     }
 
     public static void swipeElementPointToPoint(
             AppiumDriver<? extends WebElement> driver, WebElement element,
-            int time, int startPercentX, int startPercentY, int endPercentX,
+            int timeMillis, int startPercentX, int startPercentY, int endPercentX,
             int endPercentY) {
 
         final Point coords = element.getLocation();
@@ -308,25 +308,10 @@ public class DriverUtils {
         final int endX = coords.x + size.getWidth() * endPercentX / 100;
         final int endY = coords.y + size.getHeight() * endPercentY / 100;
 
-        driver.swipe(startX, startY, endX, endY, time);
+        driver.swipe(startX, startY, endX, endY, timeMillis);
     }
 
-    public static void swipeFromElementToElement(AppiumDriver<? extends WebElement> driver, int durationMilleseconds,
-                                                 WebElement fromElement, WebElement toElement) {
-        final Point fromPoint = fromElement.getLocation();
-        final Point toPoint = toElement.getLocation();
-        final Dimension fromElementSize = fromElement.getSize();
-        final Dimension toElementSize = toElement.getSize();
-
-        final int startX = fromPoint.x + fromElementSize.width / 2;
-        final int startY = fromPoint.y + fromElementSize.height / 2;
-        final int endX = toPoint.x + toElementSize.width / 2;
-        final int endY = toPoint.y + toElementSize.height / 2;
-
-        driver.swipe(startX, startY, endX, endY, durationMilleseconds);
-    }
-
-    public static void swipeByCoordinates(AppiumDriver<? extends WebElement> driver, int time,
+    public static void swipeByCoordinates(AppiumDriver<? extends WebElement> driver, int timeMillis,
                                           int startPercentX, int startPercentY, int endPercentX,
                                           int endPercentY) throws Exception {
         final Dimension screenSize = driver.manage().window().getSize();
@@ -336,7 +321,7 @@ public class DriverUtils {
         final int endX = screenSize.width * endPercentX / 100;
         final int endY = screenSize.height * endPercentY / 100;
 
-        driver.swipe(startX, startY, endX, endY, time);
+        driver.swipe(startX, startY, endX, endY, timeMillis);
     }
 
     public static final int DEFAULT_SWIPE_DURATION = 1000; // milliseconds
