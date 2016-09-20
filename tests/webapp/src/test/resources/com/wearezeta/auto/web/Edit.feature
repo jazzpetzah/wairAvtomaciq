@@ -96,6 +96,40 @@ Feature: Edit
       | Login      | Password      | Name      | Contact   | OriginalMessage | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | edit me         | edited        |
 
+  @C206287 @staging
+  Scenario Outline: Verify design is correct if I edit a message in between other messages from me
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I write random message
+    And I send message
+    And I see random message in conversation
+    And I write message <OriginalMessage>
+    And I send message
+    And I see text message <OriginalMessage>
+    And I write random message
+    And I send message
+    And I see random message in conversation
+    Then I see 4 messages in conversation
+    And I do not see message header for second last message
+    When I click context menu of the second last message
+    And I click to edit message in context menu
+    And I delete 7 characters from the conversation input
+    And I write message <EditedMessage>
+    And I send message
+    Then I do not see text message <OriginalMessage>
+    And I see text message <EditedMessage>
+    And I see 4 messages in conversation
+    And I see message header for second last message
+    And I do not see message header for last message
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | OriginalMessage | EditedMessage |
+      | user1Email | user2Password | user1Name | user2Name | edit me         | edited        |
+
   @C206269 @regression
   Scenario Outline: Verify I see changed message if message was edited from another device (1:1)
     Given There are 2 users where <Name> is me
