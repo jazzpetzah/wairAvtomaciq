@@ -110,8 +110,9 @@ Feature: Self Profile
     Given I accept alert
     Given I dismiss settings warning
     Given I see conversations list
-    When I tap settings gear button
-    And I tap to add my phone number
+    Given I tap settings gear button
+    Given I select settings item Account
+    When I select settings item Add phone number
     And I input phone number <Number> with code <Code>
     Then I verify the alert contains text <ExpectedText>
 
@@ -120,16 +121,17 @@ Feature: Self Profile
       | user1Name | 8301652248706 | +0   | has already been registered |
 
   @C1081 @regression @rc @fastLogin
-  Scenario Outline: Verify theme switcher is shown on the self profile
+  Scenario Outline: Verify theme switcher is shown in settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap settings gear button
-    Then I see theme switcher button on self profile page
+    Given I tap settings gear button
+    When I select settings item Account
+    Then I see settings item <ThemeItemName>
 
     Examples:
-      | Name      |
-      | user1Name |
+      | Name      | ThemeItemName |
+      | user1Name | Dark Theme    |
 
   @C3168 @real @real_rc
   Scenario Outline: Verify changing profile picture using camera
