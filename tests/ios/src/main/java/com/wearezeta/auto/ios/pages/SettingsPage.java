@@ -18,10 +18,9 @@ public class SettingsPage extends IOSPage {
 
     public static final By xpathSettingsPage = By.xpath("//UIANavigationBar[@name='Settings']");
 
-    private static final By nameBackButton = MobileBy.AccessibilityId("Back");
-
-    private static final By xpathAllSoundAlertsButton =
-            By.xpath("//UIATableCell[@name='Sound Alerts']/*[@value='All']");
+    private static final FunctionFor2Parameters<String, String, String> xpathStrSettingsValue =
+            (itemName, expectedValue) -> String.format("//UIATableCell[@name='%s']/*[@value='%s']",
+                    itemName, expectedValue);
 
     private static final By nameEditButton = MobileBy.AccessibilityId("Edit");
 
@@ -58,14 +57,6 @@ public class SettingsPage extends IOSPage {
 
     public void selectItem(String itemName) throws Exception {
         ((IOSElement) getElement(xpathMenuContainer)).scrollTo(itemName).click();
-    }
-
-    public void goBack() throws Exception {
-        getElement(nameBackButton).click();
-    }
-
-    public boolean isSoundAlertsSetToDefault() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathAllSoundAlertsButton);
     }
 
     public boolean isItemVisible(String itemName) throws Exception {
@@ -133,5 +124,10 @@ public class SettingsPage extends IOSPage {
 
     public boolean isSupportWebPageVisible() throws Exception {
         return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathAskSupport, 15);
+    }
+
+    public boolean isSettingItemValueEqualTo(String itemName, String expectedValue) throws Exception {
+        final By locator = By.xpath(xpathStrSettingsValue.apply(itemName, expectedValue));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 }

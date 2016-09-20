@@ -51,26 +51,20 @@ public class SettingsPageSteps {
     }
 
     /**
-     * Tap back button on settings page
+     * Verify the current value of a setting
      *
+     * @param itemName      setting option name
+     * @param expectedValue the expected value. Can be user name/email/phone number alias
      * @throws Exception
-     * @step. ^I switch to the previous settings page$
+     * @step. ^I verify the value of settings item (.*) equals to (.*)
      */
-    @And("^I switch to the previous settings page$")
-    public void ISwitchToThePreviousSettingsPage() throws Exception {
-        getSettingsPage().goBack();
-    }
-
-    /**
-     * Verify that alert settings are set to default values
-     *
-     * @throws Exception
-     * @step. ^I verify sound alerts settings are set to default values$
-     */
-    @When("^I verify sound alerts settings are set to default values$")
-    public void IVerifyAllIsDefaultValue() throws Exception {
-        Assert.assertTrue("Sound alerts settings are NOT set to their default values",
-                getSettingsPage().isSoundAlertsSetToDefault());
+    @Then("^I verify the value of settings item (.*) equals to (.*)")
+    public void IVerifySettingsItemValue(String itemName, String expectedValue) throws Exception {
+        expectedValue = usrMgr.replaceAliasesOccurences(expectedValue, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        expectedValue = usrMgr.replaceAliasesOccurences(expectedValue, ClientUsersManager.FindBy.NAME_ALIAS);
+        expectedValue = usrMgr.replaceAliasesOccurences(expectedValue, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+        Assert.assertTrue(String.format("The value of '%s' setting item is not equal to '%s'", itemName, expectedValue),
+                getSettingsPage().isSettingItemValueEqualTo(itemName, expectedValue));
     }
 
     /**
@@ -233,9 +227,9 @@ public class SettingsPageSteps {
     /**
      * Tap navigation button on Setitngs page
      *
-     * @step. ^I tap (Done|Back) navigation button on Settings page$
      * @param name name of the button
      * @throws Exception
+     * @step. ^I tap (Done|Back) navigation button on Settings page$
      */
     @And("^I tap (Done|Back) navigation button on Settings page$")
     public void ITapNavigationButton(String name) throws Exception {
@@ -245,9 +239,8 @@ public class SettingsPageSteps {
     /**
      * Verify whether Reset Password page is opened in browser
      *
-     * @step. ^I see Reset Password page$
-     *
      * @throws Exception
+     * @step. ^I see Reset Password page$
      */
     @Then("^I see Reset Password page$")
     public void ISeeResetPasswordPage() throws Exception {
