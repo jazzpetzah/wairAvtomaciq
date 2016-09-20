@@ -174,7 +174,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 |
       | user1Name | user2Name | user3Name | chrome      | chrome       |
 
-  @C2082 @calling_basic @fastLogin @torun
+  @C2082 @calling_basic @fastLogin
   Scenario Outline: Put app into background after initiating call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
