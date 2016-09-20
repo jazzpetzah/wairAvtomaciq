@@ -177,6 +177,27 @@ public class ConversationPage extends WebPage {
         conversationInput.sendKeys(Keys.ENTER);
     }
 
+    /**
+        Gets message id for messages started from the last (messageIndex = 1), to the top - third last (messageIndex = 3)
+     */
+
+    private String getMessageId(int messageIndex) throws Exception{
+        String messageId = null;
+        switch (messageIndex) {
+            case 1:
+                messageId = getLatestMessageId();
+                break;
+            case 2:
+                messageId = getSecondLastMessageId();
+                break;
+            case 3:
+                messageId = getThirdLastMessageId();
+                break;
+            default: break;
+        }
+        return messageId;
+    }
+
     public String getLastActionMessage() throws Exception {
         final By locator = By
                 .cssSelector(WebAppLocators.ConversationPage.cssFirstAction);
@@ -1011,28 +1032,16 @@ public class ConversationPage extends WebPage {
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeSymbol.apply(getSecondLastMessageId()));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
-
-    //I edited this step
+    
     public void clickLikeMessageWithoutOtherLikes(int messageIndex) throws Exception {
-        String messageId = null;
-        switch (messageIndex) {
-            case 1: messageId = getLatestMessageId(); break;
-            case 2: messageId = getSecondLastMessageId(); break;
-            case 3: messageId = getThirdLastMessageId(); break;
-            default: break;
-        }
+        String messageId = getMessageId(messageIndex);
         hoverOverMessage(messageId);
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeWithoutOtherLikesByMessageId.apply(messageId));
         getDriver().findElement(locator).click();
     }
 
     public void clickUnlikeMessageWithoutOtherLikes(int messageIndex) throws Exception {
-        String messageId = getLatestMessageId();
-        if (messageIndex == 2) {
-            messageId = getSecondLastMessageId();
-        } else if (messageIndex == 3) {
-            messageId = getThirdLastMessageId();
-        }
+        String messageId = getMessageId(messageIndex);
         hoverOverMessage(messageId);
         By locator = By.
                 cssSelector(WebAppLocators.ConversationPage.cssUnlikeWithoutOtherLikesByMessageId.apply(messageId));
@@ -1040,24 +1049,14 @@ public class ConversationPage extends WebPage {
     }
 
     public void clickLikeMessageWithOtherLikes(int messageIndex) throws Exception {
-        String messageId = getLatestMessageId();
-        if (messageIndex == 2) {
-            messageId = getSecondLastMessageId();
-        } else if (messageIndex == 3) {
-            messageId = getThirdLastMessageId();
-        }
+        String messageId = getMessageId(messageIndex);
         hoverOverMessage(messageId);
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeWithoutOtherLikesByMessageId.apply(messageId));
         getDriver().findElement(locator).click();
     }
 
     public void clickUnlikeMessageWithOtherLikes(int messageIndex) throws Exception {
-        String messageId = getLatestMessageId();
-        if (messageIndex == 2) {
-            messageId = getSecondLastMessageId();
-        } else if (messageIndex == 3) {
-            messageId = getThirdLastMessageId();
-        }
+        String messageId = getMessageId(messageIndex);
         hoverOverMessage(messageId);
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssUnlikeWithOtherLikesByMessageId.apply(messageId));
         getDriver().findElement(locator).click();
