@@ -144,8 +144,9 @@ Feature: Self Profile
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap settings gear button
+    And I select settings item Account
+    And I select settings item Picture
     And I remember my current profile picture
-    And I tap on personal screen
     And I tap Take Photo button on Camera page
     And I tap Take Photo button on Camera page
     And I tap Confirm button on Picture preview page
