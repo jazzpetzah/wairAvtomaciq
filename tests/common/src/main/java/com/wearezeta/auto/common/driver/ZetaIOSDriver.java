@@ -104,15 +104,6 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
         return (e instanceof UnreachableBrowserException) || (e instanceof SessionNotFoundException);
     }
 
-    public IOSElement scrollTo(String text) {
-        return (IOSElement) findElementByIosUIAutomation(
-                ".scrollToElementWithPredicate(\"name CONTAINS '" + text + "'\")");
-    }
-
-    public IOSElement scrollToExact(String text) {
-        return (IOSElement) findElementByIosUIAutomation(".scrollToElementWithName(\"" + text + "\")");
-    }
-
     @Override
     protected Response execute(String command) {
         return this.execute(command, ImmutableMap.<String, Object>of());

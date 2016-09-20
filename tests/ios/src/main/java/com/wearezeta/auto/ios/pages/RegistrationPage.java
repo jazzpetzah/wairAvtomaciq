@@ -3,6 +3,8 @@ package com.wearezeta.auto.ios.pages;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import io.appium.java_client.MobileBy;
@@ -11,11 +13,18 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
 public class RegistrationPage extends IOSPage {
+    private static final String WIRE_COUNTRY_NAME = "Wirestan";
+
+    private static final By fbXpathMCountriesContainer = FBBy.FBXPath("//XCUIElementTypeTableView");
+
+    private static final By xpathWireCountry =
+            By.xpath(String.format("//*[starts-with(@name, '%s')]", WIRE_COUNTRY_NAME));
 
     private static final By xpathYourName = By.xpath("//XCUIElementTypeTextField[@value='YOUR FULL NAME']");
 
@@ -77,15 +86,15 @@ public class RegistrationPage extends IOSPage {
         clickElementWithRetryIfStillDisplayed(nameAgreeButton);
     }
 
-    private static final String WIRE_COUNTRY_NAME = "Wirestan";
-
     private void selectWirestan() throws Exception {
         final WebElement countryPickerBtn = getElement(nameCountryPickerButton);
         countryPickerBtn.click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCountryPickerButton, 5)) {
             countryPickerBtn.click();
         }
-        getDriver().scrollTo(WIRE_COUNTRY_NAME).click();
+        ((FBElement) getElement(fbXpathMCountriesContainer)).scroll(Optional.empty(), Optional.of(WIRE_COUNTRY_NAME),
+                Optional.empty(), Optional.empty());
+        getElement(xpathWireCountry).click();
         // Wait for animation
         Thread.sleep(2000);
     }

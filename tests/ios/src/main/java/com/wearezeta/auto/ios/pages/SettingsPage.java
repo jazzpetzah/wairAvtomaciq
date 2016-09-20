@@ -19,7 +19,10 @@ import java.util.function.Function;
 public class SettingsPage extends IOSPage {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private static final String xpathStrMenuContainer = "//XCUIElementTypeTableView";
-    private static final By xpathMenuContainer = FBBy.FBXPath(xpathStrMenuContainer);
+    private static final By fbXpathMenuContainer = FBBy.FBXPath(xpathStrMenuContainer);
+
+    private static final Function<String, String> xpathStrMenuItemByName = namePrefix ->
+            String.format("%s/*[@name='%s']", xpathStrMenuContainer, namePrefix);
 
     public static final By xpathSettingsPage = By.xpath("//XCUIElementTypeNavigationBar[@name='Settings']");
 
@@ -73,11 +76,13 @@ public class SettingsPage extends IOSPage {
     }
 
     public void selectItem(String itemName) throws Exception {
-        getDriver().scrollTo(itemName).click();
+        ((FBElement) getElement(fbXpathMenuContainer)).scroll(Optional.empty(), Optional.of(itemName),
+                Optional.empty(), Optional.empty());
+        getElement(By.xpath(xpathStrMenuItemByName.apply(itemName))).click();
     }
 
     public boolean isItemVisible(String itemName) throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), MobileBy.AccessibilityId(itemName));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(xpathStrMenuItemByName.apply(itemName)));
     }
 
     public void pressEditButton() throws Exception {
@@ -126,7 +131,8 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean isItemInvisible(String itemName) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), MobileBy.AccessibilityId(itemName));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.xpath(xpathStrMenuItemByName.apply(itemName)));
     }
 
     public void tapNavigationButton(String name) throws Exception {
@@ -145,7 +151,7 @@ public class SettingsPage extends IOSPage {
 
     public boolean isSettingItemValueEqualTo(String itemName, String expectedValue) throws Exception {
         final By locator = By.xpath(xpathStrSettingsValue.apply(itemName, expectedValue));
-        ((FBElement) getElement(xpathMenuContainer)).scroll(Optional.empty(), Optional.of(itemName),
+        ((FBElement) getElement(fbXpathMenuContainer)).scroll(Optional.empty(), Optional.of(itemName),
                 Optional.empty(), Optional.empty());
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
