@@ -786,7 +786,7 @@ public class ConversationPageSteps {
         }
     }
 
-    @When("^I remember edit timestamp of( second)? latest message$")
+    @When("^I remember edit timestamp of( second)? last message$")
     public void IRememberEditTimestamp(String second) throws Exception {
         if (second == null) {
             rememberedEditTimeStamp = context.getPagesCollection().getPage(ConversationPage.class)
@@ -797,7 +797,7 @@ public class ConversationPageSteps {
         }
     }
 
-    @Then("^I verify the edit timestamp of( second)? latest message equals the remembered timestamp$")
+    @Then("^I verify the edit timestamp of( second)? last message equals the remembered timestamp$")
     public void ICompareTimestamps(String second) throws Exception {
         String editTimeStamp;
         if (second == null) {
@@ -892,7 +892,7 @@ public class ConversationPageSteps {
     }
 
     @Then("^I (do not )?see likes below the last message$")
-    public void ThenISeeLikesForLatestMessage(String not) throws Exception {
+    public void ISeeLikesForLatestMessage(String not) throws Exception {
         if (not == null) {
             assertTrue("Likes of others are NOT visible for last message", context.getPagesCollection().getPage(
                     ConversationPage.class).isLikeLineVisibleForLastMessage());
@@ -903,7 +903,8 @@ public class ConversationPageSteps {
     }
 
     @Then("^I see the (third |second )?last message is only liked by me$")
-    public void ThenISeeLatestMessageIsOnlyLikedByMe(String messageIndex) throws Exception {
+    public void ISeeLatestMessageIsOnlyLikedByMe(String messageIndex) throws Exception {
+        //TODO
         int indexNumber = 1;
         if ("third ".equals(messageIndex)) {
             indexNumber = 3;
@@ -916,20 +917,20 @@ public class ConversationPageSteps {
                 .isUnlikeWithoutOtherLikesVisibleForMessage(indexNumber));
     }
     
-    @Then("^I see the latest message is only liked by others$")
-    public void ThenISeeLatestMessageIsOnlyLikedByOthers() throws Exception {
+    @Then("^I see the last message is only liked by others$")
+    public void ISeeLastMessageIsOnlyLikedByOthers() throws Exception {
         assertTrue("The message is liked by you", context.getPagesCollection().getPage(ConversationPage.class)
                 .isLikeWithOtherLikesVisibleForLatestMessage());
     }
 
-    @Then("^I see the latest message is liked by others and me$")
-    public void ThenISeeLatestMessageIsLikedByOthersMe() throws Exception {
+    @Then("^I see the last message is liked by others and me$")
+    public void ISeeLastMessageIsLikedByOthersMe() throws Exception {
         assertTrue("Message is NOT liked by others and you", context.getPagesCollection().getPage(ConversationPage.class)
                 .isUnlikeWithOtherLikesVisibleForLatestMessage());
     }
 
-    @Then("^I see the latest message is liked by (.*)$")
-    public void ThenISeeLatestMessageIsLikedBy(String usersToNameAliases) throws Exception {
+    @Then("^I see the last message is liked by (.*)$")
+    public void ISeeLastMessageIsLikedBy(String usersToNameAliases) throws Exception {
         List<String> likers = context.getPagesCollection().getPage(ConversationPage.class).getUsersThatLikeTheLatestMessage();
         List<String> aliases = CommonSteps.splitAliases(usersToNameAliases);
         String[] users = new String[aliases.size()];
