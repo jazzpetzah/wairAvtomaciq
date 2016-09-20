@@ -6,15 +6,17 @@ Feature: Self Profile
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap settings gear button
-    And I select settings item Account
-    And I tap to edit my name
-    And I change my name to <NewUsername>
+    Given I tap settings gear button
+    Given I select settings item Account
+    Given I select settings item Name
+    When I clear Name input field on Settings page
+    And I set "<NewUsername>" value to Name input field on Settings page
+    And I tap Return button on the keyboard
     Then I verify the value of settings item Name equals to "<NewUsername>"
-    When I close self profile
-    And I tap settings gear button
-    And I tap to edit my name
-    And I change my name to <NewUsername1>
+    When I select settings item Name
+    And I clear Name input field on Settings page
+    And I set "<NewUsername1>" value to Name input field on Settings page
+    And I tap Return button on the keyboard
     Then I verify the value of settings item Name equals to "<NewUsername1>"
 
     Examples:
@@ -130,8 +132,9 @@ Feature: Self Profile
     Given I accept First Time overlay if it is visible
     Given I dismiss settings warning
     Given I see conversations list
-    When I tap settings gear button
-    And I tap to add my phone number
+    Given I tap settings gear button
+    Given I select settings item Account
+    When I select settings item Add phone number
     And I enter phone number for Myself
     And I enter registration verification code for Myself
     Then I see phone number attached to profile
@@ -151,8 +154,9 @@ Feature: Self Profile
     Given I accept alert
     Given I dismiss settings warning
     Given I see conversations list
-    When I tap settings gear button
-    And I tap to add my phone number
+    Given I tap settings gear button
+    Given I select settings item Account
+    When I select settings item Add phone number
     And I input phone number <Number> with code <Code>
     Then I verify the alert contains text <ExpectedText>
 
@@ -166,9 +170,9 @@ Feature: Self Profile
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap settings gear button
-    Then I dont see theme switcher button on self profile page
+    When I select settings item Account
+    Then I do not see settings item <ThemeItemName>
 
     Examples:
-      | Name      |
-      | user1Name |
+      | Name      | ThemeItemName |
+      | user1Name | Dark Theme    |

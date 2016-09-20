@@ -161,15 +161,16 @@ Feature: Self Profile
     Given I tap Keep This One button
     Given I tap Share Contacts button on Share Contacts overlay
     Given I see conversations list
-    When I tap settings gear button
-    And I tap ADD EMAIL ADDRESS AND PASSWORD
+    Given I tap settings gear button
+    Given I select settings item Account
+    When I select settings item Add email address
     And I enter email <Email>
     And I enter password <Password>
     And I start activation email monitoring
     And I click Create Account Button
     And I see confirmation page
     And I verify registration address
-    Then I see email <Email> on Personal page
+    Then I verify the value of settings item Email equals to "<Email>"
 
     Examples:
       | Email      | Password      | Name      |
