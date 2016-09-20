@@ -33,6 +33,7 @@ import org.junit.Assert;
 import org.openqa.selenium.Keys;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -770,7 +771,7 @@ public class ConversationPageSteps {
             editTimeStamp = context.getPagesCollection().getPage(ConversationPage.class)
                     .getSecondLastEditTimestamp();
         }
-        assertTrue("The timestamps are not equal", rememberedEditTimeStamp.equals(editTimeStamp));
+        assertEquals("The timestamps are not equal", rememberedEditTimeStamp, editTimeStamp);
     }
 
     @When("^I( do not)? see like symbol for latest message$")
