@@ -267,4 +267,3 @@ Feature: Self Profile
     Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
-    
