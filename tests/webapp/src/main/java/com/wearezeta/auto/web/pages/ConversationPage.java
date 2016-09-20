@@ -1021,22 +1021,22 @@ public class ConversationPage extends WebPage {
     //likes
 
     public boolean isLikeSymbolVisibleForLastMessage() throws Exception {
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeSymbol.apply(getLatestMessageId()));
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeSymbol.apply(getMessageId(1)));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isLikeSymbolInvisibleForLastMessage() throws Exception {
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeSymbol.apply(getLatestMessageId()));
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeSymbol.apply(getMessageId(1)));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     public boolean isLikeSymbolVisibleForSecondLastMessage() throws Exception {
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeSymbol.apply(getSecondLastMessageId()));
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeSymbol.apply(getMessageId(2)));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isLikeSymbolInvisibleForSecondLastMessage() throws Exception {
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeSymbol.apply(getSecondLastMessageId()));
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeSymbol.apply(getMessageId(2)));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
