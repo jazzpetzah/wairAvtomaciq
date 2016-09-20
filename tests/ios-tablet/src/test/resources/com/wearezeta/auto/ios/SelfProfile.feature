@@ -28,9 +28,10 @@ Feature: Self Profile
     Given I see conversations list
     When I tap settings gear button
     # This is usually enough to have the profile picture loaded
-    And I wait for 10 seconds
+    And I wait for 7 seconds
+    And I select settings item Account
+    And I select settings item Picture
     And I remember my current profile picture
-    And I tap on personal screen
     And I tap Camera Roll button on Camera page
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
@@ -48,9 +49,10 @@ Feature: Self Profile
     Given I see conversations list
     When I tap settings gear button
     # This is usually enough to have the profile picture loaded
-    And I wait for 10 seconds
+    And I wait for 7 seconds
+    And I select settings item Account
+    And I select settings item Picture
     And I remember my current profile picture
-    And I tap on personal screen
     And I tap Camera Roll button on Camera page
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page

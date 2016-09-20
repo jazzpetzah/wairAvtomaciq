@@ -1,15 +1,16 @@
 Feature: Self Profile
 
-  @C3211 @regression @fastLogin
+  @C3211 @regression @fastLogin @torun
   Scenario Outline: Change your profile picture
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap settings gear button
-    # This is usually enough to have the profile picture loaded
-    And I wait for 10 seconds
+    # Wait until profile picture is fully loaded
+    And I wait for 7 seconds
+    And I select settings item Account
+    And I select settings item Picture
     And I remember my current profile picture
-    And I tap on personal screen
     And I tap Camera Roll button on Camera page
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
