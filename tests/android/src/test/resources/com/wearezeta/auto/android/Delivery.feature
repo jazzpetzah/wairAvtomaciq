@@ -24,7 +24,7 @@ Feature: Delivery
       | Name      | Contact   | Msg1 | Msg2 | MessageStatus | ContactDevice |
       | user1Name | user2Name | M1   | M2   | Sent          | D1            |
 
-  @C232578 @staging
+  @C232578 @regression
   Scenario Outline: Verify Resend option is shown for failed to send message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

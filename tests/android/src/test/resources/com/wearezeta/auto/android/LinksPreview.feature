@@ -131,7 +131,7 @@ Feature: Links Preview
       | Name      | Contact   | Link1               | Link2                    | Link3                    | LinkUrl      | Link4                       | Link2Url        |
       | user1Name | user2Name | http://facebook.com | https://www.facebook.com | http://www.facebook.com/ | facebook.com | HTTP://WWW.FRANCE24.COM/FR/ | france24.com/FR |
 
-  @C169223 @staging
+  @C169223 @regression
   Scenario Outline: Verify resend icon appears for unsent link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

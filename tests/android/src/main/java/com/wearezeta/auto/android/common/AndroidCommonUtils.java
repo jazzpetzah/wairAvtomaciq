@@ -821,4 +821,10 @@ public class AndroidCommonUtils extends CommonUtils {
         final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("com.google.android.location") + "\\b");
         return pattern.matcher(output).find();
     }
+
+    public static boolean verifyGoogleGCMServiceInstalled() throws Exception {
+        String output = AndroidCommonUtils.getAdbOutput("shell 'pm list packages'");
+        final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("com.google.android.gms") + "\\b");
+        return pattern.matcher(output).find();
+    }
 }
