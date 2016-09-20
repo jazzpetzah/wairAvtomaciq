@@ -1227,7 +1227,7 @@ public class ConversationPage extends WebPage {
         By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
         String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeButtonByMessageId.apply(id));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     public boolean isDeleteForEveryoneButtonInContextMenuInvisible() throws Exception {
@@ -1242,12 +1242,12 @@ public class ConversationPage extends WebPage {
 
     public boolean isLikeButtonInContextMenuInvisible() throws Exception {
         By locator = By.xpath(WebAppLocators.ConversationPage.xpathLikeInContext);
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     public boolean isDeleteForMeButtonInContextMenuVisible() throws Exception {
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteForMeInContext);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isUnlikeButtonInContextMenuVisible() throws Exception {
