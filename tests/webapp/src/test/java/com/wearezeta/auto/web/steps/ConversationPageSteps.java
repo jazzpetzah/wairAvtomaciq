@@ -33,6 +33,7 @@ import org.junit.Assert;
 import org.openqa.selenium.Keys;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -51,6 +52,8 @@ public class ConversationPageSteps {
     private static final String VIDEO_MESSAGE_IMAGE = "example.png";
 
     private String randomMessage;
+
+    private String rememberedEditTimeStamp;
 
     private final TestContext context;
 
@@ -745,6 +748,30 @@ public class ConversationPageSteps {
     @When("^I click to edit message in context menu$")
     public void IClickEditInContextMenuOfLatestMessage() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickEditInMessageContextMenu();
+    }
+
+    @When("^I remember edit timestamp of( second)? latest message$")
+    public void IRememberEditTimestamp(String second) throws Exception {
+        if (second == null) {
+            rememberedEditTimeStamp = context.getPagesCollection().getPage(ConversationPage.class)
+                    .getLastEditTimestamp();
+        } else {
+            rememberedEditTimeStamp = context.getPagesCollection().getPage(ConversationPage.class)
+                    .getSecondLastEditTimestamp();
+        }
+    }
+
+    @Then("^I verify the edit timestamp of( second)? latest message equals the remembered timestamp$")
+    public void ICompareTimestamps(String second) throws Exception {
+        String editTimeStamp;
+        if (second == null) {
+            editTimeStamp = context.getPagesCollection().getPage(ConversationPage.class)
+                    .getLastEditTimestamp();
+        } else {
+            editTimeStamp = context.getPagesCollection().getPage(ConversationPage.class)
+                    .getSecondLastEditTimestamp();
+        }
+        assertEquals("The timestamps are not equal", rememberedEditTimeStamp, editTimeStamp);
     }
 
     @When("^I( do not)? see like symbol for latest message$")
