@@ -52,6 +52,8 @@ Feature: Registration
     And I tap Share Contacts button on Share Contacts overlay
     And I tap settings gear button
     And I tap on personal screen
+    And I select settings item Account
+    And I select settings item Picture
     Then I see Take Photo button on Camera page
 
     Examples:
