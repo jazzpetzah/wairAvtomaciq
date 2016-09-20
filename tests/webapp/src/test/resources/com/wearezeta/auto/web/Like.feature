@@ -51,7 +51,7 @@ Feature: Like
 # No likes
     And I do not see likes below the latest message
 # Only liked by me
-    When I click to like the latest message without other likes
+    When I click to like the last message without other likes
     And I do not see likes below the latest message
     Then I see the latest message is only liked by me
 # Liked by others and me
@@ -63,7 +63,7 @@ Feature: Like
     And I see likes below the latest message
     And I see the latest message is liked by Myself,<Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
 # Only liked by others
-    When I click to unlike the latest message with other likes
+    When I click to unlike the last message with other likes
     Then I see likes below the latest message
     And I see the latest message is liked by <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
 # Everything unliked
@@ -89,7 +89,7 @@ Feature: Like
     And Contact <Contact> sends message <Link> via device Device1 to user me
     Then I see link <LinkInPreview> in link preview message
     And I do not see likes below the latest message
-    When I click to like the latest message without other likes
+    When I click to like the last message without other likes
     And I wait for 5 seconds
     And I see likes below the latest message
     And I fail the test
@@ -112,7 +112,7 @@ Feature: Like
 # No likes
     And I do not see likes below the latest message
 # Only liked by me
-    When I click to like the latest message without other likes
+    When I click to like the last message without other likes
     And I do not see likes below the latest message
     Then I see the latest message is only liked by me
 # Liked by others and me
@@ -120,7 +120,7 @@ Feature: Like
     And I see likes below the latest message
     And I see the latest message is liked by others and me
 # Only liked by others
-    When I click to unlike the latest message with other likes
+    When I click to unlike the last message with other likes
     Then I see likes below the latest message
     And I see the latest message is only liked by others
 # Everything unliked
@@ -144,7 +144,7 @@ Feature: Like
 # No likes
     And I do not see likes below the latest message
 # Only liked by me
-    When I click to like the latest message without other likes
+    When I click to like the last message without other likes
     And I do not see likes below the latest message
     Then I see the latest message is only liked by me
 # Liked by others and me
@@ -152,7 +152,7 @@ Feature: Like
     And I see likes below the latest message
     And I see the latest message is liked by others and me
 # Only liked by others
-    When I click to unlike the latest message with other likes
+    When I click to unlike the last message with other likes
     Then I see likes below the latest message
     And I see the latest message is only liked by others
 # Everything unliked
@@ -178,7 +178,7 @@ Feature: Like
 # No likes
     And I do not see likes below the latest message
 # Only liked by me
-    When I click to like the latest message without other likes
+    When I click to like the last message without other likes
     And I do not see likes below the latest message
     Then I see the latest message is only liked by me
 # Liked by others and me
@@ -186,7 +186,7 @@ Feature: Like
     And I see likes below the latest message
     And I see the latest message is liked by others and me
 # Only liked by others
-    When I click to unlike the latest message with other likes
+    When I click to unlike the last message with other likes
     Then I see likes below the latest message
     And I see the latest message is only liked by others
 # Everything unliked
@@ -210,7 +210,7 @@ Feature: Like
 # No likes
     And I do not see likes below the latest message
 # Only liked by me
-    When I click to like the latest message without other likes
+    When I click to like the last message without other likes
     And I do not see likes below the latest message
     Then I see the latest message is only liked by me
 # Liked by others and me
@@ -218,7 +218,7 @@ Feature: Like
     And I see likes below the latest message
     And I see the latest message is liked by others and me
 # Only liked by others
-    When I click to unlike the latest message with other likes
+    When I click to unlike the last message with other likes
     Then I see likes below the latest message
     And I see the latest message is only liked by others
 # Everything unliked
@@ -228,7 +228,7 @@ Feature: Like
 # No likes
     And I do not see likes below the latest message
 # Only liked by me
-    When I click to like the latest message without other likes
+    When I click to like the last message without other likes
     And I do not see likes below the latest message
     Then I see the latest message is only liked by me
 # Liked by others and me
@@ -236,7 +236,7 @@ Feature: Like
     And I see likes below the latest message
     And I see the latest message is liked by others and me
 # Only liked by others
-    When I click to unlike the latest message with other likes
+    When I click to unlike the last message with other likes
     Then I see likes below the latest message
     And I see the latest message is only liked by others
 # Everything unliked
@@ -247,7 +247,7 @@ Feature: Like
 # No likes
     And I do not see likes below the latest message
 # Only liked by me
-    When I click to like the latest message without other likes
+    When I click to like the last message without other likes
     And I do not see likes below the latest message
     Then I see the latest message is only liked by me
 # Liked by others and me
@@ -255,7 +255,7 @@ Feature: Like
     And I see likes below the latest message
     And I see the latest message is liked by others and me
 # Only liked by others
-    When I click to unlike the latest message with other likes
+    When I click to unlike the last message with other likes
     Then I see likes below the latest message
     And I see the latest message is only liked by others
 # Everything unliked
@@ -266,7 +266,7 @@ Feature: Like
 # No likes
     And I do not see likes below the latest message
 # Only liked by me
-    When I click to like the latest message without other likes
+    When I click to like the last message without other likes
     And I do not see likes below the latest message
     Then I see the latest message is only liked by me
 # Liked by others and me
@@ -274,7 +274,7 @@ Feature: Like
     And I see likes below the latest message
     And I see the latest message is liked by others and me
 # Only liked by others
-    When I click to unlike the latest message with other likes
+    When I click to unlike the last message with other likes
     Then I see likes below the latest message
     And I see the latest message is only liked by others
 # Everything unliked
@@ -298,7 +298,7 @@ Feature: Like
 # No likes
     And I do not see likes below the latest message
 # Only liked by me
-    When I click to like the latest message without other likes
+    When I click to like the last message without other likes
     And I do not see likes below the latest message
     Then I see the latest message is only liked by me
 # Liked by others and me
@@ -306,7 +306,7 @@ Feature: Like
     And I see likes below the latest message
     And I see the latest message is liked by others and me
 # Only liked by others
-    When I click to unlike the latest message with other likes
+    When I click to unlike the last message with other likes
     Then I see likes below the latest message
     And I see the latest message is only liked by others
 # Everything unliked
@@ -336,7 +336,7 @@ Feature: Like
 # No likes
     And I do not see likes below the latest message
 # Only liked by me
-    When I click to like the latest message without other likes
+    When I click to like the last message without other likes
     And I do not see likes below the latest message
     Then I see the latest message is only liked by me
 # Liked by others and me
@@ -344,7 +344,7 @@ Feature: Like
     And I see likes below the latest message
     And I see the latest message is liked by others and me
 # Only liked by others
-    When I click to unlike the latest message with other likes
+    When I click to unlike the last message with other likes
     Then I see likes below the latest message
     And I see the latest message is only liked by others
 # Everything unliked
@@ -368,7 +368,7 @@ Feature: Like
 # No likes
     And I do not see likes below the latest message
 # Only liked by me
-    When I click to like the latest message without other likes
+    When I click to like the last message without other likes
     And I do not see likes below the latest message
     Then I see the latest message is only liked by me
 # Liked by others and me
@@ -376,7 +376,7 @@ Feature: Like
     And I see likes below the latest message
     And I see the latest message is liked by others and me
 # Only liked by others
-    When I click to unlike the latest message with other likes
+    When I click to unlike the last message with other likes
     Then I see likes below the latest message
     And I see the latest message is only liked by others
 # Everything unliked
@@ -448,7 +448,7 @@ Feature: Like
 # No likes
     And I do not see likes below the latest message
 # Only liked by me
-    When I click to like the latest message without other likes
+    When I click to like the last message without other likes
     And I do not see likes below the latest message
     Then I see the latest message is only liked by me
 # Liked by others and me
@@ -465,7 +465,7 @@ Feature: Like
 # Everything unliked
     And I do not see likes below the latest message
 # Only liked by me
-    When I click to like the latest message without other likes
+    When I click to like the last message without other likes
     And I do not see likes below the latest message
     Then I see the latest message is only liked by me
 # Liked by others and me
@@ -473,7 +473,7 @@ Feature: Like
     And I see likes below the latest message
     And I see the latest message is liked by others and me
 # Only liked by others
-    When I click to unlike the latest message with other likes
+    When I click to unlike the last message with other likes
     Then I see likes below the latest message
     And I see the latest message is only liked by others
 # Everything unliked
@@ -498,7 +498,7 @@ Feature: Like
 # No likes
     And I do not see likes below the latest message
 # Only liked by me
-    When I click to like the latest message without other likes
+    When I click to like the last message without other likes
     And I do not see likes below the latest message
     Then I see the latest message is only liked by me
 # Liked by others and me
@@ -511,7 +511,7 @@ Feature: Like
 # Everything unliked
     And I do not see likes below the latest message
 # Only liked by me
-    When I click to like the latest message without other likes
+    When I click to like the last message without other likes
     And I do not see likes below the latest message
     Then I see the latest message is only liked by me
 # Liked by others and me
@@ -519,7 +519,7 @@ Feature: Like
     And I see likes below the latest message
     And I see the latest message is liked by others and me
 # Only liked by others
-    When I click to unlike the latest message with other likes
+    When I click to unlike the last message with other likes
     Then I see likes below the latest message
     And I see the latest message is only liked by others
 # Everything unliked

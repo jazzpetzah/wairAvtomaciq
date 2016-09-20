@@ -510,7 +510,8 @@ And I wait for 60 seconds
     And I do not see Remove button on Group Participants popover
     And I verify that conversation input and buttons are not visible
     #check another user message <Message1>
-    And I cannot click like button for the third last message
+    When I click to unlike the third last message without other likes
+    And I see the third last message is only liked by me
     When I click context menu of the third last message
     And I do not see like button in context menu
     And I see delete for me button in context menu

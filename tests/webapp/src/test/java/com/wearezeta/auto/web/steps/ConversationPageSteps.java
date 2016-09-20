@@ -798,21 +798,47 @@ public class ConversationPageSteps {
         }
     }
 
-    @When("^I click to (like|unlike) the latest message with(out)? other likes$")
-    public void IClickToLikeLatestMessageWithoutOtherLikes(String like, String out) throws Exception {
+    @When("^I click to (like|unlike) the (third |second )?last message with(out)? other likes$")
+    public void IClickToLikeLatestMessageWithoutOtherLikes(String like, String indexNumber, String out) throws Exception {
         boolean isWithout = "out".equals(out);
         boolean isLike = "like".equals(like);
-        if (isWithout) {
-            if (isLike) {
-                context.getPagesCollection().getPage(ConversationPage.class).clickLikeLatestMessageWithoutOtherLikes();
+        int indexNummer = 1;
+            if (isWithout) {
+                if (isLike) {
+                    if (indexNumber == "third ") {
+                        indexNummer = 3;
+                    }
+                    if (indexNumber == "second ") {
+                        indexNummer = 2;
+                    }
+                    context.getPagesCollection().getPage(ConversationPage.class).clickLikeMessageWithoutOtherLikes(indexNummer);
+                } else {
+                    if (indexNumber == "third ") {
+                        indexNummer = 3;
+                    }
+                    if (indexNumber == "second ") {
+                        indexNummer = 2;
+                    }
+                    context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeMessageWithoutOtherLikes(indexNummer);
+                }
+            } else if (isLike) {
+                if (indexNumber == "third ") {
+                    indexNummer = 3;
+                }
+                if (indexNumber == "second ") {
+                    indexNummer = 2;
+                }
+                context.getPagesCollection().getPage(ConversationPage.class).clickLikeMessageWithOtherLikes(indexNummer);
             } else {
-                context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeLatestMessageWithoutOtherLikes();
+                if (indexNumber == "third ") {
+                    indexNummer = 3;
+                }
+                if (indexNumber == "second ") {
+                    indexNummer = 2;
+                }
+                context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeMessageWithOtherLikes(indexNummer);
             }
-        } else if (isLike) {
-            context.getPagesCollection().getPage(ConversationPage.class).clickLikeLatestMessageWithOtherLikes();
-        } else {
-            context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeLatestMessageWithOtherLikes();
-        }
+
     }
 
     @Then("^I (do not )?see likes below the latest message$")
