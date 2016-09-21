@@ -845,58 +845,17 @@ public class ConversationPageSteps {
     public void IClickToLikeLatestMessageWithoutOtherLikes(String like, String index, String out) throws Exception {
         boolean isWithout = "out".equals(out);
         boolean isLike = "like".equals(like);
-        String indexValue = index;
-        int indexNummer = 1;
+        int indexNummer = context.getPagesCollection().getPage(ConversationPage.class).getXLastMessageIndex(index);
         if (isWithout) {
             if (isLike) {
-                switch (indexValue) {
-                    case ("third "): indexNummer = 3;
-                        break;
-                    case ("second "): indexNummer = 2;
-                        break;
-                    case (" "): indexNummer = 1;
-                        break;
-                    default:
-                        throw new Exception("indexNummer should be between 1 and 3");}
                 context.getPagesCollection().getPage(ConversationPage.class).clickLikeMessageWithoutOtherLikes(indexNummer);
             } else {
-                switch (indexValue) {
-                    case ("third "): indexNummer = 3;
-                        break;
-                    case ("second "): indexNummer = 2;
-                        break;
-                    case (" "): indexNummer = 1;
-                        break;
-                    default:
-                        throw new Exception("indexNummer should be between 1 and 3");}
-                    context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeMessageWithoutOtherLikes(indexNummer);
+                context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeMessageWithoutOtherLikes(indexNummer);
                 }
-
         } else if (isLike) {
-            switch (indexValue) {
-                case ("third "): indexNummer = 3;
-                    break;
-                case ("second "): indexNummer = 2;
-                    break;
-                case (" "): indexNummer = 1;
-                    break;
-                default:
-                    throw new Exception("indexNummer should be between 1 and 3");}
                 context.getPagesCollection().getPage(ConversationPage.class).clickLikeMessageWithOtherLikes(indexNummer);
             }
-        else { switch (indexValue) {
-            case ("third "):
-                indexNummer = 3;
-                break;
-            case ("second "):
-                indexNummer = 2;
-                break;
-            case (" "):
-                indexNummer = 1;
-                break;
-            default:
-                throw new Exception("indexNummer should be between 1 and 3");
-                }
+        else {
                 context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeMessageWithOtherLikes(indexNummer);
         }
     }
