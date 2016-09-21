@@ -1010,15 +1010,16 @@ public class ConversationPage extends WebPage {
 
     public int getXLastMessageIndex(String indexValue) throws Exception {
         int indexNummer = 1;
+        if (indexValue == null)
+            return indexNummer;
         switch (indexValue) {
-            case ("third "): indexNummer = 3;
+            case "third ": indexNummer = 3;
                 break;
-            case ("second "): indexNummer = 2;
+            case "second ": indexNummer = 2;
                 break;
-            case (" "): indexNummer = 1;
+            default: indexNummer = 1;
                 break;
-            default:
-                throw new Exception("indexNummer should be between 1 and 3");}
+            }
         return indexNummer;
     }
 
@@ -1054,8 +1055,7 @@ public class ConversationPage extends WebPage {
     public void clickUnlikeMessageWithoutOtherLikes(int messageIndex) throws Exception {
         String messageId = getMessageId(messageIndex);
         hoverOverMessage(messageId);
-        By locator = By.
-                cssSelector(WebAppLocators.ConversationPage.cssUnlikeWithoutOtherLikesByMessageId.apply(messageId));
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssUnlikeWithoutOtherLikesByMessageId.apply(messageId));
         getDriver().findElement(locator).click();
     }
 

@@ -431,7 +431,7 @@ public final class WebAppLocators {
         public static final String cssSecondLastMessage = "[data-uie-name='item-message']:nth-last-child(2)";
 
         public static final Function<Integer, String> cssLastMessageByIndex = (
-                index) -> String.format("%s:nth-last-child(%s)", cssLastMessage, index);
+                index) -> String.format("%s:nth-last-child(%s)", cssMessage, index);
 
         public static final String cssLastTextMessage = cssLastMessage + " .text";
 
