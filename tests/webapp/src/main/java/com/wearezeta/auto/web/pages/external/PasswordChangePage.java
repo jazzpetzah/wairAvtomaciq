@@ -12,7 +12,7 @@ import com.wearezeta.auto.web.locators.ExternalLocators;
 import com.wearezeta.auto.web.pages.WebPage;
 
 public class PasswordChangePage extends WebPage {
-	@FindBy(id = ExternalLocators.PasswordChangePage.idPasswordInput)
+	@FindBy(css = ExternalLocators.PasswordChangePage.cssPasswordInput)
 	private WebElement passwordField;
 
 	@FindBy(css = ExternalLocators.PasswordChangePage.cssSubmitButton)
@@ -39,7 +39,7 @@ public class PasswordChangePage extends WebPage {
 
 	public void waitUntilVisible(int timeoutSeconds) throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(ExternalLocators.PasswordChangePage.idPasswordInput)) : "Password Change page has not been displayed within "
+				By.cssSelector(ExternalLocators.PasswordChangePage.cssPasswordInput)) : "Password Change page has not been displayed within "
 				+ timeoutSeconds + " seconds";
 	}
 }

@@ -12,8 +12,7 @@ public final class ExternalLocators {
 	}
 
 	public static final class DeleteAccountPage {
-		public final static String cssSubmitButton = "[data-uie-name='do-delete-account']";
-		public final static String cssSuccess = ".success";
+		public final static String cssSubmitButton = "[type='submit']";
 		public final static String idWrongKey = "400";
 		public final static String idWrongCode = "403";
 		public final static Function<String, String> xpathLabelByText = txt -> String
@@ -21,12 +20,12 @@ public final class ExternalLocators {
 	}
 
 	public static final class PasswordChangePage {
-		public final static String idPasswordInput = "password";
-		public final static String cssSubmitButton = "button.wbtn";
+		public final static String cssPasswordInput = "[name='password']";
+		public final static String cssSubmitButton = "[type='submit']";
 	}
 
 	public static final class PasswordChangeRequestPage {
-		public final static String idEmailInput = "email";
+		public final static String cssEmailInput = "[name='email']";
 		public final static String cssSubmitButton = "button";
 	}
 
@@ -54,6 +53,7 @@ public final class ExternalLocators {
 		public final static String cssDownloadOSX = "a[href*='mt=12']";
 		public final static String cssDownloadWindows = "a[href*='download']";
 		public final static String cssWebappButton = "[href='https://wire-webapp-staging.zinfra.io']";
+		public final static String cssOpenWireButton = ".wbtn";
 		
 		public final static Function<String, String> xpathLabelByText = txt -> String
 				.format("//*[contains(text(),'%s')]", txt);

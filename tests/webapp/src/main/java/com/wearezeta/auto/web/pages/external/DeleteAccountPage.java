@@ -17,6 +17,7 @@ public class DeleteAccountPage extends WebPage {
     private WebElement submitButton;
     
     private static final String ERROR_TEXT = "Something went wrong.";
+    private static final String SUCCESS_TEXT = "Account deleted";
 
     public DeleteAccountPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
@@ -33,7 +34,7 @@ public class DeleteAccountPage extends WebPage {
     }
 
     public boolean isSuccess() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(ExternalLocators.DeleteAccountPage.cssSuccess));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(ExternalLocators.DeleteAccountPage.xpathLabelByText.apply(SUCCESS_TEXT)));
     }
     
     public boolean isWrongKey() throws Exception {
