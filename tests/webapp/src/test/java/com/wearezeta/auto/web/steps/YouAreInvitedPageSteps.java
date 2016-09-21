@@ -54,23 +54,6 @@ public class YouAreInvitedPageSteps {
 		}
 	}
 
-	/**
-	 * Open generic invitation link directly and overwrite User-Agent
-	 *
-	 * @step. ^I use generic invitation link for invitation for (.*)$
-	 *
-	 * @param agent
-	 *            ?agent= parameter to determine if iphone, android, osx or
-	 *            windows is used
-	 * @throws Exception
-	 */
-	@When("^I use generic invitation link for invitation for (.*)$")
-	public void IUseGenericInvitationLinkForInvitation(String agent) throws Exception {
-		final String website = CommonUtils.getWebsitePathFromConfig(YouAreInvitedPageSteps.class);
-		context.getPagesCollection().getPage(YouAreInvitedPage.class).setUrl(website + "/c/" + code + "/%3Fagent=" + agent);
-		context.getPagesCollection().getPage(YouAreInvitedPage.class).navigateTo();
-	}
-
 	@Then("^I see button that sends me to App Store$")
 	public void ISeeButtonThatSendsMeToAppStore() throws Exception {
 		String storeUrl = "https://itunes.apple.com/app/wire/id930944768?mt=8";
