@@ -12,11 +12,13 @@ Feature: Bring Your Friends
     And I do not see Share Contacts button
     When I remember invitation link on Bring Your Friends popover
     And I navigate to previously remembered invitation link
-    Then I see You are invited page
+    Then I see Registration page
+    And I verify description message is visible
+    And I verify description message is equal to <DescriptionMessage>
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Login      | Password      | Name      | DescriptionMessage                                                                                    |
+      | user1Email | user1Password | user1Name | Simple, private & secure messenger for chat, calls, sharing pics, music, videos, GIFs and more.       |
 
   @C3217 @regression
   Scenario Outline: Invite people when you have top people or search suggestions
@@ -37,11 +39,13 @@ Feature: Bring Your Friends
     And I see Share Contacts button
     When I remember invitation link on Bring Your Friends popover
     And I navigate to previously remembered invitation link
-    Then I see You are invited page
+    Then I see Registration page
+    And I verify description message is visible
+    And I verify description message is equal to <DescriptionMessage>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Message |
-      | user1Email | user1Password | user1Name | user2Name | Hello   |
+      | Login      | Password      | Name      | Contact   | Message | DescriptionMessage                                                                                    |
+      | user1Email | user1Password | user1Name | user2Name | Hello   | Simple, private & secure messenger for chat, calls, sharing pics, music, videos, GIFs and more.       |
 
   @C1774 @regression
   Scenario Outline: Show invitation button when Gmail import has no suggestions
