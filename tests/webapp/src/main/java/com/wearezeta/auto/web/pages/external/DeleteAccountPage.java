@@ -16,7 +16,7 @@ public class DeleteAccountPage extends WebPage {
     @FindBy(css = ExternalLocators.DeleteAccountPage.cssSubmitButton)
     private WebElement submitButton;
     
-    private static final String ERROR_TEXT = "Something went wrong.";
+    private static final String ERROR_TEXT = "Something went wrong";
     private static final String SUCCESS_TEXT = "Account deleted";
 
     public DeleteAccountPage(Future<ZetaWebAppDriver> lazyDriver)
@@ -43,10 +43,6 @@ public class DeleteAccountPage extends WebPage {
     
     public boolean isWrongCode() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(ExternalLocators.DeleteAccountPage.idWrongCode));
-    }
-    
-    public boolean isButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(ExternalLocators.DeleteAccountPage.cssSubmitButton));
     }
     
     public boolean isErrorMessage() throws Exception {
