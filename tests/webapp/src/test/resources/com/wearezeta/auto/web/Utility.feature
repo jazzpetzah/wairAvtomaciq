@@ -1,35 +1,5 @@
 Feature: Utility
 
-  @C3262
-  Scenario: Verify buttons on invitation page for iphone
-    # Blocked due to limitation of Selenium
-    When I use generic invitation link for invitation for iphone
-    And I see You are invited page with agent
-    Then I see button that sends me to App Store
-    And I see button to connect for iphone including invitation code
-
-  @C3263
-  Scenario: Verify buttons on invitation page for android
-    # Blocked due to limitation of Selenium
-    When I use generic invitation link for invitation for android
-    And I see You are invited page with agent
-    Then I see button that sends me to Play Store
-    And I see button to connect for android including invitation code
-
-  @C3264 @utility
-  Scenario: Verify buttons on invitation page for osx
-    Given I switch to sign in page
-    When I use generic invitation link for invitation for osx
-    And I see You are invited page
-    Then I see 'Open Wire' button
-
-  @C3265 @utility
-  Scenario: Verify buttons on invitation page for windows
-    Given I switch to sign in page
-    When I use generic invitation link for invitation for windows
-    And I see You are invited page
-    Then I see 'Open Wire' button
-
   @C3257 @utility
   Scenario: Verify buttons on download page
     Given I switch to sign in page
