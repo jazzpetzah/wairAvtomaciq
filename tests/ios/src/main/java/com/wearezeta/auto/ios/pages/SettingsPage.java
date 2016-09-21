@@ -81,6 +81,8 @@ public class SettingsPage extends IOSPage {
             dstElement.scrollTo();
         }
         dstElement.click();
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     public boolean isItemVisible(String itemName) throws Exception {
