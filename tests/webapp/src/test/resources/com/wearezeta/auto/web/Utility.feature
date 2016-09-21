@@ -211,14 +211,16 @@ Feature: Utility
   @C3275 @C3276
   Scenario Outline: Verify buttons from verfication link for <Agent>
     # Blocked due to limitation of Selenium
-    When I navigate to verify page for <Agent>
-    When I navigate to verify page for <Agent>
-    Then I see download button for <Agent>
+    Given There is 1 user where <Name> is me
+    Given I switch to sign in page
+    When I generate verification code for user <Name>
+    And I go to phone verification page for <Agent>
+    Then I see 'Open Wire' button with verification code
 
     Examples:
-      | Agent   |
-      | iphone  |
-      | android |
+      | Name      | Agent   |
+      | user1Name | iphone  |
+      | user1Name | android |
 
   @C3277 @utility
   Scenario: Verify buttons from verification link for osx
@@ -334,10 +336,13 @@ Feature: Utility
     And I remember delete link of user <Name>
     And I use remembered link on <Agent> without key checksum
     Then I see error message for missing checksum
-    And I use remembered link on <Agent> without code checksum
+    And I do not see success message for account deleted
+    When I use remembered link on <Agent> without code checksum
     Then I see error message for missing checksum
-    And I use remembered link on <Agent> without both checksum
+    And I do not see success message for account deleted
+    When I use remembered link on <Agent> without both checksum
     Then I see error message for missing checksum
+    And I do not see success message for account deleted
 
     Examples:
       | Email      | Password      | Name      | Agent   |

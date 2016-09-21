@@ -51,8 +51,7 @@ Feature: E2EE
     And I tap Done navigation button on Settings page
     Then I wait until settings gear is not changed
     When I tap settings gear button
-    And I select settings item Privacy & Security
-    And I select settings item Manage devices
+    And I select settings item Devices
     Then I see settings item <DeviceName>
 
     Examples:
@@ -186,8 +185,7 @@ Feature: E2EE
     And User Myself adds new devices <DeviceName>
     When I tap settings gear button
     And I tap OK button on the alert
-    And I select settings item Privacy & Security
-    And I select settings item Manage devices
+    And I select settings item Devices
     And I tap Edit button
     And I tap Delete <DeviceName> button from devices
     And I confirm with my <Password> the deletion of the device
@@ -205,8 +203,7 @@ Feature: E2EE
     And User Myself adds a new device <DeviceName> with label <DeviceLabel>
     When I tap settings gear button
     And I tap OK button on the alert
-    And I select settings item Privacy & Security
-    And I select settings item Manage devices
+    And I select settings item Devices
     When I open details page of device number 2
     And I tap Verify switcher on Device Details page
     And I tap Back navigation button on Settings page
@@ -389,8 +386,7 @@ Feature: E2EE
     Given I sign in using my email
     Given I see conversations list
     And I tap settings gear button
-    And I select settings item Privacy & Security
-    And I select settings item Manage devices
+    And I select settings item Devices
     When I tap on current device
     Then I see settings item Key Fingerprint
     And I do not see settings item Verified
@@ -409,8 +405,7 @@ Feature: E2EE
     And User Myself adds new device <DeviceName>
     When I tap settings gear button
     And I tap OK button on the alert
-    And I select settings item Privacy & Security
-    And I select settings item Manage devices
+    And I select settings item Devices
     And I open details page of device number 2
     And I tap Remove Device on device detail page
     And I confirm with my <Password> the deletion of the device
