@@ -6,21 +6,23 @@ import com.wearezeta.auto.android.pages.GiphyPreviewPage;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletGiphyPage extends AndroidTabletPage {
-	public TabletGiphyPage(Future<ZetaAndroidDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
-	}
+    public TabletGiphyPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+        super(lazyDriver);
+    }
 
-	private GiphyPreviewPage getAndroidGiphyPage() throws Exception {
-		return this.getAndroidPageInstance(GiphyPreviewPage.class);
-	}
+    private GiphyPreviewPage getAndroidGiphyPage() throws Exception {
+        return this.getAndroidPageInstance(GiphyPreviewPage.class);
+    }
 
-	public boolean waitUntilIsVisible() throws Exception {
-		return getAndroidGiphyPage().isGiphyPreviewShown();
-	}
+    public boolean waitUntilIsVisible() throws Exception {
+        return getAndroidGiphyPage().isGiphyPreviewShown();
+    }
 
-	public void tapSendButton() throws Exception {
-		getAndroidGiphyPage().clickSendButton();
-	}
+    public void tapSendButton() throws Exception {
+        getAndroidGiphyPage().clickSendButton();
+    }
 
+    public void clickOnSomeGif() throws Exception {
+        getAndroidGiphyPage().clickOnSomeGif();
+    }
 }

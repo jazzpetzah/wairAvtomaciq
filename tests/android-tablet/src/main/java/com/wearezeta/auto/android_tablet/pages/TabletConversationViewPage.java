@@ -152,18 +152,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getElement(idCloseImageBtn).click();
     }
 
-    public boolean waitUntilGiphyButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idGiphyPreviewButton);
-    }
-
-    public boolean waitUntilGiphyButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idGiphyPreviewButton);
-    }
-
-    public void tapGiphyButton() throws Exception {
-        getElement(idGiphyPreviewButton).click();
-    }
-
     public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries) throws Exception {
         return getConversationViewPage().scrollUpUntilMediaBarVisible(maxScrollRetries);
     }

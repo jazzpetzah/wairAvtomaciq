@@ -101,10 +101,9 @@ Feature: Rich Media
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
     When I tap on text input
-    Then I do not see Giphy button in the conversation view
-    When I type the message "<Message>" in the conversation view
-    Then I see Giphy button in the conversation view
-    When I tap Giphy button in the conversation view
+    And I type the message "<Message>" in the conversation view
+    And I tap Gif button from cursor toolbar
+    And I select a random gif from the grid preview
     Then I see Giphy preview page
     When I tap Send button on the Giphy preview page
     Then I see the conversation view
@@ -126,10 +125,9 @@ Feature: Rich Media
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
     When I tap on text input
-    Then I do not see Giphy button in the conversation view
-    When I type the message "<Message>" in the conversation view
-    Then I see Giphy button in the conversation view
-    When I tap Giphy button in the conversation view
+    And I type the message "<Message>" in the conversation view
+    And I tap Gif button from cursor toolbar
+    And I select a random gif from the grid preview
     Then I see Giphy preview page
     When I tap Send button on the Giphy preview page
     Then I see the conversation view

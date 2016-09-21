@@ -103,7 +103,8 @@ Feature: Recall Message
     When I tap the conversation <Contact>
     And I tap on text input
     And I type the message "<Message>" in the Conversation view
-    And I tap Giphy button in the conversation view
+    And I tap Gif button from cursor toolbar
+    And I select a random gif from the grid preview
     Then I see Giphy preview page
     When I tap Send button on the Giphy preview page
     And I long tap Image container in the conversation view

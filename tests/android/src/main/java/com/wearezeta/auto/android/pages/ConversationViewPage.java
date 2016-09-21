@@ -65,6 +65,7 @@ public class ConversationViewPage extends AndroidPage {
     private static final By idCursorLess = By.id("cursor_menu_item_less");
     private static final By idCursorVideoMessage = By.id("cursor_menu_item_video");
     private static final By idCursorShareLocation = By.id("cursor_menu_item_location");
+    private static final By idCursorGif = By.id("cursor_menu_item_gif");
     private static final By idCursorView = By.id("cal__cursor");
     private static final By idCursorSelfAvatar = By.id("civ__cursor__self_avatar");
     private static final String CURSOR_EDIT_TOOLTIP = "TYPE A MESSAGE";
@@ -401,6 +402,8 @@ public class ConversationViewPage extends AndroidPage {
                 return idCursorVideoMessage;
             case "share location":
                 return idCursorShareLocation;
+            case "gif":
+                return idCursorGif;
             default:
                 throw new IllegalArgumentException(String.format("Unknown tool button name '%s'", name));
         }

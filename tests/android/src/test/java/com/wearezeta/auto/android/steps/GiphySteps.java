@@ -16,14 +16,16 @@ public class GiphySteps {
 	}
 
 	/**
-	 * Click on GIF button
+	 * Type text in Giphy Toolbar Input field
 	 *
+	 * @param text
+	 * @param hideKeyboard equals null means do not hide keyboard
 	 * @throws Exception
-	 * @step. ^I click on the GIF button$
-	 */
-	@When("^I click on the GIF button$")
-	public void IClickOnTheGifButton() throws Exception {
-		getGiphyPreviewPage().clickOnGIFButton();
+	 * @step. ^I type "(.*)" in Giphy toolbar input field$
+     */
+	@When("^I type \"(.*)\" in Giphy toolbar input field( and hide keyboard)?$")
+	public void ISearchGiphy(String text, String hideKeyboard) throws Exception {
+		getGiphyPreviewPage().typeTextOnSearchField(text,hideKeyboard != null);
 	}
 
 	/**
@@ -35,18 +37,6 @@ public class GiphySteps {
 	@When("^I see giphy preview page$")
 	public void ISeeGiphyPreviewPage() throws Exception {
 		Assert.assertTrue("Giphy preview page is not shown", getGiphyPreviewPage().isGiphyPreviewShown());
-	}
-
-	/**
-	 * Clicks the giphy link button to open the grid preview
-	 *
-	 * @step. ^I click on the giphy link button$
-	 *
-	 * @throws Exception
-	 */
-	@When("^I click on the giphy link button$")
-	public void IClickOnTheGifPreview() throws Exception {
-		getGiphyPreviewPage().clickGiphyLinkButton();
 	}
 
 	/**
