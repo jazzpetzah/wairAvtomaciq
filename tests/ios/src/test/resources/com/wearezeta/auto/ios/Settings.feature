@@ -165,6 +165,8 @@ Feature: Settings
     When I select settings item Add phone number
     And I enter phone number for Myself
     And I enter registration verification code for Myself
+    And I tap settings gear button
+    And I select settings item Account
     Then I verify the value of settings item Phone equals to "<MyPhoneNumber>"
 
     Examples:
@@ -260,6 +262,8 @@ Feature: Settings
     And I click Create Account Button
     And I see confirmation page
     And I verify registration address
+    And I tap settings gear button
+    And I select settings item Account
     Then I verify the value of settings item Email equals to "<Email>"
 
     Examples:
