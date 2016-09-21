@@ -14,8 +14,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class PeoplePickerPage extends IOSPage {
-    private static final By xpathPickerSearch =
-            By.xpath("//XCUIElementTypeTextView[@name='textViewSearch' and @visible='true']");
+    private static final By fbNamePickerSearch = FBBy.FBAccessibilityId("textViewSearch");
 
     public static final By xpathPickerClearButton =
             By.xpath("//*[@name='PeoplePickerClearButton' or @name='ContactsViewCloseButton']");
@@ -90,11 +89,11 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isPeoplePickerPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathPickerSearch);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), fbNamePickerSearch);
     }
 
     public void tapOnPeoplePickerSearch() throws Exception {
-        DriverUtils.tapInTheCenterOfTheElement(getDriver(), getElement(xpathPickerSearch));
+        this.tapAtTheCenterOfElement((FBElement) getElement(fbNamePickerSearch));
     }
 
     public void tapOnPeoplePickerClearBtn() throws Exception {
@@ -106,7 +105,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void fillTextInPeoplePickerSearch(String text) throws Exception {
-        final WebElement searchInput = getElement(xpathPickerSearch);
+        final WebElement searchInput = getElement(fbNamePickerSearch);
         searchInput.sendKeys(text + " ");
     }
 
@@ -155,7 +154,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void pressBackspaceButton() throws Exception {
-        getElement(xpathPickerSearch).sendKeys(Keys.DELETE);
+        getElement(fbNamePickerSearch).sendKeys(Keys.DELETE);
     }
 
     public void clickAddToConversationButton() throws Exception {

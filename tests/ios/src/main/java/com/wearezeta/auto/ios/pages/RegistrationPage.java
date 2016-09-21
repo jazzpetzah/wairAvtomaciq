@@ -18,9 +18,13 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 public class RegistrationPage extends IOSPage {
-    private static final String WIRE_COUNTRY_NAME = "Wirestan ☀️";
+    private static final String WIRE_COUNTRY_NAME_PREFIX = "Wirestan";
 
-    private static final By fbNameWireCountry = FBBy.FBAccessibilityId(WIRE_COUNTRY_NAME);
+    private static final String WIRE_COUNTRY_NAME = WIRE_COUNTRY_NAME_PREFIX + " ☀️";
+
+    private static final By nameSearchField = MobileBy.AccessibilityId("Search");
+
+    private static final By nameWireCountry = MobileBy.AccessibilityId(WIRE_COUNTRY_NAME);
 
     private static final By xpathYourName = By.xpath("//XCUIElementTypeTextField[@value='YOUR FULL NAME']");
 
@@ -39,7 +43,7 @@ public class RegistrationPage extends IOSPage {
     private static final By xpathEmailVerifPrompt =
             By.xpath("//XCUIElementTypeStaticText[contains(@name, 'We sent an email to ')]");
 
-    private static final By namePhoneNumberField = MobileBy.AccessibilityId("PhoneNumberField");
+    private static final By fbNamePhoneNumberField = FBBy.FBAccessibilityId("PhoneNumberField");
 
     public static final By xpathVerificationCodeInput = By.xpath("//XCUIElementTypeTextField");
 
@@ -88,19 +92,18 @@ public class RegistrationPage extends IOSPage {
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCountryPickerButton, 5)) {
             countryPickerBtn.click();
         }
-        final FBElement dstElement = (FBElement) getElementIfExists(fbNameWireCountry).orElseThrow(
-                () -> new IllegalStateException("Wire country item is not present")
-        );
-        dstElement.scrollTo();
-        dstElement.click();
+        final WebElement searchInput = getElement(nameSearchField);
+        searchInput.click();
+        searchInput.sendKeys(WIRE_COUNTRY_NAME_PREFIX);
+        getElement(nameWireCountry).click();
         // Wait for animation
         Thread.sleep(2000);
     }
 
     public void inputPhoneNumber(PhoneNumber number) throws Exception {
         selectWirestan();
-        final WebElement phoneNumberField = getElement(namePhoneNumberField);
-        DriverUtils.tapInTheCenterOfTheElement(getDriver(), phoneNumberField);
+        final FBElement phoneNumberField = (FBElement) getElement(fbNamePhoneNumberField);
+        this.tapAtTheCenterOfElement(phoneNumberField);
         Thread.sleep(2000);
         phoneNumberField.sendKeys(number.withoutPrefix());
         getElement(nameConfirmButton).click();
@@ -265,8 +268,8 @@ public class RegistrationPage extends IOSPage {
 
     public void inputPhoneNumberAndExpectNoCommit(PhoneNumber phoneNumber) throws Exception {
         selectWirestan();
-        final WebElement phoneNumberField = getElement(namePhoneNumberField);
-        DriverUtils.tapInTheCenterOfTheElement(getDriver(), phoneNumberField);
+        final FBElement phoneNumberField = (FBElement) getElement(fbNamePhoneNumberField);
+        this.tapAtTheCenterOfElement(phoneNumberField);
         Thread.sleep(2000);
         phoneNumberField.sendKeys(phoneNumber.withoutPrefix());
         if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConfirmButton, 3)) {
