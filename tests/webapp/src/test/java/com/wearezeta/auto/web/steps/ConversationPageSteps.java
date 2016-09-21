@@ -28,6 +28,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
@@ -650,8 +651,7 @@ public class ConversationPageSteps {
 
     @Then("^I wait until audio (.*) is uploaded completely$")
     public void IWaitUntilAudioIsUploaded(String fileName) throws Exception {
-        assertThat("Upload still not finished for audio " + fileName, context.getPagesCollection().getPage(
-                ConversationPage.class)
+        assertThat("Upload still not finished for audio " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
                 .waitUntilAudioUploaded(fileName));
     }
 
@@ -702,18 +702,18 @@ public class ConversationPageSteps {
             context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnThirdLastMessage();
         }
         else {
-            context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnLatestMessage();
+            context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnLastMessage();
         }
     }
 
     @When("^I click to delete message for everyone in context menu$")
     public void IClickDeleteEverywhereInContextMenuOfLatestMessage() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clickDeleteEverywhereInContextMenuOfLatestMessage();
+        context.getPagesCollection().getPage(ConversationPage.class).clickDeleteEverywhereInContextMenuOfLastMessage();
     }
 
     @When("^I click to delete message for me in context menu$")
     public void IClickDeleteForMeInContextMenuOfLatestMessage() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clickDeleteForMeInContextMenuOfLatestMessage();
+        context.getPagesCollection().getPage(ConversationPage.class).clickDeleteForMeInContextMenuOfLastMessage();
     }
 
     @When("^I click confirm to delete message for everyone$")
@@ -733,7 +733,7 @@ public class ConversationPageSteps {
 
     @When("^I hover over the latest message$")
     public void IHoverOverLatestMessage() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).hoverOverLatestMessage();
+        context.getPagesCollection().getPage(ConversationPage.class).hoverOverLastMessage();
     }
 
     @When("^I do not see delete button for latest message$")
@@ -840,11 +840,11 @@ public class ConversationPageSteps {
         if (isLike) {
             assertTrue("Like button is not visible", context.getPagesCollection().getPage(ConversationPage.class)
                     .isLikeButtonInContextMenuVisible());
-            context.getPagesCollection().getPage(ConversationPage.class).clickReactInContextMenuOfLatestMessage();
+            context.getPagesCollection().getPage(ConversationPage.class).clickReactInContextMenuOfLastMessage();
         } else {
             assertTrue("Unlike button is not visible", context.getPagesCollection().getPage(ConversationPage.class)
                     .isUnlikeButtonInContextMenuVisible());
-            context.getPagesCollection().getPage(ConversationPage.class).clickReactInContextMenuOfLatestMessage();
+            context.getPagesCollection().getPage(ConversationPage.class).clickReactInContextMenuOfLastMessage();
         }
     }
 
@@ -852,46 +852,63 @@ public class ConversationPageSteps {
     public void IClickToLikeLatestMessageWithoutOtherLikes(String like, String index, String out) throws Exception {
         boolean isWithout = "out".equals(out);
         boolean isLike = "like".equals(like);
+        String indexValue = index;
         int indexNummer = 1;
-            if (isWithout) {
-                if (isLike) {
-                    if ("third ".equals(index)) {
-                        indexNummer = 3;
-                    }
-                    else if ("second ".equals(index)) {
-                        indexNummer = 2;
-                    }
-                    else indexNummer = 1;
-                    context.getPagesCollection().getPage(ConversationPage.class).clickLikeMessageWithoutOtherLikes(indexNummer);
-                } else {
-                    if ("third ".equals(index)) {
-                        indexNummer = 3;
-                    }
-                    else if ("second ".equals(index)) {
-                        indexNummer = 2;
-                    }
-                    else indexNummer = 1;
+        if (isWithout) {
+            if (isLike) {
+                switch (indexValue) {
+                    case ("third "): indexNummer = 3;
+                        break;
+                    case ("second "): indexNummer = 2;
+                        break;
+                    case (" "): indexNummer = 1;
+                        break;
+                    default:
+                        //throw Exception("");
+                        break;}
+                context.getPagesCollection().getPage(ConversationPage.class).clickLikeMessageWithoutOtherLikes(indexNummer);
+            } else {
+                switch (indexValue) {
+                    case ("third "): indexNummer = 3;
+                        break;
+                    case ("second "): indexNummer = 2;
+                        break;
+                    case (" "): indexNummer = 1;
+                        break;
+                    default:
+                        //throw Exception("");
+                        break;}
                     context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeMessageWithoutOtherLikes(indexNummer);
                 }
-            } else if (isLike) {
-                if ("third ".equals(index)) {
-                    indexNummer = 3;
-                }
-                else if ("second ".equals(index)) {
-                    indexNummer = 2;
-                }
-                else indexNummer = 1;
+
+        } else if (isLike) {
+            switch (indexValue) {
+                case ("third "): indexNummer = 3;
+                    break;
+                case ("second "): indexNummer = 2;
+                    break;
+                case (" "): indexNummer = 1;
+                    break;
+                default:
+                    //throw Exception("");
+                    break;}
                 context.getPagesCollection().getPage(ConversationPage.class).clickLikeMessageWithOtherLikes(indexNummer);
-            } else {
-                if ("third ".equals(index)) {
-                    indexNummer = 3;
-                }
-                else if ("second ".equals(index)) {
-                    indexNummer = 2;
-                }
-                else indexNummer = 1;
-                context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeMessageWithOtherLikes(indexNummer);
             }
+        else { switch (indexValue) {
+            case ("third "):
+                indexNummer = 3;
+                break;
+            case ("second "):
+                indexNummer = 2;
+                break;
+            case (" "):
+                indexNummer = 1;
+                break;
+            default:
+                //throw Exception("");
+                break;}
+                context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeMessageWithOtherLikes(indexNummer);
+        }
     }
 
     @Then("^I (do not )?see likes below the last message$")
