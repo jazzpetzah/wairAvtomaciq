@@ -76,10 +76,12 @@ final class FBDriverRESTClient {
 
     private final ExecutorService pool = Executors.newFixedThreadPool(1);
 
+    private static final long WD_REQUEST_TIMEOUT_MS = ZetaIOSDriver.MAX_COMMAND_DURATION_MILLIS / 4;
+
     private JSONObject waitForResponse(RequestSender r) throws RESTError {
         final Future<String> future = pool.submit(r::send);
         try {
-            return new JSONObject(future.get(ZetaIOSDriver.MAX_COMMAND_DURATION_MILLIS, TimeUnit.MILLISECONDS));
+            return new JSONObject(future.get(WD_REQUEST_TIMEOUT_MS, TimeUnit.MILLISECONDS));
         } catch (Exception e) {
             if (e.getCause() instanceof RESTError) {
                 throw (RESTError) e.getCause();

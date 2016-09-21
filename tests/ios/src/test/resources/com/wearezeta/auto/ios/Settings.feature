@@ -253,7 +253,7 @@ Feature: Settings
     Given I see conversations list
     Given I tap settings gear button
     Given I select settings item Account
-    When I select settings item Add email address
+    When I select settings item Add email address and password
     And I enter email <Email>
     And I enter password <Password>
     And I start activation email monitoring

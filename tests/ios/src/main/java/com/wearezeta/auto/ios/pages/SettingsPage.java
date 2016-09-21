@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
@@ -18,25 +19,25 @@ public class SettingsPage extends IOSPage {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private static final String xpathStrMenuContainer = "//XCUIElementTypeTable";
 
-    private static final Function<String, String> xpathStrMenuItemByName = namePrefix ->
-            String.format("%s/*[@name='%s']", xpathStrMenuContainer, namePrefix);
+    private static final Function<String, String> xpathStrMenuItemByName = name ->
+            String.format("%s//XCUIElementTypeCell[./*[@name='%s']]", xpathStrMenuContainer, name);
 
     public static final By xpathSettingsPage = By.xpath("//XCUIElementTypeNavigationBar[@name='Settings']");
 
     private static final FunctionFor2Parameters<String, String, String> xpathStrSettingsValue =
-            (itemName, expectedValue) -> String.format("//XCUIElementTypeCell[@name='%s']/*[@value='%s']",
-                    itemName, expectedValue);
+            (itemName, expectedValue) -> String.format("%s/*[@value='%s']",
+                    xpathStrMenuItemByName.apply(itemName), expectedValue);
 
     private static final By nameEditButton = MobileBy.AccessibilityId("Edit");
 
     private static final By nameSelfNameEditField =
-            By.xpath("//XCUIElementTypeCell[@name='Name']/XCUIElementTypeTextField[last()]");
+            By.xpath(String.format("%s/XCUIElementTypeTextField[last()]", xpathStrMenuItemByName.apply("Name")));
 
     private static final Function<String, String> xpathDeleteDeviceButtonByName = devicename ->
             String.format("//XCUIElementTypeButton[contains(@name,'Delete %s')]", devicename);
 
     private static final Function<String, String> xpathDeviceListEntry = device ->
-            String.format("//XCUIElementTypeCell[contains(@name,'%s')]", device);
+            String.format("//*[contains(@name,'%s')]", device);
 
     private static final By nameDeleteButton = MobileBy.AccessibilityId("Delete");
 
@@ -73,7 +74,7 @@ public class SettingsPage extends IOSPage {
     }
 
     public void selectItem(String itemName) throws Exception {
-        final By locator = By.xpath(xpathStrMenuItemByName.apply(itemName));
+        final By locator = FBBy.FBXPath(xpathStrMenuItemByName.apply(itemName));
         final FBElement dstElement = (FBElement) getElementIfExists(locator).orElseThrow(
                 () -> new IllegalStateException(String.format("Menu element '%s' does not exist", itemName))
         );
@@ -150,7 +151,7 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean isSettingItemValueEqualTo(String itemName, String expectedValue) throws Exception {
-        final By locator = By.xpath(xpathStrSettingsValue.apply(itemName, expectedValue));
+        final By locator = FBBy.FBXPath(xpathStrSettingsValue.apply(itemName, expectedValue));
         final FBElement dstElement = (FBElement) getElementIfExists(locator).orElseThrow(
                 () -> new IllegalStateException(String.format("Menu element '%s' does not exist",
                         itemName))
