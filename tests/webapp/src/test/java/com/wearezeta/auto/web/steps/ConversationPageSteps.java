@@ -695,15 +695,18 @@ public class ConversationPageSteps {
 
     @When("^I click context menu of the (second |third )?last message$")
     public void IClickContextMenuOfThirdLastMessage(String indexNumber) throws Exception {
-        if (indexNumber.equals("second ")) {
-            context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnSecondLastMessage();
-        }
-        else if (indexNumber.equals("third ")) {
-            context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnThirdLastMessage();
-        }
-        else {
-            context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnLastMessage();
-        }
+        int messageId = 1;
+        String indexValue = indexNumber;
+        switch (indexValue) {
+                case ("third "): messageId = 3;
+                    break;
+                case ("second "): messageId = 2;
+                    break;
+                case (" "): messageId = 1;
+                    break;
+                default:
+                    throw new Exception("indexNummer should be between 1 and 3");}
+            context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnMessage(messageId);
     }
 
     @When("^I click to delete message for everyone in context menu$")
@@ -864,8 +867,7 @@ public class ConversationPageSteps {
                     case (" "): indexNummer = 1;
                         break;
                     default:
-                        //throw Exception("");
-                        break;}
+                        throw new Exception("indexNummer should be between 1 and 3");}
                 context.getPagesCollection().getPage(ConversationPage.class).clickLikeMessageWithoutOtherLikes(indexNummer);
             } else {
                 switch (indexValue) {
@@ -876,8 +878,7 @@ public class ConversationPageSteps {
                     case (" "): indexNummer = 1;
                         break;
                     default:
-                        //throw Exception("");
-                        break;}
+                        throw new Exception("indexNummer should be between 1 and 3");}
                     context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeMessageWithoutOtherLikes(indexNummer);
                 }
 
@@ -890,8 +891,7 @@ public class ConversationPageSteps {
                 case (" "): indexNummer = 1;
                     break;
                 default:
-                    //throw Exception("");
-                    break;}
+                    throw new Exception("indexNummer should be between 1 and 3");}
                 context.getPagesCollection().getPage(ConversationPage.class).clickLikeMessageWithOtherLikes(indexNummer);
             }
         else { switch (indexValue) {
@@ -905,8 +905,8 @@ public class ConversationPageSteps {
                 indexNummer = 1;
                 break;
             default:
-                //throw Exception("");
-                break;}
+                throw new Exception("indexNummer should be between 1 and 3");
+                }
                 context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeMessageWithOtherLikes(indexNummer);
         }
     }

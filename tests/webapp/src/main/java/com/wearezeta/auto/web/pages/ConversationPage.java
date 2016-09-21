@@ -1170,22 +1170,8 @@ public class ConversationPage extends WebPage {
 
     //context menu
 
-    public void clickContextMenuOnLastMessage() throws Exception {
-        String latestMessageId = getMessageId(1);
-        hoverOverMessage(latestMessageId);
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssContextMenuButtonByMessageId.apply(latestMessageId));
-        getDriver().findElement(locator).click();
-    }
-
-    public void clickContextMenuOnSecondLastMessage() throws Exception {
-        String id = getMessageId(2);
-        hoverOverMessage(id);
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssContextMenuButtonByMessageId.apply(id));
-        getDriver().findElement(locator).click();
-    }
-
-    public void clickContextMenuOnThirdLastMessage() throws Exception {
-        String id = getMessageId(3);
+    public void clickContextMenuOnMessage(int indexNumber) throws Exception {
+        String id = getMessageId(indexNumber);
         hoverOverMessage(id);
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssContextMenuButtonByMessageId.apply(id));
         getDriver().findElement(locator).click();
