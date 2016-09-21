@@ -1401,16 +1401,6 @@ public class ConversationPage extends WebPage {
         return getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
     }
 
-    private String getSecondLastMessageId() throws Exception {
-        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssSecondLastMessage);
-        return getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
-    }
-
-    private String getThirdLastMessageId() throws Exception {
-        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssThirdLastMessage);
-        return getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
-    }
-
     private static List<String> getTextOfPresentElements(By locator, WebDriver driver) throws Exception {
         final List<WebElement> headers = driver.findElements(locator);
         return headers.stream().filter(a -> a.isDisplayed())
