@@ -336,10 +336,13 @@ Feature: Utility
     And I remember delete link of user <Name>
     And I use remembered link on <Agent> without key checksum
     Then I see error message for missing checksum
-    And I use remembered link on <Agent> without code checksum
+    And I do not see success message for account deleted
+    When I use remembered link on <Agent> without code checksum
     Then I see error message for missing checksum
-    And I use remembered link on <Agent> without both checksum
+    And I do not see success message for account deleted
+    When I use remembered link on <Agent> without both checksum
     Then I see error message for missing checksum
+    And I do not see success message for account deleted
 
     Examples:
       | Email      | Password      | Name      | Agent   |
