@@ -257,4 +257,8 @@ public class FBDriverAPI {
     public void dismissAlert() throws RESTError, StatusNotZeroError {
         parseResponseWithStatus(client.dismissAlert(getSessionId()));
     }
+
+    public void dragFromToForDuration(String uuid, DragArguments dragArguments) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.dragFromToForDuration(getSessionId(), uuid, dragArguments));
+    }
 }

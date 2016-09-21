@@ -322,4 +322,12 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
             throw new WebDriverException(e);
         }
     }
+
+    public void dragFromToForDuration(DragArguments dragArguments) {
+        try {
+            fbDriverAPI.dragFromToForDuration(this.uuid, dragArguments);
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
+            throw new WebDriverException(e);
+        }
+    }
 }

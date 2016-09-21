@@ -271,4 +271,17 @@ final class FBDriverRESTClient {
                 () -> restHandlers.httpPost(webResource, new JSONObject().toString(), new int[]{HttpStatus.SC_OK})
         );
     }
+
+    public JSONObject dragFromToForDuration(String sessionId, String uuid, DragArguments dragArguments)
+            throws RESTError {
+        final Builder webResource = buildDefaultRequest(
+                String.format("uiaTarget/%s/dragfromtoforduration", uuid), sessionId);
+        final JSONObject body = new JSONObject();
+        body.put("fromX", dragArguments.getFromX());
+        body.put("fromY", dragArguments.getFromY());
+        body.put("toX", dragArguments.getToX());
+        body.put("toY", dragArguments.getToY());
+        body.put("duration", dragArguments.getDurationSeconds());
+        return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
+    }
 }
