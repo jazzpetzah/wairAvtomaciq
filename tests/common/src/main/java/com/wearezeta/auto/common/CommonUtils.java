@@ -311,6 +311,27 @@ public class CommonUtils {
         }
     }
 
+    public static String getAccountPagesFromConfig(Class<?> c) throws Exception {
+        String path = System.getProperty("accountPagesPath");
+        if (path != null && !path.isEmpty()) {
+            return path;
+        } else {
+            final String currentBackendType = getBackendType(c);
+            switch (currentBackendType.toLowerCase()) {
+                case "edge":
+                    return getValueFromConfig(c, "accountPagesEdgePath");
+                case "dev":
+                    return getValueFromConfig(c, "accountPagesStagingPath");
+                case "staging":
+                    return getValueFromConfig(c, "accountPagesStagingPath");
+                case "production":
+                    return getValueFromConfig(c, "accountPagesProductionPath");
+                default:
+                    return getValueFromConfig(c, "accountPagesProductionPath");
+            }
+        }
+    }
+
     public static String getAndroidApplicationPathFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "androidApplicationPath");
     }

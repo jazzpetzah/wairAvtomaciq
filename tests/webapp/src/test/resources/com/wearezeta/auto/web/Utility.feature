@@ -211,14 +211,16 @@ Feature: Utility
   @C3275 @C3276
   Scenario Outline: Verify buttons from verfication link for <Agent>
     # Blocked due to limitation of Selenium
-    When I navigate to verify page for <Agent>
-    When I navigate to verify page for <Agent>
-    Then I see download button for <Agent>
+    Given There is 1 user where <Name> is me
+    Given I switch to sign in page
+    When I generate verification code for user <Name>
+    And I go to phone verification page for <Agent>
+    Then I see 'Open Wire' button with verification code
 
     Examples:
-      | Agent   |
-      | iphone  |
-      | android |
+      | Name      | Agent   |
+      | user1Name | iphone  |
+      | user1Name | android |
 
   @C3277 @utility
   Scenario: Verify buttons from verification link for osx

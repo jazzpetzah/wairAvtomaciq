@@ -1,6 +1,8 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.pages.external.VerifyPage;
@@ -12,7 +14,8 @@ import static org.hamcrest.Matchers.*;
 
 public class VerifyPageSteps {
 	
-        private final TestContext context;
+	private final TestContext context;
+    private String phoneVerificationCode;
         
     public VerifyPageSteps() {
         this.context = new TestContext();
@@ -21,7 +24,7 @@ public class VerifyPageSteps {
     public VerifyPageSteps(TestContext context) {
         this.context = context;
     }
-	
+
 	/**
 	 * Open verify page on website
 	 *
@@ -42,8 +45,27 @@ public class VerifyPageSteps {
 		context.getPagesCollection().getPage(VerifyPage.class).setUrl(website + "/verify/%3Fagent=" + agent);
 		context.getPagesCollection().getPage(VerifyPage.class).navigateTo();		
 	}
-	
-	@Then("^I see download button for (.*)$")
+
+	@When("^I generate verification code for user (.*)$")
+	public void IGenerateVerificationCode(String name) throws Exception {
+		ClientUser user = context.getUserManager().findUserByNameOrNameAlias(name);
+        phoneVerificationCode = BackendAPIWrappers.getActivationCodeByPhoneNumber(user.getPhoneNumber());
+	}
+
+	@When("^I go to phone verification page for (.*)$")
+	public void IGoToPhoneVerificationPage(String agent) throws Exception {
+		final String website = CommonUtils.getAccountPagesFromConfig(VerifyPageSteps.class);
+		context.getPagesCollection().getPage(VerifyPage.class).setUrl(website + "v/" + phoneVerificationCode + "?agent=" + agent);
+		context.getPagesCollection().getPage(VerifyPage.class).navigateTo();
+	}
+
+    @When("^I see 'Open Wire' button with verification code$")
+    public void IGoToPhoneVerificationPage() throws Exception {
+        assertThat("Phone Verification", context.getPagesCollection().getPage(VerifyPage.class).getWireUrlFromButton(),
+                is("wire://verify-phone/" + phoneVerificationCode));
+    }
+
+    @Then("^I see download button for (.*)$")
 	public void ISeeDownloadButton(String agent) throws Exception {
 		String downloadLink = "";
 		switch (agent) {
