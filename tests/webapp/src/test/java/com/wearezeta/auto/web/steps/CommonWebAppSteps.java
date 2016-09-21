@@ -749,6 +749,7 @@ public class CommonWebAppSteps {
                             throw new IllegalStateException(
                                     "Invitation message has not been received");
                         }).extractInvitationLink();
+        log.info("Personal invitation url: " + url);
         RegistrationPage registrationPage = context.getPagesCollection().getPage(RegistrationPage.class);
         registrationPage.setUrl(url);
         registrationPage.navigateTo();
