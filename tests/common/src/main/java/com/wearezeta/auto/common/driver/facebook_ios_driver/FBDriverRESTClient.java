@@ -46,9 +46,9 @@ final class FBDriverRESTClient {
             new CommonRESTHandlers(FBDriverRESTClient::verifyRequestResult);
 
     private static void verifyRequestResult(int currentResponseCode, int[] acceptableResponseCodes,
-                                            String message) throws FBDriverAPIException {
+                                            String message) throws FBDriverAPIError {
         if (!ArrayUtils.contains(acceptableResponseCodes, currentResponseCode)) {
-            throw new FBDriverAPIException(String.format(
+            throw new FBDriverAPIError(String.format(
                     "Facebook WebDriver service API request failed. " +
                             "Request return code is: %d. Expected codes are: %s. Message from service is: %s",
                     currentResponseCode, Arrays.toString(acceptableResponseCodes), message), currentResponseCode);
@@ -76,18 +76,17 @@ final class FBDriverRESTClient {
 
     private final ExecutorService pool = Executors.newFixedThreadPool(1);
 
-    private static final long WD_REQUEST_TIMEOUT_MS = ZetaIOSDriver.MAX_COMMAND_DURATION_MILLIS / 4;
+    private static final long WD_REQUEST_TIMEOUT_MS = ZetaIOSDriver.MAX_COMMAND_DURATION_MILLIS / 2;
 
     private JSONObject waitForResponse(RequestSender r) throws RESTError {
         final Future<String> future = pool.submit(r::send);
         try {
             return new JSONObject(future.get(WD_REQUEST_TIMEOUT_MS, TimeUnit.MILLISECONDS));
         } catch (Exception e) {
-            if (e.getCause() instanceof RESTError) {
-                throw (RESTError) e.getCause();
+            if (e.getCause() instanceof FBDriverAPIError) {
+                throw (FBDriverAPIError) e.getCause();
             }
-            throw new RESTError(String.format("Failed to execute API request to Facebook WebDriver: %s",
-                    e.getMessage()), -1);
+            throw new FBDriverAPIError(e);
         }
     }
 

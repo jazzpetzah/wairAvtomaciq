@@ -18,10 +18,9 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 public class RegistrationPage extends IOSPage {
-    private static final String WIRE_COUNTRY_NAME = "Wirestan";
+    private static final String WIRE_COUNTRY_NAME = "Wirestan ☀️";
 
-    private static final By fbXpathWireCountry =
-            FBBy.FBXPath(String.format("//*[starts-with(@name, '%s')]", WIRE_COUNTRY_NAME));
+    private static final By fbNameWireCountry = FBBy.FBAccessibilityId(WIRE_COUNTRY_NAME);
 
     private static final By xpathYourName = By.xpath("//XCUIElementTypeTextField[@value='YOUR FULL NAME']");
 
@@ -89,7 +88,7 @@ public class RegistrationPage extends IOSPage {
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCountryPickerButton, 5)) {
             countryPickerBtn.click();
         }
-        final FBElement dstElement = (FBElement) getElementIfExists(fbXpathWireCountry).orElseThrow(
+        final FBElement dstElement = (FBElement) getElementIfExists(fbNameWireCountry).orElseThrow(
                 () -> new IllegalStateException("Wire country item is not present")
         );
         dstElement.scrollTo();
