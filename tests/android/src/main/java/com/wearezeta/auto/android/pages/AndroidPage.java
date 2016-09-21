@@ -32,8 +32,6 @@ public abstract class AndroidPage extends BasePage {
     private static final Function<String, String> xpathStrAlertTitleByTextPart =
             text -> String.format("//*[@id='alertTitle' and contains(@value, '%s')]", text);
 
-    protected static final By idGiphyPreviewButton = By.id("cursor_button_giphy");
-
     protected static final By idCloseImageBtn = By.id("gtv__single_image_message__close");
 
     public static final By xpathDismissUpdateButton = By.xpath("//*[@value='Dismiss']");

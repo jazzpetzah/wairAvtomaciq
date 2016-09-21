@@ -205,7 +205,8 @@ Feature: Delete Message
     When I tap on conversation name <Contact>
     And I tap on text input
     And I type the message "<Message>"
-    And I click on the GIF button
+    And I tap Gif button from cursor toolbar
+    And I select a random gif from the grid preview
     Then I see giphy preview page
     When I click on the giphy send button
     Then I see a picture in the conversation view

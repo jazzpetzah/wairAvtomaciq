@@ -158,27 +158,15 @@ public class ConversationViewPageSteps {
      *                               release his finger after tap on an icon. Works for long tap on Audio Message
      *                               icon only
      * @throws Exception
-     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location) button (\d+ seconds )? from cursor
+     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif) button (\d+ seconds )? from cursor
      * toolbar( without releasing my finger)?$
      */
-    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location) button " +
+    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif) button " +
             "(\\d+ seconds )?from cursor toolbar( without releasing my finger)?$")
     public void ITapCursorToolButton(String longTap, String btnName, String longTapDurationSeconds,
                                      String shouldReleaseFinger) throws Exception {
         if (longTap == null) {
-            switch (btnName.toLowerCase()) {
-                case "video message":
-                case "audio message":
-                case "ping":
-                case "add picture":
-                case "sketch":
-                case "file":
-                case "share location":
-                    getConversationViewPage().tapCursorToolButton(btnName);
-                    break;
-                default:
-                    throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
-            }
+            getConversationViewPage().tapCursorToolButton(btnName);
         } else {
             int longTapDuration = (longTapDurationSeconds == null) ? DriverUtils.LONG_TAP_DURATION :
                     Integer.parseInt(longTapDurationSeconds.replaceAll("[\\D]", "")) * 1000;
