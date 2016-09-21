@@ -490,7 +490,7 @@ And I wait for 60 seconds
     When I open conversation with <ChatName>
     And Contact <Contact1> sends message <Message1> via device Device1 to group conversation <ChatName>
     When I click to like the last message without other likes
-    And I do not see likes below the latest message
+    And I do not see likes below the last message
     Then I see the last message is only liked by me
     And I write message <Message2>
     And I send message

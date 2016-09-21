@@ -1000,6 +1000,28 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
+    /**
+     * Get last message index (last, second last, third last)
+     *
+     * @param indexValue String
+     * @return
+     * @throws Exception
+     */
+
+    public int getXLastMessageIndex(String indexValue) throws Exception {
+        int indexNummer = 1;
+        switch (indexValue) {
+            case ("third "): indexNummer = 3;
+                break;
+            case ("second "): indexNummer = 2;
+                break;
+            case (" "): indexNummer = 1;
+                break;
+            default:
+                throw new Exception("indexNummer should be between 1 and 3");}
+        return indexNummer;
+    }
+
     //likes
 
     public boolean isLikeSymbolVisibleForLastMessage() throws Exception {

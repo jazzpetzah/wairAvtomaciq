@@ -695,18 +695,8 @@ public class ConversationPageSteps {
 
     @When("^I click context menu of the (second |third )?last message$")
     public void IClickContextMenuOfThirdLastMessage(String indexNumber) throws Exception {
-        int messageId = 1;
-        String indexValue = indexNumber;
-        switch (indexValue) {
-                case ("third "): messageId = 3;
-                    break;
-                case ("second "): messageId = 2;
-                    break;
-                case (" "): messageId = 1;
-                    break;
-                default:
-                    throw new Exception("indexNummer should be between 1 and 3");}
-            context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnMessage(messageId);
+        int messageId = context.getPagesCollection().getPage(ConversationPage.class).getXLastMessageIndex(indexNumber);
+        context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnMessage(messageId);
     }
 
     @When("^I click to delete message for everyone in context menu$")
@@ -923,18 +913,10 @@ public class ConversationPageSteps {
     }
 
     @Then("^I see the (third |second )?last message is only liked by me$")
-    public void ISeeLatestMessageIsOnlyLikedByMe(String messageIndex) throws Exception {
-        //TODO
-        int indexNumber = 1;
-        if ("third ".equals(messageIndex)) {
-            indexNumber = 3;
-        }
-        else if ("second ".equals(messageIndex)) {
-            indexNumber = 2;
-        }
-        else indexNumber = 1;
-        assertTrue("The message is NOT only liked by you", context.getPagesCollection().getPage(ConversationPage.class)
-                .isUnlikeWithoutOtherLikesVisibleForMessage(indexNumber));
+    public void ISeeLatestMessageIsOnlyLikedByMe(String indexValue) throws Exception {
+        int messageIndex = context.getPagesCollection().getPage(ConversationPage.class).getXLastMessageIndex(indexValue);
+        assertTrue("The " + indexValue + "last message is NOT only liked by you", context.getPagesCollection().getPage(ConversationPage.class)
+                .isUnlikeWithoutOtherLikesVisibleForMessage(messageIndex));
     }
     
     @Then("^I see the last message is only liked by others$")
