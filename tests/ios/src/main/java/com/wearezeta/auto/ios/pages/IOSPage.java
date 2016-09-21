@@ -69,7 +69,7 @@ public abstract class IOSPage extends BasePage {
     private IOSKeyboard onScreenKeyboard;
 
     protected long getDriverInitializationTimeout() {
-        return (ZetaIOSDriver.MAX_COMMAND_DURATION_MILLIS + AppiumServer.RESTART_TIMEOUT_MILLIS)
+        return (ZetaIOSDriver.MAX_SESSION_INIT_DURATION_MILLIS + AppiumServer.RESTART_TIMEOUT_MILLIS)
                 * DRIVER_CREATION_RETRIES_COUNT;
     }
 

@@ -27,7 +27,8 @@ import org.openqa.selenium.remote.UnreachableBrowserException;
 
 public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, FindsByFBPredicate,
         FindsByFBAccessibilityId, FindsByFBXPath, FindsByFBClassName {
-    public static final long MAX_COMMAND_DURATION_MILLIS = 150000;
+    public static final long MAX_COMMAND_DURATION_MILLIS = 60000;
+    public static final long MAX_SESSION_INIT_DURATION_MILLIS = 200000;
 
     public static final String AUTO_ACCEPT_ALERTS_CAPABILITY_NAME = "autoAcceptAlerts";
 
@@ -122,8 +123,11 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
 
         final Callable<Response> task = () -> super.execute(driverCommand, parameters);
         final Future<Response> future = getPool().submit(task);
+        final long timeout = driverCommand.equals(DriverCommand.NEW_SESSION) ?
+                MAX_SESSION_INIT_DURATION_MILLIS :
+                MAX_COMMAND_DURATION_MILLIS;
         try {
-            return future.get(MAX_COMMAND_DURATION_MILLIS, TimeUnit.MILLISECONDS);
+            return future.get(timeout, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             if (e instanceof ExecutionException) {
                 if (driverCommand.equals(HIDE_KEYBOARD_COMMAND) && (e.getCause() instanceof WebDriverException)) {
