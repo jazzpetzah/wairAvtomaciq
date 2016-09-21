@@ -16,7 +16,7 @@ public class TabletConversationViewPage extends ConversationViewPage {
 	}
 	
 	public void tapAddPictureiPadButton() throws Exception {
-		getElement(nameAddPictureButton).click();
+		getElement(fbNameAddPictureButton).click();
 	}
 	
 	public void pressConversationDetailiPadButton() throws Exception{

@@ -21,7 +21,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     private static final By nameConfirmRemoveButton = MobileBy.AccessibilityId("REMOVE");
 
-    private static final By nameOtherUserAddContactToChatButton = MobileBy.AccessibilityId("OtherUserMetaControllerLeftButton");
+    private static final By fbNameOtherUserAddContactToChatButton = FBBy.FBAccessibilityId("OtherUserMetaControllerLeftButton");
 
     private static final By nameContinueButton = MobileBy.AccessibilityId("CONTINUE");
 
@@ -95,7 +95,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
         if (addButton.isPresent()) {
             addButton.get().click();
         } else {
-            getElement(nameOtherUserAddContactToChatButton).click();
+            getElement(fbNameOtherUserAddContactToChatButton).click();
         }
         catchContinueAlert();
     }
@@ -135,7 +135,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public void tapStartConversationButton() throws Exception {
-        this.getDriver().tap(1, getElement(nameOtherUserAddContactToChatButton), 1);
+        this.tapAtTheCenterOfElement((FBElement) getElement(fbNameOtherUserAddContactToChatButton));
     }
 
     public void openConversationMenu() throws Exception {

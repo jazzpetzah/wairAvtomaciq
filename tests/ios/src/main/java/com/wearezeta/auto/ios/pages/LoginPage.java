@@ -4,6 +4,8 @@ import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DummyElement;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSElement;
@@ -23,7 +25,7 @@ public class LoginPage extends IOSPage {
 
     private static final By nameLoginButton = MobileBy.AccessibilityId("RegistrationConfirmButton");
 
-    private static final By nameLoginField = MobileBy.AccessibilityId("EmailField");
+    private static final By fbNameLoginField = FBBy.FBAccessibilityId("EmailField");
 
     private static final By namePasswordField = MobileBy.AccessibilityId("PasswordField");
 
@@ -83,7 +85,7 @@ public class LoginPage extends IOSPage {
     }
 
     public void setLogin(String login) throws Exception {
-        ((IOSElement) getElement(nameLoginField)).setValue(login);
+        ((IOSElement) getElement(fbNameLoginField)).setValue(login);
     }
 
     public void setPassword(String password) throws Exception {
@@ -107,9 +109,9 @@ public class LoginPage extends IOSPage {
     }
 
     public void tapHoldEmailInput() throws Exception {
-        final WebElement loginField = getElement(nameLoginField);
+        final FBElement loginField = (FBElement) getElement(fbNameLoginField);
         message = loginField.getText();
-        this.getDriver().tap(1, loginField, 1000);
+        this.longTapAt(loginField);
     }
 
     public void tapPasswordField() throws Exception {

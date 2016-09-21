@@ -12,6 +12,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.driver.*;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.DragArguments;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
@@ -172,7 +173,7 @@ public abstract class IOSPage extends BasePage {
                 String.format("%.2f", y * 1.0 / windowSize.height), "2");
     }
 
-    public void inputStringFromPasteboard(WebElement dstElement, boolean shouldCommitInput) throws Exception {
+    public void inputStringFromPasteboard(FBElement dstElement, boolean shouldCommitInput) throws Exception {
         final Dimension elSize = dstElement.getSize();
         final Point elLocation = dstElement.getLocation();
         final int tapX = elLocation.x + elSize.width / 2;
@@ -184,7 +185,7 @@ public abstract class IOSPage extends BasePage {
                 IOSSimulatorHelper.pressEnterKey();
             }
         } else {
-            getDriver().tap(1, tapX, tapY, DriverUtils.LONG_TAP_DURATION);
+            this.longTapAt(dstElement);
             getElement(nameBadgeItemPaste, "Paste item is not visible", 15).click();
             if (shouldCommitInput) {
                 this.tapKeyboardCommitButton();
@@ -278,15 +279,22 @@ public abstract class IOSPage extends BasePage {
         doubleClickAt(el, 50, 50);
     }
 
-    @SuppressWarnings("unused")
-    protected void longClickAt(WebElement el) throws Exception {
-        final Dimension elSize = el.getSize();
-        final Point elLocation = el.getLocation();
-        final Dimension windowSize = getDriver().manage().window().getSize();
-        IOSSimulatorHelper.clickAt(
-                String.format("%.2f", (elLocation.x + elSize.width / 2) * 1.0 / windowSize.width),
-                String.format("%.2f", (elLocation.y + elSize.height / 2) * 1.0 / windowSize.height),
-                String.format("%.3f", DriverUtils.LONG_TAP_DURATION / 1000.0));
+    protected void longTapAt(FBElement el) throws Exception {
+        this.longTapAt(el, 50, 50);
+    }
+
+    protected void longTapAt(FBElement el, int percentX, int percentY) throws Exception {
+        final Dimension size = el.getSize();
+        final double x = size.getWidth() * percentX / 100;
+        final double y = size.getHeight() * percentY / 100;
+        el.dragFromToForDuration(new DragArguments(x, y, x, y, DriverUtils.LONG_TAP_DURATION * 1.0 / 1000));
+//        final Dimension elSize = el.getSize();
+//        final Point elLocation = el.getLocation();
+//        final Dimension windowSize = getDriver().manage().window().getSize();
+//        IOSSimulatorHelper.clickAt(
+//                String.format("%.2f", (elLocation.x + elSize.width / 2) * 1.0 / windowSize.width),
+//                String.format("%.2f", (elLocation.y + elSize.height / 2) * 1.0 / windowSize.height),
+//                String.format("%.3f", DriverUtils.LONG_TAP_DURATION / 1000.0));
     }
 
     public void rotateScreen(ScreenOrientation orientation) throws Exception {

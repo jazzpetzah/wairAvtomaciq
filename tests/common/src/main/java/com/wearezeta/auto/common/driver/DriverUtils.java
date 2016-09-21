@@ -30,8 +30,7 @@ public class DriverUtils {
             .getSimpleName());
 
     public static int getDefaultLookupTimeoutSeconds() throws Exception {
-        return Integer.parseInt(CommonUtils
-                .getDriverTimeoutFromConfig(DriverUtils.class));
+        return Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(DriverUtils.class));
     }
 
     /**
