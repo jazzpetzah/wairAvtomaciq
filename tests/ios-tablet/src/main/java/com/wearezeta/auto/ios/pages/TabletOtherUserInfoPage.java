@@ -6,7 +6,6 @@ import java.util.function.Function;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
@@ -40,7 +39,7 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
     }
 
     public boolean isConnectButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOtherUserConnectButton);
+        return isElementDisplayed(xpathOtherUserConnectButton);
     }
 
     public void clickConnectButton() throws Exception {
@@ -57,12 +56,12 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
 
     public boolean isNameVisible(String user) throws Exception {
         final By locator = By.xpath(xpathStrOtherUserNameField.apply(user));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public boolean isEmailVisible(String email) throws Exception {
         final By locator = By.xpath(xpathStrOtherUserEmailField.apply(email));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     @Override

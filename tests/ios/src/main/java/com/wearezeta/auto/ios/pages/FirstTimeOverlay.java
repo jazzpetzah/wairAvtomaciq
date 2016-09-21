@@ -17,7 +17,7 @@ public class FirstTimeOverlay extends IOSPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameOKButton);
+        return isElementDisplayed(nameOKButton);
     }
 
     public boolean waitUntilInvisible() throws Exception {

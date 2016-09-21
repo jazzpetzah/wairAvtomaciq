@@ -19,7 +19,7 @@ public class PendingOutgoingConnectionPage extends IOSPage {
     }
 
     public boolean isConnectButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathConnectOtherUserButton);
+        return isElementDisplayed(xpathConnectOtherUserButton);
     }
 
     public boolean isConnectButtonInvisible() throws Exception {

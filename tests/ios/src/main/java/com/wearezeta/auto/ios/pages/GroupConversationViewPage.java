@@ -25,11 +25,11 @@ public class GroupConversationViewPage extends ConversationViewPage {
 
     public boolean isYouAddedUserMessageShown(String user) throws Exception {
         final By locator = By.xpath(xpathStrYouAddedToGroupChatMessageByName.apply(user));
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public boolean isYouRenamedConversationMessageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),nameYouRenamedConversation);
+        return isElementDisplayed(nameYouRenamedConversation);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class GroupConversationViewPage extends ConversationViewPage {
     }
 
     public boolean isYouLeftMessageShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameYouLeftMessage);
+        return isElementDisplayed(nameYouLeftMessage);
     }
 
 }

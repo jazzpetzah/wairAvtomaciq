@@ -56,7 +56,7 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), MobileBy.AccessibilityId(nameStrMainWindow));
+        return isElementDisplayed(MobileBy.AccessibilityId(nameStrMainWindow));
     }
 
     public void switchToEmailLogin() throws Exception {
@@ -117,7 +117,7 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean wrongCredentialsNotificationIsShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameWrongCredentialsNotification);
+        return isElementDisplayed(nameWrongCredentialsNotification);
     }
 
     public void tapForgotPasswordButton() throws Exception {
@@ -125,20 +125,19 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isSetEmailPasswordSuggestionVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSetEmailPasswordSuggestionLabel);
+        return isElementDisplayed(xpathSetEmailPasswordSuggestionLabel);
     }
 
     public boolean isResendIn10minAlertVisible() throws Exception {
-        return waitUntilAlertAppears() && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameResentIn10min);
+        return waitUntilAlertAppears() && isElementDisplayed(nameResentIn10min);
     }
 
     public boolean isInvalidEmailAlertShown() throws Exception {
-        return waitUntilAlertAppears() && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidEmail);
+        return waitUntilAlertAppears() && isElementDisplayed(nameInvalidEmail);
     }
 
     public boolean isAlreadyRegisteredEmailAlertShown() throws Exception {
-        return waitUntilAlertAppears() && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                nameAlreadyRegisteredEmail);
+        return waitUntilAlertAppears() && isElementDisplayed(nameAlreadyRegisteredEmail);
     }
 
     public void clickPhoneNotNow() throws Exception {
@@ -146,7 +145,7 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isSomethingWentWrongAlertShown() throws Exception {
-        return waitUntilAlertAppears() && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSomethingWentWrong);
+        return waitUntilAlertAppears() && isElementDisplayed(nameSomethingWentWrong);
     }
 
     public void dismissSettingsWarningIfVisible(int timeoutSeconds) throws Exception {

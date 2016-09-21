@@ -76,7 +76,7 @@ public class VoiceFiltersOverlay extends IOSPage {
     }
 
     public boolean isButtonVisible(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getButtonLocatorByName(name));
+        return isElementDisplayed(getButtonLocatorByName(name));
     }
 
     public boolean isButtonInvisible(String name) throws Exception {

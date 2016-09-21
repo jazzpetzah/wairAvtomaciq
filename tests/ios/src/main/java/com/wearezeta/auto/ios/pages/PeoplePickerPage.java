@@ -89,7 +89,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isPeoplePickerPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), fbNamePickerSearch);
+        return isElementDisplayed(fbNamePickerSearch);
     }
 
     public void tapOnPeoplePickerSearch() throws Exception {
@@ -166,7 +166,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isPeopleYouMayKnowLabelVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), namePeopleYouMayKnowLabel);
+        return isElementDisplayed(namePeopleYouMayKnowLabel);
     }
 
     private void unblockButtonDoubleClick() throws Exception {
@@ -232,7 +232,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean waitUntilNoResultsLabelIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameNoResults);
+        return isElementDisplayed(nameNoResults);
     }
 
     private By getActionButtonByName(String name) {
@@ -257,7 +257,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isActionButtonVisible(String actionButtonName) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getActionButtonByName(actionButtonName));
+        return isElementDisplayed(getActionButtonByName(actionButtonName));
     }
 
     public boolean isActionButtonInvisible(String actionButtonName) throws Exception {
@@ -265,11 +265,11 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isShareContactsSettingsWarningShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameLaterButton);
+        return isElementDisplayed(nameLaterButton);
     }
 
     public boolean isFirstItemInSearchResult(String name) throws Exception {
         final By locator = By.xpath(xpathStrFirstSearchResultEntryByName.apply(name));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 }

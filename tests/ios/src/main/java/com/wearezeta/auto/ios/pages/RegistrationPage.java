@@ -113,7 +113,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public boolean isVerificationCodePageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathVerificationPage);
+        return isElementDisplayed(xpathVerificationPage);
     }
 
     public void inputActivationCode(PhoneNumber forNumber) throws Exception {
@@ -137,7 +137,7 @@ public class RegistrationPage extends IOSPage {
 
     public boolean isConfirmationShown() throws Exception {
         final By locator = By.xpath(xpathStrConfirmationByMessage.apply(getEmail()));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public void inputName() throws Exception {
@@ -200,11 +200,11 @@ public class RegistrationPage extends IOSPage {
     }
 
     public boolean isEmailVerificationPromptVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathEmailVerifPrompt);
+        return isElementDisplayed(xpathEmailVerifPrompt);
     }
 
     public boolean isInvalidCodeAlertShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidCode);
+        return isElementDisplayed(nameInvalidCode);
     }
 
     public void tapChooseOwnPicButton() throws Exception {
@@ -251,7 +251,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public boolean noCodeShowingUpLabelIsDisplayed() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathNoCodeShowingUpLabel);
+        return isElementDisplayed(xpathNoCodeShowingUpLabel);
     }
 
     public boolean noCodeShowingUpLabelIsNotDisplayed() throws Exception {
@@ -259,7 +259,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public boolean resendButtonIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameResendCodeButton);
+        return isElementDisplayed(nameResendCodeButton);
     }
 
     public boolean resendButtonIsNotVisible() throws Exception {

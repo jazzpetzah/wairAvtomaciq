@@ -53,7 +53,7 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 
     public boolean isNumberOfPeopleInGroupEqualToExpected(int expectedNumber) throws Exception {
         final By locator = By.xpath(xpathStrGroupCountByNumber.apply(expectedNumber));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public void selectEllipsisMenuAction(String actionName) throws Exception {

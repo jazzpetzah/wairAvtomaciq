@@ -34,27 +34,27 @@ public class GiphyPreviewPage extends IOSPage {
     }
 
     public boolean isGiphyRefreshButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameGiphyRefreshButton);
+        return isElementDisplayed(nameGiphyRefreshButton);
     }
 
     public boolean isGiphyLinkButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameGiphyLinkButton);
+        return isElementDisplayed(nameGiphyLinkButton);
     }
 
     public boolean isGiphyTitleButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameGiphyTitleButton);
+        return isElementDisplayed(nameGiphyTitleButton);
     }
 
     public boolean isGiphyImageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), predicateGiphyImage);
+        return isElementDisplayed(predicateGiphyImage);
     }
 
     public boolean isGiphyRejectButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameGiphyCancelRequestButton);
+        return isElementDisplayed(nameGiphyCancelRequestButton);
     }
 
     public boolean isGiphySendButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGiphySendButton);
+        return isElementDisplayed(xpathGiphySendButton);
     }
 
     public void clickGiphyMoreButton() throws Exception {
@@ -62,6 +62,6 @@ public class GiphyPreviewPage extends IOSPage {
     }
 
     public boolean isGiphyGridShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameGiphyGrid);
+        return isElementDisplayed(nameGiphyGrid);
     }
 }

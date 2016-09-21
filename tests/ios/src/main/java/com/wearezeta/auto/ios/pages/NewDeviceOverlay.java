@@ -24,7 +24,7 @@ public class NewDeviceOverlay extends IOSPage {
 
     public boolean isContainingLabel(String expectedLabel) throws Exception {
         final By locator = By.xpath(xpathStrLabelByText.apply(expectedLabel));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public void tapShowDeviceButton() throws Exception {

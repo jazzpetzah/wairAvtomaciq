@@ -17,7 +17,7 @@ public class ShareContactsOverlay extends IOSPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathShareContactsButton);
+        return isElementDisplayed(xpathShareContactsButton);
     }
 
     public boolean waitUntilInvisible() throws Exception {

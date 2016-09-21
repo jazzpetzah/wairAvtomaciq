@@ -48,11 +48,11 @@ public class IncomingPendingRequestsPage extends IOSPage {
     }
 
     public boolean isConnectButtonDisplayed() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathPendingRequestConnectButton);
+        return isElementDisplayed(xpathPendingRequestConnectButton);
     }
 
     public boolean isConnectToNameExist(String expectedName) throws Exception {
         final By locator = By.xpath(xpathStrPendingRequesterByName.apply(expectedName));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 }

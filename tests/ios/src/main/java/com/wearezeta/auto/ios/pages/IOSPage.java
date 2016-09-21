@@ -151,7 +151,7 @@ public abstract class IOSPage extends BasePage {
 
     public boolean isBadgeItemVisible(String name) throws Exception {
         final By locator = getBadgeLocatorByName(name);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public boolean isBadgeItemInvisible(String name) throws Exception {
@@ -428,6 +428,23 @@ public abstract class IOSPage extends BasePage {
             }
             throw e;
         }
+    }
+
+    protected boolean isElementDisplayed(By locator) throws Exception {
+        return this.isElementDisplayed(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
+    }
+
+    protected boolean isElementDisplayed(By locator, int timeoutSeconds) throws Exception {
+        final Optional<WebElement> el = getElementIfExists(locator, timeoutSeconds);
+        if (el.isPresent()) {
+            if (el.get().isDisplayed()) {
+                return true;
+            } else if (getDriver().getCapabilities().is(ZetaIOSDriver.AUTO_ACCEPT_ALERTS_CAPABILITY_NAME)) {
+                acceptAlertIfVisible(ALERT_VISIBILITY_TIMEOUT_SECONDS);
+                return el.get().isDisplayed();
+            }
+        }
+        return false;
     }
 
     public boolean isWebPageVisible(String expectedUrl) throws Exception {

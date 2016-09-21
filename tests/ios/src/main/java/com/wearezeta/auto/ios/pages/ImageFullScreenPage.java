@@ -25,7 +25,7 @@ public class ImageFullScreenPage extends IOSPage {
     }
 
     public boolean isImageFullScreenShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameImageFullScreenPage);
+        return isElementDisplayed(nameImageFullScreenPage);
     }
 
     public void tapCloseButton() throws Exception {

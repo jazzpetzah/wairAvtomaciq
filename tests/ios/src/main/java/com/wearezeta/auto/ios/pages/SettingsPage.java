@@ -117,7 +117,7 @@ public class SettingsPage extends IOSPage {
 
     public boolean isDeviceVisibleInList(String device) throws Exception {
         final By locator = By.xpath(xpathDeviceListEntry.apply(device));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public boolean isDeviceInvisibleInList(String device) throws Exception {
@@ -127,7 +127,7 @@ public class SettingsPage extends IOSPage {
 
     public boolean verificationLabelVisibility(String deviceName, String verificationLabel) throws Exception {
         final By locator = By.xpath(xpathStrDeviceVerificationLabel.apply(deviceName, verificationLabel));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public void tapCurrentDevice() throws Exception {

@@ -55,7 +55,7 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isCallStatusLabelVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameCallStatusLabel);
+        return isElementDisplayed(nameCallStatusLabel);
     }
 
     public boolean isCallStatusLabelInvisible() throws Exception {
@@ -63,7 +63,7 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isSecondCallAlertVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSecondCallAlert);
+        return isElementDisplayed(nameSecondCallAlert);
     }
 
     public void pressAnswerCallAlertButton() throws Exception {
@@ -75,8 +75,7 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isGroupCallFullMessageShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGroupCallFullMessage,
-                WAIT_FOR_GROUPCALL_FULL_MSG);
+        return isElementDisplayed(xpathGroupCallFullMessage, WAIT_FOR_GROUPCALL_FULL_MSG);
     }
 
     protected String getButtonAccessibilityIdByName(final String name) {
@@ -112,11 +111,11 @@ public class CallingOverlayPage extends IOSPage {
 
     public boolean isCallingMessageContainingVisible(String text) throws Exception {
         final By locator = By.xpath(xpathStrCallingMessageByText.apply(text));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 20);
+        return isElementDisplayed(locator, 20);
     }
 
     public boolean isButtonVisible(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getButtonLocatorByName(name), 20);
+        return isElementDisplayed(getButtonLocatorByName(name), 20);
     }
 
     public boolean isButtonInvisible(String name) throws Exception {
@@ -124,19 +123,19 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isMuteButtonSelected() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathMuteButtonSelected);
+        return isElementDisplayed(xpathMuteButtonSelected);
     }
 
     public boolean isMuteButtonNotSelected() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathMuteButtonNotSelected);
+        return isElementDisplayed(xpathMuteButtonNotSelected);
     }
 
     public boolean isVideoButtonSelected() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathMuteButtonSelected);
+        return isElementDisplayed( xpathMuteButtonSelected);
     }
 
     public boolean isVideoButtonNotSelected() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathMuteButtonNotSelected);
+        return isElementDisplayed(xpathMuteButtonNotSelected);
     }
 
     public BufferedImage getMuteButtonScreenshot() throws Exception {

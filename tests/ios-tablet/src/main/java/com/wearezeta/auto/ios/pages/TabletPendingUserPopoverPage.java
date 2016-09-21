@@ -5,7 +5,6 @@ import java.util.function.Function;
 
 import org.openqa.selenium.By;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class TabletPendingUserPopoverPage extends OtherUserOnPendingProfilePage {
@@ -21,11 +20,11 @@ public class TabletPendingUserPopoverPage extends OtherUserOnPendingProfilePage 
 
     public boolean isUserNameDisplayed(String name) throws Exception {
         final By locator = By.xpath(xpathStrUserByName.apply(name));
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public boolean isConnectButtonDisplayed() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathConnectButton);
+        return isElementDisplayed(xpathConnectButton);
     }
 
 }

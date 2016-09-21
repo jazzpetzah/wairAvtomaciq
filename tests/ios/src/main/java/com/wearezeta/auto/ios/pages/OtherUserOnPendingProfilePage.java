@@ -29,11 +29,11 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
     }
 
     public boolean isClosePageButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameOtherProfilePageCloseButton);
+        return isElementDisplayed(nameOtherProfilePageCloseButton);
     }
 
     public boolean isCancelRequestButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOtherProfileCancelRequestButton);
+        return isElementDisplayed(xpathOtherProfileCancelRequestButton);
     }
 
     public void tapCancelRequestButton() throws Exception {
@@ -49,11 +49,11 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
     }
 
     public boolean isUserNameDisplayed(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), MobileBy.AccessibilityId(name), 10);
+        return isElementDisplayed(MobileBy.AccessibilityId(name), 10);
     }
 
     public boolean isRemoveFromGroupConversationVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameRightActionButton);
+        return isElementDisplayed(nameRightActionButton);
     }
 
     public void tapConnectButton() throws Exception {

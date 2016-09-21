@@ -102,7 +102,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public boolean isOtherUserProfileNameVisible(String name) throws Exception {
         final By locator = By.xpath(xpathStrUserProfileNameByValue.apply(name));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public void removeFromConversation() throws Exception {
@@ -121,12 +121,12 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public boolean isUserNameVisible(String name) throws Exception {
         final By locator = By.xpath(xpathStrOtherPersonalInfoPageNameFieldByName.apply(name));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public boolean isUserEmailVisible(String email) throws Exception {
         final By locator = By.xpath(xpathStrOtherPersonalInfoPageEmailFieldByEmail.apply(email));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public boolean isUserEmailNotVisible(String email) throws Exception {
@@ -148,11 +148,11 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public boolean isActionMenuVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathActionMenu);
+        return isElementDisplayed(xpathActionMenu);
     }
 
     public int getParticipantDevicesCount() throws Exception {
-        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathDevicesList)) {
+        if (isElementDisplayed(xpathDevicesList)) {
             return getElements(xpathDevicesList).size();
         }
         return 0;
@@ -164,7 +164,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public boolean isShieldIconVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathVerifiedShield);
+        return isElementDisplayed(xpathVerifiedShield);
     }
 
     public boolean isShieldIconNotVisible() throws Exception {

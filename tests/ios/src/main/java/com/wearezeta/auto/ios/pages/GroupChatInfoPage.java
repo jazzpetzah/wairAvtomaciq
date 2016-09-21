@@ -60,7 +60,7 @@ public class GroupChatInfoPage extends IOSPage {
 
     public boolean isGroupNameEqualTo(String expectedName) throws Exception {
         final By locator = By.xpath(xpathStrConversationNameByText.apply(expectedName));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public void setGroupChatName(String name) throws Exception {
@@ -81,12 +81,12 @@ public class GroupChatInfoPage extends IOSPage {
                 map(x -> String.format("contains(@value, '%s')", x)).
                 collect(Collectors.toList()));
         final By locator = By.xpath(xpathStrConversationNameByExpr.apply(xpathExpr));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public boolean isNumberOfPeopleEquals(int expectedNumber) throws Exception {
         final By locator = MobileBy.AccessibilityId(nameStrNumberPeopleByCount.apply(expectedNumber));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public int getParticipantsAvatarsCount() throws Exception {
@@ -124,7 +124,7 @@ public class GroupChatInfoPage extends IOSPage {
     }
 
     public boolean isLeaveConversationAlertVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameLeaveConversationAlert);
+        return isElementDisplayed(nameLeaveConversationAlert);
     }
 
     public void clickOnAddButton() throws Exception {

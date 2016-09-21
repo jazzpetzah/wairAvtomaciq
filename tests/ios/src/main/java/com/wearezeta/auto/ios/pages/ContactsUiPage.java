@@ -7,7 +7,6 @@ import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class ContactsUiPage extends IOSPage {
@@ -28,11 +27,10 @@ public class ContactsUiPage extends IOSPage {
 
     public ContactsUiPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
-        // TODO Auto-generated constructor stub
     }
 
     public boolean isSearchInputVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSearchInput);
+        return isElementDisplayed(xpathSearchInput);
     }
 
     public void inputTextToSearch(String text) throws Exception {
@@ -43,7 +41,7 @@ public class ContactsUiPage extends IOSPage {
 
     public boolean isContactPresentedInContactsList(String contact) throws Exception {
         final By locator = By.xpath(xpathStrConvoCellByName.apply(contact));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 5);
+        return isElementDisplayed(locator, 5);
     }
 
     public void tapInviteOthersButton() throws Exception {
@@ -51,7 +49,7 @@ public class ContactsUiPage extends IOSPage {
     }
 
     public boolean isInviteOthersButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInviteOthersButton);
+        return isElementDisplayed( nameInviteOthersButton);
     }
 
     public void clickOpenButtonNextToUser(String contact) throws Exception {

@@ -80,7 +80,7 @@ public class ConversationsListPage extends IOSPage {
             getElementIfDisplayed(shareContactsAlertOKButton, 3).orElseGet(DummyElement::new).click();
         } else {
             // Wait until animation is completed
-            DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.xpathPickerClearButton, 3);
+            isElementDisplayed(PeoplePickerPage.xpathPickerClearButton, 3);
         }
     }
 
@@ -168,11 +168,11 @@ public class ConversationsListPage extends IOSPage {
                 map(x -> String.format("contains(@name, '%s')", x)).
                 collect(Collectors.toList()));
         final By locator = By.xpath(xpathStrContactListItemByExpr.apply(xpathExpr));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, timeoutSeconds);
+        return isElementDisplayed(locator, timeoutSeconds);
     }
 
     private boolean isCancelActionButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameCancelActionButton);
+        return isElementDisplayed(nameCancelActionButton);
     }
 
     public BufferedImage getConversationEntryScreenshot(int idx) throws Exception {
@@ -195,7 +195,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isMuteCallButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameMuteCallButton);
+        return isElementDisplayed(nameMuteCallButton);
     }
 
     public void clickMuteCallButton() throws Exception {
@@ -204,7 +204,7 @@ public class ConversationsListPage extends IOSPage {
 
     public boolean isActionMenuVisibleForConversation(String conversation) throws Exception {
         final By locator = By.xpath(xpathStrActionMenuByConversationName.apply(conversation));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     private By getActionButtonByName(String buttonTitle) {
@@ -212,7 +212,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isButtonVisibleInActionMenu(String buttonTitle) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getActionButtonByName(buttonTitle));
+        return isElementDisplayed(getActionButtonByName(buttonTitle));
     }
 
     public void tapButtonInActionMenu(String buttonTitle) throws Exception {
@@ -229,7 +229,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isInviteMorePeopleButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSendAnInviteButton);
+        return isElementDisplayed(nameSendAnInviteButton);
     }
 
     public boolean isInviteMorePeopleButtonNotVisible() throws Exception {
@@ -259,7 +259,7 @@ public class ConversationsListPage extends IOSPage {
 
     public boolean isFirstConversationName(String convoName) throws Exception {
         final By locator = By.xpath(xpathStrFirstConversationEntryByName.apply(convoName));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public void openArchivedConversations() throws Exception {
@@ -267,7 +267,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isArchiveButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameOpenArchiveButton);
+        return isElementDisplayed(nameOpenArchiveButton);
     }
 
     public boolean isArchiveButtonInvisible() throws Exception {
@@ -275,7 +275,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean contactsLabelIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathContactsLabel);
+        return isElementDisplayed(xpathContactsLabel);
     }
 
     public boolean contactLabelIsNotVisible() throws Exception {
@@ -283,7 +283,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean noConversationsMessageIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEmptyConversationsListMessage);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEmptyConversationsListMessage);
     }
 
     public void clickCloseArchivePageButton() throws Exception {
@@ -291,7 +291,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean hintTextIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConversationsHintTextLabel);
+        return isElementDisplayed(nameConversationsHintTextLabel);
     }
 
     public boolean hintTextIsNotVisible() throws Exception {
