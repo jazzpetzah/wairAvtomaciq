@@ -301,7 +301,7 @@ Feature: Recall Message
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
 
-  @C206257 @regression @fastLogin @torun
+  @C206257 @regression @fastLogin
   Scenario Outline: Verify delete everywhere works for audio messages
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -309,7 +309,6 @@ Feature: Recall Message
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    #And I record <Duration> seconds long audio message and send it using swipe up gesture
     And I long tap Audio Message button from input tools
     And I tap Send record control button
     Then I see audio message container in the conversation view
