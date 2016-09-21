@@ -17,8 +17,19 @@ Feature: Sign In
 
   @C43808 @rc @regression
   Scenario Outline: Sign in to Wire by phone
-    Given There are 1 users where <Name> is me
+    Given There is 1 user where <Name> is me
     When I sign in using my phone number
+    Then I see Conversations list with no conversations
+
+    Examples:
+      | Name      |
+      | user1Name |
+
+  @C250820 @staging
+  Scenario Outline: Verify I can sign in by phone number with Verification URL
+    Given There is 1 user with phone number only where <Name> is me
+    Given I uninstall all other version of Wire apps
+    When I sign in using my phone number with SMS verification
     Then I see Conversations list with no conversations
 
     Examples:
@@ -151,4 +162,4 @@ Feature: Sign In
 
     Examples:
       | Password      | Name      | DeviceToRemoveWithoutPassword | DeviceToRemove | OtherDevice |
-      | user1Password | user1Name | Device1                       |  Device2       | Device3     |
+      | user1Password | user1Name | Device1                       | Device2        | Device3     |

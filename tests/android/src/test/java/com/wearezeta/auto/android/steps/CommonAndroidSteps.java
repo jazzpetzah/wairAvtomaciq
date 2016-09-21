@@ -75,6 +75,8 @@ public class CommonAndroidSteps {
     public static final int FIRST_TIME_OVERLAY_TIMEOUT = 3; // seconds
     private static final String DEFAULT_USER_AVATAR = "aqaPictureContact600_800.jpg";
     private static final String GCM_TOKEN_PATTERN = "token:\\s+(.*)$";
+    //TODO: should I move this list to configuration file?
+    private static final String[] wirePackageList = {"com.wire.candidate", "com.wire.x", "com.waz.zclient.dev"};
 
     private static String getUrl() throws Exception {
         return CommonUtils.getAndroidAppiumUrlFromConfig(CommonAndroidSteps.class);
@@ -1839,6 +1841,22 @@ public class CommonAndroidSteps {
         // Because we still need to wait several seconds after it retrieve the GCM InstanceID from device.
         Thread.sleep(10000);
         commonSteps.UnregisterPushToken(pushToken.orElseThrow(() -> new IllegalStateException("Cannot find GCM Token from logcat")));
+    }
+
+    /**
+     * Try to remove all other Wire packages
+     *
+     * @throws Exception
+     * @step. ^I uninstall all other version of Wire apps$
+     */
+    @When("^I uninstall all other version of Wire apps$")
+    public void IUninstallAllOtherWires() throws Exception {
+        String currentPackage = CommonUtils.getAndroidPackageFromConfig(getClass());
+        for(String packageName : wirePackageList) {
+            if (!packageName.equals(currentPackage)) {
+                AndroidCommonUtils.uninstallPackage(packageName);
+            }
+        }
     }
 
 }
