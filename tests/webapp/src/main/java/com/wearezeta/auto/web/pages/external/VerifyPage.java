@@ -31,6 +31,9 @@ public class VerifyPage extends WebPage {
 	
 	@FindBy(css = ExternalLocators.VerifyPage.cssWebappButton)
 	private WebElement webappButton;
+
+	@FindBy(css = ExternalLocators.VerifyPage.cssOpenWireButton)
+	private WebElement openWireButton;
 	
 	private static final String ERROR_TEXT = "Something went wrong.";
 	
@@ -38,27 +41,10 @@ public class VerifyPage extends WebPage {
 			throws Exception {
 		super(lazyDriver);
 	}
-	
-	@Override
-	public void setUrl(String url) {
-		// To make sure that we are redirected to staging site
-		try {
-			super.setUrl(transformSiteUrl(url));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
+
 	@Override
 	protected ZetaWebAppDriver getDriver() throws Exception {
 		return (ZetaWebAppDriver) super.getDriver();
-	}
-	
-	private static String transformSiteUrl(String url)
-			throws Exception {
-		final URI uri = new URI(url);
-		final String website = CommonUtils.getWebsitePathFromConfig(DownloadPage.class);
-		return website + uri.getPath();
 	}
 
 	public String getDownloadUrl(String agent) {
@@ -87,4 +73,8 @@ public class VerifyPage extends WebPage {
 						By.xpath(ExternalLocators.VerifyPage.xpathLabelByText
 								.apply(ERROR_TEXT)));
 		}
+
+	public String getWireUrlFromButton() {
+		return openWireButton.getAttribute("href");
+	}
 }
