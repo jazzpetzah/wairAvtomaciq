@@ -3,7 +3,6 @@ package com.wearezeta.auto.ios.pages;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
@@ -12,14 +11,12 @@ import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.*;
 
 import java.awt.image.BufferedImage;
-import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
 public class SettingsPage extends IOSPage {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private static final String xpathStrMenuContainer = "//XCUIElementTypeTable";
-    private static final By fbXpathMenuContainer = FBBy.FBXPath(xpathStrMenuContainer);
 
     private static final Function<String, String> xpathStrMenuItemByName = namePrefix ->
             String.format("%s/*[@name='%s']", xpathStrMenuContainer, namePrefix);
@@ -76,9 +73,12 @@ public class SettingsPage extends IOSPage {
     }
 
     public void selectItem(String itemName) throws Exception {
-        ((FBElement) getElement(fbXpathMenuContainer)).scroll(Optional.empty(), Optional.of(itemName),
-                Optional.empty(), Optional.empty());
-        getElement(By.xpath(xpathStrMenuItemByName.apply(itemName))).click();
+        final By locator = By.xpath(xpathStrMenuItemByName.apply(itemName));
+        final FBElement dstElement = (FBElement) getElementIfExists(locator).orElseThrow(
+                () -> new IllegalStateException(String.format("Menu element '%s' does not exist", itemName))
+        );
+        dstElement.scrollTo();
+        dstElement.click();
     }
 
     public boolean isItemVisible(String itemName) throws Exception {
@@ -151,9 +151,12 @@ public class SettingsPage extends IOSPage {
 
     public boolean isSettingItemValueEqualTo(String itemName, String expectedValue) throws Exception {
         final By locator = By.xpath(xpathStrSettingsValue.apply(itemName, expectedValue));
-        ((FBElement) getElement(fbXpathMenuContainer)).scroll(Optional.empty(), Optional.of(itemName),
-                Optional.empty(), Optional.empty());
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        final FBElement dstElement = (FBElement) getElementIfExists(locator).orElseThrow(
+                () -> new IllegalStateException(String.format("Menu element '%s' does not exist",
+                        itemName))
+        );
+        dstElement.scrollTo();
+        return dstElement.isDisplayed();
     }
 
     public void clearSelfName() throws Exception {

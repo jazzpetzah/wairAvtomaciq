@@ -38,12 +38,12 @@ public class CameraRollPage extends IOSPage {
     }
 
     public void clickFirstLibraryFolder() throws Exception {
-        DriverUtils.getElementIfPresentInDOM(getDriver(), xpathCameraLibraryFirstFolder).
+        getElementIfExists(xpathCameraLibraryFirstFolder).
                 orElseThrow(() -> new IllegalStateException("Cannot find a library to select")).click();
     }
 
     public void clickFirstImage() throws Exception {
-        DriverUtils.getElementIfPresentInDOM(getDriver(), xpathLibraryFirstPicture).
+        getElementIfExists(xpathLibraryFirstPicture).
                 orElseThrow(() -> new IllegalStateException("Cannot find an image to select")).click();
     }
 

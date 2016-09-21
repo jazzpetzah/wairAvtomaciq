@@ -17,7 +17,7 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
     }
 
     private WebElement makeOverlayButtonVisible(String name) throws Exception {
-        final Optional<WebElement> dstBtn = DriverUtils.getElementIfPresentInDOM(getDriver(),
+        final Optional<WebElement> dstBtn = getElementIfExists(
                 FBBy.FBAccessibilityId(getButtonAccessibilityIdByName(name)));
         if (dstBtn.isPresent()) {
             if (!dstBtn.get().isDisplayed()) {

@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -21,10 +20,8 @@ import java.util.function.Function;
 public class RegistrationPage extends IOSPage {
     private static final String WIRE_COUNTRY_NAME = "Wirestan";
 
-    private static final By fbXpathMCountriesContainer = FBBy.FBXPath("//XCUIElementTypeTable");
-
-    private static final By xpathWireCountry =
-            By.xpath(String.format("//*[starts-with(@name, '%s')]", WIRE_COUNTRY_NAME));
+    private static final By fbXpathWireCountry =
+            FBBy.FBXPath(String.format("//*[starts-with(@name, '%s')]", WIRE_COUNTRY_NAME));
 
     private static final By xpathYourName = By.xpath("//XCUIElementTypeTextField[@value='YOUR FULL NAME']");
 
@@ -92,9 +89,11 @@ public class RegistrationPage extends IOSPage {
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCountryPickerButton, 5)) {
             countryPickerBtn.click();
         }
-        ((FBElement) getElement(fbXpathMCountriesContainer)).scroll(Optional.empty(), Optional.of(WIRE_COUNTRY_NAME),
-                Optional.empty(), Optional.empty());
-        getElement(xpathWireCountry).click();
+        final FBElement dstElement = (FBElement) getElementIfExists(fbXpathWireCountry).orElseThrow(
+                () -> new IllegalStateException("Wire country item is not present")
+        );
+        dstElement.scrollTo();
+        dstElement.click();
         // Wait for animation
         Thread.sleep(2000);
     }

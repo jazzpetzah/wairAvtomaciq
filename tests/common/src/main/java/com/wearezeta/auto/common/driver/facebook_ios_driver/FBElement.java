@@ -67,6 +67,34 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
         }
     }
 
+    public void scrollUp() {
+        this.scroll(Optional.of(FBDriverAPI.ScrollingDirection.UP),
+                Optional.empty(), Optional.empty(), Optional.empty());
+    }
+
+    public void scrollDown() {
+        this.scroll(Optional.of(FBDriverAPI.ScrollingDirection.DOWN),
+                Optional.empty(), Optional.empty(), Optional.empty());
+    }
+
+    public void scrollRight() {
+        this.scroll(Optional.of(FBDriverAPI.ScrollingDirection.RIGHT),
+                Optional.empty(), Optional.empty(), Optional.empty());
+    }
+
+    public void scrollLeft() {
+        this.scroll(Optional.of(FBDriverAPI.ScrollingDirection.LEFT),
+                Optional.empty(), Optional.empty(), Optional.empty());
+    }
+
+    public void scrollTo() {
+        this.scroll(Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(true));
+    }
+
+    public void scrollToChild(String childName) {
+        this.scroll(Optional.empty(), Optional.of(childName), Optional.empty(), Optional.empty());
+    }
+
     @Override
     public void submit() {
         throw new NotImplementedException(String.format(
