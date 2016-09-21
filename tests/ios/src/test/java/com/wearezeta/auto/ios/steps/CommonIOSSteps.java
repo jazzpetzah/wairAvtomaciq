@@ -209,7 +209,7 @@ public class CommonIOSSteps {
 
         final Map<String, Object> additionalCaps = new HashMap<>();
         if (!scenario.getSourceTagNames().contains("@noAcceptAlert")) {
-            additionalCaps.put("autoAcceptAlerts", true);
+            additionalCaps.put(ZetaIOSDriver.AUTO_ACCEPT_ALERTS_CAPABILITY_NAME, true);
         }
 
         String appPath = getAppPath();

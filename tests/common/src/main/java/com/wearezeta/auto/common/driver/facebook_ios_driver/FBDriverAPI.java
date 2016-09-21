@@ -245,4 +245,16 @@ public class FBDriverAPI {
     public void switchToHomescreen() throws RESTError, StatusNotZeroError {
         parseResponseWithStatus(client.switchToHomescreen(getSessionId()));
     }
+
+    public String getAlertText() throws RESTError, StatusNotZeroError {
+        return parseResponseWithStatus(client.getAlertText(getSessionId()));
+    }
+
+    public void acceptAlert() throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.acceptAlert(getSessionId()));
+    }
+
+    public void dismissAlert() throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.dismissAlert(getSessionId()));
+    }
 }

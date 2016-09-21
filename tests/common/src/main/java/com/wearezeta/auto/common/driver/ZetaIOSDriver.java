@@ -12,7 +12,6 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rest.RESTError;
-import io.appium.java_client.ios.IOSElement;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpStatus;
@@ -29,6 +28,8 @@ import org.openqa.selenium.remote.UnreachableBrowserException;
 public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, FindsByFBPredicate,
         FindsByFBAccessibilityId, FindsByFBXPath, FindsByFBClassName {
     public static final long MAX_COMMAND_DURATION_MILLIS = 150000;
+
+    public static final String AUTO_ACCEPT_ALERTS_CAPABILITY_NAME = "autoAcceptAlerts";
 
     private static final Logger log = ZetaLogger.getLog(ZetaIOSDriver.class.getSimpleName());
 
@@ -249,6 +250,30 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     public void runAppInBackground(int seconds) {
         try {
             fbDriverAPI.deactivateApp(seconds);
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
+    public void acceptAlert() {
+        try {
+            fbDriverAPI.acceptAlert();
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
+    public void dismissAlert() {
+        try {
+            fbDriverAPI.dismissAlert();
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
+    public String getAlertText() {
+        try {
+            return fbDriverAPI.getAlertText();
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }

@@ -91,6 +91,8 @@ public class ConversationsListPage extends IOSPage {
 
     public void tapSettingsGearButton() throws Exception {
         getElement(nameSettingsGearButton).click();
+        // Wait for transition animation
+        Thread.sleep(1000);
     }
 
     public void tapOnName(String name) throws Exception {

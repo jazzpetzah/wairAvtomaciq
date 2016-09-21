@@ -204,7 +204,7 @@ public class ConversationViewPage extends IOSPage {
                     String.format("(//XCUIElementTypeButton[@name='%s'])[%s][@value='%s']", strNameAudioActionButton,
                             index, buttonState);
 
-    private static final By classNameShareLocationContainer = MobileBy.className("MapView");
+    private static final By classNameShareLocationContainer = By.className("XCUIElementTypeMapView");
 
     private static final By nameDefaultRecievedLocationAddress = MobileBy.AccessibilityId(Constants.DEFAULT_GMAP_ADDRESS);
 

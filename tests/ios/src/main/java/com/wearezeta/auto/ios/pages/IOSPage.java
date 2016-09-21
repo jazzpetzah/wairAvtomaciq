@@ -61,7 +61,7 @@ public abstract class IOSPage extends BasePage {
 
     private static final By nameDoneButton = MobileBy.AccessibilityId("Done");
 
-    private static final By classAlert = By.className("Alert");
+    private static final By classAlert = By.className("XCUIElementTypeAlert");
 
     protected static final Function<String, String> xpathStrAlertButtonByCaption = caption ->
             String.format("//XCUIElementTypeAlert//XCUIElementTypeButton[@label='%s']", caption);
@@ -221,24 +221,36 @@ public abstract class IOSPage extends BasePage {
                 .executeScript(script);
     }
 
-    public void acceptAlertIfVisible() throws Exception {
-        acceptAlertIfVisible(DriverUtils.getDefaultLookupTimeoutSeconds());
+    public boolean acceptAlertIfVisible() throws Exception {
+        return acceptAlertIfVisible(DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
-    public void acceptAlertIfVisible(int timeoutSeconds) throws Exception {
+    public boolean acceptAlertIfVisible(int timeoutSeconds) throws Exception {
         if (waitUntilAlertAppears(timeoutSeconds)) {
-            getDriver().switchTo().alert().accept();
+            if (getDriver().isXCUIModeEnabled()) {
+                getDriver().acceptAlert();
+            } else {
+                getDriver().switchTo().alert().accept();
+            }
+            return true;
         }
+        return false;
     }
 
-    public void dismissAlertIfVisible() throws Exception {
-        dismissAlertIfVisible(DriverUtils.getDefaultLookupTimeoutSeconds());
+    public boolean dismissAlertIfVisible() throws Exception {
+        return dismissAlertIfVisible(DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
-    public void dismissAlertIfVisible(int timeoutSeconds) throws Exception {
+    public boolean dismissAlertIfVisible(int timeoutSeconds) throws Exception {
         if (waitUntilAlertAppears(timeoutSeconds)) {
-            getDriver().switchTo().alert().dismiss();
+            if (getDriver().isXCUIModeEnabled()) {
+                getDriver().dismissAlert();
+            } else {
+                getDriver().switchTo().alert().dismiss();
+            }
+            return true;
         }
+        return false;
     }
 
     public boolean isAlertContainsText(String expectedText) throws Exception {
@@ -374,12 +386,18 @@ public abstract class IOSPage extends BasePage {
         clickElementWithRetryIfNextElementNotAppears(locator, nextLocator, DEFAULT_RETRY_COUNT);
     }
 
+    private static final int ALERT_VISIBILITY_TIMEOUT_SECONDS = 2;
+
     @Override
     protected WebElement getElement(By locator) throws Exception {
         try {
             return super.getElement(locator);
         } catch (Exception e) {
             log.debug(getDriver().getPageSource());
+            if (getDriver().getCapabilities().is(ZetaIOSDriver.AUTO_ACCEPT_ALERTS_CAPABILITY_NAME)) {
+                acceptAlertIfVisible(ALERT_VISIBILITY_TIMEOUT_SECONDS);
+                return super.getElement(locator);
+            }
             throw e;
         }
     }
@@ -390,6 +408,10 @@ public abstract class IOSPage extends BasePage {
             return super.getElement(locator, message);
         } catch (Exception e) {
             log.debug(getDriver().getPageSource());
+            if (getDriver().getCapabilities().is(ZetaIOSDriver.AUTO_ACCEPT_ALERTS_CAPABILITY_NAME)) {
+                acceptAlertIfVisible(ALERT_VISIBILITY_TIMEOUT_SECONDS);
+                return super.getElement(locator, message);
+            }
             throw e;
         }
     }
@@ -400,6 +422,10 @@ public abstract class IOSPage extends BasePage {
             return super.getElement(locator, message, timeoutSeconds);
         } catch (Exception e) {
             log.debug(getDriver().getPageSource());
+            if (getDriver().getCapabilities().is(ZetaIOSDriver.AUTO_ACCEPT_ALERTS_CAPABILITY_NAME)) {
+                acceptAlertIfVisible(ALERT_VISIBILITY_TIMEOUT_SECONDS);
+                return super.getElement(locator, message, timeoutSeconds);
+            }
             throw e;
         }
     }

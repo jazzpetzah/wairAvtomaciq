@@ -52,7 +52,7 @@ public class GroupChatInfoPage extends IOSPage {
                     "XCUIElementTypeCollectionView/XCUIElementTypeCell/XCUIElementTypeStaticText[@name='%s']",
                     name.toUpperCase());
 
-    private static final By classNameParticipantAvatarCell = By.className("Cell");
+    private static final By classNameParticipantAvatarCell = By.className("XCUIElementTypeCell");
     
     public GroupChatInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);

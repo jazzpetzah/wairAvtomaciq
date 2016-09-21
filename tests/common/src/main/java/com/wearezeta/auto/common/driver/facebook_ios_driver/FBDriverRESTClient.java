@@ -252,4 +252,23 @@ final class FBDriverRESTClient {
         return waitForResponse(() -> restHandlers.httpPost(webResource, new JSONObject().toString(),
                 new int[]{HttpStatus.SC_OK}));
     }
+
+    public JSONObject getAlertText(String sessionId) throws RESTError {
+        final Builder webResource = buildDefaultRequest("alert/text", sessionId);
+        return waitForResponse(() -> restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK}));
+    }
+
+    public JSONObject acceptAlert(String sessionId) throws RESTError {
+        final Builder webResource = buildDefaultRequest("alert/accept", sessionId);
+        return waitForResponse(
+                () -> restHandlers.httpPost(webResource, new JSONObject().toString(), new int[]{HttpStatus.SC_OK})
+        );
+    }
+
+    public JSONObject dismissAlert(String sessionId) throws RESTError {
+        final Builder webResource = buildDefaultRequest("alert/dismiss", sessionId);
+        return waitForResponse(
+                () -> restHandlers.httpPost(webResource, new JSONObject().toString(), new int[]{HttpStatus.SC_OK})
+        );
+    }
 }

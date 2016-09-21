@@ -17,10 +17,9 @@ import java.util.function.Function;
 
 public class SettingsPage extends IOSPage {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private static final String xpathStrMenuContainer = "//XCUIElementTypeTable";
 
     private static final Function<String, String> xpathStrMenuItemByName = name ->
-            String.format("%s//XCUIElementTypeCell[./*[@name='%s']]", xpathStrMenuContainer, name);
+            String.format("//XCUIElementTypeCell[./XCUIElementTypeStaticText[@name='%s']]", name);
 
     public static final By xpathSettingsPage = By.xpath("//XCUIElementTypeNavigationBar[@name='Settings']");
 
@@ -78,7 +77,9 @@ public class SettingsPage extends IOSPage {
         final FBElement dstElement = (FBElement) getElementIfExists(locator).orElseThrow(
                 () -> new IllegalStateException(String.format("Menu element '%s' does not exist", itemName))
         );
-        dstElement.scrollTo();
+        if (!dstElement.isDisplayed()) {
+            dstElement.scrollTo();
+        }
         dstElement.click();
     }
 
@@ -152,12 +153,7 @@ public class SettingsPage extends IOSPage {
 
     public boolean isSettingItemValueEqualTo(String itemName, String expectedValue) throws Exception {
         final By locator = FBBy.FBXPath(xpathStrSettingsValue.apply(itemName, expectedValue));
-        final FBElement dstElement = (FBElement) getElementIfExists(locator).orElseThrow(
-                () -> new IllegalStateException(String.format("Menu element '%s' does not exist",
-                        itemName))
-        );
-        dstElement.scrollTo();
-        return dstElement.isDisplayed();
+        return getElementIfExists(locator).isPresent();
     }
 
     public void clearSelfName() throws Exception {
