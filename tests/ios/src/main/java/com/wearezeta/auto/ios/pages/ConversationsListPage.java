@@ -53,7 +53,7 @@ public class ConversationsListPage extends IOSPage {
 
 
     private static final Function<String, String> xpathStrContactListPlayPauseButtonByConvoName = name ->
-            String.format("//XCUIElementTypeCell[@name='%s']/Button[@name='mediaCellButton']", name);
+            String.format("//XCUIElementTypeCell[@name='%s']///XCUIElementTypeButton[@name='mediaCellButton']", name);
 
     private static final Function<String, String> xpathStrSelectedConversationEntryByName = name ->
             String.format("%s/XCUIElementTypeCell[@name='%s']", xpathStrContactListRoot, name);
