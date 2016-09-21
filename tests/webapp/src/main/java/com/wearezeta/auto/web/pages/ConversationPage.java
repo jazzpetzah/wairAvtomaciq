@@ -182,26 +182,8 @@ public class ConversationPage extends WebPage {
      */
 
     private String getMessageId(int messageIndex) throws Exception{
-        String messageId = null;
-        switch (messageIndex) {
-            case 1: {
-                By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessageByIndex.apply(messageIndex));
-                messageId=getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
-                break;
-            }
-            case 2: {
-                By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessageByIndex.apply(messageIndex));
-                messageId = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
-                break;
-            }
-            case 3: {
-                By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessageByIndex.apply(messageIndex));
-                messageId = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
-                break;
-            }
-            default: break;
-        }
-        return messageId;
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessageByIndex.apply(messageIndex));
+        return getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
     }
 
     public String getLastActionMessage() throws Exception {
