@@ -301,7 +301,7 @@ Feature: Recall Message
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
 
-  @C206257 @regression @fastLogin
+  @C206257 @regression @fastLogin @torun
   Scenario Outline: Verify delete everywhere works for audio messages
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
