@@ -90,13 +90,14 @@ Feature: Like
     Then I see link <LinkInPreview> in link preview message
     And I do not see likes below the last message
     When I click to like the last message without other likes
-    And I wait for 5 seconds
-    And I see likes below the last message
-    And I fail the test
+    And I do not see likes below the last message
+    Then I see the last message is only liked by me
+    When I click to unlike the last message without other likes
+    Then I do not see likes below the last message
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Link     | LinkInPreview    |
-      | user1Email | user1Password | user1Name | user2Name | wire.com | https://wire.com |
+      | Login      | Password      | Name      | Contact   | Link     | LinkInPreview |
+      | user1Email | user1Password | user1Name | user2Name | wire.com | wire.com      |
 
   @C226428 @staging
   Scenario Outline: Verify liking someone's picture
@@ -400,7 +401,7 @@ Feature: Like
     Then I see text message <Message1>
     And I see 2 messages in conversation
     And I do not see likes below the last message
-    When I click context menu of the latest message
+    When I click context menu of the last message
     And I click to delete message for me in context menu
     And I click confirm to delete message for me
     Then I do not see text message <Message1>
@@ -456,7 +457,7 @@ Feature: Like
     And I see likes below the last message
     And I see the last message is liked by others and me
 # Edit
-    When I click context menu of the latest message
+    When I click context menu of the last message
     And I click to edit message in context menu
     And I delete 7 characters from the conversation input
     And I write message <EditedMessage>
@@ -591,7 +592,7 @@ Feature: Like
 # No likes
     And I do not see likes below the last message
 # Only liked by me
-    When I click context menu of the latest message
+    When I click context menu of the last message
     And I click like button in context menu for latest message
     And I do not see likes below the last message
     Then I see the last message is only liked by me
@@ -600,7 +601,7 @@ Feature: Like
     And I see likes below the last message
     And I see the last message is liked by others and me
 # Only liked by others
-    When I click context menu of the latest message
+    When I click context menu of the last message
     And I click unlike button in context menu for latest message
     Then I see likes below the last message
     And I see the last message is only liked by others
