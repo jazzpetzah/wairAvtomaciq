@@ -277,6 +277,21 @@ public class CommonWebAppSteps {
     }
 
     /**
+     * userWhoRemoves removes UserB from group conversation ChatName
+     *
+     * @param userWhoRemoves          user that removes another participant from group chat
+     * @param chatName                    group chat name
+     * @param userToRemove username to be removed from the group conversation
+     * @throws Exception
+     * @step. ^(.*) removes? (.*) from group conversation (.*)
+     */
+    @Given("^(.*) removes? (.*) from group conversation (.*)")
+    public void UserRemovesContactFromGroup(String userWhoRemoves, String userToRemove, String chatName)
+            throws Exception {
+        context.getCommonSteps().UserRemovesAnotherUserFromGroupConversation(userWhoRemoves, userToRemove, chatName);
+    }
+
+    /**
      * Sets self user to be the current user. Avatar picture for this user is set automatically
      *
      * @param nameAlias user to be set as self user
