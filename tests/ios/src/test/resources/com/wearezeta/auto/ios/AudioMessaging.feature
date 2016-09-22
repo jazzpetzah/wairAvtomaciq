@@ -212,7 +212,7 @@ Feature: Audio Messaging
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
 
   @C139856 @regression @fastLogin
-  Scenario Outline: (ZIOS-6759) Verify playback is stopped when outgoing call is started
+  Scenario Outline: (ZIOS-6688) Verify playback is stopped when outgoing call is started
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
