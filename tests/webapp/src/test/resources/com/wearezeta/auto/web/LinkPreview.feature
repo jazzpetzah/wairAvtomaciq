@@ -38,7 +38,7 @@ Feature: Link Preview
     Then I see link <LinkInPreview> in link preview message
     And I see a title <LinkTitle> in link preview in the conversation view
     And I see a picture <LinkPreviewImage> from link preview
-    When I click context menu of the latest message
+    When I click context menu of the last message
     And I click to delete message for me in context menu
     And I click confirm to delete message for me
     Then I do not see a title <LinkTitle> in link preview in the conversation view
