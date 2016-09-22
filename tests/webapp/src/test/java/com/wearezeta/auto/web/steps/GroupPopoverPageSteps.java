@@ -366,13 +366,11 @@ public class GroupPopoverPageSteps {
 	 */
 	@When("^I (do not )?see Remove button on Group Participants popover$")
 	public void ISeeRemoveUserFromGroupChat(String doNot) throws Exception {
-		if (doNot == null)
-		{
-			Assert.assertTrue("Remove Button is not visible on Group Participants Popover",
+		if (doNot == null){
+		 Assert.assertTrue("Remove Button is not visible on Group Participants Popover",
 					context.getPagesCollection().getPage(GroupPopoverContainer.class).isRemoveButtonVisible());
 		}
-		else
-		{
+		else {
 			Assert.assertTrue("Remove Button is visible on Group Participants Popover",
 					context.getPagesCollection().getPage(GroupPopoverContainer.class).isRemoveButtonInvisible());
 		}
