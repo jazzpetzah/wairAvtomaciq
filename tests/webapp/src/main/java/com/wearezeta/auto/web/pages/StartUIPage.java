@@ -283,7 +283,7 @@ public class StartUIPage extends WebPage {
         return wait.until(drv -> {
             try {
                 String value = drv.findElement(locator).getAttribute("value");
-                return (value.equals(""));
+                return (value == null || value.isEmpty());
             } catch (WebDriverException e) {
                 return true;
             }
