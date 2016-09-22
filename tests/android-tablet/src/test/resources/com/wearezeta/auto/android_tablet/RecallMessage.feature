@@ -103,7 +103,8 @@ Feature: Recall Message
     When I tap the conversation <Contact>
     And I tap on text input
     And I type the message "<Message>" in the Conversation view
-    And I tap Giphy button in the conversation view
+    And I tap Gif button from cursor toolbar
+    And I select a random gif from the grid preview
     Then I see Giphy preview page
     When I tap Send button on the Giphy preview page
     And I long tap Image container in the conversation view
@@ -129,7 +130,7 @@ Feature: Recall Message
     Given I see Conversations list with conversations
     Given I tap the conversation <Contact>
     When I type the message "<Link>" in the Conversation view
-    And I send the typed message in the Conversation view
+    And I send the typed message by cursor Send button in the Conversation view
     And I hide keyboard
     And I long tap Link Preview container in the conversation view
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>

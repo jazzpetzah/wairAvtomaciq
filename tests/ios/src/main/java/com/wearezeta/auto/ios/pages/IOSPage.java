@@ -202,11 +202,11 @@ public abstract class IOSPage extends BasePage {
         this.onScreenKeyboard.pressDeleteButton();
     }
 
-    public void clickHideKeyboardButton() throws Exception {
+    public void tapHideKeyboardButton() throws Exception {
         this.onScreenKeyboard.pressHideButton();
     }
 
-    public void clickSpaceKeyboardButton() throws Exception {
+    public void tapSpaceKeyboardButton() throws Exception {
         this.onScreenKeyboard.pressSpaceButton();
     }
 

@@ -120,6 +120,7 @@ public final class WebAppLocators {
 
         public static final Function<Integer, String> xpathContactListEntryByIndex = (
                 idx) -> String.format("(%s)[%s]", xpathContactListEntries, idx);
+
         public static final String xpathArchivedContactListEntries = xpathParentArchiveListItem
                 + "//*[@data-uie-name='item-conversation-archived']";
 
@@ -387,6 +388,10 @@ public final class WebAppLocators {
         public static final Function<String, String> cssLinkPreviewLinkByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] .link-preview-site", text);
 
+        public static final String cssDeleteForMeInContext = "[data-context-action='delete']";
+
+        public static final String cssDeleteForEveryoneInContext = "[data-context-action='delete-everyone']";
+
         public static final Function<String, String> cssLikeSymbol = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-body-like", text);
 
@@ -399,6 +404,9 @@ public final class WebAppLocators {
 
         public static final Function<String, String> cssEditButtonByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='do-message-edit']", text);
+
+        public static final Function<String, String> cssLikeButtonByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='do-message-react']", text);
 
         public static final String cssDoDelete = "[data-uie-name='do-delete']";
 
@@ -418,15 +426,16 @@ public final class WebAppLocators {
 
         public static final String cssCloseResetSessionDialog = "[data-uie-name='modal-session-reset'] [data-uie-name='do-close']";
 
-        public static final String cssLastMessage = "[data-uie-name='item-message']:last-child";
+        public static final String cssLastMessage = "[data-uie-name='item-message']:nth-last-child(1)";
 
         public static final String cssSecondLastMessage = "[data-uie-name='item-message']:nth-last-child(2)";
 
-        public static final String cssLastTextMessage = cssLastMessage
-                + " .text";
+        public static final Function<Integer, String> cssLastMessageByIndex = (
+                index) -> String.format("%s:nth-last-child(%s)", cssMessage, index);
 
-        public static final String cssSecondLastTextMessage = cssSecondLastMessage
-                + " .text";
+        public static final String cssLastTextMessage = cssLastMessage + " .text";
+
+        public static final String cssSecondLastTextMessage = cssSecondLastMessage + " .text";
 
         public static final String cssFirstAction = cssMessage + " .action";
 

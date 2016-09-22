@@ -150,7 +150,7 @@ Feature: Search
     And I open search UI
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I click Hide keyboard button
+    And I tap Hide keyboard button
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
     And I type the default message and send it

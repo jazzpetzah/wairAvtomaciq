@@ -11,7 +11,7 @@ Feature: Conversation View
     And I tap the conversation <Contact>
     And I tap on text input
     When I type the message "<Message>" in the conversation view
-    And I send the typed message in the conversation view
+    And I send the typed message by cursor Send button in the conversation view
     Then I see the message "<Message>" in the conversation view
 
     Examples:
@@ -29,7 +29,7 @@ Feature: Conversation View
     And I tap the conversation <Contact>
     And I tap on text input
     When I type the message "<Message>" in the conversation view
-    And I send the typed message in the conversation view
+    And I send the typed message by cursor Send button in the conversation view
     Then I see the message "<Message>" in the conversation view
 
     Examples:
@@ -113,7 +113,7 @@ Feature: Conversation View
     And I tap the conversation <GroupChatName>
     And I tap on text input
     When I type the message "<Message>" in the conversation view
-    And I send the typed message in the conversation view
+    And I send the typed message by cursor Send button in the conversation view
     Then I see the message "<Message>" in the conversation view
 
     Examples:
@@ -132,7 +132,7 @@ Feature: Conversation View
     And I tap the conversation <GroupChatName>
     And I tap on text input
     When I type the message "<Message>" in the conversation view
-    And I send the typed message in the conversation view
+    And I send the typed message by cursor Send button in the conversation view
     Then I see the message "<Message>" in the conversation view
 
     Examples:

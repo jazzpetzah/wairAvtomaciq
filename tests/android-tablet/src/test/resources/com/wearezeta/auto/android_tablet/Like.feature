@@ -10,7 +10,7 @@ Feature: Like
     Given I see Conversations list with conversations
     When I tap the conversation <Contact>
     And I type the message "<Message>" in the Conversation view
-    And I send the typed message in the Conversation view
+    And I send the typed message by cursor Send button in the Conversation view
     And I tap the Text message "<Message>" in the conversation view
     And I remember the state of like button
   # Tap heart like
@@ -54,7 +54,7 @@ Feature: Like
     Given I see Conversations list with conversations
     When I tap the conversation <Contact>
     And I type the message "<Url>" in the Conversation view
-    And I send the typed message in the Conversation view
+    And I send the typed message by cursor Send button in the Conversation view
     And I tap Link Preview container in the conversation view
     And I press Back button until Wire app is in foreground in 10 seconds
     And I remember the state of like button
@@ -144,7 +144,7 @@ Feature: Like
     Given I see Conversations list with conversations
     When I tap the conversation <Contact>
     And I type the message "<SoundCloudLink>" in the Conversation view
-    And I send the typed message in the Conversation view
+    And I send the typed message by cursor Send button in the Conversation view
     And I scroll to the bottom of the Conversation view
     And I tap Soundcloud container in the conversation view
     And I scroll to the bottom of the Conversation view
@@ -167,7 +167,7 @@ Feature: Like
     Given I see Conversations list with conversations
     When I tap the conversation <Contact>
     And I type the message "<YoutubeLink>" in the Conversation view
-    And I send the typed message in the Conversation view
+    And I send the typed message by cursor Send button in the Conversation view
     And I tap Youtube container in the conversation view
     And I scroll to the bottom of the Conversation view
     And I remember the state of like button
@@ -279,7 +279,7 @@ Feature: Like
     Given I see Conversations list with conversations
     Given I tap the conversation <Contact>
     When I type the message "<Message>" in the Conversation view
-    And I send the typed message in the Conversation view
+    And I send the typed message by cursor Send button in the Conversation view
     And User <Contact> likes the recent message from user Myself via device <ContactDevice>
     Then I see Like description with expected text "<Contact>" in conversation view
     And I see Like button in conversation view
@@ -307,7 +307,7 @@ Feature: Like
     Given I see Conversations list with conversations
     Given I tap the conversation <Group>
     And I type the message "<Message>" in the Conversation view
-    And I send the typed message in the Conversation view
+    And I send the typed message by cursor Send button in the Conversation view
     When User <Contact1> likes the recent message from group conversation <Group> via device <D1>
     And User <Contact2> likes the recent message from group conversation <Group> via device <D2>
     And User <Contact3> likes the recent message from group conversation <Group> via device <D3>

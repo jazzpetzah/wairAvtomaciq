@@ -12,7 +12,7 @@ Feature: Edit
     Then I send message
     And I see text message <Message1>
     And I see 2 messages in conversation
-    When I click context menu of the latest message
+    When I click context menu of the last message
     And I click to edit message in context menu
     And I delete 8 characters from the conversation input
     And I write message <Message2>
@@ -38,7 +38,7 @@ Feature: Edit
     Then I send message
     And I see text message <Message1>
     And I see 2 messages in conversation
-    When I click context menu of the latest message
+    When I click context menu of the last message
     And I click to edit message in context menu
     And I delete 8 characters from the conversation input
     And I write message <Message2>
@@ -62,9 +62,9 @@ Feature: Edit
     Given Contact <Contact1> sends message <Message1> via device Device1 to group conversation <ChatName>
     And I see text message <Message1>
     And I see 2 messages in conversation
-    When I click context menu of the latest message
-    And I do not see edit button in context menu for latest message
-    When I click context menu of the latest message
+    When I click context menu of the last message
+    And I do not see edit button in context menu
+    When I click context menu of the last message
     And I see text message <Message1>
     And I see 2 messages in conversation
 
@@ -96,7 +96,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact   | OriginalMessage | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | edit me         | edited        |
 
-  @C206287 @edit @staging
+  @C206287 @edit @regression
   Scenario Outline: Verify design is correct if I edit a message in between other messages from me
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -237,7 +237,7 @@ Feature: Edit
       | Login      | Password      | Name      | Contact1   | Contact2   | ChatName | OriginalMessage | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | GC1      | edit me         | edited        |
 
-  @C223070 @edit @staging
+  @C223070 @edit @regression
   Scenario Outline: Verify position and date of edited message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -270,7 +270,7 @@ Feature: Edit
     And I see text message <EditedMessage>
     And I see 3 messages in conversation
     And I see latest text message last message
-    When I remember edit timestamp of second latest message
+    When I remember edit timestamp of second last message
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
@@ -281,7 +281,7 @@ Feature: Edit
     And I am signed in properly
     And I open conversation with <Name>
     Then I see latest text message last message
-    And I verify the edit timestamp of second latest message equals the remembered timestamp
+    And I verify the edit timestamp of second last message equals the remembered timestamp
 
     Examples:
       | Login      | Password      | Login2     | Password2     | Name      | Contact   | OriginalMessage | EditedMessage |
@@ -323,7 +323,7 @@ Feature: Edit
     Then I send message
     And I see text message <OriginalMessage>
     And I see 2 messages in conversation
-    When I click context menu of the latest message
+    When I click context menu of the last message
     And I click to edit message in context menu
     And I delete 7 characters from the conversation input
     And I write message <EditedMessage1>
@@ -331,7 +331,7 @@ Feature: Edit
     Then I do not see text message <OriginalMessage>
     And I see text message <EditedMessage1>
     And I see 2 messages in conversation
-    When I click context menu of the latest message
+    When I click context menu of the last message
     And I click to edit message in context menu
     And I delete 7 characters from the conversation input
     And I write message <EditedMessage2>
@@ -356,7 +356,7 @@ Feature: Edit
     Then I send message
     And I see text message <OriginalMessage>
     And I see 2 messages in conversation
-    When I click context menu of the latest message
+    When I click context menu of the last message
     And I click to edit message in context menu
     And I delete 7 characters from the conversation input
     And I write message <EditedMessage>
@@ -384,7 +384,7 @@ Feature: Edit
     And I see text message <OriginalMessage>
     And I see text message <OriginalMessage2>
     And I see 3 messages in conversation
-    When I click context menu of the latest message
+    When I click context menu of the last message
     And I click to edit message in context menu
     And I delete 9 characters from the conversation input
     And I write message <IntermediateMessage>

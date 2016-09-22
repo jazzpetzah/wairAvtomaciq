@@ -12,7 +12,11 @@ Feature: Location Share
     When I open conversation with <ChatName>
     And User <Contact1> sends location <LocationName> with <Latitude> and <Longitude> to group conversation <ChatName> via device Device1
     Then I see location message <LocationName> with <Latitude> and <Longitude> in the conversation view
-    When I click context menu of the latest message
+    When I open conversation with <Contact1>
+    And I see 1 messages in conversation
+    And I open conversation with <ChatName>
+    Then I see location message <LocationName> with <Latitude> and <Longitude> in the conversation view
+    When I click context menu of the last message
     And I click to delete message for me in context menu
     And I click confirm to delete message for me
     Then I do not see location message <LocationName> with <Latitude> and <Longitude> in the conversation view

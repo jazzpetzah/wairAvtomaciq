@@ -2,8 +2,8 @@ Feature: Link Preview
 
   @C169241 @regression
   Scenario Outline: Verify you can see preview for link sent from mobile
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
@@ -13,11 +13,17 @@ Feature: Link Preview
     Then I see link <LinkInPreview> in link preview message
     And I see a title <LinkTitle> in link preview in the conversation view
     And I see a picture <LinkPreviewImage> from link preview
+    When I open conversation with <Contact2>
+    And I see 1 messages in conversation
+    When I open conversation with <Contact>
+    Then I see link <LinkInPreview> in link preview message
+    And I see a title <LinkTitle> in link preview in the conversation view
+    And I see a picture <LinkPreviewImage> from link preview
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Link                                                                                                               | LinkInPreview                                                                                           | LinkTitle                                                                           | LinkPreviewImage |
-      | user1Email | user1Password | user1Name | user2Name | https://wire.com                                                                                                   | wire.com                                                                                                | Wire · Modern communication, full privacy. For iOS, Android, OS X, Windows and web. | linkpreview0.png |
-      | user1Email | user1Password | user1Name | user2Name | http://www.heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | Wire: Neuer WebRTC-Messenger soll WhatsApp &amp; Co. Konkurrenz machen              | linkpreview1.png |
+      | Login      | Password      | Name      | Contact   | Contact2  | Link                                                                                                               | LinkInPreview                                                                                           | LinkTitle                                                                           | LinkPreviewImage |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | https://wire.com                                                                                                   | wire.com                                                                                                | Wire · Modern communication, full privacy. For iOS, Android, macOS, Windows and web. | linkpreview0.png |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | http://www.heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | heise.de/newsticker/meldung/Wire-Neuer-WebRTC-Messenger-soll-WhatsApp-Co-Konkurrenz-machen-2477770.html | Wire: Neuer WebRTC-Messenger soll WhatsApp &amp; Co. Konkurrenz machen              | linkpreview1.png |
 
   @C169235 @regression
   Scenario Outline: Verify you can delete link preview
@@ -32,7 +38,7 @@ Feature: Link Preview
     Then I see link <LinkInPreview> in link preview message
     And I see a title <LinkTitle> in link preview in the conversation view
     And I see a picture <LinkPreviewImage> from link preview
-    When I click context menu of the latest message
+    When I click context menu of the last message
     And I click to delete message for me in context menu
     And I click confirm to delete message for me
     Then I do not see a title <LinkTitle> in link preview in the conversation view

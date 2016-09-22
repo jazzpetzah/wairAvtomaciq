@@ -202,6 +202,9 @@ public class PickleJarInheritedTest extends PickleJarTest {
                     // filter failed asset download
                     .filter((entry)
                             -> !entry.getMessage().contains("Failed to download asset"))
+                    // filter failed group renaming
+                    .filter((entry)
+                            -> !entry.getMessage().contains("Failed to rename conversation"))
                     // filter encryption precondition
                     .filter((entry)
                             -> !entry.getMessage().contains("otr") && !entry.getMessage().contains("412 (Precondition Failed)"))

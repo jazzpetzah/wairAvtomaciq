@@ -8,15 +8,15 @@ Feature: Links Preview
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
-    And I type the message "<DeadLink>" and send it
+    And I type the message "<DeadLink>" and send it by cursor Send button
     # C165147
     Then I do not see Link Preview container in the conversation view
     And I see the message "<DeadLink>" in the conversation view
-    When I type the message "<ShortenUrl>" and send it
+    When I type the message "<ShortenUrl>" and send it by cursor Send button
     # C169222
     Then I see Link Preview container in the conversation view
     And I do not see the message "<ShortenUrl>" in the conversation view
-    When I type the message "<Link>" and send it
+    When I type the message "<Link>" and send it by cursor Send button
     # C165143
     Then I see Link Preview container in the conversation view
     And I do not see the message "<Link>" in the conversation view
@@ -51,7 +51,7 @@ Feature: Links Preview
     When I tap on conversation name <Contact>
     And I enable Airplane mode on the device
     And I see No Internet bar in 15 seconds
-    And I type the message "<Link>" and send it
+    And I type the message "<Link>" and send it by cursor Send button
     And I disable Airplane mode on the device
     And I do not see No Internet bar in 15 seconds
     Then I see Link Preview container in the conversation view
@@ -69,31 +69,31 @@ Feature: Links Preview
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
-    And I type the message "<TextLink>" and send it
+    And I type the message "<TextLink>" and send it by cursor Send button
     Then I see Link Preview container in the conversation view
     And I see the message "<TextLink>" in the conversation view
     When I long tap Link Preview container in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
-    And I type the message "<LinkText>" and send it
+    And I type the message "<LinkText>" and send it by cursor Send button
     Then I see Link Preview container in the conversation view
     And I see the message "<LinkText>" in the conversation view
     When I long tap Link Preview container in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
-    And I type the message "<TextLinkText>" and send it
+    And I type the message "<TextLinkText>" and send it by cursor Send button
     Then I see Link Preview container in the conversation view
     And I see the message "<TextLinkText>" in the conversation view
     When I long tap Link Preview container in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
-    And I type the message "<url4>" and send it
+    And I type the message "<url4>" and send it by cursor Send button
     Then I see Link Preview container in the conversation view
     And I do not see the message "<url4>" in the conversation view
     When I long tap Link Preview container in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
-    And I type the message "<url5>" and send it
+    And I type the message "<url5>" and send it by cursor Send button
     Then I see Link Preview container in the conversation view
     And I do not see the message "<url5>" in the conversation view
 
@@ -109,22 +109,22 @@ Feature: Links Preview
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
-    And I type the message "<Link1>" and send it
+    And I type the message "<Link1>" and send it by cursor Send button
     Then I see Link Preview URL <LinkUrl>
     When I long tap Link Preview container in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
-    And I type the message "<Link2>" and send it
+    And I type the message "<Link2>" and send it by cursor Send button
     Then I see Link Preview URL <LinkUrl>
     When I long tap Link Preview container in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
-    And I type the message "<Link3>" and send it
+    And I type the message "<Link3>" and send it by cursor Send button
     Then I see Link Preview URL <LinkUrl>
     When I long tap Link Preview container in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
-    And I type the message "<Link4>" and send it
+    And I type the message "<Link4>" and send it by cursor Send button
     Then I see Link Preview URL <Link2Url>
 
     Examples:
@@ -141,7 +141,7 @@ Feature: Links Preview
     When I tap on conversation name <Contact>
     And I enable Airplane mode on the device
     And I see No Internet bar in 10 seconds
-    And I type the message "<LinkUrl>" and send it
+    And I type the message "<LinkUrl>" and send it by cursor Send button
     Then I see Message status with expected text "<MessageStatus>" in conversation view
     And I disable Airplane mode on the device
 

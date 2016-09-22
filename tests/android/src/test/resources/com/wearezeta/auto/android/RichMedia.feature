@@ -14,7 +14,7 @@ Feature: Rich Media
     # Wait until message fully loaded
     And I wait for 3 seconds
     And I tap on text input
-    And I type the message "<SoundCloudLink>" and send it
+    And I type the message "<SoundCloudLink>" and send it by cursor Send button
     And User <Contact1> sends encrypted message to user Myself
     And I scroll to the bottom of conversation view
     And I tap Play button on SoundCloud container
@@ -39,7 +39,7 @@ Feature: Rich Media
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap on text input
-    And I type the message "<SoudCloudLink>" and send it
+    And I type the message "<SoudCloudLink>" and send it by cursor Send button
     # Workaround for bug with autoscroll for next two lines
     And I scroll to the bottom of conversation view
     And I scroll up the conversation view
@@ -60,7 +60,7 @@ Feature: Rich Media
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap on text input
-    And I type the message "<SoundCloudLink>" and send it
+    And I type the message "<SoundCloudLink>" and send it by cursor Send button
     And I scroll to the bottom of conversation view
     And I tap Play button on SoundCloud container
     And I press back button
@@ -85,7 +85,7 @@ Feature: Rich Media
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap on text input
-    And I type the message "<YoutubeLink>" and send it
+    And I type the message "<YoutubeLink>" and send it by cursor Send button
     Then I see Play button on Youtube container
 
     Examples:

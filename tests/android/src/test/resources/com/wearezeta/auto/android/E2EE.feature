@@ -435,7 +435,7 @@ Feature: E2EE
     Then I see a message informing me conversation is verified
     When User <Contact1> adds new device Device1
     And I tap on text input
-    And I type the message "<Message2>" and send it without hiding keyboard
+    And I type the message "<Message2>" and send it by cursor Send button without hiding keyboard
     When I see takeover screen from user "<Contact1>"
     Then I tap send anyway button
     And I do not see takeover screen

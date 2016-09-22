@@ -111,7 +111,7 @@ Feature: Settings
       | user1Name | 60      |
 
   @C1092 @C1093 @regression @fastLogin
-  Scenario Outline: Attempt to enter a name with 0/1 chars
+  Scenario Outline: (ZIOS-7297) Attempt to enter a name with 0/1 chars
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -165,6 +165,8 @@ Feature: Settings
     When I select settings item Add phone number
     And I enter phone number for Myself
     And I enter registration verification code for Myself
+    And I tap settings gear button
+    And I select settings item Account
     Then I verify the value of settings item Phone equals to "<MyPhoneNumber>"
 
     Examples:
@@ -260,6 +262,8 @@ Feature: Settings
     And I click Create Account Button
     And I see confirmation page
     And I verify registration address
+    And I tap settings gear button
+    And I select settings item Account
     Then I verify the value of settings item Email equals to "<Email>"
 
     Examples:

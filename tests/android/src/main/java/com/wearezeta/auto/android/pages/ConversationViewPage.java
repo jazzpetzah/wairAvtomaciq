@@ -59,12 +59,14 @@ public class ConversationViewPage extends AndroidPage {
 
     //region Conversation Cursor locators
     public static final String idStrCursorEditText = "cet__cursor";
+    public static final By idCursorSendButton = By.id("cursor_button_send");
     private static final By idCursorCamera = By.id("cursor_menu_item_camera");
     private static final By idCursorPing = By.id("cursor_menu_item_ping");
     private static final By idCursorMore = By.id("cursor_menu_item_more");
     private static final By idCursorLess = By.id("cursor_menu_item_less");
     private static final By idCursorVideoMessage = By.id("cursor_menu_item_video");
     private static final By idCursorShareLocation = By.id("cursor_menu_item_location");
+    private static final By idCursorGif = By.id("cursor_menu_item_gif");
     private static final By idCursorView = By.id("cal__cursor");
     private static final By idCursorSelfAvatar = By.id("civ__cursor__self_avatar");
     private static final String CURSOR_EDIT_TOOLTIP = "TYPE A MESSAGE";
@@ -344,7 +346,7 @@ public class ConversationViewPage extends AndroidPage {
         getElement(idCursorEditText).click();
     }
 
-    public void typeAndSendMessage(String message, boolean hideKeyboard) throws Exception {
+    public void typeAndSendMessage(String message, String sendFrom, boolean hideKeyboard) throws Exception {
         final WebElement cursorInput = getElement(idCursorEditText);
         final int maxTries = 5;
         int ntry = 0;
@@ -362,7 +364,17 @@ public class ConversationViewPage extends AndroidPage {
                             "test.",
                     message));
         }
-        pressKeyboardSendButton();
+
+        switch(sendFrom.toLowerCase()) {
+            case "keyboard":
+                pressKeyboardSendButton();
+                break;
+            case "cursor":
+                getElement(idCursorSendButton).click();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify the send button type '%s'", sendFrom));
+        }
         if (hideKeyboard) {
             this.hideKeyboard();
         }
@@ -401,6 +413,8 @@ public class ConversationViewPage extends AndroidPage {
                 return idCursorVideoMessage;
             case "share location":
                 return idCursorShareLocation;
+            case "gif":
+                return idCursorGif;
             default:
                 throw new IllegalArgumentException(String.format("Unknown tool button name '%s'", name));
         }
@@ -974,11 +988,13 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean isCursorToolbarVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorMore);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorMore)
+                || DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorLess);
     }
 
     public boolean isCursorToolbarInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorMore);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorMore)
+                && DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorLess);
     }
 
     public int getMessageHeight(String msg) throws Exception {

@@ -478,3 +478,55 @@ And I wait for 60 seconds
     Examples:
       | Login      | Password      | Name      | Contact  | ContactEmail                  | ContactPassword | File1          | File2              |
       | user1Email | user1Password | user1Name | 928d0420 | smoketester+928d0420@wire.com | aqa123456!      | over8000ch.txt | lessThan8000ch.txt |
+
+  @C221139 @staging
+  Scenario Outline: Verify after user was removed from group he cannot do some actions
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <ChatName>
+    And Contact <Contact1> sends message <Message1> via device Device1 to group conversation <ChatName>
+    When I click to like the last message without other likes
+    And I do not see likes below the last message
+    Then I see the last message is only liked by me
+    And I write message <Message2>
+    And I send message
+    Then I see text message <Message1>
+    Then I see text message <Message2>
+    And I see 3 messages in conversation
+    When <Contact1> removes Myself from group conversation <ChatName>
+    Then I see <MessageAction> action for <Contact1> in conversation
+    When I see 4 messages in conversation
+    #check another user message <Message1>
+    When I click to unlike the third last message without other likes
+    And I see the third last message is only liked by me
+    When I click context menu of the third last message
+    And I do not see like button in context menu
+    And I see delete for me button in context menu
+    #check own message
+    And I do not see like symbol for second last message
+    And I click context menu of the second last message
+    And I do not see delete for everyone button in context menu
+    And I do not see like button in context menu
+    And I do not see edit button in context menu
+    And I see delete for me button in context menu
+    #general actions in group
+    And I verify that conversation input and buttons are not visible
+    When I click People button in group conversation
+    #editing group name - should be disabled, but not implemented yet. So for now the name stays the same as before editing
+    And I see titlebar with <ChatName>
+    And I change group conversation title to <ChatNameEdit> on Group Participants popover
+    And I see titlebar with <ChatName>
+    Then I see Group Participants popover
+    And I see <Contact1>,<Contact2> displayed on Group Participants popover
+    And I do not see Add People button on Group Participants popover
+    And I do not see Leave button on Group Participants popover
+    And I click on participant <Contact1> on Group Participants popover
+    And I do not see Remove button on Group Participants popover
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName     | Message1 | MessageAction | Message2 | ChatNameEdit |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | OldGroupName | message1 | REMOVED YOU   | message2 | NewGroupName |

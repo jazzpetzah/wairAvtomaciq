@@ -99,16 +99,19 @@ public class ConversationViewPageSteps {
 
 
     /**
-     * Send message to the chat
+     * Send message to the chat, there are 2 ways to send
+     * 1) Send from Cursor Input Send button (By default)
+     * 2) Send from Keyboard Enter button (Need to disable Send button in Settings->Options)
      *
      * @param msg               message to type. There are several special shortcuts: LONG_MESSAGE - to type long message
+     * @param sendFrom          identify send button
      * @param doNotHideKeyboard if it equals null, should hide keyboard
      * @throws Exception
-     * @step. ^I type the message "(.*)" and send it( without hiding keyboard)?$
+     * @step. ^I type the message "(.*)" and send it by (keyboard|cursor) Send button( without hiding keyboard)?$
      */
-    @When("^I type the message \"(.*)\" and send it( without hiding keyboard)?$")
-    public void ITypeMessageAndSendIt(String msg, String doNotHideKeyboard) throws Exception {
-        getConversationViewPage().typeAndSendMessage(expandMessage(msg), doNotHideKeyboard == null);
+    @When("^I type the message \"(.*)\" and send it by (keyboard|cursor) Send button( without hiding keyboard)?$")
+    public void ITypeMessageAndSendIt(String msg, String sendFrom, String doNotHideKeyboard) throws Exception {
+        getConversationViewPage().typeAndSendMessage(expandMessage(msg), sendFrom, doNotHideKeyboard == null);
     }
 
     /**
@@ -158,27 +161,15 @@ public class ConversationViewPageSteps {
      *                               release his finger after tap on an icon. Works for long tap on Audio Message
      *                               icon only
      * @throws Exception
-     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location) button (\d+ seconds )? from cursor
+     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif) button (\d+ seconds )? from cursor
      * toolbar( without releasing my finger)?$
      */
-    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location) button " +
+    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif) button " +
             "(\\d+ seconds )?from cursor toolbar( without releasing my finger)?$")
     public void ITapCursorToolButton(String longTap, String btnName, String longTapDurationSeconds,
                                      String shouldReleaseFinger) throws Exception {
         if (longTap == null) {
-            switch (btnName.toLowerCase()) {
-                case "video message":
-                case "audio message":
-                case "ping":
-                case "add picture":
-                case "sketch":
-                case "file":
-                case "share location":
-                    getConversationViewPage().tapCursorToolButton(btnName);
-                    break;
-                default:
-                    throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
-            }
+            getConversationViewPage().tapCursorToolButton(btnName);
         } else {
             int longTapDuration = (longTapDurationSeconds == null) ? DriverUtils.LONG_TAP_DURATION :
                     Integer.parseInt(longTapDurationSeconds.replaceAll("[\\D]", "")) * 1000;

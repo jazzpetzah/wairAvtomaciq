@@ -22,7 +22,7 @@ Feature: Upgrade
     Then I see 2 images in the conversation view
     When I scroll to the bottom of conversation view
     And I tap on text input
-    And I type the message "<Message2>" and send it
+    And I type the message "<Message2>" and send it by cursor Send button
     Then I see the message "<Message2>" in the conversation view
 
     Examples:

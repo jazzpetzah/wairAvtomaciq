@@ -9,7 +9,7 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
-    And I type the message "<Txt>" and send it
+    And I type the message "<Txt>" and send it by cursor Send button
     And I long tap the Text message "<Txt>" in the conversation view
     And I tap Like button on the message bottom menu
     # C226091
@@ -35,7 +35,7 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
-    Given I type the message "<Txt>" and send it
+    Given I type the message "<Txt>" and send it by cursor Send button
     # C226018
     When I tap the Text message "<Txt>" in the conversation view
     And I remember the state of like button
@@ -62,7 +62,7 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
-    And I type the message "<Txt>" and send it
+    And I type the message "<Txt>" and send it by cursor Send button
     And I double tap the Text message "<Txt>" in the conversation view
     Then I see Like button in conversation view
     And I see Like description with expected text "<Name>" in conversation view
@@ -84,7 +84,7 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
-    When I type the message "<Message>" and send it
+    When I type the message "<Message>" and send it by cursor Send button
     And User <Contact> likes the recent message from user Myself via device <ContactDevice>
     # C226040
     Then I see Like description with expected text "<Contact>" in conversation view
@@ -111,7 +111,7 @@ Feature: Like
     Given I see Conversations list with conversations
     # C226045
     When I tap on conversation name <Contact1>
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     And I tap the Text message "<Message>" in the conversation view
     And I tap Like button in conversation view
     Then I see Like description with expected text "<Name>" in conversation view
@@ -140,7 +140,7 @@ Feature: Like
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     # C226049
-    When I type the message "<Message>" and send it
+    When I type the message "<Message>" and send it by cursor Send button
     And I long tap the Text message "<Message>" in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
@@ -171,7 +171,7 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
-    When I type the message "<Message>" and send it
+    When I type the message "<Message>" and send it by cursor Send button
     And I navigate back from conversation
     And I swipe right on a <Contact>
     And I select DELETE from conversation settings menu
@@ -192,7 +192,7 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
-    When I type the message "<Message>" and send it
+    When I type the message "<Message>" and send it by cursor Send button
     And User <Contact> blocks user Myself
     And I tap the Text message "<Message>" in the conversation view
     And I remember the state of like button
@@ -217,7 +217,7 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Group>
-    Given I type the message "<Message>" and send it
+    Given I type the message "<Message>" and send it by cursor Send button
     When User <Contact1> likes the recent message from group conversation <Group> via device <D1>
     And User <Contact2> likes the recent message from group conversation <Group> via device <D2>
     And User <Contact3> likes the recent message from group conversation <Group> via device <D3>
@@ -329,7 +329,7 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
-    And I type the message "<Url>" and send it
+    And I type the message "<Url>" and send it by cursor Send button
     And I tap Link Preview container in the conversation view
     And I press Back button until Wire app is in foreground in 10 seconds
     And I remember the state of like button
@@ -415,7 +415,7 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
-    And I type the message "<YoutubeLink>" and send it
+    And I type the message "<YoutubeLink>" and send it by cursor Send button
     And I tap Youtube container in the conversation view
     And I remember the state of like button
     And I tap Like button in conversation view
@@ -434,7 +434,7 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
-    And I type the message "<SoundCloudLink>" and send it
+    And I type the message "<SoundCloudLink>" and send it by cursor Send button
     And I scroll to the bottom of conversation view
     And I tap Soundcloud container in the conversation view
     And I scroll to the bottom of conversation view
@@ -458,7 +458,7 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Group>
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     And User <Contact1> likes the recent message from group conversation <Group> via device <ContactDevice>
     Then I see Like description with expected text "<Contact1>" in conversation view
 

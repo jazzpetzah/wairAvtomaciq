@@ -118,7 +118,7 @@ Feature: Notifications
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
-    When I type the message "<Message>" and send it
+    When I type the message "<Message>" and send it by cursor Send button
     And I minimize the application
     And User <Contact> likes the recent message from user Myself via device <ContactDevice>
     Then I see the message "<Notification>" in push notifications list

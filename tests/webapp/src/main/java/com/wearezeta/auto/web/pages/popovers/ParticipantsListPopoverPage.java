@@ -44,11 +44,19 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 		leaveButton.click();
 	}
 
+	public boolean isLeaveButtonInvisible() throws Exception{
+		final By locator = By.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xpathLeaveGroupChat);
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
+	}
+
+	public boolean isAddPeopleButtonInvisible() throws Exception{
+		final By locator = By.xpath(PopoverLocators.Shared.xpathAddButton);
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
+	}
+
 	public void clickOnParticipant(String name) throws Exception {
-		final By locator = By
-				.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xpathParticipantByName
-						.apply(name));
-		DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 3);
+		final By locator = By.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xpathParticipantByName.apply(name));
+		DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
 		WebElement participant = getDriver().findElement(locator);
 		DriverUtils.waitUntilElementClickable(this.getDriver(), participant);
 		participant.click();
@@ -64,8 +72,7 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 		return super
 				.getSharedElement(String
 						.format("%s%s",
-								PopoverLocators.GroupPopover.ParticipantsListPage.xpathPageRootLocator,
-								relativeXpath));
+								PopoverLocators.GroupPopover.ParticipantsListPage.xpathPageRootLocator, relativeXpath));
 	}
 
 	private WebElement getAddPeopleElement() throws Exception {
@@ -73,8 +80,7 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 	}
 
 	public void clickAddPeopleButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-				getAddPeopleElement());
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(), getAddPeopleElement());
 		getAddPeopleElement().click();
 	}
 
@@ -83,17 +89,13 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 	}
 
 	public boolean isParticipantVisible(String name) throws Exception {
-		final By locator = By
-				.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xpathParticipantByName
-						.apply(name));
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 3);
+		final By locator = By.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xpathParticipantByName.apply(name));
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
 	}
 
 	public boolean isParticipantVerified(String name) throws Exception {
-		final By locator = By
-				.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xPathVerifiedParticipant
-						.apply(name));
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 3);
+		final By locator = By.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xPathVerifiedParticipant.apply(name));
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
 	}
 
 	public String getConversationTitle() {
@@ -109,8 +111,7 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 	}
 
 	public String getPeopleCountInfo() throws Exception {
-		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(PopoverLocators.GroupPopover.ParticipantsListPage
-				.cssPeopleCount));
+		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(PopoverLocators.GroupPopover.ParticipantsListPage.cssPeopleCount));
 		return peopleCount.getText();
 	}
 

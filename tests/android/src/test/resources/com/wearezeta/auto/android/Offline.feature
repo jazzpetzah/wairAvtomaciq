@@ -38,7 +38,7 @@ Feature: Offline
     And I tap on conversation name <Contact>
     And I enable Airplane mode on the device
     When I tap on text input
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     Then I see Message status with expected text "Sending failed. Resend" in conversation view
     When I tap Add picture button from cursor toolbar
     And I tap Take Photo button on Extended cursor camera overlay
