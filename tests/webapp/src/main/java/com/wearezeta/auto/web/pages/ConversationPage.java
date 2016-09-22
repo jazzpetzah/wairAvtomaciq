@@ -1071,8 +1071,7 @@ public class ConversationPage extends WebPage {
     }
 
     public boolean isUnlikeWithoutOtherLikesVisibleForMessage(int messageIndex) throws Exception {
-        String messageId = getMessageId(messageIndex);
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssUnlikeWithoutOtherLikesByMessageId.apply(messageId));
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssUnlikeWithoutOtherLikesByMessageId.apply(getMessageId(messageIndex)));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
@@ -1092,8 +1091,7 @@ public class ConversationPage extends WebPage {
     }
 
     public void hoverOverLastMessage() throws Exception {
-        String messageId = getMessageId(1);
-        hoverOverMessage(messageId);
+        hoverOverMessage(getMessageId(1));
     }
 
     public void clickEditInMessageContextMenu() throws Exception {
