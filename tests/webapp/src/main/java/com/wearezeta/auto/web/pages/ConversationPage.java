@@ -1184,20 +1184,17 @@ public class ConversationPage extends WebPage {
     }
 
     public void clickDeleteEverywhereInContextMenuOfLastMessage() throws Exception {
-        String id = getMessageId(1);
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteEverywhereByMessageId.apply(id));
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteEverywhereByMessageId.apply(getMessageId(1)));
         getDriver().findElement(locator).click();
     }
 
     public void clickDeleteForMeInContextMenuOfLastMessage() throws Exception {
-        String id = getMessageId(1);
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteForMeByMessageId.apply(id));
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteForMeByMessageId.apply(getMessageId(1)));
         getDriver().findElement(locator).click();
     }
 
     public void clickReactInContextMenuOfLastMessage() throws Exception {
-        String id = getMessageId(1);
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssReactByMessageId.apply(id));
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssReactByMessageId.apply(getMessageId(1)));
         getDriver().findElement(locator).click();
     }
 
@@ -1215,8 +1212,7 @@ public class ConversationPage extends WebPage {
     }
 
     public boolean isImageInvisible() throws Exception {
-        return DriverUtils.
-                waitUntilLocatorDissapears(getDriver(), By.cssSelector(WebAppLocators.ConversationPage.cssFirstImage));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.cssSelector(WebAppLocators.ConversationPage.cssFirstImage));
     }
 
     public boolean isLongMessageWarnDialogShown() throws Exception {
@@ -1224,8 +1220,7 @@ public class ConversationPage extends WebPage {
     }
 
     public boolean isLongMessageWarnDialogNotShown() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.cssSelector(
-                WebAppLocators.ConversationPage.cssLongMessageDialog));
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage.cssLongMessageDialog));
     }
 
     public void clickOKButtonOnLongMWarning() throws Exception {
