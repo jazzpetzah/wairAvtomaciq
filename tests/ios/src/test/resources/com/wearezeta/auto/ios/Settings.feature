@@ -111,7 +111,7 @@ Feature: Settings
       | user1Name | 60      |
 
   @C1092 @C1093 @regression @fastLogin
-  Scenario Outline: Attempt to enter a name with 0/1 chars
+  Scenario Outline: (ZIOS-7297) Attempt to enter a name with 0/1 chars
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
