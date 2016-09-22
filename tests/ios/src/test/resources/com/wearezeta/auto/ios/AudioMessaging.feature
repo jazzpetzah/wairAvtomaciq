@@ -127,7 +127,7 @@ Feature: Audio Messaging
 
 
   @C139855 @regression @fastLogin
-  Scenario Outline: (ZIOS-6759) Verify playback is stopped when incoming call has appeared
+  Scenario Outline: (ZIOS-6688) Verify playback is stopped when incoming call has appeared
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
