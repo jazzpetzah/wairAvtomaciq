@@ -111,7 +111,7 @@ public class LoginPage extends IOSPage {
     public void tapHoldEmailInput() throws Exception {
         final FBElement loginField = (FBElement) getElement(fbNameLoginField);
         message = loginField.getText();
-        this.longTapAt(loginField);
+        loginField.longTap();
     }
 
     public void tapPasswordField() throws Exception {

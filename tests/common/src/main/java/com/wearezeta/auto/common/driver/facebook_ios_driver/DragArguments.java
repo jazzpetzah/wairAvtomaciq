@@ -13,20 +13,8 @@ public class DragArguments {
         this.fromY = fromY;
         this.toX = toX;
         this.toY = toY;
-        validateDurationValue(durationSeconds);
+        DurationValidator.validate(durationSeconds);
         this.durationSeconds = durationSeconds;
-    }
-
-    private static final double MAX_DURATION_VALUE = 60;
-    private static final double MIN_DURATION_VALUE = 0.5;
-
-    private static void validateDurationValue(double actualValue) {
-        if (actualValue < MIN_DURATION_VALUE || actualValue > MAX_DURATION_VALUE) {
-            throw new IllegalArgumentException(String.format(
-                    "Duration value is expected to be in range [%.2f seconds, %.2f seconds]. " +
-                            "The actual duration value %.2f does not fit into this range.",
-                    MIN_DURATION_VALUE, MAX_DURATION_VALUE, actualValue));
-        }
     }
 
     public double getFromX() {

@@ -185,7 +185,7 @@ public abstract class IOSPage extends BasePage {
                 IOSSimulatorHelper.pressEnterKey();
             }
         } else {
-            this.longTapAt(dstElement);
+            dstElement.longTap();
             getElement(nameBadgeItemPaste, "Paste item is not visible", 15).click();
             if (shouldCommitInput) {
                 this.tapKeyboardCommitButton();
@@ -279,10 +279,6 @@ public abstract class IOSPage extends BasePage {
         doubleClickAt(el, 50, 50);
     }
 
-    protected void longTapAt(FBElement el) throws Exception {
-        this.longTapAt(el, 50, 50);
-    }
-
     protected void longClickAt(WebElement el, int percentX, int percentY) throws Exception {
         if (!CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             throw new IllegalStateException("This method works for iOS Simulator only");
@@ -298,14 +294,6 @@ public abstract class IOSPage extends BasePage {
 
     protected void longClickAt(WebElement el) throws Exception {
         this.longClickAt(el, 50, 50);
-    }
-
-    protected void longTapAt(FBElement el, int percentX, int percentY) throws Exception {
-        final Dimension size = el.getSize();
-        final double x = size.getWidth() * percentX / 100;
-        final double y = size.getHeight() * percentY / 100;
-        el.dragFromToForDuration(new DragArguments(x, y, x, y, DriverUtils.LONG_TAP_DURATION * 1.0 / 1000));
-
     }
 
     public void rotateScreen(ScreenOrientation orientation) throws Exception {

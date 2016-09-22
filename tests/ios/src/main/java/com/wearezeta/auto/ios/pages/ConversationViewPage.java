@@ -469,7 +469,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapHoldTextInput() throws Exception {
-        this.longTapAt((FBElement) getElement(fbNameConversationInput));
+        ((FBElement) getElement(fbNameConversationInput)).longTap();
     }
 
     public void scrollToBeginningOfConversation() throws Exception {
@@ -764,9 +764,8 @@ public class ConversationViewPage extends IOSPage {
         if (isDoubleTap) {
             doubleClickAt(el, tapPercentX, tapPercentY);
         } else {
-            if(isLongTap) {
-                // FIXME: perform long tap by coordinates
-                el.touchAndHold(DriverUtils.LONG_TAP_DURATION, true);
+            if (isLongTap) {
+                longClickAt(el, tapPercentX, tapPercentY);
             } else {
                 this.tapByPercentOfElementSize(el, tapPercentX, tapPercentY);
             }
@@ -783,18 +782,14 @@ public class ConversationViewPage extends IOSPage {
         }
     }
 
-    public void longTapInputToolButtonByName(String btnName, boolean shouldKeepTap) throws Exception {
+    public void longTapInputToolButtonByName(String btnName) throws Exception {
         final FBElement dstElement = (FBElement) locateCursorToolButton(getInputToolButtonByName(btnName));
-        if (shouldKeepTap) {
-            dstElement.touchAndHold(10, false);
-        } else {
-            this.longTapAt(dstElement);
-        }
+        dstElement.longTap();
     }
 
     public void longTapWithDurationInputToolButtonByName(String btnName, int durationSeconds) throws Exception {
         final FBElement dstElement = (FBElement) locateCursorToolButton(getInputToolButtonByName(btnName));
-        dstElement.touchAndHold(durationSeconds, true);
+        dstElement.touchAndHold(durationSeconds);
     }
 
     private By getRecordControlButtonByName(String buttonName) {
@@ -825,7 +820,7 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapAudioRecordWaitAndSwipe(int swipeDelaySeconds) throws Exception {
         final FBElement recordAudioMessageBtn = (FBElement) getElement(fbNameAudioMessageButton);
-        recordAudioMessageBtn.touchAndHold(swipeDelaySeconds, true);
+        recordAudioMessageBtn.touchAndHold(swipeDelaySeconds);
         getElement(nameSendAudioMessageButton).click();
 //        new TouchAction(getDriver()).press(recordAudioMessageBtn)
 //                .waitAction(swipeDelaySeconds * 1000)
@@ -1001,7 +996,7 @@ public class ConversationViewPage extends IOSPage {
         final By locator = By.xpath(xpathStrUserNameByText.apply(sender));
         final FBElement dstElement = (FBElement) getElement(locator);
         if (isLongTap) {
-            this.longTapAt(dstElement);
+            dstElement.longTap();
         } else {
             dstElement.click();
         }
@@ -1009,7 +1004,6 @@ public class ConversationViewPage extends IOSPage {
 
     /**
      * Make sure all these locators resulting into FBElement instance
-     *
      */
     private By getContainerLocatorByName(String name) {
         switch (name.toLowerCase()) {
@@ -1042,7 +1036,7 @@ public class ConversationViewPage extends IOSPage {
         if (isDoubleTap) {
             doubleClickAt(dstElement);
         } else if (isLongTap) {
-            this.longTapAt(dstElement);
+            dstElement.longTap();
         } else {
             dstElement.click();
         }
