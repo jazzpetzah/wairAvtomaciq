@@ -977,11 +977,13 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean isCursorToolbarVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorMore);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorMore)
+                || DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorLess);
     }
 
     public boolean isCursorToolbarInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorMore);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorMore)
+                && DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorLess);
     }
 
     public int getMessageHeight(String msg) throws Exception {

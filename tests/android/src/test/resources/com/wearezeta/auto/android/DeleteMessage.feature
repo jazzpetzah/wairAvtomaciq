@@ -208,7 +208,7 @@ Feature: Delete Message
     And I tap Gif button from cursor toolbar
     And I select a random gif from the grid preview
     Then I see giphy preview page
-    When I click on the giphy send button
+    When I tap on the giphy Send button
     Then I see a picture in the conversation view
     When I long tap Image container in the conversation view
     And I tap Delete only for me button on the message bottom menu
