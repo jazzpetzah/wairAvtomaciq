@@ -78,7 +78,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | ChatName | Message1 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GC1      | like me  |
 
-  @C226427 @staging @torun
+  @C226427 @staging
   Scenario Outline: Verify liking someone's link preview in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -87,19 +87,18 @@ Feature: Like
     Given I am signed in properly
     When I open conversation with <Contact>
     And Contact <Contact> sends message <Link> via device Device1 to user me
-    And I wait for 3 seconds
     Then I see link <LinkInPreview> in link preview message
     And I do not see likes below the last message
     When I click to like the last message without other likes
-    And I wait for 5 seconds
+    And I wait for 3 seconds
     And I do not see likes below the last message
     Then I see the last message is only liked by me
     When I click to unlike the last message without other likes
     Then I do not see likes below the last message
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Link     | LinkInPreview    |
-      | user1Email | user1Password | user1Name | user2Name | wire.com | https://wire.com |
+      | Login      | Password      | Name      | Contact   | Link     | LinkInPreview |
+      | user1Email | user1Password | user1Name | user2Name | wire.com | wire.com      |
 
   @C226428 @staging
   Scenario Outline: Verify liking someone's picture
