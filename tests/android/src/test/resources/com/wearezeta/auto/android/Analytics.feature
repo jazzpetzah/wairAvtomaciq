@@ -57,7 +57,7 @@ Feature: Analytics
     And I tap Gif button from cursor toolbar
     And I select a random gif from the grid preview
     And I see giphy preview page
-    And I click on the giphy send button
+    And I tap on the giphy Send button
     Then I verify that <LogType> log contains string "ACTION=photo" 2 times
     # Photo from camera
     When I tap Add picture button from cursor toolbar

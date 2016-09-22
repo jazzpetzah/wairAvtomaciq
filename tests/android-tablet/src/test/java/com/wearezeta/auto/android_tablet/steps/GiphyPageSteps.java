@@ -31,21 +31,21 @@ public class GiphyPageSteps {
      * Tap the corresponding button on Giphy preview page
      *
      * @throws Exception
-     * @step. ^I tap Send button on the Giphy [Pp]review page$
+     * @step. ^I tap (Send|Cancel) button on the Giphy [Pp]review page$
      */
-    @When("^I tap Send button on the Giphy [Pp]review page$")
-    public void ITapButton() throws Exception {
-        getGiphyPage().tapSendButton();
+    @When("^I tap (Send|Cancel) button on the Giphy [Pp]review page$")
+    public void ITapButton(String buttonName) throws Exception {
+        getGiphyPage().tapOnConfirmationButton(buttonName);
     }
 
     /**
      * Selects one of the gifs from the grid preview
      *
      * @throws Exception
-     * @step. ^I select a random gif from the grid preview$
+     * @step. ^I select (a random|\d+(?:st|nd|th)) gif from the grid preview$
      */
-    @When("^I select a random gif from the grid preview$")
-    public void ISelectARandomGifFromTheGridPreview() throws Exception {
-        getGiphyPage().clickOnSomeGif();
+    @When("^I select (a random|\\d+(?:st|nd|th)) gif from the grid preview$")
+    public void ISelectARandomGifFromTheGridPreview(String index) throws Exception {
+        getGiphyPage().tapGifPreviewByIndex(index);
     }
 }

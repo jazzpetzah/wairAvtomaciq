@@ -18,11 +18,11 @@ public class TabletGiphyPage extends AndroidTabletPage {
         return getAndroidGiphyPage().isGiphyPreviewShown();
     }
 
-    public void tapSendButton() throws Exception {
-        getAndroidGiphyPage().clickSendButton();
+    public void tapOnConfirmationButton(String buttonName) throws Exception {
+        getAndroidGiphyPage().tapOnConfirmationButton(buttonName);
     }
 
-    public void clickOnSomeGif() throws Exception {
-        getAndroidGiphyPage().clickOnSomeGif();
+    public void tapGifPreviewByIndex(String index) throws Exception {
+        getAndroidGiphyPage().tapGifPreviewByIndex(index);
     }
 }

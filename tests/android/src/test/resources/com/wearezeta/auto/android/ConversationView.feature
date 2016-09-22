@@ -196,47 +196,6 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C787 @regression @rc @rc42
-  Scenario Outline: I can send GIF image by typing some massage and clicking GIF cursor button
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    When I tap on conversation name <Contact>
-    And I tap on text input
-    And I type the message "<Message>"
-    And I tap Gif button from cursor toolbar
-    And I see the giphy grid preview
-    And I select a random gif from the grid preview
-    When I click on the giphy send button
-    Then I see a picture in the conversation view
-    And I see the most recent conversation message is "<Message> · via giphy.com"
-
-    Examples:
-      | Name      | Contact   | Message |
-      | user1Name | user2Name | Yo      |
-
-  @C250821 @staging
-  Scenario Outline: I can search a GIF image by clicking GIF cursor button
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    When I tap on conversation name <Contact>
-    And I tap Gif button from cursor toolbar
-    Then I see the giphy grid preview
-    When I type "<Message>" in Giphy toolbar input field and hide keyboard
-    And I select a random gif from the grid preview
-    When I click on the giphy send button
-    Then I see a picture in the conversation view
-    And I see the most recent conversation message is "<Message> · via giphy.com"
-
-    Examples:
-      | Name      | Contact   | Message |
-      | user1Name | user2Name | Yo      |
-
   @C674 @regression @rc
   Scenario Outline: Send GIF format pic
     Given There are 2 users where <Name> is me
@@ -274,28 +233,6 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
-
-  @C236 @regression @rc
-  Scenario Outline: I can send giphy image from the giphy grid preview
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    When I tap on conversation name <Contact>
-    And I tap on text input
-    And I type the message "<Message>"
-    And I tap Gif button from cursor toolbar
-    Then I see the giphy grid preview
-    And I select a random gif from the grid preview
-    And I see giphy preview page
-    When I click on the giphy send button
-    Then I see a picture in the conversation view
-    And I see the most recent conversation message is "<Message> · via giphy.com"
-
-    Examples:
-      | Name      | Contact   | Message |
-      | user1Name | user2Name | Yo      |
 
   @C77948 @C77950 @regression @rc
   Scenario Outline: Upper toolbar displayed in conversation view, I can back to Conversations list by toolbar arrow
