@@ -51,7 +51,7 @@ public abstract class FBBy extends MobileBy {
 
         @Override
         public String toString() {
-            return "By.ByFBAccessibilityId: " + this.id;
+            return "FBBy.FBAccessibilityId: " + this.id;
         }
     }
 
@@ -92,7 +92,7 @@ public abstract class FBBy extends MobileBy {
 
         @Override
         public String toString() {
-            return "By.ByFBClassName: " + this.name;
+            return "FBBy.FBClassName: " + this.name;
         }
     }
 
@@ -133,7 +133,7 @@ public abstract class FBBy extends MobileBy {
 
         @Override
         public String toString() {
-            return "By.ByFBClassName: " + this.xpath;
+            return "FBBy.FBXPath: " + this.xpath;
         }
     }
 
@@ -174,7 +174,7 @@ public abstract class FBBy extends MobileBy {
 
         @Override
         public String toString() {
-            return "By.ByFBPredicate: " + this.predicateText;
+            return "FBBy.FBPredicate: " + this.predicateText;
         }
     }
 }

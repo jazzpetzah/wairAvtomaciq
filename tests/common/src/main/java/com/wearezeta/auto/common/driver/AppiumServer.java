@@ -97,7 +97,8 @@ public class AppiumServer {
                 "routined", "assetsd", "mstreamd", "healthd", "MobileCal",
                 "callservicesd", "revisiond", "touchsetupd", "calaccessd",
                 "ServerFileProvider", "mobileassetd", "IMDPersistenceAgent",
-                "itunesstored", "profiled", "passd", "carkitd", "instruments");
+                "itunesstored", "profiled", "passd", "carkitd", "instruments",
+                "xcodebuild", "XCTRunner");
         restart();
     }
 
