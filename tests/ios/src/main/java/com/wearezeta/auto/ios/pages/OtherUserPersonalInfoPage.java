@@ -17,12 +17,12 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class OtherUserPersonalInfoPage extends IOSPage {
     private static final By fbNameRemoveFromConversation =
-            FBBy.FBAccessibilityId("OtherUserMetaControllerRightButton");
+            FBBy.AccessibilityId("OtherUserMetaControllerRightButton");
 
     private static final By nameConfirmRemoveButton = MobileBy.AccessibilityId("REMOVE");
 
     private static final By fbNameOtherUserAddContactToChatButton =
-            FBBy.FBAccessibilityId("OtherUserMetaControllerLeftButton");
+            FBBy.AccessibilityId("OtherUserMetaControllerLeftButton");
 
     private static final By nameContinueButton = MobileBy.AccessibilityId("CONTINUE");
 
@@ -44,7 +44,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final By nameAddContactToChatButton = MobileBy.AccessibilityId("metaControllerLeftButton");
 
     protected static final By fbNameOtherUserConversationMenu =
-            FBBy.FBAccessibilityId("OtherUserMetaControllerRightButton");
+            FBBy.AccessibilityId("OtherUserMetaControllerRightButton");
 
     private static final By nameConversationMenu = MobileBy.AccessibilityId("metaControllerRightButton");
 

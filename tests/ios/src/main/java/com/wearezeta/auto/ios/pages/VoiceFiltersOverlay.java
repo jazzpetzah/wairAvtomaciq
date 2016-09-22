@@ -13,7 +13,7 @@ import java.util.concurrent.Future;
 public class VoiceFiltersOverlay extends IOSPage {
     private static final By nameRecordButton = MobileBy.AccessibilityId("record");
     private static final By nameStopRecordButton = MobileBy.AccessibilityId("stopRecording");
-    private static final By fbNameConfirmRecordButton = FBBy.FBAccessibilityId("confirmRecording");
+    private static final By fbNameConfirmRecordButton = FBBy.AccessibilityId("confirmRecording");
     private static final By nameConfirmRecordButton = MobileBy.AccessibilityId("confirmRecording");
     private static final By nameRedoRecordButton = MobileBy.AccessibilityId("redoRecording");
     private static final By nameCancelRecordButton = MobileBy.AccessibilityId("cancelRecording");

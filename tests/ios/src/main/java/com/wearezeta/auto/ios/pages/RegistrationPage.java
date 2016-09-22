@@ -43,7 +43,7 @@ public class RegistrationPage extends IOSPage {
     private static final By xpathEmailVerifPrompt =
             By.xpath("//XCUIElementTypeStaticText[contains(@name, 'We sent an email to ')]");
 
-    private static final By fbNamePhoneNumberField = FBBy.FBAccessibilityId("PhoneNumberField");
+    private static final By fbNamePhoneNumberField = FBBy.AccessibilityId("PhoneNumberField");
 
     public static final By xpathVerificationCodeInput = By.xpath("//XCUIElementTypeTextField");
 

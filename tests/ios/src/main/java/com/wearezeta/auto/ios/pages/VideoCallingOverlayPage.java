@@ -17,7 +17,7 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
 
     private WebElement makeOverlayButtonVisible(String name) throws Exception {
         final Optional<WebElement> dstBtn = getElementIfExists(
-                FBBy.FBAccessibilityId(getButtonAccessibilityIdByName(name)));
+                FBBy.AccessibilityId(getButtonAccessibilityIdByName(name)));
         if (dstBtn.isPresent()) {
             if (!dstBtn.get().isDisplayed()) {
                 this.tapAtTheCenterOfElement((FBElement) dstBtn.get());

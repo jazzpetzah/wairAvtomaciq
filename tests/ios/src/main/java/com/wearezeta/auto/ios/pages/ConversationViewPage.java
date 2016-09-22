@@ -33,7 +33,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final String nameStrConversationInputField = "inputField";
 
-    private static final By fbNameConversationInput = FBBy.FBAccessibilityId(nameStrConversationInputField);
+    private static final By fbNameConversationInput = FBBy.AccessibilityId(nameStrConversationInputField);
 
     private static final Function<String, String> xpathStrConversationInputByValue = value ->
             String.format("//XCUIElementTypeTextView[@name='%s' and @value='%s']", nameStrConversationInputField, value);
@@ -76,10 +76,10 @@ public class ConversationViewPage extends IOSPage {
 
     private static final String xpathStrImageCells = xpathStrAllEntries + "[@name='ImageCell']";
     private static final By xpathImageCell = By.xpath(xpathStrImageCells);
-    private static final By fbXpathLastImageCell = FBBy.FBXPath(String.format("(%s)[1]", xpathStrImageCells));
+    private static final By fbXpathLastImageCell = FBBy.xpath(String.format("(%s)[1]", xpathStrImageCells));
 
     private static final By fbXpathMediaContainerCell =
-            FBBy.FBXPath(xpathStrAllTextMessages + "[contains(@value, '://')]/following::XCUIElementTypeButton");
+            FBBy.xpath(xpathStrAllTextMessages + "[contains(@value, '://')]/following::XCUIElementTypeButton");
 
     private static final By xpathGiphyImage = By
             .xpath(xpathStrAllTextMessages + "[@name='via giphy.com']/following::XCUIElementTypeCell[@name='ImageCell']");
@@ -118,13 +118,13 @@ public class ConversationViewPage extends IOSPage {
 
     public static final String MEDIA_STATE_STOPPED = "ended";
 
-    private static final By fbNameCursorSketchButton = FBBy.FBAccessibilityId("sketchButton");
-    protected static final By fbNameAddPictureButton = FBBy.FBAccessibilityId("photoButton");
-    private static final By fbNamePingButton = FBBy.FBAccessibilityId("pingButton");
-    private static final By fbNameFileTransferButton = FBBy.FBAccessibilityId("uploadFileButton");
-    private static final By fbNameVideoMessageButton = FBBy.FBAccessibilityId("videoButton");
-    private static final By fbNameAudioMessageButton = FBBy.FBAccessibilityId("audioButton");
-    private static final By fbNameShareLocationButton = FBBy.FBAccessibilityId("locationButton");
+    private static final By fbNameCursorSketchButton = FBBy.AccessibilityId("sketchButton");
+    protected static final By fbNameAddPictureButton = FBBy.AccessibilityId("photoButton");
+    private static final By fbNamePingButton = FBBy.AccessibilityId("pingButton");
+    private static final By fbNameFileTransferButton = FBBy.AccessibilityId("uploadFileButton");
+    private static final By fbNameVideoMessageButton = FBBy.AccessibilityId("videoButton");
+    private static final By fbNameAudioMessageButton = FBBy.AccessibilityId("audioButton");
+    private static final By fbNameShareLocationButton = FBBy.AccessibilityId("locationButton");
 
     private static final String xpathStrConversationViewTopBar =
             "//XCUIElementTypeNavigationBar[./XCUIElementTypeButton[@name='Back']]";
@@ -135,7 +135,7 @@ public class ConversationViewPage extends IOSPage {
     private static Function<String, String> xpathStrToolbarByExpr = expr ->
             String.format("%s/XCUIElementTypeButton[%s]", xpathStrConversationViewTopBar, expr);
 
-    private static final By fbNameEllipsisButton = FBBy.FBAccessibilityId("showOtherRowButton");
+    private static final By fbNameEllipsisButton = FBBy.AccessibilityId("showOtherRowButton");
     private static final By xpathAudioCallButton = MobileBy.AccessibilityId("audioCallBarButton");
     private static final By xpathVideoCallButton = MobileBy.AccessibilityId("videoCallBarButton");
     private static final By xpathConversationDetailsButton = By.xpath(xpathStrConversationViewTopBar +
@@ -155,7 +155,7 @@ public class ConversationViewPage extends IOSPage {
                     name.toUpperCase());
 
     private static final String nameStrFileTransferBottomLabel = "FileTransferBottomLabel";
-    private static final By fbNameFileTransferBottomLabel = FBBy.FBAccessibilityId(nameStrFileTransferBottomLabel);
+    private static final By fbNameFileTransferBottomLabel = FBBy.AccessibilityId(nameStrFileTransferBottomLabel);
     private static final Function<String, String> xpathTransferBottomLabelByExpr = expr ->
             String.format("//XCUIElementTypeStaticText[@name='%s' and %s]", nameStrFileTransferBottomLabel, expr);
     private static final By nameFileTransferActionButton = MobileBy.AccessibilityId("FileTransferActionButton");
@@ -170,14 +170,14 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameShareButton = MobileBy.AccessibilityId("Share");
 
-    private static final By fbNameVideoMessageActionButton = FBBy.FBAccessibilityId("VideoActionButton");
+    private static final By fbNameVideoMessageActionButton = FBBy.AccessibilityId("VideoActionButton");
 
 //    private static final By nameVideoMessageSizeLabel = MobileBy.AccessibilityId("VideoSizeLabel");
 
     private static final Function<String, String> xpathStrUserNameByText = text ->
             String.format("//XCUIElementTypeCell[@name='%s']", text.toUpperCase());
 
-    private static final By fbNameAudioRecorderCancelButton = FBBy.FBAccessibilityId("audioRecorderCancel");
+    private static final By fbNameAudioRecorderCancelButton = FBBy.AccessibilityId("audioRecorderCancel");
 
     private static final By nameSendAudioMessageButton = MobileBy.AccessibilityId("audioRecorderSend");
 
@@ -193,7 +193,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameAudioPlaceholderTimeLabel = MobileBy.AccessibilityId("AudioTimeLabel");
 
     private static final String strNameAudioActionButton = "AudioActionButton";
-    private static final By fbNameAudioActionButton = FBBy.FBAccessibilityId(strNameAudioActionButton);
+    private static final By fbNameAudioActionButton = FBBy.AccessibilityId(strNameAudioActionButton);
 
     private static final Function<Integer, String> xpathStrAudioActionButtonByIndex = index ->
             String.format("(//*[@name='%s'])[%s]", strNameAudioActionButton, index);
@@ -203,7 +203,7 @@ public class ConversationViewPage extends IOSPage {
                     String.format("(//XCUIElementTypeButton[@name='%s'])[%s][@value='%s']", strNameAudioActionButton,
                             index, buttonState);
 
-    private static final By fbClassNameShareLocationContainer = FBBy.FBClassName("XCUIElementTypeMapView");
+    private static final By fbClassNameShareLocationContainer = FBBy.className("XCUIElementTypeMapView");
 
     private static final By nameDefaultReceivedLocationAddress =
             MobileBy.AccessibilityId(Constants.DEFAULT_GMAP_ADDRESS);
@@ -213,7 +213,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By xpathDefaultMapApplication = By.xpath("//XCUIElementTypeApplication[@name='Maps']");
 
-    private static final By fbNameLinkPreviewSource = FBBy.FBAccessibilityId("linkPreviewSource");
+    private static final By fbNameLinkPreviewSource = FBBy.AccessibilityId("linkPreviewSource");
 
     private static final By nameLinkPreviewImage = MobileBy.AccessibilityId("linkPreviewImage");
 
@@ -757,7 +757,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapMessageByText(boolean isLongTap, boolean isDoubleTap, String msg) throws Exception {
-        final FBElement el = (FBElement) getElement(FBBy.FBXPath(xpathStrMessageByTextPart.apply(msg)));
+        final FBElement el = (FBElement) getElement(FBBy.xpath(xpathStrMessageByTextPart.apply(msg)));
         // The tap should be performed precisely on the text
         final int tapPercentX = 10;
         final int tapPercentY = 50;

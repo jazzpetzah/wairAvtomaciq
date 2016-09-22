@@ -16,7 +16,7 @@ public class VideoPlayerPage extends IOSPage {
     private static final By xpathVideoMainPage = By.className("XCUIElementTypeWebView");
 
     private static final By nameVideoDoneButton = MobileBy.AccessibilityId("Done");
-    private static final By fbNameVideoDoneButton = FBBy.FBAccessibilityId("Done");
+    private static final By fbNameVideoDoneButton = FBBy.AccessibilityId("Done");
 
     private static final By nameVideoPauseButton = MobileBy.AccessibilityId("PauseButton");
 

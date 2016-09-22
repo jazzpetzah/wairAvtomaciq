@@ -25,7 +25,7 @@ public class LoginPage extends IOSPage {
 
     private static final By nameLoginButton = MobileBy.AccessibilityId("RegistrationConfirmButton");
 
-    private static final By fbNameLoginField = FBBy.FBAccessibilityId("EmailField");
+    private static final By fbNameLoginField = FBBy.AccessibilityId("EmailField");
 
     private static final By namePasswordField = MobileBy.AccessibilityId("PasswordField");
 

@@ -6,7 +6,6 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class GiphyPreviewPage extends IOSPage {
@@ -17,7 +16,7 @@ public class GiphyPreviewPage extends IOSPage {
     private static final By nameGiphyTitleButton = MobileBy.AccessibilityId("centerButton");
 
     // TODO: assign a name to Giphy image element
-    private static final By predicateGiphyImage = FBBy.FBClassName("XCUIElementTypeImage");
+    private static final By predicateGiphyImage = FBBy.className("XCUIElementTypeImage");
 
     private static final By nameGiphyCancelRequestButton = MobileBy.AccessibilityId("rejectButton");
 

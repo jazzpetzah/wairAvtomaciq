@@ -20,7 +20,7 @@ abstract class KeyboardState {
 
     protected void tapSpecialKey(String keyName) throws InterruptedException {
         if (keyName.equals(SHIFT) || keyName.equals(MORE_LETTERS) || keyName.equals(MORE_NUMBERS)) {
-            final FBElement el = (FBElement) keyboard.findElement(FBBy.FBAccessibilityId(keyName));
+            final FBElement el = (FBElement) keyboard.findElement(FBBy.AccessibilityId(keyName));
             el.click();
             Thread.sleep(1500);
         } else {

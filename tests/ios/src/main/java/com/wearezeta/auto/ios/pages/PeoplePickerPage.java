@@ -14,13 +14,13 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class PeoplePickerPage extends IOSPage {
-    private static final By fbNamePickerSearch = FBBy.FBAccessibilityId("textViewSearch");
+    private static final By fbNamePickerSearch = FBBy.AccessibilityId("textViewSearch");
 
     public static final By xpathPickerClearButton =
             By.xpath("//*[@name='PeoplePickerClearButton' or @name='ContactsViewCloseButton']");
 
     public static final By fbXpathPickerClearButton =
-            FBBy.FBXPath("//*[@name='PeoplePickerClearButton' or @name='ContactsViewCloseButton']");
+            FBBy.xpath("//*[@name='PeoplePickerClearButton' or @name='ContactsViewCloseButton']");
 
     private static final By nameKeyboardEnterButton = MobileBy.AccessibilityId("Return");
 

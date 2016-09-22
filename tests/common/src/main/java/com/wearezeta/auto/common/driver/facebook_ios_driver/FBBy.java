@@ -14,18 +14,18 @@ public abstract class FBBy extends MobileBy {
         super(locatorString);
     }
 
-    public static By FBAccessibilityId(String id) {
+    public static By AccessibilityId(String id) {
         if (id == null) {
             throw new IllegalArgumentException("Must supply a valid accessibility id string");
         } else {
-            return new ByFBAccessibilityId(id);
+            return new ByAccessibilityId(id);
         }
     }
 
-    public static class ByFBAccessibilityId extends By implements Serializable {
+    public static class ByAccessibilityId extends By implements Serializable {
         private final String id;
 
-        public ByFBAccessibilityId(String uiautomatorText) {
+        public ByAccessibilityId(String uiautomatorText) {
             this.id = uiautomatorText;
         }
 
@@ -51,22 +51,22 @@ public abstract class FBBy extends MobileBy {
 
         @Override
         public String toString() {
-            return "FBBy.FBAccessibilityId: " + this.id;
+            return "FBBy.AccessibilityId: " + this.id;
         }
     }
 
-    public static By FBClassName(String name) {
+    public static By className(String name) {
         if (name == null) {
             throw new IllegalArgumentException("Must supply a valid class xpath string");
         } else {
-            return new ByFBClassName(name);
+            return new ByClassName(name);
         }
     }
 
-    public static class ByFBClassName extends By implements Serializable {
+    public static class ByClassName extends By implements Serializable {
         private final String name;
 
-        public ByFBClassName(String uiautomatorText) {
+        public ByClassName(String uiautomatorText) {
             this.name = uiautomatorText;
         }
 
@@ -92,22 +92,22 @@ public abstract class FBBy extends MobileBy {
 
         @Override
         public String toString() {
-            return "FBBy.FBClassName: " + this.name;
+            return "FBBy.className: " + this.name;
         }
     }
 
-    public static By FBXPath(String xpath) {
+    public static By xpath(String xpath) {
         if (xpath == null) {
             throw new IllegalArgumentException("Must supply a valid XPath string");
         } else {
-            return new ByFBXPath(xpath);
+            return new ByXPath(xpath);
         }
     }
 
-    public static class ByFBXPath extends By implements Serializable {
+    public static class ByXPath extends By implements Serializable {
         private final String xpath;
 
-        public ByFBXPath(String uiautomatorText) {
+        public ByXPath(String uiautomatorText) {
             this.xpath = uiautomatorText;
         }
 
@@ -133,22 +133,22 @@ public abstract class FBBy extends MobileBy {
 
         @Override
         public String toString() {
-            return "FBBy.FBXPath: " + this.xpath;
+            return "FBBy.xpath: " + this.xpath;
         }
     }
 
-    public static By FBPredicate(String predicate) {
+    public static By Predicate(String predicate) {
         if (predicate == null) {
             throw new IllegalArgumentException("Must supply a valid predicate string");
         } else {
-            return new ByFBPredicate(predicate);
+            return new ByPredicate(predicate);
         }
     }
 
-    public static class ByFBPredicate extends By implements Serializable {
+    public static class ByPredicate extends By implements Serializable {
         private final String predicateText;
 
-        public ByFBPredicate(String uiautomatorText) {
+        public ByPredicate(String uiautomatorText) {
             this.predicateText = uiautomatorText;
         }
 
@@ -174,7 +174,7 @@ public abstract class FBBy extends MobileBy {
 
         @Override
         public String toString() {
-            return "FBBy.FBPredicate: " + this.predicateText;
+            return "FBBy.Predicate: " + this.predicateText;
         }
     }
 }

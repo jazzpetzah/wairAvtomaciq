@@ -73,7 +73,7 @@ public class SettingsPage extends IOSPage {
     }
 
     public void selectItem(String itemName) throws Exception {
-        final By locator = FBBy.FBXPath(xpathStrMenuItemByName.apply(itemName));
+        final By locator = FBBy.xpath(xpathStrMenuItemByName.apply(itemName));
         final FBElement dstElement = (FBElement) getElementIfExists(locator).orElseThrow(
                 () -> new IllegalStateException(String.format("Menu element '%s' does not exist", itemName))
         );
@@ -154,7 +154,7 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean isSettingItemValueEqualTo(String itemName, String expectedValue) throws Exception {
-        final By locator = FBBy.FBXPath(xpathStrSettingsValue.apply(itemName, expectedValue));
+        final By locator = FBBy.xpath(xpathStrSettingsValue.apply(itemName, expectedValue));
         return getElementIfExists(locator).isPresent();
     }
 

@@ -119,7 +119,7 @@ public class GroupChatInfoPage extends IOSPage {
     }
 
     public void selectParticipant(String name) throws Exception {
-        final By locator = FBBy.FBXPath(xpathPeopleViewCollectionCellByName.apply(name));
+        final By locator = FBBy.xpath(xpathPeopleViewCollectionCellByName.apply(name));
         this.tapAtTheCenterOfElement((FBElement) getElement(locator));
     }
 
