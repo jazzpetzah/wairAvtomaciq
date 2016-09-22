@@ -24,6 +24,7 @@ Feature: Link Preview
     Given I see conversations list
     When I tap on contact name <Contact>
     And I type the "<Link>" message and send it
+    And I tap Hide keyboard button
     Then I see link preview container in the conversation view
     When I long tap on link preview in conversation view
     And I tap on Delete badge item

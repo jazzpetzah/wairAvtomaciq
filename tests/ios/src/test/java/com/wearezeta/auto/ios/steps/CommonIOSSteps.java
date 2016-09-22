@@ -438,20 +438,20 @@ public class CommonIOSSteps {
     }
 
     /**
-     * click the corresponding on-screen keyboard button
+     * Tap the corresponding on-screen keyboard button
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I click (Hide|Space|Done) keyboard button$
+     * @step. ^I tap (Hide|Space|Done) keyboard button$
      */
-    @When("^I click (Hide|Space|Done) keyboard button$")
-    public void IClickHideKeyboardBtn(String btnName) throws Exception {
+    @When("^I tap (Hide|Space|Done) keyboard button$")
+    public void ITapHideKeyboardBtn(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
             case "hide":
-                pagesCollection.getCommonPage().clickHideKeyboardButton();
+                pagesCollection.getCommonPage().tapHideKeyboardButton();
                 break;
             case "space":
-                pagesCollection.getCommonPage().clickSpaceKeyboardButton();
+                pagesCollection.getCommonPage().tapSpaceKeyboardButton();
                 break;
             case "done":
                 pagesCollection.getCommonPage().tapKeyboardCommitButton();
