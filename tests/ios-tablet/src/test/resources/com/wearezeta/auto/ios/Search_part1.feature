@@ -25,6 +25,7 @@ Feature: Search
     Given I see conversations list
     Given I wait until <Contact> exists in backend search results
     When I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
 
@@ -125,6 +126,7 @@ Feature: Search
     When I do not see conversation <Contact> in conversations list
     And I wait until <Contact> exists in backend search results
     And I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
@@ -146,6 +148,7 @@ Feature: Search
     When I do not see conversation <Contact> in conversations list
     And I wait until <Contact> exists in backend search results
     And I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I click Hide keyboard button
     And I tap on conversation <Contact> in search result

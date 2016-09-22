@@ -19,7 +19,7 @@ public class KeyboardGalleryPage extends IOSPage {
     private static final By nameFullscreenCameraButton = MobileBy.AccessibilityId("fullscreenCameraButton");
 
     private static final By xpathFirstPicture =
-            By.xpath("//XCUIElementTypeCell[@name='changeCameraButton']/following-sibling::XCUIElementTypeCell");
+            By.xpath("//XCUIElementTypeCell[@name='changeCameraButton']/following::XCUIElementTypeCell");
 
     private static final By nameBackButton = MobileBy.AccessibilityId("goBackButton");
 

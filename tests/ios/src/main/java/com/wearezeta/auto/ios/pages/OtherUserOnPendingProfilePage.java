@@ -14,7 +14,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
             By.xpath("//XCUIElementTypeButton[@label='CANCEL REQUEST']");
 
     private static final By xpathCancelRequestYesButton = By.xpath(
-            "//XCUIElementTypeStaticText[@name='Cancel Request?']/following-sibling::XCUIElementTypeButton[@name='YES']");
+            "//XCUIElementTypeStaticText[@name='Cancel Request?']/following::XCUIElementTypeButton[@name='YES']");
 
     private static final By nameRightActionButton = MobileBy.AccessibilityId("OtherUserMetaControllerRightButton");
 

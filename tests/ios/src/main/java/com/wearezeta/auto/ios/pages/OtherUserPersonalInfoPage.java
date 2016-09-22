@@ -16,19 +16,21 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class OtherUserPersonalInfoPage extends IOSPage {
-
-    private static final By fbNameRemoveFromConversation = FBBy.FBAccessibilityId("OtherUserMetaControllerRightButton");
+    private static final By fbNameRemoveFromConversation =
+            FBBy.FBAccessibilityId("OtherUserMetaControllerRightButton");
 
     private static final By nameConfirmRemoveButton = MobileBy.AccessibilityId("REMOVE");
 
-    private static final By fbNameOtherUserAddContactToChatButton = FBBy.FBAccessibilityId("OtherUserMetaControllerLeftButton");
+    private static final By fbNameOtherUserAddContactToChatButton =
+            FBBy.FBAccessibilityId("OtherUserMetaControllerLeftButton");
 
     private static final By nameContinueButton = MobileBy.AccessibilityId("CONTINUE");
 
-    private static final By nameExitOtherUserPersonalInfoPageButton = MobileBy.AccessibilityId("OtherUserProfileCloseButton");
+    private static final By nameExitOtherUserPersonalInfoPageButton =
+            MobileBy.AccessibilityId("OtherUserProfileCloseButton");
 
     private static final By xpathConfirmDeleteButton = By
-        .xpath("//XCUIElementTypeButton[@name='CANCEL']/following-sibling::XCUIElementTypeButton[@name='DELETE']");
+        .xpath("//XCUIElementTypeButton[@name='CANCEL']/following::XCUIElementTypeButton[@name='DELETE']");
 
     private static final By nameAlsoLeaveCheckerButton = MobileBy.AccessibilityId("ALSO LEAVE THE CONVERSATION");
 
@@ -36,18 +38,18 @@ public class OtherUserPersonalInfoPage extends IOSPage {
             String.format("//XCUIElementTypeStaticText[@name='%s']", name);
 
     private static final Function<String, String> xpathStrOtherPersonalInfoPageEmailFieldByEmail = name -> String.format(
-        "//XCUIElementTypeButton[@name='OtherUserProfileCloseButton']/following-sibling::XCUIElementTypeTextView[@name='%s']",
+        "//XCUIElementTypeButton[@name='OtherUserProfileCloseButton']/following::XCUIElementTypeTextView[@name='%s']",
             name.toUpperCase());
 
     private static final By nameAddContactToChatButton = MobileBy.AccessibilityId("metaControllerLeftButton");
 
-    protected static final By nameOtherUserConversationMenu = MobileBy.AccessibilityId("OtherUserMetaControllerRightButton");
-    protected static final By fbNameOtherUserConversationMenu = FBBy.FBAccessibilityId("OtherUserMetaControllerRightButton");
+    protected static final By fbNameOtherUserConversationMenu =
+            FBBy.FBAccessibilityId("OtherUserMetaControllerRightButton");
 
     private static final By nameConversationMenu = MobileBy.AccessibilityId("metaControllerRightButton");
 
     private static final By xpathActionMenu = By
-        .xpath("//XCUIElementTypeStaticText[following-sibling::XCUIElementTypeButton[@name='CANCEL'] and @visible='true']");
+        .xpath("//XCUIElementTypeStaticText[following::XCUIElementTypeButton[@name='CANCEL']]");
 
     private static final String xpathStrDevicesList = "(" + xpathStrMainWindow +
             "//XCUIElementTypeTable)[1]/XCUIElementTypeCell";
@@ -55,8 +57,8 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final Function<Integer, String> xpathStrDeviceByIndex =
             idx -> String.format("%s[%s]", xpathStrDevicesList, idx);
 
-    private static final Function<String, String> xpathStrUserProfileNameByValue = value -> String.format(
-        "//*[@name='%s' and @visible='true']", value);
+    private static final Function<String, String> xpathStrUserProfileNameByValue = value ->
+            String.format("//*[@name='%s']", value);
 
     private static final By xpathVerifiedShield = MobileBy.AccessibilityId("VerifiedShield");
 
@@ -143,7 +145,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
         if (conversationMenuButton.isPresent()) {
             conversationMenuButton.get().click();
         } else {
-            getElement(nameOtherUserConversationMenu).click();
+            getElement(fbNameOtherUserConversationMenu).click();
         }
     }
 

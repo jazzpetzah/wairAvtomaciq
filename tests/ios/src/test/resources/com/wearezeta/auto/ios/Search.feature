@@ -21,6 +21,7 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
 
@@ -74,6 +75,7 @@ Feature: Search
     Given I see conversations list
     Given I wait until <UnconnectedUser> exists in backend search results
     When I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <UnconnectedUser>
     And I tap on conversation <UnconnectedUser> in search result
     And I tap Connect button on Pending outgoing connection page
@@ -148,6 +150,7 @@ Feature: Search
     Given I see conversations list
     Given I wait until <Contact> exists in backend search results
     When I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Call action button on People picker page
@@ -204,6 +207,7 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     When I tap on conversation <Contact> in search result
     Then I see Open conversation action button on People picker page
@@ -305,6 +309,7 @@ Feature: Search
     And I tap on 1st top connection contact
     And I do not see Open conversation action button on People picker page
     And I see Invite more people button
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I do not see Invite more people button

@@ -79,7 +79,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbXpathLastImageCell = FBBy.FBXPath(String.format("(%s)[1]", xpathStrImageCells));
 
     private static final By fbXpathMediaContainerCell =
-            FBBy.FBXPath(xpathStrAllTextMessages + "[contains(@value, '://')]/following-sibling::XCUIElementTypeButton");
+            FBBy.FBXPath(xpathStrAllTextMessages + "[contains(@value, '://')]/following::XCUIElementTypeButton");
 
     private static final By xpathGiphyImage = By
             .xpath(xpathStrAllTextMessages + "[@name='via giphy.com']/following::XCUIElementTypeCell[@name='ImageCell']");
@@ -100,7 +100,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameGifButton = MobileBy.AccessibilityId("gifButton");
 
     public static final Function<String, String> xpathStrMissedCallButtonByContact = name -> String.format(
-            "//XCUIElementTypeCell[.//*[@name='%s CALLED']]/XCUIElementTypeButton[@name='ConversationMissedCallButton']",
+            "//XCUIElementTypeCell[.//*[@name='%s CALLED']]//XCUIElementTypeButton[@name='ConversationMissedCallButton']",
             name.toUpperCase());
 
     public static final By xpathStrMissedCallButtonByYourself =
@@ -139,7 +139,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By xpathAudioCallButton = MobileBy.AccessibilityId("audioCallBarButton");
     private static final By xpathVideoCallButton = MobileBy.AccessibilityId("videoCallBarButton");
     private static final By xpathConversationDetailsButton = By.xpath(xpathStrConversationViewTopBar +
-            "/XCUIElementTypeButton[@name='Back']/following-sibling::" +
+            "/XCUIElementTypeButton[@name='Back']/following::" +
             "XCUIElementTypeButton[not(@name='ConversationBackButton') and boolean(string(@label))]");
 
     private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("Too many people to call");
@@ -221,7 +221,8 @@ public class ConversationViewPage extends IOSPage {
             String.format("//XCUIElementTypeActionSheet//XCUIElementTypeButton[@name='%s']", name);
 
     private static final Function<String, String> xpathStrDeleteOnLabelForUser = name ->
-            String.format("//XCUIElementTypeCell[@name='%s']//XCUIElementTypeStaticText[starts-with(@label, 'Deleted on')]",
+            String.format(
+                    "//XCUIElementTypeCell[@name='%s']//XCUIElementTypeStaticText[starts-with(@label, 'Deleted on')]",
                     name.toUpperCase());
 
     private static final By nameUndoEdit = MobileBy.AccessibilityId("undoButton");

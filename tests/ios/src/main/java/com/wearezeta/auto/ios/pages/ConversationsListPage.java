@@ -33,7 +33,7 @@ public class ConversationsListPage extends IOSPage {
     private static final Function<Integer, String> xpathStrConvoListEntryByIdx = idx ->
             String.format("%s[%s]", xpathStrContactListItems, idx);
     private static final Function<String, String> xpathStrFirstConversationEntryByName = name ->
-            String.format("%s[1]/XCUIElementTypeStaticText[@value='%s']", xpathStrContactListItems, name);
+            String.format("%s[1]//XCUIElementTypeStaticText[@value='%s']", xpathStrContactListItems, name);
 
     private static final String strNameContactsButton = "bottomBarContactsButton";
 
@@ -43,7 +43,7 @@ public class ConversationsListPage extends IOSPage {
             String.format("//XCUIElementTypeButton[@name='%s' and @label='CONTACTS']", strNameContactsButton));
 
     private static final By xpathPendingRequest =
-            By.xpath("//XCUIElementTypeCell[contains(@name,' waiting')]/XCUIElementTypeStaticText[1]");
+            By.xpath("//XCUIElementTypeCell[contains(@name,' waiting')]//XCUIElementTypeStaticText");
 
     private static final By nameMuteCallButton = MobileBy.AccessibilityId("MuteVoiceButton");
 
@@ -53,13 +53,13 @@ public class ConversationsListPage extends IOSPage {
 
 
     private static final Function<String, String> xpathStrContactListPlayPauseButtonByConvoName = name ->
-            String.format("//XCUIElementTypeCell[@name='%s']///XCUIElementTypeButton[@name='mediaCellButton']", name);
+            String.format("//XCUIElementTypeCell[@name='%s']//XCUIElementTypeButton[@name='mediaCellButton']", name);
 
     private static final Function<String, String> xpathStrSelectedConversationEntryByName = name ->
             String.format("%s/XCUIElementTypeCell[@name='%s']", xpathStrContactListRoot, name);
 
     private static final Function<String, String> xpathStrActionMenuByConversationName = name ->
-            String.format("//XCUIElementTypeStaticText[@name='%s' and @visible='true']", name.toUpperCase());
+            String.format("//XCUIElementTypeStaticText[@name='%s']", name.toUpperCase());
 
     private static final By nameEmptyConversationsListMessage = MobileBy.AccessibilityId(
             "NO ACTIVE CONVERSATIONS TAP CONTACTS TO START A CONVERSATION");

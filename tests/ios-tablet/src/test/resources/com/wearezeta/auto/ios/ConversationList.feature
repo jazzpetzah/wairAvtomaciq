@@ -342,6 +342,7 @@ Feature: Conversation List
     And I select Also Leave option on Delete conversation confirmation
     And I confirm delete conversation content
     And I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
@@ -389,6 +390,7 @@ Feature: Conversation List
     And I do not see Archive button at the bottom of conversations list
     And I wait until <Contact> exists in backend search results
     And I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
 

@@ -19,7 +19,7 @@ public class SettingsPage extends IOSPage {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private static final Function<String, String> xpathStrMenuItemByName = name ->
-            String.format("//XCUIElementTypeCell[./XCUIElementTypeStaticText[@name='%s']]", name);
+            String.format("//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[@name='%s'] ]", name);
 
     public static final By xpathSettingsPage = By.xpath("//XCUIElementTypeNavigationBar[@name='Settings']");
 
@@ -45,11 +45,11 @@ public class SettingsPage extends IOSPage {
 
     private static final FunctionFor2Parameters<String, String, String> xpathStrDeviceVerificationLabel =
             (deviceName, verificationLabel) -> String.format(
-                    "//XCUIElementTypeCell[@name='%s']/XCUIElementTypeStaticText[@name='%s']",
+                    "//XCUIElementTypeCell[@name='%s']//XCUIElementTypeStaticText[@name='%s']",
                     deviceName, verificationLabel);
 
     private static final String xpathStrCurrentDevice = "(" + xpathStrMainWindow +
-            "//XCUIElementTypeTable)[1]/XCUIElementTypeCell[1]";
+            "//XCUIElementTypeTable)[1]/XCUIElementTypeCell";
     private static final By xpathCurrentDevices = By.xpath(xpathStrCurrentDevice);
 
     private static final By xpathChangePasswordPageChangePasswordButton =
@@ -57,7 +57,7 @@ public class SettingsPage extends IOSPage {
 
     private static final By xpathAskSupport = By.xpath("//*[@name='Ask Support']");
 
-    private static final String xpathStrColorPicker = "//*[@name='COLOR']/following-sibling::XCUIElementTypeTable";
+    private static final String xpathStrColorPicker = "//*[@name='COLOR']/following::XCUIElementTypeTable";
     private static final By xpathColorPicker = By.xpath(xpathStrColorPicker);
 
     // indexation starts from 1

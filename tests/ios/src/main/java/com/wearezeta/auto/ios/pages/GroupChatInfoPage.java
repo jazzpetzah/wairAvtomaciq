@@ -42,14 +42,14 @@ public class GroupChatInfoPage extends IOSPage {
     private static final Function<String, String> xpathStrUserNameLabelByText = text ->
             String.format("//XCUIElementTypeCollectionView[preceding-sibling::" +
                     "XCUIElementTypeTextView[@name='ParticipantsView_GroupName']]" +
-                    "/XCUIElementTypeCell/XCUIElementTypeStaticText[last() and @name='%s']", text);
+                    "/XCUIElementTypeCell//XCUIElementTypeStaticText[@name='%s']", text);
 
     private static final Function<Integer, String> nameStrNumberPeopleByCount =
             count -> String.format("%s PEOPLE", count);
 
     private static final Function<String, String> xpathPeopleViewCollectionCellByName = name ->
-            String.format("//XCUIElementTypeButton[@name='metaControllerCancelButton']/following-sibling::" +
-                    "XCUIElementTypeCollectionView/XCUIElementTypeCell/XCUIElementTypeStaticText[@name='%s']",
+            String.format("//XCUIElementTypeButton[@name='metaControllerCancelButton']/following::" +
+                    "XCUIElementTypeCollectionView/XCUIElementTypeCell//XCUIElementTypeStaticText[@name='%s']",
                     name.toUpperCase());
 
     private static final By classNameParticipantAvatarCell = By.className("XCUIElementTypeCell");

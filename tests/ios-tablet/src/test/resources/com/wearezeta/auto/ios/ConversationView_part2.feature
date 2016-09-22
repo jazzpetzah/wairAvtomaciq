@@ -310,6 +310,7 @@ Feature: Conversation View
     Then I do not see conversation <Contact1> in conversations list
     When I wait until <Contact1> exists in backend search results
     And I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page

@@ -56,9 +56,9 @@ public abstract class IOSPage extends BasePage {
 
     protected static final By nameBackToWireBrowserButton = MobileBy.AccessibilityId("Back to Wire");
 
-    protected static final By xpathConfirmButton = By.xpath("//XCUIElementTypeButton[@name='OK' and @visible='true']");
+    protected static final By xpathConfirmButton = By.xpath("//XCUIElementTypeButton[@name='OK'']");
 
-    protected static final By xpathCancelButton = By.xpath("//XCUIElementTypeButton[@name='Cancel' and @visible='true']");
+    protected static final By xpathCancelButton = By.xpath("//XCUIElementTypeButton[@name='Cancel']");
 
     private static final By nameDoneButton = MobileBy.AccessibilityId("Done");
 
@@ -449,9 +449,12 @@ public abstract class IOSPage extends BasePage {
                 return true;
             } else if (getDriver().getCapabilities().is(ZetaIOSDriver.AUTO_ACCEPT_ALERTS_CAPABILITY_NAME)) {
                 acceptAlertIfVisible(ALERT_VISIBILITY_TIMEOUT_SECONDS);
-                return el.get().isDisplayed();
+                if (el.get().isDisplayed()) {
+                    return true;
+                }
             }
         }
+        this.printPageSource();
         return false;
     }
 

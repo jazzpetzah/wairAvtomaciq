@@ -44,8 +44,8 @@ public class PeoplePickerPage extends IOSPage {
     private static final By xpathInviteMorePeopleButton = By.xpath("//XCUIElementTypeButton[@name='INVITE MORE PEOPLE']");
 
     private static final Function<String, String> xpathStrInstantConnectButtonByUserName = name -> String.format(
-            "//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s'] ]/XCUIElementTypeButton[@name='instantPlusConnectButton']",
-            name);
+            "//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[@name='%s'] ]" +
+                    "//XCUIElementTypeButton[@name='instantPlusConnectButton']", name);
 
     private static final By nameLaterButton = MobileBy.AccessibilityId("MAYBE LATER");
 
@@ -56,14 +56,14 @@ public class PeoplePickerPage extends IOSPage {
     private static final By nameSendImageButton = MobileBy.AccessibilityId("actionBarCameraButton");
 
     private static final By xpathContactViewCloseButton =
-            By.xpath("//*[@name='ContactsViewCloseButton' and @visible='true']");
+            By.xpath("//*[@name='ContactsViewCloseButton']");
 
     private static final Function<String, String> xpathStrFoundContactByName =
-            name -> String.format("//*[@name='%s' and @visible='true']", name);
+            name -> String.format("//*[@name='%s']", name);
 
     private static final Function<Integer, String> xpathStrPeoplePickerTopConnectionsAvatarByIdx = idx ->
-            String.format("%s//XCUIElementTypeCollectionView/XCUIElementTypeCell/XCUIElementTypeCollectionView/XCUIElementTypeCell[%s]",
-                    xpathStrMainWindow, idx);
+            String.format("%s//XCUIElementTypeCollectionView/XCUIElementTypeCell" +
+                    "//XCUIElementTypeCollectionView/XCUIElementTypeCell[%s]", xpathStrMainWindow, idx);
 
     private static final Function<String, String> xpathStrPeoplePickerSelectedCellByName = name ->
             String.format("(%s//XCUIElementTypeTable)[1]/XCUIElementTypeCell[@name='%s']", xpathStrMainWindow, name);
@@ -73,7 +73,7 @@ public class PeoplePickerPage extends IOSPage {
                     "XCUIElementTypeCell[%d]/XCUIElementTypeStaticText[last()]", xpathStrMainWindow, idx);
 
     private static final Function<String, String> xpathStrFirstSearchResultEntryByName = name ->
-            String.format("%s//XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeStaticText[@name='%s']",
+            String.format("%s//XCUIElementTypeCollectionView/XCUIElementTypeCell//XCUIElementTypeStaticText[@name='%s']",
                     xpathStrMainWindow, name);
 
     private static final By nameNoResults = MobileBy.AccessibilityId("No results.");
