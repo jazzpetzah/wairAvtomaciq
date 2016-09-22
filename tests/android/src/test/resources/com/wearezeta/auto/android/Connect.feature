@@ -424,7 +424,7 @@ Feature: Connect
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap on text input
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     And User <Name> blocks user <Contact>
     And User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     And User <Contact> sends encrypted message to user <Name>

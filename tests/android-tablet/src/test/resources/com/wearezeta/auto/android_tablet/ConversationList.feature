@@ -123,7 +123,7 @@ Feature: Conversation List
     And I tap the conversation <Contact>
     And I tap on text input
     When I type the message "<SoundCloudLink>" in the conversation view
-    And I send the typed message in the conversation view
+    And I send the typed message by cursor Send button in the conversation view
     And I scroll to the bottom of the conversation view
     And I tap Play button in the conversation view
     And I swipe right to show the conversations list
@@ -144,7 +144,7 @@ Feature: Conversation List
     And I tap the conversation <Contact>
     And I tap on text input
     When I type the message "<SoundCloudLink>" in the conversation view
-    And I send the typed message in the conversation view
+    And I send the typed message by cursor Send button in the conversation view
     And I scroll to the bottom of the conversation view
     And I tap Play button in the conversation view
     Then I see Play button next to the conversation name <Contact>

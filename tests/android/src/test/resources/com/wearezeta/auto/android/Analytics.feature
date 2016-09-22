@@ -41,7 +41,7 @@ Feature: Analytics
     Then I verify that <LogType> log contains string "media.sent_audio_message"
     And I verify that <LogType> log contains string "ACTION=audio"
     # Text message
-    When I type the message "<Message>" and send it
+    When I type the message "<Message>" and send it by cursor Send button
     Then I verify that <LogType> log contains string "media.completed_media_action"
     And I verify that <LogType> log contains string "ACTION=text"
     # Ping

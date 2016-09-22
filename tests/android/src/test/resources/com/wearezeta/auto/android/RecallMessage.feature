@@ -41,7 +41,7 @@ Feature: Recall Message
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
-    When I type the message "<Text>" and send it
+    When I type the message "<Text>" and send it by cursor Send button
     And I remember the state of the recent message from user <Contact> in the local database
     And I long tap the Text message "<Text>" in the conversation view
     And I tap Delete for everyone button on the message bottom menu
@@ -144,7 +144,7 @@ Feature: Recall Message
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
-    When I type the message "<Link>" and send it
+    When I type the message "<Link>" and send it by cursor Send button
     And I long tap Link Preview container in the conversation view
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I tap Delete for everyone button on the message bottom menu
@@ -306,7 +306,7 @@ Feature: Recall Message
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <GroupChatName>
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     And <Contact1> removes Myself from group <GroupChatName>
     And I tap the Text message "<Message>" in the conversation view
     # C226046
@@ -329,7 +329,7 @@ Feature: Recall Message
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     # Youtube
-    When I type the message "<YoutubeLink>" and send it
+    When I type the message "<YoutubeLink>" and send it by cursor Send button
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I long tap Youtube container in the conversation view
     And I tap Delete for everyone button on the message bottom menu
@@ -337,7 +337,7 @@ Feature: Recall Message
     Then I do not see Youtube container in the conversation view
     And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
     # Soundcloud
-    When I type the message "<SoundCloudLink>" and send it
+    When I type the message "<SoundCloudLink>" and send it by cursor Send button
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I long tap Soundcloud container in the conversation view
     And I tap Delete for everyone button on the message bottom menu
@@ -404,7 +404,7 @@ Feature: Recall Message
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     And I see the message "<Message>" in the conversation view
     And User <Contact1> remembers the recent message from user Myself via device <ContactDevice>
     And I enable Airplane mode on the device

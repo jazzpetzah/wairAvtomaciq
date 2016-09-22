@@ -59,6 +59,7 @@ public class ConversationViewPage extends AndroidPage {
 
     //region Conversation Cursor locators
     public static final String idStrCursorEditText = "cet__cursor";
+    public static final By idCursorSendButton = By.id("cursor_button_send");
     private static final By idCursorCamera = By.id("cursor_menu_item_camera");
     private static final By idCursorPing = By.id("cursor_menu_item_ping");
     private static final By idCursorMore = By.id("cursor_menu_item_more");
@@ -345,7 +346,7 @@ public class ConversationViewPage extends AndroidPage {
         getElement(idCursorEditText).click();
     }
 
-    public void typeAndSendMessage(String message, boolean hideKeyboard) throws Exception {
+    public void typeAndSendMessage(String message, String sendFrom, boolean hideKeyboard) throws Exception {
         final WebElement cursorInput = getElement(idCursorEditText);
         final int maxTries = 5;
         int ntry = 0;
@@ -363,7 +364,17 @@ public class ConversationViewPage extends AndroidPage {
                             "test.",
                     message));
         }
-        pressKeyboardSendButton();
+
+        switch(sendFrom.toLowerCase()) {
+            case "keyboard":
+                pressKeyboardSendButton();
+                break;
+            case "cursor":
+                getElement(idCursorSendButton).click();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify the send button type '%s'", sendFrom));
+        }
         if (hideKeyboard) {
             this.hideKeyboard();
         }

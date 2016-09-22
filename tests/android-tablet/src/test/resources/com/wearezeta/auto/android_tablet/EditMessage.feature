@@ -32,7 +32,7 @@ Feature: Edit message
     Given I see Conversations list with conversations
     When I tap the conversation <GroupChatName>
     And I type the message "<Message>" in the Conversation view
-    And I send the typed message in the Conversation view
+    And I send the typed message by cursor Send button in the Conversation view
     And User <Contact1> remembers the recent message from group conversation <GroupChatName> via device <ContactDevice>
     And I long tap the Text message "<Message>" in the conversation view
     And I tap Edit button on the message bottom menu
@@ -74,7 +74,7 @@ Feature: Edit message
     Given I see Conversations list with conversations
     Given I tap the conversation <Contact1>
     And I type the message "<Message>" in the Conversation view
-    And I send the typed message in the Conversation view
+    And I send the typed message by cursor Send button in the Conversation view
     And I long tap the Text message "<Message>" in the conversation view
     And I tap Edit button on the message bottom menu
     And I see edit message toolbar
