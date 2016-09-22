@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Optional;
 import java.util.concurrent.*;
@@ -9,10 +8,8 @@ import java.util.function.Function;
 
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.driver.*;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.DragArguments;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
@@ -494,27 +491,6 @@ public abstract class IOSPage extends BasePage {
 
     public void tapConfirmButton() throws Exception {
         getElement(xpathConfirmButton).click();
-    }
-
-    /**
-     * fixes taking tablet simulator screenshots via simshot
-     *
-     * @return Optinal screenshot image
-     * @throws Exception
-     */
-    @Override
-    public Optional<BufferedImage> takeScreenshot() throws Exception {
-        Optional<BufferedImage> result = super.takeScreenshot();
-        if (CommonUtils.getIsSimulatorFromConfig(getClass()) && result.isPresent()) {
-            final Dimension screenSize = getDriver().manage().window().getSize();
-            final double scaleX = 1.0 * result.get().getWidth() / screenSize.getWidth();
-            final double scaleY = 1.0 * result.get().getHeight() / screenSize.getHeight();
-            if (scaleX < 1 || scaleY < 1) {
-                final double scale = (scaleX > scaleY) ? scaleY : scaleX;
-                result = Optional.of(ImageUtil.resizeImage(result.get(), (float) (1.0 / scale)));
-            }
-        }
-        return result;
     }
 
     public void tapCancelButton() throws Exception {

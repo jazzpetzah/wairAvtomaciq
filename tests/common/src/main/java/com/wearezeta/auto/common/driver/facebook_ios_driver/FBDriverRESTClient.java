@@ -284,4 +284,9 @@ final class FBDriverRESTClient {
         body.put("duration", dragArguments.getDurationSeconds());
         return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
+
+    public JSONObject getScreenshot(String sessionId) throws RESTError {
+        final Builder webResource = buildDefaultRequest("screenshot", sessionId);
+        return waitForResponse(() -> restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK}));
+    }
 }

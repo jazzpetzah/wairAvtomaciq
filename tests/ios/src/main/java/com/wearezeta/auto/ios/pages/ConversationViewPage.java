@@ -51,12 +51,12 @@ public class ConversationViewPage extends IOSPage {
     /**
      * !!! The actual message order in DOM is reversed relatively to the messages order in the conversation view
      */
-    private static final String xpathStrAllEntries = xpathStrMainWindow + "//XCUIElementTypeTable/XCUIElementTypeCell";
+    private static final String xpathStrAllEntries = "//XCUIElementTypeTable/XCUIElementTypeCell";
     private static final By xpathAllEntries = By.xpath(xpathStrAllEntries);
     private static final By xpathFirstEntry = By.xpath(xpathStrAllEntries + "[1]");
 
     private static final String xpathStrAllTextMessages = xpathStrAllEntries +
-            "/XCUIElementTypeTextView[boolean(string(@value))]";
+            "//XCUIElementTypeTextView[boolean(string(@value))]";
     private static final By xpathAllTextMessages = By.xpath(xpathStrAllTextMessages);
 
     private static final Function<String, String> xpathStrLastMessageByTextPart = text ->
@@ -79,10 +79,11 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbXpathLastImageCell = FBBy.xpath(String.format("(%s)[1]", xpathStrImageCells));
 
     private static final By fbXpathMediaContainerCell =
-            FBBy.xpath(xpathStrAllTextMessages + "[contains(@value, '://')]/following::XCUIElementTypeButton");
+            FBBy.xpath("//XCUIElementTypeTextView[contains(@value, '://')]/following-sibling::XCUIElementTypeButton");
 
-    private static final By xpathGiphyImage = By
-            .xpath(xpathStrAllTextMessages + "[@name='via giphy.com']/following::XCUIElementTypeCell[@name='ImageCell']");
+    private static final By xpathGiphyImage =
+            By.xpath("//XCUIElementTypeCell[ .//*[contains(@value, 'via giphy.com')] ]" +
+                    "/following-sibling::XCUIElementTypeCell[@name='ImageCell']");
 
     private static final By xpathLastMessageResendButton =
             By.xpath(xpathStrAllTextMessages + "[1]/ancestor::*/XCUIElementTypeOther");

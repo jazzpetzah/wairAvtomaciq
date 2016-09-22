@@ -1,6 +1,5 @@
 package com.wearezeta.auto.common.driver;
 
-import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -8,12 +7,9 @@ import java.util.concurrent.*;
 import java.util.concurrent.TimeoutException;
 
 import com.google.common.collect.ImmutableMap;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rest.RESTError;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
@@ -31,6 +27,9 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     public static final long MAX_SESSION_INIT_DURATION_MILLIS = 200000;
 
     public static final String AUTO_ACCEPT_ALERTS_CAPABILITY_NAME = "autoAcceptAlerts";
+    public static final String AUTOMATION_NAME_CAPABILITY_NAME = "automationName";
+    public static final String AUTOMATION_MODE_XCUITEST = "XCUITest";
+
 
     private static final Logger log = ZetaLogger.getLog(ZetaIOSDriver.class.getSimpleName());
 
@@ -43,41 +42,19 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     }
 
     public boolean isXCUIModeEnabled() {
-        final Capabilities caps = this.getCapabilities();
-        return caps.is("automationName") && caps.getCapability("automationName").equals("XCUITest");
+        final Object dstCap = this.getCapabilities().getCapability(AUTOMATION_NAME_CAPABILITY_NAME);
+        return (dstCap != null) && (dstCap instanceof String) && dstCap.equals(AUTOMATION_MODE_XCUITEST);
     }
 
     @Override
     public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException {
         try {
-            if (CommonUtils.getIsSimulatorFromConfig(this.getClass()) && !isXCUIModeEnabled()) {
-                final Object result = takeFullScreenShot();
-                final String base64EncodedPng = new String((byte[]) result);
-                return outputType.convertFromBase64Png(base64EncodedPng);
-            }
-        } catch (Exception e) {
+            final String base64EncodedPng = fbDriverAPI.getScreenshot();
+            return outputType.convertFromBase64Png(base64EncodedPng);
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
-        return super.getScreenshotAs(outputType);
     }
-
-    private byte[] takeFullScreenShot() throws Exception {
-        File result = File.createTempFile("tmp", ".png", null);
-        byte[] output;
-        try {
-            CommonUtils.executeUIShellScript(
-                    new String[]{
-                            String.format("%s/simshot \"%s\"", CommonUtils.getIOSToolsRoot(CommonUtils.class),
-                                    result.getCanonicalPath())
-                    }).get(CommonUtils.SCREENSHOT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-            output = Base64.encodeBase64(FileUtils.readFileToByteArray(result));
-        } finally {
-            //noinspection ResultOfMethodCallIgnored
-            result.delete();
-        }
-        return output;
-    }
-
 
     @Override
     public boolean isSessionLost() {
@@ -280,6 +257,38 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
             return fbDriverAPI.getAlertText();
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
+        }
+    }
+
+    @Override
+    public Options manage() {
+        return new ZetaRemoteWebDriverOptions();
+    }
+
+    private static final By STANDARD_WINDOW = By.className("XCUIElementTypeWindow");
+
+    protected class ZetaRemoteWebDriverOptions extends RemoteWebDriverOptions {
+        @Override
+        public WebDriver.Window window() {
+            return new ZetaRemoteWindow(findElement(STANDARD_WINDOW));
+        }
+
+        protected class ZetaRemoteWindow extends RemoteWindow {
+            private WebElement window;
+
+            public ZetaRemoteWindow(WebElement window) {
+                this.window = window;
+            }
+
+            @Override
+            public Dimension getSize() {
+                return this.window.getSize();
+            }
+
+            @Override
+            public Point getPosition() {
+                return this.window.getLocation();
+            }
         }
     }
 }

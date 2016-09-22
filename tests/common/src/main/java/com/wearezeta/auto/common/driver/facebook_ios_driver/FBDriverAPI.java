@@ -261,4 +261,8 @@ public class FBDriverAPI {
     public void dragFromToForDuration(String uuid, DragArguments dragArguments) throws RESTError, StatusNotZeroError {
         parseResponseWithStatus(client.dragFromToForDuration(getSessionId(), uuid, dragArguments));
     }
+
+    public String getScreenshot() throws RESTError, StatusNotZeroError {
+        return parseResponseWithStatus(client.getScreenshot(getSessionId()));
+    }
 }

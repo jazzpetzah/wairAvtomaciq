@@ -108,7 +108,8 @@ public class CommonIOSSteps {
         capabilities.setCapability("nativeInstrumentsLib", isUseNativeInstrumentsEnabled());
         capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
-        capabilities.setCapability("automationName", "XCUITest");
+        capabilities.setCapability(ZetaIOSDriver.AUTOMATION_NAME_CAPABILITY_NAME,
+                ZetaIOSDriver.AUTOMATION_MODE_XCUITEST);
         capabilities.setCapability("app", ipaPath);
         capabilities.setCapability("fullReset", true);
         capabilities.setCapability("appName", getAppName());
