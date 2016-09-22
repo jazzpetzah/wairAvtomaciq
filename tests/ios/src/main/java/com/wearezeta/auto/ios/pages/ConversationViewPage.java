@@ -819,7 +819,7 @@ public class ConversationViewPage extends IOSPage {
         if (button.equals(namePlayAudioRecorderButton)) {
             getElement(button).click();
         } else {
-            clickElementWithRetryIfStillDisplayed(button);
+            tapElementWithRetryIfStillDisplayed(button);
         }
     }
 

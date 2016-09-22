@@ -203,7 +203,7 @@ public class PeoplePickerPage extends IOSPage {
 
     public void pressInstantConnectButton(String forName) throws Exception {
         final By locator = By.xpath(xpathStrInstantConnectButtonByUserName.apply(forName));
-        clickElementWithRetryIfStillDisplayed(locator);
+        tapElementWithRetryIfStillDisplayed(locator);
     }
 
     public void tapNumberOfTopConnectionsButNotUser(int numberToTap, String contact) throws Exception {

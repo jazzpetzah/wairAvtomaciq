@@ -283,18 +283,29 @@ public abstract class IOSPage extends BasePage {
         this.longTapAt(el, 50, 50);
     }
 
+    protected void longClickAt(WebElement el, int percentX, int percentY) throws Exception {
+        if (!CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            throw new IllegalStateException("This method works for iOS Simulator only");
+        }
+        final Dimension elSize = el.getSize();
+        final Point elLocation = el.getLocation();
+        final Dimension windowSize = getDriver().manage().window().getSize();
+        IOSSimulatorHelper.clickAt(
+                String.format("%.2f", (elLocation.x + elSize.width / 2) * 1.0 / windowSize.width),
+                String.format("%.2f", (elLocation.y + elSize.height / 2) * 1.0 / windowSize.height),
+                String.format("%.3f", DriverUtils.LONG_TAP_DURATION / 1000.0));
+    }
+
+    protected void longClickAt(WebElement el) throws Exception {
+        this.longClickAt(el, 50, 50);
+    }
+
     protected void longTapAt(FBElement el, int percentX, int percentY) throws Exception {
         final Dimension size = el.getSize();
         final double x = size.getWidth() * percentX / 100;
         final double y = size.getHeight() * percentY / 100;
         el.dragFromToForDuration(new DragArguments(x, y, x, y, DriverUtils.LONG_TAP_DURATION * 1.0 / 1000));
-//        final Dimension elSize = el.getSize();
-//        final Point elLocation = el.getLocation();
-//        final Dimension windowSize = getDriver().manage().window().getSize();
-//        IOSSimulatorHelper.clickAt(
-//                String.format("%.2f", (elLocation.x + elSize.width / 2) * 1.0 / windowSize.width),
-//                String.format("%.2f", (elLocation.y + elSize.height / 2) * 1.0 / windowSize.height),
-//                String.format("%.3f", DriverUtils.LONG_TAP_DURATION / 1000.0));
+
     }
 
     public void rotateScreen(ScreenOrientation orientation) throws Exception {
@@ -359,7 +370,7 @@ public abstract class IOSPage extends BasePage {
         return Executors.newSingleThreadExecutor().submit(callable);
     }
 
-    public void clickElementWithRetryIfStillDisplayed(By locator, int retryCount) throws Exception {
+    public void tapElementWithRetryIfStillDisplayed(By locator, int retryCount) throws Exception {
         WebElement el = getElement(locator);
         int counter = 0;
         do {
@@ -372,11 +383,11 @@ public abstract class IOSPage extends BasePage {
         throw new IllegalStateException(String.format("Locator %s is still displayed", locator));
     }
 
-    public void clickElementWithRetryIfStillDisplayed(By locator) throws Exception {
-        clickElementWithRetryIfStillDisplayed(locator, DEFAULT_RETRY_COUNT);
+    public void tapElementWithRetryIfStillDisplayed(By locator) throws Exception {
+        tapElementWithRetryIfStillDisplayed(locator, DEFAULT_RETRY_COUNT);
     }
 
-    public void clickElementWithRetryIfNextElementNotAppears(By locator, By nextLocator, int retryCount)
+    public void tapElementWithRetryIfNextElementNotAppears(By locator, By nextLocator, int retryCount)
             throws Exception {
         WebElement el = getElement(locator);
         int counter = 0;
@@ -390,8 +401,8 @@ public abstract class IOSPage extends BasePage {
         throw new IllegalStateException(String.format("Locator %s did't appear", nextLocator));
     }
 
-    public void clickElementWithRetryIfNextElementAppears(By locator, By nextLocator) throws Exception {
-        clickElementWithRetryIfNextElementNotAppears(locator, nextLocator, DEFAULT_RETRY_COUNT);
+    public void tapElementWithRetryIfNextElementAppears(By locator, By nextLocator) throws Exception {
+        tapElementWithRetryIfNextElementNotAppears(locator, nextLocator, DEFAULT_RETRY_COUNT);
     }
 
     private static final int ALERT_VISIBILITY_TIMEOUT_SECONDS = 2;

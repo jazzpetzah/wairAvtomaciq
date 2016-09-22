@@ -128,7 +128,9 @@ public class ConversationsListPage extends IOSPage {
         );
         final Dimension elSize = dstElement.getSize();
         final double y = elSize.getHeight() * 8 / 9;
-        dstElement.dragFromToForDuration(new DragArguments(elSize.getWidth() / 10, y, elSize.getWidth() * 3 / 4, y, 1));
+        dstElement.dragFromToForDuration(
+                new DragArguments(elSize.getWidth() / 10, y, elSize.getWidth() * 3 / 4, y, 1)
+        );
     }
 
     public void swipeRightConversationToRevealActionButtons(String conversation) throws Exception {
@@ -260,7 +262,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public void openArchivedConversations() throws Exception {
-        clickElementWithRetryIfStillDisplayed(nameOpenArchiveButton);
+        tapElementWithRetryIfStillDisplayed(nameOpenArchiveButton);
     }
 
     public boolean isArchiveButtonVisible() throws Exception {

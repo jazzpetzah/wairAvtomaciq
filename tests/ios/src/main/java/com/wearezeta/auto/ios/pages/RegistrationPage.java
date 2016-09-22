@@ -83,7 +83,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void clickAgreeButton() throws Exception {
-        clickElementWithRetryIfStillDisplayed(nameAgreeButton);
+        tapElementWithRetryIfStillDisplayed(nameAgreeButton);
     }
 
     private void selectWirestan() throws Exception {
@@ -208,7 +208,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void tapChooseOwnPicButton() throws Exception {
-        clickElementWithRetryIfNextElementAppears(nameChooseOwnPictureButton, nameChoosePhotoButton);
+        tapElementWithRetryIfNextElementAppears(nameChooseOwnPictureButton, nameChoosePhotoButton);
     }
 
     public void tapChoosePhotoButton() throws Exception {

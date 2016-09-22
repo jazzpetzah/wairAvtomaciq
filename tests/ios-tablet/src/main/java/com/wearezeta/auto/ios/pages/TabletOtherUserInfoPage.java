@@ -35,7 +35,7 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
     }
 
     public void removeFromConversationOniPad() throws Exception {
-        clickElementWithRetryIfStillDisplayed(nameOtherUserMetaControllerRightButtonIPadPopover);
+        tapElementWithRetryIfStillDisplayed(nameOtherUserMetaControllerRightButtonIPadPopover);
     }
 
     public boolean isConnectButtonVisible() throws Exception {
