@@ -49,7 +49,7 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap on text input
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     Then I see the message "<Message>" in the conversation view
 
     Examples:
@@ -129,7 +129,7 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <GroupChatName>
     And I tap on text input
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     Then I see the message "<Message>" in the conversation view
 
     Examples:
@@ -145,7 +145,7 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap on text input
-    And I type the message "LONG_MESSAGE" and send it
+    And I type the message "LONG_MESSAGE" and send it by cursor Send button
     Then I see the message "LONG_MESSAGE" in the conversation view
 
     Examples:

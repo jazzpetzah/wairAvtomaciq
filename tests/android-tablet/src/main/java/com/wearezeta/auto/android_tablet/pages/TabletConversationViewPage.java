@@ -58,8 +58,17 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getConversationViewPage().typeMessage(message);
     }
 
-    public void sendMessage() throws Exception {
-        getDriver().tapSendButton();
+    public void sendMessage(String sendFrom) throws Exception {
+        switch (sendFrom.toLowerCase()) {
+            case "keyboard":
+                getDriver().tapSendButton();
+                break;
+            case "cursor":
+                getElement(ConversationViewPage.idCursorSendButton).click();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify send button type '%s'", sendFrom));
+        }
     }
 
     public boolean waitUntilMessageIsVisible(String expectedMessage) throws Exception {

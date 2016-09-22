@@ -41,7 +41,7 @@ Feature: Offline Mode
     When I enable Airplane mode on the device
     And I tap on text input
     And I type the message "<Message>" in the conversation view
-    And I send the typed message in the conversation view
+    And I send the typed message by cursor Send button in the conversation view
     Then I see the message "<Message>" in the conversation view
     And I see Message status with expected text "Sending failed. Resend" in conversation view
     When I hide keyboard

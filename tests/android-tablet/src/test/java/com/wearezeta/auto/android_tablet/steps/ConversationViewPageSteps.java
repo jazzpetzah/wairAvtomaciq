@@ -167,12 +167,13 @@ public class ConversationViewPageSteps {
     /**
      * Tap Enter to send the typed message into the conversation
      *
+     * @param sendFrom identify send button type
      * @throws Exception
-     * @step. ^I send the typed message in (?:the |\\s*)[Cc]onversation view$
+     * @step. ^I send the typed message by (keyboard|cursor) Send button in (?:the |\s*)[Cc]onversation view$
      */
-    @And("^I send the typed message in (?:the |\\s*)[Cc]onversation view$")
-    public void ISendMessage() throws Exception {
-        getConversationViewPage().sendMessage();
+    @And("^I send the typed message by (keyboard|cursor) Send button in (?:the |\\s*)[Cc]onversation view$")
+    public void ISendMessage(String sendFrom) throws Exception {
+        getConversationViewPage().sendMessage(sendFrom);
     }
 
     /**
