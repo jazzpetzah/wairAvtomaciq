@@ -90,7 +90,6 @@ Feature: Like
     Then I see link <LinkInPreview> in link preview message
     And I do not see likes below the last message
     When I click to like the last message without other likes
-    And I wait for 3 seconds
     And I do not see likes below the last message
     Then I see the last message is only liked by me
     When I click to unlike the last message without other likes
