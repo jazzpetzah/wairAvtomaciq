@@ -78,7 +78,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | ChatName | Message1 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GC1      | like me  |
 
-  @C226427 @staging
+  @C226427 @staging @torun
   Scenario Outline: Verify liking someone's link preview in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -87,12 +87,15 @@ Feature: Like
     Given I am signed in properly
     When I open conversation with <Contact>
     And Contact <Contact> sends message <Link> via device Device1 to user me
+    And I wait for 3 seconds
     Then I see link <LinkInPreview> in link preview message
     And I do not see likes below the last message
     When I click to like the last message without other likes
     And I wait for 5 seconds
-    And I see likes below the last message
-    And I fail the test
+    And I do not see likes below the last message
+    Then I see the last message is only liked by me
+    When I click to unlike the last message without other likes
+    Then I do not see likes below the last message
 
     Examples:
       | Login      | Password      | Name      | Contact   | Link     | LinkInPreview    |
@@ -400,7 +403,7 @@ Feature: Like
     Then I see text message <Message1>
     And I see 2 messages in conversation
     And I do not see likes below the last message
-    When I click context menu of the latest message
+    When I click context menu of the last message
     And I click to delete message for me in context menu
     And I click confirm to delete message for me
     Then I do not see text message <Message1>
@@ -456,7 +459,7 @@ Feature: Like
     And I see likes below the last message
     And I see the last message is liked by others and me
 # Edit
-    When I click context menu of the latest message
+    When I click context menu of the last message
     And I click to edit message in context menu
     And I delete 7 characters from the conversation input
     And I write message <EditedMessage>
@@ -591,7 +594,7 @@ Feature: Like
 # No likes
     And I do not see likes below the last message
 # Only liked by me
-    When I click context menu of the latest message
+    When I click context menu of the last message
     And I click like button in context menu for latest message
     And I do not see likes below the last message
     Then I see the last message is only liked by me
@@ -600,7 +603,7 @@ Feature: Like
     And I see likes below the last message
     And I see the last message is liked by others and me
 # Only liked by others
-    When I click context menu of the latest message
+    When I click context menu of the last message
     And I click unlike button in context menu for latest message
     Then I see likes below the last message
     And I see the last message is only liked by others
