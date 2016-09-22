@@ -32,6 +32,38 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Message1 |
       | user1Email | user1Password | user1Name | user2Name | like me  |
 
+  @C250829 @like @edit @staging
+  Scenario Outline: Verify I can edit and then like my message in 1:1
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact1>
+    And I write message <Message1>
+    Then I send message
+    And I see text message <Message1>
+    And I see 2 messages in conversation
+    When I press Up Arrow to edit message
+    And I delete 8 characters from the conversation input
+    And I write message <Message2>
+    And I send message
+    Then I do not see text message <Message1>
+    And I see text message <Message2>
+    And I see 2 messages in conversation
+    When I click to like the last message without other likes
+    Then I see the last message is only liked by me
+    When I open conversation with <Contact2>
+    And I see 1 messages in conversation
+    And I open conversation with <Contact1>
+    And I see text message <Message2>
+    And I see 2 messages in conversation
+    Then I see the last message is only liked by me
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | Message1 | Message2       |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | message1 | edited message |
+
   @C226472 @staging
   Scenario Outline: Verify you can like someone's message in group
     Given There are 6 users where <Name> is me
