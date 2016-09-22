@@ -151,7 +151,7 @@ Feature: Sign In
       | Name      | PhoneNumber      | Password   |
       | user1Name | user1PhoneNumber | aqa123456! |
 
-  @C246199 @staging
+  @C246199 @regression
   Scenario Outline: Verify you can sign by phone number on email signin page
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
