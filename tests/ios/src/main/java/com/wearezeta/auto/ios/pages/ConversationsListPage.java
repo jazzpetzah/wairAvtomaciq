@@ -8,6 +8,9 @@ import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DummyElement;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.DragArguments;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.ios.tools.FastLoginContainer;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
@@ -16,8 +19,6 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class ConversationsListPage extends IOSPage {
-    private static final int CONV_SWIPE_TIME = 500;
-
     private static final By nameSettingsGearButton = MobileBy.AccessibilityId("bottomBarSettingsButton");
 
     private static final By nameOpenArchiveButton = MobileBy.AccessibilityId("bottomBarArchivedButton");
@@ -27,13 +28,13 @@ public class ConversationsListPage extends IOSPage {
 
     protected static final String xpathStrContactListItems = xpathStrContactListRoot + "/XCUIElementTypeCell";
     private static final Function<String, String> xpathStrContactListItemByExpr = xpathExpr ->
-            String.format("%s/XCUIElementTypeStaticText[%s]", xpathStrContactListItems, xpathExpr);
+            String.format("%s//XCUIElementTypeStaticText[%s]", xpathStrContactListItems, xpathExpr);
     protected static final Function<String, String> xpathStrConvoListEntryByName = name ->
-            String.format("%s/XCUIElementTypeStaticText[@value='%s']/parent::*", xpathStrContactListItems, name);
+            String.format("%s[ .//XCUIElementTypeStaticText[@value='%s'] ]", xpathStrContactListItems, name);
     private static final Function<Integer, String> xpathStrConvoListEntryByIdx = idx ->
             String.format("%s[%s]", xpathStrContactListItems, idx);
     private static final Function<String, String> xpathStrFirstConversationEntryByName = name ->
-            String.format("%s[1]//XCUIElementTypeStaticText[@value='%s']", xpathStrContactListItems, name);
+            String.format("%s[1][ .//XCUIElementTypeStaticText[@value='%s'] ]", xpathStrContactListItems, name);
 
     private static final String strNameContactsButton = "bottomBarContactsButton";
 
@@ -47,7 +48,7 @@ public class ConversationsListPage extends IOSPage {
 
     private static final By nameMuteCallButton = MobileBy.AccessibilityId("MuteVoiceButton");
 
-    public static final By nameCancelActionButton = MobileBy.AccessibilityId("CANCEL");
+    // public static final By nameCancelActionButton = MobileBy.AccessibilityId("CANCEL");
 
     private static final By nameSendAnInviteButton = MobileBy.AccessibilityId("INVITE MORE PEOPLE");
 
@@ -104,7 +105,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     private Optional<WebElement> findNameInContactList(String name, int timeoutSeconds) throws Exception {
-        final By locator = By.xpath(xpathStrConvoListEntryByName.apply(name));
+        final By locator = FBBy.xpath(xpathStrConvoListEntryByName.apply(name));
         return getElementIfDisplayed(locator, timeoutSeconds);
     }
 
@@ -121,17 +122,17 @@ public class ConversationsListPage extends IOSPage {
         return findNameInContactList(name, timeoutSeconds).isPresent();
     }
 
-    public void swipeRightOnContact(String contact) throws Exception {
-        DriverUtils.swipeRight(this.getDriver(),
-                findNameInContactList(contact).orElseThrow(IllegalStateException::new), CONV_SWIPE_TIME, 90, 50);
+    public void swipeRightOnContact(String name) throws Exception {
+        final FBElement dstElement = (FBElement) findNameInContactList(name).orElseThrow(
+                () -> new IllegalStateException(String.format("Cannot find a conversation named '%s'", name))
+        );
+        final Dimension elSize = dstElement.getSize();
+        final double y = elSize.getHeight() * 8 / 9;
+        dstElement.dragFromToForDuration(new DragArguments(elSize.getWidth() / 10, y, elSize.getWidth() * 3 / 4, y, 1));
     }
 
     public void swipeRightConversationToRevealActionButtons(String conversation) throws Exception {
-        int count = 0;
-        do {
-            swipeRightOnContact(conversation);
-            count++;
-        } while ((count < 5) && !isCancelActionButtonVisible());
+        swipeRightOnContact(conversation);
     }
 
     public boolean isPendingRequestInContactList() throws Exception {
@@ -169,10 +170,6 @@ public class ConversationsListPage extends IOSPage {
                 collect(Collectors.toList()));
         final By locator = By.xpath(xpathStrContactListItemByExpr.apply(xpathExpr));
         return isElementDisplayed(locator, timeoutSeconds);
-    }
-
-    private boolean isCancelActionButtonVisible() throws Exception {
-        return isElementDisplayed(nameCancelActionButton);
     }
 
     public BufferedImage getConversationEntryScreenshot(int idx) throws Exception {
@@ -283,7 +280,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean noConversationsMessageIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEmptyConversationsListMessage);
+        return isElementDisplayed(nameEmptyConversationsListMessage);
     }
 
     public void clickCloseArchivePageButton() throws Exception {
