@@ -28,7 +28,6 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
@@ -695,7 +694,7 @@ public class ConversationPageSteps {
 
     @When("^I click context menu of the (second |third )?last message$")
     public void IClickContextMenuOfThirdLastMessage(String indexNumber) throws Exception {
-        int messageId = context.getPagesCollection().getPage(ConversationPage.class).getXLastMessageIndex(indexNumber);
+        int messageId = getXLastMessageIndex(indexNumber);
         context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnMessage(messageId);
     }
 
@@ -845,7 +844,7 @@ public class ConversationPageSteps {
     public void IClickToLikeLatestMessageWithoutOtherLikes(String like, String index, String out) throws Exception {
         boolean isWithout = "out".equals(out);
         boolean isLike = "like".equals(like);
-        int indexNummer = context.getPagesCollection().getPage(ConversationPage.class).getXLastMessageIndex(index);
+        int indexNummer = getXLastMessageIndex(index);
         if (isWithout) {
             if (isLike) {
                 context.getPagesCollection().getPage(ConversationPage.class).clickLikeMessageWithoutOtherLikes(indexNummer);
@@ -873,7 +872,7 @@ public class ConversationPageSteps {
 
     @Then("^I see the (third |second )?last message is only liked by me$")
     public void ISeeLatestMessageIsOnlyLikedByMe(String indexValue) throws Exception {
-        int messageIndex = context.getPagesCollection().getPage(ConversationPage.class).getXLastMessageIndex(indexValue);
+        int messageIndex = getXLastMessageIndex(indexValue);
         assertTrue("The " + indexValue + "last message is NOT only liked by you", context.getPagesCollection().getPage(ConversationPage.class)
                 .isUnlikeWithoutOtherLikesVisibleForMessage(messageIndex));
     }
@@ -1077,6 +1076,29 @@ public class ConversationPageSteps {
     @Then("^I really see text message (.*)")
     public void ISeeTextMessageInViewPort(String message) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).waitForDisplayedMessageContains(message, 30);
+    }
+
+    /**
+     * Get last message index (last, second last, third last)
+     *
+     * @param indexValue String
+     * @return
+     * @throws Exception
+     */
+
+    private int getXLastMessageIndex(String indexValue) throws Exception {
+        int indexNummer = 1;
+        if (indexValue == null)
+            return indexNummer;
+        switch (indexValue) {
+            case "third ": indexNummer = 3;
+                break;
+            case "second ": indexNummer = 2;
+                break;
+            default: indexNummer = 1;
+                break;
+        }
+        return indexNummer;
     }
 
     private static String expandPattern(final String originalStr) {
