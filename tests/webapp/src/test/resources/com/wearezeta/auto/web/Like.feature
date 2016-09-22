@@ -62,6 +62,11 @@ Feature: Like
     And User <Contact5> likes the recent message from group conversation <ChatName> via device Device5
     And I see likes below the last message
     And I see the last message is liked by Myself,<Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    When I open conversation with <Contact1>
+    And I see 1 messages in conversation
+    And I open conversation with <ChatName>
+    And I see likes below the last message
+    And I see the last message is liked by Myself,<Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
 # Only liked by others
     When I click to unlike the last message with other likes
     Then I see likes below the last message
