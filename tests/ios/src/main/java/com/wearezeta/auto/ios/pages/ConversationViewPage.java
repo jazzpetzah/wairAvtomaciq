@@ -16,6 +16,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
 import com.wearezeta.auto.common.sync_engine_bridge.Constants;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import edu.emory.mathcs.backport.java.util.Arrays;
 import io.appium.java_client.MobileBy;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
@@ -244,7 +245,10 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbXpathUploadMenu =
             FBBy.xpath("//XCUIElementTypeButton[@label='Cancel']/preceding-sibling::*[1]");
 
-    private static final int UPLOAD_MENU_ITEMS_COUNT = 7;
+    private static final String[] UPLOAD_MENU_ITEMS = new String[]{
+            "Record a video", "Videos", "20 MB file", "Big file",
+            "group-icon@3x.png", "CountryCodes.plist", "iCloud"
+    };
 
     private static final int MAX_APPEARANCE_TIME = 20;
 
@@ -613,36 +617,13 @@ public class ConversationViewPage extends IOSPage {
         final FBElement uploadMenu = (FBElement) getElement(fbXpathUploadMenu);
         final Dimension menuSize = uploadMenu.getSize();
         // FIXME: Workaround for menu items positions
-        int itemIdx;
-        switch (itemName) {
-            case "Record a video":
-                itemIdx = 1;
-                break;
-            case "Videos":
-                itemIdx = 2;
-                break;
-            case "20 MB file":
-                itemIdx = 3;
-                break;
-            case "Big file":
-                itemIdx = 4;
-                break;
-            case "group-icon@3x.png":
-                itemIdx = 5;
-                break;
-            case "CountryCodes.plist":
-                itemIdx = 6;
-                break;
-            case "iCloud":
-                itemIdx = 7;
-                break;
-            default:
-                throw new IllegalArgumentException(
-                        String.format("Unknown upload menu item '%s'", itemName));
+        final int itemIdx = Arrays.asList(UPLOAD_MENU_ITEMS).indexOf(itemName);
+        if (itemIdx < 0) {
+            throw new IllegalArgumentException(String.format("Unknown upload menu item '%s'", itemName));
         }
         uploadMenu.tap(menuSize.getWidth() / 8,
-                menuSize.getHeight() / UPLOAD_MENU_ITEMS_COUNT * itemIdx -
-                        (menuSize.getHeight() / UPLOAD_MENU_ITEMS_COUNT / 2));
+                menuSize.getHeight() / UPLOAD_MENU_ITEMS.length * itemIdx +
+                        menuSize.getHeight() / UPLOAD_MENU_ITEMS.length / 2);
     }
 
     public boolean isFileTransferTopLabelVisible() throws Exception {
