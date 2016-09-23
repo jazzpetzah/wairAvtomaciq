@@ -831,28 +831,38 @@ Feature: VideoCalling
     When I click on video button
     And I see video button unpressed
     And <Contact> verify that all audio flows have greater than 0 bytes
+    And <Contact> verifies to get audio data from me
 #    And <Contact> verifies to not get video data from me
     Then I see my self video is off
-    And I see video from other user is not black
+    And I see video call is maximized
     When I click on video button
     And I see video button pressed
     And <Contact> verify that all audio flows have greater than 0 bytes
     And <Contact> verify that all video flows have greater than 0 bytes
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
     Then I see my self video is on
     And I see my self video is not black
-    And I see video from other user is not black
+    And I see video call is maximized
     When I minimize video call
     Then I see broadcast indicator is shown for video
     When I click on video button
     And I see video button unpressed
     Then I see broadcast indicator is not shown for video
+    And <Contact> verifies to get audio data from me
     When I click on video button
     Then I see video button pressed
     And I see broadcast indicator is shown for video
     When <Contact> switches video off
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
     When I maximize video call via titlebar
     When <Contact> switches video on
-    Then I see video from other user is not black
+    And I see video call is maximized
+    And <Contact> verify that all audio flows have greater than 0 bytes
+    And <Contact> verify that all video flows have greater than 0 bytes
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
     And I do not see my self video view
