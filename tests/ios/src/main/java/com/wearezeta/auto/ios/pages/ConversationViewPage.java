@@ -36,7 +36,8 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbNameConversationInput = FBBy.AccessibilityId(nameStrConversationInputField);
 
     private static final Function<String, String> xpathStrConversationInputByValue = value ->
-            String.format("//XCUIElementTypeTextView[@name='%s' and @value='%s']", nameStrConversationInputField, value);
+            String.format("//XCUIElementTypeTextView[@name='%s' and @value='%s']",
+                    nameStrConversationInputField, value);
 
     private static final By nameConversationInputAvatar = MobileBy.AccessibilityId("authorImage");
 
@@ -72,7 +73,8 @@ public class ConversationViewPage extends IOSPage {
             String.format("%s[@value='%s']", xpathStrAllTextMessages, text);
 
     private static final Function<String, String> xpathStrSystemMessageByText = text ->
-            String.format("//XCUIElementTypeCell[@name='%s']", text.toUpperCase());
+            String.format("//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@value='%s'] ]",
+                    text.toUpperCase());
 
     private static final String xpathStrImageCells = xpathStrAllEntries + "[@name='ImageCell']";
     private static final By xpathImageCell = By.xpath(xpathStrImageCells);
