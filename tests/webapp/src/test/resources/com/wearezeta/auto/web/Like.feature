@@ -19,11 +19,11 @@ Feature: Like
 # Liked by others and me
     When User <Contact> likes the recent message from user <Name> via device Device1
     And I see likes below the last message
-    And I see the last message is liked by Myself,<Contact>
+    And I see the last message is liked by users Myself,<Contact>
 # Only liked by others
     When I click to unlike the last message with other likes
     Then I see likes below the last message
-    And I see the last message is liked by <Contact>
+    And I see the last message is liked by users <Contact>
 # Everything unliked
     When User <Contact> unlikes the recent message from user <Name> via device Device1
     And I do not see likes below the last message
@@ -93,16 +93,16 @@ Feature: Like
     And User <Contact4> likes the recent message from group conversation <ChatName> via device Device4
     And User <Contact5> likes the recent message from group conversation <ChatName> via device Device5
     And I see likes below the last message
-    And I see the last message is liked by Myself,<Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    And I see the last message is liked by users Myself,<Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     When I open conversation with <Contact1>
     And I see 1 messages in conversation
     And I open conversation with <ChatName>
     And I see likes below the last message
-    And I see the last message is liked by Myself,<Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    And I see the last message is liked by users Myself,<Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
 # Only liked by others
     When I click to unlike the last message with other likes
     Then I see likes below the last message
-    And I see the last message is liked by <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    And I see the last message is liked by users <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
 # Everything unliked
     When User <Contact1> unlikes the recent message from group conversation <ChatName> via device Device1
     And User <Contact2> unlikes the recent message from group conversation <ChatName> via device Device2
@@ -630,7 +630,7 @@ Feature: Like
     And I do not see likes below the last message
 # Only liked by me
     When I click context menu of the last message
-    And I click like button in context menu for latest message
+    And I click like button in context menu for last message
     And I do not see likes below the last message
     Then I see the last message is only liked by me
 # Liked by others and me
@@ -639,7 +639,7 @@ Feature: Like
     And I see the last message is liked by others and me
 # Only liked by others
     When I click context menu of the last message
-    And I click unlike button in context menu for latest message
+    And I click unlike button in context menu for last message
     Then I see likes below the last message
     And I see the last message is only liked by others
 # Everything unliked

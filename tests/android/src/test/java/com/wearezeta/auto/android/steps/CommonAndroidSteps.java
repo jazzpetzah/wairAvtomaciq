@@ -76,7 +76,7 @@ public class CommonAndroidSteps {
     private static final String DEFAULT_USER_AVATAR = "aqaPictureContact600_800.jpg";
     private static final String GCM_TOKEN_PATTERN = "token:\\s+(.*)$";
     //TODO: should I move this list to configuration file?
-    private static final String[] wirePackageList = {"com.wire.candidate", "com.wire.x", "com.waz.zclient.dev"};
+    private static final String[] wirePackageList = {"com.wire.candidate", "com.wire.x", "com.waz.zclient.dev", "com.wire.qaavs"};
 
     private static String getUrl() throws Exception {
         return CommonUtils.getAndroidAppiumUrlFromConfig(CommonAndroidSteps.class);
