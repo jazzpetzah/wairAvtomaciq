@@ -169,7 +169,7 @@ public class ConversationViewPageSteps {
         } else {
             Assert.assertTrue(
                     String.format("The last message in the conversation does not contain the expected one '%s'",
-                            msg), getConversationViewPage().isLastMessageContain(msg));
+                            msg), getConversationViewPage().isRecentMessageContain(msg));
         }
     }
 
@@ -423,7 +423,7 @@ public class ConversationViewPageSteps {
     @Then("^I see conversation view is scrolled back to the playing media link (.*)")
     public void ISeeConversationViewIsScrolledBackToThePlayingMedia(String link) throws Throwable {
         Assert.assertTrue(String.format("The last conversation message does not contain text '%s'", link),
-                getConversationViewPage().isLastMessageContain(link));
+                getConversationViewPage().isRecentMessageContain(link));
         Assert.assertTrue("View did not scroll back", getConversationViewPage()
                 .isMediaContainerVisible());
     }
@@ -454,7 +454,7 @@ public class ConversationViewPageSteps {
     public void ICheckCopiedContentFrom(String mail) throws Exception {
         final String finalString = usrMgr.replaceAliasesOccurences(mail, FindBy.EMAIL_ALIAS);
         Assert.assertTrue(String.format("The last message in the chat does not contain '%s' part",
-                finalString), getConversationViewPage().isLastMessageContain(finalString));
+                finalString), getConversationViewPage().isRecentMessageContain(finalString));
     }
 
     /**
@@ -579,10 +579,10 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see vimeo link (.*) but NO media player$")
     public void ISeeVimeoLinkButNOMediaPlayer(String link) throws Exception {
-        Assert.assertFalse("Media player is shown in dialog", getConversationViewPage()
-                .isYoutubeContainerVisible());
+        Assert.assertFalse("Media player is visible, but should be hidden",
+                getConversationViewPage().isMediaContainerVisible());
         Assert.assertTrue(String.format("The last conversation message does not contain %s link", link),
-                getConversationViewPage().isLastMessageContain(link));
+                getConversationViewPage().isRecentMessageContain(link));
     }
 
     /**
@@ -594,10 +594,10 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see vimeo link (.*) and media in the conversation view$")
     public void ISeeVimeoLinkAndMediaInDialog(String link) throws Exception {
-        Assert.assertTrue("Media is missing in dialog", getConversationViewPage()
-                .isYoutubeContainerVisible());
-        Assert.assertTrue(String.format("The last conversation message does not contain %s link", link),
-                getConversationViewPage().isLastMessageContain(link));
+        Assert.assertTrue("Media player is missing in the conversation",
+                getConversationViewPage().isMediaContainerVisible());
+        Assert.assertTrue(String.format("The recent conversation message does not contain %s link", link),
+                getConversationViewPage().isRecentMessageContain(link));
     }
 
     /**

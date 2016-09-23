@@ -335,7 +335,7 @@ public class ConversationViewPage extends IOSPage {
         return isElementDisplayed(locator, 3);
     }
 
-    public boolean isLastMessageContain(String expectedText) throws Exception {
+    public boolean isRecentMessageContain(String expectedText) throws Exception {
         final By locator = By.xpath(xpathStrRecentMessageByTextPart.apply(expectedText));
         return isElementDisplayed(locator);
     }
@@ -448,10 +448,6 @@ public class ConversationViewPage extends IOSPage {
             DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationPage),
                     1000, 50, 30, 50, 95);
         }
-    }
-
-    public boolean isYoutubeContainerVisible() throws Exception {
-        return isElementDisplayed(fbXpathMediaContainerCell, 10);
     }
 
     public boolean isMediaContainerVisible() throws Exception {
