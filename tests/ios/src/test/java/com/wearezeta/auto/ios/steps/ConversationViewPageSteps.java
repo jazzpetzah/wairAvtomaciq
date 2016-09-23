@@ -283,11 +283,6 @@ public class ConversationViewPageSteps {
                 "does not equal to the expected count %s", actualCount, expectedCount), actualCount == expectedCount);
     }
 
-    @When("I click video container for the first time")
-    public void IPlayVideoFirstTime() throws Exception {
-        getConversationViewPage().clickOnPlayVideoButton();
-    }
-
     /**
      * Copy to system clipboard, paste and send invitation link from pointed user in a conversation
      *
@@ -500,17 +495,6 @@ public class ConversationViewPageSteps {
             Assert.assertTrue("Input placeholder text is visible",
                     getConversationViewPage().isInputPlaceholderTextInvisible());
         }
-    }
-
-    /**
-     * Clicking on video play button in youtube player
-     *
-     * @throws Exception
-     * @step. ^I click play video button$
-     */
-    @When("I click play video button")
-    public void IClickPlayButton() throws Exception {
-        getConversationViewPage().clickOnPlayVideoButton();
     }
 
     /**
@@ -1465,13 +1449,11 @@ public class ConversationViewPageSteps {
      *
      * @param pWidth   destination cell X tap point (in percent 0-100)
      * @param pHeight  destination cell Y tap point (in percent 0-100)
-     * @param fromName message sender name/alias
      * @throws Exception
      * @step. I tap at (\d+)% of width and (\d+)% of height of the recent message$
      */
     @When("^I tap at (\\d+)% of width and (\\d+)% of height of the recent message$")
-    public void ITapAtContainerCorner(int pWidth, int pHeight, String fromName) throws Exception {
-        fromName = usrMgr.replaceAliasesOccurences(fromName, FindBy.NAME_ALIAS);
+    public void ITapAtContainerCorner(int pWidth, int pHeight) throws Exception {
         getConversationViewPage().tapAtRecentMessage(pWidth, pHeight);
     }
 

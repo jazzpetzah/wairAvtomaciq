@@ -514,10 +514,6 @@ public class ConversationViewPage extends IOSPage {
         typeMessage(message, false);
     }
 
-    public void clickOnPlayVideoButton() throws Exception {
-        getElement(fbXpathMediaContainerCell).click();
-    }
-
     public void openGifPreviewPage() throws Exception {
         getElement(nameGifButton).click();
     }
