@@ -8,7 +8,6 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import io.appium.java_client.MobileBy;
-import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -27,7 +26,7 @@ public class LoginPage extends IOSPage {
 
     private static final By fbNameLoginField = FBBy.AccessibilityId("EmailField");
 
-    private static final By namePasswordField = MobileBy.AccessibilityId("PasswordField");
+    private static final By fbNamePasswordField = FBBy.AccessibilityId("PasswordField");
 
     private static final By nameWrongCredentialsNotification = MobileBy.AccessibilityId("Please verify your details and try again.");
 
@@ -85,11 +84,11 @@ public class LoginPage extends IOSPage {
     }
 
     public void setLogin(String login) throws Exception {
-        ((IOSElement) getElement(fbNameLoginField)).setValue(login);
+        ((FBElement) getElement(fbNameLoginField)).setValue(login);
     }
 
     public void setPassword(String password) throws Exception {
-        ((IOSElement) getElement(namePasswordField)).setValue(password);
+        ((FBElement) getElement(fbNamePasswordField)).setValue(password);
     }
 
     public static final int LOGIN_TIMEOUT_SECONDS = 30;
@@ -115,7 +114,7 @@ public class LoginPage extends IOSPage {
     }
 
     public void tapPasswordField() throws Exception {
-        getElement(namePasswordField).click();
+        getElement(fbNamePasswordField).click();
     }
 
     public boolean wrongCredentialsNotificationIsShown() throws Exception {

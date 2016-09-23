@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
-import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -21,7 +20,7 @@ public class GroupChatInfoPage extends IOSPage {
 
     private static final By nameLeaveConversationButton = MobileBy.AccessibilityId("LEAVE");
 
-    private static final By nameConversationNameTextField = MobileBy.AccessibilityId("ParticipantsView_GroupName");
+    private static final By fbNameConversationNameTextField = FBBy.AccessibilityId("ParticipantsView_GroupName");
 
     private static final Function<String, String> xpathStrConversationNameByText = text ->
             String.format("//*[@name='ParticipantsView_GroupName' and @value='%s']", text);
@@ -64,11 +63,11 @@ public class GroupChatInfoPage extends IOSPage {
     }
 
     public void setGroupChatName(String name) throws Exception {
-        final WebElement nameInputField = getElement(nameConversationNameTextField);
+        final FBElement nameInputField = (FBElement) getElement(fbNameConversationNameTextField);
         nameInputField.click();
         this.isKeyboardVisible();
         try {
-            ((IOSElement) nameInputField).setValue(name);
+            nameInputField.setValue(name);
         } catch (WebDriverException e) {
             nameInputField.clear();
             nameInputField.sendKeys(name);

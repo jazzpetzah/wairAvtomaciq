@@ -8,7 +8,6 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import io.appium.java_client.MobileBy;
-import io.appium.java_client.ios.IOSElement;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -30,9 +29,9 @@ public class RegistrationPage extends IOSPage {
 
     private static final By xpathNameField = By.xpath("//XCUIElementTypeTextField");
 
-    private static final By nameYourEmail = MobileBy.AccessibilityId("EmailField");
+    private static final By fbNameYourEmail = FBBy.AccessibilityId("EmailField");
 
-    private static final By nameYourPassword = MobileBy.AccessibilityId("PasswordField");
+    private static final By fbNameYourPassword = FBBy.AccessibilityId("PasswordField");
 
     private static final By xpathCreateAccountButton = By
             .xpath("//XCUIElementTypeSecureTextField[contains(@name, 'PasswordField')]/XCUIElementTypeButton");
@@ -152,11 +151,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void typeEmail() throws Exception {
-        try {
-            ((IOSElement) getElement(nameYourEmail)).setValue(getEmail());
-        } catch (Exception e) {
-            getElement(nameYourEmail).sendKeys(getEmail());
-        }
+        ((FBElement) getElement(fbNameYourEmail)).setValue(getEmail());
     }
 
     public void typeUsername() throws Exception {
@@ -187,11 +182,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     private void typePassword() throws Exception {
-        try {
-            ((IOSElement) getElement(nameYourPassword)).setValue(getPassword());
-        } catch (Exception e) {
-            getElement(nameYourPassword).sendKeys(getPassword());
-        }
+        ((FBElement) getElement(fbNameYourPassword)).setValue(getPassword());
     }
 
     public void setPassword(String password) throws Exception {

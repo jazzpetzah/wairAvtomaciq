@@ -8,7 +8,6 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
 import io.appium.java_client.MobileBy;
-import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.*;
 
 import java.awt.image.BufferedImage;
@@ -40,8 +39,8 @@ public class SettingsPage extends IOSPage {
 
     private static final By nameDeleteButton = MobileBy.AccessibilityId("Delete");
 
-    private static final By xpathDeleteDevicePasswordField =
-            By.xpath("//XCUIElementTypeSecureTextField[contains(@value,'Password')]");
+    private static final By fbXpathDeleteDevicePasswordField =
+            FBBy.xpath("//XCUIElementTypeSecureTextField[contains(@value,'Password')]");
 
     private static final FunctionFor2Parameters<String, String, String> xpathStrDeviceVerificationLabel =
             (deviceName, verificationLabel) -> String.format(
@@ -112,7 +111,7 @@ public class SettingsPage extends IOSPage {
 
     public void typePasswordToConfirmDeleteDevice(String password) throws Exception {
         password = usrMgr.findUserByPasswordAlias(password).getPassword();
-        ((IOSElement) getElement(xpathDeleteDevicePasswordField)).setValue(password);
+        ((FBElement) getElement(fbXpathDeleteDevicePasswordField)).setValue(password);
     }
 
     public boolean isDeviceVisibleInList(String device) throws Exception {
