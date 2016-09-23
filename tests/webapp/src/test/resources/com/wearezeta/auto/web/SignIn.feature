@@ -196,8 +196,8 @@ Feature: Sign In
       | Name      | Error        |
       | user1Name | Invalid Code |
 
-  @C1786 @mute
-  Scenario Outline: Verify you are asked to add an email address after sign in with a phone number
+  @C246198 @staging
+  Scenario Outline: Verify you are asked to add an email address after sign in with a phone number and unset password
     Given There is 1 user where <Name> is me with phone number only
     Given I switch to sign in page
     When I switch to phone number sign in page
