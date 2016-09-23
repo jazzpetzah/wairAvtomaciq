@@ -12,13 +12,13 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class AddEmailAddressPage extends WebPage {
 
-    @FindBy(id = "wire-mail-email")
+    @FindBy(id = "wire-verify-account-email")
     private WebElement emailField;
 
-    @FindBy(id = "wire-mail-password")
+    @FindBy(id = "wire-verify-account-password")
     private WebElement passwordField;
 
-    @FindBy(id = "wire-mail-add")
+    @FindBy(id = "wire-verify-account")
     private WebElement addButton;
 
     @FindBy(css = WebAppLocators.AddEmailAddressPage.cssErrorMessage)
