@@ -29,17 +29,16 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final By nameExitOtherUserPersonalInfoPageButton =
             MobileBy.AccessibilityId("OtherUserProfileCloseButton");
 
-    private static final By xpathConfirmDeleteButton = By
-        .xpath("//XCUIElementTypeButton[@name='CANCEL']/following::XCUIElementTypeButton[@name='DELETE']");
+    private static final By xpathConfirmDeleteButton =
+            By.xpath("//XCUIElementTypeButton[@name='CANCEL']/following::XCUIElementTypeButton[@name='DELETE']");
 
     private static final By nameAlsoLeaveCheckerButton = MobileBy.AccessibilityId("ALSO LEAVE THE CONVERSATION");
 
     private static final Function<String, String> xpathStrOtherPersonalInfoPageNameFieldByName = name ->
             String.format("//XCUIElementTypeStaticText[@name='%s']", name);
 
-    private static final Function<String, String> xpathStrOtherPersonalInfoPageEmailFieldByEmail = name -> String.format(
-        "//XCUIElementTypeButton[@name='OtherUserProfileCloseButton']/following::XCUIElementTypeTextView[@name='%s']",
-            name.toUpperCase());
+    private static final Function<String, String> xpathStrOtherPersonalInfoPageEmailFieldByEmail = email ->
+            String.format("//XCUIElementTypeTextView[@value='%s']", email.toUpperCase());
 
     private static final By nameAddContactToChatButton = MobileBy.AccessibilityId("metaControllerLeftButton");
 
@@ -48,8 +47,8 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     private static final By nameConversationMenu = MobileBy.AccessibilityId("metaControllerRightButton");
 
-    private static final By xpathActionMenu = By
-        .xpath("//XCUIElementTypeStaticText[following::XCUIElementTypeButton[@name='CANCEL']]");
+    private static final By xpathActionMenu =
+            By.xpath("//XCUIElementTypeStaticText[following::XCUIElementTypeButton[@name='CANCEL']]");
 
     private static final String xpathStrDevicesList = "(" + xpathStrMainWindow +
             "//XCUIElementTypeTable)[1]/XCUIElementTypeCell";
