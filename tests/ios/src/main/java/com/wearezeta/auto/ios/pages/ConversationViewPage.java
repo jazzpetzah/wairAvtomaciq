@@ -741,18 +741,9 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void scrollToTheBottom() throws Exception {
-        final int maxActions = 5;
-        int actionIdx = 0;
-        do {
-            if (isElementDisplayed(xpathRecentEntry, 1)) {
-                return;
-            }
-            swipeUp(1000);
-            actionIdx++;
-        } while (actionIdx < maxActions);
-        if (!isElementDisplayed(xpathRecentEntry, 1)) {
-            throw new IllegalStateException(String.format("The very first conversation entry is not visible after %s " +
-                    "scrolling retries", actionIdx));
+        getElement(fbNameConversationInput).click();
+        if (!isElementDisplayed(xpathRecentEntry)) {
+            throw new IllegalStateException("Failed to scroll to the bottom of the conversation");
         }
     }
 

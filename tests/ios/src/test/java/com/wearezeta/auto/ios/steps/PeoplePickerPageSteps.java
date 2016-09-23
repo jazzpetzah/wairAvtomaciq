@@ -210,7 +210,7 @@ public class PeoplePickerPageSteps {
 
     @When("^I press Backspace button in search field$")
     public void IPressBackspaceBtn() throws Exception {
-        getPeoplePickerPage().pressBackspaceButton();
+        getPeoplePickerPage().pressBackspaceKeyboardButton();
     }
 
     /**

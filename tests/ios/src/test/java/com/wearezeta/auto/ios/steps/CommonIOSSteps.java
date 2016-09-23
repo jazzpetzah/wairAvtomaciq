@@ -409,17 +409,6 @@ public class CommonIOSSteps {
         }
     }
 
-    @When("^I press keyboard Delete button$")
-    public void IPressKeyboardDeleteBtn() throws Exception {
-        pagesCollection.getCommonPage().clickKeyboardDeleteButton();
-        pagesCollection.getCommonPage().clickKeyboardDeleteButton();
-    }
-
-    @When("^I scroll up page a bit$")
-    public void IScrollUpPageABit() throws Exception {
-        pagesCollection.getCommonPage().smallScrollUp();
-    }
-
     @When("^I accept alert$")
     public void IAcceptAlert() throws Exception {
         pagesCollection.getCommonPage().acceptAlertIfVisible();

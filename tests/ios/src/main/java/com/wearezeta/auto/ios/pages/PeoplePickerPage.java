@@ -147,8 +147,8 @@ public class PeoplePickerPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), namePeoplePickerTopPeopleLabel, 2);
     }
 
-    public void pressBackspaceButton() throws Exception {
-        getElement(fbNamePickerSearch).sendKeys(Keys.DELETE);
+    public void pressBackspaceKeyboardButton() throws Exception {
+        tapKeyboardDeleteButton();
     }
 
     public void clickAddToConversationButton() throws Exception {

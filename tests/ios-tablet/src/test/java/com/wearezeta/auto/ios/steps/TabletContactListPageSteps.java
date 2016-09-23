@@ -68,18 +68,6 @@ public class TabletContactListPageSteps {
         }
     }
 
-
-    /**
-     * Swipes down on Contact list on iPad
-     *
-     * @throws Exception
-     * @step ^I swipe down contact list on iPad$
-     */
-    @When("^I swipe down contact list on iPad$")
-    public void ISwipeDownContactListOniPad() throws Exception {
-        getTabletContactListPage().swipeDown(500);
-    }
-
     /**
      * Verifies that mute a call button in landscape in conv list is not shown
      *

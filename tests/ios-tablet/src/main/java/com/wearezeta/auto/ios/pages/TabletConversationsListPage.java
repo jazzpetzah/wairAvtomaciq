@@ -26,12 +26,6 @@ public class TabletConversationsListPage extends ConversationsListPage {
     }
 
     @Override
-    public void swipeDown(int time) throws Exception {
-        DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationListPage), time,
-                20, 15, 20, 90);
-    }
-
-    @Override
     public void swipeUp(int time) throws Exception {
         DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationListPage), time,
                 20, 90, 20, 10);

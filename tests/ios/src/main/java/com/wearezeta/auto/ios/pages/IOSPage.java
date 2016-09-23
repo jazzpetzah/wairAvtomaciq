@@ -99,19 +99,6 @@ public abstract class IOSPage extends BasePage {
         return (Future<ZetaIOSDriver>) super.getLazyDriver();
     }
 
-    public void swipeUp(int time) throws Exception {
-        DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(nameMainWindow), time,
-                50, 55, 50, 10);
-    }
-
-    public void swipeDown(int time) throws Exception {
-        DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(nameMainWindow), time, 50, 10, 50, 90);
-    }
-
-    public void smallScrollUp() throws Exception {
-        this.getDriver().swipe(10, 220, 10, 200, 500);
-    }
-
     private By getBadgeLocatorByName(String name) {
         switch (name.toLowerCase()) {
             case "select all":
@@ -197,7 +184,7 @@ public abstract class IOSPage extends BasePage {
         return this.onScreenKeyboard.isInvisible(timeoutSeconds);
     }
 
-    public void clickKeyboardDeleteButton() throws Exception {
+    public void tapKeyboardDeleteButton() throws Exception {
         this.onScreenKeyboard.pressDeleteButton();
     }
 

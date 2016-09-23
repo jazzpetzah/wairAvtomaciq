@@ -6,6 +6,7 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
     Then I see the conversation "<ContactName>" exists in Search results
 
@@ -135,6 +136,7 @@ Feature: Search
     Given I see conversations list
     Given I wait until <Contact> exists in backend search results
     When I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field first 5 letters of user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
 
@@ -266,6 +268,7 @@ Feature: Search
     And I see Open conversation action button on People picker page
     And I tap on 2nd top connection contact
     Then I see Create conversation action button on People picker page
+    # We need to tap the button twice, because first tap only selects the element
     When I press Backspace button in search field
     And I press Backspace button in search field
     Then I do not see Create conversation action button on People picker page
