@@ -32,16 +32,6 @@ public class GroupConversationViewPage extends ConversationViewPage {
         return isElementDisplayed(nameYouRenamedConversation);
     }
 
-    @Override
-    public void swipeUp(int time) throws Exception {
-        final WebElement element = getElement(nameMainWindow);
-        final Point coords = element.getLocation();
-        final Dimension elementSize = element.getSize();
-        this.getDriver().swipe(coords.x + elementSize.width / 2,
-                coords.y + elementSize.height - 170,
-                coords.x + elementSize.width / 2, coords.y + 40, time);
-    }
-
     public boolean isYouLeftMessageShown() throws Exception {
         return isElementDisplayed(nameYouLeftMessage);
     }

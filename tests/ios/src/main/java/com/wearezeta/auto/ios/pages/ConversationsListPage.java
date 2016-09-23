@@ -148,15 +148,6 @@ public class ConversationsListPage extends IOSPage {
         return isConversationNotInList(name, 5);
     }
 
-    @Override
-    public void swipeDown(int time) throws Exception {
-        Point coords = getElement(nameMainWindow).getLocation();
-        Dimension elementSize = getElement(nameMainWindow).getSize();
-        this.getDriver().swipe(coords.x + elementSize.width / 2,
-                coords.y + 150, coords.x + elementSize.width / 2,
-                coords.y + elementSize.height - 150, time);
-    }
-
     public boolean isConversationWithUsersExist(List<String> names, int timeoutSeconds) throws Exception {
         final String xpathExpr = String.join(" and ", names.stream().
                 map(x -> String.format("contains(@name, '%s')", x)).

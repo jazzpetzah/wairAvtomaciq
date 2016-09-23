@@ -22,7 +22,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -439,14 +438,6 @@ public class ConversationViewPage extends IOSPage {
 
     public void openConversationDetails() throws Exception {
         getElement(xpathConversationDetailsButton).click();
-    }
-
-    @Override
-    public void swipeUp(int time) throws Exception {
-        final Point coords = getElement(nameMainWindow).getLocation();
-        final Dimension elementSize = getElement(nameMainWindow).getSize();
-        this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - TEXT_INPUT_HEIGHT,
-                coords.x + elementSize.width / 2, coords.y + TOP_BORDER_WIDTH, time);
     }
 
     public void swipeDialogPageDown() throws Exception {
