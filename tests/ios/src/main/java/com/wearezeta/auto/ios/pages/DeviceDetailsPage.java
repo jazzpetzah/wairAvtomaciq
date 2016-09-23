@@ -15,7 +15,8 @@ public class DeviceDetailsPage extends IOSPage {
                     "/preceding-sibling::XCUIElementTypeButton[1]");
 
     private static final By xpathKeyFingerprintValue =
-            By.xpath("(//XCUIElementTypeCell[@name='Key Fingerprint']//XCUIElementTypeStaticText)[2]");
+            By.xpath("//XCUIElementTypeStaticText[@name='Key Fingerprint']" +
+                    "/following-sibling::XCUIElementTypeStaticText[1]");
 
     private static final By nameRemoveDevice = MobileBy.AccessibilityId("Remove Device");
 
