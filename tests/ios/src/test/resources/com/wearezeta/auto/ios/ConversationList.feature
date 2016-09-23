@@ -533,6 +533,7 @@ Feature: Conversation List
     Given I see conversations list
     Given I see Conversations hint text
     When I tap on Conversations hint text
+    And I accept alert
     Then I see People Picker page
     When I click close button to dismiss people view
     Then I see conversations list
