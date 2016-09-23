@@ -28,20 +28,9 @@ public class GroupChatInfoPageSteps {
         getGroupChatInfoPage().tapLeaveConversation();
     }
 
-    @When("I change group conversation name to (.*)")
+    @When("^I change group conversation name to \"(.*)\"$")
     public void IChangeConversationNameTo(String name) throws Exception {
         getGroupChatInfoPage().setGroupChatName(name);
-    }
-
-    /**
-     * Try to input empty conversation name
-     *
-     * @throws Exception
-     * @step. ^I try to change group conversation name to empty$
-     */
-    @When("^I try to change group conversation name to empty$")
-    public void IChangeConversationNameToEmpty() throws Exception {
-        getGroupChatInfoPage().setGroupChatName("");
     }
 
     /**

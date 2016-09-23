@@ -109,7 +109,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I change group conversation name to <ChatName>
+    And I change group conversation name to "<ChatName>"
     Then I see correct conversation name <ChatName>
     And I close group info page
     And I see You Renamed Conversation message shown in conversation view
@@ -515,7 +515,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I try to change group conversation name to empty
+    And I change group conversation name to ""
     Then I see correct conversation name <GroupChatName>
     When I try to change group conversation name to random with length <MaxGroupChatNameLenght>
     Then I see correct conversation name <GroupChatName>

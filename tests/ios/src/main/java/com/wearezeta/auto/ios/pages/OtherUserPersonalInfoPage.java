@@ -47,11 +47,9 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     private static final By nameConversationMenu = MobileBy.AccessibilityId("metaControllerRightButton");
 
-    private static final By xpathActionMenu =
-            By.xpath("//XCUIElementTypeStaticText[following::XCUIElementTypeButton[@name='CANCEL']]");
+    private static final By xpathActionsMenu = By.xpath("//XCUIElementTypeButton[@name='CANCEL']");
 
-    private static final String xpathStrDevicesList = "(" + xpathStrMainWindow +
-            "//XCUIElementTypeTable)[1]/XCUIElementTypeCell";
+    private static final String xpathStrDevicesList = "//XCUIElementTypeTable/XCUIElementTypeCell";
     private static final By xpathDevicesList = By.xpath(xpathStrDevicesList);
     private static final Function<Integer, String> xpathStrDeviceByIndex =
             idx -> String.format("%s[%s]", xpathStrDevicesList, idx);
@@ -149,7 +147,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public boolean isActionMenuVisible() throws Exception {
-        return isElementDisplayed(xpathActionMenu);
+        return isElementDisplayed(xpathActionsMenu);
     }
 
     public int getParticipantDevicesCount() throws Exception {

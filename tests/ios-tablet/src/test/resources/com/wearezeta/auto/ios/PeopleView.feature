@@ -176,7 +176,7 @@ Feature: People View
     And I open group conversation details
     And I open conversation menu on iPad
     And I select Rename action from iPad ellipsis menu
-    And I change group conversation name to <ChatName>
+    And I change group conversation name to "<ChatName>"
     And I dismiss popover on iPad
     Then I see You Renamed Conversation message shown in conversation view
     When I navigate back to conversations list
@@ -199,7 +199,7 @@ Feature: People View
     And I open group conversation details
     And I open conversation menu on iPad
     And I select Rename action from iPad ellipsis menu
-    And I change group conversation name to <ChatName>
+    And I change group conversation name to "<ChatName>"
     And I dismiss popover on iPad
     Then I see You Renamed Conversation message shown in conversation view
     And I see conversation <ChatName> in conversations list
@@ -936,7 +936,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I try to change group conversation name to empty
+    And I change group conversation name to ""
     Then I see correct conversation name <GroupChatName>
     When I try to change group conversation name to random with length <MaxGroupChatNameLength>
     Then I see correct conversation name <GroupChatName>
@@ -955,7 +955,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I try to change group conversation name to empty
+    And I change group conversation name to ""
     Then I see correct conversation name <GroupChatName>
     When I try to change group conversation name to random with length <MaxGroupChatNameLenght>
     Then I see correct conversation name <GroupChatName>
