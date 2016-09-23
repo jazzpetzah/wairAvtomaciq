@@ -10,8 +10,10 @@ import java.util.concurrent.Future;
 public class DeviceDetailsPage extends IOSPage {
     private final static By nameVerifySwitcher = By.xpath("//XCUIElementTypeSwitch");
 
-    private static final By xpathBackButton = By.xpath(xpathStrMainWindow + "/XCUIElementTypeButton[4]");
-    
+    private static final By xpathBackButton =
+            By.xpath("//XCUIElementTypeButton[@name='SHOW MY DEVICE FINGERPRINT']" +
+                    "/preceding-sibling::XCUIElementTypeButton[1]");
+
     private static final By xpathKeyFingerprintValue =
             By.xpath("(//XCUIElementTypeCell[@name='Key Fingerprint']//XCUIElementTypeStaticText)[2]");
 
@@ -28,11 +30,11 @@ public class DeviceDetailsPage extends IOSPage {
     public void tapBackButton() throws Exception {
         getElement(xpathBackButton).click();
     }
-    
+
     public String getFingerprintValue() throws Exception {
         return getElement(xpathKeyFingerprintValue).getAttribute("value");
     }
-    
+
     public boolean verifyFingerPrintNotEmpty() throws Exception {
         return !getFingerprintValue().isEmpty();
     }
