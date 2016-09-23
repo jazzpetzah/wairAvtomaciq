@@ -19,6 +19,7 @@ import org.openqa.selenium.remote.DriverCommand;
 import org.openqa.selenium.remote.Response;
 import org.openqa.selenium.remote.SessionNotFoundException;
 import org.openqa.selenium.remote.UnreachableBrowserException;
+import org.openqa.selenium.security.Credentials;
 
 
 public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, FindsByFBPredicate,
@@ -39,11 +40,6 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     public ZetaIOSDriver(URL remoteAddress, Capabilities desiredCapabilities) {
         super(remoteAddress, desiredCapabilities);
         this.fbDriverAPI = new FBDriverAPI();
-    }
-
-    public boolean isXCUIModeEnabled() {
-        final Object dstCap = this.getCapabilities().getCapability(AUTOMATION_NAME_CAPABILITY_NAME);
-        return (dstCap != null) && (dstCap instanceof String) && dstCap.equals(AUTOMATION_MODE_XCUITEST);
     }
 
     public boolean isAutoAlertAcceptModeEnabled() {
@@ -240,7 +236,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
         }
     }
 
-    public void acceptAlert() {
+    protected void acceptAlert() {
         try {
             fbDriverAPI.acceptAlert();
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
@@ -248,7 +244,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
         }
     }
 
-    public void dismissAlert() {
+    protected void dismissAlert() {
         try {
             fbDriverAPI.dismissAlert();
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
@@ -256,7 +252,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
         }
     }
 
-    public String getAlertText() {
+    protected String getAlertText() {
         try {
             return fbDriverAPI.getAlertText();
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
@@ -293,6 +289,51 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
             public Point getPosition() {
                 return this.window.getLocation();
             }
+        }
+    }
+
+    public TargetLocator switchTo() {
+        return new InnerTargetLocator();
+    }
+
+    class IOSAlert implements Alert {
+        @Override
+        public void dismiss() {
+            ZetaIOSDriver.this.dismissAlert();
+        }
+
+        @Override
+        public void accept() {
+            ZetaIOSDriver.this.acceptAlert();
+        }
+
+        @Override
+        public String getText() {
+            return ZetaIOSDriver.this.getAlertText();
+        }
+
+        @Override
+        public void sendKeys(String s) {
+            throw new IllegalStateException("IOS alerts don't support sending keys");
+        }
+
+        @Override
+        public void setCredentials(Credentials credentials) {
+            throw new IllegalStateException("IOS alerts don't support settings credentials");
+        }
+
+        @Override
+        public void authenticateUsing(Credentials credentials) {
+            throw new IllegalStateException("IOS alerts don't support authentication");
+        }
+    }
+
+    private class InnerTargetLocator extends RemoteTargetLocator {
+        private InnerTargetLocator() {
+        }
+
+        public Alert alert() {
+            return new IOSAlert();
         }
     }
 }

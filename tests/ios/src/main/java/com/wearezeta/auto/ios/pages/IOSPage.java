@@ -221,11 +221,7 @@ public abstract class IOSPage extends BasePage {
 
     public boolean acceptAlertIfVisible(int timeoutSeconds) throws Exception {
         if (waitUntilAlertAppears(timeoutSeconds)) {
-            if (getDriver().isXCUIModeEnabled()) {
-                getDriver().acceptAlert();
-            } else {
-                getDriver().switchTo().alert().accept();
-            }
+            getDriver().switchTo().alert().accept();
             return true;
         }
         return false;
@@ -237,11 +233,7 @@ public abstract class IOSPage extends BasePage {
 
     public boolean dismissAlertIfVisible(int timeoutSeconds) throws Exception {
         if (waitUntilAlertAppears(timeoutSeconds)) {
-            if (getDriver().isXCUIModeEnabled()) {
-                getDriver().dismissAlert();
-            } else {
-                getDriver().switchTo().alert().dismiss();
-            }
+            getDriver().switchTo().alert().dismiss();
             return true;
         }
         return false;

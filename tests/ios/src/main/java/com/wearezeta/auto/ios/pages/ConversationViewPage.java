@@ -79,7 +79,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final String xpathStrImageCells = xpathStrAllEntries + "[@name='ImageCell']";
     private static final By xpathImageCell = By.xpath(xpathStrImageCells);
-    private static final By fbXpathLastImageCell = FBBy.xpath(String.format("(%s)[1]", xpathStrImageCells));
+    private static final By fbXpathRecentImageCell = FBBy.xpath(String.format("(%s)[1]", xpathStrImageCells));
 
     private static final By fbXpathMediaContainerCell =
             FBBy.xpath("//XCUIElementTypeTextView[contains(@value, '://')]/following-sibling::XCUIElementTypeButton");
@@ -237,8 +237,8 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameLikeButton = MobileBy.AccessibilityId("likeButton");
 
-    private static final By nameSketchOnImageButton = MobileBy.AccessibilityId("sketchOnImageButton");
-    private static final By nameFullScreenOnImageButton = MobileBy.AccessibilityId("openFullScreenButton");
+    private static final By fbNameSketchOnImageButton = FBBy.AccessibilityId("sketchOnImageButton");
+    private static final By fbNameFullScreenOnImageButton = FBBy.AccessibilityId("openFullScreenButton");
 
     private static final By nameRecentMessageToolbox = MobileBy.AccessibilityId("MessageToolbox");
 
@@ -606,7 +606,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public Optional<BufferedImage> getRecentPictureScreenshot() throws Exception {
-        return getElementScreenshot(getElement(fbXpathLastImageCell));
+        return getElementScreenshot(getElement(fbXpathRecentImageCell));
     }
 
     public void tapFileTransferMenuItem(String itemName) throws Exception {
@@ -989,7 +989,7 @@ public class ConversationViewPage extends IOSPage {
     private By getContainerLocatorByName(String name) {
         switch (name.toLowerCase()) {
             case "image":
-                return fbXpathLastImageCell;
+                return fbXpathRecentImageCell;
             case "media container":
             case "media":
                 return fbXpathMediaContainerCell;
@@ -1057,17 +1057,18 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapImageButton(String buttonName) throws Exception {
         By locator = getImageButtonByName(buttonName);
-        getElementIfExists(locator).orElseThrow(
+        final FBElement dstElement = (FBElement) getElementIfExists(locator).orElseThrow(
                 () -> new IllegalStateException(buttonName + "button can't be found")
-        ).click();
+        );
+        this.tapAtTheCenterOfElement(dstElement);
     }
 
     private By getImageButtonByName(String buttonName) throws Exception {
         switch (buttonName.toLowerCase()) {
             case "sketch":
-                return nameSketchOnImageButton;
+                return fbNameSketchOnImageButton;
             case "fullscreen":
-                return nameFullScreenOnImageButton;
+                return fbNameFullScreenOnImageButton;
             default:
                 throw new Exception("Not recognized button name. Available 'sketch', 'fullscreen'");
         }
