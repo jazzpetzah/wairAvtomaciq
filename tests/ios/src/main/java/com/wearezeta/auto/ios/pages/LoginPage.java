@@ -130,15 +130,15 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isResendIn10minAlertVisible() throws Exception {
-        return waitUntilAlertAppears() && isElementDisplayed(nameResentIn10min);
+        return waitUntilAlertDisplayed() && isElementDisplayed(nameResentIn10min);
     }
 
     public boolean isInvalidEmailAlertShown() throws Exception {
-        return waitUntilAlertAppears() && isElementDisplayed(nameInvalidEmail);
+        return waitUntilAlertDisplayed() && isElementDisplayed(nameInvalidEmail);
     }
 
     public boolean isAlreadyRegisteredEmailAlertShown() throws Exception {
-        return waitUntilAlertAppears() && isElementDisplayed(nameAlreadyRegisteredEmail);
+        return waitUntilAlertDisplayed() && isElementDisplayed(nameAlreadyRegisteredEmail);
     }
 
     public void clickPhoneNotNow() throws Exception {
@@ -146,7 +146,7 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isSomethingWentWrongAlertShown() throws Exception {
-        return waitUntilAlertAppears() && isElementDisplayed(nameSomethingWentWrong);
+        return waitUntilAlertDisplayed() && isElementDisplayed(nameSomethingWentWrong);
     }
 
     public void dismissSettingsWarningIfVisible(int timeoutSeconds) throws Exception {

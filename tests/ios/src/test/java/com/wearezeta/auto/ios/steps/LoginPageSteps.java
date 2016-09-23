@@ -70,7 +70,7 @@ public class LoginPageSteps {
         getLoginPage().tapLoginButton();
         getLoginPage().waitForLoginToFinish();
         getLoginPage().acceptAlertIfVisible(5);
-        getFirstTimeOverlayPage().acceptIfVisible(2);
+        getFirstTimeOverlayPage().acceptIfVisible(5);
         getLoginPage().acceptAlertIfVisible(5);
         getLoginPage().dismissSettingsWarningIfVisible(5);
     }
@@ -82,7 +82,7 @@ public class LoginPageSteps {
         getLoginPage().inputLoginCode(number);
         getLoginPage().waitForLoginToFinish();
         getLoginPage().acceptAlertIfVisible(5);
-        getFirstTimeOverlayPage().acceptIfVisible(2);
+        getFirstTimeOverlayPage().acceptIfVisible(5);
         getLoginPage().acceptAlertIfVisible(5);
         getLoginPage().dismissSettingsWarningIfVisible(5);
     }

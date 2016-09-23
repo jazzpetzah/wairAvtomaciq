@@ -38,15 +38,6 @@ public class ShareContactsOverlaySteps {
      */
     @When("^I tap (Share Contacts|Not Now) button on Share Contacts overlay$")
     public void ITapShareContactsButton(String btnName) throws Exception {
-        switch (btnName) {
-            case "Share Contacts":
-                getShareContactsOverlay().tapShareContactsButton();
-                break;
-            case "Not Now":
-                getShareContactsOverlay().tapNotNowButton();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
-        }
+        getShareContactsOverlay().tapButton(btnName);
     }
 }

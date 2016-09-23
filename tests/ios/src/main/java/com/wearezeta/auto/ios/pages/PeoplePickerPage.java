@@ -36,9 +36,6 @@ public class PeoplePickerPage extends IOSPage {
 
     private static final By nameUnblockButton = MobileBy.AccessibilityId("UNBLOCK");
 
-    private static final By xpathSelectedTopPeople =
-            By.xpath("//XCUIElementTypeCell/XCUIElementTypeCollectionView/XCUIElementTypeCell[@value='1']");
-
     public static final By xpathInviteCopyButton = By.xpath("//XCUIElementTypeCell[@name='Copy']");
 
     private static final By xpathInviteMorePeopleButton = By.xpath("//XCUIElementTypeButton[@name='INVITE MORE PEOPLE']");
@@ -177,10 +174,6 @@ public class PeoplePickerPage extends IOSPage {
 
     public void unblockUserOniPad() throws Exception {
         unblockButtonDoubleClick();
-    }
-
-    public int getNumberOfSelectedTopPeople() throws Exception {
-        return getElements(xpathSelectedTopPeople).size();
     }
 
     public void tapSendInviteButton() throws Exception {

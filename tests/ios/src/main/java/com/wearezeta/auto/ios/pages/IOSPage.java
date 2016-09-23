@@ -32,7 +32,6 @@ public abstract class IOSPage extends BasePage {
     private static final int DEFAULT_RETRY_COUNT = 2;
 
     protected static final String nameStrMainWindow = "ZClientMainWindow";
-    protected static final By nameMainWindow = MobileBy.AccessibilityId(nameStrMainWindow);
 
     protected static final String xpathStrMainWindow = "//XCUIElementTypeWindow[@name='ZClientMainWindow']";
 
@@ -207,7 +206,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     public boolean acceptAlertIfVisible(int timeoutSeconds) throws Exception {
-        if (waitUntilAlertAppears(timeoutSeconds)) {
+        if (waitUntilAlertDisplayed(timeoutSeconds)) {
             getDriver().switchTo().alert().accept();
             return true;
         }
@@ -219,7 +218,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     public boolean dismissAlertIfVisible(int timeoutSeconds) throws Exception {
-        if (waitUntilAlertAppears(timeoutSeconds)) {
+        if (waitUntilAlertDisplayed(timeoutSeconds)) {
             getDriver().switchTo().alert().dismiss();
             return true;
         }
@@ -493,11 +492,11 @@ public abstract class IOSPage extends BasePage {
         tapByPercentOfElementSize(el, 50, 50);
     }
 
-    public boolean waitUntilAlertAppears() throws Exception {
-        return waitUntilAlertAppears(DriverUtils.getDefaultLookupTimeoutSeconds());
+    public boolean waitUntilAlertDisplayed() throws Exception {
+        return waitUntilAlertDisplayed(DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
-    public boolean waitUntilAlertAppears(int timeoutSeconds) throws Exception {
+    public boolean waitUntilAlertDisplayed(int timeoutSeconds) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), classAlert, timeoutSeconds);
     }
 

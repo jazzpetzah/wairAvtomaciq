@@ -200,12 +200,15 @@ public class RegistrationPage extends IOSPage {
 
     public void tapChooseOwnPicButton() throws Exception {
         tapElementWithRetryIfNextElementAppears(nameChooseOwnPictureButton, nameChoosePhotoButton);
+        if (getDriver().isAutoAlertAcceptModeEnabled()) {
+            this.acceptAlertIfVisible();
+        }
     }
 
     public void tapChoosePhotoButton() throws Exception {
         getElement(nameChoosePhotoButton, "Choose photo button is not visible").click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameChoosePhotoButton)) {
-            throw new IllegalStateException("Confirm button is still visible");
+        if (getDriver().isAutoAlertAcceptModeEnabled()) {
+            this.acceptAlertIfVisible();
         }
     }
 
@@ -230,6 +233,9 @@ public class RegistrationPage extends IOSPage {
 
     public void tapTakePhotoButton() throws Exception {
         getElement(nameTakePhotoButton).click();
+        if (getDriver().isAutoAlertAcceptModeEnabled()) {
+            this.acceptAlertIfVisible();
+        }
     }
 
     /**

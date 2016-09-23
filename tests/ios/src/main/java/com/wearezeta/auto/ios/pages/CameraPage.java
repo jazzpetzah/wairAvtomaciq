@@ -45,6 +45,9 @@ public class CameraPage extends IOSPage {
             isTestImageUploaded = true;
         }
         getElement(getButtonByName(name)).click();
+        if (getDriver().isAutoAlertAcceptModeEnabled()) {
+            this.acceptAlertIfVisible(3);
+        }
     }
 
     public boolean isButtonVisible(String name) throws Exception {

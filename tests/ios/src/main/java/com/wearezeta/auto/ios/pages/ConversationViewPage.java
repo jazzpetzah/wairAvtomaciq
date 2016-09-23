@@ -61,7 +61,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By xpathAllTextMessages = By.xpath(xpathStrAllTextMessages);
 
     private static final Function<String, String> xpathStrRecentMessageByTextPart = text ->
-            String.format("%s[1][contains(@value, '%s')]", xpathStrAllTextMessages, text);
+            String.format("%s[1]/XCUIElementTypeTextView[contains(@value, '%s')]", xpathStrAllEntries, text);
 
     private static final Function<String, String> xpathStrRecentMessageByExactText = text ->
             String.format("%s[1][@value='%s']", xpathStrAllTextMessages, text);
@@ -166,7 +166,7 @@ public class ConversationViewPage extends IOSPage {
     private static final Function<String, String> xpathStrFilePreviewByFileName = fileName ->
             String.format("//XCUIElementTypeNavigationBar[@name='%s']", fileName);
 
-    private static final By nameGenericFileShareMenu = MobileBy.AccessibilityId("ActivityListView");
+    private static final By nameGenericFileShareMenu = MobileBy.AccessibilityId("Cancel");
 
     private static final By xpathFileUploadingLabel =
             By.xpath("//XCUIElementTypeStaticText[contains(@value,'UPLOADING…')]");
@@ -432,9 +432,6 @@ public class ConversationViewPage extends IOSPage {
     public void tapOnMediaBar() throws Exception {
         getElement(nameTitle).click();
     }
-
-    private static final int TEXT_INPUT_HEIGHT = 300;
-    private static final int TOP_BORDER_WIDTH = 40;
 
     public void openConversationDetails() throws Exception {
         getElement(xpathConversationDetailsButton).click();

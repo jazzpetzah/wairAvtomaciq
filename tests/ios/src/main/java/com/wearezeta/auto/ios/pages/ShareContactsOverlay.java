@@ -24,17 +24,22 @@ public class ShareContactsOverlay extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathShareContactsButton);
     }
 
-    public void tapShareContactsButton() throws Exception {
-        if (getDriver().isAutoAlertAcceptModeEnabled()) {
-            this.acceptAlertIfVisible(5);
+    private By getButtonByName(String name) {
+        switch (name.toLowerCase()) {
+            case "not now":
+                return nameNotNowButton;
+            case "share contacts":
+                return xpathShareContactsButton;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
         }
-        getElement(xpathShareContactsButton).click();
     }
 
-    public void tapNotNowButton() throws Exception {
+    public void tapButton(String name) throws Exception {
+        final By locator = getButtonByName(name);
         if (getDriver().isAutoAlertAcceptModeEnabled()) {
-            this.acceptAlertIfVisible(5);
+            this.acceptAlertIfVisible(15);
         }
-        getElement(nameNotNowButton).click();
+        getElement(locator).click();
     }
 }

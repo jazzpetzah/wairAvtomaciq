@@ -263,20 +263,6 @@ public class PeoplePickerPageSteps {
     }
 
     /**
-     * This step checks if the number of the selected contacts is correct.
-     *
-     * @param number expected number of contacts
-     * @throws Exception
-     * @step. ^I see that (\\d+) contacts are selected$
-     */
-    @Then("^I see that (\\d+) contacts are selected$")
-    public void ISeeThatContactsAreSelected(int number) throws Exception {
-        int numberOfSelectedTopPeople = getPeoplePickerPage().getNumberOfSelectedTopPeople();
-        Assert.assertEquals("Expected selected contacts: " + number + " but actual selected contacts: "
-                + numberOfSelectedTopPeople, number, numberOfSelectedTopPeople);
-    }
-
-    /**
      * Presses the Send An Invite button in the people picker. To invite people via mail.
      *
      * @throws Exception

@@ -210,8 +210,9 @@ Feature: Search
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    Then I see that <Number> contacts are selected
+    And I tap Create conversation action button on People picker page
+    Then I see group chat page with users <Contact>,<Contact2>
 
     Examples:
-      | Name      | Contact   | Number |
-      | user1Name | user2Name | 2      |
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
