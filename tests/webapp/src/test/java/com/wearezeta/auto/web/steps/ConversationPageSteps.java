@@ -826,7 +826,7 @@ public class ConversationPageSteps {
         }
     }
 
-    @When("^I click (like|unlike) button in context menu for latest message$")
+    @When("^I click (like|unlike) button in context menu for last message$")
     public void IClickToLikeInContextMenuOfLatestMessage(String like) throws Exception {
         boolean isLike = "like".equals(like);
         if (isLike) {
@@ -889,7 +889,7 @@ public class ConversationPageSteps {
                 .isUnlikeWithOtherLikesVisibleForLastMessage());
     }
 
-    @Then("^I see the last message is liked by (.*)$")
+    @Then("^I see the last message is liked by users? (.*)$")
     public void ISeeLastMessageIsLikedBy(String usersToNameAliases) throws Exception {
         List<String> likers = context.getPagesCollection().getPage(ConversationPage.class).getUsersThatLikeTheLastMessage();
         List<String> aliases = CommonSteps.splitAliases(usersToNameAliases);

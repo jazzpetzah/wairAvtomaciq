@@ -908,13 +908,11 @@ public final class WebAppLocators {
 
     public static final class AddEmailAddressPage {
 
-        public static final String cssErrorMessage = "#form-verify-email [data-uie-name='status-error']";
+        public static final String cssErrorMessage = "#form-verify-account [data-uie-name='status-error']";
 
-        public static final String cssSkipForNowButton = "[data-uie-name='go-add-later']";
+        public static final String cssErrorMarkedEmailField = "#form-verify-account .input-error[data-uie-name='enter-email']";
 
-        public static final String cssErrorMarkedEmailField = "#form-verify-email .input-error[data-uie-name='enter-email']";
-
-        public static final String cssErrorMarkedPasswordField = "#form-verify-email " +
+        public static final String cssErrorMarkedPasswordField = "#form-verify-account " +
                 ".input-error[data-uie-name='enter-password']";
     }
 

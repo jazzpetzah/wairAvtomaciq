@@ -46,8 +46,7 @@ public class AddEmailAddressPageSteps {
 	 * @throws Throwable
 	 */
 	@When("^I enter email address (.*) on add email address dialog$")
-	public void IEnterEmailOnAddEmailAddressDialog(String email)
-			throws Throwable {
+	public void IEnterEmailOnAddEmailAddressDialog(String email) throws Throwable {
 		context.getPagesCollection().getPage(AddEmailAddressPage.class)
 				.setEmail(email);
 	}
@@ -76,29 +75,6 @@ public class AddEmailAddressPageSteps {
 	public void IClickAddButtonOnAddEmailAddressDialog() throws Exception {
 		context.getPagesCollection().getPage(AddEmailAddressPage.class)
 				.clickAddButton();
-	}
-
-	/**
-	 * See Skip for now button
-	 * 
-	 * @step. ^I see Skip for now button on add email address dialog$
-	 */
-	@When("^I see Skip for now button on add email address dialog$")
-	public void ISeeSkipForNowButtonOnAddEmailAddressDialog() throws Exception {
-		context.getPagesCollection().getPage(AddEmailAddressPage.class)
-				.isSkipButtonVisible();
-	}
-
-	/**
-	 * Click Skip for now button
-	 * 
-	 * @step. ^I click Skip for now button on add email address dialog$
-	 */
-	@When("^I click Skip for now button on add email address dialog$")
-	public void IClickSkipForNowButtonOnAddEmailAddressDialog()
-			throws Exception {
-		context.getPagesCollection().getPage(AddEmailAddressPage.class)
-				.clickSkipForNowButton();
 	}
 
 	/**

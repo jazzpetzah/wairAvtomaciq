@@ -45,10 +45,7 @@ public class WelcomePage extends WebPage {
         final String picturePath = WebCommonUtils
                 .getFullPicturePath(pictureName);
         chooseYourOwnInput.sendKeys(picturePath);
-        if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
-            // manually trigger change event on input until https://bugzilla.mozilla.org/show_bug.cgi?id=1280947 is fixed
-            this.getDriver().executeScript("evt = new Event('change');arguments[0].dispatchEvent(evt);", chooseYourOwnInput);
-        }
+
         // manually trigger change event for redirect
         if (WebAppExecutionContext.getBrowser().isSupportingAccessToJavascriptContext()) {
             this.getDriver().executeScript("e = $.Event('change');$(\""
