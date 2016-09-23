@@ -19,7 +19,6 @@ import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -233,7 +232,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final FunctionFor2Parameters<String, String, Integer> xpathMessageByTextAndIndex =
             (messageText, index) -> String.format("%s[%s]/XCUIElementTypeTextView[@value='%s']",
-                            xpathStrAllEntries, index, messageText);
+                    xpathStrAllEntries, index, messageText);
 
     private static final By nameLikeButton = MobileBy.AccessibilityId("likeButton");
 
@@ -241,6 +240,11 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbNameFullScreenOnImageButton = FBBy.AccessibilityId("openFullScreenButton");
 
     private static final By nameRecentMessageToolbox = MobileBy.AccessibilityId("MessageToolbox");
+
+    private static final By fbXpathUploadMenu =
+            FBBy.xpath("//XCUIElementTypeButton[@label='Cancel']/preceding-sibling::*[1]");
+
+    private static final int UPLOAD_MENU_ITEMS_COUNT = 7;
 
     private static final int MAX_APPEARANCE_TIME = 20;
 
@@ -606,12 +610,39 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapFileTransferMenuItem(String itemName) throws Exception {
-        Optional<WebElement> element = getElementIfDisplayed(MobileBy.AccessibilityId(itemName), MAX_APPEARANCE_TIME);
-        if (element.isPresent()) {
-            element.get().click();
-        } else {
-            Assert.fail(String.format("'%s' file transfer item didn't appear in %s seconds", itemName, MAX_APPEARANCE_TIME));
+        final FBElement uploadMenu = (FBElement) getElement(fbXpathUploadMenu);
+        final Dimension menuSize = uploadMenu.getSize();
+        // FIXME: Workaround for menu items positions
+        int itemIdx;
+        switch (itemName) {
+            case "Record a video":
+                itemIdx = 1;
+                break;
+            case "Videos":
+                itemIdx = 2;
+                break;
+            case "20 MB file":
+                itemIdx = 3;
+                break;
+            case "Big file":
+                itemIdx = 4;
+                break;
+            case "group-icon@3x.png":
+                itemIdx = 5;
+                break;
+            case "CountryCodes.plist":
+                itemIdx = 6;
+                break;
+            case "iCloud":
+                itemIdx = 7;
+                break;
+            default:
+                throw new IllegalArgumentException(
+                        String.format("Unknown upload menu item '%s'", itemName));
         }
+        uploadMenu.tap(menuSize.getWidth() / 8,
+                menuSize.getHeight() / UPLOAD_MENU_ITEMS_COUNT * itemIdx -
+                        (menuSize.getHeight() / UPLOAD_MENU_ITEMS_COUNT / 2));
     }
 
     public boolean isFileTransferTopLabelVisible() throws Exception {
@@ -770,6 +801,8 @@ public class ConversationViewPage extends IOSPage {
             return toolButton.get();
         } else {
             this.tapAtTheCenterOfElement((FBElement) getElement(fbNameEllipsisButton));
+            // Wait for animation
+            Thread.sleep(500);
             return getElement(locator);
         }
     }
