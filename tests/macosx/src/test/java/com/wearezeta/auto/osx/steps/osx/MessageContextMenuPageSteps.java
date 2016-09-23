@@ -29,7 +29,7 @@ public class MessageContextMenuPageSteps {
      */
     @Given("^I open context menu of the last message$")
     public void IOpenContextMenuOfLast() throws Exception {
-        webappPagesCollection.getPage(ConversationPage.class).clickContextMenuOnLatestMessage();
+        webappPagesCollection.getPage(ConversationPage.class).clickContextMenuOnMessage(1);
     }
 
     /**
