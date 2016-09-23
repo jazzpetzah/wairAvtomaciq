@@ -48,11 +48,11 @@ public class GroupChatInfoPage extends IOSPage {
 
     private static final Function<String, String> xpathPeopleViewCollectionCellByName = name ->
             String.format("//XCUIElementTypeButton[@name='metaControllerCancelButton']/following::" +
-                    "XCUIElementTypeCollectionView/XCUIElementTypeCell//XCUIElementTypeStaticText[@name='%s']",
+                            "XCUIElementTypeCollectionView/XCUIElementTypeCell//XCUIElementTypeStaticText[@name='%s']",
                     name.toUpperCase());
 
     private static final By classNameParticipantAvatarCell = By.className("XCUIElementTypeCell");
-    
+
     public GroupChatInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -66,12 +66,8 @@ public class GroupChatInfoPage extends IOSPage {
         final FBElement nameInputField = (FBElement) getElement(fbNameConversationNameTextField);
         nameInputField.click();
         this.isKeyboardVisible();
-        try {
-            nameInputField.setValue(name);
-        } catch (WebDriverException e) {
-            nameInputField.clear();
-            nameInputField.sendKeys(name);
-        }
+        nameInputField.clear();
+        nameInputField.setValue(name);
         tapKeyboardCommitButton();
     }
 
