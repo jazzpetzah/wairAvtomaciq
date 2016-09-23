@@ -128,13 +128,13 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbNameShareLocationButton = FBBy.AccessibilityId("locationButton");
 
     private static final String xpathStrConversationViewTopBar =
-            "//XCUIElementTypeNavigationBar[./XCUIElementTypeButton[@name='Back']]";
+            "//XCUIElementTypeNavigationBar[ ./XCUIElementTypeButton[@name='Back'] ]";
     private static final By xpathConversationViewTopBar = By.xpath(xpathStrConversationViewTopBar);
     private static Function<String, String> xpathStrToolbarByConversationName = name ->
-            String.format("%s/XCUIElementTypeButton[starts-with(@name, '%s')]",
+            String.format("%s//XCUIElementTypeButton[starts-with(@name, '%s')]",
                     xpathStrConversationViewTopBar, name.toUpperCase());
     private static Function<String, String> xpathStrToolbarByExpr = expr ->
-            String.format("%s/XCUIElementTypeButton[%s]", xpathStrConversationViewTopBar, expr);
+            String.format("%s//XCUIElementTypeButton[%s]", xpathStrConversationViewTopBar, expr);
 
     private static final By fbNameEllipsisButton = FBBy.AccessibilityId("showOtherRowButton");
     private static final By xpathAudioCallButton = MobileBy.AccessibilityId("audioCallBarButton");
