@@ -54,16 +54,17 @@ public class ConversationViewPage extends IOSPage {
      */
     private static final String xpathStrAllEntries = "//XCUIElementTypeTable/XCUIElementTypeCell";
     private static final By xpathAllEntries = By.xpath(xpathStrAllEntries);
-    private static final By xpathFirstEntry = By.xpath(xpathStrAllEntries + "[1]");
+    private static final String xpathStrRecentEntry = xpathStrAllEntries + "[1]";
+    private static final By xpathRecentEntry = By.xpath(xpathStrRecentEntry);
 
     private static final String xpathStrAllTextMessages = xpathStrAllEntries +
             "/XCUIElementTypeTextView[boolean(string(@value))]";
     private static final By xpathAllTextMessages = By.xpath(xpathStrAllTextMessages);
 
-    private static final Function<String, String> xpathStrLastMessageByTextPart = text ->
+    private static final Function<String, String> xpathStrRecentMessageByTextPart = text ->
             String.format("%s[1][contains(@value, '%s')]", xpathStrAllTextMessages, text);
 
-    private static final Function<String, String> xpathStrLastMessageByExactText = text ->
+    private static final Function<String, String> xpathStrRecentMessageByExactText = text ->
             String.format("%s[1][@value='%s']", xpathStrAllTextMessages, text);
 
     private static final Function<String, String> xpathStrMessageByTextPart = text ->
@@ -177,9 +178,6 @@ public class ConversationViewPage extends IOSPage {
 
 //    private static final By nameVideoMessageSizeLabel = MobileBy.AccessibilityId("VideoSizeLabel");
 
-    private static final Function<String, String> xpathStrUserNameByText = text ->
-            String.format("//XCUIElementTypeCell[@name='%s']", text.toUpperCase());
-
     private static final By fbNameAudioRecorderCancelButton = FBBy.AccessibilityId("audioRecorderCancel");
 
     private static final By nameSendAudioMessageButton = MobileBy.AccessibilityId("audioRecorderSend");
@@ -234,8 +232,8 @@ public class ConversationViewPage extends IOSPage {
                     getDomainName(text).toLowerCase());
 
     private static final FunctionFor2Parameters<String, String, Integer> xpathMessageByTextAndIndex =
-            (messageText, index) ->
-                    String.format("%s[%s]/XCUIElementTypeTextView[@name='%s']", xpathStrAllEntries, index, messageText);
+            (messageText, index) -> String.format("%s[%s]/XCUIElementTypeTextView[@value='%s']",
+                            xpathStrAllEntries, index, messageText);
 
     private static final By nameLikeButton = MobileBy.AccessibilityId("likeButton");
 
@@ -338,12 +336,12 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isLastMessageContain(String expectedText) throws Exception {
-        final By locator = By.xpath(xpathStrLastMessageByTextPart.apply(expectedText));
+        final By locator = By.xpath(xpathStrRecentMessageByTextPart.apply(expectedText));
         return isElementDisplayed(locator);
     }
 
     public boolean isLastMessageEqual(String expectedText) throws Exception {
-        final By locator = By.xpath(xpathStrLastMessageByExactText.apply(expectedText));
+        final By locator = By.xpath(xpathStrRecentMessageByExactText.apply(expectedText));
         return isElementDisplayed(locator);
     }
 
@@ -518,11 +516,6 @@ public class ConversationViewPage extends IOSPage {
 
     public void openGifPreviewPage() throws Exception {
         getElement(nameGifButton).click();
-    }
-
-    public boolean isUserNameDisplayedInConversationView(String name) throws Exception {
-        final By locator = By.xpath(xpathStrUserNameByText.apply(name));
-        return isElementDisplayed(locator);
     }
 
     public boolean isConnectingToUserConversationLabelVisible(String username) throws Exception {
@@ -747,13 +740,13 @@ public class ConversationViewPage extends IOSPage {
         final int maxActions = 5;
         int actionIdx = 0;
         do {
-            if (isElementDisplayed(xpathFirstEntry, 1)) {
+            if (isElementDisplayed(xpathRecentEntry, 1)) {
                 return;
             }
             swipeUp(1000);
             actionIdx++;
         } while (actionIdx < maxActions);
-        if (!isElementDisplayed(xpathFirstEntry, 1)) {
+        if (!isElementDisplayed(xpathRecentEntry, 1)) {
             throw new IllegalStateException(String.format("The very first conversation entry is not visible after %s " +
                     "scrolling retries", actionIdx));
         }
@@ -965,6 +958,8 @@ public class ConversationViewPage extends IOSPage {
     public void tapEditControlButton(String name) throws Exception {
         final By locator = getEditControlByName(name);
         getElement(locator).click();
+        // Wait for the animation
+        Thread.sleep(1000);
     }
 
     public boolean isLinkPreviewSourceVisible(String expectedSrc) throws Exception {
@@ -983,24 +978,9 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public int getCountOfUsernames(String name) throws Exception {
-        final By locator = By.xpath(xpathStrUserNameByText.apply(name));
-        return getElements(locator).size();
-    }
-
     public boolean isMessageByPositionDisplayed(String message, int position) throws Exception {
         final By locator = By.xpath(xpathMessageByTextAndIndex.apply(message, position));
         return isElementDisplayed(locator);
-    }
-
-    public void tapRecentMessageFrom(boolean isLongTap, String sender) throws Exception {
-        final By locator = By.xpath(xpathStrUserNameByText.apply(sender));
-        final FBElement dstElement = (FBElement) getElement(locator);
-        if (isLongTap) {
-            dstElement.longTap();
-        } else {
-            dstElement.click();
-        }
     }
 
     /**
@@ -1071,9 +1051,8 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameLikeButton);
     }
 
-    public void tapAtRecentMessage(int pWidth, int pHeight, String from) throws Exception {
-        final By locator = By.xpath(xpathStrUserNameByText.apply(from));
-        DriverUtils.tapOnPercentOfElement(getDriver(), getElement(locator), pWidth, pHeight);
+    public void tapAtRecentMessage(int pWidth, int pHeight) throws Exception {
+        DriverUtils.tapOnPercentOfElement(getDriver(), getElement(xpathRecentEntry), pWidth, pHeight);
     }
 
     public void tapImageButton(String buttonName) throws Exception {

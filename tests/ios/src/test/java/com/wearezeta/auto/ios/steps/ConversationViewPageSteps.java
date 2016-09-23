@@ -539,19 +539,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify my user name in conversation view
-     *
-     * @param name String name - my user name
-     * @throws Exception
-     * @step. I see my user name (.*) in conversation
-     */
-    @When("I see my user name (.*) in conversation")
-    public void ISeeUserName(String name) throws Exception {
-        Assert.assertTrue("My name: " + name + " is not displayed in dialog",
-                getConversationViewPage().isUserNameDisplayedInConversationView(name));
-    }
-
-    /**
      * Verify if conversation view page with pointed user is shown.
      *
      * @param contact contact name
@@ -1382,22 +1369,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify that username is presented in conversation view X times
-     *
-     * @param nameAlias user name
-     * @param count     expected count user name is presented in conversation view
-     * @throws Exception
-     * @step. ^I see (.*) username exists in conversation view (\d+) times?
-     */
-    @Then("^I see (.*) username exists in conversation view (\\d+) times?$")
-    public void ISeeUsernameIsPresentedInConversationXTimes(String nameAlias, int count) throws Exception {
-        nameAlias = usrMgr.replaceAliasesOccurences(nameAlias, FindBy.NAME_ALIAS);
-        int actualCount = getConversationViewPage().getCountOfUsernames(nameAlias);
-        Assert.assertEquals(String.format("Username %s should be presented in conversation view %s time(s) but it is " +
-                "presented %s time(s)", nameAlias, count, actualCount), count, actualCount);
-    }
-
-    /**
      * Verify if pointed message is presented on relevant position in conversation view
      *
      * @param message  message text to verify
@@ -1409,20 +1380,6 @@ public class ConversationViewPageSteps {
     public void ISeeMessageIsOnXPositionInConversation(String message, int position) throws Exception {
         Assert.assertTrue(String.format("Message '%s' is not presented on %s position in conversation view", message, position),
                 getConversationViewPage().isMessageByPositionDisplayed(message, position));
-    }
-
-    /**
-     * Tap in the center of the most recent message cell for the particular contact
-     *
-     * @param isLongTap is not equal to null if long tap is going to be performed
-     * @param sender    sender name/alias
-     * @throws Exception
-     * @step. ^I (long )?tap on the recent message from (.*)
-     */
-    @When("^I (long )?tap on the recent message from (.*)")
-    public void ITapRecentMessage(String isLongTap, String sender) throws Exception {
-        sender = usrMgr.replaceAliasesOccurences(sender, FindBy.NAME_ALIAS);
-        getConversationViewPage().tapRecentMessageFrom(isLongTap != null, sender);
     }
 
     private static final int LIKE_ICON_STATE_CHANGE_TIMEOUT = 7; //seconds
@@ -1510,12 +1467,12 @@ public class ConversationViewPageSteps {
      * @param pHeight  destination cell Y tap point (in percent 0-100)
      * @param fromName message sender name/alias
      * @throws Exception
-     * @step. I tap at (\d+)% of width and (\d+)% of height of the recent message from (.*)
+     * @step. I tap at (\d+)% of width and (\d+)% of height of the recent message$
      */
-    @When("^I tap at (\\d+)% of width and (\\d+)% of height of the recent message from (.*)")
+    @When("^I tap at (\\d+)% of width and (\\d+)% of height of the recent message$")
     public void ITapAtContainerCorner(int pWidth, int pHeight, String fromName) throws Exception {
         fromName = usrMgr.replaceAliasesOccurences(fromName, FindBy.NAME_ALIAS);
-        getConversationViewPage().tapAtRecentMessage(pWidth, pHeight, fromName);
+        getConversationViewPage().tapAtRecentMessage(pWidth, pHeight);
     }
 
     /**

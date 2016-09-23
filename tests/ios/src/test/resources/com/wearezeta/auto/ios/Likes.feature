@@ -217,7 +217,7 @@ Feature: Likes
     Given User <Contact> sends encrypted message "<SCLink>" to user Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
-    When I tap at 90% of width and 90% of height of the recent message from <Contact>
+    When I tap at 90% of width and 90% of height of the recent message
     And I remember the state of Like icon in the conversation
     And I tap Like icon in the conversation
     Then I see the state of Like icon is changed in the conversation
