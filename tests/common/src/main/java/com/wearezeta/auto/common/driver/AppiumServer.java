@@ -1,7 +1,7 @@
 package com.wearezeta.auto.common.driver;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.common.process.UnixProcessHelpers;
+import com.wearezeta.auto.common.process.UnixProcessHelpers;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.net.UrlChecker;

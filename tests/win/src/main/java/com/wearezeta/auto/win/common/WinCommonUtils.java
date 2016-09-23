@@ -1,6 +1,6 @@
 package com.wearezeta.auto.win.common;
 
-import com.wearezeta.common.process.ProcessHandler;
+import com.wearezeta.auto.common.process.ProcessHandler;
 import java.awt.image.BufferedImage;
 
 import org.apache.log4j.Logger;

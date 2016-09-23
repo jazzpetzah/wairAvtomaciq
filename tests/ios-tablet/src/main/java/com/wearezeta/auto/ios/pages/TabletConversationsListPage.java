@@ -6,7 +6,6 @@ import java.util.function.Function;
 
 import org.openqa.selenium.By;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -14,21 +13,12 @@ import org.openqa.selenium.WebElement;
 
 
 public class TabletConversationsListPage extends ConversationsListPage {
-    private static final By xpathConversationListPage =
-            By.xpath("//UIAApplication[1]/UIAWindow[2]/UIACollectionView[1]");
-
     protected static final Function<String, String> xpathStrConvoListTitleByName = name ->
             String.format("%s/UIAStaticText[@value='%s']", xpathStrContactListItems, name);
 
     public TabletConversationsListPage(Future<ZetaIOSDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
-    }
-
-    @Override
-    public void swipeUp(int time) throws Exception {
-        DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationListPage), time,
-                20, 90, 20, 10);
     }
 
     public enum EntrySide {
