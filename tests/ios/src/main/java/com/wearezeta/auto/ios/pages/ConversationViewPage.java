@@ -149,7 +149,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("Too many people to call");
 
     private static final Function<String, String> xpathStrUserNameInUpperToolbar = text ->
-            String.format("%s/XCUIElementTypeButton[contains(@name, '%s')]", xpathStrConversationViewTopBar,
+            String.format("%s//XCUIElementTypeButton[starts-with(@name, '%s')]", xpathStrConversationViewTopBar,
                     text.toUpperCase());
 
     private static final String nameStrFileTransferTopLabel = "FileTransferTopLabel";
