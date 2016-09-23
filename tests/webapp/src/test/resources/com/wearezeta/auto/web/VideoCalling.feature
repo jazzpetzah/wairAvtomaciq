@@ -833,14 +833,14 @@ Feature: VideoCalling
     And <Contact> verify that all audio flows have greater than 0 bytes
 #    And <Contact> verifies to not get video data from me
     Then I see my self video is off
-    And I see video from other user is not black
+    And I see video call is maximized
     When I click on video button
     And I see video button pressed
     And <Contact> verify that all audio flows have greater than 0 bytes
     And <Contact> verify that all video flows have greater than 0 bytes
     Then I see my self video is on
     And I see my self video is not black
-    And I see video from other user is not black
+    And I see video call is maximized
     When I minimize video call
     Then I see broadcast indicator is shown for video
     When I click on video button
@@ -852,7 +852,7 @@ Feature: VideoCalling
     When <Contact> switches video off
     When I maximize video call via titlebar
     When <Contact> switches video on
-    Then I see video from other user is not black
+    And I see video call is maximized
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
     And I do not see my self video view
