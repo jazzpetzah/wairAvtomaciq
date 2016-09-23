@@ -418,10 +418,6 @@ public class ConversationPage extends WebPage {
     public void sendFile(String fileName) throws Exception {
         final String filePath = WebCommonUtils.getFullFilePath("filetransfer/" + fileName);
         filePathInput.sendKeys(filePath);
-        if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
-            // manually trigger change event on input until https://bugzilla.mozilla.org/show_bug.cgi?id=1280947 is fixed
-            this.getDriver().executeScript("evt = new Event('change');arguments[0].dispatchEvent(evt);", filePathInput);
-        }
     }
 
     public double getOverlapScoreOfLastImage(String pictureName)
