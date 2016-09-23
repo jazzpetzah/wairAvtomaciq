@@ -91,22 +91,4 @@ public class TabletContactListPageSteps {
         Assert.assertFalse("Mute call button is still visible",
                 getTabletContactListPage().isMuteCallButtonVisible());
     }
-
-    /**
-     * Verifies that next conversation is selected in list.
-     *
-     * @param conversation that is selected now
-     * @throws Throwable
-     * @step. ^I see conversation (.*) is selected in list$
-     */
-    @Then("^I see conversation (.*) is selected in list$")
-    public void ISeeConversationIsSelectedInList(String conversation)
-            throws Throwable {
-        conversation = usrMgr.replaceAliasesOccurences(conversation,
-                ClientUsersManager.FindBy.NAME_ALIAS);
-        Assert.assertEquals("Conversation is not selected", "1",
-                getTabletContactListPage().getSelectedConversationCellValue(conversation).
-                        orElseThrow(() -> new IllegalStateException("No conversations are selected in the list")));
-    }
-
 }

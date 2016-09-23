@@ -44,7 +44,7 @@ public class ConversationsListPage extends IOSPage {
             String.format("//XCUIElementTypeButton[@name='%s' and @label='CONTACTS']", strNameContactsButton));
 
     private static final By xpathPendingRequest =
-            By.xpath("//XCUIElementTypeCell[contains(@name,' waiting')]//XCUIElementTypeStaticText");
+            By.xpath("//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[contains(@name,' waiting')] ]");
 
     private static final By nameMuteCallButton = MobileBy.AccessibilityId("MuteVoiceButton");
 
@@ -54,10 +54,8 @@ public class ConversationsListPage extends IOSPage {
 
 
     private static final Function<String, String> xpathStrContactListPlayPauseButtonByConvoName = name ->
-            String.format("//XCUIElementTypeCell[@name='%s']//XCUIElementTypeButton[@name='mediaCellButton']", name);
-
-    private static final Function<String, String> xpathStrSelectedConversationEntryByName = name ->
-            String.format("%s/XCUIElementTypeCell[@name='%s']", xpathStrContactListRoot, name);
+            String.format("//XCUIElementTypeCell[ .//*[@name='%s'] ]" +
+                    "//XCUIElementTypeButton[@name='mediaCellButton']", name);
 
     private static final Function<String, String> xpathStrActionMenuByConversationName = name ->
             String.format("//XCUIElementTypeStaticText[@name='%s']", name.toUpperCase());
@@ -216,15 +214,6 @@ public class ConversationsListPage extends IOSPage {
 
     public void tapButtonInActionMenu(String buttonTitle) throws Exception {
         getElement(getActionButtonByName(buttonTitle)).click();
-    }
-
-    public Optional<String> getSelectedConversationCellValue(String conversation) throws Exception {
-        final By locator = By.xpath(xpathStrSelectedConversationEntryByName.apply(conversation));
-        final Optional<WebElement> cell = getElementIfDisplayed(locator);
-        if (cell.isPresent()) {
-            return Optional.of(cell.get().getAttribute("value"));
-        }
-        return Optional.empty();
     }
 
     public boolean isInviteMorePeopleButtonVisible() throws Exception {

@@ -487,7 +487,7 @@ Feature: People View
     And I tap Block action button
     And I confirm blocking alert
     Then I do not see conversation <Contact1> in conversations list
-    Then I see conversation <Contact2> is selected in list
+    And I see conversation <Contact2> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -507,7 +507,7 @@ Feature: People View
     And I tap Block action button
     And I confirm blocking alert
     Then I do not see conversation <Contact1> in conversations list
-    Then I see conversation <Contact2> is selected in list
+    And I see conversation <Contact2> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -527,7 +527,7 @@ Feature: People View
     And I see <Contact1> user profile page
     And I unblock user
     And I navigate back to conversations list
-    Then I see conversation <Contact1> is selected in list
+    Then I see conversation <Contact1> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName    |
@@ -547,7 +547,7 @@ Feature: People View
     And I select participant <Contact1>
     And I see <Contact1> user profile page
     And I unblock user
-    Then I see conversation <Contact1> is selected in list
+    Then I see conversation <Contact1> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName    |

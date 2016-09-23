@@ -212,8 +212,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     When I see conversations list
-    Then I see conversation <Contact> is selected in list
-    And I see the conversation with <Contact>
+    Then I see the conversation with <Contact>
 
     Examples:
       | Name      | Contact   |
