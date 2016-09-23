@@ -62,11 +62,11 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     private static final By xpathVerifiedShield = MobileBy.AccessibilityId("VerifiedShield");
 
-    private static final Function<String, String> xpathStrDeviceId = id -> String.format(
-        "//XCUIElementTypeStaticText[contains(@name, '%s')]", id);
+    private static final Function<String, String> xpathStrDeviceId = id ->
+            String.format("//XCUIElementTypeStaticText[contains(@name, '%s')]", id);
 
-    private static final Function<String, String> xpathStrLinkBlockByText = text -> String.format(
-            "//*[contains(@name, '%s')]", text);
+    private static final Function<String, String> xpathStrLinkBlockByText = text ->
+            String.format("//*[contains(@value, '%s')]", text);
 
     public OtherUserPersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
