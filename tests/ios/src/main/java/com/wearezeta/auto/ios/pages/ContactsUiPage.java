@@ -12,7 +12,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 public class ContactsUiPage extends IOSPage {
 
     private static final By xpathSearchInput =
-            By.xpath("//XCUIElementTypeTextView[StaticText[@name='SEARCH BY NAME']]");
+            By.xpath("//XCUIElementTypeTextView[ .//XCUIElementTypeStaticText[@name='SEARCH BY NAME'] ]");
 
     private static final By nameInviteOthersButton = MobileBy.AccessibilityId("INVITE OTHERS");
 
@@ -21,9 +21,7 @@ public class ContactsUiPage extends IOSPage {
                     "XCUIElementTypeButton[@name='ContactsViewCloseButton']]", name);
 
     private static final Function<String, String> xpathStrOpenButtonByConvoName = name ->
-            String.format("//XCUIElementTypeCell[@name='%s']" +
-                    "[preceding::XCUIElementTypeButton[@name='ContactsViewCloseButton']]/XCUIElementTypeButton[@name='OPEN']",
-                    name);
+            String.format("%s/XCUIElementTypeButton[@name='OPEN']", xpathStrConvoCellByName.apply(name));
 
     public ContactsUiPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -49,7 +47,7 @@ public class ContactsUiPage extends IOSPage {
     }
 
     public boolean isInviteOthersButtonVisible() throws Exception {
-        return isElementDisplayed( nameInviteOthersButton);
+        return isElementDisplayed(nameInviteOthersButton);
     }
 
     public void clickOpenButtonNextToUser(String contact) throws Exception {

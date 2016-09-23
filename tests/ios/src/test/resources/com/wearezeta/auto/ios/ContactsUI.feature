@@ -1,6 +1,6 @@
 Feature: ContactsUI
 
-  @C81 @regression @fastLogin
+  @C81 @regression @fastLogin @torun
   Scenario Outline: Verify blocked users are not displayed in the Contacts UI
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -26,7 +26,6 @@ Feature: ContactsUI
     Given I see conversations list
     And I open search UI
     And I tap Send Invite button
-    And I see contact <Contact> in ContactsUI page list
     When I click on Open button next to user name <Contact> on ContactsUI
     Then I see the conversation with <Contact>
 

@@ -26,9 +26,8 @@ Feature: ContactsUI
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given I open search UI
+    When I open search UI
     And I tap Send Invite button
-    And I see contact <Contact> in ContactsUI page list
     And I click on Open button next to user name <Contact> on ContactsUI
     Then I see the conversation with <Contact>
 
