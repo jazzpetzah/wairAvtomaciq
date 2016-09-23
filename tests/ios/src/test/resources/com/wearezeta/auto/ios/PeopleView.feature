@@ -176,20 +176,22 @@ Feature: People View
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
-  @C975 @regression @fastLogin
+  @C975 @regression @fastLogin @torun
   Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I tap on contact name <Contact1>
-    And I open conversation details
-    And I tap Create Group button
-    And I tap on Search input on People picker page
+    Given I tap on contact name <Contact1>
+    Given I open conversation details
+    Given I tap Create Group button
+    Given I tap on Search input on People picker page
+    # Tap it 3 times to unselect and select again
     When I tap on conversation <Contact2> in search result
-    Then I see user <Contact2> on People picker page is selected
-    When I tap on conversation <Contact2> in search result
-    Then I see user <Contact2> on People picker page is NOT selected
+    And I tap on conversation <Contact2> in search result
+    And I tap on conversation <Contact2> in search result
+    And I tap Create conversation action button on People picker page
+    Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -223,15 +225,13 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on contact name <Contact1>
-    And I open conversation details
-    And I tap Create Group button
-    And I tap on conversation <Contact2> in search result
+    Given I tap on contact name <Contact1>
+    Given I open conversation details
+    Given I tap Create Group button
+    When I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact3> in search result
     And I click close button to dismiss people view
     And I tap Create Group button
-    And I see user <Contact2> on People picker page is NOT selected
-    And I see user <Contact3> on People picker page is NOT selected
     And I click close button to dismiss people view
     And I close user profile page
     And I navigate back to conversations list

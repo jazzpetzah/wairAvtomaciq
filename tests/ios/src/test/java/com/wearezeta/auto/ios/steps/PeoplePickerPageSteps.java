@@ -208,18 +208,6 @@ public class PeoplePickerPageSteps {
         Assert.assertTrue("Top People label is not shown", getPeoplePickerPage().isTopPeopleLabelVisible());
     }
 
-    @When("I see user (.*) on People picker page is selected")
-    public void ISeeUserIsSelectedOnPeoplePickerPage(String name) throws Exception {
-        name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        Assert.assertTrue(getPeoplePickerPage().isUserSelected(name));
-    }
-
-    @When("I see user (.*) on People picker page is NOT selected")
-    public void ISeeUserIsNotSelectedOnPeoplePickerPage(String name) throws Exception {
-        name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        Assert.assertFalse(getPeoplePickerPage().isUserSelected(name));
-    }
-
     @When("^I press Backspace button in search field$")
     public void IPressBackspaceBtn() throws Exception {
         getPeoplePickerPage().pressBackspaceButton();
@@ -354,8 +342,9 @@ public class PeoplePickerPageSteps {
 
     /**
      * Verifies that Share your contacts settings message is shown
-     * @step. I see Share Contacts settings warning
+     *
      * @throws Exception
+     * @step. I see Share Contacts settings warning
      */
     @Then("^I see Share Contacts settings warning$")
     public void ISeeShareContactsSettingsWarning() throws Exception {

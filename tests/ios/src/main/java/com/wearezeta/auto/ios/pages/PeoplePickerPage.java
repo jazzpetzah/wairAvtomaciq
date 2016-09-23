@@ -65,9 +65,6 @@ public class PeoplePickerPage extends IOSPage {
             String.format("%s//XCUIElementTypeCollectionView/XCUIElementTypeCell" +
                     "//XCUIElementTypeCollectionView/XCUIElementTypeCell[%s]", xpathStrMainWindow, idx);
 
-    private static final Function<String, String> xpathStrPeoplePickerSelectedCellByName = name ->
-            String.format("(%s//XCUIElementTypeTable)[1]/XCUIElementTypeCell[@name='%s']", xpathStrMainWindow, name);
-
     private static final Function<Integer, String> xpathStrPeoplePickerTopConnectionsItemByIdx = idx ->
             String.format("%s//XCUIElementTypeCollectionView/XCUIElementTypeCell/XCUIElementTypeCollectionView/" +
                     "XCUIElementTypeCell[%d]/XCUIElementTypeStaticText[last()]", xpathStrMainWindow, idx);
@@ -148,11 +145,6 @@ public class PeoplePickerPage extends IOSPage {
 
     public boolean isTopPeopleLabelVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), namePeoplePickerTopPeopleLabel, 2);
-    }
-
-    public boolean isUserSelected(String name) throws Exception {
-        final By locator = By.xpath(xpathStrPeoplePickerSelectedCellByName.apply(name));
-        return getElement(locator).getAttribute("value").equals("1");
     }
 
     public void pressBackspaceButton() throws Exception {
