@@ -25,10 +25,12 @@ public class ShareContactsOverlay extends IOSPage {
     }
 
     public void tapShareContactsButton() throws Exception {
+        this.acceptAlertIfVisible(5);
         getElement(xpathShareContactsButton).click();
     }
 
     public void tapNotNowButton() throws Exception {
+        this.acceptAlertIfVisible(5);
         getElement(nameNotNowButton).click();
     }
 }

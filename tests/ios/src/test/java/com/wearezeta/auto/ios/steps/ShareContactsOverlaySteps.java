@@ -37,7 +37,7 @@ public class ShareContactsOverlaySteps {
      * @step. ^I tap (Share Contacts|Not Now) button on Share Contacts overlay$
      */
     @When("^I tap (Share Contacts|Not Now) button on Share Contacts overlay$")
-    public void TTapShareContactsButton(String btnName) throws Exception {
+    public void ITapShareContactsButton(String btnName) throws Exception {
         switch (btnName) {
             case "Share Contacts":
                 getShareContactsOverlay().tapShareContactsButton();

@@ -27,13 +27,7 @@ public class PendingOutgoingConnectionPage extends IOSPage {
     }
 
     public void tapConnectButton() throws Exception {
-        final Optional<WebElement> connectOtherUserButton = getElementIfDisplayed(xpathConnectOtherUserButton);
-        if (connectOtherUserButton.isPresent()) {
-            connectOtherUserButton.get().click();
-        } else if (isKeyboardVisible()) {
-            tapKeyboardCommitButton();
-            getElement(xpathConnectOtherUserButton).click();
-        }
+        getElement(xpathConnectOtherUserButton).click();
         // Wait for animation
         Thread.sleep(2000);
     }
