@@ -220,9 +220,6 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameLinkPreviewImage = MobileBy.AccessibilityId("linkPreviewImage");
 
-    private static final Function<String, String> xpathStrActionSheetBtnByName = name ->
-            String.format("//XCUIElementTypeActionSheet//XCUIElementTypeButton[@name='%s']", name);
-
     private static final Function<String, String> xpathStrDeleteOnLabelForUser = name ->
             String.format(
                     "//XCUIElementTypeCell[@name='%s']//XCUIElementTypeStaticText[starts-with(@label, 'Deleted on')]",
@@ -940,13 +937,11 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void selectDeleteMenuItem(String name) throws Exception {
-        final By locator = By.xpath(xpathStrActionSheetBtnByName.apply(name));
-        getElement(locator).click();
+        getElement(MobileBy.AccessibilityId(name)).click();
     }
 
     public boolean deleteMenuItemNotVisible(String name) throws Exception {
-        final By locator = By.xpath(xpathStrActionSheetBtnByName.apply(name));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), MobileBy.AccessibilityId(name));
     }
 
     public boolean isDeletedOnLabelPresent(String name) throws Exception {
