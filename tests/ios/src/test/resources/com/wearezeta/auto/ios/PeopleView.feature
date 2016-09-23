@@ -176,7 +176,7 @@ Feature: People View
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
-  @C975 @regression @fastLogin @torun
+  @C975 @regression @fastLogin
   Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -382,6 +382,7 @@ Feature: People View
     And I select Also Leave option on Delete conversation confirmation
     And I confirm delete conversation content
     And I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view

@@ -57,7 +57,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
             idx -> String.format("%s[%s]", xpathStrDevicesList, idx);
 
     private static final Function<String, String> xpathStrUserProfileNameByValue = value ->
-            String.format("//*[@name='%s']", value);
+            String.format("//XCUIElementTypeStaticText[@name='%s']", value);
 
     private static final By xpathVerifiedShield = MobileBy.AccessibilityId("VerifiedShield");
 
