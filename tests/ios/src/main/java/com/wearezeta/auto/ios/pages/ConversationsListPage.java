@@ -7,11 +7,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.driver.DummyElement;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.DragArguments;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
-import com.wearezeta.auto.ios.tools.FastLoginContainer;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
 
@@ -67,19 +65,14 @@ public class ConversationsListPage extends IOSPage {
 
     private static final By nameConversationsHintTextLabel = MobileBy.AccessibilityId("Conversations start here");
 
-    private static final By shareContactsAlertOKButton = By.xpath(xpathStrAlertButtonByCaption.apply("OK"));
-
     public ConversationsListPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
     public void tapContactsButton() throws Exception {
         getElement(nameContactsButton).click();
-        if (FastLoginContainer.getInstance().isEnabled()) {
-            getElementIfDisplayed(shareContactsAlertOKButton, 3).orElseGet(DummyElement::new).click();
-        } else {
-            // Wait until animation is completed
-            isElementDisplayed(PeoplePickerPage.xpathPickerClearButton, 3);
+        if (getDriver().isAutoAlertAcceptModeEnabled()) {
+            acceptAlertIfVisible(3);
         }
     }
 

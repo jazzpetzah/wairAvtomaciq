@@ -15,7 +15,6 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
-import com.wearezeta.auto.ios.pages.IOSPage;
 
 public class IOSCommonUtils {
     private static Logger log = ZetaLogger.getLog(IOSCommonUtils.class.getSimpleName());
@@ -54,8 +53,9 @@ public class IOSCommonUtils {
 
     public static ClientDeviceInfo readDeviceInfo() throws Exception {
         String os = "iOS";
-        String osBuild = (String) IOSPage.executeScript("UIATarget.localTarget().systemVersion();");
-        String deviceName = (String) IOSPage.executeScript("UIATarget.localTarget().model();");
+        // FIXME: get the necessary information
+        String osBuild = "";
+        String deviceName = "";
         String gsmNetworkType = "";
         Boolean isWifiEnabled = true;
 

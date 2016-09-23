@@ -8,7 +8,6 @@ import java.util.function.Function;
 
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.driver.*;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -53,7 +52,7 @@ public abstract class IOSPage extends BasePage {
 
     protected static final By nameBackToWireBrowserButton = MobileBy.AccessibilityId("Back to Wire");
 
-    protected static final By xpathConfirmButton = By.xpath("//XCUIElementTypeButton[@name='OK'']");
+    protected static final By xpathConfirmButton = By.xpath("//XCUIElementTypeButton[@name='OK']");
 
     protected static final By xpathCancelButton = By.xpath("//XCUIElementTypeButton[@name='Cancel']");
 
@@ -212,11 +211,8 @@ public abstract class IOSPage extends BasePage {
 
     public void tapKeyboardCommitButton() throws Exception {
         this.onScreenKeyboard.pressCommitButton();
-    }
-
-    public static Object executeScript(String script) throws Exception {
-        return PlatformDrivers.getInstance().getDriver(Platform.iOS).get()
-                .executeScript(script);
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     public boolean acceptAlertIfVisible() throws Exception {
@@ -284,8 +280,8 @@ public abstract class IOSPage extends BasePage {
         final Point elLocation = el.getLocation();
         final Dimension windowSize = getDriver().manage().window().getSize();
         IOSSimulatorHelper.clickAt(
-                String.format("%.2f", (elLocation.x + elSize.width / 2) * 1.0 / windowSize.width),
-                String.format("%.2f", (elLocation.y + elSize.height / 2) * 1.0 / windowSize.height),
+                String.format("%.2f", (elLocation.x + elSize.width * percentX / 100.0) / windowSize.width),
+                String.format("%.2f", (elLocation.y + elSize.height * percentY / 100.0) / windowSize.height),
                 String.format("%.3f", DriverUtils.LONG_TAP_DURATION / 1000.0));
     }
 
@@ -398,7 +394,7 @@ public abstract class IOSPage extends BasePage {
             return super.getElement(locator);
         } catch (Exception e) {
             log.debug(getDriver().getPageSource());
-            if (getDriver().getCapabilities().is(ZetaIOSDriver.AUTO_ACCEPT_ALERTS_CAPABILITY_NAME)) {
+            if (getDriver().isAutoAlertAcceptModeEnabled()) {
                 acceptAlertIfVisible(ALERT_VISIBILITY_TIMEOUT_SECONDS);
                 return super.getElement(locator);
             }
@@ -412,7 +408,7 @@ public abstract class IOSPage extends BasePage {
             return super.getElement(locator, message);
         } catch (Exception e) {
             log.debug(getDriver().getPageSource());
-            if (getDriver().getCapabilities().is(ZetaIOSDriver.AUTO_ACCEPT_ALERTS_CAPABILITY_NAME)) {
+            if (getDriver().isAutoAlertAcceptModeEnabled()) {
                 acceptAlertIfVisible(ALERT_VISIBILITY_TIMEOUT_SECONDS);
                 return super.getElement(locator, message);
             }
@@ -426,7 +422,7 @@ public abstract class IOSPage extends BasePage {
             return super.getElement(locator, message, timeoutSeconds);
         } catch (Exception e) {
             log.debug(getDriver().getPageSource());
-            if (getDriver().getCapabilities().is(ZetaIOSDriver.AUTO_ACCEPT_ALERTS_CAPABILITY_NAME)) {
+            if (getDriver().isAutoAlertAcceptModeEnabled()) {
                 acceptAlertIfVisible(ALERT_VISIBILITY_TIMEOUT_SECONDS);
                 return super.getElement(locator, message, timeoutSeconds);
             }
@@ -443,7 +439,7 @@ public abstract class IOSPage extends BasePage {
         if (el.isPresent()) {
             if (el.get().isDisplayed()) {
                 return true;
-            } else if (getDriver().getCapabilities().is(ZetaIOSDriver.AUTO_ACCEPT_ALERTS_CAPABILITY_NAME)) {
+            } else if (getDriver().isAutoAlertAcceptModeEnabled()) {
                 acceptAlertIfVisible(ALERT_VISIBILITY_TIMEOUT_SECONDS);
                 if (el.get().isDisplayed()) {
                     return true;

@@ -123,6 +123,8 @@ public class PeoplePickerPage extends IOSPage {
         getSearchResultsElement(name).orElseThrow(
                 () -> new IllegalStateException(String.format("User '%s' is not visible in people picker", name))).
                 click();
+        // Wait for the animation
+        Thread.sleep(1000);
     }
 
     public void dismissPeoplePicker() throws Exception {

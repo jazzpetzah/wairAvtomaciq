@@ -37,13 +37,15 @@ public class CameraRollPage extends IOSPage {
     }
 
     public void clickFirstLibraryFolder() throws Exception {
-        getElementIfExists(xpathCameraLibraryFirstFolder).
-                orElseThrow(() -> new IllegalStateException("Cannot find a library to select")).click();
+        getElementIfExists(xpathCameraLibraryFirstFolder).orElseThrow(
+                () -> new IllegalStateException("Cannot find a library to select")
+        ).click();
     }
 
     public void clickFirstImage() throws Exception {
-        getElementIfExists(xpathLibraryFirstPicture).
-                orElseThrow(() -> new IllegalStateException("Cannot find an image to select")).click();
+        getElementIfExists(xpathLibraryFirstPicture).orElseThrow(
+                () -> new IllegalStateException("Cannot find an image to select")
+        ).click();
     }
 
     private String getCameraRollCellValue() throws Exception {

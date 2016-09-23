@@ -208,8 +208,9 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I open search UI
     Given I wait until <ContactEmail> exists in backend search results
+    When I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
     And I tap the instant connect button next to <UnconnectedUser>
     And I click close button to dismiss people view

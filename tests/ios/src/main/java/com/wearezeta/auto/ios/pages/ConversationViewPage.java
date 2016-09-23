@@ -56,7 +56,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By xpathFirstEntry = By.xpath(xpathStrAllEntries + "[1]");
 
     private static final String xpathStrAllTextMessages = xpathStrAllEntries +
-            "//XCUIElementTypeTextView[boolean(string(@value))]";
+            "/XCUIElementTypeTextView[boolean(string(@value))]";
     private static final By xpathAllTextMessages = By.xpath(xpathStrAllTextMessages);
 
     private static final Function<String, String> xpathStrLastMessageByTextPart = text ->
@@ -694,6 +694,9 @@ public class ConversationViewPage extends IOSPage {
             isTestImageUploaded = true;
         }
         locateCursorToolButton(locator).click();
+        if (getDriver().isAutoAlertAcceptModeEnabled()) {
+            acceptAlertIfVisible(2);
+        }
     }
 
     public boolean waitUntilDownloadReadyPlaceholderVisible(String expectedFileName, String expectedSize,

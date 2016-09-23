@@ -46,6 +46,10 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
         return (dstCap != null) && (dstCap instanceof String) && dstCap.equals(AUTOMATION_MODE_XCUITEST);
     }
 
+    public boolean isAutoAlertAcceptModeEnabled() {
+        return getCapabilities().is(AUTO_ACCEPT_ALERTS_CAPABILITY_NAME);
+    }
+
     @Override
     public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException {
         try {
