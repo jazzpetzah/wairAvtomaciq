@@ -204,7 +204,7 @@ public class ConversationViewPage extends IOSPage {
                     String.format("(//XCUIElementTypeButton[@name='%s'])[%s][@value='%s']", strNameAudioActionButton,
                             index, buttonState);
 
-    private static final By fbClassNameShareLocationContainer = FBBy.className("XCUIElementTypeMapView");
+    private static final By fbClassNameShareLocationContainer = FBBy.className("XCUIElementTypeMap");
 
     private static final By nameDefaultReceivedLocationAddress =
             MobileBy.AccessibilityId(Constants.DEFAULT_GMAP_ADDRESS);
