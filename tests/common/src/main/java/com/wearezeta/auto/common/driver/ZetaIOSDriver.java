@@ -25,7 +25,7 @@ import org.openqa.selenium.security.Credentials;
 public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, FindsByFBPredicate,
         FindsByFBAccessibilityId, FindsByFBXPath, FindsByFBClassName {
     public static final long MAX_COMMAND_DURATION_MILLIS = 60000;
-    public static final long MAX_SESSION_INIT_DURATION_MILLIS = 200000;
+    public static final long MAX_SESSION_INIT_DURATION_MILLIS = 180000;
 
     public static final String AUTO_ACCEPT_ALERTS_CAPABILITY_NAME = "autoAcceptAlerts";
     public static final String AUTOMATION_NAME_CAPABILITY_NAME = "automationName";
@@ -83,7 +83,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
 
     @Override
     public Response execute(String driverCommand, Map<String, ?> parameters) {
-        if (this.isSessionLost() && !driverCommand.equals(DriverCommand.SCREENSHOT)) {
+        if (this.isSessionLost()) {
             throw new IllegalStateException(
                     String.format("Appium session is dead. Skipping execution of '%s' command...", driverCommand));
         }
