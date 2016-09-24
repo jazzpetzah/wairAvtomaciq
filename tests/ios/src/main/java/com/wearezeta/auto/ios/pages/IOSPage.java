@@ -520,7 +520,7 @@ public abstract class IOSPage extends BasePage {
     @Override
     public Optional<BufferedImage> takeScreenshot() throws Exception {
         Optional<BufferedImage> result = super.takeScreenshot();
-        if (CommonUtils.getIsSimulatorFromConfig(getClass()) && result.isPresent()) {
+        if (result.isPresent()) {
             final Dimension screenSize = getDriver().manage().window().getSize();
             final double scaleX = 1.0 * result.get().getWidth() / screenSize.getWidth();
             final double scaleY = 1.0 * result.get().getHeight() / screenSize.getHeight();
