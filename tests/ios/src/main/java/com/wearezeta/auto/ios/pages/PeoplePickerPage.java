@@ -24,7 +24,8 @@ public class PeoplePickerPage extends IOSPage {
 
     private static final By nameKeyboardEnterButton = MobileBy.AccessibilityId("Return");
 
-    private static final By xpathCreateConversationButton = By.xpath("//XCUIElementTypeButton[@name='CREATE GROUP']");
+    private static final By xpathCreateConversationButton =
+            By.xpath("//XCUIElementTypeButton[@name='CREATE GROUP']");
 
     private static final By namePeoplePickerTopPeopleLabel = MobileBy.AccessibilityId("TOP PEOPLE");
 
@@ -52,23 +53,21 @@ public class PeoplePickerPage extends IOSPage {
 
     private static final By nameSendImageButton = MobileBy.AccessibilityId("actionBarCameraButton");
 
-    private static final By xpathContactViewCloseButton =
-            By.xpath("//*[@name='ContactsViewCloseButton']");
+    private static final By xpathContactViewCloseButton = By.xpath("//*[@name='ContactsViewCloseButton']");
 
     private static final Function<String, String> xpathStrFoundContactByName =
-            name -> String.format("//*[@name='%s']", name);
+            name -> String.format("//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s'] ]", name);
 
     private static final Function<Integer, String> xpathStrPeoplePickerTopConnectionsAvatarByIdx = idx ->
-            String.format("%s//XCUIElementTypeCollectionView/XCUIElementTypeCell" +
-                    "//XCUIElementTypeCollectionView/XCUIElementTypeCell[%s]", xpathStrMainWindow, idx);
+            String.format("//XCUIElementTypeCollectionView/XCUIElementTypeCell" +
+                    "//XCUIElementTypeCollectionView/XCUIElementTypeCell[%s]", idx);
 
     private static final Function<Integer, String> xpathStrPeoplePickerTopConnectionsItemByIdx = idx ->
-            String.format("%s//XCUIElementTypeCollectionView/XCUIElementTypeCell/XCUIElementTypeCollectionView/" +
-                    "XCUIElementTypeCell[%d]/XCUIElementTypeStaticText[last()]", xpathStrMainWindow, idx);
+            String.format("//XCUIElementTypeCollectionView/XCUIElementTypeCell/XCUIElementTypeCollectionView/" +
+                    "XCUIElementTypeCell[%d]/XCUIElementTypeStaticText[last()]", idx);
 
-    private static final Function<String, String> xpathStrFirstSearchResultEntryByName = name ->
-            String.format("%s//XCUIElementTypeCollectionView/XCUIElementTypeCell//XCUIElementTypeStaticText[@name='%s']",
-                    xpathStrMainWindow, name);
+    private static final Function<String, String> xpathStrFirstSearchResultEntryByName = name -> String.format(
+            "//XCUIElementTypeCollectionView/XCUIElementTypeCell//XCUIElementTypeStaticText[@name='%s']", name);
 
     private static final By nameNoResults = MobileBy.AccessibilityId("No results.");
 
