@@ -2,6 +2,8 @@ package com.wearezeta.auto.ios.pages;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
@@ -9,10 +11,14 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 
 public class CameraRollPage extends IOSPage {
-    private static final By xpathCameraLibraryFirstFolder =
-            By.xpath("(//XCUIElementTypeTable)[last()]/XCUIElementTypeCell");
+    private static final By fbXpathCameraLibraryFirstFolder =
+            FBBy.xpath("(//XCUIElementTypeTable)[last()]/XCUIElementTypeCell");
 
-    private static final By xpathLibraryFirstPicture = By.xpath("//XCUIElementTypeCollectionView/XCUIElementTypeCell");
+    private static final By fbXpathLibraryFirstPicture =
+            FBBy.xpath("//XCUIElementTypeCollectionView[@name='PhotosGridView']/XCUIElementTypeCell");
+
+    private static final By fbXpathLibraryLastPicture =
+            FBBy.xpath("//XCUIElementTypeCollectionView[@name='PhotosGridView']/XCUIElementTypeCell[last()]");
 
     private static final By xpathCameraRolCell = By.xpath("//XCUIElementTypeCell[@name='Camera Roll']");
 
@@ -27,25 +33,38 @@ public class CameraRollPage extends IOSPage {
     }
 
     public void selectFirstPicture() throws Exception {
+        boolean shouldSelectLastPicture = true;
         try {
-            clickFirstLibraryFolder();
+            tapFirstLibraryFolder();
         } catch (IllegalStateException e) {
-            // Ignore silently
+            shouldSelectLastPicture = false;
         }
-
-        clickFirstImage();
+        if (shouldSelectLastPicture) {
+            tapLastImage();
+        } else {
+            tapFirstImage();
+        }
     }
 
-    public void clickFirstLibraryFolder() throws Exception {
-        getElementIfExists(xpathCameraLibraryFirstFolder).orElseThrow(
+    public void tapFirstLibraryFolder() throws Exception {
+        final FBElement btn = (FBElement) getElementIfExists(fbXpathCameraLibraryFirstFolder, 3).orElseThrow(
                 () -> new IllegalStateException("Cannot find a library to select")
-        ).click();
+        );
+        this.tapAtTheCenterOfElement(btn);
     }
 
-    public void clickFirstImage() throws Exception {
-        getElementIfExists(xpathLibraryFirstPicture).orElseThrow(
+    public void tapFirstImage() throws Exception {
+        final FBElement btn = (FBElement) getElementIfExists(fbXpathLibraryFirstPicture).orElseThrow(
                 () -> new IllegalStateException("Cannot find an image to select")
-        ).click();
+        );
+        this.tapAtTheCenterOfElement(btn);
+    }
+
+    public void tapLastImage() throws Exception {
+        final FBElement btn = (FBElement) getElementIfExists(fbXpathLibraryLastPicture).orElseThrow(
+                () -> new IllegalStateException("Cannot find an image to select")
+        );
+        this.tapAtTheCenterOfElement(btn);
     }
 
     private String getCameraRollCellValue() throws Exception {

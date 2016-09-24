@@ -40,8 +40,7 @@ public class TabletLoginPageSteps {
         getTabletLoginPage().tapLoginButton();
         getTabletLoginPage().waitForLoginToFinish();
         getTabletLoginPage().acceptAlertIfVisible(5);
-        getFirstTimeOverlayPage().acceptIfVisible(2);
-        getTabletLoginPage().acceptAlertIfVisible(5);
-        getTabletLoginPage().dismissSettingsWarningIfVisible(10);
+        getFirstTimeOverlayPage().accept();
+        getTabletLoginPage().dismissSettingsWarning();
     }
 }

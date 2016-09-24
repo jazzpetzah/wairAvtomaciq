@@ -70,9 +70,8 @@ public class LoginPageSteps {
         getLoginPage().tapLoginButton();
         getLoginPage().waitForLoginToFinish();
         getLoginPage().acceptAlertIfVisible(5);
-        getFirstTimeOverlayPage().acceptIfVisible(5);
-        getLoginPage().acceptAlertIfVisible(5);
-        getLoginPage().dismissSettingsWarningIfVisible(5);
+        getFirstTimeOverlayPage().accept();
+        getLoginPage().dismissSettingsWarning();
     }
 
     private void phoneLoginSequence(final PhoneNumber number) throws Exception {
@@ -82,9 +81,8 @@ public class LoginPageSteps {
         getLoginPage().inputLoginCode(number);
         getLoginPage().waitForLoginToFinish();
         getLoginPage().acceptAlertIfVisible(5);
-        getFirstTimeOverlayPage().acceptIfVisible(5);
-        getLoginPage().acceptAlertIfVisible(5);
-        getLoginPage().dismissSettingsWarningIfVisible(5);
+        getFirstTimeOverlayPage().accept();
+        getLoginPage().dismissSettingsWarning();
     }
 
     /**
