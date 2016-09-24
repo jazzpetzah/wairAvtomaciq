@@ -104,6 +104,7 @@ public class PeoplePickerPage extends IOSPage {
 
     public Optional<WebElement> getSearchResultsElement(String user) throws Exception {
         final By locator = By.xpath(xpathStrFoundContactByName.apply(user));
+        this.printPageSource();
         return getElementIfDisplayed(locator);
     }
 
