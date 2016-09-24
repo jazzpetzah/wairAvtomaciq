@@ -200,7 +200,7 @@ public class ConversationViewPage extends IOSPage {
                     String.format("(//XCUIElementTypeButton[@name='%s'])[%s][@value='%s']", strNameAudioActionButton,
                             index, buttonState);
 
-    private static final By fbClassNameShareLocationContainer = FBBy.className("XCUIElementTypeMap");
+    private static final By fbXpathShareLocationContainer = FBBy.xpath("//XCUIElementTypeMap/parent::*");
 
     private static final By nameDefaultReceivedLocationAddress =
             MobileBy.AccessibilityId(Constants.DEFAULT_GMAP_ADDRESS);
@@ -976,7 +976,7 @@ public class ConversationViewPage extends IOSPage {
             case "media":
                 return fbXpathMediaContainerCell;
             case "location map":
-                return fbClassNameShareLocationContainer;
+                return fbXpathShareLocationContainer;
             case "file transfer placeholder":
                 return fbNameFileTransferBottomLabel;
             case "audio message placeholder":
@@ -1007,7 +1007,7 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isContainerVisible(String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, MAX_APPEARANCE_TIME);
+        return isElementDisplayed(locator, MAX_APPEARANCE_TIME);
     }
 
     public boolean isContainerInvisible(String name) throws Exception {
