@@ -87,14 +87,11 @@ public class ConversationViewPage extends IOSPage {
             By.xpath("//XCUIElementTypeCell[ .//*[contains(@value, 'via giphy.com')] ]" +
                     "/following-sibling::XCUIElementTypeCell[@name='ImageCell']");
 
-    private static final By xpathLastMessageResendButton =
-            By.xpath(xpathStrAllTextMessages + "[1]/ancestor::*/XCUIElementTypeOther");
-
     private static final By namePlayButton = MobileBy.AccessibilityId("mediaBarPlayButton");
 
     private static final By namePauseButton = MobileBy.AccessibilityId("mediaBarPauseButton");
 
-    private static final By xpathConversationPage = By.xpath("(" + xpathStrMainWindow + "//XCUIElementTypeTable)[1]");
+    private static final By xpathConversationPage = By.xpath("//XCUIElementTypeTable");
 
     private static final By nameMediaBarCloseButton = MobileBy.AccessibilityId("mediabarCloseButton");
 
@@ -532,7 +529,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void resendLastMessageInDialogToUser() throws Exception {
-        getElement(xpathLastMessageResendButton).click();
+        getElement(nameRecentMessageToolbox).click();
     }
 
     public BufferedImage getMediaContainerStateGlyphScreenshot() throws Exception {

@@ -21,8 +21,7 @@ public class ConversationsListPage extends IOSPage {
 
     private static final By nameOpenArchiveButton = MobileBy.AccessibilityId("bottomBarArchivedButton");
 
-    private static final String xpathStrContactListRoot = String.format("(%s//XCUIElementTypeCollectionView)[1]",
-            xpathStrMainWindow);
+    private static final String xpathStrContactListRoot = "//XCUIElementTypeCollectionView";
 
     protected static final String xpathStrContactListItems = xpathStrContactListRoot + "/XCUIElementTypeCell";
     private static final Function<String, String> xpathStrContactListItemByExpr = xpathExpr ->
