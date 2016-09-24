@@ -92,19 +92,6 @@ public class TabletGroupConversationDetailPopoverPageSteps {
     }
 
     /**
-     * Waits until popover is closed
-     *
-     * @throws Exception
-     * @step. ^I wait until popover is closed$
-     */
-    @When("^I wait until popover is closed$")
-    public void IWaitUntilPopoverIsClosed() throws Exception {
-        Assert.assertTrue("Popover is still shown",
-                getTabletGroupConversationDetailPopoverPage()
-                        .waitConversationInfoPopoverToClose());
-    }
-
-    /**
      * Tap on the screen to dismiss popover
      *
      * @throws Exception

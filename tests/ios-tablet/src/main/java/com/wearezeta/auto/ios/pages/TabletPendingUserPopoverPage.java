@@ -9,10 +9,10 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class TabletPendingUserPopoverPage extends OtherUserOnPendingProfilePage {
     public static final Function<String, String> xpathStrUserByName = name ->
-            String.format("//UIAPopover/UIAStaticText[contains(@name, '%s')]", name);
+            String.format("(//XCUIElementTypeStaticText[contains(@name, '%s')])[last()]", name);
 
     public static final By xpathConnectButton =
-            By.xpath("//UIAPopover//UIAButton[@label='CONNECT' and @visible='true']");
+            By.xpath("(//XCUIElementTypeButton[@label='CONNECT'])[last()]");
 
     public TabletPendingUserPopoverPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);

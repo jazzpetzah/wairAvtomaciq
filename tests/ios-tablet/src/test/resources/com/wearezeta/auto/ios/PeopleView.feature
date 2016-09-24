@@ -604,7 +604,6 @@ Feature: People View
     And I open conversation menu
     And I tap Delete action button
     And I confirm delete conversation content
-    And I wait until popover is closed
     Then I do not see conversation <GroupChatName> in conversations list
     And I do not see Archive button at the bottom of conversations list
 
@@ -627,7 +626,6 @@ Feature: People View
     And I open conversation menu
     And I tap Delete action button
     And I confirm delete conversation content
-    And I wait until popover is closed
     Then I do not see conversation <GroupChatName> in conversations list
     And I do not see Archive button at the bottom of conversations list
 
@@ -649,7 +647,8 @@ Feature: People View
     And I tap Delete action button
     And I select Also Leave option on Delete conversation confirmation
     And I confirm delete conversation content
-    And I wait until popover is closed
+    # Wait for the popover to be closed
+    And I wait for 2 seconds
     And I open search UI
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
@@ -678,7 +677,8 @@ Feature: People View
     And I tap Delete action button
     And I select Also Leave option on Delete conversation confirmation
     And I confirm delete conversation content
-    And I wait until popover is closed
+    # Wait for the popover to be closed
+    And I wait for 2 seconds
     And I open search UI
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
@@ -708,7 +708,8 @@ Feature: People View
     And I open conversation menu
     And I tap Delete action button
     And I confirm delete conversation content
-    And I wait until popover is closed
+    # Wait for the popover to be closed
+    And I wait for 2 seconds
     And I open search UI
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
@@ -738,7 +739,8 @@ Feature: People View
     And I open conversation menu
     And I tap Delete action button
     And I confirm delete conversation content
-    And I wait until popover is closed
+    # Wait for the popover to be closed
+    And I wait for 2 seconds
     And I open search UI
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
@@ -766,7 +768,8 @@ Feature: People View
     And I open conversation menu
     And I tap Delete action button
     And I confirm delete conversation content
-    And I wait until popover is closed
+    # Wait for the popover to be closed
+    And I wait for 2 seconds
     And I open search UI
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
@@ -794,7 +797,8 @@ Feature: People View
     And I open conversation menu
     And I tap Delete action button
     And I confirm delete conversation content
-    And I wait until popover is closed
+    # Wait for the popover to be closed
+    And I wait for 2 seconds
     And I open search UI
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
@@ -820,7 +824,8 @@ Feature: People View
     And I tap Leave Conversation button
     And I see leave conversation alert
     And I confirm leaving
-    And I wait until popover is closed
+    # Wait for the popover to be closed
+    And I wait for 2 seconds
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
@@ -845,7 +850,8 @@ Feature: People View
     And I tap Leave Conversation button
     And I see leave conversation alert
     And I confirm leaving
-    And I wait until popover is closed
+    # Wait for the popover to be closed
+    And I wait for 2 seconds
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>

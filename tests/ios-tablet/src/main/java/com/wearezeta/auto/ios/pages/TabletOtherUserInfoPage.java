@@ -13,19 +13,17 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
             MobileBy.AccessibilityId("OtherUserMetaControllerRightButton");
 
     private static final Function<String, String> xpathStrOtherUserNameField = name ->
-            String.format("%s//*[@name='%s']",
-                    TabletGroupConversationDetailPopoverPage.xpathStrPopover, name);
+            String.format("(//*[@name='%s'])[last()]", name);
 
     private static final Function<String, String> xpathStrOtherUserEmailField = email ->
-            String.format("%s//*[@name='%s']",
-                    TabletGroupConversationDetailPopoverPage.xpathStrPopover, email.toUpperCase());
+            String.format("(//*[@name='%s'])[last()]", email.toUpperCase());
 
-    private static final By xpathOtherUserConnectButton = By.xpath("//UIAButton[@label='CONNECT']");
+    private static final By xpathOtherUserConnectButton =
+            By.xpath("(//XCUIElementTypeButton[@label='CONNECT'])[last()]");
 
     // idx starts from 1
     private static final Function<Integer, String> xpathStrDeviceByIndex = idx ->
-            String.format("%s/UIATableView/UIATableCell[%d]",
-                    TabletGroupConversationDetailPopoverPage.xpathStrPopover, idx);
+            String.format("(//XCUIElementTypeTableView)[last()]/UIATableCell[%d]", idx);
 
     private static final By nameOtherUserProfilePageCloseButton =
             MobileBy.AccessibilityId("OtherUserProfileCloseButton");
