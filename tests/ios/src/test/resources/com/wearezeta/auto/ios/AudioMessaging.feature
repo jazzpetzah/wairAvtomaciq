@@ -278,16 +278,19 @@ Feature: Audio Messaging
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
-    And User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    And I tap on contact name <Contact>
-    And User Me sends 1 encrypted message to user <Contact>
-    And I remember media container state
-    And I tap on media container in conversation view
-    And I see media container state is changed
-    And I remember media container state
-    And I tap Play audio message button
-    Then I see media container state is changed
+    Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
+    Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given I tap on contact name <Contact>
+    Given I tap on media container in conversation view
+    Given User Me sends 1 encrypted message to user <Contact>
+    # Wait until audio message is fully loaded
+    Given I wait for 7 seconds
+    Given I tap Play audio message button
+    # Wait until audio track is loaded
+    Given I wait for 7 seconds
+    When I remember media container state
+    And I wait for 3 seconds
+    Then I see media container state is not changed
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                                   | FileName | FileMIME  | ContactDevice |

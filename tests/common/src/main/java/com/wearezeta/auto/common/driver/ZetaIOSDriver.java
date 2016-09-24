@@ -47,16 +47,6 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     }
 
     @Override
-    public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException {
-        try {
-            final String base64EncodedPng = fbDriverAPI.getScreenshot();
-            return outputType.convertFromBase64Png(base64EncodedPng);
-        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
-            throw new WebDriverException(e);
-        }
-    }
-
-    @Override
     public boolean isSessionLost() {
         return this.isSessionLost;
     }
