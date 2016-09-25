@@ -70,8 +70,8 @@ Feature: Registration
     Given I enter activation code
     Given I accept terms of service
     And I input Non-English name <ArabicName> and hit Enter
-    And I tap Keep This One button
     And I accept alert
+    And I tap Keep This One button
     When I tap Not Now button on Share Contacts overlay
     Then I see conversations list
     When I tap settings gear button

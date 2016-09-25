@@ -232,9 +232,9 @@ public class LoginPageSteps {
      *
      * @param password password string
      * @throws IOException
-     * @step. I have entered password (.*)
+     * @step. ^I have entered password (.*)
      */
-    @When("I have entered password (.*)")
+    @When("^I have entered password (.*)")
     public void WhenIHaveEnteredPassword(String password) throws Exception {
         try {
             password = usrMgr.findUserByPasswordAlias(password).getPassword();

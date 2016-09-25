@@ -316,7 +316,10 @@ Feature: E2EE
   Scenario Outline: Verify device management appearance after 7 sign ins
     Given There is 1 user where <Name> is me
     Given User Myself adds new devices <DeviceName1>,<DeviceName2>,<DeviceName3>,<DeviceName4>,<DeviceName5>,<DeviceName6>,<DeviceName7>
-    When I sign in using my email
+    Given I switch to Log In tab
+    Given I have entered login <Email>
+    Given I have entered password <Password>
+    When I tap Login button
     Then I see Manage Devices overlay
 
     Examples:
