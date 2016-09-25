@@ -76,7 +76,7 @@ Feature: Sign In
     Given I switch to Phone Log In tab
     When I enter phone number for Myself
     When I enter login verification code for Myself
-    Then I see set email/password suggesstion page
+    Then I see set email/password suggestion page
     When I have entered login <Email>
     And I start activation email monitoring
     And I have entered password <Password>
@@ -143,7 +143,7 @@ Feature: Sign In
     Given I switch to Phone Log In tab
     And I enter phone number for Myself
     And I enter login verification code for Myself
-    And I see set email/password suggesstion page
+    And I see set email/password suggestion page
     And I have entered login <Email>
     And I start activation email monitoring
     And I have entered password <Password>
@@ -170,7 +170,7 @@ Feature: Sign In
     When I enter phone number for Myself
     When I enter login verification code for Myself
     And I accept alert
-    And I see set email/password suggesstion page
+    And I see set email/password suggestion page
     When I have entered login <Email>
     And I have entered password <Password>
     When I tap Return button on the keyboard

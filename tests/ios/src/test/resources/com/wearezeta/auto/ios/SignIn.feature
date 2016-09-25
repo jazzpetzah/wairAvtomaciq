@@ -120,7 +120,7 @@ Feature: Sign In
     When I enter phone number for Myself
     And I enter login verification code for Myself
     And I accept alert
-    And I see set email/password suggesstion page
+    And I see set email/password suggestion page
     And I have entered login <Email>
     And I have entered password <Password>
     And I tap Done keyboard button
@@ -139,7 +139,7 @@ Feature: Sign In
     When I enter phone number for Myself
     And I enter login verification code for Myself
     And I accept alert
-    And I see set email/password suggesstion page
+    And I see set email/password suggestion page
     And I have entered login <Email>
     And I have entered password <Password>
     And I tap Done keyboard button

@@ -148,11 +148,12 @@ public class LoginPageSteps {
      * Verify set email/password suggesstion page is shown
      *
      * @throws Exception
-     * @step. ^I see set email/password suggesstion page$
+     * @step. ^I see set email/password suggestion page$
      */
-    @When("^I see set email/password suggesstion page$")
+    @When("^I see set email/password suggestion page$")
     public void ISeeSetEmailPassSuggestionPage() throws Exception {
-        Assert.assertTrue(getLoginPage().isSetEmailPasswordSuggestionVisible());
+        Assert.assertTrue("Email/password suggestion page is not visible",
+                getLoginPage().isSetEmailPasswordSuggestionVisible());
     }
 
     private static final int BY_PHONE_NUMBER_LOGIN_PROBABILITY = 25;
