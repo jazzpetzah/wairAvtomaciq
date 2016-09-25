@@ -62,6 +62,9 @@ public abstract class IOSPage extends BasePage {
     protected static final Function<String, String> xpathStrAlertButtonByCaption = caption ->
             String.format("//XCUIElementTypeAlert//XCUIElementTypeButton[@label='%s']", caption);
 
+    private static final Function<String, String> xpathStrAddressBarByUrlPart = urlPart ->
+            String.format("//*[contains(@name, '%s')]", urlPart);
+
     private IOSKeyboard onScreenKeyboard;
 
     protected long getDriverInitializationTimeout() {
@@ -409,28 +412,16 @@ public abstract class IOSPage extends BasePage {
 
     public boolean isWebPageVisible(String expectedUrl) throws Exception {
         final WebElement urlBar = getElement(xpathBrowserURLButton, "The address bar of web browser is not visible");
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            final Dimension elSize = urlBar.getSize();
-            final Point elLocation = urlBar.getLocation();
-            clickAtSimulator(elLocation.x + elSize.width / 6, elLocation.y + elSize.height / 2);
-            Thread.sleep(1000);
-        } else {
-            urlBar.click();
-        }
+        urlBar.click();
         return DriverUtils.waitUntilLocatorAppears(getDriver(),
-                By.xpath(String.format("//*[starts-with(@name, '%s')]", expectedUrl)));
+                By.xpath(xpathStrAddressBarByUrlPart.apply(expectedUrl)));
     }
 
     public void tapBackToWire() throws Exception {
         final WebElement backToWireButton = getElement(nameBackToWireBrowserButton);
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            final Dimension elSize = backToWireButton.getSize();
-            final Point elLocation = backToWireButton.getLocation();
-            clickAtSimulator(elLocation.x + elSize.width / 2, elLocation.y + elSize.height / 2);
-            Thread.sleep(1000);
-        } else {
-            backToWireButton.click();
-        }
+        backToWireButton.click();
+        // Wait for animation
+        Thread.sleep(3000);
     }
 
     public void installIpa(File ipaFile) throws Exception {

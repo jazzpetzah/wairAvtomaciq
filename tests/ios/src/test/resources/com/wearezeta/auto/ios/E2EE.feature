@@ -228,9 +228,9 @@ Feature: E2EE
     #And I see the conversation view contains message <ExpectedMsg>
     And I see 1 conversation entries
     #BUG link can not be located
-    And I tap on THIS DEVICE link
-    And I open details page of device number 1
-    Then I see fingerprint is not empty
+    #    And I tap on THIS DEVICE link
+    #    And I open details page of device number 1
+    #    Then I see fingerprint is not empty
 
     Examples:
       | Name      | Contact1  | ExpectedMsg               |
@@ -254,6 +254,8 @@ Feature: E2EE
     And I type the default message and send it
     And I close New Device overlay
     And I resend the last message in the conversation with Resend button
+    # Wait until the message is sent
+    And I wait for 3 seconds
     Then I see 2 default messages in the conversation view
 
     Examples:
@@ -453,10 +455,9 @@ Feature: E2EE
     And I open conversation details
     And I switch to Devices tab
     When I tap "Why verify conversations?" link in user details
-    And I wait for 3 seconds
+    And I wait for 7 seconds
     Then I see "https://support.wire.com" web page opened
     When I tap Back To Wire button
-    And I wait for 7 seconds
     And I open details page of device number 1
     And I tap "How do I do that?" link in user details
     And I wait for 7 seconds
