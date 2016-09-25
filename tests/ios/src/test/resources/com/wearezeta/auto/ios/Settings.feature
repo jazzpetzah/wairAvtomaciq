@@ -262,6 +262,7 @@ Feature: Settings
     Given I input name <Name> and hit Enter
     Given I accept alert
     Given I tap Keep This One button
+    Given I accept alert
     Given I tap Share Contacts button on Share Contacts overlay
     Given I see conversations list
     Given I tap settings gear button

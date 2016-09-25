@@ -14,8 +14,8 @@ Feature: Registration
     And I accept alert
     And I verify registration address
     And I tap Choose Own Picture button
-    And I accept alert
     And I tap Choose Photo button
+    And I accept alert
     And I select the first picture from Camera Roll
     And I accept alert
     And I tap Share Contacts button on Share Contacts overlay
