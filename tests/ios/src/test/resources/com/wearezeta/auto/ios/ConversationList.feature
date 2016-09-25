@@ -209,6 +209,7 @@ Feature: Conversation List
     And I tap Delete action button
     And I confirm delete conversation content
     And I open search UI
+    And I accept alert
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     And I tap on conversation <GroupChatName> in search result
@@ -234,6 +235,7 @@ Feature: Conversation List
     And I tap Delete action button
     And I confirm delete conversation content
     And I open search UI
+    And I accept alert
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
@@ -350,6 +352,7 @@ Feature: Conversation List
     And I select Also Leave option on Delete conversation confirmation
     And I confirm delete conversation content
     And I open search UI
+    And I accept alert
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
@@ -378,6 +381,7 @@ Feature: Conversation List
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
     When I open search UI
+    And I accept alert
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     And I tap on conversation <GroupChatName> in search result
@@ -438,6 +442,7 @@ Feature: Conversation List
     And I do not see Archive button at the bottom of conversations list
     And I wait until <Contact> exists in backend search results
     And I open search UI
+    And I accept alert
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
@@ -480,7 +485,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C111308 @noAcceptAlert @regression
+  @C111308 @regression
   Scenario Outline: Verify share contacts dialogue is shown each time on invite more friends click
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -490,8 +495,7 @@ Feature: Conversation List
     Given I have entered password <Password>
     Given I tap Login button
     Given I dismiss alert
-    Given I accept First Time overlay if it is visible
-    Given I dismiss alert
+    Given I accept First Time overlay
     Given I dismiss settings warning
     Given I see conversations list
     When I open search UI

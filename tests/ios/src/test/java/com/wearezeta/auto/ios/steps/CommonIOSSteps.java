@@ -209,10 +209,6 @@ public class CommonIOSSteps {
         }
 
         final Map<String, Object> additionalCaps = new HashMap<>();
-        if (!scenario.getSourceTagNames().contains("@noAcceptAlert")) {
-            additionalCaps.put(ZetaIOSDriver.AUTO_ACCEPT_ALERTS_CAPABILITY_NAME, true);
-        }
-
         String appPath = getAppPath();
         if (scenario.getSourceTagNames().contains(TAG_NAME_UPGRADE) ||
                 scenario.getSourceTagNames().contains(TAG_NAME_ADDRESSBOOK)) {
@@ -411,7 +407,7 @@ public class CommonIOSSteps {
 
     @When("^I accept alert$")
     public void IAcceptAlert() throws Exception {
-        pagesCollection.getCommonPage().acceptAlertIfVisible();
+        pagesCollection.getCommonPage().acceptAlert();
     }
 
     /**
@@ -428,7 +424,7 @@ public class CommonIOSSteps {
 
     @When("^I dismiss alert$")
     public void IDismissAlert() throws Exception {
-        pagesCollection.getCommonPage().dismissAlertIfVisible();
+        pagesCollection.getCommonPage().dismissAlert();
     }
 
     /**

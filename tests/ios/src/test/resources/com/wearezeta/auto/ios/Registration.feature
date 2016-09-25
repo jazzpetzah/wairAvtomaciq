@@ -8,8 +8,10 @@ Feature: Registration
     And I accept terms of service
     And I input name <Name> and hit Enter
     And I tap Choose Own Picture button
+    And I accept alert
     And I tap Choose Photo button
     And I select the first picture from Camera Roll
+    And I accept alert
     And I tap Share Contacts button on Share Contacts overlay
     Then I see conversations list
 
@@ -17,7 +19,7 @@ Feature: Registration
       | Name      |
       | user1Name |
 
-  @C14321 @noAcceptAlert @regression
+  @C14321 @regression
   Scenario Outline: Verify that it's impossible to proceed registration with more than 16 characters in Phone
     Given I see sign in screen
     When I enter <Count> digits phone number
@@ -27,7 +29,7 @@ Feature: Registration
       | Count | ExpectedText               |
       | 16    | enter a valid phone number |
 
-  @C2652 @regression @noAcceptAlert
+  @C2652 @regression
   Scenario Outline: Verify notification appearance in case of incorrect code
     Given I see sign in screen
     When I enter phone number for <Name>
@@ -46,9 +48,11 @@ Feature: Registration
     And I accept terms of service
     And I input name <Name> and hit Enter
     And I tap Choose Own Picture button
+    And I accept alert
     And I tap Take Photo button
     And I tap Take Photo button on Camera page
     And I tap Confirm button on Picture preview page
+    And I accept alert
     And I tap Share Contacts button on Share Contacts overlay
     And I tap settings gear button
     And I select settings item Account
@@ -67,6 +71,7 @@ Feature: Registration
     Given I accept terms of service
     And I input Non-English name <ArabicName> and hit Enter
     And I tap Keep This One button
+    And I accept alert
     When I tap Not Now button on Share Contacts overlay
     Then I see conversations list
     When I tap settings gear button

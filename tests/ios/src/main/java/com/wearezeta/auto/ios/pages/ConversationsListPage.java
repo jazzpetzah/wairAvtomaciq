@@ -70,9 +70,6 @@ public class ConversationsListPage extends IOSPage {
 
     public void tapContactsButton() throws Exception {
         getElement(nameContactsButton).click();
-        if (getDriver().isAutoAlertAcceptModeEnabled()) {
-            acceptAlertIfVisible(3);
-        }
     }
 
     public void tapPlayPauseButtonNextTo(String name) throws Exception {

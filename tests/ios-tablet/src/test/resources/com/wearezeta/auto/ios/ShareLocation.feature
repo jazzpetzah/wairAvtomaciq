@@ -14,6 +14,7 @@ Feature: Share Location
     And I see the default received Share Location address in the conversation view
     When I tap on group chat with name <GroupChatName>
     And I tap Share Location button from input tools
+    And I accept alert
     # Small delay waiting location detection animation to finish(animation for iPad takes longer)
     And I wait for 10 seconds
     And I tap Send location button from map view

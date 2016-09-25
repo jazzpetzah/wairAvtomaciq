@@ -140,6 +140,7 @@ Feature: Likes
     And User <Contact1> likes the recent message from group conversation <Group>
     Then I do not see conversation <Group> in conversations list
     When I open search UI
+    And I accept alert
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <Group>
     And I tap on conversation <Group> in search result

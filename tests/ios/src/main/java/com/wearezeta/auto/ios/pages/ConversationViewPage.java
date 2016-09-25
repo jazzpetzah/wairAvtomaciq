@@ -675,9 +675,6 @@ public class ConversationViewPage extends IOSPage {
             isTestImageUploaded = true;
         }
         locateCursorToolButton(locator).click();
-        if (getDriver().isAutoAlertAcceptModeEnabled()) {
-            acceptAlertIfVisible(2);
-        }
     }
 
     public boolean waitUntilDownloadReadyPlaceholderVisible(String expectedFileName, String expectedSize,

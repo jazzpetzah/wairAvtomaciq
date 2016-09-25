@@ -58,6 +58,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search UI
+    And I accept alert
     Then I see People picker page
 
     Examples:
@@ -275,6 +276,7 @@ Feature: Conversation List
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
     When I open search UI
+    And I accept alert
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     And I tap on conversation <GroupChatName> in search result
@@ -341,6 +343,7 @@ Feature: Conversation List
     And I select Also Leave option on Delete conversation confirmation
     And I confirm delete conversation content
     And I open search UI
+    And I accept alert
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
@@ -389,6 +392,7 @@ Feature: Conversation List
     And I do not see Archive button at the bottom of conversations list
     And I wait until <Contact> exists in backend search results
     And I open search UI
+    And I accept alert
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results

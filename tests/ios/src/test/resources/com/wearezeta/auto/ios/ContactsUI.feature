@@ -9,6 +9,7 @@ Feature: ContactsUI
     Given I see conversations list
     When I do not see conversation <Contact> in conversations list
     And I open search UI
+    And I accept alert
     And I tap Send Invite button
     And I see ContactsUI page
     And I input user name <Contact> in search on ContactsUI
@@ -25,6 +26,7 @@ Feature: ContactsUI
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I open search UI
+    Given I accept alert
     Given I tap Send Invite button
     When I click on Open button next to user name <Contact> on ContactsUI
     Then I see the conversation with <Contact>

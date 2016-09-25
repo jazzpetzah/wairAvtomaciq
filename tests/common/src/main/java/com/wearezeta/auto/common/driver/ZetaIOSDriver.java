@@ -27,7 +27,6 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     public static final long MAX_COMMAND_DURATION_MILLIS = 60000;
     public static final long MAX_SESSION_INIT_DURATION_MILLIS = 180000;
 
-    public static final String AUTO_ACCEPT_ALERTS_CAPABILITY_NAME = "autoAcceptAlerts";
     public static final String AUTOMATION_NAME_CAPABILITY_NAME = "automationName";
     public static final String AUTOMATION_MODE_XCUITEST = "XCUITest";
 
@@ -40,10 +39,6 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     public ZetaIOSDriver(URL remoteAddress, Capabilities desiredCapabilities) {
         super(remoteAddress, desiredCapabilities);
         this.fbDriverAPI = new FBDriverAPI();
-    }
-
-    public boolean isAutoAlertAcceptModeEnabled() {
-        return getCapabilities().is(AUTO_ACCEPT_ALERTS_CAPABILITY_NAME);
     }
 
     @Override

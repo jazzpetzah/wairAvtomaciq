@@ -8,6 +8,7 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I tap Login button
+    And I accept alert
     And I accept First Time overlay
     And I dismiss settings warning
     Then I see conversations list
@@ -16,7 +17,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C3133 @rc @regression
+  @C3133 @rc @regression @torun
   Scenario Outline: Sign in to ZClient [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -25,6 +26,7 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I tap Login button
+    And I accept alert
     And I accept First Time overlay
     And I dismiss settings warning
     Then I see conversations list
@@ -33,7 +35,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C3132 @regression @noAcceptAlert
+  @C3132 @regression
   Scenario Outline: Notification if SignIn credentials are wrong [LANDSCAPE]
     Given I see sign in screen
     Given I rotate UI to landscape
@@ -56,6 +58,7 @@ Feature: Sign In
     Given I switch to Phone Log In tab
     When I enter phone number for Myself
     When I enter login verification code for Myself
+    And I accept alert
     And I accept First Time overlay
     And I dismiss settings warning
     Then I see conversations list
@@ -87,7 +90,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C3137 @regression @noAcceptAlert
+  @C3137 @regression
   Scenario Outline: Verify impossibility to login with the wrong code [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -102,7 +105,7 @@ Feature: Sign In
       | Name      |
       | user1Name |
 
-  @C3140 @regression @noAcceptAlert
+  @C3140 @regression
   Scenario Outline: Verify impossibility to resend code within 10 min [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -117,7 +120,7 @@ Feature: Sign In
       | Name      |
       | user1Name |
 
-  @C3141 @regression @noAcceptAlert
+  @C3141 @regression
   Scenario Outline: Verify impossibility to login with unregistered phone number [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -157,7 +160,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C2868 @regression @noAcceptAlert
+  @C2868 @regression
   Scenario Outline: Verify error message appears in case of registering already taken email [LANDSCAPE]
     Given There is 1 user where <Name> is me with phone number only
     Given I rotate UI to landscape

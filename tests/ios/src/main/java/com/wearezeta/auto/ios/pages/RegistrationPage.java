@@ -200,16 +200,10 @@ public class RegistrationPage extends IOSPage {
 
     public void tapChooseOwnPicButton() throws Exception {
         tapElementWithRetryIfNextElementAppears(nameChooseOwnPictureButton, nameChoosePhotoButton);
-        if (getDriver().isAutoAlertAcceptModeEnabled()) {
-            this.acceptAlertIfVisible();
-        }
     }
 
     public void tapChoosePhotoButton() throws Exception {
         getElement(nameChoosePhotoButton, "Choose photo button is not visible").click();
-        if (getDriver().isAutoAlertAcceptModeEnabled()) {
-            this.acceptAlertIfVisible();
-        }
     }
 
     public void waitRegistrationToFinish() throws Exception {
@@ -217,7 +211,6 @@ public class RegistrationPage extends IOSPage {
         if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator, 40)) {
             throw new IllegalStateException("Verification page is still visible after the timeout");
         }
-        instantiatePage(FirstTimeOverlay.class).acceptIfVisible(2);
     }
 
     private static final int SELF_PICTURE_LOAD_TIMEOUT_SECONDS = 30;
@@ -233,9 +226,6 @@ public class RegistrationPage extends IOSPage {
 
     public void tapTakePhotoButton() throws Exception {
         getElement(nameTakePhotoButton).click();
-        if (getDriver().isAutoAlertAcceptModeEnabled()) {
-            this.acceptAlertIfVisible();
-        }
     }
 
     /**

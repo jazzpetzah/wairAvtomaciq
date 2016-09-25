@@ -59,8 +59,6 @@ public abstract class IOSPage extends BasePage {
 
     private static final By nameDoneButton = MobileBy.AccessibilityId("Done");
 
-    private static final By classAlert = By.className("XCUIElementTypeAlert");
-
     protected static final Function<String, String> xpathStrAlertButtonByCaption = caption ->
             String.format("//XCUIElementTypeAlert//XCUIElementTypeButton[@label='%s']", caption);
 
@@ -203,28 +201,28 @@ public abstract class IOSPage extends BasePage {
         Thread.sleep(1000);
     }
 
-    public boolean acceptAlertIfVisible() throws Exception {
-        return acceptAlertIfVisible(DriverUtils.getDefaultLookupTimeoutSeconds());
+    public void acceptAlert() throws Exception {
+        acceptAlert(DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
-    public boolean acceptAlertIfVisible(int timeoutSeconds) throws Exception {
+    public void acceptAlert(int timeoutSeconds) throws Exception {
         if (waitUntilAlertDisplayed(timeoutSeconds)) {
             getDriver().switchTo().alert().accept();
-            return true;
+            return;
         }
-        return false;
+        throw new IllegalStateException(String.format("No alert has been shown after %s seconds", timeoutSeconds));
     }
 
-    public boolean dismissAlertIfVisible() throws Exception {
-        return dismissAlertIfVisible(DriverUtils.getDefaultLookupTimeoutSeconds());
+    public void dismissAlert() throws Exception {
+        dismissAlert(DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
-    public boolean dismissAlertIfVisible(int timeoutSeconds) throws Exception {
+    public void dismissAlert(int timeoutSeconds) throws Exception {
         if (waitUntilAlertDisplayed(timeoutSeconds)) {
             getDriver().switchTo().alert().dismiss();
-            return true;
+            return;
         }
-        return false;
+        throw new IllegalStateException(String.format("No alert has been shown after %s seconds", timeoutSeconds));
     }
 
     public boolean isAlertContainsText(String expectedText) throws Exception {
@@ -366,18 +364,12 @@ public abstract class IOSPage extends BasePage {
         tapElementWithRetryIfNextElementNotAppears(locator, nextLocator, DEFAULT_RETRY_COUNT);
     }
 
-    private static final int ALERT_VISIBILITY_TIMEOUT_SECONDS = 2;
-
     @Override
     protected WebElement getElement(By locator) throws Exception {
         try {
             return super.getElement(locator);
         } catch (Exception e) {
-            log.debug(getDriver().getPageSource());
-            if (getDriver().isAutoAlertAcceptModeEnabled()) {
-                acceptAlertIfVisible(ALERT_VISIBILITY_TIMEOUT_SECONDS);
-                return super.getElement(locator);
-            }
+            printPageSource();
             throw e;
         }
     }
@@ -387,11 +379,7 @@ public abstract class IOSPage extends BasePage {
         try {
             return super.getElement(locator, message);
         } catch (Exception e) {
-            log.debug(getDriver().getPageSource());
-            if (getDriver().isAutoAlertAcceptModeEnabled()) {
-                acceptAlertIfVisible(ALERT_VISIBILITY_TIMEOUT_SECONDS);
-                return super.getElement(locator, message);
-            }
+            printPageSource();
             throw e;
         }
     }
@@ -401,11 +389,7 @@ public abstract class IOSPage extends BasePage {
         try {
             return super.getElement(locator, message, timeoutSeconds);
         } catch (Exception e) {
-            log.debug(getDriver().getPageSource());
-            if (getDriver().isAutoAlertAcceptModeEnabled()) {
-                acceptAlertIfVisible(ALERT_VISIBILITY_TIMEOUT_SECONDS);
-                return super.getElement(locator, message, timeoutSeconds);
-            }
+            printPageSource();
             throw e;
         }
     }
@@ -417,14 +401,7 @@ public abstract class IOSPage extends BasePage {
     protected boolean isElementDisplayed(By locator, int timeoutSeconds) throws Exception {
         final Optional<WebElement> el = getElementIfExists(locator, timeoutSeconds);
         if (el.isPresent()) {
-            if (el.get().isDisplayed()) {
-                return true;
-            } else if (getDriver().isAutoAlertAcceptModeEnabled()) {
-                acceptAlertIfVisible(ALERT_VISIBILITY_TIMEOUT_SECONDS);
-                if (el.get().isDisplayed()) {
-                    return true;
-                }
-            }
+            return el.get().isDisplayed();
         }
         this.printPageSource();
         return false;
@@ -499,7 +476,15 @@ public abstract class IOSPage extends BasePage {
     }
 
     public boolean waitUntilAlertDisplayed(int timeoutSeconds) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), classAlert, timeoutSeconds);
+        final long msStart = System.currentTimeMillis();
+        do {
+            try {
+                return getDriver().switchTo().alert().getText() != null;
+            } catch (WebDriverException e) {
+                Thread.sleep(500);
+            }
+        } while (System.currentTimeMillis() - msStart <= timeoutSeconds * 1000);
+        return false;
     }
 
     public void tapAlertButton(String caption) throws Exception {

@@ -37,9 +37,6 @@ public class ShareContactsOverlay extends IOSPage {
 
     public void tapButton(String name) throws Exception {
         final By locator = getButtonByName(name);
-        if (getDriver().isAutoAlertAcceptModeEnabled()) {
-            this.acceptAlertIfVisible(15);
-        }
         getElement(locator).click();
     }
 }

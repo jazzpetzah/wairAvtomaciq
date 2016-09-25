@@ -69,7 +69,7 @@ public class LoginPageSteps {
         getLoginPage().setPassword(password);
         getLoginPage().tapLoginButton();
         getLoginPage().waitForLoginToFinish();
-        getLoginPage().acceptAlertIfVisible(5);
+        getLoginPage().acceptAlert();
         getFirstTimeOverlayPage().accept();
         getLoginPage().dismissSettingsWarning();
     }
@@ -80,7 +80,7 @@ public class LoginPageSteps {
         getRegistrationPage().inputPhoneNumber(number);
         getLoginPage().inputLoginCode(number);
         getLoginPage().waitForLoginToFinish();
-        getLoginPage().acceptAlertIfVisible(5);
+        getLoginPage().acceptAlert();
         getFirstTimeOverlayPage().accept();
         getLoginPage().dismissSettingsWarning();
     }

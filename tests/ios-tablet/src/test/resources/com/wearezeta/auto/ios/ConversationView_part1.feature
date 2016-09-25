@@ -158,7 +158,8 @@ Feature: Conversation View
     And I have entered login <Login>
     And I have entered password <Password>
     And I tap Login button
-    And I accept First Time overlay if it is visible
+    And I accept alert
+    And I accept First Time overlay
     And I dismiss settings warning
     And I see conversations list
     And I tap on contact name <Contact>
@@ -197,6 +198,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I tap Sketch button from input tools
+    And I accept alert
     And I draw a random sketch
     And I send my sketch
     Then I see 1 photo in the conversation view
@@ -214,6 +216,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I tap Sketch button from input tools
+    And I accept alert
     And I draw a random sketch
     And I send my sketch
     Then I see 1 photo in the conversation view

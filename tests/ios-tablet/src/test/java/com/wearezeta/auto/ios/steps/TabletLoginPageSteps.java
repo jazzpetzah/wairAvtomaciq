@@ -39,7 +39,7 @@ public class TabletLoginPageSteps {
         getTabletLoginPage().setPassword(self.getPassword());
         getTabletLoginPage().tapLoginButton();
         getTabletLoginPage().waitForLoginToFinish();
-        getTabletLoginPage().acceptAlertIfVisible(5);
+        getTabletLoginPage().acceptAlert();
         getFirstTimeOverlayPage().accept();
         getTabletLoginPage().dismissSettingsWarning();
     }

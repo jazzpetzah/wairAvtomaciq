@@ -119,7 +119,7 @@ Feature: Delete Message
       | Name      | Contact   | FileName                   |
       | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
 
-  @C123604 @regression @noAcceptAlert @fastLogin
+  @C123604 @regression @fastLogin
   Scenario Outline: Verify canceling deleting a message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

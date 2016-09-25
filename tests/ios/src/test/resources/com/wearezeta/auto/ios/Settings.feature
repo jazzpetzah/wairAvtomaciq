@@ -102,6 +102,7 @@ Feature: Settings
     Given I select settings item Picture
     When I remember my current profile picture
     And I tap Camera Roll button on Camera page
+    And I accept alert
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
     Then I wait up to <Timeout> seconds until my profile picture is changed
@@ -157,7 +158,8 @@ Feature: Settings
     Given There is 1 user where <Name> is me with email only
     Given I sign in using my email
     Given I click Not Now to not add phone number
-    Given I accept First Time overlay if it is visible
+    Given I accept alert
+    Given I accept First Time overlay
     Given I dismiss settings warning
     Given I see conversations list
     Given I tap settings gear button
@@ -179,7 +181,8 @@ Feature: Settings
     Given I sign in using my email
     Given I accept alert
     Given I click Not Now to not add phone number
-    Given I accept First Time overlay if it is visible
+    Given I accept alert
+    Given I accept First Time overlay
     Given I dismiss settings warning
     Given I see conversations list
     Given I tap settings gear button
@@ -191,15 +194,14 @@ Feature: Settings
       | Name      | DigitsCount |
       | user1Name | 5           |
 
-  @C1088 @regression @noAcceptAlert
+  @C1088 @regression
   Scenario Outline: Verify error message appears in case of registering already taken phone number
     Given There is 1 user where <Name> is me with email only
     Given I sign in using my email
     Given I accept alert
     Given I click Not Now to not add phone number
     Given I accept alert
-    Given I accept First Time overlay if it is visible
-    Given I accept alert
+    Given I accept First Time overlay
     Given I dismiss settings warning
     Given I see conversations list
     Given I tap settings gear button
@@ -235,6 +237,7 @@ Feature: Settings
     And I select settings item Picture
     And I remember my current profile picture
     And I tap Take Photo button on Camera page
+    And I accept alert
     And I tap Take Photo button on Camera page
     And I tap Confirm button on Picture preview page
     Then I wait up to <Timeout> seconds until my profile picture is changed
@@ -251,6 +254,7 @@ Feature: Settings
     Given I accept terms of service
     Given I input name <Name> and hit Enter
     Given I tap Keep This One button
+    Given I accept alert
     Given I tap Share Contacts button on Share Contacts overlay
     Given I see conversations list
     Given I tap settings gear button
