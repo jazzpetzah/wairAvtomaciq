@@ -495,16 +495,17 @@ public abstract class IOSPage extends BasePage {
      */
     @Override
     public Optional<BufferedImage> takeScreenshot() throws Exception {
-        Optional<BufferedImage> result = super.takeScreenshot();
-        if (result.isPresent()) {
+        Optional<BufferedImage> screenshotImage = super.takeScreenshot();
+        if (screenshotImage.isPresent()) {
             final Dimension screenSize = getDriver().manage().window().getSize();
-            final double scaleX = 1.0 * result.get().getWidth() / screenSize.getWidth();
-            final double scaleY = 1.0 * result.get().getHeight() / screenSize.getHeight();
-            if (scaleX < 1 || scaleY < 1) {
-                final double scale = (scaleX > scaleY) ? scaleY : scaleX;
-                result = Optional.of(ImageUtil.resizeImage(result.get(), (float) (1.0 / scale)));
+            if (screenshotImage.get().getWidth() != screenSize.getWidth()) {
+                // proportions are expected to be the same
+                final double scale = 1.0 * screenSize.getWidth() / screenshotImage.get().getWidth();
+                screenshotImage = Optional.of(
+                        ImageUtil.resizeImage(screenshotImage.get(), (float) scale)
+                );
             }
         }
-        return result;
+        return screenshotImage;
     }
 }
