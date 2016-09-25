@@ -25,6 +25,9 @@ public class FirstTimeOverlay extends IOSPage {
     }
 
     public void acceptIfVisible(int timeoutSeconds) throws Exception {
+        if (getDriver().isAutoAlertAcceptModeEnabled()) {
+            this.acceptAlertIfVisible();
+        }
         final Optional<WebElement> gotItButton = getElementIfDisplayed(nameOKButton, timeoutSeconds);
         if (gotItButton.isPresent()) {
             gotItButton.get().click();
@@ -32,6 +35,9 @@ public class FirstTimeOverlay extends IOSPage {
     }
 
     public void accept() throws Exception {
+        if (getDriver().isAutoAlertAcceptModeEnabled()) {
+            this.acceptAlertIfVisible();
+        }
         getElement(nameOKButton).click();
     }
 }
