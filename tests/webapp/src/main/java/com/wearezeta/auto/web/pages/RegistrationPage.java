@@ -47,10 +47,6 @@ public class RegistrationPage extends WebPage {
     @FindBy(css = WebAppLocators.RegistrationPage.cssSwitchToSignInButton)
     private WebElement switchToSignInButton;
 
-    @FindBy(css = WebAppLocators.RegistrationPage.cssIntroWire)
-    private WebElement introWire;
-
-
     // TODO move to locators
     @FindBy(css = ".icon-envelope")
     private WebElement verificationEnvelope;
@@ -161,10 +157,6 @@ public class RegistrationPage extends WebPage {
 
     public void refreshPage() throws Exception {
         getDriver().get(getDriver().getCurrentUrl());
-    }
-
-    public String getTextIntroWire() throws Exception {
-        return introWire.getAttribute("value");
     }
 
     @Override

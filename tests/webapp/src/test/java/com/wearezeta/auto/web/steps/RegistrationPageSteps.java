@@ -447,12 +447,4 @@ public class RegistrationPageSteps {
 	public void IClickVerifyLaterButton() throws Exception {
 		context.getPagesCollection().getPage(RegistrationPage.class).clickVerifyLaterButton();
 	}
-
-	@Then("^I see intro about Wire when user got personal invite (.*)$")
-	public void ISeeIntroWhenPersonalInvitation(String expectedText) throws Exception {
-		final String shownText = context.getPagesCollection().getPage(RegistrationPage.class).getTextIntroWire();
-		Assert.assertTrue(
-				String.format("The actual login error '%s' is not equal to the expected one: '%s'", shownText, expectedText),
-					shownText.equals(expectedText));
-	}
 }

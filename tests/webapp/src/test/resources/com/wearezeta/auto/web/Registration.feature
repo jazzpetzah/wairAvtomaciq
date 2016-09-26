@@ -32,7 +32,7 @@ Feature: Registration
     When <Contact> navigates to personal invitation registration page
     Then <Contact> verifies email is correct on Registration page
     And <Contact> verifies username is correct on Registration page
-    And I see intro about Wire when user got personal invite <TextWire>
+    And I see intro about Wire saying <TextWire>
     And I enter user password "<Password>" on Registration page
     And I accept the Terms of Use
     And I submit registration form
@@ -41,7 +41,7 @@ Feature: Registration
     And I see Contact list with name <Name>
 
     Examples: 
-      | Password      | Name      | ContactMail | Contact    | Message | TextWire                                                                                        |
+      | Password      | Name      | ContactMail | Contact    | Message | TextWire                                                                                     |
       | user1Password | user1Name | user2Email  | user2Name  | Hello   | Simple, private & secure messenger for chat, calls, sharing pics, music, videos, GIFs and more. |
 
   @C1770 @smoke

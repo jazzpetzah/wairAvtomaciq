@@ -13,11 +13,11 @@ Feature: Bring Your Friends
     When I remember invitation link on Bring Your Friends popover
     And I navigate to previously remembered invitation link
     Then I see Registration page
-    And I verify description message is visible
-    And I verify description message is equal to <DescriptionMessage>
+    And I verify text about Wire is visible
+    And I see intro about Wire saying <TextWire>
 
     Examples: 
-      | Login      | Password      | Name      | DescriptionMessage                                                                                    |
+      | Login      | Password      | Name      | TextWire                                                                                    |
       | user1Email | user1Password | user1Name | Simple, private & secure messenger for chat, calls, sharing pics, music, videos, GIFs and more.       |
 
   @C3217 @regression
@@ -40,11 +40,11 @@ Feature: Bring Your Friends
     When I remember invitation link on Bring Your Friends popover
     And I navigate to previously remembered invitation link
     Then I see Registration page
-    And I verify description message is visible
-    And I verify description message is equal to <DescriptionMessage>
+    And I verify text about Wire is visible
+    And I see intro about Wire saying <TextWire>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Message | DescriptionMessage                                                                                    |
+      | Login      | Password      | Name      | Contact   | Message | TextWire                                                                                    |
       | user1Email | user1Password | user1Name | user2Name | Hello   | Simple, private & secure messenger for chat, calls, sharing pics, music, videos, GIFs and more.       |
 
   @C1774 @regression

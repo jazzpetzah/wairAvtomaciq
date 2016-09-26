@@ -253,10 +253,10 @@ Feature: Sign In
     Given I switch to sign in page
     Given I open <Language> login page as if I was redirected from get.wire.com
     Then I see Registration page
-    And I verify description message is visible
-    And I verify description message is equal to <DescriptionMessage>
-
+    And I verify text about Wire is visible
+    And I see intro about Wire saying <TextWire>
+    
     Examples:
-      | Language | DescriptionMessage                                                                                    |
+      | Language | TextWire                                                                                   |
       | english  | Simple, private & secure messenger for chat, calls, sharing pics, music, videos, GIFs and more.       |
       | german   | Ein moderner und sicherer Messenger für Unterhaltungen, Anrufe, Bilder, Musik, Videos, GIFs und mehr. |
