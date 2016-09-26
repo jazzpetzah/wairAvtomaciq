@@ -28,8 +28,8 @@ public class SettingsPage extends IOSPage {
 
     private static final By nameEditButton = MobileBy.AccessibilityId("Edit");
 
-    private static final By nameSelfNameEditField =
-            By.xpath(String.format("%s/XCUIElementTypeTextField[last()]", xpathStrMenuItemByName.apply("Name")));
+    private static final By fbXpathSelfNameEditField =
+            FBBy.xpath(String.format("%s/XCUIElementTypeTextField[last()]", xpathStrMenuItemByName.apply("Name")));
 
     private static final Function<String, String> xpathDeleteDeviceButtonByName = devicename ->
             String.format("//XCUIElementTypeButton[contains(@name,'Delete %s')]", devicename);
@@ -158,11 +158,11 @@ public class SettingsPage extends IOSPage {
     }
 
     public void clearSelfName() throws Exception {
-        getElement(nameSelfNameEditField).clear();
+        getElement(fbXpathSelfNameEditField).clear();
     }
 
     public void setSelfName(String newName) throws Exception {
-        getElement(nameSelfNameEditField).sendKeys(newName);
+        ((FBElement) getElement(fbXpathSelfNameEditField)).setValue(newName);
     }
 
     public BufferedImage getColorPickerStateScreenshot() throws Exception {
