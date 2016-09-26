@@ -121,6 +121,7 @@ public class CommonIOSSteps {
             ));
             capabilities.setCapability("realDeviceLogger",
                     "/usr/local/lib/node_modules/deviceconsole/deviceconsole");
+            capabilities.setCapability("showXcodeLog", true);
         } else {
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()));
         }
