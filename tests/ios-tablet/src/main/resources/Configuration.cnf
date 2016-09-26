@@ -10,6 +10,7 @@ iOSToolsRoot=${iOSToolsRoot}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 pictureResultsPath=${pictureResultsPath}
 defaultImagesPath=${defaultImagesPath}
+defaultAudioPath=${defaultAudioPath}
 defaultEmail=${defaultEmail}
 specialEmail=${specialEmail}
 specialPassword=${specialPassword}

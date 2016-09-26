@@ -123,6 +123,10 @@ public class CommonUtils {
         return getValueFromConfig(c, "defaultImagesPath");
     }
 
+    public static String getAudioPathFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "defaultAudioPath");
+    }
+
     public static String getPictureResultsPathFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "pictureResultsPath");
     }

@@ -22,9 +22,10 @@
         <useNativeInstrumentsLib>true</useNativeInstrumentsLib>
         <isSimulator>true</isSimulator>
         <driverTimeoutSeconds>7</driverTimeoutSeconds>
-        <defaultImagesPath>${project.basedir}/../tools/img/</defaultImagesPath>
-        <pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
         <iOSToolsRoot>${project.basedir}/../tools/ios</iOSToolsRoot>
+        <defaultImagesPath>${project.basedir}/../tools/img/</defaultImagesPath>
+        <defaultAudioPath>${project.basedir}/../tools/audio/</defaultAudioPath>
+        <pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
         <defaultEmail>smoketester@wire.com</defaultEmail>
         <specialEmail>smoketester.android@wire.com</specialEmail>
         <specialPassword>aqa12345678</specialPassword>
