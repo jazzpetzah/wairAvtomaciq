@@ -21,7 +21,6 @@
         <useNativeInstrumentsLib>true</useNativeInstrumentsLib>
         <isSimulator>true</isSimulator>
         <driverTimeoutSeconds>7</driverTimeoutSeconds>
-        <iOSToolsRoot>${project.basedir}/../tools/ios</iOSToolsRoot>
         <defaultEmail>smoketester@wire.com</defaultEmail>
         <specialEmail>smoketester.android@wire.com</specialEmail>
         <specialPassword>aqa12345678</specialPassword>
