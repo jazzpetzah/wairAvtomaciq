@@ -63,4 +63,8 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
     public void confirmConnect() throws Exception {
         getElement(nameConnectConfirmButton).click();
     }
+
+    public void tapCloseButton() throws Exception {
+        getElement(nameOtherProfilePageCloseButton).click();
+    }
 }

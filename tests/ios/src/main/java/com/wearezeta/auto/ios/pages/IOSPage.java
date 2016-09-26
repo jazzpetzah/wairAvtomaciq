@@ -402,9 +402,16 @@ public abstract class IOSPage extends BasePage {
     }
 
     protected boolean isElementDisplayed(By locator, int timeoutSeconds) throws Exception {
+        final long msStarted = System.currentTimeMillis();
         final Optional<WebElement> el = getElementIfExists(locator, timeoutSeconds);
+        final long msExistCheckDuration = System.currentTimeMillis() - msStarted;
         if (el.isPresent()) {
-            return el.get().isDisplayed();
+            do {
+                if (el.get().isDisplayed()) {
+                    return true;
+                }
+                Thread.sleep(500);
+            } while (System.currentTimeMillis() - msStarted - msExistCheckDuration <= timeoutSeconds * 1000);
         }
         this.printPageSource();
         return false;

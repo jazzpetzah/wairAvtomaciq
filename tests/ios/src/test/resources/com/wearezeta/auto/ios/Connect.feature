@@ -177,7 +177,6 @@ Feature: Connect
     Then I see first item in contact list named <Contact>
     When I wait until <Contact> exists in backend search results
     And I open search UI
-    And I accept alert
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -221,7 +220,7 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
     And I tap the instant connect button next to <UnconnectedUser>
-    And I click close button to dismiss people view
+    And I tap Close button on pending profile page
     And I see first item in contact list named <UnconnectedUser>
     And I tap on contact name <UnconnectedUser>
     Then I see Pending Connect to <UnconnectedUser> message in the conversation view
