@@ -565,7 +565,7 @@ public class CommonAndroidSteps {
      */
     @Given("^(.*) has an avatar picture from file (.*)$")
     public void UserHasAnAvatarPicture(String name, String picture) throws Exception {
-        String picturePath = CommonUtils.getImagesPath(getClass()) + File.pathSeparator + picture;
+        String picturePath = CommonUtils.getImagesPath(getClass()) + picture;
         try {
             name = usrMgr.findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
