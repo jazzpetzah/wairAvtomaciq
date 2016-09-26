@@ -198,7 +198,6 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I tap Sketch button from input tools
-    And I accept alert
     And I draw a random sketch
     And I send my sketch
     Then I see 1 photo in the conversation view
@@ -216,7 +215,6 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I tap Sketch button from input tools
-    And I accept alert
     And I draw a random sketch
     And I send my sketch
     Then I see 1 photo in the conversation view
