@@ -402,19 +402,12 @@ public abstract class IOSPage extends BasePage {
     }
 
     protected boolean isElementDisplayed(By locator, int timeoutSeconds) throws Exception {
-        final long msStarted = System.currentTimeMillis();
-        final Optional<WebElement> el = getElementIfExists(locator, timeoutSeconds);
-        final long msExistCheckDuration = System.currentTimeMillis() - msStarted;
-        if (el.isPresent()) {
-            do {
-                if (el.get().isDisplayed()) {
-                    return true;
-                }
-                Thread.sleep(500);
-            } while (System.currentTimeMillis() - msStarted - msExistCheckDuration <= timeoutSeconds * 1000);
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, timeoutSeconds)) {
+            return true;
+        } else {
+            this.printPageSource();
+            return false;
         }
-        this.printPageSource();
-        return false;
     }
 
     public boolean isWebPageVisible(String expectedUrl) throws Exception {
