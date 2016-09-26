@@ -1109,7 +1109,7 @@ public class CommonIOSSteps {
                               String convoName, String deviceName) throws Exception {
         String root;
         if (isTemporary == null) {
-            root = CommonUtils.getImagesPath(getClass());
+            root = CommonUtils.getAudioPathFromConfig(getClass());
         } else {
             root = CommonUtils.getBuildPathFromConfig(getClass());
         }
