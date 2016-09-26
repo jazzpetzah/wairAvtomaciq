@@ -87,11 +87,6 @@ public class CommonIOSSteps {
         return getiOSAddressbookAppPathFromConfig(CommonIOSSteps.class);
     }
 
-    private static boolean isUseNativeInstrumentsEnabled() throws Exception {
-        return Boolean.parseBoolean(getIsUseNativeInstrumentsLibFromConfig(
-                CommonIOSSteps.class).orElseGet(() -> "false"));
-    }
-
     private static String getAppName() throws Exception {
         return getIOSAppName(CommonIOSSteps.class);
     }
@@ -108,7 +103,6 @@ public class CommonIOSSteps {
         final boolean isRealDevice = !CommonUtils.getIsSimulatorFromConfig(getClass());
 
         final DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("nativeInstrumentsLib", isUseNativeInstrumentsEnabled());
         capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
         capabilities.setCapability(ZetaIOSDriver.AUTOMATION_NAME_CAPABILITY_NAME,
@@ -117,6 +111,8 @@ public class CommonIOSSteps {
         capabilities.setCapability("fullReset", true);
         capabilities.setCapability("appName", getAppName());
         if (isRealDevice) {
+            // https://github.com/appium/appium/issues/6597
+
             // We don't really care about which particular real device model we have
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()).split("\\s+")[0]);
             udid = RealDeviceHelpers.getUDID();
