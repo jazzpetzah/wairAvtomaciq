@@ -7,6 +7,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.TimeoutException;
 
 import com.google.common.collect.ImmutableMap;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rest.RESTError;
@@ -250,29 +251,31 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
         return new ZetaRemoteWebDriverOptions();
     }
 
-    private static final By STANDARD_WINDOW = By.className("XCUIElementTypeWindow");
-
     protected class ZetaRemoteWebDriverOptions extends RemoteWebDriverOptions {
         @Override
         public WebDriver.Window window() {
-            return new ZetaRemoteWindow(findElement(STANDARD_WINDOW));
+            return new ZetaRemoteWindow();
         }
 
         protected class ZetaRemoteWindow extends RemoteWindow {
-            private WebElement window;
+            public ZetaRemoteWindow() {
 
-            public ZetaRemoteWindow(WebElement window) {
-                this.window = window;
             }
 
             @Override
             public Dimension getSize() {
-                return this.window.getSize();
+                try {
+                    return FBElement.apiStringToDimension(
+                            fbDriverAPI.getWindowSize(CommonUtils.generateGUID())
+                    );
+                } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
+                    throw new WebDriverException(e);
+                }
             }
 
             @Override
             public Point getPosition() {
-                return this.window.getLocation();
+                return new Point(0, 0);
             }
         }
     }

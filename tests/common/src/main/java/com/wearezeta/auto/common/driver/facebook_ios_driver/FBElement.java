@@ -223,11 +223,15 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
 
     public Dimension getWindowSize() {
         try {
-            final JSONObject rect = new JSONObject(fbDriverAPI.getWindowSize(this.uuid));
-            return new Dimension(rect.getInt("width"), rect.getInt("height"));
+            return apiStringToDimension(fbDriverAPI.getWindowSize(this.uuid));
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
+    }
+
+    public static Dimension apiStringToDimension(String s) {
+        final JSONObject rect = new JSONObject(s);
+        return new Dimension(rect.getInt("width"), rect.getInt("height"));
     }
 
     @Override
