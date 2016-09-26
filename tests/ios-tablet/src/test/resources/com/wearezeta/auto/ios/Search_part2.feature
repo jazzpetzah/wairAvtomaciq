@@ -8,6 +8,8 @@ Feature: Search
     Given I see conversations list
     Given I wait until <Contact> exists in backend search results
     When I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Call action button on People picker page
@@ -26,6 +28,8 @@ Feature: Search
     Given I see conversations list
     Given I wait until <Contact> exists in backend search results
     When I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Call action button on People picker page
@@ -43,10 +47,12 @@ Feature: Search
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
+    And I accept alert
     And I see top people list on People picker page
     Then I tap on first 3 top connections
     When I tap Send image action button on People picker page
     And I tap Camera Roll button on Camera page
+    And I accept alert
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
@@ -67,10 +73,12 @@ Feature: Search
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
+    And I accept alert
     And I see top people list on People picker page
     Then I tap on first 3 top connections
     When I tap Send image action button on People picker page
     And I tap Camera Roll button on Camera page
+    And I accept alert
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
@@ -90,6 +98,7 @@ Feature: Search
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
+    And I accept alert
     And I see top people list on People picker page
     And I tap on first 1 top connections
     Then I see Open conversation action button on People picker page
@@ -106,6 +115,7 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search UI
+    And I accept alert
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -124,6 +134,7 @@ Feature: Search
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
+    And I accept alert
     When I tap on 1st top connection contact
     Then I see Open conversation action button on People picker page
     When I tap on 2nd top connection contact
@@ -142,6 +153,7 @@ Feature: Search
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
+    And I accept alert
     And I see top people list on People picker page
     When I tap on 1st top connection contact
     Then I see Open conversation action button on People picker page
@@ -161,6 +173,7 @@ Feature: Search
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
+    And I accept alert
     And I see top people list on People picker page
     And I tap on Search input on People picker page
     And I tap on 1st top connection contact
@@ -186,6 +199,7 @@ Feature: Search
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
+    And I accept alert
     And I see top people list on People picker page
     And I tap on 1st top connection contact
     And I tap Open conversation action button on People picker page
@@ -204,6 +218,7 @@ Feature: Search
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
+    And I accept alert
     And I see top people list on People picker page
     And I tap on 1st top connection contact
     And I tap Open conversation action button on People picker page
@@ -222,6 +237,7 @@ Feature: Search
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
+    And I accept alert
     And I see Invite more people button
     And I tap on 1st top connection contact
     And I do not see Invite more people button

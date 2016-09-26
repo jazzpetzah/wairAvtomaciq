@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.ImageFullScreenPage;
 
 import cucumber.api.java.en.Then;
@@ -10,8 +9,6 @@ import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class ImageFullScreenPageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
     private ImageFullScreenPage getImageFullScreenPage() throws Exception {

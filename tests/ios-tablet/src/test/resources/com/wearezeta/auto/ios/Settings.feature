@@ -130,6 +130,7 @@ Feature: Settings
     And I select settings item Picture
     And I remember my current profile picture
     And I tap Camera Roll button on Camera page
+    And I accept alert
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
     Then I wait up to <Timeout> seconds until my profile picture is changed
@@ -151,6 +152,7 @@ Feature: Settings
     And I select settings item Picture
     And I remember my current profile picture
     And I tap Camera Roll button on Camera page
+    And I accept alert
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
     Then I wait up to <Timeout> seconds until my profile picture is changed
@@ -226,7 +228,8 @@ Feature: Settings
     Given There is 1 users where <Name> is me with email only
     Given I Sign in on tablet using my email
     Given I click Not Now to not add phone number
-    Given I accept First Time overlay if it is visible
+    Given I accept alert
+    Given I accept First Time overlay
     Given I dismiss settings warning
     Given I see conversations list
     Given I tap settings gear button
@@ -240,15 +243,14 @@ Feature: Settings
       | Name      | MyPhoneNumber    |
       | user1Name | user1PhoneNumber |
 
-  @C2866 @regression @noAcceptAlert
+  @C2866 @regression
   Scenario Outline: Verify error message appears in case of registering already taken phone number [LANDSCAPE]
     Given There is 1 users where <Name> is me with email only
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I click Not Now to not add phone number
     Given I accept alert
-    Given I accept First Time overlay if it is visible
-    Given I accept alert
+    Given I accept First Time overlay
     Given I dismiss settings warning
     Given I see conversations list
     Given I tap settings gear button

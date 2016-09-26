@@ -36,6 +36,7 @@ import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.remote.Response;
 import org.openqa.selenium.remote.SessionNotFoundException;
 import org.openqa.selenium.remote.UnreachableBrowserException;
+import org.openqa.selenium.remote.internal.JsonToWebElementConverter;
 
 public class ZetaWinDriver extends AppiumDriver<WebElement> implements ZetaDriver {
 
@@ -46,7 +47,7 @@ public class ZetaWinDriver extends AppiumDriver<WebElement> implements ZetaDrive
 	private volatile boolean isSessionLost = false;
 
 	public ZetaWinDriver(URL remoteAddress, Capabilities desiredCapabilities) {
-		super(remoteAddress, desiredCapabilities);
+		super(remoteAddress, desiredCapabilities, JsonToWebElementConverter.class);
 	}
 
 	@Override
@@ -69,16 +70,6 @@ public class ZetaWinDriver extends AppiumDriver<WebElement> implements ZetaDrive
 	}
 
 	@Override
-	public MobileElement scrollTo(String text) {
-		throw new RuntimeException("Not implemented for OSX");
-	}
-
-	@Override
-	public MobileElement scrollToExact(String text) {
-		throw new RuntimeException("Not implemented for OSX");
-	}
-
-	@Override
 	public boolean isSessionLost() {
 		return this.isSessionLost;
 	}
@@ -93,6 +84,11 @@ public class ZetaWinDriver extends AppiumDriver<WebElement> implements ZetaDrive
 	@Override
 	protected Response execute(String command) {
 		return this.execute(command, ImmutableMap.<String, Object>of());
+	}
+
+	@Override
+	public void swipe(int i, int i1, int i2, int i3, int i4) {
+		throw new RuntimeException("Not implemented for OSX");
 	}
 
 	@Override

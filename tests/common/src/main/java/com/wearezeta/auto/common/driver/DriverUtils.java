@@ -30,8 +30,7 @@ public class DriverUtils {
             .getSimpleName());
 
     public static int getDefaultLookupTimeoutSeconds() throws Exception {
-        return Integer.parseInt(CommonUtils
-                .getDriverTimeoutFromConfig(DriverUtils.class));
+        return Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(DriverUtils.class));
     }
 
     /**
@@ -133,7 +132,7 @@ public class DriverUtils {
                 } catch (NoSuchElementException | StaleElementReferenceException | InvalidElementStateException e) {
                     // Ignore silently
                 }
-                Thread.sleep(100);
+                Thread.sleep(1000);
             } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
             return Optional.empty();
         } finally {
@@ -226,7 +225,7 @@ public class DriverUtils {
                 } catch (NoSuchElementException | StaleElementReferenceException | InvalidElementStateException e) {
                     // Ignore silently
                 }
-                Thread.sleep(100);
+                Thread.sleep(1000);
             } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
             return Optional.empty();
         } finally {
@@ -324,25 +323,6 @@ public class DriverUtils {
         driver.swipe(startX, startY, endX, endY, timeMillis);
     }
 
-    public static final int DEFAULT_SWIPE_DURATION = 1000; // milliseconds
-    public static final int DEFAULT_FINGERS = 1;
-
-    public static void genericTap(AppiumDriver<? extends WebElement> driver) {
-        genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS, DEFAULT_PERCENTAGE, DEFAULT_PERCENTAGE);
-    }
-
-    public static void genericTap(AppiumDriver<? extends WebElement> driver, int percentX, int percentY) {
-        genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS, percentX, percentY);
-    }
-
-    public static void genericTap(AppiumDriver<? extends WebElement> driver,
-                                  int time, int fingers, int percentX, int percentY) {
-        final Dimension screenSize = driver.manage().window().getSize();
-        final int xCoords = screenSize.width * percentX / 100;
-        final int yCoords = screenSize.height * percentY / 100;
-        driver.tap(fingers, xCoords, yCoords, time);
-    }
-
     public static void tapByCoordinates(AppiumDriver<? extends WebElement> driver, WebElement element,
                                         int offsetX, int offsetY) {
         final Point coords = element.getLocation();
@@ -354,24 +334,6 @@ public class DriverUtils {
 
     public static void tapByCoordinates(AppiumDriver<? extends WebElement> driver, WebElement element) {
         tapByCoordinates(driver, element, 0, 0);
-    }
-
-    public static void tapByCoordinatesWithPercentOffcet(AppiumDriver<? extends WebElement> driver, WebElement element,
-                                                         int offsetX, int offsetY) {
-        final Point coords = element.getLocation();
-        final Dimension elementSize = element.getSize();
-        driver.tap(1, (coords.x + elementSize.width * offsetX / 100), (coords.y + elementSize.height * offsetY / 100),
-                SINGLE_TAP_DURATION);
-    }
-
-    public static void multiTap(AppiumDriver<? extends WebElement> driver,
-                                WebElement element, int tapCount) {
-        final Point coords = element.getLocation();
-        final Dimension elementSize = element.getSize();
-        for (int i = 0; i < tapCount; i++) {
-            driver.tap(1, coords.x + elementSize.width / 2, coords.y + elementSize.height / 2,
-                    SINGLE_TAP_DURATION);
-        }
     }
 
     public static void addClass(RemoteWebDriver driver, WebElement element,
@@ -441,16 +403,6 @@ public class DriverUtils {
         final int y = coords.y + size.getHeight() / 2;
         log.info("Tap on " + x + ":" + y);
         driver.tap(1, x, y, SINGLE_TAP_DURATION);
-    }
-
-    public static void tapOnPercentOfElement(AppiumDriver<? extends WebElement> driver, WebElement element,
-                                             int percentX, int percentY, int durationMs) {
-        final Point coords = element.getLocation();
-        final Dimension size = element.getSize();
-        final int x = coords.x + size.getWidth() * percentX / 100;
-        final int y = coords.y + size.getHeight() * percentY / 100;
-        log.info("Tap on " + x + ":" + y);
-        driver.tap(1, x, y, durationMs);
     }
 
     public static void tapOnPercentOfElement(

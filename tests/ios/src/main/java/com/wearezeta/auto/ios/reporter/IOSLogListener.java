@@ -3,7 +3,7 @@ package com.wearezeta.auto.ios.reporter;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.common.process.AsyncProcess;
+import com.wearezeta.auto.common.process.AsyncProcess;
 
 public final class IOSLogListener {
 	private static final Logger log = ZetaLogger.getLog(IOSLogListener.class

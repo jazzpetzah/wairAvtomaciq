@@ -9,6 +9,8 @@ Feature: Connect
     Given I see conversations list
     Given I wait until <Contact> exists in backend search results
     When I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
@@ -75,6 +77,8 @@ Feature: Connect
     And I do not see Pending request link in conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
     Then I see Pending request page
@@ -111,8 +115,10 @@ Feature: Connect
     Given <Contact2> is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <Contact> exists in backend search results
     When I open search UI
-    And I wait until <Contact> exists in backend search results
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
@@ -137,6 +143,8 @@ Feature: Connect
     Then I do not see conversation <Contact> in conversations list
     When I wait until <Contact> exists in backend search results
     And I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user
@@ -160,6 +168,8 @@ Feature: Connect
     Given I see conversations list
     Given I wait until <Contact> exists in backend search results
     When I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
@@ -167,6 +177,7 @@ Feature: Connect
     Then I see first item in contact list named <Contact>
     When I wait until <Contact> exists in backend search results
     And I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     Then I see Cancel Request button on pending profile page
@@ -182,6 +193,7 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search UI
+    And I accept alert
     And I tap Send Invite button
     And I tap Invite Others button
     And I tap Copy button
@@ -202,11 +214,13 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I open search UI
     Given I wait until <ContactEmail> exists in backend search results
+    When I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
     And I tap the instant connect button next to <UnconnectedUser>
-    And I click close button to dismiss people view
+    And I tap Close button on pending profile page
     And I see first item in contact list named <UnconnectedUser>
     And I tap on contact name <UnconnectedUser>
     Then I see Pending Connect to <UnconnectedUser> message in the conversation view
@@ -244,7 +258,10 @@ Feature: Connect
     And I tap Cancel Request button on pending profile page
     And I confirm Cancel Request action on pending profile page
     And I navigate back to conversations list
+    And I wait until <Contact1> exists in backend search results
     And I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Connect button on Pending outgoing connection page
@@ -263,6 +280,8 @@ Feature: Connect
     Given I see conversations list
     Given I wait until <Contact1> exists in backend search results
     When I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Cancel Request button on pending profile page
@@ -310,6 +329,8 @@ Feature: Connect
     And I type the default message and send it
     Then I see 1 default message in the conversation view
     When I tap Add Picture button from input tools
+    And I accept alert
+    And I accept alert
     And I select the first picture from Keyboard Gallery
     And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
@@ -328,6 +349,8 @@ Feature: Connect
     Given I wait until <Contact> exists in backend search results
     Then I do not see conversation <Contact> in conversations list
     When I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user

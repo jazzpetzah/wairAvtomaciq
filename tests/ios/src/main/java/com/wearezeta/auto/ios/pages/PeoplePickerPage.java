@@ -5,6 +5,8 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.DummyElement;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
 
@@ -12,14 +14,18 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class PeoplePickerPage extends IOSPage {
-    private static final By xpathPickerSearch = By.xpath("//UIATextView[@name='textViewSearch' and @visible='true']");
+    private static final By fbNamePickerSearch = FBBy.AccessibilityId("textViewSearch");
 
     public static final By xpathPickerClearButton =
             By.xpath("//*[@name='PeoplePickerClearButton' or @name='ContactsViewCloseButton']");
 
+    public static final By fbXpathPickerClearButton =
+            FBBy.xpath("//*[@name='PeoplePickerClearButton' or @name='ContactsViewCloseButton']");
+
     private static final By nameKeyboardEnterButton = MobileBy.AccessibilityId("Return");
 
-    private static final By xpathCreateConversationButton = By.xpath("//UIAButton[@name='CREATE GROUP']");
+    private static final By xpathCreateConversationButton =
+            By.xpath("//XCUIElementTypeButton[@name='CREATE GROUP']");
 
     private static final By namePeoplePickerTopPeopleLabel = MobileBy.AccessibilityId("TOP PEOPLE");
 
@@ -31,15 +37,13 @@ public class PeoplePickerPage extends IOSPage {
 
     private static final By nameUnblockButton = MobileBy.AccessibilityId("UNBLOCK");
 
-    private static final By xpathSelectedTopPeople =
-            By.xpath("//UIACollectionCell/UIACollectionView/UIACollectionCell[@value='1']");
+    public static final By xpathInviteCopyButton = By.xpath("//XCUIElementTypeCell[@name='Copy']");
 
-    public static final By xpathInviteCopyButton = By.xpath("//UIACollectionCell[@name='Copy']");
-
-    private static final By xpathInviteMorePeopleButton = By.xpath("//UIAButton[@name='INVITE MORE PEOPLE']");
+    private static final By xpathInviteMorePeopleButton = By.xpath("//XCUIElementTypeButton[@name='INVITE MORE PEOPLE']");
 
     private static final Function<String, String> xpathStrInstantConnectButtonByUserName = name -> String.format(
-            "//UIACollectionCell[ ./UIAStaticText[@name='%s'] ]/UIAButton[@name='instantPlusConnectButton']", name);
+            "//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[@name='%s'] ]" +
+                    "//XCUIElementTypeButton[@name='instantPlusConnectButton']", name);
 
     private static final By nameLaterButton = MobileBy.AccessibilityId("MAYBE LATER");
 
@@ -49,27 +53,21 @@ public class PeoplePickerPage extends IOSPage {
 
     private static final By nameSendImageButton = MobileBy.AccessibilityId("actionBarCameraButton");
 
-    private static final By xpathContactViewCloseButton =
-            By.xpath("//*[@name='ContactsViewCloseButton' and @visible='true']");
+    private static final By xpathContactViewCloseButton = By.xpath("//*[@name='ContactsViewCloseButton']");
 
     private static final Function<String, String> xpathStrFoundContactByName =
-            name -> String.format("//*[@name='%s' and @visible='true']", name);
+            name -> String.format("//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s'] ]", name);
 
     private static final Function<Integer, String> xpathStrPeoplePickerTopConnectionsAvatarByIdx = idx ->
-            String.format("%s/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%s]",
-                    xpathStrMainWindow, idx);
-
-    private static final Function<String, String> xpathStrPeoplePickerSelectedCellByName = name ->
-            String.format("%s/UIATableView[1]/UIATableCell[@name='%s']", xpathStrMainWindow, name);
+            String.format("//XCUIElementTypeCollectionView/XCUIElementTypeCell" +
+                    "//XCUIElementTypeCollectionView/XCUIElementTypeCell[%s]", idx);
 
     private static final Function<Integer, String> xpathStrPeoplePickerTopConnectionsItemByIdx = idx ->
-            String.format(
-                    "%s/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]/UIAStaticText[last()]",
-                    xpathStrMainWindow, idx);
+            String.format("//XCUIElementTypeCollectionView/XCUIElementTypeCell/XCUIElementTypeCollectionView/" +
+                    "XCUIElementTypeCell[%d]/XCUIElementTypeStaticText[last()]", idx);
 
-    private static final Function<String, String> xpathStrFirstSearchResultEntryByName = name ->
-            String.format("%s/UIACollectionView/UIACollectionCell[1]/UIAStaticText[@name='%s']",
-                    xpathStrMainWindow, name);
+    private static final Function<String, String> xpathStrFirstSearchResultEntryByName = name -> String.format(
+            "//XCUIElementTypeCollectionView/XCUIElementTypeCell//XCUIElementTypeStaticText[@name='%s']", name);
 
     private static final By nameNoResults = MobileBy.AccessibilityId("No results.");
 
@@ -84,28 +82,29 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isPeoplePickerPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathPickerSearch);
+        return isElementDisplayed(fbNamePickerSearch);
     }
 
     public void tapOnPeoplePickerSearch() throws Exception {
-        DriverUtils.tapInTheCenterOfTheElement(getDriver(), getElement(xpathPickerSearch));
+        this.tapAtTheCenterOfElement((FBElement) getElement(fbNamePickerSearch));
     }
 
     public void tapOnPeoplePickerClearBtn() throws Exception {
-        final WebElement closeButton = getElement(xpathPickerClearButton);
-        DriverUtils.tapByCoordinates(getDriver(), closeButton);
+        final FBElement closeButton = (FBElement) getElement(fbXpathPickerClearButton);
+        this.tapAtTheCenterOfElement(closeButton);
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathPickerClearButton, 5)) {
-            DriverUtils.tapByCoordinates(getDriver(), closeButton);
+            this.tapAtTheCenterOfElement(closeButton);
         }
     }
 
     public void fillTextInPeoplePickerSearch(String text) throws Exception {
-        final WebElement searchInput = getElement(xpathPickerSearch);
+        final WebElement searchInput = getElement(fbNamePickerSearch);
         searchInput.sendKeys(text + " ");
     }
 
     public Optional<WebElement> getSearchResultsElement(String user) throws Exception {
         final By locator = By.xpath(xpathStrFoundContactByName.apply(user));
+        this.printPageSource();
         return getElementIfDisplayed(locator);
     }
 
@@ -118,6 +117,8 @@ public class PeoplePickerPage extends IOSPage {
         getSearchResultsElement(name).orElseThrow(
                 () -> new IllegalStateException(String.format("User '%s' is not visible in people picker", name))).
                 click();
+        // Wait for the animation
+        Thread.sleep(1000);
     }
 
     public void dismissPeoplePicker() throws Exception {
@@ -143,13 +144,8 @@ public class PeoplePickerPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), namePeoplePickerTopPeopleLabel, 2);
     }
 
-    public boolean isUserSelected(String name) throws Exception {
-        final By locator = By.xpath(xpathStrPeoplePickerSelectedCellByName.apply(name));
-        return getElement(locator).getAttribute("value").equals("1");
-    }
-
-    public void pressBackspaceButton() throws Exception {
-        getElement(xpathPickerSearch).sendKeys(Keys.DELETE);
+    public void pressBackspaceKeyboardButton() throws Exception {
+        tapKeyboardDeleteButton();
     }
 
     public void clickAddToConversationButton() throws Exception {
@@ -161,11 +157,15 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isPeopleYouMayKnowLabelVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), namePeopleYouMayKnowLabel);
+        return isElementDisplayed(namePeopleYouMayKnowLabel);
     }
 
     private void unblockButtonDoubleClick() throws Exception {
-        DriverUtils.multiTap(getDriver(), getDriver().findElement(nameUnblockButton), 2);
+        final WebElement dstElement = getElement(nameUnblockButton);
+        for (int nClicks = 0; nClicks < 2; nClicks++) {
+            dstElement.click();
+            Thread.sleep(1000);
+        }
     }
 
     public void unblockUser() throws Exception {
@@ -174,10 +174,6 @@ public class PeoplePickerPage extends IOSPage {
 
     public void unblockUserOniPad() throws Exception {
         unblockButtonDoubleClick();
-    }
-
-    public int getNumberOfSelectedTopPeople() throws Exception {
-        return getElements(xpathSelectedTopPeople).size();
     }
 
     public void tapSendInviteButton() throws Exception {
@@ -194,7 +190,7 @@ public class PeoplePickerPage extends IOSPage {
 
     public void pressInstantConnectButton(String forName) throws Exception {
         final By locator = By.xpath(xpathStrInstantConnectButtonByUserName.apply(forName));
-        clickElementWithRetryIfStillDisplayed(locator);
+        tapElementWithRetryIfStillDisplayed(locator);
     }
 
     public void tapNumberOfTopConnectionsButNotUser(int numberToTap, String contact) throws Exception {
@@ -223,7 +219,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean waitUntilNoResultsLabelIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameNoResults);
+        return isElementDisplayed(nameNoResults);
     }
 
     private By getActionButtonByName(String name) {
@@ -248,7 +244,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isActionButtonVisible(String actionButtonName) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getActionButtonByName(actionButtonName));
+        return isElementDisplayed(getActionButtonByName(actionButtonName));
     }
 
     public boolean isActionButtonInvisible(String actionButtonName) throws Exception {
@@ -256,11 +252,11 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isShareContactsSettingsWarningShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameLaterButton);
+        return isElementDisplayed(nameLaterButton);
     }
 
     public boolean isFirstItemInSearchResult(String name) throws Exception {
         final By locator = By.xpath(xpathStrFirstSearchResultEntryByName.apply(name));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 }

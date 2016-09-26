@@ -208,21 +208,9 @@ public class PeoplePickerPageSteps {
         Assert.assertTrue("Top People label is not shown", getPeoplePickerPage().isTopPeopleLabelVisible());
     }
 
-    @When("I see user (.*) on People picker page is selected")
-    public void ISeeUserIsSelectedOnPeoplePickerPage(String name) throws Exception {
-        name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        Assert.assertTrue(getPeoplePickerPage().isUserSelected(name));
-    }
-
-    @When("I see user (.*) on People picker page is NOT selected")
-    public void ISeeUserIsNotSelectedOnPeoplePickerPage(String name) throws Exception {
-        name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        Assert.assertFalse(getPeoplePickerPage().isUserSelected(name));
-    }
-
     @When("^I press Backspace button in search field$")
     public void IPressBackspaceBtn() throws Exception {
-        getPeoplePickerPage().pressBackspaceButton();
+        getPeoplePickerPage().pressBackspaceKeyboardButton();
     }
 
     /**
@@ -272,20 +260,6 @@ public class PeoplePickerPageSteps {
     @When("^I unblock user on iPad$")
     public void IUnblockUserOniPad() throws Exception {
         getPeoplePickerPage().unblockUserOniPad();
-    }
-
-    /**
-     * This step checks if the number of the selected contacts is correct.
-     *
-     * @param number expected number of contacts
-     * @throws Exception
-     * @step. ^I see that (\\d+) contacts are selected$
-     */
-    @Then("^I see that (\\d+) contacts are selected$")
-    public void ISeeThatContactsAreSelected(int number) throws Exception {
-        int numberOfSelectedTopPeople = getPeoplePickerPage().getNumberOfSelectedTopPeople();
-        Assert.assertEquals("Expected selected contacts: " + number + " but actual selected contacts: "
-                + numberOfSelectedTopPeople, number, numberOfSelectedTopPeople);
     }
 
     /**
@@ -354,8 +328,9 @@ public class PeoplePickerPageSteps {
 
     /**
      * Verifies that Share your contacts settings message is shown
-     * @step. I see Share Contacts settings warning
+     *
      * @throws Exception
+     * @step. I see Share Contacts settings warning
      */
     @Then("^I see Share Contacts settings warning$")
     public void ISeeShareContactsSettingsWarning() throws Exception {

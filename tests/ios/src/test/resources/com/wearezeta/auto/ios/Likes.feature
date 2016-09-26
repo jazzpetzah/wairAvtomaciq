@@ -140,6 +140,8 @@ Feature: Likes
     And User <Contact1> likes the recent message from group conversation <Group>
     Then I do not see conversation <Group> in conversations list
     When I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <Group>
     And I tap on conversation <Group> in search result
     Then I see 0 photos in the conversation view
@@ -216,7 +218,7 @@ Feature: Likes
     Given User <Contact> sends encrypted message "<SCLink>" to user Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
-    When I tap at 90% of width and 90% of height of the recent message from <Contact>
+    When I tap at 90% of width and 90% of height of the recent message
     And I remember the state of Like icon in the conversation
     And I tap Like icon in the conversation
     Then I see the state of Like icon is changed in the conversation

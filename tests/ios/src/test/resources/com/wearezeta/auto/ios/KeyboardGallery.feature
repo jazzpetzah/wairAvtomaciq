@@ -8,6 +8,8 @@ Feature: Keyboard Gallery
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
+    And I accept alert
+    And I accept alert
     And I tap Fullscreen Camera button on Keyboard Gallery overlay
     And I tap Take Photo button on Camera page
     And I tap Use Photo button on Picture preview page
@@ -17,7 +19,7 @@ Feature: Keyboard Gallery
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C173057 @C170362 @regression
+  @C173057 @C170362 @regression @fastLogin
   Scenario Outline: Verify opening gallery tapping on gallery icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -25,6 +27,8 @@ Feature: Keyboard Gallery
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
+    And I accept alert
+    And I accept alert
     And I tap Camera Roll button on Keyboard Gallery overlay
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
@@ -42,6 +46,8 @@ Feature: Keyboard Gallery
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I tap Add Picture button from input tools
+    And I accept alert
+    And I accept alert
     Then I see Camera Roll button on Keyboard Gallery overlay
     When I tap File Transfer button from input tools
     Then I see file transfer menu item <ItemName>
@@ -60,6 +66,8 @@ Feature: Keyboard Gallery
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
+    And I accept alert
+    And I accept alert
     And I select the first picture from Keyboard Gallery
     And I tap Sketch button on Picture Preview page
     And I draw a random sketch
@@ -78,6 +86,8 @@ Feature: Keyboard Gallery
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
+    And I accept alert
+    And I accept alert
     And I tap Camera Shutter button on Keyboard Gallery overlay
     And I tap Sketch button on Picture Preview page
     And I draw a random sketch

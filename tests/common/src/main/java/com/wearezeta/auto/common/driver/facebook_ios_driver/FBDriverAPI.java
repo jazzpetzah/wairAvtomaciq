@@ -27,11 +27,10 @@ public class FBDriverAPI {
 
     private static final String OBJC_YES = "true";
 
-    private FBDriverRESTClient client;
+    private static final FBDriverRESTClient client = new FBDriverRESTClient(HOST_NAME, PORT_NUMBER);
     private Optional<String> sessionId = Optional.empty();
 
     public FBDriverAPI() {
-        this.client = new FBDriverRESTClient(HOST_NAME, PORT_NUMBER);
     }
 
     private String getSessionId() throws RESTError {
@@ -40,7 +39,7 @@ public class FBDriverAPI {
                 throw new IllegalStateException(String.format("Facebook Driver service listener at %s:%s is dead",
                         HOST_NAME, PORT_NUMBER));
             }
-            this.sessionId = Optional.of(this.client.getSession().getString("sessionId"));
+            this.sessionId = Optional.of(client.getSession().getString("sessionId"));
         }
         return this.sessionId.get();
     }
@@ -97,27 +96,27 @@ public class FBDriverAPI {
         return parseFindElementOutput(client.findElement(getSessionId(), uuid, BY_ACCESSIBILITY_ID_STRING, value));
     }
 
-    private static Optional<FBElement> parseFindElementOutput(JSONObject output) {
+    private Optional<FBElement> parseFindElementOutput(JSONObject output) {
         String value;
         try {
             value = parseResponseWithStatus(output);
-        } catch (StatusNotZeroError statusNotZeroError) {
+        } catch (StatusNotZeroError e) {
             return Optional.empty();
         }
-        return Optional.of(new FBElement(new JSONObject(value).getString("ELEMENT")));
+        return Optional.of(new FBElement(new JSONObject(value).getString("ELEMENT"), this));
     }
 
-    private static List<FBElement> parseFindElementsOutput(JSONObject output) {
+    private List<FBElement> parseFindElementsOutput(JSONObject output) {
         String value;
         try {
             value = parseResponseWithStatus(output);
-        } catch (StatusNotZeroError statusNotZeroError) {
+        } catch (StatusNotZeroError e) {
             return Collections.emptyList();
         }
         final JSONArray elementsList = new JSONArray(value);
         final List<FBElement> result = new ArrayList<>();
         for (int i = 0; i < elementsList.length(); i++) {
-            result.add(new FBElement(elementsList.getJSONObject(i).getString("ELEMENT")));
+            result.add(new FBElement(elementsList.getJSONObject(i).getString("ELEMENT"), this));
         }
         return result;
     }
@@ -150,16 +149,20 @@ public class FBDriverAPI {
         return parseFindElementsOutput(client.findElements(getSessionId(), uuid, BY_PREDICATE_STRING, value));
     }
 
-    public void click(String uuid) throws RESTError {
-        client.click(getSessionId(), uuid);
+    public void click(String uuid) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.click(getSessionId(), uuid));
     }
 
-    public void setValue(String uuid, String newValue) throws RESTError {
-        client.setValue(getSessionId(), uuid, newValue);
+    public void setValue(String uuid, CharSequence... charSequences) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.setValue(getSessionId(), uuid, charSequences));
     }
 
-    public void clear(String uuid) throws RESTError {
-        client.clear(getSessionId(), uuid);
+    public void clear(String uuid) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.clear(getSessionId(), uuid));
+    }
+
+    public void deactivateApp(double durationSeconds) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.deactivateApp(getSessionId(), durationSeconds));
     }
 
     public static class StatusNotZeroError extends Exception {
@@ -200,29 +203,31 @@ public class FBDriverAPI {
         return parseResponseWithStatus(client.getRect(getSessionId(), uuid));
     }
 
-    public void doubleTap(String uuid) throws RESTError {
-        client.doubleTap(getSessionId(), uuid);
+    public void doubleTap(String uuid) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.doubleTap(getSessionId(), uuid));
     }
 
-    public void touchAndHold(String uuid, double durationSeconds) throws RESTError {
-        client.touchAndHold(getSessionId(), uuid, durationSeconds);
+    public void touchAndHold(String uuid, double durationSeconds) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.touchAndHold(getSessionId(), uuid, durationSeconds));
     }
 
     public void scroll(String uuid, Optional<String> toChildNamed, Optional<ScrollingDirection> direction,
-                       Optional<String> predicateString, Optional<Boolean> toVisible) throws RESTError {
+                       Optional<String> predicateString, Optional<Boolean> toVisible)
+            throws RESTError, StatusNotZeroError {
         Optional<String> strDirection = Optional.empty();
         if (direction.isPresent()) {
             strDirection = Optional.of(direction.get().toString().toLowerCase());
         }
-        client.scroll(getSessionId(), uuid, toChildNamed, strDirection, predicateString, toVisible);
+        parseResponseWithStatus(
+                client.scroll(getSessionId(), uuid, toChildNamed, strDirection, predicateString, toVisible));
     }
 
-    public void tap(String uuid, double x, double y) throws RESTError {
-        client.tap(getSessionId(), uuid, x, y);
+    public void tap(String uuid, double x, double y) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.tap(getSessionId(), uuid, x, y));
     }
 
-    public void sendKeys(String value) throws RESTError {
-        client.sendKeys(getSessionId(), value);
+    public void sendKeys(CharSequence... charSequences) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.sendKeys(getSessionId(), charSequences));
     }
 
     public boolean isAccessible(String uuid) throws RESTError, StatusNotZeroError {
@@ -235,5 +240,29 @@ public class FBDriverAPI {
 
     public enum ScrollingDirection {
         UP, DOWN, LEFT, RIGHT
+    }
+
+    public void switchToHomescreen() throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.switchToHomescreen(getSessionId()));
+    }
+
+    public String getAlertText() throws RESTError, StatusNotZeroError {
+        return parseResponseWithStatus(client.getAlertText(getSessionId()));
+    }
+
+    public void acceptAlert() throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.acceptAlert(getSessionId()));
+    }
+
+    public void dismissAlert() throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.dismissAlert(getSessionId()));
+    }
+
+    public void dragFromToForDuration(String uuid, DragArguments dragArguments) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.dragFromToForDuration(getSessionId(), uuid, dragArguments));
+    }
+
+    public String getScreenshot() throws RESTError, StatusNotZeroError {
+        return parseResponseWithStatus(client.getScreenshot(getSessionId()));
     }
 }

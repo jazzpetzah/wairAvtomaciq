@@ -47,6 +47,8 @@ Feature: Connect
     And I navigate back to conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Connect button on Pending outgoing connection page
@@ -71,6 +73,8 @@ Feature: Connect
     And I confirm Cancel Request action on pending profile page
     And I wait until <Contact1> exists in backend search results
     And I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Connect button on Pending outgoing connection page
@@ -90,6 +94,8 @@ Feature: Connect
     Given I see conversations list
     Given I wait until <Contact1> exists in backend search results
     When I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Cancel Request button on pending profile page
@@ -109,6 +115,8 @@ Feature: Connect
     Given I see conversations list
     Given I wait until <Contact1> exists in backend search results
     When I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Cancel Request button on pending profile page
@@ -281,6 +289,7 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search UI
+    And I accept alert
     And I tap Send Invite button
     And I tap Invite Others button
     And I tap Copy button

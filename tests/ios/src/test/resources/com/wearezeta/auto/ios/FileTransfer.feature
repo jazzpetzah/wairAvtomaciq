@@ -87,7 +87,7 @@ Feature: File Transfer
       | Name      | Contact   | ItemName                   |
       | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
 
-  @C82523 @regression @noAcceptAlert @fastLogin
+  @C82523 @regression @fastLogin
   Scenario Outline: Verify notification is shown if file size is more than 25 MB
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -97,7 +97,7 @@ Feature: File Transfer
     And I tap File Transfer button from input tools
     And I tap file transfer menu item <ItemName>
     Then I verify the alert contains text <ExpectedAlertText>
-    When I tap OK button on the alert
+    When I accept alert
     Then I do not see file transfer placeholder
 
     Examples:

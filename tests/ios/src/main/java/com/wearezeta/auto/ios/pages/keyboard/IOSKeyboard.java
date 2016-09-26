@@ -17,8 +17,8 @@ import org.openqa.selenium.WebElement;
 
 public class IOSKeyboard extends BasePage {
     private static final KeyboardState UNKNOWN_STATE = new KeyboardStateUnknown();
-    private static final String xpathStrKeyboard = "//UIAKeyboard";
-    private static By classNameKeyboard = By.className("UIAKeyboard");
+    private static final String xpathStrKeyboard = "//XCUIElementTypeKeyboard";
+    private static final By xpathKeyboard = By.xpath(xpathStrKeyboard);
     private static final By xpathCommitKey = By.xpath(xpathStrKeyboard +
                     "//*[@name='Go' or @name='Send' or @name='Done' or @name='return' or @name='Return']");
 
@@ -51,11 +51,11 @@ public class IOSKeyboard extends BasePage {
     }
 
     public boolean isVisible(int timeoutSeconds) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), classNameKeyboard, timeoutSeconds);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathKeyboard, timeoutSeconds);
     }
 
     public boolean isInvisible(int timeoutSeconds) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), classNameKeyboard, timeoutSeconds);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathKeyboard, timeoutSeconds);
     }
 
     public boolean isVisible() throws Exception {
@@ -101,12 +101,12 @@ public class IOSKeyboard extends BasePage {
     }
 
     public void typeString(String message) throws Exception {
-        final WebElement keyboard = DriverUtils.verifyPresence(getDriver(), classNameKeyboard);
+        final WebElement keyboard = DriverUtils.verifyPresence(getDriver(), xpathKeyboard);
 
-        final KeyboardStateAlpha keyboardStateAlpha = new KeyboardStateAlpha(getDriver(), keyboard);
+        final KeyboardStateAlpha keyboardStateAlpha = new KeyboardStateAlpha(keyboard);
         final KeyboardStateAlphaCaps keyboardStateAlphaCaps = new KeyboardStateAlphaCaps(getDriver(), keyboard);
-        final KeyboardStateNumbers keyboardStateNumbers = new KeyboardStateNumbers(getDriver(), keyboard);
-        final KeyboardStateSpecial keyboardStateSpecial = new KeyboardStateSpecial(getDriver(), keyboard);
+        final KeyboardStateNumbers keyboardStateNumbers = new KeyboardStateNumbers(keyboard);
+        final KeyboardStateSpecial keyboardStateSpecial = new KeyboardStateSpecial(keyboard);
         final List<KeyboardState> statesList = new ArrayList<>();
         Collections.addAll(statesList,
                 keyboardStateAlpha, keyboardStateAlphaCaps, keyboardStateNumbers, keyboardStateSpecial);

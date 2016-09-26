@@ -16,7 +16,8 @@ public class GroupConversationViewPage extends ConversationViewPage {
     private static final By nameYouLeftMessage = MobileBy.AccessibilityId("YOU LEFT");
 
     private static final Function<String, String> xpathStrYouAddedToGroupChatMessageByName =
-            name -> String.format("//UIAStaticText[starts-with(@name,'YOU ADDED %s')]", name.toUpperCase());
+            name -> String.format("//XCUIElementTypeStaticText[starts-with(@name,'YOU ADDED %s')]",
+                    name.toUpperCase());
 
     public GroupConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -24,25 +25,15 @@ public class GroupConversationViewPage extends ConversationViewPage {
 
     public boolean isYouAddedUserMessageShown(String user) throws Exception {
         final By locator = By.xpath(xpathStrYouAddedToGroupChatMessageByName.apply(user));
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public boolean isYouRenamedConversationMessageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),nameYouRenamedConversation);
-    }
-
-    @Override
-    public void swipeUp(int time) throws Exception {
-        final WebElement element = getElement(nameMainWindow);
-        final Point coords = element.getLocation();
-        final Dimension elementSize = element.getSize();
-        this.getDriver().swipe(coords.x + elementSize.width / 2,
-                coords.y + elementSize.height - 170,
-                coords.x + elementSize.width / 2, coords.y + 40, time);
+        return isElementDisplayed(nameYouRenamedConversation);
     }
 
     public boolean isYouLeftMessageShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameYouLeftMessage);
+        return isElementDisplayed(nameYouLeftMessage);
     }
 
 }

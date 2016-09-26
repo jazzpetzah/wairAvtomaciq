@@ -13,7 +13,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 
 public class SketchPage extends IOSPage {
     private static final By nameSketchSendButton = MobileBy.AccessibilityId("SketchConfirmButton");
-    private static final By xpathTapColorLabel = By.xpath("//UIAStaticText[contains(@name, 'TAP COLOR')]");
+    private static final By xpathTapColorLabel = By.xpath("//XCUIElementTypeStaticText[contains(@name, 'TAP COLOR')]");
 
     public SketchPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);

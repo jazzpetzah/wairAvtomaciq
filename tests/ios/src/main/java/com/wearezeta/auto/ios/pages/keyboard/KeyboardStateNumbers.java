@@ -1,12 +1,11 @@
 package com.wearezeta.auto.ios.pages.keyboard;
 
-import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import org.openqa.selenium.WebElement;
 
 class KeyboardStateNumbers extends KeyboardState {
 
-    public KeyboardStateNumbers(ZetaIOSDriver driver, WebElement keyboard) {
-        super(driver, keyboard);
+    public KeyboardStateNumbers(WebElement keyboard) {
+        super(keyboard);
     }
 
     @Override

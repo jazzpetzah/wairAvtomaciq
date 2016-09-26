@@ -6,7 +6,7 @@ import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.common.process.AsyncProcess;
+import com.wearezeta.auto.common.process.AsyncProcess;
 
 public final class AndroidLogListener {
     private static final Logger log = ZetaLogger.getLog(AndroidLogListener.class.getSimpleName());

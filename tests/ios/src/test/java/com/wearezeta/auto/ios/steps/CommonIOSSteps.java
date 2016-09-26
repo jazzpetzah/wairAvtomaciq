@@ -27,6 +27,7 @@ import gherkin.formatter.model.Result;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -107,6 +108,8 @@ public class CommonIOSSteps {
         capabilities.setCapability("nativeInstrumentsLib", isUseNativeInstrumentsEnabled());
         capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
+        capabilities.setCapability(ZetaIOSDriver.AUTOMATION_NAME_CAPABILITY_NAME,
+                ZetaIOSDriver.AUTOMATION_MODE_XCUITEST);
         capabilities.setCapability("app", ipaPath);
         capabilities.setCapability("fullReset", true);
         capabilities.setCapability("appName", getAppName());
@@ -121,7 +124,7 @@ public class CommonIOSSteps {
             ));
         }
         capabilities.setCapability("platformVersion", getPlatformVersion());
-        capabilities.setCapability("launchTimeout", ZetaIOSDriver.MAX_COMMAND_DURATION_MILLIS);
+        capabilities.setCapability("launchTimeout", ZetaIOSDriver.MAX_SESSION_INIT_DURATION_MILLIS);
         final String backendType = getBackendType(this.getClass());
         final List<String> processArgs = new ArrayList<>(Arrays.asList(
                 "-UseHockey", "0",
@@ -155,7 +158,9 @@ public class CommonIOSSteps {
                 }
             }
         }
-        capabilities.setCapability("processArguments", String.join(" ", processArgs));
+        final JSONObject argsValue = new JSONObject();
+        argsValue.put("args", processArgs);
+        capabilities.setCapability("processArguments", argsValue.toString());
 
         if (!CommonUtils.getIsSimulatorFromConfig(getClass()) &&
                 (capabilities.is("noReset") && !((Boolean) capabilities.getCapability("noReset")) ||
@@ -204,10 +209,6 @@ public class CommonIOSSteps {
         }
 
         final Map<String, Object> additionalCaps = new HashMap<>();
-        if (!scenario.getSourceTagNames().contains("@noAcceptAlert")) {
-            additionalCaps.put("autoAcceptAlerts", true);
-        }
-
         String appPath = getAppPath();
         if (scenario.getSourceTagNames().contains(TAG_NAME_UPGRADE) ||
                 scenario.getSourceTagNames().contains(TAG_NAME_ADDRESSBOOK)) {
@@ -404,20 +405,9 @@ public class CommonIOSSteps {
         }
     }
 
-    @When("^I press keyboard Delete button$")
-    public void IPressKeyboardDeleteBtn() throws Exception {
-        pagesCollection.getCommonPage().clickKeyboardDeleteButton();
-        pagesCollection.getCommonPage().clickKeyboardDeleteButton();
-    }
-
-    @When("^I scroll up page a bit$")
-    public void IScrollUpPageABit() throws Exception {
-        pagesCollection.getCommonPage().smallScrollUp();
-    }
-
     @When("^I accept alert$")
     public void IAcceptAlert() throws Exception {
-        pagesCollection.getCommonPage().acceptAlertIfVisible();
+        pagesCollection.getCommonPage().acceptAlert();
     }
 
     /**
@@ -434,7 +424,7 @@ public class CommonIOSSteps {
 
     @When("^I dismiss alert$")
     public void IDismissAlert() throws Exception {
-        pagesCollection.getCommonPage().dismissAlertIfVisible();
+        pagesCollection.getCommonPage().dismissAlert();
     }
 
     /**
@@ -894,28 +884,6 @@ public class CommonIOSSteps {
             throws Exception {
         pagesCollection.getCommonPage().rotateScreen(orientation);
         Thread.sleep(1000); // fix for animation
-    }
-
-    /**
-     * Tap in center of the screen
-     *
-     * @throws Exception
-     * @step. ^I tap on center of the screen$
-     */
-    @When("^I tap on center of the screen$")
-    public void ITapOnCenterOfTheScreen() throws Exception {
-        pagesCollection.getCommonPage().tapOnCenterOfScreen();
-    }
-
-    /**
-     * Tap in top left corner of the screen
-     *
-     * @throws Exception
-     * @step. ^I tap on top left corner of the screen$
-     */
-    @When("^I tap on top left corner of the screen$")
-    public void ITapOnTopLeftCornerOfTheScreen() throws Exception {
-        pagesCollection.getCommonPage().tapOnTopLeftScreen();
     }
 
     /**

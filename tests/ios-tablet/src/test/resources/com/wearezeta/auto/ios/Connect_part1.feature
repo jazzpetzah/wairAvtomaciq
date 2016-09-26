@@ -7,9 +7,10 @@ Feature: Connect
     Given <Contact2> is connected to <Contact>
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until <Contact> exists in backend search results
     When I open search UI
+    And I accept alert
     And I tap on Search input on People picker page
-    And I wait until <Contact> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
@@ -32,9 +33,10 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until <Contact> exists in backend search results
     When I open search UI
+    And I accept alert
     And I tap on Search input on People picker page
-    And I wait until <Contact> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
@@ -105,6 +107,7 @@ Feature: Connect
     And I do not see conversation <Contact1> in conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search UI
+    And I accept alert
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
@@ -132,6 +135,7 @@ Feature: Connect
     And I do not see conversation <Contact1> in conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search UI
+    And I accept alert
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
@@ -232,6 +236,7 @@ Feature: Connect
     Then I do not see conversation <Contact> in conversations list
     When I wait until <Contact> exists in backend search results
     And I open search UI
+    And I accept alert
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -258,6 +263,7 @@ Feature: Connect
     Then I do not see conversation <Contact> in conversations list
     When I wait until <Contact> exists in backend search results
     And I open search UI
+    And I accept alert
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -279,6 +285,7 @@ Feature: Connect
     Given I see conversations list
     Given I wait until <Contact> exists in backend search results
     When I open search UI
+    And I accept alert
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -286,6 +293,7 @@ Feature: Connect
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     When I open search UI
+    And I accept alert
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -303,6 +311,7 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search UI
+    And I accept alert
     And I tap Send Invite button
     And I tap Invite Others button
     And I tap Copy button

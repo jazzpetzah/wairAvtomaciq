@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.common.process.UnixProcessHelpers;
+import com.wearezeta.auto.common.process.UnixProcessHelpers;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;

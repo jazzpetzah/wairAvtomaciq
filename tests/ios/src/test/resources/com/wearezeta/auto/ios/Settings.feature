@@ -102,6 +102,7 @@ Feature: Settings
     Given I select settings item Picture
     When I remember my current profile picture
     And I tap Camera Roll button on Camera page
+    And I accept alert
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
     Then I wait up to <Timeout> seconds until my profile picture is changed
@@ -155,9 +156,13 @@ Feature: Settings
   @C1085 @clumsy @rc @regression
   Scenario Outline: Verify adding phone number to the contact signed up with email
     Given There is 1 user where <Name> is me with email only
-    Given I sign in using my email
+    Given I switch to Log In tab
+    Given I have entered login <Email>
+    Given I have entered password <Password>
+    Given I tap Login button
     Given I click Not Now to not add phone number
-    Given I accept First Time overlay if it is visible
+    Given I accept alert
+    Given I accept First Time overlay
     Given I dismiss settings warning
     Given I see conversations list
     Given I tap settings gear button
@@ -170,16 +175,19 @@ Feature: Settings
     Then I verify the value of settings item Phone equals to "<MyPhoneNumber>"
 
     Examples:
-      | Name      | MyPhoneNumber    |
-      | user1Name | user1PhoneNumber |
+      | Name      | MyPhoneNumber    | Email      | Password      |
+      | user1Name | user1PhoneNumber | user1Email | user1Password |
 
   @C1087 @regression
   Scenario Outline: Verify error message appears in case of entering a not valid phone number
     Given There is 1 user where <Name> is me with email only
-    Given I sign in using my email
+    Given I switch to Log In tab
+    Given I have entered login <Email>
+    Given I have entered password <Password>
+    Given I tap Login button
     Given I accept alert
     Given I click Not Now to not add phone number
-    Given I accept First Time overlay if it is visible
+    Given I accept First Time overlay
     Given I dismiss settings warning
     Given I see conversations list
     Given I tap settings gear button
@@ -191,15 +199,16 @@ Feature: Settings
       | Name      | DigitsCount |
       | user1Name | 5           |
 
-  @C1088 @regression @noAcceptAlert
+  @C1088 @regression
   Scenario Outline: Verify error message appears in case of registering already taken phone number
     Given There is 1 user where <Name> is me with email only
-    Given I sign in using my email
+    Given I switch to Log In tab
+    Given I have entered login <Email>
+    Given I have entered password <Password>
+    Given I tap Login button
     Given I accept alert
     Given I click Not Now to not add phone number
-    Given I accept alert
-    Given I accept First Time overlay if it is visible
-    Given I accept alert
+    Given I accept First Time overlay
     Given I dismiss settings warning
     Given I see conversations list
     Given I tap settings gear button
@@ -235,6 +244,7 @@ Feature: Settings
     And I select settings item Picture
     And I remember my current profile picture
     And I tap Take Photo button on Camera page
+    And I accept alert
     And I tap Take Photo button on Camera page
     And I tap Confirm button on Picture preview page
     Then I wait up to <Timeout> seconds until my profile picture is changed
@@ -250,12 +260,14 @@ Feature: Settings
     Given I enter activation code
     Given I accept terms of service
     Given I input name <Name> and hit Enter
+    Given I accept alert
     Given I tap Keep This One button
+    Given I accept alert
     Given I tap Share Contacts button on Share Contacts overlay
     Given I see conversations list
     Given I tap settings gear button
     Given I select settings item Account
-    When I select settings item Add email address
+    When I select settings item Add email address and password
     And I enter email <Email>
     And I enter password <Password>
     And I start activation email monitoring

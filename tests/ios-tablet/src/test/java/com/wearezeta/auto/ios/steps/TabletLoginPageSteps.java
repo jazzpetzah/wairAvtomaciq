@@ -39,9 +39,8 @@ public class TabletLoginPageSteps {
         getTabletLoginPage().setPassword(self.getPassword());
         getTabletLoginPage().tapLoginButton();
         getTabletLoginPage().waitForLoginToFinish();
-        getTabletLoginPage().acceptAlertIfVisible(5);
-        getFirstTimeOverlayPage().acceptIfVisible(2);
-        getTabletLoginPage().acceptAlertIfVisible(5);
-        getTabletLoginPage().dismissSettingsWarningIfVisible(10);
+        getTabletLoginPage().acceptAlert();
+        getFirstTimeOverlayPage().accept();
+        getTabletLoginPage().dismissSettingsWarning();
     }
 }

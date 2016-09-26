@@ -8,6 +8,7 @@ Feature: Search
     Given I see conversations list
     Given I wait until <ContactEmail> exists in backend search results
     When I open search UI
+    And I accept alert
     And I input in People picker search field user email <ContactEmail>
     Then I see the conversation "<ContactName>" exists in Search results
 
@@ -25,6 +26,8 @@ Feature: Search
     Given I see conversations list
     Given I wait until <Contact> exists in backend search results
     When I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
 
@@ -40,6 +43,7 @@ Feature: Search
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
+    And I accept alert
     And I see top people list on People picker page
     Then I tap on first 1 top connections
     #And I click Go button to create 1:1 conversation
@@ -60,6 +64,7 @@ Feature: Search
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
+    And I accept alert
     And I see top people list on People picker page
     Then I tap on first 1 top connections
     #And I click Go button to create 1:1 conversation
@@ -79,12 +84,13 @@ Feature: Search
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
+    And I accept alert
     And I see top people list on People picker page
     Then I tap on first 2 top connections
     And I tap Create conversation action button on People picker page
     And I wait for 5 seconds
     And I open group conversation details
-    And I change group conversation name to <ConvoName>
+    And I change group conversation name to "<ConvoName>"
     And I dismiss popover on iPad
     And I navigate back to conversations list
     Then I see first item in contact list named <ConvoName>
@@ -102,12 +108,13 @@ Feature: Search
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
+    And I accept alert
     And I see top people list on People picker page
     And I tap on first 2 top connections
     And I tap Create conversation action button on People picker page
     And I wait for 5 seconds
     And I open group conversation details
-    And I change group conversation name to <ConvoName>
+    And I change group conversation name to "<ConvoName>"
     And I dismiss popover on iPad
     And I see first item in contact list named <ConvoName>
 
@@ -125,6 +132,8 @@ Feature: Search
     When I do not see conversation <Contact> in conversations list
     And I wait until <Contact> exists in backend search results
     And I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
@@ -146,6 +155,8 @@ Feature: Search
     When I do not see conversation <Contact> in conversations list
     And I wait until <Contact> exists in backend search results
     And I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap Hide keyboard button
     And I tap on conversation <Contact> in search result
@@ -185,6 +196,7 @@ Feature: Search
     Given I see conversations list
     Given I wait until <Contact> exists in backend search results
     When I open search UI
+    And I accept alert
     And I tap on Search input on People picker page
     And I input in People picker search field first 7 letters of user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
@@ -203,12 +215,14 @@ Feature: Search
     Given I wait until <Contact> exists in backend search results
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
+    And I accept alert
     And I tap on 1 top connection but not <Contact>
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    Then I see that <Number> contacts are selected
+    And I tap Create conversation action button on People picker page
+    Then I see group chat page with users <Contact>,<Contact2>
 
     Examples:
-      | Name      | Contact   | Number |
-      | user1Name | user2Name | 2      |
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |

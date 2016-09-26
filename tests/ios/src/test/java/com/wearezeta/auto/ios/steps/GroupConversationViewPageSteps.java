@@ -30,11 +30,6 @@ public class GroupConversationViewPageSteps {
                 getGroupConversationViewPage().isUpperToolbarContainNames(participantNames));
     }
 
-    @When("^I swipe up on group chat page$")
-    public void ISwipeUpOnGroupChatPage() throws Exception {
-        getGroupConversationViewPage().swipeUp(1000);
-    }
-
     @When("^I see You Renamed Conversation message shown in conversation view$")
     public void ISeeYouRenamedMessageInGroupChat() throws Exception {
         Assert.assertTrue("You Renamed Conversation message is not visible in the conversation view",

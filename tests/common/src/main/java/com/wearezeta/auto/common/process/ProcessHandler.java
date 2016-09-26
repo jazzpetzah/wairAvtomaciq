@@ -1,4 +1,4 @@
-package com.wearezeta.common.process;
+package com.wearezeta.auto.common.process;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import java.io.BufferedReader;

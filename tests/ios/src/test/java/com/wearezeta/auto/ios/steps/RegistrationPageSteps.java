@@ -5,7 +5,6 @@ import com.wearezeta.auto.common.email.ActivationMessage;
 import com.wearezeta.auto.common.email.WireMessage;
 import com.wearezeta.auto.common.usrmgmt.*;
 import com.wearezeta.auto.ios.pages.RegistrationPage;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;

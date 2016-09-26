@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 class KeyboardStateAlphaCaps extends KeyboardState {
 
 	public KeyboardStateAlphaCaps(ZetaIOSDriver driver, WebElement keyboard) {
-        super(driver, keyboard);
+        super(keyboard);
     }
 
 	@Override

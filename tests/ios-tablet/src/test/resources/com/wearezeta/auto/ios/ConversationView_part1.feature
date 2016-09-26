@@ -158,7 +158,8 @@ Feature: Conversation View
     And I have entered login <Login>
     And I have entered password <Password>
     And I tap Login button
-    And I accept First Time overlay if it is visible
+    And I accept alert
+    And I accept First Time overlay
     And I dismiss settings warning
     And I see conversations list
     And I tap on contact name <Contact>
