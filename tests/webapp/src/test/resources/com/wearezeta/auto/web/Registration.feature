@@ -32,6 +32,7 @@ Feature: Registration
     When <Contact> navigates to personal invitation registration page
     Then <Contact> verifies email is correct on Registration page
     And <Contact> verifies username is correct on Registration page
+    And I verify text about Wire is visible
     And I see intro about Wire saying <TextWire>
     And I enter user password "<Password>" on Registration page
     And I accept the Terms of Use
