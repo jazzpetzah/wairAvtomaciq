@@ -266,7 +266,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
             public Dimension getSize() {
                 try {
                     return FBElement.apiStringToDimension(
-                            fbDriverAPI.getWindowSize(CommonUtils.generateGUID())
+                            fbDriverAPI.getWindowSize(CommonUtils.generateGUID().toUpperCase())
                     );
                 } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
                     throw new WebDriverException(e);
