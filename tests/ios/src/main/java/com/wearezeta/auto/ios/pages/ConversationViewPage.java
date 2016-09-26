@@ -273,7 +273,7 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean waitUntilPartOfTextMessageIsNotVisible(String msg) throws Exception {
         final By locator = By.xpath(xpathStrMessageByTextPart.apply(msg));
-        return isElementDisplayed(locator);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     public void tapVideoCallButton() throws Exception {
