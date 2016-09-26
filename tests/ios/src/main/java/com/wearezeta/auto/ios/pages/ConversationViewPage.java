@@ -14,7 +14,6 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
-import com.wearezeta.auto.common.sync_engine_bridge.Constants;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import edu.emory.mathcs.backport.java.util.Arrays;
 import io.appium.java_client.MobileBy;
@@ -201,12 +200,6 @@ public class ConversationViewPage extends IOSPage {
                             index, buttonState);
 
     private static final By fbXpathShareLocationContainer = FBBy.xpath("//XCUIElementTypeMap/parent::*");
-
-    private static final By nameDefaultReceivedLocationAddress =
-            MobileBy.AccessibilityId(Constants.DEFAULT_GMAP_ADDRESS);
-
-    private static final By nameDefaultSentLocationAddress =
-            MobileBy.AccessibilityId("1800 Ellis St, San Francisco, CA  94102");
 
     private static final By xpathDefaultMapApplication = By.xpath("//XCUIElementTypeApplication[@name='Maps']");
 
@@ -869,22 +862,6 @@ public class ConversationViewPage extends IOSPage {
     public boolean isRecordControlButtonState(String buttonState) throws Exception {
         final By locator = By.xpath(recordControlButtonWithState.apply(buttonState));
         return isElementDisplayed(locator);
-    }
-
-    public boolean isDefaultReceivedShareLocationAddressVisible() throws Exception {
-        return isElementDisplayed(nameDefaultReceivedLocationAddress);
-    }
-
-    public boolean isDefaultReceivedShareLocationAddressNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDefaultReceivedLocationAddress);
-    }
-
-    public boolean isDefaultSentShareLocationAddressVisible() throws Exception {
-        return isElementDisplayed(nameDefaultSentLocationAddress);
-    }
-
-    public boolean isDefaultSentShareLocationAddressNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDefaultSentLocationAddress);
     }
 
     public boolean isDefaultMapApplicationVisible() throws Exception {

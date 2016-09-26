@@ -1171,28 +1171,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify visibility of default received|sent Share Location address
-     *
-     * @param shouldNotSee equals to null if text input should be visible
-     * @param origin       'received' if shared in precondition step or 'sent' if shared from conversation view
-     * @throws Exception
-     * @step. I (do not )?see the default (received|sent) Share Location address in the conversation view$
-     */
-    @Then("^I (do not )?see the default (received|sent) Share Location address in the conversation view$")
-    public void VerifyShareLocationAddressVisibility(String shouldNotSee, String origin) throws Exception {
-        boolean condition;
-        if (origin.equals("received")) {
-            condition = (shouldNotSee == null) ? getConversationViewPage().isDefaultReceivedShareLocationAddressVisible() :
-                    getConversationViewPage().isDefaultReceivedShareLocationAddressNotVisible();
-        } else {
-            condition = (shouldNotSee == null) ? getConversationViewPage().isDefaultSentShareLocationAddressVisible() :
-                    getConversationViewPage().isDefaultSentShareLocationAddressNotVisible();
-        }
-        Assert.assertTrue(String.format("Share %s Location address should be %s in the conversation view", origin,
-                (shouldNotSee == null) ? "visible" : "invisible"), condition);
-    }
-
-    /**
      * Verify visibility of default Map application
      *
      * @throws Exception
