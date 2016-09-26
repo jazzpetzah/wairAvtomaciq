@@ -768,6 +768,14 @@ public class CommonWebAppSteps {
         RegistrationPage registrationPage = context.getPagesCollection().getPage(RegistrationPage.class);
         registrationPage.setUrl(url);
         registrationPage.navigateTo();
+        // workaround when using dev (backend is sending mail with account page that redirects to staging webapp)
+        final String webapp = CommonUtils.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
+        final String backend = CommonUtils.getBackendType(CommonWebAppSteps.class);
+        if(registrationPage.getCurrentUrl().contains("staging") && webapp.contains("dev") && backend.equals("staging")) {
+            url = registrationPage.getCurrentUrl().replace("staging", "dev");
+            registrationPage.setUrl(url);
+            registrationPage.navigateTo();
+        }
     }
 
     /**

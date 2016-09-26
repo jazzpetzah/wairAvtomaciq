@@ -321,8 +321,8 @@ public class LoginPageSteps {
 
 	@Then("^I verify text about Wire is visible$")
 	public void IVerifyTextAboutWireIsvisible() throws Throwable {
-		Assert.assertTrue("description message is not visible", context.getPagesCollection().getPage(LoginPage.class)
-				.isDescriptionMessageVisible());
+		Assert.assertTrue("description message is not visible on " + context.getDriver().getCurrentUrl(),
+				context.getPagesCollection().getPage(LoginPage.class).isDescriptionMessageVisible());
 	}
 
 	@Then("^I see intro about Wire saying (.*)$")
