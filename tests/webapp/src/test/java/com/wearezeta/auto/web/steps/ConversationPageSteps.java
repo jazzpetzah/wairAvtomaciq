@@ -859,6 +859,34 @@ public class ConversationPageSteps {
         }
     }
 
+    @When("^I open like list of the latest message$")
+    public void IOpenLikeListForLatestMsg() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickLatestLikeLine();
+    }
+
+    @When("^I( do not)? see like list of last message$")
+    public void ISeeLikeListOfLatestMsg(String doNot) throws Exception {
+        if (doNot == null) {
+            assertTrue("Like list is NOT visible", context.getPagesCollection()
+                    .getPage(ConversationPage.class).isLikeListOfLatestMsgVisible());
+        } else {
+            assertFalse("Like list is VISIBLE", context.getPagesCollection()
+                    .getPage(ConversationPage.class).isLikeListOfLatestMsgVisible());
+        }
+    }
+
+    @When("^I see (\\d+) avatars in like list of last message$")
+    public void ISeeXAvatarsInLikeList(int amount) throws Exception {
+        assertThat("Wrong amount of avatars found", context.getPagesCollection()
+                        .getPage(ConversationPage.class).getAvatarsInLatestLikeList(),
+                equalTo(amount));
+    }
+
+    @When("^I close like list of last message$")
+    public void ICloseLikeListOfLatestMsg() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickXLatestLikeList();
+    }
+
     @Then("^I (do not )?see likes below the last message$")
     public void ISeeLikesForLatestMessage(String not) throws Exception {
         if (not == null) {
