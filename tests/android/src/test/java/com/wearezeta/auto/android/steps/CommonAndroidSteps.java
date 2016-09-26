@@ -1859,4 +1859,38 @@ public class CommonAndroidSteps {
         }
     }
 
+    /**
+     * Mute/Archive conversation from SE
+     * Please note, there are also archieve/unarchive/mute/unmute functions by BE directly
+     *
+     * @param userToNameAlias  user who want to mute conversation
+     * @param dstUserNameAlias conversation or user to be muted/archived
+     * @throws Exception
+     * @step. ^(.*) (mutes?|unmutes?|archives?|unarchives?)  conversation with (.*)$
+     */
+    @When("^(.*) (mutes?|unmutes?|archives?|unarchives?) conversation with (user|group) (.*) on device (.*)$")
+    public void MuteConversationWithUser(String userToNameAlias, String action, String convType,
+                                         String dstUserNameAlias, String deviceName) throws Exception {
+        boolean isGroup = convType.equals("group");
+        switch (action.toLowerCase()) {
+            case "mutes":
+            case "mute":
+                commonSteps.UserMutesConversation(userToNameAlias, dstUserNameAlias, deviceName, isGroup);
+                break;
+            case "unmutes":
+            case "unmute":
+                commonSteps.UserUnmutesConversation(userToNameAlias, dstUserNameAlias, deviceName, isGroup);
+                break;
+            case "archives":
+            case "archive":
+                commonSteps.UserArchiveConversation(userToNameAlias, dstUserNameAlias, deviceName, isGroup);
+                break;
+            case "unarchives":
+            case "unarchive":
+                commonSteps.UserUnarchiveConversation(userToNameAlias, dstUserNameAlias, deviceName, isGroup);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify action '%s'", action));
+        }
+    }
 }
