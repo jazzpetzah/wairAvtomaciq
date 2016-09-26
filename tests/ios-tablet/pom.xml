@@ -21,9 +21,6 @@
         <useNativeInstrumentsLib>true</useNativeInstrumentsLib>
         <isSimulator>true</isSimulator>
         <driverTimeoutSeconds>7</driverTimeoutSeconds>
-        <pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
-        <defaultImagesPath>${project.basedir}/../tools/img/</defaultImagesPath>
-        <defaultAudioPath>${project.basedir}/../tools/audio/</defaultAudioPath>
         <iOSToolsRoot>${project.basedir}/../tools/ios</iOSToolsRoot>
         <defaultEmail>smoketester@wire.com</defaultEmail>
         <specialEmail>smoketester.android@wire.com</specialEmail>
