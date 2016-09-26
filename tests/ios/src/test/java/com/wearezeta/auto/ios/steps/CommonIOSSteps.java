@@ -123,6 +123,8 @@ public class CommonIOSSteps {
             capabilities.setCapability("udid", udid.orElseThrow(
                     () -> new IllegalStateException("Cannot detect any connected iDevice")
             ));
+            capabilities.setCapability("realDeviceLogger",
+                    "/usr/local/lib/node_modules/deviceconsole/deviceconsole");
         } else {
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()));
         }
