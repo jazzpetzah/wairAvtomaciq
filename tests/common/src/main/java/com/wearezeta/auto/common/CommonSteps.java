@@ -248,19 +248,12 @@ public final class CommonSteps {
                 userToUnblock.getId(), ConnectionStatus.Accepted);
     }
 
-    public void ArchiveConversationWithUser(String usersToNameAliases,
-                                            String archiveConversationWithUser) throws Exception {
-        ClientUser user = usrMgr.findUserByNameOrNameAlias(usersToNameAliases);
-        ClientUser archivedUser = usrMgr.findUserByNameOrNameAlias(archiveConversationWithUser);
-        BackendAPIWrappers.archiveUserConv(user, archivedUser);
+    public void ArchiveConversationWithUser(String ownerUser, String dstConvoName) throws Exception {
+        UserArchiveConversation(ownerUser, dstConvoName, null, false);
     }
 
-    public void ArchiveConversationWithGroup(String aUser,
-                                             String archiveConversationWithGroup) throws Exception {
-        ClientUser user = usrMgr.findUserByNameOrNameAlias(aUser);
-        final String conversationIDToArchive = BackendAPIWrappers.getConversationIdByName(user,
-                archiveConversationWithGroup);
-        BackendAPIWrappers.archiveGroupConv(user, conversationIDToArchive);
+    public void ArchiveConversationWithGroup(String ownerUser, String dstConvoName) throws Exception {
+        UserArchiveConversation(ownerUser, dstConvoName, null, true);
     }
 
     public void GenerateNewLoginCode(String asUser) throws Exception {
@@ -268,32 +261,20 @@ public final class CommonSteps {
         BackendAPIWrappers.generateNewLoginCode(user);
     }
 
-    public void MuteConversationWithUser(String usersToNameAliases,
-                                         String muteConversationWithUser) throws Exception {
-        ClientUser user = usrMgr.findUserByNameOrNameAlias(usersToNameAliases);
-        ClientUser mutedUser = usrMgr.findUserByNameOrNameAlias(muteConversationWithUser);
-        BackendAPIWrappers.updateConvMutedState(user, mutedUser, true);
+    public void MuteConversationWithUser(String ownerUser, String dstConvoName) throws Exception {
+        UserMutesConversation(ownerUser, dstConvoName, null, false);
     }
 
-    public void MuteConversationWithGroup(String usersToNameAliases,
-                                          String muteConversationWithGroup) throws Exception {
-        ClientUser user = usrMgr.findUserByNameOrNameAlias(usersToNameAliases);
-        BackendAPIWrappers.updateGroupConvMutedState(user, muteConversationWithGroup, true);
+    public void MuteConversationWithGroup(String ownerUser, String dstConvoName) throws Exception {
+        UserMutesConversation(ownerUser, dstConvoName, null, true);
     }
 
-    public void UnarchiveConversationWithUser(String usersToNameAliases,
-                                              String archiveConversationWithUser) throws Exception {
-        ClientUser user = usrMgr.findUserByNameOrNameAlias(usersToNameAliases);
-        ClientUser archivedUser = usrMgr.findUserByNameOrNameAlias(archiveConversationWithUser);
-        BackendAPIWrappers.unarchiveUserConv(user, archivedUser);
+    public void UnarchiveConversationWithUser(String ownerUser, String dstConvoName) throws Exception {
+        UserUnarchiveConversation(ownerUser, dstConvoName, null, false);
     }
 
-    public void UnarchiveConversationWithGroup(String aUser,
-                                               String archiveConversationWithGroup) throws Exception {
-        ClientUser user = usrMgr.findUserByNameOrNameAlias(aUser);
-        final String conversationIDToArchive = BackendAPIWrappers.getConversationIdByName(user,
-                archiveConversationWithGroup);
-        BackendAPIWrappers.unarchiveGroupConv(user, conversationIDToArchive);
+    public void UnarchiveConversationWithGroup(String ownerUser, String dstConvoName) throws Exception {
+        UserUnarchiveConversation(ownerUser, dstConvoName, null, true);
     }
 
     public void ChangeGroupChatName(String asUserNameAliases, String conversationToRename, String newConversationName)

@@ -38,10 +38,6 @@ public final class BackendAPIWrappers {
 
     private static final Logger log = ZetaLogger.getLog(BackendAPIWrappers.class.getSimpleName());
 
-    public static void setDefaultBackendURL(String url) {
-        BackendREST.setDefaultBackendURL(url);
-    }
-
     public static Future<String> initMessageListener(ClientUser forUser,
                                                      Map<String, String> additionalExpectedHeaders) throws Exception {
         IMAPSMailbox mbox = IMAPSMailbox.getInstance(forUser.getEmail(), forUser.getPassword());
@@ -632,43 +628,6 @@ public final class BackendAPIWrappers {
     public static void updateUserAccentColor(ClientUser user, AccentColor color) throws Exception {
         BackendREST.updateSelfInfo(receiveAuthToken(user), color.getId(), null, null);
         user.setAccentColor(color);
-    }
-
-    public static void updateConvMutedState(ClientUser user,
-                                            ClientUser mutedUser, boolean muted) throws Exception {
-        final String convId = getConversationWithSingleUser(user, mutedUser);
-        BackendREST.updateConvSelfInfo(receiveAuthToken(user), convId,
-                Optional.of(muted), Optional.empty());
-    }
-
-    public static void updateGroupConvMutedState(ClientUser user,
-                                                 String groupConvName, boolean muted) throws Exception {
-        BackendREST.updateConvSelfInfo(receiveAuthToken(user), getConversationIdByName(user, groupConvName),
-                Optional.of(muted), Optional.empty());
-    }
-
-    public static void archiveUserConv(ClientUser ownerUser, ClientUser archivedUser) throws Exception {
-        final String convId = getConversationWithSingleUser(ownerUser, archivedUser);
-        BackendREST.updateConvSelfInfo(receiveAuthToken(ownerUser), convId,
-                Optional.empty(), Optional.of(true));
-    }
-
-    public static void archiveGroupConv(ClientUser selfUser, String conversationToArchive) throws Exception {
-        BackendREST.updateConvSelfInfo(receiveAuthToken(selfUser), conversationToArchive,
-                Optional.empty(), Optional.of(true));
-    }
-
-    public static void unarchiveUserConv(ClientUser ownerUser,
-                                         ClientUser archivedUser) throws Exception {
-        final String convId = getConversationWithSingleUser(ownerUser, archivedUser);
-        BackendREST.updateConvSelfInfo(receiveAuthToken(ownerUser), convId,
-                Optional.empty(), Optional.of(false));
-    }
-
-    public static void unarchiveGroupConv(ClientUser ownerUser,
-                                          String conversationToUnarchive) throws Exception {
-        BackendREST.updateConvSelfInfo(receiveAuthToken(ownerUser), conversationToUnarchive,
-                Optional.empty(), Optional.of(false));
     }
 
     public static void changeGroupChatName(ClientUser asUser, String conversationIDToRename, String newConversationName)
