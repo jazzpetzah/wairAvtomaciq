@@ -657,8 +657,7 @@ public class ConversationPage extends WebPage {
         if (WebAppExecutionContext.isCurrentPlatformWindows()) {
             conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "k"));
         } else {
-            throw new PendingException(
-                    "Webdriver does not support shortcuts for Mac browsers");
+            conversationInput.sendKeys(Keys.chord(Keys.META, Keys.ALT, "k"));
         }
     }
 
