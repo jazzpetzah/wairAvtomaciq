@@ -47,8 +47,8 @@ public class RegistrationPage extends WebPage {
     @FindBy(css = WebAppLocators.RegistrationPage.cssSwitchToSignInButton)
     private WebElement switchToSignInButton;
 
-    @FindBy(css = WebAppLocators.RegistrationPage.cssTextAfterPersonalInvite)
-    private WebElement textAfterPersonalInvite;
+    @FindBy(css = WebAppLocators.RegistrationPage.cssIntroWire)
+    private WebElement introWire;
 
 
     // TODO move to locators
@@ -163,8 +163,8 @@ public class RegistrationPage extends WebPage {
         getDriver().get(getDriver().getCurrentUrl());
     }
 
-    public String getTextAfterPersonalInvitation() throws Exception {
-        return textAfterPersonalInvite.getAttribute("value");
+    public String getTextIntroWire() throws Exception {
+        return introWire.getAttribute("value");
     }
 
     @Override

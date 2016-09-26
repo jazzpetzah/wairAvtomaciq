@@ -743,7 +743,7 @@ public final class WebAppLocators {
 
         public static final String cssTermsOfUseCheckbox = ".checkbox-terms-of-use span";
 
-        public static final String cssTextAfterPersonalInvite = "[data-uie-name='status-get-wire']";
+        public static final String cssIntroWire = "[data-uie-name='status-get-wire']";
     }
 
     public static final class SelfPictureUploadPage {
