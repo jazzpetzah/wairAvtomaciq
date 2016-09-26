@@ -21,6 +21,7 @@
         <useNativeInstrumentsLib>true</useNativeInstrumentsLib>
         <isSimulator>true</isSimulator>
         <driverTimeoutSeconds>7</driverTimeoutSeconds>
+        <pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
         <defaultEmail>smoketester@wire.com</defaultEmail>
         <specialEmail>smoketester.android@wire.com</specialEmail>
         <specialPassword>aqa12345678</specialPassword>
