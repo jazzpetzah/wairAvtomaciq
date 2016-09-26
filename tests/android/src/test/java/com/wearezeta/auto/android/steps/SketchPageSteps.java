@@ -1,8 +1,8 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.android.pages.EmojiKeyboardOverlayPage;
 import com.wearezeta.auto.android.pages.SketchPage;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import cucumber.api.java.en.When;
 
 public class SketchPageSteps {
@@ -10,8 +10,14 @@ public class SketchPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
             .getInstance();
 
+    private static final String EMOJI_UNICODE = "\uD83D\uDE00";
+
     private SketchPage getSketchPage() throws Exception {
         return pagesCollection.getPage(SketchPage.class);
+    }
+
+    private EmojiKeyboardOverlayPage getEmojiKeyboardOverlayPage() throws Exception {
+        return pagesCollection.getPage(EmojiKeyboardOverlayPage.class);
     }
 
     /**
@@ -19,14 +25,20 @@ public class SketchPageSteps {
      * around the canvas
      *
      * @throws Exception
-     * @step. ^I draw a sketch( on image)? with (.*) colors$
+     * @step. ^I draw a sketch(?: on image|) with (.*) colors$
      */
-    @When("^I draw a sketch( on image)? with (.*) colors?$")
-    public void IDrawASketchWithXColors(String onImage, int numColors)
+    @When("^I draw a sketch(?: on image|) with (.*) colors?$")
+    public void IDrawASketchWithXColors(int numColors)
             throws Exception {
         SketchPage page = getSketchPage();
+        // Should skip first emoji selection.
+        if (numColors >= SketchPage.SketchColor.values().length) {
+            throw new IllegalStateException(String.format("The number colors should be less than %d",
+                    SketchPage.SketchColor.values().length));
+        }
+
         for (int i = 1; i <= numColors; i++) {
-            page.setColor(i);
+            page.setColor(SketchPage.SketchColor.values()[i]);
             page.drawRandomLines(1);
         }
     }
@@ -50,10 +62,9 @@ public class SketchPageSteps {
      */
     @When("^I draw an emoji sketch$")
     public void IDrawAnEmojiSketch() throws Exception {
-        SketchPage page = getSketchPage();
-        page.setColor(0);
-        page.pickEmoji();
-        page.drawEmojiOnCanvas();
+        getSketchPage().setColor(SketchPage.SketchColor.EMOJI);
+        getEmojiKeyboardOverlayPage().tapEmojiByValue(EMOJI_UNICODE);
+        getSketchPage().drawEmojiOnCanvas();
     }
 
 }
