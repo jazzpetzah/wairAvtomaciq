@@ -603,6 +603,30 @@ public final class CommonSteps {
         }
     }
 
+    public void UserArchiveConversation(String fromUserNameAlias, String dstConversationName, String deviceName,
+                                        boolean isGroup) throws Exception {
+        ClientUser fromUser = usrMgr.findUserByNameOrNameAlias(fromUserNameAlias);
+        if (!isGroup) {
+            ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(dstConversationName);
+            SEBridge.getInstance().archiveConversation(fromUser, dstUser.getId(), deviceName);
+        } else {
+            String dstConvId = BackendAPIWrappers.getConversationIdByName(fromUser, dstConversationName);
+            SEBridge.getInstance().archiveConversation(fromUser, dstConvId, deviceName);
+        }
+    }
+
+    public void UserUnarchiveConversation(String fromUserNameAlias, String dstConversationName, String deviceName,
+                                        boolean isGroup) throws Exception {
+        ClientUser fromUser = usrMgr.findUserByNameOrNameAlias(fromUserNameAlias);
+        if (!isGroup) {
+            ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(dstConversationName);
+            SEBridge.getInstance().unarchiveConvesation(fromUser, dstUser.getId(), deviceName);
+        } else {
+            String dstConvId = BackendAPIWrappers.getConversationIdByName(fromUser, dstConversationName);
+            SEBridge.getInstance().unarchiveConvesation(fromUser, dstConvId, deviceName);
+        }
+    }
+
     public void IChangeUserAvatarPicture(String userNameAlias,
                                          String picturePath) throws Exception {
         final ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(userNameAlias);
