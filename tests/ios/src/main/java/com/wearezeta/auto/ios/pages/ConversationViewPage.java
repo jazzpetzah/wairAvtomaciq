@@ -1006,29 +1006,25 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathAllTextMessages);
     }
 
-    public boolean waitUntilAnyTextMessagesAreVisible(int times) throws Exception {
-        assert times > 0 : "Expected count should be greater than 0";
-        final boolean result = isElementDisplayed(xpathAllTextMessages);
-        if (times == 1) {
-            return result;
-        } else {
-            if (result) {
-                final long msStarted = System.currentTimeMillis();
-                while (System.currentTimeMillis() - msStarted <=
-                        Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass()))) {
-                    if (selectVisibleElements(xpathAllTextMessages).size() >= times) {
-                        return true;
-                    }
-                    Thread.sleep(500);
-                }
-            }
-        }
-        return false;
+    public boolean waitUntilAnyTextMessagesAreVisible(int expectedCount) throws Exception {
+        return waitUntilLocatorIsVisubleXTimes(xpathAllTextMessages, expectedCount);
     }
 
-    public boolean waitUntilTextMessagesAreVisible(String s, int times) throws Exception {
-        assert times > 0 : "Expected count should be greater than 0";
+    public boolean waitUntilTextMessagesAreVisible(String s, int expectedCount) throws Exception {
         final By locator = By.xpath(xpathStrRecentMessageByExactText.apply(s));
+        return waitUntilLocatorIsVisubleXTimes(locator, expectedCount);
+    }
+
+    public boolean areNoImagesVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathImageCell);
+    }
+
+    public boolean areXImagesVisible(int expectedCount) throws Exception {
+        return waitUntilLocatorIsVisubleXTimes(xpathImageCell, expectedCount);
+    }
+
+    private boolean waitUntilLocatorIsVisubleXTimes(By locator, int times) throws Exception {
+        assert times > 0 : "Expected count should be greater than 0";
         final boolean result = isElementDisplayed(locator);
         if (times == 1) {
             return result;
@@ -1038,30 +1034,6 @@ public class ConversationViewPage extends IOSPage {
                 while (System.currentTimeMillis() - msStarted <=
                         Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass()))) {
                     if (selectVisibleElements(locator).size() >= times) {
-                        return true;
-                    }
-                    Thread.sleep(500);
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean areNoImagesVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathImageCell);
-    }
-
-    public boolean areXImagesVisible(int expectedCount) throws Exception {
-        assert expectedCount > 0 : "Expected count should be greater than 0";
-        final boolean result = isElementDisplayed(xpathImageCell);
-        if (expectedCount == 1) {
-            return result;
-        } else {
-            if (result) {
-                final long msStarted = System.currentTimeMillis();
-                while (System.currentTimeMillis() - msStarted <=
-                        Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass()))) {
-                    if (selectVisibleElements(xpathImageCell).size() >= expectedCount) {
                         return true;
                     }
                     Thread.sleep(500);
