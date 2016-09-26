@@ -255,7 +255,7 @@ Feature: Sign In
     Then I see Registration page
     And I verify text about Wire is visible
     And I see intro about Wire saying <TextWire>
-    
+
     Examples:
       | Language | TextWire                                                                                   |
       | english  | Simple, private & secure messenger for chat, calls, sharing pics, music, videos, GIFs and more.       |
