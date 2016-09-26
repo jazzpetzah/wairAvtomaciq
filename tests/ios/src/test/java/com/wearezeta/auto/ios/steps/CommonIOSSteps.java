@@ -46,6 +46,8 @@ import static com.wearezeta.auto.common.CommonUtils.*;
 public class CommonIOSSteps {
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
+    private static final String IOS_WD_APP_BUNDLE = "com.apple.test.WebDriverAgentRunner-Runner";
+    private static final String FACEBOOK_WD_APP_BUNDLE = "com.facebook.IntegrationApp";
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
     private static Logger log = ZetaLogger.getLog(CommonIOSSteps.class.getSimpleName());
@@ -175,9 +177,15 @@ public class CommonIOSSteps {
                     FileUtils.deleteDirectory(appPath);
                 }
             }
-            RealDeviceHelpers.uninstallApp(udid.orElseThrow(
+            final String dstUDID = udid.orElseThrow(
                     () -> new IllegalStateException("Cannot detect any connected iDevice")
-            ), cachedBundleIds.get(ipaPath));
+            );
+            for (String bundleId : Arrays.asList(
+                    IOS_WD_APP_BUNDLE,
+                    FACEBOOK_WD_APP_BUNDLE,
+                    cachedBundleIds.get(ipaPath))) {
+                RealDeviceHelpers.uninstallApp(dstUDID, bundleId);
+            }
             capabilities.setCapability("fullReset", false);
         }
 
