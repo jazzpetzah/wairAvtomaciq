@@ -18,7 +18,6 @@
         <appPath>/Project/ZClient_ios.app</appPath>
         <platformVersion>9.3</platformVersion>
         <appName>Wire</appName>
-        <useNativeInstrumentsLib>true</useNativeInstrumentsLib>
         <isSimulator>true</isSimulator>
         <driverTimeoutSeconds>7</driverTimeoutSeconds>
         <pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>

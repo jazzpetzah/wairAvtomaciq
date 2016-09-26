@@ -19,7 +19,6 @@
         <oldAppPath></oldAppPath>
         <platformVersion>9.3</platformVersion>
         <appName>Wire</appName>
-        <useNativeInstrumentsLib>true</useNativeInstrumentsLib>
         <isSimulator>true</isSimulator>
         <driverTimeoutSeconds>7</driverTimeoutSeconds>
         <defaultImagesPath>${project.basedir}/../tools/img/</defaultImagesPath>

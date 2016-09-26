@@ -5,7 +5,6 @@ iosApplicationPath=${appPath}
 oldAppPath=${oldAppPath}
 isSimulator=${isSimulator}
 appName=${appName}
-useNativeInstrumentsLib=${useNativeInstrumentsLib}
 platformVersion=${platformVersion}
 iOSToolsRoot=${iOSToolsRoot}
 driverTimeoutSeconds=${driverTimeoutSeconds}
