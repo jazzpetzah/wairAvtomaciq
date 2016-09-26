@@ -105,6 +105,7 @@ public class CommonIOSSteps {
                                                 Optional<Map<String, Object>> additionalCaps,
                                                 int retriesCount) throws Exception {
         Optional<String> udid = Optional.empty();
+        final boolean isRealDevice = !CommonUtils.getIsSimulatorFromConfig(getClass());
 
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("nativeInstrumentsLib", isUseNativeInstrumentsEnabled());
@@ -115,15 +116,15 @@ public class CommonIOSSteps {
         capabilities.setCapability("app", ipaPath);
         capabilities.setCapability("fullReset", true);
         capabilities.setCapability("appName", getAppName());
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            capabilities.setCapability("deviceName", getDeviceName(this.getClass()));
-        } else {
+        if (isRealDevice) {
             // We don't really care about which particular real device model we have
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()).split("\\s+")[0]);
             udid = RealDeviceHelpers.getUDID();
             capabilities.setCapability("udid", udid.orElseThrow(
                     () -> new IllegalStateException("Cannot detect any connected iDevice")
             ));
+        } else {
+            capabilities.setCapability("deviceName", getDeviceName(this.getClass()));
         }
         capabilities.setCapability("platformVersion", getPlatformVersion());
         capabilities.setCapability("launchTimeout", ZetaIOSDriver.MAX_SESSION_INIT_DURATION_MILLIS);
@@ -164,9 +165,18 @@ public class CommonIOSSteps {
         argsValue.put("args", processArgs);
         capabilities.setCapability("processArguments", argsValue.toString());
 
-        if (!CommonUtils.getIsSimulatorFromConfig(getClass()) &&
-                (capabilities.is("noReset") && !((Boolean) capabilities.getCapability("noReset")) ||
-                        !capabilities.is("noReset"))) {
+        if (isRealDevice) {
+            prepareRealDevice(capabilities, udid, ipaPath);
+        }
+
+        return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance().resetDriver(
+                getUrl(), capabilities, retriesCount
+        );
+    }
+
+    private static void prepareRealDevice(DesiredCapabilities caps, Optional<String> udid, String ipaPath)
+            throws Exception {
+        if ((caps.is("noReset") && !((Boolean) caps.getCapability("noReset")) || !caps.is("noReset"))) {
             // FIXME: Sometimes Appium fails to reset app prefs properly on real device
             if (!cachedBundleIds.containsKey(ipaPath)) {
                 final File appPath = IOSCommonUtils.extractAppFromIpa(new File(ipaPath));
@@ -186,11 +196,8 @@ public class CommonIOSSteps {
                     cachedBundleIds.get(ipaPath))) {
                 RealDeviceHelpers.uninstallApp(dstUDID, bundleId);
             }
-            capabilities.setCapability("fullReset", false);
+            caps.setCapability("fullReset", false);
         }
-
-        return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
-                .resetDriver(getUrl(), capabilities, retriesCount);
     }
 
     @Before
