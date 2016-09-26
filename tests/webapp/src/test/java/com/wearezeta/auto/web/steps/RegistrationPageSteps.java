@@ -433,8 +433,7 @@ public class RegistrationPageSteps {
 	 */
 	@Given("^I switch to [Ss]ign [Ii]n page$")
 	public void ISwitchToLoginPage() throws Exception {
-		context.getPagesCollection().getPage(RegistrationPage.class)
-				.switchToLoginPage();
+		context.getPagesCollection().getPage(RegistrationPage.class).switchToLoginPage();
 	}
         
 	/**
@@ -446,7 +445,14 @@ public class RegistrationPageSteps {
 	 */
 	@Then("^I click on Verify later button on Verification page$")
 	public void IClickVerifyLaterButton() throws Exception {
-		context.getPagesCollection().getPage(RegistrationPage.class)
-				.clickVerifyLaterButton();
+		context.getPagesCollection().getPage(RegistrationPage.class).clickVerifyLaterButton();
+	}
+
+	@Then("^I see text after user got personal invite (.*)$")
+	public void ISeeTextAfterPersonalInvitation(String expectedText) throws Exception {
+		final String shownText = context.getPagesCollection().getPage(RegistrationPage.class).getTextAfterPersonalInvitation();
+		Assert.assertTrue(
+				String.format("The actual login error '%s' is not equal to the expected one: '%s'", shownText, expectedText),
+					shownText.equals(expectedText));
 	}
 }
