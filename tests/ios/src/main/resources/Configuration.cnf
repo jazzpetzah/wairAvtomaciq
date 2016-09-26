@@ -9,6 +9,7 @@ useNativeInstrumentsLib=${useNativeInstrumentsLib}
 platformVersion=${platformVersion}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 pictureResultsPath=${pictureResultsPath}
+projectBuildPath=${project.build.directory}
 iOSToolsRoot=${project.build.directory}/../tools/ios/
 defaultImagesPath=${project.build.directory}/../tools/img/
 defaultAudioPath=${project.build.directory}/../tools/audio/
