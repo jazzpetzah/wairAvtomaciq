@@ -143,18 +143,41 @@ public class ConversationViewPageSteps {
         getConversationViewPage().tapKeyboardCommitButton();
     }
 
+    /**
+     * Wait until text messages are visible in the conversation
+     *
+     * @param expectedCount the expected count of messages. Should be equal or greater than zero
+     * @param isDefault     equals to null if presence of any messages are supposed to be verified
+     * @throws Exception
+     * @step. ^I see (\d+) (default )?messages? in the conversation view$"
+     */
     @Then("^I see (\\d+) (default )?messages? in the conversation view$")
     public void ThenISeeMessageInTheDialog(int expectedCount, String isDefault) throws Exception {
-        // To speed up the verification if zero messages presence should be verified
-        final int timeoutSeconds = (expectedCount == 0) ?
-                1 : Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass()));
         final Optional<String> expectedMsg = (isDefault == null) ?
                 Optional.empty() : Optional.of(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
-        final int actualCount = getConversationViewPage().getMessagesCount(expectedMsg, timeoutSeconds);
-        Assert.assertTrue(
-                String.format("The actual messages count is different " +
-                                "from the expected count: %s != %s",
-                        actualCount, expectedCount), actualCount == expectedCount);
+        if (expectedCount == 0) {
+            if (expectedMsg.isPresent()) {
+                Assert.assertTrue(
+                        String.format("There are some '%s' messages in the conversation, while zero is expected",
+                                expectedMsg),
+                        getConversationViewPage().waitUntilTextMessageIsNotVisible(expectedMsg.get()));
+            } else {
+                Assert.assertTrue("There are some  messages in the conversation, while zero is expected",
+                        getConversationViewPage().waitUntilAllTextMessageAreNotVisible());
+            }
+        } else if (expectedCount >= 1) {
+            if (expectedMsg.isPresent()) {
+                Assert.assertTrue(
+                        String.format("There are some '%s' messages in the conversation, while %d is expected",
+                                expectedMsg, expectedCount),
+                        getConversationViewPage().waitUntilTextMessagesAreVisible(expectedMsg.get(), expectedCount));
+            } else {
+                Assert.assertTrue(
+                        String.format("There are no messages in the conversation, while %d is expected",
+                                expectedCount),
+                        getConversationViewPage().waitUntilAnyTextMessagesAreVisible(expectedCount));
+            }
+        }
     }
 
     @Then("^I see last message in the conversation view (is|contains) expected message (.*)")
@@ -264,23 +287,24 @@ public class ConversationViewPageSteps {
                 getConversationViewPage().isConnectingToUserConversationLabelVisible(contact));
     }
 
-    private static final long IMAGE_VISIBILITY_TIMEOUT = 10000; //milliseconds
-
+    /**
+     * Verify whether images are visible in the conversarion
+     *
+     * @step. ^I see (\d+) photos? in the conversation view$
+     *
+     * @param expectedCount the expected count of images
+     * @throws Exception
+     */
     @Then("^I see (\\d+) photos? in the conversation view$")
     public void ISeeNewPhotoInTheDialog(int expectedCount) throws Exception {
-        int actualCount = getConversationViewPage().getCountOfImages();
-        if (actualCount > 0 && expectedCount > 1 && actualCount < expectedCount) {
-            final long millisecondsStarted = System.currentTimeMillis();
-            do {
-                actualCount = getConversationViewPage().getCountOfImages();
-                if (actualCount >= expectedCount) {
-                    break;
-                }
-                Thread.sleep(500);
-            } while (System.currentTimeMillis() - millisecondsStarted <= IMAGE_VISIBILITY_TIMEOUT);
+        if (expectedCount == 0) {
+            Assert.assertTrue("No images are expected to be visible in the conversations",
+                    getConversationViewPage().areNoImagesVisible());
+        } else {
+            Assert.assertTrue(
+                    String.format("%d images are expected to be visible in the conversations", expectedCount),
+                    getConversationViewPage().areXImagesVisible(expectedCount));
         }
-        Assert.assertTrue(String.format("The actual count of images in the conversation view %s " +
-                "does not equal to the expected count %s", actualCount, expectedCount), actualCount == expectedCount);
     }
 
     /**
@@ -297,16 +321,6 @@ public class ConversationViewPageSteps {
         IOSSimulatorHelper.copySystemClipboardToSimulatorClipboard();
         ITapHoldTextInput();
         IClickPopupPasteAndCommitText();
-    }
-
-    @When("^I scroll media out of sight until media bar appears$")
-    public void IScrollMediaOutOfSightUntilMediaBarAppears() throws Exception {
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            throw new PendingException("Known Bug: Media bar disappears unexpectedly on Simulator");
-        } else {
-            Assert.assertTrue("Media bar is not displayed after the view has been scrolled to the top",
-                    getConversationViewPage().scrollDownTillMediaBarAppears());
-        }
     }
 
     @When("^I pause playing the media in media bar$")
@@ -1425,8 +1439,8 @@ public class ConversationViewPageSteps {
     /**
      * Tap the recent media container to show/hide like icon
      *
-     * @param pWidth   destination cell X tap point (in percent 0-100)
-     * @param pHeight  destination cell Y tap point (in percent 0-100)
+     * @param pWidth  destination cell X tap point (in percent 0-100)
+     * @param pHeight destination cell Y tap point (in percent 0-100)
      * @throws Exception
      * @step. I tap at (\d+)% of width and (\d+)% of height of the recent message$
      */

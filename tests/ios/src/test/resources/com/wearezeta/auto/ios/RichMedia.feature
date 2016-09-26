@@ -28,7 +28,7 @@ Feature: Rich Media
     When I tap on contact name <Contact>
     And I tap on text input
     And I tap on media container in conversation view
-    And I scroll media out of sight until media bar appears
+    And I scroll to the bottom of the conversation
     And I pause playing the media in media bar
     Then I see media is paused on Media Bar
     And I tap Play in media bar
@@ -51,7 +51,7 @@ Feature: Rich Media
     When I tap on contact name <Contact>
     And I scroll to the bottom of the conversation
     And I tap on media container in conversation view
-    And I scroll media out of sight until media bar appears
+    And I scroll to the bottom of the conversation
     And I tap on the media bar
     Then I see conversation view is scrolled back to the playing media link <SoundCloudLink>
 
@@ -70,7 +70,7 @@ Feature: Rich Media
     And I tap on contact name <Contact>
     And I scroll to the bottom of the conversation
     When I tap on media container in conversation view
-    And I scroll media out of sight until media bar appears
+    And I scroll to the bottom of the conversation
     Then I wait up to 35 seconds for media bar to disappear
 
     Examples:
@@ -88,7 +88,7 @@ Feature: Rich Media
     When I tap on contact name <Contact1>
     And I scroll to the bottom of the conversation
     And I tap on media container in conversation view
-    When I scroll media out of sight until media bar appears
+    When I scroll to the bottom of the conversation
     And I scroll to the bottom of the conversation
     Then I do not see media bar in the conversation view
 
@@ -115,7 +115,7 @@ Feature: Rich Media
     And I navigate back to conversations list
     And I tap Pause button in conversations list next to <Contact2>
     And I tap on contact name <Contact2>
-    And I scroll media out of sight until media bar appears
+    And I scroll to the bottom of the conversation
     Then I see media is paused on Media Bar
 
     Examples:

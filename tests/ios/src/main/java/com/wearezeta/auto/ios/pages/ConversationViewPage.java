@@ -264,8 +264,13 @@ public class ConversationViewPage extends IOSPage {
         return isElementDisplayed(locator);
     }
 
-    public boolean waitUntilPartOfTextMessageIsNotVisible(String msg) throws Exception {
+    public boolean waitUntilTextMessageIsNotVisible(String msg) throws Exception {
         final By locator = By.xpath(xpathStrMessageByTextPart.apply(msg));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public boolean waitUntilPartOfTextMessageIsNotVisible(String msg) throws Exception {
+        final By locator = By.xpath(xpathStrRecentMessageByExactText.apply(msg));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
@@ -342,34 +347,6 @@ public class ConversationViewPage extends IOSPage {
         return isElementDisplayed(locator);
     }
 
-    public int getMessagesCount(Optional<String> expectedMessage, int timeoutSeconds) throws Exception {
-        By locator = xpathAllTextMessages;
-        if (expectedMessage.isPresent()) {
-            locator = By.xpath(xpathStrMessageByTextPart.apply(expectedMessage.get()));
-        }
-        return selectVisibleElements(locator, timeoutSeconds).size();
-    }
-
-    public int getCountOfImages() throws Exception {
-        if (DriverUtils.waitUntilLocatorAppears(getDriver(), xpathImageCell)) {
-            return getElements(xpathImageCell).size();
-        }
-        return 0;
-    }
-
-    public boolean scrollDownTillMediaBarAppears() throws Exception {
-        final int maxScrolls = 2;
-        int nTry = 0;
-        while (nTry < maxScrolls) {
-            if (isElementDisplayed(nameTitle, 2)) {
-                return true;
-            }
-            swipeDialogPageDown();
-            nTry++;
-        }
-        return false;
-    }
-
     private boolean isMediaBarPauseButtonVisible() throws Exception {
         return isElementDisplayed(namePauseButton, 3);
     }
@@ -425,15 +402,6 @@ public class ConversationViewPage extends IOSPage {
 
     public void openConversationDetails() throws Exception {
         getElement(xpathConversationDetailsButton).click();
-    }
-
-    public void swipeDialogPageDown() throws Exception {
-        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            IOSSimulatorHelper.swipeDown();
-        } else {
-            DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationPage),
-                    1000, 50, 30, 50, 95);
-        }
     }
 
     public boolean isMediaContainerVisible() throws Exception {
@@ -1032,5 +1000,74 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapRecentMessageToolbox() throws Exception {
         getElement(nameRecentMessageToolbox).click();
+    }
+
+    public boolean waitUntilAllTextMessageAreNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathAllTextMessages);
+    }
+
+    public boolean waitUntilAnyTextMessagesAreVisible(int times) throws Exception {
+        assert times > 0 : "Expected count should be greater than 0";
+        final boolean result = isElementDisplayed(xpathAllTextMessages);
+        if (times == 1) {
+            return result;
+        } else {
+            if (result) {
+                final long msStarted = System.currentTimeMillis();
+                while (System.currentTimeMillis() - msStarted <=
+                        Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass()))) {
+                    if (selectVisibleElements(xpathAllTextMessages).size() >= times) {
+                        return true;
+                    }
+                    Thread.sleep(500);
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean waitUntilTextMessagesAreVisible(String s, int times) throws Exception {
+        assert times > 0 : "Expected count should be greater than 0";
+        final By locator = By.xpath(xpathStrRecentMessageByExactText.apply(s));
+        final boolean result = isElementDisplayed(locator);
+        if (times == 1) {
+            return result;
+        } else {
+            if (result) {
+                final long msStarted = System.currentTimeMillis();
+                while (System.currentTimeMillis() - msStarted <=
+                        Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass()))) {
+                    if (selectVisibleElements(locator).size() >= times) {
+                        return true;
+                    }
+                    Thread.sleep(500);
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean areNoImagesVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathImageCell);
+    }
+
+    public boolean areXImagesVisible(int expectedCount) throws Exception {
+        assert expectedCount > 0 : "Expected count should be greater than 0";
+        final boolean result = isElementDisplayed(xpathImageCell);
+        if (expectedCount == 1) {
+            return result;
+        } else {
+            if (result) {
+                final long msStarted = System.currentTimeMillis();
+                while (System.currentTimeMillis() - msStarted <=
+                        Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass()))) {
+                    if (selectVisibleElements(xpathImageCell).size() >= expectedCount) {
+                        return true;
+                    }
+                    Thread.sleep(500);
+                }
+            }
+        }
+        return false;
     }
 }
