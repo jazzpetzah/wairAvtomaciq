@@ -1014,6 +1014,26 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
+    public void clickLatestLikeLine() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLatestLikeLine);
+        getDriver().findElement(locator).click();
+    }
+
+    public boolean isLikeListOfLatestMsgVisible() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLatestLikeList);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public void clickXLatestLikeList() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssXLatestLikeList);
+        getDriver().findElement(locator).click();
+    }
+
+    public int getAvatarsInLatestLikeList() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeListAvatars);
+        return this.getDriver().findElements(locator).size();
+    }
+
     public void clickLikeMessageWithoutOtherLikes(int messageIndex) throws Exception {
         String messageId = getMessageId(messageIndex);
         hoverOverMessage(messageId);
