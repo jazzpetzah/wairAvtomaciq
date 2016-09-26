@@ -1007,12 +1007,12 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean waitUntilAnyTextMessagesAreVisible(int expectedCount) throws Exception {
-        return waitUntilLocatorIsVisubleXTimes(xpathAllTextMessages, expectedCount);
+        return waitUntilLocatorIsVisibleXTimes(xpathAllTextMessages, expectedCount);
     }
 
     public boolean waitUntilTextMessagesAreVisible(String s, int expectedCount) throws Exception {
         final By locator = By.xpath(xpathStrRecentMessageByExactText.apply(s));
-        return waitUntilLocatorIsVisubleXTimes(locator, expectedCount);
+        return waitUntilLocatorIsVisibleXTimes(locator, expectedCount);
     }
 
     public boolean areNoImagesVisible() throws Exception {
@@ -1020,10 +1020,10 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean areXImagesVisible(int expectedCount) throws Exception {
-        return waitUntilLocatorIsVisubleXTimes(xpathImageCell, expectedCount);
+        return waitUntilLocatorIsVisibleXTimes(xpathImageCell, expectedCount);
     }
 
-    private boolean waitUntilLocatorIsVisubleXTimes(By locator, int times) throws Exception {
+    private boolean waitUntilLocatorIsVisibleXTimes(By locator, int times) throws Exception {
         assert times > 0 : "Expected count should be greater than 0";
         final boolean result = isElementDisplayed(locator);
         if (times == 1) {
