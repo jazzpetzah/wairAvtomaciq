@@ -19,6 +19,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaDriver;
+import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rc.RCTestcase;
 import com.wearezeta.auto.common.rc.TestcaseResultToTestrailTransformer;
@@ -168,6 +169,14 @@ public class ZetaFormatter implements Formatter, Reporter {
                     log.error("Failed to take Android screenshot:");
                     e.printStackTrace();
                 }
+            } else if (driver instanceof ZetaOSXDriver) {
+                final Optional<BufferedImage> screenshot = DriverUtils.takeMacOSFullScreenShot(driver);
+                if (!screenshot.isPresent()) {
+                    return;
+                }
+                screenshotSavers.execute(() ->
+                        ImageUtil.storeImage(ImageUtil.scaleTo(screenshot.get(),
+                                MAX_SCREENSHOT_WIDTH, MAX_SCREENSHOT_HEIGHT), resultScreenshot));
             } else {
                 final Optional<BufferedImage> screenshot = DriverUtils.takeFullScreenShot(driver);
                 if (!screenshot.isPresent()) {

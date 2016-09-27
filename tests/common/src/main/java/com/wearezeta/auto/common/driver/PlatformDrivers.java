@@ -68,7 +68,7 @@ public final class PlatformDrivers {
     }
 
     public static boolean isMobileDriver(RemoteWebDriver driver) {
-        return (driver instanceof ZetaIOSDriver) || (driver instanceof ZetaAndroidDriver);
+        return (driver instanceof ZetaIOSDriver) || (driver instanceof ZetaAndroidDriver) || (driver instanceof ZetaOSXDriver);
     }
 
     public static void setDefaultImplicitWaitTimeout(RemoteWebDriver driver) throws Exception {

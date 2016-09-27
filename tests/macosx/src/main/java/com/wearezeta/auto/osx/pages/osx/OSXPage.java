@@ -147,6 +147,6 @@ public abstract class OSXPage extends BasePage {
     }
 
     public Optional<BufferedImage> getScreenshot() throws Exception {
-        return DriverUtils.takeFullScreenShot(getDriver());
+        return DriverUtils.takeMacOSFullScreenShot(getDriver());
     }
 }
