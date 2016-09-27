@@ -125,11 +125,11 @@ public class SEBridge {
         getOrAddDevice(userFrom, deviceName).archiveConversation(convId);
     }
 
-    public void unarchiveConvesation(ClientUser userFrom, String convId) throws Exception {
+    public void unarchiveConversation(ClientUser userFrom, String convId) throws Exception {
         getOrAddRandomDevice(userFrom).unarchiveConversation(convId);
     }
 
-    public void unarchiveConvesation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+    public void unarchiveConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
         getOrAddDevice(userFrom, deviceName).unarchiveConversation(convId);
     }
 

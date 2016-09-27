@@ -626,16 +626,16 @@ public final class CommonSteps {
         if (!isGroup) {
             ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(dstConversationName);
             if (deviceName == null) {
-                SEBridge.getInstance().unarchiveConvesation(fromUser, dstUser.getId());
+                SEBridge.getInstance().unarchiveConversation(fromUser, dstUser.getId());
             } else {
-                SEBridge.getInstance().unarchiveConvesation(fromUser, dstUser.getId(), deviceName);
+                SEBridge.getInstance().unarchiveConversation(fromUser, dstUser.getId(), deviceName);
             }
         } else {
             String dstConvId = BackendAPIWrappers.getConversationIdByName(fromUser, dstConversationName);
             if (deviceName == null) {
-                SEBridge.getInstance().unarchiveConvesation(fromUser, dstConvId);
+                SEBridge.getInstance().unarchiveConversation(fromUser, dstConvId);
             } else {
-                SEBridge.getInstance().unarchiveConvesation(fromUser, dstConvId, deviceName);
+                SEBridge.getInstance().unarchiveConversation(fromUser, dstConvId, deviceName);
             }
         }
     }
