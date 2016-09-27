@@ -121,7 +121,6 @@ Feature: Calling
     And I tap on contact name <Contact1>
     And I remember the left side state of <Contact2> conversation item on iPad
     And I tap Audio Call button
-    And I accept alert
     And I see Calling overlay
     And <Contact2> calls me
     And I see call status message contains "<Contact2> calling"
@@ -202,7 +201,6 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Audio Call button
-    And I accept alert
     And I see Calling overlay
     And I tap Leave button on Calling overlay
     Then I do not see Calling overlay
@@ -271,7 +269,6 @@ Feature: Calling
     Given I remember the state of <GroupChatName> conversation item
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
-    And I accept alert
     And I see <NumberOfAvatars> avatars on the Calling overlay
     Then I tap Leave button on Calling overlay
     And I do not see Calling overlay
