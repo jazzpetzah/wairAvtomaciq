@@ -9,6 +9,7 @@ Feature: Video Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Video Call button
+    And I accept alert
     Then I see call status message contains "<Contact> ringing"
     When I tap Leave button on Calling overlay
     And I do not see Calling overlay
@@ -48,6 +49,7 @@ Feature: Video Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Video Call button
+    And I accept alert
     And I see Video Calling overlay
     And I tap Leave button on Video Calling overlay
     And I do not see Video Calling overlay
