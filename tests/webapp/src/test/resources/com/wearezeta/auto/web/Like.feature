@@ -523,6 +523,43 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Message1 | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | like me  | edited        |
 
+  @C226444 @like @staging
+  Scenario Outline: Verify I can see likers count instead of names (ex. 5 people)
+    Given There are 6 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given <Name> has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device2 with label Label2
+    Given user <Contact3> adds a new device Device3 with label Label3
+    Given user <Contact4> adds a new device Device4 with label Label4
+    Given user <Contact5> adds a new device Device5 with label Label5
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <ChatName>
+    And Contact <Contact1> sends message <Message> via device Device1 to group conversation <ChatName>
+    Then I see text message <Message>
+    When I click to like the last message without other likes
+    And User <Contact1> likes the recent message from group conversation <ChatName> via device Device1
+    And User <Contact2> likes the recent message from group conversation <ChatName> via device Device2
+    And User <Contact3> likes the recent message from group conversation <ChatName> via device Device3
+    And User <Contact4> likes the recent message from group conversation <ChatName> via device Device4
+    Then I see likes below the last message
+    And I see names in like string of last message
+    When User <Contact5> likes the recent message from group conversation <ChatName> via device Device5
+    And I see likes below the last message
+    And I wait for 1 seconds
+    Then I see count of 6 people in like string of last message
+    When User <Contact1> unlikes the recent message from group conversation <ChatName> via device Device1
+    And I see likes below the last message
+    And I wait for 1 seconds
+    And I see the last message is liked by users Myself,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Then I see names in like string of last message
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | ChatName | Message |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GROUP    | like me |
+
   @C226446 @like @staging
   Scenario Outline: Verify I can open like list by tapping on the number of people who liked
     Given There are 3 users where <Name> is me

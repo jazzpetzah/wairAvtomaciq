@@ -1014,17 +1014,17 @@ public class ConversationPage extends WebPage {
     }
 
     public void clickLatestLikeLine() throws Exception {
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLatestLikeLine);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLastLikeLine);
         getDriver().findElement(locator).click();
     }
 
     public boolean isLikeListOfLatestMsgVisible() throws Exception {
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLatestLikeList);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLastLikeList);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public void clickXLatestLikeList() throws Exception {
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssXLatestLikeList);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssXLastLikeList);
         getDriver().findElement(locator).click();
     }
 
@@ -1067,6 +1067,11 @@ public class ConversationPage extends WebPage {
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssUserThatLikeByMessageId.apply(latestMessageId));
         String text = getDriver().findElement(locator).getAttribute("data-uie-value");
         return Arrays.asList(text.split("\\s*,\\s*"));
+    }
+
+    public String getLastLikeString() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLastLikeLine);
+        return getDriver().findElement(locator).getText();
     }
 
     public boolean isUnlikeWithOtherLikesVisibleForLastMessage() throws Exception {
