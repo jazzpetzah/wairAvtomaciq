@@ -210,6 +210,8 @@ public abstract class IOSPage extends BasePage {
 
     public void acceptAlert(int timeoutSeconds) throws Exception {
         if (waitUntilAlertDisplayed(timeoutSeconds)) {
+            // Wait for the animation
+            Thread.sleep(1000);
             getDriver().switchTo().alert().accept();
             return;
         }
@@ -222,6 +224,8 @@ public abstract class IOSPage extends BasePage {
 
     public void dismissAlert(int timeoutSeconds) throws Exception {
         if (waitUntilAlertDisplayed(timeoutSeconds)) {
+            // Wait for the animation
+            Thread.sleep(1000);
             getDriver().switchTo().alert().dismiss();
             return;
         }

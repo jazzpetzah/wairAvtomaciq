@@ -17,7 +17,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C3133 @rc @regression @torun
+  @C3133 @rc @regression
   Scenario Outline: Sign in to ZClient [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
