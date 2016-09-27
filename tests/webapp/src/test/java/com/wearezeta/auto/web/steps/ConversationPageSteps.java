@@ -930,6 +930,14 @@ public class ConversationPageSteps {
         assertThat("Wrong number of likes", likers, hasSize(users.length));
     }
 
+    @Then("^I see (.*) is the most recent liker of last message$")
+    public void ISeeMostRecentLiker(String liker) throws Exception {
+        List<String> likers = context.getPagesCollection().getPage(ConversationPage.class).getUsersThatLikeTheLastMessage();
+        ClientUser userTo = context.getUserManager().findUserByNameOrNameAlias(liker);
+        String user = userTo.getName();
+        assertThat("User is not the most recent liker", likers.get(likers.size() - 1), is(user));
+    }
+
     @When("^I click reset session on the latest decryption error")
     public void IClickToResetSession() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickToResetSessionOnLatestError();
