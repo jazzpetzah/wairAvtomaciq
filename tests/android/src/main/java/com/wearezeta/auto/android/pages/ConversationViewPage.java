@@ -69,7 +69,6 @@ public class ConversationViewPage extends AndroidPage {
     private static final By idCursorShareLocation = By.id("cursor_menu_item_location");
     private static final By idCursorGif = By.id("cursor_menu_item_gif");
     private static final By idCursorView = By.id("cal__cursor");
-    private static final By idCursorSelfAvatar = By.id("civ__cursor__self_avatar");
     private static final String CURSOR_EDIT_TOOLTIP = "TYPE A MESSAGE";
     private static final By xpathCursorEditHint = By.xpath(
             String.format("//*[@id='ttv__cursor_hint' and contains(@value, '%s')]", CURSOR_EDIT_TOOLTIP));
@@ -339,10 +338,6 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathCursorEditHint);
     }
 
-    public boolean isSelfAvatarOnTextInputVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorSelfAvatar);
-    }
-
     public void tapOnTextInput() throws Exception {
         getElement(idCursorEditText).click();
     }
@@ -441,6 +436,14 @@ public class ConversationViewPage extends AndroidPage {
             ).click();
             getElement(locator).click();
         }
+    }
+
+    public boolean waitUntilCursorSendButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorSendButton);
+    }
+
+    public boolean waitUntilCursorSendButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorSendButton);
     }
 
     public void longTapAudioMessageCursorBtn(int durationMillis) throws Exception {

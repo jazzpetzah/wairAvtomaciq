@@ -205,3 +205,34 @@ Feature: Settings
     Examples:
       | Name      | CurrentNumber    | NewNumber        |
       | user1Name | user1PhoneNumber | user2PhoneNumber |
+
+  @C250836 @staging
+  Scenario Outline: I can enable/disable send button in Settings
+    Given There is 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap conversations list settings button
+    # Disable at first
+    And I select "Options" settings menu item
+    And I select "Send button" settings menu item
+    And I press Back button 2 times
+    And I see Conversations list
+    And I tap on conversation name <Contact>
+    And I type the message "<Message1>" and send it by keyboard Send button
+    Then I see the message "<Message1>" in the conversation view
+    # Enable now
+    When I navigate back from conversation
+    And I tap conversations list settings button
+    And I select "Options" settings menu item
+    And I select "Send button" settings menu item
+    And I press Back button 2 times
+    And I see Conversations list
+    And I tap on conversation name <Contact>
+    And I type the message "<Message2>" and send it by cursor Send button
+    Then I see the message "<Message2>" in the conversation view
+
+    Examples:
+      | Name      | Contact   | Message1 | Message2 |
+      | user1Name | user2Name | Yo       | NoPb     |
