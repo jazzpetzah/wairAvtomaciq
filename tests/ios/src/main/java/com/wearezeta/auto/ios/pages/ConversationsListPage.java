@@ -91,12 +91,12 @@ public class ConversationsListPage extends IOSPage {
         Thread.sleep(1000);
     }
 
-    private Optional<WebElement> findNameInContactList(String name, int timeoutSeconds) throws Exception {
+    protected Optional<WebElement> findNameInContactList(String name, int timeoutSeconds) throws Exception {
         final By locator = FBBy.xpath(xpathStrConvoListEntryByName.apply(name));
         return getElementIfDisplayed(locator, timeoutSeconds);
     }
 
-    private Optional<WebElement> findNameInContactList(String name) throws Exception {
+    protected Optional<WebElement> findNameInContactList(String name) throws Exception {
         return findNameInContactList(name,
                 Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass())));
     }
@@ -109,7 +109,7 @@ public class ConversationsListPage extends IOSPage {
         return findNameInContactList(name, timeoutSeconds).isPresent();
     }
 
-    public void swipeRightOnContact(String name) throws Exception {
+    private void swipeRightOnContact(String name) throws Exception {
         final FBElement dstElement = (FBElement) findNameInContactList(name).orElseThrow(
                 () -> new IllegalStateException(String.format("Cannot find a conversation named '%s'", name))
         );

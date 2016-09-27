@@ -7,7 +7,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I swipe right on a <Contact>
+    When I swipe right on iPad the conversation named <Contact>
     And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
@@ -25,7 +25,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    And I swipe right on a <GroupChatName>
+    And I swipe right on iPad the conversation named <GroupChatName>
     And I tap Archive action button
     Then I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
@@ -174,7 +174,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I swipe right on a <GroupChatName>
+    When I swipe right on iPad the conversation named <GroupChatName>
     Then I see conversation <GroupChatName> name in action menu in Contact List
     And I see Mute action button
     And I see Archive action button
@@ -193,7 +193,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I swipe right on a <Contact>
+    When I swipe right on iPad the conversation named <Contact>
     Then I see conversation <Contact> name in action menu in Contact List
     And I see Mute action button
     And I see Archive action button
@@ -228,7 +228,7 @@ Feature: Conversation List
     Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User Myself sends 1 encrypted message to user <Contact1>
-    When I swipe right on a <Contact1>
+    When I swipe right on iPad the conversation named <Contact1>
     And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <Contact1> in conversations list
@@ -245,11 +245,11 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I swipe right on a <Contact1>
+    When I swipe right on iPad the conversation named <Contact1>
     And I tap Archive action button
     And I do not see conversation <Contact1> in conversations list
     And I open archived conversations
-    And I swipe right on a <Contact1>
+    And I swipe right on iPad the conversation named <Contact1>
     And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <Contact1> in conversations list
@@ -271,7 +271,7 @@ Feature: Conversation List
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User Myself sends encrypted image <Image> to group conversation <GroupChatName>
-    When I swipe right on a <GroupChatName>
+    When I swipe right on iPad the conversation named <GroupChatName>
     And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
@@ -295,7 +295,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I swipe right on a <Contact1>
+    When I swipe right on iPad the conversation named <Contact1>
     And I tap Block action button
     And I tap Cancel action button
     Then I see conversation action menu
@@ -311,9 +311,9 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I swipe right on a <Contact>
+    When I swipe right on iPad the conversation named <Contact>
     And I tap Mute action button
-    When I swipe right on a <Contact>
+    When I swipe right on iPad the conversation named <Contact>
     And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     Given User <Contact> sends 1 encrypted message to user Myself
@@ -338,7 +338,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
-    When I swipe right on a <GroupChatName>
+    When I swipe right on iPad the conversation named <GroupChatName>
     And I tap Delete action button
     And I select Also Leave option on Delete conversation confirmation
     And I confirm delete conversation content
@@ -365,7 +365,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I swipe right on a <GroupChatName>
+    When I swipe right on iPad the conversation named <GroupChatName>
     And I see Archive action button
     And I see Delete action button
     And I see Cancel action button
@@ -385,7 +385,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I swipe right on a <Contact>
+    When I swipe right on iPad the conversation named <Contact>
     And I tap Block action button
     And I confirm blocking alert
     Then I do not see conversation <Contact> in conversations list

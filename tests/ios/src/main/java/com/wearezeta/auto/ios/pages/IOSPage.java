@@ -336,6 +336,22 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
+    public void swipeAtElement(WebElement el, int percentStartX, int percentStartY,
+                               int percentEndX, int percentEndY, double durationSeconds) throws Exception {
+        if (!CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            throw new IllegalStateException("This method is supported only on Simulator");
+        }
+        final Point location = el.getLocation();
+        final Dimension size = el.getSize();
+        final Dimension screenSize = getDriver().manage().window().getSize();
+        IOSSimulatorHelper.swipe(
+                (location.getX() + percentStartX * size.getWidth() / 100.0) / screenSize.getWidth(),
+                (location.getY() + percentStartY * size.getHeight() / 100.0) / screenSize.getHeight(),
+                (location.getX() + percentEndX * size.getWidth() / 100.0) / screenSize.getWidth(),
+                (location.getY() + percentEndY * size.getHeight() / 100.0) / screenSize.getHeight(),
+                (long)(durationSeconds * 1000.0));
+    }
+
     public Future<?> lockScreenOnRealDevice() throws Exception {
         /*
         this method can return the future itself, so you have more control over execution.
