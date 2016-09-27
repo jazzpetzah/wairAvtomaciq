@@ -196,8 +196,8 @@ Feature: Settings
     Then I enter <DigitsCount> digits phone number and expect no commit button
 
     Examples:
-      | Name      | DigitsCount |
-      | user1Name | 5           |
+      | Name      | DigitsCount | Email      | Password      |
+      | user1Name | 5           | user1Email | user1Password |
 
   @C1088 @regression
   Scenario Outline: Verify error message appears in case of registering already taken phone number
@@ -218,8 +218,8 @@ Feature: Settings
     Then I verify the alert contains text <ExpectedText>
 
     Examples:
-      | Name      | Number        | Code | ExpectedText                |
-      | user1Name | 8301652248706 | +0   | has already been registered |
+      | Name      | Number        | Code | ExpectedText                | Email      | Password      |
+      | user1Name | 8301652248706 | +0   | has already been registered | user1Email | user1Password |
 
   @C1081 @regression @rc @fastLogin
   Scenario Outline: Verify theme switcher is shown in settings
