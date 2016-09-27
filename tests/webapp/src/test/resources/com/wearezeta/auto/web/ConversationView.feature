@@ -489,6 +489,7 @@ And I wait for 60 seconds
     Given I am signed in properly
     When I open conversation with <ChatName>
     And Contact <Contact1> sends message <Message1> via device Device1 to group conversation <ChatName>
+    Then I see text message <Message1>
     When I click to like the last message without other likes
     And I do not see likes below the last message
     Then I see the last message is only liked by me
@@ -501,6 +502,7 @@ And I wait for 60 seconds
     Then I see <MessageAction> action for <Contact1> in conversation
     When I see 4 messages in conversation
     #check another user message <Message1>
+    And I do not see likes below the third last message
     When I click to unlike the third last message without other likes
     And I see the third last message is only liked by me
     When I click context menu of the third last message

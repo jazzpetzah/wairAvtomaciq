@@ -214,6 +214,34 @@ class Device extends RemoteEntity implements IDevice {
     }
 
     @Override
+    public void archiveConversation(String convId) throws Exception {
+        try {
+            askActor(this.ref(), new ActorMessage.ArchiveConv(new RConvId(convId)));
+        } catch (TimeoutException e) {
+            // recreate process and retry
+            respawn();
+            if (hasLoggedInUser()) {
+                logInWithUser(this.loggedInUser.get());
+            }
+            askActor(this.ref(), new ActorMessage.ArchiveConv(new RConvId(convId)));
+        }
+    }
+
+    @Override
+    public void unarchiveConversation(String convId) throws Exception {
+        try {
+            askActor(this.ref(), new ActorMessage.UnarchiveConv(new RConvId(convId)));
+        } catch (TimeoutException e) {
+            // recreate process and retry
+            respawn();
+            if (hasLoggedInUser()) {
+                logInWithUser(this.loggedInUser.get());
+            }
+            askActor(this.ref(), new ActorMessage.UnarchiveConv(new RConvId(convId)));
+        }
+    }
+
+    @Override
     public void sendFile(String convId, String path, String mime) throws Exception {
         try {
             askActor(this.ref(), new ActorMessage.SendFile(new RConvId(convId), path, mime));

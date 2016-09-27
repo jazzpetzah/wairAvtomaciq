@@ -355,7 +355,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | File       | Size |
       | user1Email | user1Password | user1Name | user2Name | C87933.txt | 15MB |
 
-  @C226434 @staging
+  @C226434 @like @regression
   Scenario Outline: Verify liking gif from GIPHY
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -522,6 +522,76 @@ Feature: Like
     Examples:
       | Login      | Password      | Name      | Contact   | Message1 | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | like me  | edited        |
+
+  @C226446 @like @regression
+  Scenario Outline: Verify I can open like list by tapping on the number of people who liked
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <ChatName> with <Contact1>,<Contact2>
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device2 with label Label2
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <ChatName>
+    And Contact <Contact1> sends message <Message> via device Device1 to group conversation <ChatName>
+    Then I see text message <Message>
+    When I click to like the last message without other likes
+    And User <Contact1> likes the recent message from group conversation <ChatName> via device Device1
+    And User <Contact2> likes the recent message from group conversation <ChatName> via device Device2
+    Then I see likes below the last message
+    And I see the last message is liked by users Myself,<Contact1>,<Contact2>
+    When I open like list of the latest message
+    Then I see like list of last message
+    And I see 3 avatars in like list of last message
+    When I close like list of last message
+    Then I do not see like list of last message
+    When I click to unlike the last message with other likes
+    And I do not see like symbol for last message
+    Then I see the last message is liked by users <Contact1>,<Contact2>
+    When I open like list of the latest message
+    And I see like list of last message
+    Then I see 2 avatars in like list of last message
+    And I close like list of last message
+    And I do not see like list of last message
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | Message |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GROUPCHAT | like me |
+
+  @C226447 @like @regression
+  Scenario Outline: Verify likes list is sorted by time, most recent liker is on the right
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <ChatName> with <Contact1>,<Contact2>
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device2 with label Label2
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <ChatName>
+    And Contact <Contact1> sends message <Message> via device Device1 to group conversation <ChatName>
+    Then I see text message <Message>
+    When I click to like the last message without other likes
+    And User <Contact2> likes the recent message from group conversation <ChatName> via device Device2
+    Then I see likes below the last message
+    And I see the last message is liked by users Myself,<Contact2>
+    And I see <Contact2> is the most recent liker of last message
+    When User <Contact1> likes the recent message from group conversation <ChatName> via device Device1
+    And I see likes below the last message
+    Then I see the last message is liked by users Myself,<Contact2>,<Contact1>
+    And I see <Contact1> is the most recent liker of last message
+    When User <Contact2> unlikes the recent message from group conversation <ChatName> via device Device2
+    And I see likes below the last message
+    And I see the last message is liked by users Myself,<Contact1>
+    And User <Contact2> likes the recent message from group conversation <ChatName> via device Device2
+    And I see likes below the last message
+    Then I see the last message is liked by users Myself,<Contact1>,<Contact2>
+    And I see <Contact2> is the most recent liker of last message
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | Message |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GROUPCHAT | like me |
 
   @C234613 @like @regression
   Scenario Outline: Verify likes are reset if sender edits his message

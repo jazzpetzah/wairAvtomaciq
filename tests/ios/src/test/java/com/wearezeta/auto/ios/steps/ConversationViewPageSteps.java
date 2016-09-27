@@ -28,9 +28,6 @@ public class ConversationViewPageSteps {
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private static final String FTRANSFER_MENU_DEFAULT_PNG = "group-icon@3x.png";
-    private static final String FTRANSFER_MENU_TOO_BIG = "Big file";
-
     private ConversationViewPage getConversationViewPage() throws Exception {
         return pagesCollection.getPage(ConversationViewPage.class);
     }
@@ -159,7 +156,7 @@ public class ConversationViewPageSteps {
             if (expectedMsg.isPresent()) {
                 Assert.assertTrue(
                         String.format("There are some '%s' messages in the conversation, while zero is expected",
-                                expectedMsg),
+                                expectedMsg.get()),
                         getConversationViewPage().waitUntilTextMessageIsNotVisible(expectedMsg.get()));
             } else {
                 Assert.assertTrue("There are some  messages in the conversation, while zero is expected",
@@ -169,7 +166,7 @@ public class ConversationViewPageSteps {
             if (expectedMsg.isPresent()) {
                 Assert.assertTrue(
                         String.format("There are some '%s' messages in the conversation, while %d is expected",
-                                expectedMsg, expectedCount),
+                                expectedMsg.get(), expectedCount),
                         getConversationViewPage().waitUntilTextMessagesAreVisible(expectedMsg.get(), expectedCount));
             } else {
                 Assert.assertTrue(
@@ -837,17 +834,6 @@ public class ConversationViewPageSteps {
                 avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
     }
 
-    private String expandFileTransferItemName(String itemName) {
-        switch (itemName) {
-            case "FTRANSFER_MENU_DEFAULT_PNG":
-                return FTRANSFER_MENU_DEFAULT_PNG;
-            case "TOO_BIG":
-                return FTRANSFER_MENU_TOO_BIG;
-            default:
-                return itemName;
-        }
-    }
-
     /**
      * Tap on file transfer menu item by name
      *
@@ -857,8 +843,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap file transfer menu item (.*)")
     public void ITapFileTransferMenuItem(String itemName) throws Exception {
-        final String realName = expandFileTransferItemName(itemName);
-        getConversationViewPage().tapFileTransferMenuItem(realName);
+        getConversationViewPage().tapFileTransferMenuItem(itemName);
     }
 
     /**
@@ -870,9 +855,8 @@ public class ConversationViewPageSteps {
      */
     @When("^I see file transfer menu item (.*)")
     public void ISeeFileTransferMenuItem(String itemName) throws Exception {
-        final String realName = expandFileTransferItemName(itemName);
-        Assert.assertTrue(String.format("File transfer menu item '%s' is not visible", realName),
-                getConversationViewPage().isFileTransferMenuItemVisible(realName));
+        Assert.assertTrue(String.format("File transfer menu item '%s' is not visible", itemName),
+                getConversationViewPage().isFileTransferMenuItemVisible(itemName));
     }
 
     /**

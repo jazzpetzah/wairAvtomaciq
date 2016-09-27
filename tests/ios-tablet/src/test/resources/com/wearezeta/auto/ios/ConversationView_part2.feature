@@ -310,7 +310,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User Myself sends 1 encrypted message to user <Contact1>
-    When I swipe right on a <Contact1>
+    When I swipe right on iPad the conversation named <Contact1>
     And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <Contact1> in conversations list

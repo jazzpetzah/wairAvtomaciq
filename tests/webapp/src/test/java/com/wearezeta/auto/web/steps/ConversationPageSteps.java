@@ -859,14 +859,43 @@ public class ConversationPageSteps {
         }
     }
 
-    @Then("^I (do not )?see likes below the last message$")
-    public void ISeeLikesForLatestMessage(String not) throws Exception {
+    @When("^I open like list of the latest message$")
+    public void IOpenLikeListForLatestMsg() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickLatestLikeLine();
+    }
+
+    @When("^I( do not)? see like list of last message$")
+    public void ISeeLikeListOfLatestMsg(String doNot) throws Exception {
+        if (doNot == null) {
+            assertTrue("Like list is NOT visible", context.getPagesCollection()
+                    .getPage(ConversationPage.class).isLikeListOfLatestMsgVisible());
+        } else {
+            assertFalse("Like list is VISIBLE", context.getPagesCollection()
+                    .getPage(ConversationPage.class).isLikeListOfLatestMsgVisible());
+        }
+    }
+
+    @When("^I see (\\d+) avatars in like list of last message$")
+    public void ISeeXAvatarsInLikeList(int amount) throws Exception {
+        assertThat("Wrong amount of avatars found", context.getPagesCollection()
+                        .getPage(ConversationPage.class).getAvatarsInLatestLikeList(),
+                equalTo(amount));
+    }
+
+    @When("^I close like list of last message$")
+    public void ICloseLikeListOfLatestMsg() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickXLatestLikeList();
+    }
+
+    @Then("^I (do not )?see likes below the (third |second )?last message$")
+    public void ISeeLikesForLatestMessage(String not, String indexValue) throws Exception {
+        int messageIndex = getXLastMessageIndex(indexValue);
         if (not == null) {
             assertTrue("Likes of others are NOT visible for last message", context.getPagesCollection().getPage(
-                    ConversationPage.class).isLikeLineVisibleForLastMessage());
+                    ConversationPage.class).isLikeLineVisibleForMessage(messageIndex));
         } else {
             assertTrue("Likes of others are visible for last message", context.getPagesCollection().getPage(ConversationPage.class)
-                    .isLikeLineInvisibleForLastMessage());
+                    .isLikeLineInvisibleForMessage(messageIndex));
         }
     }
 
@@ -900,6 +929,14 @@ public class ConversationPageSteps {
         }
         assertThat("User not found in like message", likers, hasItems(users));
         assertThat("Wrong number of likes", likers, hasSize(users.length));
+    }
+
+    @Then("^I see (.*) is the most recent liker of last message$")
+    public void ISeeMostRecentLiker(String liker) throws Exception {
+        List<String> likers = context.getPagesCollection().getPage(ConversationPage.class).getUsersThatLikeTheLastMessage();
+        ClientUser userTo = context.getUserManager().findUserByNameOrNameAlias(liker);
+        String user = userTo.getName();
+        assertThat("User is not the most recent liker", likers.get(likers.size() - 1), is(user));
     }
 
     @When("^I click reset session on the latest decryption error")

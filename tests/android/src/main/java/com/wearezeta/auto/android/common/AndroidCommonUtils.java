@@ -621,7 +621,7 @@ public class AndroidCommonUtils extends CommonUtils {
         String fileName = FilenameUtils.getBaseName(fileFullName);
 
         if (isVideo) {
-            String imagesDirectoryPath = getImagesPath(CommonUtils.class);
+            String imagesDirectoryPath = getImagesPathFromConfig(CommonUtils.class);
             CommonUtils.generateVideoFile(basePath + File.separator + fileFullName, size, imagesDirectoryPath
                     + IMAGE_FOR_VIDEO_GENERATION);
         } else {
@@ -638,7 +638,7 @@ public class AndroidCommonUtils extends CommonUtils {
      * @throws Exception
      */
     public static void pushLocalFileToSdcardDownload(String fileFullName) throws Exception {
-        String basePath = getImagesPath(AndroidCommonUtils.class);
+        String basePath = getImagesPathFromConfig(AndroidCommonUtils.class);
         String extension = FilenameUtils.getExtension(fileFullName);
         String fileName = FilenameUtils.getBaseName(fileFullName);
 

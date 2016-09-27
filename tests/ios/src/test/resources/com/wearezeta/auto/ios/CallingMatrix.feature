@@ -10,6 +10,7 @@ Feature: Calling Matrix
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Audio Call button
+    And I accept alert
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see Calling overlay
     And <Contact> verifies to have 1 flow
@@ -34,6 +35,7 @@ Feature: Calling Matrix
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Audio Call button
+    And I accept alert
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see Calling overlay
     When I tap Leave button on Calling overlay
@@ -56,6 +58,7 @@ Feature: Calling Matrix
     When <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
+    And I accept alert
     And I see call status message contains "<Contact>"
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And <Contact> verifies to have 1 flow
@@ -81,6 +84,7 @@ Feature: Calling Matrix
     When <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
+    And I accept alert
     And I see call status message contains "<Contact>"
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     When I tap Leave button on Calling overlay
@@ -104,6 +108,7 @@ Feature: Calling Matrix
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
+    And I accept alert
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see Calling overlay
     And <Contact1>,<Contact2> verifies to have 2 flow
@@ -132,6 +137,7 @@ Feature: Calling Matrix
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
+    And I accept alert
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see Calling overlay
     When I tap Leave button on Calling overlay
@@ -156,6 +162,7 @@ Feature: Calling Matrix
     And <Contact1> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
+    And I accept alert
     Then I see Calling overlay
     And <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verify that call status to <GroupChatName> is changed to active in <Timeout> seconds
@@ -188,6 +195,7 @@ Feature: Calling Matrix
     And <Contact1> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
+    And I accept alert
     Then I see Calling overlay
     And <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verify that call status to <GroupChatName> is changed to active in <Timeout> seconds
@@ -215,6 +223,7 @@ Feature: Calling Matrix
     And <Contact1> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
+    And I accept alert
     Then I see Calling overlay
     And <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verify that call status to <GroupChatName> is changed to active in <Timeout> seconds
@@ -240,6 +249,7 @@ Feature: Calling Matrix
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Audio Call button
+    And I accept alert
     Then I close the app for 5 seconds
     And I see Calling overlay
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -262,6 +272,7 @@ Feature: Calling Matrix
     When <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
+    And I accept alert
     Then I see call status message contains "<Contact>"
     When I close the app for 5 seconds
     Then I see call status message contains "<Contact>"
@@ -284,6 +295,7 @@ Feature: Calling Matrix
     Given I see conversations list
     And I tap on contact name <Contact>
     And I tap Audio Call button
+    And I accept alert
     When I lock screen for 5 seconds
     Then I see Calling overlay
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds

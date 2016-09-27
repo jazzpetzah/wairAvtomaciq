@@ -76,6 +76,7 @@ Feature: Calling
     When <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
+    And I accept alert
     And I see call status message contains "<Contact>"
     And I tap Leave button on Calling overlay
     Then I do not see Calling overlay
@@ -136,6 +137,7 @@ Feature: Calling
     Given I see conversations list
     And I tap on contact name <Contact>
     And I tap Audio Call button
+    And I accept alert
     When I lock screen for 5 seconds
     Then I see Calling overlay
 
@@ -159,6 +161,7 @@ Feature: Calling
     When I remember the state of <Contact2> conversation item
     And I tap on contact name <Contact1>
     And I tap Audio Call button
+    And I accept alert
     And I see Calling overlay
     And <Contact2> calls me
     And I see call status message contains "<Contact2> calling"
@@ -184,6 +187,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Audio Call button
+    And I accept alert
     Then I close the app for 5 seconds
     And I see Calling overlay
 
@@ -203,6 +207,7 @@ Feature: Calling
     And <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
+    And I accept alert
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 
     Examples:
@@ -219,6 +224,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Audio Call button
+    And I accept alert
     And I see Calling overlay
     And I tap Leave button on Calling overlay
     Then I do not see Calling overlay
@@ -241,6 +247,7 @@ Feature: Calling
     And <Contact1> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
+    And I accept alert
     Then I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:
@@ -277,6 +284,7 @@ Feature: Calling
     And I tap on contact name <Contact1>
     When <Contact1> calls me
     And I tap Accept button on Calling overlay
+    And I accept alert
     When <Contact2> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
@@ -302,6 +310,7 @@ Feature: Calling
     Then I do not see Calling overlay
     And I wait for 20 seconds
     And I tap Audio Call button
+    And I accept alert
     Then I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:
@@ -321,6 +330,7 @@ Feature: Calling
     When <Contact1> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
+    And I accept alert
     And I see Calling overlay
     Then I see <NumberOfAvatars> avatars on the Calling overlay
     When <Contact3> calls me
@@ -361,6 +371,7 @@ Feature: Calling
     And I wait for 45 seconds
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
+    And I accept alert
     Then I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:
@@ -398,6 +409,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
+    And I accept alert
     Then I see <NumberOfAvatars> avatars on the Calling overlay
     And <Contact1> verifies that waiting instance status is changed to active in 10 seconds
     And <Contact2> verifies that waiting instance status is changed to active in 10 seconds

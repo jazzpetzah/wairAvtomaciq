@@ -806,7 +806,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 20      |
 
-  @C12074 @videocalling @staging
+  @C12074 @videocalling @regression
   Scenario Outline: Verify I can disable video in Video call and enable it back
     Given My browser supports calling
     Given There are 2 users where <Name> is me

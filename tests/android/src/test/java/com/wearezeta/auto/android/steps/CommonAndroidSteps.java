@@ -565,7 +565,7 @@ public class CommonAndroidSteps {
      */
     @Given("^(.*) has an avatar picture from file (.*)$")
     public void UserHasAnAvatarPicture(String name, String picture) throws Exception {
-        String picturePath = CommonUtils.getImagesPath(CommonAndroidSteps.class) + "/" + picture;
+        String picturePath = CommonUtils.getImagesPathFromConfig(getClass()) + picture;
         try {
             name = usrMgr.findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
@@ -954,7 +954,7 @@ public class CommonAndroidSteps {
     public void ContactSendImageToConversation(String imageSenderUserNameAlias, String isEncrypted,
                                                String imageFileName, String conversationType,
                                                String dstConversationName) throws Exception {
-        final String imagePath = CommonUtils.getImagesPath(CommonAndroidSteps.class) + imageFileName;
+        final String imagePath = CommonUtils.getImagesPathFromConfig(getClass()) + imageFileName;
         final boolean isGroup = conversationType.equals("group");
         if (isEncrypted == null) {
             commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
@@ -1275,7 +1275,7 @@ public class CommonAndroidSteps {
     @When("^(.*) sends (.*) file having name \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) (.*)$")
     public void ContactSendsXFileFromSE(String contact, String size, String fileFullName, String mimeType,
                                         String deviceName, String convoType, String dstConvoName) throws Exception {
-        String basePath = AndroidCommonUtils.getBuildPathFromConfig(AndroidCommonUtils.class);
+        String basePath = AndroidCommonUtils.getBuildPathFromConfig(getClass());
         String sourceFilePath = basePath + File.separator + fileFullName;
 
         CommonUtils.createRandomAccessFile(sourceFilePath, size);
@@ -1303,7 +1303,7 @@ public class CommonAndroidSteps {
     @When("^(.*) sends local file named \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) (.*)$")
     public void ContactSendsXLocalFileFromSE(String contact, String fileFullName, String mimeType,
                                              String deviceName, String convoType, String dstConvoName) throws Exception {
-        String basePath = AndroidCommonUtils.getImagesPath(AndroidCommonUtils.class);
+        String basePath = CommonUtils.getAudioPathFromConfig(getClass());
         String sourceFilePath = basePath + File.separator + fileFullName;
 
         boolean isGroup = convoType.equals("group conversation");
@@ -1859,4 +1859,38 @@ public class CommonAndroidSteps {
         }
     }
 
+    /**
+     * Mute/Archive conversation from SE
+     * Please note, there are also archieve/unarchive/mute/unmute functions by BE directly
+     *
+     * @param userToNameAlias  user who want to mute conversation
+     * @param dstUserNameAlias conversation or user to be muted/archived
+     * @throws Exception
+     * @step. ^(.*) (mutes?|unmutes?|archives?|unarchives?)  conversation with (.*)$
+     */
+    @When("^(.*) (mutes?|unmutes?|archives?|unarchives?) conversation with (user|group) (.*) on device (.*)$")
+    public void MuteConversationWithUser(String userToNameAlias, String action, String convType,
+                                         String dstUserNameAlias, String deviceName) throws Exception {
+        boolean isGroup = convType.equals("group");
+        switch (action.toLowerCase()) {
+            case "mutes":
+            case "mute":
+                commonSteps.UserMutesConversation(userToNameAlias, dstUserNameAlias, deviceName, isGroup);
+                break;
+            case "unmutes":
+            case "unmute":
+                commonSteps.UserUnmutesConversation(userToNameAlias, dstUserNameAlias, deviceName, isGroup);
+                break;
+            case "archives":
+            case "archive":
+                commonSteps.UserArchiveConversation(userToNameAlias, dstUserNameAlias, deviceName, isGroup);
+                break;
+            case "unarchives":
+            case "unarchive":
+                commonSteps.UserUnarchiveConversation(userToNameAlias, dstUserNameAlias, deviceName, isGroup);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify action '%s'", action));
+        }
+    }
 }

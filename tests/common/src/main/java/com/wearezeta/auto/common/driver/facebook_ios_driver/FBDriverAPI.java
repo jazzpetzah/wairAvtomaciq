@@ -258,11 +258,20 @@ public class FBDriverAPI {
         parseResponseWithStatus(client.dismissAlert(getSessionId()));
     }
 
-    public void dragFromToForDuration(String uuid, DragArguments dragArguments) throws RESTError, StatusNotZeroError {
-        parseResponseWithStatus(client.dragFromToForDuration(getSessionId(), uuid, dragArguments));
+    public void dragFromToForDuration(String uuid, FBDragArguments FBDragArguments) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.dragFromToForDuration(getSessionId(), uuid, FBDragArguments));
     }
 
     public String getScreenshot() throws RESTError, StatusNotZeroError {
         return parseResponseWithStatus(client.getScreenshot(getSessionId()));
+    }
+
+    public void setRotation(FBDeviceOrientation o) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.setRotation(getSessionId(), o));
+    }
+
+    public FBDeviceOrientation getRotation() throws RESTError, StatusNotZeroError {
+        final JSONObject r = new JSONObject(parseResponseWithStatus(client.getRotation(getSessionId())));
+        return FBDeviceOrientation.fromAngle(r.getInt("z"));
     }
 }

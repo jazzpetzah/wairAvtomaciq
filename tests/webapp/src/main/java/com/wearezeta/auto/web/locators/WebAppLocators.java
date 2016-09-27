@@ -449,6 +449,14 @@ public final class WebAppLocators {
 
         public static final String cssSecondLastMsgHeader = cssSecondLastMessage + " .message-header-label";
 
+        public static final String cssLatestLikeLine = cssLastMessage + " [data-uie-name='message-liked-names']";
+
+        public static final String cssLatestLikeList = cssLastMessage + " [data-uie-name='message-liked-avatars']";
+
+        public static final String cssXLatestLikeList = cssLastMessage + " .icon-close";
+
+        public static final String cssLikeListAvatars = cssLatestLikeList + " .user-avatar-xs";
+
         //Link preview
 
         public static final String cssLinkTitle = ".link-preview-title";

@@ -101,12 +101,36 @@ public class SEBridge {
         getOrAddDevice(userFrom, deviceName).clearConversation(convId);
     }
 
+    public void muteConversation(ClientUser userFrom, String convId) throws Exception {
+        getOrAddRandomDevice(userFrom).muteConversation(convId);
+    }
+
     public void muteConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
         getOrAddDevice(userFrom, deviceName).muteConversation(convId);
     }
 
+    public void unmuteConversation(ClientUser userFrom, String convId) throws Exception {
+        getOrAddRandomDevice(userFrom).unmuteConversation(convId);
+    }
+
     public void unmuteConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
         getOrAddDevice(userFrom, deviceName).unmuteConversation(convId);
+    }
+
+    public void archiveConversation(ClientUser userFrom, String convId) throws Exception {
+        getOrAddRandomDevice(userFrom).archiveConversation(convId);
+    }
+
+    public void archiveConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).archiveConversation(convId);
+    }
+
+    public void unarchiveConversation(ClientUser userFrom, String convId) throws Exception {
+        getOrAddRandomDevice(userFrom).unarchiveConversation(convId);
+    }
+
+    public void unarchiveConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).unarchiveConversation(convId);
     }
 
     public void sendFile(ClientUser userFrom, String convId, String path, String mime, String deviceName)

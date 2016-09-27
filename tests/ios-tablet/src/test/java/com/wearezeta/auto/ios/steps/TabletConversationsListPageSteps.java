@@ -11,12 +11,12 @@ import cucumber.api.java.en.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TabletContactListPageSteps {
+public class TabletConversationsListPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private TabletConversationsListPage getTabletContactListPage() throws Exception {
+    private TabletConversationsListPage getTabletConversationsListPage() throws Exception {
         return pagesCollection.getPage(TabletConversationsListPage.class);
     }
 
@@ -36,7 +36,7 @@ public class TabletContactListPageSteps {
         final TabletConversationsListPage.EntrySide entrySide = TabletConversationsListPage.EntrySide.valueOf(side.toUpperCase());
         this.savedConvoItemStates.put(name,
                 new ElementState(
-                        () -> getTabletContactListPage().getConversationEntryScreenshot(entrySide, name)
+                        () -> getTabletConversationsListPage().getConversationEntryScreenshot(entrySide, name)
                 ).remember()
         );
     }
@@ -77,6 +77,19 @@ public class TabletContactListPageSteps {
     @Then("^I dont see mute call button in conversation list on iPad$")
     public void IDontSeeMuteCallButtonInConversationLisOniPad() throws Exception {
         Assert.assertFalse("Mute call button is still visible",
-                getTabletContactListPage().isMuteCallButtonVisible());
+                getTabletConversationsListPage().isMuteCallButtonVisible());
+    }
+
+    /**
+     * Performs swipe right action on the particular convo list item
+     *
+     * @step.^I swipe right on iPad the conversation named (.*)
+     * @param name conversation name/alias
+     * @throws Exception
+     */
+    @When("^I swipe right on iPad the conversation named (.*)")
+    public void ISwipeRightConversation(String name) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        getTabletConversationsListPage().swipeRightConversationToRevealActionButtons(name);
     }
 }

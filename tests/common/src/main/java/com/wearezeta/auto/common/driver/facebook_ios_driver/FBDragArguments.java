@@ -1,14 +1,14 @@
 package com.wearezeta.auto.common.driver.facebook_ios_driver;
 
 
-public class DragArguments {
+public class FBDragArguments {
     private double fromX;
     private double fromY;
     private double toX;
     private double toY;
     private double durationSeconds;
 
-    public DragArguments(double fromX, double fromY, double toX, double toY, double durationSeconds) {
+    public FBDragArguments(double fromX, double fromY, double toX, double toY, double durationSeconds) {
         this.fromX = fromX;
         this.fromY = fromY;
         this.toX = toX;

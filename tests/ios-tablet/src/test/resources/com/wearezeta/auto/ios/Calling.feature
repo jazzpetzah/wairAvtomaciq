@@ -66,6 +66,7 @@ Feature: Calling
     When <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
+    And I accept alert
     Then I see call status message contains "<Contact>"
 
     Examples:
@@ -120,6 +121,7 @@ Feature: Calling
     And I tap on contact name <Contact1>
     And I remember the left side state of <Contact2> conversation item on iPad
     And I tap Audio Call button
+    And I accept alert
     And I see Calling overlay
     And <Contact2> calls me
     And I see call status message contains "<Contact2> calling"
@@ -164,6 +166,7 @@ Feature: Calling
     And <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
+    And I accept alert
     Then I see Leave button on Calling overlay
 
     Examples:
@@ -182,6 +185,7 @@ Feature: Calling
     And <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
+    And I accept alert
     Then I see Leave button on Calling overlay
 
     Examples:
@@ -198,13 +202,14 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Audio Call button
+    And I accept alert
     And I see Calling overlay
     And I tap Leave button on Calling overlay
     Then I do not see Calling overlay
     And <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
-    # Give it some time to finish initialization
+    And I accept alert
     And I wait for 5 seconds
     And <Contact> stops calling me
     And I do not see Calling overlay
@@ -225,6 +230,7 @@ Feature: Calling
     When <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
+    And I accept alert
     And I see Leave button on Calling overlay
     When I close the app for 5 seconds
     Then I see Leave button on Calling overlay
@@ -265,6 +271,7 @@ Feature: Calling
     Given I remember the state of <GroupChatName> conversation item
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
+    And I accept alert
     And I see <NumberOfAvatars> avatars on the Calling overlay
     Then I tap Leave button on Calling overlay
     And I do not see Calling overlay
@@ -291,6 +298,7 @@ Feature: Calling
     And <Contact1> calls <GroupChatName>
     Then I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
+    And I accept alert
     And I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:

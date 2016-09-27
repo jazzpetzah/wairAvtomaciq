@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 
 import static com.wearezeta.auto.common.CommonUtils.getDeviceName;
 import static com.wearezeta.auto.common.CommonUtils.getIOSToolsRoot;
-import static com.wearezeta.auto.common.CommonUtils.getImagesPath;
+import static com.wearezeta.auto.common.CommonUtils.getImagesPathFromConfig;
 
 public class IOSSimulatorHelper {
     public static final int SIMULATOR_INTERACTION_TIMEOUT = 3 * 60; //seconds
@@ -328,7 +328,7 @@ public class IOSSimulatorHelper {
     }
 
     public static void uploadImage() throws Exception {
-        uploadImage(new File(getImagesPath(IOSSimulatorHelper.class) + File.separator + TESTING_IMAGE_NAME));
+        uploadImage(new File(getImagesPathFromConfig(IOSSimulatorHelper.class) + File.separator + TESTING_IMAGE_NAME));
     }
 
     public static void copySystemClipboardToSimulatorClipboard() throws Exception {

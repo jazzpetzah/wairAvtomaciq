@@ -657,8 +657,7 @@ public class ConversationPage extends WebPage {
         if (WebAppExecutionContext.isCurrentPlatformWindows()) {
             conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "k"));
         } else {
-            throw new PendingException(
-                    "Webdriver does not support shortcuts for Mac browsers");
+            conversationInput.sendKeys(Keys.chord(Keys.META, Keys.ALT, "k"));
         }
     }
 
@@ -1014,6 +1013,26 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
+    public void clickLatestLikeLine() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLatestLikeLine);
+        getDriver().findElement(locator).click();
+    }
+
+    public boolean isLikeListOfLatestMsgVisible() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLatestLikeList);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public void clickXLatestLikeList() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssXLatestLikeList);
+        getDriver().findElement(locator).click();
+    }
+
+    public int getAvatarsInLatestLikeList() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssLikeListAvatars);
+        return this.getDriver().findElements(locator).size();
+    }
+
     public void clickLikeMessageWithoutOtherLikes(int messageIndex) throws Exception {
         String messageId = getMessageId(messageIndex);
         hoverOverMessage(messageId);
@@ -1067,13 +1086,13 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean isLikeLineVisibleForLastMessage() throws Exception {
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssFooterByMessageId.apply(getMessageId(1)));
+    public boolean isLikeLineVisibleForMessage(int messageIndex) throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssFooterByMessageId.apply(getMessageId(messageIndex)));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean isLikeLineInvisibleForLastMessage() throws Exception {
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssFooterByMessageId.apply(getMessageId(1)));
+    public boolean isLikeLineInvisibleForMessage(int messageIndex) throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssFooterByMessageId.apply(getMessageId(messageIndex)));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 

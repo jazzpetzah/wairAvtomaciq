@@ -226,7 +226,10 @@ Feature: Settings
   @C2860 @regression
   Scenario Outline: Verify adding phone number to the contact signed up with email [PORTRAIT]
     Given There is 1 users where <Name> is me with email only
-    Given I Sign in on tablet using my email
+    Given I switch to Log In tab
+    Given I have entered login <Email>
+    Given I have entered password <Password>
+    Given I tap Login button
     Given I click Not Now to not add phone number
     Given I accept alert
     Given I accept First Time overlay
@@ -240,14 +243,17 @@ Feature: Settings
     Then I verify the value of settings item Phone equals to "<MyPhoneNumber>"
 
     Examples:
-      | Name      | MyPhoneNumber    |
-      | user1Name | user1PhoneNumber |
+      | Name      | MyPhoneNumber    | Email      | Password      |
+      | user1Name | user1PhoneNumber | user1Email | user1Password |
 
   @C2866 @regression
   Scenario Outline: Verify error message appears in case of registering already taken phone number [LANDSCAPE]
     Given There is 1 users where <Name> is me with email only
     Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
+    Given I switch to Log In tab
+    Given I have entered login <Email>
+    Given I have entered password <Password>
+    Given I tap Login button
     Given I click Not Now to not add phone number
     Given I accept alert
     Given I accept First Time overlay
@@ -260,9 +266,9 @@ Feature: Settings
     Then I verify the alert contains text <ExpectedText>
 
     Examples:
-      | Name      | Number        | Code | ExpectedText                |
-      | user1Name | 8301652248706 | +0   | has already been registered |
-
+      | Name      | Number        | Code | ExpectedText                | Email      | Password      |
+      | user1Name | 8301652248706 | +0   | has already been registered | user1Email | user1Password |
+    
   @C2855 @rc @regression @fastLogin
   Scenario Outline: Verify theme switcher is not shown on the self profile [LANDSCAPE]
     Given There is 1 user where <Name> is me
