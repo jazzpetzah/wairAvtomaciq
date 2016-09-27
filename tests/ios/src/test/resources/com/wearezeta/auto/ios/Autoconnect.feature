@@ -17,8 +17,8 @@ Feature: Autoconnect
     And I input name <Name> and hit Enter
     And I accept alert
     And I tap Keep This One button
-    And I accept alert
     And I tap Share Contacts button on Share Contacts overlay
+    And I accept alert
     And User <Name> is me
     Then I see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
@@ -87,8 +87,8 @@ Feature: Autoconnect
     And I input name <Name> and hit Enter
     And I accept alert
     And I tap Keep This One button
-    And I accept alert
     And I tap Share Contacts button on Share Contacts overlay
+    And I accept alert
     And User <Name> is me
     And I see conversations list
     And I wait until <Contact> exists in backend search results

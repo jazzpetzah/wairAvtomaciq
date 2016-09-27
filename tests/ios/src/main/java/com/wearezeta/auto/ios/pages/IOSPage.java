@@ -510,7 +510,10 @@ public abstract class IOSPage extends BasePage {
         final long msStart = System.currentTimeMillis();
         do {
             try {
-                return Optional.of(getDriver().switchTo().alert().getText());
+                final String text = getDriver().switchTo().alert().getText();
+                if (text != null && text.length() > 0 && !text.equals("null")) {
+                    return Optional.of(text);
+                }
             } catch (WebDriverException e) {
                 Thread.sleep(500);
             }

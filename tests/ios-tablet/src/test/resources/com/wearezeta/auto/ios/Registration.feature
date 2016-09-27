@@ -18,6 +18,7 @@ Feature: Registration
     And I accept alert
     And I select the first picture from Camera Roll
     And I tap Share Contacts button on Share Contacts overlay
+    And I accept alert
     Then I see conversations list
 
     Examples: 

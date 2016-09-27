@@ -263,6 +263,7 @@ Feature: Settings
     Given I accept alert
     Given I tap Keep This One button
     Given I tap Share Contacts button on Share Contacts overlay
+    Given I accept alert
     Given I see conversations list
     Given I tap settings gear button
     Given I select settings item Account
