@@ -205,6 +205,24 @@ public class DriverUtils {
         }
     }
 
+    public static boolean waitUntilLocatorContainsText(RemoteWebDriver driver, final By locator) throws Exception {
+        return waitUntilLocatorContainsText(driver, locator, getDefaultLookupTimeoutSeconds());
+    }
+
+    public static boolean waitUntilLocatorContainsText(RemoteWebDriver driver, final By locator, int timeoutSeconds) {
+        try {
+            Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+                    .withTimeout(timeoutSeconds, TimeUnit.SECONDS)
+                    .pollingEvery(1, TimeUnit.SECONDS)
+                    .ignoring(NoSuchElementException.class)
+                    .ignoring(StaleElementReferenceException.class)
+                    .ignoring(InvalidElementStateException.class);
+            return wait.until(drv -> drv.findElements(locator).size() > 0 && !drv.findElement(locator).getText().isEmpty());
+        } catch (TimeoutException ex) {
+            return false;
+        }
+    }
+
     public static Optional<WebElement> getElementIfPresentInDOM(RemoteWebDriver driver, final By by) throws Exception {
         return getElementIfPresentInDOM(driver, by, getDefaultLookupTimeoutSeconds());
     }
