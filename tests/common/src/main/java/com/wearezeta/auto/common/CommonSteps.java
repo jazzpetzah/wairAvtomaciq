@@ -565,10 +565,18 @@ public final class CommonSteps {
         ClientUser msgFromUser = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
         if (!isGroup) {
             ClientUser msgToUser = usrMgr.findUserByNameOrNameAlias(dstConversationName);
-            SEBridge.getInstance().muteConversation(msgFromUser, msgToUser.getId(), deviceName);
+            if (deviceName == null) {
+                SEBridge.getInstance().muteConversation(msgFromUser, msgToUser.getId());
+            } else {
+                SEBridge.getInstance().muteConversation(msgFromUser, msgToUser.getId(), deviceName);
+            }
         } else {
             String dstConvId = BackendAPIWrappers.getConversationIdByName(msgFromUser, dstConversationName);
-            SEBridge.getInstance().muteConversation(msgFromUser, dstConvId, deviceName);
+            if (deviceName == null) {
+                SEBridge.getInstance().muteConversation(msgFromUser, dstConvId);
+            } else {
+                SEBridge.getInstance().muteConversation(msgFromUser, dstConvId, deviceName);
+            }
         }
     }
 
@@ -577,10 +585,18 @@ public final class CommonSteps {
         ClientUser msgFromUser = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
         if (!isGroup) {
             ClientUser msgToUser = usrMgr.findUserByNameOrNameAlias(dstConversationName);
-            SEBridge.getInstance().unmuteConversation(msgFromUser, msgToUser.getId(), deviceName);
+            if (deviceName == null) {
+                SEBridge.getInstance().unmuteConversation(msgFromUser, msgToUser.getId());
+            } else {
+                SEBridge.getInstance().unmuteConversation(msgFromUser, msgToUser.getId(), deviceName);
+            }
         } else {
             String dstConvId = BackendAPIWrappers.getConversationIdByName(msgFromUser, dstConversationName);
-            SEBridge.getInstance().unmuteConversation(msgFromUser, dstConvId, deviceName);
+            if (deviceName == null) {
+                SEBridge.getInstance().unmuteConversation(msgFromUser, dstConvId);
+            } else {
+                SEBridge.getInstance().unmuteConversation(msgFromUser, dstConvId, deviceName);
+            }
         }
     }
 
@@ -589,10 +605,18 @@ public final class CommonSteps {
         ClientUser fromUser = usrMgr.findUserByNameOrNameAlias(fromUserNameAlias);
         if (!isGroup) {
             ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(dstConversationName);
-            SEBridge.getInstance().archiveConversation(fromUser, dstUser.getId(), deviceName);
+            if (deviceName == null) {
+                SEBridge.getInstance().archiveConversation(fromUser, dstUser.getId());
+            } else {
+                SEBridge.getInstance().archiveConversation(fromUser, dstUser.getId(), deviceName);
+            }
         } else {
             String dstConvId = BackendAPIWrappers.getConversationIdByName(fromUser, dstConversationName);
-            SEBridge.getInstance().archiveConversation(fromUser, dstConvId, deviceName);
+            if (deviceName == null) {
+                SEBridge.getInstance().archiveConversation(fromUser, dstConvId);
+            } else {
+                SEBridge.getInstance().archiveConversation(fromUser, dstConvId, deviceName);
+            }
         }
     }
 
@@ -601,10 +625,18 @@ public final class CommonSteps {
         ClientUser fromUser = usrMgr.findUserByNameOrNameAlias(fromUserNameAlias);
         if (!isGroup) {
             ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(dstConversationName);
-            SEBridge.getInstance().unarchiveConvesation(fromUser, dstUser.getId(), deviceName);
+            if (deviceName == null) {
+                SEBridge.getInstance().unarchiveConvesation(fromUser, dstUser.getId());
+            } else {
+                SEBridge.getInstance().unarchiveConvesation(fromUser, dstUser.getId(), deviceName);
+            }
         } else {
             String dstConvId = BackendAPIWrappers.getConversationIdByName(fromUser, dstConversationName);
-            SEBridge.getInstance().unarchiveConvesation(fromUser, dstConvId, deviceName);
+            if (deviceName == null) {
+                SEBridge.getInstance().unarchiveConvesation(fromUser, dstConvId);
+            } else {
+                SEBridge.getInstance().unarchiveConvesation(fromUser, dstConvId, deviceName);
+            }
         }
     }
 
