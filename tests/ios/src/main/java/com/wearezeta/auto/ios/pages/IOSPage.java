@@ -208,14 +208,26 @@ public abstract class IOSPage extends BasePage {
         acceptAlert(DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
+    private final static int MAX_ALERT_HANDLING_RETRIES = 5;
+
     public void acceptAlert(int timeoutSeconds) throws Exception {
         if (waitUntilAlertDisplayed(timeoutSeconds)) {
-            // Wait for the animation
-            Thread.sleep(1000);
-            getDriver().switchTo().alert().accept();
-            return;
+            int retry = 0;
+            do {
+                try {
+                    getDriver().switchTo().alert().accept();
+                } catch (WebDriverException e) {
+                    // ignore silently
+                }
+                retry++;
+            } while (waitUntilAlertNotDisplayed(1) && retry < MAX_ALERT_HANDLING_RETRIES);
+            if (retry < MAX_ALERT_HANDLING_RETRIES) {
+                return;
+            }
         }
-        throw new IllegalStateException(String.format("No alert has been shown after %s seconds", timeoutSeconds));
+        throw new IllegalStateException(
+                String.format("No alert has been shown after %s seconds or it cannot be accepted after %s retries",
+                timeoutSeconds, MAX_ALERT_HANDLING_RETRIES));
     }
 
     public void dismissAlert() throws Exception {
@@ -224,12 +236,22 @@ public abstract class IOSPage extends BasePage {
 
     public void dismissAlert(int timeoutSeconds) throws Exception {
         if (waitUntilAlertDisplayed(timeoutSeconds)) {
-            // Wait for the animation
-            Thread.sleep(1000);
-            getDriver().switchTo().alert().dismiss();
-            return;
+            int retry = 0;
+            do {
+                try {
+                    getDriver().switchTo().alert().dismiss();
+                } catch (WebDriverException e) {
+                    // ignore silently
+                }
+                retry++;
+            } while (waitUntilAlertNotDisplayed(1) && retry < MAX_ALERT_HANDLING_RETRIES);
+            if (retry < MAX_ALERT_HANDLING_RETRIES) {
+                return;
+            }
         }
-        throw new IllegalStateException(String.format("No alert has been shown after %s seconds", timeoutSeconds));
+        throw new IllegalStateException(
+                String.format("No alert has been shown after %s seconds or it cannot be dismissed after %s retries",
+                        timeoutSeconds, MAX_ALERT_HANDLING_RETRIES));
     }
 
     public boolean isAlertContainsText(String expectedText) throws Exception {
@@ -478,6 +500,19 @@ public abstract class IOSPage extends BasePage {
             } catch (WebDriverException e) {
                 Thread.sleep(500);
             }
+        } while (System.currentTimeMillis() - msStart <= timeoutSeconds * 1000);
+        return false;
+    }
+
+    public boolean waitUntilAlertNotDisplayed(int timeoutSeconds) throws Exception {
+        final long msStart = System.currentTimeMillis();
+        do {
+            try {
+                getDriver().switchTo().alert().getText();
+            } catch (WebDriverException e) {
+                return true;
+            }
+            Thread.sleep(500);
         } while (System.currentTimeMillis() - msStart <= timeoutSeconds * 1000);
         return false;
     }
