@@ -37,9 +37,9 @@ public class EmojiKeyboardOverlayPageSteps {
      *
      * @param index the index
      * @throws Exception
-     * @step. ^I tap on (\d+)(?:st|nd|rd|th) emoji in cursor Emoji keyboard$
+     * @step. ^I tap on (\d+)(?:st|nd|rd|th) emoji at Emoji Keyboard$
      */
-    @When("^I tap on (\\d+)(?:st|nd|rd|th) emoji in Emoji keyboard$")
+    @When("^I tap on (\\d+)(?:st|nd|rd|th) emoji at Emoji Keyboard$")
     public void ITapEmoji(int index) throws Exception {
         getCursorEmojiOverlayPage().tapEmojiByIndex(index);
     }

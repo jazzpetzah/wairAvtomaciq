@@ -1833,7 +1833,7 @@ public class CommonAndroidSteps {
                     if (m.find()) {
                         return m.group(1);
                     } else {
-                        throw new IllegalStateException(String.format("Cannot find GCM Token from Logcat: %s",GCMTokenOutput));
+                        throw new IllegalStateException(String.format("Cannot find GCM Token from Logcat: %s", GCMTokenOutput));
                     }
                 }
         );
@@ -1852,7 +1852,7 @@ public class CommonAndroidSteps {
     @When("^I uninstall all other version of Wire apps$")
     public void IUninstallAllOtherWires() throws Exception {
         String currentPackage = CommonUtils.getAndroidPackageFromConfig(getClass());
-        for(String packageName : wirePackageList) {
+        for (String packageName : wirePackageList) {
             if (!packageName.equals(currentPackage)) {
                 AndroidCommonUtils.uninstallPackage(packageName);
             }
@@ -1892,5 +1892,16 @@ public class CommonAndroidSteps {
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify action '%s'", action));
         }
+    }
+
+    /**
+     * Verify the virtual keyboard is visible in the screen
+     *
+     * @throws Exception
+     * @step. ^I see Android keyboard$
+     */
+    @Then("^I see Android keyboard$")
+    public void ISeeKeyboard() throws Exception {
+        Assert.assertTrue("The system keyboard is expected to be visible", AndroidCommonUtils.isKeyboardVisible());
     }
 }

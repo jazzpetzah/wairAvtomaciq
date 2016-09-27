@@ -832,4 +832,10 @@ public class AndroidCommonUtils extends CommonUtils {
         AndroidCommonUtils.executeAdb(String.
                 format("shell am start -a android.intent.action.VIEW -d %s", url));
     }
+
+    public static boolean isKeyboardVisible() throws Exception {
+        String output = AndroidCommonUtils.getAdbOutput("shell dumpsys input_method | grep mInputShown");
+        final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("mInputShown=true") + "\\b");
+        return pattern.matcher(output).find();
+    }
 }

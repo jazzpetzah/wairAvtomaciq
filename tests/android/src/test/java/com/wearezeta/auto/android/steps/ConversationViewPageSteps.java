@@ -151,6 +151,24 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Verify the cursor send button is visible/invisible
+     *
+     * @param shouldNotSee equals null means the send button should be visible
+     * @throws Exception
+     * @step. ^I( do not)? see Send button in cursor input$
+     */
+    @Then("^I( do not)? see Send button in cursor input$")
+    public void ISeeSendButtonInCursorInput(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("The send button in cursor is expected to be visible",
+                    getConversationViewPage().waitUntilCursorSendButtonVisible());
+        } else {
+            Assert.assertTrue("The send button in cursor is expected to be invisible",
+                    getConversationViewPage().waitUntilCursorSendButtonInvisible());
+        }
+    }
+
+    /**
      * Press the corresponding button in the input controls
      * Tap file button will send file directly when you installed testing_gallery-debug.apk
      *
@@ -161,10 +179,10 @@ public class ConversationViewPageSteps {
      *                               release his finger after tap on an icon. Works for long tap on Audio Message
      *                               icon only
      * @throws Exception
-     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to cursor) button (\d+ seconds )? from cursor
+     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text) button (\d+ seconds )? from cursor
      * toolbar( without releasing my finger)?$
      */
-    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to cursor)" +
+    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text)" +
             " button (\\d+ seconds )?from cursor toolbar( without releasing my finger)?$")
     public void ITapCursorToolButton(String longTap, String btnName, String longTapDurationSeconds,
                                      String shouldReleaseFinger) throws Exception {
@@ -1072,18 +1090,6 @@ public class ConversationViewPageSteps {
             Assert.assertTrue("The tooltip of text input should be invisible",
                     getConversationViewPage().isTooltipOfTextInputInvisible());
         }
-    }
-
-    /**
-     * Check the self avatar on text input
-     *
-     * @throws Exception
-     * @step. ^I see self avatar on text input$
-     */
-    @Then("^I see self avatar on text input$")
-    public void ISeeSelfAvatarOnTextInput() throws Exception {
-        Assert.assertTrue("The self avatar should be visible on text input",
-                getConversationViewPage().isSelfAvatarOnTextInputVisible());
     }
 
     /**

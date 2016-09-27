@@ -31,3 +31,32 @@ Feature: Emoji
     Examples:
       | Name      | Contact   | NormalText | MixedText | MaxHeightDiff |
       | user1Name | user2Name | Yo         | 👿?       | 20            |
+
+  @C250833 @C250834 @staging
+  Scenario Outline: Verify When I switch to emoji keyboard and select one, cursor send button appears even it is disabled in settings
+    Given There is 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap conversations list settings button
+    # Disable at first
+    And I select "Options" settings menu item
+    And I select "Send button" settings menu item
+    And I press Back button 2 times
+    And I see Conversations list
+    And I tap on conversation name <Contact>
+    And I tap Switch to emoji button from cursor toolbar
+    # C250834
+    Then I see Emoji keyboard
+    When I tap on 1st emoji at Emoji Keyboard
+    # C250833
+    Then I see Send button in cursor input
+    When I tap Switch to text button from cursor toolbar
+    # C250834
+    Then I do not see Emoji keyboard
+    And I see Android keyboard
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
