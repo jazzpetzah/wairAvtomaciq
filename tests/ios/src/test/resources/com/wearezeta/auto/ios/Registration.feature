@@ -74,7 +74,6 @@ Feature: Registration
     Given I input Non-English name <ArabicName> and hit Enter
     Given I accept alert
     Given I tap Keep This One button
-    Given I accept alert
     When I tap Not Now button on Share Contacts overlay
     Then I see conversations list
     When I tap settings gear button
