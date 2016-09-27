@@ -41,9 +41,6 @@ public class ConversationViewPage extends IOSPage {
 
     private static final String DEFAULT_INPUT_PLACEHOLDER_TEXT = "TYPE A MESSAGE";
     private static final By nameInputPlaceholderText = MobileBy.AccessibilityId(DEFAULT_INPUT_PLACEHOLDER_TEXT);
-    private static final By xpathEmptyInputField = By.xpath(
-            String.format("//*[@name='%s' or (@name='%s' and @value='')]",
-                    DEFAULT_INPUT_PLACEHOLDER_TEXT, nameStrConversationInputField));
 
     protected static final By nameYouRenamedConversation = MobileBy.AccessibilityId("YOU RENAMED THE CONVERSATION");
 
@@ -445,17 +442,9 @@ public class ConversationViewPage extends IOSPage {
             // Wait for keyboard opening animation
             Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
         }
+        convoInput.sendKeys(message);
         if (shouldSend) {
-            if (DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathEmptyInputField, 1)) {
-                // to keep the existing stuff inside the input field
-                convoInput.sendKeys(message);
-            } else {
-                // This is faster and allows to avoid autocorrection, but does not update input cursor position properly
-                convoInput.setValue(message);
-            }
             this.tapKeyboardCommitButton();
-        } else {
-            convoInput.sendKeys(message);
         }
     }
 
