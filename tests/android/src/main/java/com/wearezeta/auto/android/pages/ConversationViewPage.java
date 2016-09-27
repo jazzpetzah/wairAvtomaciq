@@ -59,7 +59,8 @@ public class ConversationViewPage extends AndroidPage {
 
     //region Conversation Cursor locators
     public static final String idStrCursorEditText = "cet__cursor";
-    public static final By idCursorSendButton = By.id("cursor_button_send");
+    public static final By idCursorSendButton = By.id("fl__cursor__send_button_container");
+    private static final By idCursorInputEmojiButton = By.id("fl__cursor__emoji_container");
     private static final By idCursorCamera = By.id("cursor_menu_item_camera");
     private static final By idCursorPing = By.id("cursor_menu_item_ping");
     private static final By idCursorMore = By.id("cursor_menu_item_more");
@@ -365,7 +366,7 @@ public class ConversationViewPage extends AndroidPage {
                     message));
         }
 
-        switch(sendFrom.toLowerCase()) {
+        switch (sendFrom.toLowerCase()) {
             case "keyboard":
                 pressKeyboardSendButton();
                 break;
@@ -399,6 +400,9 @@ public class ConversationViewPage extends AndroidPage {
 
     private By getCursorToolButtonLocatorByName(String name) {
         switch (name.toLowerCase()) {
+            case "switch to text":
+            case "switch to emoji":
+                return idCursorInputEmojiButton;
             case "ping":
                 return idCursorPing;
             case "add picture":
