@@ -215,12 +215,21 @@ public abstract class IOSPage extends BasePage {
             int retry = 0;
             do {
                 try {
+                    // Workaround for https://github.com/facebook/WebDriverAgent/issues/300
+                    boolean wasLandscape = false;
+                    if (getDriver().getOrientation() == ScreenOrientation.LANDSCAPE) {
+                        getDriver().rotate(ScreenOrientation.PORTRAIT);
+                        wasLandscape = true;
+                    }
                     getDriver().switchTo().alert().accept();
+                    if (wasLandscape) {
+                        getDriver().rotate(ScreenOrientation.LANDSCAPE);
+                    }
                 } catch (WebDriverException e) {
                     // ignore silently
                 }
                 retry++;
-            } while (waitUntilAlertNotDisplayed(1) && retry < MAX_ALERT_HANDLING_RETRIES);
+            } while (waitUntilAlertDisplayed(1) && retry < MAX_ALERT_HANDLING_RETRIES);
             if (retry < MAX_ALERT_HANDLING_RETRIES) {
                 return;
             }
@@ -239,12 +248,21 @@ public abstract class IOSPage extends BasePage {
             int retry = 0;
             do {
                 try {
+                    // Workaround for https://github.com/facebook/WebDriverAgent/issues/300
+                    boolean wasLandscape = false;
+                    if (getDriver().getOrientation() == ScreenOrientation.LANDSCAPE) {
+                        getDriver().rotate(ScreenOrientation.PORTRAIT);
+                        wasLandscape = true;
+                    }
                     getDriver().switchTo().alert().dismiss();
+                    if (wasLandscape) {
+                        getDriver().rotate(ScreenOrientation.LANDSCAPE);
+                    }
                 } catch (WebDriverException e) {
                     // ignore silently
                 }
                 retry++;
-            } while (waitUntilAlertNotDisplayed(1) && retry < MAX_ALERT_HANDLING_RETRIES);
+            } while (waitUntilAlertDisplayed(1) && retry < MAX_ALERT_HANDLING_RETRIES);
             if (retry < MAX_ALERT_HANDLING_RETRIES) {
                 return;
             }
@@ -500,19 +518,6 @@ public abstract class IOSPage extends BasePage {
             } catch (WebDriverException e) {
                 Thread.sleep(500);
             }
-        } while (System.currentTimeMillis() - msStart <= timeoutSeconds * 1000);
-        return false;
-    }
-
-    public boolean waitUntilAlertNotDisplayed(int timeoutSeconds) throws Exception {
-        final long msStart = System.currentTimeMillis();
-        do {
-            try {
-                getDriver().switchTo().alert().getText();
-            } catch (WebDriverException e) {
-                return true;
-            }
-            Thread.sleep(500);
         } while (System.currentTimeMillis() - msStart <= timeoutSeconds * 1000);
         return false;
     }

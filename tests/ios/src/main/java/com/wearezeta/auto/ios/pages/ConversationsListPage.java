@@ -7,7 +7,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.DragArguments;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDragArguments;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
@@ -116,7 +116,7 @@ public class ConversationsListPage extends IOSPage {
         final Dimension elSize = dstElement.getSize();
         final double y = elSize.getHeight() * 8 / 9;
         dstElement.dragFromToForDuration(
-                new DragArguments(elSize.getWidth() / 10, y, elSize.getWidth() * 3 / 4, y, 1)
+                new FBDragArguments(elSize.getWidth() / 10, y, elSize.getWidth() * 3 / 4, y, 1)
         );
     }
 

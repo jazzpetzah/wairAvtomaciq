@@ -330,9 +330,9 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
         }
     }
 
-    public void dragFromToForDuration(DragArguments dragArguments) {
+    public void dragFromToForDuration(FBDragArguments FBDragArguments) {
         try {
-            fbDriverAPI.dragFromToForDuration(this.uuid, dragArguments);
+            fbDriverAPI.dragFromToForDuration(this.uuid, FBDragArguments);
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }

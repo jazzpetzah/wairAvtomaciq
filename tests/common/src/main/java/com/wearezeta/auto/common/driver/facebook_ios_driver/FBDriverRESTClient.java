@@ -69,6 +69,20 @@ final class FBDriverRESTClient {
         return client.target(dstUrl).request().header("Content-type", MediaType.APPLICATION_JSON);
     }
 
+    public JSONObject setRotation(String sessionId, FBDeviceOrientation o) throws RESTError {
+        final Builder webResource = buildDefaultRequest("rotation", sessionId);
+        final JSONObject body = new JSONObject();
+        body.put("x", 0);
+        body.put("y", 0);
+        body.put("z", o.getAngle());
+        return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
+    }
+
+    public JSONObject getRotation(String sessionId) throws RESTError {
+        final Builder webResource = buildDefaultRequest("rotation", sessionId);
+        return waitForResponse(() -> restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK}));
+    }
+
     @FunctionalInterface
     public interface RequestSender {
         String send() throws RESTError;
@@ -272,16 +286,16 @@ final class FBDriverRESTClient {
         );
     }
 
-    public JSONObject dragFromToForDuration(String sessionId, String uuid, DragArguments dragArguments)
+    public JSONObject dragFromToForDuration(String sessionId, String uuid, FBDragArguments FBDragArguments)
             throws RESTError {
         final Builder webResource = buildDefaultRequest(
                 String.format("uiaTarget/%s/dragfromtoforduration", uuid), sessionId);
         final JSONObject body = new JSONObject();
-        body.put("fromX", dragArguments.getFromX());
-        body.put("fromY", dragArguments.getFromY());
-        body.put("toX", dragArguments.getToX());
-        body.put("toY", dragArguments.getToY());
-        body.put("duration", dragArguments.getDurationSeconds());
+        body.put("fromX", FBDragArguments.getFromX());
+        body.put("fromY", FBDragArguments.getFromY());
+        body.put("toX", FBDragArguments.getToX());
+        body.put("toY", FBDragArguments.getToY());
+        body.put("duration", FBDragArguments.getDurationSeconds());
         return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 

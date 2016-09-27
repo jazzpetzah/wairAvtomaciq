@@ -247,6 +247,47 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     }
 
     @Override
+    public void rotate(ScreenOrientation orientation) {
+        try {
+            switch (orientation) {
+                case LANDSCAPE:
+                    fbDriverAPI.setRotation(FBDeviceOrientation.LANDSCAPE_LEFT);
+                    break;
+                case PORTRAIT:
+                    fbDriverAPI.setRotation(FBDeviceOrientation.PORTRAIT);
+                    break;
+                default:
+                    throw new IllegalArgumentException(
+                            String.format("Unknown orientation value '%s'", orientation.toString())
+                    );
+            }
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
+    @Override
+    public ScreenOrientation getOrientation() {
+        try {
+            final FBDeviceOrientation currentOrientation = fbDriverAPI.getRotation();
+            switch (currentOrientation) {
+                case PORTRAIT:
+                case PORTRAIT_UPSIDE_DOWN:
+                    return ScreenOrientation.PORTRAIT;
+                case LANDSCAPE_LEFT:
+                case LANDSCAPE_RIGHT:
+                    return ScreenOrientation.LANDSCAPE;
+                default:
+                    throw new IllegalArgumentException(
+                            String.format("Unknown orientation value '%s'", currentOrientation.toString())
+                    );
+            }
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
+    @Override
     public Options manage() {
         return new ZetaRemoteWebDriverOptions();
     }
