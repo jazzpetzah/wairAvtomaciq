@@ -328,7 +328,6 @@ Feature: Conversation View
     Then I see tooltip of text input
     When I tap on text input
     Then I see tooltip of text input
-    And I see self avatar on text input
     When I type the message "<Message>"
     And I do not see tooltip of text input
 
@@ -381,3 +380,23 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | LeaveGroupChat |
+
+  @C250837 @C250838 @staging
+  Scenario Outline: Verify cursor send button is visible when input is not empty although you switch conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
+    And I type the message "<Message>"
+    Then I see Send button in cursor input
+    When I navigate back from conversation
+    And I tap on conversation name <Contact2>
+    And I navigate back from conversation
+    And I tap on conversation name <Contact1>
+    Then I see Send button in cursor input
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Message |
+      | user1Name | user2Name | user3Name | YoNo    |

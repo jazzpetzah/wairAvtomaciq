@@ -50,7 +50,7 @@ public class DriverUtils {
     public static boolean isElementPresentAndDisplayed(RemoteWebDriver driver, final WebElement element) {
         try {
             final boolean result = element.isDisplayed();
-            if (driver instanceof ZetaIOSDriver) {
+            if (driver instanceof ZetaIOSDriver || driver instanceof ZetaOSXWebAppDriver ) {
                 return result;
             } else {
                 return result && isElementInScreenRect(driver, element);
@@ -202,6 +202,24 @@ public class DriverUtils {
             if (!PlatformDrivers.isMobileDriver(driver)) {
                 restoreImplicitWait(driver);
             }
+        }
+    }
+
+    public static boolean waitUntilLocatorContainsText(RemoteWebDriver driver, final By locator) throws Exception {
+        return waitUntilLocatorContainsText(driver, locator, getDefaultLookupTimeoutSeconds());
+    }
+
+    public static boolean waitUntilLocatorContainsText(RemoteWebDriver driver, final By locator, int timeoutSeconds) {
+        try {
+            Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+                    .withTimeout(timeoutSeconds, TimeUnit.SECONDS)
+                    .pollingEvery(1, TimeUnit.SECONDS)
+                    .ignoring(NoSuchElementException.class)
+                    .ignoring(StaleElementReferenceException.class)
+                    .ignoring(InvalidElementStateException.class);
+            return wait.until(drv -> drv.findElements(locator).size() > 0 && !drv.findElement(locator).getText().isEmpty());
+        } catch (TimeoutException ex) {
+            return false;
         }
     }
 
@@ -376,8 +394,25 @@ public class DriverUtils {
             final BufferedImage bImageFromConvert = ImageIO.read(new ByteArrayInputStream(srcImage));
             return Optional.ofNullable(bImageFromConvert);
         } catch (WebDriverException | NoClassDefFoundError e) {
-            // e.printStackTrace();
             log.error("Selenium driver has failed to take the screenshot of the current screen!");
+        }
+        return Optional.empty();
+    }
+    
+    /**
+     * AppiumForMac seems to send screenshots in non-base64 format on certain platforms when requesting bytes 
+     * so we explicitly request base64.
+     * @param driver
+     * @return
+     * @throws Exception 
+     */
+    public static Optional<BufferedImage> takeMacOSFullScreenShot(ZetaDriver driver) throws Exception {
+        try {
+            final byte[] srcImage = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64).getBytes();
+            final BufferedImage bImageFromConvert = ImageIO.read(new ByteArrayInputStream(srcImage));
+            return Optional.ofNullable(bImageFromConvert);
+        } catch (WebDriverException | NoClassDefFoundError e) {
+            log.error("Selenium driver has failed to take macOS screenshot of the current screen!");
         }
         return Optional.empty();
     }

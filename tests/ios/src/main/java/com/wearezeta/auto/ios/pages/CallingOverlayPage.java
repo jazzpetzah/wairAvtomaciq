@@ -8,6 +8,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 public class CallingOverlayPage extends IOSPage {
     private static final By nameCallStatusLabel = MobileBy.AccessibilityId("CallStatusLabel");
@@ -24,31 +25,25 @@ public class CallingOverlayPage extends IOSPage {
     protected static final By nameMuteCallButton = MobileBy.AccessibilityId(nameStrMuteCallButton);
 
     protected static final String nameStrCallVideoButton = "CallVideoButton";
-    protected static final By nameCallVideoButton = MobileBy.AccessibilityId(nameStrCallVideoButton);
 
     private static final String nameStrSwitchCameraButton = "SwitchCameraButton";
 
     private static final String nameStrAcceptCallButton = "AcceptButton";
 
-    private static final Function<String, String> xpathStrCallingMessageByText = text ->
-            String.format("//*[@name='CallStatusLabel' and contains(@value, '%s')]", text);
+    private static final By nameCallingMessage = MobileBy.AccessibilityId("CallStatusLabel");
 
     private static final By nameSecondCallAlert = MobileBy.AccessibilityId("Answer call?");
 
     private static final By nameAnswerCallAlertButton = MobileBy.AccessibilityId("Answer");
 
-    private static final By xpathGroupCallAvatars = By.xpath(
-            "//XCUIElementTypeWindow[@name='ZClientNotificationWindow']//XCUIElementTypeCell");
 
-    private static final By xpathMuteButtonSelected =
-            By.xpath("//XCUIElementTypeButton[@name='CallMuteButton' and @value='1']");
+    private static final Function<Integer, String> xpathStrGroupCallAvatarsByCount = count ->
+            String.format("//XCUIElementTypeButton[@name='SwitchCameraButton']/" +
+                    "following::XCUIElementTypeCollectionView[count(XCUIElementTypeCell)=%s]", count);
 
-    private static final By xpathMuteButtonNotSelected =
-            By.xpath("//XCUIElementTypeButton[@name='CallMuteButton' and @value='']");
+    private static final By nameGroupCallFullMessage = MobileBy.AccessibilityId("The call is full");
 
-    private static final By xpathGroupCallFullMessage = By.xpath("//XCUIElementTypeAlert[@name='The call is full']");
-
-    private static final Integer WAIT_FOR_GROUPCALL_FULL_MSG  = 20;
+    private static final Integer WAIT_FOR_GROUPCALL_FULL_MSG = 20;
 
     public CallingOverlayPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -70,12 +65,8 @@ public class CallingOverlayPage extends IOSPage {
         getElement(nameAnswerCallAlertButton).click();
     }
 
-    public int getNumberOfParticipantsAvatars() throws Exception {
-        return getElements(xpathGroupCallAvatars).size();
-    }
-
     public boolean isGroupCallFullMessageShown() throws Exception {
-        return isElementDisplayed(xpathGroupCallFullMessage, WAIT_FOR_GROUPCALL_FULL_MSG);
+        return isElementDisplayed(nameGroupCallFullMessage, WAIT_FOR_GROUPCALL_FULL_MSG);
     }
 
     protected String getButtonAccessibilityIdByName(final String name) {
@@ -110,8 +101,16 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isCallingMessageContainingVisible(String text) throws Exception {
-        final By locator = By.xpath(xpathStrCallingMessageByText.apply(text));
-        return isElementDisplayed(locator, 20);
+        // XPath locators are bloody slow here
+        final long msStarted = System.currentTimeMillis();
+        final WebElement el = getElement(nameCallingMessage, "No calling overlay is visible after the timeout", 15);
+        do {
+            if (el.getText().contains(text)) {
+                return true;
+            }
+            Thread.sleep(500);
+        } while (System.currentTimeMillis() - msStarted <= 5000);
+        return false;
     }
 
     public boolean isButtonVisible(String name) throws Exception {
@@ -123,24 +122,45 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isMuteButtonSelected() throws Exception {
-        return isElementDisplayed(xpathMuteButtonSelected);
+        final long msStarted = System.currentTimeMillis();
+        final WebElement el = getElement(nameMuteCallButton);
+        do {
+            if (el.getText().equals("1")) {
+                return true;
+            }
+            Thread.sleep(500);
+        } while (System.currentTimeMillis() - msStarted <= 5000);
+        return false;
     }
 
     public boolean isMuteButtonNotSelected() throws Exception {
-        return isElementDisplayed(xpathMuteButtonNotSelected);
+        final long msStarted = System.currentTimeMillis();
+        final WebElement el = getElement(nameMuteCallButton);
+        do {
+            if (el.getText().equals("")) {
+                return true;
+            }
+            Thread.sleep(500);
+        } while (System.currentTimeMillis() - msStarted <= 5000);
+        return false;
     }
 
     public boolean isVideoButtonSelected() throws Exception {
-        return isElementDisplayed( xpathMuteButtonSelected);
+        return isMuteButtonSelected();
     }
 
     public boolean isVideoButtonNotSelected() throws Exception {
-        return isElementDisplayed(xpathMuteButtonNotSelected);
+        return isMuteButtonNotSelected();
     }
 
     public BufferedImage getMuteButtonScreenshot() throws Exception {
         return this.getElementScreenshot(getElement(nameMuteCallButton)).orElseThrow(
                 () -> new IllegalStateException("Cannot take a screenshot of Mute button")
         );
+    }
+
+    public boolean isCountOfAvatarsEqualTo(int expectedNumberOfAvatars, int timeoutSeconds) throws Exception {
+        final By locator = By.xpath(xpathStrGroupCallAvatarsByCount.apply(expectedNumberOfAvatars));
+        return isElementDisplayed(locator, timeoutSeconds);
     }
 }

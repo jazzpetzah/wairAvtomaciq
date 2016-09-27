@@ -203,8 +203,13 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     public Point getLocation() {
         try {
             final JSONObject rect = new JSONObject(fbDriverAPI.getRect(this.uuid));
-            return new Point(rect.getJSONObject("origin").getInt("x"),
-                    rect.getJSONObject("origin").getInt("y"));
+            // TODO: Adjust the interface after driver update
+            if (rect.has("origin")) {
+                return new Point(rect.getJSONObject("origin").getInt("x"),
+                        rect.getJSONObject("origin").getInt("y"));
+            } else {
+                return new Point(rect.getInt("x"), rect.getInt("y"));
+            }
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
@@ -214,8 +219,13 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     public Dimension getSize() {
         try {
             final JSONObject rect = new JSONObject(fbDriverAPI.getRect(this.uuid));
-            return new Dimension(rect.getJSONObject("size").getInt("width"),
-                    rect.getJSONObject("size").getInt("height"));
+            // TODO: Adjust the interface after driver update
+            if (rect.has("size")) {
+                return new Dimension(rect.getJSONObject("size").getInt("width"),
+                        rect.getJSONObject("size").getInt("height"));
+            } else {
+                return new Dimension(rect.getInt("width"), rect.getInt("height"));
+            }
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
@@ -330,9 +340,9 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
         }
     }
 
-    public void dragFromToForDuration(DragArguments dragArguments) {
+    public void dragFromToForDuration(FBDragArguments FBDragArguments) {
         try {
-            fbDriverAPI.dragFromToForDuration(this.uuid, dragArguments);
+            fbDriverAPI.dragFromToForDuration(this.uuid, FBDragArguments);
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }

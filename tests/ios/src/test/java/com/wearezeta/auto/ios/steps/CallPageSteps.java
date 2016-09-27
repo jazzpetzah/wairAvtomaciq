@@ -171,20 +171,12 @@ public class CallPageSteps {
      */
     @Then("^I see (\\d+) avatars? on the Calling overlay$")
     public void ISeeXAvatars(int expectedNumberOfAvatars) throws Exception {
-        final long millisecondsStarted = System.currentTimeMillis();
-        int actualNumberOfAvatars = 0;
-        while (System.currentTimeMillis() - millisecondsStarted <= CALL_AVATARS_VISIBILITY_TIMEOUT * 1000) {
-            actualNumberOfAvatars = getCallingOverlayPage().getNumberOfParticipantsAvatars();
-            if (actualNumberOfAvatars == expectedNumberOfAvatars) {
-                return;
-            } else if (actualNumberOfAvatars > expectedNumberOfAvatars) {
-                break;
-            }
-            Thread.sleep(1000);
-        }
-        assert false :
-                String.format("The actual number of calling avatars %s is not equal to the expected number %s",
-                        actualNumberOfAvatars, expectedNumberOfAvatars);
+        Assert.assertTrue(
+                String.format("The actual number of calling avatars is not equal to the expected number %s",
+                        expectedNumberOfAvatars),
+                getCallingOverlayPage().isCountOfAvatarsEqualTo(expectedNumberOfAvatars,
+                        CALL_AVATARS_VISIBILITY_TIMEOUT)
+        );
     }
 
     /**

@@ -9,7 +9,7 @@ Feature: File Transfer
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap File Transfer button from input tools
-    And I tap file transfer menu item <ItemName>
+    And I tap on iPad file transfer menu item <ItemName>
     When I type the default message and send it
     Then I see 1 default messages in the conversation view
     And I see file transfer placeholder

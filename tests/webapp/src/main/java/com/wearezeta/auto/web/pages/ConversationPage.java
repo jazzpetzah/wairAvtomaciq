@@ -1091,13 +1091,13 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean isLikeLineVisibleForLastMessage() throws Exception {
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssFooterByMessageId.apply(getMessageId(1)));
+    public boolean isLikeLineVisibleForMessage(int messageIndex) throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssFooterByMessageId.apply(getMessageId(messageIndex)));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean isLikeLineInvisibleForLastMessage() throws Exception {
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssFooterByMessageId.apply(getMessageId(1)));
+    public boolean isLikeLineInvisibleForMessage(int messageIndex) throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssFooterByMessageId.apply(getMessageId(messageIndex)));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 

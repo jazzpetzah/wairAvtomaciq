@@ -887,14 +887,15 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).clickXLatestLikeList();
     }
 
-    @Then("^I (do not )?see likes below the last message$")
-    public void ISeeLikesForLatestMessage(String not) throws Exception {
+    @Then("^I (do not )?see likes below the (third |second )?last message$")
+    public void ISeeLikesForLatestMessage(String not, String indexValue) throws Exception {
+        int messageIndex = getXLastMessageIndex(indexValue);
         if (not == null) {
             assertTrue("Likes of others are NOT visible for last message", context.getPagesCollection().getPage(
-                    ConversationPage.class).isLikeLineVisibleForLastMessage());
+                    ConversationPage.class).isLikeLineVisibleForMessage(messageIndex));
         } else {
             assertTrue("Likes of others are visible for last message", context.getPagesCollection().getPage(ConversationPage.class)
-                    .isLikeLineInvisibleForLastMessage());
+                    .isLikeLineInvisibleForMessage(messageIndex));
         }
     }
 

@@ -65,7 +65,7 @@ Feature: Archive
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I swipe right on a <GroupChatName>
+    When I swipe right on iPad the conversation named <GroupChatName>
     And I tap Leave action button
     And I confirm leaving
     Then I do not see conversation <GroupChatName> in conversations list
@@ -96,13 +96,13 @@ Feature: Archive
     And I see NO ACTIVE CONVERSATIONS message in conversations list
     When I open archived conversations
     Then I see conversation <ArchivedUser> in conversations list
-    When I swipe right on a <ArchivedUser>
+    When I swipe right on iPad the conversation named <ArchivedUser>
     And I tap Unarchive action button
     Then I do not see conversation <ArchivedUser> in conversations list
     When I tap close Archive page button
     Then I see conversation <ArchivedUser> in conversations list
     And I do not see Archive button at the bottom of conversations list
-    When I swipe right on a <ArchivedUser>
+    When I swipe right on iPad the conversation named <ArchivedUser>
     And I tap Archive action button
     And I do not see conversation <ArchivedUser> in conversations list
     And I see Archive button at the bottom of conversations list

@@ -44,6 +44,8 @@ public class CameraRollPage extends IOSPage {
         } else {
             tapFirstImage();
         }
+        // Wait for the animation
+        Thread.sleep(2000);
     }
 
     public void tapFirstLibraryFolder() throws Exception {

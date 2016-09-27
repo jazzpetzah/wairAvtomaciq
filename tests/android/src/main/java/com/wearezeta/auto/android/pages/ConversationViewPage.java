@@ -59,7 +59,8 @@ public class ConversationViewPage extends AndroidPage {
 
     //region Conversation Cursor locators
     public static final String idStrCursorEditText = "cet__cursor";
-    public static final By idCursorSendButton = By.id("cursor_button_send");
+    public static final By idCursorSendButton = By.id("fl__cursor__send_button_container");
+    private static final By idCursorInputEmojiButton = By.id("fl__cursor__emoji_container");
     private static final By idCursorCamera = By.id("cursor_menu_item_camera");
     private static final By idCursorPing = By.id("cursor_menu_item_ping");
     private static final By idCursorMore = By.id("cursor_menu_item_more");
@@ -68,7 +69,6 @@ public class ConversationViewPage extends AndroidPage {
     private static final By idCursorShareLocation = By.id("cursor_menu_item_location");
     private static final By idCursorGif = By.id("cursor_menu_item_gif");
     private static final By idCursorView = By.id("cal__cursor");
-    private static final By idCursorSelfAvatar = By.id("civ__cursor__self_avatar");
     private static final String CURSOR_EDIT_TOOLTIP = "TYPE A MESSAGE";
     private static final By xpathCursorEditHint = By.xpath(
             String.format("//*[@id='ttv__cursor_hint' and contains(@value, '%s')]", CURSOR_EDIT_TOOLTIP));
@@ -338,10 +338,6 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathCursorEditHint);
     }
 
-    public boolean isSelfAvatarOnTextInputVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorSelfAvatar);
-    }
-
     public void tapOnTextInput() throws Exception {
         getElement(idCursorEditText).click();
     }
@@ -365,7 +361,7 @@ public class ConversationViewPage extends AndroidPage {
                     message));
         }
 
-        switch(sendFrom.toLowerCase()) {
+        switch (sendFrom.toLowerCase()) {
             case "keyboard":
                 pressKeyboardSendButton();
                 break;
@@ -399,6 +395,9 @@ public class ConversationViewPage extends AndroidPage {
 
     private By getCursorToolButtonLocatorByName(String name) {
         switch (name.toLowerCase()) {
+            case "switch to text":
+            case "switch to emoji":
+                return idCursorInputEmojiButton;
             case "ping":
                 return idCursorPing;
             case "add picture":
@@ -437,6 +436,14 @@ public class ConversationViewPage extends AndroidPage {
             ).click();
             getElement(locator).click();
         }
+    }
+
+    public boolean waitUntilCursorSendButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorSendButton);
+    }
+
+    public boolean waitUntilCursorSendButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorSendButton);
     }
 
     public void longTapAudioMessageCursorBtn(int durationMillis) throws Exception {

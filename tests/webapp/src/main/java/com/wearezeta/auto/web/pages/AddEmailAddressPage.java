@@ -50,6 +50,7 @@ public class AddEmailAddressPage extends WebPage {
     }
 
     public String getErrorMessage() throws Exception {
+        DriverUtils.waitUntilLocatorContainsText(getDriver(), By.cssSelector(WebAppLocators.AddEmailAddressPage.cssErrorMessage));
         DriverUtils.waitUntilLocatorAppears(getDriver(), By.cssSelector(WebAppLocators.AddEmailAddressPage.cssErrorMessage));
         return errorMessage.getText();
     }

@@ -355,7 +355,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | File       | Size |
       | user1Email | user1Password | user1Name | user2Name | C87933.txt | 15MB |
 
-  @C226434 @staging
+  @C226434 @like @regression
   Scenario Outline: Verify liking gif from GIPHY
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -560,7 +560,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | ChatName | Message |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GROUP    | like me |
 
-  @C226446 @like @staging
+  @C226446 @like @regression
   Scenario Outline: Verify I can open like list by tapping on the number of people who liked
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -596,7 +596,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | Message |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GROUPCHAT | like me |
 
-  @C226447 @like @staging
+  @C226447 @like @regression
   Scenario Outline: Verify likes list is sorted by time, most recent liker is on the right
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

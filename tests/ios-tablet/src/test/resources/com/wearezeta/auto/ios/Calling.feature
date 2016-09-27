@@ -66,6 +66,7 @@ Feature: Calling
     When <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
+    And I accept alert
     Then I see call status message contains "<Contact>"
 
     Examples:
@@ -164,6 +165,7 @@ Feature: Calling
     And <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
+    And I accept alert
     Then I see Leave button on Calling overlay
 
     Examples:
@@ -182,6 +184,7 @@ Feature: Calling
     And <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
+    And I accept alert
     Then I see Leave button on Calling overlay
 
     Examples:
@@ -204,7 +207,7 @@ Feature: Calling
     And <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
-    # Give it some time to finish initialization
+    And I accept alert
     And I wait for 5 seconds
     And <Contact> stops calling me
     And I do not see Calling overlay
@@ -225,6 +228,7 @@ Feature: Calling
     When <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
+    And I accept alert
     And I see Leave button on Calling overlay
     When I close the app for 5 seconds
     Then I see Leave button on Calling overlay
@@ -291,6 +295,7 @@ Feature: Calling
     And <Contact1> calls <GroupChatName>
     Then I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
+    And I accept alert
     And I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:
