@@ -160,6 +160,8 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     public void openDeviceDetailsPage(int deviceIndex) throws Exception {
         final By locator = By.xpath(xpathStrDeviceByIndex.apply(deviceIndex));
         getElement(locator).click();
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     public boolean isShieldIconVisible() throws Exception {

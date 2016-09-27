@@ -226,7 +226,7 @@ Feature: E2EE
     And I tap on contact name <Contact1>
     #BUG system msg e2ee labels not be located by appium
     #And I see the conversation view contains message <ExpectedMsg>
-    And I see 1 conversation entries
+    And I see 1 conversation entry
     #BUG link can not be located
     #    And I tap on THIS DEVICE link
     #    And I open details page of device number 1

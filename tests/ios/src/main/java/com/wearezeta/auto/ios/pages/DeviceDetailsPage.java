@@ -8,7 +8,8 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 
 public class DeviceDetailsPage extends IOSPage {
-    private final static By nameVerifySwitcher = By.xpath("//XCUIElementTypeSwitch");
+    private final static By xpathVerifySwitcher =
+            By.xpath("//XCUIElementTypeSwitch[@name='Verified']");
 
     private static final By xpathBackButton =
             By.xpath("//XCUIElementTypeButton[@name='SHOW MY DEVICE FINGERPRINT']" +
@@ -25,7 +26,7 @@ public class DeviceDetailsPage extends IOSPage {
     }
 
     public void tapVerifySwitcher() throws Exception {
-        getElement(nameVerifySwitcher).click();
+        getElement(xpathVerifySwitcher).click();
     }
 
     public void tapBackButton() throws Exception {
