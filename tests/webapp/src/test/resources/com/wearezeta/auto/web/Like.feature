@@ -355,7 +355,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | File       | Size |
       | user1Email | user1Password | user1Name | user2Name | C87933.txt | 15MB |
 
-  @C226434 @staging
+  @C226434 @like @regression
   Scenario Outline: Verify liking gif from GIPHY
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
