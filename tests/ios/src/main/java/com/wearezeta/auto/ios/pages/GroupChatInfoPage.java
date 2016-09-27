@@ -63,10 +63,10 @@ public class GroupChatInfoPage extends IOSPage {
 
     public void setGroupChatName(String name) throws Exception {
         final FBElement nameInputField = (FBElement) getElement(fbNameConversationNameTextField);
-        nameInputField.click();
+        tapAtTheCenterOfElement(nameInputField);
         this.isKeyboardVisible();
         nameInputField.clear();
-        nameInputField.setValue(name);
+        nameInputField.sendKeys(name);
         tapKeyboardCommitButton();
     }
 
