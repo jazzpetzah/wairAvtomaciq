@@ -114,10 +114,10 @@ public class CommonUtils {
     }
 
     public static String getDefaultUserImagePath(Class<?> c) throws Exception {
-        return getImagesPath(c) + USER_IMAGE;
+        return getImagesPathFromConfig(c) + USER_IMAGE;
     }
 
-    public static String getImagesPath(Class<?> c) throws Exception {
+    public static String getImagesPathFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "defaultImagesPath");
     }
 

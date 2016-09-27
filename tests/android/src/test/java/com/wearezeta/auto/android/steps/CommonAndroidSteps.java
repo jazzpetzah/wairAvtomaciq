@@ -565,7 +565,7 @@ public class CommonAndroidSteps {
      */
     @Given("^(.*) has an avatar picture from file (.*)$")
     public void UserHasAnAvatarPicture(String name, String picture) throws Exception {
-        String picturePath = CommonUtils.getImagesPath(getClass()) + picture;
+        String picturePath = CommonUtils.getImagesPathFromConfig(getClass()) + picture;
         try {
             name = usrMgr.findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
@@ -954,7 +954,7 @@ public class CommonAndroidSteps {
     public void ContactSendImageToConversation(String imageSenderUserNameAlias, String isEncrypted,
                                                String imageFileName, String conversationType,
                                                String dstConversationName) throws Exception {
-        final String imagePath = CommonUtils.getImagesPath(getClass()) + imageFileName;
+        final String imagePath = CommonUtils.getImagesPathFromConfig(getClass()) + imageFileName;
         final boolean isGroup = conversationType.equals("group");
         if (isEncrypted == null) {
             commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,

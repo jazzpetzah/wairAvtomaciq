@@ -800,7 +800,7 @@ public class CommonIOSSteps {
     @When("^User (\\w+) changes? avatar picture to (.*)$")
     public void IChangeUserAvatarPicture(String userNameAlias, String name)
             throws Exception {
-        final String rootPath = getImagesPath(getClass());
+        final String rootPath = getImagesPathFromConfig(getClass());
         commonSteps.IChangeUserAvatarPicture(userNameAlias, rootPath
                 + "/"
                 + (name.toLowerCase().equals("default") ? DEFAULT_USER_AVATAR
@@ -861,7 +861,7 @@ public class CommonIOSSteps {
                                                String isEncrypted,
                                                String imageFileName, String conversationType,
                                                String dstConversationName) throws Exception {
-        final String imagePath = CommonUtils.getImagesPath(this.getClass()) + File.separator + imageFileName;
+        final String imagePath = CommonUtils.getImagesPathFromConfig(this.getClass()) + File.separator + imageFileName;
         final boolean isGroup = conversationType.equals("group");
         if (isEncrypted == null) {
             commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
@@ -1109,7 +1109,11 @@ public class CommonIOSSteps {
                               String convoName, String deviceName) throws Exception {
         String root;
         if (isTemporary == null) {
-            root = CommonUtils.getAudioPathFromConfig(getClass());
+            if (mimeType.toLowerCase().contains("image")) {
+                root = CommonUtils.getImagesPathFromConfig(getClass());
+            } else {
+                root = CommonUtils.getAudioPathFromConfig(getClass());
+            }
         } else {
             root = CommonUtils.getBuildPathFromConfig(getClass());
         }

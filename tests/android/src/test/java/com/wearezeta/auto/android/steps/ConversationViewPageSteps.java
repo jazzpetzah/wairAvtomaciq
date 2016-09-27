@@ -1266,7 +1266,7 @@ public class ConversationViewPageSteps {
     @Then("^I wait for (\\d+) seconds? until audio message (?:download|upload) completed$")
     public void IWaitUntilMessageUploaded(int timeoutSeconds) throws Exception {
         final BufferedImage cancelBntInitialState = ImageUtil.readImageFromFile(
-                AndroidCommonUtils.getImagesPath(AndroidCommonUtils.class) + "android_audio_msg_cancel_btn.png");
+                AndroidCommonUtils.getImagesPathFromConfig(AndroidCommonUtils.class) + "android_audio_msg_cancel_btn.png");
         audioMessagePlayButtonState.remember(cancelBntInitialState);
         Assert.assertTrue(String.format(
                 "After %s seconds audio message is still being uploaded", timeoutSeconds),
