@@ -325,8 +325,8 @@ Feature: E2EE
     Then I see Manage Devices overlay
 
     Examples:
-      | Name      | DeviceName1 | DeviceName2 | DeviceName3 | DeviceName4 | DeviceName5 | DeviceName6 | DeviceName7 |
-      | user1Name | Device1     | Device2     | Device3     | Device4     | Device5     | Device6     | Device7     |
+      | Name      | DeviceName1 | DeviceName2 | DeviceName3 | DeviceName4 | DeviceName5 | DeviceName6 | DeviceName7 | Email      | Password      |
+      | user1Name | Device1     | Device2     | Device3     | Device4     | Device5     | Device6     | Device7     | user1Email | user1Password |
 
   @C14314 @regression @fastLogin
   Scenario Outline: Verify you can see device ids of the other conversation participant in participant details view inside a group conversation
@@ -455,12 +455,12 @@ Feature: E2EE
     And I open conversation details
     And I switch to Devices tab
     When I tap "Why verify conversations?" link in user details
-    And I wait for 7 seconds
+    And I wait for 12 seconds
     Then I see "https://support.wire.com" web page opened
     When I tap Back To Wire button
     And I open details page of device number 1
     And I tap "How do I do that?" link in user details
-    And I wait for 7 seconds
+    And I wait for 12 seconds
     Then I see "https://support.wire.com" web page opened
 
     Examples:
