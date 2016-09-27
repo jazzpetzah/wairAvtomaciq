@@ -3,7 +3,6 @@ package com.wearezeta.auto.ios.pages;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.driver.DummyElement;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
@@ -136,15 +135,15 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isResendIn10minAlertVisible() throws Exception {
-        return waitUntilAlertDisplayed() && isElementDisplayed(nameResentIn10min);
+        return readAlertText().isPresent() && isElementDisplayed(nameResentIn10min);
     }
 
     public boolean isInvalidEmailAlertShown() throws Exception {
-        return waitUntilAlertDisplayed() && isElementDisplayed(nameInvalidEmail);
+        return readAlertText().isPresent() && isElementDisplayed(nameInvalidEmail);
     }
 
     public boolean isAlreadyRegisteredEmailAlertShown() throws Exception {
-        return waitUntilAlertDisplayed() && isElementDisplayed(nameAlreadyRegisteredEmail);
+        return readAlertText().isPresent() && isElementDisplayed(nameAlreadyRegisteredEmail);
     }
 
     public void clickPhoneNotNow() throws Exception {
@@ -152,11 +151,7 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isSomethingWentWrongAlertShown() throws Exception {
-        return waitUntilAlertDisplayed() && isElementDisplayed(nameSomethingWentWrong);
-    }
-
-    public void dismissSettingsWarningIfVisible(int timeoutSeconds) throws Exception {
-        getElementIfDisplayed(nameMaybeLater, timeoutSeconds).orElseGet(DummyElement::new).click();
+        return readAlertText().isPresent() && isElementDisplayed(nameSomethingWentWrong);
     }
 
     public void switchToLogin() throws Exception {

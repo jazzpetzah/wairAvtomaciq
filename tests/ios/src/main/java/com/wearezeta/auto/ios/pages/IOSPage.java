@@ -205,13 +205,14 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void acceptAlert() throws Exception {
-        acceptAlert(DriverUtils.getDefaultLookupTimeoutSeconds());
+        handleAlert(true, DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
     private final static int MAX_ALERT_HANDLING_RETRIES = 5;
 
-    public void acceptAlert(int timeoutSeconds) throws Exception {
-        if (waitUntilAlertDisplayed(timeoutSeconds)) {
+    public void handleAlert(boolean shouldAccept, int timeoutSeconds) throws Exception {
+        final Optional<String> initialAlertText = readAlertText(timeoutSeconds);
+        if (initialAlertText.isPresent()) {
             int retry = 0;
             do {
                 try {
@@ -221,55 +222,34 @@ public abstract class IOSPage extends BasePage {
                         getDriver().rotate(ScreenOrientation.PORTRAIT);
                         wasLandscape = true;
                     }
-                    getDriver().switchTo().alert().accept();
+                    if (shouldAccept) {
+                        getDriver().switchTo().alert().accept();
+                    } else {
+                        getDriver().switchTo().alert().dismiss();
+                    }
                     if (wasLandscape) {
                         getDriver().rotate(ScreenOrientation.LANDSCAPE);
                     }
                 } catch (WebDriverException e) {
                     // ignore silently
                 }
+                final Optional<String> currentText = readAlertText(1);
+                if (!currentText.isPresent() || !currentText.get().equals(initialAlertText.get())) {
+                    return;
+                }
                 retry++;
-            } while (waitUntilAlertDisplayed(1) && retry < MAX_ALERT_HANDLING_RETRIES);
+            } while (retry < MAX_ALERT_HANDLING_RETRIES);
             if (retry < MAX_ALERT_HANDLING_RETRIES) {
                 return;
             }
         }
         throw new IllegalStateException(
-                String.format("No alert has been shown after %s seconds or it cannot be accepted after %s retries",
-                timeoutSeconds, MAX_ALERT_HANDLING_RETRIES));
+                String.format("No alert has been shown after %s seconds or it cannot be %s after %s retries",
+                        timeoutSeconds, shouldAccept ? "accepted" : "dismissed", MAX_ALERT_HANDLING_RETRIES));
     }
 
     public void dismissAlert() throws Exception {
-        dismissAlert(DriverUtils.getDefaultLookupTimeoutSeconds());
-    }
-
-    public void dismissAlert(int timeoutSeconds) throws Exception {
-        if (waitUntilAlertDisplayed(timeoutSeconds)) {
-            int retry = 0;
-            do {
-                try {
-                    // Workaround for https://github.com/facebook/WebDriverAgent/issues/300
-                    boolean wasLandscape = false;
-                    if (getDriver().getOrientation() == ScreenOrientation.LANDSCAPE) {
-                        getDriver().rotate(ScreenOrientation.PORTRAIT);
-                        wasLandscape = true;
-                    }
-                    getDriver().switchTo().alert().dismiss();
-                    if (wasLandscape) {
-                        getDriver().rotate(ScreenOrientation.LANDSCAPE);
-                    }
-                } catch (WebDriverException e) {
-                    // ignore silently
-                }
-                retry++;
-            } while (waitUntilAlertDisplayed(1) && retry < MAX_ALERT_HANDLING_RETRIES);
-            if (retry < MAX_ALERT_HANDLING_RETRIES) {
-                return;
-            }
-        }
-        throw new IllegalStateException(
-                String.format("No alert has been shown after %s seconds or it cannot be dismissed after %s retries",
-                        timeoutSeconds, MAX_ALERT_HANDLING_RETRIES));
+        handleAlert(false, DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
     public boolean isAlertContainsText(String expectedText) throws Exception {
@@ -506,20 +486,20 @@ public abstract class IOSPage extends BasePage {
         tapByPercentOfElementSize(el, 50, 50);
     }
 
-    public boolean waitUntilAlertDisplayed() throws Exception {
-        return waitUntilAlertDisplayed(DriverUtils.getDefaultLookupTimeoutSeconds());
+    public Optional<String> readAlertText() throws Exception {
+        return readAlertText(DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
-    public boolean waitUntilAlertDisplayed(int timeoutSeconds) throws Exception {
+    public Optional<String> readAlertText(int timeoutSeconds) throws Exception {
         final long msStart = System.currentTimeMillis();
         do {
             try {
-                return getDriver().switchTo().alert().getText() != null;
+                return Optional.of(getDriver().switchTo().alert().getText());
             } catch (WebDriverException e) {
                 Thread.sleep(500);
             }
         } while (System.currentTimeMillis() - msStart <= timeoutSeconds * 1000);
-        return false;
+        return Optional.empty();
     }
 
     public void tapAlertButton(String caption) throws Exception {
