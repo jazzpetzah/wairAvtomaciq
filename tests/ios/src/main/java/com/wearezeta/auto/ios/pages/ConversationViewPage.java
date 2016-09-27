@@ -234,12 +234,15 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbXpathUploadMenu =
             FBBy.xpath("//XCUIElementTypeButton[@label='Cancel']/preceding-sibling::*[1]");
 
-    private static final String[] UPLOAD_MENU_ITEMS = new String[]{
+    protected static final String[] UPLOAD_MENU_ITEMS = new String[]{
             "Record a video", "Videos", "20 MB file", "Big file",
             "group-icon@3x.png", "CountryCodes.plist", "iCloud"
     };
 
     private static final int MAX_APPEARANCE_TIME = 20;
+
+    private static final String FTRANSFER_MENU_DEFAULT_PNG = "group-icon@3x.png";
+    private static final String FTRANSFER_MENU_TOO_BIG = "Big file";
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -555,7 +558,19 @@ public class ConversationViewPage extends IOSPage {
         return getElementScreenshot(getElement(fbXpathRecentImageCell));
     }
 
+    protected String expandFileTransferItemName(String itemName) {
+        switch (itemName) {
+            case "FTRANSFER_MENU_DEFAULT_PNG":
+                return FTRANSFER_MENU_DEFAULT_PNG;
+            case "TOO_BIG":
+                return FTRANSFER_MENU_TOO_BIG;
+            default:
+                return itemName;
+        }
+    }
+
     public void tapFileTransferMenuItem(String itemName) throws Exception {
+        itemName = expandFileTransferItemName(itemName);
         final FBElement uploadMenu = (FBElement) getElement(fbXpathUploadMenu);
         final Dimension menuSize = uploadMenu.getSize();
         // FIXME: Workaround for menu items positions
@@ -1011,7 +1026,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean waitUntilTextMessagesAreVisible(String s, int expectedCount) throws Exception {
-        final By locator = By.xpath(xpathStrMessageByTextPart.apply(s));
+        final By locator = By.xpath(xpathStrMessageByExactText.apply(s));
         return waitUntilLocatorIsVisibleXTimes(locator, expectedCount);
     }
 
