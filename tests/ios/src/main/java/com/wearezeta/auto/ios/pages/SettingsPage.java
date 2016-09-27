@@ -162,7 +162,7 @@ public class SettingsPage extends IOSPage {
     }
 
     public void setSelfName(String newName) throws Exception {
-        ((FBElement) getElement(fbXpathSelfNameEditField)).setValue(newName);
+        getElement(fbXpathSelfNameEditField).sendKeys(newName);
     }
 
     public BufferedImage getColorPickerStateScreenshot() throws Exception {
