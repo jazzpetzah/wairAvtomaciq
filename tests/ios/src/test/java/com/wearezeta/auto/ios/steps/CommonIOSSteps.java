@@ -1168,7 +1168,7 @@ public class CommonIOSSteps {
      */
     @Given("^I prepare (.*) to be uploaded as a video message$")
     public void IPrepareVideoMessage(String name) throws Exception {
-        final File srcVideo = new File(getImagesPath(getClass()) + File.separator + name);
+        final File srcVideo = new File(getAudioPathFromConfig(getClass()) + File.separator + name);
         if (!srcVideo.exists()) {
             throw new IllegalArgumentException(String.format("The file %s does not exist or is not accessible",
                     srcVideo.getCanonicalPath()));
