@@ -84,11 +84,17 @@ public class LoginPage extends IOSPage {
     }
 
     public void setLogin(String login) throws Exception {
-        ((FBElement) getElement(fbNameLoginField)).setValue(login);
+        final FBElement el = ((FBElement) getElement(fbNameLoginField));
+        el.click();
+        el.clear();
+        el.setValue(login);
     }
 
     public void setPassword(String password) throws Exception {
-        ((FBElement) getElement(fbNamePasswordField)).setValue(password);
+        final FBElement el = ((FBElement) getElement(fbNamePasswordField));
+        el.click();
+        el.clear();
+        el.setValue(password);
     }
 
     public static final int LOGIN_TIMEOUT_SECONDS = 30;
