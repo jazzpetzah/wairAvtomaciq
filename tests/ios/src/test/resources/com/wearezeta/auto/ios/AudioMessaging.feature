@@ -204,7 +204,6 @@ Feature: Audio Messaging
     # Wait until the audio is downloaded and starts playback
     And I wait for <AudioDownloadTimeout> seconds
     And I tap Audio Call button
-    And I accept alert
     And I tap Leave button on Calling overlay
     Then I verify the state of Play button on audio message placeholder is not changed
 

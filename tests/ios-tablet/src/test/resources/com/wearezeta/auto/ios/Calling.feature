@@ -9,7 +9,6 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Audio Call button
-    And I accept alert
     And I see Calling overlay
     When I tap Leave button on Calling overlay
     Then I do not see Calling overlay
@@ -100,7 +99,6 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Audio Call button
-    And I accept alert
     And I see Calling overlay
     Then I lock screen for 5 seconds
     And I see Calling overlay
@@ -148,7 +146,6 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Audio Call button
-    And I accept alert
     And I see Calling overlay
     Then I close the app for 5 seconds
     And I see Calling overlay
@@ -248,7 +245,6 @@ Feature: Calling
     Given I see conversations list
     Then I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
-    And I accept alert
     And I see Calling overlay
     When I tap Leave button on Calling overlay
     Then I do not see Calling overlay
