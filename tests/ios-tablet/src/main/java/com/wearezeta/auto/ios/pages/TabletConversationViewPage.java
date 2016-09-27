@@ -9,22 +9,14 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class TabletConversationViewPage extends ConversationViewPage {
 
-	public static final By nameOpenConversationDetails = MobileBy.AccessibilityId("ComposeControllerConversationDetailButton");
+	public static final By nameOpenConversationDetails =
+			MobileBy.AccessibilityId("ComposeControllerConversationDetailButton");
 	
 	public TabletConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
 	
-	public void tapAddPictureiPadButton() throws Exception {
-		getElement(fbNameAddPictureButton).click();
-	}
-	
-	public void pressConversationDetailiPadButton() throws Exception{
+	public void tapConversationDetailsIPadButton() throws Exception{
 		getElement(nameOpenConversationDetails).click();
 	}
-	
-	public void pressGroupConversationDetailiPadButton() throws Exception{
-        pressConversationDetailiPadButton();
-	}
-	
 }

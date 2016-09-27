@@ -37,7 +37,9 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I tap Add Picture button on iPad
+    And I tap Add Picture button from input tools
+    And I accept alert
+    And I accept alert
     And I select the first picture from Keyboard Gallery
     And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
@@ -54,7 +56,9 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I tap Add Picture button on iPad
+    And I tap Add Picture button from input tools
+    And I accept alert
+    And I accept alert
     And I select the first picture from Keyboard Gallery
     And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
