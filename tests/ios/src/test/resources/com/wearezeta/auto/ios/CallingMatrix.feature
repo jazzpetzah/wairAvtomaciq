@@ -10,7 +10,6 @@ Feature: Calling Matrix
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Audio Call button
-    And I accept alert
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see Calling overlay
     And <Contact> verifies to have 1 flow
@@ -35,7 +34,6 @@ Feature: Calling Matrix
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Audio Call button
-    And I accept alert
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see Calling overlay
     When I tap Leave button on Calling overlay
@@ -108,7 +106,6 @@ Feature: Calling Matrix
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
-    And I accept alert
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see Calling overlay
     And <Contact1>,<Contact2> verifies to have 2 flow
@@ -137,7 +134,6 @@ Feature: Calling Matrix
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
-    And I accept alert
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see Calling overlay
     When I tap Leave button on Calling overlay
@@ -249,7 +245,6 @@ Feature: Calling Matrix
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Audio Call button
-    And I accept alert
     Then I close the app for 5 seconds
     And I see Calling overlay
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -295,7 +290,6 @@ Feature: Calling Matrix
     Given I see conversations list
     And I tap on contact name <Contact>
     And I tap Audio Call button
-    And I accept alert
     When I lock screen for 5 seconds
     Then I see Calling overlay
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds

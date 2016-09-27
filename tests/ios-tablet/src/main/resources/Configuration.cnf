@@ -4,7 +4,6 @@ iosAppiumUrl=${Url}
 iosApplicationPath=${appPath}
 isSimulator=${isSimulator}
 appName=${appName}
-useNativeInstrumentsLib=${useNativeInstrumentsLib}
 platformVersion=${platformVersion}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 pictureResultsPath=${pictureResultsPath}
