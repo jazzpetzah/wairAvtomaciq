@@ -159,7 +159,7 @@ public class ConversationViewPageSteps {
             if (expectedMsg.isPresent()) {
                 Assert.assertTrue(
                         String.format("There are some '%s' messages in the conversation, while zero is expected",
-                                expectedMsg),
+                                expectedMsg.get()),
                         getConversationViewPage().waitUntilTextMessageIsNotVisible(expectedMsg.get()));
             } else {
                 Assert.assertTrue("There are some  messages in the conversation, while zero is expected",
@@ -169,7 +169,7 @@ public class ConversationViewPageSteps {
             if (expectedMsg.isPresent()) {
                 Assert.assertTrue(
                         String.format("There are some '%s' messages in the conversation, while %d is expected",
-                                expectedMsg, expectedCount),
+                                expectedMsg.get(), expectedCount),
                         getConversationViewPage().waitUntilTextMessagesAreVisible(expectedMsg.get(), expectedCount));
             } else {
                 Assert.assertTrue(
