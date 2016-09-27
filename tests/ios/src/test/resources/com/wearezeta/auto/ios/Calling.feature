@@ -352,7 +352,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | GroupChatName  |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | StartGROUPCALL |
 
-  @C2048 @rc @calling_advanced @fastLogin @torun
+  @C2048 @rc @calling_advanced @fastLogin
   Scenario Outline: Verify possibility to join call after 45 seconds of starting it
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
