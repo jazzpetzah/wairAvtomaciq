@@ -479,7 +479,7 @@ And I wait for 60 seconds
       | Login      | Password      | Name      | Contact  | ContactEmail                  | ContactPassword | File1          | File2              |
       | user1Email | user1Password | user1Name | 928d0420 | smoketester+928d0420@wire.com | aqa123456!      | over8000ch.txt | lessThan8000ch.txt |
 
-  @C221139 @staging
+  @C221139 @staging @torun
   Scenario Outline: Verify after user was removed from group he cannot do some actions
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -502,6 +502,8 @@ And I wait for 60 seconds
     Then I see <MessageAction> action for <Contact1> in conversation
     When I see 4 messages in conversation
     #check another user message <Message1>
+    And I do not see likes below the third last message
+    Then I see the last message is only liked by me
     When I click to unlike the third last message without other likes
     And I see the third last message is only liked by me
     When I click context menu of the third last message
