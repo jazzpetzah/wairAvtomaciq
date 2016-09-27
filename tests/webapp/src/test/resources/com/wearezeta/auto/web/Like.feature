@@ -523,7 +523,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Message1 | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | like me  | edited        |
 
-  @C226446 @like @staging
+  @C226446 @like @regression
   Scenario Outline: Verify I can open like list by tapping on the number of people who liked
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -559,7 +559,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | Message |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GROUPCHAT | like me |
 
-  @C226447 @like @staging
+  @C226447 @like @regression
   Scenario Outline: Verify likes list is sorted by time, most recent liker is on the right
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
