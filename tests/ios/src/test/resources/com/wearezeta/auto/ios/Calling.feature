@@ -27,6 +27,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Audio Call button
+    And I accept alert
     Then I see Calling overlay
 
     Examples:
@@ -41,6 +42,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Audio Call button
+    And I accept alert
     And I see Calling overlay
     When I tap Leave button on Calling overlay
     Then I do not see Calling overlay
@@ -136,6 +138,7 @@ Feature: Calling
     Given I see conversations list
     And I tap on contact name <Contact>
     And I tap Audio Call button
+    And I accept alert
     When I lock screen for 5 seconds
     Then I see Calling overlay
 
@@ -159,6 +162,7 @@ Feature: Calling
     When I remember the state of <Contact2> conversation item
     And I tap on contact name <Contact1>
     And I tap Audio Call button
+    And I accept alert
     And I see Calling overlay
     And <Contact2> calls me
     And I see call status message contains "<Contact2> calling"
@@ -184,6 +188,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Audio Call button
+    And I accept alert
     Then I close the app for 5 seconds
     And I see Calling overlay
 
@@ -219,6 +224,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Audio Call button
+    And I accept alert
     And I see Calling overlay
     And I tap Leave button on Calling overlay
     Then I do not see Calling overlay
@@ -302,6 +308,7 @@ Feature: Calling
     Then I do not see Calling overlay
     And I wait for 20 seconds
     And I tap Audio Call button
+    And I accept alert
     Then I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:
@@ -341,6 +348,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
+    And I accept alert
     Then I see Calling overlay
 
     Examples:
@@ -361,6 +369,7 @@ Feature: Calling
     And I wait for 45 seconds
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
+    And I accept alert
     Then I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:
@@ -398,6 +407,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
+    And I accept alert
     Then I see <NumberOfAvatars> avatars on the Calling overlay
     And <Contact1> verifies that waiting instance status is changed to active in 10 seconds
     And <Contact2> verifies that waiting instance status is changed to active in 10 seconds
@@ -417,6 +427,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Audio Call button
+    And I accept alert
     And I wait for 5 seconds
     And I tap Leave button on Calling overlay
     And I do not see Calling overlay
