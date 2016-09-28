@@ -616,6 +616,7 @@ Feature: Conversation View
     When I long tap on image in conversation view
     Then I see Save badge item
     When I tap on Save badge item
+    And I accept alert
     Then I do not see Save badge item
     And I see 1 photo in the conversation view
 
