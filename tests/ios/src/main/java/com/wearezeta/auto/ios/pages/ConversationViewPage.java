@@ -198,7 +198,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By fbXpathShareLocationContainer = FBBy.xpath("//XCUIElementTypeMap/parent::*");
 
-    private static final By xpathDefaultMapApplication = By.xpath("//XCUIElementTypeApplication[@name='Maps']");
+    private static final By nameDefaultMapApplication = MobileBy.AccessibilityId("CalloutArrow.png");
 
     private static final By fbNameLinkPreviewSource = FBBy.AccessibilityId("linkPreviewSource");
 
@@ -837,7 +837,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isDefaultMapApplicationVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathDefaultMapApplication, 15);
+        return isElementDisplayed(nameDefaultMapApplication, 15);
     }
 
     public boolean isLinkPreviewImageVisible() throws Exception {
