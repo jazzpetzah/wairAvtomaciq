@@ -165,6 +165,7 @@ Feature: Video Calling
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Video call action button on People picker page
+    And I accept alert
     Then I see call status message contains "<Contact> ringing"
     And I see Leave button on Video Calling overlay
 
