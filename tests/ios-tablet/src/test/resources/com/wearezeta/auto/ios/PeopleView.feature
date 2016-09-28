@@ -17,7 +17,6 @@ Feature: People View
     And I input in People picker search field user name <Contact2>
     And I tap on conversation <Contact2> in search result
     And I tap Create conversation action button on People picker page
-    And I click on Go button
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:

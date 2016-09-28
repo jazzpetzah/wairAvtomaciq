@@ -401,6 +401,8 @@ public class ConversationViewPage extends IOSPage {
 
     public void openConversationDetails() throws Exception {
         getElement(xpathConversationDetailsButton).click();
+        // Wait for animation
+        Thread.sleep(500);
     }
 
     public boolean isMediaContainerVisible() throws Exception {
