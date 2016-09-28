@@ -76,7 +76,6 @@ Feature: Calling
     When <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
-    And I accept alert
     And I see call status message contains "<Contact>"
     And I tap Leave button on Calling overlay
     Then I do not see Calling overlay
@@ -243,7 +242,6 @@ Feature: Calling
     And <Contact1> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
-    And I accept alert
     Then I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:
@@ -280,7 +278,6 @@ Feature: Calling
     And I tap on contact name <Contact1>
     When <Contact1> calls me
     And I tap Accept button on Calling overlay
-    And I accept alert
     When <Contact2> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
@@ -325,7 +322,6 @@ Feature: Calling
     When <Contact1> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
-    And I accept alert
     And I see Calling overlay
     Then I see <NumberOfAvatars> avatars on the Calling overlay
     When <Contact3> calls me
