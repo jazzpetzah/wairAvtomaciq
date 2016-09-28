@@ -61,13 +61,11 @@ Feature: Link Preview
     Given I see conversations list
     When I tap on contact name <Contact>
     And I type the "<Shortenlink>" message and send it
-    And I navigate back to conversations list
-    And I tap on contact name <Contact>
     Then I see link preview container in the conversation view
 
     Examples:
-      | Name      | Contact   | Shortenlink          |
-      | user1Name | user2Name | http://goo.gl/pA9mgH |
+      | Name      | Contact   | Shortenlink           |
+      | user1Name | user2Name | https://goo.gl/pywMuA |
 
   @C167039 @rc @regression @fastLogin
   Scenario Outline: Verify preview is shown for different formats of link
