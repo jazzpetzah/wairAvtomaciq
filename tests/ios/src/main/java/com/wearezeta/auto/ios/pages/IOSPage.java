@@ -165,16 +165,12 @@ public abstract class IOSPage extends BasePage {
         final int tapY = elLocation.y + elSize.height / 2;
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             longClickAtSimulator(tapX, tapY);
-            getElement(nameBadgeItemPaste).click();
-            if (shouldCommitInput) {
-                IOSSimulatorHelper.pressEnterKey();
-            }
         } else {
             dstElement.longTap();
-            getElement(nameBadgeItemPaste, "Paste item is not visible", 15).click();
-            if (shouldCommitInput) {
-                this.tapKeyboardCommitButton();
-            }
+        }
+        getElement(nameBadgeItemPaste).click();
+        if (shouldCommitInput) {
+            this.tapKeyboardCommitButton();
         }
     }
 
