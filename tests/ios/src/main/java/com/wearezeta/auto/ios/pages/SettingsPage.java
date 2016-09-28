@@ -154,7 +154,7 @@ public class SettingsPage extends IOSPage {
 
     public boolean isSettingItemValueEqualTo(String itemName, String expectedValue) throws Exception {
         final By locator = FBBy.xpath(xpathStrSettingsValue.apply(itemName, expectedValue));
-        return getElementIfExists(locator).isPresent();
+        return isElementDisplayed(locator);
     }
 
     public void clearSelfName() throws Exception {

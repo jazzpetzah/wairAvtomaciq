@@ -50,8 +50,8 @@ Feature: Settings
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap settings gear button
-    And I select settings item Privacy & Security
-    Then I verify the value of settings item Sound Alerts equals to "<ExpectedValue>"
+    And I select settings item Options
+    Then I verify the value of settings item Sound alerts equals to "<ExpectedValue>"
 
     Examples:
       | Name      | ExpectedValue |
