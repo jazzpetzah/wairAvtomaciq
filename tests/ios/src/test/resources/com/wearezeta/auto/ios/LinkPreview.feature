@@ -154,6 +154,8 @@ Feature: Link Preview
     Then I see the conversation view contains message <SoundCloudLink>
     And I do not see link preview container in the conversation view
     When User <Contact> sends encrypted message "<VimeoLink>" to user <Name>
+    # Wait for the message to be delivered
+    And I wait for 5 seconds
     Then I see the conversation view contains message <VimeoLink>
     And I do not see link preview container in the conversation view
     When I type tag for giphy preview <GiphyTag> and open preview overlay
