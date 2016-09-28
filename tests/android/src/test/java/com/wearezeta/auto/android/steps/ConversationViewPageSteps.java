@@ -179,10 +179,10 @@ public class ConversationViewPageSteps {
      *                               release his finger after tap on an icon. Works for long tap on Audio Message
      *                               icon only
      * @throws Exception
-     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text) button (\d+ seconds )? from cursor
+     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text|Send) button (\d+ seconds )? from cursor
      * toolbar( without releasing my finger)?$
      */
-    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text)" +
+    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text|Send)" +
             " button (\\d+ seconds )?from cursor toolbar( without releasing my finger)?$")
     public void ITapCursorToolButton(String longTap, String btnName, String longTapDurationSeconds,
                                      String shouldReleaseFinger) throws Exception {

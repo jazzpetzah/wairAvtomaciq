@@ -398,6 +398,8 @@ public class ConversationViewPage extends AndroidPage {
             case "switch to text":
             case "switch to emoji":
                 return idCursorInputEmojiButton;
+            case "send":
+                return idCursorSendButton;
             case "ping":
                 return idCursorPing;
             case "add picture":
