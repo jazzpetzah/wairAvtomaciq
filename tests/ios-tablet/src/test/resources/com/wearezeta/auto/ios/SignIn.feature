@@ -84,6 +84,7 @@ Feature: Sign In
     When I tap Return button on the keyboard
     Then I see email verification reminder
     When I verify registration address
+    And I accept First Time overlay
     And I dismiss settings warning
     Then I see conversations list
 
@@ -152,6 +153,7 @@ Feature: Sign In
     And I tap Return button on the keyboard
     And I see email verification reminder
     And I verify registration address
+    And I accept First Time overlay
     And I dismiss settings warning
     Then I see conversations list
     When I tap settings gear button
