@@ -133,4 +133,8 @@ public class GroupChatInfoPage extends IOSPage {
         final By locator = By.xpath(xpathPeopleViewCollectionCellByName.apply(contact));
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
     }
+
+    public int getGroupNameLength() throws Exception {
+        return getElement(fbNameConversationNameTextField).getText().length();
+    }
 }

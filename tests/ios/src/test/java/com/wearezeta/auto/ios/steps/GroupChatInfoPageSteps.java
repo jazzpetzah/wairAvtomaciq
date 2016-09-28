@@ -148,4 +148,18 @@ public class GroupChatInfoPageSteps {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         Assert.assertTrue(getGroupChatInfoPage().waitForContactToDisappear(contact));
     }
+
+    /**
+     * Verify current length of group name
+     *
+     * @param expectedLength the expected number of chars in group name
+     * @throws Exception
+     * @step. ^I see the length of group conversation name equals to (\d+)$
+     */
+    @Then("^I see the length of group conversation name equals to (\\d+)$")
+    public void IVerifyNameLength(int expectedLength) throws Exception {
+        final int actualLength = getGroupChatInfoPage().getGroupNameLength();
+        Assert.assertTrue(String.format("The actual group name length %d is not equal to the expected length %d",
+                actualLength, expectedLength), actualLength == expectedLength);
+    }
 }

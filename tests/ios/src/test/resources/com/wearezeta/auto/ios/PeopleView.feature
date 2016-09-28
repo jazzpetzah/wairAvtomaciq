@@ -521,9 +521,9 @@ Feature: People View
     And I open group conversation details
     And I change group conversation name to ""
     Then I see correct conversation name <GroupChatName>
-    When I try to change group conversation name to random with length <MaxGroupChatNameLenght>
-    Then I see correct conversation name <GroupChatName>
+    When I try to change group conversation name to random with length <ChatNameLength>
+    Then I see the length of group conversation name equals to <MaxAllowedLength>
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLenght |
-      | user1Name | user2Name | user3Name | TESTCHAT      | 65                     |
+      | Name      | Contact1  | Contact2  | GroupChatName | ChatNameLength | MaxAllowedLength |
+      | user1Name | user2Name | user3Name | TESTCHAT      | 70             | 64               |
