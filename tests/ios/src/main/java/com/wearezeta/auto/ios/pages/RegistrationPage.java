@@ -151,7 +151,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void typeEmail() throws Exception {
-        ((FBElement) getElement(fbNameYourEmail)).setValue(getEmail());
+        getElement(fbNameYourEmail).sendKeys(getEmail());
     }
 
     public void typeUsername() throws Exception {
@@ -182,7 +182,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     private void typePassword() throws Exception {
-        ((FBElement) getElement(fbNameYourPassword)).setValue(getPassword());
+        getElement(fbNameYourPassword).sendKeys(getPassword());
     }
 
     public void setPassword(String password) throws Exception {
