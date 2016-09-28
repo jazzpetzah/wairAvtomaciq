@@ -265,12 +265,16 @@ Feature: Calling
     Given I remember the state of <GroupChatName> conversation item
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
+    # Wait for the call to be established
+    And I wait for 5 seconds
     And I see <NumberOfAvatars> avatars on the Calling overlay
     Then I tap Leave button on Calling overlay
     And I do not see Calling overlay
     Then I see the state of <GroupChatName> conversation item is changed
     And I wait for 20 seconds
     And I tap Audio Call button
+    # Wait for the call to be established
+    And I wait for 5 seconds
     Then I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:
@@ -291,6 +295,8 @@ Feature: Calling
     And <Contact1> calls <GroupChatName>
     Then I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
+    # Wait for the call to be established
+    And I wait for 5 seconds
     And I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:

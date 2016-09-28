@@ -303,6 +303,8 @@ Feature: Calling
     Then I do not see Calling overlay
     And I wait for 20 seconds
     And I tap Audio Call button
+    # Wait for the call to be established
+    And I wait for 5 seconds
     Then I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:
@@ -327,6 +329,8 @@ Feature: Calling
     When <Contact3> calls me
     And I see call status message contains "<Contact3> calling"
     And I tap Accept button on Calling overlay
+    # Wait for the call to be established
+    And I wait for 5 seconds
     Then I see <NumberOf1on1CallAvatars> avatars on the Calling overlay
 
     Examples:
@@ -362,6 +366,8 @@ Feature: Calling
     And I wait for 45 seconds
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
+    # Wait for the call to be established
+    And I wait for 5 seconds
     Then I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:
@@ -399,6 +405,8 @@ Feature: Calling
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
+    # Wait for the call to be established
+    And I wait for 5 seconds
     Then I see <NumberOfAvatars> avatars on the Calling overlay
     And <Contact1> verifies that waiting instance status is changed to active in 10 seconds
     And <Contact2> verifies that waiting instance status is changed to active in 10 seconds
