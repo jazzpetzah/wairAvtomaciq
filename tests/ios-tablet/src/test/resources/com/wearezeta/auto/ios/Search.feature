@@ -9,6 +9,7 @@ Feature: Search
     Given I wait until <ContactEmail> exists in backend search results
     When I open search UI
     And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
     Then I see the conversation "<ContactName>" exists in Search results
 
