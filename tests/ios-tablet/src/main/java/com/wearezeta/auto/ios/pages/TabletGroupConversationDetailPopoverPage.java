@@ -14,8 +14,9 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
     private static final By nameConversationMenu = MobileBy.AccessibilityId("metaControllerRightButton");
 
     private static final Function<String, String> xpathStrPopoverParticipantByName = name ->
-            String.format("(//XCUIElementTypeTableView)[last()]//XCUIElementTypeStaticText[@name='%s']" +
-                    "/parent::*[1]", name.toUpperCase());
+            String.format("//XCUIElementTypeTextView[@name='ParticipantsView_GroupName']" +
+                    "/following::XCUIElementTypeCollectionView[1]/" +
+                    "XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s'] ]", name.toUpperCase());
 
     private static final Function<Integer, String> xpathStrGroupCountByNumber = number ->
             String.format("//XCUIElementTypeStaticText[contains(@name,'%s PEOPLE')]", number);
