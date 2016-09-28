@@ -23,7 +23,8 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
 
     // idx starts from 1
     private static final Function<Integer, String> xpathStrDeviceByIndex = idx ->
-            String.format("(//XCUIElementTypeTableView)[last()]/UIATableCell[%d]", idx);
+            String.format("//XCUIElementTypeButton[@name='DEVICES']/following::" +
+                    "XCUIElementTypeTable[1]/XCUIElementTypeCell[%d]", idx);
 
     private static final By nameOtherUserProfilePageCloseButton =
             MobileBy.AccessibilityId("OtherUserProfileCloseButton");
