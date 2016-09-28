@@ -250,6 +250,8 @@ Feature: Video Calling
     And I accept alert
     Then I see call status message contains "<Contact> ringing"
     When I tap Leave button on Video Calling overlay
+    # Wait for animation
+    And I wait for 2 seconds
     And I see missed call from contact YOU
     And I tap Video Call button
     Then I see call status message contains "<Contact> ringing"

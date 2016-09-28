@@ -95,13 +95,12 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameGifButton = MobileBy.AccessibilityId("gifButton");
 
-    public static final Function<String, String> xpathStrMissedCallButtonByContact = name -> String.format(
-            "//XCUIElementTypeCell[.//*[@name='%s CALLED']]//XCUIElementTypeButton[@name='ConversationMissedCallButton']",
-            name.toUpperCase());
+    public static final Function<String, String> xpathStrMissedCallButtonByContact = name ->
+            String.format("//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s CALLED'] ]" +
+                    "/XCUIElementTypeButton[@name='ConversationMissedCallButton']", name.toUpperCase());
 
     public static final By xpathStrMissedCallButtonByYourself =
-            By.xpath("//XCUIElementTypeCell[.//*[@name='YOU CALLED']]/" +
-                    "XCUIElementTypeButton[@name='ConversationMissedCallButton']");
+            By.xpath(xpathStrMissedCallButtonByContact.apply("you"));
 
     public static final Function<String, String> xpathStrConnectingToUserLabelByName = name -> String.format(
             "//XCUIElementTypeStaticText[contains(@name, 'CONNECTING TO %s.')]", name.toUpperCase());
