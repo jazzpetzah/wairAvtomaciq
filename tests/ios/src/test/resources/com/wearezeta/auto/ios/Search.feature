@@ -85,7 +85,7 @@ Feature: Search
     And I input in People picker search field conversation name <UnconnectedUser>
     And I tap on conversation <UnconnectedUser> in search result
     And I tap Connect button on Pending outgoing connection page
-    And I click close button to dismiss people view
+    And I tap X button in People Picker input field
     And I tap on contact name <UnconnectedUser>
     And I open conversation details
     And I see <UnconnectedUser> user pending profile page

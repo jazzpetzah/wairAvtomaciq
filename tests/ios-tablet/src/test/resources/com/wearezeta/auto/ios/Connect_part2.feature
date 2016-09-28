@@ -53,7 +53,7 @@ Feature: Connect
     And I tap on conversation <Contact1> in search result
     And I tap Connect button on Pending outgoing connection page
     And I do not see Pending outgoing connection page
-    And I click close button to dismiss people view
+    And I tap X button in People Picker input field
     Then I see first item in contact list named <Contact1>
 
     Examples:
@@ -79,7 +79,7 @@ Feature: Connect
     And I tap on conversation <Contact1> in search result
     And I tap Connect button on Pending outgoing connection page
     And I do not see Pending outgoing connection page
-    And I click close button to dismiss people view
+    And I tap X button in People Picker input field
     Then I see first item in contact list named <Contact1>
 
     Examples:
@@ -294,7 +294,7 @@ Feature: Connect
     And I tap Invite Others button
     And I tap Copy button
     And I click close Invite list button
-    And I click clear button
+    And I tap X button in People Picker input field
     And I tap on contact name <Contact>
     And I tap on text input
     And I tap and hold on message input

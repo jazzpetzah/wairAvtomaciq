@@ -19,8 +19,8 @@ public class IOSKeyboard extends BasePage {
     private static final KeyboardState UNKNOWN_STATE = new KeyboardStateUnknown();
     private static final String xpathStrKeyboard = "//XCUIElementTypeKeyboard";
     private static final By xpathKeyboard = By.xpath(xpathStrKeyboard);
-    private static final By xpathCommitKey = By.xpath(xpathStrKeyboard +
-                    "//*[@name='Go' or @name='Send' or @name='Done' or @name='return' or @name='Return']");
+    private static final By xpathCommitButton = By.xpath("//XCUIElementTypeKey" +
+                    "[@name='Go' or @name='Send' or @name='Done' or @name='return' or @name='Return']");
 
     private static final By nameSpaceButton = MobileBy.AccessibilityId("space");
 
@@ -79,7 +79,7 @@ public class IOSKeyboard extends BasePage {
     }
 
     public void pressCommitButton() throws Exception {
-        getElement(xpathCommitKey, "Keyboard commit key is not visible", 15).click();
+        getElement(xpathCommitButton, "Keyboard commit key is not visible", 15).click();
     }
 
     private KeyboardState getInitialState(List<KeyboardState> statesList) throws Exception {
@@ -126,7 +126,7 @@ public class IOSKeyboard extends BasePage {
             By keyLocator;
             switch (messageChar) {
                 case "\n":
-                    keyLocator = xpathCommitKey;
+                    keyLocator = xpathCommitButton;
                     break;
                 case " ":
                     keyLocator = MobileBy.AccessibilityId("space");

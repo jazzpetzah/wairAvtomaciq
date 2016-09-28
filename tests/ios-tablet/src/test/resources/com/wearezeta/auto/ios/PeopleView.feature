@@ -16,6 +16,7 @@ Feature: People View
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact2>
     And I tap on conversation <Contact2> in search result
+    And I tap Create conversation action button on People picker page
     And I click on Go button
     Then I see group chat page with users <Contact1>,<Contact2>
 
@@ -40,7 +41,7 @@ Feature: People View
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact2>
     And I tap on conversation <Contact2> in search result
-    And I click on Go button
+    And I tap Create conversation action button on People picker page
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
@@ -656,7 +657,7 @@ Feature: People View
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
-    When I click close button to dismiss people view
+    When I tap X button in People Picker input field
     Then I do not see conversation <GroupChatName> in conversations list
     # Workaround for ZIOS-6195
     # And I do not see Archive button at the bottom of conversations list
@@ -687,7 +688,7 @@ Feature: People View
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
-    When I click close button to dismiss people view
+    When I tap X button in People Picker input field
     Then I do not see conversation <GroupChatName> in conversations list
     # Workaround for ZIOS-6195
     # And I do not see Archive button at the bottom of conversations list

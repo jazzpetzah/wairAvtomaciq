@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.ios.pages.PeoplePickerPage;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -21,6 +22,10 @@ public class GroupChatInfoPageSteps {
 
     private GroupChatInfoPage getGroupChatInfoPage() throws Exception {
         return pagesCollection.getPage(GroupChatInfoPage.class);
+    }
+
+    private PeoplePickerPage getPeoplePickerPage() throws Exception {
+        return pagesCollection.getPage(PeoplePickerPage.class);
     }
 
     @When("^I tap Leave Conversation button$")
@@ -124,7 +129,11 @@ public class GroupChatInfoPageSteps {
         PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
         pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact);
         pickerSteps.ITapOnConversationFromSearch(contact);
-        pickerSteps.WhenIClickOnAddToConversationButton();
+        if (getPeoplePickerPage().isKeyboardVisible()) {
+            getPeoplePickerPage().tapKeyboardCommitButton();
+        } else {
+            getPeoplePickerPage().tapAddToConversationButton();
+        }
     }
 
     /**

@@ -14,7 +14,7 @@ Feature: People View
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact2>
     And I tap on conversation <Contact2> in search result
-    And I click on Go button
+    And I tap Done keyboard button
     And I wait for 2 seconds
     Then I see group chat page with users <Contact1>,<Contact2>
 
@@ -35,7 +35,7 @@ Feature: People View
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I tap on conversation <Contact3> in search result
-    And I click on Go button
+    And I tap Done keyboard button
     Then I can see You Added <Contact3> message
     When I open group conversation details
     Then I see that conversation has <Number> people
@@ -230,9 +230,9 @@ Feature: People View
     Given I tap Create Group button
     When I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact3> in search result
-    And I click close button to dismiss people view
+    And I tap X button in People Picker input field
     And I tap Create Group button
-    And I click close button to dismiss people view
+    And I tap X button in People Picker input field
     And I close user profile page
     And I navigate back to conversations list
     Then I don't see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
@@ -334,7 +334,7 @@ Feature: People View
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I see the conversation "<Contact3>" exists in Search results
-    And I click close button to dismiss people view
+    And I tap X button in People Picker input field
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I wait until <Contact2> exists in backend search results
@@ -387,7 +387,7 @@ Feature: People View
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
-    When I click close button to dismiss people view
+    When I tap X button in People Picker input field
     Then I do not see conversation <GroupChatName> in conversations list
     And I see Archive button at the bottom of conversations list
     And I open archived conversations

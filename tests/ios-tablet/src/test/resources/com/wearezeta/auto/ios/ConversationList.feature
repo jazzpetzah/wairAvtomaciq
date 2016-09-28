@@ -347,7 +347,7 @@ Feature: Conversation List
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
-    When I click close button to dismiss people view
+    When I tap X button in People Picker input field
     And I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
     Then I see conversation <GroupChatName> in conversations list
@@ -430,7 +430,7 @@ Feature: Conversation List
     When I tap on Conversations hint text
     And I accept alert
     Then I see People Picker page
-    When I click close button to dismiss people view
+    When I tap X button in People Picker input field
     Then I see conversations list
     And I do not see Conversations hint text
 

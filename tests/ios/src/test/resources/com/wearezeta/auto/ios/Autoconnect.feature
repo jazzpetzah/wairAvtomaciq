@@ -42,7 +42,7 @@ Feature: Autoconnect
     And I wait until <Contact2> exists in backend search results
     When I open search UI
     And I accept alert
-    And I click clear button
+    And I tap X button in People Picker input field
     Then I see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
 
@@ -119,7 +119,7 @@ Feature: Autoconnect
     Given I sign in using my email or phone number
     When I open search UI
     And I accept alert
-    And I click clear button
+    And I tap X button in People Picker input field
     Then I see 1st autoconnection in conversations list
     When I quit Wire
     And I relaunch Wire

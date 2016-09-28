@@ -14,7 +14,7 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
-    And I click close button to dismiss people view
+    And I tap X button in People Picker input field
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
     And I see Pending Connect to <Contact> message in the conversation view
@@ -40,7 +40,7 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
-    And I click close button to dismiss people view
+    And I tap X button in People Picker input field
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
     And I see Pending Connect to <Contact> message in the conversation view
@@ -290,7 +290,7 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
-    And I click close button to dismiss people view
+    And I tap X button in People Picker input field
     Then I see first item in contact list named <Contact>
     When I open search UI
     And I accept alert
@@ -316,7 +316,7 @@ Feature: Connect
     And I tap Invite Others button
     And I tap Copy button
     And I click close Invite list button
-    And I click clear button
+    And I tap X button in People Picker input field
     And I tap on contact name <Contact>
     And I tap on text input
     And I tap and hold on message input

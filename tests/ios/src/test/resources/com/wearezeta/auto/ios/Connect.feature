@@ -14,7 +14,7 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
-    And I click close button to dismiss people view
+    And I tap X button in People Picker input field
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
     And I see Pending Connect to <Contact> message in the conversation view
@@ -173,7 +173,7 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
-    And I click close button to dismiss people view
+    And I tap X button in People Picker input field
     Then I see first item in contact list named <Contact>
     When I wait until <Contact> exists in backend search results
     And I open search UI
@@ -198,7 +198,7 @@ Feature: Connect
     And I tap Invite Others button
     And I tap Copy button
     And I click close Invite list button
-    And I click clear button
+    And I tap X button in People Picker input field
     And I tap on contact name <Contact>
     And I tap on text input
     And I tap and hold on message input
@@ -220,7 +220,7 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
     And I tap the instant connect button next to <UnconnectedUser>
-    And I tap Close button on pending profile page
+    And I tap X button in People Picker input field
     And I see first item in contact list named <UnconnectedUser>
     And I tap on contact name <UnconnectedUser>
     Then I see Pending Connect to <UnconnectedUser> message in the conversation view
@@ -265,7 +265,7 @@ Feature: Connect
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Connect button on Pending outgoing connection page
-    And I click close button to dismiss people view
+    And I tap X button in People Picker input field
     Then I see first item in contact list named <Contact1>
 
     Examples:

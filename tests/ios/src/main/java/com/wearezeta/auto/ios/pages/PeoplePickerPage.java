@@ -4,7 +4,6 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import com.wearezeta.auto.common.driver.DummyElement;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
@@ -22,16 +21,12 @@ public class PeoplePickerPage extends IOSPage {
     public static final By fbXpathPickerClearButton =
             FBBy.xpath("//*[@name='PeoplePickerClearButton' or @name='ContactsViewCloseButton']");
 
-    private static final By nameKeyboardEnterButton = MobileBy.AccessibilityId("Return");
-
     private static final By xpathCreateConversationButton =
             By.xpath("//XCUIElementTypeButton[@name='CREATE GROUP']");
 
     private static final By namePeoplePickerTopPeopleLabel = MobileBy.AccessibilityId("TOP PEOPLE");
 
     private static final By namePeoplePickerAddToConversationButton = MobileBy.AccessibilityId("ADD");
-
-    private static final By nameContinueUploadButton = MobileBy.AccessibilityId("SHARE CONTACTS");
 
     private static final By namePeopleYouMayKnowLabel = MobileBy.AccessibilityId("CONNECT");
 
@@ -77,10 +72,6 @@ public class PeoplePickerPage extends IOSPage {
         super(lazyDriver);
     }
 
-    public void clickMaybeLaterButton() throws Exception {
-        getElement(nameLaterButton).click();
-    }
-
     public boolean isPeoplePickerPageVisible() throws Exception {
         return isElementDisplayed(fbNamePickerSearch);
     }
@@ -121,16 +112,8 @@ public class PeoplePickerPage extends IOSPage {
         Thread.sleep(1000);
     }
 
-    public void dismissPeoplePicker() throws Exception {
-        getElement(xpathPickerClearButton, "Clear button is not visible in the search field").click();
-    }
-
     public boolean addToConversationNotVisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), namePeoplePickerAddToConversationButton);
-    }
-
-    public void clickOnGoButton() throws Exception {
-        getElement(nameKeyboardEnterButton).click();
     }
 
     public void tapNumberOfTopConnections(int numberToTap) throws Exception {
@@ -148,12 +131,8 @@ public class PeoplePickerPage extends IOSPage {
         tapKeyboardDeleteButton();
     }
 
-    public void clickAddToConversationButton() throws Exception {
+    public void tapAddToConversationButton() throws Exception {
         getElement(namePeoplePickerAddToConversationButton).click();
-    }
-
-    public void clickContinueButton() throws Exception {
-        getElementIfDisplayed(nameContinueUploadButton).orElseGet(DummyElement::new).click();
     }
 
     public boolean isPeopleYouMayKnowLabelVisible() throws Exception {

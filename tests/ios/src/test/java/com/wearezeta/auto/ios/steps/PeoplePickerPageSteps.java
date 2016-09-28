@@ -23,11 +23,6 @@ public class PeoplePickerPageSteps {
         Assert.assertTrue(getPeoplePickerPage().isPeoplePickerPageVisible());
     }
 
-    @When("I click Continue button on Upload dialog")
-    public void IClickContinueButtonOnUploadDialog() throws Exception {
-        getPeoplePickerPage().clickContinueButton();
-    }
-
     /**
      * Verifies that CONNECT label is visible
      *
@@ -42,16 +37,6 @@ public class PeoplePickerPageSteps {
         } else {
             Assert.assertTrue("CONNECT label is visible", getPeoplePickerPage().isPeopleYouMayKnowLabelInvisible());
         }
-    }
-
-    /**
-     * Click maybe later to dismiss contacts import
-     *
-     * @throws Exception
-     */
-    @When("^I press maybe later button$")
-    public void IPressMaybeLater() throws Exception {
-        getPeoplePickerPage().clickMaybeLaterButton();
     }
 
     @When("^I tap on Search input on People picker page$")
@@ -146,16 +131,6 @@ public class PeoplePickerPageSteps {
         Assert.assertTrue("Add to conversation button is visible", getPeoplePickerPage().addToConversationNotVisible());
     }
 
-    @When("^I click on Go button$")
-    public void WhenIClickOnGoButton() throws Exception {
-        getPeoplePickerPage().clickOnGoButton();
-    }
-
-    @When("^I click clear button$")
-    public void WhenIClickClearButton() throws Exception {
-        getPeoplePickerPage().dismissPeoplePicker();
-    }
-
     /**
      * Click on close button to dismiss Invite list
      *
@@ -226,17 +201,8 @@ public class PeoplePickerPageSteps {
         getPeoplePickerPage().selectElementInSearchResults(name);
     }
 
-    @When("^I click on Add to conversation button$")
-    public void WhenIClickOnAddToConversationButton() throws Exception {
-        if (getPeoplePickerPage().isKeyboardVisible()) {
-            getPeoplePickerPage().clickOnGoButton();
-        } else {
-            getPeoplePickerPage().clickAddToConversationButton();
-        }
-    }
-
-    @When("^I click close button to dismiss people view$")
-    public void IClickCloseButtonDismissPeopleView() throws Exception {
+    @When("^I tap X button in People Picker input field$")
+    public void ITapXButton() throws Exception {
         getPeoplePickerPage().tapOnPeoplePickerClearBtn();
     }
 
