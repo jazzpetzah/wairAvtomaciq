@@ -225,6 +225,8 @@ Feature: Recall Message
     And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in <Wait2> seconds
     #Vimeo
     When User <Contact> sends encrypted message "<VimeoLink>" to user Myself
+    # Wait for the preview to be generated
+    And I wait for 5 seconds
     Then I see media container in the conversation view
     And User <Contact> remembers the recent message from user Myself via device <HisDevice>
     And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
