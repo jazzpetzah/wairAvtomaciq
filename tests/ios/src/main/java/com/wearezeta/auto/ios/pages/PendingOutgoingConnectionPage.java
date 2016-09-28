@@ -1,10 +1,8 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.util.Optional;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
@@ -27,7 +25,7 @@ public class PendingOutgoingConnectionPage extends IOSPage {
     }
 
     public void tapConnectButton() throws Exception {
-        getElement(xpathConnectOtherUserButton).click();
+        this.tapElementWithRetryIfStillDisplayed(xpathConnectOtherUserButton);
         // Wait for animation
         Thread.sleep(2000);
     }
