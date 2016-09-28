@@ -48,6 +48,7 @@ public class CommonIOSSteps {
     private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
     private static final String IOS_WD_APP_BUNDLE = "com.apple.test.WebDriverAgentRunner-Runner";
     private static final String FACEBOOK_WD_APP_BUNDLE = "com.facebook.IntegrationApp";
+    private static final String ADDRESSBOOK_HELPER_APP_NAME = "AddressbookApp.ipa";
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
     private static Logger log = ZetaLogger.getLog(CommonIOSSteps.class.getSimpleName());
@@ -83,8 +84,11 @@ public class CommonIOSSteps {
         return getOldAppPathFromConfig(CommonIOSSteps.class);
     }
 
+    /**
+     * https://github.com/wireapp/wire-automation-addressbook-ios
+     */
     public static String getiOSAddressbookAppPath() throws Exception {
-        return getiOSAddressbookAppPathFromConfig(CommonIOSSteps.class);
+        return getIOSToolsRoot(CommonIOSSteps.class) + File.separator + ADDRESSBOOK_HELPER_APP_NAME;
     }
 
     private static String getAppName() throws Exception {

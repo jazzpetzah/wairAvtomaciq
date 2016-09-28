@@ -22,6 +22,3 @@ rcNotificationsRecepients=${rcNotificationsRecepients}
 testrailUser=smoketester+ios@wire.com
 testrailToken=3ss3NdlIsbkVZ/qjARyZ-t42ldIdkAFdZzbPgC3o0
 projectBuildPath=${project.build.directory}
-#Link to Address Book App: https://github.com/wireapp/wire-automation-addressbook-ios
-iosAddressbookAppPath=${iOSToolsRoot}/AddressbookApp.ipa
-
