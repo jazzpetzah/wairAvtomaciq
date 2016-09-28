@@ -180,23 +180,24 @@ public class CommonIOSSteps {
     private static void prepareRealDevice(DesiredCapabilities caps, Optional<String> udid, String ipaPath)
             throws Exception {
         if ((caps.is("noReset") && !((Boolean) caps.getCapability("noReset")) || !caps.is("noReset"))) {
-            // FIXME: Sometimes Appium fails to reset app prefs properly on real device
-            if (!cachedBundleIds.containsKey(ipaPath)) {
-                final File appPath = IOSCommonUtils.extractAppFromIpa(new File(ipaPath));
-                try {
-                    cachedBundleIds.put(ipaPath, IOSCommonUtils.getBundleId(
-                            new File(appPath.getCanonicalPath() + File.separator + "Info.plist")));
-                } finally {
-                    FileUtils.deleteDirectory(appPath);
-                }
-            }
+//            // FIXME: Sometimes Appium fails to reset app prefs properly on real device
+//            if (!cachedBundleIds.containsKey(ipaPath)) {
+//                final File appPath = IOSCommonUtils.extractAppFromIpa(new File(ipaPath));
+//                try {
+//                    cachedBundleIds.put(ipaPath, IOSCommonUtils.getBundleId(
+//                            new File(appPath.getCanonicalPath() + File.separator + "Info.plist")));
+//                } finally {
+//                    FileUtils.deleteDirectory(appPath);
+//                }
+//            }
             final String dstUDID = udid.orElseThrow(
                     () -> new IllegalStateException("Cannot detect any connected iDevice")
             );
             for (String bundleId : Arrays.asList(
                     IOS_WD_APP_BUNDLE,
-                    FACEBOOK_WD_APP_BUNDLE,
-                    cachedBundleIds.get(ipaPath))) {
+                    FACEBOOK_WD_APP_BUNDLE
+//                    cachedBundleIds.get(ipaPath)
+            )) {
                 RealDeviceHelpers.uninstallApp(dstUDID, bundleId);
             }
             caps.setCapability("fullReset", false);
