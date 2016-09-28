@@ -120,6 +120,8 @@ public class PeoplePickerPage extends IOSPage {
         for (int i = 1; i <= numberToTap; i++) {
             final By locator = By.xpath(xpathStrPeoplePickerTopConnectionsAvatarByIdx.apply(i));
             getElement(locator).click();
+            // Wait for animation
+            Thread.sleep(1000);
         }
     }
 
