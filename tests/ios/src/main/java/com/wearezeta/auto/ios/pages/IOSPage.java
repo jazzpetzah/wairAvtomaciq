@@ -145,26 +145,9 @@ public abstract class IOSPage extends BasePage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public void clickAtSimulator(int x, int y) throws Exception {
-        final Dimension windowSize = getDriver().manage().window().getSize();
-        IOSSimulatorHelper.clickAt(String.format("%.2f", x * 1.0 / windowSize.width),
-                String.format("%.2f", y * 1.0 / windowSize.height),
-                String.format("%.3f", DriverUtils.SINGLE_TAP_DURATION / 1000.0));
-    }
-
-    private void longClickAtSimulator(int x, int y) throws Exception {
-        final Dimension windowSize = getDriver().manage().window().getSize();
-        IOSSimulatorHelper.clickAt(String.format("%.2f", x * 1.0 / windowSize.width),
-                String.format("%.2f", y * 1.0 / windowSize.height), "2");
-    }
-
     public void inputStringFromPasteboard(FBElement dstElement, boolean shouldCommitInput) throws Exception {
-        final Dimension elSize = dstElement.getSize();
-        final Point elLocation = dstElement.getLocation();
-        final int tapX = elLocation.x + elSize.width / 2;
-        final int tapY = elLocation.y + elSize.height / 2;
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            longClickAtSimulator(tapX, tapY);
+            longClickAt(dstElement);
         } else {
             dstElement.longTap();
         }
