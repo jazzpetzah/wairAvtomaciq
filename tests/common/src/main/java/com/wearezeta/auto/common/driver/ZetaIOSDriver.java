@@ -265,9 +265,16 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
             @Override
             public Dimension getSize() {
                 try {
-                    return FBElement.apiStringToDimension(
+                    final Dimension originalDimension = FBElement.apiStringToDimension(
                             fbDriverAPI.getWindowSize(CommonUtils.generateGUID().toUpperCase())
                     );
+                    // FIXME: workaround for webdriver bug https://github.com/facebook/WebDriverAgent/issues/303
+                    if (ZetaIOSDriver.this.getOrientation() == ScreenOrientation.LANDSCAPE &&
+                            originalDimension.getHeight() > originalDimension.getWidth()) {
+                        return new Dimension(originalDimension.getHeight(), originalDimension.getWidth());
+                    } else {
+                        return originalDimension;
+                    }
                 } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
                     throw new WebDriverException(e);
                 }
