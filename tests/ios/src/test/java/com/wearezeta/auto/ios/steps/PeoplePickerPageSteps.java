@@ -210,22 +210,11 @@ public class PeoplePickerPageSteps {
      * Unblocks a blocked user by clicking the unblock button
      *
      * @throws Exception
-     * @step. I unblock user
+     * @step. ^I tap Unblock button
      */
-    @When("^I unblock user$")
+    @When("^I tap Unblock button$")
     public void IUnblockUser() throws Exception {
         getPeoplePickerPage().unblockUser();
-    }
-
-    /**
-     * Unblocks a blocked user by clicking the unblock button for iPad
-     *
-     * @throws Exception
-     * @step. I unblock user on iPad
-     */
-    @When("^I unblock user on iPad$")
-    public void IUnblockUserOniPad() throws Exception {
-        getPeoplePickerPage().unblockUserOniPad();
     }
 
     /**

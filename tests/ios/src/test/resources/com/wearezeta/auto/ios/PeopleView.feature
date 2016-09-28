@@ -314,7 +314,7 @@ Feature: People View
     And I open group conversation details
     And I select participant <Contact1>
     And I see <Contact1> user profile page
-    And I unblock user
+    And I tap Unblock button
     Then I see conversation view page
 
     Examples:

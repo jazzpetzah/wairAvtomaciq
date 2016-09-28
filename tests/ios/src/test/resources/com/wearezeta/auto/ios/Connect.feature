@@ -147,7 +147,7 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    And I unblock user
+    And I tap Unblock button
     Then I see 0 default messages in the conversation view
     And I see 0 photos in the conversation view
     # FIXME: No idea why these messages are not getting delivered in automated tests, manual run through always pass
@@ -353,7 +353,7 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    And I unblock user
+    And I tap Unblock button
     Then I see conversation view page
     When I navigate back to conversations list
     Then I see conversation <Contact> in conversations list

@@ -141,20 +141,8 @@ public class PeoplePickerPage extends IOSPage {
         return isElementDisplayed(namePeopleYouMayKnowLabel);
     }
 
-    private void unblockButtonDoubleClick() throws Exception {
-        final WebElement dstElement = getElement(nameUnblockButton);
-        for (int nClicks = 0; nClicks < 2; nClicks++) {
-            dstElement.click();
-            Thread.sleep(1000);
-        }
-    }
-
     public void unblockUser() throws Exception {
         getElement(nameUnblockButton).click();
-    }
-
-    public void unblockUserOniPad() throws Exception {
-        unblockButtonDoubleClick();
     }
 
     public void tapSendInviteButton() throws Exception {

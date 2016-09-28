@@ -128,7 +128,7 @@ Feature: Search
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    And I unblock user
+    And I tap Unblock button
     And I type the default message and send it
     Then I see 1 default message in the conversation view
 
