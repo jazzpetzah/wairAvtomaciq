@@ -75,7 +75,7 @@ Feature: Archive
       | user1Name | user2Name | user3Name | LeaveArchive  |
 
   @C82827 @regression @fastLogin
-  Scenario Outline: Verify archive behaviour when one archive/unarchive a conversation
+  Scenario Outline: ZIOS-7328 Verify archive behaviour when one archive/unarchive a conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
     Given User Myself archives single user conversation <ArchivedUser>
