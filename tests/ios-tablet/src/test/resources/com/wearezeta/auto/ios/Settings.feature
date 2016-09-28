@@ -178,8 +178,8 @@ Feature: Settings
     Then I verify the alert contains text <ExpectedAlertText>
 
     Examples:
-      | Name      | ExpectedAlertText     | OneCharName |
-      | user1Name | AT LEAST 2 CHARACTERS | c           |
+      | Name      | ExpectedAlertText | OneCharName |
+      | user1Name | name is too short | c           |
 
   @C2888 @rc @regression @fastLogin
   Scenario Outline: Verify name change [LANDSCAPE]
@@ -229,8 +229,8 @@ Feature: Settings
     Given I have entered login <Email>
     Given I have entered password <Password>
     Given I tap Login button
-    Given I click Not Now to not add phone number
     Given I accept alert
+    Given I click Not Now to not add phone number
     Given I accept First Time overlay
     Given I dismiss settings warning
     Given I see conversations list
@@ -253,8 +253,8 @@ Feature: Settings
     Given I have entered login <Email>
     Given I have entered password <Password>
     Given I tap Login button
-    Given I click Not Now to not add phone number
     Given I accept alert
+    Given I click Not Now to not add phone number
     Given I accept First Time overlay
     Given I dismiss settings warning
     Given I see conversations list
@@ -267,7 +267,7 @@ Feature: Settings
     Examples:
       | Name      | Number        | Code | ExpectedText                | Email      | Password      |
       | user1Name | 8301652248706 | +0   | has already been registered | user1Email | user1Password |
-    
+
   @C2855 @rc @regression @fastLogin
   Scenario Outline: Verify theme switcher is not shown on the self profile [LANDSCAPE]
     Given There is 1 user where <Name> is me

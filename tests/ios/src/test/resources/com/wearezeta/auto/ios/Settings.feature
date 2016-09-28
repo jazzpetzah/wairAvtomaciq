@@ -128,8 +128,8 @@ Feature: Settings
     Then I verify the alert contains text <ExpectedAlertText>
 
     Examples:
-      | Name      | ExpectedAlertText  | OneCharName |
-      | user1Name | name is too shortS | c           |
+      | Name      | ExpectedAlertText | OneCharName |
+      | user1Name | name is too short | c           |
 
   @C1097 @regression @rc @clumsy @fastLogin
   Scenario Outline: Verify name change
