@@ -95,6 +95,7 @@ Feature: Sign In
     Given I switch to Phone Log In tab
     When I enter phone number for Myself
     And I enter login verification code for Myself
+    And I accept alert
     And I have entered login <Email>
     And I start activation email monitoring
     And I have entered password <Password>
