@@ -15,7 +15,7 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
         super(lazyDriver);
     }
 
-    private WebElement makeOverlayButtonVisible(String name) throws Exception {
+    private FBElement makeOverlayButtonVisible(String name) throws Exception {
         final Optional<WebElement> dstBtn = getElementIfExists(
                 FBBy.AccessibilityId(getButtonAccessibilityIdByName(name)));
         if (dstBtn.isPresent()) {
@@ -27,12 +27,12 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
             throw new IllegalStateException(String.format("the button identified by '%s' is expected to be present",
                     name));
         }
-        return dstBtn.get();
+        return (FBElement) dstBtn.get();
     }
 
     private void tapOverlayButton(String name) throws Exception {
-        final WebElement btn = makeOverlayButtonVisible(name);
-        btn.click();
+        final FBElement btn = makeOverlayButtonVisible(name);
+        this.tapAtTheCenterOfElement(btn);
     }
 
     @Override
