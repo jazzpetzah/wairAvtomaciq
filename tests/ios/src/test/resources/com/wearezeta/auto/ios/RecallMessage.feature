@@ -328,6 +328,7 @@ Feature: Recall Message
   @C202342 @regression @fastLogin
   Scenario Outline: Verify delete for everyone system message doesn't produce an unread dot
     Given There are 2 users where <Name> is me
+    Given User Myself removes his avatar picture
     Given Myself is connected to <Contact1>
     Given User <Contact1> adds new device <DeviceName>
     Given I sign in using my email or phone number
