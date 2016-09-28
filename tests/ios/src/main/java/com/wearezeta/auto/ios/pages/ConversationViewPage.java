@@ -848,7 +848,8 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isFileTransferMenuItemVisible(String itemName) throws Exception {
-        return isElementDisplayed(MobileBy.AccessibilityId(itemName), MAX_APPEARANCE_TIME);
+        return isElementDisplayed(MobileBy.AccessibilityId(expandFileTransferItemName(itemName)),
+                MAX_APPEARANCE_TIME);
     }
 
     public int getMessageHeight(String msg) throws Exception {
