@@ -202,7 +202,7 @@ Feature: E2EE
     Given I see conversations list
     And User Myself adds a new device <DeviceName> with label <DeviceLabel>
     When I tap settings gear button
-    And I tap OK button on the alert
+    And I accept alert
     And I select settings item Devices
     When I open details page of device number 2
     And I tap Verify switcher on Device Details page

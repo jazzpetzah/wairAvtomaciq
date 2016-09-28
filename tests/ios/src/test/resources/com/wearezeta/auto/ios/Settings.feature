@@ -81,8 +81,7 @@ Feature: Settings
     And I select settings item Account
     And I start waiting for <Name> account removal notification
     And I select settings item Delete Account
-    # FIXME: Sometimes the alert is not accepted automatically
-    And I tap OK button on the alert
+    And I accept alert
     Then I see sign in screen
     And I verify account removal notification is received
 
@@ -122,15 +121,15 @@ Feature: Settings
     When I clear Name input field on Settings page
     And I tap Return button on the keyboard
     Then I verify the alert contains text <ExpectedAlertText>
-    And I tap OK button on the alert
+    And I accept alert
     When I clear Name input field on Settings page
     And I set "<OneCharName>" value to Name input field on Settings page
     And I tap Return button on the keyboard
     Then I verify the alert contains text <ExpectedAlertText>
 
     Examples:
-      | Name      | ExpectedAlertText     | OneCharName |
-      | user1Name | AT LEAST 2 CHARACTERS | c           |
+      | Name      | ExpectedAlertText  | OneCharName |
+      | user1Name | name is too shortS | c           |
 
   @C1097 @regression @rc @clumsy @fastLogin
   Scenario Outline: Verify name change
