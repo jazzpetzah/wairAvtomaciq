@@ -32,13 +32,16 @@ public class CameraRollPage extends IOSPage {
         }
     }
 
-    public void selectFirstPicture() throws Exception {
+    public void selectAnyPicture() throws Exception {
         boolean shouldSelectLastPicture = true;
         try {
             tapFirstLibraryFolder();
+            // Wait for the animation
+            Thread.sleep(1000);
         } catch (IllegalStateException e) {
             shouldSelectLastPicture = false;
         }
+
         if (shouldSelectLastPicture) {
             tapLastImage();
         } else {
