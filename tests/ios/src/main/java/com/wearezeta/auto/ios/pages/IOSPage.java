@@ -35,8 +35,6 @@ public abstract class IOSPage extends BasePage {
 
     protected static final String nameStrMainWindow = "ZClientMainWindow";
 
-    protected static final String xpathStrMainWindow = "//XCUIElementTypeWindow[@name='ZClientMainWindow']";
-
     private static final By nameBadgeItemSelectAll = MobileBy.AccessibilityId("Select All");
     private static final By nameBadgeItemCopy = MobileBy.AccessibilityId("Copy");
     private static final By nameBadgeItemDelete = MobileBy.AccessibilityId("Delete");

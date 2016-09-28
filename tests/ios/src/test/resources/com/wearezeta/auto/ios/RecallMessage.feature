@@ -294,11 +294,9 @@ Feature: Recall Message
     Given I see conversations list
     When I tap on contact name <Contact>
     Then I see location map container in the conversation view
-    And I see the default received Share Location address in the conversation view
     And User <Contact> remembers the recent message from user Myself via device <DeviceName>
     When User <Contact> deletes the recent message everywhere from user <Name> via device <DeviceName>
     Then I do not see location map container in the conversation view
-    And I do not see the default received Share Location address in the conversation view
     And User <Contact> sees the recent message from user Myself via device <DeviceName> is changed in 15 seconds
 
     Examples:
@@ -324,8 +322,8 @@ Feature: Recall Message
     And User <Contact> sees the recent message from user Myself via device <DeviceName> is changed in 15 seconds
 
     Examples:
-      | Name      | Contact   | DeviceName | Duration |
-      | user1Name | user2Name | device1    | 5        |
+      | Name      | Contact   | DeviceName |
+      | user1Name | user2Name | device1    |
 
   @C202342 @regression @fastLogin
   Scenario Outline: Verify delete for everyone system message doesn't produce an unread dot
