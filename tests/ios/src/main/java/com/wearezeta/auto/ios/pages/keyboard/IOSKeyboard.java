@@ -19,7 +19,7 @@ public class IOSKeyboard extends BasePage {
     private static final KeyboardState UNKNOWN_STATE = new KeyboardStateUnknown();
     private static final String xpathStrKeyboard = "//XCUIElementTypeKeyboard";
     private static final By xpathKeyboard = By.xpath(xpathStrKeyboard);
-    private static final By xpathCommitButton = By.xpath("//XCUIElementTypeKey" +
+    private static final By xpathCommitButton = By.xpath(xpathStrKeyboard + "//*" +
                     "[@name='Go' or @name='Send' or @name='Done' or @name='return' or @name='Return']");
 
     private static final By nameSpaceButton = MobileBy.AccessibilityId("space");
