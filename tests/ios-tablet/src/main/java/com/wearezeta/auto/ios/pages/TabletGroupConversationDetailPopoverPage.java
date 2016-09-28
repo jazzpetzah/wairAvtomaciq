@@ -18,8 +18,7 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
                     "/parent::*[1]", name.toUpperCase());
 
     private static final Function<Integer, String> xpathStrGroupCountByNumber = number ->
-            String.format("(//XCUIElementTypeTableView)[last()]//UIAStaticText[contains(@name,'%s PEOPLE')]",
-                    number);
+            String.format("//XCUIElementTypeStaticText[contains(@name,'%s PEOPLE')]", number);
 
     private static final By fbNamePopoverDismissRegion = FBBy.AccessibilityId("PopoverDismissRegion");
 
