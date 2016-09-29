@@ -838,7 +838,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isDefaultMapApplicationVisible() throws Exception {
-        return isElementDisplayed(nameDefaultMapApplication, 15);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), nameDefaultMapApplication, 15);
     }
 
     public boolean isLinkPreviewImageVisible() throws Exception {
