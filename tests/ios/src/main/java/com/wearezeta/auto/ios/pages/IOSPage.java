@@ -150,8 +150,15 @@ public abstract class IOSPage extends BasePage {
             dstElement.longTap();
         }
         getElement(nameBadgeItemPaste).click();
+        // Wait for animation
+        Thread.sleep(2000);
         if (shouldCommitInput) {
-            this.tapKeyboardCommitButton();
+            if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+                IOSSimulatorHelper.pressEnterKey();
+                Thread.sleep(1000);
+            } else {
+                this.tapKeyboardCommitButton();
+            }
         }
     }
 
