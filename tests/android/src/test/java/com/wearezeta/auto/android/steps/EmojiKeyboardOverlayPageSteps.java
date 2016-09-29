@@ -49,10 +49,21 @@ public class EmojiKeyboardOverlayPageSteps {
      *
      * @param emojiValue emoji unicode value
      * @throws Exception
-     * @step. ^I tap on the emoji "(.*)" in Emoji keyboard$
+     * @step. ^I tap on the emoji "(.*)" at Emoji keyboard$
      */
-    @When("^I tap on the emoji \"(.*)\" in Emoji keyboard$")
+    @When("^I tap on the emoji \"(.*)\" at Emoji keyboard$")
     public void ITapSpecialEmoji(String emojiValue) throws Exception {
         getCursorEmojiOverlayPage().tapEmojiByValue(emojiValue);
+    }
+
+    /**
+     * Tap on Backspace button of Emoji keyboard
+     *
+     * @throws Exception
+     * @step. ^I tap on Backspace button at Emoji keyboard$
+     */
+    @When("^I tap on Backspace button at Emoji keyboard$")
+    public void ITapDBackspaceButton() throws Exception {
+        getCursorEmojiOverlayPage().tapEmojiKeyboardTab(EmojiKeyboardOverlayPage.KeboardTab.BACKSPACE);
     }
 }
