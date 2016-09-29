@@ -952,12 +952,12 @@ Feature: People View
     And I open group conversation details
     And I change group conversation name to ""
     Then I see correct conversation name <GroupChatName>
-    When I try to change group conversation name to random with length <MaxGroupChatNameLength>
-    Then I see correct conversation name <GroupChatName>
+    When I try to change group conversation name to random with length <ActualLength>
+    Then I see the length of group conversation name equals to <ExpectedLength>
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLength |
-      | user1Name | user2Name | user3Name | TESTCHAT      | 65                     |
+      | Name      | Contact1  | Contact2  | GroupChatName | ActualLength | ExpectedLength |
+      | user1Name | user2Name | user3Name | TESTCHAT      | 70           | 64             |
 
   @C2725 @regression @fastLogin
   Scenario Outline: Verify length limit for group conversation name [LANDSCAPE]
@@ -971,9 +971,9 @@ Feature: People View
     And I open group conversation details
     And I change group conversation name to ""
     Then I see correct conversation name <GroupChatName>
-    When I try to change group conversation name to random with length <MaxGroupChatNameLenght>
-    Then I see correct conversation name <GroupChatName>
+    When I try to change group conversation name to random with length <ActualLength>
+    Then I see the length of group conversation name equals to <ExpectedLength>
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLenght |
-      | user1Name | user2Name | user3Name | TESTCHAT      | 65                     |
+      | Name      | Contact1  | Contact2  | GroupChatName | ActualLength | ExpectedLength |
+      | user1Name | user2Name | user3Name | TESTCHAT      | 70           | 64             |
