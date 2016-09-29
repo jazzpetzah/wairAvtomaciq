@@ -13,10 +13,10 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
             MobileBy.AccessibilityId("OtherUserMetaControllerRightButton");
 
     private static final Function<String, String> xpathStrOtherUserNameField = name ->
-            String.format("//*[@name='%s']", name);
+            String.format("//XCUIElementTypeStaticText[@name='%s']", name);
 
     private static final Function<String, String> xpathStrOtherUserEmailField = email ->
-            String.format("//*[@value='%s']", email.toUpperCase());
+            String.format("//XCUIElementTypeTextView[@value='%s']", email.toUpperCase());
 
     private static final By xpathOtherUserConnectButton =
             By.xpath("(//XCUIElementTypeButton[@label='CONNECT'])[last()]");
