@@ -310,7 +310,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName   | CallBackend | NumberOfAvatars |
       | user1Name | user2Name | user3Name | RejoinGROUPCALL | chrome      | 2               |
 
-  @C2054 @rc @calling_advanced @ZIOS-6010 @fastLogin
+  @C2054 @rc @calling_advanced @fastLogin
   Scenario Outline: Verify receiving 1-to-1 call during group call (and accepting it)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>

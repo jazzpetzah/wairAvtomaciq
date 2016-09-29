@@ -11,7 +11,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 public class CallingOverlayPage extends IOSPage {
-    private static final By nameCallStatusLabel = MobileBy.AccessibilityId("CallStatusLabel");
+    private static final String nameStrCallStatusLabel = "CallStatusLabel";
+    private static final By nameCallStatusLabel = MobileBy.AccessibilityId(nameStrCallStatusLabel);
 
     private static final String nameStrEndCallButton = "LeaveCallButton";
 
@@ -40,6 +41,10 @@ public class CallingOverlayPage extends IOSPage {
     private static final Function<Integer, String> xpathStrGroupCallAvatarsByCount = count ->
             String.format("//XCUIElementTypeButton[@name='SwitchCameraButton']/" +
                     "following::XCUIElementTypeCollectionView[count(XCUIElementTypeCell)=%s]", count);
+
+    private static final By xpathCallerAvatar = By.xpath(String.format(
+            "//XCUIElementTypeStaticText[@name='%s']/following::*[@name='CallingUsersImage']",
+            nameStrCallStatusLabel));
 
     private static final By nameGroupCallFullMessage = MobileBy.AccessibilityId("The call is full");
 
@@ -160,7 +165,13 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isCountOfAvatarsEqualTo(int expectedNumberOfAvatars, int timeoutSeconds) throws Exception {
-        final By locator = By.xpath(xpathStrGroupCallAvatarsByCount.apply(expectedNumberOfAvatars));
+        assert expectedNumberOfAvatars > 0 : "The expected number of avatar should be greater than zero";
+        By locator;
+        if (expectedNumberOfAvatars == 1) {
+            locator = xpathCallerAvatar;
+        } else {
+            locator = By.xpath(xpathStrGroupCallAvatarsByCount.apply(expectedNumberOfAvatars));
+        }
         return isElementDisplayed(locator, timeoutSeconds);
     }
 }
