@@ -1017,7 +1017,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean waitUntilTextMessagesAreVisible(String s, int expectedCount) throws Exception {
-        final By locator = By.xpath(xpathStrMessageByExactText.apply(s));
+        final By locator = By.xpath(xpathStrMessageByTextPart.apply(s));
         return waitUntilLocatorIsVisibleXTimes(locator, expectedCount);
     }
 
