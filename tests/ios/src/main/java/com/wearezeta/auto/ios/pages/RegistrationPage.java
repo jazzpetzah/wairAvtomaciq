@@ -151,11 +151,15 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void typeEmail() throws Exception {
-        getElement(fbNameYourEmail).sendKeys(getEmail());
+        final WebElement emailInput = getElement(fbNameYourEmail);
+        emailInput.click();
+        emailInput.sendKeys(getEmail());
     }
 
     public void typeUsername() throws Exception {
-        getElement(xpathYourName, "Name input is not visible").sendKeys(getName());
+        final WebElement yourNameInput = getElement(xpathYourName);
+        yourNameInput.click();
+        yourNameInput.sendKeys(getName());
     }
 
     public String getName() {
@@ -182,7 +186,9 @@ public class RegistrationPage extends IOSPage {
     }
 
     private void typePassword() throws Exception {
-        getElement(fbNameYourPassword).sendKeys(getPassword());
+        final WebElement passwordInput = getElement(fbNameYourPassword);
+        passwordInput.click();
+        passwordInput.sendKeys(getPassword());
     }
 
     public void setPassword(String password) throws Exception {
