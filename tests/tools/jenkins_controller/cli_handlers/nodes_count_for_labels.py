@@ -3,7 +3,6 @@
 import inspect
 from threading import Thread, Lock
 import paramiko
-from pprint import pformat
 import random
 import re
 import smtplib
@@ -212,19 +211,6 @@ class RealAndroidDevice(BaseNodeVerifier):
 
 
 class IOSSimulator(BaseNodeVerifier):
-    def _get_installed_simulators(self, ssh_client):
-        try:
-            _, stdout, _ = ssh_client.exec_command('/usr/bin/instruments -s', timeout=10)
-            matches = re.findall(r'([\w\s\(\)\.]+)\[(\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12})\]', stdout.read())
-            result = {}
-            if matches:
-                for match in matches:
-                    result[match[0].strip()] = match[1].strip()
-            return result
-        except Exception:
-            traceback.print_exc()
-        return ''
-
     def get_timeout(self):
         return IOS_SIM_VERIFICATION_JOB_TIMEOUT
 
@@ -266,14 +252,17 @@ class IOSSimulator(BaseNodeVerifier):
                            password=self._verification_kwargs['node_password'])
             simulator_name = self._verification_kwargs['ios_simulator_name']
 
-            available_simulators = self._get_installed_simulators(client)
-            dst_name = filter(lambda x: x.lower().find(simulator_name.lower()) >= 0, available_simulators.iterkeys())
+            xcrun_output = ''
+            try:
+                _, stdout, _ = client.exec_command('/usr/bin/xcrun simctl list', timeout=10)
+                xcrun_output = stdout.read()
+            except Exception:
+                traceback.print_exc()
+            is_sim_present = xcrun_output.lower().find(simulator_name.lower()) >= 0
             result = True
-            if dst_name:
-                simulator_name = dst_name[0]
-            else:
+            if not is_sim_present:
                 msg = 'There is no "{}" simulator available. The list of available simulators for the node "{}":\n{}\n'. \
-                    format(simulator_name, self._node.name, pformat(available_simulators))
+                    format(simulator_name, self._node.name, xcrun_output)
                 sys.stderr.write(msg)
                 self._send_email_notification('Non-existing simulator name "{}" has been provided'.
                                               format(simulator_name), msg)
