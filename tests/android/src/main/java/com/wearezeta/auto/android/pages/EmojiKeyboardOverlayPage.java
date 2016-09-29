@@ -28,15 +28,15 @@ public class EmojiKeyboardOverlayPage extends AndroidPage {
     }
 
     private final static String strIdEmojiItem = "emoji_keyboard_item";
-    private final static String strIdContainer = "ll__emoji_keyboard__emoji_container";
+    private final static String strIdTab = "til__emoji_keyboard";
 
-    private static final By idContainer = By.id(strIdContainer);
+    private static final By idContainer = By.id(strIdTab);
     private static final Function<Integer, String> xpathEmojiItemByIndex =
             index -> String.format("(//*[@id='%s'])[%d]", strIdEmojiItem, index);
     private static final Function<String, String> xpathEmojiItemByValue =
             value -> String.format("//*[@id='%s' and @value='%s']", strIdEmojiItem, value);
     private static final Function<KeboardTab, String> xpathTabByEmojiTab =
-            tab -> String.format("//*[@id='til__emoji_keyboard']/*[2]/*[%d]", tab.getIndex());
+            tab -> String.format("//*[@id='%s']/*[2]/*[%d]", strIdTab, tab.getIndex());
 
     public boolean waitUntilVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idContainer);
