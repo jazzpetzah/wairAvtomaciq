@@ -45,11 +45,11 @@ Feature: Likes
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to group conversation <Group>
+    Given I see conversations list
+    Given <Contact1> removes Myself from group chat <Group>
     Given I tap on contact name <Group>
-    When <Contact1> removes Myself from group chat <Group>
-    And I tap default message in conversation view
+    When I tap default message in conversation view
     Then I do not see Like icon in the conversation
     When I double tap default message in conversation view
     Then I do not see Like icon in the conversation
