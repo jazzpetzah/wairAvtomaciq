@@ -66,7 +66,6 @@ Feature: Calling
     When <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
-    And I accept alert
     Then I see call status message contains "<Contact>"
 
     Examples:
