@@ -239,6 +239,9 @@ Feature: Settings
     When I select settings item Add phone number
     And I enter phone number for Myself
     And I enter registration verification code for Myself
+    Then I see conversations list
+    When I tap settings gear button
+    And I select settings item Account
     Then I verify the value of settings item Phone equals to "<MyPhoneNumber>"
 
     Examples:
