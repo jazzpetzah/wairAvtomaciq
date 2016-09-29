@@ -22,6 +22,8 @@ public interface IDevice extends IRemoteEntity {
 
     void sendPing(String convId) throws Exception;
 
+    void typing(String convId) throws Exception;
+
     void clearConversation(String convId) throws Exception;
 
     void muteConversation(String convId) throws Exception;

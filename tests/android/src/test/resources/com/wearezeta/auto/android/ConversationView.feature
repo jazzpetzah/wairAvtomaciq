@@ -400,3 +400,35 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  | Contact2  | Message |
       | user1Name | user2Name | user3Name | YoNo    |
+
+  @C250856 @staging
+  Scenario Outline: Verify I see someone is typing in 1:1 conversation
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
+    And User <Contact> is typing in the conversation Myself
+    Then I see <Contact> is typing
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @C250857 @staging
+  Scenario Outline: Verify I see someone are typing in group conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
+    And User <Contact1> is typing in the conversation <GroupChatName>
+    And User <Contact2> is typing in the conversation <GroupChatName>
+    Then I see <Contact1>,<Contact2> are typing
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | TypingGroup   |

@@ -97,6 +97,10 @@ public class SEBridge {
         getOrAddRandomDevice(userFrom).sendPing(convId);
     }
 
+    public void typing(ClientUser userFrom, String convId) throws Exception {
+        getOrAddRandomDevice(userFrom).typing(convId);
+    }
+
     public void clearConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
         getOrAddDevice(userFrom, deviceName).clearConversation(convId);
     }
@@ -176,7 +180,7 @@ public class SEBridge {
 
     public void updateMessage(ClientUser userFrom, MessageId messageId, String newMessage, String deviceName)
             throws Exception {
-        if(deviceName == null) {
+        if (deviceName == null) {
             updateMessage(userFrom, messageId, newMessage);
         } else {
             getOrAddDevice(userFrom, deviceName).updateMessage(messageId, newMessage);

@@ -757,6 +757,19 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * User X typing in specified conversation
+     *
+     * @param fromUserNameAlias   The user who is typing
+     * @param dstConversationName The conversation where the user is typing
+     * @throws Exception
+     * @step. ^User (\w+) is typing in the conversation (.*)$
+     */
+    @When("^User (\\w+) is typing in the conversation (.*)$")
+    public void UserTypingInConversation(String fromUserNameAlias, String dstConversationName) throws Exception {
+        commonSteps.UserIsTypingInConversation(fromUserNameAlias, dstConversationName);
+    }
+
+    /**
      * User A sends a hotping to a conversation
      *
      * @param hotPingFromUserNameAlias The user to do the hotpinging

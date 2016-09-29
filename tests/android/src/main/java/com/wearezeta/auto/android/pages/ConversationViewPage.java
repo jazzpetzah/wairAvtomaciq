@@ -75,6 +75,8 @@ public class ConversationViewPage extends AndroidPage {
     public static final By idCursorEditText = By.id(idStrCursorEditText);
     public static Function<String, String> xpathCurosrEditTextByValue = value ->
             String.format("//*[@id='%s' and @value='%s']", idStrCursorEditText, value);
+    public static Function<String, String> xpathCursorTypingIndicatorByContainsQuery = query ->
+            String.format("//*[@id='ttv__typing_indicator_names'%s]", query);
     //endregion
 
     //region Message footer
@@ -391,6 +393,16 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean waitUntilCursorInputTextVisible(String text) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathCurosrEditTextByValue.apply(text)));
+    }
+
+    public boolean waitUntilTypingVisible(String names) throws Exception {
+        String[] nameList = names.split(",");
+        StringBuffer buffer = new StringBuffer();
+        for (String name : nameList) {
+            buffer.append(String.format(" and contains(@value,'%s')", name.toLowerCase().trim()));
+        }
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(xpathCursorTypingIndicatorByContainsQuery.apply(buffer.toString())));
     }
 
     private By getCursorToolButtonLocatorByName(String name) {
