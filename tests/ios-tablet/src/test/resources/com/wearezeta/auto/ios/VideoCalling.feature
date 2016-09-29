@@ -76,24 +76,3 @@ Feature: Video Calling
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
-
-  @C28864 @calling_basic @fastLogin
-  Scenario Outline: Verify muting ongoing Video call [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given <Contact> starts instance using <CallBackend>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When <Contact> starts a video call to me
-    And I see call status message contains "<Contact> calling"
-    And I tap Accept Video button on Calling overlay
-    And I accept alert
-    And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
-    And I remember state of Mute button on Video Calling overlay
-    And I tap Mute button on Video Calling overlay
-    Then I see state of Mute button has changed on Video Calling overlay
-
-    Examples:
-      | Name      | Contact   | Timeout | CallBackend |
-      | user1Name | user2Name | 30      | chrome      |
