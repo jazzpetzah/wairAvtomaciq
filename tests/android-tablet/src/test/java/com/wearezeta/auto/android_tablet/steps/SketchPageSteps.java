@@ -29,7 +29,7 @@ public class SketchPageSteps {
                     SketchPage.SketchColor.values().length));
         }
 
-        for (int i = 0; i < numColors; i++) {
+        for (int i = 1; i <= numColors; i++) {
             getSketchPage().setColor(SketchPage.SketchColor.values()[i]);
             getSketchPage().drawRandomLines(1);
         }

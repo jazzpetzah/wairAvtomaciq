@@ -308,8 +308,7 @@ Feature: Conversation View
     And I tap Confirm button on Take Picture view
     And I see a new picture in the conversation view
     And I tap Image container in the conversation view
-    And I tap on Fullscreen button on the recent image in the conversation view
-    And I tap Sketch Image Paint button on Picture preview overlay
+    And I tap on Sketch button on the recent image in the conversation view
     And I draw a sketch with <NumColors> colors on Sketch page
     And I tap Send button on Sketch page
     Then I see a new picture in the conversation view
