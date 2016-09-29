@@ -1549,4 +1549,18 @@ public class ConversationViewPageSteps {
                 String.format("The expect count is not equal to actual count, actual: %d, expect: %d",
                         actualCount, expectedCount), actualCount == expectedCount);
     }
+
+    /**
+     * Verify Someone is/are typing
+     *
+     * @param userNames name or name alias comma separated list
+     * @throws Exception
+     * @step. ^I see (.*) (?:is|are) typing$
+     */
+    @Then("^I see (.*) (?:is|are) typing$")
+    public void ISeeTyping(String userNames) throws Exception {
+        String names = usrMgr.replaceAliasesOccurences(userNames, FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("%s are expected to be visible in typing list", userNames),
+                getConversationViewPage().waitUntilTypingVisible(names));
+    }
 }
