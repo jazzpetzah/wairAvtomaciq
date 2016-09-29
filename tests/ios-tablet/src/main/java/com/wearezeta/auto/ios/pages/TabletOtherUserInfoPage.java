@@ -16,7 +16,7 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
             String.format("//*[@name='%s']", name);
 
     private static final Function<String, String> xpathStrOtherUserEmailField = email ->
-            String.format("//*[@values='%s']", email.toUpperCase());
+            String.format("//*[@value='%s']", email.toUpperCase());
 
     private static final By xpathOtherUserConnectButton =
             By.xpath("(//XCUIElementTypeButton[@label='CONNECT'])[last()]");
