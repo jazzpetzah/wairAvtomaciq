@@ -203,7 +203,6 @@ Feature: Calling
     And <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
-    And I accept alert
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 
     Examples:
