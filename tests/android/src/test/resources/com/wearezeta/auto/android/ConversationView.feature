@@ -370,7 +370,7 @@ Feature: Conversation View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given Myself leave group chat <GroupChatName>
     Given Myself is unarchived group chat <GroupChatName>
-    When I sign in using my email or phone number
+    When I sign in using my email
     And I accept First Time overlay as soon as it is visible
     And I see Conversations list with conversations
     And I tap on conversation name <GroupChatName>
