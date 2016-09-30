@@ -478,7 +478,7 @@ Feature: E2EE
       | user1Name | user1Email | user1Password | device1 |
 
   @C12081 @regression
-  Scenario Outline: When 1:1 conversation was degraded - I can ignore takeover screen and send message
+  Scenario Outline: (AN-4546) When 1:1 conversation was degraded - I can ignore takeover screen and send message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -495,7 +495,7 @@ Feature: E2EE
     And User <Contact1> adds new device <Device>
     And I tap on text input
     And I type the message "<Message2>"
-    And I press Send button
+    And I tap Send button from cursor toolbar
     When I see takeover screen from user "<Contact1>"
     Then I tap send anyway button
     And I do not see takeover screen
@@ -506,7 +506,7 @@ Feature: E2EE
       | user1Name | user2Name | device2 | Msg1     | MsgToSendAnyway |
 
   @C12065 @regression
-  Scenario Outline: (AN-3683) When 1:1 conversation was degraded - I can manage new device to verified and resend message
+  Scenario Outline: (AN-4546) When 1:1 conversation was degraded - I can manage new device to verified and resend message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -523,7 +523,7 @@ Feature: E2EE
     And User <Contact1> adds new device <Device>
     And I tap on text input
     And I type the message "<Message2>"
-    And I press Send button
+    And I tap Send button from cursor toolbar
     When I see takeover screen from user "<Contact1>"
     Then I tap show device button
     And I do not see takeover screen

@@ -23,7 +23,7 @@ Feature: Settings
     Given I see Conversations list with no conversations
     When I tap conversations list settings button
     And I select "About" settings menu item
-    Then I see "Wire Website" settings menu item
+    Then I see "Wire website" settings menu item
 
     Examples:
       | Name      |
