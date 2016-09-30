@@ -296,7 +296,7 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    And I see <Contact> user pending profile popover on iPad
+    Then I see <Contact> user pending profile popover on iPad
 
     Examples:
       | Name      | Contact   | Contact2  |

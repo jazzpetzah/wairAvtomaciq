@@ -29,9 +29,9 @@ public class RegistrationPage extends IOSPage {
 
     private static final By xpathNameField = By.xpath("//XCUIElementTypeTextField");
 
-    private static final By fbNameYourEmail = FBBy.AccessibilityId("EmailField");
+    private static final By nameYourEmail = MobileBy.AccessibilityId("EmailField");
 
-    private static final By fbNameYourPassword = FBBy.AccessibilityId("PasswordField");
+    private static final By nameYourPassword = MobileBy.AccessibilityId("PasswordField");
 
     private static final By xpathCreateAccountButton = By
             .xpath("//XCUIElementTypeSecureTextField[contains(@name, 'PasswordField')]/XCUIElementTypeButton");
@@ -151,7 +151,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void typeEmail() throws Exception {
-        final WebElement emailInput = getElement(fbNameYourEmail);
+        final WebElement emailInput = getElement(nameYourEmail);
         emailInput.click();
         emailInput.sendKeys(getEmail());
     }
@@ -186,7 +186,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     private void typePassword() throws Exception {
-        final WebElement passwordInput = getElement(fbNameYourPassword);
+        final WebElement passwordInput = getElement(nameYourPassword);
         passwordInput.click();
         passwordInput.sendKeys(getPassword());
     }
