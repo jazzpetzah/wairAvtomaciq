@@ -88,6 +88,9 @@ public class ConversationViewPage extends AndroidPage {
     private static final String strIdMessageMetaStatus = "tv__footer__message_status";
     private static final String strIdMessageMetaFirstLike = "cv__first_like_chathead";
     private static final String strIdMessageMetaSecondLike = "cv__first_like_chathead";
+
+    private static final By idResendButton = By.xpath(
+            String.format("//*[@id='%s' and @value='Sending failed. Resend']", strIdMessageMetaStatus));
     //endregion
 
     //region Message Bottom Menu
@@ -145,8 +148,6 @@ public class ConversationViewPage extends AndroidPage {
     private static final String xpathStrConversationToolbar = "//*[@id='t_conversation_toolbar']";
 
     private static final By xpathToolbar = By.xpath(xpathStrConversationToolbar);
-
-    private static final By idResendButton = By.id("fl__row_conversation__message_error_container");
 
     private static final By xpathToolBarNavigation =
             By.xpath(String.format("%s/*[@value='' and count(*)=1]", xpathStrConversationToolbar));
@@ -1117,7 +1118,7 @@ public class ConversationViewPage extends AndroidPage {
     public void tapAllResendButton() throws Exception {
         List<WebElement> resendButtonList = selectVisibleElements(idResendButton);
         for (WebElement resendButton : resendButtonList) {
-            resendButton.click();
+            DriverUtils.tapOnPercentOfElement(this.getDriver(), resendButton, 85, 50);
         }
     }
     //endregion
