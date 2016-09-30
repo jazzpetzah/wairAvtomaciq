@@ -283,4 +283,4 @@ Feature: Settings
 
     Examples:
       | Name      | ThemeItemName |
-      | user1Name | Dark Theme    |
+      | user1Name | Dark theme    |
