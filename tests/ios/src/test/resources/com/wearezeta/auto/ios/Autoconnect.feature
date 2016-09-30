@@ -93,7 +93,6 @@ Feature: Autoconnect
     And I see conversations list
     And I wait until <Contact> exists in backend search results
     When I open search UI
-    And I accept alert
     And I wait until <Contact> is first search result on backend
     And I input in People picker search field first 1 letter of user name <Contact>
     Then I see the first item in Search result is <Contact>
