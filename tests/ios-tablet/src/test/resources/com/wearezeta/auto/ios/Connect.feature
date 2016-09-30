@@ -293,7 +293,6 @@ Feature: Connect
     And I tap X button in People Picker input field
     Then I see first item in contact list named <Contact>
     When I open search UI
-    And I accept alert
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
