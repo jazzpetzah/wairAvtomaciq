@@ -32,7 +32,7 @@ Feature: Emoji
       | Name      | Contact   | NormalText | MixedText | MaxHeightDiff |
       | user1Name | user2Name | Yo         | 👿?       | 20            |
 
-  @C250833 @C250834 @staging
+  @C250833 @C250834 @regression
   Scenario Outline: Verify When I switch to emoji keyboard and select one, cursor send button appears even it is disabled in settings
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -61,7 +61,7 @@ Feature: Emoji
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C250835 @staging
+  @C250835 @regression
   Scenario Outline: I can erase emoji by 'backspace' button
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>

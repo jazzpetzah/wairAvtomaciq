@@ -25,7 +25,7 @@ Feature: Sign In
       | Name      |
       | user1Name |
 
-  @C250820 @staging
+  @C250820 @regression
   Scenario Outline: Verify I can sign in by phone number with Verification URL
     Given There is 1 user with phone number only where <Name> is me
     Given I uninstall all other version of Wire apps

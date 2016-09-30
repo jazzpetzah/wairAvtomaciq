@@ -23,7 +23,7 @@ Feature: Notifications
       | Name      | Contact   | Message |
       | user1Name | user2Name | hello   |
 
-  @C131187 @staging
+  @C131187 @regression
   Scenario Outline: (CM-1071) Verify push notifications after receiving any type of message
     Given I am on Android with Google Location Service
     Given I am on Android 4.4 or better
