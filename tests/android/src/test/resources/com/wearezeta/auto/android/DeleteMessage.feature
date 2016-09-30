@@ -130,7 +130,7 @@ Feature: Delete Message
 
     Examples:
       | Name      | Contact   | Message1   | CallBackend | Message2         |
-      | user1Name | user2Name | You pinged | autocall    | user2Name pinged |
+      | user1Name | user2Name | You pinged | zcall       | user2Name pinged |
 
   @C111642 @regression @rc
   Scenario Outline: (AN-4171) Verify deleting the shared file

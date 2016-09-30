@@ -188,7 +188,7 @@ Feature: Conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       | CallBackend |
-      | user1Name | user2Name | user3Name | DELETE        | testing.jpg | autocall    |
+      | user1Name | user2Name | user3Name | DELETE        | testing.jpg | zcall       |
 
   @C451 @regression
   Scenario Outline: I can mute 1:1 conversation from the Conversations list

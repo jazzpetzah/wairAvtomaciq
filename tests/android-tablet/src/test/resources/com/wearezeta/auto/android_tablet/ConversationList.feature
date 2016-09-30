@@ -340,7 +340,7 @@ Feature: Conversation List
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       | CallBackend | DeleteItem |
-      | user1Name | user2Name | user3Name | DELETE        | testing.jpg | autocall    | DELETE     |
+      | user1Name | user2Name | user3Name | DELETE        | testing.jpg | zcall       | DELETE     |
 
   @C553 @regression
   Scenario Outline: Verify I see picture, ping and call after I delete a group conversation from conversation list (landscape)
@@ -381,7 +381,7 @@ Feature: Conversation List
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       | CallBackend | DeleteItem |
-      | user1Name | user2Name | user3Name | DELETE        | testing.jpg | autocall    | DELETE     |
+      | user1Name | user2Name | user3Name | DELETE        | testing.jpg | zcall       | DELETE     |
 
   @C562 @regression
   Scenario Outline: I can mute 1:1 conversation from the conversation list (portrait)

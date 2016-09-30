@@ -85,7 +85,7 @@ Feature: Permissions
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | CallBackend | CallBackend2 |
-      | user1Name | user2Name | user3Name | user4Name | autocall    | chrome       |
+      | user1Name | user2Name | user3Name | user4Name | zcall       | chrome       |
 
   @C136785 @noAcceptAlert @permissionsTest
   Scenario Outline: Verify you can successfully register a new user and log in automatically denying all permission requests
