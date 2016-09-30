@@ -901,7 +901,7 @@ Feature: Calling
     And <Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>,<Contact10> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
 # waiting for join call controls
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I see the join call controls for conversation <ChatName>
     When I join call of conversation <ChatName>
     And I wait for 1 seconds
