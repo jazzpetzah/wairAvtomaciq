@@ -19,7 +19,7 @@ Feature: Calling
 
     Examples:
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
-      | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
+      | zcall       | user1Name | user2Name | user3Name | ChatForGroupCall |
 
   @C783 @calling_basic @rc @rc44
   Scenario Outline: Calling bar buttons are clickable and change its state (portrait)
@@ -47,7 +47,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | zcall       |
 
   @C821 @regression @rc @rc44
   Scenario Outline: I can join group call in foreground (landscape)
@@ -73,7 +73,7 @@ Feature: Calling
 
     Examples:
       | CallBackend | CallBackend2 | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    |
-      | chrome      | autocall     | user1Name | user2Name | user3Name | user4Name | user5Name | ChatForGroupCall |
+      | chrome      | zcall        | user1Name | user2Name | user3Name | user4Name | user5Name | ChatForGroupCall |
 
   @C794 @calling_basic @rc @rc44
   Scenario Outline: Calling bar buttons are clickable and change its state (landscape)
@@ -101,7 +101,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | zcall       |
 
   @C487 @calling_basic
   Scenario Outline: (AN-3145) I see miss call notification on the list and inside conversation view (portrait)
@@ -126,7 +126,7 @@ Feature: Calling
 
     Examples:
       | CallBackend | Name      | Contact1  | Contact2  |
-      | autocall    | user1Name | user2Name | user3Name |
+      | zcall       | user1Name | user2Name | user3Name |
 
   @C521 @calling_basic
   Scenario Outline: I see miss call notification on the list and inside conversation view (landscape)
@@ -149,7 +149,7 @@ Feature: Calling
 
     Examples:
       | CallBackend | Name      | Contact1  | Contact2  |
-      | autocall    | user1Name | user2Name | user3Name |
+      | zcall       | user1Name | user2Name | user3Name |
 
   @C811 @calling_basic @rc
   Scenario Outline: Receive call while Wire is running in the background (portrait)
@@ -172,7 +172,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | zcall       |
 
   @C770 @calling_basic @rc
   Scenario Outline: Receive call while tablet in sleeping mode (screen locked) (portrait)
@@ -195,7 +195,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | zcall       |
 
   @C486 @calling_advanced
   Scenario Outline: Other wire user trying to call me while I'm already in wire call
@@ -217,7 +217,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend |
-      | user1Name | user2Name | user3Name | autocall    |
+      | user1Name | user2Name | user3Name | zcall       |
 
   @C813 @calling_basic @rc
   Scenario Outline: Silence an incoming call (portrait)
@@ -236,7 +236,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | zcall       |
 
   @C814 @calling_basic @rc
   Scenario Outline: Silence an incoming call (landscape)
@@ -255,4 +255,4 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | chrome      |

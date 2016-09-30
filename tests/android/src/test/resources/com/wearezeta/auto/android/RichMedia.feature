@@ -114,7 +114,7 @@ Feature: Rich Media
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                   | CallBackend |
-      | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme | autocall    |
+      | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme | zcall       |
 
   @C139850 @regression
   Scenario Outline: Verify that play of soundcloud track will be stopped by incoming video call

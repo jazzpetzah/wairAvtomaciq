@@ -207,7 +207,7 @@ Feature: Audio Message
 
     Examples:
       | Name      | Contact   | FileName | MIMEType  | DeviceName | CallBackend |
-      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | autocall    |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | zcall       |
 
   @C139851 @regression
   Scenario Outline: (AN-4067) Verify that play of audio message will be stopped by incoming video call
@@ -254,7 +254,7 @@ Feature: Audio Message
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | zcall       |
 
   @C165127 @C165128 @C165137 @regression
   Scenario Outline: Single tap on mic button open voice recording dialog
