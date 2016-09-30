@@ -408,7 +408,12 @@ public class StartUIPageSteps {
 
     @When("^I open remembered users conversation$")
     public void IOpenSecondRememberedUsersConversation() throws Exception {
-        context.getPagesCollection().getPage(ContactListPage.class).openConversation(rememberedUser);
+        ContactListPage contactListPage = context.getPagesCollection().getPage(ContactListPage.class);
+        Assert.assertTrue(String.format("Conversation with name '%s' is not visible", rememberedUser),
+                contactListPage.isConversationVisible(rememberedUser));
+        contactListPage.openConversation(rememberedUser);
+        Assert.assertTrue(String.format("Conversation '%s' should be selected", rememberedUser),
+                contactListPage.isConversationSelected(rememberedUser));
     }
 
     @When("^I see connecting message in conversation with remembered contact$")

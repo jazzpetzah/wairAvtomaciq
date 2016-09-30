@@ -107,15 +107,19 @@ public class ContactListPageSteps {
     /**
      * Opens conversation by choosing it from Contact List
      *
-     * @param contact conversation name string
+     * @param conversation conversation name string
      * @throws Exception
      * @step. ^I open conversation with (.*)
      */
     @Given("^I open conversation with (.*)")
-    public void GivenIOpenConversationWith(String contact) throws Exception {
-        contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-        context.getPagesCollection().getPage(ContactListPage.class).openConversation(
-                contact);
+    public void GivenIOpenConversationWith(String conversation) throws Exception {
+        conversation = context.getUserManager().replaceAliasesOccurences(conversation, FindBy.NAME_ALIAS);
+        ContactListPage contactListPage = context.getPagesCollection().getPage(ContactListPage.class);
+        Assert.assertTrue(String.format("Conversation with name '%s' is not visible", conversation),
+                contactListPage.isConversationVisible(conversation));
+        contactListPage.openConversation(conversation);
+        Assert.assertTrue(String.format("Conversation '%s' should be selected", conversation),
+                contactListPage.isConversationSelected(conversation));
     }
 
     /**
