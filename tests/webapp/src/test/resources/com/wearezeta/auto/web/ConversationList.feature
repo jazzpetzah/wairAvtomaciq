@@ -317,7 +317,7 @@ Feature: Conversation List
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Message | Action | PING   | Image                     | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | hello   | START  | pinged | userpicture_landscape.jpg | autocall    |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | hello   | START  | pinged | userpicture_landscape.jpg | zcall       |
 
   @C1814 @regression
   Scenario Outline: Verify I can delete and leave a group conversation from conversation list
