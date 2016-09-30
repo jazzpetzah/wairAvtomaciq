@@ -510,7 +510,7 @@ Feature: Conversation List
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | AlertText            |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | access your Contacts |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | Access Your Contacts |
 
   @C95627 @regression @fastLogin
   Scenario Outline: Verify deleting a conversation is synchronised to all devices
