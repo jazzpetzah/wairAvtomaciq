@@ -26,7 +26,7 @@ Feature: Giphy
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @C250822 @staging
+  @C250822 @regression
   Scenario Outline: Verify I can see "No GIFs found" in case of incorrect search query and correct it then close giphy
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -49,7 +49,7 @@ Feature: Giphy
       | Name      | Contact   | InvalidMessage | ValidMessage |
       | user1Name | user2Name | +++++++        | Yo           |
 
-  @C250823 @staging
+  @C250823 @regression
   Scenario Outline: Verify I can see updated search results after discard selected gif and change search query
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -71,7 +71,7 @@ Feature: Giphy
       | Name      | Contact   | Message1 | Message2 |
       | user1Name | user2Name | TEST     | Yo       |
 
-  @C250821 @staging
+  @C250821 @regression
   Scenario Outline: I can search a GIF image by clicking GIF cursor button
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -91,7 +91,7 @@ Feature: Giphy
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @C250825 @staging
+  @C250825 @regression
   Scenario Outline: Verify Giphy grid stays opened when I receive a message in current/other conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -110,7 +110,7 @@ Feature: Giphy
       | Name      | Contact1  | Contact2  | Message1 | Message2 |
       | user1Name | user2Name | user3Name | Current  | Other    |
 
-  @C250827 @staging
+  @C250827 @regression
   Scenario Outline: Verify I can discard gif picture and select another in giphy grid
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

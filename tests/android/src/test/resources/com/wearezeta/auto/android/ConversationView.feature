@@ -381,7 +381,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | LeaveGroupChat |
 
-  @C250837 @C250838 @staging
+  @C250837 @C250838 @regression
   Scenario Outline: Verify cursor send button is visible when input is not empty although you switch conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
