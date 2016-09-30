@@ -128,6 +128,7 @@ Feature: Video Calling
     When <Contact2> calls me
     And I see call status message contains "<Contact2> calling"
     Then I tap Accept button on Calling overlay
+    And I accept alert
     And I do not see Accept Video button on Calling overlay
     And I see Leave button on Calling overlay
     And <Contact2> verifies that call status to me is changed to active in <Timeout> seconds
