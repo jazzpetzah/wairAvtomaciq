@@ -252,21 +252,6 @@ class IOSSimulator(BaseNodeVerifier):
                            password=self._verification_kwargs['node_password'])
             simulator_name = self._verification_kwargs['ios_simulator_name']
 
-            xcrun_output = ''
-            try:
-                _, stdout, _ = client.exec_command('/usr/bin/xcrun simctl list', timeout=10)
-                xcrun_output = stdout.read()
-            except Exception:
-                traceback.print_exc()
-            is_sim_present = xcrun_output.lower().find(simulator_name.lower()) >= 0
-            result = True
-            if not is_sim_present:
-                msg = 'There is no "{}" simulator available. The list of available simulators for the node "{}":\n{}\n'. \
-                    format(simulator_name, self._node.name, xcrun_output)
-                sys.stderr.write(msg)
-                self._send_email_notification('Non-existing simulator name "{}" has been provided'.
-                                              format(simulator_name), msg)
-                return False
             if result is True:
                 sys.stderr.write('Adjusting simulator scale...')
                 scale_factor = 4
