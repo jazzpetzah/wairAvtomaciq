@@ -643,26 +643,6 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | Caramba!      | testing.jpg |
 
-  @C2603 @regression @fastLogin
-  Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back [LANDSCAPE]
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact>,<Contact1>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    Then I do not see user avatar icon near the conversation input field
-    When I tap on text input
-    Then I see user avatar icon near the conversation input field
-    # This is to hide keyboard
-    When I tap on contact name <Contact1>
-    And I tap on contact name <Contact>
-    Then I do not see user avatar icon near the conversation input field
-
-    Examples:
-      | Name      | Contact   | Contact1  |
-      | user1Name | user2Name | user3Name |
-
   @C2624 @regression @rc @fastLogin
   Scenario Outline: Verify sending GIF format pic [LANDSCAPE]
     Given There are 2 users where <Name> is me

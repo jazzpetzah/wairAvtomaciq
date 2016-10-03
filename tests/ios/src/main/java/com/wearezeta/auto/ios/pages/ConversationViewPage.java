@@ -37,8 +37,6 @@ public class ConversationViewPage extends IOSPage {
             String.format("//XCUIElementTypeTextView[@name='%s' and @value='%s']",
                     nameStrConversationInputField, value);
 
-    private static final By nameConversationInputAvatar = MobileBy.AccessibilityId("authorImage");
-
     private static final String DEFAULT_INPUT_PLACEHOLDER_TEXT = "TYPE A MESSAGE";
     private static final By nameInputPlaceholderText = MobileBy.AccessibilityId(DEFAULT_INPUT_PLACEHOLDER_TEXT);
 
@@ -464,14 +462,6 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isGiphyImageVisible() throws Exception {
         return isElementDisplayed(xpathGiphyImage);
-    }
-
-    public boolean isUserAvatarNextToInputVisible() throws Exception {
-        return isElementDisplayed(nameConversationInputAvatar);
-    }
-
-    public boolean isUserAvatarNextToInputInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConversationInputAvatar);
     }
 
     public boolean isShieldIconVisibleNextToInputField() throws Exception {
