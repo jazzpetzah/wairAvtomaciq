@@ -215,11 +215,12 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I wait until <ContactEmail> exists in backend search results
-    When I open search UI
-    And I accept alert
-    And I tap on Search input on People picker page
-    And I input in People picker search field user email <ContactEmail>
-    And I tap the instant connect button next to <UnconnectedUser>
+    Given I open search UI
+    Given I accept alert
+    Given I tap on Search input on People picker page
+    Given I input in People picker search field user email <ContactEmail>
+    When I tap the instant connect button next to <UnconnectedUser>
+    And I tap X button in People Picker input field
     Then I see Pending Connect to <UnconnectedUser> message in the conversation view
 
     Examples:
