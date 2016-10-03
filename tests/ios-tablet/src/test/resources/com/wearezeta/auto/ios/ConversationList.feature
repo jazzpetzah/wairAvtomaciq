@@ -89,13 +89,15 @@ Feature: Conversation List
     Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see conversations list
     Given User <Contact> sends <Number> encrypted messages to user Myself
     Given User <Contact3> sends <Number> encrypted messages to user Myself
+    Given I see conversations list
     Given I see first item in contact list named <Contact3>
-    Given User <Contact2> securely pings conversation <Name>
+    When User <Contact2> securely pings conversation <Name>
+    And I wait for 5 seconds
     Then I see first item in contact list named <Contact2>
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    When User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    And I wait for 5 seconds
     Then I see first item in contact list named <Contact>
 
     Examples:
