@@ -161,8 +161,8 @@ Feature: Recall Message
     Given Myself is connected to <Contact1>
     Given User <Contact1> adds new device <Contact1Device>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to user Myself
+    Given I see conversations list
     When I tap on contact name <Contact1>
     Then I see 1 default message in the conversation view
     When User <Contact1> deletes the recent message everywhere from user <Name> via device <Contact1Device>
@@ -332,8 +332,8 @@ Feature: Recall Message
     Given Myself is connected to <Contact1>
     Given User <Contact1> adds new device <DeviceName>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to user Myself
+    Given I see conversations list
     When I remember the state of <Contact1> conversation item
     And I tap on contact name <Contact1>
     And I navigate back to conversations list
