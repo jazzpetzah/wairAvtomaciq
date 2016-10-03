@@ -40,7 +40,8 @@ Feature: Settings
     When I tap settings gear button
     And I select settings item Account
     And I select settings item Reset Password
-    And I wait for 4 seconds
+    # Wait until the web page is fully loaded
+    And I wait for 8 seconds
     Then I see Reset Password page
 
     Examples:
