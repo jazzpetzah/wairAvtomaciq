@@ -67,7 +67,7 @@ Feature: Voice Filters
 
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend |
-      | user1Name | user2Name | user3Name | autocall    |
+      | user1Name | user2Name | user3Name | zcall       |
 
   @C165155 @regression @fastLogin
   Scenario Outline: ZIOS-6903 Voice Filters: Verify voice filter control is preserved if one has already recorded something
@@ -96,7 +96,7 @@ Feature: Voice Filters
 
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend |
-      | user1Name | user2Name | user3Name | autocall    |
+      | user1Name | user2Name | user3Name | zcall       |
 
   @C165140 @regression @fastLogin
   Scenario Outline: Verify you can retry recording of filtered voice message
