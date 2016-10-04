@@ -10,6 +10,8 @@ Feature: Share Location
     When I tap on contact name <Contact>
     Then I see location map container in the conversation view
     When I tap on location map in conversation view
+    # Wait until the map is loaded
+    And I wait for 9 seconds
     Then I see map application is opened
 
     Examples:
