@@ -69,7 +69,6 @@ Feature: Keyboard Gallery
     And I accept alert
     And I accept alert
     And I select the first picture from Keyboard Gallery
-    And I see Picture Preview page
     And I tap Sketch button on Picture Preview page
     And I draw a random sketch
     And I send my sketch

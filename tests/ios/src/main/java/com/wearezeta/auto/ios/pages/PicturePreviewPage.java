@@ -39,8 +39,4 @@ public class PicturePreviewPage extends IOSPage {
         final By locator = getButtonLocatorByName(name);
         getElement(locator).click();
     }
-
-    public boolean isUsePhotoButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSketchButton);
-    }
 }

@@ -23,15 +23,4 @@ public class PicturePreviewPageSteps {
     public void ITapButton(String name) throws Exception {
         getPicturePreviewPage().tapButton(name);
     }
-
-    /**
-     * Verify picture preview page opened
-     *
-     * @throws Exception
-     * @step. ^I see Picture [Pp]review page$
-     */
-    @Then("^I see Picture [Pp]review page$")
-    public void ISeePicturePreviewPage() throws Exception {
-        getPicturePreviewPage().isUsePhotoButtonVisible();
-    }
 }
