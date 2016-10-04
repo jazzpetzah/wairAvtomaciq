@@ -939,6 +939,18 @@ public class ConversationPageSteps {
         assertThat("User is not the most recent liker", likers.get(likers.size() - 1), is(user));
     }
 
+    @Then("^I see names in like string of last message$")
+    public void ISeeNamesInLastLikeString() throws Exception {
+        String likeString = context.getPagesCollection().getPage(ConversationPage.class).getLastLikeString();
+        assertThat("There are no names in the like string", likeString, not(containsString("people")));
+    }
+
+    @Then("^I see count of (\\d+) people in like string of last message$")
+    public void ISeePeopleCountInLastLikeString(int count) throws Exception {
+        String likeString = context.getPagesCollection().getPage(ConversationPage.class).getLastLikeString();
+        assertThat("Wrong people count", likeString, is(count + " people"));
+    }
+
     @When("^I click reset session on the latest decryption error")
     public void IClickToResetSession() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickToResetSessionOnLatestError();
