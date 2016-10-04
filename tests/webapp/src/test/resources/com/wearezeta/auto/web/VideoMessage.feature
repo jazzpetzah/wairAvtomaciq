@@ -2,7 +2,6 @@ Feature: Video Message
 
   @C123927 @videomessage @regression
   Scenario Outline: Verify sender can play video message
-    Given my browser supports video message feature
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -46,7 +45,6 @@ Feature: Video Message
 
   @C123926 @videomessage @regression
   Scenario Outline: Verify receiver can play video message in 1:1
-    Given my browser supports video message feature
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -70,7 +68,6 @@ Feature: Video Message
 
   @C123939 @videomessage @regression
   Scenario Outline: Verify receivers can play video message in group
-    Given my browser supports video message feature
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
@@ -95,7 +92,6 @@ Feature: Video Message
 
   @C123929 @videomessage @regression
   Scenario Outline: Verify sender can cancel video message upload
-    Given my browser supports video message feature
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -115,7 +111,6 @@ Feature: Video Message
 
   @C123928 @videomessage @staging
   Scenario Outline: Verify receiver can cancel video message download
-    Given my browser supports video message feature
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>

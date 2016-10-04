@@ -107,14 +107,6 @@ public class CommonWebAppSteps {
         }
     }
 
-    @Then("^my browser supports video message feature$")
-    public void MyBrowserSupportsInlineVideo() throws Exception {
-        if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
-            throw new PendingException("Video messages are disabled for Firefox < 49 because of https://wearezeta" +
-                    ".atlassian.net/browse/WEBAPP-2723");
-        }
-    }
-
     @Given("^I switch language to (.*)$")
     public void ISwitchLanguageTo(String language) throws Exception {
         context.getPagesCollection().getPage(WebPage.class).switchLanguage(language);
