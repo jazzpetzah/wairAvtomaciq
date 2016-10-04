@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.ios.pages.PicturePreviewPage;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PicturePreviewPageSteps {
