@@ -58,7 +58,7 @@ Feature: Keyboard Gallery
       | Name      | Contact   | ItemName                   |
       | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
 
-  @C183904 @regression @fastLogin
+  @C183904 @rc @regression @fastLogin
   Scenario Outline: I can draw a sketch on picture from gallery
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -69,6 +69,7 @@ Feature: Keyboard Gallery
     And I accept alert
     And I accept alert
     And I select the first picture from Keyboard Gallery
+    And I see Picture Preview page
     And I tap Sketch button on Picture Preview page
     And I draw a random sketch
     And I send my sketch
