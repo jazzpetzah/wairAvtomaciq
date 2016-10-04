@@ -942,7 +942,7 @@ public class ConversationPageSteps {
     @Then("^I see names in like string of last message$")
     public void ISeeNamesInLastLikeString() throws Exception {
         String likeString = context.getPagesCollection().getPage(ConversationPage.class).getLastLikeString();
-        assertThat("There are no names in the like string", not(likeString.contains("people")));
+        assertThat("There are no names in the like string", likeString, not(containsString("people")));
     }
 
     @Then("^I see count of (\\d+) people in like string of last message$")
