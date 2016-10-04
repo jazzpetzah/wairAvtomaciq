@@ -22,11 +22,12 @@ Feature: File Transfer
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
     # And I verify the downloaded file is the same as the uploaded file <File>
+    And I see localytics event <Event> with attributes <Attributes>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File       | Size  | Type |
-      | user1Email | user1Password | user1Name | user2Name | C82815.txt | 0B    | TXT  |
-      | user1Email | user1Password | user1Name | user2Name | C82815.zip | 512KB | ZIP  |
+      | Login      | Password      | Name      | Contact   | File       | Size  | Type | Event                        | Attributes                                                                    |
+      | user1Email | user1Password | user1Name | user2Name | C82815.txt | 0B    | TXT  | media.completed_media_action | {\"action\":\"file\",\"conversation_type\":\"one_to_one\",\"with_bot\":false} |
+      | user1Email | user1Password | user1Name | user2Name | C82815.zip | 512KB | ZIP  | media.completed_media_action | {\"action\":\"file\",\"conversation_type\":\"one_to_one\",\"with_bot\":false} |
 
   @C95632 @filetransfer @regression
   Scenario Outline: Verify file can be uploaded and re-downloaded by sender himself in group

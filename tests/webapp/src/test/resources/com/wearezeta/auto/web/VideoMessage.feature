@@ -17,10 +17,11 @@ Feature: Video Message
     Then I wait until video <File> is downloaded and starts to play
     And I verify time for video <File> is changing in the conversation view
     And I verify seek bar is shown for video <File> in the conversation view
+    And I see localytics event <Event> with attributes <Attributes>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File        | Size  |
-      | user1Email | user1Password | user1Name | user2Name | C123927.mp4 | 20MB  |
+      | Login      | Password      | Name      | Contact   | File        | Size  | Event                        | Attributes                                                                    |
+      | user1Email | user1Password | user1Name | user2Name | C123927.mp4 | 20MB  | media.completed_media_action | {\"action\":\"file\",\"conversation_type\":\"one_to_one\",\"with_bot\":false} |
 
   @C123938 @videomessage @regression
   Scenario Outline: Verify user can delete video message

@@ -1,6 +1,6 @@
 Feature: VideoCalling
 
-  @C12071 @videocalling @smoke
+  @C12071 @videocalling @smoke @localytics
   Scenario Outline: Verify I can start Video call from conversation view
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -26,10 +26,11 @@ Feature: VideoCalling
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
     And I do not see my self video view
+    And I see localytics event <Event> with attributes <Attributes>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout | Event                        | Attributes                                                                          |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      | media.completed_media_action | {\"action\":\"video_call\",\"conversation_type\":\"one_to_one\",\"with_bot\":false} |
 
   @C12070 @videocalling @smoke
   Scenario Outline: Verify I can accept Video call

@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @C1761 @smoke @useSpecialEmail
+  @C1761 @smoke @useSpecialEmail @localytics
   Scenario Outline: Verify new user can be registered
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
@@ -17,12 +17,13 @@ Feature: Registration
     And I confirm keeping picture on Welcome page
     Then I see user name on self profile page <Name>
     Then I see user email on self profile page <Email>
+    And I see localytics event <Event> with attributes <Attributes>
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
 
     Examples: 
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Email      | Password      | Name      | Event                  | Attributes              |
+      | user1Email | user1Password | user1Name | registration.succeeded | {\"content\":\"email\"} |
 
   @C1822 @regression @useSpecialEmail
   Scenario Outline: Verify I can accept personal invitation
