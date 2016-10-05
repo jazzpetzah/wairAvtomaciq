@@ -112,6 +112,8 @@ public class SketchPage extends AndroidPage {
                 log.debug("Can't find send sketch button. Page source: " + getDriver().getPageSource());
             }
         }
+        // Wait for animation
+        Thread.sleep(2000);
     }
 
     public Optional<BufferedImage> getCanvasScreenshot() throws Exception {
