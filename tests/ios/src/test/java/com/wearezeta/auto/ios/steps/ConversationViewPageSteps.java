@@ -481,9 +481,9 @@ public class ConversationViewPageSteps {
      *
      * @param contact User name who called
      * @throws Exception
-     * @step. ^I click missed call button to call contact (.*)$
+     * @step. ^I tap missed call button to call contact (.*)
      */
-    @When("^I click missed call button to call contact (.*)$")
+    @When("^I tap missed call button to call contact (.*)")
     public void IClickMissedCallButton(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         getConversationViewPage().clickOnCallButtonForContact(contact.toUpperCase());

@@ -231,7 +231,7 @@ Feature: Settings
     Given I have entered password <Password>
     Given I tap Login button
     Given I accept alert
-    Given I click Not Now to not add phone number
+    Given I tap Not Now to not add phone number
     Given I accept First Time overlay
     Given I dismiss settings warning
     Given I see conversations list
@@ -258,7 +258,7 @@ Feature: Settings
     Given I have entered password <Password>
     Given I tap Login button
     Given I accept alert
-    Given I click Not Now to not add phone number
+    Given I tap Not Now to not add phone number
     Given I accept First Time overlay
     Given I dismiss settings warning
     Given I see conversations list

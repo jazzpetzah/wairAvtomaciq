@@ -56,7 +56,7 @@ public class GiphyPreviewPage extends IOSPage {
         return isElementDisplayed(xpathGiphySendButton);
     }
 
-    public void clickGiphyMoreButton() throws Exception {
+    public void tapMoreButton() throws Exception {
         getElement(nameGiphyRefreshButton, "Giphy Refresh button is not visible").click();
     }
 

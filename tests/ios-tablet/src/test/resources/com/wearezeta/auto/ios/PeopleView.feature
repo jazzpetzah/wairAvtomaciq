@@ -57,9 +57,9 @@ Feature: People View
     And I open conversation details
     And I see <Contact1> user profile page in iPad popover
     And I tap Create Group button
-    And I click on connected user <Contact2> on People picker on iPad popover
-    And I click on connected user <Contact3> on People picker on iPad popover
-    And I click on Create button on iPad popover
+    And I tap connected user <Contact2> on People picker on iPad popover
+    And I tap connected user <Contact3> on People picker on iPad popover
+    And I tap Create button on iPad popover
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I navigate back to conversations list
     Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
@@ -79,9 +79,9 @@ Feature: People View
     And I open conversation details
     And I see <Contact1> user profile page in iPad popover
     And I tap Create Group button
-    And I click on connected user <Contact2> on People picker on iPad popover
-    And I click on connected user <Contact3> on People picker on iPad popover
-    And I click on Create button on iPad popover
+    And I tap connected user <Contact2> on People picker on iPad popover
+    And I tap connected user <Contact3> on People picker on iPad popover
+    And I tap Create button on iPad popover
     And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 
@@ -138,9 +138,9 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
-    And I click Remove on iPad
-    And I confirm remove on iPad
-    And I click Go back button on user profile popover
+    And I tap Remove button on iPad popover
+    And I confirm removal on iPad popover
+    And I tap Go Back button on user profile popover
     Then I see that <Contact2> is not present on group chat info page
 
     Examples:
@@ -158,9 +158,9 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
-    And I click Remove on iPad
-    And I confirm remove on iPad
-    And I click Go back button on user profile popover
+    And I tap Remove button on iPad popover
+    And I confirm removal on iPad popover
+    And I tap Go Back button on user profile popover
     Then I see that <Contact2> is not present on group chat info page
 
     Examples:
@@ -447,8 +447,8 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Add People button
-    And I click on connected user <Contact3> on People picker on iPad popover
-    And I click on Add to Conversation button on iPad popover
+    And I tap connected user <Contact3> on People picker on iPad popover
+    And I tap Add to Conversation button on iPad popover
     And I open conversation details
     Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
 
@@ -467,8 +467,8 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Add People button
-    And I click on connected user <Contact3> on People picker on iPad popover
-    And I click on Add to Conversation button on iPad popover
+    And I tap connected user <Contact3> on People picker on iPad popover
+    And I tap Add to Conversation button on iPad popover
     And I open conversation details
     Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
 

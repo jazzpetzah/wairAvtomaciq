@@ -146,7 +146,7 @@ public class LoginPage extends IOSPage {
         return readAlertText().isPresent() && isElementDisplayed(nameAlreadyRegisteredEmail);
     }
 
-    public void clickPhoneNotNow() throws Exception {
+    public void tapPhoneNotNow() throws Exception {
         getElement(nameNotNowButton).click();
     }
 

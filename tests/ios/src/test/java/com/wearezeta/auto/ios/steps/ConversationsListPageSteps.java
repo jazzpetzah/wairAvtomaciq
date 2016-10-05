@@ -333,9 +333,9 @@ public class ConversationsListPageSteps {
         getConversationsListPage().tapPlayPauseButtonNextTo(name);
     }
 
-    @When("I click on Pending request link in conversations list")
-    public void IClickPendingRequestLinkContactList() throws Exception {
-        getConversationsListPage().clickPendingRequest();
+    @When("I tap Incoming Pending Requests item in conversations list")
+    public void ITapPendingRequestLinkContactList() throws Exception {
+        getConversationsListPage().tapPendingRequest();
     }
 
     @When("I (do not )?see Pending request link in conversations list")

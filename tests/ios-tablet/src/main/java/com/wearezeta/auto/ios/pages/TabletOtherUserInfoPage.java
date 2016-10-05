@@ -41,11 +41,11 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
         return isElementDisplayed(xpathOtherUserConnectButton);
     }
 
-    public void clickConnectButton() throws Exception {
+    public void tapConnectButton() throws Exception {
         getElement(xpathOtherUserConnectButton).click();
     }
 
-    public void clickGoBackButton() throws Exception {
+    public void tapGoBackButton() throws Exception {
         getElement(nameOtherUserProfilePageCloseButton).click();
     }
 

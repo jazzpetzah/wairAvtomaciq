@@ -8,7 +8,7 @@ Feature: Registration
     And I enter email <Email>
     And I enter password <Password>
     And I start activation email monitoring
-    And I click Create Account Button
+    And I tap Create Account button on Registration page
     And I accept terms of service
     And I accept alert
     And I see confirmation page

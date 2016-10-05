@@ -30,10 +30,10 @@ Feature: Connect
     Given <Contact> sent connection request to Me
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I click on Pending request link in conversations list
+    And I tap Incoming Pending Requests item in conversations list
     And I wait for 2 seconds
-    And I see Hello connect message from user <Contact> on Pending request page
-    And I click Connect button on Pending request page
+    And I see Hello connect message from user <Contact> on Incoming Pending Requests page
+    And I tap Connect button on Incoming Pending Requests page
     And I wait for 2 seconds
     And I navigate back to conversations list
     Then I see first item in contact list named <Contact>
@@ -72,8 +72,8 @@ Feature: Connect
     Given Myself is connected to <Contact4>
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I click on Pending request link in conversations list
-    And I click on Ignore button on Pending requests page <SentRequests> times
+    And I tap Incoming Pending Requests item in conversations list
+    And I tap Ignore button on Incoming Pending Requests page <SentRequests> times
     And I do not see Pending request link in conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search UI
@@ -81,7 +81,7 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
-    Then I see Pending request page
+    Then I see Incoming Pending Requests page
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
@@ -96,8 +96,8 @@ Feature: Connect
     Given Myself is connected to <Contact4>
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I click on Pending request link in conversations list
-    And I click on Connect button on Pending requests page <SentRequests> times
+    And I tap Incoming Pending Requests item in conversations list
+    And I tap Connect button on Incoming Pending Requests page <SentRequests> times
     And I navigate back to conversations list
     Then I do not see Pending request link in conversations list
     And I see conversation <Contact1> in conversations list
@@ -197,7 +197,7 @@ Feature: Connect
     And I tap Send Invite button
     And I tap Invite Others button
     And I tap Copy button
-    And I click close Invite list button
+    And I tap Close Invite list button
     And I tap X button in People Picker input field
     And I tap on contact name <Contact>
     And I tap on text input
@@ -305,7 +305,7 @@ Feature: Connect
     And I select participant <Contact3>
     And I see <Contact3> user pending profile page
     And I tap Start Conversation button on pending profile page
-    And I click on Ignore button on Pending requests page
+    And I tap Ignore button on Incoming Pending Requests page
     And I close group info page
     And I navigate back to conversations list
     # Workaround for ZIOS-4985
@@ -368,8 +368,8 @@ Feature: Connect
     Given <Contact2> sent connection request to Me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I click on Pending request link in conversations list
-    Then I see Pending request page
+    When I tap Incoming Pending Requests item in conversations list
+    Then I see Incoming Pending Requests page
 
     Examples:
       | Name      | Contact   | Contact2  | Contact3  |
@@ -382,9 +382,8 @@ Feature: Connect
     Given User <Contact> changes name to <NewName>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I click on Pending request link in conversations list
-    And I see Pending request page
-    Then I see Hello connect message from user <NewName> on Pending request page
+    When I tap Incoming Pending Requests item in conversations list
+    Then I see Hello connect message from user <NewName> on Incoming Pending Requests page
 
     Examples:
       | Name      | Contact   | NewName  |
@@ -411,8 +410,8 @@ Feature: Connect
     Given <Contact> sent connection request to Me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I click on Pending request link in conversations list
-    And I click Connect button on Pending request page
+    When I tap Incoming Pending Requests item in conversations list
+    And I tap Connect button on Incoming Pending Requests page
     Then I see conversation view page
 
     Examples:

@@ -28,7 +28,7 @@ Feature: ContactsUI
     Given I open search UI
     Given I accept alert
     Given I tap Send Invite button
-    When I click on Open button next to user name <Contact> on ContactsUI
+    When I tap Open button next to user name <Contact> on ContactsUI
     Then I see the conversation with <Contact>
 
     Examples: 

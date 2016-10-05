@@ -160,7 +160,7 @@ Feature: Settings
     Given I have entered password <Password>
     Given I tap Login button
     Given I accept alert
-    Given I click Not Now to not add phone number
+    Given I tap Not Now to not add phone number
     Given I accept First Time overlay
     Given I dismiss settings warning
     Given I see conversations list
@@ -185,7 +185,7 @@ Feature: Settings
     Given I have entered password <Password>
     Given I tap Login button
     Given I accept alert
-    Given I click Not Now to not add phone number
+    Given I tap Not Now to not add phone number
     Given I accept First Time overlay
     Given I dismiss settings warning
     Given I see conversations list
@@ -206,7 +206,7 @@ Feature: Settings
     Given I have entered password <Password>
     Given I tap Login button
     Given I accept alert
-    Given I click Not Now to not add phone number
+    Given I tap Not Now to not add phone number
     Given I accept First Time overlay
     Given I dismiss settings warning
     Given I see conversations list
@@ -270,7 +270,7 @@ Feature: Settings
     And I enter email <Email>
     And I enter password <Password>
     And I start activation email monitoring
-    And I click Create Account Button
+    And I tap Create Account button on Registration page
     And I see confirmation page
     And I verify registration address
     And I tap settings gear button

@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import cucumber.api.java.en.Then;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -8,55 +9,49 @@ import com.wearezeta.auto.ios.pages.IncomingPendingRequestsPage;
 import cucumber.api.java.en.When;
 
 public class IncomingPendingRequestsPageSteps {
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-	private IncomingPendingRequestsPage getPendingRequestsPage() throws Exception {
-		return pagesCollection.getPage(IncomingPendingRequestsPage.class);
-	}
+    private IncomingPendingRequestsPage getPendingRequestsPage() throws Exception {
+        return pagesCollection.getPage(IncomingPendingRequestsPage.class);
+    }
 
-	@When("^I click on Ignore button on Pending requests page$")
-	public void IClickOnIgnoreButtonPendingRequests() throws Exception {
-		getPendingRequestsPage().clickIgnoreButton();
-	}
+    /**
+     * Tap the corresponding button on Pending Request page
+     *
+     * @param btnName button name to tap
+     * @throws Exception
+     * @step. ^I tap (Ignore|Connect) button on Incoming Pending Requests page$
+     */
+    @When("^I tap (Ignore|Connect) button on Incoming Pending Requests page$")
+    public void ITapIgnoreButtonPendingRequests(String btnName) throws Exception {
+        getPendingRequestsPage().tapButton(btnName);
+    }
 
-	@When("^I click on Ignore button on Pending requests page (\\d+) times?$")
-	public void IClickOnIgnoreButtonPendingRequests(int numberOfIgnores) throws Exception {
-		getPendingRequestsPage().clickIgnoreButtonMultiple(numberOfIgnores);
-	}
+    /**
+     * Tap the corresponding button on Pending Request page multiple times
+     *
+     * @param btnName button name to tap
+     * @param count how many times the button should be clicked. Should be greater than zero
+     * @throws Exception
+     * @step. ^I tap (Ignore|Connect) button on Incoming Pending Requests page (\d+) times?$
+     */
+    @When("^I tap (Ignore|Connect) button on Incoming Pending Requests page (\\d+) times?$")
+    public void ITapIgnoreButtonPendingRequests(String btnName, int count) throws Exception {
+        getPendingRequestsPage().tapButton(btnName, count);
+    }
 
-	@When("I click Connect button on Pending request page")
-	public void IClickOnConnectButtonPendingRequest() throws Exception {
-		getPendingRequestsPage().clickConnectButton();
-	}
+    @Then("^I see Incoming Pending Requests page$")
+    public void ISeePendingRequestPage() throws Exception {
+        Assert.assertTrue("Incoming Pending Requests page is not shown",
+                getPendingRequestsPage().isConnectButtonDisplayed());
+    }
 
-	/**
-	 * Clicks the connect button on the pending requests page a specific number
-	 * of times
-	 * 
-	 * @step. ^I click on Connect button on Pending requests page (\d+) times?$
-	 * 
-	 * @param numberOfConnects
-	 *            number of clicks integer
-	 * @throws AssertionError
-	 *             if connect button is not visible
-	 */
-	@When("^I click on Connect button on Pending requests page (\\d+) times?$")
-	public void IClickOnConnectButtonPendingRequests(int numberOfConnects) throws Exception {
-		getPendingRequestsPage().clickConnectButtonMultiple(numberOfConnects);
-	}
-
-	@When("I see Pending request page")
-	public void ISeePendingRequestPage() throws Exception {
-		Assert.assertTrue("Pending Requests page is not shown",
-				getPendingRequestsPage().isConnectButtonDisplayed());
-	}
-
-	@When("I see Hello connect message from user (.*) on Pending request page")
-	public void ISeeHelloConnectMessageFrom(String user) throws Exception {
-		user = usrMgr.findUserByNameOrNameAlias(user).getName();
-		Assert.assertTrue(String.format("Connect To message is not visible for user '%s'", user),
-				getPendingRequestsPage().isConnectToNameExist(user));
-	}
+    @Then("^I see Hello connect message from user (.*) on Incoming Pending Requests page$")
+    public void ISeeHelloConnectMessageFrom(String user) throws Exception {
+        user = usrMgr.findUserByNameOrNameAlias(user).getName();
+        Assert.assertTrue(String.format("Connect To message is not visible for user '%s'", user),
+                getPendingRequestsPage().isConnectToNameExist(user));
+    }
 }

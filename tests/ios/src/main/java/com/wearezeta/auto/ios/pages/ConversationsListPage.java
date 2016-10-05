@@ -132,7 +132,7 @@ public class ConversationsListPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathPendingRequest);
     }
 
-    public void clickPendingRequest() throws Exception {
+    public void tapPendingRequest() throws Exception {
         getElement(xpathPendingRequest).click();
     }
 

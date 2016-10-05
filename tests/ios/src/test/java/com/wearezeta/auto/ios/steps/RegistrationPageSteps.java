@@ -132,9 +132,9 @@ public class RegistrationPageSteps {
         getRegistrationPage().setPassword(this.userToRegister.getPassword());
     }
 
-    @When("I click Create Account Button")
-    public void IClickCreateAccountButton() throws Exception {
-        getRegistrationPage().clickCreateAccountButton();
+    @When("^I tap Create Account button on Registration page$")
+    public void ITapCreateAccountButton() throws Exception {
+        getRegistrationPage().tapCreateAccountButton();
     }
 
     @Then("^I see confirmation page$")

@@ -144,7 +144,7 @@ public class RegistrationPage extends IOSPage {
         }
     }
 
-    public void clickCreateAccountButton() throws Exception {
+    public void tapCreateAccountButton() throws Exception {
         getElement(xpathCreateAccountButton, "Create Account button is not visible").click();
     }
 

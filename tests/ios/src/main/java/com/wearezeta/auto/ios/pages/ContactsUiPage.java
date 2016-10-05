@@ -49,7 +49,7 @@ public class ContactsUiPage extends IOSPage {
         return isElementDisplayed(nameInviteOthersButton);
     }
 
-    public void clickOpenButtonNextToUser(String contact) throws Exception {
+    public void tapOpenButtonNextToUser(String contact) throws Exception {
         final By locator = By.xpath(xpathStrOpenButtonByConvoName.apply(contact));
         getElement(locator).click();
     }

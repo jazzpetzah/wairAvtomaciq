@@ -62,7 +62,7 @@ Feature: Connect
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <UnconnectedUser>
-    And I click Connect button on not connected user profile popover
+    And I tap Connect button on not connected user profile popover
     And I dismiss popover on iPad
     And I navigate back to conversations list
     Then I see first item in contact list named <UnconnectedUser>
@@ -83,7 +83,7 @@ Feature: Connect
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <UnconnectedUser>
-    And I click Connect button on not connected user profile popover
+    And I tap Connect button on not connected user profile popover
     And I dismiss popover on iPad
     Then I see first item in contact list named <UnconnectedUser>
 
@@ -100,9 +100,8 @@ Feature: Connect
     Given Myself is connected to <Contact4>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I click on Pending request link in conversations list
-    And I see Pending request page
-    And I click on Ignore button on Pending requests page <SentRequests> times
+    When I tap Incoming Pending Requests item in conversations list
+    And I tap Ignore button on Incoming Pending Requests page <SentRequests> times
     And I do not see Pending request link in conversations list
     And I do not see conversation <Contact1> in conversations list
     And I wait until <Contact1> exists in backend search results
@@ -128,9 +127,8 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I click on Pending request link in conversations list
-    And I see Pending request page
-    And I click on Ignore button on Pending requests page <SentRequests> times
+    When I tap Incoming Pending Requests item in conversations list
+    And I tap Ignore button on Incoming Pending Requests page <SentRequests> times
     And I do not see Pending request link in conversations list
     And I do not see conversation <Contact1> in conversations list
     And I wait until <Contact1> exists in backend search results
@@ -154,9 +152,8 @@ Feature: Connect
     Given Myself is connected to <Contact4>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I click on Pending request link in conversations list
-    And I see Pending request page
-    And I click on Connect button on Pending requests page <SentRequests> times
+    When I tap Incoming Pending Requests item in conversations list
+    And I tap Connect button on Incoming Pending Requests page <SentRequests> times
     And I navigate back to conversations list
     Then I do not see Pending request link in conversations list
     And I see conversation <Contact1> in conversations list
@@ -177,9 +174,8 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I click on Pending request link in conversations list
-    And I see Pending request page
-    And I click on Connect button on Pending requests page <SentRequests> times
+    When I tap Incoming Pending Requests item in conversations list
+    And I tap Connect button on Incoming Pending Requests page <SentRequests> times
     Then I do not see Pending request link in conversations list
     And I see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
@@ -314,7 +310,7 @@ Feature: Connect
     And I tap Send Invite button
     And I tap Invite Others button
     And I tap Copy button
-    And I click close Invite list button
+    And I tap Close Invite list button
     And I tap X button in People Picker input field
     And I tap on contact name <Contact>
     And I tap on text input
@@ -468,7 +464,7 @@ Feature: Connect
     And I select user on iPad group popover <Contact3>
     And I see incoming pending popover from user <Contact3> on iPad
     And I tap Start Conversation button on other user profile page
-    And I click on Ignore button on Pending requests page
+    And I tap Ignore button on Incoming Pending Requests page
     And I dismiss popover on iPad
     And I navigate back to conversations list
     # Workaround for ZIOS-4985
@@ -496,7 +492,7 @@ Feature: Connect
     And I select user on iPad group popover <Contact3>
     And I see incoming pending popover from user <Contact3> on iPad
     And I tap Start Conversation button on other user profile page
-    And I click on Ignore button on Pending requests page
+    And I tap Ignore button on Incoming Pending Requests page
     And I dismiss popover on iPad
     # Workaround for ZIOS-4985
     # Then I do not see Pending request link in conversations list
@@ -515,8 +511,8 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I click on Pending request link in conversations list
-    Then I see Pending request page
+    When I tap Incoming Pending Requests item in conversations list
+    Then I see Incoming Pending Requests page
 
     Examples:
       | Name      | Contact   | Contact2  | Contact3  |
@@ -529,9 +525,8 @@ Feature: Connect
     Given User <Contact> changes name to <NewName>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I click on Pending request link in conversations list
-    And I see Pending request page
-    Then I see Hello connect message from user <NewName> on Pending request page
+    When I tap Incoming Pending Requests item in conversations list
+    Then I see Hello connect message from user <NewName> on Incoming Pending Requests page
 
     Examples:
       | Name      | Contact   | NewName  |
@@ -545,9 +540,8 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I click on Pending request link in conversations list
-    And I see Pending request page
-    Then I see Hello connect message from user <NewName> on Pending request page
+    When I tap Incoming Pending Requests item in conversations list
+    Then I see Hello connect message from user <NewName> on Incoming Pending Requests page
 
     Examples:
       | Name      | Contact   | NewName  |
@@ -619,7 +613,7 @@ Feature: Connect
     And I tap Send Invite button
     And I tap Invite Others button
     And I tap Copy button
-    And I click close Invite list button
+    And I tap Close Invite list button
     And I tap X button in People Picker input field
     And I tap on contact name <Contact>
     And I tap on text input
