@@ -123,7 +123,7 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean wrongCredentialsNotificationIsShown() throws Exception {
-        return isElementDisplayed(nameWrongCredentialsNotification);
+        return isElementDisplayed(nameWrongCredentialsNotification, 30);
     }
 
     public void tapForgotPasswordButton() throws Exception {
