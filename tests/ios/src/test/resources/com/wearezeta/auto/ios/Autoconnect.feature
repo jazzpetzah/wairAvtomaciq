@@ -137,7 +137,7 @@ Feature: Autoconnect
     Given I delete all contacts from Address Book
     Given I add name <Contact> and phone <ContactPhone> to Address Book
     Given I relaunch Wire
-    Given I remember the users <Contact> Address Book name
+    Given I remember the name of user <Contact> in Address Book
     Given User <Contact> changes name to <NewName>
     Given I sign in using my email or phone number
     Given I wait until <Contact> exists in backend search results
@@ -146,7 +146,7 @@ Feature: Autoconnect
     And I tap on contact name <Contact>
     And I open conversation details
     Then I verify username <Contact> on Other User Profile page is displayed
-    Then I verify users Address Book name on Other User Profile page is displayed
+    Then I verify the previously remembered user name from Address Book is displayed on Other User Profile page
 
     Examples:
       | Name      | Contact   | ContactPhone     | NewName |

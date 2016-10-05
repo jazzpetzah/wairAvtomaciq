@@ -132,11 +132,11 @@ public class OtherUserPersonalInfoPageSteps {
     /**
      * Remembers the name of the user how he is saved in the Address Book
      *
-     * @param addressbookName
+     * @param addressbookName name of user in Address Book
      * @throws Exception
-     * @step. ^I remember the users (.*) Address Book name$
+     * @step. ^I remember the name of user (.*) in Address Book$
      */
-    @When("^I remember the users (.*) Address Book name$")
+    @When("^I remember the name of user (.*) in Address Book$")
     public void IRememberTheUsersAddressBookName(String addressbookName) throws Exception {
         userAddressBookName = usrMgr.replaceAliasesOccurences(addressbookName, ClientUsersManager.FindBy.NAME_ALIAS);
     }
@@ -145,9 +145,9 @@ public class OtherUserPersonalInfoPageSteps {
      * Verifies that the Address Book name of the user is displayed
      *
      * @throws Exception
-     * @step. ^I verify users Address Book name on Other User Profile page is displayed$
+     * @step. ^I verify the previously remembered user name from Address Book is displayed on Other User Profile page$
      */
-    @Then("^I verify users Address Book name on Other User Profile page is displayed$")
+    @Then("^I verify the previously remembered user name from Address Book is displayed on Other User Profile page$")
     public void IVerifyUsersAddressBookNameOnOtherUserProfilePageIsDisplayed() throws Exception {
         if(userAddressBookName.isEmpty()){
             throw new IllegalStateException("Save the Address Book name of the user first!");
