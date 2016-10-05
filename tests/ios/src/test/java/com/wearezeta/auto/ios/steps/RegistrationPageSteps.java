@@ -105,7 +105,7 @@ public class RegistrationPageSteps {
     @When("^I input name (.*) and hit Enter$")
     public void IInputNameAndHitEnter(String name) throws Exception {
         IEnterName(name);
-        getRegistrationPage().inputName();
+        getRegistrationPage().commitName();
     }
 
     /**
@@ -117,8 +117,7 @@ public class RegistrationPageSteps {
     @When("^I input Non-English name (.*) and hit Enter$")
     public void IInputNonEnglishNameAndHitEnter(String name) throws Exception {
         getRegistrationPage().setName(name);
-        getRegistrationPage().tapNameInputField();
-        getRegistrationPage().inputName();
+        getRegistrationPage().commitName();
     }
 
     @When("^I enter email (.*)$")

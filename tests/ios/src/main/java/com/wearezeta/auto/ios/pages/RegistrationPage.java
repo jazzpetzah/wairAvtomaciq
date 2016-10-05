@@ -27,8 +27,6 @@ public class RegistrationPage extends IOSPage {
 
     private static final By xpathYourName = By.xpath("//XCUIElementTypeTextField[@value='YOUR FULL NAME']");
 
-    private static final By xpathNameField = By.xpath("//XCUIElementTypeTextField");
-
     private static final By nameYourEmail = MobileBy.AccessibilityId("EmailField");
 
     private static final By nameYourPassword = MobileBy.AccessibilityId("PasswordField");
@@ -139,7 +137,7 @@ public class RegistrationPage extends IOSPage {
         return isElementDisplayed(locator);
     }
 
-    public void inputName() throws Exception {
+    public void commitName() throws Exception {
         getElement(nameConfirmButton).click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmButton)) {
             throw new IllegalStateException("Confirm button is still visible");
@@ -232,15 +230,6 @@ public class RegistrationPage extends IOSPage {
 
     public void tapTakePhotoButton() throws Exception {
         getElement(nameTakePhotoButton).click();
-    }
-
-    /**
-     * Send extra space keys (workaround for simulator bug)
-     *
-     * @throws Exception
-     */
-    public void tapNameInputField() throws Exception {
-        getElement(xpathNameField).sendKeys("\n\n");
     }
 
     public boolean noCodeShowingUpLabelIsDisplayed() throws Exception {
