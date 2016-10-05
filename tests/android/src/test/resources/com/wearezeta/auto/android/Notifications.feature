@@ -146,5 +146,5 @@ Feature: Notifications
     Then I do not see the message "<Message>" in push notifications list
 
     Examples:
-      | Name      | Contact   | Message |
-      | user1Name | user2Name | hello   |
+      | Name      | Contact   | Message | ContactDevice |
+      | user1Name | user2Name | hello   | Device1       |
