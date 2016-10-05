@@ -43,6 +43,7 @@ Feature: Autoconnect
     When I open search UI
     And I accept alert
     And I tap X button in People Picker input field
+    And I wait for 3 seconds
     Then I see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
 
