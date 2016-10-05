@@ -444,6 +444,8 @@ public class ConversationViewPage extends AndroidPage {
                         }
                     }
             ).click();
+            // Wait for animation
+            Thread.sleep(1000);
             return getElement(locator);
         }
     }
