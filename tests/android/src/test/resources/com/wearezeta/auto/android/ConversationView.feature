@@ -401,7 +401,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | Message |
       | user1Name | user2Name | user3Name | YoNo    |
 
-  @C250856 @staging
+  @C250856 @regression
   Scenario Outline: Verify I see someone is typing in 1:1 conversation
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -416,7 +416,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C250857 @staging
+  @C250857 @regression
   Scenario Outline: Verify I see someone are typing in group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
