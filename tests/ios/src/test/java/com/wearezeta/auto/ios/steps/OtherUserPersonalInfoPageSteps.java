@@ -149,7 +149,7 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @Then("^I verify the previously remembered user name from Address Book is displayed on Other User Profile page$")
     public void IVerifyUsersAddressBookNameOnOtherUserProfilePageIsDisplayed() throws Exception {
-        if(userAddressBookName.isEmpty()){
+        if(userAddressBookName == null){
             throw new IllegalStateException("Save the Address Book name of the user first!");
         }
         Assert.assertTrue(String.format("User Address Book name '%s' is not visible", userAddressBookName),

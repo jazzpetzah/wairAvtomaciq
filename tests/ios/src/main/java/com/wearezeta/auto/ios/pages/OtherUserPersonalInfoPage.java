@@ -38,7 +38,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
             String.format("//XCUIElementTypeStaticText[@name='%s']", name);
 
     private static final Function<String, String> xpathStrOtherPersonalInfoPageAddressBookNameFieldByName = name ->
-            String.format("%s/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
+            String.format("//XCUIElementTypeStaticText[@name='%s']", name);
 
     private static final Function<String, String> xpathStrOtherPersonalInfoPageEmailFieldByEmail = email ->
             String.format("//XCUIElementTypeTextView[@value='%s']", email.toUpperCase());

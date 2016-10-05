@@ -27,7 +27,7 @@ Feature: Autoconnect
       | Contact1  | Contact2  | ContactPhone     | Contact2Phone    | Name      |
       | user1Name | user2Name | user1PhoneNumber | user2PhoneNumber | user3Name |
 
-  @C202304 @regression @addressbookStart
+  @torun @C202304 @regression @addressbookStart
   Scenario Outline: Verify autoconnect users by direct match phone numbers - delayed
     Given There are 3 users where <Name> is me
     Given I quit Wire
@@ -149,11 +149,12 @@ Feature: Autoconnect
     Given I sign in using my email or phone number
     Given I wait until <Contact> exists in backend search results
     When I open search UI
-    And I click clear button
+    And I accept alert
+    And I tap X button in People Picker input field
     And I tap on contact name <Contact>
     And I open conversation details
     Then I verify username <Contact> on Other User Profile page is displayed
-    Then I verify the previously remembered user name from Address Book is displayed on Other User Profile page
+    And I verify the previously remembered user name from Address Book is displayed on Other User Profile page
 
     Examples:
       | Name      | Contact   | ContactPhone     | NewName |
