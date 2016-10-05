@@ -523,7 +523,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Message1 | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | like me  | edited        |
 
-  @C226444 @like @staging
+  @C226444 @like @regression
   Scenario Outline: Verify I can see likers count instead of names (ex. 5 people)
     Given There are 6 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
