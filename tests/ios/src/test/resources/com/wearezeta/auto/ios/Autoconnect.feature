@@ -27,7 +27,7 @@ Feature: Autoconnect
       | Contact1  | Contact2  | ContactPhone     | Contact2Phone    | Name      |
       | user1Name | user2Name | user1PhoneNumber | user2PhoneNumber | user3Name |
 
-  @torun @C202304 @regression @addressbookStart
+  @C202304 @regression @addressbookStart
   Scenario Outline: Verify autoconnect users by direct match phone numbers - delayed
     Given There are 3 users where <Name> is me
     Given I quit Wire
@@ -36,7 +36,6 @@ Feature: Autoconnect
     Given I delete all contacts from Address Book
     Given I add name <Contact1> and phone <ContactPhone> to Address Book
     Given I add name <Contact2> and phone <Contact2Phone> to Address Book
-    And I wait for 10 seconds
     Given I relaunch Wire
     Given I sign in using my email or phone number
     And I wait until <Contact1> exists in backend search results
