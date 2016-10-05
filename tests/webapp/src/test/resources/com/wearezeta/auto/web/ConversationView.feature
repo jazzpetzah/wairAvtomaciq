@@ -518,8 +518,6 @@ And I wait for 60 seconds
     And I do not see like button in context menu
     And I do not see edit button in context menu
     And I see delete for me button in context menu
-    # check editing through error up
-    And I press Up Arrow to edit message
     #general actions in group
     And I verify that conversation input and buttons are not visible
     When I click People button in group conversation
