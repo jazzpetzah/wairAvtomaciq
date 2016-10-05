@@ -482,7 +482,7 @@ And I wait for 60 seconds
       | Login      | Password      | Name      | Contact  | ContactEmail                  | ContactPassword | File1          | File2              |
       | user1Email | user1Password | user1Name | 928d0420 | smoketester+928d0420@wire.com | aqa123456!      | over8000ch.txt | lessThan8000ch.txt |
 
-  @C221139 @staging
+  @C221139 @regression
   Scenario Outline: Verify after user was removed from group he cannot do some actions
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
