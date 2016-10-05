@@ -298,11 +298,12 @@ Feature: Search
     Given I wait until <Contact1> exists in backend search results
     When I open Search UI
     And I type user name "<Contact1>" in search field
+    And I wait for 2 seconds
     And I tap on user name found on People picker page <Contact1>
     And I tap on Search input on People picker page
     And I type user name "<Contact2>" in search field
+    And I wait for 2 seconds
     And I tap on user name found on People picker page <Contact2>
-    And I see Create Conversation action button on People Picker page
     And I tap Create Conversation action button on People Picker page
     # Workaround for issue AN-4011 with following two stpes
     And I tap conversation name from top toolbar
