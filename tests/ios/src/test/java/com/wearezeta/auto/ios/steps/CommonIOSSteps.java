@@ -143,7 +143,7 @@ public class CommonIOSSteps {
                 "--disable-autocorrection",
                 // https://wearezeta.atlassian.net/browse/ZIOS-5259
                 "-AnalyticsUserDefaultsDisabledKey", "0"
-                // ,"--debug-log-network"
+                ,"--debug-log-network"
         ));
 
         if (additionalCaps.isPresent()) {
