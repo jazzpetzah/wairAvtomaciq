@@ -54,7 +54,7 @@ Feature: Rich Media
     And I tap the conversation <Contact>
     And I tap on text input
     When I type the message "<SoundCloudLink>" in the conversation view
-    And I send the typed message in the conversation view
+    And I send the typed message by cursor Send button in the conversation view
     And I scroll to the bottom of the conversation view
     And I tap Play button in the conversation view
     And I swipe right to show the conversations list
@@ -79,7 +79,7 @@ Feature: Rich Media
     And I tap the conversation <Contact>
     And I tap on text input
     When I type the message "<SoundCloudLink>" in the conversation view
-    And I send the typed message in the conversation view
+    And I send the typed message by cursor Send button in the conversation view
     And I scroll to the bottom of the conversation view
     And I tap Play button in the conversation view
     Then I see Pause button next to the conversation name <Contact>
@@ -101,10 +101,9 @@ Feature: Rich Media
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
     When I tap on text input
-    Then I do not see Giphy button in the conversation view
-    When I type the message "<Message>" in the conversation view
-    Then I see Giphy button in the conversation view
-    When I tap Giphy button in the conversation view
+    And I type the message "<Message>" in the conversation view
+    And I tap Gif button from cursor toolbar
+    And I select a random gif from the grid preview
     Then I see Giphy preview page
     When I tap Send button on the Giphy preview page
     Then I see the conversation view
@@ -126,10 +125,9 @@ Feature: Rich Media
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
     When I tap on text input
-    Then I do not see Giphy button in the conversation view
-    When I type the message "<Message>" in the conversation view
-    Then I see Giphy button in the conversation view
-    When I tap Giphy button in the conversation view
+    And I type the message "<Message>" in the conversation view
+    And I tap Gif button from cursor toolbar
+    And I select a random gif from the grid preview
     Then I see Giphy preview page
     When I tap Send button on the Giphy preview page
     Then I see the conversation view
@@ -154,7 +152,7 @@ Feature: Rich Media
     And I tap the conversation <Contact>
     And I tap on text input
     When I type the message "<SoundCloudLink>" in the conversation view
-    And I send the typed message in the conversation view
+    And I send the typed message by cursor Send button in the conversation view
     And I scroll to the bottom of the conversation view
     And I tap Play button in the conversation view
     And I remember the state of media button in the conversation view

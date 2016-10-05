@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.android.pages.SketchPage;
 import com.wearezeta.auto.android_tablet.pages.TabletSketchPage;
 
 import cucumber.api.java.en.And;
@@ -16,14 +17,20 @@ public class SketchPageSteps {
     /**
      * Draw a random sketch image
      *
-     * @param colorsCount the count of colors used while drawing (not more than 9)
+     * @param numColors the count of colors used while drawing (not more than 9)
      * @throws Exception
      * @step. ^I draw a sketch with (\\d+) colors? on [Ss]ketch page$
      */
     @When("^I draw a sketch with (\\d+) colors? on [Ss]ketch page$")
-    public void IDrawSketch(int colorsCount) throws Exception {
-        for (int i = 0; i < colorsCount; i++) {
-            getSketchPage().setColor(i + 1);
+    public void IDrawSketch(int numColors) throws Exception {
+        // Should skip first emoji selection.
+        if (numColors >= SketchPage.SketchColor.values().length) {
+            throw new IllegalStateException(String.format("The number colors should be less than %d",
+                    SketchPage.SketchColor.values().length));
+        }
+
+        for (int i = 1; i <= numColors; i++) {
+            getSketchPage().setColor(SketchPage.SketchColor.values()[i]);
             getSketchPage().drawRandomLines(1);
         }
     }

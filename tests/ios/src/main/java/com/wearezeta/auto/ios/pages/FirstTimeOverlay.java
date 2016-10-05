@@ -17,18 +17,11 @@ public class FirstTimeOverlay extends IOSPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameOKButton);
+        return isElementDisplayed(nameOKButton);
     }
 
     public boolean waitUntilInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameOKButton);
-    }
-
-    public void acceptIfVisible(int timeoutSeconds) throws Exception {
-        final Optional<WebElement> gotItButton = getElementIfDisplayed(nameOKButton, timeoutSeconds);
-        if (gotItButton.isPresent()) {
-            gotItButton.get().click();
-        }
     }
 
     public void accept() throws Exception {

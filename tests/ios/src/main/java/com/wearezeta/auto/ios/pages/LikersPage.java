@@ -12,7 +12,7 @@ import java.util.function.Function;
 public class LikersPage extends IOSPage {
 
     private static final Function<String, String> xpathStrContactAvatarByName = name ->
-            String.format("//UIACollectionCell[./UIAStaticText[@name='%s']]", name);
+            String.format("//XCUIElementTypeCell[.//XCUIElementTypeStaticText[@name='%s']]", name);
 
     private static final By nameCloseButton = MobileBy.AccessibilityId("BackButton");
 
@@ -27,7 +27,7 @@ public class LikersPage extends IOSPage {
 
     public boolean isLikerVisible(String name) throws Exception {
         final By locator = By.xpath(xpathStrContactAvatarByName.apply(name));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public void tapCloseButton() throws Exception {
@@ -35,11 +35,11 @@ public class LikersPage extends IOSPage {
     }
 
     public boolean likersPageIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameLikersPageLabel);
+        return isElementDisplayed(nameLikersPageLabel);
     }
 
     public boolean isLikerByPositionVisible(String name, int position) throws Exception {
         final By locator = By.xpath(xpathStrLikerByNameAndIndex.apply(position, name));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 }

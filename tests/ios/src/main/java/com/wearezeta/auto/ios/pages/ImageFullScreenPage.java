@@ -18,14 +18,14 @@ public class ImageFullScreenPage extends IOSPage {
     private static final By nameFullScreenCloseButton = MobileBy.AccessibilityId("fullScreenCloseButton");
 
     private static final By xpathFullScreenImage =
-            By.xpath("//UIAScrollView[@name='fullScreenPage']/UIAImage[@visible='true']");
+            By.xpath("//XCUIElementTypeScrollView[@name='fullScreenPage']/XCUIElementTypeImage");
 
     public ImageFullScreenPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
     public boolean isImageFullScreenShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameImageFullScreenPage);
+        return isElementDisplayed(nameImageFullScreenPage);
     }
 
     public void tapCloseButton() throws Exception {

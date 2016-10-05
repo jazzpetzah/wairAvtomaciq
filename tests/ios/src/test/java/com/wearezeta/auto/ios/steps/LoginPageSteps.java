@@ -69,10 +69,9 @@ public class LoginPageSteps {
         getLoginPage().setPassword(password);
         getLoginPage().tapLoginButton();
         getLoginPage().waitForLoginToFinish();
-        getLoginPage().acceptAlertIfVisible(5);
-        getFirstTimeOverlayPage().acceptIfVisible(2);
-        getLoginPage().acceptAlertIfVisible(5);
-        getLoginPage().dismissSettingsWarningIfVisible(5);
+        getLoginPage().acceptAlert();
+        getFirstTimeOverlayPage().accept();
+        getLoginPage().dismissSettingsWarning();
     }
 
     private void phoneLoginSequence(final PhoneNumber number) throws Exception {
@@ -81,10 +80,9 @@ public class LoginPageSteps {
         getRegistrationPage().inputPhoneNumber(number);
         getLoginPage().inputLoginCode(number);
         getLoginPage().waitForLoginToFinish();
-        getLoginPage().acceptAlertIfVisible(5);
-        getFirstTimeOverlayPage().acceptIfVisible(2);
-        getLoginPage().acceptAlertIfVisible(5);
-        getLoginPage().dismissSettingsWarningIfVisible(5);
+        getLoginPage().acceptAlert();
+        getFirstTimeOverlayPage().accept();
+        getLoginPage().dismissSettingsWarning();
     }
 
     /**
@@ -150,11 +148,12 @@ public class LoginPageSteps {
      * Verify set email/password suggesstion page is shown
      *
      * @throws Exception
-     * @step. ^I see set email/password suggesstion page$
+     * @step. ^I see set email/password suggestion page$
      */
-    @When("^I see set email/password suggesstion page$")
+    @When("^I see set email/password suggestion page$")
     public void ISeeSetEmailPassSuggestionPage() throws Exception {
-        Assert.assertTrue(getLoginPage().isSetEmailPasswordSuggestionVisible());
+        Assert.assertTrue("Email/password suggestion page is not visible",
+                getLoginPage().isSetEmailPasswordSuggestionVisible());
     }
 
     private static final int BY_PHONE_NUMBER_LOGIN_PROBABILITY = 25;
@@ -233,9 +232,9 @@ public class LoginPageSteps {
      *
      * @param password password string
      * @throws IOException
-     * @step. I have entered password (.*)
+     * @step. ^I have entered password (.*)
      */
-    @When("I have entered password (.*)")
+    @When("^I have entered password (.*)")
     public void WhenIHaveEnteredPassword(String password) throws Exception {
         try {
             password = usrMgr.findUserByPasswordAlias(password).getPassword();
@@ -350,12 +349,9 @@ public class LoginPageSteps {
         getLoginPage().tapForgotPasswordButton();
     }
 
-    /**
-     * @throws Throwable
-     */
-    @When("^I click Not Now to not add phone number$")
-    public void IClickNotNowToNotAddPhoneNumber() throws Throwable {
-        getLoginPage().clickPhoneNotNow();
+    @When("^I tap Not Now to not add phone number$")
+    public void ITapNotNowToNotAddPhoneNumber() throws Exception {
+        getLoginPage().tapPhoneNotNow();
         getLoginPage().waitForLoginToFinish();
     }
 

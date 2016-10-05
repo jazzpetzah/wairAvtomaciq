@@ -10,10 +10,11 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class OtherUserOnPendingProfilePage extends IOSPage {
 
-    private static final By xpathOtherProfileCancelRequestButton = By.xpath("//UIAButton[@label='CANCEL REQUEST']");
+    private static final By xpathOtherProfileCancelRequestButton =
+            By.xpath("//XCUIElementTypeButton[@label='CANCEL REQUEST']");
 
     private static final By xpathCancelRequestYesButton = By.xpath(
-            "//UIAStaticText[@name='Cancel Request?']/following-sibling::UIAButton[@name='YES']");
+            "//XCUIElementTypeStaticText[@name='Cancel Request?']/following::XCUIElementTypeButton[@name='YES']");
 
     private static final By nameRightActionButton = MobileBy.AccessibilityId("OtherUserMetaControllerRightButton");
 
@@ -28,11 +29,11 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
     }
 
     public boolean isClosePageButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameOtherProfilePageCloseButton);
+        return isElementDisplayed(nameOtherProfilePageCloseButton);
     }
 
     public boolean isCancelRequestButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOtherProfileCancelRequestButton);
+        return isElementDisplayed(xpathOtherProfileCancelRequestButton);
     }
 
     public void tapCancelRequestButton() throws Exception {
@@ -48,11 +49,11 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
     }
 
     public boolean isUserNameDisplayed(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), MobileBy.AccessibilityId(name), 10);
+        return isElementDisplayed(MobileBy.AccessibilityId(name), 10);
     }
 
     public boolean isRemoveFromGroupConversationVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameRightActionButton);
+        return isElementDisplayed(nameRightActionButton);
     }
 
     public void tapConnectButton() throws Exception {
@@ -61,5 +62,9 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 
     public void confirmConnect() throws Exception {
         getElement(nameConnectConfirmButton).click();
+    }
+
+    public void tapCloseButton() throws Exception {
+        getElement(nameOtherProfilePageCloseButton).click();
     }
 }

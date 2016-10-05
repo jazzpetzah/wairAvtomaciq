@@ -97,16 +97,44 @@ public class SEBridge {
         getOrAddRandomDevice(userFrom).sendPing(convId);
     }
 
+    public void typing(ClientUser userFrom, String convId) throws Exception {
+        getOrAddRandomDevice(userFrom).typing(convId);
+    }
+
     public void clearConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
         getOrAddDevice(userFrom, deviceName).clearConversation(convId);
+    }
+
+    public void muteConversation(ClientUser userFrom, String convId) throws Exception {
+        getOrAddRandomDevice(userFrom).muteConversation(convId);
     }
 
     public void muteConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
         getOrAddDevice(userFrom, deviceName).muteConversation(convId);
     }
 
+    public void unmuteConversation(ClientUser userFrom, String convId) throws Exception {
+        getOrAddRandomDevice(userFrom).unmuteConversation(convId);
+    }
+
     public void unmuteConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
         getOrAddDevice(userFrom, deviceName).unmuteConversation(convId);
+    }
+
+    public void archiveConversation(ClientUser userFrom, String convId) throws Exception {
+        getOrAddRandomDevice(userFrom).archiveConversation(convId);
+    }
+
+    public void archiveConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).archiveConversation(convId);
+    }
+
+    public void unarchiveConversation(ClientUser userFrom, String convId) throws Exception {
+        getOrAddRandomDevice(userFrom).unarchiveConversation(convId);
+    }
+
+    public void unarchiveConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).unarchiveConversation(convId);
     }
 
     public void sendFile(ClientUser userFrom, String convId, String path, String mime, String deviceName)
@@ -152,7 +180,7 @@ public class SEBridge {
 
     public void updateMessage(ClientUser userFrom, MessageId messageId, String newMessage, String deviceName)
             throws Exception {
-        if(deviceName == null) {
+        if (deviceName == null) {
             updateMessage(userFrom, messageId, newMessage);
         } else {
             getOrAddDevice(userFrom, deviceName).updateMessage(messageId, newMessage);

@@ -23,7 +23,7 @@ Feature: Notifications
       | Name      | Contact   | Message |
       | user1Name | user2Name | hello   |
 
-  @C131187 @staging
+  @C131187 @regression
   Scenario Outline: (CM-1071) Verify push notifications after receiving any type of message
     Given I am on Android with Google Location Service
     Given I am on Android 4.4 or better
@@ -85,7 +85,30 @@ Feature: Notifications
       | Name      | Contact   | Message |
       | user1Name | user2Name | hello   |
 
-  @C226044 @staging
+  @C248344 @regression @GCMToken
+  Scenario Outline: Verify unregister push token at backend and see if client can resume getting notifications by itself
+    Given I am on Android with GCM Service
+    Given I am on Android 4.4 or better
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I minimize the application
+    And I unregister GCM push token in 10 seconds
+    And User <Contact> sends encrypted message "<Message>" to user Myself
+    Then I do not see the message "<Message>" in push notifications list
+    When I restore the application
+    And I wait for 2 seconds
+    And I minimize the application
+    And User <Contact> sends encrypted message "<Message2>" to user Myself
+    Then I see the message "<Message2>" in push notifications list
+
+    Examples:
+      | Name      | Contact   | Message | Message2 |
+      | user1Name | user2Name | Yo      | Nop      |
+
+  @C226044 @regression
   Scenario Outline: When somebody likes my message - I receive notification (app in background)
     Given I am on Android 4.4 or better
     Given There are 2 users where <Name> is me
@@ -95,12 +118,33 @@ Feature: Notifications
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
-    When I type the message "<Message>" and send it
+    When I type the message "<Message>" and send it by cursor Send button
     And I minimize the application
     And User <Contact> likes the recent message from user Myself via device <ContactDevice>
-# TODO: No spec for exact notification message for Android
     Then I see the message "<Notification>" in push notifications list
 
     Examples:
       | Name      | Contact   | Message | ContactDevice | Notification |
-      | user1Name | user2Name | Hi      | Device1       | like message |
+      | user1Name | user2Name | Hi      | Device1       | your message |
+
+  @C255424 @regression @rc
+  Scenario Outline: Verify notifications list is cleaned once I open Wire app
+    Given I am on Android 4.4 or better
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <ContactDevice>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When I see Conversations list with name <Contact>
+    And I minimize the application
+    And User <Contact> sends encrypted message <Message> to user Myself
+    Then I see the message "<Message>" in push notifications list
+    When I restore the application
+    And I wait for 2 seconds
+    Then I do not see the message "<Message>" in push notifications list
+
+    Examples:
+      | Name      | Contact   | Message | ContactDevice |
+      | user1Name | user2Name | hello   | Device1       |

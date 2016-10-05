@@ -7,7 +7,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I swipe right on a <Contact>
+    When I swipe right on iPad the conversation named <Contact>
     And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
@@ -25,7 +25,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    And I swipe right on a <GroupChatName>
+    And I swipe right on iPad the conversation named <GroupChatName>
     And I tap Archive action button
     Then I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
@@ -58,6 +58,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search UI
+    And I accept alert
     Then I see People picker page
 
     Examples:
@@ -88,13 +89,15 @@ Feature: Conversation List
     Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see conversations list
     Given User <Contact> sends <Number> encrypted messages to user Myself
     Given User <Contact3> sends <Number> encrypted messages to user Myself
+    Given I see conversations list
     Given I see first item in contact list named <Contact3>
-    Given User <Contact2> securely pings conversation <Name>
+    When User <Contact2> securely pings conversation <Name>
+    And I wait for 5 seconds
     Then I see first item in contact list named <Contact2>
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    When User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    And I wait for 5 seconds
     Then I see first item in contact list named <Contact>
 
     Examples:
@@ -107,12 +110,11 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    And I do not see Pending request link in conversations list
-    When <Contact> sent connection request to Me
-    Then I see Pending request link in conversations list
+    When I do not see Pending request link in conversations list
+    And <Contact> sent connection request to Me
     # Workaround for ZIOS-6338
-    When I click on Pending request link in conversations list
-    Then I see Hello connect message from user <Contact> on Pending request page
+    And I tap Incoming Pending Requests item in conversations list
+    Then I see Hello connect message from user <Contact> on Incoming Pending Requests page
 
     Examples:
       | Name      | Contact   |
@@ -173,7 +175,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I swipe right on a <GroupChatName>
+    When I swipe right on iPad the conversation named <GroupChatName>
     Then I see conversation <GroupChatName> name in action menu in Contact List
     And I see Mute action button
     And I see Archive action button
@@ -192,7 +194,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I swipe right on a <Contact>
+    When I swipe right on iPad the conversation named <Contact>
     Then I see conversation <Contact> name in action menu in Contact List
     And I see Mute action button
     And I see Archive action button
@@ -212,8 +214,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     When I see conversations list
-    Then I see conversation <Contact> is selected in list
-    And I see the conversation with <Contact>
+    Then I see the conversation with <Contact>
 
     Examples:
       | Name      | Contact   |
@@ -228,7 +229,7 @@ Feature: Conversation List
     Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User Myself sends 1 encrypted message to user <Contact1>
-    When I swipe right on a <Contact1>
+    When I swipe right on iPad the conversation named <Contact1>
     And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <Contact1> in conversations list
@@ -245,11 +246,11 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I swipe right on a <Contact1>
+    When I swipe right on iPad the conversation named <Contact1>
     And I tap Archive action button
     And I do not see conversation <Contact1> in conversations list
     And I open archived conversations
-    And I swipe right on a <Contact1>
+    And I swipe right on iPad the conversation named <Contact1>
     And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <Contact1> in conversations list
@@ -271,11 +272,12 @@ Feature: Conversation List
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User Myself sends encrypted image <Image> to group conversation <GroupChatName>
-    When I swipe right on a <GroupChatName>
+    When I swipe right on iPad the conversation named <GroupChatName>
     And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
     When I open search UI
+    And I accept alert
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     And I tap on conversation <GroupChatName> in search result
@@ -294,7 +296,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I swipe right on a <Contact1>
+    When I swipe right on iPad the conversation named <Contact1>
     And I tap Block action button
     And I tap Cancel action button
     Then I see conversation action menu
@@ -310,9 +312,9 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I swipe right on a <Contact>
+    When I swipe right on iPad the conversation named <Contact>
     And I tap Mute action button
-    When I swipe right on a <Contact>
+    When I swipe right on iPad the conversation named <Contact>
     And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     Given User <Contact> sends 1 encrypted message to user Myself
@@ -337,14 +339,16 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
-    When I swipe right on a <GroupChatName>
+    When I swipe right on iPad the conversation named <GroupChatName>
     And I tap Delete action button
     And I select Also Leave option on Delete conversation confirmation
     And I confirm delete conversation content
     And I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
-    When I click close button to dismiss people view
+    When I tap X button in People Picker input field
     And I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
     Then I see conversation <GroupChatName> in conversations list
@@ -362,7 +366,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I swipe right on a <GroupChatName>
+    When I swipe right on iPad the conversation named <GroupChatName>
     And I see Archive action button
     And I see Delete action button
     And I see Cancel action button
@@ -382,13 +386,15 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I swipe right on a <Contact>
+    When I swipe right on iPad the conversation named <Contact>
     And I tap Block action button
     And I confirm blocking alert
     Then I do not see conversation <Contact> in conversations list
     And I do not see Archive button at the bottom of conversations list
     And I wait until <Contact> exists in backend search results
     And I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
 
@@ -422,10 +428,10 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given I see Conversations hint text
     When I tap on Conversations hint text
+    And I accept alert
     Then I see People Picker page
-    When I click close button to dismiss people view
+    When I tap X button in People Picker input field
     Then I see conversations list
     And I do not see Conversations hint text
 

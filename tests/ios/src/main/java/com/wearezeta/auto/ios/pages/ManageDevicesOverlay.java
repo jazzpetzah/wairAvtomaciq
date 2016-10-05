@@ -14,11 +14,11 @@ public class ManageDevicesOverlay extends IOSPage{
         super(lazyDriver);
     }
 
-    public boolean waitUntiVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameManageDevicesButton);
+    public boolean waitUntilVisible() throws Exception {
+        return isElementDisplayed(nameManageDevicesButton);
     }
 
-    public boolean waitUntiInvisible() throws Exception {
+    public boolean waitUntilInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameManageDevicesButton);
     }
 }

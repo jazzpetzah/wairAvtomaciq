@@ -259,7 +259,7 @@ Feature: VideoCalling
       | user1Name | user2Name | chrome      | 60      |
 
   @C49973 @calling_advanced
-  Scenario Outline: Verify you cannot make audio call to user A while he makes video call
+  Scenario Outline: (AN-4545) Verify you cannot make audio call to user A while he makes video call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given <Contact> starts instance using <CallBackend>

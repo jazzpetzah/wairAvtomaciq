@@ -30,7 +30,7 @@ Feature: Calling
     And <Contact> stops calling me
     And I tap on contact name <Contact>
     Then I see missed call from contact <Contact>
-    And I click missed call button to call contact <Contact>
+    And I tap missed call button to call contact <Contact>
     And I see Calling overlay
 
     Examples:
@@ -204,7 +204,6 @@ Feature: Calling
     And <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
-    # Give it some time to finish initialization
     And I wait for 5 seconds
     And <Contact> stops calling me
     And I do not see Calling overlay
@@ -265,12 +264,16 @@ Feature: Calling
     Given I remember the state of <GroupChatName> conversation item
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
+    # Wait for the call to be established
+    And I wait for 5 seconds
     And I see <NumberOfAvatars> avatars on the Calling overlay
     Then I tap Leave button on Calling overlay
     And I do not see Calling overlay
     Then I see the state of <GroupChatName> conversation item is changed
     And I wait for 20 seconds
     And I tap Audio Call button
+    # Wait for the call to be established
+    And I wait for 5 seconds
     Then I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:
@@ -291,6 +294,8 @@ Feature: Calling
     And <Contact1> calls <GroupChatName>
     Then I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
+    # Wait for the call to be established
+    And I wait for 5 seconds
     And I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:

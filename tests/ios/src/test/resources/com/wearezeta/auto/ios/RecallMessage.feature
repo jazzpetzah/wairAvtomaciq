@@ -72,6 +72,8 @@ Feature: Recall Message
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
+    And I accept alert
+    And I accept alert
     And I select the first picture from Keyboard Gallery
     And I tap Confirm button on Picture preview page
     And I see 1 photo in the conversation view
@@ -112,6 +114,8 @@ Feature: Recall Message
     And User <Contact2> sees the recent message from group conversation <Group> via device <Contact2Device> is changed in <Wait2> seconds
     And User Myself sees the recent message from group conversation <Group> via device <MySecondDevice> is changed in <Wait2> seconds
     When User Myself send 1 encrypted message using device <MySecondDevice> to group conversation <Group>
+    # Wait until the message is delivered
+    And I wait for 5 seconds
     Then I see 1 default message in the conversation view
     When User <Contact1> remembers the recent message from group conversation <Group> via device <Contact1Device>
     And User <Contact2> remembers the recent message from group conversation <Group> via device <Contact2Device>
@@ -157,8 +161,8 @@ Feature: Recall Message
     Given Myself is connected to <Contact1>
     Given User <Contact1> adds new device <Contact1Device>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to user Myself
+    Given I see conversations list
     When I tap on contact name <Contact1>
     Then I see 1 default message in the conversation view
     When User <Contact1> deletes the recent message everywhere from user <Name> via device <Contact1Device>
@@ -221,6 +225,8 @@ Feature: Recall Message
     And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in <Wait2> seconds
     #Vimeo
     When User <Contact> sends encrypted message "<VimeoLink>" to user Myself
+    # Wait for the preview to be generated
+    And I wait for 5 seconds
     Then I see media container in the conversation view
     And User <Contact> remembers the recent message from user Myself via device <HisDevice>
     And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
@@ -288,11 +294,9 @@ Feature: Recall Message
     Given I see conversations list
     When I tap on contact name <Contact>
     Then I see location map container in the conversation view
-    And I see the default received Share Location address in the conversation view
     And User <Contact> remembers the recent message from user Myself via device <DeviceName>
     When User <Contact> deletes the recent message everywhere from user <Name> via device <DeviceName>
     Then I do not see location map container in the conversation view
-    And I do not see the default received Share Location address in the conversation view
     And User <Contact> sees the recent message from user Myself via device <DeviceName> is changed in 15 seconds
 
     Examples:
@@ -307,7 +311,8 @@ Feature: Recall Message
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I record <Duration> seconds long audio message and send it using swipe up gesture
+    And I long tap Audio Message button from input tools
+    And I tap Send record control button
     Then I see audio message container in the conversation view
     And User <Contact> remembers the recent message from user Myself via device <DeviceName>
     When I long tap on audio message placeholder in conversation view
@@ -317,17 +322,18 @@ Feature: Recall Message
     And User <Contact> sees the recent message from user Myself via device <DeviceName> is changed in 15 seconds
 
     Examples:
-      | Name      | Contact   | DeviceName | Duration |
-      | user1Name | user2Name | device1    | 5        |
+      | Name      | Contact   | DeviceName |
+      | user1Name | user2Name | device1    |
 
   @C202342 @regression @fastLogin
   Scenario Outline: Verify delete for everyone system message doesn't produce an unread dot
     Given There are 2 users where <Name> is me
+    Given User Myself removes his avatar picture
     Given Myself is connected to <Contact1>
     Given User <Contact1> adds new device <DeviceName>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to user Myself
+    Given I see conversations list
     When I remember the state of <Contact1> conversation item
     And I tap on contact name <Contact1>
     And I navigate back to conversations list

@@ -9,8 +9,9 @@ Feature: Share Location
     Given I see conversations list
     When I tap on contact name <Contact>
     Then I see location map container in the conversation view
-    And I see the default received Share Location address in the conversation view
     When I tap on location map in conversation view
+    # Wait until the map is loaded
+    And I wait for 9 seconds
     Then I see map application is opened
 
     Examples:
@@ -26,12 +27,10 @@ Feature: Share Location
     Given I see conversations list
     When I tap on contact name <Contact>
     Then I see location map container in the conversation view
-    And I see the default received Share Location address in the conversation view
     And I long tap on location map in conversation view
     And I tap on Delete badge item
     And I select Delete for Me item from Delete menu
     Then I do not see location map container in the conversation view
-    Then I do not see the default received Share Location address in the conversation view
 
     Examples:
       | Name      | Contact   | DeviceName |
@@ -45,6 +44,7 @@ Feature: Share Location
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Share Location button from input tools
+    And I accept alert
     # Small delay waiting location detection animation to finish
     And I wait for 5 seconds
     And I tap Send location button from map view
@@ -65,6 +65,7 @@ Feature: Share Location
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I tap Share Location button from input tools
+    And I accept alert
     # Small delay waiting location detection animation to finish
     And I wait for 5 seconds
     And I tap Send location button from map view
@@ -93,7 +94,7 @@ Feature: Share Location
       | Name      | Contact   | DeviceName | ExpectedText |
       | user1Name | user2Name | device1    | Wirestan     |
 
-  @C165116 @regression @noAcceptAlert @fastLogin
+  @C165116 @regression @fastLogin
   Scenario Outline: Verify permissions are asked first time on the map opening
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>

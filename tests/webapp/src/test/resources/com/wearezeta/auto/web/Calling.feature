@@ -901,7 +901,7 @@ Feature: Calling
     And <Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>,<Contact10> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
 # waiting for join call controls
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I see the join call controls for conversation <ChatName>
     When I join call of conversation <ChatName>
     And I wait for 1 seconds
@@ -919,7 +919,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Contact8  | Contact9   | Contact10  | ChatName              | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | GroupCallConversation | chrome      | chrome      | 30      |
 
-  @C1813 @regression @calling @group
+  @C1813 @regression @calling @group @localytics
   Scenario Outline: Verify initiating group call
     Given My browser supports calling
     Given There are 5 users where <Name> is me
@@ -941,11 +941,12 @@ Feature: Calling
     And <Contact1>,<Contact2>,<Contact3>,<Contact4> verify that all audio flows have greater than 0 bytes
     When I hang up call with conversation <ChatName>
     Then I see the join call controls for conversation <ChatName>
+    And I see localytics event <Event> with attributes <Attributes>
 
     Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 20      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | firefox     | 20      |
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout | Event                        | Attributes                                                                     |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 20      | media.completed_media_action | {\"action\":\"audio_call\",\"conversation_type\":\"group\",\"with_bot\":false} |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | firefox     | 20      | media.completed_media_action | {\"action\":\"audio_call\",\"conversation_type\":\"group\",\"with_bot\":false} |
 
   @C1800 @regression @calling @group
   Scenario Outline: Verify ignoring group call

@@ -8,11 +8,15 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 
 public class DeviceDetailsPage extends IOSPage {
-    private final static By nameVerifySwitcher = By.xpath("//UIASwitch");
+    private final static By xpathVerifySwitcher = By.xpath("//XCUIElementTypeSwitch");
 
-    private static final By xpathBackButton = By.xpath(xpathStrMainWindow + "/UIAButton[4]");
-    
-    private static final By xpathKeyFingerprintValue = By.xpath("//UIATableCell[@name='Key Fingerprint']/UIAStaticText[2]");
+    private static final By xpathBackButton =
+            By.xpath("//XCUIElementTypeButton[@name='SHOW MY DEVICE FINGERPRINT']" +
+                    "/preceding-sibling::XCUIElementTypeButton[1]");
+
+    private static final By xpathKeyFingerprintValue =
+            By.xpath("//XCUIElementTypeStaticText[@name='Key Fingerprint']" +
+                    "/following-sibling::XCUIElementTypeStaticText[1]");
 
     private static final By nameRemoveDevice = MobileBy.AccessibilityId("Remove Device");
 
@@ -21,17 +25,17 @@ public class DeviceDetailsPage extends IOSPage {
     }
 
     public void tapVerifySwitcher() throws Exception {
-        getElement(nameVerifySwitcher).click();
+        getElement(xpathVerifySwitcher).click();
     }
 
     public void tapBackButton() throws Exception {
         getElement(xpathBackButton).click();
     }
-    
+
     public String getFingerprintValue() throws Exception {
         return getElement(xpathKeyFingerprintValue).getAttribute("value");
     }
-    
+
     public boolean verifyFingerPrintNotEmpty() throws Exception {
         return !getFingerprintValue().isEmpty();
     }

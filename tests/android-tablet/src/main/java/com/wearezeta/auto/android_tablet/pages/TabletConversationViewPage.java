@@ -58,8 +58,17 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getConversationViewPage().typeMessage(message);
     }
 
-    public void sendMessage() throws Exception {
-        getDriver().tapSendButton();
+    public void sendMessage(String sendFrom) throws Exception {
+        switch (sendFrom.toLowerCase()) {
+            case "keyboard":
+                getDriver().tapSendButton();
+                break;
+            case "cursor":
+                getElement(ConversationViewPage.idCursorSendButton).click();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify send button type '%s'", sendFrom));
+        }
     }
 
     public boolean waitUntilMessageIsVisible(String expectedMessage) throws Exception {
@@ -150,18 +159,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
     public void tapClosePicturePreviewButton() throws Exception {
         getElement(idCloseImageBtn).click();
-    }
-
-    public boolean waitUntilGiphyButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idGiphyPreviewButton);
-    }
-
-    public boolean waitUntilGiphyButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idGiphyPreviewButton);
-    }
-
-    public void tapGiphyButton() throws Exception {
-        getElement(idGiphyPreviewButton).click();
     }
 
     public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries) throws Exception {

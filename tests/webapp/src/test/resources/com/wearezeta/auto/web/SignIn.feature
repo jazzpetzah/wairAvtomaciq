@@ -114,7 +114,7 @@ Feature: Sign In
       | Email      | Password      |
       | user1Email | user1Password |
 
-  @C246200 @staging
+  @C246200 @regression
   Scenario Outline: Verify you can sign in by phone number with already set password and temporary device
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
@@ -133,7 +133,7 @@ Feature: Sign In
       | Name      | PhoneNumber      | Password   |
       | user1Name | user1PhoneNumber | aqa123456! |
 
-  @C246197 @staging
+  @C246197 @regression
   Scenario Outline: Verify you can sign in by phone number with already set password and permanent device
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
@@ -151,8 +151,24 @@ Feature: Sign In
       | Name      | PhoneNumber      | Password   |
       | user1Name | user1PhoneNumber | aqa123456! |
 
-  @C1788 @mute
-  Scenario Outline: Verify you see correct error message when sign in with incorrect phone number
+  @C246199 @regression
+  Scenario Outline: Verify you can sign by phone number on email signin page
+    Given There is 1 user where <Name> is me
+    Given I switch to sign in page
+    When I enter phone number "<PhoneNumber>"
+    And I enter password "<Password>"
+    And I check option to remember me
+    And I press Sign In button
+    Then I am signed in properly
+    And I see user name on self profile page <Name>
+    And I see user phone number on self profile page <PhoneNumber>
+
+    Examples: 
+      | Name      | Email      | PhoneNumber      | Password   |
+      | user1Name | user1Email | user1PhoneNumber | aqa123456! |
+
+  @C246201 @regression
+  Scenario Outline: Verify I see a proper error when I try to sign in with invalid phone number
     Given I switch to sign in page
     When I switch to phone number sign in page
     And I enter country code <CountryCode> on phone number sign in
@@ -161,10 +177,10 @@ Feature: Sign In
     Then I see invalid phone number error message saying <Error>
 
     Examples: 
-      | CountryCode | PhoneNumber | Error                |
-      | +49         | 9999999999  | Unknown Phone Number |
-      | +49         | qwerqwer    | Invalid Phone Number |
-      | +49         | !@$!@$      | Invalid Phone Number |
+      | CountryCode | PhoneNumber | Error                                  |
+      | +49         | 9999999999  | Sorry. This phone number is forbidden. |
+      | +49         | 1qwerqwer   | Invalid Phone Number                   |
+      | +49         | 1!@$!@$     | Invalid Phone Number                   |
 
   @C1789 @mute
   Scenario Outline: Verify you see correct error message when sign in with a phone number with incorrect code
@@ -180,8 +196,8 @@ Feature: Sign In
       | Name      | Error        |
       | user1Name | Invalid Code |
 
-  @C1786 @mute
-  Scenario Outline: Verify you are asked to add an email address after sign in with a phone number
+  @C246198 @regression
+  Scenario Outline: Verify you are asked to add an email address after sign in with a phone number and unset password
     Given There is 1 user where <Name> is me with phone number only
     Given I switch to sign in page
     When I switch to phone number sign in page
@@ -237,10 +253,10 @@ Feature: Sign In
     Given I switch to sign in page
     Given I open <Language> login page as if I was redirected from get.wire.com
     Then I see Registration page
-    And I verify description message is visible
-    And I verify description message is equal to <DescriptionMessage>
+    And I verify text about Wire is visible
+    And I see intro about Wire saying <TextWire>
 
     Examples:
-      | Language | DescriptionMessage                                                                                    |
+      | Language | TextWire                                                                                   |
       | english  | Simple, private & secure messenger for chat, calls, sharing pics, music, videos, GIFs and more.       |
       | german   | Ein moderner und sicherer Messenger für Unterhaltungen, Anrufe, Bilder, Musik, Videos, GIFs und mehr. |

@@ -1,7 +1,7 @@
 package com.wearezeta.auto.common.driver;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.common.process.UnixProcessHelpers;
+import com.wearezeta.auto.common.process.UnixProcessHelpers;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.net.UrlChecker;
@@ -97,7 +97,8 @@ public class AppiumServer {
                 "routined", "assetsd", "mstreamd", "healthd", "MobileCal",
                 "callservicesd", "revisiond", "touchsetupd", "calaccessd",
                 "ServerFileProvider", "mobileassetd", "IMDPersistenceAgent",
-                "itunesstored", "profiled", "passd", "carkitd", "instruments");
+                "itunesstored", "profiled", "passd", "carkitd", "instruments",
+                "xcodebuild", "XCTRunner");
         restart();
     }
 

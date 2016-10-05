@@ -186,10 +186,14 @@ public class DeleteAccountPageSteps {
 	
 	@Then("^I see error message for missing checksum$")
 	public void ISeeErrorMessageForMissingChecksum() throws Exception{
-		DeleteAccountPage deleteAccountPage = context.getPagesCollection()
-				.getPage(DeleteAccountPage.class);
-		assertFalse("Delete button is visible", deleteAccountPage.isButtonVisible());
-		assertTrue("Delete account page shows success message", deleteAccountPage.isErrorMessage());
+		DeleteAccountPage deleteAccountPage = context.getPagesCollection().getPage(DeleteAccountPage.class);
+		assertTrue("Delete account page shows no error message", deleteAccountPage.isErrorMessage());
+	}
+
+	@Then("^I do not see success message for account deleted$")
+	public void ISeeNoSuccessMessage() throws Exception{
+		DeleteAccountPage deleteAccountPage = context.getPagesCollection().getPage(DeleteAccountPage.class);
+		assertFalse("Delete account page shows success message", deleteAccountPage.isSuccess());
 	}
 }
 

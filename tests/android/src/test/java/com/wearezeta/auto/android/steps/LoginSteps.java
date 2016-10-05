@@ -2,6 +2,7 @@ package com.wearezeta.auto.android.steps;
 
 import java.util.Random;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.registration.*;
 import cucumber.api.java.en.And;
 import org.junit.Assert;
@@ -67,13 +68,15 @@ public class LoginSteps {
     }
 
     /**
-     * Do sign in using phone number
+     * Do sign in using phone number, there are 2 ways to fill up verification code
+     * 1) Type verification code direct on Wire
+     * 2) Use Web browser link
      *
      * @throws Exception
-     * @step. ^I sign in using my phone number$
+     * @step. ^I sign in using my phone number( with SMS verification)?$
      */
-    @Given("^I sign in using my phone number$")
-    public void ISignInUsingMyPhoneNumber() throws Exception {
+    @Given("^I sign in using my phone number( with SMS verification)?$")
+    public void ISignInUsingMyPhoneNumber(String verifiedBySmsURL) throws Exception {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
         assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
         getWelcomePage().clickAreaCodeSelector();
@@ -81,10 +84,18 @@ public class LoginSteps {
         getWelcomePage().inputPhoneNumber(self.getPhoneNumber());
         getWelcomePage().clickConfirm();
         final String verificationCode = BackendAPIWrappers.getLoginCodeByPhoneNumber(self.getPhoneNumber());
-        getVerificationPage().inputVerificationCode(verificationCode);
-        getVerificationPage().clickConfirm();
+        if (verifiedBySmsURL == null) {
+            getVerificationPage().inputVerificationCode(verificationCode);
+            getVerificationPage().clickConfirm();
+        } else {
+            AndroidCommonUtils.openWebsiteFromADB(String.format("http://wire.com/v/%s", verificationCode));
+        }
         Assert.assertTrue("Phone number verification code input screen is still visible",
                 getVerificationPage().waitUntilConfirmButtonDisappears());
+    }
+
+    private void ISignInUsingMyPhoneNumber() throws Exception {
+        ISignInUsingMyPhoneNumber(null);
     }
 
     private static final int PHONE_NUMBER_LOGIN_THRESHOLD = 60;

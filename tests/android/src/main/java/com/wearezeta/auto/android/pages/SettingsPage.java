@@ -92,10 +92,6 @@ public class SettingsPage extends AndroidPage {
 
     public void tapOKButtonOnPasswordConfirmationDialog() throws Exception {
         getElement(xpathOKButton).click();
-        // TODO: How to defect that element has changed his location?
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOKButton, 5)) {
-            DriverUtils.tapByCoordinatesWithPercentOffcet(getDriver(), getElement(xpathOKButton), 50, -200);
-        }
     }
 
     public void tapCurrentDevice() throws Exception {

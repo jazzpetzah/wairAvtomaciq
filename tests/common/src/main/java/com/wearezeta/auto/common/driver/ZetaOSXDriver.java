@@ -4,7 +4,6 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
 import org.openqa.selenium.*;
 import org.openqa.selenium.remote.RemoteWebElement;
 
@@ -22,6 +21,7 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.Response;
 import org.openqa.selenium.remote.SessionNotFoundException;
 import org.openqa.selenium.remote.UnreachableBrowserException;
+import org.openqa.selenium.remote.internal.JsonToWebElementConverter;
 
 public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDriver {
 
@@ -34,7 +34,7 @@ public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDrive
 	private volatile boolean isSessionLost = false;
 
 	public ZetaOSXDriver(URL remoteAddress, Capabilities desiredCapabilities) {
-		super(remoteAddress, desiredCapabilities);
+		super(remoteAddress, desiredCapabilities, JsonToWebElementConverter.class);
 	}
 
         public void setWindowLocator(By windowLocator) {
@@ -78,6 +78,11 @@ public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDrive
 	}
 
 	@Override
+	public void swipe(int i, int i1, int i2, int i3, int i4) {
+		throw new RuntimeException("Not implemented for OSX");
+	}
+
+	@Override
 	public Response execute(String driverCommand, Map<String, ?> parameters) {
 		if (this.isSessionLost()) {
 			log.warn(String.format("Driver session is dead. Skipping execution of '%s' command...", driverCommand));
@@ -108,16 +113,6 @@ public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDrive
 			this.pool = Executors.newSingleThreadExecutor();
 		}
 		return this.pool;
-	}
-
-	@Override
-	public MobileElement scrollTo(String text) {
-		throw new RuntimeException("Not implemented for OSX");
-	}
-
-	@Override
-	public MobileElement scrollToExact(String text) {
-		throw new RuntimeException("Not implemented for OSX");
 	}
 
 	protected class WireRemoteWebElement extends RemoteWebElement {

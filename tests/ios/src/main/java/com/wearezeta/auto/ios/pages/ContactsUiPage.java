@@ -7,29 +7,27 @@ import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class ContactsUiPage extends IOSPage {
 
-    private static final By xpathSearchInput = By.xpath("//UIATextView[UIAStaticText[@name='SEARCH BY NAME']]");
+    private static final By xpathSearchInput =
+            By.xpath("//XCUIElementTypeTextView[ .//XCUIElementTypeStaticText[@name='SEARCH BY NAME'] ]");
 
     private static final By nameInviteOthersButton = MobileBy.AccessibilityId("INVITE OTHERS");
 
     private static final Function<String, String> xpathStrConvoCellByName = name ->
-            String.format("//UIATableCell[@name='%s'][preceding::UIAButton[@name='ContactsViewCloseButton']]", name);
+            String.format("//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s'] ]", name);
 
     private static final Function<String, String> xpathStrOpenButtonByConvoName = name ->
-            String.format("//UIATableCell[@name='%s']" +
-                    "[preceding::UIAButton[@name='ContactsViewCloseButton']]/UIAButton[@name='OPEN']", name);
+            String.format("%s/XCUIElementTypeButton[@name='OPEN']", xpathStrConvoCellByName.apply(name));
 
     public ContactsUiPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
-        // TODO Auto-generated constructor stub
     }
 
     public boolean isSearchInputVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSearchInput);
+        return isElementDisplayed(xpathSearchInput);
     }
 
     public void inputTextToSearch(String text) throws Exception {
@@ -40,7 +38,7 @@ public class ContactsUiPage extends IOSPage {
 
     public boolean isContactPresentedInContactsList(String contact) throws Exception {
         final By locator = By.xpath(xpathStrConvoCellByName.apply(contact));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 5);
+        return isElementDisplayed(locator, 5);
     }
 
     public void tapInviteOthersButton() throws Exception {
@@ -48,10 +46,10 @@ public class ContactsUiPage extends IOSPage {
     }
 
     public boolean isInviteOthersButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInviteOthersButton);
+        return isElementDisplayed(nameInviteOthersButton);
     }
 
-    public void clickOpenButtonNextToUser(String contact) throws Exception {
+    public void tapOpenButtonNextToUser(String contact) throws Exception {
         final By locator = By.xpath(xpathStrOpenButtonByConvoName.apply(contact));
         getElement(locator).click();
     }

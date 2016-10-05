@@ -10,7 +10,6 @@ import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Assert;
@@ -27,9 +26,6 @@ public class ConversationViewPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
-    private static final String FTRANSFER_MENU_DEFAULT_PNG = "group-icon@3x.png";
-    private static final String FTRANSFER_MENU_TOO_BIG = "Big file";
 
     private ConversationViewPage getConversationViewPage() throws Exception {
         return pagesCollection.getPage(ConversationViewPage.class);
@@ -143,18 +139,41 @@ public class ConversationViewPageSteps {
         getConversationViewPage().tapKeyboardCommitButton();
     }
 
+    /**
+     * Wait until text messages are visible in the conversation
+     *
+     * @param expectedCount the expected count of messages. Should be equal or greater than zero
+     * @param isDefault     equals to null if presence of any messages are supposed to be verified
+     * @throws Exception
+     * @step. ^I see (\d+) (default )?messages? in the conversation view$"
+     */
     @Then("^I see (\\d+) (default )?messages? in the conversation view$")
     public void ThenISeeMessageInTheDialog(int expectedCount, String isDefault) throws Exception {
-        // To speed up the verification if zero messages presence should be verified
-        final int timeoutSeconds = (expectedCount == 0) ?
-                1 : Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass()));
         final Optional<String> expectedMsg = (isDefault == null) ?
                 Optional.empty() : Optional.of(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
-        final int actualCount = getConversationViewPage().getMessagesCount(expectedMsg, timeoutSeconds);
-        Assert.assertTrue(
-                String.format("The actual messages count is different " +
-                                "from the expected count: %s != %s",
-                        actualCount, expectedCount), actualCount == expectedCount);
+        if (expectedCount == 0) {
+            if (expectedMsg.isPresent()) {
+                Assert.assertTrue(
+                        String.format("There are some '%s' messages in the conversation, while zero is expected",
+                                expectedMsg.get()),
+                        getConversationViewPage().waitUntilTextMessageIsNotVisible(expectedMsg.get()));
+            } else {
+                Assert.assertTrue("There are some  messages in the conversation, while zero is expected",
+                        getConversationViewPage().waitUntilAllTextMessageAreNotVisible());
+            }
+        } else if (expectedCount >= 1) {
+            if (expectedMsg.isPresent()) {
+                Assert.assertTrue(
+                        String.format("There are some '%s' messages in the conversation, while %d is expected",
+                                expectedMsg.get(), expectedCount),
+                        getConversationViewPage().waitUntilTextMessagesAreVisible(expectedMsg.get(), expectedCount));
+            } else {
+                Assert.assertTrue(
+                        String.format("There are no messages in the conversation, while %d is expected",
+                                expectedCount),
+                        getConversationViewPage().waitUntilAnyTextMessagesAreVisible(expectedCount));
+            }
+        }
     }
 
     @Then("^I see last message in the conversation view (is|contains) expected message (.*)")
@@ -169,7 +188,7 @@ public class ConversationViewPageSteps {
         } else {
             Assert.assertTrue(
                     String.format("The last message in the conversation does not contain the expected one '%s'",
-                            msg), getConversationViewPage().isLastMessageContain(msg));
+                            msg), getConversationViewPage().isRecentMessageContain(msg));
         }
     }
 
@@ -200,23 +219,20 @@ public class ConversationViewPageSteps {
      *
      * @param isLongTap       equals to null if simple tap should be performed
      * @param btnName         one of available button names
-     * @param shouldKeepTap   this signals that the finger should not be released after the step is completed.
-     *                        Works with long tap only
      * @param durationSeconds specific time duration you press the button
      * @throws Exception
      * @step. ^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message)
-     * button( for \\d+ seconds?)?
-     * from input tool( without releasing my finger)?s$
+     * button( for \\d+ seconds?)? from input tools$
      */
     @When("^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message) " +
-            "button( for \\d+ seconds?)? from input tools( without releasing my finger)?$")
-    public void ITapButtonByNameFromInputTools(String isLongTap, String btnName, String durationSeconds,
-                                               String shouldKeepTap) throws Exception {
+            "button( for \\d+ seconds?)? from input tools$")
+    public void ITapButtonByNameFromInputTools(String isLongTap, String btnName, String durationSeconds)
+            throws Exception {
         if (isLongTap == null) {
             getConversationViewPage().tapInputToolButtonByName(btnName);
         } else {
             if (durationSeconds == null) {
-                getConversationViewPage().longTapInputToolButtonByName(btnName, shouldKeepTap != null);
+                getConversationViewPage().longTapInputToolButtonByName(btnName);
             } else {
                 getConversationViewPage().longTapWithDurationInputToolButtonByName(btnName,
                         Integer.parseInt(durationSeconds.replaceAll("[\\D]", "")));
@@ -267,28 +283,24 @@ public class ConversationViewPageSteps {
                 getConversationViewPage().isConnectingToUserConversationLabelVisible(contact));
     }
 
-    private static final long IMAGE_VISIBILITY_TIMEOUT = 10000; //milliseconds
-
+    /**
+     * Verify whether images are visible in the conversarion
+     *
+     * @step. ^I see (\d+) photos? in the conversation view$
+     *
+     * @param expectedCount the expected count of images
+     * @throws Exception
+     */
     @Then("^I see (\\d+) photos? in the conversation view$")
     public void ISeeNewPhotoInTheDialog(int expectedCount) throws Exception {
-        int actualCount = getConversationViewPage().getCountOfImages();
-        if (actualCount > 0 && expectedCount > 1 && actualCount < expectedCount) {
-            final long millisecondsStarted = System.currentTimeMillis();
-            do {
-                actualCount = getConversationViewPage().getCountOfImages();
-                if (actualCount >= expectedCount) {
-                    break;
-                }
-                Thread.sleep(500);
-            } while (System.currentTimeMillis() - millisecondsStarted <= IMAGE_VISIBILITY_TIMEOUT);
+        if (expectedCount == 0) {
+            Assert.assertTrue("No images are expected to be visible in the conversations",
+                    getConversationViewPage().areNoImagesVisible());
+        } else {
+            Assert.assertTrue(
+                    String.format("%d images are expected to be visible in the conversations", expectedCount),
+                    getConversationViewPage().areXImagesVisible(expectedCount));
         }
-        Assert.assertTrue(String.format("The actual count of images in the conversation view %s " +
-                "does not equal to the expected count %s", actualCount, expectedCount), actualCount == expectedCount);
-    }
-
-    @When("I click video container for the first time")
-    public void IPlayVideoFirstTime() throws Exception {
-        getConversationViewPage().clickOnPlayVideoButton();
     }
 
     /**
@@ -305,16 +317,6 @@ public class ConversationViewPageSteps {
         IOSSimulatorHelper.copySystemClipboardToSimulatorClipboard();
         ITapHoldTextInput();
         IClickPopupPasteAndCommitText();
-    }
-
-    @When("^I scroll media out of sight until media bar appears$")
-    public void IScrollMediaOutOfSightUntilMediaBarAppears() throws Exception {
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            throw new PendingException("Known Bug: Media bar disappears unexpectedly on Simulator");
-        } else {
-            Assert.assertTrue("Media bar is not displayed after the view has been scrolled to the top",
-                    getConversationViewPage().scrollDownTillMediaBarAppears());
-        }
     }
 
     @When("^I pause playing the media in media bar$")
@@ -426,7 +428,7 @@ public class ConversationViewPageSteps {
     @Then("^I see conversation view is scrolled back to the playing media link (.*)")
     public void ISeeConversationViewIsScrolledBackToThePlayingMedia(String link) throws Throwable {
         Assert.assertTrue(String.format("The last conversation message does not contain text '%s'", link),
-                getConversationViewPage().isLastMessageContain(link));
+                getConversationViewPage().isRecentMessageContain(link));
         Assert.assertTrue("View did not scroll back", getConversationViewPage()
                 .isMediaContainerVisible());
     }
@@ -457,7 +459,7 @@ public class ConversationViewPageSteps {
     public void ICheckCopiedContentFrom(String mail) throws Exception {
         final String finalString = usrMgr.replaceAliasesOccurences(mail, FindBy.EMAIL_ALIAS);
         Assert.assertTrue(String.format("The last message in the chat does not contain '%s' part",
-                finalString), getConversationViewPage().isLastMessageContain(finalString));
+                finalString), getConversationViewPage().isRecentMessageContain(finalString));
     }
 
     /**
@@ -479,9 +481,9 @@ public class ConversationViewPageSteps {
      *
      * @param contact User name who called
      * @throws Exception
-     * @step. ^I click missed call button to call contact (.*)$
+     * @step. ^I tap missed call button to call contact (.*)
      */
-    @When("^I click missed call button to call contact (.*)$")
+    @When("^I tap missed call button to call contact (.*)")
     public void IClickMissedCallButton(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         getConversationViewPage().clickOnCallButtonForContact(contact.toUpperCase());
@@ -503,17 +505,6 @@ public class ConversationViewPageSteps {
             Assert.assertTrue("Input placeholder text is visible",
                     getConversationViewPage().isInputPlaceholderTextInvisible());
         }
-    }
-
-    /**
-     * Clicking on video play button in youtube player
-     *
-     * @throws Exception
-     * @step. ^I click play video button$
-     */
-    @When("I click play video button")
-    public void IClickPlayButton() throws Exception {
-        getConversationViewPage().clickOnPlayVideoButton();
     }
 
     /**
@@ -539,19 +530,6 @@ public class ConversationViewPageSteps {
     public void ISeeGiphyInConversation() throws Exception {
         Assert.assertTrue("There is no giphy in conversation", getConversationViewPage()
                 .isGiphyImageVisible());
-    }
-
-    /**
-     * Verify my user name in conversation view
-     *
-     * @param name String name - my user name
-     * @throws Exception
-     * @step. I see my user name (.*) in conversation
-     */
-    @When("I see my user name (.*) in conversation")
-    public void ISeeUserName(String name) throws Exception {
-        Assert.assertTrue("My name: " + name + " is not displayed in dialog",
-                getConversationViewPage().isUserNameDisplayedInConversationView(name));
     }
 
     /**
@@ -595,10 +573,10 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see vimeo link (.*) but NO media player$")
     public void ISeeVimeoLinkButNOMediaPlayer(String link) throws Exception {
-        Assert.assertFalse("Media player is shown in dialog", getConversationViewPage()
-                .isYoutubeContainerVisible());
+        Assert.assertFalse("Media player is visible, but should be hidden",
+                getConversationViewPage().isMediaContainerVisible());
         Assert.assertTrue(String.format("The last conversation message does not contain %s link", link),
-                getConversationViewPage().isLastMessageContain(link));
+                getConversationViewPage().isRecentMessageContain(link));
     }
 
     /**
@@ -610,10 +588,10 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see vimeo link (.*) and media in the conversation view$")
     public void ISeeVimeoLinkAndMediaInDialog(String link) throws Exception {
-        Assert.assertTrue("Media is missing in dialog", getConversationViewPage()
-                .isYoutubeContainerVisible());
-        Assert.assertTrue(String.format("The last conversation message does not contain %s link", link),
-                getConversationViewPage().isLastMessageContain(link));
+        Assert.assertTrue("Media player is missing in the conversation",
+                getConversationViewPage().isMediaContainerVisible());
+        Assert.assertTrue(String.format("The recent conversation message does not contain %s link", link),
+                getConversationViewPage().isRecentMessageContain(link));
     }
 
     /**
@@ -639,23 +617,6 @@ public class ConversationViewPageSteps {
     @And("^I select (Delete for Me|Delete for Everyone|Cancel) item from Delete menu$")
     public void ISelectDeleteMenuItem(String name) throws Exception {
         getConversationViewPage().selectDeleteMenuItem(name);
-    }
-
-    /**
-     * Verify whether user avatar is visible near convo input field
-     *
-     * @param shouldNotBeVisible equals to nuill is the avatar should be invisible
-     * @throws Exception
-     * @step. ^I (do not )?see plus icon is changed to user avatar icon$
-     */
-    @When("^I (do not )?see user avatar icon near the conversation input field$")
-    public void ISeeUserAvatar(String shouldNotBeVisible) throws Exception {
-        if (shouldNotBeVisible == null) {
-            Assert.assertTrue("User avatar is not visible", getConversationViewPage().isUserAvatarNextToInputVisible());
-        } else {
-            Assert.assertTrue("User avatar is visible, but should be hidden",
-                    getConversationViewPage().isUserAvatarNextToInputInvisible());
-        }
     }
 
     /**
@@ -855,17 +816,6 @@ public class ConversationViewPageSteps {
                 avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
     }
 
-    private String expandFileTransferItemName(String itemName) {
-        switch (itemName) {
-            case "FTRANSFER_MENU_DEFAULT_PNG":
-                return FTRANSFER_MENU_DEFAULT_PNG;
-            case "TOO_BIG":
-                return FTRANSFER_MENU_TOO_BIG;
-            default:
-                return itemName;
-        }
-    }
-
     /**
      * Tap on file transfer menu item by name
      *
@@ -875,8 +825,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap file transfer menu item (.*)")
     public void ITapFileTransferMenuItem(String itemName) throws Exception {
-        final String realName = expandFileTransferItemName(itemName);
-        getConversationViewPage().tapFileTransferMenuItem(realName);
+        getConversationViewPage().tapFileTransferMenuItem(itemName);
     }
 
     /**
@@ -888,9 +837,8 @@ public class ConversationViewPageSteps {
      */
     @When("^I see file transfer menu item (.*)")
     public void ISeeFileTransferMenuItem(String itemName) throws Exception {
-        final String realName = expandFileTransferItemName(itemName);
-        Assert.assertTrue(String.format("File transfer menu item '%s' is not visible", realName),
-                getConversationViewPage().isFileTransferMenuItemVisible(realName));
+        Assert.assertTrue(String.format("File transfer menu item '%s' is not visible", itemName),
+                getConversationViewPage().isFileTransferMenuItemVisible(itemName));
     }
 
     /**
@@ -1203,28 +1151,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify visibility of default received|sent Share Location address
-     *
-     * @param shouldNotSee equals to null if text input should be visible
-     * @param origin       'received' if shared in precondition step or 'sent' if shared from conversation view
-     * @throws Exception
-     * @step. I (do not )?see the default (received|sent) Share Location address in the conversation view$
-     */
-    @Then("^I (do not )?see the default (received|sent) Share Location address in the conversation view$")
-    public void VerifyShareLocationAddressVisibility(String shouldNotSee, String origin) throws Exception {
-        boolean condition;
-        if (origin.equals("received")) {
-            condition = (shouldNotSee == null) ? getConversationViewPage().isDefaultReceivedShareLocationAddressVisible() :
-                    getConversationViewPage().isDefaultReceivedShareLocationAddressNotVisible();
-        } else {
-            condition = (shouldNotSee == null) ? getConversationViewPage().isDefaultSentShareLocationAddressVisible() :
-                    getConversationViewPage().isDefaultSentShareLocationAddressNotVisible();
-        }
-        Assert.assertTrue(String.format("Share %s Location address should be %s in the conversation view", origin,
-                (shouldNotSee == null) ? "visible" : "invisible"), condition);
-    }
-
-    /**
      * Verify visibility of default Map application
      *
      * @throws Exception
@@ -1385,22 +1311,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify that username is presented in conversation view X times
-     *
-     * @param nameAlias user name
-     * @param count     expected count user name is presented in conversation view
-     * @throws Exception
-     * @step. ^I see (.*) username exists in conversation view (\d+) times?
-     */
-    @Then("^I see (.*) username exists in conversation view (\\d+) times?$")
-    public void ISeeUsernameIsPresentedInConversationXTimes(String nameAlias, int count) throws Exception {
-        nameAlias = usrMgr.replaceAliasesOccurences(nameAlias, FindBy.NAME_ALIAS);
-        int actualCount = getConversationViewPage().getCountOfUsernames(nameAlias);
-        Assert.assertEquals(String.format("Username %s should be presented in conversation view %s time(s) but it is " +
-                "presented %s time(s)", nameAlias, count, actualCount), count, actualCount);
-    }
-
-    /**
      * Verify if pointed message is presented on relevant position in conversation view
      *
      * @param message  message text to verify
@@ -1412,20 +1322,6 @@ public class ConversationViewPageSteps {
     public void ISeeMessageIsOnXPositionInConversation(String message, int position) throws Exception {
         Assert.assertTrue(String.format("Message '%s' is not presented on %s position in conversation view", message, position),
                 getConversationViewPage().isMessageByPositionDisplayed(message, position));
-    }
-
-    /**
-     * Tap in the center of the most recent message cell for the particular contact
-     *
-     * @param isLongTap is not equal to null if long tap is going to be performed
-     * @param sender    sender name/alias
-     * @throws Exception
-     * @step. ^I (long )?tap on the recent message from (.*)
-     */
-    @When("^I (long )?tap on the recent message from (.*)")
-    public void ITapRecentMessage(String isLongTap, String sender) throws Exception {
-        sender = usrMgr.replaceAliasesOccurences(sender, FindBy.NAME_ALIAS);
-        getConversationViewPage().tapRecentMessageFrom(isLongTap != null, sender);
     }
 
     private static final int LIKE_ICON_STATE_CHANGE_TIMEOUT = 7; //seconds
@@ -1509,16 +1405,14 @@ public class ConversationViewPageSteps {
     /**
      * Tap the recent media container to show/hide like icon
      *
-     * @param pWidth   destination cell X tap point (in percent 0-100)
-     * @param pHeight  destination cell Y tap point (in percent 0-100)
-     * @param fromName message sender name/alias
+     * @param pWidth  destination cell X tap point (in percent 0-100)
+     * @param pHeight destination cell Y tap point (in percent 0-100)
      * @throws Exception
-     * @step. I tap at (\d+)% of width and (\d+)% of height of the recent message from (.*)
+     * @step. I tap at (\d+)% of width and (\d+)% of height of the recent message$
      */
-    @When("^I tap at (\\d+)% of width and (\\d+)% of height of the recent message from (.*)")
-    public void ITapAtContainerCorner(int pWidth, int pHeight, String fromName) throws Exception {
-        fromName = usrMgr.replaceAliasesOccurences(fromName, FindBy.NAME_ALIAS);
-        getConversationViewPage().tapAtRecentMessage(pWidth, pHeight, fromName);
+    @When("^I tap at (\\d+)% of width and (\\d+)% of height of the recent message$")
+    public void ITapAtContainerCorner(int pWidth, int pHeight) throws Exception {
+        getConversationViewPage().tapAtRecentMessage(pWidth, pHeight);
     }
 
     /**

@@ -1,6 +1,6 @@
 Feature: Likes
 
-  @C246217 @staging @fastLogin
+  @C246217 @regression @fastLogin
   Scenario Outline: Verify liking/unliking a message by tapping on like icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

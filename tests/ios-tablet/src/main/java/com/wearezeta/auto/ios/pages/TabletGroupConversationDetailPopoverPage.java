@@ -3,24 +3,25 @@ package com.wearezeta.auto.ios.pages;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import org.openqa.selenium.WebElement;
 
 public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage {
     private static final By nameConversationMenu = MobileBy.AccessibilityId("metaControllerRightButton");
 
-    public static final String xpathStrPopover = "//UIAPopover[@visible='true']";
-    private static final By xpathPopover = By.xpath(xpathStrPopover);
-
     private static final Function<String, String> xpathStrPopoverParticipantByName = name ->
-            String.format("%s//UIAStaticText[@name='%s']/parent::*", xpathStrPopover, name.toUpperCase());
+            String.format("//XCUIElementTypeTextView[@name='ParticipantsView_GroupName']" +
+                    "/following::XCUIElementTypeCollectionView[1]/" +
+                    "XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s'] ]", name.toUpperCase());
 
     private static final Function<Integer, String> xpathStrGroupCountByNumber = number ->
-            String.format("%s//UIAStaticText[contains(@name,'%s PEOPLE')]", xpathStrPopover, number);
+            String.format("//XCUIElementTypeStaticText[contains(@name,'%s PEOPLE')]", number);
+
+    private static final By fbNamePopoverDismissRegion = FBBy.AccessibilityId("PopoverDismissRegion");
 
     public TabletGroupConversationDetailPopoverPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -30,20 +31,10 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
         getElement(nameConversationMenu).click();
     }
 
-    public boolean waitConversationInfoPopoverToClose() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), xpathPopover);
-    }
-
     public void dismissPopover() throws Exception {
-        final WebElement popover = getElement(xpathPopover);
-        for (int i = 0; i < 3; i++) {
-            DriverUtils.tapOutsideOfTheElement(getDriver(), popover, 100, 0);
-            if (waitConversationInfoPopoverToClose()) {
-                // Wait for animation
-                Thread.sleep(1000);
-                return;
-            }
-        }
+        this.tapByPercentOfElementSize((FBElement) getElement(fbNamePopoverDismissRegion), 10, 10);
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     public void selectUserByNameOniPadPopover(String name) throws Exception {
@@ -53,7 +44,7 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 
     public boolean isNumberOfPeopleInGroupEqualToExpected(int expectedNumber) throws Exception {
         final By locator = By.xpath(xpathStrGroupCountByNumber.apply(expectedNumber));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public void selectEllipsisMenuAction(String actionName) throws Exception {

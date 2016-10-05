@@ -11,12 +11,12 @@ import cucumber.api.java.en.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TabletContactListPageSteps {
+public class TabletConversationsListPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private TabletConversationsListPage getTabletContactListPage() throws Exception {
+    private TabletConversationsListPage getTabletConversationsListPage() throws Exception {
         return pagesCollection.getPage(TabletConversationsListPage.class);
     }
 
@@ -36,7 +36,7 @@ public class TabletContactListPageSteps {
         final TabletConversationsListPage.EntrySide entrySide = TabletConversationsListPage.EntrySide.valueOf(side.toUpperCase());
         this.savedConvoItemStates.put(name,
                 new ElementState(
-                        () -> getTabletContactListPage().getConversationEntryScreenshot(entrySide, name)
+                        () -> getTabletConversationsListPage().getConversationEntryScreenshot(entrySide, name)
                 ).remember()
         );
     }
@@ -68,18 +68,6 @@ public class TabletContactListPageSteps {
         }
     }
 
-
-    /**
-     * Swipes down on Contact list on iPad
-     *
-     * @throws Exception
-     * @step ^I swipe down contact list on iPad$
-     */
-    @When("^I swipe down contact list on iPad$")
-    public void ISwipeDownContactListOniPad() throws Exception {
-        getTabletContactListPage().swipeDown(500);
-    }
-
     /**
      * Verifies that mute a call button in landscape in conv list is not shown
      *
@@ -89,24 +77,19 @@ public class TabletContactListPageSteps {
     @Then("^I dont see mute call button in conversation list on iPad$")
     public void IDontSeeMuteCallButtonInConversationLisOniPad() throws Exception {
         Assert.assertFalse("Mute call button is still visible",
-                getTabletContactListPage().isMuteCallButtonVisible());
+                getTabletConversationsListPage().isMuteCallButtonVisible());
     }
 
     /**
-     * Verifies that next conversation is selected in list.
+     * Performs swipe right action on the particular convo list item
      *
-     * @param conversation that is selected now
-     * @throws Throwable
-     * @step. ^I see conversation (.*) is selected in list$
+     * @step.^I swipe right on iPad the conversation named (.*)
+     * @param name conversation name/alias
+     * @throws Exception
      */
-    @Then("^I see conversation (.*) is selected in list$")
-    public void ISeeConversationIsSelectedInList(String conversation)
-            throws Throwable {
-        conversation = usrMgr.replaceAliasesOccurences(conversation,
-                ClientUsersManager.FindBy.NAME_ALIAS);
-        Assert.assertEquals("Conversation is not selected", "1",
-                getTabletContactListPage().getSelectedConversationCellValue(conversation).
-                        orElseThrow(() -> new IllegalStateException("No conversations are selected in the list")));
+    @When("^I swipe right on iPad the conversation named (.*)")
+    public void ISwipeRightConversation(String name) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        getTabletConversationsListPage().swipeRightConversationToRevealActionButtons(name);
     }
-
 }

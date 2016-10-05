@@ -167,12 +167,13 @@ public class ConversationViewPageSteps {
     /**
      * Tap Enter to send the typed message into the conversation
      *
+     * @param sendFrom identify send button type
      * @throws Exception
-     * @step. ^I send the typed message in (?:the |\\s*)[Cc]onversation view$
+     * @step. ^I send the typed message by (keyboard|cursor) Send button in (?:the |\s*)[Cc]onversation view$
      */
-    @And("^I send the typed message in (?:the |\\s*)[Cc]onversation view$")
-    public void ISendMessage() throws Exception {
-        getConversationViewPage().sendMessage();
+    @And("^I send the typed message by (keyboard|cursor) Send button in (?:the |\\s*)[Cc]onversation view$")
+    public void ISendMessage(String sendFrom) throws Exception {
+        getConversationViewPage().sendMessage(sendFrom);
     }
 
     /**
@@ -209,9 +210,9 @@ public class ConversationViewPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Ping|Add picture|Sketch|File|Share location|Audio message|Video message) button from cursor toolbar$
+     * @step. ^I tap (Ping|Add picture|Sketch|File|Share location|Audio message|Video message|Gif) button from cursor toolbar$
      */
-    @When("^I (long )?tap (Ping|Add picture|Sketch|File|Share location|Audio message|Video message) " +
+    @When("^I (long )?tap (Ping|Add picture|Sketch|File|Share location|Audio message|Video message|Gif) " +
             "button from cursor toolbar( for \\d+ seconds?)?$")
     public void WhenITapCursorToolButton(String isLongTap, String btnName, String duration) throws Exception {
         if (isLongTap == null) {
@@ -433,38 +434,6 @@ public class ConversationViewPageSteps {
     @When("^I tap (?:Play|Puase) button in the [Cc]onversation view$")
     public void ITapPlayPauseButton() throws Exception {
         getConversationViewPage().tapPlayPauseButton();
-    }
-
-    /**
-     * Verify whether Giphy button is visible in the convo view
-     *
-     * @param shouldNotSee equals to null if 'do not' sentence does not exist in step
-     *                     signature
-     * @throws Exception
-     * @step. ^I (do not )?see Giphy button in the [Cc]onversation view$
-     */
-    @Then("^I (do not )?see Giphy button in the [Cc]onversation view$")
-    public void ISeeGiphyButton(String shouldNotSee) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue(
-                    "Giphy button is not visible in the conversation view",
-                    getConversationViewPage().waitUntilGiphyButtonVisible());
-        } else {
-            Assert.assertTrue(
-                    "Giphy button is visible in the conversation view, but should be hidden",
-                    getConversationViewPage().waitUntilGiphyButtonInvisible());
-        }
-    }
-
-    /**
-     * Tap Giphy button
-     *
-     * @throws Exception
-     * @step. ^I tap Giphy button in the [Cc]onversation view$
-     */
-    @When("^I tap Giphy button in the [Cc]onversation view$")
-    public void ITapGiphyButton() throws Exception {
-        getConversationViewPage().tapGiphyButton();
     }
 
     /**

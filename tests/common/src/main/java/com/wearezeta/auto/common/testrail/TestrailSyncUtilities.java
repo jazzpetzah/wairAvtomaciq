@@ -145,8 +145,10 @@ public class TestrailSyncUtilities {
     }
 
     private static final String STAGING_TAG = "@staging";
+    private static final String RC_TAG = "@rc";
     private static final String IS_AUTOMATED_PROPERTY = "custom_is_automated";
     private static final String IS_STAGING_PROPERTY = "custom_is_staging";
+    private static final String IS_RC_PROPERTY = "custom_is_rc";
 
     private static void syncTestrailIsAutomatedState(String scenarioName, Set<String> normalizedTags) {
         final List<String> actualIds = normalizedTags
@@ -174,9 +176,15 @@ public class TestrailSyncUtilities {
                 if (normalizedTags.contains(STAGING_TAG)) {
                     props.put(IS_AUTOMATED_PROPERTY, false);
                     props.put(IS_STAGING_PROPERTY, true);
+                    props.put(IS_RC_PROPERTY, false);
+                } else if (normalizedTags.contains(RC_TAG)) {
+                    props.put(IS_AUTOMATED_PROPERTY, true);
+                    props.put(IS_STAGING_PROPERTY, false);
+                    props.put(IS_RC_PROPERTY, true);
                 } else {
                     props.put(IS_AUTOMATED_PROPERTY, true);
                     props.put(IS_STAGING_PROPERTY, false);
+                    props.put(IS_RC_PROPERTY, false);
                 }
                 TestrailRESTWrapper.updateCustomCaseProperties(Long.parseLong(caseId), props);
             } catch (Exception e) {

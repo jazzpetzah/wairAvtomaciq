@@ -107,7 +107,7 @@ Feature: Archive
 
     Examples:
       | Email      | Password      | Name      | Contact   | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | autocall    |
+      | user1Email | user1Password | user1Name | user2Name | zcall       |
 
   @C131206 @regression
   Scenario Outline: Verify you archive the conversation when you press ⌥ ⌘ ⇧ D (Mac) or alt + ctrl + D (Win)

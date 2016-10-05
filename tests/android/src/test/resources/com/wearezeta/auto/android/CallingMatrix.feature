@@ -22,9 +22,9 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact   | CallBackend          | Timeout |
+      | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
+      | user1Name | user2Name | chrome:52.0.2743.82  | 20      |
       | user1Name | user2Name | chrome:51.0.2704.106 | 20      |
-      | user1Name | user2Name | chrome:50.0.2661.75  | 20      |
-      | user1Name | user2Name | chrome:49.0.2623.75  | 20      |
       | user1Name | user2Name | firefox:46.0.1       | 20      |
       | user1Name | user2Name | firefox:45.0.1       | 20      |
 
@@ -48,10 +48,9 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact   | CallBackend     | Timeout |
-      | user1Name | user2Name | zcall:2.7.17    | 20      |
-      | user1Name | user2Name | zcall:2.7.26    | 20      |
       | user1Name | user2Name | zcall:2.8.6     | 20      |
       | user1Name | user2Name | zcall:2.8.8     | 20      |
+      | user1Name | user2Name | zcall:2.9.3     | 20      |
 
   @calling_matrix
   Scenario Outline: Verify I can receive 1:1 call from <CallBackend>
@@ -75,9 +74,9 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact1  | CallBackend          | Timeout |
+      | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
+      | user1Name | user2Name | chrome:52.0.2743.82  | 20      |
       | user1Name | user2Name | chrome:51.0.2704.106 | 20      |
-      | user1Name | user2Name | chrome:50.0.2661.75  | 20      |
-      | user1Name | user2Name | chrome:49.0.2623.75  | 20      |
       | user1Name | user2Name | firefox:46.0.1       | 20      |
       | user1Name | user2Name | firefox:45.0.1       | 20      |
 
@@ -103,10 +102,9 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact1  | CallBackend   | Timeout |
-      | user1Name | user2Name | zcall:2.7.17  | 20      |
-      | user1Name | user2Name | zcall:2.7.26  | 60      |
       | user1Name | user2Name | zcall:2.8.6   | 60      |
       | user1Name | user2Name | zcall:2.8.8   | 60      |
+      | user1Name | user2Name | zcall:2.9.3   | 60      |
 
   @calling_matrix
   Scenario Outline: Verify I can make group call with multiple <WaitBackend>
@@ -131,9 +129,9 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | WaitBackend          | Timeout |
+      | user1Name | user2Name | user3Name | GroupCall     | chrome:53.0.2785.116 | 20      |
+      | user1Name | user2Name | user3Name | GroupCall     | chrome:52.0.2743.82  | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | chrome:51.0.2704.106 | 20      |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:50.0.2661.75  | 20      |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:49.0.2623.75  | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | firefox:46.0.1       | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | firefox:45.0.1       | 20      |
 
@@ -156,10 +154,9 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | WaitBackend   | Timeout |
-      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.7.17  | 20      |
-      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.7.26  | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | zcall:2.8.6   | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | zcall:2.8.8   | 20      |
+      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.9.3   | 20      |
 
   @calling_matrix
   Scenario Outline: Verify I can join group call with multiple <Backend>
@@ -186,9 +183,9 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Backend              | Timeout |
+      | user1Name | user2Name | user3Name | GroupCall     | chrome:53.0.2785.116 | 20      |
+      | user1Name | user2Name | user3Name | GroupCall     | chrome:52.0.2743.82  | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | chrome:51.0.2704.106 | 20      |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:50.0.2661.75  | 20      |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:49.0.2623.75  | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | firefox:46.0.1       | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | firefox:45.0.1       | 20      |
 
@@ -214,9 +211,9 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | WaitBackend          | Timeout | CallBackend  |
+      | user1Name | user2Name | user3Name | GroupCall     | chrome:53.0.2785.116 | 20      | zcall:2.8.8  |
+      | user1Name | user2Name | user3Name | GroupCall     | chrome:52.0.2743.82  | 20      | zcall:2.8.8  |
       | user1Name | user2Name | user3Name | GroupCall     | chrome:51.0.2704.106 | 20      | zcall:2.8.8  |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:50.0.2661.75  | 20      | zcall:2.8.8  |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:49.0.2623.75  | 20      | zcall:2.8.8  |
       | user1Name | user2Name | user3Name | GroupCall     | firefox:46.0.1       | 20      | zcall:2.8.8  |
 
   @calling_matrix
@@ -241,12 +238,11 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend   | Timeout | WaitBackend  |
-      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.7.26  | 20      | zcall:2.7.26 |
-      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.8.8   | 20      | zcall:2.7.26 |
-      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.7.26  | 20      | zcall:2.8.6  |
       | user1Name | user2Name | user3Name | GroupCall     | zcall:2.8.6   | 20      | zcall:2.8.6  |
       | user1Name | user2Name | user3Name | GroupCall     | zcall:2.8.6   | 20      | zcall:2.8.8  |
       | user1Name | user2Name | user3Name | GroupCall     | zcall:2.8.8   | 20      | zcall:2.8.8  |
+      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.9.3   | 20      | zcall:2.9.3  |
+      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.8.8   | 20      | zcall:2.9.3  |
 
   @calling_matrix
   Scenario Outline: Verify putting client to the background during 1-to-1 call <CallBackend> to me
@@ -268,10 +264,9 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact   | CallBackend    | Timeout |
-      | user1Name | user2Name | zcall:2.7.26   | 20      |
-      | user1Name | user2Name | zcall:2.7.17   | 20      |
       | user1Name | user2Name | zcall:2.8.6    | 20      |
       | user1Name | user2Name | zcall:2.8.8    | 20      |
+      | user1Name | user2Name | zcall:2.9.3    | 20      |
 
   @calling_matrix
   Scenario Outline: Put app into background after initiating call with user <WaitBackend>
@@ -292,8 +287,9 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact   | WaitBackend          | Timeout |
+      | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
+      | user1Name | user2Name | chrome:52.0.2743.82  | 20      |
       | user1Name | user2Name | chrome:51.0.2704.106 | 20      |
-      | user1Name | user2Name | chrome:50.0.2661.75  | 20      |
 
   @calling_matrix
   Scenario Outline: Lock device screen when in call with user <WaitBackend>
@@ -316,8 +312,9 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact   | WaitBackend          | Timeout |
+      | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
+      | user1Name | user2Name | chrome:52.0.2743.82  | 20      |
       | user1Name | user2Name | chrome:51.0.2704.106 | 20      |
-      | user1Name | user2Name | chrome:50.0.2661.75  | 20      |
 
   @calling_matrix
   Scenario Outline: Answer 1-to-1 call <CallBackend> from GCM
@@ -336,7 +333,6 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact   | CallBackend  | Timeout |
-      | user1Name | user2Name | zcall:2.7.26 | 20      |
-      | user1Name | user2Name | zcall:2.7.17 | 20      |
       | user1Name | user2Name | zcall:2.8.6  | 20      |
       | user1Name | user2Name | zcall:2.8.8  | 20      |
+      | user1Name | user2Name | zcall:2.9.3  | 20      |

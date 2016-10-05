@@ -1,6 +1,6 @@
 Feature: Like
 
-  @C246204 @staging
+  @C246204 @regression
   Scenario Outline: I can like/unlike text message by heart/long tap/double tap
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -10,7 +10,7 @@ Feature: Like
     Given I see Conversations list with conversations
     When I tap the conversation <Contact>
     And I type the message "<Message>" in the Conversation view
-    And I send the typed message in the Conversation view
+    And I send the typed message by cursor Send button in the Conversation view
     And I tap the Text message "<Message>" in the conversation view
     And I remember the state of like button
   # Tap heart like
@@ -44,7 +44,7 @@ Feature: Like
       | Name      | Contact   | MessageStatus | Message |
       | user1Name | user2Name | Sent          | OMG     |
 
-  @C246205 @staging
+  @C246205 @regression
   Scenario Outline: I can like link by heart (Portrait)
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
@@ -54,7 +54,7 @@ Feature: Like
     Given I see Conversations list with conversations
     When I tap the conversation <Contact>
     And I type the message "<Url>" in the Conversation view
-    And I send the typed message in the Conversation view
+    And I send the typed message by cursor Send button in the Conversation view
     And I tap Link Preview container in the conversation view
     And I press Back button until Wire app is in foreground in 10 seconds
     And I remember the state of like button
@@ -66,7 +66,7 @@ Feature: Like
       | Name      | Contact   | Url                     |
       | user1Name | user2Name | http://www.facebook.com |
 
-  @C246206 @staging
+  @C246206 @regression
   Scenario Outline: I can like a picture by heart
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -88,7 +88,7 @@ Feature: Like
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C246207 @staging
+  @C246207 @regression
   Scenario Outline: I can like sketch by heart/long tap/double tap (portrait)
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
@@ -134,7 +134,7 @@ Feature: Like
       | Name      | Contact   | MessageStatus |
       | user1Name | user2Name | Sent          |
 
-  @C246208 @staging
+  @C246208 @regression
   Scenario Outline: I can like Soundcloud
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -144,7 +144,7 @@ Feature: Like
     Given I see Conversations list with conversations
     When I tap the conversation <Contact>
     And I type the message "<SoundCloudLink>" in the Conversation view
-    And I send the typed message in the Conversation view
+    And I send the typed message by cursor Send button in the Conversation view
     And I scroll to the bottom of the Conversation view
     And I tap Soundcloud container in the conversation view
     And I scroll to the bottom of the Conversation view
@@ -157,7 +157,7 @@ Feature: Like
       | Name      | Contact   | SoundCloudLink                                   |
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
-  @C246209 @staging
+  @C246209 @regression
   Scenario Outline: I can like youtube (portrait)
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
@@ -167,7 +167,7 @@ Feature: Like
     Given I see Conversations list with conversations
     When I tap the conversation <Contact>
     And I type the message "<YoutubeLink>" in the Conversation view
-    And I send the typed message in the Conversation view
+    And I send the typed message by cursor Send button in the Conversation view
     And I tap Youtube container in the conversation view
     And I scroll to the bottom of the Conversation view
     And I remember the state of like button
@@ -179,7 +179,7 @@ Feature: Like
       | Name      | Contact   | YoutubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
-  @C246210 @staging
+  @C246210 @regression
   Scenario Outline: I can like location
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -200,7 +200,7 @@ Feature: Like
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
 
-  @C246211 @staging
+  @C246211 @regression
   Scenario Outline: I can like audio message
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -222,7 +222,7 @@ Feature: Like
       | Name      | Contact   | FileName | MIMEType  | DeviceName |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
 
-  @C246212 @staging
+  @C246212 @regression
   Scenario Outline: I can like video message
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -245,7 +245,7 @@ Feature: Like
       | Name      | Contact   | FileSize | FileFullName     |
       | user1Name | user2Name | 1.00MB   | random_video.mp4 |
 
-  @C246213 @staging
+  @C246213 @regression
   Scenario Outline: I can like file transfer
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -268,7 +268,7 @@ Feature: Like
       | Name      | Contact   | FileName  | FileSize | FileExtension |
       | user1Name | user2Name | qa_random | 1.00MB   | txt           |
 
-  @C246214 @staging
+  @C246214 @regression
   Scenario Outline: Verify like icon is visible and sorted liker name next to the like icon, and I could like it.
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -279,7 +279,7 @@ Feature: Like
     Given I see Conversations list with conversations
     Given I tap the conversation <Contact>
     When I type the message "<Message>" in the Conversation view
-    And I send the typed message in the Conversation view
+    And I send the typed message by cursor Send button in the Conversation view
     And User <Contact> likes the recent message from user Myself via device <ContactDevice>
     Then I see Like description with expected text "<Contact>" in conversation view
     And I see Like button in conversation view
@@ -292,7 +292,7 @@ Feature: Like
       | Name      | Contact   | Message | ContactDevice |
       | user1Name | user2Name | Hi      | Device1       |
 
-  @C246215 @staging
+  @C246215 @regression
   Scenario Outline: I see likers count instead of names and first/second likes avatars
     Given There are 5 users where <Name> is me
     Given I rotate UI to landscape
@@ -307,7 +307,7 @@ Feature: Like
     Given I see Conversations list with conversations
     Given I tap the conversation <Group>
     And I type the message "<Message>" in the Conversation view
-    And I send the typed message in the Conversation view
+    And I send the typed message by cursor Send button in the Conversation view
     When User <Contact1> likes the recent message from group conversation <Group> via device <D1>
     And User <Contact2> likes the recent message from group conversation <Group> via device <D2>
     And User <Contact3> likes the recent message from group conversation <Group> via device <D3>

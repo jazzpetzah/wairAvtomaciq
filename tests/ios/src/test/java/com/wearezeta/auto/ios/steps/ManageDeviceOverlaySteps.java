@@ -21,9 +21,9 @@ public class ManageDeviceOverlaySteps {
     @Then("^I (do not )?see Manage Devices overlay$")
     public void ISeeManageDevicesOverlay(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
-            Assert.assertTrue("Manage Devices overlay is not visible", getManageDevicesOverlay().waitUntiVisible());
+            Assert.assertTrue("Manage Devices overlay is not visible", getManageDevicesOverlay().waitUntilVisible());
         } else {
-            Assert.assertTrue("Manage Devices overlay is not visible", getManageDevicesOverlay().waitUntiInvisible());
+            Assert.assertTrue("Manage Devices overlay is not visible", getManageDevicesOverlay().waitUntilInvisible());
         }
     }
 }

@@ -43,7 +43,7 @@ Feature: Audio Message
     And I tap audio recording Send button
     Then I see cursor toolbar
     And I see Audio Message container in the conversation view
-    And I wait for 25 seconds until audio message upload completed
+    And I wait for 30 seconds until audio message upload completed
     When I remember the state of recent audio message seekbar
     And I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
@@ -163,14 +163,14 @@ Feature: Audio Message
     And I wait for 3 seconds
     When I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
-    Then I wait for 15 seconds until audio message download completed
+    Then I wait for 20 seconds until audio message download completed
     And I verify the state of recent audio message seekbar in the conversation view is changed
     # Wait until play button changes to pause button
-    And I wait for 2 seconds
+    #And I wait for 2 seconds
     When I remember the state of Pause button on the recent audio message in the conversation view
     And I minimize the application
     # Wait until Wire is minimized
-    And I wait for 3 seconds
+    And I wait for 5 seconds
     And I restore the application
     Then I verify the state of Pause button on the recent audio message in the conversation view is changed
     When I long tap Audio Message container in the conversation view
@@ -207,7 +207,7 @@ Feature: Audio Message
 
     Examples:
       | Name      | Contact   | FileName | MIMEType  | DeviceName | CallBackend |
-      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | autocall    |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | zcall       |
 
   @C139851 @regression
   Scenario Outline: (AN-4067) Verify that play of audio message will be stopped by incoming video call
@@ -254,7 +254,7 @@ Feature: Audio Message
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | zcall       |
 
   @C165127 @C165128 @C165137 @regression
   Scenario Outline: Single tap on mic button open voice recording dialog

@@ -8,6 +8,7 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I tap Login button
+    And I accept alert
     And I accept First Time overlay
     And I dismiss settings warning
     Then I see conversations list
@@ -16,7 +17,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C1133 @regression @rc @clumsy @noAcceptAlert
+  @C1133 @regression @rc @clumsy
   Scenario Outline: Notification if SignIn credentials are wrong
     Given I see sign in screen
     When I switch to Log In tab
@@ -37,6 +38,7 @@ Feature: Sign In
     Given I switch to Phone Log In tab
     When I enter phone number for Myself
     And I enter login verification code for Myself
+    And I accept alert
     And I accept First Time overlay
     And I dismiss settings warning
     Then I see conversations list
@@ -45,7 +47,7 @@ Feature: Sign In
       | Name      |
       | user1Name |
 
-  @C1145 @regression @noAcceptAlert
+  @C1145 @regression
   Scenario Outline: Verify impossibility to login with the wrong code
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -59,7 +61,7 @@ Feature: Sign In
       | Name      |
       | user1Name |
 
-  @C1146 @regression @noAcceptAlert
+  @C1146 @regression
   Scenario Outline: Verify impossibility to resend code within 10 min
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -73,7 +75,7 @@ Feature: Sign In
       | Name      |
       | user1Name |
 
-  @C1143 @regression @noAcceptAlert
+  @C1143 @regression
   Scenario Outline: Verify impossibility to login with unregistered phone number
     Given I see sign in screen
     Given I switch to Log In tab
@@ -93,22 +95,25 @@ Feature: Sign In
     Given I switch to Phone Log In tab
     When I enter phone number for Myself
     And I enter login verification code for Myself
+    And I accept alert
     And I have entered login <Email>
     And I start activation email monitoring
     And I have entered password <Password>
-    And I click Done keyboard button
+    And I tap Done keyboard button
     And I see email verification reminder
     And I verify registration address
+    And I accept First Time overlay
     And I dismiss settings warning
     Then I see conversations list
     When I tap settings gear button
-    Then I see email <Email> on Personal page
+    And I select settings item Account
+    Then I verify the value of settings item Email equals to "<Email>"
 
     Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C3505 @regression @noAcceptAlert
+  @C3505 @regression
   Scenario Outline: Verify error message appears in case of registering already taken email
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -117,17 +122,17 @@ Feature: Sign In
     When I enter phone number for Myself
     And I enter login verification code for Myself
     And I accept alert
-    And I see set email/password suggesstion page
+    And I see set email/password suggestion page
     And I have entered login <Email>
     And I have entered password <Password>
-    And I click Done keyboard button
+    And I tap Done keyboard button
     Then I see already registered email alert
 
     Examples:
       | Email                     | Password      | Name      |
       | smoketester@wearezeta.com | user1Password | user1Name |
 
-  @C1147 @regression @noAcceptAlert
+  @C1147 @regression
   Scenario Outline: Verify error message appears in case of entering not valid email address
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -136,10 +141,10 @@ Feature: Sign In
     When I enter phone number for Myself
     And I enter login verification code for Myself
     And I accept alert
-    And I see set email/password suggesstion page
+    And I see set email/password suggestion page
     And I have entered login <Email>
     And I have entered password <Password>
-    And I click Done keyboard button
+    And I tap Done keyboard button
     Then I see invalid email alert
 
     Examples:

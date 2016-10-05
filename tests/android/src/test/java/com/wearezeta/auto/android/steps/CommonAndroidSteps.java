@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CommonAndroidSteps {
@@ -73,6 +74,9 @@ public class CommonAndroidSteps {
     public static final int DEFAULT_SWIPE_TIME = 1500;
     public static final int FIRST_TIME_OVERLAY_TIMEOUT = 3; // seconds
     private static final String DEFAULT_USER_AVATAR = "aqaPictureContact600_800.jpg";
+    private static final String GCM_TOKEN_PATTERN = "token:\\s+(.*)$";
+    //TODO: should I move this list to configuration file?
+    private static final String[] wirePackageList = {"com.wire.candidate", "com.wire.x", "com.waz.zclient.dev", "com.wire.qaavs"};
 
     private static String getUrl() throws Exception {
         return CommonUtils.getAndroidAppiumUrlFromConfig(CommonAndroidSteps.class);
@@ -228,12 +232,15 @@ public class CommonAndroidSteps {
 
         isAutoAnswerCallEnabled = scenario.getSourceTagNames().contains("@calling_autoAnswer");
 
+        //Start Listenter
         int retriesCount = AndroidPage.DRIVER_CREATION_RETRIES_COUNT;
         if (scenario.getSourceTagNames().contains("@performance")) {
             AndroidLogListener.getInstance(ListenerType.PERF).start();
             retriesCount++;
         } else if (scenario.getSourceTagNames().contains("@analytics")) {
             AndroidLogListener.getInstance(ListenerType.ANALYTICS).start();
+        } else if (scenario.getSourceTagNames().contains("@GCMToken")) {
+            AndroidLogListener.getInstance(ListenerType.GCMToken).start();
         }
         if (isLogcatEnabled) {
             AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
@@ -558,7 +565,7 @@ public class CommonAndroidSteps {
      */
     @Given("^(.*) has an avatar picture from file (.*)$")
     public void UserHasAnAvatarPicture(String name, String picture) throws Exception {
-        String picturePath = CommonUtils.getImagesPath(CommonAndroidSteps.class) + "/" + picture;
+        String picturePath = CommonUtils.getImagesPathFromConfig(getClass()) + picture;
         try {
             name = usrMgr.findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
@@ -747,6 +754,19 @@ public class CommonAndroidSteps {
         } else {
             commonSteps.UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
         }
+    }
+
+    /**
+     * User X typing in specified conversation
+     *
+     * @param fromUserNameAlias   The user who is typing
+     * @param dstConversationName The conversation where the user is typing
+     * @throws Exception
+     * @step. ^User (\w+) is typing in the conversation (.*)$
+     */
+    @When("^User (\\w+) is typing in the conversation (.*)$")
+    public void UserTypingInConversation(String fromUserNameAlias, String dstConversationName) throws Exception {
+        commonSteps.UserIsTypingInConversation(fromUserNameAlias, dstConversationName);
     }
 
     /**
@@ -947,7 +967,7 @@ public class CommonAndroidSteps {
     public void ContactSendImageToConversation(String imageSenderUserNameAlias, String isEncrypted,
                                                String imageFileName, String conversationType,
                                                String dstConversationName) throws Exception {
-        final String imagePath = CommonUtils.getImagesPath(CommonAndroidSteps.class) + imageFileName;
+        final String imagePath = CommonUtils.getImagesPathFromConfig(getClass()) + imageFileName;
         final boolean isGroup = conversationType.equals("group");
         if (isEncrypted == null) {
             commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
@@ -1139,9 +1159,9 @@ public class CommonAndroidSteps {
      * Press Send button on OnScreen keyboard (the keyboard should be already populated)
      *
      * @throws Exception
-     * @step. ^I press Send button$
+     * @step. ^I press Send button at Android keyboard$
      */
-    @And("^I press Send button$")
+    @And("^I press Send button at Android keyboard$")
     public void IPressSendButton() throws Exception {
         pagesCollection.getCommonPage().pressKeyboardSendButton();
     }
@@ -1268,7 +1288,7 @@ public class CommonAndroidSteps {
     @When("^(.*) sends (.*) file having name \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) (.*)$")
     public void ContactSendsXFileFromSE(String contact, String size, String fileFullName, String mimeType,
                                         String deviceName, String convoType, String dstConvoName) throws Exception {
-        String basePath = AndroidCommonUtils.getBuildPathFromConfig(AndroidCommonUtils.class);
+        String basePath = AndroidCommonUtils.getBuildPathFromConfig(getClass());
         String sourceFilePath = basePath + File.separator + fileFullName;
 
         CommonUtils.createRandomAccessFile(sourceFilePath, size);
@@ -1296,7 +1316,11 @@ public class CommonAndroidSteps {
     @When("^(.*) sends local file named \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) (.*)$")
     public void ContactSendsXLocalFileFromSE(String contact, String fileFullName, String mimeType,
                                              String deviceName, String convoType, String dstConvoName) throws Exception {
-        String basePath = AndroidCommonUtils.getImagesPath(AndroidCommonUtils.class);
+        String basePath = CommonUtils.getAudioPathFromConfig(getClass());
+        if (mimeType.toLowerCase().startsWith("image")) {
+            basePath = CommonUtils.getImagesPathFromConfig(getClass());
+        }
+
         String sourceFilePath = basePath + File.separator + fileFullName;
 
         boolean isGroup = convoType.equals("group conversation");
@@ -1580,6 +1604,19 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * Verify whether Android with GCM Service, if not supported, it will throw a Pending Exception
+     *
+     * @throws Exception
+     * @step. ^I am on Android with GCM Service$
+     */
+    @Given("^I am on Android with GCM Service$")
+    public void IAmOnAndroidWithGCM() throws Exception {
+        if (!AndroidCommonUtils.verifyGoogleGCMServiceInstalled()) {
+            throw new PendingException("The current Android doesn't support GCM service");
+        }
+    }
+
+    /**
      * Verify whether no internet bar is visible
      *
      * @param shouldNotSee   equals null means the "no internet bar" should be visible
@@ -1795,4 +1832,93 @@ public class CommonAndroidSteps {
                 "from the local database", this.recentMsgId), db.isMessageDeleted(this.recentMsgId));
     }
 
+    /**
+     * Unregister GCM Token, the step should be called after You already login device.
+     *
+     * @throws Exception
+     * @step. I unregister GCM push token in (\d+) seconds$
+     */
+    @When("^I unregister GCM push token in (\\d+) seconds$")
+    public void IUnresgisterGCMToekn(int timeoutSeconds) throws Exception {
+        Optional<String> pushToken = CommonUtils.waitUntil(
+                timeoutSeconds,
+                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
+                () -> {
+                    String GCMTokenOutput = AndroidLogListener.getInstance(ListenerType.GCMToken).getStdOut();
+                    final Pattern p = Pattern.compile(GCM_TOKEN_PATTERN, Pattern.MULTILINE);
+                    final Matcher m = p.matcher(GCMTokenOutput);
+                    if (m.find()) {
+                        return m.group(1);
+                    } else {
+                        throw new IllegalStateException(String.format("Cannot find GCM Token from Logcat: %s", GCMTokenOutput));
+                    }
+                }
+        );
+        // Wait for 10 seconds until SE register TOKEN on BE
+        // Because we still need to wait several seconds after it retrieve the GCM InstanceID from device.
+        Thread.sleep(10000);
+        commonSteps.UnregisterPushToken(pushToken.orElseThrow(() -> new IllegalStateException("Cannot find GCM Token from logcat")));
+    }
+
+    /**
+     * Try to remove all other Wire packages
+     *
+     * @throws Exception
+     * @step. ^I uninstall all other version of Wire apps$
+     */
+    @When("^I uninstall all other version of Wire apps$")
+    public void IUninstallAllOtherWires() throws Exception {
+        String currentPackage = CommonUtils.getAndroidPackageFromConfig(getClass());
+        for (String packageName : wirePackageList) {
+            if (!packageName.equals(currentPackage)) {
+                AndroidCommonUtils.uninstallPackage(packageName);
+            }
+        }
+    }
+
+    /**
+     * Mute/Archive conversation from SE
+     * Please note, there are also archieve/unarchive/mute/unmute functions by BE directly
+     *
+     * @param userToNameAlias  user who want to mute conversation
+     * @param dstUserNameAlias conversation or user to be muted/archived
+     * @throws Exception
+     * @step. ^(.*) (mutes?|unmutes?|archives?|unarchives?)  conversation with (.*)$
+     */
+    @When("^(.*) (mutes?|unmutes?|archives?|unarchives?) conversation with (user|group) (.*) on device (.*)$")
+    public void MuteConversationWithUser(String userToNameAlias, String action, String convType,
+                                         String dstUserNameAlias, String deviceName) throws Exception {
+        boolean isGroup = convType.equals("group");
+        switch (action.toLowerCase()) {
+            case "mutes":
+            case "mute":
+                commonSteps.UserMutesConversation(userToNameAlias, dstUserNameAlias, deviceName, isGroup);
+                break;
+            case "unmutes":
+            case "unmute":
+                commonSteps.UserUnmutesConversation(userToNameAlias, dstUserNameAlias, deviceName, isGroup);
+                break;
+            case "archives":
+            case "archive":
+                commonSteps.UserArchiveConversation(userToNameAlias, dstUserNameAlias, deviceName, isGroup);
+                break;
+            case "unarchives":
+            case "unarchive":
+                commonSteps.UserUnarchiveConversation(userToNameAlias, dstUserNameAlias, deviceName, isGroup);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify action '%s'", action));
+        }
+    }
+
+    /**
+     * Verify the virtual keyboard is visible in the screen
+     *
+     * @throws Exception
+     * @step. ^I see Android keyboard$
+     */
+    @Then("^I see Android keyboard$")
+    public void ISeeKeyboard() throws Exception {
+        Assert.assertTrue("The system keyboard is expected to be visible", AndroidCommonUtils.isKeyboardVisible());
+    }
 }

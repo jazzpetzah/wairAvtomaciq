@@ -33,7 +33,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1   | Contact2  | ChatName                | OfflineMsg | OnlineMsg | OtherDeviceMsg |
       | user1Email | user1Password | user1Name | user2Name  | user3Name | HistoryOfflineGroupChat | OFFLINE    | ONLINE    | OTHERDEVICE    |
 
-  @C1703 @smoke
+  @C1703 @smoke @localytics
   Scenario Outline: Send message in 1on1
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -45,10 +45,11 @@ Feature: Conversation View
     When I write random message
     And I send message
     Then I see random message in conversation
+    And I see localytics event <Event> with attributes <Attributes>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | Event                        | Attributes                                                                    |
+      | user1Email | user1Password | user1Name | user2Name | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"with_bot\":false} |
 
   @C1701 @smoke
   Scenario Outline: Verify you can see image on the second end in a group conversation
@@ -151,7 +152,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Youtubelink1                               | Youtubelink2                                                 | Youtubelink3                          | Youtubelink4                 |
       | user1Email | user1Password | user1Name | user2Name | http://www.youtube.com/watch?v=JOCtdw9FG-s | https://www.youtube.com/watch?v=txqiwrbYGrs&feature=youtu.be | https://www.youtube.com/v/_1w2aASUpWQ | https://youtu.be/QH2-TGUlwu4 |
 
-  @C1759 @regression
+  @C1759 @regression @localytics
   Scenario Outline: Send Camera picture to group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -162,10 +163,11 @@ Feature: Conversation View
     And I open conversation with <ChatName>
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
+    And I see localytics event <Event> with attributes <Attributes>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | PictureName               |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | SendPictureGroupChat | userpicture_landscape.jpg |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | PictureName               | Event                        | Attributes                                                                |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | SendPictureGroupChat | userpicture_landscape.jpg | media.completed_media_action | {\"action\":\"photo\",\"conversation_type\":\"group\",\"with_bot\":false} |
 
   @C1764 @regression @e2ee
   Scenario Outline: I cannot see missed messages when rejoining a conversation after leaving it
@@ -315,7 +317,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
 
-  @C1792 @regression
+  @C1792 @regression @localytics
   Scenario Outline: Verify you can send not-random gif with giphy button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -332,10 +334,11 @@ Feature: Conversation View
     When I click send button in Giphy popup
     Then I see sent gif in the conversation view
     And I verify the second last text message equals to <ExpectedMessage>
+    And I see localytics event <Event> with attributes <Attributes>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Message | ExpectedMessage     |
-      | user1Email | user1Password | user1Name | user2Name | cat     | cat • via giphy.com |
+      | Login      | Password      | Name      | Contact   | Message | ExpectedMessage     | Event                        | Attributes                                                                     |
+      | user1Email | user1Password | user1Name | user2Name | cat     | cat • via giphy.com | media.completed_media_action | {\"action\":\"photo\",\"conversation_type\":\"one_to_one\",\"with_bot\":false} |
 
   @C1797 @regression
   Scenario Outline: Verify that typed-in messages are not lost
@@ -478,3 +481,57 @@ And I wait for 60 seconds
     Examples:
       | Login      | Password      | Name      | Contact  | ContactEmail                  | ContactPassword | File1          | File2              |
       | user1Email | user1Password | user1Name | 928d0420 | smoketester+928d0420@wire.com | aqa123456!      | over8000ch.txt | lessThan8000ch.txt |
+
+  @C221139 @staging
+  Scenario Outline: Verify after user was removed from group he cannot do some actions
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <ChatName>
+    And Contact <Contact1> sends message <Message1> via device Device1 to group conversation <ChatName>
+    Then I see text message <Message1>
+    When I click to like the last message without other likes
+    And I do not see likes below the last message
+    Then I see the last message is only liked by me
+    And I write message <Message2>
+    And I send message
+    Then I see text message <Message1>
+    Then I see text message <Message2>
+    And I see 3 messages in conversation
+    When <Contact1> removes Myself from group conversation <ChatName>
+    Then I see <MessageAction> action for <Contact1> in conversation
+    When I see 4 messages in conversation
+    #check another user message <Message1>
+    And I do not see likes below the third last message
+    When I click to unlike the third last message without other likes
+    And I see the third last message is only liked by me
+    When I click context menu of the third last message
+    And I do not see like button in context menu
+    And I see delete for me button in context menu
+    #check own message
+    And I do not see like symbol for second last message
+    And I click context menu of the second last message
+    And I do not see delete for everyone button in context menu
+    And I do not see like button in context menu
+    And I do not see edit button in context menu
+    And I see delete for me button in context menu
+    #general actions in group
+    And I verify that conversation input and buttons are not visible
+    When I click People button in group conversation
+    #editing group name - should be disabled, but not implemented yet. So for now the name stays the same as before editing
+    And I see titlebar with <ChatName>
+    And I change group conversation title to <ChatNameEdit> on Group Participants popover
+    And I see titlebar with <ChatName>
+    Then I see Group Participants popover
+    And I see <Contact1>,<Contact2> displayed on Group Participants popover
+    And I do not see Add People button on Group Participants popover
+    And I do not see Leave button on Group Participants popover
+    And I click on participant <Contact1> on Group Participants popover
+    And I do not see Remove button on Group Participants popover
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName     | Message1 | MessageAction | Message2 | ChatNameEdit |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | OldGroupName | message1 | REMOVED YOU   | message2 | NewGroupName |

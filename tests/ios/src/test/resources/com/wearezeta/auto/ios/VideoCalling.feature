@@ -8,6 +8,7 @@ Feature: Video Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Video Call button
+    And I accept alert
     Then I see call status message contains "<Contact> ringing"
     And I see Leave button on Calling overlay
 
@@ -23,6 +24,7 @@ Feature: Video Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Video Call button
+    And I accept alert
     Then I see call status message contains "<Contact> ringing"
     When I tap Leave button on Calling overlay
     Then I see missed call from contact YOU
@@ -41,6 +43,7 @@ Feature: Video Calling
     When <Contact> starts a video call to <Name>
     And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
+    And I accept alert
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verifies to have 1 flows
     And <Contact> verifies that all flows have greater than 0 bytes
@@ -63,6 +66,7 @@ Feature: Video Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Video Call button
+    And I accept alert
     And I see Video Calling overlay
     Then <Contact> verifies to have 1 flows
     And <Contact> verifies that all flows have greater than 0 bytes
@@ -117,14 +121,15 @@ Feature: Video Calling
     Given <Contact2> starts instance using <AudioCallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
-    And <Contact1> starts a video call to me
-    And I see call status message contains "<Contact1> calling"
-    And I tap Accept Video button on Calling overlay
+    Given <Contact1> starts a video call to me
+    Given I see call status message contains "<Contact1> calling"
+    Given I tap Accept Video button on Calling overlay
+    Given I accept alert
     When <Contact2> calls me
     And I see call status message contains "<Contact2> calling"
     Then I tap Accept button on Calling overlay
+    And I accept alert
     And I do not see Accept Video button on Calling overlay
-    And I see Leave button on Calling overlay
     And <Contact2> verifies that call status to me is changed to active in <Timeout> seconds
     And <Contact1> verifies that call status to me is changed to destroyed in <Timeout> seconds
 
@@ -155,9 +160,12 @@ Feature: Video Calling
     Given I see conversations list
     Given I wait until <Contact> exists in backend search results
     When I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Video call action button on People picker page
+    And I accept alert
     Then I see call status message contains "<Contact> ringing"
     And I see Leave button on Video Calling overlay
 
@@ -175,6 +183,7 @@ Feature: Video Calling
     When <Contact> start a video call to me
     And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
+    And I accept alert
     And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     Then I see Switch Camera button on Video Calling overlay
     When <Contact2> starts a video call to me
@@ -197,6 +206,7 @@ Feature: Video Calling
     When <Contact> starts a video call to <Name>
     And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
+    And I accept alert
     And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     And I remember state of Mute button on Video Calling overlay
     And I tap Mute button on Video Calling overlay
@@ -215,6 +225,7 @@ Feature: Video Calling
     And <Contact> starts a video call to me
     And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
+    And I accept alert
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     Then I see Switch Camera button on Video Calling overlay
     When <Contact2> starts a video call to me
@@ -236,8 +247,11 @@ Feature: Video Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Video Call button
+    And I accept alert
     Then I see call status message contains "<Contact> ringing"
     When I tap Leave button on Video Calling overlay
+    # Wait for animation
+    And I wait for 2 seconds
     And I see missed call from contact YOU
     And I tap Video Call button
     Then I see call status message contains "<Contact> ringing"
@@ -254,6 +268,7 @@ Feature: Video Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Video Call button
+    And I accept alert
     Then I see call status message contains "<Contact> ringing"
     When I tap Leave button on Video Calling overlay
     And I tap Audio Call button

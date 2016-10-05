@@ -33,6 +33,7 @@ import org.junit.Assert;
 import org.openqa.selenium.Keys;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -51,6 +52,8 @@ public class ConversationPageSteps {
     private static final String VIDEO_MESSAGE_IMAGE = "example.png";
 
     private String randomMessage;
+
+    private String rememberedEditTimeStamp;
 
     private final TestContext context;
 
@@ -647,8 +650,7 @@ public class ConversationPageSteps {
 
     @Then("^I wait until audio (.*) is uploaded completely$")
     public void IWaitUntilAudioIsUploaded(String fileName) throws Exception {
-        assertThat("Upload still not finished for audio " + fileName, context.getPagesCollection().getPage(
-                ConversationPage.class)
+        assertThat("Upload still not finished for audio " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
                 .waitUntilAudioUploaded(fileName));
     }
 
@@ -690,24 +692,20 @@ public class ConversationPageSteps {
         }
     }
 
-    @When("^I click context menu of the latest message$")
-    public void IClickContextMenuOfLatestMessage() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnLatestMessage();
-    }
-
-    @When("^I click context menu of the second last message$")
-    public void IClickContextMenuOfSecondLastMessage() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnSecondLastMessage();
+    @When("^I click context menu of the (second |third )?last message$")
+    public void IClickContextMenuOfThirdLastMessage(String indexNumber) throws Exception {
+        int messageId = getXLastMessageIndex(indexNumber);
+        context.getPagesCollection().getPage(ConversationPage.class).clickContextMenuOnMessage(messageId);
     }
 
     @When("^I click to delete message for everyone in context menu$")
     public void IClickDeleteEverywhereInContextMenuOfLatestMessage() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clickDeleteEverywhereInContextMenuOfLatestMessage();
+        context.getPagesCollection().getPage(ConversationPage.class).clickDeleteEverywhereInContextMenuOfLastMessage();
     }
 
     @When("^I click to delete message for me in context menu$")
     public void IClickDeleteForMeInContextMenuOfLatestMessage() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clickDeleteForMeInContextMenuOfLatestMessage();
+        context.getPagesCollection().getPage(ConversationPage.class).clickDeleteForMeInContextMenuOfLastMessage();
     }
 
     @When("^I click confirm to delete message for everyone$")
@@ -717,7 +715,7 @@ public class ConversationPageSteps {
 
     @When("^I click to delete the latest message$")
     public void IClickToDelete() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clickToDeleteLatestMessage();
+        context.getPagesCollection().getPage(ConversationPage.class).clickToDeleteLastMessage();
     }
 
     @When("^I click confirm to delete message for me$")
@@ -727,19 +725,37 @@ public class ConversationPageSteps {
 
     @When("^I hover over the latest message$")
     public void IHoverOverLatestMessage() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).hoverOverLatestMessage();
+        context.getPagesCollection().getPage(ConversationPage.class).hoverOverLastMessage();
     }
 
     @When("^I do not see delete button for latest message$")
     public void IDoNotSeeDeleteButton() throws Exception {
         assertFalse("Delete button is visible", context.getPagesCollection().getPage(ConversationPage.class)
-                .isDeleteButtonVisibleForLatestMessage());
+                .isDeleteButtonVisibleForLastMessage());
     }
 
-    @When("^I do not see edit button in context menu for latest message$")
-    public void IDoNotSeeEditButton() throws Exception {
+    @When("^I do not see edit button in context menu$")
+    public void IDoNotSeeEditButtonInContext() throws Exception {
         assertTrue("Edit button is visible", context.getPagesCollection().getPage(ConversationPage.class)
-                .isEditButtonInvisibleForLatestMessage());
+                .isEditButtonInvisibleForLastMessage());
+    }
+
+    @When("^I do not see delete for everyone button in context menu$")
+    public void IDoNotSeeDeleteForEveryoneButtonInContext() throws Exception {
+        assertTrue("Delete for everyone button is visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isDeleteForEveryoneButtonInContextMenuInvisible());
+    }
+
+    @When("^I do not see like button in context menu$")
+    public void IDoNotSeeLikeButtonInContext() throws Exception {
+        assertTrue("Like button is visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isLikeButtonInContextMenuInvisible());
+    }
+
+    @When("^I see delete for me button in context menu$")
+    public void ISeeDeleteForMeButtonInContext() throws Exception {
+        assertTrue("Delete For Me button is not visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isDeleteForMeButtonInContextMenuVisible());
     }
 
     @When("^I click to edit message in context menu$")
@@ -747,81 +763,164 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).clickEditInMessageContextMenu();
     }
 
-    @When("^I( do not)? see like symbol for latest message$")
-    public void ISeeLikeButton(String doNot) throws Exception {
-        if (doNot == null) {
-            assertTrue("Like symbol is not visible", context.getPagesCollection().getPage(ConversationPage.class)
-                    .isLikeSymbolVisible());
+    @When("^I( do not)? see like symbol for (second )?last message$")
+    public void ISeeLikeButton(String doNot, String second) throws Exception {
+        boolean isSecond = " second".equals(second);
+        if (!isSecond) {
+            if (doNot == null) {
+                assertTrue("Like symbol is not visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolVisibleForLastMessage());
+            } else {
+                assertTrue("Like symbol is visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolInvisibleForLastMessage());
+            }
         } else {
-            assertFalse("Like symbol is visible", context.getPagesCollection().getPage(ConversationPage.class)
-                    .isLikeSymbolVisible());
+            if (doNot == null) {
+                assertTrue("Like symbol is not visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolVisibleForSecondLastMessage());
+            } else {
+                assertTrue("Like symbol is visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolInvisibleForSecondLastMessage());
+            }
         }
     }
 
-    @When("^I click (like|unlike) button in context menu for latest message$")
+    @When("^I remember edit timestamp of( second)? last message$")
+    public void IRememberEditTimestamp(String second) throws Exception {
+        if (second == null) {
+            rememberedEditTimeStamp = context.getPagesCollection().getPage(ConversationPage.class)
+                    .getLastEditTimestamp();
+        } else {
+            rememberedEditTimeStamp = context.getPagesCollection().getPage(ConversationPage.class)
+                    .getSecondLastEditTimestamp();
+        }
+    }
+
+    @Then("^I verify the edit timestamp of( second)? last message equals the remembered timestamp$")
+    public void ICompareTimestamps(String second) throws Exception {
+        String editTimeStamp;
+        if (second == null) {
+            editTimeStamp = context.getPagesCollection().getPage(ConversationPage.class)
+                    .getLastEditTimestamp();
+        } else {
+            editTimeStamp = context.getPagesCollection().getPage(ConversationPage.class)
+                    .getSecondLastEditTimestamp();
+        }
+        assertEquals("The timestamps are not equal", rememberedEditTimeStamp, editTimeStamp);
+    }
+
+    @Then("^I( do not)? see message header for( second)? last message$")
+    public void ISeeMessageHeader(String doNot, String second) throws Exception {
+        boolean isDoNot = " do not".equals(doNot);
+        boolean isSecond = " second".equals(second);
+        if (isDoNot) {
+            if (isSecond) {
+                assertFalse("Second last message header is VISIBLE",
+                        context.getPagesCollection().getPage(ConversationPage.class).isSecondLastMsgHeaderVisible());
+            } else {
+                assertFalse("Last message header is VISIBLE",
+                        context.getPagesCollection().getPage(ConversationPage.class).isLastMsgHeaderVisible());
+            }
+        } else if (isSecond) {
+            assertTrue("Second last message header is NOT VISIBLE",
+                    context.getPagesCollection().getPage(ConversationPage.class).isSecondLastMsgHeaderVisible());
+        } else {
+            assertTrue("Last message header NOT VISIBLE",
+                    context.getPagesCollection().getPage(ConversationPage.class).isLastMsgHeaderVisible());
+        }
+    }
+
+    @When("^I click (like|unlike) button in context menu for last message$")
     public void IClickToLikeInContextMenuOfLatestMessage(String like) throws Exception {
         boolean isLike = "like".equals(like);
         if (isLike) {
             assertTrue("Like button is not visible", context.getPagesCollection().getPage(ConversationPage.class)
                     .isLikeButtonInContextMenuVisible());
-            context.getPagesCollection().getPage(ConversationPage.class).clickReactInContextMenuOfLatestMessage();
+            context.getPagesCollection().getPage(ConversationPage.class).clickReactInContextMenuOfLastMessage();
         } else {
             assertTrue("Unlike button is not visible", context.getPagesCollection().getPage(ConversationPage.class)
                     .isUnlikeButtonInContextMenuVisible());
-            context.getPagesCollection().getPage(ConversationPage.class).clickReactInContextMenuOfLatestMessage();
+            context.getPagesCollection().getPage(ConversationPage.class).clickReactInContextMenuOfLastMessage();
         }
     }
 
-    @When("^I click to (like|unlike) the latest message with(out)? other likes$")
-    public void IClickToLikeLatestMessageWithoutOtherLikes(String like, String out) throws Exception {
+    @When("^I click to (like|unlike) the (third |second )?last message with(out)? other likes$")
+    public void IClickToLikeLatestMessageWithoutOtherLikes(String like, String index, String out) throws Exception {
         boolean isWithout = "out".equals(out);
         boolean isLike = "like".equals(like);
+        int indexNummer = getXLastMessageIndex(index);
         if (isWithout) {
             if (isLike) {
-                context.getPagesCollection().getPage(ConversationPage.class).clickLikeLatestMessageWithoutOtherLikes();
+                context.getPagesCollection().getPage(ConversationPage.class).clickLikeMessageWithoutOtherLikes(indexNummer);
             } else {
-                context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeLatestMessageWithoutOtherLikes();
-            }
+                context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeMessageWithoutOtherLikes(indexNummer);
+                }
         } else if (isLike) {
-            context.getPagesCollection().getPage(ConversationPage.class).clickLikeLatestMessageWithOtherLikes();
-        } else {
-            context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeLatestMessageWithOtherLikes();
+                context.getPagesCollection().getPage(ConversationPage.class).clickLikeMessageWithOtherLikes(indexNummer);
+            }
+        else {
+                context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeMessageWithOtherLikes(indexNummer);
         }
     }
 
-    @Then("^I (do not )?see likes below the latest message$")
-    public void ThenISeeLikesForLatestMessage(String not) throws Exception {
+    @When("^I open like list of the latest message$")
+    public void IOpenLikeListForLatestMsg() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickLatestLikeLine();
+    }
+
+    @When("^I( do not)? see like list of last message$")
+    public void ISeeLikeListOfLatestMsg(String doNot) throws Exception {
+        if (doNot == null) {
+            assertTrue("Like list is NOT visible", context.getPagesCollection()
+                    .getPage(ConversationPage.class).isLikeListOfLatestMsgVisible());
+        } else {
+            assertFalse("Like list is VISIBLE", context.getPagesCollection()
+                    .getPage(ConversationPage.class).isLikeListOfLatestMsgVisible());
+        }
+    }
+
+    @When("^I see (\\d+) avatars in like list of last message$")
+    public void ISeeXAvatarsInLikeList(int amount) throws Exception {
+        assertThat("Wrong amount of avatars found", context.getPagesCollection()
+                        .getPage(ConversationPage.class).getAvatarsInLatestLikeList(),
+                equalTo(amount));
+    }
+
+    @When("^I close like list of last message$")
+    public void ICloseLikeListOfLatestMsg() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickXLatestLikeList();
+    }
+
+    @Then("^I (do not )?see likes below the (third |second )?last message$")
+    public void ISeeLikesForLatestMessage(String not, String indexValue) throws Exception {
+        int messageIndex = getXLastMessageIndex(indexValue);
         if (not == null) {
-            assertTrue("Likes of others are NOT visible for message", context.getPagesCollection().getPage(
-                    ConversationPage.class)
-                    .isLikeLineVisibleForLatestMessage());
+            assertTrue("Likes of others are NOT visible for last message", context.getPagesCollection().getPage(
+                    ConversationPage.class).isLikeLineVisibleForMessage(messageIndex));
         } else {
-            assertTrue("Likes of others are visible for message", context.getPagesCollection().getPage(ConversationPage.class)
-                    .isLikeLineInvisibleForLatestMessage());
+            assertTrue("Likes of others are visible for last message", context.getPagesCollection().getPage(ConversationPage.class)
+                    .isLikeLineInvisibleForMessage(messageIndex));
         }
     }
 
-    @Then("^I see the latest message is only liked by me$")
-    public void ThenISeeLatestMessageIsOnlyLikedByMe() throws Exception {
-        assertTrue("The message is NOT only liked by you", context.getPagesCollection().getPage(ConversationPage.class)
-                .isUnlikeWithoutOtherLikesVisibleForLatestMessage());
+    @Then("^I see the (third |second )?last message is only liked by me$")
+    public void ISeeLatestMessageIsOnlyLikedByMe(String indexValue) throws Exception {
+        int messageIndex = getXLastMessageIndex(indexValue);
+        assertTrue("The " + indexValue + "last message is NOT only liked by you", context.getPagesCollection().getPage(ConversationPage.class)
+                .isUnlikeWithoutOtherLikesVisibleForMessage(messageIndex));
     }
     
-    @Then("^I see the latest message is only liked by others$")
-    public void ThenISeeLatestMessageIsOnlyLikedByOthers() throws Exception {
+    @Then("^I see the last message is only liked by others$")
+    public void ISeeLastMessageIsOnlyLikedByOthers() throws Exception {
         assertTrue("The message is liked by you", context.getPagesCollection().getPage(ConversationPage.class)
-                .isLikeWithOtherLikesVisibleForLatestMessage());
+                .isLikeWithOtherLikesVisibleForLastMessage());
     }
 
-    @Then("^I see the latest message is liked by others and me$")
-    public void ThenISeeLatestMessageIsLikedByOthersMe() throws Exception {
+    @Then("^I see the last message is liked by others and me$")
+    public void ISeeLastMessageIsLikedByOthersMe() throws Exception {
         assertTrue("Message is NOT liked by others and you", context.getPagesCollection().getPage(ConversationPage.class)
-                .isUnlikeWithOtherLikesVisibleForLatestMessage());
+                .isUnlikeWithOtherLikesVisibleForLastMessage());
     }
 
-    @Then("^I see the latest message is liked by (.*)$")
-    public void ThenISeeLatestMessageIsLikedBy(String usersToNameAliases) throws Exception {
-        List<String> likers = context.getPagesCollection().getPage(ConversationPage.class).getUsersThatLikeTheLatestMessage();
+    @Then("^I see the last message is liked by users? (.*)$")
+    public void ISeeLastMessageIsLikedBy(String usersToNameAliases) throws Exception {
+        List<String> likers = context.getPagesCollection().getPage(ConversationPage.class).getUsersThatLikeTheLastMessage();
         List<String> aliases = CommonSteps.splitAliases(usersToNameAliases);
         String[] users = new String[aliases.size()];
         for(int i = 0; i < aliases.size(); i++) {
@@ -830,6 +929,26 @@ public class ConversationPageSteps {
         }
         assertThat("User not found in like message", likers, hasItems(users));
         assertThat("Wrong number of likes", likers, hasSize(users.length));
+    }
+
+    @Then("^I see (.*) is the most recent liker of last message$")
+    public void ISeeMostRecentLiker(String liker) throws Exception {
+        List<String> likers = context.getPagesCollection().getPage(ConversationPage.class).getUsersThatLikeTheLastMessage();
+        ClientUser userTo = context.getUserManager().findUserByNameOrNameAlias(liker);
+        String user = userTo.getName();
+        assertThat("User is not the most recent liker", likers.get(likers.size() - 1), is(user));
+    }
+
+    @Then("^I see names in like string of last message$")
+    public void ISeeNamesInLastLikeString() throws Exception {
+        String likeString = context.getPagesCollection().getPage(ConversationPage.class).getLastLikeString();
+        assertThat("There are no names in the like string", likeString, not(containsString("people")));
+    }
+
+    @Then("^I see count of (\\d+) people in like string of last message$")
+    public void ISeePeopleCountInLastLikeString(int count) throws Exception {
+        String likeString = context.getPagesCollection().getPage(ConversationPage.class).getLastLikeString();
+        assertThat("Wrong people count", likeString, is(count + " people"));
     }
 
     @When("^I click reset session on the latest decryption error")
@@ -1006,6 +1125,29 @@ public class ConversationPageSteps {
     @Then("^I really see text message (.*)")
     public void ISeeTextMessageInViewPort(String message) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).waitForDisplayedMessageContains(message, 30);
+    }
+
+    /**
+     * Get last message index (last, second last, third last)
+     *
+     * @param indexValue String
+     * @return
+     * @throws Exception
+     */
+
+    private int getXLastMessageIndex(String indexValue) throws Exception {
+        int indexNummer = 1;
+        if (indexValue == null)
+            return indexNummer;
+        switch (indexValue) {
+            case "third ": indexNummer = 3;
+                break;
+            case "second ": indexNummer = 2;
+                break;
+            default: indexNummer = 1;
+                break;
+        }
+        return indexNummer;
     }
 
     private static String expandPattern(final String originalStr) {

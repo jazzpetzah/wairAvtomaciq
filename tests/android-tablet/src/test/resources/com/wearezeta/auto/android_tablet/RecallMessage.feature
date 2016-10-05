@@ -1,6 +1,6 @@
 Feature: Recall Message
 
-  @C246267 @C246269 @staging
+  @C246267 @C246269 @regression
   Scenario Outline:  Verify I can delete my message everywhere (1:1) (myview + others view)
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -32,7 +32,7 @@ Feature: Recall Message
       | Name      | Contact1  | Message           | ContactDevice | MySecondDevice | Message2 |
       | user1Name | user2Name | DeleteTextMessage | Device2       | Device1        | Del2     |
 
-  @C246268 @C246270 @staging
+  @C246268 @C246270 @regression
   Scenario Outline: Verify I can delete my message everywhere(group) (myview + others view)
     Given There are 3 users where <Name> is me
     Given I rotate UI to landscape
@@ -66,7 +66,7 @@ Feature: Recall Message
       | user1Name | user2Name | user3Name | TGroup | DeleteTextMessage | Device2       | Device1        | Del2     |
 
 
-  @C246271 @staging
+  @C246271 @regression
   Scenario Outline: Verify I can delete everywhere works for images
     Given There are 2 users where <Name> is me
     Given I push local file named "<FileName>" to the device
@@ -91,7 +91,7 @@ Feature: Recall Message
       | Name      | Contact   | ContactDevice | FileName       |
       | user1Name | user2Name | Device1       | avatarTest.png |
 
-  @C246272 @staging
+  @C246272 @regression
   Scenario Outline: Verify delete everywhere works for giphy
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -103,7 +103,8 @@ Feature: Recall Message
     When I tap the conversation <Contact>
     And I tap on text input
     And I type the message "<Message>" in the Conversation view
-    And I tap Giphy button in the conversation view
+    And I tap Gif button from cursor toolbar
+    And I select a random gif from the grid preview
     Then I see Giphy preview page
     When I tap Send button on the Giphy preview page
     And I long tap Image container in the conversation view
@@ -118,7 +119,7 @@ Feature: Recall Message
       | Name      | Contact   | Message | ContactDevice |
       | user1Name | user2Name | Yo      | Device1       |
 
-  @C246273 @staging
+  @C246273 @regression
   Scenario Outline: Verify delete everywhere works for link preview
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -129,7 +130,7 @@ Feature: Recall Message
     Given I see Conversations list with conversations
     Given I tap the conversation <Contact>
     When I type the message "<Link>" in the Conversation view
-    And I send the typed message in the Conversation view
+    And I send the typed message by cursor Send button in the Conversation view
     And I hide keyboard
     And I long tap Link Preview container in the conversation view
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
@@ -142,7 +143,7 @@ Feature: Recall Message
       | Name      | Contact   | Link                    | ContactDevice |
       | user1Name | user2Name | http://www.facebook.com | Device1       |
 
-  @C246274 @staging
+  @C246274 @regression
   Scenario Outline: Verify delete everywhere works for Share location
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -165,7 +166,7 @@ Feature: Recall Message
       | Name      | Contact   | ContactDevice |
       | user1Name | user2Name | device1       |
 
-  @C246275 @staging
+  @C246275 @regression
   Scenario Outline: Verify delete everywhere works for file sharing
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -189,7 +190,7 @@ Feature: Recall Message
       | Name      | Contact   | FileName  | FileExtension | FileSize | ContactDevice | UploadingTimeout |
       | user1Name | user2Name | qa_random | txt           | 1.00MB   | device1       | 20               |
 
-  @C246276 @staging
+  @C246276 @regression
   Scenario Outline: Verify delete everywhere works for audio messages
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -214,7 +215,7 @@ Feature: Recall Message
       | Name      | Contact   | TapDuration | ContactDevice |
       | user1Name | user2Name | 5           | Device1       |
 
-  @C246277 @staging
+  @C246277 @regression
   Scenario Outline: Verify delete everywhere works for video messages
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape

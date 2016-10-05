@@ -27,6 +27,7 @@ import gherkin.formatter.model.Result;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -45,6 +46,9 @@ import static com.wearezeta.auto.common.CommonUtils.*;
 public class CommonIOSSteps {
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
+    private static final String IOS_WD_APP_BUNDLE = "com.apple.test.WebDriverAgentRunner-Runner";
+    private static final String FACEBOOK_WD_APP_BUNDLE = "com.facebook.IntegrationApp";
+    private static final String ADDRESSBOOK_HELPER_APP_NAME = "AddressbookApp.ipa";
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
     private static Logger log = ZetaLogger.getLog(CommonIOSSteps.class.getSimpleName());
@@ -80,13 +84,11 @@ public class CommonIOSSteps {
         return getOldAppPathFromConfig(CommonIOSSteps.class);
     }
 
+    /**
+     * https://github.com/wireapp/wire-automation-addressbook-ios
+     */
     public static String getiOSAddressbookAppPath() throws Exception {
-        return getiOSAddressbookAppPathFromConfig(CommonIOSSteps.class);
-    }
-
-    private static boolean isUseNativeInstrumentsEnabled() throws Exception {
-        return Boolean.parseBoolean(getIsUseNativeInstrumentsLibFromConfig(
-                CommonIOSSteps.class).orElseGet(() -> "false"));
+        return getIOSToolsRoot(CommonIOSSteps.class) + File.separator + ADDRESSBOOK_HELPER_APP_NAME;
     }
 
     private static String getAppName() throws Exception {
@@ -97,31 +99,42 @@ public class CommonIOSSteps {
 
     private static Map<String, String> cachedBundleIds = new HashMap<>();
 
+    private static final long INSTALL_DELAY_MS = 3000;
+
     @SuppressWarnings("unchecked")
     public Future<ZetaIOSDriver> resetIOSDriver(String ipaPath,
                                                 Optional<Map<String, Object>> additionalCaps,
                                                 int retriesCount) throws Exception {
         Optional<String> udid = Optional.empty();
+        final boolean isRealDevice = !CommonUtils.getIsSimulatorFromConfig(getClass());
 
         final DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("nativeInstrumentsLib", isUseNativeInstrumentsEnabled());
         capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
+        capabilities.setCapability(ZetaIOSDriver.AUTOMATION_NAME_CAPABILITY_NAME,
+                ZetaIOSDriver.AUTOMATION_MODE_XCUITEST);
         capabilities.setCapability("app", ipaPath);
         capabilities.setCapability("fullReset", true);
         capabilities.setCapability("appName", getAppName());
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            capabilities.setCapability("deviceName", getDeviceName(this.getClass()));
-        } else {
+        if (isRealDevice) {
+            // https://github.com/appium/appium/issues/6597
+
             // We don't really care about which particular real device model we have
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()).split("\\s+")[0]);
             udid = RealDeviceHelpers.getUDID();
             capabilities.setCapability("udid", udid.orElseThrow(
                     () -> new IllegalStateException("Cannot detect any connected iDevice")
             ));
+            capabilities.setCapability("realDeviceLogger",
+                    "/usr/local/lib/node_modules/deviceconsole/deviceconsole");
+            capabilities.setCapability("showXcodeLog", true);
+        } else {
+            capabilities.setCapability("deviceName", getDeviceName(this.getClass()));
+            // https://github.com/appium/appium-xcuitest-driver/pull/184/files
+            capabilities.setCapability("iosInstallPause", INSTALL_DELAY_MS);
         }
         capabilities.setCapability("platformVersion", getPlatformVersion());
-        capabilities.setCapability("launchTimeout", ZetaIOSDriver.MAX_COMMAND_DURATION_MILLIS);
+        capabilities.setCapability("launchTimeout", ZetaIOSDriver.MAX_SESSION_INIT_DURATION_MILLIS);
         final String backendType = getBackendType(this.getClass());
         final List<String> processArgs = new ArrayList<>(Arrays.asList(
                 "-UseHockey", "0",
@@ -155,11 +168,22 @@ public class CommonIOSSteps {
                 }
             }
         }
-        capabilities.setCapability("processArguments", String.join(" ", processArgs));
+        final JSONObject argsValue = new JSONObject();
+        argsValue.put("args", processArgs);
+        capabilities.setCapability("processArguments", argsValue.toString());
 
-        if (!CommonUtils.getIsSimulatorFromConfig(getClass()) &&
-                (capabilities.is("noReset") && !((Boolean) capabilities.getCapability("noReset")) ||
-                        !capabilities.is("noReset"))) {
+        if (isRealDevice) {
+            prepareRealDevice(capabilities, udid, ipaPath);
+        }
+
+        return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance().resetDriver(
+                getUrl(), capabilities, retriesCount
+        );
+    }
+
+    private static void prepareRealDevice(DesiredCapabilities caps, Optional<String> udid, String ipaPath)
+            throws Exception {
+        if ((caps.is("noReset") && !((Boolean) caps.getCapability("noReset")) || !caps.is("noReset"))) {
             // FIXME: Sometimes Appium fails to reset app prefs properly on real device
             if (!cachedBundleIds.containsKey(ipaPath)) {
                 final File appPath = IOSCommonUtils.extractAppFromIpa(new File(ipaPath));
@@ -170,14 +194,17 @@ public class CommonIOSSteps {
                     FileUtils.deleteDirectory(appPath);
                 }
             }
-            RealDeviceHelpers.uninstallApp(udid.orElseThrow(
+            final String dstUDID = udid.orElseThrow(
                     () -> new IllegalStateException("Cannot detect any connected iDevice")
-            ), cachedBundleIds.get(ipaPath));
-            capabilities.setCapability("fullReset", false);
+            );
+            for (String bundleId : Arrays.asList(
+                    IOS_WD_APP_BUNDLE,
+                    FACEBOOK_WD_APP_BUNDLE,
+                    cachedBundleIds.get(ipaPath))) {
+                RealDeviceHelpers.uninstallApp(dstUDID, bundleId);
+            }
+            caps.setCapability("fullReset", false);
         }
-
-        return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
-                .resetDriver(getUrl(), capabilities, retriesCount);
     }
 
     @Before
@@ -204,10 +231,6 @@ public class CommonIOSSteps {
         }
 
         final Map<String, Object> additionalCaps = new HashMap<>();
-        if (!scenario.getSourceTagNames().contains("@noAcceptAlert")) {
-            additionalCaps.put("autoAcceptAlerts", true);
-        }
-
         String appPath = getAppPath();
         if (scenario.getSourceTagNames().contains(TAG_NAME_UPGRADE) ||
                 scenario.getSourceTagNames().contains(TAG_NAME_ADDRESSBOOK)) {
@@ -404,20 +427,9 @@ public class CommonIOSSteps {
         }
     }
 
-    @When("^I press keyboard Delete button$")
-    public void IPressKeyboardDeleteBtn() throws Exception {
-        pagesCollection.getCommonPage().clickKeyboardDeleteButton();
-        pagesCollection.getCommonPage().clickKeyboardDeleteButton();
-    }
-
-    @When("^I scroll up page a bit$")
-    public void IScrollUpPageABit() throws Exception {
-        pagesCollection.getCommonPage().smallScrollUp();
-    }
-
     @When("^I accept alert$")
     public void IAcceptAlert() throws Exception {
-        pagesCollection.getCommonPage().acceptAlertIfVisible();
+        pagesCollection.getCommonPage().acceptAlert();
     }
 
     /**
@@ -434,24 +446,24 @@ public class CommonIOSSteps {
 
     @When("^I dismiss alert$")
     public void IDismissAlert() throws Exception {
-        pagesCollection.getCommonPage().dismissAlertIfVisible();
+        pagesCollection.getCommonPage().dismissAlert();
     }
 
     /**
-     * click the corresponding on-screen keyboard button
+     * Tap the corresponding on-screen keyboard button
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I click (Hide|Space|Done) keyboard button$
+     * @step. ^I tap (Hide|Space|Done) keyboard button$
      */
-    @When("^I click (Hide|Space|Done) keyboard button$")
-    public void IClickHideKeyboardBtn(String btnName) throws Exception {
+    @When("^I tap (Hide|Space|Done) keyboard button$")
+    public void ITapHideKeyboardBtn(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
             case "hide":
-                pagesCollection.getCommonPage().clickHideKeyboardButton();
+                pagesCollection.getCommonPage().tapHideKeyboardButton();
                 break;
             case "space":
-                pagesCollection.getCommonPage().clickSpaceKeyboardButton();
+                pagesCollection.getCommonPage().tapSpaceKeyboardButton();
                 break;
             case "done":
                 pagesCollection.getCommonPage().tapKeyboardCommitButton();
@@ -810,7 +822,7 @@ public class CommonIOSSteps {
     @When("^User (\\w+) changes? avatar picture to (.*)$")
     public void IChangeUserAvatarPicture(String userNameAlias, String name)
             throws Exception {
-        final String rootPath = getImagesPath(getClass());
+        final String rootPath = getImagesPathFromConfig(getClass());
         commonSteps.IChangeUserAvatarPicture(userNameAlias, rootPath
                 + "/"
                 + (name.toLowerCase().equals("default") ? DEFAULT_USER_AVATAR
@@ -871,7 +883,7 @@ public class CommonIOSSteps {
                                                String isEncrypted,
                                                String imageFileName, String conversationType,
                                                String dstConversationName) throws Exception {
-        final String imagePath = CommonUtils.getImagesPath(this.getClass()) + File.separator + imageFileName;
+        final String imagePath = CommonUtils.getImagesPathFromConfig(this.getClass()) + File.separator + imageFileName;
         final boolean isGroup = conversationType.equals("group");
         if (isEncrypted == null) {
             commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
@@ -894,28 +906,6 @@ public class CommonIOSSteps {
             throws Exception {
         pagesCollection.getCommonPage().rotateScreen(orientation);
         Thread.sleep(1000); // fix for animation
-    }
-
-    /**
-     * Tap in center of the screen
-     *
-     * @throws Exception
-     * @step. ^I tap on center of the screen$
-     */
-    @When("^I tap on center of the screen$")
-    public void ITapOnCenterOfTheScreen() throws Exception {
-        pagesCollection.getCommonPage().tapOnCenterOfScreen();
-    }
-
-    /**
-     * Tap in top left corner of the screen
-     *
-     * @throws Exception
-     * @step. ^I tap on top left corner of the screen$
-     */
-    @When("^I tap on top left corner of the screen$")
-    public void ITapOnTopLeftCornerOfTheScreen() throws Exception {
-        pagesCollection.getCommonPage().tapOnTopLeftScreen();
     }
 
     /**
@@ -1141,7 +1131,11 @@ public class CommonIOSSteps {
                               String convoName, String deviceName) throws Exception {
         String root;
         if (isTemporary == null) {
-            root = CommonUtils.getImagesPath(getClass());
+            if (mimeType.toLowerCase().contains("image")) {
+                root = CommonUtils.getImagesPathFromConfig(getClass());
+            } else {
+                root = CommonUtils.getAudioPathFromConfig(getClass());
+            }
         } else {
             root = CommonUtils.getBuildPathFromConfig(getClass());
         }
@@ -1200,7 +1194,7 @@ public class CommonIOSSteps {
      */
     @Given("^I prepare (.*) to be uploaded as a video message$")
     public void IPrepareVideoMessage(String name) throws Exception {
-        final File srcVideo = new File(getImagesPath(getClass()) + File.separator + name);
+        final File srcVideo = new File(getAudioPathFromConfig(getClass()) + File.separator + name);
         if (!srcVideo.exists()) {
             throw new IllegalArgumentException(String.format("The file %s does not exist or is not accessible",
                     srcVideo.getCanonicalPath()));

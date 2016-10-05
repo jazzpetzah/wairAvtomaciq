@@ -78,7 +78,6 @@ public class PickleJarScanner {
 
                         scenarioArray[0] = feature.getName();
                         // replacing placeholders with examples in scenario name
-                        // Pattern quote escapes characters that are dangerous in regexes
                         scenarioArray[1] = PickleExecutor.replaceExampleOccurences(scenarioDefinition.
                                 getName(), exampleRowWithHeader);
                         scenarioArray[2] = new Integer(j + 1);

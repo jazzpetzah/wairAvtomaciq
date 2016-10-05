@@ -25,6 +25,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.logging.LogEntry;
@@ -101,14 +104,6 @@ public class CommonWebAppSteps {
                                 .toString()
                                 + " does support calling but this test is just for browsers without support.");
             }
-        }
-    }
-
-    @Then("^my browser supports video message feature$")
-    public void MyBrowserSupportsInlineVideo() throws Exception {
-        if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
-            throw new PendingException("Video messages are disabled for Firefox < 49 because of https://wearezeta" +
-                    ".atlassian.net/browse/WEBAPP-2723");
         }
     }
 
@@ -274,6 +269,21 @@ public class CommonWebAppSteps {
             throws Exception {
         context.getCommonSteps().UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName,
                 otherParticipantsNameAlises);
+    }
+
+    /**
+     * userWhoRemoves removes UserB from group conversation ChatName
+     *
+     * @param userWhoRemoves          user that removes another participant from group chat
+     * @param chatName                    group chat name
+     * @param userToRemove username to be removed from the group conversation
+     * @throws Exception
+     * @step. ^(.*) removes? (.*) from group conversation (.*)
+     */
+    @Given("^(.*) removes? (.*) from group conversation (.*)")
+    public void UserRemovesContactFromGroup(String userWhoRemoves, String userToRemove, String chatName)
+            throws Exception {
+        context.getCommonSteps().UserRemovesAnotherUserFromGroupConversation(userWhoRemoves, userToRemove, chatName);
     }
 
     /**
@@ -749,9 +759,18 @@ public class CommonWebAppSteps {
                             throw new IllegalStateException(
                                     "Invitation message has not been received");
                         }).extractInvitationLink();
+        log.info("Personal invitation url: " + url);
         RegistrationPage registrationPage = context.getPagesCollection().getPage(RegistrationPage.class);
         registrationPage.setUrl(url);
         registrationPage.navigateTo();
+        // workaround when using dev (backend is sending mail with account page that redirects to staging webapp)
+        final String webapp = CommonUtils.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
+        final String backend = CommonUtils.getBackendType(CommonWebAppSteps.class);
+        if(registrationPage.getCurrentUrl().contains("staging") && webapp.contains("dev") && backend.equals("staging")) {
+            url = registrationPage.getCurrentUrl().replace("staging", "dev");
+            registrationPage.setUrl(url);
+            registrationPage.navigateTo();
+        }
     }
 
     /**
@@ -956,5 +975,28 @@ public class CommonWebAppSteps {
     @Given("^User (.*) only keeps his (\\d+) most recent OTR clients$")
     public void UserKeepsXOtrClients(String userAs, int clientsCount) throws Exception {
         context.getCommonSteps().UserKeepsXOtrClients(userAs, clientsCount);
+    }
+
+    @Then("^I see localytics event (.*) with attributes (.*)$")
+    public void ISeeLocalyticsEvent(String event, String attributes) throws Exception {
+        if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement() &&
+                WebCommonUtils.getExtendedLoggingLevelInConfig(CommonWebAppSteps.class).equals("ALL")) {
+            List<String> localyticsEvents = new ArrayList<>();
+            List<LogEntry> logEntries = context.getBrowserLog();
+            if (!logEntries.isEmpty()) {
+                for (LogEntry logEntry : logEntries) {
+                    if(logEntry.getMessage().contains("Localytics event")) {
+                        String message = logEntry.getMessage();
+                        localyticsEvents.add(message.substring(message.lastIndexOf("|") + 2));
+                    }
+                }
+            }
+            assertThat("Did not find any localytics events in browser console", not(localyticsEvents.isEmpty()));
+            for(String localyticsEvent: localyticsEvents) {
+                log.info("Found event: " + localyticsEvent);
+            }
+            assertThat("Did not find localytics event " + event + " in browser console", localyticsEvents,
+                    hasItem("Localytics event '" + event + "' with attributes: " + attributes));
+        }
     }
 }

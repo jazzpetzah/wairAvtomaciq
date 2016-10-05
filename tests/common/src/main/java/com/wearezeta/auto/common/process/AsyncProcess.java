@@ -1,4 +1,4 @@
-package com.wearezeta.common.process;
+package com.wearezeta.auto.common.process;
 
 import java.io.BufferedReader;
 import java.io.IOException;

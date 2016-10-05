@@ -172,6 +172,19 @@ class Device extends RemoteEntity implements IDevice {
     }
 
     @Override
+    public void typing(String convId) throws Exception {
+        try {
+            askActor(this.ref(), new ActorMessage.Typing(new RConvId(convId)));
+        } catch (TimeoutException e) {
+            respawn();
+            if (hasLoggedInUser()) {
+                logInWithUser(this.loggedInUser.get());
+            }
+            askActor(this.ref(), new ActorMessage.Typing(new RConvId(convId)));
+        }
+    }
+
+    @Override
     public void clearConversation(String convId) throws Exception {
         try {
             askActor(this.ref(), new ActorMessage.ClearConversation(new RConvId(convId)));
@@ -210,6 +223,34 @@ class Device extends RemoteEntity implements IDevice {
                 logInWithUser(this.loggedInUser.get());
             }
             askActor(this.ref(), new ActorMessage.UnmuteConv(new RConvId(convId)));
+        }
+    }
+
+    @Override
+    public void archiveConversation(String convId) throws Exception {
+        try {
+            askActor(this.ref(), new ActorMessage.ArchiveConv(new RConvId(convId)));
+        } catch (TimeoutException e) {
+            // recreate process and retry
+            respawn();
+            if (hasLoggedInUser()) {
+                logInWithUser(this.loggedInUser.get());
+            }
+            askActor(this.ref(), new ActorMessage.ArchiveConv(new RConvId(convId)));
+        }
+    }
+
+    @Override
+    public void unarchiveConversation(String convId) throws Exception {
+        try {
+            askActor(this.ref(), new ActorMessage.UnarchiveConv(new RConvId(convId)));
+        } catch (TimeoutException e) {
+            // recreate process and retry
+            respawn();
+            if (hasLoggedInUser()) {
+                logInWithUser(this.loggedInUser.get());
+            }
+            askActor(this.ref(), new ActorMessage.UnarchiveConv(new RConvId(convId)));
         }
     }
 

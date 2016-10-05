@@ -1,10 +1,11 @@
 Feature: Registration
 
-  @C1761 @smoke @useSpecialEmail
+  @C1761 @smoke @useSpecialEmail @localytics
   Scenario Outline: Verify new user can be registered
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password "<Password>" on Registration page
+    And Create Account button is disabled
     And I accept the Terms of Use
     And I start activation email monitoring
     And I submit registration form
@@ -16,12 +17,13 @@ Feature: Registration
     And I confirm keeping picture on Welcome page
     Then I see user name on self profile page <Name>
     Then I see user email on self profile page <Email>
+    And I see localytics event <Event> with attributes <Attributes>
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
 
     Examples: 
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Email      | Password      | Name      | Event                  | Attributes              |
+      | user1Email | user1Password | user1Name | registration.succeeded | {\"content\":\"email\"} |
 
   @C1822 @regression @useSpecialEmail
   Scenario Outline: Verify I can accept personal invitation
@@ -31,6 +33,8 @@ Feature: Registration
     When <Contact> navigates to personal invitation registration page
     Then <Contact> verifies email is correct on Registration page
     And <Contact> verifies username is correct on Registration page
+    And I verify text about Wire is visible
+    And I see intro about Wire saying <TextWire>
     And I enter user password "<Password>" on Registration page
     And I accept the Terms of Use
     And I submit registration form
@@ -39,8 +43,8 @@ Feature: Registration
     And I see Contact list with name <Name>
 
     Examples: 
-      | Login      | Password      | Name      | ContactMail | Contact    | Message |
-      | user1Email | user1Password | user1Name | user2Email  | user2Name  | Hello   |
+      | Password      | Name      | ContactMail | Contact    | Message | TextWire                                                                                     |
+      | user1Password | user1Name | user2Email  | user2Name  | Hello   | Simple, private & secure messenger for chat, calls, sharing pics, music, videos, GIFs and more. |
 
   @C1770 @smoke
   Scenario Outline: Upload own picture on Welcome page
@@ -101,8 +105,8 @@ Feature: Registration
     And I see email <UnusedEmail> on Verification page
 
     Examples: 
-      | Name      | UsedEmail  | UnusedEmail | Password      |
-      | user1Name | user1Email | user2Email  | user2Password |
+      | Name      | UsedEmail  | UnusedEmail |
+      | user1Name | user1Email | user2Email  |
 
   @C1763 @regression
   Scenario Outline: I want to see an error message if the email address is forbidden
@@ -118,7 +122,7 @@ Feature: Registration
       | Name      | Email              | Password      |
       | user1Name | nope@wearezeta.com | user1Password |
 
-  @C3219 @smoke
+  @C3219 @mute
   Scenario Outline: I want to see an error message if Terms of Use are not accepted
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page

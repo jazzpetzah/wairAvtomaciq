@@ -11,7 +11,6 @@ import java.util.concurrent.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.waz.api.Opt;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver.SurfaceOrientation;
 import com.wearezeta.auto.common.video.SequenceEncoder;
@@ -19,7 +18,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.net.ntp.NTPUDPClient;
 import org.apache.log4j.Logger;
 import org.jcodec.common.model.Picture;
 
@@ -116,11 +114,15 @@ public class CommonUtils {
     }
 
     public static String getDefaultUserImagePath(Class<?> c) throws Exception {
-        return getImagesPath(c) + USER_IMAGE;
+        return getImagesPathFromConfig(c) + USER_IMAGE;
     }
 
-    public static String getImagesPath(Class<?> c) throws Exception {
+    public static String getImagesPathFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "defaultImagesPath");
+    }
+
+    public static String getAudioPathFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "defaultAudioPath");
     }
 
     public static String getPictureResultsPathFromConfig(Class<?> c) throws Exception {
@@ -311,6 +313,27 @@ public class CommonUtils {
         }
     }
 
+    public static String getAccountPagesFromConfig(Class<?> c) throws Exception {
+        String path = System.getProperty("accountPagesPath");
+        if (path != null && !path.isEmpty()) {
+            return path;
+        } else {
+            final String currentBackendType = getBackendType(c);
+            switch (currentBackendType.toLowerCase()) {
+                case "edge":
+                    return getValueFromConfig(c, "accountPagesEdgePath");
+                case "dev":
+                    return getValueFromConfig(c, "accountPagesStagingPath");
+                case "staging":
+                    return getValueFromConfig(c, "accountPagesStagingPath");
+                case "production":
+                    return getValueFromConfig(c, "accountPagesProductionPath");
+                default:
+                    return getValueFromConfig(c, "accountPagesProductionPath");
+            }
+        }
+    }
+
     public static String getAndroidApplicationPathFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "androidApplicationPath");
     }
@@ -341,10 +364,6 @@ public class CommonUtils {
 
     public static boolean getHasBackendSelection(Class<?> c) throws Exception {
         return getValueFromConfig(c, "hasBackendSelection").toLowerCase().equals("true");
-    }
-
-    public static String getiOSAddressbookAppPathFromConfig(Class<?> c) throws Exception {
-        return getValueFromConfig(c, "iosAddressbookAppPath");
     }
 
     public static String getAndroidPackageFromConfig(Class<?> c) {
@@ -466,10 +485,6 @@ public class CommonUtils {
 
     public static String getPlatformVersionFromConfig(Class<?> cls) throws Exception {
         return getValueFromConfig(cls, "platformVersion");
-    }
-
-    public static Optional<String> getIsUseNativeInstrumentsLibFromConfig(Class<?> cls) throws Exception {
-        return getOptionalValueFromConfig(cls, "useNativeInstrumentsLib");
     }
 
     public static String getIOSAppName(Class<?> cls) throws Exception {
@@ -602,17 +617,6 @@ public class CommonUtils {
         return executeUIShellScript(scriptContent.toArray(asArray));
     }
 
-    private static final String TIME_SERVER = "time-a.nist.gov";
-
-    public static Future<Long> getPreciseTime() throws Exception {
-        final Callable<Long> task = () -> {
-            final NTPUDPClient timeClient = new NTPUDPClient();
-            final InetAddress inetAddress = InetAddress.getByName(TIME_SERVER);
-            return new Date(timeClient.getTime(inetAddress).getReturnTime()).getTime();
-        };
-        return Executors.newSingleThreadExecutor().submit(task);
-    }
-
     public static String getLocalIP4Address() throws UnknownHostException {
         return InetAddress.getLocalHost().getHostAddress();
     }
@@ -703,9 +707,6 @@ public class CommonUtils {
 
     /**
      * Convert formatted file size such as 50KB, 30.00MB into bytes
-     *
-     * @param size
-     * @return file size in bytes
      */
     public static long getFileSizeFromString(String size) {
         final String[] sizeParts = size.split("(?<=\\d)\\s*(?=[a-zA-Z])");
@@ -779,13 +780,6 @@ public class CommonUtils {
 
     /**
      * Wait until the block do not throw exception or timeout
-     *
-     * @param timeoutSeconds
-     * @param interval
-     * @param function
-     * @param <T>
-     * @return
-     * @throws Exception
      */
     public static <T> Optional<T> waitUntil(int timeoutSeconds, long interval, Callable<T> function) throws Exception {
         final long millisecondsStarted = System.currentTimeMillis();
@@ -802,12 +796,6 @@ public class CommonUtils {
 
     /**
      * Wait until the block get true
-     *
-     * @param timeoutSeconds
-     * @param interval
-     * @param function
-     * @return
-     * @throws Exception
      */
     public static boolean waitUntilTrue(int timeoutSeconds, long interval, Callable<Boolean> function)
             throws Exception {

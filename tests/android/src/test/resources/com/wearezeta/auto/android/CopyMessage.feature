@@ -9,7 +9,7 @@ Feature: Copy Message
     Given I see Conversations list with conversations
     And I tap on conversation name <Contact>
     And I tap on text input
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     When I long tap the Text message "<Message>" in the conversation view
     And I tap Copy button on the message bottom menu
     Then I verify that Android clipboard content equals to "<Message>"
@@ -19,7 +19,7 @@ Feature: Copy Message
       | user1Name | user2Name | Yo      |
 
   @C119436 @regression @rc
-  Scenario Outline: Verify copy multimedia link from youtube/soundcould
+  Scenario Outline: (BUG AN-4543) Verify copy multimedia link from youtube/soundcould
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number

@@ -48,8 +48,7 @@ public final class WebAppLocators {
         public static final String errorMarkedPasswordField = "#form-account-login " +
                 ".input-error[data-uie-name='enter-password']";
 
-        // TODO change to '#wire-login-password-remember label' when gregor merges his phone login changes
-        public static final String cssRememberMe = "#remember-me label";
+        public static final String cssRememberMe = "#wire-login-password-remember label";
 
         public static final String cssForgotPassword = "[data-uie-name='go-forgot-password']";
     }
@@ -121,6 +120,7 @@ public final class WebAppLocators {
 
         public static final Function<Integer, String> xpathContactListEntryByIndex = (
                 idx) -> String.format("(%s)[%s]", xpathContactListEntries, idx);
+
         public static final String xpathArchivedContactListEntries = xpathParentArchiveListItem
                 + "//*[@data-uie-name='item-conversation-archived']";
 
@@ -388,6 +388,10 @@ public final class WebAppLocators {
         public static final Function<String, String> cssLinkPreviewLinkByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] .link-preview-site", text);
 
+        public static final String cssDeleteForMeInContext = "[data-context-action='delete']";
+
+        public static final String cssDeleteForEveryoneInContext = "[data-context-action='delete-everyone']";
+
         public static final Function<String, String> cssLikeSymbol = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-body-like", text);
 
@@ -400,6 +404,9 @@ public final class WebAppLocators {
 
         public static final Function<String, String> cssEditButtonByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='do-message-edit']", text);
+
+        public static final Function<String, String> cssLikeButtonByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='do-message-react']", text);
 
         public static final String cssDoDelete = "[data-uie-name='do-delete']";
 
@@ -419,19 +426,36 @@ public final class WebAppLocators {
 
         public static final String cssCloseResetSessionDialog = "[data-uie-name='modal-session-reset'] [data-uie-name='do-close']";
 
-        public static final String cssLastMessage = "[data-uie-name='item-message']:last-child";
+        public static final String cssLastMessage = "[data-uie-name='item-message']:nth-last-child(1)";
 
         public static final String cssSecondLastMessage = "[data-uie-name='item-message']:nth-last-child(2)";
 
-        public static final String cssLastTextMessage = cssLastMessage
-                + " .text";
+        public static final Function<Integer, String> cssLastMessageByIndex = (
+                index) -> String.format("%s:nth-last-child(%s)", cssMessage, index);
 
-        public static final String cssSecondLastTextMessage = cssSecondLastMessage
-                + " .text";
+        public static final String cssLastTextMessage = cssLastMessage + " .text";
+
+        public static final String cssSecondLastTextMessage = cssSecondLastMessage + " .text";
 
         public static final String cssFirstAction = cssMessage + " .action";
 
         public static final String cssLastAction = cssLastMessage + " .action";
+
+        public static final String cssLastEditTimestamp = cssLastMessage + " .icon-edit";
+
+        public static final String cssSecondLastEditTimestamp = cssSecondLastMessage + " .icon-edit";
+
+        public static final String cssLastMsgHeader = cssLastMessage + " .message-header-label";
+
+        public static final String cssSecondLastMsgHeader = cssSecondLastMessage + " .message-header-label";
+
+        public static final String cssLastLikeLine = cssLastMessage + " [data-uie-name='message-liked-names']";
+
+        public static final String cssLastLikeList = cssLastMessage + " [data-uie-name='message-liked-avatars']";
+
+        public static final String cssXLastLikeList = cssLastMessage + " .icon-close";
+
+        public static final String cssLikeListAvatars = cssLastLikeList + " .user-avatar-xs";
 
         //Link preview
 
@@ -892,13 +916,11 @@ public final class WebAppLocators {
 
     public static final class AddEmailAddressPage {
 
-        public static final String cssErrorMessage = "#form-verify-email [data-uie-name='status-error']";
+        public static final String cssErrorMessage = "#form-verify-account [data-uie-name='status-error']";
 
-        public static final String cssSkipForNowButton = "[data-uie-name='go-add-later']";
+        public static final String cssErrorMarkedEmailField = "#form-verify-account .input-error[data-uie-name='enter-email']";
 
-        public static final String cssErrorMarkedEmailField = "#form-verify-email .input-error[data-uie-name='enter-email']";
-
-        public static final String cssErrorMarkedPasswordField = "#form-verify-email " +
+        public static final String cssErrorMarkedPasswordField = "#form-verify-account " +
                 ".input-error[data-uie-name='enter-password']";
     }
 

@@ -165,7 +165,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @C388  @C111632 @regression @rc
+  @C388 @C111632 @regression @rc
   Scenario Outline: I would not know other person has ignored my connection request
     Given There are 3 users where <Name> is me
     Given Myself is connected to <IntermediateContact>
@@ -181,7 +181,6 @@ Feature: Connect
     When I click Connect button on connect to page
     And <Contact> ignore all requests
     And I press Clear button
-    And I tap on conversation name <Contact>
     Then I see that connection is pending
     And I do not see cursor toolbar
     And I do not see text input
@@ -424,7 +423,7 @@ Feature: Connect
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap on text input
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     And User <Name> blocks user <Contact>
     And User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     And User <Contact> sends encrypted message to user <Name>

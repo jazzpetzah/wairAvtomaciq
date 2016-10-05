@@ -50,8 +50,8 @@ Feature: Link Preview
     And I see the conversation view contains message <Text1> <Link> <Text>
 
     Examples:
-      | Name      | Contact   | Link                                                                                  | Text    | Text1      |
-      | user1Name | user2Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 | My text | Text first |
+      | Name      | Contact   | Link             | Text    | Text1      |
+      | user1Name | user2Name | https://wire.com | My text | Text first |
 
   @C169224 @regression @fastLogin
   Scenario Outline: Verify preview is shown for shortened URL
@@ -61,13 +61,11 @@ Feature: Link Preview
     Given I see conversations list
     When I tap on contact name <Contact>
     And I type the "<Shortenlink>" message and send it
-    And I navigate back to conversations list
-    And I tap on contact name <Contact>
     Then I see link preview container in the conversation view
 
     Examples:
-      | Name      | Contact   | Shortenlink          |
-      | user1Name | user2Name | http://goo.gl/pA9mgH |
+      | Name      | Contact   | Shortenlink           |
+      | user1Name | user2Name | https://goo.gl/pywMuA |
 
   @C167039 @rc @regression @fastLogin
   Scenario Outline: Verify preview is shown for different formats of link
@@ -118,8 +116,8 @@ Feature: Link Preview
     Then I see link preview container in the conversation view
 
     Examples:
-      | Name      | Contact   | Contact1  | Link                                                                                  |
-      | user1Name | user2Name | user3Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 |
+      | Name      | Contact   | Contact1  | Link             |
+      | user1Name | user2Name | user3Name | https://wire.com |
 
   @C167033 @regression @fastLogin
   Scenario Outline: Verify preview is shown without picture when there are none
@@ -154,6 +152,8 @@ Feature: Link Preview
     Then I see the conversation view contains message <SoundCloudLink>
     And I do not see link preview container in the conversation view
     When User <Contact> sends encrypted message "<VimeoLink>" to user <Name>
+    # Wait for the message to be delivered
+    And I wait for 5 seconds
     Then I see the conversation view contains message <VimeoLink>
     And I do not see link preview container in the conversation view
     When I type tag for giphy preview <GiphyTag> and open preview overlay

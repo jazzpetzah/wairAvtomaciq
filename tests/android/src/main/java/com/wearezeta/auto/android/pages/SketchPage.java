@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.Future;
-import java.util.function.Function;
 
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.openqa.selenium.By;
@@ -23,14 +22,23 @@ public class SketchPage extends AndroidPage {
 
     private static final By idSendButton = By.id("tv__send_button");
 
-    private static final Function<String, String> xpathStrEmojiKey = emojiKey -> String
-            .format("//*[@id='emoji_keyboard_item' and @value='%s']", emojiKey);
-
     // Colors should be in the order they appear in the color picker
-    public static final String[] colors = {"emoji","white", "black", "blue", "green",
-            "yellow", "red", "orange", "pink", "purple"};
+    public enum SketchColor {
+        EMOJI(0), WHITE(1), BLACK(2), BLUE(3), GREEN(4), YELLOW(5), RED(6), ORANGE(7), PINK(8), PURPLE(9);
 
-    private int selectedColorIndex = 1; // default to white
+        private int index;
+
+        SketchColor(int index) {
+            this.index = index;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+    }
+
+
+    private SketchColor selectedColor = SketchColor.WHITE; // default to white
 
     /**
      * The padding value on either sides of the color picker. Taken from the
@@ -46,29 +54,25 @@ public class SketchPage extends AndroidPage {
         super(lazyDriver);
     }
 
-    public void setColor(int colorIndex) throws Exception {
-        this.selectedColorIndex = colorIndex;
+    public void setColor(SketchColor color) throws Exception {
+        this.selectedColor = color;
         selectColorFromChooser(getElement(idColorPicker));
     }
 
     private void selectColorFromChooser(WebElement colorPicker)
             throws Exception {
-        int numColors = colors.length;
+        int numColors = SketchColor.values().length;
         double colorPickerElementWidth = colorPicker.getSize().width;
         // the actual select area is a bit smaller than the width of the element
-        double colorPickerSelectorWidth = colorPickerElementWidth - 2
-                * colorPickerPadding;
+        double colorPickerSelectorWidth = colorPickerElementWidth - 2 * colorPickerPadding;
 
         double colorWidth = colorPickerSelectorWidth / numColors;
 
-        double colorPosition = colorWidth * selectedColorIndex
-                + ((0.5) * colorWidth);
-        double percentX = (colorPickerPadding + colorPosition)
-                / colorPickerElementWidth * 100;
+        double colorPosition = colorWidth * selectedColor.getIndex() + ((0.5) * colorWidth);
+        double percentX = (colorPickerPadding + colorPosition) / colorPickerElementWidth * 100;
         int percentY = 50;
 
-        DriverUtils.tapOnPercentOfElement(this.getDriver(), colorPicker,
-                (int) percentX, percentY);
+        DriverUtils.tapOnPercentOfElement(this.getDriver(), colorPicker, (int) percentX, percentY);
 
         // This is needed according to current control algorithm
         Thread.sleep(1000);
@@ -108,18 +112,15 @@ public class SketchPage extends AndroidPage {
                 log.debug("Can't find send sketch button. Page source: " + getDriver().getPageSource());
             }
         }
+        // Wait for animation
+        Thread.sleep(2000);
     }
 
     public Optional<BufferedImage> getCanvasScreenshot() throws Exception {
         return this.getElementScreenshot(getElement(idCanvas));
     }
 
-    public void pickEmoji() throws Exception {
-        final WebElement emojiKey = getElement(By.xpath(xpathStrEmojiKey.apply("\uD83D\uDE00")));
-        DriverUtils.tapInTheCenterOfTheElement(getDriver(), emojiKey);
-    }
-
     public void drawEmojiOnCanvas() throws Exception {
-            DriverUtils.tapInTheCenterOfTheElement(getDriver(),getElement(idCanvas));
+        DriverUtils.tapInTheCenterOfTheElement(getDriver(), getElement(idCanvas));
     }
 }

@@ -1,9 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.StringReader;
 import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.concurrent.TimeoutException;
@@ -12,8 +10,8 @@ import java.util.function.Function;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.driver.*;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
@@ -28,18 +26,7 @@ import com.wearezeta.auto.ios.pages.keyboard.IOSKeyboard;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.remote.UnreachableBrowserException;
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
 
 public abstract class IOSPage extends BasePage {
     private static final Logger log = ZetaLogger.getLog(IOSPage.class.getSimpleName());
@@ -49,10 +36,6 @@ public abstract class IOSPage extends BasePage {
     private static final int DEFAULT_RETRY_COUNT = 2;
 
     protected static final String nameStrMainWindow = "ZClientMainWindow";
-    protected static final By nameMainWindow = MobileBy.AccessibilityId(nameStrMainWindow);
-
-    protected static final String xpathStrMainWindow =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']";
 
     private static final By nameBadgeItemSelectAll = MobileBy.AccessibilityId("Select All");
     private static final By nameBadgeItemCopy = MobileBy.AccessibilityId("Copy");
@@ -64,43 +47,35 @@ public abstract class IOSPage extends BasePage {
     private static final By nameBadgeItemUnlike = MobileBy.AccessibilityId("Unlike");
 
     private static final Function<String, String> xpathStrAlertByText = text ->
-            String.format("//UIAAlert[ .//*[contains(@name, '%s')] or contains(@name, '%s')]", text, text);
+            String.format("//XCUIElementTypeAlert[ .//*[contains(@name, '%s')] or contains(@name, '%s')]", text, text);
 
-    protected static final By xpathBrowserURLButton = By.xpath("//UIAButton[@name='URL']");
+    protected static final By xpathBrowserURLButton = By.xpath("//XCUIElementTypeButton[@name='URL']");
 
     protected static final By nameBackToWireBrowserButton = MobileBy.AccessibilityId("Back to Wire");
 
-    protected static final By xpathConfirmButton = By.xpath("//UIAButton[@name='OK' and @visible='true']");
+    protected static final By xpathConfirmButton = By.xpath("//XCUIElementTypeButton[@name='OK']");
 
-    protected static final By xpathCancelButton = By.xpath("//UIAButton[@name='Cancel' and @visible='true']");
+    protected static final By xpathCancelButton = By.xpath("//XCUIElementTypeButton[@name='Cancel']");
 
     private static final By nameDoneButton = MobileBy.AccessibilityId("Done");
 
-    private static final By classAlert = By.className("UIAAlert");
-
     protected static final Function<String, String> xpathStrAlertButtonByCaption = caption ->
-            String.format("//UIAAlert//UIAButton[@label='%s']", caption);
+            String.format("//XCUIElementTypeAlert//XCUIElementTypeButton[@label='%s']", caption);
+
+    private static final Function<String, String> xpathStrAddressBarByUrlPart = urlPart ->
+            String.format("//*[contains(@name, '%s')]", urlPart);
 
     private IOSKeyboard onScreenKeyboard;
 
     protected long getDriverInitializationTimeout() {
-        return (ZetaIOSDriver.MAX_COMMAND_DURATION_MILLIS + AppiumServer.RESTART_TIMEOUT_MILLIS)
+        return (ZetaIOSDriver.MAX_SESSION_INIT_DURATION_MILLIS + AppiumServer.RESTART_TIMEOUT_MILLIS)
                 * DRIVER_CREATION_RETRIES_COUNT;
     }
-
-    private DocumentBuilder documentBuilder;
-    private XPath xpath;
 
     public IOSPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
 
         this.onScreenKeyboard = new IOSKeyboard(driver);
-
-        final DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-        domFactory.setNamespaceAware(true);
-        this.documentBuilder = domFactory.newDocumentBuilder();
-        final XPathFactory factory = XPathFactory.newInstance();
-        this.xpath = factory.newXPath();
     }
 
     @Override
@@ -124,19 +99,6 @@ public abstract class IOSPage extends BasePage {
     @Override
     protected Future<ZetaIOSDriver> getLazyDriver() {
         return (Future<ZetaIOSDriver>) super.getLazyDriver();
-    }
-
-    public void swipeUp(int time) throws Exception {
-        DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(nameMainWindow), time,
-                50, 55, 50, 10);
-    }
-
-    public void swipeDown(int time) throws Exception {
-        DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(nameMainWindow), time, 50, 10, 50, 90);
-    }
-
-    public void smallScrollUp() throws Exception {
-        this.getDriver().swipe(10, 220, 10, 200, 500);
     }
 
     private By getBadgeLocatorByName(String name) {
@@ -175,7 +137,7 @@ public abstract class IOSPage extends BasePage {
 
     public boolean isBadgeItemVisible(String name) throws Exception {
         final By locator = getBadgeLocatorByName(name);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public boolean isBadgeItemInvisible(String name) throws Exception {
@@ -183,34 +145,21 @@ public abstract class IOSPage extends BasePage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public void clickAtSimulator(int x, int y) throws Exception {
-        final Dimension windowSize = getDriver().manage().window().getSize();
-        IOSSimulatorHelper.clickAt(String.format("%.2f", x * 1.0 / windowSize.width),
-                String.format("%.2f", y * 1.0 / windowSize.height),
-                String.format("%.3f", DriverUtils.SINGLE_TAP_DURATION / 1000.0));
-    }
 
-    private void longClickAtSimulator(int x, int y) throws Exception {
-        final Dimension windowSize = getDriver().manage().window().getSize();
-        IOSSimulatorHelper.clickAt(String.format("%.2f", x * 1.0 / windowSize.width),
-                String.format("%.2f", y * 1.0 / windowSize.height), "2");
-    }
-
-    public void inputStringFromPasteboard(WebElement dstElement, boolean shouldCommitInput) throws Exception {
-        final Dimension elSize = dstElement.getSize();
-        final Point elLocation = dstElement.getLocation();
-        final int tapX = elLocation.x + elSize.width / 2;
-        final int tapY = elLocation.y + elSize.height / 2;
+    public void inputStringFromPasteboard(FBElement dstElement, boolean shouldCommitInput) throws Exception {
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            longClickAtSimulator(tapX, tapY);
-            getElement(nameBadgeItemPaste).click();
-            if (shouldCommitInput) {
-                IOSSimulatorHelper.pressEnterKey();
-            }
+            longClickAt(dstElement);
         } else {
-            getDriver().tap(1, tapX, tapY, DriverUtils.LONG_TAP_DURATION);
-            getElement(nameBadgeItemPaste, "Paste item is not visible", 15).click();
-            if (shouldCommitInput) {
+            dstElement.longTap();
+        }
+        getElement(nameBadgeItemPaste).click();
+        // Wait for animation
+        Thread.sleep(2000);
+        if (shouldCommitInput) {
+            if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+                IOSSimulatorHelper.pressEnterKey();
+                Thread.sleep(1000);
+            } else {
                 this.tapKeyboardCommitButton();
             }
         }
@@ -224,45 +173,70 @@ public abstract class IOSPage extends BasePage {
         return this.onScreenKeyboard.isInvisible(timeoutSeconds);
     }
 
-    public void clickKeyboardDeleteButton() throws Exception {
+    public void tapKeyboardDeleteButton() throws Exception {
         this.onScreenKeyboard.pressDeleteButton();
     }
 
-    public void clickHideKeyboardButton() throws Exception {
+    public void tapHideKeyboardButton() throws Exception {
         this.onScreenKeyboard.pressHideButton();
     }
 
-    public void clickSpaceKeyboardButton() throws Exception {
+    public void tapSpaceKeyboardButton() throws Exception {
         this.onScreenKeyboard.pressSpaceButton();
     }
 
     public void tapKeyboardCommitButton() throws Exception {
         this.onScreenKeyboard.pressCommitButton();
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
-    public static Object executeScript(String script) throws Exception {
-        return PlatformDrivers.getInstance().getDriver(Platform.iOS).get()
-                .executeScript(script);
+    public void acceptAlert() throws Exception {
+        handleAlert(true, DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
-    public void acceptAlertIfVisible() throws Exception {
-        acceptAlertIfVisible(DriverUtils.getDefaultLookupTimeoutSeconds());
-    }
+    private final static int MAX_ALERT_HANDLING_RETRIES = 5;
 
-    public void acceptAlertIfVisible(int timeoutSeconds) throws Exception {
-        if (waitUntilAlertAppears(timeoutSeconds)) {
-            getDriver().switchTo().alert().accept();
+    public void handleAlert(boolean shouldAccept, int timeoutSeconds) throws Exception {
+        final Optional<String> initialAlertText = readAlertText(timeoutSeconds);
+        if (initialAlertText.isPresent()) {
+            int retry = 0;
+            do {
+                try {
+                    // Workaround for https://github.com/facebook/WebDriverAgent/issues/300
+                    boolean wasLandscape = false;
+                    if (getDriver().getOrientation() == ScreenOrientation.LANDSCAPE) {
+                        getDriver().rotate(ScreenOrientation.PORTRAIT);
+                        wasLandscape = true;
+                    }
+                    if (shouldAccept) {
+                        getDriver().switchTo().alert().accept();
+                    } else {
+                        getDriver().switchTo().alert().dismiss();
+                    }
+                    if (wasLandscape) {
+                        getDriver().rotate(ScreenOrientation.LANDSCAPE);
+                    }
+                } catch (WebDriverException e) {
+                    // ignore silently
+                }
+                final Optional<String> currentText = readAlertText(1);
+                if (!currentText.isPresent() || !currentText.get().equals(initialAlertText.get())) {
+                    return;
+                }
+                retry++;
+            } while (retry < MAX_ALERT_HANDLING_RETRIES);
+            if (retry < MAX_ALERT_HANDLING_RETRIES) {
+                return;
+            }
         }
+        throw new IllegalStateException(
+                String.format("No alert has been shown after %s seconds or it cannot be %s after %s retries",
+                        timeoutSeconds, shouldAccept ? "accepted" : "dismissed", MAX_ALERT_HANDLING_RETRIES));
     }
 
-    public void dismissAlertIfVisible() throws Exception {
-        dismissAlertIfVisible(DriverUtils.getDefaultLookupTimeoutSeconds());
-    }
-
-    public void dismissAlertIfVisible(int timeoutSeconds) throws Exception {
-        if (waitUntilAlertAppears(timeoutSeconds)) {
-            getDriver().switchTo().alert().dismiss();
-        }
+    public void dismissAlert() throws Exception {
+        handleAlert(false, DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
     public boolean isAlertContainsText(String expectedText) throws Exception {
@@ -290,7 +264,6 @@ public abstract class IOSPage extends BasePage {
             IOSSimulatorHelper.launchApp(bundleId);
             Thread.sleep(1000);
         } else {
-            // https://discuss.appium.io/t/runappinbackground-does-not-work-for-ios9/6201
             this.getDriver().runAppInBackground(timeSeconds);
         }
     }
@@ -311,15 +284,21 @@ public abstract class IOSPage extends BasePage {
         doubleClickAt(el, 50, 50);
     }
 
-    @SuppressWarnings("unused")
-    protected void longClickAt(WebElement el) throws Exception {
+    protected void longClickAt(WebElement el, int percentX, int percentY) throws Exception {
+        if (!CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            throw new IllegalStateException("This method works for iOS Simulator only");
+        }
         final Dimension elSize = el.getSize();
         final Point elLocation = el.getLocation();
         final Dimension windowSize = getDriver().manage().window().getSize();
         IOSSimulatorHelper.clickAt(
-                String.format("%.2f", (elLocation.x + elSize.width / 2) * 1.0 / windowSize.width),
-                String.format("%.2f", (elLocation.y + elSize.height / 2) * 1.0 / windowSize.height),
+                String.format("%.2f", (elLocation.x + elSize.width * percentX / 100.0) / windowSize.width),
+                String.format("%.2f", (elLocation.y + elSize.height * percentY / 100.0) / windowSize.height),
                 String.format("%.3f", DriverUtils.LONG_TAP_DURATION / 1000.0));
+    }
+
+    protected void longClickAt(WebElement el) throws Exception {
+        this.longClickAt(el, 50, 50);
     }
 
     public void rotateScreen(ScreenOrientation orientation) throws Exception {
@@ -344,14 +323,6 @@ public abstract class IOSPage extends BasePage {
         this.getDriver().rotate(ScreenOrientation.PORTRAIT);
     }
 
-    public void tapOnCenterOfScreen() throws Exception {
-        DriverUtils.genericTap(this.getDriver());
-    }
-
-    public void tapOnTopLeftScreen() throws Exception {
-        DriverUtils.genericTap(this.getDriver(), 1, 1);
-    }
-
     public void lockScreen(int timeSeconds) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
@@ -368,11 +339,27 @@ public abstract class IOSPage extends BasePage {
             IOSSimulatorHelper.swipeRight();
             Thread.sleep(2000);
         } else {
-            this.getDriver().lockScreen(timeSeconds);
+            this.getDriver().lockDevice(timeSeconds);
         }
     }
 
-    public void lockScreenOnRealDevice() throws Exception {
+    public void swipeAtElement(WebElement el, int percentStartX, int percentStartY,
+                               int percentEndX, int percentEndY, double durationSeconds) throws Exception {
+        if (!CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            throw new IllegalStateException("This method is supported only on Simulator");
+        }
+        final Point location = el.getLocation();
+        final Dimension size = el.getSize();
+        final Dimension screenSize = getDriver().manage().window().getSize();
+        IOSSimulatorHelper.swipe(
+                (location.getX() + percentStartX * size.getWidth() / 100.0) / screenSize.getWidth(),
+                (location.getY() + percentStartY * size.getHeight() / 100.0) / screenSize.getHeight(),
+                (location.getX() + percentEndX * size.getWidth() / 100.0) / screenSize.getWidth(),
+                (location.getY() + percentEndY * size.getHeight() / 100.0) / screenSize.getHeight(),
+                (long) (durationSeconds * 1000.0));
+    }
+
+    public Future<?> lockScreenOnRealDevice() throws Exception {
         /*
         this method can return the future itself, so you have more control over execution.
         Also, it might come in handy to pass timeout as a parameter.
@@ -386,14 +373,13 @@ public abstract class IOSPage extends BasePage {
          */
         final ZetaIOSDriver driver = this.getDriver();
         final Callable callable = () -> {
-            driver.lockScreen(20);
+            driver.lockDevice(20);
             return true;
         };
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(callable);
+        return Executors.newSingleThreadExecutor().submit(callable);
     }
 
-    public void clickElementWithRetryIfStillDisplayed(By locator, int retryCount) throws Exception {
+    public void tapElementWithRetryIfStillDisplayed(By locator, int retryCount) throws Exception {
         WebElement el = getElement(locator);
         int counter = 0;
         do {
@@ -406,11 +392,11 @@ public abstract class IOSPage extends BasePage {
         throw new IllegalStateException(String.format("Locator %s is still displayed", locator));
     }
 
-    public void clickElementWithRetryIfStillDisplayed(By locator) throws Exception {
-        clickElementWithRetryIfStillDisplayed(locator, DEFAULT_RETRY_COUNT);
+    public void tapElementWithRetryIfStillDisplayed(By locator) throws Exception {
+        tapElementWithRetryIfStillDisplayed(locator, DEFAULT_RETRY_COUNT);
     }
 
-    public void clickElementWithRetryIfNextElementNotAppears(By locator, By nextLocator, int retryCount)
+    public void tapElementWithRetryIfNextElementNotAppears(By locator, By nextLocator, int retryCount)
             throws Exception {
         WebElement el = getElement(locator);
         int counter = 0;
@@ -424,8 +410,8 @@ public abstract class IOSPage extends BasePage {
         throw new IllegalStateException(String.format("Locator %s did't appear", nextLocator));
     }
 
-    public void clickElementWithRetryIfNextElementAppears(By locator, By nextLocator) throws Exception {
-        clickElementWithRetryIfNextElementNotAppears(locator, nextLocator, DEFAULT_RETRY_COUNT);
+    public void tapElementWithRetryIfNextElementAppears(By locator, By nextLocator) throws Exception {
+        tapElementWithRetryIfNextElementNotAppears(locator, nextLocator, DEFAULT_RETRY_COUNT);
     }
 
     @Override
@@ -433,7 +419,7 @@ public abstract class IOSPage extends BasePage {
         try {
             return super.getElement(locator);
         } catch (Exception e) {
-            log.debug(getDriver().getPageSource());
+            printPageSource();
             throw e;
         }
     }
@@ -443,7 +429,7 @@ public abstract class IOSPage extends BasePage {
         try {
             return super.getElement(locator, message);
         } catch (Exception e) {
-            log.debug(getDriver().getPageSource());
+            printPageSource();
             throw e;
         }
     }
@@ -453,35 +439,36 @@ public abstract class IOSPage extends BasePage {
         try {
             return super.getElement(locator, message, timeoutSeconds);
         } catch (Exception e) {
-            log.debug(getDriver().getPageSource());
+            printPageSource();
             throw e;
+        }
+    }
+
+    protected boolean isElementDisplayed(By locator) throws Exception {
+        return this.isElementDisplayed(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
+    }
+
+    protected boolean isElementDisplayed(By locator, int timeoutSeconds) throws Exception {
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, timeoutSeconds)) {
+            return true;
+        } else {
+            this.printPageSource();
+            return false;
         }
     }
 
     public boolean isWebPageVisible(String expectedUrl) throws Exception {
         final WebElement urlBar = getElement(xpathBrowserURLButton, "The address bar of web browser is not visible");
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            final Dimension elSize = urlBar.getSize();
-            final Point elLocation = urlBar.getLocation();
-            clickAtSimulator(elLocation.x + elSize.width / 6, elLocation.y + elSize.height / 2);
-            Thread.sleep(1000);
-        } else {
-            urlBar.click();
-        }
+        urlBar.click();
         return DriverUtils.waitUntilLocatorAppears(getDriver(),
-                By.xpath(String.format("//*[starts-with(@name, '%s')]", expectedUrl)));
+                By.xpath(xpathStrAddressBarByUrlPart.apply(expectedUrl)));
     }
 
     public void tapBackToWire() throws Exception {
         final WebElement backToWireButton = getElement(nameBackToWireBrowserButton);
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            final Dimension elSize = backToWireButton.getSize();
-            final Point elLocation = backToWireButton.getLocation();
-            clickAtSimulator(elLocation.x + elSize.width / 2, elLocation.y + elSize.height / 2);
-            Thread.sleep(1000);
-        } else {
-            backToWireButton.click();
-        }
+        backToWireButton.click();
+        // Wait for animation
+        Thread.sleep(3000);
     }
 
     public void installIpa(File ipaFile) throws Exception {
@@ -495,27 +482,6 @@ public abstract class IOSPage extends BasePage {
 
     public void tapConfirmButton() throws Exception {
         getElement(xpathConfirmButton).click();
-    }
-
-    /**
-     * fixes taking tablet simulator screenshots via simshot
-     *
-     * @return Optinal screenshot image
-     * @throws Exception
-     */
-    @Override
-    public Optional<BufferedImage> takeScreenshot() throws Exception {
-        Optional<BufferedImage> result = super.takeScreenshot();
-        if (CommonUtils.getIsSimulatorFromConfig(getClass()) && result.isPresent()) {
-            final Dimension screenSize = getDriver().manage().window().getSize();
-            final double scaleX = 1.0 * result.get().getWidth() / screenSize.getWidth();
-            final double scaleY = 1.0 * result.get().getHeight() / screenSize.getHeight();
-            if (scaleX < 1 || scaleY < 1) {
-                final double scale = (scaleX > scaleY) ? scaleY : scaleX;
-                result = Optional.of(ImageUtil.resizeImage(result.get(), (float) (1.0 / scale)));
-            }
-        }
-        return result;
     }
 
     public void tapCancelButton() throws Exception {
@@ -534,34 +500,32 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
-    protected Optional<Rectangle> getElementBounds(String xpathExpr) throws Exception {
-        final String docStr = getDriver().getPageSource();
-        final Document doc = documentBuilder.parse(new InputSource(new StringReader(docStr)));
-        final XPathExpression expr = xpath.compile(xpathExpr);
-        final NodeList result = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
-        if (result.getLength() == 0) {
-            log.debug(xpathExpr);
-            log.debug(docStr);
-            return Optional.empty();
-        }
-        final Node node = result.item(0);
-        final NamedNodeMap attributes = node.getAttributes();
-        return Optional.of(new Rectangle((int) Double.parseDouble(attributes.getNamedItem("x").getNodeValue()),
-                (int) Double.parseDouble(attributes.getNamedItem("y").getNodeValue()),
-                (int) Double.parseDouble(attributes.getNamedItem("width").getNodeValue()),
-                (int) Double.parseDouble(attributes.getNamedItem("height").getNodeValue())));
+    public void tapByPercentOfElementSize(FBElement el, int percentX, int percentY) throws Exception {
+        final Dimension size = el.getSize();
+        el.tap(percentX * size.getWidth() / 100, percentY * size.getHeight() / 100);
     }
 
-    public void tapOnScreenCenter() throws Exception {
-        DriverUtils.genericTap(getDriver(), 50, 50);
+    public void tapAtTheCenterOfElement(FBElement el) throws Exception {
+        tapByPercentOfElementSize(el, 50, 50);
     }
 
-    public boolean waitUntilAlertAppears() throws Exception {
-        return waitUntilAlertAppears(DriverUtils.getDefaultLookupTimeoutSeconds());
+    public Optional<String> readAlertText() throws Exception {
+        return readAlertText(DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
-    public boolean waitUntilAlertAppears(int timeoutSeconds) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), classAlert, timeoutSeconds);
+    public Optional<String> readAlertText(int timeoutSeconds) throws Exception {
+        final long msStart = System.currentTimeMillis();
+        do {
+            try {
+                final String text = getDriver().switchTo().alert().getText();
+                if (text != null && text.length() > 0 && !text.equals("null")) {
+                    return Optional.of(text);
+                }
+            } catch (WebDriverException e) {
+                Thread.sleep(500);
+            }
+        } while (System.currentTimeMillis() - msStart <= timeoutSeconds * 1000);
+        return Optional.empty();
     }
 
     public void tapAlertButton(String caption) throws Exception {
@@ -571,5 +535,27 @@ public abstract class IOSPage extends BasePage {
 
     public boolean isKeyboardInvisible() throws Exception {
         return this.onScreenKeyboard.isInvisible();
+    }
+
+    /**
+     * fixes taking tablet simulator screenshots via simshot
+     *
+     * @return Optinal screenshot image
+     * @throws Exception
+     */
+    @Override
+    public Optional<BufferedImage> takeScreenshot() throws Exception {
+        Optional<BufferedImage> screenshotImage = super.takeScreenshot();
+        if (screenshotImage.isPresent()) {
+            final Dimension screenSize = getDriver().manage().window().getSize();
+            if (screenshotImage.get().getWidth() != screenSize.getWidth()) {
+                // proportions are expected to be the same
+                final double scale = 1.0 * screenSize.getWidth() / screenshotImage.get().getWidth();
+                screenshotImage = Optional.of(
+                        ImageUtil.resizeImage(screenshotImage.get(), (float) scale)
+                );
+            }
+        }
+        return screenshotImage;
     }
 }

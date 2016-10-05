@@ -4,9 +4,9 @@ import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import org.openqa.selenium.By;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -14,27 +14,12 @@ import org.openqa.selenium.WebElement;
 
 
 public class TabletConversationsListPage extends ConversationsListPage {
-    private static final By xpathConversationListPage =
-            By.xpath("//UIAApplication[1]/UIAWindow[2]/UIACollectionView[1]");
-
     protected static final Function<String, String> xpathStrConvoListTitleByName = name ->
-            String.format("%s/UIAStaticText[@value='%s']", xpathStrContactListItems, name);
+            String.format("%s/XCUIElementTypeStaticText[@value='%s']", xpathStrContactListItems, name);
 
     public TabletConversationsListPage(Future<ZetaIOSDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
-    }
-
-    @Override
-    public void swipeDown(int time) throws Exception {
-        DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationListPage), time,
-                20, 15, 20, 90);
-    }
-
-    @Override
-    public void swipeUp(int time) throws Exception {
-        DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationListPage), time,
-                20, 90, 20, 10);
     }
 
     public enum EntrySide {
@@ -67,5 +52,14 @@ public class TabletConversationsListPage extends ConversationsListPage {
             default:
                 throw new IllegalArgumentException(String.format("Unsupported side value '%s'", side.name()));
         }
+    }
+
+    @Override
+    public void swipeRightConversationToRevealActionButtons(String conversation) throws Exception {
+        // FIXME: perform swipe via standard driver methods
+        final FBElement dstElement = (FBElement) findNameInContactList(conversation).orElseThrow(
+                () -> new IllegalStateException(String.format("Cannot find a conversation named '%s'", conversation))
+        );
+        swipeAtElement(dstElement, 20, 60, 65, 60, 1.5);
     }
 }

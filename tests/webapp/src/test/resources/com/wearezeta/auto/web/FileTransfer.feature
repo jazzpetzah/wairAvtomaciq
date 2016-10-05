@@ -22,11 +22,12 @@ Feature: File Transfer
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
     # And I verify the downloaded file is the same as the uploaded file <File>
+    And I see localytics event <Event> with attributes <Attributes>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File       | Size  | Type |
-      | user1Email | user1Password | user1Name | user2Name | C82815.txt | 0B    | TXT  |
-      | user1Email | user1Password | user1Name | user2Name | C82815.zip | 512KB | ZIP  |
+      | Login      | Password      | Name      | Contact   | File       | Size  | Type | Event                        | Attributes                                                                    |
+      | user1Email | user1Password | user1Name | user2Name | C82815.txt | 0B    | TXT  | media.completed_media_action | {\"action\":\"file\",\"conversation_type\":\"one_to_one\",\"with_bot\":false} |
+      | user1Email | user1Password | user1Name | user2Name | C82815.zip | 512KB | ZIP  | media.completed_media_action | {\"action\":\"file\",\"conversation_type\":\"one_to_one\",\"with_bot\":false} |
 
   @C95632 @filetransfer @regression
   Scenario Outline: Verify file can be uploaded and re-downloaded by sender himself in group
@@ -191,14 +192,14 @@ Feature: File Transfer
   @C87933 @filetransfer @regression
   Scenario Outline: Verify file can be downloaded and decrypted by receiver in 1:1
     Given There are 2 users where <Name> is me
-    Given user <Contact> adds a new device Device1 with label Label1
-    Given Myself is connected to <Contact>
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact1>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    Given I see Contact list with name <Contact>
-    When I open conversation with <Contact>
-    When <Contact> sends <Size> sized file with name <File> via device Device1 to user <Name>
+    Given I see Contact list with name <Contact1>
+    When I open conversation with <Contact1>
+    When <Contact1> sends <Size> sized file with name <File> via device Device1 to user <Name>
     When I wait until placeholder for file <File> disappears
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
@@ -210,7 +211,7 @@ Feature: File Transfer
   # And I verify the downloaded file is the same as the uploaded file <File>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File       | Size | Type |
+      | Login      | Password      | Name      | Contact1  | File       | Size | Type |
       | user1Email | user1Password | user1Name | user2Name | C87933.txt | 15MB | TXT  |
 
   @C95631 @filetransfer @regression
@@ -234,6 +235,11 @@ Feature: File Transfer
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
   # And I verify the downloaded file is the same as the uploaded file <File>
+    When I open conversation with <Contact1>
+    And I see 1 messages in conversation
+    And I open conversation with <ChatName>
+    Then I verify size of file <File> is <Size> in the conversation view
+    And I verify type of file <File> is <Type> in the conversation view
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | File       | Size | Type | ChatName  |

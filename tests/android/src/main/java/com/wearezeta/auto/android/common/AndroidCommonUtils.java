@@ -621,7 +621,7 @@ public class AndroidCommonUtils extends CommonUtils {
         String fileName = FilenameUtils.getBaseName(fileFullName);
 
         if (isVideo) {
-            String imagesDirectoryPath = getImagesPath(CommonUtils.class);
+            String imagesDirectoryPath = getImagesPathFromConfig(CommonUtils.class);
             CommonUtils.generateVideoFile(basePath + File.separator + fileFullName, size, imagesDirectoryPath
                     + IMAGE_FOR_VIDEO_GENERATION);
         } else {
@@ -638,7 +638,7 @@ public class AndroidCommonUtils extends CommonUtils {
      * @throws Exception
      */
     public static void pushLocalFileToSdcardDownload(String fileFullName) throws Exception {
-        String basePath = getImagesPath(AndroidCommonUtils.class);
+        String basePath = getImagesPathFromConfig(AndroidCommonUtils.class);
         String extension = FilenameUtils.getExtension(fileFullName);
         String fileName = FilenameUtils.getBaseName(fileFullName);
 
@@ -819,6 +819,23 @@ public class AndroidCommonUtils extends CommonUtils {
     public static boolean verifyGoogleLocationServiceInstalled() throws Exception {
         String output = AndroidCommonUtils.getAdbOutput("shell 'pm list packages'");
         final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("com.google.android.location") + "\\b");
+        return pattern.matcher(output).find();
+    }
+
+    public static boolean verifyGoogleGCMServiceInstalled() throws Exception {
+        String output = AndroidCommonUtils.getAdbOutput("shell 'pm list packages'");
+        final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("com.google.android.gms") + "\\b");
+        return pattern.matcher(output).find();
+    }
+
+    public static void openWebsiteFromADB(String url) throws Exception {
+        AndroidCommonUtils.executeAdb(String.
+                format("shell am start -a android.intent.action.VIEW -d %s", url));
+    }
+
+    public static boolean isKeyboardVisible() throws Exception {
+        String output = AndroidCommonUtils.getAdbOutput("shell dumpsys input_method | grep mInputShown");
+        final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("mInputShown=true") + "\\b");
         return pattern.matcher(output).find();
     }
 }

@@ -49,7 +49,7 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap on text input
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     Then I see the message "<Message>" in the conversation view
 
     Examples:
@@ -129,7 +129,7 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <GroupChatName>
     And I tap on text input
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     Then I see the message "<Message>" in the conversation view
 
     Examples:
@@ -145,7 +145,7 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap on text input
-    And I type the message "LONG_MESSAGE" and send it
+    And I type the message "LONG_MESSAGE" and send it by cursor Send button
     Then I see the message "LONG_MESSAGE" in the conversation view
 
     Examples:
@@ -196,26 +196,6 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C787 @regression @rc @rc42
-  Scenario Outline: I can send giphy image by typing some massage and clicking GIF button
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    When I tap on conversation name <Contact>
-    And I tap on text input
-    And I type the message "<Message>"
-    And I click on the GIF button
-    Then I see giphy preview page
-    When I click on the giphy send button
-    Then I see a picture in the conversation view
-    And I see the most recent conversation message is "<Message> · via giphy.com"
-
-    Examples:
-      | Name      | Contact   | Message |
-      | user1Name | user2Name | Yo      |
-
   @C674 @regression @rc
   Scenario Outline: Send GIF format pic
     Given There are 2 users where <Name> is me
@@ -253,30 +233,6 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
-
-  @C236 @regression @rc
-  Scenario Outline: I can send giphy image from the giphy grid preview
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    When I tap on conversation name <Contact>
-    And I tap on text input
-    And I type the message "<Message>"
-    And I click on the GIF button
-    Then I see giphy preview page
-    Then I click on the giphy link button
-    Then I see the giphy grid preview
-    Then I select a random gif from the grid preview
-    Then I see giphy preview page
-    When I click on the giphy send button
-    Then I see a picture in the conversation view
-    And I see the most recent conversation message is "<Message> · via giphy.com"
-
-    Examples:
-      | Name      | Contact   | Message |
-      | user1Name | user2Name | Yo      |
 
   @C77948 @C77950 @regression @rc
   Scenario Outline: Upper toolbar displayed in conversation view, I can back to Conversations list by toolbar arrow
@@ -372,7 +328,6 @@ Feature: Conversation View
     Then I see tooltip of text input
     When I tap on text input
     Then I see tooltip of text input
-    And I see self avatar on text input
     When I type the message "<Message>"
     And I do not see tooltip of text input
 
@@ -415,7 +370,7 @@ Feature: Conversation View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given Myself leave group chat <GroupChatName>
     Given Myself is unarchived group chat <GroupChatName>
-    When I sign in using my email or phone number
+    When I sign in using my email
     And I accept First Time overlay as soon as it is visible
     And I see Conversations list with conversations
     And I tap on conversation name <GroupChatName>
@@ -425,3 +380,55 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | LeaveGroupChat |
+
+  @C250837 @C250838 @regression
+  Scenario Outline: Verify cursor send button is visible when input is not empty although you switch conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
+    And I type the message "<Message>"
+    Then I see Send button in cursor input
+    When I navigate back from conversation
+    And I tap on conversation name <Contact2>
+    And I navigate back from conversation
+    And I tap on conversation name <Contact1>
+    Then I see Send button in cursor input
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Message |
+      | user1Name | user2Name | user3Name | YoNo    |
+
+  @C250856 @regression
+  Scenario Outline: Verify I see someone is typing in 1:1 conversation
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
+    And User <Contact> is typing in the conversation Myself
+    Then I see <Contact> is typing
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @C250857 @regression
+  Scenario Outline: Verify I see someone are typing in group conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
+    And User <Contact1> is typing in the conversation <GroupChatName>
+    And User <Contact2> is typing in the conversation <GroupChatName>
+    Then I see <Contact1>,<Contact2> are typing
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | TypingGroup   |

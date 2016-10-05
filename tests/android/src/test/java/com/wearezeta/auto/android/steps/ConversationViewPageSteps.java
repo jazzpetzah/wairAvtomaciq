@@ -99,16 +99,19 @@ public class ConversationViewPageSteps {
 
 
     /**
-     * Send message to the chat
+     * Send message to the chat, there are 2 ways to send
+     * 1) Send from Cursor Input Send button (By default)
+     * 2) Send from Keyboard Enter button (Need to disable Send button in Settings->Options)
      *
      * @param msg               message to type. There are several special shortcuts: LONG_MESSAGE - to type long message
+     * @param sendFrom          identify send button
      * @param doNotHideKeyboard if it equals null, should hide keyboard
      * @throws Exception
-     * @step. ^I type the message "(.*)" and send it( without hiding keyboard)?$
+     * @step. ^I type the message "(.*)" and send it by (keyboard|cursor) Send button( without hiding keyboard)?$
      */
-    @When("^I type the message \"(.*)\" and send it( without hiding keyboard)?$")
-    public void ITypeMessageAndSendIt(String msg, String doNotHideKeyboard) throws Exception {
-        getConversationViewPage().typeAndSendMessage(expandMessage(msg), doNotHideKeyboard == null);
+    @When("^I type the message \"(.*)\" and send it by (keyboard|cursor) Send button( without hiding keyboard)?$")
+    public void ITypeMessageAndSendIt(String msg, String sendFrom, String doNotHideKeyboard) throws Exception {
+        getConversationViewPage().typeAndSendMessage(expandMessage(msg), sendFrom, doNotHideKeyboard == null);
     }
 
     /**
@@ -148,6 +151,24 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Verify the cursor send button is visible/invisible
+     *
+     * @param shouldNotSee equals null means the send button should be visible
+     * @throws Exception
+     * @step. ^I( do not)? see Send button in cursor input$
+     */
+    @Then("^I( do not)? see Send button in cursor input$")
+    public void ISeeSendButtonInCursorInput(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("The send button in cursor is expected to be visible",
+                    getConversationViewPage().waitUntilCursorSendButtonVisible());
+        } else {
+            Assert.assertTrue("The send button in cursor is expected to be invisible",
+                    getConversationViewPage().waitUntilCursorSendButtonInvisible());
+        }
+    }
+
+    /**
      * Press the corresponding button in the input controls
      * Tap file button will send file directly when you installed testing_gallery-debug.apk
      *
@@ -158,27 +179,15 @@ public class ConversationViewPageSteps {
      *                               release his finger after tap on an icon. Works for long tap on Audio Message
      *                               icon only
      * @throws Exception
-     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location) button (\d+ seconds )? from cursor
+     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text|Send) button (\d+ seconds )? from cursor
      * toolbar( without releasing my finger)?$
      */
-    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location) button " +
-            "(\\d+ seconds )?from cursor toolbar( without releasing my finger)?$")
+    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text|Send)" +
+            " button (\\d+ seconds )?from cursor toolbar( without releasing my finger)?$")
     public void ITapCursorToolButton(String longTap, String btnName, String longTapDurationSeconds,
                                      String shouldReleaseFinger) throws Exception {
         if (longTap == null) {
-            switch (btnName.toLowerCase()) {
-                case "video message":
-                case "audio message":
-                case "ping":
-                case "add picture":
-                case "sketch":
-                case "file":
-                case "share location":
-                    getConversationViewPage().tapCursorToolButton(btnName);
-                    break;
-                default:
-                    throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
-            }
+            getConversationViewPage().tapCursorToolButton(btnName);
         } else {
             int longTapDuration = (longTapDurationSeconds == null) ? DriverUtils.LONG_TAP_DURATION :
                     Integer.parseInt(longTapDurationSeconds.replaceAll("[\\D]", "")) * 1000;
@@ -1084,18 +1093,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Check the self avatar on text input
-     *
-     * @throws Exception
-     * @step. ^I see self avatar on text input$
-     */
-    @Then("^I see self avatar on text input$")
-    public void ISeeSelfAvatarOnTextInput() throws Exception {
-        Assert.assertTrue("The self avatar should be visible on text input",
-                getConversationViewPage().isSelfAvatarOnTextInputVisible());
-    }
-
-    /**
      * Check the corresponding message bottom menu button.
      *
      * @param name one of possible message bottom menu button name
@@ -1275,7 +1272,7 @@ public class ConversationViewPageSteps {
     @Then("^I wait for (\\d+) seconds? until audio message (?:download|upload) completed$")
     public void IWaitUntilMessageUploaded(int timeoutSeconds) throws Exception {
         final BufferedImage cancelBntInitialState = ImageUtil.readImageFromFile(
-                AndroidCommonUtils.getImagesPath(AndroidCommonUtils.class) + "android_audio_msg_cancel_btn.png");
+                AndroidCommonUtils.getImagesPathFromConfig(AndroidCommonUtils.class) + "android_audio_msg_cancel_btn.png");
         audioMessagePlayButtonState.remember(cancelBntInitialState);
         Assert.assertTrue(String.format(
                 "After %s seconds audio message is still being uploaded", timeoutSeconds),
@@ -1551,5 +1548,19 @@ public class ConversationViewPageSteps {
         Assert.assertTrue(
                 String.format("The expect count is not equal to actual count, actual: %d, expect: %d",
                         actualCount, expectedCount), actualCount == expectedCount);
+    }
+
+    /**
+     * Verify Someone is/are typing
+     *
+     * @param userNames name or name alias comma separated list
+     * @throws Exception
+     * @step. ^I see (.*) (?:is|are) typing$
+     */
+    @Then("^I see (.*) (?:is|are) typing$")
+    public void ISeeTyping(String userNames) throws Exception {
+        String names = usrMgr.replaceAliasesOccurences(userNames, FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("%s are expected to be visible in typing list", userNames),
+                getConversationViewPage().waitUntilTypingVisible(names));
     }
 }

@@ -15,8 +15,10 @@ Feature: Autoconnect
     And I enter activation code
     And I accept terms of service
     And I input name <Name> and hit Enter
+    And I accept alert
     And I tap Keep This One button
     And I tap Share Contacts button on Share Contacts overlay
+    And I accept alert
     And User <Name> is me
     Then I see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
@@ -39,7 +41,8 @@ Feature: Autoconnect
     And I wait until <Contact1> exists in backend search results
     And I wait until <Contact2> exists in backend search results
     When I open search UI
-    And I click clear button
+    And I accept alert
+    And I tap X button in People Picker input field
     Then I see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
 
@@ -59,6 +62,7 @@ Feature: Autoconnect
     Given I sign in using my email or phone number
     And I wait until <Contact> exists in backend search results
     When I open search UI
+    And I accept alert
     And I wait until <Contact> is first search result on backend
     And I input in People picker search field first 1 letter of user name <Contact>
     Then I see the first item in Search result is <Contact>
@@ -81,8 +85,10 @@ Feature: Autoconnect
     And I enter activation code
     And I accept terms of service
     And I input name <Name> and hit Enter
+    And I accept alert
     And I tap Keep This One button
     And I tap Share Contacts button on Share Contacts overlay
+    And I accept alert
     And User <Name> is me
     And I see conversations list
     And I wait until <Contact> exists in backend search results
@@ -95,7 +101,7 @@ Feature: Autoconnect
       | Contact   | ContactEmail | Name      |
       | user1Name | user1Email   | user2Name |
 
-  @C226448 @addressbookStart @staging
+  @C226448 @addressbookStart @regression
   Scenario Outline: (MEC-1557) Verify Address Book is uploaded in batches
     Given There is 1 user where <Name> is me
     Given I quit Wire
@@ -111,7 +117,8 @@ Feature: Autoconnect
     Given I relaunch Wire
     Given I sign in using my email or phone number
     When I open search UI
-    And I click clear button
+    And I accept alert
+    And I tap X button in People Picker input field
     Then I see 1st autoconnection in conversations list
     When I quit Wire
     And I relaunch Wire

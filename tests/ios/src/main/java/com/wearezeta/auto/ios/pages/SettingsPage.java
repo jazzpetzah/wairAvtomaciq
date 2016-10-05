@@ -1,47 +1,67 @@
 package com.wearezeta.auto.ios.pages;
 
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
 import io.appium.java_client.MobileBy;
-import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.*;
 
+import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
 public class SettingsPage extends IOSPage {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private static final String xpathStrMenuContainer = "//UIATableView";
-    private static final By xpathMenuContainer = By.xpath(xpathStrMenuContainer);
 
-    public static final By xpathSettingsPage = By.xpath("//UIANavigationBar[@name='Settings']");
+    private static final Function<String, String> xpathStrMenuItemByName = name ->
+            String.format("//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[@name='%s'] ]", name);
 
-    private static final By nameBackButton = MobileBy.AccessibilityId("Back");
+    public static final By xpathSettingsPage = By.xpath("//XCUIElementTypeNavigationBar[@name='Settings']");
 
-    private static final By xpathAllSoundAlertsButton =
-            By.xpath("//UIATableCell[@name='Sound Alerts']/*[@value='All']");
+    private static final FunctionFor2Parameters<String, String, String> xpathStrSettingsValue =
+            (itemName, expectedValue) -> String.format("%s/*[@value='%s']",
+                    xpathStrMenuItemByName.apply(itemName), expectedValue);
 
     private static final By nameEditButton = MobileBy.AccessibilityId("Edit");
 
+    private static final By fbXpathSelfNameEditField =
+            FBBy.xpath(String.format("%s/XCUIElementTypeTextField[last()]",
+                    xpathStrMenuItemByName.apply("Name")));
+
     private static final Function<String, String> xpathDeleteDeviceButtonByName = devicename ->
-            String.format("//UIAButton[contains(@name,'Delete %s')]", devicename);
+            String.format("//XCUIElementTypeButton[contains(@name,'Delete %s')]", devicename);
 
     private static final Function<String, String> xpathDeviceListEntry = device ->
-            String.format("//UIATableCell[contains(@name,'%s')]", device);
+            String.format("//*[contains(@name,'%s')]", device);
 
     private static final By nameDeleteButton = MobileBy.AccessibilityId("Delete");
 
-    private static final By xpathDeleteDevicePasswordField =
-            By.xpath("//UIASecureTextField[contains(@value,'Password')]");
+    private static final By fbXpathDeleteDevicePasswordField =
+            FBBy.xpath("//XCUIElementTypeSecureTextField[contains(@value,'Password')]");
 
     private static final FunctionFor2Parameters<String, String, String> xpathStrDeviceVerificationLabel =
             (deviceName, verificationLabel) -> String.format(
-                    "//UIATableCell[@name='%s']/UIAStaticText[@name='%s']", deviceName, verificationLabel);
+                    "//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s'] ]" +
+                            "/XCUIElementTypeStaticText[@name='%s']", deviceName, verificationLabel);
 
-    private static final String xpathStrCurrentDevice = xpathStrMainWindow + "/UIATableView[1]/UIATableCell[1]";
+    private static final String xpathStrCurrentDevice = "//XCUIElementTypeTable/XCUIElementTypeCell";
     private static final By xpathCurrentDevices = By.xpath(xpathStrCurrentDevice);
+
+    private static final By xpathChangePasswordPageChangePasswordButton =
+            By.xpath("//XCUIElementTypeButton[@name='RESET PASSWORD']");
+
+    private static final By xpathAskSupport = By.xpath("//*[@name='Ask Support']");
+
+    private static final String xpathStrColorPicker = "//*[@name='COLOR']/following::XCUIElementTypeTable[1]";
+    private static final By xpathColorPicker = By.xpath(xpathStrColorPicker);
+
+    // indexation starts from 1
+    private static final Function<Integer, String> xpathSreColorByIdx = idx ->
+            String.format("%s/XCUIElementTypeCell[%s]", xpathStrColorPicker, idx);
 
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -52,19 +72,20 @@ public class SettingsPage extends IOSPage {
     }
 
     public void selectItem(String itemName) throws Exception {
-        ((IOSElement) getElement(xpathMenuContainer)).scrollTo(itemName).click();
-    }
-
-    public void goBack() throws Exception {
-        getElement(nameBackButton).click();
-    }
-
-    public boolean isSoundAlertsSetToDefault() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathAllSoundAlertsButton);
+        final By locator = FBBy.xpath(xpathStrMenuItemByName.apply(itemName));
+        final FBElement dstElement = (FBElement) getElementIfExists(locator).orElseThrow(
+                () -> new IllegalStateException(String.format("Menu element '%s' does not exist", itemName))
+        );
+        if (!dstElement.isDisplayed()) {
+            dstElement.scrollTo();
+        }
+        dstElement.click();
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     public boolean isItemVisible(String itemName) throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), MobileBy.AccessibilityId(itemName));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(xpathStrMenuItemByName.apply(itemName)));
     }
 
     public void pressEditButton() throws Exception {
@@ -90,12 +111,12 @@ public class SettingsPage extends IOSPage {
 
     public void typePasswordToConfirmDeleteDevice(String password) throws Exception {
         password = usrMgr.findUserByPasswordAlias(password).getPassword();
-        ((IOSElement) getElement(xpathDeleteDevicePasswordField)).setValue(password);
+        ((FBElement) getElement(fbXpathDeleteDevicePasswordField)).setValue(password);
     }
 
     public boolean isDeviceVisibleInList(String device) throws Exception {
         final By locator = By.xpath(xpathDeviceListEntry.apply(device));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public boolean isDeviceInvisibleInList(String device) throws Exception {
@@ -105,7 +126,7 @@ public class SettingsPage extends IOSPage {
 
     public boolean verificationLabelVisibility(String deviceName, String verificationLabel) throws Exception {
         final By locator = By.xpath(xpathStrDeviceVerificationLabel.apply(deviceName, verificationLabel));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isElementDisplayed(locator);
     }
 
     public void tapCurrentDevice() throws Exception {
@@ -113,6 +134,45 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean isItemInvisible(String itemName) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), MobileBy.AccessibilityId(itemName));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.xpath(xpathStrMenuItemByName.apply(itemName)));
+    }
+
+    public void tapNavigationButton(String name) throws Exception {
+        getElement(MobileBy.AccessibilityId(name)).click();
+        // Wait for transition animation
+        Thread.sleep(1000);
+    }
+
+    public boolean isResetPasswordPageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathChangePasswordPageChangePasswordButton);
+    }
+
+    public boolean isSupportWebPageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathAskSupport, 15);
+    }
+
+    public boolean isSettingItemValueEqualTo(String itemName, String expectedValue) throws Exception {
+        final By locator = FBBy.xpath(xpathStrSettingsValue.apply(itemName, expectedValue));
+        return isElementDisplayed(locator);
+    }
+
+    public void clearSelfName() throws Exception {
+        getElement(fbXpathSelfNameEditField).clear();
+    }
+
+    public void setSelfName(String newName) throws Exception {
+        getElement(fbXpathSelfNameEditField).sendKeys(newName);
+    }
+
+    public BufferedImage getColorPickerStateScreenshot() throws Exception {
+        return this.getElementScreenshot(getElement(xpathColorPicker)).orElseThrow(
+                () -> new IllegalStateException("Cannot make a screenshot of Color Picker control")
+        );
+    }
+
+    public void selectAccentColor(AccentColor byName) throws Exception {
+        final By locator = By.xpath(xpathSreColorByIdx.apply(byName.getId()));
+        getElement(locator).click();
     }
 }

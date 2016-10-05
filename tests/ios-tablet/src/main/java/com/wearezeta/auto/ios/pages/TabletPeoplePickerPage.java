@@ -11,16 +11,16 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class TabletPeoplePickerPage extends PeoplePickerPage {
-    public static final By xpathSearchField = By.xpath(xpathStrMainWindow +
-            "/UIAPopover[1]/UIATextView[@name='textViewSearch']");
+    public static final By xpathSearchField =
+            By.xpath("(//XCUIElementTypeTextView[@name='textViewSearch'])[last()]");
 
     public static final By namePeoplePickerAddToConversationButton = MobileBy.AccessibilityId("ADD");
 
     public static final By xpathPeoplePickerCreateConversationButton =
-            By.xpath("//UIAPopover//UIAButton[@name='CREATE GROUP']");
+            By.xpath("(//XCUIElementTypeButton[@name='CREATE GROUP'])[last()]");
 
     public static final Function<String,String> xpathStrIPADPeoplePickerResultUserName = name ->
-            String.format("//UIAPopover//UIAStaticText[@name='%s']", name);
+            String.format("(//XCUIElementTypeStaticText[@name='%s'])[last()]", name);
 
     public TabletPeoplePickerPage(Future<ZetaIOSDriver> lazyDriver)
             throws Exception {

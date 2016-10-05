@@ -14,12 +14,14 @@ public class KeyboardGalleryPage extends IOSPage {
 
     private static final By nameTakePictureButton = MobileBy.AccessibilityId("takePictureButton");
 
-    private static final By nameToggleCameraButton = MobileBy.AccessibilityId("changeCameraButton");
+    private static final String nameStrToggleCameraButton = "changeCameraButton";
+    private static final By nameToggleCameraButton = MobileBy.AccessibilityId(nameStrToggleCameraButton);
 
     private static final By nameFullscreenCameraButton = MobileBy.AccessibilityId("fullscreenCameraButton");
 
-    private static final By xpathFirstPicture =
-            By.xpath("//UIACollectionCell[@name='changeCameraButton']/following-sibling::UIACollectionCell");
+    private static final By xpathFirstPicture = By.xpath(String.format(
+            "//XCUIElementTypeCollectionView[ .//XCUIElementTypeButton[@name='%s'] ]" +
+                    "/XCUIElementTypeCell[2]", nameStrToggleCameraButton));
 
     private static final By nameBackButton = MobileBy.AccessibilityId("goBackButton");
 

@@ -1,7 +1,7 @@
 Feature: Rich Media
 
   @C714 @C77959 @regression @rc @rc42
-  Scenario Outline: Verify you can play/pause SoundCloud media from the Media Bar in conversation
+  Scenario Outline: (load bug AN-4559) Verify you can play/pause SoundCloud media from the Media Bar in conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -14,9 +14,10 @@ Feature: Rich Media
     # Wait until message fully loaded
     And I wait for 3 seconds
     And I tap on text input
-    And I type the message "<SoundCloudLink>" and send it
+    And I type the message "<SoundCloudLink>" and send it by cursor Send button
     And User <Contact1> sends encrypted message to user Myself
     And I scroll to the bottom of conversation view
+    And I wait for 3 seconds
     And I tap Play button on SoundCloud container
     And I remember the state of Play button on SoundCloud container
     And I swipe down on conversation until Mediabar appears
@@ -39,7 +40,7 @@ Feature: Rich Media
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap on text input
-    And I type the message "<SoudCloudLink>" and send it
+    And I type the message "<SoudCloudLink>" and send it by cursor Send button
     # Workaround for bug with autoscroll for next two lines
     And I scroll to the bottom of conversation view
     And I scroll up the conversation view
@@ -60,7 +61,7 @@ Feature: Rich Media
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap on text input
-    And I type the message "<SoundCloudLink>" and send it
+    And I type the message "<SoundCloudLink>" and send it by cursor Send button
     And I scroll to the bottom of conversation view
     And I tap Play button on SoundCloud container
     And I press back button
@@ -85,7 +86,7 @@ Feature: Rich Media
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap on text input
-    And I type the message "<YoutubeLink>" and send it
+    And I type the message "<YoutubeLink>" and send it by cursor Send button
     Then I see Play button on Youtube container
 
     Examples:
@@ -114,7 +115,7 @@ Feature: Rich Media
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                   | CallBackend |
-      | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme | autocall    |
+      | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme | zcall       |
 
   @C139850 @regression
   Scenario Outline: Verify that play of soundcloud track will be stopped by incoming video call

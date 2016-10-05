@@ -45,11 +45,11 @@ Feature: Likes
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to group conversation <Group>
+    Given I see conversations list
+    Given <Contact1> removes Myself from group chat <Group>
     Given I tap on contact name <Group>
-    When <Contact1> removes Myself from group chat <Group>
-    And I tap default message in conversation view
+    When I tap default message in conversation view
     Then I do not see Like icon in the conversation
     When I double tap default message in conversation view
     Then I do not see Like icon in the conversation
@@ -140,6 +140,8 @@ Feature: Likes
     And User <Contact1> likes the recent message from group conversation <Group>
     Then I do not see conversation <Group> in conversations list
     When I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <Group>
     And I tap on conversation <Group> in search result
     Then I see 0 photos in the conversation view
@@ -216,7 +218,7 @@ Feature: Likes
     Given User <Contact> sends encrypted message "<SCLink>" to user Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
-    When I tap at 90% of width and 90% of height of the recent message from <Contact>
+    When I tap at 90% of width and 90% of height of the recent message
     And I remember the state of Like icon in the conversation
     And I tap Like icon in the conversation
     Then I see the state of Like icon is changed in the conversation
@@ -266,34 +268,22 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C226014 @staging @fastLogin
-  Scenario Outline: Likes list is sorted by like time, most recent liker is on the top
-    Given There are 6 users where <Name> is me
-    Given Myself is connected to all other
-    Given Myself has group chat <Group> with all other
-    Given User <Contact1> adds a new device Contact1Device with label Contact1DeviceLabel
-    Given User <Contact2> adds a new device Contact2Device with label Contact2DeviceLabel
-    Given User <Contact3> adds a new device Contact3Device with label Contact3DeviceLabel
-    Given User <Contact4> adds a new device Contact4Device with label Contact4DeviceLabel
-    Given User <Contact5> adds a new device Contact5Device with label Contact5DeviceLabel
+  @C226000 @regression @fastLogin
+  Scenario Outline: Verify deleted for myself someone else message doesn't reappear after someone liked it
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given User Myself sends 1 encrypted message to group conversation <Group>
+    Given User <Contact> sends 1 encrypted message to user Myself
     Given I see conversations list
-    Given I tap on group chat with name <Group>
-    Given I see 1 default message in the conversation view
-    When User <Contact1> likes the recent message from group conversation <Group>
-    And User <Contact2> likes the recent message from group conversation <Group>
-    And User <Contact3> likes the recent message from group conversation <Group>
-    And User <Contact4> likes the recent message from group conversation <Group>
-    And User <Contact5> likes the recent message from group conversation <Group>
-    And I tap toolbox of the recent message
-    Then I see Likers page
-    And I see user <Contact5> in likers list at position number 1
-    And I see user <Contact4> in likers list at position number 2
-    And I see user <Contact3> in likers list at position number 3
-    And I see user <Contact2> in likers list at position number 4
-    And I see user <Contact1> in likers list at position number 5
-    
+    Given I tap on contact name <Contact>
+    When I long tap default message in conversation view
+    And I tap on Delete badge item
+    And I select Delete for Me item from Delete menu
+    Then I see 0 default messages in the conversation view
+    When User <Contact> likes the recent message from user Myself
+    Then I see 0 default messages in the conversation view
+    And I do not see Like icon in the conversation
+
     Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Group        |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | LikersGroup  |
+      | Name      | Contact   |
+      | user1Name | user2Name |

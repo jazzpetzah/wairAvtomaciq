@@ -23,7 +23,7 @@ public class CameraRollPageSteps {
      */
     @When("^I select the first picture from Camera Roll$")
     public void ISelectFirstPicture() throws Exception {
-        getCameraRollPage().selectFirstPicture();
+        getCameraRollPage().selectAnyPicture();
     }
 
     /**

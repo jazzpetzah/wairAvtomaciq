@@ -14,7 +14,7 @@ Feature: People View
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact2>
     And I tap on conversation <Contact2> in search result
-    And I click on Go button
+    And I tap Create conversation action button on People picker page
     And I wait for 2 seconds
     Then I see group chat page with users <Contact1>,<Contact2>
 
@@ -35,7 +35,7 @@ Feature: People View
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I tap on conversation <Contact3> in search result
-    And I click on Go button
+    And I tap Done keyboard button
     Then I can see You Added <Contact3> message
     When I open group conversation details
     Then I see that conversation has <Number> people
@@ -109,7 +109,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I change group conversation name to <ChatName>
+    And I change group conversation name to "<ChatName>"
     Then I see correct conversation name <ChatName>
     And I close group info page
     And I see You Renamed Conversation message shown in conversation view
@@ -182,14 +182,16 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I tap on contact name <Contact1>
-    And I open conversation details
-    And I tap Create Group button
-    And I tap on Search input on People picker page
+    Given I tap on contact name <Contact1>
+    Given I open conversation details
+    Given I tap Create Group button
+    Given I tap on Search input on People picker page
+    # Tap it 3 times to unselect and select again
     When I tap on conversation <Contact2> in search result
-    Then I see user <Contact2> on People picker page is selected
-    When I tap on conversation <Contact2> in search result
-    Then I see user <Contact2> on People picker page is NOT selected
+    And I tap on conversation <Contact2> in search result
+    And I tap on conversation <Contact2> in search result
+    And I tap Create conversation action button on People picker page
+    Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -223,16 +225,14 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on contact name <Contact1>
-    And I open conversation details
-    And I tap Create Group button
-    And I tap on conversation <Contact2> in search result
+    Given I tap on contact name <Contact1>
+    Given I open conversation details
+    Given I tap Create Group button
+    When I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact3> in search result
-    And I click close button to dismiss people view
+    And I tap X button in People Picker input field
     And I tap Create Group button
-    And I see user <Contact2> on People picker page is NOT selected
-    And I see user <Contact3> on People picker page is NOT selected
-    And I click close button to dismiss people view
+    And I tap X button in People Picker input field
     And I close user profile page
     And I navigate back to conversations list
     Then I don't see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
@@ -314,7 +314,7 @@ Feature: People View
     And I open group conversation details
     And I select participant <Contact1>
     And I see <Contact1> user profile page
-    And I unblock user
+    And I tap Unblock button
     Then I see conversation view page
 
     Examples:
@@ -330,9 +330,11 @@ Feature: People View
     Given I see conversations list
     Given I wait until <Contact3> exists in backend search results
     When I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I see the conversation "<Contact3>" exists in Search results
-    And I click close button to dismiss people view
+    And I tap X button in People Picker input field
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I wait until <Contact2> exists in backend search results
@@ -381,9 +383,11 @@ Feature: People View
     And I select Also Leave option on Delete conversation confirmation
     And I confirm delete conversation content
     And I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
-    When I click close button to dismiss people view
+    When I tap X button in People Picker input field
     Then I do not see conversation <GroupChatName> in conversations list
     And I see Archive button at the bottom of conversations list
     And I open archived conversations
@@ -410,6 +414,8 @@ Feature: People View
     And I tap Delete action button
     And I confirm delete conversation content
     And I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
     Then I see conversation name <GroupChatName> in Upper Toolbar
@@ -435,6 +441,8 @@ Feature: People View
     And I tap Delete action button
     And I confirm delete conversation content
     And I open search UI
+    And I accept alert
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
@@ -511,11 +519,11 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I try to change group conversation name to empty
+    And I change group conversation name to ""
     Then I see correct conversation name <GroupChatName>
-    When I try to change group conversation name to random with length <MaxGroupChatNameLenght>
-    Then I see correct conversation name <GroupChatName>
+    When I try to change group conversation name to random with length <ChatNameLength>
+    Then I see the length of group conversation name equals to <MaxAllowedLength>
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLenght |
-      | user1Name | user2Name | user3Name | TESTCHAT      | 65                     |
+      | Name      | Contact1  | Contact2  | GroupChatName | ChatNameLength | MaxAllowedLength |
+      | user1Name | user2Name | user3Name | TESTCHAT      | 70             | 64               |

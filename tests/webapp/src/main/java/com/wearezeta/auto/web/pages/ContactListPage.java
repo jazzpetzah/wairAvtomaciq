@@ -31,6 +31,10 @@ import cucumber.api.PendingException;
 public class ContactListPage extends WebPage {
 
     private static final Logger log = ZetaLogger.getLog(ContactListPage.class.getSimpleName());
+    
+    
+    private static final String DEFAULT_GROUP_CONVO_NAMES_SEPARATOR = ",";
+    private static final int CONVO_LIST_ENTRY_VISIBILITY_TIMEOUT = 15; // seconds
 
     @FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssSelfProfileButton)
     private WebElement selfProfileButton;
@@ -111,8 +115,6 @@ public class ContactListPage extends WebPage {
     public ContactListPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
-
-    private static final String DEFAULT_GROUP_CONVO_NAMES_SEPARATOR = ",";
 
     /**
      * Fixes default group conversation name, because we never know the original order of participant names in group convo name
@@ -415,36 +417,35 @@ public class ContactListPage extends WebPage {
                                 cssSelector));
     }
 
-    private static final int OPEN_CONVO_LIST_ENTRY_TIMEOUT = 8; // seconds
-
     public void openConversation(String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
         By locator = By.cssSelector(WebAppLocators.ContactListPage.cssContactListEntryByName.apply(conversationName));
-        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
         WebElement conversation = getDriver().findElement(locator);
         DriverUtils.waitUntilElementClickable(this.getDriver(), conversation);
         conversation.click();
-        By selected = By.cssSelector(WebAppLocators.ContactListPage.cssSelectedContactListEntryByName.apply(conversationName));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                selected, OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Conversation is not selected within "
-                + OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
+    }
+    
+    public boolean isConversationVisible(String conversationName) throws Exception {
+        conversationName = fixDefaultGroupConvoName(conversationName, false);
+        By locator = By.cssSelector(WebAppLocators.ContactListPage.cssContactListEntryByName.apply(conversationName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, CONVO_LIST_ENTRY_VISIBILITY_TIMEOUT);
     }
 
     public boolean isConversationSelected(String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
         By selected = By.cssSelector(WebAppLocators.ContactListPage.cssSelectedContactListEntryByName.apply(conversationName));
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                selected, OPEN_CONVO_LIST_ENTRY_TIMEOUT);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), selected);
     }
 
+    // TODO move asserts to page step class (see #openConversation(String))
     public void openConnectionRequestsList() throws Exception {
         final By locator = By.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
         DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
         this.getDriver().findElement(locator).click();
         By selected = By.cssSelector(WebAppLocators.ContactListPage.cssSelectedIncomingPendingConvoItem);
         assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                selected, OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Conversation is not selected within "
-                + OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
+                selected, CONVO_LIST_ENTRY_VISIBILITY_TIMEOUT) : "Conversation is not selected within "
+                + CONVO_LIST_ENTRY_VISIBILITY_TIMEOUT + " second(s) timeout";
     }
 
     public void openSelfProfile() throws Exception {

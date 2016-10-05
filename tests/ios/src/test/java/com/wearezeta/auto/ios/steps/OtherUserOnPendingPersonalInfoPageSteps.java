@@ -60,9 +60,9 @@ public class OtherUserOnPendingPersonalInfoPageSteps {
      *
      * @param btnName one of possible button names
      * @throws Exception
-     * @step. ^I tap (Start Conversation|Connect|Cancel Request) button on pending profile page$
+     * @step. ^I tap (Start Conversation|Connect|Cancel Request|Close) button on pending profile page$
      */
-    @When("^I tap (Start Conversation|Connect|Cancel Request) button on pending profile page$")
+    @When("^I tap (Start Conversation|Connect|Cancel Request|Close) button on pending profile page$")
     public void ITapButton(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
             case "start conversation":
@@ -73,6 +73,9 @@ public class OtherUserOnPendingPersonalInfoPageSteps {
                 break;
             case "cancel request":
                 getOtherUserOnPendingProfilePage().tapCancelRequestButton();
+                break;
+            case "close":
+                getOtherUserOnPendingProfilePage().tapCloseButton();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Button %s is unknown", btnName));

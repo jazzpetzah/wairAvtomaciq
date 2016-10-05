@@ -134,6 +134,14 @@ public abstract class BasePage {
         return DriverUtils.getElementIfDisplayed(getDriver(), locator, timeoutSeconds);
     }
 
+    protected Optional<WebElement> getElementIfExists(By locator) throws Exception {
+        return DriverUtils.getElementIfPresentInDOM(getDriver(), locator);
+    }
+
+    protected Optional<WebElement> getElementIfExists(By locator, int timeoutSeconds) throws Exception {
+        return DriverUtils.getElementIfPresentInDOM(getDriver(), locator, timeoutSeconds);
+    }
+
     /**
      *
      * @deprecated use pagesCollection.clearAllPages() instead

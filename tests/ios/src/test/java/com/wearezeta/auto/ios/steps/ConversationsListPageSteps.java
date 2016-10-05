@@ -244,7 +244,6 @@ public class ConversationsListPageSteps {
         }
     }
 
-
     @When("^I create group chat with (.*) and (.*)$")
     public void ICreateGroupChat(String contact1, String contact2) throws Exception {
         WhenITapOnContactName(contact1);
@@ -258,7 +257,11 @@ public class ConversationsListPageSteps {
         pickerSteps.WhenITapOnSearchInputOnPeoplePickerPage();
         pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact2);
         pickerSteps.ITapOnConversationFromSearch(contact2);
-        pickerSteps.WhenIClickOnAddToConversationButton();
+        if (getPeoplePickerPage().isKeyboardVisible()) {
+            getPeoplePickerPage().tapKeyboardCommitButton();
+        } else {
+            getPeoplePickerPage().tapAddToConversationButton();
+        }
 
         GroupConversationViewPageSteps groupChatSteps = new GroupConversationViewPageSteps();
         groupChatSteps.ThenISeeGroupChatPage(String.format("%s%s%s",
@@ -330,9 +333,9 @@ public class ConversationsListPageSteps {
         getConversationsListPage().tapPlayPauseButtonNextTo(name);
     }
 
-    @When("I click on Pending request link in conversations list")
-    public void IClickPendingRequestLinkContactList() throws Exception {
-        getConversationsListPage().clickPendingRequest();
+    @When("I tap Incoming Pending Requests item in conversations list")
+    public void ITapPendingRequestLinkContactList() throws Exception {
+        getConversationsListPage().tapPendingRequest();
     }
 
     @When("I (do not )?see Pending request link in conversations list")
