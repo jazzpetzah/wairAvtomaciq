@@ -146,6 +146,8 @@ public class OtherUserPersonalInfoPage extends IOSPage {
         } else {
             getElement(fbNameOtherUserConversationMenu).click();
         }
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     public boolean isActionMenuVisible() throws Exception {
