@@ -123,7 +123,7 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean wrongCredentialsNotificationIsShown() throws Exception {
-        return isElementDisplayed(nameWrongCredentialsNotification);
+        return isElementDisplayed(nameWrongCredentialsNotification, 30);
     }
 
     public void tapForgotPasswordButton() throws Exception {
@@ -146,7 +146,7 @@ public class LoginPage extends IOSPage {
         return readAlertText().isPresent() && isElementDisplayed(nameAlreadyRegisteredEmail);
     }
 
-    public void clickPhoneNotNow() throws Exception {
+    public void tapPhoneNotNow() throws Exception {
         getElement(nameNotNowButton).click();
     }
 

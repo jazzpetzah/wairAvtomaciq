@@ -118,8 +118,11 @@ public class ContactListPageSteps {
     @Given("^I open conversation with (.*)")
     public void GivenIOpenConversationWith(String contact) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-        webappPagesCollection.getPage(ContactListPage.class).openConversation(
-                contact);
+        Assert.assertTrue(String.format("Conversation with name '%s' is not visible", contact),
+                webappPagesCollection.getPage(ContactListPage.class).isConversationVisible(contact));
+        webappPagesCollection.getPage(ContactListPage.class).openConversation(contact);
+        Assert.assertTrue(String.format("Conversation '%s' should be selected", contact),
+                webappPagesCollection.getPage(ContactListPage.class).isConversationSelected(contact));
     }
 
     /**

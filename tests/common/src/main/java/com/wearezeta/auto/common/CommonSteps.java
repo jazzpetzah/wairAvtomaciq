@@ -317,6 +317,13 @@ public final class CommonSteps {
         seBridge.sendPing(pingFromUser, convId);
     }
 
+    public void UserIsTypingInConversation(String typingFromUserNameAlias, String dstConversationName) throws Exception {
+        final ClientUser typingFromUser = usrMgr.findUserByNameOrNameAlias(typingFromUserNameAlias);
+        dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+        final String convId = BackendAPIWrappers.getConversationIdByName(typingFromUser, dstConversationName);
+        seBridge.typing(typingFromUser, convId);
+    }
+
     public void UserHotPingedConversationOtr(String pingFromUserNameAlias,
                                              String dstConversationName) throws Exception {
         final ClientUser pingFromUser = usrMgr.findUserByNameOrNameAlias(pingFromUserNameAlias);
@@ -621,7 +628,7 @@ public final class CommonSteps {
     }
 
     public void UserUnarchiveConversation(String fromUserNameAlias, String dstConversationName, String deviceName,
-                                        boolean isGroup) throws Exception {
+                                          boolean isGroup) throws Exception {
         ClientUser fromUser = usrMgr.findUserByNameOrNameAlias(fromUserNameAlias);
         if (!isGroup) {
             ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(dstConversationName);

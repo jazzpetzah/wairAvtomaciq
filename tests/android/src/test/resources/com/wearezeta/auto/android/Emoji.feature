@@ -32,7 +32,7 @@ Feature: Emoji
       | Name      | Contact   | NormalText | MixedText | MaxHeightDiff |
       | user1Name | user2Name | Yo         | 👿?       | 20            |
 
-  @C250833 @C250834 @staging
+  @C250833 @C250834 @regression
   Scenario Outline: Verify When I switch to emoji keyboard and select one, cursor send button appears even it is disabled in settings
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -60,3 +60,22 @@ Feature: Emoji
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C250835 @regression
+  Scenario Outline: I can erase emoji by 'backspace' button
+    Given There is 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
+    And I tap Switch to emoji button from cursor toolbar
+    And I tap on the emoji "<Emoji>" at Emoji keyboard
+    And I tap on the emoji "<Emoji>" at Emoji keyboard
+    And I tap on Backspace button at Emoji keyboard
+    And I tap Send button from cursor toolbar
+    Then I see the message "<Emoji>" in the conversation view
+
+    Examples:
+      | Name      | Contact   | Emoji |
+      | user1Name | user2Name | 😀    |

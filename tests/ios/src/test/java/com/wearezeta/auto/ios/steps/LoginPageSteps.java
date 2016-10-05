@@ -349,12 +349,9 @@ public class LoginPageSteps {
         getLoginPage().tapForgotPasswordButton();
     }
 
-    /**
-     * @throws Throwable
-     */
-    @When("^I click Not Now to not add phone number$")
-    public void IClickNotNowToNotAddPhoneNumber() throws Throwable {
-        getLoginPage().clickPhoneNotNow();
+    @When("^I tap Not Now to not add phone number$")
+    public void ITapNotNowToNotAddPhoneNumber() throws Exception {
+        getLoginPage().tapPhoneNotNow();
         getLoginPage().waitForLoginToFinish();
     }
 

@@ -27,11 +27,9 @@ public class RegistrationPage extends IOSPage {
 
     private static final By xpathYourName = By.xpath("//XCUIElementTypeTextField[@value='YOUR FULL NAME']");
 
-    private static final By xpathNameField = By.xpath("//XCUIElementTypeTextField");
+    private static final By nameYourEmail = MobileBy.AccessibilityId("EmailField");
 
-    private static final By fbNameYourEmail = FBBy.AccessibilityId("EmailField");
-
-    private static final By fbNameYourPassword = FBBy.AccessibilityId("PasswordField");
+    private static final By nameYourPassword = MobileBy.AccessibilityId("PasswordField");
 
     private static final By xpathCreateAccountButton = By
             .xpath("//XCUIElementTypeSecureTextField[contains(@name, 'PasswordField')]/XCUIElementTypeButton");
@@ -139,23 +137,27 @@ public class RegistrationPage extends IOSPage {
         return isElementDisplayed(locator);
     }
 
-    public void inputName() throws Exception {
+    public void commitName() throws Exception {
         getElement(nameConfirmButton).click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmButton)) {
             throw new IllegalStateException("Confirm button is still visible");
         }
     }
 
-    public void clickCreateAccountButton() throws Exception {
+    public void tapCreateAccountButton() throws Exception {
         getElement(xpathCreateAccountButton, "Create Account button is not visible").click();
     }
 
     public void typeEmail() throws Exception {
-        getElement(fbNameYourEmail).sendKeys(getEmail());
+        final WebElement emailInput = getElement(nameYourEmail);
+        emailInput.click();
+        emailInput.sendKeys(getEmail());
     }
 
     public void typeUsername() throws Exception {
-        getElement(xpathYourName, "Name input is not visible").sendKeys(getName());
+        final WebElement yourNameInput = getElement(xpathYourName);
+        yourNameInput.click();
+        yourNameInput.sendKeys(getName());
     }
 
     public String getName() {
@@ -182,7 +184,9 @@ public class RegistrationPage extends IOSPage {
     }
 
     private void typePassword() throws Exception {
-        getElement(fbNameYourPassword).sendKeys(getPassword());
+        final WebElement passwordInput = getElement(nameYourPassword);
+        passwordInput.click();
+        passwordInput.sendKeys(getPassword());
     }
 
     public void setPassword(String password) throws Exception {
@@ -226,15 +230,6 @@ public class RegistrationPage extends IOSPage {
 
     public void tapTakePhotoButton() throws Exception {
         getElement(nameTakePhotoButton).click();
-    }
-
-    /**
-     * Send extra space keys (workaround for simulator bug)
-     *
-     * @throws Exception
-     */
-    public void tapNameInputField() throws Exception {
-        getElement(xpathNameField).sendKeys("\n\n");
     }
 
     public boolean noCodeShowingUpLabelIsDisplayed() throws Exception {

@@ -37,8 +37,6 @@ public class ConversationViewPage extends IOSPage {
             String.format("//XCUIElementTypeTextView[@name='%s' and @value='%s']",
                     nameStrConversationInputField, value);
 
-    private static final By nameConversationInputAvatar = MobileBy.AccessibilityId("authorImage");
-
     private static final String DEFAULT_INPUT_PLACEHOLDER_TEXT = "TYPE A MESSAGE";
     private static final By nameInputPlaceholderText = MobileBy.AccessibilityId(DEFAULT_INPUT_PLACEHOLDER_TEXT);
 
@@ -466,14 +464,6 @@ public class ConversationViewPage extends IOSPage {
         return isElementDisplayed(xpathGiphyImage);
     }
 
-    public boolean isUserAvatarNextToInputVisible() throws Exception {
-        return isElementDisplayed(nameConversationInputAvatar);
-    }
-
-    public boolean isUserAvatarNextToInputInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConversationInputAvatar);
-    }
-
     public boolean isShieldIconVisibleNextToInputField() throws Exception {
         return isElementDisplayed(nameShieldIconNextToInput);
     }
@@ -838,7 +828,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isDefaultMapApplicationVisible() throws Exception {
-        return isElementDisplayed(nameDefaultMapApplication, 15);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), nameDefaultMapApplication, 15);
     }
 
     public boolean isLinkPreviewImageVisible() throws Exception {
@@ -1017,7 +1007,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean waitUntilTextMessagesAreVisible(String s, int expectedCount) throws Exception {
-        final By locator = By.xpath(xpathStrMessageByExactText.apply(s));
+        final By locator = By.xpath(xpathStrMessageByTextPart.apply(s));
         return waitUntilLocatorIsVisibleXTimes(locator, expectedCount);
     }
 

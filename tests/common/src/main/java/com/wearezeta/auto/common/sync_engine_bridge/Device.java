@@ -172,6 +172,19 @@ class Device extends RemoteEntity implements IDevice {
     }
 
     @Override
+    public void typing(String convId) throws Exception {
+        try {
+            askActor(this.ref(), new ActorMessage.Typing(new RConvId(convId)));
+        } catch (TimeoutException e) {
+            respawn();
+            if (hasLoggedInUser()) {
+                logInWithUser(this.loggedInUser.get());
+            }
+            askActor(this.ref(), new ActorMessage.Typing(new RConvId(convId)));
+        }
+    }
+
+    @Override
     public void clearConversation(String convId) throws Exception {
         try {
             askActor(this.ref(), new ActorMessage.ClearConversation(new RConvId(convId)));

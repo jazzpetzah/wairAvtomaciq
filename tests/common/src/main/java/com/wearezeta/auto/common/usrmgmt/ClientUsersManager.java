@@ -326,7 +326,7 @@ public class ClientUsersManager {
                             usersCreationTimeout));
         }
         if (createdClientsCount.get() != usersToCreate.size()) {
-            throw new RuntimeException("Failed to create new users or contacts on the backend");
+            throw new RuntimeException("Failed to create new users or contacts on the backend (created " + createdClientsCount.get() + " users)");
         }
     }
 

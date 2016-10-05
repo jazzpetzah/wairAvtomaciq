@@ -40,7 +40,8 @@ Feature: Settings
     When I tap settings gear button
     And I select settings item Account
     And I select settings item Reset Password
-    And I wait for 4 seconds
+    # Wait until the web page is fully loaded
+    And I wait for 8 seconds
     Then I see Reset Password page
 
     Examples:
@@ -230,7 +231,7 @@ Feature: Settings
     Given I have entered password <Password>
     Given I tap Login button
     Given I accept alert
-    Given I click Not Now to not add phone number
+    Given I tap Not Now to not add phone number
     Given I accept First Time overlay
     Given I dismiss settings warning
     Given I see conversations list
@@ -239,6 +240,9 @@ Feature: Settings
     When I select settings item Add phone number
     And I enter phone number for Myself
     And I enter registration verification code for Myself
+    Then I see conversations list
+    When I tap settings gear button
+    And I select settings item Account
     Then I verify the value of settings item Phone equals to "<MyPhoneNumber>"
 
     Examples:
@@ -254,7 +258,7 @@ Feature: Settings
     Given I have entered password <Password>
     Given I tap Login button
     Given I accept alert
-    Given I click Not Now to not add phone number
+    Given I tap Not Now to not add phone number
     Given I accept First Time overlay
     Given I dismiss settings warning
     Given I see conversations list
@@ -280,4 +284,4 @@ Feature: Settings
 
     Examples:
       | Name      | ThemeItemName |
-      | user1Name | Dark Theme    |
+      | user1Name | Dark theme    |

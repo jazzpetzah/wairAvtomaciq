@@ -102,6 +102,7 @@ Feature: Sign In
     And I tap Done keyboard button
     And I see email verification reminder
     And I verify registration address
+    And I accept First Time overlay
     And I dismiss settings warning
     Then I see conversations list
     When I tap settings gear button

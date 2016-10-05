@@ -757,6 +757,19 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * User X typing in specified conversation
+     *
+     * @param fromUserNameAlias   The user who is typing
+     * @param dstConversationName The conversation where the user is typing
+     * @throws Exception
+     * @step. ^User (\w+) is typing in the conversation (.*)$
+     */
+    @When("^User (\\w+) is typing in the conversation (.*)$")
+    public void UserTypingInConversation(String fromUserNameAlias, String dstConversationName) throws Exception {
+        commonSteps.UserIsTypingInConversation(fromUserNameAlias, dstConversationName);
+    }
+
+    /**
      * User A sends a hotping to a conversation
      *
      * @param hotPingFromUserNameAlias The user to do the hotpinging
@@ -1146,9 +1159,9 @@ public class CommonAndroidSteps {
      * Press Send button on OnScreen keyboard (the keyboard should be already populated)
      *
      * @throws Exception
-     * @step. ^I press Send button$
+     * @step. ^I press Send button at Android keyboard$
      */
-    @And("^I press Send button$")
+    @And("^I press Send button at Android keyboard$")
     public void IPressSendButton() throws Exception {
         pagesCollection.getCommonPage().pressKeyboardSendButton();
     }
@@ -1304,6 +1317,10 @@ public class CommonAndroidSteps {
     public void ContactSendsXLocalFileFromSE(String contact, String fileFullName, String mimeType,
                                              String deviceName, String convoType, String dstConvoName) throws Exception {
         String basePath = CommonUtils.getAudioPathFromConfig(getClass());
+        if (mimeType.toLowerCase().startsWith("image")) {
+            basePath = CommonUtils.getImagesPathFromConfig(getClass());
+        }
+
         String sourceFilePath = basePath + File.separator + fileFullName;
 
         boolean isGroup = convoType.equals("group conversation");

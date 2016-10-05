@@ -30,7 +30,7 @@ Feature: Calling
     And <Contact> stops calling me
     And I tap on contact name <Contact>
     Then I see missed call from contact <Contact>
-    And I click missed call button to call contact <Contact>
+    And I tap missed call button to call contact <Contact>
     And I see Calling overlay
 
     Examples:
@@ -66,7 +66,6 @@ Feature: Calling
     When <Contact> calls me
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
-    And I accept alert
     Then I see call status message contains "<Contact>"
 
     Examples:

@@ -179,10 +179,10 @@ public class ConversationViewPageSteps {
      *                               release his finger after tap on an icon. Works for long tap on Audio Message
      *                               icon only
      * @throws Exception
-     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text) button (\d+ seconds )? from cursor
+     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text|Send) button (\d+ seconds )? from cursor
      * toolbar( without releasing my finger)?$
      */
-    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text)" +
+    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text|Send)" +
             " button (\\d+ seconds )?from cursor toolbar( without releasing my finger)?$")
     public void ITapCursorToolButton(String longTap, String btnName, String longTapDurationSeconds,
                                      String shouldReleaseFinger) throws Exception {
@@ -1548,5 +1548,19 @@ public class ConversationViewPageSteps {
         Assert.assertTrue(
                 String.format("The expect count is not equal to actual count, actual: %d, expect: %d",
                         actualCount, expectedCount), actualCount == expectedCount);
+    }
+
+    /**
+     * Verify Someone is/are typing
+     *
+     * @param userNames name or name alias comma separated list
+     * @throws Exception
+     * @step. ^I see (.*) (?:is|are) typing$
+     */
+    @Then("^I see (.*) (?:is|are) typing$")
+    public void ISeeTyping(String userNames) throws Exception {
+        String names = usrMgr.replaceAliasesOccurences(userNames, FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("%s are expected to be visible in typing list", userNames),
+                getConversationViewPage().waitUntilTypingVisible(names));
     }
 }

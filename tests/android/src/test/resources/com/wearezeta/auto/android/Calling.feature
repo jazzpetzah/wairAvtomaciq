@@ -18,7 +18,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | autocall    | 60      |
+      | user1Name | user2Name | zcall       | 60      |
 
   @C713 @calling_basic @rc
   Scenario Outline: Silence an incoming call
@@ -36,7 +36,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | zcall       |
 
   @C698 @calling_basic @rc
   Scenario Outline: I can start 1:1 call
@@ -81,7 +81,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | CallBackend | Timeout |
-      | user1Name | user2Name | autocall    | 60      |
+      | user1Name | user2Name | zcall       | 60      |
 
   @C710 @calling_basic @rc
   Scenario Outline: Receive call while Wire is running in the background
@@ -106,7 +106,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | autocall    | 60      |
+      | user1Name | user2Name | zcall       | 60      |
 
   @C711 @calling_basic @rc
   Scenario Outline: Receive call while mobile in sleeping mode(screen locked)
@@ -131,7 +131,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | autocall    | 60      |
+      | user1Name | user2Name | zcall       | 60      |
 
   @C721 @calling_basic @rc @rc42
   Scenario Outline: Calling bar buttons are clickable and change their states
@@ -158,7 +158,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | zcall       |
 
   @C431 @calling_basic
   Scenario Outline: Calling bar buttons are clickable and change their states in a group call
@@ -186,7 +186,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName    | CallBackend |
-      | user1Name | user2Name | user3Name | ChatForGroupCall | autocall    |
+      | user1Name | user2Name | user3Name | ChatForGroupCall | zcall       |
 
   @C807 @calling_basic @rc @rc42
   Scenario Outline: I can start group call
@@ -235,7 +235,7 @@ Feature: Calling
 
     Examples:
       | CallBackend | CallBackend2 | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    | Timeout |
-      | chrome      | autocall     | user1Name | user2Name | user3Name | user4Name | user5Name | ChatForGroupCall | 60      |
+      | chrome      | zcall        | user1Name | user2Name | user3Name | user4Name | user5Name | ChatForGroupCall | 60      |
 
   @C805 @calling_basic @rc
   Scenario Outline: (AN-3396) I can join group call after I ignored it
@@ -257,7 +257,7 @@ Feature: Calling
 
     Examples:
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
-      | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
+      | zcall       | user1Name | user2Name | user3Name | ChatForGroupCall |
 
   @C802 @calling_basic @rc
   Scenario Outline: I can join group call after I leave it
@@ -281,7 +281,7 @@ Feature: Calling
 
     Examples:
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
-      | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
+      | zcall       | user1Name | user2Name | user3Name | ChatForGroupCall |
 
   @C424 @calling_basic
   Scenario Outline: Verify creating the call with a maximum amount of the people
@@ -300,7 +300,7 @@ Feature: Calling
 
     Examples:
       | CallBackend | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    |
-      | autocall    | user1Name | user2Name | user3Name | user4Name | user5Name | MaxGroupCallChat |
+      | zcall       | user1Name | user2Name | user3Name | user4Name | user5Name | MaxGroupCallChat |
 
   @C425 @calling_basic
   Scenario Outline: (AN-4376) Verify too many people in the group call
@@ -319,7 +319,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Contact8  | Contact9   | Contact10  | GroupChatName       | AlertTitle              | CallBackend |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | MaxGroupCallNegChat | Too many people to call | autocall    |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | MaxGroupCallNegChat | Too many people to call | zcall       |
 
   @C427 @calling_advanced
   Scenario Outline: Verify receiving 1to1 call during group call and accepting it
@@ -339,7 +339,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
-      | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
+      | user1Name | user2Name | user3Name | user4Name | GroupCallChat | zcall       |
 
   @C806 @calling_advanced @rc
   Scenario Outline: (AN-3140, AN-3510) Verify receiving group call during 1to1 call and accepting it
@@ -365,7 +365,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
-      | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
+      | user1Name | user2Name | user3Name | user4Name | GroupCallChat | zcall       |
 
   @C428 @calling_advanced
   Scenario Outline: (AN-3510) Verify receiving 1to1 call during group call and ignoring it
@@ -390,7 +390,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
-      | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
+      | user1Name | user2Name | user3Name | user4Name | GroupCallChat | zcall       |
 
   @C803 @calling_basic @rc @rc42
   Scenario Outline: Verify accepting group call in background
@@ -412,7 +412,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |
-      | user1Name | user2Name | user3Name | GroupCallChat | autocall    |
+      | user1Name | user2Name | user3Name | GroupCallChat | zcall       |
 
   @C121 @calling_basic
   Scenario Outline: Lock device screen after initiating call
@@ -452,7 +452,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | zcall       |
 
   @C405 @calling_advanced
   Scenario Outline: (AN-3510) Other user trying to call me while I'm already in zeta call
@@ -474,7 +474,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend |
-      | user1Name | user2Name | user3Name | autocall    |
+      | user1Name | user2Name | user3Name | zcall       |
 
   @calling_autoAnswer
   Scenario Outline: Auto Answer Call
@@ -491,7 +491,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | zcall       |
 
   @call_loop
   Scenario Outline: Make 1:1 call loop to AVS <CallBackend>
@@ -505,7 +505,7 @@ Feature: Calling
     And I call 100 times for 1 minutes with <Contact>
 
     Examples:
-      | Name      | Contact   | CallBackend     |
-      | user1Name | user2Name | zcall:2.7.26    |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | zcall       |
 
 

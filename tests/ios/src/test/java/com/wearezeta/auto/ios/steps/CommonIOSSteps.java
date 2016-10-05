@@ -99,6 +99,8 @@ public class CommonIOSSteps {
 
     private static Map<String, String> cachedBundleIds = new HashMap<>();
 
+    private static final long INSTALL_DELAY_MS = 3000;
+
     @SuppressWarnings("unchecked")
     public Future<ZetaIOSDriver> resetIOSDriver(String ipaPath,
                                                 Optional<Map<String, Object>> additionalCaps,
@@ -128,6 +130,8 @@ public class CommonIOSSteps {
             capabilities.setCapability("showXcodeLog", true);
         } else {
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()));
+            // https://github.com/appium/appium-xcuitest-driver/pull/184/files
+            capabilities.setCapability("iosInstallPause", INSTALL_DELAY_MS);
         }
         capabilities.setCapability("platformVersion", getPlatformVersion());
         capabilities.setCapability("launchTimeout", ZetaIOSDriver.MAX_SESSION_INIT_DURATION_MILLIS);

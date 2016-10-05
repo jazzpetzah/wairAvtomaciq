@@ -93,15 +93,11 @@ public class ContactsUiPageSteps {
      *
      * @param contact user name
      * @throws Exception
-     * @step. ^I click on Open button next to user name (.*) on ContactsUI$
+     * @step. ^I tap Open button next to user name (.*) on ContactsUI$
      */
-    @When("^I click on Open button next to user name (.*) on ContactsUI$")
+    @When("^I tap Open button next to user name (.*) on ContactsUI$")
     public void IClickOpenButtonNextToUser(String contact) throws Exception {
-        try {
-            contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        } catch (NoSuchUserException e) {
-            // Ignore silently
-        }
-        getContactsUiPage().clickOpenButtonNextToUser(contact);
+        contact = usrMgr.replaceAliasesOccurences(contact, ClientUsersManager.FindBy.NAME_ALIAS);
+        getContactsUiPage().tapOpenButtonNextToUser(contact);
     }
 }

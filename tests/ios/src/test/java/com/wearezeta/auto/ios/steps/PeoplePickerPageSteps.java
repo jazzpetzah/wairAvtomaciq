@@ -135,9 +135,9 @@ public class PeoplePickerPageSteps {
      * Click on close button to dismiss Invite list
      *
      * @throws Exception
-     * @step. ^I click close Invite list button$
+     * @step. ^I tap Close Invite list button$
      */
-    @When("^I click close Invite list button$")
+    @When("^I tap Close Invite list button$")
     public void WhenIClickCloseInviteListButton() throws Exception {
         getPeoplePickerPage().closeInviteList();
     }

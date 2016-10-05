@@ -30,7 +30,7 @@ Feature: ContactsUI
     When I open search UI
     And I accept alert
     And I tap Send Invite button
-    And I click on Open button next to user name <Contact> on ContactsUI
+    And I tap Open button next to user name <Contact> on ContactsUI
     Then I see the conversation with <Contact>
 
     Examples: 

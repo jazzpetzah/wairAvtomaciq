@@ -37,14 +37,13 @@ public class ConversationViewPage extends AndroidPage {
             By.xpath(String.format("(//*[@id='%s'])[last()]", idStrRowConversationMessage));
     private static final By xpathFirstConversationMessage =
             By.xpath(String.format("(//*[@id='%s'])[1]", idStrRowConversationMessage));
-    private static final Function<String, String> xpathStrLinkPreviewTextMessage = text -> String
-            .format(String.format("//*[@id='cv__row_conversation__link_preview__text_message' and @value='%s']", text));
+    private static final Function<String, String> xpathStrLinkPreviewTextMessage = text ->
+            String.format("//*[@id='cv__row_conversation__link_preview__text_message' and @value='%s']", text);
 
     // Image
     private static final String idStrConversationImages = "fl__row_conversation__message_image_container";
     public static final By idConversationImageContainer = By.id(idStrConversationImages);
     private static final String xpathStrLastImage = String.format("(//*[@id='%s'])[last()]", idStrConversationImages);
-    private static final By xpathLastImage = By.xpath(xpathStrLastImage);
 
     // System message
     private static final String idStrMissedCallMesage = "ttv__row_conversation__missed_call";
@@ -75,6 +74,8 @@ public class ConversationViewPage extends AndroidPage {
     public static final By idCursorEditText = By.id(idStrCursorEditText);
     public static Function<String, String> xpathCurosrEditTextByValue = value ->
             String.format("//*[@id='%s' and @value='%s']", idStrCursorEditText, value);
+    public static Function<String, String> xpathCursorTypingIndicatorByContainsQuery = query ->
+            String.format("//*[@id='ttv__typing_indicator_names'%s]", query);
     //endregion
 
     //region Message footer
@@ -86,6 +87,9 @@ public class ConversationViewPage extends AndroidPage {
     private static final String strIdMessageMetaStatus = "tv__footer__message_status";
     private static final String strIdMessageMetaFirstLike = "cv__first_like_chathead";
     private static final String strIdMessageMetaSecondLike = "cv__first_like_chathead";
+
+    private static final By idResendButton = By.xpath(
+            String.format("//*[@id='%s' and @value='Sending failed. Resend']", strIdMessageMetaStatus));
     //endregion
 
     //region Message Bottom Menu
@@ -144,8 +148,6 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By xpathToolbar = By.xpath(xpathStrConversationToolbar);
 
-    private static final By idResendButton = By.id("fl__row_conversation__message_error_container");
-
     private static final By xpathToolBarNavigation =
             By.xpath(String.format("%s/*[@value='' and count(*)=1]", xpathStrConversationToolbar));
 
@@ -184,9 +186,6 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final Function<String, String> xpathConversationPeopleChangedByExp = exp -> String
             .format("//*[@id='ttv__row_conversation__people_changed__text' and %s]", exp);
-
-    private static final Function<String, String> xpathCursorHintByValue = value -> String
-            .format("//*[@id='ctv__cursor' and @value='%s']", value);
 
     private static final Function<String, String> xpathLinkPreviewUrlByValue = value -> String
             .format("//*[@id='ttv__row_conversation__link_preview__url' and @value='%s']", value);
@@ -393,11 +392,23 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathCurosrEditTextByValue.apply(text)));
     }
 
+    public boolean waitUntilTypingVisible(String names) throws Exception {
+        String[] nameList = names.split(",");
+        StringBuilder buffer = new StringBuilder();
+        for (String name : nameList) {
+            buffer.append(String.format(" and contains(@value,'%s')", name.toLowerCase().trim()));
+        }
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(xpathCursorTypingIndicatorByContainsQuery.apply(buffer.toString())));
+    }
+
     private By getCursorToolButtonLocatorByName(String name) {
         switch (name.toLowerCase()) {
             case "switch to text":
             case "switch to emoji":
                 return idCursorInputEmojiButton;
+            case "send":
+                return idCursorSendButton;
             case "ping":
                 return idCursorPing;
             case "add picture":
@@ -419,11 +430,10 @@ public class ConversationViewPage extends AndroidPage {
         }
     }
 
-    public void tapCursorToolButton(String name) throws Exception {
-        final By locator = getCursorToolButtonLocatorByName(name);
+    private WebElement showCursorToolButtonIfNotVisible(By locator) throws Exception {
         final Optional<WebElement> btn = getElementIfDisplayed(locator, 3);
         if (btn.isPresent()) {
-            btn.get().click();
+            return btn.get();
         } else {
             getElementIfDisplayed(idCursorMore, 3).orElseGet(() ->
                     {
@@ -434,8 +444,19 @@ public class ConversationViewPage extends AndroidPage {
                         }
                     }
             ).click();
-            getElement(locator).click();
+            // Wait for animation
+            Thread.sleep(1000);
+            return getElement(locator);
         }
+    }
+
+    private WebElement showCursorToolButtonIfNotVisible(String name) throws Exception {
+        final By locator = getCursorToolButtonLocatorByName(name);
+        return showCursorToolButtonIfNotVisible(locator);
+    }
+
+    public void tapCursorToolButton(String name) throws Exception {
+        showCursorToolButtonIfNotVisible(name).click();
     }
 
     public boolean waitUntilCursorSendButtonVisible() throws Exception {
@@ -447,23 +468,18 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public void longTapAudioMessageCursorBtn(int durationMillis) throws Exception {
-        getDriver().longTap(getElement(idCursorAudioMessage), durationMillis);
+        getDriver().longTap(showCursorToolButtonIfNotVisible(idCursorAudioMessage), durationMillis);
     }
 
     public void longTapAudioMessageCursorBtnAndSwipeUp(int durationMillis) throws Exception {
-        longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idAudioRecordingSendButton),
-                DEFAULT_SWIPE_DURATION, durationMillis);
+        longTapAndSwipe(showCursorToolButtonIfNotVisible(idCursorAudioMessage),
+                () -> getElement(idAudioRecordingSendButton), DEFAULT_SWIPE_DURATION, durationMillis);
     }
 
     public void longTapAudioMessageCursorBtnAndRememberIcon(int durationMillis, ElementState elementState)
             throws Exception {
         longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idCursorAudioMessage),
                 DEFAULT_SWIPE_DURATION, durationMillis, Optional.of(elementState::remember));
-    }
-
-    public boolean isCursorHintVisible(String hintMessage) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.xpath(xpathCursorHintByValue.apply(hintMessage)));
     }
 
     public boolean isAudioMessageRecordingSlideVisible() throws Exception {
@@ -1103,7 +1119,7 @@ public class ConversationViewPage extends AndroidPage {
     public void tapAllResendButton() throws Exception {
         List<WebElement> resendButtonList = selectVisibleElements(idResendButton);
         for (WebElement resendButton : resendButtonList) {
-            resendButton.click();
+            DriverUtils.tapOnPercentOfElement(this.getDriver(), resendButton, 85, 50);
         }
     }
     //endregion

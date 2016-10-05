@@ -297,7 +297,7 @@ Feature: Recall Message
       | Name      | Contact1  | ContactDevice |
       | user1Name | user2Name | Device1       |
 
-  @C206252 @C226046 @staging
+  @C206252 @C226046 @regression
   Scenario Outline: (AN-4394) Verify I cannot delete message everywhere/like message when I was removed from group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

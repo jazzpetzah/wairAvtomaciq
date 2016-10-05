@@ -41,7 +41,7 @@ Feature: Giphy
     When I tap on contact name <Contact>
     And I type tag for giphy preview <GiphyTag> and open preview overlay
     And I wait for 5 seconds
-    When I click more giphy button
+    When I tap More button on Giphy page
     Then I see giphy grid preview
 
     Examples: 

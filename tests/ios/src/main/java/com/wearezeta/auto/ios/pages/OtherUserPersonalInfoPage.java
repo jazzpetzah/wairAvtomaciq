@@ -50,6 +50,8 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final By xpathActionsMenu = By.xpath("//XCUIElementTypeButton[@name='CANCEL']");
 
     private static final String xpathStrDevicesList = "//XCUIElementTypeTable/XCUIElementTypeCell";
+    private static final Function<Integer, String> xpathStrDevicesByCount = count ->
+            String.format("//XCUIElementTypeTable[count(XCUIElementTypeCell)=%s]", count);
     private static final By xpathDevicesList = By.xpath(xpathStrDevicesList);
     private static final Function<Integer, String> xpathStrDeviceByIndex =
             idx -> String.format("%s[%s]", xpathStrDevicesList, idx);
@@ -144,17 +146,17 @@ public class OtherUserPersonalInfoPage extends IOSPage {
         } else {
             getElement(fbNameOtherUserConversationMenu).click();
         }
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     public boolean isActionMenuVisible() throws Exception {
         return isElementDisplayed(xpathActionsMenu);
     }
 
-    public int getParticipantDevicesCount() throws Exception {
-        if (isElementDisplayed(xpathDevicesList)) {
-            return getElements(xpathDevicesList).size();
-        }
-        return 0;
+    public boolean isParticipantDevicesCountEqualTo(int expectedCount) throws Exception {
+        final By locator = By.xpath(xpathStrDevicesByCount.apply(expectedCount));
+        return isElementDisplayed(locator);
     }
 
     public void openDeviceDetailsPage(int deviceIndex) throws Exception {
@@ -174,6 +176,8 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public void switchToTab(String tabName) throws Exception {
         getElement(MobileBy.AccessibilityId(tabName.toUpperCase())).click();
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     private String convertStringIDtoLocatorTypeID(String id) {

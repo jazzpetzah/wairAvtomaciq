@@ -54,13 +54,13 @@ public class GiphyPreviewPageSteps {
 	/**
 	 * Click on more gifs button
 	 * 
-	 * @step. ^I click more giphy button$
+	 * @step. ^I tap More button on Giphy page$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I click more giphy button$")
-	public void IClickMoreGiphyButton() throws Exception {
-		getGiphyPreviewPage().clickGiphyMoreButton();
+	@When("^I tap More button on Giphy page$")
+	public void ITapMoreGiphyButton() throws Exception {
+		getGiphyPreviewPage().tapMoreButton();
 	}
 
 	/**

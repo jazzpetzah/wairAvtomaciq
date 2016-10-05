@@ -89,13 +89,15 @@ Feature: Conversation List
     Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see conversations list
     Given User <Contact> sends <Number> encrypted messages to user Myself
     Given User <Contact3> sends <Number> encrypted messages to user Myself
+    Given I see conversations list
     Given I see first item in contact list named <Contact3>
-    Given User <Contact2> securely pings conversation <Name>
+    When User <Contact2> securely pings conversation <Name>
+    And I wait for 5 seconds
     Then I see first item in contact list named <Contact2>
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    When User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    And I wait for 5 seconds
     Then I see first item in contact list named <Contact>
 
     Examples:
@@ -108,12 +110,11 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    And I do not see Pending request link in conversations list
-    When <Contact> sent connection request to Me
-    Then I see Pending request link in conversations list
+    When I do not see Pending request link in conversations list
+    And <Contact> sent connection request to Me
     # Workaround for ZIOS-6338
-    When I click on Pending request link in conversations list
-    Then I see Hello connect message from user <Contact> on Pending request page
+    And I tap Incoming Pending Requests item in conversations list
+    Then I see Hello connect message from user <Contact> on Incoming Pending Requests page
 
     Examples:
       | Name      | Contact   |

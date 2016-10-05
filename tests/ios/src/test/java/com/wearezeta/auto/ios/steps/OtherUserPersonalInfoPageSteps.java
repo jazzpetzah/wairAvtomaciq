@@ -171,9 +171,10 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @When("^I see (\\d+) devices shown in participant devices tab$")
     public void ISeeDevicesShownInDevicesTab(int expectedNumDevices) throws Exception {
-        int numDevices = getOtherUserPersonalInfoPage().getParticipantDevicesCount();
-        Assert.assertTrue("The expected number of devices: " + expectedNumDevices +
-                " is not equals to actual count: " + numDevices, expectedNumDevices == numDevices);
+        Assert.assertTrue(
+                String.format("The expected number of devices: %s is not equals to actual count", expectedNumDevices),
+                getOtherUserPersonalInfoPage().isParticipantDevicesCountEqualTo(expectedNumDevices)
+        );
     }
 
     /**
@@ -205,20 +206,20 @@ public class OtherUserPersonalInfoPageSteps {
                     getOtherUserPersonalInfoPage().isShieldIconNotVisible());
         }
     }
-    
+
     /**
      * Verify all device with correct IDs are presented on participant devices tab
-     * 
-     * @step. ^I see user (.*) devices? IDs? (?:is|are) presented on participant devices tab$
+     *
      * @param name username
      * @throws Exception
+     * @step. ^I see user (.*) devices? IDs? (?:is|are) presented on participant devices tab$
      */
     @Then("^I see user (.*) devices? IDs? (?:is|are) presented on participant devices tab$")
     public void ISeeUserDeveceIDPresentedOnDetailsPage(String name) throws Exception {
         List<String> deviceIDs = CommonSteps.getInstance().GetDevicesIDsForUser(name);
         for (String id : deviceIDs) {
             Assert.assertTrue(String.format("Device ID '%s' is not visible", id), getOtherUserPersonalInfoPage()
-                .isUserDeviceIdVisible(id));
+                    .isUserDeviceIdVisible(id));
         }
     }
 
@@ -226,9 +227,9 @@ public class OtherUserPersonalInfoPageSteps {
      * Tap the corresponding link on user details page. Since we cannot detect the exact link position
      * we just assume this link is located at the bottom left corner of the container text block.
      *
-     * @step. ^I tap "(.*)" link in user details$
      * @param expectedLink the full text of the link to be clicked
      * @throws Exception
+     * @step. ^I tap "(.*)" link in user details$
      */
     @When("^I tap \"(.*)\" link in user details$")
     public void ITapLink(String expectedLink) throws Exception {

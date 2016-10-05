@@ -21,10 +21,10 @@ public class TabletOtherUserInfoPageSteps {
      * Clicks remove button on the other user info popover
      *
      * @throws Exception
-     * @step. ^I click Remove on iPad$
+     * @step. ^I tap Remove button on iPad popover$
      */
-    @When("^I click Remove on iPad$")
-    public void IClickRemoveOniPad() throws Exception {
+    @When("^I tap Remove button on iPad popover$")
+    public void ITapRemoveOniPad() throws Exception {
         getTabletOtherUserInfoPage().removeFromConversationOniPad();
     }
 
@@ -32,10 +32,10 @@ public class TabletOtherUserInfoPageSteps {
      * Clicks the confirm REMOVE button
      *
      * @throws Exception
-     * @step. ^I confirm remove on iPad$
+     * @step. ^I confirm removal on iPad popover$
      */
-    @When("^I confirm remove on iPad$")
-    public void IConfirmRemoveOniPad() throws Exception {
+    @When("^I confirm removal on iPad popover$")
+    public void IConfirmRemovalOniPad() throws Exception {
         getTabletOtherUserInfoPage().confirmRemove();
     }
 
@@ -85,22 +85,22 @@ public class TabletOtherUserInfoPageSteps {
      * Click on Connect button on not connected user profile popover
      *
      * @throws Exception
-     * @step. ^I click Connect button on not connected user profile popover$
+     * @step. ^I tap Connect button on not connected user profile popover$
      */
-    @When("^I click Connect button on not connected user profile popover$")
-    public void IClickConnectButtonOnNotConnectedUserProfilePopover() throws Exception {
-        getTabletOtherUserInfoPage().clickConnectButton();
+    @When("^I tap Connect button on not connected user profile popover$")
+    public void ITapConnectButtonOnNotConnectedUserProfilePopover() throws Exception {
+        getTabletOtherUserInfoPage().tapConnectButton();
     }
 
     /**
      * Click on Back button on user profile popover (usually to return to group chat info page )
      *
      * @throws Exception
-     * @step. ^I click Go back button on user profile popover$
+     * @step. ^I tap Go Back button on user profile popover$
      */
-    @When("^I click Go back button on user profile popover$")
-    public void IClickGOButtonOnUserProfilePopover() throws Exception {
-        getTabletOtherUserInfoPage().clickGoBackButton();
+    @When("^I tap Go Back button on user profile popover$")
+    public void ITapGOButtonOnUserProfilePopover() throws Exception {
+        getTabletOtherUserInfoPage().tapGoBackButton();
     }
 
     /**

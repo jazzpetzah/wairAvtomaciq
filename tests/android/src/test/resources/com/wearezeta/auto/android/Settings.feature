@@ -23,7 +23,7 @@ Feature: Settings
     Given I see Conversations list with no conversations
     When I tap conversations list settings button
     And I select "About" settings menu item
-    Then I see "Wire Website" settings menu item
+    Then I see "Wire website" settings menu item
 
     Examples:
       | Name      |
@@ -206,7 +206,7 @@ Feature: Settings
       | Name      | CurrentNumber    | NewNumber        |
       | user1Name | user1PhoneNumber | user2PhoneNumber |
 
-  @C250836 @staging
+  @C250836 @regression
   Scenario Outline: I can enable/disable send button in Settings
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>

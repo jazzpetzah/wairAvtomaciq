@@ -23,7 +23,7 @@ Feature: Notifications
       | Name      | Contact   | Message |
       | user1Name | user2Name | hello   |
 
-  @C131187 @staging
+  @C131187 @regression
   Scenario Outline: (CM-1071) Verify push notifications after receiving any type of message
     Given I am on Android with Google Location Service
     Given I am on Android 4.4 or better
@@ -126,3 +126,25 @@ Feature: Notifications
     Examples:
       | Name      | Contact   | Message | ContactDevice | Notification |
       | user1Name | user2Name | Hi      | Device1       | your message |
+
+  @C255424 @regression @rc
+  Scenario Outline: Verify notifications list is cleaned once I open Wire app
+    Given I am on Android 4.4 or better
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <ContactDevice>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When I see Conversations list with name <Contact>
+    And I minimize the application
+    And User <Contact> sends encrypted message <Message> to user Myself
+    Then I see the message "<Message>" in push notifications list
+    When I restore the application
+    And I wait for 2 seconds
+    Then I do not see the message "<Message>" in push notifications list
+
+    Examples:
+      | Name      | Contact   | Message | ContactDevice |
+      | user1Name | user2Name | hello   | Device1       |

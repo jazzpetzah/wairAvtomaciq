@@ -121,15 +121,15 @@ Feature: Video Calling
     Given <Contact2> starts instance using <AudioCallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
-    And <Contact1> starts a video call to me
-    And I see call status message contains "<Contact1> calling"
-    And I tap Accept Video button on Calling overlay
-    And I accept alert
+    Given <Contact1> starts a video call to me
+    Given I see call status message contains "<Contact1> calling"
+    Given I tap Accept Video button on Calling overlay
+    Given I accept alert
     When <Contact2> calls me
     And I see call status message contains "<Contact2> calling"
     Then I tap Accept button on Calling overlay
+    And I accept alert
     And I do not see Accept Video button on Calling overlay
-    And I see Leave button on Calling overlay
     And <Contact2> verifies that call status to me is changed to active in <Timeout> seconds
     And <Contact1> verifies that call status to me is changed to destroyed in <Timeout> seconds
 

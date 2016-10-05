@@ -10,7 +10,6 @@ import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Assert;
@@ -482,9 +481,9 @@ public class ConversationViewPageSteps {
      *
      * @param contact User name who called
      * @throws Exception
-     * @step. ^I click missed call button to call contact (.*)$
+     * @step. ^I tap missed call button to call contact (.*)
      */
-    @When("^I click missed call button to call contact (.*)$")
+    @When("^I tap missed call button to call contact (.*)")
     public void IClickMissedCallButton(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         getConversationViewPage().clickOnCallButtonForContact(contact.toUpperCase());
@@ -618,23 +617,6 @@ public class ConversationViewPageSteps {
     @And("^I select (Delete for Me|Delete for Everyone|Cancel) item from Delete menu$")
     public void ISelectDeleteMenuItem(String name) throws Exception {
         getConversationViewPage().selectDeleteMenuItem(name);
-    }
-
-    /**
-     * Verify whether user avatar is visible near convo input field
-     *
-     * @param shouldNotBeVisible equals to nuill is the avatar should be invisible
-     * @throws Exception
-     * @step. ^I (do not )?see plus icon is changed to user avatar icon$
-     */
-    @When("^I (do not )?see user avatar icon near the conversation input field$")
-    public void ISeeUserAvatar(String shouldNotBeVisible) throws Exception {
-        if (shouldNotBeVisible == null) {
-            Assert.assertTrue("User avatar is not visible", getConversationViewPage().isUserAvatarNextToInputVisible());
-        } else {
-            Assert.assertTrue("User avatar is visible, but should be hidden",
-                    getConversationViewPage().isUserAvatarNextToInputInvisible());
-        }
     }
 
     /**

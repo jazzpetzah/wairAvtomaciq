@@ -19,7 +19,7 @@ Feature: Copy Message
       | user1Name | user2Name | Yo      |
 
   @C119436 @regression @rc
-  Scenario Outline: Verify copy multimedia link from youtube/soundcould
+  Scenario Outline: (BUG AN-4543) Verify copy multimedia link from youtube/soundcould
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number

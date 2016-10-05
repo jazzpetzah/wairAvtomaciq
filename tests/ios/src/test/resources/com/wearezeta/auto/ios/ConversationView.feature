@@ -388,26 +388,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | Caramba!      | testing.jpg |
 
-  @C886 @regression @fastLogin
-  Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    Then I do not see user avatar icon near the conversation input field
-    When I tap on text input
-    Then I see user avatar icon near the conversation input field
-    # This is to hide keyboard
-    When I navigate back to conversations list
-    And I tap on contact name <Contact>
-    Then I do not see user avatar icon near the conversation input field
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C917 @real_rc @real @torun
+  @C917 @real_rc @real
   Scenario Outline: Verify sending photo from a back camera
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
