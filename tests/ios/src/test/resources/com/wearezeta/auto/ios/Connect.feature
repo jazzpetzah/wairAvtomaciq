@@ -201,8 +201,9 @@ Feature: Connect
     And I tap X button in People Picker input field
     And I tap on contact name <Contact>
     And I tap on text input
-    And I tap and hold on message input
-    And I paste and commit the text
+    And I long tap on text input
+    And I tap on Paste badge item
+    And I tap Send Message button in conversation view
     Then I verify that pasted message contains MyEmail
 
     Examples:

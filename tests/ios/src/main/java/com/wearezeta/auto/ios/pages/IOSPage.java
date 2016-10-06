@@ -40,7 +40,7 @@ public abstract class IOSPage extends BasePage {
     private static final By nameBadgeItemSelectAll = MobileBy.AccessibilityId("Select All");
     private static final By nameBadgeItemCopy = MobileBy.AccessibilityId("Copy");
     private static final By nameBadgeItemDelete = MobileBy.AccessibilityId("Delete");
-    private static final By nameBadgeItemPaste = MobileBy.AccessibilityId("Paste");
+    protected static final By nameBadgeItemPaste = MobileBy.AccessibilityId("Paste");
     private static final By nameBadgeItemSave = MobileBy.AccessibilityId("Save");
     private static final By nameBadgeItemEdit = MobileBy.AccessibilityId("Edit");
     private static final By nameBadgeItemLike = MobileBy.AccessibilityId("Like");
@@ -143,26 +143,6 @@ public abstract class IOSPage extends BasePage {
     public boolean isBadgeItemInvisible(String name) throws Exception {
         final By locator = getBadgeLocatorByName(name);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
-    }
-
-
-    public void inputStringFromPasteboard(FBElement dstElement, boolean shouldCommitInput) throws Exception {
-        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            longClickAt(dstElement);
-        } else {
-            dstElement.longTap();
-        }
-        getElement(nameBadgeItemPaste).click();
-        // Wait for animation
-        Thread.sleep(2000);
-        if (shouldCommitInput) {
-            if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-                IOSSimulatorHelper.pressEnterKey();
-                Thread.sleep(1000);
-            } else {
-                this.tapKeyboardCommitButton();
-            }
-        }
     }
 
     public boolean isKeyboardVisible() throws Exception {

@@ -141,7 +141,7 @@ Feature: Conversation View
     And I tap on contact name <Contact2>
     And I tap on contact name <Contact1>
     And I tap on text input
-    And I tap Send button on the keyboard
+    And I tap Send Message button in conversation view
     Then I see 1 default message in the conversation view
 
     Examples:
@@ -168,8 +168,9 @@ Feature: Conversation View
     And I see conversations list
     And I tap on contact name <Contact>
     And I tap on text input
-    And I tap and hold on message input
-    And I paste and commit the text
+    And I long tap on text input
+    And I tap on Paste badge item
+    And I tap Send Message button in conversation view
     Then I see last message in the conversation view is expected message <Text>
 
     Examples:
@@ -528,7 +529,7 @@ Feature: Conversation View
     And I long tap on image in conversation view
     And I tap on Copy badge item
     And I tap on text input
-    And I tap and hold on message input
+    And I long tap on text input
     And I tap on Paste badge item
     And I confirm my choice
     Then I see 2 photos in the conversation view
@@ -552,7 +553,7 @@ Feature: Conversation View
     And I long tap on image in conversation view
     And I tap on Copy badge item
     And I tap on text input
-    And I tap and hold on message input
+    And I long tap on text input
     And I tap on Paste badge item
     And I confirm my choice
     Then I see 2 photos in the conversation view

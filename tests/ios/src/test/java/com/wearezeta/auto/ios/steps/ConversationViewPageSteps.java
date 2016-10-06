@@ -40,9 +40,9 @@ public class ConversationViewPageSteps {
         ISeeTextInput(null);
     }
 
-    @When("^I tap on text input$")
-    public void WhenITapOnTextInput() throws Exception {
-        getConversationViewPage().tapOnCursorInput();
+    @When("^I (long )?tap on text input$")
+    public void ITapOnTextInput(String isLongTap) throws Exception {
+        getConversationViewPage().tapTextInput(isLongTap != null);
     }
 
     /**
@@ -113,14 +113,14 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Taps "Paste" item in popup menu of an input field and commit pasted text
+     * Tap Send Message button in conversation
      *
+     * @step. I tap Send Message button in conversation view
      * @throws Exception
-     * @step. ^I paste and commit the text$
      */
-    @When("^I paste and commit the text$")
-    public void IClickPopupPasteAndCommitText() throws Exception {
-        getConversationViewPage().pasteAndCommit();
+    @And("^I tap Send Message button in conversation view$")
+    public void ITapSendMessageButton() throws Exception {
+        getConversationViewPage().tapSendButton();
     }
 
     /**
@@ -315,8 +315,10 @@ public class ConversationViewPageSteps {
         String link = CommonSteps.getInstance().GetInvitationUrl(user);
         CommonUtils.setStringValueInSystemClipboard(link);
         IOSSimulatorHelper.copySystemClipboardToSimulatorClipboard();
-        ITapHoldTextInput();
-        IClickPopupPasteAndCommitText();
+        getConversationViewPage().tapTextInput(false);
+        getConversationViewPage().tapTextInput(true);
+        getConversationViewPage().tapBadgeItem("Paste");
+        getConversationViewPage().tapSendButton();
     }
 
     @When("^I pause playing the media in media bar$")
@@ -436,11 +438,6 @@ public class ConversationViewPageSteps {
     @Then("^I navigate back to conversations list")
     public void INavigateToConversationsList() throws Exception {
         getConversationViewPage().returnToConversationsList();
-    }
-
-    @When("I tap and hold on message input")
-    public void ITapHoldTextInput() throws Exception {
-        getConversationViewPage().tapHoldTextInput();
     }
 
     @When("^I scroll to the beginning of the conversation$")

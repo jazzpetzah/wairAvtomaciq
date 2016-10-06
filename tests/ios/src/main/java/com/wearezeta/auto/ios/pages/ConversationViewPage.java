@@ -228,6 +228,8 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbXpathUploadMenu =
             FBBy.xpath("//XCUIElementTypeButton[@label='Cancel']/preceding-sibling::*[1]");
 
+    private static final By nameSendButton = MobileBy.AccessibilityId("sendButton");
+
     protected static final String[] UPLOAD_MENU_ITEMS = new String[]{
             "Record a video", "Videos", "20 MB file", "Big file",
             "group-icon@3x.png", "CountryCodes.plist", "iCloud"
@@ -242,6 +244,10 @@ public class ConversationViewPage extends IOSPage {
 
     public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
+    }
+
+    public void tapSendButton() throws Exception {
+        getElement(nameSendButton).click();
     }
 
     private static String getDomainName(String url) {
@@ -321,8 +327,14 @@ public class ConversationViewPage extends IOSPage {
         getElement(locator).click();
     }
 
-    public void tapOnCursorInput() throws Exception {
-        getElement(fbNameConversationInput).click();
+    public void tapTextInput(boolean isLongTap) throws Exception {
+        final FBElement inputField = (FBElement) getElement(fbNameConversationInput);
+        if (isLongTap) {
+            inputField.longTap();
+        } else {
+            inputField.click();
+            Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
+        }
     }
 
     public void clearTextInput() throws Exception {
@@ -415,10 +427,6 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameTitle);
     }
 
-    public void tapHoldTextInput() throws Exception {
-        ((FBElement) getElement(fbNameConversationInput)).longTap();
-    }
-
     public void scrollToBeginningOfConversation() throws Exception {
         for (int i = 0; i < 2; i++) {
             if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
@@ -443,7 +451,7 @@ public class ConversationViewPage extends IOSPage {
         }
         convoInput.sendKeys(message);
         if (shouldSend) {
-            this.tapKeyboardCommitButton();
+            tapSendButton();
         }
     }
 
@@ -487,15 +495,6 @@ public class ConversationViewPage extends IOSPage {
 //        BufferedImage tmp = containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
 //        ImageIO.write(tmp, "png", new File("/Users/elf/Desktop/" + System.currentTimeMillis() + ".png"));
         return containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
-    }
-
-    public void pasteAndCommit() throws Exception {
-        final FBElement convoInput = (FBElement) getElement(fbNameConversationInput,
-                "Conversation input is not visible after the timeout");
-        convoInput.click();
-        // Wait for animation
-        Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
-        this.inputStringFromPasteboard(convoInput, true);
     }
 
     public boolean areInputToolsVisible() throws Exception {

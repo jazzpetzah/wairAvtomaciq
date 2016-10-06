@@ -110,7 +110,10 @@ Feature: Link Preview
     And I tap on Copy badge item
     And I navigate back to conversations list
     And I tap on contact name <Contact1>
-    And I paste and commit the text
+    And I tap on text input
+    And I long tap on text input
+    And I tap on Paste badge item
+    And I tap Send Message button in conversation view
     And I navigate back to conversations list
     When I tap on contact name <Contact1>
     Then I see link preview container in the conversation view
