@@ -1,15 +1,15 @@
 Feature: Autoconnect
 
-  @C2034 @regression @addressbookStart
+  @torun @C2034 @regression @addressbookStart
   Scenario Outline: Verify autoconnect users by direct match phone numbers
     Given There are 2 users
-    Given I quit Wire
+    Given I minimize Wire
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
     Given I delete all contacts from Address Book
     Given I add name <Contact1> and phone <ContactPhone> to Address Book
     Given I add name <Contact2> and phone <Contact2Phone> to Address Book
-    Given I relaunch Wire
+    Given I restore Wire
     Given I see sign in screen
     When I enter phone number for <Name>
     And I enter activation code
@@ -31,15 +31,11 @@ Feature: Autoconnect
   Scenario Outline: Verify autoconnect users by direct match phone numbers - delayed
     Given There are 3 users where <Name> is me
     Given I minimize Wire
-    #Given I quit Wire
-    #Given I wait for 5 seconds
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
     Given I delete all contacts from Address Book
     Given I add name <Contact1> and phone <ContactPhone> to Address Book
     Given I add name <Contact2> and phone <Contact2Phone> to Address Book
-    #Given I wait for 10 seconds
-    #Given I relaunch Wire
     Given I restore Wire
     Given I sign in using my email or phone number
     And I wait until <Contact1> exists in backend search results
@@ -47,7 +43,6 @@ Feature: Autoconnect
     When I open search UI
     And I accept alert
     And I tap X button in People Picker input field
-    #And I wait for 240 seconds
     Then I see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
 
@@ -55,15 +50,15 @@ Feature: Autoconnect
       | Contact1  | Contact2  | ContactPhone     | Contact2Phone    | Name      |
       | user3Name | user2Name | user3PhoneNumber | user2PhoneNumber | user1Name |
 
-  @C202303 @regression @addressbookStart
+  @torun @C202303 @regression @addressbookStart
   Scenario Outline: Verify direct matching email - delayed
     Given There are 2 users where <Name> is me
-    Given I quit Wire
+    Given I minimize Wire
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
     Given I delete all contacts from Address Book
     Given I add name <Contact> and email <ContactEmail> to Address Book
-    Given I relaunch Wire
+    Given I restore Wire
     Given I sign in using my email or phone number
     And I wait until <Contact> exists in backend search results
     When I open search UI
@@ -76,15 +71,15 @@ Feature: Autoconnect
       | Contact   | ContactEmail | Name      |
       | user2Name | user2Email   | user1Name |
 
-  @C206254 @regression @addressbookStart
+  @torun @C206254 @regression @addressbookStart
   Scenario Outline: Verify direct matching of emails
     Given There is 1 user
-    Given I quit Wire
+    Given I minimize Wire
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
     Given I delete all contacts from Address Book
     Given I add name <Contact> and email <ContactEmail> to Address Book
-    Given I relaunch Wire
+    Given I restore Wire
     Given I see sign in screen
     When I enter phone number for <Name>
     And I enter activation code
@@ -106,10 +101,10 @@ Feature: Autoconnect
       | Contact   | ContactEmail | Name      |
       | user1Name | user1Email   | user2Name |
 
-  @C226448 @addressbookStart @regression
+  @torun @C226448 @addressbookStart @regression
   Scenario Outline: (MEC-1557) Verify Address Book is uploaded in batches
     Given There is 1 user where <Name> is me
-    Given I quit Wire
+    Given I minimize Wire
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
     Given I delete all contacts from Address Book
@@ -119,36 +114,36 @@ Feature: Autoconnect
     Given I pick 1 random contact from chunk 1 to register at BE
     Given I pick 1 random contact from chunk 2 to register at BE
     Given I pick 1 random contact from chunk 3 to register at BE
-    Given I relaunch Wire
+    Given I restore Wire
     Given I sign in using my email or phone number
     When I open search UI
     And I accept alert
     And I tap X button in People Picker input field
     Then I see 1st autoconnection in conversations list
-    When I quit Wire
-    And I relaunch Wire
+    When I minimize Wire
+    And I restore Wire
     Then I see 2nd autoconnection in conversations list
-    When I quit Wire
-    And I relaunch Wire
+    When I minimize Wire
+    And I restore Wire
     Then I see 3rd autoconnection in conversations list
     When I pick 1 random contact from chunk 1 to register at BE
-    And I quit Wire
-    And I relaunch Wire
+    And I minimize Wire
+    And I restore Wire
     Then I see 4th autoconnection in conversations list
 
     Examples:
       | Name      | NumberOfUsers | NumberOfChunks |
       | user1Name | 3000          | 3              |
 
-  @C79 @addressbookStart @staging
+  @torun @C79 @addressbookStart @staging
   Scenario Outline: Verify name from the address book is shown as a subtitle
     Given There are 2 users where <Name> is me
-    Given I quit Wire
+    Given I minimize Wire
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
     Given I delete all contacts from Address Book
     Given I add name <Contact> and phone <ContactPhone> to Address Book
-    Given I relaunch Wire
+    Given I restore Wire
     Given I remember the name of user <Contact> in Address Book
     Given User <Contact> changes name to <NewName>
     Given I sign in using my email or phone number
