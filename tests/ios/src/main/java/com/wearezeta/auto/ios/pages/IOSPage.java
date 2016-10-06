@@ -268,6 +268,38 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
+    public void minimizeApplication() throws Exception {
+        assert getDriver() != null : "WebDriver is not ready";
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            IOSSimulatorHelper.goHome();
+            Thread.sleep(1000);
+        } else {
+            throw new IllegalStateException("Run a Simulator first!");
+        }
+    }
+
+    public void restoreApplication() throws Exception {
+        assert getDriver() != null : "WebDriver is not ready";
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            final String autPath = (String) getDriver().getCapabilities().getCapability("app");
+            String bundleId;
+            if (autPath.endsWith(".app")) {
+                bundleId = IOSCommonUtils.getBundleId(new File(autPath + "/Info.plist"));
+            } else {
+                final File appPath = IOSCommonUtils.extractAppFromIpa(new File(autPath));
+                try {
+                    bundleId = IOSCommonUtils.getBundleId(new File(appPath.getCanonicalPath() + "/Info.plist"));
+                } finally {
+                    FileUtils.deleteDirectory(appPath);
+                }
+            }
+            IOSSimulatorHelper.launchApp(bundleId);
+            Thread.sleep(1000);
+        } else {
+            throw new IllegalStateException("Minimize the App first!");
+        }
+    }
+
     protected void doubleClickAt(WebElement el, int percentX, int percentY) throws Exception {
         if (!CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             throw new IllegalStateException("This method works for iOS Simulator only");

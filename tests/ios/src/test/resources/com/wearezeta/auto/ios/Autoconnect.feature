@@ -30,22 +30,24 @@ Feature: Autoconnect
   @torun @C202304 @regression @addressbookStart
   Scenario Outline: Verify autoconnect users by direct match phone numbers - delayed
     Given There are 3 users where <Name> is me
-    Given I quit Wire
-    Given I wait for 5 seconds
+    Given I minimize Wire
+    #Given I quit Wire
+    #Given I wait for 5 seconds
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
     Given I delete all contacts from Address Book
     Given I add name <Contact1> and phone <ContactPhone> to Address Book
     Given I add name <Contact2> and phone <Contact2Phone> to Address Book
-    Given I wait for 10 seconds
-    Given I relaunch Wire
+    #Given I wait for 10 seconds
+    #Given I relaunch Wire
+    Given I restore Wire
     Given I sign in using my email or phone number
     And I wait until <Contact1> exists in backend search results
     And I wait until <Contact2> exists in backend search results
     When I open search UI
     And I accept alert
     And I tap X button in People Picker input field
-    And I wait for 240 seconds
+    #And I wait for 240 seconds
     Then I see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
 

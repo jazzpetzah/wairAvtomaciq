@@ -1520,4 +1520,26 @@ public class CommonIOSSteps {
                         reactionType));
         }
     }
+
+    /**
+     * Minimizes the App
+     *
+     * @throws Exception
+     * @step. ^I minimize Wire$
+     */
+    @Given("^I minimize Wire$")
+    public void IMinimizeWire() throws Exception {
+        pagesCollection.getCommonPage().minimizeApplication();
+    }
+
+    /**
+     * Restores the App
+     *
+     * @throws Exception
+     * @step. ^I restore Wire$
+     */
+    @Given("^I restore Wire$")
+    public void IRestoreWire() throws Exception {
+        pagesCollection.getCommonPage().restoreApplication();
+    }
 }
