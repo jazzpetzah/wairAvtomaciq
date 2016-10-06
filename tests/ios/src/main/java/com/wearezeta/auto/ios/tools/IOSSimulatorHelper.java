@@ -304,7 +304,7 @@ public class IOSSimulatorHelper {
     }
 
     public static void installIpa(File ipaPath) throws Exception {
-        final File app = IOSCommonUtils.extractAppFromIpa(ipaPath);
+        final File app = CommonUtils.extractAppFromIpa(ipaPath);
         try {
             installApp(app);
         } finally {

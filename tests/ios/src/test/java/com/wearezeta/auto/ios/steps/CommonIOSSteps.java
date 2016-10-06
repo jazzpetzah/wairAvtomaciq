@@ -15,6 +15,7 @@ import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.process.UnixProcessHelpers;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
@@ -186,9 +187,9 @@ public class CommonIOSSteps {
         if ((caps.is("noReset") && !((Boolean) caps.getCapability("noReset")) || !caps.is("noReset"))) {
             // FIXME: Sometimes Appium fails to reset app prefs properly on real device
             if (!cachedBundleIds.containsKey(ipaPath)) {
-                final File appPath = IOSCommonUtils.extractAppFromIpa(new File(ipaPath));
+                final File appPath = CommonUtils.extractAppFromIpa(new File(ipaPath));
                 try {
-                    cachedBundleIds.put(ipaPath, IOSCommonUtils.getBundleId(
+                    cachedBundleIds.put(ipaPath, ZetaIOSDriver.parseBundleId(
                             new File(appPath.getCanonicalPath() + File.separator + "Info.plist")));
                 } finally {
                     FileUtils.deleteDirectory(appPath);
@@ -1426,6 +1427,7 @@ public class CommonIOSSteps {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            UnixProcessHelpers.killProcessesGracefully("Wire");
         }
     }
 
@@ -1517,5 +1519,27 @@ public class CommonIOSSteps {
                 throw new IllegalArgumentException(String.format("Cannot identify the reaction type '%s'",
                         reactionType));
         }
+    }
+
+    /**
+     * Minimizes the App
+     *
+     * @throws Exception
+     * @step. ^I minimize Wire$
+     */
+    @Given("^I minimize Wire$")
+    public void IMinimizeWire() throws Exception {
+        pagesCollection.getCommonPage().minimizeApplication();
+    }
+
+    /**
+     * Restores the App
+     *
+     * @throws Exception
+     * @step. ^I restore Wire$
+     */
+    @Given("^I restore Wire$")
+    public void IRestoreWire() throws Exception {
+        pagesCollection.getCommonPage().restoreApplication();
     }
 }

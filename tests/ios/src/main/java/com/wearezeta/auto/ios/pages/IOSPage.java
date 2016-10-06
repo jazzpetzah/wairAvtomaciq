@@ -13,10 +13,8 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.*;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -229,22 +227,30 @@ public abstract class IOSPage extends BasePage {
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             IOSSimulatorHelper.goHome();
             Thread.sleep(timeSeconds * 1000);
-            final String autPath = (String) getDriver().getCapabilities().getCapability("app");
-            String bundleId;
-            if (autPath.endsWith(".app")) {
-                bundleId = IOSCommonUtils.getBundleId(new File(autPath + "/Info.plist"));
-            } else {
-                final File appPath = IOSCommonUtils.extractAppFromIpa(new File(autPath));
-                try {
-                    bundleId = IOSCommonUtils.getBundleId(new File(appPath.getCanonicalPath() + "/Info.plist"));
-                } finally {
-                    FileUtils.deleteDirectory(appPath);
-                }
-            }
-            IOSSimulatorHelper.launchApp(bundleId);
+            IOSSimulatorHelper.launchApp(getDriver().getBundleID());
             Thread.sleep(1000);
         } else {
             this.getDriver().runAppInBackground(timeSeconds);
+        }
+    }
+
+    public void minimizeApplication() throws Exception {
+        assert getDriver() != null : "WebDriver is not ready";
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            IOSSimulatorHelper.goHome();
+            Thread.sleep(1000);
+        } else {
+            throw new IllegalStateException("Run a Simulator first!");
+        }
+    }
+
+    public void restoreApplication() throws Exception {
+        assert getDriver() != null : "WebDriver is not ready";
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            IOSSimulatorHelper.launchApp(getDriver().getBundleID());
+            Thread.sleep(1000);
+        } else {
+            throw new IllegalStateException("Run a Simulator fist!");
         }
     }
 
