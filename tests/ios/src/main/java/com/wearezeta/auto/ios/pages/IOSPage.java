@@ -240,7 +240,7 @@ public abstract class IOSPage extends BasePage {
             IOSSimulatorHelper.goHome();
             Thread.sleep(1000);
         } else {
-            throw new IllegalStateException("Run a Simulator first!");
+            throw new IllegalStateException("This method works for iOS Simulator only");
         }
     }
 
@@ -250,7 +250,7 @@ public abstract class IOSPage extends BasePage {
             IOSSimulatorHelper.launchApp(getDriver().getBundleID());
             Thread.sleep(1000);
         } else {
-            throw new IllegalStateException("Run a Simulator fist!");
+            throw new IllegalStateException("This method works for iOS Simulator only");
         }
     }
 
