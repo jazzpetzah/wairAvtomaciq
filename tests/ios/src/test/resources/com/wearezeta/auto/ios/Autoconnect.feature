@@ -1,6 +1,6 @@
 Feature: Autoconnect
 
-  @torun @C2034 @regression @addressbookStart
+  @C2034 @regression @addressbookStart
   Scenario Outline: Verify autoconnect users by direct match phone numbers
     Given There are 2 users
     Given I minimize Wire
@@ -27,7 +27,7 @@ Feature: Autoconnect
       | Contact1  | Contact2  | ContactPhone     | Contact2Phone    | Name      |
       | user1Name | user2Name | user1PhoneNumber | user2PhoneNumber | user3Name |
 
-  @torun @C202304 @regression @addressbookStart
+  @C202304 @regression @addressbookStart
   Scenario Outline: Verify autoconnect users by direct match phone numbers - delayed
     Given There are 3 users where <Name> is me
     Given I minimize Wire
@@ -50,7 +50,7 @@ Feature: Autoconnect
       | Contact1  | Contact2  | ContactPhone     | Contact2Phone    | Name      |
       | user3Name | user2Name | user3PhoneNumber | user2PhoneNumber | user1Name |
 
-  @torun @C202303 @regression @addressbookStart
+  @C202303 @regression @addressbookStart
   Scenario Outline: Verify direct matching email - delayed
     Given There are 2 users where <Name> is me
     Given I minimize Wire
@@ -64,6 +64,7 @@ Feature: Autoconnect
     When I open search UI
     And I accept alert
     And I wait until <Contact> is first search result on backend
+    And I tap on Search input on People picker page
     And I input in People picker search field first 1 letter of user name <Contact>
     Then I see the first item in Search result is <Contact>
 
@@ -71,7 +72,7 @@ Feature: Autoconnect
       | Contact   | ContactEmail | Name      |
       | user2Name | user2Email   | user1Name |
 
-  @torun @C206254 @regression @addressbookStart
+  @C206254 @regression @addressbookStart
   Scenario Outline: Verify direct matching of emails
     Given There is 1 user
     Given I minimize Wire
@@ -94,6 +95,7 @@ Feature: Autoconnect
     And I wait until <Contact> exists in backend search results
     When I open search UI
     And I wait until <Contact> is first search result on backend
+    And I tap on Search input on People picker page
     And I input in People picker search field first 1 letter of user name <Contact>
     Then I see the first item in Search result is <Contact>
 
@@ -101,7 +103,7 @@ Feature: Autoconnect
       | Contact   | ContactEmail | Name      |
       | user1Name | user1Email   | user2Name |
 
-  @torun @C226448 @addressbookStart @regression
+  @C226448 @addressbookStart @regression
   Scenario Outline: (MEC-1557) Verify Address Book is uploaded in batches
     Given There is 1 user where <Name> is me
     Given I minimize Wire
@@ -135,7 +137,7 @@ Feature: Autoconnect
       | Name      | NumberOfUsers | NumberOfChunks |
       | user1Name | 3000          | 3              |
 
-  @torun @C79 @addressbookStart @staging
+  @C79 @addressbookStart @staging
   Scenario Outline: Verify name from the address book is shown as a subtitle
     Given There are 2 users where <Name> is me
     Given I minimize Wire
@@ -159,57 +161,3 @@ Feature: Autoconnect
     Examples:
       | Name      | Contact   | ContactPhone     | NewName |
       | user1Name | user2Name | user2PhoneNumber | Beyonce |
-
-  @addressbookStart
-  Scenario Outline: Interrupt AB upload on the first upload after sign in
-    Given There is 1 user where <Name> is me
-    Given I quit Wire
-    Given I install Address Book Helper app
-    Given I launch Address Book Helper app
-    Given I delete all contacts from Address Book
-    Given I add <NumberOfUsers> users to Address Book
-    Given I read list of contacts in Address Book
-    Given I separate list of contacts into <NumberOfChunks> chunks
-    Given I pick 10 random contact from chunk 1 to register at BE
-    Given I relaunch Wire
-    Given I sign in using my email or phone number
-    When I open search UI
-    And I accept alert
-    And I tap X button in People Picker input field
-    And I quit Wire
-    And I relaunch Wire
-    Then I see 9th autoconnection in conversations list
-
-    Examples:
-      | Name      | NumberOfUsers | NumberOfChunks |
-      | user1Name | 1000          | 1              |
-
-  @addressbookStart
-  Scenario Outline: Interrupt AB upload on the first upload after registration
-    Given There are 0 users
-    Given I quit Wire
-    Given I install Address Book Helper app
-    Given I launch Address Book Helper app
-    Given I delete all contacts from Address Book
-    Given I add <NumberOfUsers> users to Address Book
-    Given I read list of contacts in Address Book
-    Given I separate list of contacts into <NumberOfChunks> chunks
-    Given I pick 10 random contact from chunk 1 to register at BE
-    Given I relaunch Wire
-    Given I see sign in screen
-    When I enter phone number for <Name>
-    And I enter activation code
-    And I accept terms of service
-    And I input name <Name> and hit Enter
-    And I accept alert
-    And I tap Keep This One button
-    And I tap Share Contacts button on Share Contacts overlay
-    And I accept alert
-    And User <Name> is me
-    And I quit Wire
-    And I relaunch Wire
-    Then I see 8th autoconnection in conversations list
-
-    Examples:
-      | Name         | NumberOfUsers | NumberOfChunks |
-      | user1001Name | 1000          | 1              |
