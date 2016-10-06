@@ -1,7 +1,5 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.text.Normalizer;
-import java.text.Normalizer.Form;
 import java.util.Optional;
 
 import com.wearezeta.auto.common.CommonSteps;
@@ -178,9 +176,7 @@ public class ConversationViewPageSteps {
 
     @Then("^I see last message in the conversation view (is|contains) expected message (.*)")
     public void ThenISeeLasMessageIsd(String operation, String msg) throws Exception {
-        if (!Normalizer.isNormalized(msg, Form.NFC)) {
-            msg = Normalizer.normalize(msg, Form.NFC);
-        }
+        msg = usrMgr.replaceAliasesOccurences(msg, FindBy.EMAIL_ALIAS);
         if (operation.equals("is")) {
             Assert.assertTrue(
                     String.format("The last message in the conversation is different from the expected one '%s'",
@@ -443,20 +439,6 @@ public class ConversationViewPageSteps {
     @When("^I scroll to the beginning of the conversation$")
     public void IScrollToTheBeginningOfTheConversation() throws Throwable {
         getConversationViewPage().scrollToBeginningOfConversation();
-    }
-
-    /**
-     * Checks if the pasted message contains the particular email
-     *
-     * @param mail email address/alias
-     * @throws Exception
-     * @step. ^I verify that pasted content contains (.*)$
-     */
-    @Then("^I verify that pasted message contains (.*)$")
-    public void ICheckCopiedContentFrom(String mail) throws Exception {
-        final String finalString = usrMgr.replaceAliasesOccurences(mail, FindBy.EMAIL_ALIAS);
-        Assert.assertTrue(String.format("The last message in the chat does not contain '%s' part",
-                finalString), getConversationViewPage().isRecentMessageContain(finalString));
     }
 
     /**

@@ -91,7 +91,7 @@ Feature: Share Location
     And I long tap on text input
     And I tap on Paste badge item
     And I tap Send Message button in conversation view
-    Then I verify that pasted message contains <ExpectedText>
+    Then I see last message in the conversation view contains expected message <ExpectedText>
 
     Examples:
       | Name      | Contact   | DeviceName | ExpectedText |

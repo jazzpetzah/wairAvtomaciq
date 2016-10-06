@@ -317,7 +317,7 @@ Feature: Connect
     And I long tap on text input
     And I tap on Paste badge item
     And I tap Send Message button in conversation view
-    Then I verify that pasted message contains MyEmail
+    Then I see last message in the conversation view contains expected message MyEmail
 
     Examples:
       | Name      | Contact   |
@@ -621,7 +621,7 @@ Feature: Connect
     And I long tap on text input
     And I tap on Paste badge item
     And I tap Send Message button in conversation view
-    Then I verify that pasted message contains MyEmail
+    Then I see last message in the conversation view contains expected message MyEmail
 
     Examples:
       | Name      | Contact   |
