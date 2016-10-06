@@ -57,7 +57,7 @@ public final class WebAppLocators {
 
         public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
         public static final String xpathParentArchiveListItem = "//div[@id='archive']";
-        public static final String cssParentContactListItem = "#conversation-list";
+        public static final String cssParentContactListItem = "#conversations";
         public static final String cssParentArchiveListItem = "#archive";
 
         public static final String cssIncomingPendingConvoItem = "[data-uie-name='item-pending-requests']";
@@ -96,7 +96,7 @@ public final class WebAppLocators {
 
         public static final Function<String, String> cssSelectedContactListEntryByName = (
                 name) -> String
-                .format(".conversation-list-item.text-theme div[data-uie-name='item-conversation'][data-uie-value='%s'], " +
+                .format(".left-list-item.text-theme div[data-uie-name='item-conversation'][data-uie-value='%s'], " +
                                 "div[data-uie-name='item-call'][data-uie-value='%s'].text-theme", name, name);
 
         public static final Function<String, String> cssOptionsButtonByContactName = (
