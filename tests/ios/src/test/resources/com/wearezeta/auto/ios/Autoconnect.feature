@@ -27,7 +27,7 @@ Feature: Autoconnect
       | Contact1  | Contact2  | ContactPhone     | Contact2Phone    | Name      |
       | user1Name | user2Name | user1PhoneNumber | user2PhoneNumber | user3Name |
 
-  @C202304 @regression @addressbookStart
+  @torun @C202304 @regression @addressbookStart
   Scenario Outline: Verify autoconnect users by direct match phone numbers - delayed
     Given There are 3 users where <Name> is me
     Given I quit Wire

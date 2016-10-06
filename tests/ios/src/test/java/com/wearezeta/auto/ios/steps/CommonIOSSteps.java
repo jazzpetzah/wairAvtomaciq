@@ -15,6 +15,7 @@ import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.process.UnixProcessHelpers;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
@@ -1422,7 +1423,8 @@ public class CommonIOSSteps {
                 savedCaps.put(capabilityItem.getKey(), capabilityItem.getValue());
             }
             try {
-                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+                //PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+                UnixProcessHelpers.killProcessesGracefully("Wire");
             } catch (Exception e) {
                 e.printStackTrace();
             }
