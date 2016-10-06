@@ -36,6 +36,7 @@ Feature: Autoconnect
     Given I delete all contacts from Address Book
     Given I add name <Contact1> and phone <ContactPhone> to Address Book
     Given I add name <Contact2> and phone <Contact2Phone> to Address Book
+    Given I wait for 10 seconds
     Given I relaunch Wire
     Given I sign in using my email or phone number
     And I wait until <Contact1> exists in backend search results
@@ -159,3 +160,57 @@ Feature: Autoconnect
     Examples:
       | Name      | Contact   | ContactPhone     | NewName |
       | user1Name | user2Name | user2PhoneNumber | Beyonce |
+
+  @addressbookStart
+  Scenario Outline: Interrupt AB upload on the first upload after sign in
+    Given There is 1 user where <Name> is me
+    Given I quit Wire
+    Given I install Address Book Helper app
+    Given I launch Address Book Helper app
+    Given I delete all contacts from Address Book
+    Given I add <NumberOfUsers> users to Address Book
+    Given I read list of contacts in Address Book
+    Given I separate list of contacts into <NumberOfChunks> chunks
+    Given I pick 10 random contact from chunk 1 to register at BE
+    Given I relaunch Wire
+    Given I sign in using my email or phone number
+    When I open search UI
+    And I accept alert
+    And I tap X button in People Picker input field
+    And I quit Wire
+    And I relaunch Wire
+    Then I see 9th autoconnection in conversations list
+
+    Examples:
+      | Name      | NumberOfUsers | NumberOfChunks |
+      | user1Name | 1000          | 1              |
+
+  @addressbookStart
+  Scenario Outline: Interrupt AB upload on the first upload after registration
+    Given There are 0 users
+    Given I quit Wire
+    Given I install Address Book Helper app
+    Given I launch Address Book Helper app
+    Given I delete all contacts from Address Book
+    Given I add <NumberOfUsers> users to Address Book
+    Given I read list of contacts in Address Book
+    Given I separate list of contacts into <NumberOfChunks> chunks
+    Given I pick 10 random contact from chunk 1 to register at BE
+    Given I relaunch Wire
+    Given I see sign in screen
+    When I enter phone number for <Name>
+    And I enter activation code
+    And I accept terms of service
+    And I input name <Name> and hit Enter
+    And I accept alert
+    And I tap Keep This One button
+    And I tap Share Contacts button on Share Contacts overlay
+    And I accept alert
+    And User <Name> is me
+    And I quit Wire
+    And I relaunch Wire
+    Then I see 8th autoconnection in conversations list
+
+    Examples:
+      | Name         | NumberOfUsers | NumberOfChunks |
+      | user1001Name | 1000          | 1              |

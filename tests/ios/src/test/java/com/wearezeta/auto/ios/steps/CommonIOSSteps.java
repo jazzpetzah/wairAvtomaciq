@@ -1423,11 +1423,11 @@ public class CommonIOSSteps {
                 savedCaps.put(capabilityItem.getKey(), capabilityItem.getValue());
             }
             try {
-                //PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
-                UnixProcessHelpers.killProcessesGracefully("Wire");
+                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            UnixProcessHelpers.killProcessesGracefully("Wire");
         }
     }
 
