@@ -55,7 +55,7 @@ public final class WebAppLocators {
 
     public static final class ContactListPage {
 
-        public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
+        public static final String xpathParentContactListItem = "//div[@id='conversations']";
         public static final String xpathParentArchiveListItem = "//div[@id='archive']";
         public static final String cssParentContactListItem = "#conversations";
         public static final String cssParentArchiveListItem = "#archive";
