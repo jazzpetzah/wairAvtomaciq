@@ -187,9 +187,9 @@ public class CommonIOSSteps {
         if ((caps.is("noReset") && !((Boolean) caps.getCapability("noReset")) || !caps.is("noReset"))) {
             // FIXME: Sometimes Appium fails to reset app prefs properly on real device
             if (!cachedBundleIds.containsKey(ipaPath)) {
-                final File appPath = IOSCommonUtils.extractAppFromIpa(new File(ipaPath));
+                final File appPath = CommonUtils.extractAppFromIpa(new File(ipaPath));
                 try {
-                    cachedBundleIds.put(ipaPath, IOSCommonUtils.getBundleId(
+                    cachedBundleIds.put(ipaPath, ZetaIOSDriver.parseBundleId(
                             new File(appPath.getCanonicalPath() + File.separator + "Info.plist")));
                 } finally {
                     FileUtils.deleteDirectory(appPath);
