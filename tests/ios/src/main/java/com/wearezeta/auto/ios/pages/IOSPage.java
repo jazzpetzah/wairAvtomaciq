@@ -244,23 +244,28 @@ public abstract class IOSPage extends BasePage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
+    private String bundleId;
+
+    private void detectBundleID() throws Exception {
+        final String autPath = (String) getDriver().getCapabilities().getCapability("app");
+        if (autPath.endsWith(".app")) {
+            bundleId = IOSCommonUtils.getBundleId(new File(autPath + "/Info.plist"));
+        } else {
+            final File appPath = IOSCommonUtils.extractAppFromIpa(new File(autPath));
+            try {
+                bundleId = IOSCommonUtils.getBundleId(new File(appPath.getCanonicalPath() + "/Info.plist"));
+            } finally {
+                FileUtils.deleteDirectory(appPath);
+            }
+        }
+    }
+
     public void minimizeApplication(int timeSeconds) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             IOSSimulatorHelper.goHome();
             Thread.sleep(timeSeconds * 1000);
-            final String autPath = (String) getDriver().getCapabilities().getCapability("app");
-            String bundleId;
-            if (autPath.endsWith(".app")) {
-                bundleId = IOSCommonUtils.getBundleId(new File(autPath + "/Info.plist"));
-            } else {
-                final File appPath = IOSCommonUtils.extractAppFromIpa(new File(autPath));
-                try {
-                    bundleId = IOSCommonUtils.getBundleId(new File(appPath.getCanonicalPath() + "/Info.plist"));
-                } finally {
-                    FileUtils.deleteDirectory(appPath);
-                }
-            }
+            detectBundleID();
             IOSSimulatorHelper.launchApp(bundleId);
             Thread.sleep(1000);
         } else {
@@ -281,22 +286,11 @@ public abstract class IOSPage extends BasePage {
     public void restoreApplication() throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            final String autPath = (String) getDriver().getCapabilities().getCapability("app");
-            String bundleId;
-            if (autPath.endsWith(".app")) {
-                bundleId = IOSCommonUtils.getBundleId(new File(autPath + "/Info.plist"));
-            } else {
-                final File appPath = IOSCommonUtils.extractAppFromIpa(new File(autPath));
-                try {
-                    bundleId = IOSCommonUtils.getBundleId(new File(appPath.getCanonicalPath() + "/Info.plist"));
-                } finally {
-                    FileUtils.deleteDirectory(appPath);
-                }
-            }
+            detectBundleID();
             IOSSimulatorHelper.launchApp(bundleId);
             Thread.sleep(1000);
         } else {
-            throw new IllegalStateException("Minimize the App first!");
+            throw new IllegalStateException("Run a Simulator fist!");
         }
     }
 
