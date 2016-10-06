@@ -264,21 +264,43 @@ public abstract class IOSPage extends BasePage {
         doubleClickAt(el, 50, 50);
     }
 
-    protected void longClickAt(WebElement el, int percentX, int percentY) throws Exception {
+    /**
+     * Perform click on Simulator using Python script
+     *
+     * @param el              optional element to click. Absolute screen size will be calculated if Optional.empty()
+     *                        is provided
+     * @param percentX        should be between 0 and 100
+     * @param percentY        should be between 0 and 100
+     * @param durationSeconds click duration in seconds
+     * @throws Exception
+     */
+    protected void clickAt(Optional<WebElement> el, int percentX, int percentY, double durationSeconds) throws Exception {
         if (!CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             throw new IllegalStateException("This method works for iOS Simulator only");
         }
-        final Dimension elSize = el.getSize();
-        final Point elLocation = el.getLocation();
-        final Dimension windowSize = getDriver().manage().window().getSize();
-        IOSSimulatorHelper.clickAt(
-                String.format("%.2f", (elLocation.x + elSize.width * percentX / 100.0) / windowSize.width),
-                String.format("%.2f", (elLocation.y + elSize.height * percentY / 100.0) / windowSize.height),
-                String.format("%.3f", DriverUtils.LONG_TAP_DURATION / 1000.0));
+        double px;
+        double py;
+        if (el.isPresent()) {
+            final Dimension windowSize = getDriver().manage().window().getSize();
+            final Dimension elSize = el.get().getSize();
+            final Point elLocation = el.get().getLocation();
+            px = (elLocation.x + elSize.width * percentX / 100.0) / windowSize.width;
+            py = (elLocation.y + elSize.height * percentY / 100.0) / windowSize.height;
+        } else {
+            px = percentX / 100.0;
+            py = percentY / 100.0;
+        }
+        IOSSimulatorHelper.clickAt(String.format("%.2f", px),
+                String.format("%.2f", py),
+                String.format("%.3f", durationSeconds));
     }
 
-    protected void longClickAt(WebElement el) throws Exception {
-        this.longClickAt(el, 50, 50);
+    protected void longClickAt(WebElement el, int percentX, int percentY) throws Exception {
+        this.clickAt(Optional.of(el), percentX, percentY, DriverUtils.LONG_TAP_DURATION / 1000.0);
+    }
+
+    protected void clickAt(int percentX, int percentY) throws Exception {
+        this.clickAt(Optional.empty(), percentX, percentY, DriverUtils.SINGLE_TAP_DURATION / 1000.0);
     }
 
     public void rotateScreen(ScreenOrientation orientation) throws Exception {

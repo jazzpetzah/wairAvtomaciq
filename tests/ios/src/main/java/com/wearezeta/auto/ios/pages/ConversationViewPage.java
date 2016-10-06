@@ -91,8 +91,6 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameTitle = MobileBy.AccessibilityId("playingMediaTitle");
 
-    private static final By nameGifButton = MobileBy.AccessibilityId("gifButton");
-
     public static final Function<String, String> xpathStrMissedCallButtonByContact = name ->
             String.format("//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s CALLED'] ]" +
                     "/XCUIElementTypeButton[@name='ConversationMissedCallButton']", name.toUpperCase());
@@ -118,6 +116,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbNameVideoMessageButton = FBBy.AccessibilityId("videoButton");
     private static final By fbNameAudioMessageButton = FBBy.AccessibilityId("audioButton");
     private static final By fbNameShareLocationButton = FBBy.AccessibilityId("locationButton");
+    private static final By fbNameGifButton = FBBy.AccessibilityId("gifButton");
 
     private static final String xpathStrConversationViewTopBar =
             "//XCUIElementTypeNavigationBar[ ./XCUIElementTypeButton[@name='Back'] ]";
@@ -459,10 +458,6 @@ public class ConversationViewPage extends IOSPage {
         typeMessage(message, false);
     }
 
-    public void openGifPreviewPage() throws Exception {
-        getElement(nameGifButton).click();
-    }
-
     public boolean isConnectingToUserConversationLabelVisible(String username) throws Exception {
         final By locator = By.xpath(xpathStrConnectingToUserLabelByName.apply(username));
         return isElementDisplayed(locator);
@@ -594,6 +589,8 @@ public class ConversationViewPage extends IOSPage {
                 return fbNameAudioMessageButton;
             case "share location":
                 return fbNameShareLocationButton;
+            case "gif":
+                return fbNameGifButton;
             default:
                 throw new IllegalArgumentException(String.format("Unknown input tools button name %s", btnName));
         }

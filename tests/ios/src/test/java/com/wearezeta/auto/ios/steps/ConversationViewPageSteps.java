@@ -217,10 +217,10 @@ public class ConversationViewPageSteps {
      * @param btnName         one of available button names
      * @param durationSeconds specific time duration you press the button
      * @throws Exception
-     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message)
+     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message|GIF)
      * button( for \\d+ seconds?)? from input tools$
      */
-    @When("^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message) " +
+    @When("^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message|GIF) " +
             "button( for \\d+ seconds?)? from input tools$")
     public void ITapButtonByNameFromInputTools(String isLongTap, String btnName, String durationSeconds)
             throws Exception {
@@ -241,10 +241,10 @@ public class ConversationViewPageSteps {
      *
      * @param btnName one of available button names
      * @throws Exception
-     * @step. ^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input
+     * @step. ^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message|GIF) button in input
      * tools palette$
      */
-    @When("^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input " +
+    @When("^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message|GIF) button in input " +
             "tools palette$")
     public void VerifyButtonVisibilityInInputTools(String shouldNot, String btnName) throws Exception {
         if (shouldNot == null) {
@@ -484,19 +484,6 @@ public class ConversationViewPageSteps {
             Assert.assertTrue("Input placeholder text is visible",
                     getConversationViewPage().isInputPlaceholderTextInvisible());
         }
-    }
-
-    /**
-     * Types in the tag for giphy and opens preview page
-     *
-     * @param message Tag to be fetched from giphy
-     * @throws Exception
-     * @step. ^I type tag for giphy preview (.*) and open preview overlay$
-     */
-    @When("^I type tag for giphy preview (.*) and open preview overlay$")
-    public void ITypeGiphyTagAndOpenPreview(String message) throws Exception {
-        getConversationViewPage().typeMessage(message);
-        getConversationViewPage().openGifPreviewPage();
     }
 
     /**

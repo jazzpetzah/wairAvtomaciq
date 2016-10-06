@@ -51,10 +51,12 @@ Feature: Delete Message
     And I tap on Delete badge item
     And I select Delete for Me item from Delete menu
     Then I see 0 photos in the conversation view
-    And I type tag for giphy preview <GiphyTag> and open preview overlay
+    When I type the "<GiphyTag>" message
+    And I tap GIF button from input tools
     # Wait for GIF picture to be downloaded
     And I wait for 10 seconds
-    And I send gif from giphy preview page
+    And I select the first item from Giphy grid
+    And I tap Send button on Giphy preview page
     Then I see 1 photo in the conversation view
     When I long tap on image in conversation view
     And I tap on Delete badge item

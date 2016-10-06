@@ -159,10 +159,12 @@ Feature: Link Preview
     And I wait for 5 seconds
     Then I see the conversation view contains message <VimeoLink>
     And I do not see link preview container in the conversation view
-    When I type tag for giphy preview <GiphyTag> and open preview overlay
+    When I type the "<GiphyTag>" message
+    And I tap GIF button from input tools
     # Wait for GIF picture to be downloaded
     And I wait for 10 seconds
-    And I send gif from giphy preview page
+    And I select the first item from Giphy grid
+    And I tap Send button on Giphy preview page
     Then I see 1 photo in the conversation view
     And I see last message in the conversation view is expected message <GiphyTag> · via giphy.com
     And I do not see link preview container in the conversation view
