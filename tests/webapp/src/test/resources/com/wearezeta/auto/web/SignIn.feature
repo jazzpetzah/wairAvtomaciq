@@ -21,7 +21,7 @@ Feature: Sign In
     Then I see text message <Message2>
     And I see sent picture <ImageName1> in the conversation view
     When I open preferences by clicking the gear button
-    And I select Settings menu item on self profile page
+    And I open devices in preferences
     And I remember the device id of the current device
     And I close preferences
     And I wait for 2 seconds

@@ -99,7 +99,7 @@ Feature: Localytics
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I wait until <ContactEmail> exists in backend search results
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <ContactEmail> in search field of People Picker
     And I see user <Contact> found in People Picker
     And I click on not connected user <Contact> found in People Picker

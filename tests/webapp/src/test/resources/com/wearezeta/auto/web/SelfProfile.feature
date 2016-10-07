@@ -55,6 +55,8 @@ Feature: Self Profile
     Given Myself take snapshot of current profile picture
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open preferences by clicking the gear button
     And I drop picture <PictureName> to self profile
     Then I verify that current profile picture snapshot of Myself differs from the previous one
 
@@ -69,6 +71,7 @@ Feature: Self Profile
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
+    When I open preferences by clicking the gear button
     And I upload picture <PictureName> to self profile
     Then I verify that current profile picture snapshot of Myself differs from the previous one
 

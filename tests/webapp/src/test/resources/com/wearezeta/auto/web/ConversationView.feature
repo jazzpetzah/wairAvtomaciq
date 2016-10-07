@@ -203,7 +203,7 @@ Feature: Conversation View
     Given I click confirm on history info page
     Given I wait for 20 seconds
     And I am signed in properly
-    And I open People Picker from Contact List
+    And I open search by clicking the people button
     And I type <Contact1> in search field of People Picker
     And I select <Contact1> from People Picker results
     And I wait for the search field of People Picker to be empty

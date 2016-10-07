@@ -392,7 +392,7 @@ Feature: VideoCalling
     And I am signed in properly
     And I wait until <Contact> exists in backend search results
     And I see Contact list with name <Contact>
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <Contact> in search field of People Picker
     And I see user <Contact> found in People Picker
     And I select <Contact> from People Picker results
@@ -425,7 +425,7 @@ Feature: VideoCalling
     And I am signed in properly
     And I wait until <Contact1> exists in backend search results
     And I wait until <Contact2> exists in backend search results
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <Contact1> in search field of People Picker
     And I see user <Contact1> found in People Picker
     And I select <Contact1> from People Picker results

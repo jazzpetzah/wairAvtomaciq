@@ -736,12 +736,12 @@ Feature: Calling
   @C1766 @regression @calling
   Scenario Outline: Verify I get missed call notification when someone calls me
     Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>
+    Given Myself is connected to <Contact1>,<Contact2>
     Given <Contact1> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
-    When I open self profile
+    When I open conversation with <Contact2>
     When <Contact1> calls me
     And I wait for 1 seconds
     And <Contact1> stops calling me
@@ -752,8 +752,8 @@ Feature: Calling
     Then I see <MISSED> action for <Contact1> in conversation
 
     Examples:
-      | Login      | Password      | Name      | Contact1  | MISSED | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | called | chrome      |
+      | Login      | Password      | Name      | Contact1  | Contact2  | MISSED | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | called | chrome      |
 
   @C1755 @regression @calling
   Scenario Outline: Verify I can make another call while current one is ignored

@@ -119,7 +119,7 @@ Feature: Connect
     When I wait until <Name2> exists in backend search results
     And I Sign in using login <Login> and password <Password>
     And I am signed in properly
-    And I see People Picker
+    And I see Search is opened
     And I type <Login2> in search field of People Picker
     And I see user <Name2> found in People Picker
     And I click on not connected user <Name2> found in People Picker
@@ -358,8 +358,8 @@ Feature: Connect
     Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
     Given I am signed in properly
-    And I see my avatar on top of Contact list
-    When I open People Picker from Contact List
+    Given I am signed in properly
+    When I open search by clicking the people button
     And I see user <Contact1> found in People Picker
     And I remove user <Contact1> from suggestions in People Picker
     And I do not see user <Contact1> found in People Picker
@@ -381,7 +381,7 @@ Feature: Connect
     Given I Sign in using login <MyEmail> and password <MyPassword>
     Given I am signed in properly
     Given I see my avatar on top of Contact list
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     Then I see user <Contact1> found in People Picker
     When I make a connection request for user <Contact1> directly from People Picker
     And I close People Picker
@@ -443,7 +443,7 @@ Feature: Connect
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     And I wait until <Contact1> exists in backend search results
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I wait for the search field of People Picker to be empty
     And I type <Contact1Email> in search field of People Picker
     Then I see user <Contact1> found in People Picker

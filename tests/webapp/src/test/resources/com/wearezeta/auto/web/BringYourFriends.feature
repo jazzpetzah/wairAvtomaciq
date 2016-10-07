@@ -32,7 +32,7 @@ Feature: Bring Your Friends
     Given I click confirm on history info page
     When I am signed in properly
     And Myself waits until 1 people in backend top people results
-    And I open People Picker from Contact List
+    And I open search by clicking the people button
     Then I see Bring Your Friends or Invite People button
     When I click Bring Your Friends or Invite People button
     Then I see Invite People popover
@@ -73,7 +73,7 @@ Feature: Bring Your Friends
     Given I switch to Sign In page
     Given I Sign in using login user1Email and password user1Password
     Given I see first time experience with watermark
-    Given I open People Picker from Contact List
+    Given I open search by clicking the people button
     When I click button to bring friends from Gmail
     And I see Google login popup
     And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456!
@@ -86,7 +86,7 @@ Feature: Bring Your Friends
     Then I see Contact list with remembered user
     And I see cancel pending request button in the conversation view
     And I verify that conversation input and buttons are not visible
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I click button to bring friends from Gmail
     And I click on remembered pending contact found in People Picker
     And I click Cancel request on Pending Outgoing Connection popover
@@ -107,7 +107,7 @@ Feature: Bring Your Friends
     Given I click confirm on history info page
     When I am signed in properly
     And Myself waits until 1 people in backend top people results
-    And I open People Picker from Contact List
+    And I open search by clicking the people button
     Then I see Bring Your Friends or Invite People button
     When I click Bring Your Friends or Invite People button
     Then I see Invite People popover

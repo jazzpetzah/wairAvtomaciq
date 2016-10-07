@@ -44,7 +44,7 @@ Feature: Localization
     And I see Contact list with name <Contact>
     And I see a string <ConversationViewText> on the page
     And I see a string <ContactListText> on the page
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     Then I see a placeholder <SearchPlaceHolder> on the page
     When I close People Picker
     And I click on options button for conversation <Contact>
@@ -64,7 +64,7 @@ Feature: Localization
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I switch language to <Language>
-    Then I see People Picker
+    Then I see Search is opened
     And I close People Picker
     Then I open preferences by clicking the gear button
     And I select <SupportButton> menu item on self profile page
