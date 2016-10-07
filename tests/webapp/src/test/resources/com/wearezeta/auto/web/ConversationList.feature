@@ -33,19 +33,19 @@ Feature: Conversation List
 
   @C1757 @smoke
   Scenario Outline: Mute 1on1 conversation
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    Given I see Contact list with name <Contact>
-    When I set muted state for conversation <Contact>
-    And I open preferences by clicking the gear button
-    Then I see that conversation <Contact> is muted
+    Given I see Contact list with name <Contact1>
+    When I set muted state for conversation <Contact1>
+    And I open conversation with <Contact2>
+    Then I see that conversation <Contact1> is muted
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |
 
   @C1758 @regression
   Scenario Outline: Unmute 1on1 conversation
