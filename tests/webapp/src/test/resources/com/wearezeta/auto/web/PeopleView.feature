@@ -217,7 +217,6 @@ Feature: People View
     Given I am signed in properly
     Given I see Contact list with name <ChatName>
     Given I open preferences by clicking the gear button
-    Given I click gear button on self profile page
     Given I select Log out menu item on self profile page
     Given I see the clear data dialog
     Given I click Logout button on clear data dialog
@@ -237,7 +236,6 @@ Feature: People View
     Then I see archive list with name <ChatName>
     And I close archive
     When I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -318,7 +316,6 @@ Feature: People View
     Given I Sign in using login <Contact1> and password <Contact1Password>
     Given I am signed in properly
     Given I open preferences by clicking the gear button
-    Given I click gear button on self profile page
     Given I select Log out menu item on self profile page
     Given I see the clear data dialog
     Given I click Logout button on clear data dialog
@@ -337,7 +334,6 @@ Feature: People View
     And I open conversation with <Contact1>,<Contact2>
     Then I see <Message> action for <Contact2>,<Contact1> in conversation
     And I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -349,7 +345,6 @@ Feature: People View
     And I open conversation with <Name>,<Contact2>
     And I see <Message2> action for <Name>,<Contact2>,You in conversation
     And I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog

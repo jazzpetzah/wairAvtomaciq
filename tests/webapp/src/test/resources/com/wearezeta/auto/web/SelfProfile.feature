@@ -36,7 +36,7 @@ Feature: Self Profile
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I set my accent color to <ColorName>
-    And I click gear button on self profile page
+    And I open preferences by clicking the gear button
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog

@@ -20,7 +20,6 @@ Feature: Sign Out
     And I write message <Message>
     And I send message
     And I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I enable checkbox to clear all data

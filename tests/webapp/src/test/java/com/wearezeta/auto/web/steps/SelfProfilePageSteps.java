@@ -27,17 +27,6 @@ public class SelfProfilePageSteps {
     }
 
 	/**
-	 * Clicks the gear button on Self Profile page
-	 * 
-	 * @step. ^I click gear button on self profile page$
-	 * @throws Exception
-	 */
-	@And("^I click gear button on self profile page$")
-	public void IClickGearButton() throws Exception {
-		context.getPagesCollection().getPage(SelfProfilePage.class).clickGearButton();
-	}
-
-	/**
 	 * Clicks the corresponding item from "gear" menu
 	 * 
 	 * @step. ^I select (.*) menu item on self profile page$

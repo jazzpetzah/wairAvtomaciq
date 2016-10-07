@@ -18,7 +18,7 @@ Feature: Registration
     Then I see user name on self profile page <Name>
     Then I see user email on self profile page <Email>
     And I see localytics event <Event> with attributes <Attributes>
-    And I click gear button on self profile page
+    And I open preferences by clicking the gear button
     And I select Log out menu item on self profile page
 
     Examples: 
@@ -54,7 +54,7 @@ Feature: Registration
     When I see first time experience with watermark
     And Myself take snapshot of current profile picture
     And I choose <PictureName> as my self picture on Welcome page
-    And I click gear button on self profile page
+    And I open preferences by clicking the gear button
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -76,7 +76,7 @@ Feature: Registration
     And I see first time experience with watermark
     And I confirm keeping picture on Welcome page
     And I am signed in properly
-    And I click gear button on self profile page
+    And I open preferences by clicking the gear button
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog

@@ -159,7 +159,6 @@ Feature: Delete
     Given Contact <Contact> sends message <Message3> to user Myself
     Given I see text message <Message3>
     Given I open preferences by clicking the gear button
-    Given I click gear button on self profile page
     Given I select Log out menu item on self profile page
     Given I see the clear data dialog
     Given I click Logout button on clear data dialog
