@@ -67,7 +67,6 @@ Feature: Localization
     Then I see People Picker
     And I close People Picker
     Then I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select <SupportButton> menu item on self profile page
     And I switch to support page tab
     Then I see ask support link
@@ -138,7 +137,7 @@ Feature: Localization
     When I activate user by URL
     And I confirm keeping picture on Welcome page
     And I switch language to en
-    And I click gear button on self profile page
+    And I open preferences by clicking the gear button
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog

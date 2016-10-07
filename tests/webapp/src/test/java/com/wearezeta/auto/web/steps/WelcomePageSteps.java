@@ -1,10 +1,13 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.WelcomePage;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
+
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class WelcomePageSteps {
         private final TestContext context;
@@ -18,22 +21,25 @@ public class WelcomePageSteps {
     }
 
 	/**
-	 * Verify that Welcome page with Picture upload is visible or not
+	 * Verify that the conversation list shows the info "Start a conversation or invite people to join" and the conversation
+	 * shows a watermark of the wire logo
 	 * 
-	 * @step. ^I( do not)? see Welcome page$
+	 * @step. ^I( do not)? see first time experience with watermark$
 	 * @param shouldNotBeVisible
 	 *            is set to null if "do not" part does not exist
 	 * @throws Exception
 	 */
-	@And("^I( do not)? see Welcome page$")
+	@And("^I( do not)? see first time experience with watermark$")
 	public void ISeeWelcomePage(String shouldNotBeVisible)
 			throws Exception {
 		if (shouldNotBeVisible == null) {
-			context.getPagesCollection().getPage(WelcomePage.class)
-					.waitUntilButtonsAreClickable();
+			assertThat("No watermark wire logo shown",
+					context.getPagesCollection().getPage(ConversationPage.class).isWatermarkVisible());
+			// TODO: Check for first time experience info visible
 		} else {
-			context.getPagesCollection().getPage(WelcomePage.class)
-					.waitUntilNotVisible();
+			assertThat("Watermark wire logo shown",
+					context.getPagesCollection().getPage(ConversationPage.class).isWatermarkNotVisible());
+			// TODO: Check for first time experience info not visible
 		}
 	}
 

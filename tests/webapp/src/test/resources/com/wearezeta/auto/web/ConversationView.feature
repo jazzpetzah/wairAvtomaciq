@@ -12,7 +12,6 @@ Feature: Conversation View
     Then I click confirm on history info page
     When I am signed in properly
     Then I open preferences by clicking the gear button
-    When I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -59,11 +58,10 @@ Feature: Conversation View
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password2>
     Given I am signed in properly
-    Given I see Welcome page
+    Given I see first time experience with watermark
     Given I confirm keeping picture on Welcome page
     Given I see Contact list with name <ChatName>
     Given I open preferences by clicking the gear button
-    Given I click gear button on self profile page
     Given I select Log out menu item on self profile page
     Given I see the clear data dialog
     Given I click Logout button on clear data dialog
@@ -75,7 +73,6 @@ Feature: Conversation View
     Then I see sent picture <PictureName> in the conversation view
     And I see only 1 picture in the conversation
     When I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog

@@ -20,14 +20,13 @@ Feature: Sign Out
     And I write message <Message>
     And I send message
     And I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I enable checkbox to clear all data
     And I click Logout button on clear data dialog
     And I see Sign In page
     And I Sign in using login <Email3> and password <Password3>
-    And I see Welcome page
+    And I see first time experience with watermark
     And I confirm keeping picture on Welcome page
     And I am signed in properly
     Then I see Search is opened

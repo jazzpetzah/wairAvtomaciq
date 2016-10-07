@@ -6,7 +6,7 @@ Feature: Settings
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
-    And I click gear button on self profile page
+    And I open preferences by clicking the gear button
     And I select Settings menu item on self profile page
     Then I see Settings dialog
 
@@ -20,34 +20,34 @@ Feature: Settings
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
-    And I click gear button on self profile page
+    And I open preferences by clicking the gear button
     And I select Settings menu item on self profile page
     And I see Settings dialog
     When I select Sound Alerts setting to be None
     Then I see Sound Alerts setting is set to None
     And I click close settings page button
-    And I click gear button on self profile page
+    And I open preferences by clicking the gear button
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I am signed in properly
-    And I click gear button on self profile page
+    And I open preferences by clicking the gear button
     And I select Settings menu item on self profile page
     And I see Settings dialog
     Then I see Sound Alerts setting is set to None
     When I select Sound Alerts setting to be Some
     Then I see Sound Alerts setting is set to Some
     And I click close settings page button
-    And I click gear button on self profile page
+    And I open preferences by clicking the gear button
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I am signed in properly
-    And I click gear button on self profile page
+    And I open preferences by clicking the gear button
     And I select Settings menu item on self profile page
     When I see Settings dialog
     Then I see Sound Alerts setting is set to Some
@@ -62,7 +62,7 @@ Feature: Settings
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
-    Given I click gear button on self profile page
+    Given I open preferences by clicking the gear button
     When I select Settings menu item on self profile page
     And I see Settings dialog
     And I click delete account button on settings page

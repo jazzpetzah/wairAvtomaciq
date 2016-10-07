@@ -224,7 +224,7 @@ Feature: Utility
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
-    Given I click gear button on self profile page
+    Given I open preferences by clicking the gear button
     When I select Settings menu item on self profile page
     And I see Settings dialog
     And I click delete account button on settings page
@@ -251,7 +251,7 @@ Feature: Utility
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
-    Given I click gear button on self profile page
+    Given I open preferences by clicking the gear button
     When I select Settings menu item on self profile page
     And I see Settings dialog
     And I click delete account button on settings page
@@ -274,7 +274,7 @@ Feature: Utility
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
-    Given I click gear button on self profile page
+    Given I open preferences by clicking the gear button
     When I select Settings menu item on self profile page
     And I see Settings dialog
     And I click delete account button on settings page
@@ -297,7 +297,7 @@ Feature: Utility
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
-    Given I click gear button on self profile page
+    Given I open preferences by clicking the gear button
     When I select Settings menu item on self profile page
     And I see Settings dialog
     And I click delete account button on settings page

@@ -162,7 +162,6 @@ Feature: Conversation List
     When Contact <Contact1> sends message <Msg1> to group conversation <ChatName>
     Then I see Contact list with name <ChatName>
     And I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -188,7 +187,6 @@ Feature: Conversation List
     Given I Sign in using login <Login2> and password <Password2>
     Given I am signed in properly
     Given I open preferences by clicking the gear button
-    Given I click gear button on self profile page
     Given I select Log out menu item on self profile page
     Given I see the clear data dialog
     Given I click Logout button on clear data dialog
@@ -204,7 +202,6 @@ Feature: Conversation List
     When Contact <Contact> sends message <Msg1> to user <Name>
     Then I do not see Contact list with name <Contact>
     When I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -229,7 +226,6 @@ Feature: Conversation List
     Given I Sign in using login <Login2> and password <Password2>
     Given I am signed in properly
     Given I open preferences by clicking the gear button
-    Given I click gear button on self profile page
     Given I select Log out menu item on self profile page
     Given I see the clear data dialog
     Given I click Logout button on clear data dialog
@@ -250,7 +246,6 @@ Feature: Conversation List
     When Contact <Contact1> sends message <Msg1> to group conversation <ChatName>
     Then I do not see text message <Msg1>
     When I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -329,7 +324,6 @@ Feature: Conversation List
     Given I Sign in using login <Login2> and password <Password2>
     Given I am signed in properly
     Given I open preferences by clicking the gear button
-    Given I click gear button on self profile page
     Given I select Log out menu item on self profile page
     Given I see the clear data dialog
     Given I click Logout button on clear data dialog
@@ -350,7 +344,6 @@ Feature: Conversation List
     When Contact <Contact1> sends message <Msg1> to group conversation <ChatName>
     Then I do not see Contact list with name <ChatName>
     And I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -409,7 +402,6 @@ Feature: Conversation List
     And I see text message <Msg2>
     And I do not see text message <Msg1>
     And I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -461,21 +453,19 @@ Feature: Conversation List
     And I see random message in conversation
     Then I see conversation <Contact1> is on the top
     When I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     Then I see Sign In page
     When I Sign in using login <Login2> and password <Password2>
     And I am signed in properly
-    And I see Welcome page
+    And I see first time experience with watermark
     And I confirm keeping picture on Welcome page
     And I open conversation with <Name>
     And user <Name> adds a new device Device1 with label Label1
     And Contact <Name> sends message <Message> via device Device1 to user <Contact2>
     Then I see text message <Message>
     When I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog

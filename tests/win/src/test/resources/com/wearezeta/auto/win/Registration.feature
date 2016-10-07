@@ -12,7 +12,7 @@ Feature: Registration
     And I see email <Email> on Verification page
     When I activate user by URL
     And User <Name> is Me without avatar
-    Then I see Welcome page
+    Then I see first time experience with watermark
     When I confirm keeping picture on Welcome page
     Then I see user name on self profile page <Name>
     And I see user email on self profile page <Email>

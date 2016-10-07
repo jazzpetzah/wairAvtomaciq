@@ -72,7 +72,7 @@ Feature: Bring Your Friends
     Given There is 1 user where user1Name is me without avatar picture
     Given I switch to Sign In page
     Given I Sign in using login user1Email and password user1Password
-    Given I see Welcome page
+    Given I see first time experience with watermark
     Given I confirm keeping picture on Welcome page
     When I click button to bring friends from Gmail
     And I see Google login popup
@@ -126,7 +126,6 @@ Feature: Bring Your Friends
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    When I click gear button on self profile page
     And I select Settings menu item on self profile page
     And I see Settings dialog
     And I click button to import contacts from Gmail

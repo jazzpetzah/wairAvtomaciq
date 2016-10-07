@@ -157,11 +157,10 @@ Feature: File Transfer
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password2>
     Given I am signed in properly
-    Given I see Welcome page
+    Given I see first time experience with watermark
     Given I confirm keeping picture on Welcome page
     When I see Contact list with name <Name>
     And I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -175,7 +174,6 @@ Feature: File Transfer
     And I cancel file upload of file <File>
     Then I do not see file transfer for file <File> in the conversation view
     When I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog

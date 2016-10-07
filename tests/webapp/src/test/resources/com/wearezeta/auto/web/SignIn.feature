@@ -21,12 +21,11 @@ Feature: Sign In
     Then I see text message <Message2>
     And I see sent picture <ImageName1> in the conversation view
     When I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Settings menu item on self profile page
     And I remember the device id of the current device
     And I click close settings page button
     And I wait for 2 seconds
-    And I click gear button on self profile page
+    And I open preferences by clicking the gear button
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -40,7 +39,6 @@ Feature: Sign In
     And I see text message <Message2>
     And I see sent picture <ImageName1> in the conversation view
     When I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Settings menu item on self profile page
     Then I verify that the device id of the current device is the same
     And I see 0 devices in the devices section
@@ -60,12 +58,12 @@ Feature: Sign In
     Then I see the history info page
     When I click confirm on history info page
     Then I am signed in properly
-    When I click gear button on self profile page
+    When I open preferences by clicking the gear button
     And I select Settings menu item on self profile page
     And I remember the device id of the current device
     And I click close settings page button
     And I wait for 2 seconds
-    And I click gear button on self profile page
+    And I open preferences by clicking the gear button
     And I select Log out menu item on self profile page
     And I see Sign In page
     And I enter email "<Email>"
@@ -74,7 +72,7 @@ Feature: Sign In
     And I see the history info page
     And I click confirm on history info page
     Then I am signed in properly
-    When I click gear button on self profile page
+    When I open preferences by clicking the gear button
     And I select Settings menu item on self profile page
     Then I verify that the device id of the current device is not the same
     And I see 0 devices in the devices section
@@ -242,7 +240,7 @@ Feature: Sign In
     And I verify that an envelope icon is shown
     When I click on Verify later button on Verification page
     Then I am signed in properly
-    And I see Welcome page
+    And I see first time experience with watermark
 
     Examples: 
       | Name      | PasswordOfOtherUser |

@@ -42,7 +42,6 @@ Feature: Search
     And I am signed in properly
     Then I see Contact list with name <Contact1>,<Contact2>
     And I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -52,7 +51,6 @@ Feature: Search
     And I am signed in properly
     Then I see Contact list with name <Name>,<Contact2>
     And I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -109,7 +107,6 @@ Feature: Search
     And I see cancel pending request button in the conversation view
     And I verify that conversation input and buttons are not visible
     And I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -123,7 +120,6 @@ Feature: Search
     Then I see conversation with <Name> is selected in conversations list
     And I see connected message for <Name> in conversation
     And I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
