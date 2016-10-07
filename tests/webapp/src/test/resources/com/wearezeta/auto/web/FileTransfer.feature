@@ -157,7 +157,7 @@ Feature: File Transfer
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password2>
     Given I am signed in properly
-    Given I see Welcome page
+    Given I see first time experience with watermark
     Given I confirm keeping picture on Welcome page
     When I see Contact list with name <Name>
     And I open preferences by clicking the gear button

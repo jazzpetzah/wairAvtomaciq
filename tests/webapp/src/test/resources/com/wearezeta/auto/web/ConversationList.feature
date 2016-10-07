@@ -459,7 +459,7 @@ Feature: Conversation List
     Then I see Sign In page
     When I Sign in using login <Login2> and password <Password2>
     And I am signed in properly
-    And I see Welcome page
+    And I see first time experience with watermark
     And I confirm keeping picture on Welcome page
     And I open conversation with <Name>
     And user <Name> adds a new device Device1 with label Label1

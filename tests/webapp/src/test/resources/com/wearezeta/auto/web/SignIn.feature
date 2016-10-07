@@ -240,7 +240,7 @@ Feature: Sign In
     And I verify that an envelope icon is shown
     When I click on Verify later button on Verification page
     Then I am signed in properly
-    And I see Welcome page
+    And I see first time experience with watermark
 
     Examples: 
       | Name      | PasswordOfOtherUser |

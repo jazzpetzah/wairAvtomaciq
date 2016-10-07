@@ -1390,4 +1390,11 @@ public class ConversationPage extends WebPage {
         return true;
     }
 
+    public boolean isWatermarkVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(WebAppLocators.ConversationPage.idWatermark));
+    }
+
+    public boolean isWatermarkNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(WebAppLocators.ConversationPage.idWatermark));
+    }
 }

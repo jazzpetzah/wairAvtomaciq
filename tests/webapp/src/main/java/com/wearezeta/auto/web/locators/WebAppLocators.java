@@ -333,6 +333,8 @@ public final class WebAppLocators {
         public static final String idMessageList = "message-list";
 
         public static final String cssUserAvatar = ".user-avatar and .pending";
+
+        public static final String idWatermark = "watermark";
         
         public static final String cssCancelRequestButton = "#"+idConversation+" [data-uie-name='do-cancel-request']";
 
