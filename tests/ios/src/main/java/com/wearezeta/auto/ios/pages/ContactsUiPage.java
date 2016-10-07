@@ -52,5 +52,7 @@ public class ContactsUiPage extends IOSPage {
     public void tapOpenButtonNextToUser(String contact) throws Exception {
         final By locator = By.xpath(xpathStrOpenButtonByConvoName.apply(contact));
         getElement(locator).click();
+        // Wait for animation
+        Thread.sleep(1000);
     }
 }
