@@ -119,7 +119,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbNameGifButton = FBBy.AccessibilityId("gifButton");
 
     private static final String xpathStrConversationViewTopBar =
-            "//XCUIElementTypeNavigationBar[ ./XCUIElementTypeButton[@name='ConversationBackButton'] ]";
+            "//XCUIElementTypeNavigationBar[ ./XCUIElementTypeButton[@name='ConversationBackButton' or @name='Back'] ]";
     private static final By xpathConversationViewTopBar = By.xpath(xpathStrConversationViewTopBar);
     private static Function<String, String> xpathStrToolbarByConversationName = name ->
             String.format("%s//XCUIElementTypeButton[starts-with(@name, '%s')]",
