@@ -36,7 +36,7 @@ Feature: Localytics
     Given There is 1 user where <Name> is me without avatar picture
     Given I switch to Sign In page
     And I Sign in using login <Login> and password <Password>
-    And I see Welcome page
+    And I see first time experience with watermark
     And I choose <PictureName> as my self picture on Welcome page
     And I wait for 5 seconds
 
@@ -50,7 +50,7 @@ Feature: Localytics
     Given There is 1 user where <Name> is me without avatar picture
     Given I switch to Sign In page
     And I Sign in using login <Login> and password <Password>
-    And I see Welcome page
+    And I see first time experience with watermark
     And I confirm keeping picture on Welcome page
     And I wait for 5 seconds
 
@@ -72,7 +72,7 @@ Feature: Localytics
     Given There is 1 user where <Name> is me without avatar picture
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see Welcome page
+    And I see first time experience with watermark
     And I confirm keeping picture on Welcome page
     And I click button to bring friends from Gmail
     And I see Google login popup

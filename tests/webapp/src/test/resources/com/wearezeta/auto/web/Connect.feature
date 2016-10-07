@@ -253,11 +253,8 @@ Feature: Connect
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password2>
     Given I am signed in properly
-    Given I see Welcome page
-    Given I confirm keeping picture on Welcome page
     Given I see Contact list with name <ChatName>
-    Given I open self profile
-    Given I click gear button on self profile page
+    Given I open preferences by clicking the gear button
     Given I select Log out menu item on self profile page
     Given I see the clear data dialog
     Given I click Logout button on clear data dialog
