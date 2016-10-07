@@ -36,9 +36,6 @@ public class ContactListPage extends WebPage {
     private static final String DEFAULT_GROUP_CONVO_NAMES_SEPARATOR = ",";
     private static final int CONVO_LIST_ENTRY_VISIBILITY_TIMEOUT = 15; // seconds
 
-    @FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssSelfProfileButton)
-    private WebElement selfProfileButton;
-
     @FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssGearButton)
     private WebElement gearButton;
 
@@ -185,7 +182,7 @@ public class ContactListPage extends WebPage {
 
     public void waitForSelfProfileButton() throws Exception {
         assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-                selfProfileButton);
+                gearButton);
     }
 
     public boolean isConvoListEntryWithNameExist(String name) throws Exception {
@@ -354,7 +351,7 @@ public class ContactListPage extends WebPage {
         // do nothing (safari workaround)
         if (WebAppExecutionContext.getBrowser()
                 .isSupportingNativeMouseActions()) {
-            DriverUtils.moveMouserOver(this.getDriver(), selfProfileButton);
+            DriverUtils.moveMouserOver(this.getDriver(), gearButton);
         }
         return DriverUtils
                 .waitUntilLocatorIsDisplayed(
@@ -369,7 +366,7 @@ public class ContactListPage extends WebPage {
         // do nothing (safari workaround)
         if (WebAppExecutionContext.getBrowser()
                 .isSupportingNativeMouseActions()) {
-            DriverUtils.moveMouserOver(this.getDriver(), selfProfileButton);
+            DriverUtils.moveMouserOver(this.getDriver(), gearButton);
         }
         return DriverUtils
                 .waitUntilLocatorDissapears(
@@ -453,7 +450,6 @@ public class ContactListPage extends WebPage {
 
     public void openPreferences() throws Exception {
         gearButton.click();
-        selfProfileButton.click();
     }
 
     public void openStartUI() throws Exception {
