@@ -9,7 +9,7 @@ Feature: E2EE
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    Then I do not see shield icon next to conversation input field
+    Then I do not see shield icon in the conversation view
     When I open conversation details
     And I switch to Devices tab
     And I open details page of device number 1 on iPad
@@ -18,7 +18,7 @@ Feature: E2EE
     And I open details page of device number 2 on iPad
     And I tap Verify switcher on Device Details page
     And I dismiss popover on iPad
-    Then I see shield icon next to conversation input field
+    Then I see shield icon in the conversation view
     And I see 2 conversation entries
 
     Examples:
@@ -40,7 +40,7 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I dismiss popover on iPad
     When User Myself adds a new device <DeviceName2> with label <DeviceLabel2>
-    Then I do not see shield icon next to conversation input field
+    Then I do not see shield icon in the conversation view
     And I see 4 conversation entries
 
     Examples:

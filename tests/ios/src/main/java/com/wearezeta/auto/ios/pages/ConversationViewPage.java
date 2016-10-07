@@ -119,7 +119,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbNameGifButton = FBBy.AccessibilityId("gifButton");
 
     private static final String xpathStrConversationViewTopBar =
-            "//XCUIElementTypeNavigationBar[ ./XCUIElementTypeButton[@name='Back'] ]";
+            "//XCUIElementTypeNavigationBar[ ./XCUIElementTypeButton[@name='ConversationBackButton' or @name='Back'] ]";
     private static final By xpathConversationViewTopBar = By.xpath(xpathStrConversationViewTopBar);
     private static Function<String, String> xpathStrToolbarByConversationName = name ->
             String.format("%s//XCUIElementTypeButton[starts-with(@name, '%s')]",
@@ -130,9 +130,8 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbNameEllipsisButton = FBBy.AccessibilityId("showOtherRowButton");
     private static final By xpathAudioCallButton = MobileBy.AccessibilityId("audioCallBarButton");
     private static final By xpathVideoCallButton = MobileBy.AccessibilityId("videoCallBarButton");
-    private static final By xpathConversationDetailsButton = By.xpath(xpathStrConversationViewTopBar +
-            "/XCUIElementTypeButton[@name='Back']/following::" +
-            "XCUIElementTypeButton[not(@name='ConversationBackButton') and boolean(string(@label))]");
+    private static final By xpathConversationDetailsButton =
+            By.xpath(xpathStrConversationViewTopBar + "/*/XCUIElementTypeButton[boolean(string(@label))]");
 
     private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("Too many people to call");
 
@@ -247,6 +246,8 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapSendButton() throws Exception {
         getElement(nameSendButton).click();
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     private static String getDomainName(String url) {
@@ -467,12 +468,16 @@ public class ConversationViewPage extends IOSPage {
         return isElementDisplayed(xpathGiphyImage);
     }
 
-    public boolean isShieldIconVisibleNextToInputField() throws Exception {
-        return isElementDisplayed(nameShieldIconNextToInput);
+    public boolean isShieldIconVisible() throws Exception {
+        // FIXME: Make shield icon accessible
+        return false;
+        // return isElementDisplayed(nameShieldIconNextToInput);
     }
 
-    public boolean isShieldIconInvisibleNextToInputField() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameShieldIconNextToInput);
+    public boolean isShieldIconInvisible() throws Exception {
+        // FIXME: Make shield icon accessible
+        return false;
+        // return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameShieldIconNextToInput);
     }
 
     public void resendLastMessageInDialogToUser() throws Exception {
@@ -1033,5 +1038,13 @@ public class ConversationViewPage extends IOSPage {
             }
         }
         return false;
+    }
+
+    public boolean isSendMessageButtonVisible() throws Exception {
+        return isElementDisplayed(nameSendButton);
+    }
+
+    public boolean isSendMessageButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameSendButton);
     }
 }

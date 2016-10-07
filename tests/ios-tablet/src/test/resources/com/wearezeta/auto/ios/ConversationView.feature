@@ -185,8 +185,8 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I type the "   " message and send it
-    Then I see 0 default messages in the conversation view
+    And I type the "   " message
+    Then I do not see Send Message button in conversation view
     When I type the default message
     And I type the "   " message and send it
     Then I see 1 default message in the conversation view
@@ -556,6 +556,8 @@ Feature: Conversation View
     And I long tap on text input
     And I tap on Paste badge item
     And I confirm my choice
+    # Wait for animation
+    And I wait for 2 seconds
     Then I see 2 photos in the conversation view
 
     Examples:
@@ -676,7 +678,7 @@ Feature: Conversation View
     Then I see input placeholder text
     When I type the default message
     Then I do not see input placeholder text
-    When I send the message
+    When I tap Send Message button in conversation view
     Then I see input placeholder text
 
     Examples:
