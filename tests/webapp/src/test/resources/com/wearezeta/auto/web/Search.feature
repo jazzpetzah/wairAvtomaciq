@@ -9,7 +9,7 @@ Feature: Search
     And I am signed in properly
     And I wait until <Contact1> exists in backend search results
     And I wait until <Contact2> exists in backend search results
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <Contact1> in search field of People Picker
     And I select <Contact1> from People Picker results
     And I wait for the search field of People Picker to be empty
@@ -30,7 +30,7 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I wait until <Contact1> exists in backend search results
     And I type <Contact1> in search field of People Picker
     And I select <Contact1> from People Picker results
@@ -80,7 +80,7 @@ Feature: Search
     And I confirm user blocking on Single User Profile popover
     Then I do not see Contact list with name <Contact>
     Then I do not see Single User Profile popover
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <ContactEmail> in search field of People Picker
     And I select <Contact> from People Picker results
     And I see Unblock button on Single User Profile popover
@@ -97,7 +97,7 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I wait until <Name2> exists in backend search results
-    And I see People Picker
+    And I see Search is opened
     And I type <Login2> in search field of People Picker
     Then I see user <Name2> found in People Picker
     When I click on not connected user <Name2> found in People Picker
@@ -149,7 +149,7 @@ Feature: Search
     Given I click confirm on history info page
     When I am signed in properly
     And Myself waits until 2 people in backend top people results
-    And I open People Picker from Contact List
+    And I open search by clicking the people button
     And I wait till Top People list appears
     When I select <Contact1> from Top People
     And I choose to create conversation from People Picker
@@ -175,7 +175,7 @@ Feature: Search
     Given I click confirm on history info page
     When I am signed in properly
     And Myself waits until 3 people in backend top people results
-    And I open People Picker from Contact List
+    And I open search by clicking the people button
     When I select <Contact1>,<Contact2> from Top People
     And I choose to create conversation from People Picker
     Then I see Contact list with name <Contact1>,<Contact2>
@@ -190,6 +190,8 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I wait until <Name2> exists in backend search results
+    Given I am signed in properly
+    When I open search by clicking the people button
     When I see Search is opened
     And I see Bring Your Friends or Invite People button
     And I type <Email2> in search field of People Picker
@@ -208,7 +210,7 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     And I wait until <Contact1> exists in backend search results
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <Contact1> in search field of People Picker
     And I see user <Contact1> found in People Picker
     And I select <Contact1> from People Picker results
@@ -231,7 +233,7 @@ Feature: Search
     And I am signed in properly
     And I wait until <Contact1> exists in backend search results
     And I wait until <Contact2> exists in backend search results
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <Contact1> in search field of People Picker
     And I see user <Contact1> found in People Picker
     And I select <Contact1> from People Picker results

@@ -155,7 +155,7 @@ Feature: Conversation List
     Then I see a delete warning modal for group conversations
     And I click delete button in the delete warning for group conversations
     Then I do not see Contact list with name <ChatName>
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <ChatName> in search field of People Picker
     Then I see group conversation <ChatName> found in People Picker
     And I close People Picker
@@ -337,7 +337,7 @@ Feature: Conversation List
     When I click Leave checkbox on a delete warning modal for group conversations
     And I click delete button in the delete warning for group conversations
     Then I do not see Contact list with name <ChatName>
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <ChatName> in search field of People Picker
     Then I do not see group conversation <ChatName> found in People Picker
     And I close People Picker
@@ -392,7 +392,7 @@ Feature: Conversation List
     Then I see a delete warning modal for 1:1 conversations
     And I click delete button in the delete warning for 1:1 conversations
     Then I do not see Contact list with name <Contact1>
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <Contact1> in search field of People Picker
     Then I see user <Contact1> found in People Picker
     And I close People Picker

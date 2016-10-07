@@ -291,7 +291,7 @@ public class ContactListPageSteps {
      * @throws Exception
      * @step. ^I open People Picker from Contact List$
      */
-    @When("^I open People Picker from Contact List$")
+    @When("^I open search by clicking the people button$")
     public void IOpenStartUI() throws Exception {
         context.getPagesCollection().getPage(ContactListPage.class).openStartUI();
     }
