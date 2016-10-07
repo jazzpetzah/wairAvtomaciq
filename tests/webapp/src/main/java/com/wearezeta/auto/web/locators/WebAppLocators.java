@@ -273,6 +273,14 @@ public final class WebAppLocators {
     public static final class PreferencesAccountPage {
     
         public static final String cssPreferencesAccountLogoutButton = "#preferences-account [data-uie-name='do-logout']";
+        
+        public static final String cssSelfUserName = "[data-uie-name='status-name']";
+
+        public static final String cssSelfUserNameInput = "[data-uie-name='enter-name']";
+
+        public static final String cssNameSelfUserMail = "[data-uie-name='enter-email']";
+
+        public static final String cssNameSelfUserPhoneNumber = "[data-uie-name='enter-phone']";
     }
 
     public static final class SettingsPage {
@@ -312,12 +320,6 @@ public final class WebAppLocators {
                 name) -> String.format("%s//li[text()='%s']",
                 xpathGearMenuRoot, name);
 
-        public static final String xpathSelfUserName = "//*[@data-uie-name='enter-name']/span";
-
-        public static final String xpathSelfUserNameInput = "//*[@data-uie-name='enter-name']/textarea";
-
-        public static final String classNameSelfUserMail = "self-profile-mail";
-
         private static final String xpathAccentColorPicker = "//*[@data-uie-name='enter-accent-color']";
 
         public static final String xpathAccentColorPickerChildren = xpathAccentColorPicker
@@ -329,10 +331,6 @@ public final class WebAppLocators {
 
         public static final String xpathCurrentAccentColorCircleDiv = xpathAccentColorPicker
                 + "/div[contains(@class, 'selected')]/div[contains(@class,'circle')]";
-
-        public static final String xpathNameSelfUserMail = "//*[@data-uie-name='enter-email']";
-
-        public static final String xpathNameSelfUserPhoneNumber = "//*[@data-uie-name='enter-phone']";
 
         public static final String xpathCameraButton = "//*[@data-uie-name='go-profile-picture-selection']";
 

@@ -3,16 +3,12 @@ package com.wearezeta.auto.web.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.backend.AccentColor;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.SelfProfilePage;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.CoreMatchers.*;
 
 public class SelfProfilePageSteps {
 
@@ -26,93 +22,6 @@ public class SelfProfilePageSteps {
         this.context = context;
     }
 
-	/**
-	 * Clicks the corresponding item from "gear" menu
-	 * 
-	 * @step. ^I select (.*) menu item on self profile page$
-	 * 
-	 * @param name
-	 *            the name of menu item
-	 * @throws Exception
-	 */
-	@And("^I select (.*) menu item on self profile page$")
-	public void ISelectGearMenuItem(String name) throws Exception {
-		context.getPagesCollection().getPage(SelfProfilePage.class)
-				.selectGearMenuItem(name);
-	}
-
-	/**
-	 * Verifies that correct user name is shown on self profile page
-	 * 
-	 * @step. ^I see user name on self profile page (.*)$
-	 * 
-	 * @param name
-	 *            name of the user
-	 * @throws Exception
-	 */
-	@And("^I see user name on self profile page (.*)$")
-	public void ISeeUserNameOnSelfProfilePage(String name) throws Exception {
-		name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		boolean nameCorrect = context.getPagesCollection().getPage(
-				SelfProfilePage.class).checkNameInSelfProfile(name);
-		Assert.assertTrue(nameCorrect);
-	}
-
-	/**
-	 * Verifies that correct phone number is shown on self profile page
-	 * 
-	 * @step. ^I see user phone number on self profile page (.*)$
-	 * 
-	 * @param phoneNumber
-	 *            phone number of the user
-	 * @throws Exception
-	 */
-	@And("^I see user phone number on self profile page (.*)$")
-	public void ISeeUserPhoneNumberOnSelfProfilePage(String phoneNumber)
-			throws Exception {
-		phoneNumber = context.getUserManager().replaceAliasesOccurences(phoneNumber,
-				FindBy.PHONENUMBER_ALIAS);
-		assertThat(context.getPagesCollection().getPage(SelfProfilePage.class)
-				.getUserPhoneNumber(), equalTo(phoneNumber));
-	}
-
-	/**
-	 * Verifies that correct user email is shown on self profile page
-	 * 
-	 * @step. ^I see user email on self profile page (.*)$
-	 * 
-	 * @param email
-	 *            email of the user
-	 * 
-	 * @throws NoSuchUserException
-	 */
-	@And("^I see user email on self profile page (.*)$")
-	public void ISeeUserEmailOnSelfProfilePage(String email)
-			throws NoSuchUserException, Exception {
-		try {
-			email = context.getUserManager().findUserByEmailOrEmailAlias(email).getEmail();
-		} catch (NoSuchUserException e) {
-
-		}
-
-		String actualEmail = context.getPagesCollection().getPage(
-				SelfProfilePage.class).getUserMail();
-		Assert.assertEquals(email, actualEmail);
-	}
-
-	/**
-	 * Set new username on self profile page
-	 * 
-	 * @step. ^I change username to (.*)
-	 * 
-	 * @param name
-	 *            new username string
-	 */
-	@And("^I change username to (.*)")
-	public void IChangeUserNameTo(String name) throws Exception {
-		context.getPagesCollection().getPage(SelfProfilePage.class).setUserName(name);
-		context.getUserManager().getSelfUserOrThrowError().setName(name);
-	}
 
 	/**
 	 * Set accent color on self profile page

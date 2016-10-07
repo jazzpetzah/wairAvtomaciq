@@ -125,8 +125,8 @@ Feature: Sign In
     And I see the history info page
     And I click confirm on history info page
     Then I am signed in properly
-    And I see user name on self profile page <Name>
-    And I see user phone number on self profile page <PhoneNumber>
+    And I see username <Name> in account preferences
+    And I see user phone number <PhoneNumber> in account preferences
 
     Examples: 
       | Name      | PhoneNumber      | Password   |
@@ -143,8 +143,8 @@ Feature: Sign In
     And I enter password <Password> on phone login page
     And I press Sign In button on phone login page
     Then I am signed in properly
-    And I see user name on self profile page <Name>
-    And I see user phone number on self profile page <PhoneNumber>
+    And I see username <Name> in account preferences
+    And I see user phone number <PhoneNumber> in account preferences
 
     Examples: 
       | Name      | PhoneNumber      | Password   |
@@ -159,8 +159,8 @@ Feature: Sign In
     And I check option to remember me
     And I press Sign In button
     Then I am signed in properly
-    And I see user name on self profile page <Name>
-    And I see user phone number on self profile page <PhoneNumber>
+    And I see username <Name> in account preferences
+    And I see user phone number <PhoneNumber> in account preferences
 
     Examples: 
       | Name      | Email      | PhoneNumber      | Password   |

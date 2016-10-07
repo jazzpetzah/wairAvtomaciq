@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @C1761 @smoke @useSpecialEmail @localytics
+  @C1761 @smoke @useSpecialEmail @localytics @torun
   Scenario Outline: Verify new user can be registered
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
@@ -15,11 +15,9 @@ Feature: Registration
     And User <Name> is Me without avatar
     And I see first time experience with watermark
     And I open preferences by clicking the gear button
-    Then I see user name on self profile page <Name>
-    Then I see user email on self profile page <Email>
+    Then I see username <Name> in account preferences
+    Then I see user email <Email> in account preferences
     And I see localytics event <Event> with attributes <Attributes>
-    And I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
 
     Examples: 
       | Email      | Password      | Name      | Event                  | Attributes              |

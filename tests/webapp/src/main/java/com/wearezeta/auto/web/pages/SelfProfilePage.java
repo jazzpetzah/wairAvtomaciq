@@ -11,7 +11,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.google.common.base.Function;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -25,12 +24,8 @@ import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class SelfProfilePage extends WebPage {
-
-    @FindBy(how = How.CSS, using = WebAppLocators.SelfProfilePage.cssGearButton)
-    private WebElement gearButton;
 
     @FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathCameraButton)
     private WebElement cameraButton;
@@ -41,39 +36,12 @@ public class SelfProfilePage extends WebPage {
     @FindBy(how = How.CSS, using = WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput)
     private WebElement chooseYourOwnInput;
 
-    @FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathSelfUserName)
-    private WebElement userName;
-
-    @FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathSelfUserNameInput)
-    private WebElement userNameInput;
-
-    @FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathNameSelfUserMail)
-    private WebElement userMail;
-
-    @FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathNameSelfUserPhoneNumber)
-    private WebElement userPhoneNumber;
-
     @FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathAccentColorPickerChildren)
     private List<WebElement> colorsInColorPicker;
 
     public SelfProfilePage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
-    }
-
-    public boolean isSettingsButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.cssSelector(WebAppLocators.SelfProfilePage.cssGearButton));
-    }
-
-    public void clickGearButton() throws Exception {
-        // Wait until no modal is shown
-        DriverUtils.waitUntilLocatorDissapears(getDriver(), By.className("modal-show"));
-        // wait for the element to stop animation
-        waitForHalt(10000, 1000, ExpectedConditions.presenceOfElementLocated(By.cssSelector(
-                WebAppLocators.SelfProfilePage.cssGearButton)));
-        DriverUtils.waitUntilElementClickable(this.getDriver(), gearButton);
-        gearButton.click();
     }
 
     private WebElement waitForHalt(int timeoutInMillisForHalt, int timeoutInMillisForElement,
@@ -104,51 +72,6 @@ public class SelfProfilePage extends WebPage {
                         return null;
                     }
                 });
-    }
-
-    public void selectGearMenuItem(String name) throws Exception {
-        final String menuXPath = WebAppLocators.SelfProfilePage.xpathGearMenuRoot;
-        DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.xpath(menuXPath));
-        final String menuItemXPath = WebAppLocators.SelfProfilePage.xpathGearMenuItemByName.apply(name);
-        final WebElement itemElement = getDriver().findElement(By.xpath(menuItemXPath));
-        itemElement.click();
-    }
-
-    public boolean checkNameInSelfProfile(String name) throws Exception {
-        DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-                By.xpath(WebAppLocators.SelfProfilePage.xpathSelfUserName));
-
-        WebDriverWait wait = new WebDriverWait(this.getDriver(), 10);
-
-        return wait.until(new Function<WebDriver, Boolean>() {
-            public Boolean apply(WebDriver driver) {
-                if (userName.getText().equals(name)) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
-    }
-
-    public String getUserName() throws Exception {
-        DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-                By.xpath(WebAppLocators.SelfProfilePage.xpathSelfUserName));
-        return userName.getText();
-    }
-
-    public String getUserMail() {
-        return userMail.getText();
-    }
-
-    public String getUserPhoneNumber() {
-        return userPhoneNumber.getText();
-    }
-
-    public void setUserName(String name) {
-        userName.click();
-        userNameInput.clear();
-        userNameInput.sendKeys(name + "\n");
     }
 
     public void selectAccentColor(String colorName) throws Exception {

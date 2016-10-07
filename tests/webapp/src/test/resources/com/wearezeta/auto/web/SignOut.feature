@@ -11,8 +11,8 @@ Feature: Sign Out
     When I Sign in using login <Email> and password <Password>
     And I am signed in properly
     When I open preferences by clicking the gear button
-    Then I see user name on self profile page <Name>
-    And I see user email on self profile page <Email>
+    Then I see username <Name> in account preferences
+    And I see user email <Email> in account preferences
     When I open conversation with <GroupChatName>
     And I write message <Message>
     And I send message
@@ -31,8 +31,8 @@ Feature: Sign Out
     And I am signed in properly
     Then I see Search is opened
     And I see Bring Your Friends or Invite People button
-    Then I see user name on self profile page <Contact3>
-    And I see user email on self profile page <Email3>
+    Then I see username <Contact3> in account preferences
+    And I see user email <Email3> in account preferences
     And I do not see Contact list with name <GroupChatName>
     And I do not see Contact list with name <Contact1>
 

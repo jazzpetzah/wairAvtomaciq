@@ -8,9 +8,9 @@ Feature: Self Profile
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I open preferences by clicking the gear button
-    And I see user name on self profile page <Name>
+    And I see username <Name> in account preferences
     And I change username to <NewName>
-    Then I see user name on self profile page <NewName>
+    Then I see username <NewName> in account preferences
     And I see my avatar on top of Contact list
 
     Examples: 
@@ -22,9 +22,9 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
-    Then I see user name on self profile page <Name>
-    And I see user email on self profile page <Email>
-    And I see user phone number on self profile page <PhoneNumber>
+    Then I see username <Name> in account preferences
+    And I see user email <Email> in account preferences
+    And I see user phone number <PhoneNumber> in account preferences
 
     Examples: 
       | Email      | Password      | Name      | PhoneNumber      |
