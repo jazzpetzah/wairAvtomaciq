@@ -246,7 +246,7 @@ Feature: Edit
     Given I am signed in properly
     Given I see first time experience with watermark
     Given I open preferences by clicking the gear button
-    Given I select Log out menu item on self profile page
+    Given I click logout in account preferences
     Given I see the clear data dialog
     Given I click Logout button on clear data dialog
     When I see Sign In page
@@ -270,7 +270,7 @@ Feature: Edit
     And I see latest text message last message
     When I remember edit timestamp of second last message
     And I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
     Then I click Logout button on clear data dialog
     When I see Sign In page

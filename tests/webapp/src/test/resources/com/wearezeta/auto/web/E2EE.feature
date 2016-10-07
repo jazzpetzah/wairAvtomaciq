@@ -298,7 +298,7 @@ Feature: E2EE
     And Contact <Contact> sends message <OnlineMessage> to user Myself
     Then I see text message <OnlineMessage>
     And I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     And Contact <Contact> sends message <OfflineMessage> to user Myself
@@ -329,7 +329,7 @@ Feature: E2EE
     And Contact <Contact1> sends message <OnlineMessage> to group conversation <GroupChatName>
     Then I see text message <OnlineMessage>
     And I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     And Contact <Contact1> sends message <OfflineMessage> to group conversation <GroupChatName>
@@ -672,7 +672,7 @@ Feature: E2EE
     And I send message
     Then I see text message <UserMessage>
     When I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     And I see Sign In page
@@ -687,7 +687,7 @@ Feature: E2EE
     When I open conversation with <Contact1>
     Then I do not see text message <UserMessage>
     And I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see Sign In page
     And I Sign in using login <Email> and password <Password>
     And I am signed in properly

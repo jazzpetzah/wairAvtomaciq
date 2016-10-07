@@ -27,7 +27,7 @@ Feature: Settings
     Then I see Sound Alerts setting is set to None
     And I click close settings page button
     And I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     Given I see Sign In page
@@ -41,7 +41,7 @@ Feature: Settings
     Then I see Sound Alerts setting is set to Some
     And I click close settings page button
     And I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     Given I see Sign In page

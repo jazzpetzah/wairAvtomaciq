@@ -65,7 +65,7 @@ Feature: Sign In
     And I click close settings page button
     And I wait for 2 seconds
     And I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see Sign In page
     And I enter email "<Email>"
     And I enter password "<Password>"

@@ -112,7 +112,7 @@ Feature: Connect
       | Login      | Password      | Name      | ChatName | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | id3322   | user2Name | user3Name |
 
-  @C1767 @smoke
+  @C1767 @smoke @torun
   Scenario Outline: Verify 1to1 conversation is successfully created for sender end after connection is accepted
     Given There are 2 users where <Name> is me
     Given I switch to Sign In page
@@ -128,7 +128,7 @@ Feature: Connect
     And I see Contact list with name <Name2>
     And I open conversation with <Name2>
     And I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     And User <Name2> is me
@@ -140,7 +140,7 @@ Feature: Connect
     And I accept connection request from user <Name>
     And I see Contact list with name <Name>
     And I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     And User <Name> is me
@@ -171,7 +171,7 @@ Feature: Connect
     And I see Contact list with name <Name2>
     And I open conversation with <Name2>
     And I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     And User <Name2> is me
@@ -183,7 +183,7 @@ Feature: Connect
     And I ignore connection request from user <Name>
     And I do not see Contact list with name <Name>
     And I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     And User <Name> is me
@@ -251,7 +251,7 @@ Feature: Connect
     Given I am signed in properly
     Given I see Contact list with name <ChatName>
     Given I open preferences by clicking the gear button
-    Given I select Log out menu item on self profile page
+    Given I click logout in account preferences
     Given I see the clear data dialog
     Given I click Logout button on clear data dialog
     Given I see Sign In page
@@ -269,7 +269,7 @@ Feature: Connect
     And I send message
     Then I see random message in conversation
     When I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     Then I see Sign In page
@@ -282,7 +282,7 @@ Feature: Connect
     And I send message
     Then I see random message in conversation
     When I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     Then I see Sign In page
@@ -304,7 +304,7 @@ Feature: Connect
     Given I Sign in using login <User2Email> and password <User2Password>
     Given I am signed in properly
     Given I open preferences by clicking the gear button
-    Given I select Log out menu item on self profile page
+    Given I click logout in account preferences
     Given I see the clear data dialog
     Given I click Logout button on clear data dialog
     Given I see Sign In page
@@ -319,7 +319,7 @@ Feature: Connect
     And Contact <User2> sends message <Msg2> to user <User1>
     And I do not see Contact list with name <Name>
     When I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     And User <User2> is me
@@ -331,7 +331,7 @@ Feature: Connect
     And I see connected devices dialog
     And I click OK on connected devices dialog
     And I do not see connected devices dialog
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     And <User1> unblocks user <User2>
@@ -460,7 +460,7 @@ Feature: Connect
     When I close People Picker
     Then I do not see Contact list with name <Contact1>
     When I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     And User <Contact1> is me
@@ -488,7 +488,7 @@ Feature: Connect
     When I click cancel request in the options popover
     Then I do not see Contact list with name <Contact1>
     When I open preferences by clicking the gear button
-    Then I select Log out menu item on self profile page
+    Then I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     And I see Sign In page

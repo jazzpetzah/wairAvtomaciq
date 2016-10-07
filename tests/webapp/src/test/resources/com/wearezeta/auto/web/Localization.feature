@@ -138,7 +138,7 @@ Feature: Localization
     And I confirm keeping picture on Welcome page
     And I switch language to en
     And I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     And I see Sign In page

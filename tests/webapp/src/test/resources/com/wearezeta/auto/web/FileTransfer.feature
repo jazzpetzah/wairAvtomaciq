@@ -159,7 +159,7 @@ Feature: File Transfer
     Given I am signed in properly
     When I see Contact list with name <Name>
     And I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     And I see Sign In page
@@ -172,7 +172,7 @@ Feature: File Transfer
     And I cancel file upload of file <File>
     Then I do not see file transfer for file <File> in the conversation view
     When I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     And I see Sign In page

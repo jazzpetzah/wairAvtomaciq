@@ -12,7 +12,7 @@ Feature: Conversation View
     Then I click confirm on history info page
     When I am signed in properly
     Then I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     Then I see Sign In page
@@ -60,7 +60,7 @@ Feature: Conversation View
     Given I am signed in properly
     Given I see Contact list with name <ChatName>
     Given I open preferences by clicking the gear button
-    Given I select Log out menu item on self profile page
+    Given I click logout in account preferences
     Given I see the clear data dialog
     Given I click Logout button on clear data dialog
     Given I see Sign In page
@@ -71,7 +71,7 @@ Feature: Conversation View
     Then I see sent picture <PictureName> in the conversation view
     And I see only 1 picture in the conversation
     When I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     And I see Sign In page
