@@ -1403,4 +1403,27 @@ public class ConversationViewPageSteps {
     public void ITapOnImageButtons(String buttonName) throws Exception {
         getConversationViewPage().tapImageButton(buttonName);
     }
+
+    /**
+     * Tap the corresponding button which invokes Emoji or Text keyboard
+     *
+     * @throws Exception
+     * @step. ^I tap (?:Emoji|Text) Keyboard button in conversation view$
+     */
+    @When("^I tap (?:Emoji|Text) Keyboard button in conversation view$")
+    public void TapEmojiKeyboardButton() throws Exception {
+        getConversationViewPage().tapEmojiKeyboardButton();
+    }
+
+    /**
+     * Tap the corresponding key on Emoji keyboard. Tap by name does not work properly there
+     *
+     * @throws Exception
+     * @step. ^I tap number (\d+) key on Emoji Keyboard$
+     */
+    @When("^I tap key number (\\d+) on Emoji Keyboard$")
+    public void TapKeyOnEmojiKeyboard(int keyIndex) throws Exception {
+        getConversationViewPage().tapEmojiKeyboardKey(keyIndex);
+    }
 }
+
