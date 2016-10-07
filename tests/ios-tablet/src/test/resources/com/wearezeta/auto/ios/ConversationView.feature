@@ -185,8 +185,8 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I type the "   " message and send it
-    Then I see 0 default messages in the conversation view
+    And I type the "   " message
+    Then I do not see Send Message button in conversation view
     When I type the default message
     And I type the "   " message and send it
     Then I see 1 default message in the conversation view

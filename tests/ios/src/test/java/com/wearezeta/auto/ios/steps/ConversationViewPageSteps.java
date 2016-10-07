@@ -122,6 +122,24 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Verify Send Message button visiblity in the conversation view
+     *
+     * @step. I (do not )?see Send Message button in conversation view$
+     * @param shouldNotSee equals to null if the button should be visible
+     * @throws Exception
+     */
+    @Then("^I (do not )?see Send Message button in conversation view$")
+    public void ISeeSendMessageButton(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("Send Message button is not visible",
+                    getConversationViewPage().isSendMessageButtonVisible());
+        } else {
+            Assert.assertTrue("Send Message button should be invisible",
+                    getConversationViewPage().isSendMessageButtonInvisible());
+        }
+    }
+
+    /**
      * Click open conversation details button in 1:1 dialog
      *
      * @throws Exception if other user personal profile page was not created

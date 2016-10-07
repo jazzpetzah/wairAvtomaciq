@@ -1036,4 +1036,12 @@ public class ConversationViewPage extends IOSPage {
         }
         return false;
     }
+
+    public boolean isSendMessageButtonVisible() throws Exception {
+        return isElementDisplayed(nameSendButton);
+    }
+
+    public boolean isSendMessageButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameSendButton);
+    }
 }
