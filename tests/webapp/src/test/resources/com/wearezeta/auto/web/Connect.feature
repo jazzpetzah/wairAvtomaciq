@@ -112,7 +112,7 @@ Feature: Connect
       | Login      | Password      | Name      | ChatName | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | id3322   | user2Name | user3Name |
 
-  @C1767 @smoke @torun
+  @C1767 @smoke
   Scenario Outline: Verify 1to1 conversation is successfully created for sender end after connection is accepted
     Given There are 2 users where <Name> is me
     Given I switch to Sign In page

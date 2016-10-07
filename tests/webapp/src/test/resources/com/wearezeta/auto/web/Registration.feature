@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @C1761 @smoke @useSpecialEmail @localytics @torun
+  @C1761 @smoke @useSpecialEmail @localytics
   Scenario Outline: Verify new user can be registered
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
