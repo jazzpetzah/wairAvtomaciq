@@ -14,7 +14,7 @@ Feature: Registration
     When I activate user by URL
     And User <Name> is Me without avatar
     And I see first time experience with watermark
-    And I confirm keeping picture on Welcome page
+    And I open preferences by clicking the gear button
     Then I see user name on self profile page <Name>
     Then I see user email on self profile page <Email>
     And I see localytics event <Event> with attributes <Attributes>
@@ -39,7 +39,6 @@ Feature: Registration
     And I accept the Terms of Use
     And I submit registration form
     And I see first time experience with watermark
-    And I confirm keeping picture on Welcome page
     And I see Contact list with name <Name>
 
     Examples: 

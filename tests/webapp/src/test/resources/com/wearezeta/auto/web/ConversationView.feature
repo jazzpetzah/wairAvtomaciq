@@ -58,8 +58,6 @@ Feature: Conversation View
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password2>
     Given I am signed in properly
-    Given I see first time experience with watermark
-    Given I confirm keeping picture on Welcome page
     Given I see Contact list with name <ChatName>
     Given I open preferences by clicking the gear button
     Given I select Log out menu item on self profile page

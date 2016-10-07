@@ -73,7 +73,7 @@ Feature: Bring Your Friends
     Given I switch to Sign In page
     Given I Sign in using login user1Email and password user1Password
     Given I see first time experience with watermark
-    Given I confirm keeping picture on Welcome page
+    Given I open People Picker from Contact List
     When I click button to bring friends from Gmail
     And I see Google login popup
     And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456!

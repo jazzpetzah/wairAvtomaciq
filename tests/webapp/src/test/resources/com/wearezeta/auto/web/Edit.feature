@@ -243,9 +243,8 @@ Feature: Edit
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password2>
-    Given I see first time experience with watermark
-    Given I confirm keeping picture on Welcome page
     Given I am signed in properly
+    Given I see first time experience with watermark
     Given I open preferences by clicking the gear button
     Given I select Log out menu item on self profile page
     Given I see the clear data dialog
