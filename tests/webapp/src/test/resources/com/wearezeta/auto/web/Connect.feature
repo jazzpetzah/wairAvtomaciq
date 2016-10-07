@@ -140,7 +140,7 @@ Feature: Connect
     And I open the list of incoming connection requests
     And I accept connection request from user <Name>
     And I see Contact list with name <Name>
-    And I open self profile
+    And I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
@@ -172,7 +172,7 @@ Feature: Connect
     And I click Connect button on Connect To popover
     And I see Contact list with name <Name2>
     And I open conversation with <Name2>
-    And I open self profile
+    And I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
@@ -185,7 +185,7 @@ Feature: Connect
     And I open the list of incoming connection requests
     And I ignore connection request from user <Name>
     And I do not see Contact list with name <Name>
-    And I open self profile
+    And I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
@@ -289,7 +289,7 @@ Feature: Connect
     And I write random message
     And I send message
     Then I see random message in conversation
-    When I open self profile
+    When I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
@@ -328,7 +328,7 @@ Feature: Connect
     And User <User2> pinged in the conversation with <User1>
     And Contact <User2> sends message <Msg2> to user <User1>
     And I do not see Contact list with name <Name>
-    When I open self profile
+    When I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
@@ -338,7 +338,7 @@ Feature: Connect
     Then I see my avatar on top of Contact list
     When I open conversation with <User1>
     Then I see text message <Msg2>
-    When I open self profile
+    When I open preferences by clicking the gear button
     And I see connected devices dialog
     And I click OK on connected devices dialog
     And I do not see connected devices dialog
@@ -471,7 +471,7 @@ Feature: Connect
     Then I do not see Pending Outgoing Connection popover
     When I close People Picker
     Then I do not see Contact list with name <Contact1>
-    When I open self profile
+    When I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
@@ -500,7 +500,7 @@ Feature: Connect
     And I see a conversation option <ConvOption3> on the page
     When I click cancel request in the options popover
     Then I do not see Contact list with name <Contact1>
-    When I open self profile
+    When I open preferences by clicking the gear button
     And I click gear button on self profile page
     Then I select Log out menu item on self profile page
     And I see the clear data dialog

@@ -10,7 +10,7 @@ Feature: Sign Out
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
     And I am signed in properly
-    When I open self profile
+    When I open preferences by clicking the gear button
     Then I see user name on self profile page <Name>
     And I see user email on self profile page <Email>
     When I open conversation with <GroupChatName>
@@ -19,7 +19,7 @@ Feature: Sign Out
     And I open conversation with <Contact1>
     And I write message <Message>
     And I send message
-    And I open self profile
+    And I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog

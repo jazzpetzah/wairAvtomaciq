@@ -50,7 +50,7 @@ Feature: Ping
     Given I Sign in using login <Login1> and password <Password1>
     Given I am signed in properly
     Given I see Contact list with name <ChatName>
-    Given I open self profile
+    Given I open preferences by clicking the gear button
     Given I click gear button on self profile page
     Given I select Log out menu item on self profile page
     Given I see the clear data dialog
@@ -64,7 +64,7 @@ Feature: Ping
     And I open conversation with <Contact1>
     When I click ping button
     Then I see <PING> action in conversation
-    When I open self profile
+    When I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog

@@ -66,7 +66,7 @@ Feature: Localization
     When I switch language to <Language>
     Then I see People Picker
     And I close People Picker
-    Then I open self profile
+    Then I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select <SupportButton> menu item on self profile page
     And I switch to support page tab

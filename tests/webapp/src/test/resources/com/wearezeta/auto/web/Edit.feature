@@ -246,7 +246,7 @@ Feature: Edit
     Given I see Welcome page
     Given I confirm keeping picture on Welcome page
     Given I am signed in properly
-    Given I open self profile
+    Given I open preferences by clicking the gear button
     Given I click gear button on self profile page
     Given I select Log out menu item on self profile page
     Given I see the clear data dialog
@@ -271,7 +271,7 @@ Feature: Edit
     And I see 3 messages in conversation
     And I see latest text message last message
     When I remember edit timestamp of second last message
-    And I open self profile
+    And I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog

@@ -7,7 +7,7 @@ Feature: Self Profile
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    When I open self profile
+    When I open preferences by clicking the gear button
     And I see user name on self profile page <Name>
     And I change username to <NewName>
     Then I see user name on self profile page <NewName>
@@ -84,7 +84,7 @@ Feature: Self Profile
     Given I switch to Sign In page
     When I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
-    And I open self profile
+    And I open preferences by clicking the gear button
     Then I verify my accent color in color picker is set to <ColorName> color
     And I verify my avatar background color is set to <ColorName> color
     When User <Contact1> pinged in the conversation with <Name>

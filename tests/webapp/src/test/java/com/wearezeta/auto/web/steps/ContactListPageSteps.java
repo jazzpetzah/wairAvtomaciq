@@ -159,9 +159,9 @@ public class ContactListPageSteps {
      * @throws Exception
      * @step. ^I open self profile$
      */
-    @When("^I open self profile$")
-    public void IOpenSelfProfile() throws Exception {
-        context.getPagesCollection().getPage(ContactListPage.class).openSelfProfile();
+    @When("^I open preferences by clicking the gear button$")
+    public void IOpenPreferences() throws Exception {
+        context.getPagesCollection().getPage(ContactListPage.class).openPreferences();
     }
 
     /**

@@ -216,7 +216,7 @@ Feature: People View
     Given I Sign in using login <KnownContact> and password <KnownContactPassword>
     Given I am signed in properly
     Given I see Contact list with name <ChatName>
-    Given I open self profile
+    Given I open preferences by clicking the gear button
     Given I click gear button on self profile page
     Given I select Log out menu item on self profile page
     Given I see the clear data dialog
@@ -236,7 +236,7 @@ Feature: People View
     When I open archive
     Then I see archive list with name <ChatName>
     And I close archive
-    When I open self profile
+    When I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
@@ -317,7 +317,7 @@ Feature: People View
     Given I switch to Sign In page
     Given I Sign in using login <Contact1> and password <Contact1Password>
     Given I am signed in properly
-    Given I open self profile
+    Given I open preferences by clicking the gear button
     Given I click gear button on self profile page
     Given I select Log out menu item on self profile page
     Given I see the clear data dialog
@@ -336,7 +336,7 @@ Feature: People View
     And I see Contact list with name <Contact1>,<Contact2>
     And I open conversation with <Contact1>,<Contact2>
     Then I see <Message> action for <Contact2>,<Contact1> in conversation
-    And I open self profile
+    And I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
@@ -348,7 +348,7 @@ Feature: People View
     And I see Contact list with name <Name>,<Contact2>
     And I open conversation with <Name>,<Contact2>
     And I see <Message2> action for <Name>,<Contact2>,You in conversation
-    And I open self profile
+    And I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog

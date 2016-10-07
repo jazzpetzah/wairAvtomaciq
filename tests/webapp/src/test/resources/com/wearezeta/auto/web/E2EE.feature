@@ -297,7 +297,7 @@ Feature: E2EE
     When I am signed in properly
     And Contact <Contact> sends message <OnlineMessage> to user Myself
     Then I see text message <OnlineMessage>
-    And I open self profile
+    And I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
@@ -329,7 +329,7 @@ Feature: E2EE
     And I open conversation with <GroupChatName>
     And Contact <Contact1> sends message <OnlineMessage> to group conversation <GroupChatName>
     Then I see text message <OnlineMessage>
-    And I open self profile
+    And I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
@@ -645,7 +645,7 @@ Feature: E2EE
     And user <Name> adds a new device Device2 with label Label2
     #Then I see <NEW_DEVICE> action in conversation
     And I verify a badge is shown on self profile button
-    And I open self profile
+    And I open preferences by clicking the gear button
     And I see connected devices dialog
     And I see Device2 on connected devices dialog
     And I click OK on connected devices dialog
@@ -673,7 +673,7 @@ Feature: E2EE
     And I write message <UserMessage>
     And I send message
     Then I see text message <UserMessage>
-    When I open self profile
+    When I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
@@ -689,7 +689,7 @@ Feature: E2EE
     Then I do not see text message <GroupMessage>
     When I open conversation with <Contact1>
     Then I do not see text message <UserMessage>
-    And I open self profile
+    And I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see Sign In page
@@ -799,7 +799,7 @@ Feature: E2EE
     When I break the session with device Device1 of user <Name>
     And Contact <Name> sends message <Message2> via device Device1 to user <Contact>
     Then I see <UNABLE_TO_DECRYPT> action in conversation
-    When I open self profile
+    When I open preferences by clicking the gear button
     And I wait for 2 seconds
     And I click gear button on self profile page
     And I select Settings menu item on self profile page
@@ -867,7 +867,7 @@ Feature: E2EE
     Given I click confirm on history info page
     Given I am signed in properly
     When I see Contact list with name <Contact>
-    Then I open self profile
+    Then I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Settings menu item on self profile page
     When I see Settings dialog

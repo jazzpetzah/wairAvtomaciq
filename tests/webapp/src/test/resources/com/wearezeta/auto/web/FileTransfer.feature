@@ -160,7 +160,7 @@ Feature: File Transfer
     Given I see Welcome page
     Given I confirm keeping picture on Welcome page
     When I see Contact list with name <Name>
-    And I open self profile
+    And I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
@@ -174,7 +174,7 @@ Feature: File Transfer
     When I send <Size> sized file with name <File> to the current conversation
     And I cancel file upload of file <File>
     Then I do not see file transfer for file <File> in the conversation view
-    When I open self profile
+    When I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog

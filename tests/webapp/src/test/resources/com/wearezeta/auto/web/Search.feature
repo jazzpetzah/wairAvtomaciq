@@ -41,7 +41,7 @@ Feature: Search
     And I choose to create conversation from People Picker
     And I am signed in properly
     Then I see Contact list with name <Contact1>,<Contact2>
-    And I open self profile
+    And I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
@@ -51,7 +51,7 @@ Feature: Search
     And I Sign in using login <Contact1Email> and password <Contact1Password>
     And I am signed in properly
     Then I see Contact list with name <Name>,<Contact2>
-    And I open self profile
+    And I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
@@ -108,7 +108,7 @@ Feature: Search
     Then I see conversation with <Name2> is selected in conversations list
     And I see cancel pending request button in the conversation view
     And I verify that conversation input and buttons are not visible
-    And I open self profile
+    And I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
@@ -122,7 +122,7 @@ Feature: Search
     When I accept connection request from user <Name>
     Then I see conversation with <Name> is selected in conversations list
     And I see connected message for <Name> in conversation
-    And I open self profile
+    And I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog

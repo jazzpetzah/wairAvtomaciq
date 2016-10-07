@@ -448,7 +448,7 @@ public class ContactListPage extends WebPage {
                 + CONVO_LIST_ENTRY_VISIBILITY_TIMEOUT + " second(s) timeout";
     }
 
-    public void openSelfProfile() throws Exception {
+    public void openPreferences() throws Exception {
         waitForSelfProfileButton();
         selfProfileButton.click();
     }

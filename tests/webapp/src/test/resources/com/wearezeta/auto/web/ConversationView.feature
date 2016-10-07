@@ -11,7 +11,7 @@ Feature: Conversation View
     When I see the history info page
     Then I click confirm on history info page
     When I am signed in properly
-    Then I open self profile
+    Then I open preferences by clicking the gear button
     When I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
@@ -62,7 +62,7 @@ Feature: Conversation View
     Given I see Welcome page
     Given I confirm keeping picture on Welcome page
     Given I see Contact list with name <ChatName>
-    Given I open self profile
+    Given I open preferences by clicking the gear button
     Given I click gear button on self profile page
     Given I select Log out menu item on self profile page
     Given I see the clear data dialog
@@ -74,7 +74,7 @@ Feature: Conversation View
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
     And I see only 1 picture in the conversation
-    When I open self profile
+    When I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
@@ -401,7 +401,7 @@ Feature: Conversation View
     And Contact <Contact> sends 35 messages with prefix <READ> via device Device1 to user <Name>
     And I wait for 5 seconds
     Then I really see text message <READ>34
-    When I open self profile
+    When I open preferences by clicking the gear button
     And Contact <Contact> sends 35 messages with prefix <UNREAD> via device Device1 to user <Name>
     And I wait for 5 seconds
     Then I see unread dot in conversation <Contact>

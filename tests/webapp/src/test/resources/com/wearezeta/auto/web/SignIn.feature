@@ -20,7 +20,7 @@ Feature: Sign In
     And User <Contact2> sends image <ImageName1> to group conversation <GroupChatName>
     Then I see text message <Message2>
     And I see sent picture <ImageName1> in the conversation view
-    When I open self profile
+    When I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Settings menu item on self profile page
     And I remember the device id of the current device
@@ -39,7 +39,7 @@ Feature: Sign In
     And I open conversation with <GroupChatName>
     And I see text message <Message2>
     And I see sent picture <ImageName1> in the conversation view
-    When I open self profile
+    When I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Settings menu item on self profile page
     Then I verify that the device id of the current device is the same

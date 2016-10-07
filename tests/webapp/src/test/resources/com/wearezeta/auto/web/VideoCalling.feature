@@ -504,7 +504,7 @@ Feature: VideoCalling
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I am signed in properly
-    When I open self profile
+    When I open preferences by clicking the gear button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
@@ -539,7 +539,7 @@ Feature: VideoCalling
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I am signed in properly
-    Then I open self profile
+    Then I open preferences by clicking the gear button
     When <Contact> starts a video call to me
     Then I see the incoming call controls for conversation <Contact>
     And I see accept video call button for conversation <Contact>
