@@ -45,48 +45,6 @@ Feature: Registration
       | Password      | Name      | ContactMail | Contact    | Message | TextWire                                                                                     |
       | user1Password | user1Name | user2Email  | user2Name  | Hello   | Simple, private & secure messenger for chat, calls, sharing pics, music, videos, GIFs and more. |
 
-  @C1770 @smoke
-  Scenario Outline: Upload own picture on Welcome page
-    Given There is 1 user where <Name> is me without avatar picture
-    Given I switch to Sign In page
-    And I Sign in using login <Login> and password <Password>
-    When I see first time experience with watermark
-    And Myself take snapshot of current profile picture
-    And I choose <PictureName> as my self picture on Welcome page
-    And I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
-    And I see the clear data dialog
-    And I click Logout button on clear data dialog
-    And I see Sign In page
-    And I Sign in using login <Login> and password <Password>
-    Then I do not see first time experience with watermark
-    And I am signed in properly
-    And I verify that current profile picture snapshot of Myself differs from the previous one
-
-    Examples: 
-      | Login      | Password      | Name      | PictureName               |
-      | user1Email | user1Password | user1Name | userpicture_landscape.jpg |
-
-  @C1771 @smoke
-  Scenario Outline: Keep picture on Welcome page
-    Given There is 1 user where <Name> is me without avatar picture
-    Given I switch to Sign In page
-    When I Sign in using login <Login> and password <Password>
-    And I see first time experience with watermark
-    And I confirm keeping picture on Welcome page
-    And I am signed in properly
-    And I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
-    And I see the clear data dialog
-    And I click Logout button on clear data dialog
-    And I see Sign In page
-    When I Sign in using login <Login> and password <Password>
-    Then I do not see first time experience with watermark
-
-    Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
-
   @C1762 @regression
   Scenario Outline: I want to be notified if the email address I entered during registration has already been registered
     Given There is 1 user where user1Name is me without avatar picture
