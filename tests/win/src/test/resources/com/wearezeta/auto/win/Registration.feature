@@ -13,7 +13,7 @@ Feature: Registration
     When I activate user by URL
     And User <Name> is Me without avatar
     Then I see first time experience with watermark
-    When I confirm keeping picture on Welcome page
+    When I open preferences by clicking the gear button
     Then I see user name on self profile page <Name>
     And I see user email on self profile page <Email>
 
