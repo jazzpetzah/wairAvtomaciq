@@ -29,7 +29,7 @@ Feature: Sign In
     And I open account in preferences
     And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And I see Sign In page
     And I Sign in using login <Email> and password <Password>
     Then I am signed in properly

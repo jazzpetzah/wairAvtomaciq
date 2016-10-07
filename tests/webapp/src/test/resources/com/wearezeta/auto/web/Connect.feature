@@ -130,7 +130,7 @@ Feature: Connect
     And I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <Name2> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -142,7 +142,7 @@ Feature: Connect
     And I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <Name> is me
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
@@ -173,7 +173,7 @@ Feature: Connect
     And I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <Name2> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -185,7 +185,7 @@ Feature: Connect
     And I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <Name> is me
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
@@ -253,7 +253,7 @@ Feature: Connect
     Given I open preferences by clicking the gear button
     Given I click logout in account preferences
     Given I see the clear data dialog
-    Given I click Logout button on clear data dialog
+    Given I click logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
@@ -271,7 +271,7 @@ Feature: Connect
     When I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     Then I see Sign In page
     And User <Name2> is me
     When I Sign in using login <Login2> and password <Password2>
@@ -284,7 +284,7 @@ Feature: Connect
     When I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     Then I see Sign In page
     When I Sign in using login <Login> and password <Password>
     And User <Name> is me
@@ -306,7 +306,7 @@ Feature: Connect
     Given I open preferences by clicking the gear button
     Given I click logout in account preferences
     Given I see the clear data dialog
-    Given I click Logout button on clear data dialog
+    Given I click logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <User1> and password <User1Password>
     Then I see my avatar on top of Contact list
@@ -321,7 +321,7 @@ Feature: Connect
     When I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <User2> is me
     And I Sign in using login <User2Email> and password <User2Password>
     Then I see my avatar on top of Contact list
@@ -333,7 +333,7 @@ Feature: Connect
     And I do not see connected devices dialog
     And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And <User1> unblocks user <User2>
     And User <User1> is me
     And I Sign in using login <User1Email> and password <User1Password>
@@ -462,7 +462,7 @@ Feature: Connect
     When I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <Contact1> is me
     And I Sign in using login <Contact1Email> and password <Contact1Password>
     Then I am signed in properly
@@ -490,7 +490,7 @@ Feature: Connect
     When I open preferences by clicking the gear button
     Then I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And I see Sign In page
     And User <Contact1> is me
     When I Sign in using login <Contact1Email> and password <Contact1Password>

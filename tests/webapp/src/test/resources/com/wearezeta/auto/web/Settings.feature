@@ -29,7 +29,7 @@ Feature: Settings
     And I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I am signed in properly
@@ -43,7 +43,7 @@ Feature: Settings
     And I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I am signed in properly

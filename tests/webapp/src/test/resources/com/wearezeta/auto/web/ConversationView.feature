@@ -14,7 +14,7 @@ Feature: Conversation View
     Then I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     Then I see Sign In page
     And <Contact1> has group chat <ChatName> with Myself,<Contact2>
     And Contact <Name> sends 35 messages with prefix <OtherDeviceMsg> via device Device1 to group conversation <ChatName>
@@ -62,7 +62,7 @@ Feature: Conversation View
     Given I open preferences by clicking the gear button
     Given I click logout in account preferences
     Given I see the clear data dialog
-    Given I click Logout button on clear data dialog
+    Given I click logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
@@ -73,7 +73,7 @@ Feature: Conversation View
     When I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And I see Sign In page
     And User <Name2> is me
     And I Sign in using login <Login2> and password <Password2>

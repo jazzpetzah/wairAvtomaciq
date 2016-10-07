@@ -300,7 +300,7 @@ Feature: E2EE
     And I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And Contact <Contact> sends message <OfflineMessage> to user Myself
     And User <Contact> sends image <ImageName> to single user conversation Myself
     And I see Sign In page
@@ -331,7 +331,7 @@ Feature: E2EE
     And I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And Contact <Contact1> sends message <OfflineMessage> to group conversation <GroupChatName>
     And User <Contact1> sends image <ImageName> to group conversation <GroupChatName>
     And I see Sign In page
@@ -674,7 +674,7 @@ Feature: E2EE
     When I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And I see Sign In page
     And I enter email "<Email>"
     And I enter password "<Password>"

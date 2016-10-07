@@ -140,7 +140,7 @@ Feature: Localization
     And I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And I see Sign In page
     And I click Change Password button
     And I see Password Change Request page

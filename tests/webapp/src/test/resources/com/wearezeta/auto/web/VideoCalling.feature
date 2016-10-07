@@ -507,7 +507,7 @@ Feature: VideoCalling
     When I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     Then I see Sign In page
     And <Contact> starts a video call to me
     When I Sign in using login <Login> and password <Password>

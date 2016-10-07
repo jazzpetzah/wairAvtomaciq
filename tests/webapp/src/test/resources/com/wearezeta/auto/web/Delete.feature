@@ -161,7 +161,7 @@ Feature: Delete
     Given I open preferences by clicking the gear button
     Given I click logout in account preferences
     Given I see the clear data dialog
-    Given I click Logout button on clear data dialog
+    Given I click logout button on clear data dialog
     Given I see Sign In page
     And Contact Myself sends message <Message4> via device SecondDevice to user <Contact>
     And Contact <Contact> sends message <Message5> via device ContactDevice to user Myself

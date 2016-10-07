@@ -23,7 +23,7 @@ Feature: Sign Out
     And I click logout in account preferences
     And I see the clear data dialog
     And I enable checkbox to clear all data
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And I see Sign In page
     And I Sign in using login <Email3> and password <Password3>
     And I see first time experience with watermark
