@@ -366,6 +366,8 @@ Feature: Conversation View
     And I long tap on text input
     And I tap on Paste badge item
     And I confirm my choice
+    # Wait for animation
+    And I wait for 2 seconds
     Then I see 2 photo in the conversation view
 
     Examples:
