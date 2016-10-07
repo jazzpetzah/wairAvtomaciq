@@ -228,6 +228,11 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameSendButton = MobileBy.AccessibilityId("sendButton");
 
+    private static final By nameEmojiKeyboardButton = MobileBy.AccessibilityId("emojiButton");
+
+    private static final Function<Integer, String> xpathStrEmojiKeyByIndex = idx -> String.format(
+            "(//XCUIElementTypeCollectionView)[last()]/XCUIElementTypeCell[%s]", idx);
+
     protected static final String[] UPLOAD_MENU_ITEMS = new String[]{
             "Record a video", "Videos", "20 MB file", "Big file",
             "group-icon@3x.png", "CountryCodes.plist", "iCloud"
@@ -1046,5 +1051,15 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isSendMessageButtonInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameSendButton);
+    }
+
+    public void tapEmojiKeyboardButton() throws Exception {
+        getElement(nameEmojiKeyboardButton).click();
+        Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
+    }
+
+    public void tapEmojiKeyboardKey(int keyIndex) throws Exception {
+        final By locator = By.xpath(xpathStrEmojiKeyByIndex.apply(keyIndex));
+        getElement(locator).click();
     }
 }
