@@ -212,18 +212,4 @@ public class SelfProfilePageSteps {
 		context.getPagesCollection().getPage(SelfProfilePage.class).uploadPicture(pictureName);
 	}
 
-	@When("^I see the clear data dialog$")
-	public void ISeeClearDataDialog() throws Exception {
-		assertThat(context.getPagesCollection().getPage(SelfProfilePage.class).isLogoutDialogShown(), is(true));
-	}
-
-	@When("^I enable checkbox to clear all data$")
-	public void IEnableClearDataCheckbox() throws Exception {
-		context.getPagesCollection().getPage(SelfProfilePage.class).checkClearData();
-	}
-
-	@When("^I click Logout button on clear data dialog$")
-	public void IClickLogoutOnClearDataDialog() throws Exception {
-		context.getPagesCollection().getPage(SelfProfilePage.class).clickLogoutButton();
-	}
 }

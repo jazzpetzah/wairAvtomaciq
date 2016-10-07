@@ -56,12 +56,6 @@ public class SelfProfilePage extends WebPage {
     @FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathAccentColorPickerChildren)
     private List<WebElement> colorsInColorPicker;
 
-    @FindBy(how = How.CSS, using = "[data-uie-name='go-logout']")
-    private WebElement logoutButton;
-
-    @FindBy(how = How.CSS, using = ".modal-logout .checkbox span")
-    private WebElement clearDataCheckbox;
-
     public SelfProfilePage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -118,20 +112,6 @@ public class SelfProfilePage extends WebPage {
         final String menuItemXPath = WebAppLocators.SelfProfilePage.xpathGearMenuItemByName.apply(name);
         final WebElement itemElement = getDriver().findElement(By.xpath(menuItemXPath));
         itemElement.click();
-    }
-
-    public boolean isLogoutDialogShown() throws Exception {
-        return DriverUtils.waitUntilElementClickable(this.getDriver(), logoutButton);
-    }
-
-    public void checkClearData() {
-        if (!clearDataCheckbox.isSelected()) {
-            clearDataCheckbox.click();
-        }
-    }
-
-    public void clickLogoutButton() {
-        logoutButton.click();
     }
 
     public boolean checkNameInSelfProfile(String name) throws Exception {

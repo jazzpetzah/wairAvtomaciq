@@ -23,10 +23,11 @@ Feature: Sign In
     When I open preferences by clicking the gear button
     And I select Settings menu item on self profile page
     And I remember the device id of the current device
-    And I click close settings page button
+    And I close preferences
     And I wait for 2 seconds
     And I open preferences by clicking the gear button
-    And I select Log out menu item on self profile page
+    And I open account in preferences
+    And I click logout in account preferences
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     And I see Sign In page
