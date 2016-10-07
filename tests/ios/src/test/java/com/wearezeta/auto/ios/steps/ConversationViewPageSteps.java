@@ -1416,8 +1416,10 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap the corresponding key on Emoji keyboard. Tap by name does not work properly there
+     * Tap the corresponding key on Emoji keyboard. Tap by name does not work properly there.
      *
+     * @param keyIndex Keys enumeration starts at the top left corner and finishes at
+     *                 the bottom right corner of the keyboard. The first key has index 1
      * @throws Exception
      * @step. ^I tap number (\d+) key on Emoji Keyboard$
      */
