@@ -21,29 +21,6 @@ public class WelcomePageSteps {
     }
 
 	/**
-	 * Verify that the conversation list shows the info "Start a conversation or invite people to join" and the conversation
-	 * shows a watermark of the wire logo
-	 * 
-	 * @step. ^I( do not)? see first time experience with watermark$
-	 * @param shouldNotBeVisible
-	 *            is set to null if "do not" part does not exist
-	 * @throws Exception
-	 */
-	@And("^I( do not)? see first time experience with watermark$")
-	public void ISeeWelcomePage(String shouldNotBeVisible)
-			throws Exception {
-		if (shouldNotBeVisible == null) {
-			assertThat("No watermark wire logo shown",
-					context.getPagesCollection().getPage(ConversationPage.class).isWatermarkVisible());
-			// TODO: Check for first time experience info visible
-		} else {
-			assertThat("Watermark wire logo shown",
-					context.getPagesCollection().getPage(ConversationPage.class).isWatermarkNotVisible());
-			// TODO: Check for first time experience info not visible
-		}
-	}
-
-	/**
 	 * Upload a picture from local file system. The picture file itself should
 	 * already exist on the local file system and should be located in the
 	 * ~/Documents folder
