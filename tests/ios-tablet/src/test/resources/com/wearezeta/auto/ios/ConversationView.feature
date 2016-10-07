@@ -678,7 +678,7 @@ Feature: Conversation View
     Then I see input placeholder text
     When I type the default message
     Then I do not see input placeholder text
-    When I send the message
+    When I tap Send Message button in conversation view
     Then I see input placeholder text
 
     Examples:

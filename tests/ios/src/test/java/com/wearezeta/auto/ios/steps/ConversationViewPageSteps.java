@@ -150,11 +150,6 @@ public class ConversationViewPageSteps {
         getConversationViewPage().openConversationDetails();
     }
 
-    @When("^I send the message$")
-    public void WhenISendTheMessage() throws Exception {
-        getConversationViewPage().tapKeyboardCommitButton();
-    }
-
     /**
      * Wait until text messages are visible in the conversation
      *
