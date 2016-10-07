@@ -39,6 +39,9 @@ public class ContactListPage extends WebPage {
     @FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssSelfProfileButton)
     private WebElement selfProfileButton;
 
+    @FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssGearButton)
+    private WebElement gearButton;
+
     @FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathContactListEntries)
     private List<WebElement> contactListEntries;
 
@@ -449,7 +452,7 @@ public class ContactListPage extends WebPage {
     }
 
     public void openPreferences() throws Exception {
-        waitForSelfProfileButton();
+        gearButton.click();
         selfProfileButton.click();
     }
 

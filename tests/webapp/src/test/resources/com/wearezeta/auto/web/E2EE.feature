@@ -9,7 +9,7 @@ Feature: E2EE
     Then I see the history info page
     When I click confirm on history info page
     Then I am signed in properly
-    When I click gear button on self profile page
+    When I open preferences by clicking the gear button
     And I select Settings menu item on self profile page
     And I wait for 2 seconds
     Then I see a device named <Device> in the devices section
@@ -21,7 +21,7 @@ Feature: E2EE
     Then I do not see a device named <Label>, <Device> in the devices section
     When I click close settings page button
     And I wait for 2 seconds
-    And I click gear button on self profile page
+    And I open preferences by clicking the gear button
     And I select Settings menu item on self profile page
     Then I do not see a device named <Device> in the devices section
 
@@ -209,7 +209,7 @@ Feature: E2EE
     Then I see the history info page
     And I click confirm on history info page
     And I am signed in properly
-    When I click gear button on self profile page
+    When I open preferences by clicking the gear button
     And I select Settings menu item on self profile page
     Then I see a device named Device1 in the devices section
     And I see a device named Device2 in the devices section
@@ -298,7 +298,6 @@ Feature: E2EE
     And Contact <Contact> sends message <OnlineMessage> to user Myself
     Then I see text message <OnlineMessage>
     And I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -330,7 +329,6 @@ Feature: E2EE
     And Contact <Contact1> sends message <OnlineMessage> to group conversation <GroupChatName>
     Then I see text message <OnlineMessage>
     And I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -674,7 +672,6 @@ Feature: E2EE
     And I send message
     Then I see text message <UserMessage>
     When I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -690,7 +687,6 @@ Feature: E2EE
     When I open conversation with <Contact1>
     Then I do not see text message <UserMessage>
     And I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see Sign In page
     And I Sign in using login <Email> and password <Password>
@@ -801,7 +797,7 @@ Feature: E2EE
     Then I see <UNABLE_TO_DECRYPT> action in conversation
     When I open preferences by clicking the gear button
     And I wait for 2 seconds
-    And I click gear button on self profile page
+    And I open preferences by clicking the gear button
     And I select Settings menu item on self profile page
     And I wait for 2 seconds
     Then I see a device named Device1 in the devices section
@@ -868,7 +864,6 @@ Feature: E2EE
     Given I am signed in properly
     When I see Contact list with name <Contact>
     Then I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Settings menu item on self profile page
     When I see Settings dialog
     And I wait for devices

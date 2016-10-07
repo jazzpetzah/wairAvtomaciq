@@ -127,8 +127,7 @@ Feature: Connect
     And I click Connect button on Connect To popover
     And I see Contact list with name <Name2>
     And I open conversation with <Name2>
-    And I open self profile
-    And I click gear button on self profile page
+    And I open preferences by clicking the gear button
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -141,7 +140,6 @@ Feature: Connect
     And I accept connection request from user <Name>
     And I see Contact list with name <Name>
     And I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -173,7 +171,6 @@ Feature: Connect
     And I see Contact list with name <Name2>
     And I open conversation with <Name2>
     And I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -186,7 +183,6 @@ Feature: Connect
     And I ignore connection request from user <Name>
     And I do not see Contact list with name <Name>
     And I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -256,8 +252,7 @@ Feature: Connect
     Given I see Welcome page
     Given I confirm keeping picture on Welcome page
     Given I see Contact list with name <ChatName>
-    Given I open self profile
-    Given I click gear button on self profile page
+    Given I open preferences by clicking the gear button
     Given I select Log out menu item on self profile page
     Given I see the clear data dialog
     Given I click Logout button on clear data dialog
@@ -275,8 +270,7 @@ Feature: Connect
     And I write random message
     And I send message
     Then I see random message in conversation
-    When I open self profile
-    And I click gear button on self profile page
+    When I open preferences by clicking the gear button
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -290,7 +284,6 @@ Feature: Connect
     And I send message
     Then I see random message in conversation
     When I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -312,8 +305,7 @@ Feature: Connect
     Given I switch to Sign In page
     Given I Sign in using login <User2Email> and password <User2Password>
     Given I am signed in properly
-    Given I open self profile
-    Given I click gear button on self profile page
+    Given I open preferences by clicking the gear button
     Given I select Log out menu item on self profile page
     Given I see the clear data dialog
     Given I click Logout button on clear data dialog
@@ -324,12 +316,11 @@ Feature: Connect
     And Contact <User2> sends message <Msg1> to user <User1>
     Then I see text message <Msg1>
     And <User1> blocked <User2>
-    And User <User2> sends image <Picture2> to single user conversation <User1>
+    And User <User2> sends image <Picture1> to single user conversation <User1>
     And User <User2> pinged in the conversation with <User1>
     And Contact <User2> sends message <Msg2> to user <User1>
     And I do not see Contact list with name <Name>
     When I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -342,7 +333,6 @@ Feature: Connect
     And I see connected devices dialog
     And I click OK on connected devices dialog
     And I do not see connected devices dialog
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -355,8 +345,8 @@ Feature: Connect
     # Uncommented last step because of WEBAPP-862
     # Then I see text message <Msg2>
     Examples: 
-      | User1     | User1Email | User1Password | User2     | User2Email | User2Password | Msg1     | Msg2     | Picture1                  | Picture2                 |
-      | user1Name | user1Email | user2Password | user2Name | user2Email | user2Password | Message1 | Message2 | userpicture_landscape.jpg | userpicture_portrait.jpg |
+      | User1     | User1Email | User1Password | User2     | User2Email | User2Password | Msg1     | Msg2     | Picture1                 |
+      | user1Name | user1Email | user2Password | user2Name | user2Email | user2Password | Message1 | Message2 | userpicture_portrait.jpg |
 
   @C1782 @mute
   Scenario Outline: Verify you can dismiss user suggestion in PYMK list
@@ -472,7 +462,6 @@ Feature: Connect
     When I close People Picker
     Then I do not see Contact list with name <Contact1>
     When I open preferences by clicking the gear button
-    And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
@@ -501,7 +490,6 @@ Feature: Connect
     When I click cancel request in the options popover
     Then I do not see Contact list with name <Contact1>
     When I open preferences by clicking the gear button
-    And I click gear button on self profile page
     Then I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
