@@ -110,7 +110,7 @@ public final class WebAppLocators {
                 .format("%s div[data-uie-name='item-conversation-archived'][data-uie-value='%s']",
                         cssParentArchiveListItem, name);
 
-        public static final String cssSelfProfileButton = "[data-uie-name='go-self-profile']";
+        public static final String cssGearButton = "[data-uie-name='go-preferences']";
 
         public static final String xpathContactListEntries = xpathParentContactListItem
                 + "//*[@data-uie-name='item-conversation' or @data-uie-name='item-call']";
