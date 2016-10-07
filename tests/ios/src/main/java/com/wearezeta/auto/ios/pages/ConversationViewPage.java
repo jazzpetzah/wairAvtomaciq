@@ -247,6 +247,8 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapSendButton() throws Exception {
         getElement(nameSendButton).click();
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     private static String getDomainName(String url) {
