@@ -92,7 +92,7 @@ Feature: E2EE
     Given I see conversations list
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     When I tap on contact name <GroupChatName>
-    Then I do not see shield icon next to conversation input field
+    Then I do not see shield icon in the conversation view
     And I open conversation details
     When I select participant <Contact1>
     And I switch to Devices tab
@@ -107,7 +107,7 @@ Feature: E2EE
     And I navigate back from Device Details page
     And I close group participant details page
     And I close group info page
-    Then I see shield icon next to conversation input field
+    Then I see shield icon in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | DeviceName1 | DeviceLabel1 | DeviceName2 | DeviceLabel2 | GroupChatName |
@@ -129,7 +129,7 @@ Feature: E2EE
     And I close user profile page
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And User <Contact1> sends 1 encrypted message using device <DeviceName2> to user Myself
-    Then I do not see shield icon next to conversation input field
+    Then I do not see shield icon in the conversation view
     # TODO: Check the device label in the system message
     #BUG system message labels can not be located on appium
     #Then I see the conversation view contains message <ExpectedMsg>
@@ -277,7 +277,7 @@ Feature: E2EE
     And I navigate back from Device Details page
     And I close user profile page
     When User Myself adds a new device <DeviceName2> with label <DeviceLabel2>
-    Then I do not see shield icon next to conversation input field
+    Then I do not see shield icon in the conversation view
     # FIXME: Make it possible in the app to detect labels text with Appium
     # Then I see the conversation view contains message <ExpectedMsg>
     #At least checking that all system messages are there, check all conv entries
@@ -295,7 +295,7 @@ Feature: E2EE
     Given I sign in using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    Then I do not see shield icon next to conversation input field
+    Then I do not see shield icon in the conversation view
     When I open conversation details
     And I switch to Devices tab
     And I open details page of device number 1
@@ -305,7 +305,7 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I close user profile page
-    Then I see shield icon next to conversation input field
+    Then I see shield icon in the conversation view
     # FIXME: Make it possible in the app to detect labels text with Appium
     # And I see last message in dialog is expected message <VerificationMsg>
     Then I see 2 conversation entries
@@ -428,14 +428,14 @@ Feature: E2EE
     Given I sign in using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    Then I do not see shield icon next to conversation input field
+    Then I do not see shield icon in the conversation view
     When I open conversation details
     And I switch to Devices tab
     And I open details page of device number 2
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I close user profile page
-    And I do not see shield icon next to conversation input field
+    And I do not see shield icon in the conversation view
     # FIXME: Make it possible in the app to detect labels text with Appium
     # Then I do not see the conversation view contains message <ExpectedMessage>
     Then I see 1 conversation entry
@@ -481,7 +481,7 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I close user profile page
-    Then I see shield icon next to conversation input field
+    Then I see shield icon in the conversation view
     # FIXME: Make it possible in the app to detect labels text with Appium
     # Then I see last message in dialog is expected message <VerificationMsg>
     Then I see 2 conversation entries
@@ -491,7 +491,7 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I close user profile page
-    Then I do not see shield icon next to conversation input field
+    Then I do not see shield icon in the conversation view
     # FIXME: Make it possible in the app to detect labels text with Appium
     # Then I see last message in dialog contains expected message <UnverificationMsg>
     Then I see 3 conversation entries
@@ -514,9 +514,9 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I close user profile page
-    Then I see shield icon next to conversation input field
+    Then I see shield icon in the conversation view
     When I type the default message
-    Then I do not see shield icon next to conversation input field
+    Then I do not see shield icon in the conversation view
 
     Examples:
       | Name      | Contact1  |

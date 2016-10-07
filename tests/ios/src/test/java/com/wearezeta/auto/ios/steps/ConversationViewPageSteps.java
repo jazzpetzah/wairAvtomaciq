@@ -113,8 +113,8 @@ public class ConversationViewPageSteps {
     /**
      * Tap Send Message button in conversation
      *
-     * @step. I tap Send Message button in conversation view
      * @throws Exception
+     * @step. I tap Send Message button in conversation view
      */
     @And("^I tap Send Message button in conversation view$")
     public void ITapSendMessageButton() throws Exception {
@@ -124,9 +124,9 @@ public class ConversationViewPageSteps {
     /**
      * Verify Send Message button visiblity in the conversation view
      *
-     * @step. I (do not )?see Send Message button in conversation view$
      * @param shouldNotSee equals to null if the button should be visible
      * @throws Exception
+     * @step. I (do not )?see Send Message button in conversation view$
      */
     @Then("^I (do not )?see Send Message button in conversation view$")
     public void ISeeSendMessageButton(String shouldNotSee) throws Exception {
@@ -295,10 +295,9 @@ public class ConversationViewPageSteps {
     /**
      * Verify whether images are visible in the conversarion
      *
-     * @step. ^I see (\d+) photos? in the conversation view$
-     *
      * @param expectedCount the expected count of images
      * @throws Exception
+     * @step. ^I see (\d+) photos? in the conversation view$
      */
     @Then("^I see (\\d+) photos? in the conversation view$")
     public void ISeeNewPhotoInTheDialog(int expectedCount) throws Exception {
@@ -645,16 +644,16 @@ public class ConversationViewPageSteps {
      *
      * @param shouldNotSee equals to null if the shield should be visible
      * @throws Exception
-     * @step. ^I (do not )?see shield icon next to conversation input field$"
+     * @step. ^I (do not )?see shield icon in the conversation view$
      */
-    @Then("^I (do not )?see shield icon next to conversation input field$")
-    public void ISeeShieldIconNextNextToInputField(String shouldNotSee) throws Exception {
+    @Then("^I (do not )?see shield icon in the conversation view$")
+    public void ISeeShieldIcon(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
-            Assert.assertTrue("The shield icon is not visible next to the convo input field",
-                    getConversationViewPage().isShieldIconVisibleNextToInputField());
+            Assert.assertTrue("The shield icon is not visible",
+                    getConversationViewPage().isShieldIconVisible());
         } else {
-            Assert.assertTrue("The shield icon is visible next to the convo input field, but should be hidden",
-                    getConversationViewPage().isShieldIconInvisibleNextToInputField());
+            Assert.assertTrue("The shield icon is visible, but should be hidden",
+                    getConversationViewPage().isShieldIconInvisible());
         }
     }
 
@@ -666,7 +665,6 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap on THIS DEVICE link$")
     public void ITapThisDeviceLink() throws Exception {
-        //getConversationViewPage().clickThisDeviceLink();
         //this is the fix because it can not locate system message label
         getOtherUserPersonalInfoPage().openDeviceDetailsPage(1);
     }
