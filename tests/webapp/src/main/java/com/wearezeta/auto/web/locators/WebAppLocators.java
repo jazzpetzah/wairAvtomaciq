@@ -256,6 +256,19 @@ public final class WebAppLocators {
 
         public static final Function<String, String> cssAvatarInCallControlsByUserId = (id) -> String.format(".conversation-list-call-controls-row-participants [user-id='%s']", id);
     }
+    
+    public static final class PreferencesPage {
+    
+        public static final String cssPreferencesCloseButton = "#preferences [data-uie-name='do-close-preferences']";
+        
+        public static final String cssPreferencesAccountButton = "#preferences [data-uie-name='go-account']";
+        
+        public static final String cssPreferencesDevicesButton = "#preferences [data-uie-name='go-devices']";
+        
+        public static final String cssPreferencesOptionsButton = "#preferences [data-uie-name='go-options']";
+        
+        public static final String cssPreferencesAboutButton = "#preferences [data-uie-name='go-about']";
+    }
 
     public static final class SettingsPage {
 
