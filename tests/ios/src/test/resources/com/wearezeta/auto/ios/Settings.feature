@@ -51,7 +51,7 @@ Feature: Settings
     Given I see conversations list
     When I tap settings gear button
     And I select settings item Options
-    Then I verify the value of settings item Sound alerts equals to "<ExpectedValue>"
+    Then I verify the value of settings item Sound Alerts equals to "<ExpectedValue>"
 
     Examples:
       | Name      | ExpectedValue |
@@ -226,12 +226,12 @@ Feature: Settings
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap settings gear button
-    When I select settings item Account
+    When I select settings item Options
     Then I see settings item <ThemeItemName>
 
     Examples:
       | Name      | ThemeItemName |
-      | user1Name | Dark theme    |
+      | user1Name | Dark Theme    |
 
   @C3168 @real @real_rc
   Scenario Outline: Verify changing profile picture using camera

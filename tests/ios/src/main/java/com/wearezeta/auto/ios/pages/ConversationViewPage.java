@@ -91,8 +91,6 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameTitle = MobileBy.AccessibilityId("playingMediaTitle");
 
-    private static final By nameGifButton = MobileBy.AccessibilityId("gifButton");
-
     public static final Function<String, String> xpathStrMissedCallButtonByContact = name ->
             String.format("//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s CALLED'] ]" +
                     "/XCUIElementTypeButton[@name='ConversationMissedCallButton']", name.toUpperCase());
@@ -118,9 +116,10 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbNameVideoMessageButton = FBBy.AccessibilityId("videoButton");
     private static final By fbNameAudioMessageButton = FBBy.AccessibilityId("audioButton");
     private static final By fbNameShareLocationButton = FBBy.AccessibilityId("locationButton");
+    private static final By fbNameGifButton = FBBy.AccessibilityId("gifButton");
 
     private static final String xpathStrConversationViewTopBar =
-            "//XCUIElementTypeNavigationBar[ ./XCUIElementTypeButton[@name='Back'] ]";
+            "//XCUIElementTypeNavigationBar[ ./XCUIElementTypeButton[@name='ConversationBackButton' or @name='Back'] ]";
     private static final By xpathConversationViewTopBar = By.xpath(xpathStrConversationViewTopBar);
     private static Function<String, String> xpathStrToolbarByConversationName = name ->
             String.format("%s//XCUIElementTypeButton[starts-with(@name, '%s')]",
@@ -131,9 +130,8 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbNameEllipsisButton = FBBy.AccessibilityId("showOtherRowButton");
     private static final By xpathAudioCallButton = MobileBy.AccessibilityId("audioCallBarButton");
     private static final By xpathVideoCallButton = MobileBy.AccessibilityId("videoCallBarButton");
-    private static final By xpathConversationDetailsButton = By.xpath(xpathStrConversationViewTopBar +
-            "/XCUIElementTypeButton[@name='Back']/following::" +
-            "XCUIElementTypeButton[not(@name='ConversationBackButton') and boolean(string(@label))]");
+    private static final By xpathConversationDetailsButton =
+            By.xpath(xpathStrConversationViewTopBar + "/*/XCUIElementTypeButton[boolean(string(@label))]");
 
     private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("Too many people to call");
 
@@ -228,6 +226,13 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbXpathUploadMenu =
             FBBy.xpath("//XCUIElementTypeButton[@label='Cancel']/preceding-sibling::*[1]");
 
+    private static final By nameSendButton = MobileBy.AccessibilityId("sendButton");
+
+    private static final By nameEmojiKeyboardButton = MobileBy.AccessibilityId("emojiButton");
+
+    private static final Function<Integer, String> xpathStrEmojiKeyByIndex = idx -> String.format(
+            "(//XCUIElementTypeCollectionView)[last()]/XCUIElementTypeCell[%s]", idx);
+
     protected static final String[] UPLOAD_MENU_ITEMS = new String[]{
             "Record a video", "Videos", "20 MB file", "Big file",
             "group-icon@3x.png", "CountryCodes.plist", "iCloud"
@@ -242,6 +247,12 @@ public class ConversationViewPage extends IOSPage {
 
     public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
+    }
+
+    public void tapSendButton() throws Exception {
+        getElement(nameSendButton).click();
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     private static String getDomainName(String url) {
@@ -321,8 +332,14 @@ public class ConversationViewPage extends IOSPage {
         getElement(locator).click();
     }
 
-    public void tapOnCursorInput() throws Exception {
-        getElement(fbNameConversationInput).click();
+    public void tapTextInput(boolean isLongTap) throws Exception {
+        final FBElement inputField = (FBElement) getElement(fbNameConversationInput);
+        if (isLongTap) {
+            inputField.longTap();
+        } else {
+            inputField.click();
+            Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
+        }
     }
 
     public void clearTextInput() throws Exception {
@@ -415,10 +432,6 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameTitle);
     }
 
-    public void tapHoldTextInput() throws Exception {
-        ((FBElement) getElement(fbNameConversationInput)).longTap();
-    }
-
     public void scrollToBeginningOfConversation() throws Exception {
         for (int i = 0; i < 2; i++) {
             if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
@@ -443,16 +456,12 @@ public class ConversationViewPage extends IOSPage {
         }
         convoInput.sendKeys(message);
         if (shouldSend) {
-            this.tapKeyboardCommitButton();
+            tapSendButton();
         }
     }
 
     public void typeMessage(String message) throws Exception {
         typeMessage(message, false);
-    }
-
-    public void openGifPreviewPage() throws Exception {
-        getElement(nameGifButton).click();
     }
 
     public boolean isConnectingToUserConversationLabelVisible(String username) throws Exception {
@@ -464,12 +473,16 @@ public class ConversationViewPage extends IOSPage {
         return isElementDisplayed(xpathGiphyImage);
     }
 
-    public boolean isShieldIconVisibleNextToInputField() throws Exception {
-        return isElementDisplayed(nameShieldIconNextToInput);
+    public boolean isShieldIconVisible() throws Exception {
+        // FIXME: Make shield icon accessible
+        return false;
+        // return isElementDisplayed(nameShieldIconNextToInput);
     }
 
-    public boolean isShieldIconInvisibleNextToInputField() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameShieldIconNextToInput);
+    public boolean isShieldIconInvisible() throws Exception {
+        // FIXME: Make shield icon accessible
+        return false;
+        // return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameShieldIconNextToInput);
     }
 
     public void resendLastMessageInDialogToUser() throws Exception {
@@ -487,15 +500,6 @@ public class ConversationViewPage extends IOSPage {
 //        BufferedImage tmp = containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
 //        ImageIO.write(tmp, "png", new File("/Users/elf/Desktop/" + System.currentTimeMillis() + ".png"));
         return containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
-    }
-
-    public void pasteAndCommit() throws Exception {
-        final FBElement convoInput = (FBElement) getElement(fbNameConversationInput,
-                "Conversation input is not visible after the timeout");
-        convoInput.click();
-        // Wait for animation
-        Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
-        this.inputStringFromPasteboard(convoInput, true);
     }
 
     public boolean areInputToolsVisible() throws Exception {
@@ -595,6 +599,8 @@ public class ConversationViewPage extends IOSPage {
                 return fbNameAudioMessageButton;
             case "share location":
                 return fbNameShareLocationButton;
+            case "gif":
+                return fbNameGifButton;
             default:
                 throw new IllegalArgumentException(String.format("Unknown input tools button name %s", btnName));
         }
@@ -1037,5 +1043,23 @@ public class ConversationViewPage extends IOSPage {
             }
         }
         return false;
+    }
+
+    public boolean isSendMessageButtonVisible() throws Exception {
+        return isElementDisplayed(nameSendButton);
+    }
+
+    public boolean isSendMessageButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameSendButton);
+    }
+
+    public void tapEmojiKeyboardButton() throws Exception {
+        getElement(nameEmojiKeyboardButton).click();
+        Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
+    }
+
+    public void tapEmojiKeyboardKey(int keyIndex) throws Exception {
+        final By locator = By.xpath(xpathStrEmojiKeyByIndex.apply(keyIndex));
+        getElement(locator).click();
     }
 }

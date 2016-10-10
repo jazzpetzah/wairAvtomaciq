@@ -4,12 +4,16 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver.SurfaceOrientation;
@@ -806,5 +810,56 @@ public class CommonUtils {
             Thread.sleep(interval);
         } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000 && !result);
         return result;
+    }
+
+    private static final int BUFFER_SIZE = 4096;
+
+    private static void extractFile(ZipInputStream zipIn, File resultFile) throws IOException {
+        byte[] bytesIn = new byte[BUFFER_SIZE];
+        try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(resultFile))) {
+            int read;
+            while ((read = zipIn.read(bytesIn)) != -1) {
+                bos.write(bytesIn, 0, read);
+            }
+        }
+    }
+
+    public static File extractAppFromIpa(File ipaFile) throws Exception {
+        if (!ipaFile.exists()) {
+            throw new IllegalArgumentException(String.format(
+                    "Please make sure the file %s exists and is accessible", ipaFile.getCanonicalPath())
+            );
+        }
+        final Path root = Files.createTempDirectory(null);
+        Optional<File> result = Optional.empty();
+        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(ipaFile))) {
+            ZipEntry zipEntry;
+            while ((zipEntry = zis.getNextEntry()) != null) {
+                try {
+                    final String entryName = zipEntry.getName();
+                    final File currentPath = new File(root.toString() + File.separator + entryName);
+                    if (!result.isPresent() && entryName.endsWith(".app/")) {
+                        result = Optional.of(currentPath);
+                    }
+                    if (entryName.contains(".app")) {
+                        if (zipEntry.isDirectory()) {
+                            if (!currentPath.mkdirs()) {
+                                throw new IllegalStateException(String.format(
+                                        "Cannot create %s output folder", currentPath.getCanonicalPath())
+                                );
+                            }
+                        } else {
+                            extractFile(zis, currentPath);
+                        }
+                    }
+                } finally {
+                    zis.closeEntry();
+                }
+            }
+        }
+        return result.orElseThrow(
+                () -> new IllegalArgumentException(String.format("Cannot find a compressed .app inside %s",
+                        ipaFile.getAbsolutePath()))
+        );
     }
 }

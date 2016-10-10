@@ -13,9 +13,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import org.apache.log4j.Logger;
-import org.openqa.selenium.remote.RemoteWebDriver;
-
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaDriver;
@@ -24,7 +21,6 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rc.RCTestcase;
 import com.wearezeta.auto.common.rc.TestcaseResultToTestrailTransformer;
 import com.wearezeta.auto.common.testrail.TestrailSyncUtilities;
-
 import gherkin.formatter.Formatter;
 import gherkin.formatter.Reporter;
 import gherkin.formatter.model.Background;
@@ -37,8 +33,11 @@ import gherkin.formatter.model.ScenarioOutline;
 import gherkin.formatter.model.Step;
 import gherkin.formatter.model.Tag;
 import io.appium.java_client.ios.IOSDriver;
+import org.apache.log4j.Logger;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class ZetaFormatter implements Formatter, Reporter {
+
     private static String feature = "";
     private static String scenario = "";
     private static Map<Step, String> steps = new LinkedHashMap<>();
@@ -73,7 +72,8 @@ public class ZetaFormatter implements Formatter, Reporter {
     @Override
     public void feature(Feature arg0) {
         feature = arg0.getName();
-        log.debug("\n\n-----------------------\nFeature: " + feature + "\n-----------------------");
+        log.debug("\n\n----------------------------------------------\nFeature: " + feature +
+            "\n----------------------------------------------");
     }
 
     private static String formatTags(List<Tag> tags) {
@@ -89,8 +89,9 @@ public class ZetaFormatter implements Formatter, Reporter {
     @Override
     public void scenario(Scenario arg0) {
         scenario = arg0.getName();
-        log.debug(String.format("\n\n-----------------------\nScenario: %s %s\n-----------------------", scenario, formatTags
-                (arg0.getTags())));
+        log.debug(String.format("\n\n----------------------------------------------\nScenario: %s " +
+            "%s\n----------------------------------------------", scenario, formatTags
+            (arg0.getTags())));
         if (steps.size() > 0) {
             steps.clear();
         }
@@ -148,10 +149,10 @@ public class ZetaFormatter implements Formatter, Reporter {
             do {
                 final String stepNameForScr = stepName.replaceAll("\\W+", "_");
                 tmpScreenshot = new File(String.format("%s/%s/%s/%s_%s.png",
-                        CommonUtils.getPictureResultsPathFromConfig(this.getClass()), feature.replaceAll("\\W+", "_"),
-                        scenario.replaceAll("\\W+", "_"),
-                        stepNameForScr.matches(".*_") ? stepNameForScr.substring(0, stepNameForScr.length() - 1) :
-                                stepNameForScr, index));
+                    CommonUtils.getPictureResultsPathFromConfig(this.getClass()), feature.replaceAll("\\W+", "_"),
+                    scenario.replaceAll("\\W+", "_"),
+                    stepNameForScr.matches(".*_") ? stepNameForScr.substring(0, stepNameForScr.length() - 1) :
+                        stepNameForScr, index));
                 index++;
             } while (tmpScreenshot.exists());
             final File resultScreenshot = tmpScreenshot;
@@ -175,16 +176,16 @@ public class ZetaFormatter implements Formatter, Reporter {
                     return;
                 }
                 screenshotSavers.execute(() ->
-                        ImageUtil.storeImage(ImageUtil.scaleTo(screenshot.get(),
-                                MAX_SCREENSHOT_WIDTH, MAX_SCREENSHOT_HEIGHT), resultScreenshot));
+                    ImageUtil.storeImage(ImageUtil.scaleTo(screenshot.get(),
+                        MAX_SCREENSHOT_WIDTH, MAX_SCREENSHOT_HEIGHT), resultScreenshot));
             } else {
                 final Optional<BufferedImage> screenshot = DriverUtils.takeFullScreenShot(driver);
                 if (!screenshot.isPresent()) {
                     return;
                 }
                 screenshotSavers.execute(() ->
-                        ImageUtil.storeImage(ImageUtil.scaleTo(screenshot.get(),
-                                MAX_SCREENSHOT_WIDTH, MAX_SCREENSHOT_HEIGHT), resultScreenshot));
+                    ImageUtil.storeImage(ImageUtil.scaleTo(screenshot.get(),
+                        MAX_SCREENSHOT_WIDTH, MAX_SCREENSHOT_HEIGHT), resultScreenshot));
             }
         } else {
             log.debug(String.format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'", stepName));
@@ -232,13 +233,15 @@ public class ZetaFormatter implements Formatter, Reporter {
                     e.printStackTrace();
                 }
             }
-            log.debug(String.format("\n-----------------------\nSTEP: %s (status: %s, step duration: %s ms + screenshot " +
-                            "duration: %s ms)\n-----------------------", stepName, stepStatus,
-                    stepFinishedTimestamp - stepStartedTimestamp, System.currentTimeMillis() - stepFinishedTimestamp));
+            log.debug(String.format("\n----------------------------------------------\nSTEP: %s (status: %s, step duration: " +
+                "%s ms + screenshot " +
+                    "duration: %s ms)\n----------------------------------------------", stepName, stepStatus,
+                stepFinishedTimestamp - stepStartedTimestamp, System.currentTimeMillis() - stepFinishedTimestamp));
         } else {
-            log.debug(String.format("\n-----------------------\nSTEP: %s (status: %s, step duration: %s " +
-                            "ms)\n-----------------------", stepName, stepStatus,
-                    stepFinishedTimestamp - stepStartedTimestamp));
+            log.debug(String.format("\n----------------------------------------------\nSTEP: %s (status: %s, step duration: " +
+                "%s " +
+                    "ms)\n----------------------------------------------", stepName, stepStatus,
+                stepFinishedTimestamp - stepStartedTimestamp));
         }
     }
 
@@ -284,7 +287,7 @@ public class ZetaFormatter implements Formatter, Reporter {
             final Set<String> normalizedTags = normalizeTags(scenario.getTags());
 
             TestrailSyncUtilities.syncExecutedScenarioWithTestrail(scenario,
-                    new TestcaseResultToTestrailTransformer(steps).transform(), normalizedTags);
+                new TestcaseResultToTestrailTransformer(steps).transform(), normalizedTags);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

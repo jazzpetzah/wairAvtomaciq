@@ -128,6 +128,34 @@ public class OtherUserPersonalInfoPageSteps {
                 getOtherUserPersonalInfoPage().isUserNameVisible(username));
     }
 
+    private String userAddressBookName;
+    /**
+     * Remembers the name of the user how he is saved in the Address Book
+     *
+     * @param addressbookName name of user in Address Book
+     * @throws Exception
+     * @step. ^I remember the name of user (.*) in Address Book$
+     */
+    @When("^I remember the name of user (.*) in Address Book$")
+    public void IRememberTheUsersAddressBookName(String addressbookName) throws Exception {
+        userAddressBookName = usrMgr.replaceAliasesOccurences(addressbookName, ClientUsersManager.FindBy.NAME_ALIAS);
+    }
+
+    /**
+     * Verifies that the Address Book name of the user is displayed
+     *
+     * @throws Exception
+     * @step. ^I verify the previously remembered user name from Address Book is displayed on Other User Profile page$
+     */
+    @Then("^I verify the previously remembered user name from Address Book is displayed on Other User Profile page$")
+    public void IVerifyUsersAddressBookNameOnOtherUserProfilePageIsDisplayed() throws Exception {
+        if(userAddressBookName == null){
+            throw new IllegalStateException("Save the Address Book name of the user first!");
+        }
+        Assert.assertTrue(String.format("User Address Book name '%s' is not visible", userAddressBookName),
+                getOtherUserPersonalInfoPage().isUserAddressBookNameVisible(userAddressBookName));
+    }
+
     /**
      * Verify that user email on Other User Profile page is displayed and correct
      *

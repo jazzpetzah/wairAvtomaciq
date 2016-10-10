@@ -201,9 +201,10 @@ Feature: Connect
     And I tap X button in People Picker input field
     And I tap on contact name <Contact>
     And I tap on text input
-    And I tap and hold on message input
-    And I paste and commit the text
-    Then I verify that pasted message contains MyEmail
+    And I long tap on text input
+    And I tap on Paste badge item
+    And I tap Send Message button in conversation view
+    Then I see last message in the conversation view contains expected message MyEmail
 
     Examples:
       | Name      | Contact   |
@@ -220,7 +221,6 @@ Feature: Connect
     Given I tap on Search input on People picker page
     Given I input in People picker search field user email <ContactEmail>
     When I tap the instant connect button next to <UnconnectedUser>
-    And I tap X button in People Picker input field
     Then I see Pending Connect to <UnconnectedUser> message in the conversation view
 
     Examples:

@@ -37,6 +37,9 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final Function<String, String> xpathStrOtherPersonalInfoPageNameFieldByName = name ->
             String.format("//XCUIElementTypeStaticText[@name='%s']", name);
 
+    private static final Function<String, String> xpathStrOtherPersonalInfoPageAddressBookNameFieldByName = name ->
+            String.format("//XCUIElementTypeStaticText[@name='%s']", name);
+
     private static final Function<String, String> xpathStrOtherPersonalInfoPageEmailFieldByEmail = email ->
             String.format("//XCUIElementTypeTextView[@value='%s']", email.toUpperCase());
 
@@ -52,7 +55,6 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final String xpathStrDevicesList = "//XCUIElementTypeTable/XCUIElementTypeCell";
     private static final Function<Integer, String> xpathStrDevicesByCount = count ->
             String.format("//XCUIElementTypeTable[count(XCUIElementTypeCell)=%s]", count);
-    private static final By xpathDevicesList = By.xpath(xpathStrDevicesList);
     private static final Function<Integer, String> xpathStrDeviceByIndex =
             idx -> String.format("%s[%s]", xpathStrDevicesList, idx);
 
@@ -89,6 +91,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public void tapCloseUserProfileButton() throws Exception {
         getElement(nameExitOtherUserPersonalInfoPageButton, "Close profile button is not visible").click();
+        Thread.sleep(1000);
     }
 
     public void addContactToChat() throws Exception {
@@ -123,6 +126,11 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     public boolean isUserNameVisible(String name) throws Exception {
         final By locator = By.xpath(xpathStrOtherPersonalInfoPageNameFieldByName.apply(name));
         return isElementDisplayed(locator);
+    }
+
+    public boolean isUserAddressBookNameVisible(String addressbookName) throws Exception {
+        final By locator = By.xpath(xpathStrOtherPersonalInfoPageAddressBookNameFieldByName.apply(addressbookName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isUserEmailVisible(String email) throws Exception {

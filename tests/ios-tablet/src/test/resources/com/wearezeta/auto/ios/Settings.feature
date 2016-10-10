@@ -56,7 +56,7 @@ Feature: Settings
     Given I see conversations list
     When I tap settings gear button
     And I select settings item Options
-    Then I verify the value of settings item Sound alerts equals to "All"
+    Then I verify the value of settings item Sound Alerts equals to "All"
 
     Examples:
       | Name      |
@@ -279,7 +279,7 @@ Feature: Settings
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I tap settings gear button
-    When I select settings item Account
+    When I select settings item Options
     Then I do not see settings item <ThemeItemName>
 
     Examples:

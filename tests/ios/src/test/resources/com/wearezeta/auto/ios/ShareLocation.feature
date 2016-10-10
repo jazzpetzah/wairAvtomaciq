@@ -87,8 +87,11 @@ Feature: Share Location
     When I tap on contact name <Contact>
     And I long tap on location map in conversation view
     And I tap on Copy badge item
-    And I paste and commit the text
-    Then I verify that pasted message contains <ExpectedText>
+    And I tap on text input
+    And I long tap on text input
+    And I tap on Paste badge item
+    And I tap Send Message button in conversation view
+    Then I see last message in the conversation view contains expected message <ExpectedText>
 
     Examples:
       | Name      | Contact   | DeviceName | ExpectedText |

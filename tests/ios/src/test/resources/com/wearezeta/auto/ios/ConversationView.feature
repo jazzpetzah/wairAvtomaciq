@@ -103,7 +103,7 @@ Feature: Conversation View
     And I navigate back to conversations list
     And I tap on contact name <Contact>
     And I tap on text input
-    And I tap Send button on the keyboard
+    And I tap Send Message button in conversation view
     Then I see 1 default message in the conversation view
 
     Examples:
@@ -129,8 +129,9 @@ Feature: Conversation View
     And I see conversations list
     And I tap on contact name <Contact>
     And I tap on text input
-    And I tap and hold on message input
-    And I paste and commit the text
+    And I long tap on text input
+    And I tap on Paste badge item
+    And I tap Send Message button in conversation view
     Then I see last message in the conversation view is expected message <Text>
 
     Examples:
@@ -144,8 +145,8 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     And I tap on contact name <Contact>
-    When I type the "   " message and send it
-    Then I see 0 default messages in the conversation view
+    When I type the "   " message
+    Then I do not see Send Message button in conversation view
     When I type the default message
     And I type the "   " message and send it
     Then I see 1 default message in the conversation view
@@ -350,8 +351,8 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C879 @regression @ZIOS-6517 @fastLogin
-  Scenario Outline: (BUG-ZIOS-6517) Verify possibility to copy image in the conversation view
+  @C879 @regression @fastLogin
+  Scenario Outline: (ZIOS-6517) Verify possibility to copy image in the conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -362,9 +363,11 @@ Feature: Conversation View
     And I long tap on image in conversation view
     And I tap on Copy badge item
     And I tap on text input
-    And I tap and hold on message input
+    And I long tap on text input
     And I tap on Paste badge item
     And I confirm my choice
+    # Wait for animation
+    And I wait for 2 seconds
     Then I see 2 photo in the conversation view
 
     Examples:
@@ -587,5 +590,3 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
-
-

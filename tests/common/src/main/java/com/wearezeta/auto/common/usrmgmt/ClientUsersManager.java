@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 public class ClientUsersManager {
-    private static final int NUMBER_OF_REGISTRATION_RETRIES = 3;
+    private static final int NUMBER_OF_REGISTRATION_RETRIES = 5;
 
     private boolean useSpecialEmail = false;
 

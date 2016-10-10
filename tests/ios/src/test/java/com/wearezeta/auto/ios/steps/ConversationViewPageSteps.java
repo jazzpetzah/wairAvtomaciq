@@ -1,7 +1,5 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.text.Normalizer;
-import java.text.Normalizer.Form;
 import java.util.Optional;
 
 import com.wearezeta.auto.common.CommonSteps;
@@ -40,9 +38,9 @@ public class ConversationViewPageSteps {
         ISeeTextInput(null);
     }
 
-    @When("^I tap on text input$")
-    public void WhenITapOnTextInput() throws Exception {
-        getConversationViewPage().tapOnCursorInput();
+    @When("^I (long )?tap on text input$")
+    public void ITapOnTextInput(String isLongTap) throws Exception {
+        getConversationViewPage().tapTextInput(isLongTap != null);
     }
 
     /**
@@ -113,14 +111,32 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Taps "Paste" item in popup menu of an input field and commit pasted text
+     * Tap Send Message button in conversation
      *
      * @throws Exception
-     * @step. ^I paste and commit the text$
+     * @step. I tap Send Message button in conversation view
      */
-    @When("^I paste and commit the text$")
-    public void IClickPopupPasteAndCommitText() throws Exception {
-        getConversationViewPage().pasteAndCommit();
+    @And("^I tap Send Message button in conversation view$")
+    public void ITapSendMessageButton() throws Exception {
+        getConversationViewPage().tapSendButton();
+    }
+
+    /**
+     * Verify Send Message button visiblity in the conversation view
+     *
+     * @param shouldNotSee equals to null if the button should be visible
+     * @throws Exception
+     * @step. I (do not )?see Send Message button in conversation view$
+     */
+    @Then("^I (do not )?see Send Message button in conversation view$")
+    public void ISeeSendMessageButton(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("Send Message button is not visible",
+                    getConversationViewPage().isSendMessageButtonVisible());
+        } else {
+            Assert.assertTrue("Send Message button should be invisible",
+                    getConversationViewPage().isSendMessageButtonInvisible());
+        }
     }
 
     /**
@@ -132,11 +148,6 @@ public class ConversationViewPageSteps {
     @When("^I open (?:group |\\s*)conversation details$")
     public void IOpenConversationDetails() throws Exception {
         getConversationViewPage().openConversationDetails();
-    }
-
-    @When("^I send the message$")
-    public void WhenISendTheMessage() throws Exception {
-        getConversationViewPage().tapKeyboardCommitButton();
     }
 
     /**
@@ -178,9 +189,7 @@ public class ConversationViewPageSteps {
 
     @Then("^I see last message in the conversation view (is|contains) expected message (.*)")
     public void ThenISeeLasMessageIsd(String operation, String msg) throws Exception {
-        if (!Normalizer.isNormalized(msg, Form.NFC)) {
-            msg = Normalizer.normalize(msg, Form.NFC);
-        }
+        msg = usrMgr.replaceAliasesOccurences(msg, FindBy.EMAIL_ALIAS);
         if (operation.equals("is")) {
             Assert.assertTrue(
                     String.format("The last message in the conversation is different from the expected one '%s'",
@@ -221,10 +230,10 @@ public class ConversationViewPageSteps {
      * @param btnName         one of available button names
      * @param durationSeconds specific time duration you press the button
      * @throws Exception
-     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message)
+     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message|GIF)
      * button( for \\d+ seconds?)? from input tools$
      */
-    @When("^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message) " +
+    @When("^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message|GIF) " +
             "button( for \\d+ seconds?)? from input tools$")
     public void ITapButtonByNameFromInputTools(String isLongTap, String btnName, String durationSeconds)
             throws Exception {
@@ -245,10 +254,10 @@ public class ConversationViewPageSteps {
      *
      * @param btnName one of available button names
      * @throws Exception
-     * @step. ^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input
+     * @step. ^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message|GIF) button in input
      * tools palette$
      */
-    @When("^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input " +
+    @When("^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message|GIF) button in input " +
             "tools palette$")
     public void VerifyButtonVisibilityInInputTools(String shouldNot, String btnName) throws Exception {
         if (shouldNot == null) {
@@ -286,10 +295,9 @@ public class ConversationViewPageSteps {
     /**
      * Verify whether images are visible in the conversarion
      *
-     * @step. ^I see (\d+) photos? in the conversation view$
-     *
      * @param expectedCount the expected count of images
      * @throws Exception
+     * @step. ^I see (\d+) photos? in the conversation view$
      */
     @Then("^I see (\\d+) photos? in the conversation view$")
     public void ISeeNewPhotoInTheDialog(int expectedCount) throws Exception {
@@ -315,8 +323,10 @@ public class ConversationViewPageSteps {
         String link = CommonSteps.getInstance().GetInvitationUrl(user);
         CommonUtils.setStringValueInSystemClipboard(link);
         IOSSimulatorHelper.copySystemClipboardToSimulatorClipboard();
-        ITapHoldTextInput();
-        IClickPopupPasteAndCommitText();
+        getConversationViewPage().tapTextInput(false);
+        getConversationViewPage().tapTextInput(true);
+        getConversationViewPage().tapBadgeItem("Paste");
+        getConversationViewPage().tapSendButton();
     }
 
     @When("^I pause playing the media in media bar$")
@@ -438,28 +448,9 @@ public class ConversationViewPageSteps {
         getConversationViewPage().returnToConversationsList();
     }
 
-    @When("I tap and hold on message input")
-    public void ITapHoldTextInput() throws Exception {
-        getConversationViewPage().tapHoldTextInput();
-    }
-
     @When("^I scroll to the beginning of the conversation$")
     public void IScrollToTheBeginningOfTheConversation() throws Throwable {
         getConversationViewPage().scrollToBeginningOfConversation();
-    }
-
-    /**
-     * Checks if the pasted message contains the particular email
-     *
-     * @param mail email address/alias
-     * @throws Exception
-     * @step. ^I verify that pasted content contains (.*)$
-     */
-    @Then("^I verify that pasted message contains (.*)$")
-    public void ICheckCopiedContentFrom(String mail) throws Exception {
-        final String finalString = usrMgr.replaceAliasesOccurences(mail, FindBy.EMAIL_ALIAS);
-        Assert.assertTrue(String.format("The last message in the chat does not contain '%s' part",
-                finalString), getConversationViewPage().isRecentMessageContain(finalString));
     }
 
     /**
@@ -505,19 +496,6 @@ public class ConversationViewPageSteps {
             Assert.assertTrue("Input placeholder text is visible",
                     getConversationViewPage().isInputPlaceholderTextInvisible());
         }
-    }
-
-    /**
-     * Types in the tag for giphy and opens preview page
-     *
-     * @param message Tag to be fetched from giphy
-     * @throws Exception
-     * @step. ^I type tag for giphy preview (.*) and open preview overlay$
-     */
-    @When("^I type tag for giphy preview (.*) and open preview overlay$")
-    public void ITypeGiphyTagAndOpenPreview(String message) throws Exception {
-        getConversationViewPage().typeMessage(message);
-        getConversationViewPage().openGifPreviewPage();
     }
 
     /**
@@ -666,16 +644,16 @@ public class ConversationViewPageSteps {
      *
      * @param shouldNotSee equals to null if the shield should be visible
      * @throws Exception
-     * @step. ^I (do not )?see shield icon next to conversation input field$"
+     * @step. ^I (do not )?see shield icon in the conversation view$
      */
-    @Then("^I (do not )?see shield icon next to conversation input field$")
-    public void ISeeShieldIconNextNextToInputField(String shouldNotSee) throws Exception {
+    @Then("^I (do not )?see shield icon in the conversation view$")
+    public void ISeeShieldIcon(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
-            Assert.assertTrue("The shield icon is not visible next to the convo input field",
-                    getConversationViewPage().isShieldIconVisibleNextToInputField());
+            Assert.assertTrue("The shield icon is not visible",
+                    getConversationViewPage().isShieldIconVisible());
         } else {
-            Assert.assertTrue("The shield icon is visible next to the convo input field, but should be hidden",
-                    getConversationViewPage().isShieldIconInvisibleNextToInputField());
+            Assert.assertTrue("The shield icon is visible, but should be hidden",
+                    getConversationViewPage().isShieldIconInvisible());
         }
     }
 
@@ -687,7 +665,6 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap on THIS DEVICE link$")
     public void ITapThisDeviceLink() throws Exception {
-        //getConversationViewPage().clickThisDeviceLink();
         //this is the fix because it can not locate system message label
         getOtherUserPersonalInfoPage().openDeviceDetailsPage(1);
     }
@@ -1426,4 +1403,29 @@ public class ConversationViewPageSteps {
     public void ITapOnImageButtons(String buttonName) throws Exception {
         getConversationViewPage().tapImageButton(buttonName);
     }
+
+    /**
+     * Tap the corresponding button which invokes Emoji or Text keyboard
+     *
+     * @throws Exception
+     * @step. ^I tap (?:Emoji|Text) Keyboard button in conversation view$
+     */
+    @When("^I tap (?:Emoji|Text) Keyboard button in conversation view$")
+    public void TapEmojiKeyboardButton() throws Exception {
+        getConversationViewPage().tapEmojiKeyboardButton();
+    }
+
+    /**
+     * Tap the corresponding key on Emoji keyboard. Tap by name does not work properly there.
+     *
+     * @param keyIndex Keys enumeration starts at the top left corner and finishes at
+     *                 the bottom right corner of the keyboard. The first key has index 1
+     * @throws Exception
+     * @step. ^I tap number (\d+) key on Emoji Keyboard$
+     */
+    @When("^I tap key number (\\d+) on Emoji Keyboard$")
+    public void TapKeyOnEmojiKeyboard(int keyIndex) throws Exception {
+        getConversationViewPage().tapEmojiKeyboardKey(keyIndex);
+    }
 }
+

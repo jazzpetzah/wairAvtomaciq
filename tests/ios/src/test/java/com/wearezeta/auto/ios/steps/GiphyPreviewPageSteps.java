@@ -8,72 +8,56 @@ import cucumber.api.java.en.When;
 
 public class GiphyPreviewPageSteps {
 
-	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-			.getInstance();
+    private final IOSPagesCollection pagesCollecton = IOSPagesCollection.getInstance();
 
-	private GiphyPreviewPage getGiphyPreviewPage() throws Exception {
-		return (GiphyPreviewPage) pagesCollecton
-				.getPage(GiphyPreviewPage.class);
-	}
-	
-	/**
-	 * Sends the gif from preview page 
-	 * 
-	 * @step. ^I send gif from giphy preview page$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I send gif from giphy preview page$")
-	public void ISendGifFromGiphyPreview() throws Exception {
-		getGiphyPreviewPage().tapSendGiphyButton();
-	}
-	
-	/**
-	 * Verify that all elements on giphy preview page are visible
-	 * 
-	 * @step. ^I see giphy preview page$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I see giphy preview page$")
-	public void ISeeGiphyPreviewPage() throws Exception {
-		Assert.assertTrue("Giphy Refresh Button is not visible",
-				getGiphyPreviewPage().isGiphyRefreshButtonVisible());
-		Assert.assertTrue("Giphy Link Button is not visible",
-				getGiphyPreviewPage().isGiphyLinkButtonVisible());
-		Assert.assertTrue("Giphy Title Button is not visible",
-				getGiphyPreviewPage().isGiphyTitleButtonVisible());
-		Assert.assertTrue("Giphy Image is not visible", getGiphyPreviewPage()
-				.isGiphyImageVisible());
-		Assert.assertTrue("Giphy Reject Button is not visible",
-				getGiphyPreviewPage().isGiphyRejectButtonVisible());
-		Assert.assertTrue("Giphy Send Button is not visible",
-				getGiphyPreviewPage().isGiphySendButtonVisible());
-	}
-	
-	/**
-	 * Click on more gifs button
-	 * 
-	 * @step. ^I tap More button on Giphy page$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I tap More button on Giphy page$")
-	public void ITapMoreGiphyButton() throws Exception {
-		getGiphyPreviewPage().tapMoreButton();
-	}
+    private GiphyPreviewPage getGiphyPreviewPage() throws Exception {
+        return pagesCollecton.getPage(GiphyPreviewPage.class);
+    }
 
-	/**
-	 * Verify that giphy grid is shown
-	 * 
-	 * @step. ^I see giphy grid preview$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I see giphy grid preview$")
-	public void ISeeGiphyGridPreview() throws Exception {
-		Assert.assertTrue("Giphy grid is not shown", getGiphyPreviewPage()
-				.isGiphyGridShown());
-	}
+    /**
+     * Tap the first item from Giphy search grid
+     *
+     * @throws Exception
+     * @step. ^I select the first item from Giphy grid$
+     */
+    @When("^I select the first item from Giphy grid$")
+    public void ISelectFirstItem() throws Exception {
+        getGiphyPreviewPage().selectFirstItem();
+    }
+
+    /**
+     * Tap the corresponding button on Giphy preview page
+     *
+     * @throws Exception
+     * @step. ^I tap (Send|Cancel) button on Giphy preview page$
+     */
+    @When("^I tap (Send|Cancel) button on Giphy preview page$")
+    public void ITapButtonOnGiphyPreview(String btnName) throws Exception {
+        getGiphyPreviewPage().tapButton(btnName);
+    }
+
+    /**
+     * Verify that all elements on giphy preview page are visible
+     *
+     * @throws Exception
+     * @step. ^I see Giphy preview page$
+     */
+    @When("^I see Giphy preview page$")
+    public void ISeeGiphyPreviewPage() throws Exception {
+        Assert.assertTrue("Giphy Image is not visible", getGiphyPreviewPage().isPreviewVisible());
+        Assert.assertTrue("Giphy Cancel Button is not visible", getGiphyPreviewPage().isButtonVisible("Cancel"));
+        Assert.assertTrue("Giphy Send Button is not visible", getGiphyPreviewPage().isButtonVisible("Send"));
+    }
+
+    /**
+     * Verify that giphy grid is shown
+     *
+     * @throws Exception
+     * @step. ^I see giphy grid preview$
+     */
+    @When("^I see Giphy grid preview$")
+    public void ISeeGiphyGridPreview() throws Exception {
+        Assert.assertTrue("Giphy grid is not shown", getGiphyPreviewPage().isGridVisible());
+    }
 
 }

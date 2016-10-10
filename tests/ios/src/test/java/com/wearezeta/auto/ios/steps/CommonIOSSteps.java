@@ -15,6 +15,7 @@ import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.process.UnixProcessHelpers;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
@@ -143,7 +144,7 @@ public class CommonIOSSteps {
                 "--disable-autocorrection",
                 // https://wearezeta.atlassian.net/browse/ZIOS-5259
                 "-AnalyticsUserDefaultsDisabledKey", "0"
-                // ,"--debug-log-network"
+                //,"--debug-log-network"
         ));
 
         if (additionalCaps.isPresent()) {
@@ -184,24 +185,23 @@ public class CommonIOSSteps {
     private static void prepareRealDevice(DesiredCapabilities caps, Optional<String> udid, String ipaPath)
             throws Exception {
         if ((caps.is("noReset") && !((Boolean) caps.getCapability("noReset")) || !caps.is("noReset"))) {
-//            // FIXME: Sometimes Appium fails to reset app prefs properly on real device
-//            if (!cachedBundleIds.containsKey(ipaPath)) {
-//                final File appPath = IOSCommonUtils.extractAppFromIpa(new File(ipaPath));
-//                try {
-//                    cachedBundleIds.put(ipaPath, IOSCommonUtils.getBundleId(
-//                            new File(appPath.getCanonicalPath() + File.separator + "Info.plist")));
-//                } finally {
-//                    FileUtils.deleteDirectory(appPath);
-//                }
-//            }
+            // FIXME: Sometimes Appium fails to reset app prefs properly on real device
+            if (!cachedBundleIds.containsKey(ipaPath)) {
+                final File appPath = CommonUtils.extractAppFromIpa(new File(ipaPath));
+                try {
+                    cachedBundleIds.put(ipaPath, ZetaIOSDriver.parseBundleId(
+                            new File(appPath.getCanonicalPath() + File.separator + "Info.plist")));
+                } finally {
+                    FileUtils.deleteDirectory(appPath);
+                }
+            }
             final String dstUDID = udid.orElseThrow(
                     () -> new IllegalStateException("Cannot detect any connected iDevice")
             );
             for (String bundleId : Arrays.asList(
                     IOS_WD_APP_BUNDLE,
-                    FACEBOOK_WD_APP_BUNDLE
-//                    cachedBundleIds.get(ipaPath)
-            )) {
+                    FACEBOOK_WD_APP_BUNDLE,
+                    cachedBundleIds.get(ipaPath))) {
                 RealDeviceHelpers.uninstallApp(dstUDID, bundleId);
             }
             caps.setCapability("fullReset", false);
@@ -1427,6 +1427,7 @@ public class CommonIOSSteps {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            UnixProcessHelpers.killProcessesGracefully("Wire");
         }
     }
 
@@ -1518,5 +1519,27 @@ public class CommonIOSSteps {
                 throw new IllegalArgumentException(String.format("Cannot identify the reaction type '%s'",
                         reactionType));
         }
+    }
+
+    /**
+     * Minimizes the App
+     *
+     * @throws Exception
+     * @step. ^I minimize Wire$
+     */
+    @Given("^I minimize Wire$")
+    public void IMinimizeWire() throws Exception {
+        pagesCollection.getCommonPage().minimizeApplication();
+    }
+
+    /**
+     * Restores the App
+     *
+     * @throws Exception
+     * @step. ^I restore Wire$
+     */
+    @Given("^I restore Wire$")
+    public void IRestoreWire() throws Exception {
+        pagesCollection.getCommonPage().restoreApplication();
     }
 }

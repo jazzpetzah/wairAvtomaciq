@@ -13,10 +13,8 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.*;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -40,7 +38,7 @@ public abstract class IOSPage extends BasePage {
     private static final By nameBadgeItemSelectAll = MobileBy.AccessibilityId("Select All");
     private static final By nameBadgeItemCopy = MobileBy.AccessibilityId("Copy");
     private static final By nameBadgeItemDelete = MobileBy.AccessibilityId("Delete");
-    private static final By nameBadgeItemPaste = MobileBy.AccessibilityId("Paste");
+    protected static final By nameBadgeItemPaste = MobileBy.AccessibilityId("Paste");
     private static final By nameBadgeItemSave = MobileBy.AccessibilityId("Save");
     private static final By nameBadgeItemEdit = MobileBy.AccessibilityId("Edit");
     private static final By nameBadgeItemLike = MobileBy.AccessibilityId("Like");
@@ -145,26 +143,6 @@ public abstract class IOSPage extends BasePage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-
-    public void inputStringFromPasteboard(FBElement dstElement, boolean shouldCommitInput) throws Exception {
-        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            longClickAt(dstElement);
-        } else {
-            dstElement.longTap();
-        }
-        getElement(nameBadgeItemPaste).click();
-        // Wait for animation
-        Thread.sleep(2000);
-        if (shouldCommitInput) {
-            if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-                IOSSimulatorHelper.pressEnterKey();
-                Thread.sleep(1000);
-            } else {
-                this.tapKeyboardCommitButton();
-            }
-        }
-    }
-
     public boolean isKeyboardVisible() throws Exception {
         return this.onScreenKeyboard.isVisible();
     }
@@ -249,22 +227,30 @@ public abstract class IOSPage extends BasePage {
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             IOSSimulatorHelper.goHome();
             Thread.sleep(timeSeconds * 1000);
-            final String autPath = (String) getDriver().getCapabilities().getCapability("app");
-            String bundleId;
-            if (autPath.endsWith(".app")) {
-                bundleId = IOSCommonUtils.getBundleId(new File(autPath + "/Info.plist"));
-            } else {
-                final File appPath = IOSCommonUtils.extractAppFromIpa(new File(autPath));
-                try {
-                    bundleId = IOSCommonUtils.getBundleId(new File(appPath.getCanonicalPath() + "/Info.plist"));
-                } finally {
-                    FileUtils.deleteDirectory(appPath);
-                }
-            }
-            IOSSimulatorHelper.launchApp(bundleId);
+            IOSSimulatorHelper.launchApp(getDriver().getBundleID());
             Thread.sleep(1000);
         } else {
             this.getDriver().runAppInBackground(timeSeconds);
+        }
+    }
+
+    public void minimizeApplication() throws Exception {
+        assert getDriver() != null : "WebDriver is not ready";
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            IOSSimulatorHelper.goHome();
+            Thread.sleep(1000);
+        } else {
+            throw new IllegalStateException("This method works for iOS Simulator only");
+        }
+    }
+
+    public void restoreApplication() throws Exception {
+        assert getDriver() != null : "WebDriver is not ready";
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            IOSSimulatorHelper.launchApp(getDriver().getBundleID());
+            Thread.sleep(1000);
+        } else {
+            throw new IllegalStateException("This method works for iOS Simulator only");
         }
     }
 
@@ -284,21 +270,43 @@ public abstract class IOSPage extends BasePage {
         doubleClickAt(el, 50, 50);
     }
 
-    protected void longClickAt(WebElement el, int percentX, int percentY) throws Exception {
+    /**
+     * Perform click on Simulator using Python script
+     *
+     * @param el              optional element to click. Absolute screen size will be calculated if Optional.empty()
+     *                        is provided
+     * @param percentX        should be between 0 and 100
+     * @param percentY        should be between 0 and 100
+     * @param durationSeconds click duration in seconds
+     * @throws Exception
+     */
+    protected void clickAt(Optional<WebElement> el, int percentX, int percentY, double durationSeconds) throws Exception {
         if (!CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             throw new IllegalStateException("This method works for iOS Simulator only");
         }
-        final Dimension elSize = el.getSize();
-        final Point elLocation = el.getLocation();
-        final Dimension windowSize = getDriver().manage().window().getSize();
-        IOSSimulatorHelper.clickAt(
-                String.format("%.2f", (elLocation.x + elSize.width * percentX / 100.0) / windowSize.width),
-                String.format("%.2f", (elLocation.y + elSize.height * percentY / 100.0) / windowSize.height),
-                String.format("%.3f", DriverUtils.LONG_TAP_DURATION / 1000.0));
+        double px;
+        double py;
+        if (el.isPresent()) {
+            final Dimension windowSize = getDriver().manage().window().getSize();
+            final Dimension elSize = el.get().getSize();
+            final Point elLocation = el.get().getLocation();
+            px = (elLocation.x + elSize.width * percentX / 100.0) / windowSize.width;
+            py = (elLocation.y + elSize.height * percentY / 100.0) / windowSize.height;
+        } else {
+            px = percentX / 100.0;
+            py = percentY / 100.0;
+        }
+        IOSSimulatorHelper.clickAt(String.format("%.2f", px),
+                String.format("%.2f", py),
+                String.format("%.3f", durationSeconds));
     }
 
-    protected void longClickAt(WebElement el) throws Exception {
-        this.longClickAt(el, 50, 50);
+    protected void longClickAt(WebElement el, int percentX, int percentY) throws Exception {
+        this.clickAt(Optional.of(el), percentX, percentY, DriverUtils.LONG_TAP_DURATION / 1000.0);
+    }
+
+    protected void clickAt(int percentX, int percentY) throws Exception {
+        this.clickAt(Optional.empty(), percentX, percentY, DriverUtils.SINGLE_TAP_DURATION / 1000.0);
     }
 
     public void rotateScreen(ScreenOrientation orientation) throws Exception {

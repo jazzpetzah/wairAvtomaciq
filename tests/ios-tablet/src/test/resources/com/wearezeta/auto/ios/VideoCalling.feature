@@ -39,27 +39,6 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C28856 @calling_basic @fastLogin
-  Scenario Outline: Verify finishing video call [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given <Contact> starts instance using <CallBackend>
-    Given <Contact> accepts next incoming video call automatically
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I tap Video Call button
-    And I accept alert
-    And I see Video Calling overlay
-    And I tap Leave button on Video Calling overlay
-    And I do not see Video Calling overlay
-    Then I see conversation view page
-
-    Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | chrome      |
-
   @C28855 @rc @calling_basic @fastLogin
   Scenario Outline: Verify ignoring Video call [LANDSCAPE]
     Given There are 2 users where <Name> is me

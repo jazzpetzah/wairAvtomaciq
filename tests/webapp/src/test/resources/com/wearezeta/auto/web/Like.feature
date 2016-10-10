@@ -203,7 +203,6 @@ Feature: Like
 
   @C226430 @regression
   Scenario Outline: Verify liking someone's video message
-    Given my browser supports video message feature
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
