@@ -1,27 +1,19 @@
 package com.wearezeta.auto.common;
 
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import javax.imageio.ImageIO;
-import javax.management.InstanceNotFoundException;
-import javax.xml.bind.DatatypeConverter;
-
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.calling2.v1.CallingServiceClient;
 import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceCallException;
+import org.apache.log4j.Logger;
+
+import com.wearezeta.auto.common.calling2.v1.CallingServiceClient;
 import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceInstanceException;
 import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.calling2.v1.model.CallStatus;
@@ -32,12 +24,23 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import org.apache.log4j.Logger;
+
+import java.util.Arrays;
+import java.util.HashMap;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import javax.imageio.ImageIO;
+import javax.management.InstanceNotFoundException;
+import javax.xml.bind.DatatypeConverter;
 
 public final class CommonCallingSteps2 {
 
     public static final Logger LOG = ZetaLogger
-        .getLog(CommonCallingSteps2.class.getName());
+            .getLog(CommonCallingSteps2.class.getName());
 
     private static final String CALL_BACKEND_VERSION_SEPARATOR = ":";
 
@@ -110,51 +113,22 @@ public final class CommonCallingSteps2 {
         }
     }
 
-    private final Random random = new Random();
-
     /**
      * Calls to a given conversation with given users. Instances are NOT automatically created.
      * <p>
      *
-     * @param callerNames      List of caller names who call to a conversation
+     * @param callerNames List of caller names who call to a conversation
      * @param conversationName the name of the conversation to call
      * @throws Exception
      */
     public void callToConversation(List<String> callerNames, String conversationName) throws Exception {
         for (String callerName : callerNames) {
             final ClientUser callerUser = usrMgr
-                .findUserByNameOrNameAlias(callerName);
+                    .findUserByNameOrNameAlias(callerName);
             final String convId = getConversationId(callerUser, conversationName);
             final Instance instance = getInstance(callerUser);
-            int retryNumber = 1;
-            int intervalSeconds = 1;
-            do {
-                long sleepInterval = 1000;
-                try {
-                    final Call call = client.callToUser(instance, convId);
-                    addCall(call, callerUser, convId);
-                    return;
-                } catch (CallingServiceCallException e) {
-                    e.printStackTrace();
-                    sleepInterval = (intervalSeconds +
-                        random.nextInt(INSTANCE_DESTROY_TIMEOUT_SECONDS)) * 2000;
-                    intervalSeconds *= 2;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                LOG.debug(String.format("Failed to call by user '%s'. Retrying (%d of %d)...",
-                    callerName, retryNumber, INSTANCE_CREATION_RETRIES));
-                try {
-                    Thread.sleep(sleepInterval);
-                } catch (InterruptedException ex) {
-                    return;
-                }
-                retryNumber++;
-            } while (retryNumber <= INSTANCE_CREATION_RETRIES);
-            throw new RuntimeException(
-                String.format(
-                    "Calling service failed to start a call by user '%s'",
-                    callerName));
+            final Call call = client.callToUser(instance, convId);
+            addCall(call, callerUser, convId);
         }
     }
 
@@ -162,14 +136,14 @@ public final class CommonCallingSteps2 {
      * Start video calls to a given conversation with given users. Instances are NOT automatically created.
      * <p>
      *
-     * @param callerNames      list of caller names
+     * @param callerNames list of caller names
      * @param conversationName the name of the conversation to call
      * @throws Exception
      */
     public void startVideoCallToConversation(List<String> callerNames, String conversationName) throws Exception {
         for (String callerName : callerNames) {
             final ClientUser callerUser = usrMgr
-                .findUserByNameOrNameAlias(callerName);
+                    .findUserByNameOrNameAlias(callerName);
             final String convId = getConversationId(callerUser, conversationName);
             final Instance instance = getInstance(callerUser);
             final Call call = client.videoCallToUser(instance, convId);
@@ -181,21 +155,21 @@ public final class CommonCallingSteps2 {
      * Verifies the status of a call from a calling instance in a given conversation from the view of a given user.
      * <p>
      *
-     * @param callerNames      the names of the callers
+     * @param callerNames the names of the callers
      * @param conversationName the name of the conversation to check
      * @param expectedStatuses the expected status
-     * @param secondsTimeout   timeout for checking the status
+     * @param secondsTimeout timeout for checking the status
      * @throws Exception
      * @see com.wearezeta.auto.common.calling2.v1.model.CallStatus
      */
     public void verifyCallingStatus(List<String> callerNames, String conversationName,
-                                    String expectedStatuses, int secondsTimeout) throws Exception {
+            String expectedStatuses, int secondsTimeout) throws Exception {
         for (String callerName : callerNames) {
             ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
             final String convId = getConversationId(userAs, conversationName);
             waitForExpectedCallStatuses(getInstance(userAs),
-                getOutgoingCall(userAs, convId),
-                callStatusesListToObject(expectedStatuses), secondsTimeout);
+                    getOutgoingCall(userAs, convId),
+                    callStatusesListToObject(expectedStatuses), secondsTimeout);
         }
     }
 
@@ -203,20 +177,20 @@ public final class CommonCallingSteps2 {
      * Verifies current call status for a waiting instance.
      * <p>
      *
-     * @param calleeNames      list of the names of the callees
+     * @param calleeNames list of the names of the callees
      * @param expectedStatuses the expected status
-     * @param secondsTimeout   timeout for checking the status
+     * @param secondsTimeout timeout for checking the status
      * @throws Exception
      * @see com.wearezeta.auto.common.calling2.v1.model.CallStatus
      */
     public void verifyAcceptingCallStatus(List<String> calleeNames,
-                                          String expectedStatuses, int secondsTimeout) throws Exception {
+            String expectedStatuses, int secondsTimeout) throws Exception {
         for (String calleeName : calleeNames) {
             final ClientUser userAs = usrMgr
-                .findUserByNameOrNameAlias(calleeName);
+                    .findUserByNameOrNameAlias(calleeName);
             waitForExpectedCallStatuses(getInstance(userAs),
-                getIncomingCall(userAs),
-                callStatusesListToObject(expectedStatuses), secondsTimeout);
+                    getIncomingCall(userAs),
+                    callStatusesListToObject(expectedStatuses), secondsTimeout);
         }
     }
 
@@ -225,7 +199,7 @@ public final class CommonCallingSteps2 {
      * accepting an incoming call with such an instance use the method {@code CommonCallingSteps2#acceptNextCall}.
      * <p>
      *
-     * @param calleeNames  list of callee names
+     * @param calleeNames list of callee names
      * @param instanceType the {@code InstanceType} to call with as String
      * @throws Exception
      */
@@ -233,16 +207,14 @@ public final class CommonCallingSteps2 {
         LOG.debug("Creating instances for " + Arrays.toString(calleeNames.toArray()));
         createInstances(calleeNames, instanceType, "Unknown", ZetaFormatter.getScenario());
     }
-
-    public void startInstances(List<String> calleeNames, String instanceType, String platform, String scenarioName) throws
-        Exception {
+    
+    public void startInstances(List<String> calleeNames, String instanceType, String platform, String scenarioName) throws Exception {
         LOG.debug("Creating instances for " + Arrays.toString(calleeNames.toArray()));
         createInstances(calleeNames, instanceType, platform, scenarioName);
     }
-
-    private void createInstances(final List<String> calleeNames, String instanceType, String platform, String scenarioName)
-        throws InterruptedException,
-        ExecutionException, NoSuchUserException, TimeoutException {
+    
+    private void createInstances(final List<String> calleeNames, String instanceType, String platform, String scenarioName) throws InterruptedException,
+            ExecutionException, NoSuchUserException, TimeoutException {
         Map<String, CompletableFuture<Instance>> createTasks = new HashMap<>(calleeNames.size());
         for (String calleeName : calleeNames) {
             ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
@@ -251,22 +223,22 @@ public final class CommonCallingSteps2 {
                     return CompletableFuture.supplyAsync(() -> {
                         try {
                             final Instance instance = client.startInstance(userAs, convertTypeStringToTypeObject(instanceType),
-                                String.format("%s: \n%s", platform, scenarioName));
+                                    String.format("%s: \n%s", platform, scenarioName));
                             addInstance(instance, userAs);
                             return instance;
                         } catch (CallingServiceInstanceException ex) {
-                            throw new IllegalStateException(String.format("Could not start instance for user '%s'",
-                                userAs.getName()), ex);
+                            throw new IllegalStateException(String.format("Could not start instance for user '%s'", 
+                                    userAs.getName()), ex);
                         }
                     }).get(POLLING_FREQUENCY_MILLISECONDS, TimeUnit.SECONDS);
                 } catch (InterruptedException | ExecutionException | TimeoutException ex) {
                     throw new IllegalStateException(String.format("Could not start instance for user '%s'", userAs.getName()),
-                        ex);
+                            ex);
                 }
             }));
         }
         CompletableFuture.allOf(createTasks.values().toArray(new CompletableFuture[createTasks.size()])).get(
-            INSTANCE_START_TIMEOUT_SECONDS * 2, TimeUnit.SECONDS);
+                INSTANCE_START_TIMEOUT_SECONDS * 2, TimeUnit.SECONDS);
     }
 
     /**
@@ -279,9 +251,9 @@ public final class CommonCallingSteps2 {
     public void acceptNextCall(List<String> calleeNames) throws Exception {
         for (String calleeName : calleeNames) {
             final ClientUser userAs = usrMgr
-                .findUserByNameOrNameAlias(calleeName);
+                    .findUserByNameOrNameAlias(calleeName);
             final Call call = client
-                .acceptNextIncomingCall(getInstance(userAs));
+                    .acceptNextIncomingCall(getInstance(userAs));
             addCall(call, userAs);
         }
     }
@@ -296,9 +268,9 @@ public final class CommonCallingSteps2 {
     public void acceptNextVideoCall(List<String> calleeNames) throws Exception {
         for (String calleeName : calleeNames) {
             final ClientUser userAs = usrMgr
-                .findUserByNameOrNameAlias(calleeName);
+                    .findUserByNameOrNameAlias(calleeName);
             final Call call = client
-                .acceptNextIncomingVideoCall(getInstance(userAs));
+                    .acceptNextIncomingVideoCall(getInstance(userAs));
             addCall(call, userAs);
         }
     }
@@ -314,7 +286,7 @@ public final class CommonCallingSteps2 {
         for (String calleeName : calleeNames) {
             ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
             client.stopCall(getInstance(userAs),
-                getIncomingCall(userAs));
+                    getIncomingCall(userAs));
         }
     }
 
@@ -322,25 +294,25 @@ public final class CommonCallingSteps2 {
      * Stops a call to a given conversation.
      * <p>
      *
-     * @param callerNames      the name of the caller
+     * @param callerNames the name of the caller
      * @param conversationName the name of the conversation to stop call to
      * @throws Exception
      */
     public void stopOutgoingCall(List<String> callerNames, String conversationName)
-        throws Exception {
+            throws Exception {
         for (String callerName : callerNames) {
             ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
             final String convId = getConversationId(userAs, conversationName);
             client.stopCall(getInstance(userAs),
-                getOutgoingCall(userAs, convId));
+                    getOutgoingCall(userAs, convId));
         }
     }
-
+    
     /**
      * Declines a remote call within the given converastion
      * <p>
      *
-     * @param calleeNames      List of callees names who should decline the incoming call
+     * @param calleeNames List of callees names who should decline the incoming call
      * @param conversationName the name of the conversation with the call to decline
      * @throws Exception
      */
@@ -354,8 +326,8 @@ public final class CommonCallingSteps2 {
     }
 
     public List<Flow> getFlows(String callerName)
-        throws CallingServiceInstanceException, NoSuchUserException,
-        InstanceNotFoundException {
+            throws CallingServiceInstanceException, NoSuchUserException,
+            InstanceNotFoundException {
         ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
         LOG.info("Get flows for user " + userAs.getEmail());
         return client.getFlows(getInstance(userAs));
@@ -380,8 +352,7 @@ public final class CommonCallingSteps2 {
         return calls;
     }
 
-    public BufferedImage getScreenshot(ClientUser userAs) throws InstanceNotFoundException, IOException,
-        CallingServiceInstanceException {
+    public BufferedImage getScreenshot(ClientUser userAs) throws InstanceNotFoundException, IOException, CallingServiceInstanceException {
         final Instance instance = getInstance(userAs);
         String dataUrl = client.getScreenshot(instance);
         byte[] imagedata = DatatypeConverter.parseBase64Binary(dataUrl);
@@ -403,9 +374,9 @@ public final class CommonCallingSteps2 {
             final Instance instance = entry.getValue();
             final String url = callingServiceUrl + "/api/v1/instance/" + instance.getId();
             LOG.debug("---BROWSER LOG FOR INSTANCE:\n" + instance + "\n"
-                + "<a href=" + url + "/log>" + instance.getId() + " LOGS</a>" + "\n"
-                + "<a href=" + url + "/screenshots>" + instance.getId() + " SCREENSHOTS</a>");
-
+                    + "<a href="+url+"/log>"+instance.getId()+" LOGS</a>"+ "\n"
+                    + "<a href="+url+"/screenshots>"+instance.getId()+" SCREENSHOTS</a>");
+            
             destroyTasks.put(instance, CompletableFuture.supplyAsync(() -> {
                 try {
                     return client.stopInstance(instance);
@@ -416,27 +387,27 @@ public final class CommonCallingSteps2 {
             }));
         }
         CompletableFuture.allOf(destroyTasks.values().toArray(new CompletableFuture[destroyTasks.size()]))
-            .get(INSTANCE_DESTROY_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+                .get(INSTANCE_DESTROY_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         LOG.debug("Destroyed all calling instances - Clearing calling instance map");
         instanceMapping.clear();
     }
 
     private void waitForExpectedCallStatuses(Instance instance, Call call,
-                                             List<CallStatus> expectedStatuses, int secondsTimeout)
-        throws Exception {
+            List<CallStatus> expectedStatuses, int secondsTimeout)
+            throws Exception {
         long millisecondsStarted = System.currentTimeMillis();
         while (System.currentTimeMillis() - millisecondsStarted <= secondsTimeout * 1000) {
             final CallStatus currentStatus = client.getCall(instance,
-                call).getStatus();
+                    call).getStatus();
             if (expectedStatuses.contains(currentStatus)) {
                 return;
             }
             Thread.sleep(POLLING_FREQUENCY_MILLISECONDS);
         }
         throw new TimeoutException(
-            String.format(
-                "Call status for instance '%s' has not been changed to '%s' after %s second(s) timeout",
-                instance.getId(), expectedStatuses, secondsTimeout));
+                String.format(
+                        "Call status for instance '%s' has not been changed to '%s' after %s second(s) timeout",
+                        instance.getId(), expectedStatuses, secondsTimeout));
     }
 
     private static String makeKey(ClientUser from) {
@@ -450,7 +421,7 @@ public final class CommonCallingSteps2 {
     }
 
     private static List<CallStatus> callStatusesListToObject(
-        String expectedStatuses) {
+            String expectedStatuses) {
         List<CallStatus> result = new ArrayList<>();
         String[] allStatuses = expectedStatuses.split(",");
         for (String status : allStatuses) {
@@ -460,8 +431,7 @@ public final class CommonCallingSteps2 {
                 // READY could mean DESTROYED or NON_EXISTENT so we add both
                 result.add(CallStatus.NON_EXISTENT);
                 LOG.warn(
-                    "Please use DESTROYED or NON_EXISTENT instead of READY to check the state of a call! READY will be " +
-                        "removed in future versions.");
+                        "Please use DESTROYED or NON_EXISTENT instead of READY to check the state of a call! READY will be removed in future versions.");
             }
             result.add(CallStatus.valueOf(clearedStatus));
         }
@@ -493,14 +463,14 @@ public final class CommonCallingSteps2 {
     }
 
     private synchronized Instance getInstance(ClientUser userAs)
-        throws InstanceNotFoundException {
+            throws InstanceNotFoundException {
         final String key = makeKey(userAs);
         if (instanceMapping.containsKey(key)) {
             return instanceMapping.get(key);
         } else {
             throw new InstanceNotFoundException(String.format(
-                "Please create an instance for user '%s' first",
-                userAs.getName()));
+                    "Please create an instance for user '%s' first",
+                    userAs.getName()));
         }
     }
 
@@ -509,31 +479,31 @@ public final class CommonCallingSteps2 {
     }
 
     private synchronized Call getIncomingCall(ClientUser callee)
-        throws CallNotFoundException {
+            throws CallNotFoundException {
         final String callKey = makeKey(callee);
         if (callMapping.containsKey(callKey)) {
             return callMapping.get(callKey);
         } else {
             throw new CallNotFoundException(String.format(
-                "Please wait for a call as '%s' first", callee.getName()));
+                    "Please wait for a call as '%s' first", callee.getName()));
         }
     }
 
     private synchronized Call getOutgoingCall(
-        ClientUser caller, String conversationId)
-        throws CallNotFoundException {
+            ClientUser caller, String conversationId)
+            throws CallNotFoundException {
         final String callKey = makeKey(caller, conversationId);
         if (callMapping.containsKey(callKey)) {
             return callMapping.get(callKey);
         } else {
             throw new CallNotFoundException(String.format(
-                "Please make a call from '%s' to conversation '%s' first",
-                caller.getName(), conversationId));
+                    "Please make a call from '%s' to conversation '%s' first",
+                    caller.getName(), conversationId));
         }
     }
 
     private VersionedInstanceType convertTypeStringToTypeObject(
-        String instanceType) {
+            String instanceType) {
         instanceType = instanceType.toLowerCase();
         if (instanceType.contains(CALL_BACKEND_VERSION_SEPARATOR)) {
             final String[] versionedType = instanceType.split(CALL_BACKEND_VERSION_SEPARATOR);
@@ -560,7 +530,7 @@ public final class CommonCallingSteps2 {
     }
 
     private String getConversationId(ClientUser conversationOwner, String conversationName)
-        throws NoSuchUserException, Exception {
+            throws NoSuchUserException, Exception {
         String convId;
         try {
             // get conv id from pure conv name
@@ -569,13 +539,13 @@ public final class CommonCallingSteps2 {
             // get conv id from username
             final ClientUser convUser = usrMgr.findUserByNameOrNameAlias(conversationName);
             convId = BackendAPIWrappers.getConversationIdByName(conversationOwner,
-                convUser.getName());
+                    convUser.getName());
         }
         return convId;
     }
 
     public void switchVideoOn(List<String> calleeNames) throws NoSuchUserException, InstanceNotFoundException,
-        CallingServiceCallException, CallingServiceInstanceException {
+            CallingServiceCallException, CallingServiceInstanceException {
         for (String calleeName : calleeNames) {
             final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
             Instance instance = getInstance(userAs);
@@ -584,16 +554,16 @@ public final class CommonCallingSteps2 {
     }
 
     public void switchVideoOff(List<String> calleeNames) throws NoSuchUserException, InstanceNotFoundException,
-        CallingServiceCallException, CallingServiceInstanceException {
+            CallingServiceCallException, CallingServiceInstanceException {
         for (String calleeName : calleeNames) {
             final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
             Instance instance = getInstance(userAs);
             client.switchVideoOff(instance, getCurrentCall(instance));
         }
     }
-
+    
     public void maximiseVideoCall(List<String> calleeNames) throws NoSuchUserException, InstanceNotFoundException,
-        CallingServiceCallException, CallingServiceInstanceException {
+            CallingServiceCallException, CallingServiceInstanceException {
         for (String calleeName : calleeNames) {
             final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
             Instance instance = getInstance(userAs);
@@ -602,7 +572,7 @@ public final class CommonCallingSteps2 {
     }
 
     public void minimiseVideoCall(List<String> calleeNames) throws NoSuchUserException, InstanceNotFoundException,
-        CallingServiceCallException, CallingServiceInstanceException {
+            CallingServiceCallException, CallingServiceInstanceException {
         for (String calleeName : calleeNames) {
             final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
             Instance instance = getInstance(userAs);
