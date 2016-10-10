@@ -129,6 +129,9 @@ public class CommonIOSSteps {
             capabilities.setCapability("realDeviceLogger",
                     "/usr/local/lib/node_modules/deviceconsole/deviceconsole");
             capabilities.setCapability("showXcodeLog", true);
+            capabilities.setCapability("keychainPath",
+                    System.getProperty("user.home") + "/Library/Keychains/MyKeychain.keychain");
+            capabilities.setCapability("keychainPassword", "123456");
         } else {
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()));
             // https://github.com/appium/appium-xcuitest-driver/pull/184/files
