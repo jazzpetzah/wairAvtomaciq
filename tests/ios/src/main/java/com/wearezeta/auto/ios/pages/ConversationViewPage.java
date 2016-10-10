@@ -223,7 +223,10 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbNameSketchOnImageButton = FBBy.AccessibilityId("sketchOnImageButton");
     private static final By fbNameFullScreenOnImageButton = FBBy.AccessibilityId("openFullScreenButton");
 
-    private static final By nameRecentMessageToolbox = MobileBy.AccessibilityId("MessageToolbox");
+    private static final String nameStrRecentMessageToolbox = "MessageToolbox";
+    private static final By nameRecentMessageToolbox = MobileBy.AccessibilityId(nameStrRecentMessageToolbox);
+    private static final Function<String, String> strXPathMessageToolboxByText = text ->
+            String.format("//*[@name='%s' and @value='%s']", nameStrRecentMessageToolbox, text);
 
     private static final By fbXpathUploadMenu =
             FBBy.xpath("//XCUIElementTypeButton[@label='Cancel']/preceding-sibling::*[1]");
@@ -1070,5 +1073,15 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapThisDeviceLink() throws Exception {
         this.tapByPercentOfElementSize((FBElement) getElement(fbNameYouStartedUsing), 90, 50);
+    }
+
+    public boolean isMessageToolboxTextVisible(String expectedText) throws Exception {
+        final By locator = By.xpath(strXPathMessageToolboxByText.apply(expectedText));
+        return isElementDisplayed(locator);
+    }
+
+    public boolean isMessageToolboxTextInvisible(String expectedText) throws Exception {
+        final By locator = By.xpath(strXPathMessageToolboxByText.apply(expectedText));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 }

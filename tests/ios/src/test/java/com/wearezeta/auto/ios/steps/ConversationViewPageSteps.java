@@ -78,7 +78,7 @@ public class ConversationViewPageSteps {
     /**
      * Verify whether the particular system message is visible in the conversation view
      *
-     * @param expectedMsg the expected system message. may contyain user name aliases
+     * @param expectedMsg  the expected system message. may contyain user name aliases
      * @param shouldNotSee equals to null if the message should be visible
      * @throws Exception
      * @step. ^I (do not )?see "(.*)" system message in the conversation view$
@@ -167,22 +167,22 @@ public class ConversationViewPageSteps {
         if (expectedCount == 0) {
             if (expectedMsg.isPresent()) {
                 Assert.assertTrue(
-                        String.format("There are some '%s' messages in the conversation, while zero is expected",
+                        String.format("There are some '%s' messages in the conversation, but zero is expected",
                                 expectedMsg.get()),
                         getConversationViewPage().waitUntilTextMessageIsNotVisible(expectedMsg.get()));
             } else {
-                Assert.assertTrue("There are some  messages in the conversation, while zero is expected",
+                Assert.assertTrue("There are some messages in the conversation, but zero is expected",
                         getConversationViewPage().waitUntilAllTextMessageAreNotVisible());
             }
         } else if (expectedCount >= 1) {
             if (expectedMsg.isPresent()) {
                 Assert.assertTrue(
-                        String.format("There are some '%s' messages in the conversation, while %d is expected",
+                        String.format("There are less than '%s' messages in the conversation, but %d is expected",
                                 expectedMsg.get(), expectedCount),
                         getConversationViewPage().waitUntilTextMessagesAreVisible(expectedMsg.get(), expectedCount));
             } else {
                 Assert.assertTrue(
-                        String.format("There are no messages in the conversation, while %d is expected",
+                        String.format("There are no messages in the conversation, but %d is expected",
                                 expectedCount),
                         getConversationViewPage().waitUntilAnyTextMessagesAreVisible(expectedCount));
             }
@@ -1427,6 +1427,29 @@ public class ConversationViewPageSteps {
     @When("^I tap key number (\\d+) on Emoji Keyboard$")
     public void TapKeyOnEmojiKeyboard(int keyIndex) throws Exception {
         getConversationViewPage().tapEmojiKeyboardKey(keyIndex);
+    }
+
+    /**
+     * Verify whether the particular text is present or not on message toolbox
+     *
+     * @param shouldNotSee equals to null if the text should be visible
+     * @param expectedText part of the text to verify for presence
+     * @throws Exception
+     * @step. ^I (do not )?see "(.*)" on the message toolbox in conversation view$
+     */
+    @Then("^I (do not )?see \"(.*)\" on the message toolbox in conversation view$")
+    public void ISeeTextOnToolbox(String shouldNotSee, String expectedText) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue(
+                    String.format("The expected '%s' text is not visible on the message toolbox", expectedText),
+                    getConversationViewPage().isMessageToolboxTextVisible(expectedText)
+            );
+        } else {
+            Assert.assertTrue(
+                    String.format("The expected '%s' text should not be visible on the message toolbox", expectedText),
+                    getConversationViewPage().isMessageToolboxTextInvisible(expectedText)
+            );
+        }
     }
 }
 
