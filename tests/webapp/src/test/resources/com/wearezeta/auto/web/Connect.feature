@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @C1756 @smoke
+  @C1756 @smoke @WEBAPP-3244
   Scenario Outline: Accept connection request
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
