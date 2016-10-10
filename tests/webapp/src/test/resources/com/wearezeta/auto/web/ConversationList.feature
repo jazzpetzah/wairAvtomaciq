@@ -488,3 +488,38 @@ Feature: Conversation List
     Examples:
       | Login      | Password      | Login2     | Password2     | Name      | Contact1  | Contact2  | Message |
       | user1Email | user1Password | user3Email | user3Password | user1Name | user2Name | user3Name | TESTING |
+
+  @C250830 @staging
+  Scenario Outline: Verify muted conversation should not update page title
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given user <Contact2> adds a new device Device2 with label Label2
+    Given user <Contact3> adds a new device Device3 with label Label3
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact1>
+    And Contact <Contact2> sends message <Message> via device Device2 to user <Name>
+    And Contact <Contact3> sends message <Message> via device Device3 to user <Name>
+    And I see unread dot in conversation <Contact2>
+    And I see unread dot in conversation <Contact3>
+    And I wait for 1 seconds
+    Then I see unread number 2 in page title
+    When I open conversation with <Contact2>
+    And I open conversation with <Contact3>
+    And I see that conversation <Contact3> is not muted
+    And I click on options button for conversation <Contact3>
+    And I see correct tooltip for mute button in options popover
+    And I click the option to mute in the options popover
+    And I see that conversation <Contact3> is muted
+    And I open conversation with <Contact1>
+    Then I do not see unread number in page title
+    When Contact <Contact2> sends message <Message> via device Device2 to user <Name>
+    And Contact <Contact3> sends message <Message> via device Device3 to user <Name>
+    And I see unread dot in conversation <Contact2>
+    And I see unread dot in conversation <Contact3>
+    Then I see unread number 1 in page title
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Message |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | TESTING |
