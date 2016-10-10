@@ -257,7 +257,6 @@ Feature: Calling Matrix
     When I swipe to accept the call
     Then I see ongoing call
     When I minimize the application
-    And I wait for 5 seconds
     And I restore the application
     Then I see ongoing call
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
@@ -280,7 +279,6 @@ Feature: Calling Matrix
     When I tap on conversation name <Contact>
     And I tap Audio Call button from top toolbar
     And I minimize the application
-    And I wait for 5 seconds
     And I restore the application
     Then I see ongoing call
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds

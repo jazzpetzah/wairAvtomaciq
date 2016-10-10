@@ -431,7 +431,6 @@ Feature: VideoCalling
     And I see ongoing video call
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     When I minimize the application
-    And I wait for 5 seconds
     And I restore the application
     Then <Contact> verifies that call status to me is changed to active in 3 seconds
     And I see ongoing video call
