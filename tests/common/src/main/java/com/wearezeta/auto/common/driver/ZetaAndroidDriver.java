@@ -286,7 +286,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
         return outputType.convertFromBase64Png(base64EncodedPng);
     }
 
-    private static final long DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS = 2000;
+    private static final long DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS = 5000;
     private static final String SERVER_SIDE_ERROR_SIGNATURE = "unknown server-side error";
     private static final String NO_OPEN_WINDOWS_ERROR_SIGNATURE = "No open windows";
 
