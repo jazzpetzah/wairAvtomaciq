@@ -78,7 +78,7 @@ Feature: Connect
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    When I see Search is opened
+    When I open search by clicking the people button
     And I see Bring Your Friends or Invite People button
     And I type <ContactEmail> in search field of People Picker
     And I see user <Contact> found in People Picker
@@ -119,7 +119,7 @@ Feature: Connect
     When I wait until <Name2> exists in backend search results
     And I Sign in using login <Login> and password <Password>
     And I am signed in properly
-    And I see Search is opened
+    And I open search by clicking the people button
     And I type <Login2> in search field of People Picker
     And I see user <Name2> found in People Picker
     And I click on not connected user <Name2> found in People Picker
