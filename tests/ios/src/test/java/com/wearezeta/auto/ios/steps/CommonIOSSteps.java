@@ -102,6 +102,12 @@ public class CommonIOSSteps {
 
     private static final long INSTALL_DELAY_MS = 3000;
 
+    // These settings are needed to properly sign WDA for real device tests
+    // See https://github.com/appium/appium-xcuitest-driver for more details
+    private static final String KEYCHAIN_PATH = String.format("%s/%s",
+            System.getProperty("user.home"), "/Library/Keychains/MyKeychain.keychain");
+    private static final String KEYCHAIN_PASSWORD = "123456";
+
     @SuppressWarnings("unchecked")
     public Future<ZetaIOSDriver> resetIOSDriver(String ipaPath,
                                                 Optional<Map<String, Object>> additionalCaps,
@@ -129,6 +135,8 @@ public class CommonIOSSteps {
             capabilities.setCapability("realDeviceLogger",
                     "/usr/local/lib/node_modules/deviceconsole/deviceconsole");
             capabilities.setCapability("showXcodeLog", true);
+            capabilities.setCapability("keychainPath", KEYCHAIN_PATH);
+            capabilities.setCapability("keychainPassword", KEYCHAIN_PASSWORD);
         } else {
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()));
             // https://github.com/appium/appium-xcuitest-driver/pull/184/files
