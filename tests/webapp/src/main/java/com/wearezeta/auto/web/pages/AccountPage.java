@@ -23,7 +23,7 @@ public class AccountPage extends WebPage {
 
     private static final Logger log = ZetaLogger.getLog(AccountPage.class.getSimpleName());
 
-    @FindBy(css = WebAppLocators.PreferencesAccountPage.cssPreferencesAccountLogoutButton)
+    @FindBy(css = WebAppLocators.AccountPage.cssLogoutButton)
     private WebElement logoutButton;
 
     @FindBy(css = "[data-uie-name='go-logout']")
@@ -32,22 +32,22 @@ public class AccountPage extends WebPage {
     @FindBy(css = ".modal-logout .checkbox span")
     private WebElement clearDataCheckbox;
 
-    @FindBy(css = WebAppLocators.PreferencesAccountPage.cssSelfUserName)
+    @FindBy(css = WebAppLocators.AccountPage.cssSelfUserName)
     private WebElement userName;
 
-    @FindBy(css = WebAppLocators.PreferencesAccountPage.cssSelfUserNameInput)
+    @FindBy(css = WebAppLocators.AccountPage.cssSelfUserNameInput)
     private WebElement userNameInput;
 
-    @FindBy(css = WebAppLocators.PreferencesAccountPage.cssNameSelfUserMail)
+    @FindBy(css = WebAppLocators.AccountPage.cssNameSelfUserMail)
     private WebElement userMail;
 
-    @FindBy(css = WebAppLocators.PreferencesAccountPage.cssNameSelfUserPhoneNumber)
+    @FindBy(css = WebAppLocators.AccountPage.cssNameSelfUserPhoneNumber)
     private WebElement userPhoneNumber;
 
-    @FindBy(css = WebAppLocators.PreferencesAccountPage.cssSelectPicture)
+    @FindBy(css = WebAppLocators.AccountPage.cssSelectPicture)
     private WebElement selectPictureInput;
 
-    @FindBy(css = WebAppLocators.PreferencesAccountPage.cssAccentColorPickerInputs)
+    @FindBy(css = WebAppLocators.AccountPage.cssAccentColorPickerInputs)
     private List<WebElement> colorsInColorPicker;
 
     public AccountPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
@@ -74,7 +74,7 @@ public class AccountPage extends WebPage {
 
     public boolean checkNameInSelfProfile(String name) throws Exception {
         DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(
-                WebAppLocators.PreferencesAccountPage.cssSelfUserName));
+                WebAppLocators.AccountPage.cssSelfUserName));
 
         WebDriverWait wait = new WebDriverWait(this.getDriver(), 10);
 
@@ -89,7 +89,7 @@ public class AccountPage extends WebPage {
 
     public String getUserName() throws Exception {
         DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(
-                WebAppLocators.PreferencesAccountPage.cssSelfUserName));
+                WebAppLocators.AccountPage.cssSelfUserName));
         return userName.getText();
     }
 
@@ -157,13 +157,13 @@ public class AccountPage extends WebPage {
 
     public AccentColor getCurrentAvatarAccentColor() throws Exception {
         final WebElement backgroundAvatarAccentColor = this.getDriver()
-                .findElementByCssSelector(WebAppLocators.PreferencesAccountPage.cssBackgroundAvatarAccentColor);
+                .findElementByCssSelector(WebAppLocators.AccountPage.cssBackgroundAvatarAccentColor);
         return AccentColor.getByRgba(backgroundAvatarAccentColor.getCssValue("background-color"));
     }
 
     public String getCurrentAccentColor() throws Exception {
         final WebElement accentColorCircleDiv = this.getDriver()
-                .findElementByCssSelector(WebAppLocators.PreferencesAccountPage.cssCurrentAccentColorCircleDiv);
+                .findElementByCssSelector(WebAppLocators.AccountPage.cssCurrentAccentColorCircleDiv);
         return accentColorCircleDiv.getCssValue("border-top-color");
     }
 
@@ -181,7 +181,7 @@ public class AccountPage extends WebPage {
 
     public void selectAccentColor(String colorName) throws Exception {
         final int id = AccentColor.getByName(colorName).getId();
-        final String cssAccentColorDiv = WebAppLocators.PreferencesAccountPage.cssAccentColorDivById.apply(id);
+        final String cssAccentColorDiv = WebAppLocators.AccountPage.cssAccentColorDivById.apply(id);
         assert DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(cssAccentColorDiv));
         final WebElement accentColorDiv = this.getDriver().findElementByCssSelector(cssAccentColorDiv);
         assert DriverUtils.waitUntilElementClickable(this.getDriver(), accentColorDiv);

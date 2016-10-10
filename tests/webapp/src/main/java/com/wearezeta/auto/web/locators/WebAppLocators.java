@@ -270,9 +270,9 @@ public final class WebAppLocators {
         public static final String cssPreferencesAboutButton = "#preferences [data-uie-name='go-about']";
     }
     
-    public static final class PreferencesAccountPage {
+    public static final class AccountPage {
     
-        public static final String cssPreferencesAccountLogoutButton = "#preferences-account [data-uie-name='do-logout']";
+        public static final String cssLogoutButton = "#preferences-account [data-uie-name='do-logout']";
         
         public static final String cssSelfUserName = "[data-uie-name='status-name']";
 
