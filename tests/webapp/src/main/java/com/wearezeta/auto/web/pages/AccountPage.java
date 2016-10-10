@@ -19,9 +19,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class PreferencesAccountPage extends WebPage {
+public class AccountPage extends WebPage {
 
-    private static final Logger log = ZetaLogger.getLog(PreferencesAccountPage.class.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(AccountPage.class.getSimpleName());
 
     @FindBy(css = WebAppLocators.PreferencesAccountPage.cssPreferencesAccountLogoutButton)
     private WebElement logoutButton;
@@ -50,7 +50,7 @@ public class PreferencesAccountPage extends WebPage {
     @FindBy(css = WebAppLocators.PreferencesAccountPage.cssAccentColorPickerInputs)
     private List<WebElement> colorsInColorPicker;
 
-    public PreferencesAccountPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
+    public AccountPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
