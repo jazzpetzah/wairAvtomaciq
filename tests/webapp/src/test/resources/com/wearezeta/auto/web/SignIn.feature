@@ -125,6 +125,7 @@ Feature: Sign In
     And I see the history info page
     And I click confirm on history info page
     Then I am signed in properly
+    And I open preferences by clicking the gear button
     And I see username <Name> in account preferences
     And I see user phone number <PhoneNumber> in account preferences
 
@@ -160,6 +161,7 @@ Feature: Sign In
     And I check option to remember me
     And I press Sign In button
     Then I am signed in properly
+    And I open preferences by clicking the gear button
     And I see username <Name> in account preferences
     And I see user phone number <PhoneNumber> in account preferences
 
