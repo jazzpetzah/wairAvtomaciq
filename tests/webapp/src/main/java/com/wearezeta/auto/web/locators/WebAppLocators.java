@@ -298,6 +298,12 @@ public final class WebAppLocators {
         public static final String cssSelectPicture = "[data-uie-name='do-select-picture']";
     }
 
+    public static final class DevicesPage {
+        public static final String cssCurrentDevice = "[data-uie-name='preferences-device-current']";
+
+        public static final String cssCurrentDeviceId = "[data-uie-name='preferences-device-current-id']";
+    }
+
     public static final class SettingsPage {
 
         public static final String xpathSettingsDialogRoot = "//div[@id='self-settings' and contains(@class, 'modal-show')]";
@@ -310,8 +316,6 @@ public final class WebAppLocators {
 
         public static final Function<String, String> xpathDeviceLabel = (name) -> String
                 .format("//device-card//span[contains(text(),'%s')]", name);
-
-        public static final String cssCurrentDevice = "[data-uie-name='device-card-info-current']";
 
         public static final String cssDeleteAccountButton = "[data-uie-name='go-delete-account']";
         public static final String cssCancelDeleteAccountButton = "[data-uie-name='do-delete-cancel']";
