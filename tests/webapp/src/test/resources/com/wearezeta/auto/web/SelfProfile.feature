@@ -89,7 +89,7 @@ Feature: Self Profile
     Given Myself is connected to <Contact1>, <Contact2>
     Given I switch to Sign In page
     When I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open preferences by clicking the gear button
     Then I verify my accent color in color picker is set to <ColorName> color
     And I verify my avatar background color is set to <ColorName> color
