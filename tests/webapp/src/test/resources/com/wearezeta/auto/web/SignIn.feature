@@ -143,6 +143,7 @@ Feature: Sign In
     And I enter password <Password> on phone login page
     And I press Sign In button on phone login page
     Then I am signed in properly
+    And I open preferences by clicking the gear button
     And I see username <Name> in account preferences
     And I see user phone number <PhoneNumber> in account preferences
 
