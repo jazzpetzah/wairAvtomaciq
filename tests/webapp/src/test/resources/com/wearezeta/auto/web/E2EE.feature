@@ -19,7 +19,7 @@ Feature: E2EE
     And I type password "<Password>" into the device remove form
     And I click the remove button
     Then I do not see a device named <Label>, <Device> in the devices section
-    When I click close settings page button
+    When I close preferences
     And I wait for 2 seconds
     And I open preferences by clicking the gear button
     And I select Settings menu item on self profile page
@@ -798,13 +798,13 @@ Feature: E2EE
     When I open preferences by clicking the gear button
     And I wait for 2 seconds
     And I open preferences by clicking the gear button
-    And I select Settings menu item on self profile page
+    And I open devices in preferences
     And I wait for 2 seconds
     Then I see a device named Device1 in the devices section
     When I click on the device Device1 in the devices section
     Then I see a device named Device1 with label Label1 in the device details
     When I click the reset session button
-    When I click close settings page button
+    When I close preferences
     And I wait for 2 seconds
     And I open conversation with <Contact>
     And Contact <Name> sends message <Message3> via device Device1 to user <Contact>
