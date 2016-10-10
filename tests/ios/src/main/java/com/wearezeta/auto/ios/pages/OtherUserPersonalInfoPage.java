@@ -55,7 +55,6 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final String xpathStrDevicesList = "//XCUIElementTypeTable/XCUIElementTypeCell";
     private static final Function<Integer, String> xpathStrDevicesByCount = count ->
             String.format("//XCUIElementTypeTable[count(XCUIElementTypeCell)=%s]", count);
-    private static final By xpathDevicesList = By.xpath(xpathStrDevicesList);
     private static final Function<Integer, String> xpathStrDeviceByIndex =
             idx -> String.format("%s[%s]", xpathStrDevicesList, idx);
 
