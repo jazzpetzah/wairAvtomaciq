@@ -97,6 +97,7 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I wait until <Name2> exists in backend search results
+    And I open search by clicking the people button
     And I see Search is opened
     And I type <Login2> in search field of People Picker
     Then I see user <Name2> found in People Picker
