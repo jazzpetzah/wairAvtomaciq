@@ -92,6 +92,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public void tapCloseUserProfileButton() throws Exception {
         getElement(nameExitOtherUserPersonalInfoPageButton, "Close profile button is not visible").click();
+        Thread.sleep(1000);
     }
 
     public void addContactToChat() throws Exception {
