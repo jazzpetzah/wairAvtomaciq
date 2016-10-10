@@ -137,7 +137,7 @@ Feature: Autoconnect
       | Name      | NumberOfUsers | NumberOfChunks |
       | user1Name | 3000          | 3              |
 
-  @C79 @addressbookStart @staging
+  @C79 @addressbookStart @regression
   Scenario Outline: Verify name from the address book is shown as a subtitle
     Given There are 2 users where <Name> is me
     Given I minimize Wire
