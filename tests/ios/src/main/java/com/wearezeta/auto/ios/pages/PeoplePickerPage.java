@@ -160,6 +160,8 @@ public class PeoplePickerPage extends IOSPage {
     public void pressInstantConnectButton(String forName) throws Exception {
         final By locator = By.xpath(xpathStrInstantConnectButtonByUserName.apply(forName));
         tapElementWithRetryIfStillDisplayed(locator);
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     public void tapNumberOfTopConnectionsButNotUser(int numberToTap, String contact) throws Exception {

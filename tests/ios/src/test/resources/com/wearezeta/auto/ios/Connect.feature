@@ -221,8 +221,6 @@ Feature: Connect
     Given I tap on Search input on People picker page
     Given I input in People picker search field user email <ContactEmail>
     When I tap the instant connect button next to <UnconnectedUser>
-    And I tap X button in People Picker input field
-    And I tap on contact name <UnconnectedUser>
     Then I see Pending Connect to <UnconnectedUser> message in the conversation view
 
     Examples:
