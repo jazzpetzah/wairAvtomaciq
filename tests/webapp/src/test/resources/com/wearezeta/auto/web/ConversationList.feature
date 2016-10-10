@@ -70,19 +70,19 @@ Feature: Conversation List
 
   @C1721 @regression
   Scenario Outline: Verify Ping icon in the conversation list
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
-    When I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    And I open preferences by clicking the gear button
-    When User <Contact> pinged in the conversation with <Name>
-    And I see ping icon in conversation with <Contact>
-    Then I verify ping icon in conversation with <Contact> has <ColorName> color
+    Given I open conversation with <Contact2>
+    When User <Contact1> pinged in the conversation with <Name>
+    And I see ping icon in conversation with <Contact1>
+    Then I verify ping icon in conversation with <Contact1> has <ColorName> color
 
-    Examples: 
-      | Login      | Password      | Name      | ColorName  | Contact   |
-      | user1Email | user1Password | user1Name | StrongBlue | user2Name |
+    Examples:
+      | Login      | Password      | Name      | ColorName  | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | StrongBlue | user2Name | user3Name |
 
   @C1796 @regression
   Scenario Outline: Verify you mute the conversation when you press ⌥⇧⌘S (Mac) or alt + ctrl + S (Win)

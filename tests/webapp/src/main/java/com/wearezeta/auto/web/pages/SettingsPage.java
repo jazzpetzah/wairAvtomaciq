@@ -28,9 +28,6 @@ public class SettingsPage extends WebPage {
     @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssSoundAlertsLevel)
     private WebElement soundAlertsLevel;
 
-    @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssCurrentDevice)
-    private WebElement currentDevice;
-
     @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssDeviceLabels)
     private List<WebElement> deviceLabels;
 
@@ -156,10 +153,6 @@ public class SettingsPage extends WebPage {
                 .apply(device);
         DriverUtils.waitUntilElementClickable(getDriver(), getDriver().findElement(By.xpath(locator)));
         getDriver().findElement(By.xpath(locator)).click();
-    }
-
-    public String getCurrentDeviceId() {
-        return currentDevice.getAttribute("data-uie-uid");
     }
 
     public void clickDeleteAccountButton() throws Exception {

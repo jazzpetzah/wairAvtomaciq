@@ -40,7 +40,7 @@ Feature: Sign In
     And I see text message <Message2>
     And I see sent picture <ImageName1> in the conversation view
     When I open preferences by clicking the gear button
-    And I select Settings menu item on self profile page
+    And I open devices in preferences
     Then I verify that the device id of the current device is the same
     And I see 0 devices in the devices section
 
@@ -60,9 +60,9 @@ Feature: Sign In
     When I click confirm on history info page
     Then I am signed in properly
     When I open preferences by clicking the gear button
-    And I select Settings menu item on self profile page
+    And I open devices in preferences
     And I remember the device id of the current device
-    And I click close settings page button
+    And I close preferences
     And I wait for 2 seconds
     And I open preferences by clicking the gear button
     And I click logout in account preferences
@@ -74,7 +74,7 @@ Feature: Sign In
     And I click confirm on history info page
     Then I am signed in properly
     When I open preferences by clicking the gear button
-    And I select Settings menu item on self profile page
+    And I open devices in preferences
     Then I verify that the device id of the current device is not the same
     And I see 0 devices in the devices section
 
@@ -125,6 +125,7 @@ Feature: Sign In
     And I see the history info page
     And I click confirm on history info page
     Then I am signed in properly
+    And I open preferences by clicking the gear button
     And I see username <Name> in account preferences
     And I see user phone number <PhoneNumber> in account preferences
 
@@ -143,6 +144,7 @@ Feature: Sign In
     And I enter password <Password> on phone login page
     And I press Sign In button on phone login page
     Then I am signed in properly
+    And I open preferences by clicking the gear button
     And I see username <Name> in account preferences
     And I see user phone number <PhoneNumber> in account preferences
 
@@ -159,6 +161,7 @@ Feature: Sign In
     And I check option to remember me
     And I press Sign In button
     Then I am signed in properly
+    And I open preferences by clicking the gear button
     And I see username <Name> in account preferences
     And I see user phone number <PhoneNumber> in account preferences
 
