@@ -231,7 +231,7 @@ Feature: Settings
 
     Examples:
       | Name      | ThemeItemName |
-      | user1Name | Dark theme    |
+      | user1Name | Dark Theme    |
 
   @C3168 @real @real_rc
   Scenario Outline: Verify changing profile picture using camera
