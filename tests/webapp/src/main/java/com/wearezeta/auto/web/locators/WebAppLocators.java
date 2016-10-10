@@ -276,7 +276,7 @@ public final class WebAppLocators {
         
         public static final String cssSelfUserName = "[data-uie-name='status-name']";
 
-        public static final String cssSelfUserNameInput = "[data-uie-name='enter-name']";
+        public static final String cssSelfUserNameInput = "textarea[data-uie-name='enter-name']";
 
         public static final String cssNameSelfUserMail = "[data-uie-name='enter-email']";
 

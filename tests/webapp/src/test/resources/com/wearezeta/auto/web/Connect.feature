@@ -134,7 +134,7 @@ Feature: Connect
     And User <Name2> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I see connection request from one user
     And I open the list of incoming connection requests
     And I accept connection request from user <Name>
@@ -146,7 +146,7 @@ Feature: Connect
     And User <Name> is me
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     Then I see Contact list with name <Name2>
     And I open conversation with <Name2>
     And I see connected message for <Name2> in conversation
@@ -177,7 +177,7 @@ Feature: Connect
     And User <Name2> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I see connection request from one user
     And I open the list of incoming connection requests
     And I ignore connection request from user <Name>
@@ -189,7 +189,7 @@ Feature: Connect
     And User <Name> is me
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     Then I see Contact list with name <Name2>
 
     Examples: 
@@ -203,7 +203,6 @@ Feature: Connect
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And I click People button in one to one conversation
     Then I see Single User Profile popover
@@ -226,7 +225,6 @@ Feature: Connect
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     And I click People button in group conversation
     And I see Group Participants popover
@@ -257,7 +255,6 @@ Feature: Connect
     Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    And I see my avatar on top of Contact list
     When I open conversation with <Contact1>
     And I click People button in one to one conversation
     Then I see Single User Profile popover
@@ -309,7 +306,7 @@ Feature: Connect
     Given I click logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <User1> and password <User1Password>
-    Then I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <User2>
     And Contact <User2> sends message <Msg1> to user <User1>
     Then I see text message <Msg1>
@@ -324,7 +321,7 @@ Feature: Connect
     And I click logout button on clear data dialog
     And User <User2> is me
     And I Sign in using login <User2Email> and password <User2Password>
-    Then I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <User1>
     Then I see text message <Msg2>
     When I open preferences by clicking the gear button
@@ -380,7 +377,6 @@ Feature: Connect
     Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
     Given I am signed in properly
-    Given I see my avatar on top of Contact list
     When I open search by clicking the people button
     Then I see user <Contact1> found in People Picker
     When I make a connection request for user <Contact1> directly from People Picker

@@ -97,7 +97,7 @@ Feature: Localytics
     Given There are 2 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I wait until <ContactEmail> exists in backend search results
     When I open search by clicking the people button
     And I type <ContactEmail> in search field of People Picker
@@ -119,7 +119,7 @@ Feature: Localytics
     Given I sent connection request to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I see Contact list with name <Contact>
     And I wait for 65 seconds
 
@@ -134,7 +134,7 @@ Feature: Localytics
     Given <Contact> sent connection request to Me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I see connection request from one user
     And I wait for 65 seconds
 
@@ -149,7 +149,7 @@ Feature: Localytics
     Given <Contact> sent connection request to Me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I see connection request from one user
     And I open the list of incoming connection requests
     And I accept connection request from user <Contact>
@@ -167,7 +167,7 @@ Feature: Localytics
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     When I click ping button  
     Then I see ping message <PING>
@@ -184,7 +184,7 @@ Feature: Localytics
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I wait for 65 seconds
 
     Examples: 
@@ -198,7 +198,7 @@ Feature: Localytics
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     When I write random message
     And I send message
@@ -230,7 +230,7 @@ Feature: Localytics
     Given Myself has group chat <ChatName2> with <Contact2>,<Contact3>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I wait for 65 seconds
 
     Examples: 
@@ -244,7 +244,7 @@ Feature: Localytics
     Given <Contact> is connected to Me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When <Contact> calls me using <CallBackend>
     Then I see the calling bar
     And I silence the incoming call
@@ -263,7 +263,7 @@ Feature: Localytics
     Given <Contact> is connected to Me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When <Contact> calls me using <CallBackend>
     Then I see the calling bar
     And I accept the incoming call
@@ -280,7 +280,7 @@ Feature: Localytics
     Given <Contact> is connected to Me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I call
     Then I see the calling bar
@@ -331,7 +331,7 @@ Feature: Localytics
     Given <Contact> accepts next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I call
     When <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds

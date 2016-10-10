@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @C1728 @regression
+  @C1728 @regression @torun
   Scenario Outline: I can change my name
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

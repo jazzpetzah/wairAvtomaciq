@@ -101,8 +101,9 @@ public class AccountPage extends WebPage {
         return userPhoneNumber.getText();
     }
 
-    public void setUserName(String name) {
+    public void setUserName(String name) throws InterruptedException {
         userName.click();
+        Thread.sleep(1000);
         userNameInput.clear();
         userNameInput.sendKeys(name + "\n");
     }

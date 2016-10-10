@@ -41,22 +41,6 @@ public class ContactListPageSteps {
         this.context = context;
     }
 
-    /**
-     * Checks that contact list is loaded and waits for profile avatar to be
-     * shown
-     *
-     * @throws AssertionError if contact list is not loaded or avatar does not appear at
-     *                        the top of Contact List
-     * @step. ^I see my avatar on top of Contact list$
-     */
-    @Given("^I see my avatar on top of Contact list$")
-    public void ISeeMyNameOnTopOfContactList() throws Exception {
-        Assert.assertTrue("No contact list loaded.", context.getPagesCollection()
-                .getPage(ContactListPage.class).waitForContactListVisible());
-        context.getPagesCollection().getPage(ContactListPage.class)
-                .waitForSelfProfileButton();
-    }
-
     @Given("^I verify a badge is shown on self profile button$")
     public void ISeeBadgeOnSelfProfileButton() throws Exception {
         Assert.assertTrue("No badge visible.", context.getPagesCollection()
