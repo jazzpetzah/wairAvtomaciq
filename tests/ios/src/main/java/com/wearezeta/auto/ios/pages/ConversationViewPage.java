@@ -101,8 +101,6 @@ public class ConversationViewPage extends IOSPage {
     public static final Function<String, String> xpathStrConnectingToUserLabelByName = name -> String.format(
             "//XCUIElementTypeStaticText[contains(@name, 'CONNECTING TO %s.')]", name.toUpperCase());
 
-    private static final By nameShieldIconNextToInput = MobileBy.AccessibilityId("verifiedConversationIndicator");
-
     public static final String MEDIA_STATE_PLAYING = "playing";
 
     public static final String MEDIA_STATE_PAUSED = "paused";
@@ -118,20 +116,24 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbNameShareLocationButton = FBBy.AccessibilityId("locationButton");
     private static final By fbNameGifButton = FBBy.AccessibilityId("gifButton");
 
-    private static final String xpathStrConversationViewTopBar =
-            "//XCUIElementTypeNavigationBar[ ./XCUIElementTypeButton[@name='ConversationBackButton' or @name='Back'] ]";
+    private static final String xpathStrConversationViewTopBar = "//XCUIElementTypeNavigationBar[@name='Name']";
     private static final By xpathConversationViewTopBar = By.xpath(xpathStrConversationViewTopBar);
     private static Function<String, String> xpathStrToolbarByConversationName = name ->
-            String.format("%s//XCUIElementTypeButton[starts-with(@name, '%s')]",
+            String.format("%s/*[@name='Name' and starts-with(@value, '%s')]",
                     xpathStrConversationViewTopBar, name.toUpperCase());
     private static Function<String, String> xpathStrToolbarByExpr = expr ->
-            String.format("%s//XCUIElementTypeButton[%s]", xpathStrConversationViewTopBar, expr);
+            String.format("%s/*[@name='Name' and %s]", xpathStrConversationViewTopBar, expr);
+
+    // shield icon is not accessible, since it's now a part of text, so we check the actual value
+    private static final By xpathVerifiedConversation = By.xpath(
+            String.format("%s/*[@name='Name' and contains(@value, 'verified fingerprints')]",
+                    xpathStrConversationViewTopBar));
 
     private static final By fbNameEllipsisButton = FBBy.AccessibilityId("showOtherRowButton");
     private static final By xpathAudioCallButton = MobileBy.AccessibilityId("audioCallBarButton");
     private static final By xpathVideoCallButton = MobileBy.AccessibilityId("videoCallBarButton");
     private static final By xpathConversationDetailsButton =
-            By.xpath(xpathStrConversationViewTopBar + "/*/XCUIElementTypeButton[boolean(string(@label))]");
+            By.xpath(xpathStrConversationViewTopBar + "/*[@name='Name']");
 
     private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("Too many people to call");
 
@@ -395,7 +397,7 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isUpperToolbarContainNames(List<String> expectedNames) throws Exception {
         final String xpathExpr = String.join(" and ", expectedNames.stream()
-                .map(x -> String.format("contains(@name, '%s')", x.toUpperCase()))
+                .map(x -> String.format("contains(@value, '%s')", x.toUpperCase()))
                 .collect(Collectors.toList()));
         final By locator = By.xpath(xpathStrToolbarByExpr.apply(xpathExpr));
         return isElementDisplayed(locator);
@@ -474,15 +476,11 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isShieldIconVisible() throws Exception {
-        // FIXME: Make shield icon accessible
-        return false;
-        // return isElementDisplayed(nameShieldIconNextToInput);
+        return isElementDisplayed(xpathVerifiedConversation);
     }
 
     public boolean isShieldIconInvisible() throws Exception {
-        // FIXME: Make shield icon accessible
-        return false;
-        // return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameShieldIconNextToInput);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathVerifiedConversation);
     }
 
     public void resendLastMessageInDialogToUser() throws Exception {
