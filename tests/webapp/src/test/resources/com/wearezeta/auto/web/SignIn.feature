@@ -62,7 +62,7 @@ Feature: Sign In
     When I open preferences by clicking the gear button
     And I open devices in preferences
     And I remember the device id of the current device
-    And I click close settings page button
+    And I close preferences
     And I wait for 2 seconds
     And I open preferences by clicking the gear button
     And I click logout in account preferences
