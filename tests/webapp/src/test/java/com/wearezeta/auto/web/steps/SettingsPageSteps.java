@@ -82,16 +82,6 @@ public class SettingsPageSteps {
 	}
 
 	/**
-	 * Click close button on Settings page
-	 * 
-	 * @step. I click close settings page button
-	 */
-	@When("^I click close settings page button$")
-	public void IClickCloseSettingsPageButton() throws Exception {
-		context.getPagesCollection().getPage(SettingsPage.class).clickCloseButton();
-	}
-
-	/**
 	 * Remember the device id of the current device
 	 * 
 	 * @step. I remember the device id of the current device
