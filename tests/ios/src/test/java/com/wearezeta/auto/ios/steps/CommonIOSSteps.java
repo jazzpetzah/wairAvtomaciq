@@ -15,7 +15,6 @@ import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
-import com.wearezeta.auto.common.process.UnixProcessHelpers;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
@@ -491,7 +490,7 @@ public class CommonIOSSteps {
      */
     @When("^I close the app for (\\d+) seconds?$")
     public void ICloseApp(int seconds) throws Exception {
-        pagesCollection.getCommonPage().minimizeApplication(seconds);
+        pagesCollection.getCommonPage().pressHomeButton(seconds);
     }
 
     /**
@@ -1414,49 +1413,6 @@ public class CommonIOSSteps {
         commonSteps.UserXHasContactsInAddressBook(asUser, contacts);
     }
 
-    private final Map<String, Object> savedCaps = new HashMap<>();
-
-    /**
-     * Quits Wire on the simulator
-     *
-     * @throws Exception
-     * @step. ^I quit Wire$
-     */
-    @Given("^I quit Wire$")
-    public void IQuitWire() throws Exception {
-        if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-            final RemoteWebDriver currentDriver = PlatformDrivers.getInstance().getDriver(CURRENT_PLATFORM).get();
-            final Map<String, ?> currentCapabilities = currentDriver.getCapabilities().asMap();
-            for (Map.Entry<String, ?> capabilityItem : currentCapabilities.entrySet()) {
-                savedCaps.put(capabilityItem.getKey(), capabilityItem.getValue());
-            }
-            try {
-                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            UnixProcessHelpers.killProcessesGracefully("Wire");
-        }
-    }
-
-    /**
-     * Relaunches Wire on the simulator
-     *
-     * @throws Exception
-     * @step. ^I relaunch Wire$
-     */
-    @Given("^I relaunch Wire$")
-    public void IRelaunchWire() throws Exception {
-        if (savedCaps.isEmpty()) {
-            throw new IllegalStateException("Quit Wire App first!");
-        }
-        savedCaps.put("noReset", true);
-        savedCaps.put("fullReset", false);
-        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(getAppPath(), Optional.of(savedCaps), 1);
-        updateDriver(lazyDriver);
-        savedCaps.clear();
-    }
-
     private Long recentMsgId = null;
 
     private WireDatabase getWireDb() throws Exception {
@@ -1530,24 +1486,23 @@ public class CommonIOSSteps {
     }
 
     /**
-     * Minimizes the App
+     * Minimizes/restores the App
      *
+     * @param action either restore or minimize
      * @throws Exception
-     * @step. ^I minimize Wire$
+     * @step. ^I (minimize|restore) Wire$
      */
-    @Given("^I minimize Wire$")
-    public void IMinimizeWire() throws Exception {
-        pagesCollection.getCommonPage().minimizeApplication();
-    }
-
-    /**
-     * Restores the App
-     *
-     * @throws Exception
-     * @step. ^I restore Wire$
-     */
-    @Given("^I restore Wire$")
-    public void IRestoreWire() throws Exception {
-        pagesCollection.getCommonPage().restoreApplication();
+    @Given("^I (minimize|restore) Wire$")
+    public void IMinimizeWire(String action) throws Exception {
+        switch (action.toLowerCase()) {
+            case "minimize":
+                pagesCollection.getCommonPage().pressHomeButton();
+                break;
+            case "restore":
+                pagesCollection.getCommonPage().restoreWire();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown action keyword: '%s'", action));
+        }
     }
 }

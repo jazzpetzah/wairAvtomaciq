@@ -222,7 +222,7 @@ public abstract class IOSPage extends BasePage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public void minimizeApplication(int timeSeconds) throws Exception {
+    public void pressHomeButton(int timeSeconds) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             IOSSimulatorHelper.goHome();
@@ -234,7 +234,7 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
-    public void minimizeApplication() throws Exception {
+    public void pressHomeButton() throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             IOSSimulatorHelper.goHome();
@@ -244,7 +244,7 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
-    public void restoreApplication() throws Exception {
+    public void restoreWire() throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             IOSSimulatorHelper.launchApp(getDriver().getBundleID());
