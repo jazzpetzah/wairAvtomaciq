@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @C1728 @regression @torun
+  @C1728 @regression
   Scenario Outline: I can change my name
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -11,7 +11,6 @@ Feature: Self Profile
     And I see username <Name> in account preferences
     And I change username to <NewName>
     Then I see username <NewName> in account preferences
-    And I see my avatar on top of Contact list
 
     Examples: 
       | Login      | Password      | Name      | NewName     | Contact   |
