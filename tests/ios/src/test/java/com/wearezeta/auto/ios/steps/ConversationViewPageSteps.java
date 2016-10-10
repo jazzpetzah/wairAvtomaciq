@@ -6,7 +6,6 @@ import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
-import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import cucumber.api.java.en.And;
 import org.apache.commons.lang3.text.WordUtils;
@@ -27,10 +26,6 @@ public class ConversationViewPageSteps {
 
     private ConversationViewPage getConversationViewPage() throws Exception {
         return pagesCollection.getPage(ConversationViewPage.class);
-    }
-
-    private OtherUserPersonalInfoPage getOtherUserPersonalInfoPage() throws Exception {
-        return pagesCollection.getPage(OtherUserPersonalInfoPage.class);
     }
 
     @When("^I see conversation view page$")
@@ -84,14 +79,21 @@ public class ConversationViewPageSteps {
      * Verify whether the particular system message is visible in the conversation view
      *
      * @param expectedMsg the expected system message. may contyain user name aliases
+     * @param shouldNotSee equals to null if the message should be visible
      * @throws Exception
-     * @step. ^I see "(.*)" system message in the conversation view$
+     * @step. ^I (do not )?see "(.*)" system message in the conversation view$
      */
-    @Then("^I see \"(.*)\" system message in the conversation view$")
-    public void ISeeSystemMessage(String expectedMsg) throws Exception {
+    @Then("^I (do not )?see \"(.*)\" system message in the conversation view$")
+    public void ISeeSystemMessage(String shouldNotSee, String expectedMsg) throws Exception {
         expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
-        Assert.assertTrue(String.format("The expected system message '%s' is not visible in the conversation",
-                expectedMsg), getConversationViewPage().isSystemMessageVisible(expectedMsg));
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("The expected system message '%s' is not visible in the conversation",
+                    expectedMsg), getConversationViewPage().isSystemMessageVisible(expectedMsg));
+        } else {
+            Assert.assertTrue(String.format(
+                    "The expected system message '%s' should not be visible in the conversation",
+                    expectedMsg), getConversationViewPage().isSystemMessageInvisible(expectedMsg));
+        }
     }
 
     @Then("^I see User (.*) Pinged message in the conversation$")
@@ -665,8 +667,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap on THIS DEVICE link$")
     public void ITapThisDeviceLink() throws Exception {
-        //this is the fix because it can not locate system message label
-        getOtherUserPersonalInfoPage().openDeviceDetailsPage(1);
+        getConversationViewPage().tapThisDeviceLink();
     }
 
     /**

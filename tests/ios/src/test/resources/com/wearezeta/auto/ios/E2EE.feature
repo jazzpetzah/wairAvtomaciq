@@ -130,13 +130,10 @@ Feature: E2EE
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And User <Contact1> sends 1 encrypted message using device <DeviceName2> to user Myself
     Then I do not see shield icon in the conversation view
-    # TODO: Check the device label in the system message
-    #BUG system message labels can not be located on appium
-    #Then I see the conversation view contains message <ExpectedMsg>
-    Then I see 5 conversation entries
+    And I see "<Contact1>  <StartedUsingMsg>" system message in the conversation view
 
     Examples:
-      | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                |
+      | Name      | Contact1  | DeviceName2 | DeviceLabel2 | StartedUsingMsg            |
       | user1Name | user2Name | Device2     | Label2       | STARTED USING A NEW DEVICE |
 
   @C3293 @rc @regression @fastLogin
@@ -223,18 +220,15 @@ Feature: E2EE
     Given Myself is connected to <Contact1>
     Given I sign in using my email
     Given I see conversations list
-    And I tap on contact name <Contact1>
-    #BUG system msg e2ee labels not be located by appium
-    #And I see the conversation view contains message <ExpectedMsg>
-    And I see 1 conversation entry
-    #BUG link can not be located
-    #    And I tap on THIS DEVICE link
-    #    And I open details page of device number 1
-    #    Then I see fingerprint is not empty
+    Given I tap on contact name <Contact1>
+    When I see 1 conversation entry
+    And I tap on THIS DEVICE link
+    And I open details page of device number 1
+    Then I see fingerprint is not empty
 
     Examples:
-      | Name      | Contact1  | ExpectedMsg               |
-      | user1Name | user2Name | STARTED USING THIS DEVICE |
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @C14317 @rc @regression @fastLogin
   Scenario Outline: First time when 1:1 conversation is degraded - I can ignore alert screen and send messages with resend button
@@ -278,10 +272,8 @@ Feature: E2EE
     And I close user profile page
     When User Myself adds a new device <DeviceName2> with label <DeviceLabel2>
     Then I do not see shield icon in the conversation view
-    # FIXME: Make it possible in the app to detect labels text with Appium
-    # Then I see the conversation view contains message <ExpectedMsg>
-    #At least checking that all system messages are there, check all conv entries
-    Then I see 4 conversation entries
+    And I see "<ExpectedMsg>" system message in the conversation view
+
 
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                    |
@@ -306,9 +298,7 @@ Feature: E2EE
     And I navigate back from Device Details page
     And I close user profile page
     Then I see shield icon in the conversation view
-    # FIXME: Make it possible in the app to detect labels text with Appium
-    # And I see last message in dialog is expected message <VerificationMsg>
-    Then I see 2 conversation entries
+    And I see "<VerificationMsg>" system message in the conversation view
 
     Examples:
       | Name      | Contact1  | DeviceName1 | DeviceName2 | VerificationMsg               |
@@ -436,9 +426,8 @@ Feature: E2EE
     And I navigate back from Device Details page
     And I close user profile page
     And I do not see shield icon in the conversation view
-    # FIXME: Make it possible in the app to detect labels text with Appium
-    # Then I do not see the conversation view contains message <ExpectedMessage>
-    Then I see 1 conversation entry
+    Then I do not see "<ExpectedMessage>" system message in the conversation view
+
 
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceName1 | ExpectedMessage               |
@@ -482,9 +471,7 @@ Feature: E2EE
     And I navigate back from Device Details page
     And I close user profile page
     Then I see shield icon in the conversation view
-    # FIXME: Make it possible in the app to detect labels text with Appium
-    # Then I see last message in dialog is expected message <VerificationMsg>
-    Then I see 2 conversation entries
+    And I see "<VerificationMsg>" system message in the conversation view
     When I open conversation details
     And I switch to Devices tab
     And I open details page of device number 1
@@ -492,9 +479,7 @@ Feature: E2EE
     And I navigate back from Device Details page
     And I close user profile page
     Then I do not see shield icon in the conversation view
-    # FIXME: Make it possible in the app to detect labels text with Appium
-    # Then I see last message in dialog contains expected message <UnverificationMsg>
-    Then I see 3 conversation entries
+    And I see "<UnverificationMsg>" system message in the conversation view
 
     Examples:
       | Name      | Contact1  | VerificationMsg               | UnverificationMsg     |

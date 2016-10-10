@@ -67,7 +67,7 @@ public class ConversationViewPage extends IOSPage {
             String.format("%s[@value='%s']", xpathStrAllTextMessages, text);
 
     private static final Function<String, String> xpathStrSystemMessageByText = text ->
-            String.format("//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@value='%s'] ]",
+            String.format("//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[starts-with(@value, '%s')] ]",
                     text.toUpperCase());
 
     private static final String xpathStrImageCells = xpathStrAllEntries + "[@name='ImageCell']";
@@ -234,6 +234,8 @@ public class ConversationViewPage extends IOSPage {
 
     private static final Function<Integer, String> xpathStrEmojiKeyByIndex = idx -> String.format(
             "(//XCUIElementTypeCollectionView)[last()]/XCUIElementTypeCell[%s]", idx);
+
+    private static final By fbNameYouStartedUsing = FBBy.AccessibilityId("YOU STARTED USING THIS DEVICE");
 
     protected static final String[] UPLOAD_MENU_ITEMS = new String[]{
             "Record a video", "Videos", "20 MB file", "Big file",
@@ -517,6 +519,11 @@ public class ConversationViewPage extends IOSPage {
     public boolean isSystemMessageVisible(String expectedMsg) throws Exception {
         final By locator = By.xpath(xpathStrSystemMessageByText.apply(expectedMsg));
         return isElementDisplayed(locator);
+    }
+
+    public boolean isSystemMessageInvisible(String expectedMsg) throws Exception {
+        final By locator = By.xpath(xpathStrSystemMessageByText.apply(expectedMsg));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     public boolean isUpperToolbarVisible() throws Exception {
@@ -1059,5 +1066,9 @@ public class ConversationViewPage extends IOSPage {
     public void tapEmojiKeyboardKey(int keyIndex) throws Exception {
         final By locator = By.xpath(xpathStrEmojiKeyByIndex.apply(keyIndex));
         getElement(locator).click();
+    }
+
+    public void tapThisDeviceLink() throws Exception {
+        this.tapByPercentOfElementSize((FBElement) getElement(fbNameYouStartedUsing), 90, 50);
     }
 }
