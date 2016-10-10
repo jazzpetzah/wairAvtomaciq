@@ -281,6 +281,21 @@ public final class WebAppLocators {
         public static final String cssNameSelfUserMail = "[data-uie-name='enter-email']";
 
         public static final String cssNameSelfUserPhoneNumber = "[data-uie-name='enter-phone']";
+        
+        private static final String cssAccentColorPicker = "[data-uie-name='enter-accent-color']";
+        
+        public static final String cssAccentColorPickerLabels = cssAccentColorPicker + " label";
+        
+        public static final String cssAccentColorPickerInputs = cssAccentColorPicker + " input";
+        
+        public static final Function<Integer, String> cssAccentColorDivById = (
+                id) -> String.format("%s.accent-color-%s", cssAccentColorPickerLabels, id);
+        
+        public static final String cssCurrentAccentColorCircleDiv = cssAccentColorPicker + ".selected .circle";
+        
+        public static final String cssBackgroundAvatarAccentColor = ".background-accent.bg-theme";
+        
+        public static final String cssSelectPicture = "[data-uie-name='do-select-picture']";
     }
 
     public static final class SettingsPage {
@@ -320,23 +335,8 @@ public final class WebAppLocators {
                 name) -> String.format("%s//li[text()='%s']",
                 xpathGearMenuRoot, name);
 
-        private static final String xpathAccentColorPicker = "//*[@data-uie-name='enter-accent-color']";
-
-        public static final String xpathAccentColorPickerChildren = xpathAccentColorPicker
-                + "/div";
-
-        public static final Function<Integer, String> xpathAccentColorDivById = (
-                id) -> String.format("%s[%s]", xpathAccentColorPickerChildren,
-                id);
-
-        public static final String xpathCurrentAccentColorCircleDiv = xpathAccentColorPicker
-                + "/div[contains(@class, 'selected')]/div[contains(@class,'circle')]";
-
         public static final String xpathCameraButton = "//*[@data-uie-name='go-profile-picture-selection']";
 
-        public static final String cssSelectPicture = "[data-uie-name='do-select-picture']";
-
-        public static final String xpathBackgroundAvatarAccentColor = "//div[contains(@class, 'background-accent bg-theme')]";
     }
 
     public static final class ConversationPage {
@@ -768,21 +768,6 @@ public final class WebAppLocators {
         public static final String xpathVerifyLaterButton = "//div[@id='posted-later-link']";
 
         public static final String cssTermsOfUseCheckbox = ".checkbox-terms-of-use span";
-    }
-
-    public static final class SelfPictureUploadPage {
-
-        public static final String xpathRootDiv = "//div[@id='self-upload']";
-
-        public static final String cssKeepPictureButton = "[data-uie-name='do-keep-picture']";
-
-        public static final String cssChooseYourOwnInput = "[data-uie-name=do-select-picture]";
-
-        public static final String xpathNextCarouselImageBtn = xpathRootDiv
-                + "//div[contains(@class, 'carousel-arrows')]//span[contains(@class, 'carousel-arrow-right')]";
-
-        public static final String xpathPreviousCarouselImageBtn = xpathRootDiv
-                + "//div[contains(@class, 'carousel-arrows')]//span[contains(@class, 'carousel-arrow-left')]";
     }
 
     public static final class ContactsUploadPage {

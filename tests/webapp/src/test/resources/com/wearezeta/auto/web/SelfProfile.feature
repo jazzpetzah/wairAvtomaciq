@@ -35,13 +35,16 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    When I set my accent color to <ColorName>
+    Given I am signed in properly
     And I open preferences by clicking the gear button
+    When I set my accent color to <ColorName>
     And I click logout in account preferences
     And I see the clear data dialog
     And I click logout button on clear data dialog
-    And I see Sign In page
+    When I see Sign In page
     And I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open preferences by clicking the gear button
     Then I verify my accent color in color picker is set to <ColorName> color
 
     Examples: 
@@ -57,7 +60,7 @@ Feature: Self Profile
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I open preferences by clicking the gear button
-    And I drop picture <PictureName> to self profile
+    And I drop picture <PictureName> to account preferences
     Then I verify that current profile picture snapshot of Myself differs from the previous one
 
     Examples: 
@@ -72,7 +75,7 @@ Feature: Self Profile
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I open preferences by clicking the gear button
-    And I upload picture <PictureName> to self profile
+    And I upload picture <PictureName> to account preferences
     Then I verify that current profile picture snapshot of Myself differs from the previous one
 
     Examples: 

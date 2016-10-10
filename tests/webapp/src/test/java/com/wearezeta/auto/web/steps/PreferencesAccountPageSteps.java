@@ -1,15 +1,18 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.PreferencesAccountPage;
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class PreferencesAccountPageSteps {
 
@@ -47,7 +50,7 @@ public class PreferencesAccountPageSteps {
     public void ISeeUserNameOnSelfProfilePage(String name) throws Exception {
         name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         boolean nameCorrect = context.getPagesCollection().getPage(PreferencesAccountPage.class).checkNameInSelfProfile(name);
-        Assert.assertTrue(nameCorrect);
+        assertTrue(nameCorrect);
     }
 
     @And("^I see user phone number (.*) in account preferences$")
@@ -65,13 +68,42 @@ public class PreferencesAccountPageSteps {
 
         }
         String actualEmail = context.getPagesCollection().getPage(PreferencesAccountPage.class).getUserMail();
-        Assert.assertEquals(email, actualEmail);
+        assertEquals(email, actualEmail);
     }
-    
+
     @And("^I change username to (.*)")
     public void IChangeUserNameTo(String name) throws Exception {
         context.getPagesCollection().getPage(PreferencesAccountPage.class).setUserName(name);
         context.getUserManager().getSelfUserOrThrowError().setName(name);
+    }
+
+    @When("^I drop picture (.*) to account preferences$")
+    public void IDropPicture(String pictureName) throws Exception {
+        context.getPagesCollection().getPage(PreferencesAccountPage.class).dropPicture(pictureName);
+    }
+
+    @When("^I upload picture (.*) to account preferences$")
+    public void IUploadPicture(String pictureName) throws Exception {
+        context.getPagesCollection().getPage(PreferencesAccountPage.class).uploadPicture(pictureName);
+    }
+
+    @Then("^I set my accent color to (\\w+)$")
+    public void ISetMyAccentColorTo(String colorName) throws Exception {
+        context.getPagesCollection().getPage(PreferencesAccountPage.class).selectAccentColor(colorName);
+    }
+
+    @Then("^I verify my accent color in color picker is set to (\\w+) color$")
+    public void IVerifyMyAccentColor(String colorName) throws Exception {
+        final int expectedColorId = AccentColor.getByName(colorName).getId();
+        final int actualColorId = context.getPagesCollection().getPage(PreferencesAccountPage.class).getCurrentAccentColorId();
+        assertTrue("my actual accent color is not set", actualColorId == expectedColorId);
+    }
+
+    @Then("^I verify my avatar background color is set to (\\w+) color$")
+    public void IVerifyMyAvatarColor(String colorName) throws Exception {
+        final AccentColor expectedColor = AccentColor.getByName(colorName);
+        final AccentColor avatarColor = context.getPagesCollection().getPage(PreferencesAccountPage.class).getCurrentAvatarAccentColor();
+        assertTrue("my avatar background accent color is not set", avatarColor == expectedColor);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.pages;
 
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import java.util.concurrent.Future;
 
@@ -8,7 +9,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.Browser;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
+import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+import java.io.File;
+import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -38,6 +44,12 @@ public class PreferencesAccountPage extends WebPage {
     @FindBy(css = WebAppLocators.PreferencesAccountPage.cssNameSelfUserPhoneNumber)
     private WebElement userPhoneNumber;
 
+    @FindBy(css = WebAppLocators.PreferencesAccountPage.cssSelectPicture)
+    private WebElement selectPictureInput;
+
+    @FindBy(css = WebAppLocators.PreferencesAccountPage.cssAccentColorPickerInputs)
+    private List<WebElement> colorsInColorPicker;
+
     public PreferencesAccountPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -61,7 +73,8 @@ public class PreferencesAccountPage extends WebPage {
     }
 
     public boolean checkNameInSelfProfile(String name) throws Exception {
-        DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(WebAppLocators.PreferencesAccountPage.cssSelfUserName));
+        DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(
+                WebAppLocators.PreferencesAccountPage.cssSelfUserName));
 
         WebDriverWait wait = new WebDriverWait(this.getDriver(), 10);
 
@@ -75,7 +88,8 @@ public class PreferencesAccountPage extends WebPage {
     }
 
     public String getUserName() throws Exception {
-        DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(WebAppLocators.PreferencesAccountPage.cssSelfUserName));
+        DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(
+                WebAppLocators.PreferencesAccountPage.cssSelfUserName));
         return userName.getText();
     }
 
@@ -93,5 +107,85 @@ public class PreferencesAccountPage extends WebPage {
         userNameInput.sendKeys(name + "\n");
     }
 
+    public void dropPicture(String pictureName) throws Exception {
+        final String srcPicturePath = WebCommonUtils.getFullPicturePath(pictureName);
+        assert new File(srcPicturePath).exists() : srcPicturePath + " file should exist on hub file system";
+
+        /*
+		 * The code below allows to upload the picture to the remote mode
+		 * without Selenium interaction This could be useful when we have better
+		 * solution for drag and drop
+         */
+        // final String dstPicturePathForScp = WebAppConstants.TMP_ROOT + "/"
+        // + pictureName;
+        // WebCommonUtils.putFileOnExecutionNode(this.getDriver().getNodeIp(),
+        // srcPicturePath, dstPicturePathForScp);
+        //
+        // String dstPicturePath = null;
+        // if (WebAppExecutionContext.isCurrentPlatfromWindows()) {
+        // dstPicturePath = WebAppConstants.WINDOWS_TMP_ROOT + "\\"
+        // + pictureName;§
+        // } else {
+        // dstPicturePath = dstPicturePathForScp;
+        // }
+        // http://stackoverflow.com/questions/5188240/using-selenium-to-imitate-dragging-a-file-onto-an-upload-element
+        final String inputId = "SelfImageUpload";
+        this.getDriver().executeScript(
+                inputId + " = window.$('<input id=\"" + inputId
+                + "\"/>').attr({type:'file'}).appendTo('body');");
+        // The file is expected to be uploaded automatically by Webdriver
+        getDriver().findElement(By.id(inputId)).sendKeys(srcPicturePath);
+        this.getDriver().executeScript(
+                "e = $.Event('drop'); e.originalEvent = {dataTransfer : { files : "
+                + inputId + ".get(0).files } }; $(\""
+                + WebAppLocators.ProfilePicturePage.cssDropZone
+                + "\").trigger(e);");
+    }
+
+    public void uploadPicture(String pictureName) throws Exception {
+        final String picturePath = WebCommonUtils.getFullPicturePath(pictureName);
+        if (WebAppExecutionContext.getBrowser() == Browser.Safari) {
+            WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver().getNodeIp());
+        } else {
+            selectPictureInput.sendKeys(picturePath);
+        }
+        if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
+            // manually trigger change event on input
+            this.getDriver().executeScript("evt = new Event('change');arguments[0].dispatchEvent(evt);", selectPictureInput);
+        }
+    }
+
+    public AccentColor getCurrentAvatarAccentColor() throws Exception {
+        final WebElement backgroundAvatarAccentColor = this.getDriver()
+                .findElementByCssSelector(WebAppLocators.PreferencesAccountPage.cssBackgroundAvatarAccentColor);
+        return AccentColor.getByRgba(backgroundAvatarAccentColor.getCssValue("background-color"));
+    }
+
+    public String getCurrentAccentColor() throws Exception {
+        final WebElement accentColorCircleDiv = this.getDriver()
+                .findElementByCssSelector(WebAppLocators.PreferencesAccountPage.cssCurrentAccentColorCircleDiv);
+        return accentColorCircleDiv.getCssValue("border-top-color");
+    }
+
+    public int getCurrentAccentColorId() {
+        int i = 1;
+        for (WebElement colorInput : colorsInColorPicker) {
+            final String checked = colorInput.getAttribute("checked");
+            if (checked != null && checked.toLowerCase().contains("true")) {
+                return i;
+            }
+            i++;
+        }
+        throw new RuntimeException("No accent color is selected in color picker");
+    }
+
+    public void selectAccentColor(String colorName) throws Exception {
+        final int id = AccentColor.getByName(colorName).getId();
+        final String cssAccentColorDiv = WebAppLocators.PreferencesAccountPage.cssAccentColorDivById.apply(id);
+        assert DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(cssAccentColorDiv));
+        final WebElement accentColorDiv = this.getDriver().findElementByCssSelector(cssAccentColorDiv);
+        assert DriverUtils.waitUntilElementClickable(this.getDriver(), accentColorDiv);
+        accentColorDiv.click();
+    }
 
 }
