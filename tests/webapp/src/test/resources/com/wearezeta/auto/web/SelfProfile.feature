@@ -21,6 +21,8 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    And I open preferences by clicking the gear button
     Then I see username <Name> in account preferences
     And I see user email <Email> in account preferences
     And I see user phone number <PhoneNumber> in account preferences
