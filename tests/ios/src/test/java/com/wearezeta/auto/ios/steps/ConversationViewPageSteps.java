@@ -177,8 +177,8 @@ public class ConversationViewPageSteps {
         } else if (expectedCount >= 1) {
             if (expectedMsg.isPresent()) {
                 Assert.assertTrue(
-                        String.format("There are less than '%s' messages in the conversation, but %d is expected",
-                                expectedMsg.get(), expectedCount),
+                        String.format("There are less than %d '%s' messages in the conversation, but %d is expected",
+                                expectedCount, expectedMsg.get(), expectedCount),
                         getConversationViewPage().waitUntilTextMessagesAreVisible(expectedMsg.get(), expectedCount));
             } else {
                 Assert.assertTrue(
