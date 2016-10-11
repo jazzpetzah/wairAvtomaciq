@@ -15,8 +15,8 @@ public class AndroidCommonCallingSteps {
 
     private static final Logger log = ZetaLogger.getLog(CommonUtils.class.getSimpleName());
 
-    private final int DEFAULT_RETRIES = 3;
-    private final int DEFAULT_RETRY_DELAY = 30;
+    private static final int DEFAULT_RETRIES = 3;
+    private static final int DEFAULT_RETRY_DELAY = 30;
 
     private final Random random = new Random();
 
@@ -43,8 +43,7 @@ public class AndroidCommonCallingSteps {
                 return;
             }
             retryNumber++;
-        }
-        while (retryNumber <= DEFAULT_RETRIES);
+        } while (retryNumber <= DEFAULT_RETRIES);
         throw new
             RuntimeException(
             String.format("Failed to call to conversation after '%d' retries", DEFAULT_RETRIES));
