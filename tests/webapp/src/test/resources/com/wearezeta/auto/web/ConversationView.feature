@@ -51,6 +51,73 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Event                        | Attributes                                                                    |
       | user1Email | user1Password | user1Name | user2Name | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"with_bot\":false} |
 
+  @C259599 @regression @WEBAPP-3247
+  Scenario Outline: Verify delivery receipt of message in 1on1 that was read by webapp
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login2> and password <Password2>
+    Given I am signed in properly
+    Given I see Welcome page
+    Given I confirm keeping picture on Welcome page
+    Given I see Contact list with name <Name>
+    Given I open self profile
+    Given I click gear button on self profile page
+    Given I select Log out menu item on self profile page
+    Given I see the clear data dialog
+    Given I click Logout button on clear data dialog
+    Given I see Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    Given I open conversation with <Contact>
+    When I write random message
+    And I send message
+    And I see random message in conversation
+    Then I do not see delivery status of last message is Delivered
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
+    And I see Sign In page
+    And I Sign in using login <Login2> and password <Password2>
+    And I am signed in properly
+    And I open conversation with <Name>
+    And I see random message in conversation
+    And I open self profile
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
+    And I see Sign In page
+    And I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact>
+    And I see random message in conversation
+    Then I see delivery status of last message is Delivered
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | Login2     | Password2     |
+      | user1Email | user1Password | user1Name | user2Name | user2Email | user2Password |
+
+  @C228502 @smoke
+  Scenario Outline: Verify delivery receipt of message in 1on1 that was read by mobile
+    Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    Given I open conversation with <Contact>
+    When I write random message
+    And I send message
+    And I see random message in conversation
+    Then I see delivery status of last message is Delivered
+
+    Examples:
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
   @C1701 @smoke
   Scenario Outline: Verify you can see image on the second end in a group conversation
     Given There are 3 users where <Name> is me
