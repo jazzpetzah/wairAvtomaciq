@@ -67,7 +67,7 @@ public class ConversationViewPage extends IOSPage {
             String.format("%s[@value='%s']", xpathStrAllTextMessages, text);
 
     private static final Function<String, String> xpathStrSystemMessageByText = text ->
-            String.format("//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[starts-with(@value, '%s')] ]",
+            String.format("//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[starts-with(@value, '%s')] ]",
                     text.toUpperCase());
 
     private static final String xpathStrImageCells = xpathStrAllEntries + "[@name='ImageCell']";
@@ -92,8 +92,8 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameTitle = MobileBy.AccessibilityId("playingMediaTitle");
 
     public static final Function<String, String> xpathStrMissedCallButtonByContact = name ->
-            String.format("//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s CALLED'] ]" +
-                    "/XCUIElementTypeButton[@name='ConversationMissedCallButton']", name.toUpperCase());
+            String.format("//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[@name='%s CALLED'] ]" +
+                    "//XCUIElementTypeButton[@name='ConversationMissedCallButton']", name.toUpperCase());
 
     public static final By xpathStrMissedCallButtonByYourself =
             By.xpath(xpathStrMissedCallButtonByContact.apply("you"));
@@ -235,7 +235,7 @@ public class ConversationViewPage extends IOSPage {
     private static final Function<Integer, String> xpathStrEmojiKeyByIndex = idx -> String.format(
             "(//XCUIElementTypeCollectionView)[last()]/XCUIElementTypeCell[%s]", idx);
 
-    private static final By fbNameYouStartedUsing = FBBy.AccessibilityId("YOU STARTED USING THIS DEVICE");
+    private static final By nameThisDeviceLink = MobileBy.AccessibilityId("THIS DEVICE");
 
     protected static final String[] UPLOAD_MENU_ITEMS = new String[]{
             "Record a video", "Videos", "20 MB file", "Big file",
@@ -1064,7 +1064,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapThisDeviceLink() throws Exception {
-        this.tapByPercentOfElementSize((FBElement) getElement(fbNameYouStartedUsing), 90, 50);
+        getElement(nameThisDeviceLink).click();
     }
 
     public boolean isMessageToolboxTextVisible(String expectedText) throws Exception {
