@@ -204,7 +204,7 @@ Feature: Like
       | Name      | Contact   | Message | Device  |
       | user1Name | user2Name | Yo      | Device1 |
 
-  @C226041 @C226042 @regression @rc @torun
+  @C226041 @C226042 @regression @rc
   Scenario Outline: I see likers count instead of names with first/second liker avatars, and could open likers list
     Given There are 5 users where <Name> is me
     Given <Contact1> is connected to Myself,<Contact2>,<Contact3>,<Contact4>
