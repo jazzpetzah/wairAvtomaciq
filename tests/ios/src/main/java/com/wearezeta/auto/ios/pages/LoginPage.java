@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.driver.DummyElement;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
@@ -105,6 +106,10 @@ public class LoginPage extends IOSPage {
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameMaybeLater, 3)) {
             maybeLaterBtn.click();
         }
+    }
+
+    public void dismissSettingsWarningIfVisible() throws Exception {
+        getElementIfDisplayed(nameMaybeLater).orElseGet(DummyElement::new).click();
     }
 
     public Boolean isContactsButtonVisible() throws Exception {

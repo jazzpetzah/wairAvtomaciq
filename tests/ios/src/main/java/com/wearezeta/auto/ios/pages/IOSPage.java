@@ -169,6 +169,14 @@ public abstract class IOSPage extends BasePage {
         Thread.sleep(1000);
     }
 
+    public void acceptAlertIfVisible() throws Exception {
+        try {
+            handleAlert(true, DriverUtils.getDefaultLookupTimeoutSeconds());
+        } catch (IllegalStateException e) {
+            // Ignore silently
+        }
+    }
+
     public void acceptAlert() throws Exception {
         handleAlert(true, DriverUtils.getDefaultLookupTimeoutSeconds());
     }
