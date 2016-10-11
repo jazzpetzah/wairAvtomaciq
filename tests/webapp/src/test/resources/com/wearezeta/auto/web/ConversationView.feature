@@ -399,6 +399,7 @@ Feature: Conversation View
     When I open preferences by clicking the gear button
     And Contact <Contact> sends 35 messages with prefix <UNREAD> via device Device1 to user <Name>
     And I wait for 5 seconds
+    And I close preferences
     Then I see unread dot in conversation <Contact>
     When I open conversation with <Contact>
     Then I do not see text message <READ>33
