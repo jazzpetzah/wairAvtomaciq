@@ -137,9 +137,6 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("Too many people to call");
 
-    private static final Function<String, String> xpathStrUserNameInUpperToolbar = text ->
-            String.format("%s//XCUIElementTypeButton[starts-with(@name, '%s')]", xpathStrConversationViewTopBar,
-                    text.toUpperCase());
 
     private static final String nameStrFileTransferTopLabel = "FileTransferTopLabel";
     private static final By nameFileTransferTopLabel = MobileBy.AccessibilityId(nameStrFileTransferTopLabel);
@@ -538,7 +535,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isUserNameInUpperToolbarVisible(String name) throws Exception {
-        final By locator = By.xpath(xpathStrUserNameInUpperToolbar.apply(name));
+        final By locator = By.xpath(xpathStrToolbarByConversationName.apply(name));
         return isElementDisplayed(locator);
     }
 
@@ -829,11 +826,6 @@ public class ConversationViewPage extends IOSPage {
         Thread.sleep(1000);
         String currentTime = getAudioMessageRecordTimeLabelValue();
         return !startTime.equals(currentTime);
-    }
-
-    public boolean isUserNameVisibleOnUpperToolbar(String contact) throws Exception {
-        final By locator = By.xpath(xpathStrToolbarByConversationName.apply(contact));
-        return isElementDisplayed(locator);
     }
 
     public boolean isRecordControlButtonState(String buttonState) throws Exception {

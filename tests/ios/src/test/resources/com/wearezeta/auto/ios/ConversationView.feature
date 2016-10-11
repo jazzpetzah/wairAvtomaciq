@@ -481,9 +481,9 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see conversation name <Contact> in Upper Toolbar
+    And I see the conversation with <Contact>
     And User <Contact> changes name to <NewName>
-    Then I see conversation name <NewName> in Upper Toolbar
+    Then I see the conversation with <NewName>
 
     Examples:
       | Name      | Contact   | NewName |
@@ -497,9 +497,9 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see conversation name <GroupChatName> in Upper Toolbar
+    And I see the conversation with <GroupChatName>
     And User <Contact> renames conversation <GroupChatName> to <NewChatName>
-    Then I see conversation name <NewChatName> in Upper Toolbar
+    Then I see the conversation with <NewChatName>
 
     Examples:
       | Name      | Contact   | GroupChatName  | UsersAmount | NewChatName |

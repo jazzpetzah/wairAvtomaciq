@@ -13,7 +13,7 @@ Feature: E2EE
     Given I wait for 5 seconds
     Given User <Contact1> adds user Myself to group chat <GroupChatName>
     When I tap on contact name <GroupChatName>
-    Then I see conversation name <GroupChatName> in Upper Toolbar
+    Then I see the conversation with <GroupChatName>
     And I see 0 conversation entries
 
     Examples:

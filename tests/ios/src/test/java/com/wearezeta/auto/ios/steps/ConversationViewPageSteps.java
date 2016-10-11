@@ -523,7 +523,7 @@ public class ConversationViewPageSteps {
     public void ISeeConversationWith(String contact) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("Conversation with %s is not visible", contact),
-                getConversationViewPage().isUserNameVisibleOnUpperToolbar(contact));
+                getConversationViewPage().isUserNameInUpperToolbarVisible(contact));
     }
 
     /**
@@ -747,20 +747,6 @@ public class ConversationViewPageSteps {
     @Then("^I see Too many people alert$")
     public void ISee10PeopleAlert() throws Exception {
         Assert.assertTrue(getConversationViewPage().isTooManyPeopleAlertVisible());
-    }
-
-    /**
-     * Verify conversation name is displayed in Upper Toolbar
-     *
-     * @param convoName user or group chat name
-     * @throws Exception
-     * @step. ^I see conversation name (.*) in Upper Toolbar$
-     */
-    @Then("^I see conversation name (.*) in Upper Toolbar$")
-    public void ISeeUsernameInUpperToolbar(String convoName) throws Exception {
-        convoName = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
-        Assert.assertTrue(String.format("Conversation name '%s' is not displayed on Upper Toolbar", convoName),
-                getConversationViewPage().isUserNameInUpperToolbarVisible(convoName));
     }
 
     /**
