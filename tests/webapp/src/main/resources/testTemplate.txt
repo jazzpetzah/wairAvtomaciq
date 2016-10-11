@@ -33,6 +33,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.logging.LogEntry;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 
 @RunWith(Parameterized.class)
 public class $(TESTNAME)Test extends PickleJarTest{
