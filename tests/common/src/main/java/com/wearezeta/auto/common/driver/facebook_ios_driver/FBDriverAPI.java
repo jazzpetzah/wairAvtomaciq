@@ -266,12 +266,21 @@ public class FBDriverAPI {
         return parseResponseWithStatus(client.getScreenshot(getSessionId()));
     }
 
-    public void setRotation(FBDeviceOrientation o) throws RESTError, StatusNotZeroError {
+    public void setRotation(FBDeviceRotation o) throws RESTError, StatusNotZeroError {
         parseResponseWithStatus(client.setRotation(getSessionId(), o));
     }
 
-    public FBDeviceOrientation getRotation() throws RESTError, StatusNotZeroError {
+    public FBDeviceRotation getRotation() throws RESTError, StatusNotZeroError {
         final JSONObject r = new JSONObject(parseResponseWithStatus(client.getRotation(getSessionId())));
-        return FBDeviceOrientation.fromAngle(r.getInt("z"));
+        return FBDeviceRotation.fromAngle(r.getInt("z"));
+    }
+
+    public void setOrientation(FBDeviceOrientation o) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.setOrientation(getSessionId(), o));
+    }
+
+    public FBDeviceOrientation getOrientation() throws RESTError, StatusNotZeroError {
+        final String r = parseResponseWithStatus(client.getOrientation(getSessionId()));
+        return FBDeviceOrientation.valueOf(r);
     }
 }

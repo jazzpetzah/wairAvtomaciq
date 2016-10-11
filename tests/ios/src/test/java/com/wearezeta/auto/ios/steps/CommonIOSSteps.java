@@ -877,8 +877,7 @@ public class CommonIOSSteps {
      * @step. ^I rotate UI to (landscape|portrait)$
      */
     @When("^I rotate UI to (landscape|portrait)$")
-    public void WhenIRotateUILandscape(ScreenOrientation orientation)
-            throws Exception {
+    public void WhenIRotateUILandscape(ScreenOrientation orientation) throws Exception {
         pagesCollection.getCommonPage().rotateScreen(orientation);
         Thread.sleep(1000); // fix for animation
     }
