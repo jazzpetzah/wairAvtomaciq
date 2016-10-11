@@ -131,6 +131,9 @@ public class PickleJarInheritedTest extends PickleJarTest {
     }
 
     private String tailBrowserLog(int maxLogTailSize) throws InterruptedException, ExecutionException, TimeoutException {
+        if (!WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
+            return "No tailed log available";
+        }
         try {
             List<LogEntry> browserLog = lifecycle.getContext().getBrowserLog();
             if (browserLog.size() >= maxLogTailSize) {
@@ -147,6 +150,10 @@ public class PickleJarInheritedTest extends PickleJarTest {
 
     private void checkLogForErrors() throws Exception {
         List<LogEntry> browserLog = new ArrayList<>();
+        if (!WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
+            LOG.warn("No error log check available");
+            return;
+        }
         try {
             browserLog = lifecycle.getContext().getBrowserLog();
             browserLog = browserLog.stream()
