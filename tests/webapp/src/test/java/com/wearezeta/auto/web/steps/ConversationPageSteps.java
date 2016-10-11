@@ -805,6 +805,23 @@ public class ConversationPageSteps {
         assertEquals("The timestamps are not equal", rememberedEditTimeStamp, editTimeStamp);
     }
 
+
+    @Then("^I( do not)? see delivery status of last message is (.*)$")
+    public void ISeeDeliveryStatus(String doNot, String status) throws Exception {
+        boolean isDoNot = " do not".equals(doNot);
+        if (isDoNot) {
+            if(context.getPagesCollection().getPage(ConversationPage.class).isDeliveryStatusOfLastMessageVisible()) {
+                assertThat("Status wrong",
+                        context.getPagesCollection().getPage(ConversationPage.class).getDeliveryStatusOfLastMessage(),
+                        not(equalTo(status)));
+            }
+        } else {
+            assertThat("Status wrong",
+                    context.getPagesCollection().getPage(ConversationPage.class).getDeliveryStatusOfLastMessage(),
+                    equalTo(status));
+        }
+    }
+
     @Then("^I( do not)? see message header for( second)? last message$")
     public void ISeeMessageHeader(String doNot, String second) throws Exception {
         boolean isDoNot = " do not".equals(doNot);
