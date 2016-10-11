@@ -91,9 +91,11 @@ Feature: Self Profile
     Given I switch to Sign In page
     When I Sign in using login <Login> and password <Password>
     And I am signed in properly
+    And I see Contact list with name <Contact1>
     And I open preferences by clicking the gear button
     Then I verify my accent color in color picker is set to <ColorName> color
     And I verify my avatar background color is set to <ColorName> color
+    And I close preferences
     When User <Contact1> pinged in the conversation with <Name>
     And Contact <Contact2> sends message Msg1 to user <Name>
     Then I verify ping icon in conversation with <Contact1> has <ColorName> color
