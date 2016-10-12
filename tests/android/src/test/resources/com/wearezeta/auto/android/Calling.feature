@@ -94,7 +94,7 @@ Feature: Calling
     When I minimize the application
     And <Contact> calls me
     # Wait for the call to appear in UI
-    And I wait for 15 seconds
+    And I wait for 7 seconds
     Then I see incoming call from <Contact>
     When I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
@@ -404,7 +404,7 @@ Feature: Calling
     When I minimize the application
     And <Contact1>,<Contact2> calls <GroupChatName>
     # Wait for the call to appear
-    And I wait for 15 seconds
+    And I wait for 7 seconds
     Then I see incoming call
     And I see incoming call from <GroupChatName>
     When I swipe to accept the call
