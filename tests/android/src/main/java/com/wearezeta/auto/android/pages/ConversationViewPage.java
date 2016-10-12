@@ -935,7 +935,7 @@ public class ConversationViewPage extends AndroidPage {
             final Dimension size = el.getSize();
             getDriver().tap(tapType, location.x + size.width / 5, location.y + size.height / 5);
         } else {
-            getDriver().tap(tapType, getElement(locator));
+            DriverUtils.tapInTheCenterOfTheElement(getDriver(), getElement(locator));
         }
     }
 

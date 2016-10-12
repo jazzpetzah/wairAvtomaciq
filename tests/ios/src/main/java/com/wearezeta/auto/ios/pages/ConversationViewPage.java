@@ -74,8 +74,9 @@ public class ConversationViewPage extends IOSPage {
     private static final By xpathImageCell = By.xpath(xpathStrImageCells);
     private static final By fbXpathRecentImageCell = FBBy.xpath(String.format("(%s)[1]", xpathStrImageCells));
 
-    private static final By fbXpathMediaContainerCell =
-            FBBy.xpath("//XCUIElementTypeTextView[contains(@value, '://')]/following-sibling::XCUIElementTypeButton");
+    private static final By fbXpathMediaContainerCell = FBBy.xpath(
+            "(//XCUIElementTypeTextView[@name='Message' and contains(@value, '://')]/preceding-sibling::" +
+                    "*[ .//XCUIElementTypeButton ])[last()]");
 
     private static final By xpathGiphyImage =
             By.xpath("//XCUIElementTypeCell[ .//*[contains(@value, 'via giphy.com')] ]" +
@@ -92,14 +93,14 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameTitle = MobileBy.AccessibilityId("playingMediaTitle");
 
     public static final Function<String, String> xpathStrMissedCallButtonByContact = name ->
-            String.format("//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[@name='%s CALLED'] ]" +
+            String.format("//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[@value='%s CALLED'] ]" +
                     "//XCUIElementTypeButton[@name='ConversationMissedCallButton']", name.toUpperCase());
 
     public static final By xpathStrMissedCallButtonByYourself =
             By.xpath(xpathStrMissedCallButtonByContact.apply("you"));
 
     public static final Function<String, String> xpathStrConnectingToUserLabelByName = name -> String.format(
-            "//XCUIElementTypeStaticText[contains(@name, 'CONNECTING TO %s.')]", name.toUpperCase());
+            "//XCUIElementTypeStaticText[contains(@value, 'CONNECTING TO %s.')]", name.toUpperCase());
 
     public static final String MEDIA_STATE_PLAYING = "playing";
 

@@ -181,6 +181,7 @@ Feature: Connect
     When I click Connect button on connect to page
     And <Contact> ignore all requests
     And I press Clear button
+    And I tap on conversation name <Contact>
     Then I see that connection is pending
     And I do not see cursor toolbar
     And I do not see text input

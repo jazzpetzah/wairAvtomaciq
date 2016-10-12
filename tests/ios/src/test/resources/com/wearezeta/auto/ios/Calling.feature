@@ -11,8 +11,7 @@ Feature: Calling
     And I wait for 5 seconds
     And <Contact> stops calling me
     And I tap on contact name <Contact>
-    Then I see missed call from contact <Contact>
-    And I tap missed call button to call contact <Contact>
+    Then I tap missed call button to call contact <Contact>
     And I see Calling overlay
 
     Examples:
