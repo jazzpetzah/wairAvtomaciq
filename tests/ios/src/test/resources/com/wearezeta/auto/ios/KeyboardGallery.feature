@@ -9,7 +9,6 @@ Feature: Keyboard Gallery
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
     And I accept alert
-    And I accept alert
     And I tap Fullscreen Camera button on Keyboard Gallery overlay
     And I accept alert
     And I tap Take Photo button on Camera page

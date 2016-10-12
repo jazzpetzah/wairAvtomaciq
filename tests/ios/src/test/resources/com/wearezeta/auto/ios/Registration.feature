@@ -56,6 +56,7 @@ Feature: Registration
     And I tap Confirm button on Picture preview page
     And I accept alert
     And I tap Share Contacts button on Share Contacts overlay
+    And I accept alert
     And I tap settings gear button
     And I select settings item Account
     And I select settings item Picture
