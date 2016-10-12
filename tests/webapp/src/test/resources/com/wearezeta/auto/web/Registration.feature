@@ -37,7 +37,6 @@ Feature: Registration
     And I accept the Terms of Use
     And I submit registration form
     And I see first time experience with watermark
-    And I open search by clicking the people button
     And I see Contact list with name <Name>
 
     Examples: 
