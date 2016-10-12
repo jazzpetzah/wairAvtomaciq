@@ -354,7 +354,7 @@ public final class WebAppLocators {
 
         public static final String cssUserAvatar = ".user-avatar and .pending";
 
-        public static final String idWatermark = "watermark";
+        public static final String cssWatermark = "[data-uie-name='no-conversation']";
         
         public static final String cssCancelRequestButton = "#"+idConversation+" [data-uie-name='do-cancel-request']";
 
@@ -647,6 +647,8 @@ public final class WebAppLocators {
 
         public static final String xpathXButtonOnLongMWarning = "//div[contains(@class, 'modal-too-long-message')" +
                 "]//div[contains(@class, 'modal-close')]";
+
+        public static final String cssFirstTimeExperienceMessage = "[data-uie-name='start-conversation-hint']";
     }
 
     public static final class ConnectToPage {
