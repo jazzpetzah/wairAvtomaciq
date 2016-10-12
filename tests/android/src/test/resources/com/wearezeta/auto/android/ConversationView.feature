@@ -212,8 +212,6 @@ Feature: Conversation View
     When User <Contact> sends encrypted message "<Message>" to user Myself
     And I tap Image container in the conversation view
     And I wait for 1 seconds
-    #workaround for AN-4574
-    And I tap Image container in the conversation view
     And I tap on Fullscreen button on the recent image in the conversation view
     Then I see the picture in the preview is animated
 
