@@ -5,12 +5,9 @@ import java.util.List;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
-import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.DevicesPage;
-import org.junit.Assert;
 
 import com.wearezeta.auto.web.pages.SettingsPage;
-import com.wearezeta.auto.web.pages.SettingsPage.SoundAlertsLevel;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
