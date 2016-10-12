@@ -1,6 +1,6 @@
 Feature: Rich Media
 
-  @torun @C3183 @rc @regression @IPv6 @fastLogin
+  @C3183 @rc @regression @IPv6 @fastLogin
   Scenario Outline: I can send and play inline youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
