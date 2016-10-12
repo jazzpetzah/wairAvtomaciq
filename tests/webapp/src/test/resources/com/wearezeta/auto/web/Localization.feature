@@ -64,20 +64,19 @@ Feature: Localization
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I switch language to <Language>
-    Then I see Search is opened
-    And I close People Picker
-    Then I open preferences by clicking the gear button
-    And I select <SupportButton> menu item on self profile page
-    And I switch to support page tab
+    Then I am signed in properly
+    When I open preferences by clicking the gear button
+    And I open about in preferences
+    And I click support link on about page
     Then I see ask support link
     And I see a title <PageTitle> on the page
     And I see a placeholder <SearchFieldPlaceholder> on the page
     And I see localized <Language> support page
 
     Examples:
-      | Login      | Password      | Name      | Language | SupportButton | PageTitle      | SearchFieldPlaceholder |
-      | user1Email | user1Password | user1Name | de       | Hilfe         | Wire Hilfe     | Gib ein Schlagwort ein |
-      | user1Email | user1Password | user1Name | en       | Support       | Wire – Support | Enter a keyword        |
+      | Login      | Password      | Name      | Language | PageTitle      | SearchFieldPlaceholder |
+      | user1Email | user1Password | user1Name | de       | Wire Hilfe     | Gib ein Schlagwort ein |
+      | user1Email | user1Password | user1Name | en       | Wire – Support | Enter a keyword        |
 
   @C150023 @regression
   Scenario Outline: Verify registration email is <Language>
