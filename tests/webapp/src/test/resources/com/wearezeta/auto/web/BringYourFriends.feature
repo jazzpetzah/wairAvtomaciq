@@ -126,8 +126,8 @@ Feature: Bring Your Friends
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    And I select Settings menu item on self profile page
-    And I see Settings dialog
+    And I open preferences by clicking the gear button
+    And I open options in preferences
     And I click button to import contacts from Gmail
     And I see Google login popup
     And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456!

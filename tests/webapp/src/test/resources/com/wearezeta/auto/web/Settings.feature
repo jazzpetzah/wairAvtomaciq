@@ -21,9 +21,8 @@ Feature: Settings
     Given I am signed in properly
     And I open preferences by clicking the gear button
     And I open options in preferences
-    And I see Settings dialog
-    When I select Sound Alerts setting to be None
-    Then I see Sound Alerts setting is set to None
+    When I set sound alerts setting to none
+    Then I see Sound Alerts setting is set to none
     And I close preferences
     And I open preferences by clicking the gear button
     And I click logout in account preferences
@@ -34,10 +33,9 @@ Feature: Settings
     And I am signed in properly
     And I open preferences by clicking the gear button
     And I open options in preferences
-    And I see Settings dialog
-    Then I see Sound Alerts setting is set to None
-    When I select Sound Alerts setting to be Some
-    Then I see Sound Alerts setting is set to Some
+    Then I see Sound Alerts setting is set to none
+    When I set sound alerts setting to some
+    Then I see Sound Alerts setting is set to some
     And I close preferences
     And I open preferences by clicking the gear button
     And I click logout in account preferences
@@ -48,8 +46,9 @@ Feature: Settings
     And I am signed in properly
     And I open preferences by clicking the gear button
     And I open options in preferences
-    When I see Settings dialog
-    Then I see Sound Alerts setting is set to Some
+    Then I see Sound Alerts setting is set to some
+    When I set sound alerts setting to all
+    Then I see Sound Alerts setting is set to all
 
     Examples: 
       | Email      | Password      | Name      |

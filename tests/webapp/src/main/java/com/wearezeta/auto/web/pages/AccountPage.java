@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.pages;
 
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
+
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
@@ -13,8 +14,10 @@ import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+
 import java.io.File;
 import java.util.List;
+
 import org.openqa.selenium.By;
 
 public class AccountPage extends WebPage {
@@ -102,7 +105,7 @@ public class AccountPage extends WebPage {
         assert new File(srcPicturePath).exists() : srcPicturePath + " file should exist on hub file system";
 
         /*
-		 * The code below allows to upload the picture to the remote mode
+         * The code below allows to upload the picture to the remote mode
 		 * without Selenium interaction This could be useful when we have better
 		 * solution for drag and drop
          */
@@ -122,14 +125,14 @@ public class AccountPage extends WebPage {
         final String inputId = "SelfImageUpload";
         this.getDriver().executeScript(
                 inputId + " = window.$('<input id=\"" + inputId
-                + "\"/>').attr({type:'file'}).appendTo('body');");
+                        + "\"/>').attr({type:'file'}).appendTo('body');");
         // The file is expected to be uploaded automatically by Webdriver
         getDriver().findElement(By.id(inputId)).sendKeys(srcPicturePath);
         this.getDriver().executeScript(
                 "e = $.Event('drop'); e.originalEvent = {dataTransfer : { files : "
-                + inputId + ".get(0).files } }; $(\""
-                + WebAppLocators.ProfilePicturePage.cssDropZone
-                + "\").trigger(e);");
+                        + inputId + ".get(0).files } }; $(\""
+                        + WebAppLocators.ProfilePicturePage.cssDropZone
+                        + "\").trigger(e);");
     }
 
     public void uploadPicture(String pictureName) throws Exception {

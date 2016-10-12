@@ -34,54 +34,6 @@ public class SettingsPageSteps {
     }
 
 	/**
-	 * Verifies whether settings dialog is visible
-	 * 
-	 * @step. ^I see Settings dialog$
-	 * 
-	 * @throws AssertionError
-	 *             if settings dialog is not currently visible
-	 */
-	@Then("^I see Settings dialog$")
-	public void ISeeSetingsDialog() throws Exception {
-		Assert.assertTrue(context.getPagesCollection().getPage(SettingsPage.class)
-				.isVisible());
-	}
-
-	/**
-	 * Set relevant setting for sound alerts
-	 * 
-	 * @step. I select Sound Alerts setting to be (None|Some|All)
-	 * 
-	 * @param newLevel
-	 *            possible values None, Some, All
-	 * @throws Exception
-	 */
-	@When("^I select Sound Alerts setting to be (None|Some|All)")
-	public void ISelectSoundAlertsSetting(String newLevel) throws Exception {
-		context.getPagesCollection().getPage(SettingsPage.class).setSoundAlertsLevel(
-				SoundAlertsLevel.fromString(newLevel));
-	}
-
-	/**
-	 * Verify what sound alert setting is set
-	 * 
-	 * @step. I see Sound Alerts setting is set to (None|Some|All)
-	 * 
-	 * @param expectedValue
-	 *            possible values None, Some, All
-	 */
-	@When("^I see Sound Alerts setting is set to (None|Some|All)")
-	public void ISeeSoundAlertsSettingIs(String expectedValue) throws Exception {
-		final String currentValue = context.getPagesCollection()
-				.getPage(SettingsPage.class).getSoundAlertsLevel().toString();
-		Assert.assertTrue(
-				String.format(
-						"Current sound alerts setting ('%s') is not equal to the expected one: '%s'",
-						currentValue, expectedValue), expectedValue
-						.equalsIgnoreCase(currentValue));
-	}
-
-	/**
 	 * Remember the device id of the current device
 	 * 
 	 * @step. I remember the device id of the current device
@@ -205,13 +157,4 @@ public class SettingsPageSteps {
 				.getDeviceLabels(), hasSize(size));
 	}
 
-    /**
-     * Click on import contacts from Gmail via Setting
-     *
-     * @throws Exception
-     */
-    @When("^I click button to import contacts from Gmail$")
-    public void IClickImportButton() throws Exception {
-        context.getPagesCollection().getPage(SettingsPage.class).clickImportButton();
-    }
 }
