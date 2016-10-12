@@ -51,6 +51,7 @@ Feature: Registration
     And I accept alert
     And I tap Choose Own Picture button
     And I tap Take Photo button
+    And I accept alert
     And I tap Take Photo button on Camera page
     And I tap Confirm button on Picture preview page
     And I accept alert
