@@ -928,6 +928,7 @@ public class ConversationViewPage extends AndroidPage {
 
     public void tapContainer(String tapType, String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
+        System.out.println("locator="+locator.toString());
         if (Arrays.asList(idAudioMessageContainer, idVideoMessageContainer, idYoutubeContainer).contains(locator)) {
             // To avoid to tap on play button in Video message and Audio message container.
             final WebElement el = getElement(locator);
@@ -935,7 +936,7 @@ public class ConversationViewPage extends AndroidPage {
             final Dimension size = el.getSize();
             getDriver().tap(tapType, location.x + size.width / 5, location.y + size.height / 5);
         } else {
-            getDriver().tap(tapType, getElement(locator));
+            DriverUtils.tapInTheCenterOfTheElement(getDriver(), getElement(locator));
         }
     }
 
