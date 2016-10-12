@@ -210,7 +210,7 @@ Feature: E2EE
     And I click confirm on history info page
     And I am signed in properly
     When I open preferences by clicking the gear button
-    And I select Settings menu item on self profile page
+    And I open devices in preferences
     Then I see a device named Device1 in the devices section
     And I see a device named Device2 in the devices section
     And I see a device named Device3 in the devices section
@@ -862,8 +862,7 @@ Feature: E2EE
     Given I am signed in properly
     When I see Contact list with name <Contact>
     Then I open preferences by clicking the gear button
-    And I select Settings menu item on self profile page
-    When I see Settings dialog
+    And I open devices in preferences
     And I wait for devices
     And I see a device named Device1 in the devices section
     And I click on the device Device1 in the devices section
