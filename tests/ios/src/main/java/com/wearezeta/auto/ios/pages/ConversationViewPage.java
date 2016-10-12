@@ -74,8 +74,9 @@ public class ConversationViewPage extends IOSPage {
     private static final By xpathImageCell = By.xpath(xpathStrImageCells);
     private static final By fbXpathRecentImageCell = FBBy.xpath(String.format("(%s)[1]", xpathStrImageCells));
 
-    private static final By fbXpathMediaContainerCell =
-            FBBy.xpath("//XCUIElementTypeTextView[contains(@value, '://')]/following-sibling::XCUIElementTypeButton");
+    private static final By fbXpathMediaContainerCell = FBBy.xpath(
+            "(//XCUIElementTypeTextView[@name='Message' and contains(@value, '://')]/preceding-sibling::" +
+                    "*[ .//XCUIElementTypeButton ])[last()]");
 
     private static final By xpathGiphyImage =
             By.xpath("//XCUIElementTypeCell[ .//*[contains(@value, 'via giphy.com')] ]" +
