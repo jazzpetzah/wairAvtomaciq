@@ -223,10 +223,10 @@ public class ConversationViewPage extends IOSPage {
     private static final String nameStrRecentMessageToolbox = "MessageToolbox";
     private static final By nameRecentMessageToolbox = MobileBy.AccessibilityId(nameStrRecentMessageToolbox);
     private static final Function<String, String> strXPathMessageToolboxByText = text ->
-            String.format("//*[@name='%s' and @value='%s']", nameStrRecentMessageToolbox, text);
+            String.format("//*[@name='%s' and contains(@value,'%s')]", nameStrRecentMessageToolbox, text);
 
     private static final By fbXpathUploadMenu =
-            FBBy.xpath("//XCUIElementTypeButton[@label='Cancel']/preceding-sibling::*[1]");
+            FBBy.xpath("//XCUIElementTypeButton[@label='Cancel']/parent::*/preceding-sibling::*[1]");
 
     private static final By nameSendButton = MobileBy.AccessibilityId("sendButton");
 

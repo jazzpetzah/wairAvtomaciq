@@ -1,6 +1,6 @@
 Feature: Video Messaging
 
-  @torun @C111938 @rc @regression @fastLogin
+  @C111938 @rc @regression @fastLogin
   Scenario Outline: Verify recording a video
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
