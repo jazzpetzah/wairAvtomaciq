@@ -85,9 +85,9 @@ Feature: Self Profile
 
   @C1730 @regression
   Scenario Outline: Verify you can change your accent color
-    Given There is 3 users where <Name> is me
+    Given There is 4 users where <Name> is me
     Given User me change accent color to <ColorName>
-    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I switch to Sign In page
     When I Sign in using login <Login> and password <Password>
     And I am signed in properly
@@ -96,11 +96,12 @@ Feature: Self Profile
     Then I verify my accent color in color picker is set to <ColorName> color
     And I verify my avatar background color is set to <ColorName> color
     And I close preferences
+    When I open conversation with <Contact3>
     When User <Contact1> pinged in the conversation with <Name>
     And Contact <Contact2> sends message Msg1 to user <Name>
     Then I verify ping icon in conversation with <Contact1> has <ColorName> color
     And I verify unread dot in conversation with <Contact2> has <ColorName> color
 
     Examples: 
-      | Login      | Password      | Name      | ColorName | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | SoftPink  | user2Name | user3Name |
+      | Login      | Password      | Name      | ColorName | Contact1  | Contact2  | Contact3  |
+      | user1Email | user1Password | user1Name | SoftPink  | user2Name | user3Name | user4Name |
