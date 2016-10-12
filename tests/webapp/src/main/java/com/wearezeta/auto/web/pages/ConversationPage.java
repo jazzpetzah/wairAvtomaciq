@@ -1390,4 +1390,15 @@ public class ConversationPage extends WebPage {
         return true;
     }
 
+    public String getDeliveryStatusOfLastMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessageByIndex.apply(1) + " " +
+                ".message-status");
+        return getDriver().findElement(lastMessageLocator).getText();
+    }
+
+    public boolean isDeliveryStatusOfLastMessageVisible() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessageByIndex.apply(1) + " " +
+                ".message-status");
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), lastMessageLocator);
+    }
 }

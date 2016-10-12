@@ -24,7 +24,6 @@ import cucumber.api.Scenario;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import gherkin.formatter.model.Result;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -46,8 +45,8 @@ import static com.wearezeta.auto.common.CommonUtils.*;
 public class CommonIOSSteps {
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
-    private static final String IOS_WD_APP_BUNDLE = "com.apple.test.WebDriverAgentRunner-Runner";
-    private static final String FACEBOOK_WD_APP_BUNDLE = "com.facebook.IntegrationApp";
+//    private static final String IOS_WD_APP_BUNDLE = "com.apple.test.WebDriverAgentRunner-Runner";
+//    private static final String FACEBOOK_WD_APP_BUNDLE = "com.facebook.IntegrationApp";
     private static final String ADDRESSBOOK_HELPER_APP_NAME = "AddressbookApp.ipa";
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
@@ -97,8 +96,6 @@ public class CommonIOSSteps {
 
     private static final int DRIVER_CREATION_RETRIES_COUNT = 2;
 
-    private static Map<String, String> cachedBundleIds = new HashMap<>();
-
     private static final long INSTALL_DELAY_MS = 3000;
 
     // These settings are needed to properly sign WDA for real device tests
@@ -111,7 +108,7 @@ public class CommonIOSSteps {
     public Future<ZetaIOSDriver> resetIOSDriver(String ipaPath,
                                                 Optional<Map<String, Object>> additionalCaps,
                                                 int retriesCount) throws Exception {
-        Optional<String> udid = Optional.empty();
+        Optional<String> udid;
         final boolean isRealDevice = !CommonUtils.getIsSimulatorFromConfig(getClass());
 
         final DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -180,39 +177,9 @@ public class CommonIOSSteps {
         argsValue.put("args", processArgs);
         capabilities.setCapability("processArguments", argsValue.toString());
 
-        if (isRealDevice) {
-            prepareRealDevice(capabilities, udid, ipaPath);
-        }
-
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance().resetDriver(
                 getUrl(), capabilities, retriesCount
         );
-    }
-
-    private static void prepareRealDevice(DesiredCapabilities caps, Optional<String> udid, String ipaPath)
-            throws Exception {
-        if ((caps.is("noReset") && !((Boolean) caps.getCapability("noReset")) || !caps.is("noReset"))) {
-            // FIXME: Sometimes Appium fails to reset app prefs properly on real device
-            if (!cachedBundleIds.containsKey(ipaPath)) {
-                final File appPath = CommonUtils.extractAppFromIpa(new File(ipaPath));
-                try {
-                    cachedBundleIds.put(ipaPath, ZetaIOSDriver.parseBundleId(
-                            new File(appPath.getCanonicalPath() + File.separator + "Info.plist")));
-                } finally {
-                    FileUtils.deleteDirectory(appPath);
-                }
-            }
-            final String dstUDID = udid.orElseThrow(
-                    () -> new IllegalStateException("Cannot detect any connected iDevice")
-            );
-            for (String bundleId : Arrays.asList(
-                    IOS_WD_APP_BUNDLE,
-                    FACEBOOK_WD_APP_BUNDLE,
-                    cachedBundleIds.get(ipaPath))) {
-                RealDeviceHelpers.uninstallApp(dstUDID, bundleId);
-            }
-            caps.setCapability("fullReset", false);
-        }
     }
 
     @Before
@@ -910,8 +877,7 @@ public class CommonIOSSteps {
      * @step. ^I rotate UI to (landscape|portrait)$
      */
     @When("^I rotate UI to (landscape|portrait)$")
-    public void WhenIRotateUILandscape(ScreenOrientation orientation)
-            throws Exception {
+    public void WhenIRotateUILandscape(ScreenOrientation orientation) throws Exception {
         pagesCollection.getCommonPage().rotateScreen(orientation);
         Thread.sleep(1000); // fix for animation
     }

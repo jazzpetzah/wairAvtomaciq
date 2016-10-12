@@ -50,8 +50,8 @@ Feature: Like
     And I see Message status with expected text "<MessageStatus>" in conversation view
 
     Examples:
-      | Name      | Contact   | Txt | MessageStatus | ContactDevice |
-      | user1Name | user2Name | Hi  | Sent          | D1            |
+      | Name      | Contact   | Txt | MessageStatus      | ContactDevice |
+      | user1Name | user2Name | Hi  | Delivered          | D1            |
 
   @C226036 @regression @rc
   Scenario Outline: I can double tap on txt to like and unlike
@@ -72,8 +72,8 @@ Feature: Like
     And I see Message status with expected text "<MessageStatus>" in conversation view
 
     Examples:
-      | Name      | Contact   | Txt | MessageStatus | ContactDevice |
-      | user1Name | user2Name | Hi  | Sent          | D1            |
+      | Name      | Contact   | Txt | MessageStatus      | ContactDevice |
+      | user1Name | user2Name | Hi  | Delivered          | D1            |
 
   @C226040 @regression @rc
   Scenario Outline: If message was liked by somebody, like icon is visible and sorted liker name next to the like icon, and I could like it.
@@ -127,8 +127,8 @@ Feature: Like
     And I see Like description with expected text "<Name>" in conversation view
 
     Examples:
-      | Name      | Contact1  | Message | Device | NewMessage | MessageStatus | ContactDevice |
-      | user1Name | user2Name | Yo      | D1     | Hello      | Sent          | D2            |
+      | Name      | Contact1  | Message | Device | NewMessage | MessageStatus      | ContactDevice |
+      | user1Name | user2Name | Yo      | D1     | Hello      | Delivered          | D2            |
 
   @C226049 @C226037 @regression @rc
   Scenario Outline: Verify local delete for my/others message doesn't reappear after someone liked it (negative)

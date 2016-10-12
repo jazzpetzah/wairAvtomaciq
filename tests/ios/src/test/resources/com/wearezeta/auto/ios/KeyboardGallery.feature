@@ -11,6 +11,7 @@ Feature: Keyboard Gallery
     And I accept alert
     And I accept alert
     And I tap Fullscreen Camera button on Keyboard Gallery overlay
+    And I accept alert
     And I tap Take Photo button on Camera page
     And I tap Use Photo button on Picture preview page
     Then I see 1 photo in the conversation view
