@@ -437,15 +437,14 @@ public class ContactListPage extends WebPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), selected);
     }
 
-    // TODO move asserts to page step class (see #openConversation(String))
+    public boolean isConnectionRequestsListVisible() throws Exception{
+        By locator = By.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, CONVO_LIST_ENTRY_VISIBILITY_TIMEOUT);
+    }
+
     public void openConnectionRequestsList() throws Exception {
         final By locator = By.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
-        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
         this.getDriver().findElement(locator).click();
-        By selected = By.cssSelector(WebAppLocators.ContactListPage.cssSelectedIncomingPendingConvoItem);
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                selected, CONVO_LIST_ENTRY_VISIBILITY_TIMEOUT) : "Conversation is not selected within "
-                + CONVO_LIST_ENTRY_VISIBILITY_TIMEOUT + " second(s) timeout";
     }
 
     public void openPreferences() throws Exception {

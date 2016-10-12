@@ -96,7 +96,7 @@ public class ContactListPageSteps {
      * @step. ^I open conversation with (.*)
      */
     @Given("^I open conversation with (.*)")
-    public void GivenIOpenConversationWith(String conversation) throws Exception {
+    public void IOpenConversationWith(String conversation) throws Exception {
         conversation = context.getUserManager().replaceAliasesOccurences(conversation, FindBy.NAME_ALIAS);
         ContactListPage contactListPage = context.getPagesCollection().getPage(ContactListPage.class);
         Assert.assertTrue(String.format("Conversation with name '%s' is not visible", conversation),
@@ -138,10 +138,10 @@ public class ContactListPageSteps {
     }
 
     /**
-     * Clicks the self name item in the convo list to open self profile page
+     * Clicks the gear button to open preferences
      *
      * @throws Exception
-     * @step. ^I open self profile$
+     * @step. ^I open preferences by clicking the gear button$
      */
     @When("^I open preferences by clicking the gear button$")
     public void IOpenPreferences() throws Exception {
@@ -155,7 +155,7 @@ public class ContactListPageSteps {
      * @throws Exception
      * @step. ^I archive conversation (.*)$
      */
-    @When("^I archive conversation (.*)$")
+    @When("^I archive conversation (.*)")
     public void IClickArchiveButton(String contact) throws Exception {
         contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         ContactListPage contactListPage = context.getPagesCollection()
@@ -265,8 +265,9 @@ public class ContactListPageSteps {
      */
     @Given("^I open the list of incoming connection requests$")
     public void IOpenIncomingConnectionRequestsList() throws Exception {
-        context.getPagesCollection().getPage(ContactListPage.class)
-                .openConnectionRequestsList();
+        ContactListPage contactListPage = context.getPagesCollection().getPage(ContactListPage.class);
+        Assert.assertTrue("ConnectionRequestsList is not visible", contactListPage.isConnectionRequestsListVisible());
+        contactListPage.openConnectionRequestsList();
     }
 
     /**

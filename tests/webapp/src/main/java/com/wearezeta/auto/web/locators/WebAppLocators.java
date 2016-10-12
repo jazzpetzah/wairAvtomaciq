@@ -61,8 +61,6 @@ public final class WebAppLocators {
         public static final String cssParentArchiveListItem = "#archive";
 
         public static final String cssIncomingPendingConvoItem = "[data-uie-name='item-pending-requests']";
-        public static final String cssSelectedIncomingPendingConvoItem = ".conversation-list-item.text-theme " +
-                cssIncomingPendingConvoItem;
 
         public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
 
