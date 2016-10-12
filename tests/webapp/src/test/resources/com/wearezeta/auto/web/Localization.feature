@@ -110,8 +110,9 @@ Feature: Localization
     Then I verify that an envelope icon is shown
     And I see email <Email> on Verification page
     When I activate user by URL
-    And I confirm keeping picture on Welcome page
+    And I am signed in properly
     And I switch language to en
+    And I am signed in properly
     And <Name> starts listening for new device mail
     And user <Name> adds a new device Device with label Label
     Then I see new device mail in <Language> with <Message>
@@ -134,8 +135,9 @@ Feature: Localization
     Then I verify that an envelope icon is shown
     And I see email <Email> on Verification page
     When I activate user by URL
-    And I confirm keeping picture on Welcome page
+    And I am signed in properly
     And I switch language to en
+    And I am signed in properly
     And I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
