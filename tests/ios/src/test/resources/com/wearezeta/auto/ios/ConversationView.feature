@@ -51,6 +51,7 @@ Feature: Conversation View
   Scenario Outline: Send a camera roll picture to user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <DeviceName1>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
@@ -60,10 +61,11 @@ Feature: Conversation View
     And I select the first picture from Keyboard Gallery
     And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
+    And I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | DeviceName1 | DeliveredLabel |
+      | user1Name | user2Name | device1     | Delivered      |
 
   @C924 @regression @fastLogin
   Scenario Outline: Send message to group chat
