@@ -31,7 +31,6 @@ Feature: Audio Messaging
       | Name      | Contact   | DeviceName1 | DeliveredLabel |
       | user1Name | user2Name | device1     | Delivered      |
 
-
   @C129341 @C129345 @rc @regression @fastLogin
   Scenario Outline: Verify receiving a voice message and deleting it
     Given There are 2 users where <Name> is me
