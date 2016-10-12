@@ -66,8 +66,7 @@ public final class WebAppLocators {
 
         public static final Function<String, String> xpathListItemRootWithControlsByName = name -> String
                 .format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/following-sibling::div[contains" +
-                                "(@class, 'controls')]",
-                        name);
+                                "(@class, 'controls')]", name);
 
         public static final String cssArchiveButton = "[data-uie-name='do-archive']";
 
@@ -271,10 +270,8 @@ public final class WebAppLocators {
     public static final class AccountPage {
     
         public static final String cssLogoutButton = "#preferences-account [data-uie-name='do-logout']";
-        
-        public static final String cssSelfUserName = "[data-uie-name='status-name']";
 
-        public static final String cssSelfUserNameInput = "textarea[data-uie-name='enter-name']";
+        public static final String cssSelfUserNameInput = "[data-uie-name='enter-name']";
 
         public static final String cssNameSelfUserMail = "[data-uie-name='enter-email']";
 
@@ -352,7 +349,7 @@ public final class WebAppLocators {
 
         public static final String cssUserAvatar = ".user-avatar and .pending";
 
-        public static final String idWatermark = "watermark";
+        public static final String cssWatermark = "[data-uie-name='no-conversation']";
         
         public static final String cssCancelRequestButton = "#"+idConversation+" [data-uie-name='do-cancel-request']";
 
@@ -645,6 +642,8 @@ public final class WebAppLocators {
 
         public static final String xpathXButtonOnLongMWarning = "//div[contains(@class, 'modal-too-long-message')" +
                 "]//div[contains(@class, 'modal-close')]";
+
+        public static final String cssFirstTimeExperienceMessage = "[data-uie-name='start-conversation-hint']";
     }
 
     public static final class ConnectToPage {

@@ -61,8 +61,7 @@ public class AccountPageSteps {
     @And("^I see username (.*) in account preferences$")
     public void ISeeUserNameOnSelfProfilePage(String name) throws Exception {
         name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        boolean nameCorrect = context.getPagesCollection().getPage(AccountPage.class).checkNameInSelfProfile(name);
-        assertTrue(nameCorrect);
+        assertThat("Username", context.getPagesCollection().getPage(AccountPage.class).getUserName(), equalTo(name));
     }
 
     @And("^I see user phone number (.*) in account preferences$")

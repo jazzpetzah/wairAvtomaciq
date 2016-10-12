@@ -32,9 +32,6 @@ public class AccountPage extends WebPage {
     @FindBy(css = ".modal-logout .checkbox span")
     private WebElement clearDataCheckbox;
 
-    @FindBy(css = WebAppLocators.AccountPage.cssSelfUserName)
-    private WebElement userName;
-
     @FindBy(css = WebAppLocators.AccountPage.cssSelfUserNameInput)
     private WebElement userNameInput;
 
@@ -72,25 +69,10 @@ public class AccountPage extends WebPage {
         logoutInDialogButton.click();
     }
 
-    public boolean checkNameInSelfProfile(String name) throws Exception {
-        DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(
-                WebAppLocators.AccountPage.cssSelfUserName));
-
-        WebDriverWait wait = new WebDriverWait(this.getDriver(), 10);
-
-        return wait.until((WebDriver driver) -> {
-            if (userName.getText().equals(name)) {
-                return Boolean.TRUE;
-            } else {
-                return Boolean.FALSE;
-            }
-        });
-    }
-
     public String getUserName() throws Exception {
         DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(
-                WebAppLocators.AccountPage.cssSelfUserName));
-        return userName.getText();
+                WebAppLocators.AccountPage.cssSelfUserNameInput));
+        return userNameInput.getAttribute("value");
     }
 
     public String getUserMail() {
@@ -102,7 +84,7 @@ public class AccountPage extends WebPage {
     }
 
     public void setUserName(String name) throws InterruptedException {
-        userName.click();
+        userNameInput.click();
         Thread.sleep(1000);
         userNameInput.clear();
         userNameInput.sendKeys(name + "\n");

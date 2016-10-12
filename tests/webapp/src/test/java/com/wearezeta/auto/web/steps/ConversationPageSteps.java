@@ -1763,11 +1763,15 @@ public class ConversationPageSteps {
         if (shouldNotBeVisible == null) {
             assertThat("No watermark wire logo shown",
                     context.getPagesCollection().getPage(ConversationPage.class).isWatermarkVisible());
-            // TODO: Check for first time experience info visible
+            assertThat("First time experience message",
+                    context.getPagesCollection().getPage(ConversationPage.class).getFirstTimeExperienceMessage(),
+                    containsString("Start a conversation or invite people to join."));
         } else {
             assertThat("Watermark wire logo shown",
                     context.getPagesCollection().getPage(ConversationPage.class).isWatermarkNotVisible());
-            // TODO: Check for first time experience info not visible
+            assertThat("First time experience message",
+                    context.getPagesCollection().getPage(ConversationPage.class).getFirstTimeExperienceMessage(),
+                    not(containsString("Start a conversation or invite people to join.")));
         }
     }
 }

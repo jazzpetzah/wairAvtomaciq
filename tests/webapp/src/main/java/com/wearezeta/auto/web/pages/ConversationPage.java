@@ -50,6 +50,9 @@ public class ConversationPage extends WebPage {
 
     private static final String TOOLTIP_PEOPLE = "People";
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssFirstTimeExperienceMessage)
+    private WebElement firstTimeExperienceMessage;
+
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssMessageAmount)
     private List<WebElement> messageAmount;
 
@@ -1391,10 +1394,16 @@ public class ConversationPage extends WebPage {
     }
 
     public boolean isWatermarkVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(WebAppLocators.ConversationPage.idWatermark));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.cssSelector(WebAppLocators.ConversationPage.cssWatermark));
     }
 
     public boolean isWatermarkNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(WebAppLocators.ConversationPage.idWatermark));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.cssSelector(WebAppLocators.ConversationPage.cssWatermark));
+    }
+
+    public String getFirstTimeExperienceMessage() {
+        return firstTimeExperienceMessage.getText();
     }
 }

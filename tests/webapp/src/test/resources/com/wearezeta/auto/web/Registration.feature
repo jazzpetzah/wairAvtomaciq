@@ -40,7 +40,7 @@ Feature: Registration
     And I see Contact list with name <Name>
 
     Examples: 
-      | Password      | Name      | ContactMail | Contact    | Message | TextWire                                                                                     |
+      | Password      | Name      | ContactMail | Contact    | Message | TextWire                                                                                        |
       | user1Password | user1Name | user2Email  | user2Name  | Hello   | Simple, private & secure messenger for chat, calls, sharing pics, music, videos, GIFs and more. |
 
   @C1762 @regression
