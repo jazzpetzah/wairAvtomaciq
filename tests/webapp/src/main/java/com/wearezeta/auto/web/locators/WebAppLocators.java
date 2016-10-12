@@ -190,7 +190,7 @@ public final class WebAppLocators {
         public static final String cssDeleteModalActionButtonSingle = ".modal-clear .modal-action";
 
         // little dot on avatar in accent color
-        public static final String cssBadge = ".conversation-list-settings-badge";
+        public static final String cssBadge = ".conversations-settings-badge";
     }
 
     public static final class CallPage {

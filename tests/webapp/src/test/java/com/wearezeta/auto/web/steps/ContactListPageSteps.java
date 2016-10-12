@@ -41,7 +41,7 @@ public class ContactListPageSteps {
         this.context = context;
     }
 
-    @Given("^I verify a badge is shown on self profile button$")
+    @Given("^I verify a badge is shown on gear button$")
     public void ISeeBadgeOnSelfProfileButton() throws Exception {
         Assert.assertTrue("No badge visible.", context.getPagesCollection()
                 .getPage(ContactListPage.class).waitForBadgeVisible());

@@ -642,7 +642,7 @@ Feature: E2EE
     When I open conversation with <Contact>
     And user <Name> adds a new device Device2 with label Label2
     #Then I see <NEW_DEVICE> action in conversation
-    And I verify a badge is shown on self profile button
+    And I verify a badge is shown on gear button
     And I open preferences by clicking the gear button
     And I see connected devices dialog
     And I see Device2 on connected devices dialog
@@ -796,8 +796,6 @@ Feature: E2EE
     And Contact <Name> sends message <Message2> via device Device1 to user <Contact>
     Then I see <UNABLE_TO_DECRYPT> action in conversation
     When I open preferences by clicking the gear button
-    And I wait for 2 seconds
-    And I open preferences by clicking the gear button
     And I open devices in preferences
     And I wait for 2 seconds
     Then I see a device named Device1 in the devices section
