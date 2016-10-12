@@ -294,6 +294,12 @@ public final class WebAppLocators {
         public static final String cssBackgroundAvatarAccentColor = ".background-accent.bg-theme";
         
         public static final String cssSelectPicture = "[data-uie-name='do-select-picture']";
+
+        public static final String cssDeleteAccountButton = "[data-uie-name='go-delete-account']";
+
+        public static final String cssCancelDeleteAccountButton = "[data-uie-name='modal-delete-account'] [data-uie-name='do-cancel']";
+
+        public static final String cssConfirmDeleteAccountButton = "[data-uie-name='modal-delete-account'] [data-uie-name='do-send']";
     }
 
     public static final class DevicesPage {
@@ -315,9 +321,6 @@ public final class WebAppLocators {
         public static final Function<String, String> xpathDeviceLabel = (name) -> String
                 .format("//device-card//span[contains(text(),'%s')]", name);
 
-        public static final String cssDeleteAccountButton = "[data-uie-name='go-delete-account']";
-        public static final String cssCancelDeleteAccountButton = "[data-uie-name='do-delete-cancel']";
-        public static final String cssConfirmDeleteAccountButton = "[data-uie-name='do-delete-account']";
         public static final String cssConfirmText = "[data-uie-name='delete-confirm-text']";
         public static final String cssSentText = "[data-uie-name='delete-sent']";
         public static final String cssImportButton = "[data-uie-name='do-share-contacts']";

@@ -205,28 +205,6 @@ public class SettingsPageSteps {
 				.getDeviceLabels(), hasSize(size));
 	}
 
-    @When("^I click delete account button on settings page$")
-    public void IClickDeleteAccountButton() throws Exception {
-        context.getPagesCollection().getPage(SettingsPage.class).clickDeleteAccountButton();
-    }
-
-    @When("^I click cancel deletion button on settings page$")
-    public void IClickCancelDeleteButton() throws Exception {
-        context.getPagesCollection().getPage(SettingsPage.class).clickCancelDeleteAccountButton();
-    }
-
-    @When("^I click send button to delete account$")
-    public void IClickSendButton() throws Exception {
-        context.getPagesCollection().getPage(SettingsPage.class).clickConfirmDeleteAccountButton();
-    }
-
-    @When("^I see email (.*) in delete info text on settings page$")
-    public void ISeeEmailInDeleteInfo(String emailAlias) throws Exception {
-		String email = context.getUserManager().findUserByEmailOrEmailAlias(emailAlias).getEmail();
-        assertThat("Email address not in description", context.getPagesCollection().getPage(SettingsPage.class).getDeleteInfo(),
-                containsString(email.toUpperCase()));
-    }
-
     /**
      * Click on import contacts from Gmail via Setting
      *

@@ -16,8 +16,6 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 import java.io.File;
 import java.util.List;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class AccountPage extends WebPage {
 
@@ -46,6 +44,15 @@ public class AccountPage extends WebPage {
 
     @FindBy(css = WebAppLocators.AccountPage.cssAccentColorPickerInputs)
     private List<WebElement> colorsInColorPicker;
+
+    @FindBy(css = WebAppLocators.AccountPage.cssDeleteAccountButton)
+    private WebElement deleteAccountButton;
+
+    @FindBy(css = WebAppLocators.AccountPage.cssCancelDeleteAccountButton)
+    private WebElement cancelDeleteAccountButton;
+
+    @FindBy(css = WebAppLocators.AccountPage.cssConfirmDeleteAccountButton)
+    private WebElement confirmDeleteAccountButton;
 
     public AccountPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -171,4 +178,18 @@ public class AccountPage extends WebPage {
         accentColorDiv.click();
     }
 
+    public void clickDeleteAccountButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), deleteAccountButton);
+        deleteAccountButton.click();
+    }
+
+    public void clickCancelDeleteAccountButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), cancelDeleteAccountButton);
+        cancelDeleteAccountButton.click();
+    }
+
+    public void clickConfirmDeleteAccountButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), confirmDeleteAccountButton);
+        confirmDeleteAccountButton.click();
+    }
 }

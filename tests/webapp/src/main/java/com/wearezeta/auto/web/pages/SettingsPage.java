@@ -31,15 +31,6 @@ public class SettingsPage extends WebPage {
     @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssDeviceLabels)
     private List<WebElement> deviceLabels;
 
-    @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssDeleteAccountButton)
-    private WebElement deleteAccountButton;
-
-    @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssCancelDeleteAccountButton)
-    private WebElement cancelDeleteAccountButton;
-
-    @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssConfirmDeleteAccountButton)
-    private WebElement confirmDeleteAccountButton;
-
     @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssConfirmText)
     private WebElement confirmText;
 
@@ -153,21 +144,6 @@ public class SettingsPage extends WebPage {
                 .apply(device);
         DriverUtils.waitUntilElementClickable(getDriver(), getDriver().findElement(By.xpath(locator)));
         getDriver().findElement(By.xpath(locator)).click();
-    }
-
-    public void clickDeleteAccountButton() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), deleteAccountButton);
-        deleteAccountButton.click();
-    }
-
-    public void clickCancelDeleteAccountButton() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), cancelDeleteAccountButton);
-        cancelDeleteAccountButton.click();
-    }
-
-    public void clickConfirmDeleteAccountButton() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), confirmDeleteAccountButton);
-        confirmDeleteAccountButton.click();
     }
 
     public String getDeleteInfo() throws Exception {

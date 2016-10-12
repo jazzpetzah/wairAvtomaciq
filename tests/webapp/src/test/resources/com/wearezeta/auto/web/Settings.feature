@@ -59,19 +59,17 @@ Feature: Settings
   Scenario Outline: Verify you can delete account
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
+    Given I remember current page
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
     Given I open preferences by clicking the gear button
     When I open account in preferences
-    And I see Settings dialog
     And I click delete account button on settings page
-    And I see email <Email> in delete info text on settings page
     And I click cancel deletion button on settings page
     And I click delete account button on settings page
-    And I see email <Email> in delete info text on settings page
     And I click send button to delete account
     And I delete account of user <Name> via email
-    And I open Sign In page
+    And I navigate to previously remembered page
     And I see Sign In page
     When I enter email "<Email>"
     And I enter password "<Password>"
