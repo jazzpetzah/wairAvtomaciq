@@ -41,8 +41,8 @@ Feature: E2EE
     And I dismiss popover on iPad
     When User Myself adds a new device <DeviceName2> with label <DeviceLabel2>
     Then I do not see shield icon in the conversation view
-    And I see 4 conversation entries
+    And I see "<StartedUsingMsg>" system message in the conversation view
 
     Examples:
-      | Name      | Contact1  | DeviceName2 | DeviceLabel2 |
-      | user1Name | user2Name | Device2     | Label2       |
+      | Name      | Contact1  | DeviceName2 | DeviceLabel2 | StartedUsingMsg                |
+      | user1Name | user2Name | Device2     | Label2       | YOU STARTED USING A NEW DEVICE |
