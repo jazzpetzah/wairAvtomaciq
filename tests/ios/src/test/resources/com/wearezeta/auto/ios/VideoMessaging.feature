@@ -11,7 +11,6 @@ Feature: Video Messaging
     When I tap on contact name <Contact>
     And I tap Video Message button from input tools
     Then I see video message container in the conversation view
-    And I wait for 10 seconds
     And I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
