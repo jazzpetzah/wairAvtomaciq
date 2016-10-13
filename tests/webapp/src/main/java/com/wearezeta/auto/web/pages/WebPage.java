@@ -2,14 +2,11 @@ package com.wearezeta.auto.web.pages;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
-import org.apache.commons.collections.IteratorUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Alert;
 
@@ -17,8 +14,6 @@ import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.logging.LogEntry;
-import org.openqa.selenium.logging.LogType;
 
 public class WebPage extends BasePage {
 

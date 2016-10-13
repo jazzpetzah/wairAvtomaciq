@@ -160,15 +160,15 @@ public class ContactListPageSteps {
     }
 
     /**
-     * Clicks the self name item in the convo list to open self profile page
+     * Opens preferences by clicking the gear button
      *
-     * @step. ^I open self profile$
+     * @step. ^I open preferences by clicking the gear button$
      *
      * @throws Exception
      */
-    @When("^I open self profile$")
-    public void IOpenSelfProfile() throws Exception {
-        webappPagesCollection.getPage(ContactListPage.class).openSelfProfile();
+    @When("^I open preferences by clicking the gear button$")
+    public void IOpenPreferences() throws Exception {
+        webappPagesCollection.getPage(ContactListPage.class).openPreferences();
     }
 
     /**

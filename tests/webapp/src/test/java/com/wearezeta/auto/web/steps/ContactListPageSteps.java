@@ -42,23 +42,7 @@ public class ContactListPageSteps {
         this.context = context;
     }
 
-    /**
-     * Checks that contact list is loaded and waits for profile avatar to be
-     * shown
-     *
-     * @throws AssertionError if contact list is not loaded or avatar does not appear at
-     *                        the top of Contact List
-     * @step. ^I see my avatar on top of Contact list$
-     */
-    @Given("^I see my avatar on top of Contact list$")
-    public void ISeeMyNameOnTopOfContactList() throws Exception {
-        Assert.assertTrue("No contact list loaded.", context.getPagesCollection()
-                .getPage(ContactListPage.class).waitForContactListVisible());
-        context.getPagesCollection().getPage(ContactListPage.class)
-                .waitForSelfProfileButton();
-    }
-
-    @Given("^I verify a badge is shown on self profile button$")
+    @Given("^I verify a badge is shown on gear button$")
     public void ISeeBadgeOnSelfProfileButton() throws Exception {
         Assert.assertTrue("No badge visible.", context.getPagesCollection()
                 .getPage(ContactListPage.class).waitForBadgeVisible());
@@ -160,9 +144,9 @@ public class ContactListPageSteps {
      * @throws Exception
      * @step. ^I open self profile$
      */
-    @When("^I open self profile$")
-    public void IOpenSelfProfile() throws Exception {
-        context.getPagesCollection().getPage(ContactListPage.class).openSelfProfile();
+    @When("^I open preferences by clicking the gear button$")
+    public void IOpenPreferences() throws Exception {
+        context.getPagesCollection().getPage(ContactListPage.class).openPreferences();
     }
 
     /**
@@ -292,7 +276,7 @@ public class ContactListPageSteps {
      * @throws Exception
      * @step. ^I open People Picker from Contact List$
      */
-    @When("^I open People Picker from Contact List$")
+    @When("^I open search by clicking the people button$")
     public void IOpenStartUI() throws Exception {
         context.getPagesCollection().getPage(ContactListPage.class).openStartUI();
     }

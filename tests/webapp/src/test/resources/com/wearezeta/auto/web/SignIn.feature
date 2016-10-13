@@ -20,16 +20,16 @@ Feature: Sign In
     And User <Contact2> sends image <ImageName1> to group conversation <GroupChatName>
     Then I see text message <Message2>
     And I see sent picture <ImageName1> in the conversation view
-    When I open self profile
-    And I click gear button on self profile page
-    And I select Settings menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I open devices in preferences
     And I remember the device id of the current device
-    And I click close settings page button
+    And I close preferences
     And I wait for 2 seconds
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I open preferences by clicking the gear button
+    And I open account in preferences
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And I see Sign In page
     And I Sign in using login <Email> and password <Password>
     Then I am signed in properly
@@ -39,9 +39,8 @@ Feature: Sign In
     And I open conversation with <GroupChatName>
     And I see text message <Message2>
     And I see sent picture <ImageName1> in the conversation view
-    When I open self profile
-    And I click gear button on self profile page
-    And I select Settings menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I open devices in preferences
     Then I verify that the device id of the current device is the same
     And I see 0 devices in the devices section
 
@@ -60,13 +59,13 @@ Feature: Sign In
     Then I see the history info page
     When I click confirm on history info page
     Then I am signed in properly
-    When I click gear button on self profile page
-    And I select Settings menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I open devices in preferences
     And I remember the device id of the current device
-    And I click close settings page button
+    And I close preferences
     And I wait for 2 seconds
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see Sign In page
     And I enter email "<Email>"
     And I enter password "<Password>"
@@ -74,8 +73,8 @@ Feature: Sign In
     And I see the history info page
     And I click confirm on history info page
     Then I am signed in properly
-    When I click gear button on self profile page
-    And I select Settings menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I open devices in preferences
     Then I verify that the device id of the current device is not the same
     And I see 0 devices in the devices section
 
@@ -126,8 +125,9 @@ Feature: Sign In
     And I see the history info page
     And I click confirm on history info page
     Then I am signed in properly
-    And I see user name on self profile page <Name>
-    And I see user phone number on self profile page <PhoneNumber>
+    And I open preferences by clicking the gear button
+    And I see username <Name> in account preferences
+    And I see user phone number <PhoneNumber> in account preferences
 
     Examples: 
       | Name      | PhoneNumber      | Password   |
@@ -144,8 +144,9 @@ Feature: Sign In
     And I enter password <Password> on phone login page
     And I press Sign In button on phone login page
     Then I am signed in properly
-    And I see user name on self profile page <Name>
-    And I see user phone number on self profile page <PhoneNumber>
+    And I open preferences by clicking the gear button
+    And I see username <Name> in account preferences
+    And I see user phone number <PhoneNumber> in account preferences
 
     Examples: 
       | Name      | PhoneNumber      | Password   |
@@ -160,8 +161,9 @@ Feature: Sign In
     And I check option to remember me
     And I press Sign In button
     Then I am signed in properly
-    And I see user name on self profile page <Name>
-    And I see user phone number on self profile page <PhoneNumber>
+    And I open preferences by clicking the gear button
+    And I see username <Name> in account preferences
+    And I see user phone number <PhoneNumber> in account preferences
 
     Examples: 
       | Name      | Email      | PhoneNumber      | Password   |
@@ -242,7 +244,7 @@ Feature: Sign In
     And I verify that an envelope icon is shown
     When I click on Verify later button on Verification page
     Then I am signed in properly
-    And I see Welcome page
+    And I see first time experience with watermark
 
     Examples: 
       | Name      | PasswordOfOtherUser |

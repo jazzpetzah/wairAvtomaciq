@@ -26,8 +26,8 @@ Feature: Welcome
     And I check option to remember me
     And I press Sign In button
     Then I am signed in properly
-    And I see user name on self profile page <Name>
-    And I see user email on self profile page <Email>
+    And I see username <Name> in account preferences
+    And I see user email <Email> in account preferences
 
     Examples: 
       | Email      | OldPassword   | Name      | NewPassword | LoginErr                                  |

@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @C1756 @smoke
+  @C1756 @smoke @WEBAPP-3244
   Scenario Outline: Accept connection request
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
@@ -78,7 +78,7 @@ Feature: Connect
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    When I see Search is opened
+    When I open search by clicking the people button
     And I see Bring Your Friends or Invite People button
     And I type <ContactEmail> in search field of People Picker
     And I see user <Contact> found in People Picker
@@ -119,7 +119,7 @@ Feature: Connect
     When I wait until <Name2> exists in backend search results
     And I Sign in using login <Login> and password <Password>
     And I am signed in properly
-    And I see People Picker
+    And I open search by clicking the people button
     And I type <Login2> in search field of People Picker
     And I see user <Name2> found in People Picker
     And I click on not connected user <Name2> found in People Picker
@@ -127,28 +127,26 @@ Feature: Connect
     And I click Connect button on Connect To popover
     And I see Contact list with name <Name2>
     And I open conversation with <Name2>
-    And I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <Name2> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I see connection request from one user
     And I open the list of incoming connection requests
     And I accept connection request from user <Name>
     And I see Contact list with name <Name>
-    And I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <Name> is me
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     Then I see Contact list with name <Name2>
     And I open conversation with <Name2>
     And I see connected message for <Name2> in conversation
@@ -172,28 +170,26 @@ Feature: Connect
     And I click Connect button on Connect To popover
     And I see Contact list with name <Name2>
     And I open conversation with <Name2>
-    And I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <Name2> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I see connection request from one user
     And I open the list of incoming connection requests
     And I ignore connection request from user <Name>
     And I do not see Contact list with name <Name>
-    And I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <Name> is me
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     Then I see Contact list with name <Name2>
 
     Examples: 
@@ -207,7 +203,6 @@ Feature: Connect
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And I click People button in one to one conversation
     Then I see Single User Profile popover
@@ -230,7 +225,6 @@ Feature: Connect
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     And I click People button in group conversation
     And I see Group Participants popover
@@ -253,18 +247,14 @@ Feature: Connect
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password2>
     Given I am signed in properly
-    Given I see Welcome page
-    Given I confirm keeping picture on Welcome page
     Given I see Contact list with name <ChatName>
-    Given I open self profile
-    Given I click gear button on self profile page
-    Given I select Log out menu item on self profile page
+    Given I open preferences by clicking the gear button
+    Given I click logout in account preferences
     Given I see the clear data dialog
-    Given I click Logout button on clear data dialog
+    Given I click logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    And I see my avatar on top of Contact list
     When I open conversation with <Contact1>
     And I click People button in one to one conversation
     Then I see Single User Profile popover
@@ -275,11 +265,10 @@ Feature: Connect
     And I write random message
     And I send message
     Then I see random message in conversation
-    When I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     Then I see Sign In page
     And User <Name2> is me
     When I Sign in using login <Login2> and password <Password2>
@@ -289,11 +278,10 @@ Feature: Connect
     And I write random message
     And I send message
     Then I see random message in conversation
-    When I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     Then I see Sign In page
     When I Sign in using login <Login> and password <Password>
     And User <Name> is me
@@ -312,40 +300,37 @@ Feature: Connect
     Given I switch to Sign In page
     Given I Sign in using login <User2Email> and password <User2Password>
     Given I am signed in properly
-    Given I open self profile
-    Given I click gear button on self profile page
-    Given I select Log out menu item on self profile page
+    Given I open preferences by clicking the gear button
+    Given I click logout in account preferences
     Given I see the clear data dialog
-    Given I click Logout button on clear data dialog
+    Given I click logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <User1> and password <User1Password>
-    Then I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <User2>
     And Contact <User2> sends message <Msg1> to user <User1>
     Then I see text message <Msg1>
     And <User1> blocked <User2>
-    And User <User2> sends image <Picture2> to single user conversation <User1>
+    And User <User2> sends image <Picture1> to single user conversation <User1>
     And User <User2> pinged in the conversation with <User1>
     And Contact <User2> sends message <Msg2> to user <User1>
     And I do not see Contact list with name <Name>
-    When I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <User2> is me
     And I Sign in using login <User2Email> and password <User2Password>
-    Then I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <User1>
     Then I see text message <Msg2>
-    When I open self profile
+    When I open preferences by clicking the gear button
     And I see connected devices dialog
     And I click OK on connected devices dialog
     And I do not see connected devices dialog
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And <User1> unblocks user <User2>
     And User <User1> is me
     And I Sign in using login <User1Email> and password <User1Password>
@@ -355,8 +340,8 @@ Feature: Connect
     # Uncommented last step because of WEBAPP-862
     # Then I see text message <Msg2>
     Examples: 
-      | User1     | User1Email | User1Password | User2     | User2Email | User2Password | Msg1     | Msg2     | Picture1                  | Picture2                 |
-      | user1Name | user1Email | user2Password | user2Name | user2Email | user2Password | Message1 | Message2 | userpicture_landscape.jpg | userpicture_portrait.jpg |
+      | User1     | User1Email | User1Password | User2     | User2Email | User2Password | Msg1     | Msg2     | Picture1                 |
+      | user1Name | user1Email | user2Password | user2Name | user2Email | user2Password | Message1 | Message2 | userpicture_portrait.jpg |
 
   @C1782 @mute
   Scenario Outline: Verify you can dismiss user suggestion in PYMK list
@@ -370,8 +355,8 @@ Feature: Connect
     Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
     Given I am signed in properly
-    And I see my avatar on top of Contact list
-    When I open People Picker from Contact List
+    Given I am signed in properly
+    When I open search by clicking the people button
     And I see user <Contact1> found in People Picker
     And I remove user <Contact1> from suggestions in People Picker
     And I do not see user <Contact1> found in People Picker
@@ -392,8 +377,7 @@ Feature: Connect
     Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
     Given I am signed in properly
-    Given I see my avatar on top of Contact list
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     Then I see user <Contact1> found in People Picker
     When I make a connection request for user <Contact1> directly from People Picker
     And I close People Picker
@@ -455,7 +439,7 @@ Feature: Connect
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     And I wait until <Contact1> exists in backend search results
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I wait for the search field of People Picker to be empty
     And I type <Contact1Email> in search field of People Picker
     Then I see user <Contact1> found in People Picker
@@ -471,11 +455,10 @@ Feature: Connect
     Then I do not see Pending Outgoing Connection popover
     When I close People Picker
     Then I do not see Contact list with name <Contact1>
-    When I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <Contact1> is me
     And I Sign in using login <Contact1Email> and password <Contact1Password>
     Then I am signed in properly
@@ -500,11 +483,10 @@ Feature: Connect
     And I see a conversation option <ConvOption3> on the page
     When I click cancel request in the options popover
     Then I do not see Contact list with name <Contact1>
-    When I open self profile
-    And I click gear button on self profile page
-    Then I select Log out menu item on self profile page
+    When I open preferences by clicking the gear button
+    Then I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And I see Sign In page
     And User <Contact1> is me
     When I Sign in using login <Contact1Email> and password <Contact1Password>

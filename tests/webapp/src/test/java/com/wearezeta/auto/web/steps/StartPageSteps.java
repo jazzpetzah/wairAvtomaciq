@@ -198,11 +198,6 @@ public class StartPageSteps {
 		}
 	}
 
-	@Then("I switch to support page tab$")
-	public void ISwitchToSupportPageTab() throws Exception {
-		context.getPagesCollection().getPage(StartPage.class).switchToSupportPageTab();
-	}
-
 	@Then("I see ask support link")
 	public void ISeeAskSupportLink() throws Exception {
 		assertTrue("No 'Ask Support' link", context.getPagesCollection().getPage(SupportPage.class).isAskSupportVisible());

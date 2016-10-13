@@ -7,11 +7,10 @@ Feature: Self Profile
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    When I open self profile
-    And I see user name on self profile page <Name>
+    When I open preferences by clicking the gear button
+    And I see username <Name> in account preferences
     And I change username to <NewName>
-    Then I see user name on self profile page <NewName>
-    And I see my avatar on top of Contact list
+    Then I see username <NewName> in account preferences
 
     Examples: 
       | Login      | Password      | Name      | NewName     | Contact   |
@@ -22,9 +21,11 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
-    Then I see user name on self profile page <Name>
-    And I see user email on self profile page <Email>
-    And I see user phone number on self profile page <PhoneNumber>
+    And I am signed in properly
+    And I open preferences by clicking the gear button
+    Then I see username <Name> in account preferences
+    And I see user email <Email> in account preferences
+    And I see user phone number <PhoneNumber> in account preferences
 
     Examples: 
       | Email      | Password      | Name      | PhoneNumber      |
@@ -35,13 +36,16 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    And I open preferences by clicking the gear button
     When I set my accent color to <ColorName>
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
-    And I see Sign In page
+    And I click logout button on clear data dialog
+    When I see Sign In page
     And I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open preferences by clicking the gear button
     Then I verify my accent color in color picker is set to <ColorName> color
 
     Examples: 
@@ -55,7 +59,9 @@ Feature: Self Profile
     Given Myself take snapshot of current profile picture
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I drop picture <PictureName> to self profile
+    Given I am signed in properly
+    When I open preferences by clicking the gear button
+    And I drop picture <PictureName> to account preferences
     Then I verify that current profile picture snapshot of Myself differs from the previous one
 
     Examples: 
@@ -69,7 +75,8 @@ Feature: Self Profile
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    And I upload picture <PictureName> to self profile
+    When I open preferences by clicking the gear button
+    And I upload picture <PictureName> to account preferences
     Then I verify that current profile picture snapshot of Myself differs from the previous one
 
     Examples: 
@@ -78,20 +85,23 @@ Feature: Self Profile
 
   @C1730 @regression
   Scenario Outline: Verify you can change your accent color
-    Given There is 3 users where <Name> is me
+    Given There is 4 users where <Name> is me
     Given User me change accent color to <ColorName>
-    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I switch to Sign In page
     When I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
-    And I open self profile
+    And I am signed in properly
+    And I see Contact list with name <Contact1>
+    And I open preferences by clicking the gear button
     Then I verify my accent color in color picker is set to <ColorName> color
     And I verify my avatar background color is set to <ColorName> color
+    And I close preferences
+    When I open conversation with <Contact3>
     When User <Contact1> pinged in the conversation with <Name>
     And Contact <Contact2> sends message Msg1 to user <Name>
     Then I verify ping icon in conversation with <Contact1> has <ColorName> color
     And I verify unread dot in conversation with <Contact2> has <ColorName> color
 
     Examples: 
-      | Login      | Password      | Name      | ColorName | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | SoftPink  | user2Name | user3Name |
+      | Login      | Password      | Name      | ColorName | Contact1  | Contact2  | Contact3  |
+      | user1Email | user1Password | user1Name | SoftPink  | user2Name | user3Name | user4Name |

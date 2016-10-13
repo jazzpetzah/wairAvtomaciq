@@ -13,13 +13,11 @@ Feature: Registration
     And I see email <Email> on Verification page
     When I activate user by URL
     And User <Name> is Me without avatar
-    And I see Welcome page
-    And I confirm keeping picture on Welcome page
-    Then I see user name on self profile page <Name>
-    Then I see user email on self profile page <Email>
+    And I see first time experience with watermark
+    And I open preferences by clicking the gear button
+    Then I see username <Name> in account preferences
+    Then I see user email <Email> in account preferences
     And I see localytics event <Event> with attributes <Attributes>
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
 
     Examples: 
       | Email      | Password      | Name      | Event                  | Attributes              |
@@ -38,55 +36,12 @@ Feature: Registration
     And I enter user password "<Password>" on Registration page
     And I accept the Terms of Use
     And I submit registration form
-    And I see Welcome page
-    And I confirm keeping picture on Welcome page
+    And I see first time experience with watermark
     And I see Contact list with name <Name>
 
     Examples: 
-      | Password      | Name      | ContactMail | Contact    | Message | TextWire                                                                                     |
+      | Password      | Name      | ContactMail | Contact    | Message | TextWire                                                                                        |
       | user1Password | user1Name | user2Email  | user2Name  | Hello   | Simple, private & secure messenger for chat, calls, sharing pics, music, videos, GIFs and more. |
-
-  @C1770 @smoke
-  Scenario Outline: Upload own picture on Welcome page
-    Given There is 1 user where <Name> is me without avatar picture
-    Given I switch to Sign In page
-    And I Sign in using login <Login> and password <Password>
-    When I see Welcome page
-    And Myself take snapshot of current profile picture
-    And I choose <PictureName> as my self picture on Welcome page
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
-    And I see the clear data dialog
-    And I click Logout button on clear data dialog
-    And I see Sign In page
-    And I Sign in using login <Login> and password <Password>
-    Then I do not see Welcome page
-    And I am signed in properly
-    And I verify that current profile picture snapshot of Myself differs from the previous one
-
-    Examples: 
-      | Login      | Password      | Name      | PictureName               |
-      | user1Email | user1Password | user1Name | userpicture_landscape.jpg |
-
-  @C1771 @smoke
-  Scenario Outline: Keep picture on Welcome page
-    Given There is 1 user where <Name> is me without avatar picture
-    Given I switch to Sign In page
-    When I Sign in using login <Login> and password <Password>
-    And I see Welcome page
-    And I confirm keeping picture on Welcome page
-    And I am signed in properly
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
-    And I see the clear data dialog
-    And I click Logout button on clear data dialog
-    And I see Sign In page
-    When I Sign in using login <Login> and password <Password>
-    Then I do not see Welcome page
-
-    Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
 
   @C1762 @regression
   Scenario Outline: I want to be notified if the email address I entered during registration has already been registered
