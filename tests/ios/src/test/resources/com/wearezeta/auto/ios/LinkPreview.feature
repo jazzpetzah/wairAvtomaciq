@@ -4,6 +4,7 @@ Feature: Link Preview
   Scenario Outline: Verify preview is shown for sent link (link only)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <DeviceName1>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
@@ -14,10 +15,11 @@ Feature: Link Preview
     Then I see link preview container in the conversation view
     # This is to make sure the image appears in the preview (we had this bug) and good enough check here once in the test suite
     Then I see link preview image in the conversation view
+    And I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
-      | Name      | Contact   | Link                 |
-      | user1Name | user2Name | https://www.wire.com |
+      | Name      | Contact   | Link                 | DeviceName1 | DeliveredLabel |
+      | user1Name | user2Name | https://www.wire.com | devcie1     | Delivered      |
 
   @C167030 @C167031 @C167032 @regression @fastLogin
   Scenario Outline: Verify preview is shown for mixed link and text

@@ -163,14 +163,10 @@ Feature: Audio Message
     And I wait for 3 seconds
     When I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
-    Then I wait for 20 seconds until audio message download completed
+    Then I wait for 30 seconds until audio message download completed
     And I verify the state of recent audio message seekbar in the conversation view is changed
-    # Wait until play button changes to pause button
-    #And I wait for 2 seconds
     When I remember the state of Pause button on the recent audio message in the conversation view
     And I minimize the application
-    # Wait until Wire is minimized
-    And I wait for 5 seconds
     And I restore the application
     Then I verify the state of Pause button on the recent audio message in the conversation view is changed
     When I long tap Audio Message container in the conversation view

@@ -220,6 +220,8 @@ Feature: Connect
     Given I accept alert
     Given I tap on Search input on People picker page
     Given I input in People picker search field user email <ContactEmail>
+    # Wait for animation
+    Given I wait for 3 seconds
     When I tap the instant connect button next to <UnconnectedUser>
     And I tap X button in People Picker input field
     And I tap on contact name <UnconnectedUser>

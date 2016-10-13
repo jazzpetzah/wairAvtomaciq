@@ -14,6 +14,8 @@ public class PicturePreviewPage extends IOSPage {
 
     private static final By nameUsePhotoButton = MobileBy.AccessibilityId("Use Photo");
 
+    private static final By nameConfirmButton = MobileBy.AccessibilityId("OK");
+
     public PicturePreviewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -23,7 +25,7 @@ public class PicturePreviewPage extends IOSPage {
             case "sketch":
                 return nameSketchButton;
             case "confirm":
-                return xpathConfirmButton;
+                return nameConfirmButton;
             case "cancel":
                 return xpathCancelButton;
             case "retake":

@@ -446,7 +446,6 @@ Feature: Calling
     When I swipe to accept the call
     Then I see ongoing call
     When I minimize the application
-    And I wait for 10 seconds
     And I restore the application
     Then I see ongoing call
 

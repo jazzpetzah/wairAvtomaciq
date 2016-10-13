@@ -40,6 +40,7 @@ Feature: Share Location
   Scenario Outline: Verify sending location from a map view in and opening the map on clicking on map icon (1to1)
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <DeviceName1>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
@@ -51,10 +52,11 @@ Feature: Share Location
     Then I see location map container in the conversation view
     #TODO Stabilize sent address verification step
     #And I see the default sent Share Location address in the conversation view
+    And I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | DeviceName1 | DeliveredLabel |
+      | user1Name | user2Name | device1     | Delivered      |
 
   @C165126 @regression @fastLogin
   Scenario Outline: Verify sending location from a map view (group conversation)

@@ -69,7 +69,7 @@ final class FBDriverRESTClient {
         return client.target(dstUrl).request().header("Content-type", MediaType.APPLICATION_JSON);
     }
 
-    public JSONObject setRotation(String sessionId, FBDeviceOrientation o) throws RESTError {
+    public JSONObject setRotation(String sessionId, FBDeviceRotation o) throws RESTError {
         final Builder webResource = buildDefaultRequest("rotation", sessionId);
         final JSONObject body = new JSONObject();
         body.put("x", 0);
@@ -80,6 +80,18 @@ final class FBDriverRESTClient {
 
     public JSONObject getRotation(String sessionId) throws RESTError {
         final Builder webResource = buildDefaultRequest("rotation", sessionId);
+        return waitForResponse(() -> restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK}));
+    }
+
+    public JSONObject setOrientation(String sessionId, FBDeviceOrientation o) throws RESTError {
+        final Builder webResource = buildDefaultRequest("orientation", sessionId);
+        final JSONObject body = new JSONObject();
+        body.put("orientation", o.name());
+        return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
+    }
+
+    public JSONObject getOrientation(String sessionId) throws RESTError {
+        final Builder webResource = buildDefaultRequest("orientation", sessionId);
         return waitForResponse(() -> restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK}));
     }
 
@@ -263,8 +275,7 @@ final class FBDriverRESTClient {
 
     public JSONObject switchToHomescreen(String sessionId) throws RESTError {
         final Builder webResource = buildDefaultRequest("switchToHomescreen", sessionId);
-        return waitForResponse(() -> restHandlers.httpPost(webResource, new JSONObject().toString(),
-                new int[]{HttpStatus.SC_OK}));
+        return waitForResponse(() -> restHandlers.httpPost(webResource, EMPTY_JSON_BODY, new int[]{HttpStatus.SC_OK}));
     }
 
     public JSONObject getAlertText(String sessionId) throws RESTError {
@@ -275,14 +286,14 @@ final class FBDriverRESTClient {
     public JSONObject acceptAlert(String sessionId) throws RESTError {
         final Builder webResource = buildDefaultRequest("alert/accept", sessionId);
         return waitForResponse(
-                () -> restHandlers.httpPost(webResource, new JSONObject().toString(), new int[]{HttpStatus.SC_OK})
+                () -> restHandlers.httpPost(webResource, EMPTY_JSON_BODY, new int[]{HttpStatus.SC_OK})
         );
     }
 
     public JSONObject dismissAlert(String sessionId) throws RESTError {
         final Builder webResource = buildDefaultRequest("alert/dismiss", sessionId);
         return waitForResponse(
-                () -> restHandlers.httpPost(webResource, new JSONObject().toString(), new int[]{HttpStatus.SC_OK})
+                () -> restHandlers.httpPost(webResource, EMPTY_JSON_BODY, new int[]{HttpStatus.SC_OK})
         );
     }
 

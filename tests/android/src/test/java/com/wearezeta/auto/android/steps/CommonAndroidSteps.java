@@ -73,6 +73,7 @@ public class CommonAndroidSteps {
     public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
     public static final int DEFAULT_SWIPE_TIME = 1500;
     public static final int FIRST_TIME_OVERLAY_TIMEOUT = 3; // seconds
+    public static final int UI_DELAY_TIME = 2; // seconds
     private static final String DEFAULT_USER_AVATAR = "aqaPictureContact600_800.jpg";
     private static final String GCM_TOKEN_PATTERN = "token:\\s+(.*)$";
     //TODO: should I move this list to configuration file?
@@ -462,8 +463,10 @@ public class CommonAndroidSteps {
     public void IMinimizeApplication(String action) throws Exception {
         if (action.equals("minimize")) {
             AndroidCommonUtils.tapHomeButton();
+            WaitForTime(UI_DELAY_TIME);
         } else {
             AndroidCommonUtils.switchToApplication(getPackageName());
+            WaitForTime(UI_DELAY_TIME);
         }
     }
 
