@@ -32,6 +32,8 @@ Feature: Sign Out
     When I open search by clicking the people button
     Then I see Search is opened
     And I see Bring Your Friends or Invite People button
+    When I close People Picker
+    And I open preferences by clicking the gear button
     Then I see username <Contact3> in account preferences
     And I see user email <Email3> in account preferences
     And I do not see Contact list with name <GroupChatName>

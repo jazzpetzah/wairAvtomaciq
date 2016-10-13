@@ -102,21 +102,20 @@ Feature: Link Preview
   @C167038 @rc @regression @fastLogin
   Scenario Outline: Verify copying link preview
     Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact>, <Contact1>
+    Given Myself is connected to <Contact>,<Contact1>
     Given I sign in using my email or phone number
+    Given User <Contact> sends encrypted message "<Link>" to user Myself
     Given I see conversations list
-    When I tap on contact name <Contact>
-    When I type the "<Link>" message and send it
-    Then I see link preview container in the conversation view
-    When I long tap on link preview in conversation view
-    And I tap on Copy badge item
-    And I navigate back to conversations list
-    And I tap on contact name <Contact1>
-    And I tap on text input
-    And I long tap on text input
-    And I tap on Paste badge item
-    And I tap Send Message button in conversation view
-    And I navigate back to conversations list
+    Given I tap on contact name <Contact>
+    Given I long tap on link preview in conversation view
+    Given I tap on Copy badge item
+    Given I navigate back to conversations list
+    Given I tap on contact name <Contact1>
+    Given I tap on text input
+    Given I long tap on text input
+    Given I tap on Paste badge item
+    Given I tap Send Message button in conversation view
+    Given I navigate back to conversations list
     When I tap on contact name <Contact1>
     Then I see link preview container in the conversation view
 
