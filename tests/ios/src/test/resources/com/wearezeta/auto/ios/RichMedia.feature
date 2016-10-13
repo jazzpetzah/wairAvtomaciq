@@ -91,7 +91,6 @@ Feature: Rich Media
     And I scroll to the bottom of the conversation
     And I tap on media container in conversation view
     When I scroll to the bottom of the conversation
-    And I scroll to the bottom of the conversation
     Then I do not see media bar in the conversation view
 
     Examples:
