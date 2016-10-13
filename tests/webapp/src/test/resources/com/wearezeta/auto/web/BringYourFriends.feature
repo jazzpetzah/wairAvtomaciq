@@ -55,8 +55,9 @@ Feature: Bring Your Friends
     Given I see Sign In page
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
-    When I click button to bring friends from Gmail
-    And I see Google login popup
+    When I open search by clicking the people button
+    And I click button to bring friends from Gmail
+    Then I see Google login popup
     When I sign up at Google with email <Gmail> and password <GmailPassword>
     Then I see Search is opened
     And I see Bring Your Friends or Invite People button
