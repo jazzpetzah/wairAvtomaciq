@@ -146,6 +146,8 @@ public class ContactListPageSteps {
      */
     @When("^I open preferences by clicking the gear button$")
     public void IOpenPreferences() throws Exception {
+        assertTrue("gear button is NOT clickable", 
+                context.getPagesCollection().getPage(ContactListPage.class).isPreferencesButtonClickable());
         context.getPagesCollection().getPage(ContactListPage.class).openPreferences();
     }
 
