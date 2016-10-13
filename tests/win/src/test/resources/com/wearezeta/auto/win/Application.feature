@@ -77,7 +77,7 @@ Feature: Application
     And I am signed in properly
     When I click menu bar item "Wire" and menu item "Log Out"
     Then I see the clear data dialog
-    When I click Logout button on clear data dialog
+    When I click logout button on clear data dialog
     Then I see Sign In page
 
     Examples: 
