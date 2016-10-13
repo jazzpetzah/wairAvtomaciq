@@ -1594,6 +1594,20 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * Verify that device is free from run-as bug (run-as: Package 'abc' is unknown)
+     * https://code.google.com/p/android/issues/detail?id=58373
+     *
+     * @throws Exception
+     * @step. ^Device supports debug mode$
+     */
+    @Given("^Device supports debug mode$")
+    public void DeviceDebugModeSupported() throws Exception {
+        if (!AndroidCommonUtils.isWireDebugModeSupported()) {
+            throw new PendingException("The current device cannot execute run-as commands required for debug");
+        }
+    }
+
+    /**
      * Verify whether Android with Google Location Service, if not installed, it will throw a Pending Exception
      *
      * @throws Exception
