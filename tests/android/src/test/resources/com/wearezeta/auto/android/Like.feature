@@ -24,7 +24,7 @@ Feature: Like
 
     Examples:
       | Name      | Contact   | Txt | MessageStatus | ContactDevice |
-      | user1Name | user2Name | Hi  | Sent          | D1            |
+      | user1Name | user2Name | Hi  | Delivered     | D1            |
 
   @C226018 @C226020 @regression @rc
   Scenario Outline: I can unlike/like message by tap on like icon & I can like text message
