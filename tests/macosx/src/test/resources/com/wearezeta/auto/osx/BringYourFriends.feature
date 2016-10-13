@@ -5,8 +5,10 @@ Feature: Bring Your Friends
     Given There are 1 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    And I am signed in properly
-    Then I click button to bring friends from Gmail
+    When I am signed in properly
+    Then I open search by clicking the people button
+    When I see Search is opened
+    And I click button to bring friends from Gmail
     And I see Google login popup
     And I sign up at Google with email <Gmail> and password <GmailPassword>
     Then I see Search is opened
@@ -55,6 +57,7 @@ Feature: Bring Your Friends
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
+    Then I open search by clicking the people button
     Then I see Search is opened
     And I click button to import contacts from address book via search UI
     Then I allow address book access
