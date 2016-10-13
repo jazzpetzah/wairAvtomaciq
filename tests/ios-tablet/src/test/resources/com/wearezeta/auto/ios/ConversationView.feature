@@ -660,6 +660,8 @@ Feature: Conversation View
     Then I see 1 photo in the conversation view
     And I see the picture in the conversation view is animated
     When I tap on image in conversation view
+    # Wait for animation
+    And I wait for 2 seconds
     And I tap Fullscreen button on image
     Then I see the picture on image fullscreen page is animated
 
