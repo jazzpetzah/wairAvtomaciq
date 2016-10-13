@@ -89,8 +89,8 @@ Feature: People View
     Then I see the correct participant avatars for <Contact1NewName>,<Contact2NewName>
 
     Examples:
-      | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color1       | Color2       | Contact1NewName   | Contact2NewName       |
-      | user1Name | user3Name | user2Name | 2                 | GroupInfoCheck | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | aqaPictureContact | aqaAvatarTestContact  |
+      | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color1       | Color2       | Contact1NewName   | Contact2NewName      |
+      | user1Name | user3Name | user2Name | 2                 | GroupInfoCheck | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | aqaPictureContact | aqaAvatarTestContact |
 
   @C715 @regression @rc @rc42
   Scenario Outline: Verify editing the conversation name

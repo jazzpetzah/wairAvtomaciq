@@ -63,7 +63,7 @@ public class CallingSteps {
      */
     @When("^(.*) stops? calling( (.*))?$")
     public void UserXStopsCallsToUserY(String instanceUsers, String outgoingCall, String conversationName)
-        throws Exception {
+            throws Exception {
         if (outgoingCall == null) {
             commonCallingSteps.stopIncomingCall(splitAliases(instanceUsers));
         } else {
@@ -84,9 +84,9 @@ public class CallingSteps {
     @Then("(.*) verifies that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
     public void UserXVerifesCallStatusToUserY(String callers,
                                               String conversationName, String expectedStatuses, int timeoutSeconds)
-        throws Exception {
+            throws Exception {
         commonCallingSteps.verifyCallingStatus(splitAliases(callers), conversationName,
-            expectedStatuses, timeoutSeconds);
+                expectedStatuses, timeoutSeconds);
     }
 
     /**
@@ -103,7 +103,7 @@ public class CallingSteps {
     public void UserXVerifesCallStatusToUserY(String callees,
                                               String expectedStatuses, int timeoutSeconds) throws Exception {
         commonCallingSteps.verifyAcceptingCallStatus(splitAliases(callees),
-            expectedStatuses, timeoutSeconds);
+                expectedStatuses, timeoutSeconds);
     }
 
     /**
@@ -130,7 +130,7 @@ public class CallingSteps {
      */
     @When("(.*) accepts? next incoming( video)? call automatically$")
     public void UserXAcceptsNextIncomingCallAutomatically(String callees, String video)
-        throws Exception {
+            throws Exception {
         if (video == null) {
             commonCallingSteps.acceptNextCall(splitAliases(callees));
         } else {
@@ -149,10 +149,10 @@ public class CallingSteps {
      */
     @Then("(.*) verif(?:ies|y) to have (\\d+) flows?$")
     public void UserXVerifesHavingXFlows(String callees, int numberOfFlows)
-        throws Exception {
+            throws Exception {
         for (String callee : splitAliases(callees)) {
             assertThat(commonCallingSteps.getFlows(callee),
-                hasSize(numberOfFlows));
+                    hasSize(numberOfFlows));
         }
     }
 
@@ -169,7 +169,7 @@ public class CallingSteps {
             for (Flow flow : commonCallingSteps.getFlows(callee)) {
                 assertThat("incoming bytes", flow.getTelemetry().getStats().getAudio().getBytesReceived(), greaterThan(0L));
                 assertThat("outgoing bytes", flow.getTelemetry().getStats().getAudio().getBytesSent(),
-                    greaterThan(0L));
+                        greaterThan(0L));
             }
         }
     }
@@ -190,7 +190,7 @@ public class CallingSteps {
     }
 
     private static final Logger LOG = ZetaLogger.getLog(CallingSteps.class
-        .getName());
+            .getName());
 
     /**
      * Executes consecutive calls without logging out etc.
@@ -203,7 +203,7 @@ public class CallingSteps {
      */
     @Then("^I call (\\d+) times for (\\d+) minutes with (.*)$")
     public void ICallXTimes(int times, int callDurationMinutes, String callees)
-        throws Throwable {
+            throws Throwable {
         final int timeBetweenCall = 10;
         final List<String> calleeList = splitAliases(callees);
         final ConversationViewPageSteps convSteps = new ConversationViewPageSteps();
@@ -255,7 +255,7 @@ public class CallingSteps {
         }
 
         LOG.info(failures.size() + " failures happened during " + times
-            + " calls");
+                + " calls");
         failures.forEach((Integer i, Throwable t) -> {
             LOG.error(i + ": " + t.getMessage());
         });

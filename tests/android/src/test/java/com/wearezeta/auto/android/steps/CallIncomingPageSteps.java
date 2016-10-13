@@ -7,6 +7,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.When;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
+
 import static org.junit.Assert.assertTrue;
 
 public class CallIncomingPageSteps {
@@ -31,15 +32,16 @@ public class CallIncomingPageSteps {
         String subtitle = isVideoCall == null ? "Calling" : "Video calling";
         if (not == null) {
             assertTrue("Incoming call not visible", getPage().waitUntilVisible(subtitle));
-        }else{
+        } else {
             assertTrue("Incoming call should not be visible", getPage().waitUntilNotVisible(subtitle));
         }
     }
+
     /**
      * Ignores an incoming call
      *
-     * @throws Exception
      * @param action either 'accept' or 'ignore'
+     * @throws Exception
      * @step. ^I swipe to (ignore|accept) the call$
      */
     @When("^I swipe to (ignore|accept) the call$")

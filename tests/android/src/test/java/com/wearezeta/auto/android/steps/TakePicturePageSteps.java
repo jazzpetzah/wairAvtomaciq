@@ -80,7 +80,7 @@ public class TakePicturePageSteps {
                         getTakePicturePage()::isChangePhotoButtonInvisible;
                 break;
             case "gallery camera":
-                verificationFunc =( shouldNotSee == null) ? getTakePicturePage()::isGalleryCameraButtonVisible :
+                verificationFunc = (shouldNotSee == null) ? getTakePicturePage()::isGalleryCameraButtonVisible :
                         getTakePicturePage()::isGalleryCameraButtonInvisible;
                 break;
             default:

@@ -98,7 +98,6 @@ public class GiphySteps {
     }
 
 
-
     /**
      * Tap on Giphy Grid view close button
      *

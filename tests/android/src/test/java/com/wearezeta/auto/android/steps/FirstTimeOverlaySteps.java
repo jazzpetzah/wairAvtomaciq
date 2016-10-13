@@ -35,9 +35,8 @@ public class FirstTimeOverlaySteps {
     /**
      * Tap Got It button
      *
-     * @step. ^I tap Got It button on First Time overlay$
-     *
      * @throws Exception
+     * @step. ^I tap Got It button on First Time overlay$
      */
     @When("^I tap Got It button on First Time overlay$")
     public void ITapGotItButton() throws Exception {
@@ -47,9 +46,8 @@ public class FirstTimeOverlaySteps {
     /**
      * Accept the First Time overlay as soon as it is visible
      *
-     * @step. ^I accept First Time overlay as soon as it is visible$
-     *
      * @throws Exception
+     * @step. ^I accept First Time overlay as soon as it is visible$
      */
     @And("^I accept First Time overlay as soon as it is visible$")
     public void IAcceptTheOverLayWhenItIsVisible() throws Exception {

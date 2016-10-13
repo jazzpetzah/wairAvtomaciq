@@ -11,21 +11,21 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
  * The page that appears directly after a user logs in using an email
  * and password, IF that user has not already attached a phone number
  * to their account.
- * @author deancook
  *
+ * @author deancook
  */
 
 public class AddPhoneNumberPage extends AndroidPage {
 
-	public static final By idNotNowButton = By.id("ttv__not_now");
+    public static final By idNotNowButton = By.id("ttv__not_now");
 
-	public AddPhoneNumberPage(Future<ZetaAndroidDriver> lazyDriver)
-		throws Exception {
-		super(lazyDriver);
-	}
-	
-	public void tapNotNowButton() throws Exception {
-		getElement(idNotNowButton).click();
-	}
+    public AddPhoneNumberPage(Future<ZetaAndroidDriver> lazyDriver)
+            throws Exception {
+        super(lazyDriver);
+    }
+
+    public void tapNotNowButton() throws Exception {
+        getElement(idNotNowButton).click();
+    }
 
 }

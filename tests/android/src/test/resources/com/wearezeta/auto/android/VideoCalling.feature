@@ -39,7 +39,7 @@ Feature: VideoCalling
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
-    
+
   @C36362 @calling_basic @rc
   Scenario Outline: Verify I can accept Video call from locked device
     Given There are 2 users where <Name> is me

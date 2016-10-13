@@ -124,7 +124,7 @@ public class SettingsPage extends AndroidPage {
         emailEdit.clear();
         emailEdit.sendKeys(newValue);
 
-        if(password.isPresent()) {
+        if (password.isPresent()) {
             getElement(idEmailPasswordInput, "The password input is not visible").sendKeys(password.get());
         }
         getElement(xpathOKButton).click();

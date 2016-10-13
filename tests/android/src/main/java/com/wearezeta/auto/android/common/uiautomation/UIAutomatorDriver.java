@@ -17,6 +17,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
+
 import java.io.StringReader;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -104,7 +105,6 @@ public class UIAutomatorDriver {
 
     /**
      * This method can only be used externally together with getElementIfPresent one
-     *
      */
     public void clickElement(Node node) throws Exception {
         final NamedNodeMap attributes = node.getAttributes();

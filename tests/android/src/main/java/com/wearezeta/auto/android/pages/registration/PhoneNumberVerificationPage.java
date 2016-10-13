@@ -37,13 +37,13 @@ public class PhoneNumberVerificationPage extends AndroidPage {
 
     public void inputVerificationCode(String verificationCode) throws Exception {
         final Optional<WebElement> codeInput = getElementIfDisplayed(idCodeInput, 15);
-        if (codeInput.isPresent()){
+        if (codeInput.isPresent()) {
             codeInput.get().sendKeys(verificationCode);
         } else {
             final Optional<WebElement> oldCodeInput = getElementIfDisplayed(idCodeOldInput, 15);
             if (oldCodeInput.isPresent()) {
                 oldCodeInput.get().sendKeys(verificationCode);
-            } else{
+            } else {
                 getElement(idCodeInput, "Verification code input has not been shown in time", 1);
             }
         }

@@ -8,24 +8,24 @@ import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.common.performance.BatteryPerfReportModel;
 
 public class AndroidBatteryPerfReportModel extends BatteryPerfReportModel {
-	private static final Logger log = ZetaLogger
-			.getLog(AndroidBatteryPerfReportModel.class.getSimpleName());
+    private static final Logger log = ZetaLogger
+            .getLog(AndroidBatteryPerfReportModel.class.getSimpleName());
 
-	public AndroidBatteryPerfReportModel() {
-		try {
-			this.setBuildNumber(AndroidCommonUtils.readClientVersionFromAdb());
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(e.getMessage());
-		}
+    public AndroidBatteryPerfReportModel() {
+        try {
+            this.setBuildNumber(AndroidCommonUtils.readClientVersionFromAdb());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+        }
 
-		try {
-			final ClientDeviceInfo deviceInfo = AndroidCommonUtils
-					.readDeviceInfo();
-			loadValuesFromDeviceInfo(deviceInfo);
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(e.getMessage());
-		}
-	}
+        try {
+            final ClientDeviceInfo deviceInfo = AndroidCommonUtils
+                    .readDeviceInfo();
+            loadValuesFromDeviceInfo(deviceInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+        }
+    }
 }
