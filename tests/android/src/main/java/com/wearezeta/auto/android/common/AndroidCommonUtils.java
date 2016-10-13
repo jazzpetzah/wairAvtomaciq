@@ -36,11 +36,11 @@ public class AndroidCommonUtils extends CommonUtils {
     private static final Logger log = ZetaLogger.getLog(AndroidCommonUtils.class.getSimpleName());
 
     private static final String stagingBackend =
-        "[\"https://staging-nginz-https.zinfra.io\", \"https://staging-nginz-ssl.zinfra.io/await\", \"723990470614\"]";
+            "[\"https://staging-nginz-https.zinfra.io\", \"https://staging-nginz-ssl.zinfra.io/await\", \"723990470614\"]";
     private static final String edgeBackend =
-        "[\"https://edge-nginz-https.zinfra.io\", \"https://edge-nginz-ssl.zinfra.io/await\", \"258787940529\"]";
+            "[\"https://edge-nginz-https.zinfra.io\", \"https://edge-nginz-ssl.zinfra.io/await\", \"258787940529\"]";
     private static final String productionBackend =
-        "[\"https://prod-nginz-https.wire.com\", \"https://prod-nginz-ssl.wire.com/await\", \"782078216207\"]";
+            "[\"https://prod-nginz-https.wire.com\", \"https://prod-nginz-ssl.wire.com/await\", \"782078216207\"]";
 
     private static final String BACKEND_JSON = "customBackend.json";
     private static final String BACKEND_FILE_LOCATION = "/mnt/sdcard/customBackend.json";
@@ -49,24 +49,24 @@ public class AndroidCommonUtils extends CommonUtils {
     private static final String IMAGE_FOR_VIDEO_GENERATION = "about_page_logo_iPad.png";
 
     public static final String[] STANDARD_WIRE_PERMISSIONS = new String[]{
-        "android.permission.WRITE_EXTERNAL_STORAGE",
-        "android.permission.READ_CONTACTS",
-        "android.permission.RECORD_AUDIO",
-        "android.permission.CAMERA",
-        "android.permission.READ_PHONE_STATE",
-        "android.permission.ACCESS_FINE_LOCATION"
+            "android.permission.WRITE_EXTERNAL_STORAGE",
+            "android.permission.READ_CONTACTS",
+            "android.permission.RECORD_AUDIO",
+            "android.permission.CAMERA",
+            "android.permission.READ_PHONE_STATE",
+            "android.permission.ACCESS_FINE_LOCATION"
     };
 
     public static void executeAdb(final String cmdline) throws Exception {
         executeOsXCommand(new String[]{"/bin/bash", "-c",
-            ADB_PREFIX + "adb " + cmdline});
+                ADB_PREFIX + "adb " + cmdline});
     }
 
     public static void uploadPhotoToAndroid(String photoPathOnDevice)
-        throws Exception {
+            throws Exception {
         executeAdb(String.format("push %s %s", getDefaultUserImagePath(CommonUtils.class), photoPathOnDevice));
         executeAdb("shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d "
-            + "file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }");
+                + "file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }");
     }
 
     public static void unlockScreen() throws Exception {
@@ -111,8 +111,8 @@ public class AndroidCommonUtils extends CommonUtils {
 
     public static String readClientVersionFromAdb() throws Exception {
         final String output = getAdbOutput(String.format(
-            "shell dumpsys package %s | grep versionName", CommonUtils
-                .getAndroidPackageFromConfig(AndroidCommonUtils.class)));
+                "shell dumpsys package %s | grep versionName", CommonUtils
+                        .getAndroidPackageFromConfig(AndroidCommonUtils.class)));
         if (output.contains("=")) {
             return output.substring(output.indexOf("=") + 1, output.length());
         } else {
@@ -131,7 +131,7 @@ public class AndroidCommonUtils extends CommonUtils {
             return false;
         } else if (output.contains("Wi-Fi is enabled")) {
             final Pattern pattern = Pattern
-                .compile("mNetworkInfo (NetworkInfo: |\\[)?type: [^,]*, state: ([^,]*),");
+                    .compile("mNetworkInfo (NetworkInfo: |\\[)?type: [^,]*, state: ([^,]*),");
             final Matcher matcher = pattern.matcher(output);
             String state = "no info";
             while (matcher.find()) {
@@ -151,12 +151,12 @@ public class AndroidCommonUtils extends CommonUtils {
         String os = "Android";
         String osBuild = getPropertyFromAdb("ro.build.version.release");
         String deviceName = capitalizeManufacturerName(getPropertyFromAdb("ro.product.manufacturer"))
-            + " " + getPropertyFromAdb("ro.product.model");
+                + " " + getPropertyFromAdb("ro.product.model");
         String gsmNetworkType = getPropertyFromAdb("gsm.network.type");
         Boolean isWifiEnabled = isWifiEnabled();
 
         return new ClientDeviceInfo(os, osBuild, deviceName, gsmNetworkType,
-            isWifiEnabled);
+                isWifiEnabled);
     }
 
     public static String getPerfReportPathFromConfig(Class<?> c) throws Exception {
@@ -172,7 +172,7 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     public static String createBackendJSON(String bt)
-        throws FileNotFoundException, UnsupportedEncodingException {
+            throws FileNotFoundException, UnsupportedEncodingException {
         File file = new File(BACKEND_JSON);
         if (file.exists()) {
             FileUtils.deleteQuietly(file);
@@ -236,23 +236,23 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     public static Dimension getScreenSize(final ZetaAndroidDriver drv)
-        throws Exception {
+            throws Exception {
         final String output = getAdbOutput("shell dumpsys window");
         final Pattern patt = Pattern.compile("init=(\\d+)x(\\d+)");
         final Matcher m = patt.matcher(output);
         if (m.find()) {
             if (drv.getOrientation() == ScreenOrientation.LANDSCAPE) {
                 return new Dimension(Integer.parseInt(m.group(2)),
-                    Integer.parseInt(m.group(1)));
+                        Integer.parseInt(m.group(1)));
             } else {
                 return new Dimension(Integer.parseInt(m.group(1)),
-                    Integer.parseInt(m.group(2)));
+                        Integer.parseInt(m.group(2)));
             }
         } else {
             throw new AssertionError(
-                String.format(
-                    "Failed to get device screen dimensions from ADB output\n%s",
-                    output));
+                    String.format(
+                            "Failed to get device screen dimensions from ADB output\n%s",
+                            output));
         }
     }
 
@@ -267,7 +267,7 @@ public class AndroidCommonUtils extends CommonUtils {
      */
     public static int compareAndroidVersion(String targetVersion) throws Exception {
         final DefaultArtifactVersion deviceVersion =
-            new DefaultArtifactVersion(getPropertyFromAdb("ro.build.version.release"));
+                new DefaultArtifactVersion(getPropertyFromAdb("ro.build.version.release"));
         return deviceVersion.compareTo(new DefaultArtifactVersion(targetVersion));
     }
 
@@ -282,7 +282,7 @@ public class AndroidCommonUtils extends CommonUtils {
 
     public static boolean isAirplaneModeEnabled() throws Exception {
         return getAdbOutput("shell settings get global airplane_mode_on")
-            .trim().equals("1");
+                .trim().equals("1");
     }
 
     public static void setAirplaneMode(boolean expectedState) throws Exception {
@@ -290,14 +290,14 @@ public class AndroidCommonUtils extends CommonUtils {
             return;
         }
         executeAdb(String.format(
-            "shell settings put global airplane_mode_on %d",
-            expectedState ? 1 : 0));
+                "shell settings put global airplane_mode_on %d",
+                expectedState ? 1 : 0));
         executeAdb(String
-            .format("shell am broadcast -a android.intent.action.AIRPLANE_MODE --ez state %s",
-                expectedState ? "true" : "false"));
+                .format("shell am broadcast -a android.intent.action.AIRPLANE_MODE --ez state %s",
+                        expectedState ? "true" : "false"));
         assert (isAirplaneModeEnabled() == expectedState) : "ADB has failed to "
-            + (expectedState ? "enable" : "disable")
-            + " airplane mode on the device";
+                + (expectedState ? "enable" : "disable")
+                + " airplane mode on the device";
         // Let the app to understand that connectivity state has been changed
         Thread.sleep(3000);
     }
@@ -312,7 +312,7 @@ public class AndroidCommonUtils extends CommonUtils {
      */
     public static void installTestingGalleryApp(Class<?> c) throws Exception {
         final DefaultArtifactVersion deviceVersion =
-            new DefaultArtifactVersion(getPropertyFromAdb("ro.build.version.release"));
+                new DefaultArtifactVersion(getPropertyFromAdb("ro.build.version.release"));
         if (deviceVersion.compareTo(new DefaultArtifactVersion("4.3")) <= 0) {
             executeAdb(String.format("install -r %s/testing_gallery-debug.apk", getAndroidToolsPathFromConfig(c)));
         } else {
@@ -325,7 +325,7 @@ public class AndroidCommonUtils extends CommonUtils {
 
     public static void enableAutoAnswerCall(Class<?> c) throws Exception {
         executeAdb("shell am broadcast -a com.waz.zclient.intent.action.AUTO_ANSWER_CALL " +
-            "--ez AUTO_ANSWER_CALL_EXTRA_KEY true");
+                "--ez AUTO_ANSWER_CALL_EXTRA_KEY true");
     }
 
     public static boolean isAppInForeground(String packageId, long timeoutMillis) throws Exception {
@@ -369,21 +369,21 @@ public class AndroidCommonUtils extends CommonUtils {
      */
     public static void openLinkInChrome(String url) throws Exception {
         executeAdb(String
-            .format("shell am start -a android.intent.action.VIEW "
-                + "-n com.android.chrome/com.google.android.apps.chrome.Main "
-                + "-d \"%s\"", url));
+                .format("shell am start -a android.intent.action.VIEW "
+                        + "-n com.android.chrome/com.google.android.apps.chrome.Main "
+                        + "-d \"%s\"", url));
     }
 
     public static int getBatteryCapacity() throws Exception {
         final String output = getAdbOutput(
-            "shell cat /sys/class/power_supply/battery/capacity").trim();
+                "shell cat /sys/class/power_supply/battery/capacity").trim();
         return Integer.parseInt(output);
     }
 
     @SuppressWarnings("unused")
     private static String getUidForPackage(String packageId) throws Exception {
         final String output = getAdbOutput(
-            String.format("shell dumpsys package %s", packageId)).trim();
+                String.format("shell dumpsys package %s", packageId)).trim();
         final String[] lines = output.split("\n");
         boolean isPackageSignatureFound = false;
         for (String line : lines) {
@@ -405,8 +405,8 @@ public class AndroidCommonUtils extends CommonUtils {
             }
         }
         throw new RuntimeException(String.format(
-            "UserId for the package '%s' cannot be found. Adb output:\n%s",
-            packageId, output));
+                "UserId for the package '%s' cannot be found. Adb output:\n%s",
+                packageId, output));
     }
 
     private static int getPackagePid(String packageId) throws Exception {
@@ -422,8 +422,8 @@ public class AndroidCommonUtils extends CommonUtils {
             }
         }
         throw new RuntimeException(String.format(
-            "PID for the package '%s' cannot be found. Adb output:\n%s",
-            packageId, output));
+                "PID for the package '%s' cannot be found. Adb output:\n%s",
+                packageId, output));
     }
 
     /**
@@ -437,8 +437,8 @@ public class AndroidCommonUtils extends CommonUtils {
     private static long getNetworkStatValue(final String packageId,
                                             final int columnNumber) throws Exception {
         final String output = getAdbOutput(
-            String.format("shell cat /proc/%d/net/dev",
-                getPackagePid(packageId))).trim();
+                String.format("shell cat /proc/%d/net/dev",
+                        getPackagePid(packageId))).trim();
         final String[] lines = output.split("\n");
         long result = 0;
         for (String line : lines) {
@@ -463,19 +463,19 @@ public class AndroidCommonUtils extends CommonUtils {
 
     public static String getBundleIdFromAPK(String path) throws Exception {
         assert new File(path).exists() : String.format(
-            "The file %s does not exist on local file system", path);
+                "The file %s does not exist on local file system", path);
         final String cmdLine = String.format("aapt dump badging \"%s\"", path);
         final Process process = Runtime.getRuntime().exec(
-            new String[]{"/bin/bash", "-c", cmdLine});
+                new String[]{"/bin/bash", "-c", cmdLine});
         if (process == null) {
             throw new RuntimeException(String.format(
-                "Failed to execute command line '%s'", cmdLine));
+                    "Failed to execute command line '%s'", cmdLine));
         }
         String output = "";
         BufferedReader in = null;
         try {
             in = new BufferedReader(new InputStreamReader(
-                process.getInputStream()));
+                    process.getInputStream()));
             final Pattern pattern = Pattern.compile("versionName='(.*)'");
             Matcher matcher = null;
             String s;
@@ -495,13 +495,13 @@ public class AndroidCommonUtils extends CommonUtils {
             }
         }
         throw new AssertionError(String.format(
-            "Package id cannot be parsed from aapt output:\n%s",
-            output.trim()));
+                "Package id cannot be parsed from aapt output:\n%s",
+                output.trim()));
     }
 
     public static void clearAllContacts() throws Exception {
         executeAdb("shell content delete "
-            + "--uri content://com.android.contacts/raw_contacts");
+                + "--uri content://com.android.contacts/raw_contacts");
     }
 
     /**
@@ -519,12 +519,12 @@ public class AndroidCommonUtils extends CommonUtils {
         accountTypes.put("com.google", MessagingUtils.getDefaultAccountName());
         for (Map.Entry<String, String> accountInfo : accountTypes.entrySet()) {
             executeAdb(String.format("shell content insert "
-                + "--uri content://com.android.contacts/raw_contacts "
-                + "--bind account_type:s:%s "
-                + "--bind account_name:s:%s", accountInfo.getKey(), accountInfo.getValue()));
+                    + "--uri content://com.android.contacts/raw_contacts "
+                    + "--bind account_type:s:%s "
+                    + "--bind account_name:s:%s", accountInfo.getKey(), accountInfo.getValue()));
             String idsList = getAdbOutput("shell content query "
-                + "--uri content://com.android.contacts/raw_contacts "
-                + "--projection _id");
+                    + "--uri content://com.android.contacts/raw_contacts "
+                    + "--projection _id");
             Pattern pattern = Pattern.compile("_id=(\\d+)");
             Matcher matcher = pattern.matcher(idsList);
             int value = 0;
@@ -543,30 +543,30 @@ public class AndroidCommonUtils extends CommonUtils {
     private static void bindContactNameById(List<Integer> ids, String name) throws Exception {
         for (int id : ids) {
             executeAdb(String.format("shell content insert "
-                + "--uri content://com.android.contacts/data "
-                + "--bind raw_contact_id:i:%s "
-                + "--bind mimetype:s:vnd.android.cursor.item/name "
-                + "--bind data1:s:'%s'", id, name));
+                    + "--uri content://com.android.contacts/data "
+                    + "--bind raw_contact_id:i:%s "
+                    + "--bind mimetype:s:vnd.android.cursor.item/name "
+                    + "--bind data1:s:'%s'", id, name));
         }
     }
 
     private static void bindContactEmailById(List<Integer> ids, String email) throws Exception {
         for (int id : ids) {
             executeAdb(String.format("shell content insert "
-                + "--uri content://com.android.contacts/data "
-                + "--bind raw_contact_id:i:%s "
-                + "--bind mimetype:s:vnd.android.cursor.item/email_v2 "
-                + "--bind data1:s:'%s'", id, email));
+                    + "--uri content://com.android.contacts/data "
+                    + "--bind raw_contact_id:i:%s "
+                    + "--bind mimetype:s:vnd.android.cursor.item/email_v2 "
+                    + "--bind data1:s:'%s'", id, email));
         }
     }
 
     private static void bindContactPhoneNumberById(List<Integer> ids, PhoneNumber phoneNumber) throws Exception {
         for (int id : ids) {
             executeAdb(String.format("shell content insert "
-                + "--uri content://com.android.contacts/data "
-                + "--bind raw_contact_id:i:%s "
-                + "--bind mimetype:s:vnd.android.cursor.item/phone_v2 "
-                + "--bind data1:s:%s", id, phoneNumber.toString()));
+                    + "--uri content://com.android.contacts/data "
+                    + "--bind raw_contact_id:i:%s "
+                    + "--bind mimetype:s:vnd.android.cursor.item/phone_v2 "
+                    + "--bind data1:s:%s", id, phoneNumber.toString()));
         }
     }
 
@@ -597,14 +597,14 @@ public class AndroidCommonUtils extends CommonUtils {
 
     public static void broadcastInvitationCode(String code) throws Exception {
         executeAdb(String.format("shell am broadcast -a com.android.vending.INSTALL_REFERRER "
-            + "-n \"%s/com.waz.zclient.broadcast.ReferralBroadcastReceiver\" "
-            + "--es referrer \"invite-%s\"", getAndroidPackageFromConfig(AndroidCommonUtils.class), code));
+                + "-n \"%s/com.waz.zclient.broadcast.ReferralBroadcastReceiver\" "
+                + "--es referrer \"invite-%s\"", getAndroidPackageFromConfig(AndroidCommonUtils.class), code));
     }
 
     public static void installApp(File path) throws Exception {
         if (!path.isFile()) {
             throw new IllegalArgumentException(String.format(
-                "Please make sure that the file '%s' exists and is accessible", path.getCanonicalPath()));
+                    "Please make sure that the file '%s' exists and is accessible", path.getCanonicalPath()));
         }
         executeAdb(String.format("install -r %s", path.getCanonicalPath()));
     }
@@ -632,7 +632,7 @@ public class AndroidCommonUtils extends CommonUtils {
         if (isVideo) {
             String imagesDirectoryPath = getImagesPathFromConfig(CommonUtils.class);
             CommonUtils.generateVideoFile(basePath + File.separator + fileFullName, size, imagesDirectoryPath
-                + IMAGE_FOR_VIDEO_GENERATION);
+                    + IMAGE_FOR_VIDEO_GENERATION);
         } else {
             CommonUtils.createRandomAccessFile(basePath + File.separator + fileFullName, size);
         }
@@ -665,20 +665,20 @@ public class AndroidCommonUtils extends CommonUtils {
         executeAdb(String.format("shell rm %s", destinationFilePath));
         executeAdb(String.format("push %s %s", sourceFilePath, destinationFilePath));
         executeAdb(String.format("shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d file://%s",
-            destinationFilePath));
+                destinationFilePath));
 
         // The reason way do 2 times(workaround), is because in different env of adb, it handle the '"' in different way
         // Need to handle all conditions
         executeAdb(String.format("shell content update " +
-            "--uri content://media/external/file " +
-            "--bind _display_name:s:'%s' " +
-            "--bind date_added:i:%s " +
-            "--where 'title=\\\"%s\\\"'", fileFullName, futureTimestamp, fileName));
+                "--uri content://media/external/file " +
+                "--bind _display_name:s:'%s' " +
+                "--bind date_added:i:%s " +
+                "--where 'title=\\\"%s\\\"'", fileFullName, futureTimestamp, fileName));
         executeAdb(String.format("shell content update " +
-            "--uri content://media/external/file " +
-            "--bind _display_name:s:'%s' " +
-            "--bind date_added:i:%s " +
-            "--where 'title=\"%s\"'", fileFullName, futureTimestamp, fileName));
+                "--uri content://media/external/file " +
+                "--bind _display_name:s:'%s' " +
+                "--bind date_added:i:%s " +
+                "--where 'title=\"%s\"'", fileFullName, futureTimestamp, fileName));
     }
 
     public static void pullFileFromSdcardDownload(String fileFullName) throws Exception {
@@ -703,7 +703,7 @@ public class AndroidCommonUtils extends CommonUtils {
         String sourceFilePath = sdcardBasePath + fileFullName;
         executeAdb(String.format("shell rm %s", sourceFilePath));
         executeAdb(String.format("shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d file://%s",
-            sourceFilePath));
+                sourceFilePath));
     }
 
     // *** Read https://github.com/majido/clipper for more details
@@ -714,7 +714,7 @@ public class AndroidCommonUtils extends CommonUtils {
 
     private static void ensureClipperServiceIsRunning() throws Exception {
         final DefaultArtifactVersion deviceVersion =
-            new DefaultArtifactVersion(getPropertyFromAdb("ro.build.version.release"));
+                new DefaultArtifactVersion(getPropertyFromAdb("ro.build.version.release"));
 
         // Related issue for Android 4.2: http://stackoverflow
         // .com/questions/13588668/adb-throws-securityexception-while-starting-service-after-system-update-to-nexus
@@ -763,7 +763,7 @@ public class AndroidCommonUtils extends CommonUtils {
 
     public static void changeAccelerometerState(boolean isEnabled) throws Exception {
         executeAdb(String.format("shell content insert --uri content://settings/system " +
-            "--bind name:s:accelerometer_rotation --bind value:i:%s", isEnabled ? "1" : "0"));
+                "--bind name:s:accelerometer_rotation --bind value:i:%s", isEnabled ? "1" : "0"));
     }
 
     // ***
@@ -820,7 +820,7 @@ public class AndroidCommonUtils extends CommonUtils {
         final String packageName = CommonUtils.getAndroidPackageFromConfig(AndroidCommonUtils.class);
         final String output = AndroidCommonUtils.getAdbOutput(String.format("shell run-as %s ls", packageName));
         final Pattern pattern = (checkSupport) ? Pattern.compile("\\b" + Pattern.quote("is unknown") + "\\b") :
-            Pattern.compile("\\b" + Pattern.quote("not debuggable") + "\\b");
+                Pattern.compile("\\b" + Pattern.quote("not debuggable") + "\\b");
         return !pattern.matcher(output).find();
     }
 
@@ -838,7 +838,7 @@ public class AndroidCommonUtils extends CommonUtils {
 
     public static void openWebsiteFromADB(String url) throws Exception {
         AndroidCommonUtils.executeAdb(String.
-            format("shell am start -a android.intent.action.VIEW -d %s", url));
+                format("shell am start -a android.intent.action.VIEW -d %s", url));
     }
 
     public static boolean isKeyboardVisible() throws Exception {

@@ -1590,9 +1590,9 @@ public class CommonAndroidSteps {
      * Check for support debugging by device because of bug: https://code.google.com/p/android/issues/detail?id=58373
      *
      * @throws Exception
-     * @step. ^(?:Wire|Device) debug mode (enabled|supported)$
+     * @step. ^(?:Wire|Device) debug mode is (enabled|supported)$
      */
-    @Given("^(?:Wire|Device) debug mode (enabled|supported)$")
+    @Given("^(?:Wire|Device) debug mode is (enabled|supported)$")
     public void WireEnableDebugMode(String checkMode) throws Exception {
         if (!AndroidCommonUtils.isWireDebugModeEnabled(checkMode.equals("supported"))) {
             throw new PendingException(String.format("Debug mode is not '%s'. Rerun on other device or check build.", checkMode));
