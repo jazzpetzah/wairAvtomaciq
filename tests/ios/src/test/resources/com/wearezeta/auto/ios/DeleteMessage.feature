@@ -109,6 +109,8 @@ Feature: Delete Message
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap File Transfer button from input tools
+    # Wait for transition
+    And I wait for 2 seconds
     And I tap file transfer menu item <FileName>
     # Wait to be ready uploading for slower jenkins slaves
     And I wait for 10 seconds
