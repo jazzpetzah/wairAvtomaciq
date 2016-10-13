@@ -205,6 +205,11 @@ public class SEBridge {
         getOrAddDevice(userFrom, deviceName).shareLocation(convId);
     }
 
+    public void setEphemeraMode(ClientUser userFrom, String convId, long expirationMilliseconds, String deviceName)
+            throws Exception {
+        getOrAddDevice(userFrom, deviceName).setEphemeraMode(convId, expirationMilliseconds);
+    }
+
     public ActorMessage.MessageInfo[] getConversationMessages(ClientUser userFrom, String convId, String deviceName)
             throws Exception {
         if (deviceName == null) {

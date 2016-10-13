@@ -64,7 +64,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
                 getDriver().tapSendButton();
                 break;
             case "cursor":
-                getElement(ConversationViewPage.idCursorSendButton).click();
+                getElement(ConversationViewPage.idCursorSendButtonContainer).click();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify send button type '%s'", sendFrom));
