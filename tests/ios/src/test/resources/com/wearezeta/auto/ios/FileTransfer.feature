@@ -82,6 +82,8 @@ Feature: File Transfer
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap File Transfer button from input tools
+    # Wait for the placeholder
+    And I wait for 2 seconds
     And I tap file transfer menu item <ItemName>
     Then I see file transfer placeholder
     When I type the default message and send it
@@ -99,6 +101,8 @@ Feature: File Transfer
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap File Transfer button from input tools
+    # Wait for the placeholder
+    And I wait for 2 seconds
     And I tap file transfer menu item <ItemName>
     Then I verify the alert contains text <ExpectedAlertText>
     When I accept alert
