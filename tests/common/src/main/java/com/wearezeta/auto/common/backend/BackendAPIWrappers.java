@@ -8,6 +8,7 @@ import com.wearezeta.auto.common.email.PasswordResetMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.image_send.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.common.onboarding.AddressBook;
 import com.wearezeta.auto.common.onboarding.Card;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
@@ -58,6 +59,25 @@ public final class BackendAPIWrappers {
             expectedHeaders.putAll(additionalExpectedHeaders);
         }
         return mbox.getMessage(expectedHeaders, ACTIVATION_TIMEOUT);
+    }
+
+    private static <T> T retryOnBackendFailure(int retriesCount,
+                                               FunctionalInterfaces.ISupplierWithException<T> r) throws Exception {
+        int ntry = 1;
+        BackendRequestException savedException = null;
+        while (ntry <= retriesCount) {
+            try {
+                return r.call();
+            } catch (BackendRequestException e) {
+                if (e.getReturnCode() != 500) {
+                    throw e;
+                }
+                savedException = e;
+                Thread.sleep(1000 * ntry);
+            }
+            ntry++;
+        }
+        throw savedException;
     }
 
     /**
@@ -622,7 +642,12 @@ public final class BackendAPIWrappers {
                 final String postedImageId = entry.getKey().getJSONObject("data").getString("id");
                 processedAssets.put(postedImageId, entry.getValue());
             }
-            BackendREST.updateSelfInfo(receiveAuthToken(user), null, processedAssets, null);
+            retryOnBackendFailure(2,
+                    () -> {
+                        BackendREST.updateSelfInfo(receiveAuthToken(user), null, processedAssets, null);
+                        return null;
+                    }
+            );
         }
 
     }
