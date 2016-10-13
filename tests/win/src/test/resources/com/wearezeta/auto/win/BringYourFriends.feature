@@ -5,8 +5,9 @@ Feature: Bring Your Friends
     Given There are 1 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I am signed in properly
-    Then I click button to bring friends from Gmail
+    When I am signed in properly
+    Then I open search by clicking the people button
+    And I click button to bring friends from Gmail
     And I see Google login popup
     And I sign up at Google with email <Gmail> and password <GmailPassword>
     Then I see Search is opened
