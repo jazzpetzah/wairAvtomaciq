@@ -166,8 +166,7 @@ Feature: Video Calling
     Then I see Switch Camera button on Video Calling overlay
     When <Contact2> starts a video call to me
     And I tap Accept Video button on Calling overlay
-    Then I see Mute button on Video Calling overlay
-    And <Contact> verifies that call status to Myself is changed to destroyed in <Timeout> seconds
+    Then <Contact> verifies that call status to Myself is changed to destroyed in <Timeout> seconds
     And <Contact2> verifies that call status to Myself is changed to active in <Timeout> seconds
 
     Examples:
