@@ -70,67 +70,6 @@ public class AutoconnectPageSteps {
         addressbookProvisioner.clearContacts();
     }
 
-    //save all contacts that are in AB
-    private List<ABContact> contactsInAddressbook = new ArrayList<>();
-
-    /**
-     * Reads the list of contacts out of the Address Book
-     *
-     * @throws Exception
-     * @step. ^I read list of contacts in Address Book$
-     */
-    @Given("^I read list of contacts in Address Book$")
-    public void IReadListOfContactsInAddressbook() throws Exception {
-        contactsInAddressbook = addressbookProvisioner.getContacts();
-    }
-
-    //save the batches of users they get devided in to
-    private List<List<ABContact>> contactBatches = new ArrayList<>();
-
-    /**
-     * Separates the address book contacts list into number of chunks
-     *
-     * @param numberOfChunks number of chunks adressbook get divided into
-     * @throws Exception
-     * @step. ^I separate list of contacts into (\d+) chunks$
-     */
-    @Given("^I separate list of contacts into (\\d+) chunks$")
-    public void ISeparateListOfContactsIntoChunks(int numberOfChunks) throws Exception {
-        if (contactsInAddressbook.isEmpty()) {
-            throw new IllegalStateException("Read list of contacts in Address Book first!");
-        }
-        int sizeOfBatch = contactsInAddressbook.size() / numberOfChunks;
-        for (int i = 0; i < contactsInAddressbook.size(); i += sizeOfBatch) {
-            contactBatches.add(contactsInAddressbook.subList(i, Math.min(i + sizeOfBatch, contactsInAddressbook.size())));
-        }
-    }
-
-    //save the users that are registered at BE to verify they get autoconnected
-    private List<ClientUser> usersToAutoconnect = new ArrayList<>();
-
-    /**
-     * Picks a number of random user of a specific batch to register at the BE
-     *
-     * @param numberContactsToRegister number of contacts to register
-     * @param numberOfChunk            number of the batch to register from. the index starts at 0
-     * @throws Exception
-     * @step. ^I pick (\d+) random contact? from chunk (\d+) to register at BE$
-     */
-    @Then("^I pick (\\d+) random contact? from chunk (\\d+) to register at BE$")
-    public void IPickRandomContactFromChunkToRegisterAtBE(int numberContactsToRegister, int numberOfChunk)
-            throws Exception {
-        if (contactBatches.isEmpty()) {
-            throw new IllegalStateException("Separate the list of contacts into batches first!");
-        }
-        for (int i = 1; i <= numberContactsToRegister; i++) {
-            int randomNumber = new Random().nextInt(contactBatches.get(numberOfChunk - 1).size());
-            ABContact contactToRegister = contactBatches.get(numberOfChunk - 1).get(randomNumber);
-            ClientUser userToRegsiter = usrMgr.findUserByNameOrNameAlias(contactToRegister.getName());
-            usrMgr.createSpecificUsersOnBackend(Collections.singletonList(userToRegsiter), RegistrationStrategy.ByPhoneNumberOnly);
-            usersToAutoconnect.add(userToRegsiter);
-        }
-    }
-
     /**
      * Uploads name and phone number of contact to the simulator addressbook
      *
@@ -180,25 +119,5 @@ public class AutoconnectPageSteps {
             ABContact contact = new ABContact(name, Optional.empty(), Optional.of(Collections.singletonList(phoneNumber)));
             addressbookProvisioner.addContacts(Collections.singletonList(contact));
         }
-    }
-
-    /**
-     * Checks that the i-th autoconnected user is seen in list
-     *
-     * @param numberOfUserToGetAutoconnected the number of the user that gets autoconnected and should appear at the list
-     * @throws Exception
-     * @step. ^I see (\d+) autoconnection in conversations list$
-     */
-    @Then("^I see (\\d+)(?:st|nd|rd|th) autoconnection in conversations list$")
-    public void ISeeAutoconnectionInConversationsList(int numberOfUserToGetAutoconnected) throws Exception {
-        if (usersToAutoconnect.isEmpty()) {
-            throw new IllegalStateException("Pick a contact first from a batch to register at BE to get autoconnected!");
-        }
-        String user = usrMgr.replaceAliasesOccurences(usersToAutoconnect.get(numberOfUserToGetAutoconnected - 1).toString(),
-                ClientUsersManager.FindBy.NAME_ALIAS);
-        commonSteps.WaitUntilContactIsFoundInSearch(usrMgr.getSelfUserOrThrowError().getName(), user);
-        Assert.assertTrue(String.format("The conversation '%s' is not visible in the conversation list",
-                user), getConversationsListPage().isConversationInList(user));
-
     }
 }

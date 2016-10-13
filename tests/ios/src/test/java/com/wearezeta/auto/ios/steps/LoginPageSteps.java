@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.pages.FirstTimeOverlay;
 import com.wearezeta.auto.ios.tools.FastLoginContainer;
 import org.junit.Assert;
@@ -61,6 +62,7 @@ public class LoginPageSteps {
     }
 
     private void emailLoginSequence(String login, String password) throws Exception {
+        final boolean isSimulator = CommonUtils.getIsSimulatorFromConfig(getClass());
         getLoginPage().switchToLogin();
         if (FastLoginContainer.getInstance().isEnabled()) {
             return;
@@ -69,20 +71,37 @@ public class LoginPageSteps {
         getLoginPage().setPassword(password);
         getLoginPage().tapLoginButton();
         getLoginPage().waitForLoginToFinish();
-        getLoginPage().acceptAlert();
+        if (isSimulator) {
+            getLoginPage().acceptAlert();
+        } else {
+            getLoginPage().acceptAlertIfVisible();
+        }
         getFirstTimeOverlayPage().accept();
-        getLoginPage().dismissSettingsWarning();
+        if (isSimulator) {
+            getLoginPage().dismissSettingsWarning();
+        } else {
+            getLoginPage().dismissSettingsWarningIfVisible();
+        }
     }
 
     private void phoneLoginSequence(final PhoneNumber number) throws Exception {
+        final boolean isSimulator = CommonUtils.getIsSimulatorFromConfig(getClass());
         getLoginPage().switchToLogin();
         getLoginPage().switchToPhoneLogin();
         getRegistrationPage().inputPhoneNumber(number);
         getLoginPage().inputLoginCode(number);
         getLoginPage().waitForLoginToFinish();
-        getLoginPage().acceptAlert();
+        if (isSimulator) {
+            getLoginPage().acceptAlert();
+        } else {
+            getLoginPage().acceptAlertIfVisible();
+        }
         getFirstTimeOverlayPage().accept();
-        getLoginPage().dismissSettingsWarning();
+        if (isSimulator) {
+            getLoginPage().dismissSettingsWarning();
+        } else {
+            getLoginPage().dismissSettingsWarningIfVisible();
+        }
     }
 
     /**

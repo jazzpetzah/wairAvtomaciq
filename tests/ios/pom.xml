@@ -17,7 +17,7 @@
         <Url>http://127.0.0.1:4723/wd/hub</Url>
         <appPath>/Project/ZClient_ios.app</appPath>
         <oldAppPath></oldAppPath>
-        <platformVersion>9.3</platformVersion>
+        <platformVersion>10.0</platformVersion>
         <appName>Wire</appName>
         <isSimulator>true</isSimulator>
         <driverTimeoutSeconds>7</driverTimeoutSeconds>

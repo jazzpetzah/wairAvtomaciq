@@ -29,6 +29,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.logging.LogEntry;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 
 @RunWith(Parameterized.class)
 public class PickleJarInheritedTest extends PickleJarTest {
@@ -131,6 +132,9 @@ public class PickleJarInheritedTest extends PickleJarTest {
     }
 
     private String tailBrowserLog(int maxLogTailSize) throws InterruptedException, ExecutionException, TimeoutException {
+        if (!WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
+            return "No tailed log available";
+        }
         try {
             List<LogEntry> browserLog = lifecycle.getContext().getBrowserLog();
             if (browserLog.size() >= maxLogTailSize) {
@@ -147,6 +151,10 @@ public class PickleJarInheritedTest extends PickleJarTest {
 
     private void checkLogForErrors() throws Exception {
         List<LogEntry> browserLog = new ArrayList<>();
+        if (!WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
+            LOG.warn("No error log check available");
+            return;
+        }
         try {
             browserLog = lifecycle.getContext().getBrowserLog();
             browserLog = browserLog.stream()
@@ -164,7 +172,8 @@ public class PickleJarInheritedTest extends PickleJarTest {
                             -> !entry.getMessage().contains("/login") && !entry.getMessage().contains("403"))
                     // filter already used email on registration
                     .filter((entry)
-                            -> !entry.getMessage().contains("/register?challenge_cookie=true") && !entry.getMessage().contains("409"))
+                            -> !entry.getMessage().contains("/register?challenge_cookie=true") && !entry.getMessage().contains(
+                            "409"))
                     // filter ignored image previews
                     .filter((entry)
                             -> !entry.getMessage().contains("Ignored image preview"))
@@ -176,7 +185,8 @@ public class PickleJarInheritedTest extends PickleJarTest {
                             -> !entry.getMessage().contains("cast_sender.js"))
                     // filter spotify
                     .filter((entry)
-                            -> !entry.getMessage().contains("/service/version.json") && !entry.getMessage().contains("Failed to load resource"))
+                            -> !entry.getMessage().contains("/service/version.json") && !entry.getMessage().contains(
+                            "Failed to load resource"))
                     // filter removed temporary devices
                     .filter((entry)
                             -> !entry.getMessage().contains("Caused by: Local client does not exist on backend"))
@@ -187,7 +197,8 @@ public class PickleJarInheritedTest extends PickleJarTest {
                             -> !entry.getMessage().contains("User has reached the maximum of allowed clients"))
                     // filter broken sessions
                     .filter((entry)
-                            -> !entry.getMessage().contains("broken or out of sync. Reset the session and decryption is likely to work again."))
+                            -> !entry.getMessage().contains(
+                                    "broken or out of sync. Reset the session and decryption is likely to work again."))
                     .filter((entry)
                             -> !entry.getMessage().contains("and we have client ID"))
                     .filter((entry)

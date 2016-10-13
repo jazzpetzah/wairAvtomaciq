@@ -13,6 +13,7 @@ Feature: Sign Out
     When I open preferences by clicking the gear button
     Then I see username <Name> in account preferences
     And I see user email <Email> in account preferences
+    And I close preferences
     When I open conversation with <GroupChatName>
     And I write message <Message>
     And I send message
@@ -26,11 +27,13 @@ Feature: Sign Out
     And I click logout button on clear data dialog
     And I see Sign In page
     And I Sign in using login <Email3> and password <Password3>
-    And I see first time experience with watermark
-    And I confirm keeping picture on Welcome page
     And I am signed in properly
+    And I see first time experience with watermark
+    When I open search by clicking the people button
     Then I see Search is opened
     And I see Bring Your Friends or Invite People button
+    When I close People Picker
+    And I open preferences by clicking the gear button
     Then I see username <Contact3> in account preferences
     And I see user email <Email3> in account preferences
     And I do not see Contact list with name <GroupChatName>

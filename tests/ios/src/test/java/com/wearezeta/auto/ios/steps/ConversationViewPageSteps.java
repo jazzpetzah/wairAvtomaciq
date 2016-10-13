@@ -6,7 +6,6 @@ import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
-import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import cucumber.api.java.en.And;
 import org.apache.commons.lang3.text.WordUtils;
@@ -27,10 +26,6 @@ public class ConversationViewPageSteps {
 
     private ConversationViewPage getConversationViewPage() throws Exception {
         return pagesCollection.getPage(ConversationViewPage.class);
-    }
-
-    private OtherUserPersonalInfoPage getOtherUserPersonalInfoPage() throws Exception {
-        return pagesCollection.getPage(OtherUserPersonalInfoPage.class);
     }
 
     @When("^I see conversation view page$")
@@ -83,15 +78,22 @@ public class ConversationViewPageSteps {
     /**
      * Verify whether the particular system message is visible in the conversation view
      *
-     * @param expectedMsg the expected system message. may contyain user name aliases
+     * @param expectedMsg  the expected system message. may contyain user name aliases
+     * @param shouldNotSee equals to null if the message should be visible
      * @throws Exception
-     * @step. ^I see "(.*)" system message in the conversation view$
+     * @step. ^I (do not )?see "(.*)" system message in the conversation view$
      */
-    @Then("^I see \"(.*)\" system message in the conversation view$")
-    public void ISeeSystemMessage(String expectedMsg) throws Exception {
+    @Then("^I (do not )?see \"(.*)\" system message in the conversation view$")
+    public void ISeeSystemMessage(String shouldNotSee, String expectedMsg) throws Exception {
         expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
-        Assert.assertTrue(String.format("The expected system message '%s' is not visible in the conversation",
-                expectedMsg), getConversationViewPage().isSystemMessageVisible(expectedMsg));
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("The expected system message '%s' is not visible in the conversation",
+                    expectedMsg), getConversationViewPage().isSystemMessageVisible(expectedMsg));
+        } else {
+            Assert.assertTrue(String.format(
+                    "The expected system message '%s' should not be visible in the conversation",
+                    expectedMsg), getConversationViewPage().isSystemMessageInvisible(expectedMsg));
+        }
     }
 
     @Then("^I see User (.*) Pinged message in the conversation$")
@@ -165,22 +167,22 @@ public class ConversationViewPageSteps {
         if (expectedCount == 0) {
             if (expectedMsg.isPresent()) {
                 Assert.assertTrue(
-                        String.format("There are some '%s' messages in the conversation, while zero is expected",
+                        String.format("There are some '%s' messages in the conversation, but zero is expected",
                                 expectedMsg.get()),
                         getConversationViewPage().waitUntilTextMessageIsNotVisible(expectedMsg.get()));
             } else {
-                Assert.assertTrue("There are some  messages in the conversation, while zero is expected",
+                Assert.assertTrue("There are some messages in the conversation, but zero is expected",
                         getConversationViewPage().waitUntilAllTextMessageAreNotVisible());
             }
         } else if (expectedCount >= 1) {
             if (expectedMsg.isPresent()) {
                 Assert.assertTrue(
-                        String.format("There are some '%s' messages in the conversation, while %d is expected",
-                                expectedMsg.get(), expectedCount),
+                        String.format("There are less than %d '%s' messages in the conversation, but %d is expected",
+                                expectedCount, expectedMsg.get(), expectedCount),
                         getConversationViewPage().waitUntilTextMessagesAreVisible(expectedMsg.get(), expectedCount));
             } else {
                 Assert.assertTrue(
-                        String.format("There are no messages in the conversation, while %d is expected",
+                        String.format("There are no messages in the conversation, but %d is expected",
                                 expectedCount),
                         getConversationViewPage().waitUntilAnyTextMessagesAreVisible(expectedCount));
             }
@@ -521,7 +523,7 @@ public class ConversationViewPageSteps {
     public void ISeeConversationWith(String contact) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("Conversation with %s is not visible", contact),
-                getConversationViewPage().isUserNameVisibleOnUpperToolbar(contact));
+                getConversationViewPage().isUserNameInUpperToolbarVisible(contact));
     }
 
     /**
@@ -665,8 +667,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap on THIS DEVICE link$")
     public void ITapThisDeviceLink() throws Exception {
-        //this is the fix because it can not locate system message label
-        getOtherUserPersonalInfoPage().openDeviceDetailsPage(1);
+        getConversationViewPage().tapThisDeviceLink();
     }
 
     /**
@@ -746,20 +747,6 @@ public class ConversationViewPageSteps {
     @Then("^I see Too many people alert$")
     public void ISee10PeopleAlert() throws Exception {
         Assert.assertTrue(getConversationViewPage().isTooManyPeopleAlertVisible());
-    }
-
-    /**
-     * Verify conversation name is displayed in Upper Toolbar
-     *
-     * @param convoName user or group chat name
-     * @throws Exception
-     * @step. ^I see conversation name (.*) in Upper Toolbar$
-     */
-    @Then("^I see conversation name (.*) in Upper Toolbar$")
-    public void ISeeUsernameInUpperToolbar(String convoName) throws Exception {
-        convoName = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
-        Assert.assertTrue(String.format("Conversation name '%s' is not displayed on Upper Toolbar", convoName),
-                getConversationViewPage().isUserNameInUpperToolbarVisible(convoName));
     }
 
     /**
@@ -1403,4 +1390,52 @@ public class ConversationViewPageSteps {
     public void ITapOnImageButtons(String buttonName) throws Exception {
         getConversationViewPage().tapImageButton(buttonName);
     }
+
+    /**
+     * Tap the corresponding button which invokes Emoji or Text keyboard
+     *
+     * @throws Exception
+     * @step. ^I tap (?:Emoji|Text) Keyboard button in conversation view$
+     */
+    @When("^I tap (?:Emoji|Text) Keyboard button in conversation view$")
+    public void TapEmojiKeyboardButton() throws Exception {
+        getConversationViewPage().tapEmojiKeyboardButton();
+    }
+
+    /**
+     * Tap the corresponding key on Emoji keyboard. Tap by name does not work properly there.
+     *
+     * @param keyIndex Keys enumeration starts at the top left corner and finishes at
+     *                 the bottom right corner of the keyboard. The first key has index 1
+     * @throws Exception
+     * @step. ^I tap number (\d+) key on Emoji Keyboard$
+     */
+    @When("^I tap key number (\\d+) on Emoji Keyboard$")
+    public void TapKeyOnEmojiKeyboard(int keyIndex) throws Exception {
+        getConversationViewPage().tapEmojiKeyboardKey(keyIndex);
+    }
+
+    /**
+     * Verify whether the particular text is present or not on message toolbox
+     *
+     * @param shouldNotSee equals to null if the text should be visible
+     * @param expectedText part of the text to verify for presence
+     * @throws Exception
+     * @step. ^I (do not )?see "(.*)" on the message toolbox in conversation view$
+     */
+    @Then("^I (do not )?see \"(.*)\" on the message toolbox in conversation view$")
+    public void ISeeTextOnToolbox(String shouldNotSee, String expectedText) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue(
+                    String.format("The expected '%s' text is not visible on the message toolbox", expectedText),
+                    getConversationViewPage().isMessageToolboxTextVisible(expectedText)
+            );
+        } else {
+            Assert.assertTrue(
+                    String.format("The expected '%s' text should not be visible on the message toolbox", expectedText),
+                    getConversationViewPage().isMessageToolboxTextInvisible(expectedText)
+            );
+        }
+    }
 }
+

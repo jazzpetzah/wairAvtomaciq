@@ -4,18 +4,20 @@ Feature: Rich Media
   Scenario Outline: I can send and play inline youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <DeviceName1>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
     And I type the "<YouTubeLink>" message and send it
+    And I see "<DeliveredLabel>" on the message toolbox in conversation view
     And I tap on media container in conversation view
     # Wait until web page is loaded
     And I wait for 5 seconds
     Then I see video player page is opened
 
     Examples:
-      | Name      | Contact   | YouTubeLink                                |
-      | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
+      | Name      | Contact   | YouTubeLink                                | DeviceName1 | DeliveredLabel |
+      | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU | device1     | Delivered      |
 
   @C3210 @rc @regression @IPv6 @fastLogin
   Scenario Outline: (MediaBar disappears on Simulator) Play/pause SoundCloud media link from the media bar
@@ -89,7 +91,6 @@ Feature: Rich Media
     And I scroll to the bottom of the conversation
     And I tap on media container in conversation view
     When I scroll to the bottom of the conversation
-    And I scroll to the bottom of the conversation
     Then I do not see media bar in the conversation view
 
     Examples:

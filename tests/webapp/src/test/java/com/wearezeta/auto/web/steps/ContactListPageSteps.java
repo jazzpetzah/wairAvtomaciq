@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.not;
 
 public class ContactListPageSteps {
 
@@ -41,7 +42,7 @@ public class ContactListPageSteps {
         this.context = context;
     }
 
-    @Given("^I verify a badge is shown on self profile button$")
+    @Given("^I verify a badge is shown on gear button$")
     public void ISeeBadgeOnSelfProfileButton() throws Exception {
         Assert.assertTrue("No badge visible.", context.getPagesCollection()
                 .getPage(ContactListPage.class).waitForBadgeVisible());
@@ -145,6 +146,8 @@ public class ContactListPageSteps {
      */
     @When("^I open preferences by clicking the gear button$")
     public void IOpenPreferences() throws Exception {
+        assertTrue("gear button is NOT clickable", 
+                context.getPagesCollection().getPage(ContactListPage.class).isPreferencesButtonClickable());
         context.getPagesCollection().getPage(ContactListPage.class).openPreferences();
     }
 
@@ -669,6 +672,20 @@ public class ContactListPageSteps {
     }
 
     /**
+     * Click the mute option
+     *
+     * @throws Exception
+     * @step. ^I click the option to mute in the options popover$
+     */
+    @When("^I click the option to mute in the options popover$")
+    public void IClickMuteButton() throws Exception {
+        Assert.assertTrue("Mute button is not clickable", context.getPagesCollection().getPage(ContactListPage.class)
+                .isMuteButtonClickable());
+        context.getPagesCollection().getPage(ContactListPage.class)
+                .clickMuteConversation();
+    }
+
+    /**
      * Click the leave option
      *
      * @throws Exception
@@ -907,5 +924,18 @@ public class ContactListPageSteps {
                 context.getPagesCollection().getPage(ContactListPage.class).isArchiveButtonClickable());
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickArchiveConversation();
+    }
+
+    @When("^I see unread number (\\d+) in page title$")
+    public void ISeeUnreadNumberInPageTitle(Integer number) throws Exception {
+        String pageTitle = context.getPagesCollection().getPage(ContactListPage.class).getPageTitle();
+        String unreadNumber = "(" + number + ")";
+        assertThat("Unread number is not visible in page title", pageTitle, containsString(unreadNumber));
+    }
+
+    @Then("^I do not see unread number in page title$")
+    public void IDoNotSeeUnreadNumberInPageTitle() throws Exception {
+        String pageTitle = context.getPagesCollection().getPage(ContactListPage.class).getPageTitle();
+        assertThat("Part of unread number is visible", pageTitle, not(containsString("(")));
     }
 }

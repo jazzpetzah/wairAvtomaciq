@@ -115,6 +115,8 @@ public class GroupChatInfoPage extends IOSPage {
     public void selectParticipant(String name) throws Exception {
         final By locator = FBBy.xpath(xpathPeopleViewCollectionCellByName.apply(name));
         getElement(locator).click();
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     public boolean isLeaveConversationAlertVisible() throws Exception {

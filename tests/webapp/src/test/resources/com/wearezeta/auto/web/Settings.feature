@@ -7,7 +7,7 @@ Feature: Settings
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
     And I open preferences by clicking the gear button
-    Then I see Settings dialog
+    Then I see username <Name> in account preferences
 
     Examples: 
       | Email      | Password      | Name      |
@@ -21,9 +21,8 @@ Feature: Settings
     Given I am signed in properly
     And I open preferences by clicking the gear button
     And I open options in preferences
-    And I see Settings dialog
-    When I select Sound Alerts setting to be None
-    Then I see Sound Alerts setting is set to None
+    When I set sound alerts setting to none
+    Then I see Sound Alerts setting is set to none
     And I close preferences
     And I open preferences by clicking the gear button
     And I click logout in account preferences
@@ -34,10 +33,9 @@ Feature: Settings
     And I am signed in properly
     And I open preferences by clicking the gear button
     And I open options in preferences
-    And I see Settings dialog
-    Then I see Sound Alerts setting is set to None
-    When I select Sound Alerts setting to be Some
-    Then I see Sound Alerts setting is set to Some
+    Then I see Sound Alerts setting is set to none
+    When I set sound alerts setting to some
+    Then I see Sound Alerts setting is set to some
     And I close preferences
     And I open preferences by clicking the gear button
     And I click logout in account preferences
@@ -48,8 +46,9 @@ Feature: Settings
     And I am signed in properly
     And I open preferences by clicking the gear button
     And I open options in preferences
-    When I see Settings dialog
-    Then I see Sound Alerts setting is set to Some
+    Then I see Sound Alerts setting is set to some
+    When I set sound alerts setting to all
+    Then I see Sound Alerts setting is set to all
 
     Examples: 
       | Email      | Password      | Name      |
@@ -59,19 +58,17 @@ Feature: Settings
   Scenario Outline: Verify you can delete account
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
+    Given I remember current page
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
     Given I open preferences by clicking the gear button
     When I open account in preferences
-    And I see Settings dialog
     And I click delete account button on settings page
-    And I see email <Email> in delete info text on settings page
     And I click cancel deletion button on settings page
     And I click delete account button on settings page
-    And I see email <Email> in delete info text on settings page
     And I click send button to delete account
     And I delete account of user <Name> via email
-    And I open Sign In page
+    And I navigate to previously remembered page
     And I see Sign In page
     When I enter email "<Email>"
     And I enter password "<Password>"

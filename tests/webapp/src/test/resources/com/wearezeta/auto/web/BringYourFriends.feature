@@ -6,6 +6,7 @@ Feature: Bring Your Friends
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I am signed in properly
+    And I open search by clicking the people button
     When I see Bring Your Friends or Invite People button
     And I click Bring Your Friends or Invite People button
     Then I see Invite People popover
@@ -54,8 +55,9 @@ Feature: Bring Your Friends
     Given I see Sign In page
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
-    When I click button to bring friends from Gmail
-    And I see Google login popup
+    When I open search by clicking the people button
+    And I click button to bring friends from Gmail
+    Then I see Google login popup
     When I sign up at Google with email <Gmail> and password <GmailPassword>
     Then I see Search is opened
     And I see Bring Your Friends or Invite People button
@@ -126,8 +128,8 @@ Feature: Bring Your Friends
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    And I select Settings menu item on self profile page
-    And I see Settings dialog
+    And I open preferences by clicking the gear button
+    And I open options in preferences
     And I click button to import contacts from Gmail
     And I see Google login popup
     And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456!

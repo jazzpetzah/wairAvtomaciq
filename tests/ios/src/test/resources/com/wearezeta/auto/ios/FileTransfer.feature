@@ -38,6 +38,7 @@ Feature: File Transfer
   Scenario Outline: Verify placeholder is shown for the sender
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <DeviceName1>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
@@ -46,10 +47,11 @@ Feature: File Transfer
     And I wait for 2 seconds
     And I tap file transfer menu item <ItemName>
     Then I see file transfer placeholder
+    And I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
-      | Name      | Contact   | ItemName                   |
-      | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
+      | Name      | Contact   | ItemName                   | DeviceName1 | DeliveredLabel |
+      | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG | device1     | Delivered      |
 
   @C82529 @regression @fastLogin
   Scenario Outline: Verify not supported file has no preview and share menu is opened
@@ -80,6 +82,8 @@ Feature: File Transfer
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap File Transfer button from input tools
+    # Wait for the placeholder
+    And I wait for 2 seconds
     And I tap file transfer menu item <ItemName>
     Then I see file transfer placeholder
     When I type the default message and send it
@@ -97,6 +101,8 @@ Feature: File Transfer
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap File Transfer button from input tools
+    # Wait for the placeholder
+    And I wait for 2 seconds
     And I tap file transfer menu item <ItemName>
     Then I verify the alert contains text <ExpectedAlertText>
     When I accept alert

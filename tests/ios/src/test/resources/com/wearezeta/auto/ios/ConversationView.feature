@@ -21,15 +21,17 @@ Feature: Conversation View
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <DeviceName1>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
     And I type the default message and send it
     Then I see 1 default message in the conversation view
+    And I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | DeviceName1 | DeliveredLabel |
+      | user1Name | user2Name | device1     | Delivered      |
 
   @C923 @regression @fastLogin
   Scenario Outline: Send Hello to contact
@@ -49,6 +51,7 @@ Feature: Conversation View
   Scenario Outline: Send a camera roll picture to user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <DeviceName1>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
@@ -58,10 +61,11 @@ Feature: Conversation View
     And I select the first picture from Keyboard Gallery
     And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
+    And I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | DeviceName1 | DeliveredLabel |
+      | user1Name | user2Name | device1     | Delivered      |
 
   @C924 @regression @fastLogin
   Scenario Outline: Send message to group chat
@@ -479,9 +483,9 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see conversation name <Contact> in Upper Toolbar
+    And I see the conversation with <Contact>
     And User <Contact> changes name to <NewName>
-    Then I see conversation name <NewName> in Upper Toolbar
+    Then I see the conversation with <NewName>
 
     Examples:
       | Name      | Contact   | NewName |
@@ -495,9 +499,9 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see conversation name <GroupChatName> in Upper Toolbar
+    And I see the conversation with <GroupChatName>
     And User <Contact> renames conversation <GroupChatName> to <NewChatName>
-    Then I see conversation name <NewChatName> in Upper Toolbar
+    Then I see the conversation with <NewChatName>
 
     Examples:
       | Name      | Contact   | GroupChatName  | UsersAmount | NewChatName |
@@ -590,5 +594,3 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
-
-

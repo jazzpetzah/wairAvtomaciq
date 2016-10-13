@@ -418,7 +418,7 @@ Feature: People View
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
-    Then I see conversation name <GroupChatName> in Upper Toolbar
+    Then I see the conversation with <GroupChatName>
     And I see 0 conversation entries
 
     Examples:

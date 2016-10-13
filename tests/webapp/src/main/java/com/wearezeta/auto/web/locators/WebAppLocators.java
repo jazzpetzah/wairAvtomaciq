@@ -130,35 +130,30 @@ public final class WebAppLocators {
 
         public static final Function<String, String> xpathMissedCallNotificationByContactName = (
                 name) -> String
-                .format("//*[contains(@class, 'conversation-list-item') and div[@data-uie-value='%s']]//*[local-name() = " +
-                                "'svg' and @data-uie-name='status-unread']",
-                        name);
+                .format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/..//*[local-name() = " +
+                                "'svg' and @data-uie-name='status-unread']", name);
 
         public static final Function<String, String> xpathJoinedGroupCallNotificationByConversationName = (
                 name) -> String
                 .format("//*[contains(@class, 'conversation-list-item') and " +
                                 "div[@data-uie-value='%s']]//*[@data-uie-name='status-call' and " +
-                                "@data-uie-value='participating-in-group-call']",
-                        name);
+                                "@data-uie-value='participating-in-group-call']", name);
 
         public static final Function<String, String> xpathUnjoinedGroupCallNotificationByConversationName = (
                 name) -> String
                 .format("//*[contains(@class, 'conversation-list-item') and " +
                                 "div[@data-uie-value='%s']]//*[@data-uie-name='status-call' and " +
-                                "@data-uie-value='not-participating-in-group-call']",
-                        name);
+                                "@data-uie-value='not-participating-in-group-call']", name);
 
         public static final Function<String, String> xpathPingIconByContactName = (
                 name) -> String
                 .format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/parent::"
-                                + "*//*[@data-uie-name='status-unread' and contains(@class, 'icon-ping')]",
-                        name);
+                                + "*//*[@data-uie-name='status-unread' and contains(@class, 'icon-ping')]", name);
 
         public static final Function<String, String> xpathUnreadDotByContactName = (
                 name) -> String
                 .format("//*[@data-uie-name='item-conversation' and " +
-                                "@data-uie-value='%s']/..//*[@data-uie-name='status-unread']",
-                        name);
+                                "@data-uie-value='%s']/..//*[@data-uie-name='status-unread']", name);
 
         public static final Function<String, String> xpathMuteIconByContactName = (
                 name) -> String.format(
@@ -187,7 +182,7 @@ public final class WebAppLocators {
         public static final String cssDeleteModalActionButtonSingle = ".modal-clear .modal-action";
 
         // little dot on avatar in accent color
-        public static final String cssBadge = ".conversation-list-settings-badge";
+        public static final String cssBadge = ".conversations-settings-badge";
     }
 
     public static final class CallPage {
@@ -291,12 +286,31 @@ public final class WebAppLocators {
         public static final String cssBackgroundAvatarAccentColor = ".background-accent.bg-theme";
         
         public static final String cssSelectPicture = "[data-uie-name='do-select-picture']";
+
+        public static final String cssDeleteAccountButton = "[data-uie-name='go-delete-account']";
+
+        public static final String cssCancelDeleteAccountButton = "[data-uie-name='modal-delete-account'] [data-uie-name='do-cancel']";
+
+        public static final String cssConfirmDeleteAccountButton = "[data-uie-name='modal-delete-account'] [data-uie-name='do-send']";
     }
 
     public static final class DevicesPage {
         public static final String cssCurrentDevice = "[data-uie-name='preferences-device-current']";
 
         public static final String cssCurrentDeviceId = "[data-uie-name='preferences-device-current-id']";
+
+        public static final String cssActiveDeviceIds = "[data-uie-name='preferences-device-active-id']";
+
+        public static final String cssActiveDevicesLabels = "[data-uie-name='preferences-device-active-model']";
+
+        public static final Function<String, String> xpathDeviceLabel = (name) -> String
+                .format("//*[@data-uie-name='preferences-device-active-model' and contains(text(),'%s')]", name);
+    }
+
+    public static final class OptionsPage {
+
+        public static final String cssImportButton = "[data-uie-name='do-share-contacts']";
+
     }
 
     public static final class SettingsPage {
@@ -307,21 +321,12 @@ public final class WebAppLocators {
 
         public static final String cssSoundAlertsLevel = "[data-uie-name=enter-sound-alerts]";
 
-        public static final String cssDeviceLabels = ".self-settings-device-list device-card .label-xs";
-
-        public static final Function<String, String> xpathDeviceLabel = (name) -> String
-                .format("//device-card//span[contains(text(),'%s')]", name);
-
-        public static final String cssDeleteAccountButton = "[data-uie-name='go-delete-account']";
-        public static final String cssCancelDeleteAccountButton = "[data-uie-name='do-delete-cancel']";
-        public static final String cssConfirmDeleteAccountButton = "[data-uie-name='do-delete-account']";
         public static final String cssConfirmText = "[data-uie-name='delete-confirm-text']";
         public static final String cssSentText = "[data-uie-name='delete-sent']";
-        public static final String cssImportButton = "[data-uie-name='do-share-contacts']";
         public static final String cssImportAddressbookButton = "[data-uie-name='do-share-osx-contacts']";//macOS
         public static final String cssBackButton = "[data-uie-name='do-device-close']";
         public static final String cssVerificationToggle = ".button-label";
-        public static final String cssDeviceIds = ".self-settings-device-list .device-info [data-uie-name='device-id']";
+
     }
 
     public static final class SelfProfilePage {

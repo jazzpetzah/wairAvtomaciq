@@ -11,6 +11,7 @@ import cucumber.api.java.en.When;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.hamcrest.CoreMatchers.is;
@@ -117,4 +118,18 @@ public class AccountPageSteps {
         assertTrue("my avatar background accent color is not set", avatarColor == expectedColor);
     }
 
+    @When("^I click delete account button on settings page$")
+    public void IClickDeleteAccountButton() throws Exception {
+        context.getPagesCollection().getPage(AccountPage.class).clickDeleteAccountButton();
+    }
+
+    @When("^I click cancel deletion button on settings page$")
+    public void IClickCancelDeleteButton() throws Exception {
+        context.getPagesCollection().getPage(AccountPage.class).clickCancelDeleteAccountButton();
+    }
+
+    @When("^I click send button to delete account$")
+    public void IClickSendButton() throws Exception {
+        context.getPagesCollection().getPage(AccountPage.class).clickConfirmDeleteAccountButton();
+    }
 }

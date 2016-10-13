@@ -56,27 +56,6 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C12103 @calling_basic @video_calling @fastLogin
-  Scenario Outline: Verify finishing video call
-    Given There are 2 user where <Name> is me
-    Given Myself is connected to <Contact>
-    Given <Contact> starts instance using <CallBackend>
-    Given <Contact> accepts next incoming video call automatically
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I tap Video Call button
-    And I accept alert
-    And I see Video Calling overlay
-    Then <Contact> verifies to have 1 flows
-    And <Contact> verifies that all flows have greater than 0 bytes
-    When I tap Leave button on Video Calling overlay
-    Then I see conversation view page
-
-    Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | chrome      |
-
   @C12104 @calling_basic @video_calling @fastLogin
   Scenario Outline: Verify ignoring Video call
     Given There are 2 user where <Name> is me
@@ -128,7 +107,6 @@ Feature: Video Calling
     When <Contact2> calls me
     And I see call status message contains "<Contact2> calling"
     Then I tap Accept button on Calling overlay
-    And I accept alert
     And I do not see Accept Video button on Calling overlay
     And <Contact2> verifies that call status to me is changed to active in <Timeout> seconds
     And <Contact1> verifies that call status to me is changed to destroyed in <Timeout> seconds
@@ -278,3 +256,24 @@ Feature: Video Calling
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C12103 @calling_basic @video_calling @fastLogin
+  Scenario Outline: Verify finishing video call
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given <Contact> accepts next incoming video call automatically
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I tap Video Call button
+    And I accept alert
+    And I see Video Calling overlay
+    Then <Contact> verifies to have 1 flows
+    And <Contact> verifies that all flows have greater than 0 bytes
+    When I tap Leave button on Video Calling overlay
+    Then I see conversation view page
+
+    Examples:
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | chrome      |

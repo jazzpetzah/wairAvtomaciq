@@ -67,15 +67,16 @@ public class ConversationViewPage extends IOSPage {
             String.format("%s[@value='%s']", xpathStrAllTextMessages, text);
 
     private static final Function<String, String> xpathStrSystemMessageByText = text ->
-            String.format("//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@value='%s'] ]",
+            String.format("//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[starts-with(@value, '%s')] ]",
                     text.toUpperCase());
 
     private static final String xpathStrImageCells = xpathStrAllEntries + "[@name='ImageCell']";
     private static final By xpathImageCell = By.xpath(xpathStrImageCells);
     private static final By fbXpathRecentImageCell = FBBy.xpath(String.format("(%s)[1]", xpathStrImageCells));
 
-    private static final By fbXpathMediaContainerCell =
-            FBBy.xpath("//XCUIElementTypeTextView[contains(@value, '://')]/following-sibling::XCUIElementTypeButton");
+    private static final By fbXpathMediaContainerCell = FBBy.xpath(
+            "(//XCUIElementTypeTextView[@name='Message' and contains(@value, '://')]/preceding-sibling::" +
+                    "*[ .//XCUIElementTypeButton ])[last()]");
 
     private static final By xpathGiphyImage =
             By.xpath("//XCUIElementTypeCell[ .//*[contains(@value, 'via giphy.com')] ]" +
@@ -92,16 +93,14 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameTitle = MobileBy.AccessibilityId("playingMediaTitle");
 
     public static final Function<String, String> xpathStrMissedCallButtonByContact = name ->
-            String.format("//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s CALLED'] ]" +
-                    "/XCUIElementTypeButton[@name='ConversationMissedCallButton']", name.toUpperCase());
+            String.format("//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[@value='%s CALLED'] ]" +
+                    "//XCUIElementTypeButton[@name='ConversationMissedCallButton']", name.toUpperCase());
 
     public static final By xpathStrMissedCallButtonByYourself =
             By.xpath(xpathStrMissedCallButtonByContact.apply("you"));
 
     public static final Function<String, String> xpathStrConnectingToUserLabelByName = name -> String.format(
-            "//XCUIElementTypeStaticText[contains(@name, 'CONNECTING TO %s.')]", name.toUpperCase());
-
-    private static final By nameShieldIconNextToInput = MobileBy.AccessibilityId("verifiedConversationIndicator");
+            "//XCUIElementTypeStaticText[contains(@value, 'CONNECTING TO %s.')]", name.toUpperCase());
 
     public static final String MEDIA_STATE_PLAYING = "playing";
 
@@ -118,26 +117,27 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbNameShareLocationButton = FBBy.AccessibilityId("locationButton");
     private static final By fbNameGifButton = FBBy.AccessibilityId("gifButton");
 
-    private static final String xpathStrConversationViewTopBar =
-            "//XCUIElementTypeNavigationBar[ ./XCUIElementTypeButton[@name='ConversationBackButton'] ]";
+    private static final String xpathStrConversationViewTopBar = "//XCUIElementTypeNavigationBar[@name='Name']";
     private static final By xpathConversationViewTopBar = By.xpath(xpathStrConversationViewTopBar);
     private static Function<String, String> xpathStrToolbarByConversationName = name ->
-            String.format("%s//XCUIElementTypeButton[starts-with(@name, '%s')]",
+            String.format("%s/*[@name='Name' and starts-with(@value, '%s')]",
                     xpathStrConversationViewTopBar, name.toUpperCase());
     private static Function<String, String> xpathStrToolbarByExpr = expr ->
-            String.format("%s//XCUIElementTypeButton[%s]", xpathStrConversationViewTopBar, expr);
+            String.format("%s/*[@name='Name' and %s]", xpathStrConversationViewTopBar, expr);
+
+    // shield icon is not accessible, since it's now a part of text, so we check the actual value
+    private static final By xpathVerifiedConversation = By.xpath(
+            String.format("%s/*[@name='Name' and contains(@value, 'verified fingerprints')]",
+                    xpathStrConversationViewTopBar));
 
     private static final By fbNameEllipsisButton = FBBy.AccessibilityId("showOtherRowButton");
     private static final By xpathAudioCallButton = MobileBy.AccessibilityId("audioCallBarButton");
     private static final By xpathVideoCallButton = MobileBy.AccessibilityId("videoCallBarButton");
     private static final By xpathConversationDetailsButton =
-            By.xpath(xpathStrConversationViewTopBar + "/*/XCUIElementTypeButton[boolean(string(@label))]");
+            By.xpath(xpathStrConversationViewTopBar + "/*[@name='Name']");
 
     private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("Too many people to call");
 
-    private static final Function<String, String> xpathStrUserNameInUpperToolbar = text ->
-            String.format("%s//XCUIElementTypeButton[starts-with(@name, '%s')]", xpathStrConversationViewTopBar,
-                    text.toUpperCase());
 
     private static final String nameStrFileTransferTopLabel = "FileTransferTopLabel";
     private static final By nameFileTransferTopLabel = MobileBy.AccessibilityId(nameStrFileTransferTopLabel);
@@ -218,15 +218,25 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameLikeButton = MobileBy.AccessibilityId("likeButton");
 
-    private static final By fbNameSketchOnImageButton = FBBy.AccessibilityId("sketchOnImageButton");
-    private static final By fbNameFullScreenOnImageButton = FBBy.AccessibilityId("openFullScreenButton");
+    private static final By nameSketchOnImageButton = MobileBy.AccessibilityId("sketchOnImageButton");
+    private static final By nameFullScreenOnImageButton = MobileBy.AccessibilityId("openFullScreenButton");
 
-    private static final By nameRecentMessageToolbox = MobileBy.AccessibilityId("MessageToolbox");
+    private static final String nameStrRecentMessageToolbox = "MessageToolbox";
+    private static final By nameRecentMessageToolbox = MobileBy.AccessibilityId(nameStrRecentMessageToolbox);
+    private static final Function<String, String> strXPathMessageToolboxByText = text ->
+            String.format("//*[@name='%s' and contains(@value,'%s')]", nameStrRecentMessageToolbox, text);
 
     private static final By fbXpathUploadMenu =
-            FBBy.xpath("//XCUIElementTypeButton[@label='Cancel']/preceding-sibling::*[1]");
+            FBBy.xpath("//XCUIElementTypeButton[@label='Cancel']/parent::*/preceding-sibling::*[1]");
 
     private static final By nameSendButton = MobileBy.AccessibilityId("sendButton");
+
+    private static final By nameEmojiKeyboardButton = MobileBy.AccessibilityId("emojiButton");
+
+    private static final Function<Integer, String> xpathStrEmojiKeyByIndex = idx -> String.format(
+            "(//XCUIElementTypeCollectionView)[last()]/XCUIElementTypeCell[%s]", idx);
+
+    private static final By nameThisDeviceLink = MobileBy.AccessibilityId("THIS DEVICE");
 
     protected static final String[] UPLOAD_MENU_ITEMS = new String[]{
             "Record a video", "Videos", "20 MB file", "Big file",
@@ -390,7 +400,7 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isUpperToolbarContainNames(List<String> expectedNames) throws Exception {
         final String xpathExpr = String.join(" and ", expectedNames.stream()
-                .map(x -> String.format("contains(@name, '%s')", x.toUpperCase()))
+                .map(x -> String.format("contains(@value, '%s')", x.toUpperCase()))
                 .collect(Collectors.toList()));
         final By locator = By.xpath(xpathStrToolbarByExpr.apply(xpathExpr));
         return isElementDisplayed(locator);
@@ -469,15 +479,11 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isShieldIconVisible() throws Exception {
-        // FIXME: Make shield icon accessible
-        return false;
-        // return isElementDisplayed(nameShieldIconNextToInput);
+        return isElementDisplayed(xpathVerifiedConversation);
     }
 
     public boolean isShieldIconInvisible() throws Exception {
-        // FIXME: Make shield icon accessible
-        return false;
-        // return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameShieldIconNextToInput);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathVerifiedConversation);
     }
 
     public void resendLastMessageInDialogToUser() throws Exception {
@@ -516,6 +522,11 @@ public class ConversationViewPage extends IOSPage {
         return isElementDisplayed(locator);
     }
 
+    public boolean isSystemMessageInvisible(String expectedMsg) throws Exception {
+        final By locator = By.xpath(xpathStrSystemMessageByText.apply(expectedMsg));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
     public boolean isUpperToolbarVisible() throws Exception {
         return isElementDisplayed(xpathConversationViewTopBar);
     }
@@ -525,7 +536,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isUserNameInUpperToolbarVisible(String name) throws Exception {
-        final By locator = By.xpath(xpathStrUserNameInUpperToolbar.apply(name));
+        final By locator = By.xpath(xpathStrToolbarByConversationName.apply(name));
         return isElementDisplayed(locator);
     }
 
@@ -818,11 +829,6 @@ public class ConversationViewPage extends IOSPage {
         return !startTime.equals(currentTime);
     }
 
-    public boolean isUserNameVisibleOnUpperToolbar(String contact) throws Exception {
-        final By locator = By.xpath(xpathStrToolbarByConversationName.apply(contact));
-        return isElementDisplayed(locator);
-    }
-
     public boolean isRecordControlButtonState(String buttonState) throws Exception {
         final By locator = By.xpath(recordControlButtonWithState.apply(buttonState));
         return isElementDisplayed(locator);
@@ -978,18 +984,18 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapImageButton(String buttonName) throws Exception {
         By locator = getImageButtonByName(buttonName);
-        final FBElement dstElement = (FBElement) getElementIfExists(locator).orElseThrow(
+        final WebElement dstElement = getElementIfExists(locator).orElseThrow(
                 () -> new IllegalStateException(buttonName + "button can't be found")
         );
-        this.tapAtTheCenterOfElement(dstElement);
+        this.tapScreenAt(dstElement);
     }
 
     private By getImageButtonByName(String buttonName) throws Exception {
         switch (buttonName.toLowerCase()) {
             case "sketch":
-                return fbNameSketchOnImageButton;
+                return nameSketchOnImageButton;
             case "fullscreen":
-                return fbNameFullScreenOnImageButton;
+                return nameFullScreenOnImageButton;
             default:
                 throw new Exception("Not recognized button name. Available 'sketch', 'fullscreen'");
         }
@@ -1046,5 +1052,29 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isSendMessageButtonInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameSendButton);
+    }
+
+    public void tapEmojiKeyboardButton() throws Exception {
+        getElement(nameEmojiKeyboardButton).click();
+        Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
+    }
+
+    public void tapEmojiKeyboardKey(int keyIndex) throws Exception {
+        final By locator = By.xpath(xpathStrEmojiKeyByIndex.apply(keyIndex));
+        getElement(locator).click();
+    }
+
+    public void tapThisDeviceLink() throws Exception {
+        getElement(nameThisDeviceLink).click();
+    }
+
+    public boolean isMessageToolboxTextVisible(String expectedText) throws Exception {
+        final By locator = By.xpath(strXPathMessageToolboxByText.apply(expectedText));
+        return isElementDisplayed(locator);
+    }
+
+    public boolean isMessageToolboxTextInvisible(String expectedText) throws Exception {
+        final By locator = By.xpath(strXPathMessageToolboxByText.apply(expectedText));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 }

@@ -28,6 +28,8 @@ Feature: Edit Message
     When I tap on contact name <GroupChatName>
     And I type the default message and send it
     And <Contact1> removes Myself from group chat <GroupChatName>
+    # Wait for conversation view update
+    And I wait for 2 seconds
     And I long tap default message in conversation view
     Then I do not see Edit badge item
     And I tap on Delete badge item

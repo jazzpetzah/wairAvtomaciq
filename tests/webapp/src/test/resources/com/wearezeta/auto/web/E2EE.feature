@@ -10,20 +10,20 @@ Feature: E2EE
     When I click confirm on history info page
     Then I am signed in properly
     When I open preferences by clicking the gear button
-    And I select Settings menu item on self profile page
-    And I wait for 2 seconds
-    Then I see a device named <Device> in the devices section
-    When I click on the device <Device> in the devices section
+    And I open devices in preferences
+    And I wait for devices
+    Then I see an active device named <Device>
+    When I click on the device <Device>
     Then I see a device named <Device> with label <Label> in the device details
     When I click the remove device link
     And I type password "<Password>" into the device remove form
     And I click the remove button
-    Then I do not see a device named <Label>, <Device> in the devices section
+    Then I do not see an active device named <Label>,<Device>
     When I close preferences
     And I wait for 2 seconds
     And I open preferences by clicking the gear button
-    And I select Settings menu item on self profile page
-    Then I do not see a device named <Device> in the devices section
+    And I open devices in preferences
+    Then I do not see an active device named <Device>
 
     Examples:
       | Email      | Password      | Name      | Device  | Label  |
@@ -210,14 +210,14 @@ Feature: E2EE
     And I click confirm on history info page
     And I am signed in properly
     When I open preferences by clicking the gear button
-    And I select Settings menu item on self profile page
-    Then I see a device named Device1 in the devices section
-    And I see a device named Device2 in the devices section
-    And I see a device named Device3 in the devices section
-    And I see a device named Device4 in the devices section
-    And I see a device named Device5 in the devices section
-    And I see a device named Device6 in the devices section
-    And I see a device named Device7 in the devices section
+    And I open devices in preferences
+    Then I see an active device named Device1
+    And I see an active device named Device2
+    And I see an active device named Device3
+    And I see an active device named Device4
+    And I see an active device named Device5
+    And I see an active device named Device6
+    And I see an active device named Device7
 
     Examples:
       | Email      | Password      | Name      |
@@ -642,7 +642,7 @@ Feature: E2EE
     When I open conversation with <Contact>
     And user <Name> adds a new device Device2 with label Label2
     #Then I see <NEW_DEVICE> action in conversation
-    And I verify a badge is shown on self profile button
+    And I verify a badge is shown on gear button
     And I open preferences by clicking the gear button
     And I see connected devices dialog
     And I see Device2 on connected devices dialog
@@ -796,12 +796,10 @@ Feature: E2EE
     And Contact <Name> sends message <Message2> via device Device1 to user <Contact>
     Then I see <UNABLE_TO_DECRYPT> action in conversation
     When I open preferences by clicking the gear button
-    And I wait for 2 seconds
-    And I open preferences by clicking the gear button
     And I open devices in preferences
-    And I wait for 2 seconds
-    Then I see a device named Device1 in the devices section
-    When I click on the device Device1 in the devices section
+    And I wait for devices
+    Then I see an active device named Device1
+    When I click on the device Device1
     Then I see a device named Device1 with label Label1 in the device details
     When I click the reset session button
     When I close preferences
@@ -864,21 +862,20 @@ Feature: E2EE
     Given I am signed in properly
     When I see Contact list with name <Contact>
     Then I open preferences by clicking the gear button
-    And I select Settings menu item on self profile page
-    When I see Settings dialog
+    And I open devices in preferences
     And I wait for devices
-    And I see a device named Device1 in the devices section
-    And I click on the device Device1 in the devices section
+    And I see an active device named Device1
+    And I click on the device Device1
     Then I see a device named Device1 with label Label1 in the device details
-    And I verify device on self settings Device Detail section
-    And I click back button on self settings Device Detail section
+    And I verify device on device details
+    And I click back button on device details in preferences
     Then I see device Device1 of user <Name> is verified in device section
     Then I do not see device Device2 of user <Name> is verified in device section
-    When I see a device named Device2 in the devices section
-    And I click on the device Device2 in the devices section
+    When I see an active device named Device2
+    And I click on the device Device2
     Then I see a device named Device2 with label Label2 in the device details
-    And I verify device on self settings Device Detail section
-    And I click back button on self settings Device Detail section
+    And I verify device on device details
+    And I click back button on device details in preferences
     Then I see device Device1 of user <Name> is verified in device section
     Then I see device Device2 of user <Name> is verified in device section
 
