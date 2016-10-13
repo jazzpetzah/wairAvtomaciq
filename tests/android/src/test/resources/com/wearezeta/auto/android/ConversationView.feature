@@ -182,10 +182,8 @@ Feature: Conversation View
     And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
     And I tap Image container in the conversation view
-    And I rotate UI to landscape
-    And I scroll down the conversation view
-    And I rotate UI to portrait
-    Then I tap Image container in the conversation view
+    And I wait for 1 seconds
+    And I tap on Fullscreen button on the recent image in the conversation view
     And I rotate UI to landscape
     And I tap Image Close button on Take Picture view
     Then I rotate UI to portrait
