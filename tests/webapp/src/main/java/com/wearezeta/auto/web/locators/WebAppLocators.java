@@ -62,6 +62,8 @@ public final class WebAppLocators {
 
         public static final String cssIncomingPendingConvoItem = "[data-uie-name='item-pending-requests']";
 
+        public static final String cssIncomingPendingConvoItemSelected = ".left-list-item.text-theme" + cssIncomingPendingConvoItem;
+
         public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
 
         public static final Function<String, String> xpathListItemRootWithControlsByName = name -> String

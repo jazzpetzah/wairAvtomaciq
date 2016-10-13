@@ -446,6 +446,11 @@ public class ContactListPage extends WebPage {
         this.getDriver().findElement(locator).click();
     }
 
+    public boolean isConnectionRequestsListSelected() throws Exception {
+        By selected = By.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItemSelected);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), selected);
+    }
+
     public boolean isPreferencesButtonClickable() throws Exception {
         return DriverUtils.waitUntilElementClickable(this.getDriver(), gearButton);
     }

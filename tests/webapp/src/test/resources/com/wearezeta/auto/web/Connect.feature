@@ -36,8 +36,8 @@ Feature: Connect
     And I see correct color for ignore button in connection request from user <UnknownContact>
 
     Examples: 
-      | Login      | Password      | Name      | UnknownContact | UnknownContactMail | Message   |
-      | user1Email | user1Password | user1Name | user2Name      | user2Email         | YOU ADDED |
+      | Login      | Password      | Name      | UnknownContact | UnknownContactMail |
+      | user1Email | user1Password | user1Name | user2Name      | user2Email         |
 
   @C1815 @mute
   Scenario Outline: Verify pending user profiles contain known people information

@@ -271,6 +271,7 @@ public class ContactListPageSteps {
         ContactListPage contactListPage = context.getPagesCollection().getPage(ContactListPage.class);
         Assert.assertTrue("ConnectionRequestsList is not visible", contactListPage.isConnectionRequestsListVisible());
         contactListPage.openConnectionRequestsList();
+        Assert.assertTrue("ConnectionRequestList is not selected", contactListPage.isConnectionRequestsListSelected());
     }
 
     /**
