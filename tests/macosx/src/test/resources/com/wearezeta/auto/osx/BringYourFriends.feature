@@ -25,7 +25,7 @@ Feature: Bring Your Friends
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I type shortcut combination for preferences
-    And I see Settings dialog
+    And I open options in preferences
     And I click button to import contacts from Gmail
     And I see Google login popup
     And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456!
@@ -42,7 +42,7 @@ Feature: Bring Your Friends
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I type shortcut combination for preferences
-    And I see Settings dialog
+    And I open options in preferences
     And I click button to import contacts from address book via preferences
     Then I allow address book access
     And I see more than 0 suggestions in people picker
