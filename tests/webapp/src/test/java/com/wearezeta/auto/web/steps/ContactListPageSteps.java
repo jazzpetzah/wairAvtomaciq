@@ -97,7 +97,7 @@ public class ContactListPageSteps {
      * @step. ^I open conversation with (.*)
      */
     @Given("^I open conversation with (.*)")
-    public void GivenIOpenConversationWith(String conversation) throws Exception {
+    public void IOpenConversationWith(String conversation) throws Exception {
         conversation = context.getUserManager().replaceAliasesOccurences(conversation, FindBy.NAME_ALIAS);
         ContactListPage contactListPage = context.getPagesCollection().getPage(ContactListPage.class);
         Assert.assertTrue(String.format("Conversation with name '%s' is not visible", conversation),
