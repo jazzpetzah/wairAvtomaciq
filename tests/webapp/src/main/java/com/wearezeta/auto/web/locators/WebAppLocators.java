@@ -301,6 +301,13 @@ public final class WebAppLocators {
         public static final String cssCurrentDevice = "[data-uie-name='preferences-device-current']";
 
         public static final String cssCurrentDeviceId = "[data-uie-name='preferences-device-current-id']";
+
+        public static final String cssActiveDeviceIds = "[data-uie-name='preferences-device-active-id']";
+
+        public static final String cssActiveDevicesLabels = "[data-uie-name='preferences-device-active-model']";
+
+        public static final Function<String, String> xpathDeviceLabel = (name) -> String
+                .format("//*[@data-uie-name='preferences-device-active-model' and contains(text(),'%s')]", name);
     }
 
     public static final class OptionsPage {
@@ -317,17 +324,12 @@ public final class WebAppLocators {
 
         public static final String cssSoundAlertsLevel = "[data-uie-name=enter-sound-alerts]";
 
-        public static final String cssDeviceLabels = ".self-settings-device-list device-card .label-xs";
-
-        public static final Function<String, String> xpathDeviceLabel = (name) -> String
-                .format("//device-card//span[contains(text(),'%s')]", name);
-
         public static final String cssConfirmText = "[data-uie-name='delete-confirm-text']";
         public static final String cssSentText = "[data-uie-name='delete-sent']";
         public static final String cssImportAddressbookButton = "[data-uie-name='do-share-osx-contacts']";//macOS
         public static final String cssBackButton = "[data-uie-name='do-device-close']";
         public static final String cssVerificationToggle = ".button-label";
-        public static final String cssDeviceIds = ".self-settings-device-list .device-info [data-uie-name='device-id']";
+
     }
 
     public static final class SelfProfilePage {

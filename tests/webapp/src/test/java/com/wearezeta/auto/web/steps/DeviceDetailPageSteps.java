@@ -7,6 +7,7 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.DeviceDetailPage;
 
+import com.wearezeta.auto.web.pages.SettingsPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -22,22 +23,18 @@ public class DeviceDetailPageSteps {
         this.context = context;
     }
 
-	/**
-	 * Verify if you see correct name and label of device in the device details
-	 * 
-	 * @param name
-	 *            model of the device
-	 * @param label
-	 *            label of the device
-	 * @throws Exception
-	 */
+	@When("^I click back button on device details in preferences$")
+	public void IClickBackButton() throws Exception {
+		context.getPagesCollection().getPage(DeviceDetailPage.class).clickBackButton();
+	}
+
 	@Then("I see a device named (.*) with label (.*) in the device details")
 	public void ISeeACertainDeviceInDevicesSection(String name, String label)
 			throws Exception {
-		assertThat(context.getPagesCollection().getPage(DeviceDetailPage.class)
-				.getDeviceLabel(), equalTo(label.toUpperCase()));
-		assertThat(context.getPagesCollection().getPage(DeviceDetailPage.class)
-				.getDeviceLabel(), equalTo(label.toUpperCase()));
+		assertThat(context.getPagesCollection().getPage(DeviceDetailPage.class).getDeviceName(),
+				equalTo(name + context.getTestname().hashCode()));
+		assertThat(context.getPagesCollection().getPage(DeviceDetailPage.class).getDeviceName(),
+				equalTo(name + context.getTestname().hashCode()));
 	}
 
 	@When("I click the remove device link")
@@ -65,5 +62,10 @@ public class DeviceDetailPageSteps {
 	@When("I click the reset session button")
 	public void IClickTheResetSessionButtonOnForm() throws Exception {
 		context.getPagesCollection().getPage(DeviceDetailPage.class).clickResetSessionButton();
+	}
+
+	@When("^I verify device on device details$")
+	public void IVerifyDevice() throws Exception {
+		context.getPagesCollection().getPage(DeviceDetailPage.class).verifyDevice();
 	}
 }
