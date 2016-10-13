@@ -117,7 +117,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C1701 @smoke
+  @C1701 @smoke @WEBAPP-3248
   Scenario Outline: Verify you can see image on the second end in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

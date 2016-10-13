@@ -31,8 +31,7 @@ import cucumber.api.PendingException;
 public class ContactListPage extends WebPage {
 
     private static final Logger log = ZetaLogger.getLog(ContactListPage.class.getSimpleName());
-    
-    
+
     private static final String DEFAULT_GROUP_CONVO_NAMES_SEPARATOR = ",";
     private static final int CONVO_LIST_ENTRY_VISIBILITY_TIMEOUT = 15; // seconds
 
@@ -424,7 +423,7 @@ public class ContactListPage extends WebPage {
         DriverUtils.waitUntilElementClickable(this.getDriver(), conversation);
         conversation.click();
     }
-    
+
     public boolean isConversationVisible(String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
         By locator = By.cssSelector(WebAppLocators.ContactListPage.cssContactListEntryByName.apply(conversationName));
@@ -446,6 +445,10 @@ public class ContactListPage extends WebPage {
         assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
                 selected, CONVO_LIST_ENTRY_VISIBILITY_TIMEOUT) : "Conversation is not selected within "
                 + CONVO_LIST_ENTRY_VISIBILITY_TIMEOUT + " second(s) timeout";
+    }
+
+    public boolean isPreferencesButtonClickable() throws Exception {
+        return DriverUtils.waitUntilElementClickable(this.getDriver(), gearButton);
     }
 
     public void openPreferences() throws Exception {
