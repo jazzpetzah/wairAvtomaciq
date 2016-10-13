@@ -124,7 +124,9 @@ Feature: Recall Message
     And I select a random gif from the grid preview
     Then I see giphy preview page
     When I tap on the giphy Send button
-    And I long tap Image container in the conversation view
+    Then I see a picture in the conversation view
+    And I see the picture in the conversation is animated
+    When I long tap Image container in the conversation view
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
