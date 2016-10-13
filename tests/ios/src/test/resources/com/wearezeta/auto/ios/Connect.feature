@@ -288,6 +288,8 @@ Feature: Connect
     And I tap on conversation <Contact1> in search result
     And I tap Cancel Request button on pending profile page
     And I confirm Cancel Request action on pending profile page
+    # Wait for animation
+    And I wait for 1 second
     Then I see the conversation "<Contact1>" exists in Search results
 
     Examples:
