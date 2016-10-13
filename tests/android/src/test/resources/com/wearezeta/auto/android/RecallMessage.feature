@@ -34,7 +34,8 @@ Feature: Recall Message
 
   @C225997 @regression
   Scenario Outline: Verify the message deleted everywhere in local Wire database
-    Given Wire has Debug mode enabled
+    Given Device debug mode supported
+    Given Wire debug mode enabled
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -123,7 +124,9 @@ Feature: Recall Message
     And I select a random gif from the grid preview
     Then I see giphy preview page
     When I tap on the giphy Send button
-    And I long tap Image container in the conversation view
+    Then I see a picture in the conversation view
+    And I see the picture in the conversation is animated
+    When I long tap Image container in the conversation view
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert

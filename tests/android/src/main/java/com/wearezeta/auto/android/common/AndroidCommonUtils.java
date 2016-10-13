@@ -1,11 +1,26 @@
 package com.wearezeta.auto.android.common;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.email.MessagingUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -14,13 +29,7 @@ import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.ScreenOrientation;
 
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-
 import static com.wearezeta.auto.common.driver.ZetaAndroidDriver.ADB_PREFIX;
-
-import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 
 public class AndroidCommonUtils extends CommonUtils {
 
@@ -672,7 +681,6 @@ public class AndroidCommonUtils extends CommonUtils {
                 "--where 'title=\"%s\"'", fileFullName, futureTimestamp, fileName));
     }
 
-
     public static void pullFileFromSdcardDownload(String fileFullName) throws Exception {
         pullFileFromSdcard(FILE_TRANSFER_SOURCE_LOCATION, fileFullName);
     }
@@ -708,7 +716,8 @@ public class AndroidCommonUtils extends CommonUtils {
         final DefaultArtifactVersion deviceVersion =
                 new DefaultArtifactVersion(getPropertyFromAdb("ro.build.version.release"));
 
-        // Related issue for Android 4.2: http://stackoverflow.com/questions/13588668/adb-throws-securityexception-while-starting-service-after-system-update-to-nexus
+        // Related issue for Android 4.2: http://stackoverflow
+        // .com/questions/13588668/adb-throws-securityexception-while-starting-service-after-system-update-to-nexus
 
         if (deviceVersion.compareTo(new DefaultArtifactVersion("4.3")) <= 0) {
             executeAdb("shell am startservice --user 0 -n ca.zgrs.clipper/.ClipboardService");
@@ -733,7 +742,6 @@ public class AndroidCommonUtils extends CommonUtils {
         executeAdb(String.format("shell am broadcast -a clipper.set -e text \"%s\"", content));
     }
 
-
     // ***
 
     /**
@@ -749,7 +757,6 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     // ***
-
 
     // ***
     // http://stackoverflow.com/questions/11420617/android-emulator-screen-rotation/14253321#14253321
@@ -809,10 +816,11 @@ public class AndroidCommonUtils extends CommonUtils {
         }
     }
 
-    public static boolean isWireDebugModeEnabled() throws Exception {
+    public static boolean isWireDebugModeEnabled(boolean checkSupport) throws Exception {
         final String packageName = CommonUtils.getAndroidPackageFromConfig(AndroidCommonUtils.class);
         final String output = AndroidCommonUtils.getAdbOutput(String.format("shell run-as %s ls", packageName));
-        final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("not debuggable") + "\\b");
+        final Pattern pattern = (checkSupport) ? Pattern.compile("\\b" + Pattern.quote("is unknown") + "\\b") :
+                Pattern.compile("\\b" + Pattern.quote("not debuggable") + "\\b");
         return !pattern.matcher(output).find();
     }
 
