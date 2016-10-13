@@ -30,6 +30,11 @@ public class AccountPageSteps {
     public void IClosePreferences() throws Exception {
         context.getPagesCollection().getPage(AccountPage.class).logout();
     }
+    
+    @When("^I do not see logout in account preferences$")
+    public void IDoNotSeeLogout() throws Exception {
+        assertTrue("Logout should NOT be visible", context.getPagesCollection().getPage(AccountPage.class).isLogoutInvisible());
+    }
 
     @When("^I see the clear data dialog$")
     public void ISeeClearDataDialog() throws Exception {

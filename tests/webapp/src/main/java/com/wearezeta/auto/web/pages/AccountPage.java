@@ -64,9 +64,15 @@ public class AccountPage extends WebPage {
     public void logout() throws Exception {
         logoutButton.click();
     }
+    
+    // Wrapper only
+    public boolean isLogoutInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), 
+                By.cssSelector(WebAppLocators.AccountPage.cssLogoutButton));
+    }
 
     public boolean isLogoutDialogShown() throws Exception {
-        return DriverUtils.waitUntilElementClickable(this.getDriver(), logoutButton);
+        return DriverUtils.waitUntilElementClickable(this.getDriver(), logoutInDialogButton);
     }
 
     public void checkClearDataInLogoutDialog() {
