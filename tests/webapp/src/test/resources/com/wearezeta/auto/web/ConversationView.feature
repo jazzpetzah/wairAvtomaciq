@@ -456,11 +456,11 @@ Feature: Conversation View
     And I am signed in properly
     When I open conversation with <Contact>
     And Contact <Contact> sends 35 messages with prefix <READ> via device Device1 to user <Name>
-    And I wait for 5 seconds
+    And I wait for 8 seconds
     Then I really see text message <READ>34
     When I open preferences by clicking the gear button
     And Contact <Contact> sends 35 messages with prefix <UNREAD> via device Device1 to user <Name>
-    And I wait for 5 seconds
+    And I wait for 8 seconds
     And I close preferences
     Then I see unread dot in conversation <Contact>
     When I open conversation with <Contact>
