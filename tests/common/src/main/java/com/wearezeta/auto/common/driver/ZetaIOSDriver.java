@@ -361,4 +361,12 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
             return new IOSAlert();
         }
     }
+
+    public void tapScreenAt(int x, int y) {
+        try {
+            fbDriverAPI.tap("0", x, y);
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
+           throw new WebDriverException(e);
+        }
+    }
 }

@@ -525,6 +525,16 @@ public abstract class IOSPage extends BasePage {
         tapByPercentOfElementSize(el, 50, 50);
     }
 
+    public void tapScreenAt(int x, int y) throws Exception {
+        getDriver().tapScreenAt(x, y);
+    }
+
+    public void tapScreenAt(WebElement el) throws Exception {
+        final Point location = el.getLocation();
+        final Dimension size = el.getSize();
+        tapScreenAt(location.getX() + size.getWidth() / 2, location.getY() + size.getHeight() / 2);
+    }
+
     public Optional<String> readAlertText() throws Exception {
         return readAlertText(DriverUtils.getDefaultLookupTimeoutSeconds());
     }

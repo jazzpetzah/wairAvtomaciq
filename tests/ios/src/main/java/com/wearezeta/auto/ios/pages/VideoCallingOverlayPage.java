@@ -1,8 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.WebElement;
 
 import java.awt.image.BufferedImage;
@@ -15,24 +14,26 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
         super(lazyDriver);
     }
 
-    private FBElement makeOverlayButtonVisible(String name) throws Exception {
+    private WebElement makeOverlayButtonVisible(String name) throws Exception {
         final Optional<WebElement> dstBtn = getElementIfExists(
-                FBBy.AccessibilityId(getButtonAccessibilityIdByName(name)));
+                MobileBy.AccessibilityId(getButtonAccessibilityIdByName(name))
+        );
         if (dstBtn.isPresent()) {
             if (!dstBtn.get().isDisplayed()) {
-                this.tapAtTheCenterOfElement((FBElement) dstBtn.get());
+                this.tapScreenAt(dstBtn.get());
                 Thread.sleep(300);
             }
         } else {
-            throw new IllegalStateException(String.format("the button identified by '%s' is expected to be present",
-                    name));
+            throw new IllegalStateException(
+                    String.format("the button identified by '%s' is expected to be present", name)
+            );
         }
-        return (FBElement) dstBtn.get();
+        return dstBtn.get();
     }
 
     private void tapOverlayButton(String name) throws Exception {
-        final FBElement btn = makeOverlayButtonVisible(name);
-        this.tapAtTheCenterOfElement(btn);
+        final WebElement btn = makeOverlayButtonVisible(name);
+        this.tapScreenAt(btn);
     }
 
     @Override

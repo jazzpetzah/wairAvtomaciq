@@ -218,8 +218,8 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameLikeButton = MobileBy.AccessibilityId("likeButton");
 
-    private static final By fbNameSketchOnImageButton = FBBy.AccessibilityId("sketchOnImageButton");
-    private static final By fbNameFullScreenOnImageButton = FBBy.AccessibilityId("openFullScreenButton");
+    private static final By nameSketchOnImageButton = MobileBy.AccessibilityId("sketchOnImageButton");
+    private static final By nameFullScreenOnImageButton = MobileBy.AccessibilityId("openFullScreenButton");
 
     private static final String nameStrRecentMessageToolbox = "MessageToolbox";
     private static final By nameRecentMessageToolbox = MobileBy.AccessibilityId(nameStrRecentMessageToolbox);
@@ -984,18 +984,18 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapImageButton(String buttonName) throws Exception {
         By locator = getImageButtonByName(buttonName);
-        final FBElement dstElement = (FBElement) getElementIfExists(locator).orElseThrow(
+        final WebElement dstElement = getElementIfExists(locator).orElseThrow(
                 () -> new IllegalStateException(buttonName + "button can't be found")
         );
-        this.tapAtTheCenterOfElement(dstElement);
+        this.tapScreenAt(dstElement);
     }
 
     private By getImageButtonByName(String buttonName) throws Exception {
         switch (buttonName.toLowerCase()) {
             case "sketch":
-                return fbNameSketchOnImageButton;
+                return nameSketchOnImageButton;
             case "fullscreen":
-                return fbNameFullScreenOnImageButton;
+                return nameFullScreenOnImageButton;
             default:
                 throw new Exception("Not recognized button name. Available 'sketch', 'fullscreen'");
         }

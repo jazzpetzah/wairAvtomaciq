@@ -289,8 +289,6 @@ Feature: Conversation View
     And I tap Confirm button on Picture preview page
     And I see 1 photo in the conversation view
     And I tap on image in conversation view
-    # Wait for animation
-    And I wait for 2 seconds
     And I tap Fullscreen button on image
     And I see Full Screen Page opened
     And I tap close fullscreen page button
@@ -660,8 +658,6 @@ Feature: Conversation View
     Then I see 1 photo in the conversation view
     And I see the picture in the conversation view is animated
     When I tap on image in conversation view
-    # Wait for animation
-    And I wait for 2 seconds
     And I tap Fullscreen button on image
     Then I see the picture on image fullscreen page is animated
 
