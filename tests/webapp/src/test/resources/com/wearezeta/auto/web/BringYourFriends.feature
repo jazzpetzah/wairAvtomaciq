@@ -6,6 +6,7 @@ Feature: Bring Your Friends
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I am signed in properly
+    And I open search by clicking the people button
     When I see Bring Your Friends or Invite People button
     And I click Bring Your Friends or Invite People button
     Then I see Invite People popover
