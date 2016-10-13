@@ -158,11 +158,10 @@ Feature: Delete
     Given I see text message <Message2>
     Given Contact <Contact> sends message <Message3> to user Myself
     Given I see text message <Message3>
-    Given I open self profile
-    Given I click gear button on self profile page
-    Given I select Log out menu item on self profile page
+    Given I open preferences by clicking the gear button
+    Given I click logout in account preferences
     Given I see the clear data dialog
-    Given I click Logout button on clear data dialog
+    Given I click logout button on clear data dialog
     Given I see Sign In page
     And Contact Myself sends message <Message4> via device SecondDevice to user <Contact>
     And Contact <Contact> sends message <Message5> via device ContactDevice to user Myself

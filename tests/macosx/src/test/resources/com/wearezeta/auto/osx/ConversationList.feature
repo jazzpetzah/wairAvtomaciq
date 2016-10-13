@@ -309,7 +309,7 @@ Feature: Conversation List
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     When I click menu bar item "Conversation" and menu item "Start"
-    Then I see people picker
+    Then I see Search is opened
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -323,7 +323,7 @@ Feature: Conversation List
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     When I type shortcut combination to open search
-    Then I see people picker
+    Then I see Search is opened
 
     Examples: 
       | Login      | Password      | Name      | Contact   |

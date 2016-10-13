@@ -35,7 +35,7 @@ Feature: Settings
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
-    When I open self profile
+    When I open preferences by clicking the gear button
     Then I do not see the settings button on self profile page
 
     Examples: 

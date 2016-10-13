@@ -55,13 +55,13 @@ public final class WebAppLocators {
 
     public static final class ContactListPage {
 
-        public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
+        public static final String xpathParentContactListItem = "//div[@id='conversations']";
         public static final String xpathParentArchiveListItem = "//div[@id='archive']";
-        public static final String cssParentContactListItem = "#conversation-list";
+        public static final String cssParentContactListItem = "#conversations";
         public static final String cssParentArchiveListItem = "#archive";
 
         public static final String cssIncomingPendingConvoItem = "[data-uie-name='item-pending-requests']";
-        public static final String cssSelectedIncomingPendingConvoItem = ".conversation-list-item.text-theme " +
+        public static final String cssSelectedIncomingPendingConvoItem = ".left-list-item.text-theme " +
                 cssIncomingPendingConvoItem;
 
         public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
@@ -96,7 +96,7 @@ public final class WebAppLocators {
 
         public static final Function<String, String> cssSelectedContactListEntryByName = (
                 name) -> String
-                .format(".conversation-list-item.text-theme div[data-uie-name='item-conversation'][data-uie-value='%s'], " +
+                .format(".left-list-item.text-theme div[data-uie-name='item-conversation'][data-uie-value='%s'], " +
                                 "div[data-uie-name='item-call'][data-uie-value='%s'].text-theme", name, name);
 
         public static final Function<String, String> cssOptionsButtonByContactName = (
@@ -110,7 +110,7 @@ public final class WebAppLocators {
                 .format("%s div[data-uie-name='item-conversation-archived'][data-uie-value='%s']",
                         cssParentArchiveListItem, name);
 
-        public static final String cssSelfProfileButton = "[data-uie-name='go-self-profile']";
+        public static final String cssGearButton = "[data-uie-name='go-preferences']";
 
         public static final String xpathContactListEntries = xpathParentContactListItem
                 + "//*[@data-uie-name='item-conversation' or @data-uie-name='item-call']";
@@ -190,7 +190,7 @@ public final class WebAppLocators {
         public static final String cssDeleteModalActionButtonSingle = ".modal-clear .modal-action";
 
         // little dot on avatar in accent color
-        public static final String cssBadge = ".conversation-list-settings-badge";
+        public static final String cssBadge = ".conversations-settings-badge";
     }
 
     public static final class CallPage {
@@ -256,6 +256,63 @@ public final class WebAppLocators {
 
         public static final Function<String, String> cssAvatarInCallControlsByUserId = (id) -> String.format(".conversation-list-call-controls-row-participants [user-id='%s']", id);
     }
+    
+    public static final class PreferencesPage {
+    
+        public static final String cssPreferencesCloseButton = "#preferences [data-uie-name='do-close-preferences']";
+        
+        public static final String cssPreferencesAccountButton = "#preferences [data-uie-name='go-account']";
+        
+        public static final String cssPreferencesDevicesButton = "#preferences [data-uie-name='go-devices']";
+        
+        public static final String cssPreferencesOptionsButton = "#preferences [data-uie-name='go-options']";
+        
+        public static final String cssPreferencesAboutButton = "#preferences [data-uie-name='go-about']";
+    }
+    
+    public static final class AccountPage {
+    
+        public static final String cssLogoutButton = "#preferences-account [data-uie-name='do-logout']";
+
+        public static final String cssSelfUserNameInput = "[data-uie-name='enter-name']";
+
+        public static final String cssNameSelfUserMail = "[data-uie-name='enter-email']";
+
+        public static final String cssNameSelfUserPhoneNumber = "[data-uie-name='enter-phone']";
+        
+        private static final String cssAccentColorPicker = "[data-uie-name='enter-accent-color']";
+        
+        public static final String cssAccentColorPickerLabels = cssAccentColorPicker + " label";
+        
+        public static final String cssAccentColorPickerInputs = cssAccentColorPicker + " input";
+        
+        public static final Function<Integer, String> cssAccentColorDivById = (
+                id) -> String.format("%s.accent-color-%s", cssAccentColorPickerLabels, id);
+        
+        public static final String cssCurrentAccentColorCircleDiv = cssAccentColorPicker + ".selected .circle";
+        
+        public static final String cssBackgroundAvatarAccentColor = ".background-accent.bg-theme";
+        
+        public static final String cssSelectPicture = "[data-uie-name='do-select-picture']";
+
+        public static final String cssDeleteAccountButton = "[data-uie-name='go-delete-account']";
+
+        public static final String cssCancelDeleteAccountButton = "[data-uie-name='modal-delete-account'] [data-uie-name='do-cancel']";
+
+        public static final String cssConfirmDeleteAccountButton = "[data-uie-name='modal-delete-account'] [data-uie-name='do-send']";
+    }
+
+    public static final class DevicesPage {
+        public static final String cssCurrentDevice = "[data-uie-name='preferences-device-current']";
+
+        public static final String cssCurrentDeviceId = "[data-uie-name='preferences-device-current-id']";
+    }
+
+    public static final class OptionsPage {
+
+        public static final String cssImportButton = "[data-uie-name='do-share-contacts']";
+
+    }
 
     public static final class SettingsPage {
 
@@ -270,14 +327,8 @@ public final class WebAppLocators {
         public static final Function<String, String> xpathDeviceLabel = (name) -> String
                 .format("//device-card//span[contains(text(),'%s')]", name);
 
-        public static final String cssCurrentDevice = "[data-uie-name='device-card-info-current']";
-
-        public static final String cssDeleteAccountButton = "[data-uie-name='go-delete-account']";
-        public static final String cssCancelDeleteAccountButton = "[data-uie-name='do-delete-cancel']";
-        public static final String cssConfirmDeleteAccountButton = "[data-uie-name='do-delete-account']";
         public static final String cssConfirmText = "[data-uie-name='delete-confirm-text']";
         public static final String cssSentText = "[data-uie-name='delete-sent']";
-        public static final String cssImportButton = "[data-uie-name='do-share-contacts']";
         public static final String cssImportAddressbookButton = "[data-uie-name='do-share-osx-contacts']";//macOS
         public static final String cssBackButton = "[data-uie-name='do-device-close']";
         public static final String cssVerificationToggle = ".button-label";
@@ -294,33 +345,8 @@ public final class WebAppLocators {
                 name) -> String.format("%s//li[text()='%s']",
                 xpathGearMenuRoot, name);
 
-        public static final String xpathSelfUserName = "//*[@data-uie-name='enter-name']/span";
-
-        public static final String xpathSelfUserNameInput = "//*[@data-uie-name='enter-name']/textarea";
-
-        public static final String classNameSelfUserMail = "self-profile-mail";
-
-        private static final String xpathAccentColorPicker = "//*[@data-uie-name='enter-accent-color']";
-
-        public static final String xpathAccentColorPickerChildren = xpathAccentColorPicker
-                + "/div";
-
-        public static final Function<Integer, String> xpathAccentColorDivById = (
-                id) -> String.format("%s[%s]", xpathAccentColorPickerChildren,
-                id);
-
-        public static final String xpathCurrentAccentColorCircleDiv = xpathAccentColorPicker
-                + "/div[contains(@class, 'selected')]/div[contains(@class,'circle')]";
-
-        public static final String xpathNameSelfUserMail = "//*[@data-uie-name='enter-email']";
-
-        public static final String xpathNameSelfUserPhoneNumber = "//*[@data-uie-name='enter-phone']";
-
         public static final String xpathCameraButton = "//*[@data-uie-name='go-profile-picture-selection']";
 
-        public static final String cssSelectPicture = "[data-uie-name='do-select-picture']";
-
-        public static final String xpathBackgroundAvatarAccentColor = "//div[contains(@class, 'background-accent bg-theme')]";
     }
 
     public static final class ConversationPage {
@@ -333,6 +359,8 @@ public final class WebAppLocators {
         public static final String idMessageList = "message-list";
 
         public static final String cssUserAvatar = ".user-avatar and .pending";
+
+        public static final String cssWatermark = "[data-uie-name='no-conversation']";
         
         public static final String cssCancelRequestButton = "#"+idConversation+" [data-uie-name='do-cancel-request']";
 
@@ -625,6 +653,8 @@ public final class WebAppLocators {
 
         public static final String xpathXButtonOnLongMWarning = "//div[contains(@class, 'modal-too-long-message')" +
                 "]//div[contains(@class, 'modal-close')]";
+
+        public static final String cssFirstTimeExperienceMessage = "[data-uie-name='start-conversation-hint']";
     }
 
     public static final class ConnectToPage {
@@ -750,21 +780,6 @@ public final class WebAppLocators {
         public static final String xpathVerifyLaterButton = "//div[@id='posted-later-link']";
 
         public static final String cssTermsOfUseCheckbox = ".checkbox-terms-of-use span";
-    }
-
-    public static final class SelfPictureUploadPage {
-
-        public static final String xpathRootDiv = "//div[@id='self-upload']";
-
-        public static final String cssKeepPictureButton = "[data-uie-name='do-keep-picture']";
-
-        public static final String cssChooseYourOwnInput = "[data-uie-name=do-select-picture]";
-
-        public static final String xpathNextCarouselImageBtn = xpathRootDiv
-                + "//div[contains(@class, 'carousel-arrows')]//span[contains(@class, 'carousel-arrow-right')]";
-
-        public static final String xpathPreviousCarouselImageBtn = xpathRootDiv
-                + "//div[contains(@class, 'carousel-arrows')]//span[contains(@class, 'carousel-arrow-left')]";
     }
 
     public static final class ContactsUploadPage {

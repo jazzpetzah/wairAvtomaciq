@@ -392,7 +392,7 @@ Feature: VideoCalling
     And I am signed in properly
     And I wait until <Contact> exists in backend search results
     And I see Contact list with name <Contact>
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <Contact> in search field of People Picker
     And I see user <Contact> found in People Picker
     And I select <Contact> from People Picker results
@@ -425,7 +425,7 @@ Feature: VideoCalling
     And I am signed in properly
     And I wait until <Contact1> exists in backend search results
     And I wait until <Contact2> exists in backend search results
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <Contact1> in search field of People Picker
     And I see user <Contact1> found in People Picker
     And I select <Contact1> from People Picker results
@@ -504,11 +504,10 @@ Feature: VideoCalling
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I am signed in properly
-    When I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     Then I see Sign In page
     And <Contact> starts a video call to me
     When I Sign in using login <Login> and password <Password>
@@ -539,7 +538,7 @@ Feature: VideoCalling
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I am signed in properly
-    Then I open self profile
+    Then I open preferences by clicking the gear button
     When <Contact> starts a video call to me
     Then I see the incoming call controls for conversation <Contact>
     And I see accept video call button for conversation <Contact>

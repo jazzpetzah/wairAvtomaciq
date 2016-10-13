@@ -50,11 +50,10 @@ Feature: Ping
     Given I Sign in using login <Login1> and password <Password1>
     Given I am signed in properly
     Given I see Contact list with name <ChatName>
-    Given I open self profile
-    Given I click gear button on self profile page
-    Given I select Log out menu item on self profile page
+    Given I open preferences by clicking the gear button
+    Given I click logout in account preferences
     Given I see the clear data dialog
-    Given I click Logout button on clear data dialog
+    Given I click logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
@@ -64,11 +63,10 @@ Feature: Ping
     And I open conversation with <Contact1>
     When I click ping button
     Then I see <PING> action in conversation
-    When I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And Contact <Name> sends message <Message> to user <Contact1>
     And I see Sign In page
     And User <Contact1> is me

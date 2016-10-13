@@ -243,14 +243,12 @@ Feature: Edit
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password2>
-    Given I see Welcome page
-    Given I confirm keeping picture on Welcome page
     Given I am signed in properly
-    Given I open self profile
-    Given I click gear button on self profile page
-    Given I select Log out menu item on self profile page
+    Given I see first time experience with watermark
+    Given I open preferences by clicking the gear button
+    Given I click logout in account preferences
     Given I see the clear data dialog
-    Given I click Logout button on clear data dialog
+    Given I click logout button on clear data dialog
     When I see Sign In page
     And I Sign in using login <Login> and password <Password>
     And I am signed in properly
@@ -271,11 +269,10 @@ Feature: Edit
     And I see 3 messages in conversation
     And I see latest text message last message
     When I remember edit timestamp of second last message
-    And I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    Then I click Logout button on clear data dialog
+    Then I click logout button on clear data dialog
     When I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
     And I am signed in properly

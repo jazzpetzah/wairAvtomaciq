@@ -1766,4 +1766,29 @@ public class ConversationPageSteps {
     public void IClickXButoonToCancelEdit() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickXButtonToCloseEdit();
     }
+
+    /**
+     * Verify that the conversation list shows the info "Start a conversation or invite people to join" and the conversation
+     * shows a watermark of the wire logo
+     *
+     * @param shouldNotBeVisible is set to null if "do not" part does not exist
+     * @throws Exception
+     * @step. ^I( do not)? see first time experience with watermark$
+     */
+    @And("^I( do not)? see first time experience with watermark$")
+    public void ISeeWelcomePage(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            assertThat("No watermark wire logo shown",
+                    context.getPagesCollection().getPage(ConversationPage.class).isWatermarkVisible());
+            assertThat("First time experience message",
+                    context.getPagesCollection().getPage(ConversationPage.class).getFirstTimeExperienceMessage(),
+                    containsString("Start a conversation or invite people to join."));
+        } else {
+            assertThat("Watermark wire logo shown",
+                    context.getPagesCollection().getPage(ConversationPage.class).isWatermarkNotVisible());
+            assertThat("First time experience message",
+                    context.getPagesCollection().getPage(ConversationPage.class).getFirstTimeExperienceMessage(),
+                    not(containsString("Start a conversation or invite people to join.")));
+        }
+    }
 }

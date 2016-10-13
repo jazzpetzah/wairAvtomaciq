@@ -11,11 +11,10 @@ Feature: Conversation View
     When I see the history info page
     Then I click confirm on history info page
     When I am signed in properly
-    Then I open self profile
-    When I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    Then I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     Then I see Sign In page
     And <Contact1> has group chat <ChatName> with Myself,<Contact2>
     And Contact <Name> sends 35 messages with prefix <OtherDeviceMsg> via device Device1 to group conversation <ChatName>
@@ -126,14 +125,11 @@ Feature: Conversation View
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password2>
     Given I am signed in properly
-    Given I see Welcome page
-    Given I confirm keeping picture on Welcome page
     Given I see Contact list with name <ChatName>
-    Given I open self profile
-    Given I click gear button on self profile page
-    Given I select Log out menu item on self profile page
+    Given I open preferences by clicking the gear button
+    Given I click logout in account preferences
     Given I see the clear data dialog
-    Given I click Logout button on clear data dialog
+    Given I click logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
@@ -141,11 +137,10 @@ Feature: Conversation View
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
     And I see only 1 picture in the conversation
-    When I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And I see Sign In page
     And User <Name2> is me
     And I Sign in using login <Login2> and password <Password2>
@@ -275,7 +270,7 @@ Feature: Conversation View
     Given I click confirm on history info page
     Given I wait for 20 seconds
     And I am signed in properly
-    And I open People Picker from Contact List
+    And I open search by clicking the people button
     And I type <Contact1> in search field of People Picker
     And I select <Contact1> from People Picker results
     And I wait for the search field of People Picker to be empty
@@ -468,9 +463,10 @@ Feature: Conversation View
     And Contact <Contact> sends 35 messages with prefix <READ> via device Device1 to user <Name>
     And I wait for 5 seconds
     Then I really see text message <READ>34
-    When I open self profile
+    When I open preferences by clicking the gear button
     And Contact <Contact> sends 35 messages with prefix <UNREAD> via device Device1 to user <Name>
     And I wait for 5 seconds
+    And I close preferences
     Then I see unread dot in conversation <Contact>
     When I open conversation with <Contact>
     Then I do not see text message <READ>33

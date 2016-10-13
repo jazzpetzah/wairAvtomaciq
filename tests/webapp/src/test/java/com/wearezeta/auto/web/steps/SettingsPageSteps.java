@@ -5,10 +5,9 @@ import java.util.List;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
-import org.junit.Assert;
+import com.wearezeta.auto.web.pages.DevicesPage;
 
 import com.wearezeta.auto.web.pages.SettingsPage;
-import com.wearezeta.auto.web.pages.SettingsPage.SoundAlertsLevel;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -32,64 +31,6 @@ public class SettingsPageSteps {
     }
 
 	/**
-	 * Verifies whether settings dialog is visible
-	 * 
-	 * @step. ^I see Settings dialog$
-	 * 
-	 * @throws AssertionError
-	 *             if settings dialog is not currently visible
-	 */
-	@Then("^I see Settings dialog$")
-	public void ISeeSetingsDialog() throws Exception {
-		Assert.assertTrue(context.getPagesCollection().getPage(SettingsPage.class)
-				.isVisible());
-	}
-
-	/**
-	 * Set relevant setting for sound alerts
-	 * 
-	 * @step. I select Sound Alerts setting to be (None|Some|All)
-	 * 
-	 * @param newLevel
-	 *            possible values None, Some, All
-	 * @throws Exception
-	 */
-	@When("^I select Sound Alerts setting to be (None|Some|All)")
-	public void ISelectSoundAlertsSetting(String newLevel) throws Exception {
-		context.getPagesCollection().getPage(SettingsPage.class).setSoundAlertsLevel(
-				SoundAlertsLevel.fromString(newLevel));
-	}
-
-	/**
-	 * Verify what sound alert setting is set
-	 * 
-	 * @step. I see Sound Alerts setting is set to (None|Some|All)
-	 * 
-	 * @param expectedValue
-	 *            possible values None, Some, All
-	 */
-	@When("^I see Sound Alerts setting is set to (None|Some|All)")
-	public void ISeeSoundAlertsSettingIs(String expectedValue) throws Exception {
-		final String currentValue = context.getPagesCollection()
-				.getPage(SettingsPage.class).getSoundAlertsLevel().toString();
-		Assert.assertTrue(
-				String.format(
-						"Current sound alerts setting ('%s') is not equal to the expected one: '%s'",
-						currentValue, expectedValue), expectedValue
-						.equalsIgnoreCase(currentValue));
-	}
-
-	/**
-	 * Click close button on Settings page
-	 * 
-	 * @step. I click close settings page button
-	 */
-	@When("^I click close settings page button$")
-	public void IClickCloseSettingsPageButton() throws Exception {
-		context.getPagesCollection().getPage(SettingsPage.class).clickCloseButton();
-	}
-
-	/**
 	 * Remember the device id of the current device
 	 * 
 	 * @step. I remember the device id of the current device
@@ -98,8 +39,7 @@ public class SettingsPageSteps {
 	 */
 	@When("^I remember the device id of the current device$")
 	public void IRememberCurrentDeviceId() throws Exception {
-		currentDeviceId = context.getPagesCollection().getPage(SettingsPage.class)
-				.getCurrentDeviceId();
+		currentDeviceId = context.getPagesCollection().getPage(DevicesPage.class).getCurrentDeviceId();
 	}
 
 	/**
@@ -119,10 +59,10 @@ public class SettingsPageSteps {
 					"currentDeviceId was not remembered, please use the according step first");
 		} else {
 			if (not == null) {
-				assertThat(context.getPagesCollection().getPage(SettingsPage.class)
+				assertThat(context.getPagesCollection().getPage(DevicesPage.class)
 						.getCurrentDeviceId(), equalTo(currentDeviceId));
 			} else {
-				assertThat(context.getPagesCollection().getPage(SettingsPage.class)
+				assertThat(context.getPagesCollection().getPage(DevicesPage.class)
 						.getCurrentDeviceId(), not(equalTo(currentDeviceId)));
 			}
 		}
@@ -130,8 +70,6 @@ public class SettingsPageSteps {
 
 	/**
 	 * Wait for devices to show up
-	 *
-	 * @param amount amount of added devices including current device
 	 *
 	 * @throws Exception
      */
@@ -216,35 +154,4 @@ public class SettingsPageSteps {
 				.getDeviceLabels(), hasSize(size));
 	}
 
-    @When("^I click delete account button on settings page$")
-    public void IClickDeleteAccountButton() throws Exception {
-        context.getPagesCollection().getPage(SettingsPage.class).clickDeleteAccountButton();
-    }
-
-    @When("^I click cancel deletion button on settings page$")
-    public void IClickCancelDeleteButton() throws Exception {
-        context.getPagesCollection().getPage(SettingsPage.class).clickCancelDeleteAccountButton();
-    }
-
-    @When("^I click send button to delete account$")
-    public void IClickSendButton() throws Exception {
-        context.getPagesCollection().getPage(SettingsPage.class).clickConfirmDeleteAccountButton();
-    }
-
-    @When("^I see email (.*) in delete info text on settings page$")
-    public void ISeeEmailInDeleteInfo(String emailAlias) throws Exception {
-		String email = context.getUserManager().findUserByEmailOrEmailAlias(emailAlias).getEmail();
-        assertThat("Email address not in description", context.getPagesCollection().getPage(SettingsPage.class).getDeleteInfo(),
-                containsString(email.toUpperCase()));
-    }
-
-    /**
-     * Click on import contacts from Gmail via Setting
-     *
-     * @throws Exception
-     */
-    @When("^I click button to import contacts from Gmail$")
-    public void IClickImportButton() throws Exception {
-        context.getPagesCollection().getPage(SettingsPage.class).clickImportButton();
-    }
 }
