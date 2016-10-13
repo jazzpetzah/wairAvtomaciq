@@ -8,7 +8,7 @@ Feature: Settings
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     When I click menu bar item "Wire" and menu item "Preferences"
-    Then I see Settings dialog
+    Then I see username <Name> in account preferences
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -22,7 +22,7 @@ Feature: Settings
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     When I type shortcut combination to open preferences
-    Then I see Settings dialog
+    Then I see username <Name> in account preferences
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
