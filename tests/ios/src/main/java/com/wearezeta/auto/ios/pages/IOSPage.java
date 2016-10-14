@@ -18,6 +18,7 @@ import io.appium.java_client.MobileBy;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.openqa.selenium.*;
 
 import com.wearezeta.auto.ios.pages.keyboard.IOSKeyboard;
@@ -374,7 +375,11 @@ public abstract class IOSPage extends BasePage {
             }
             // this is to show the unlock label if not visible yet
             IOSSimulatorHelper.goHome();
-            IOSSimulatorHelper.swipeRight();
+            if (getDriver().getOSVersion().compareTo(new DefaultArtifactVersion("10.0")) >= 0) {
+                IOSSimulatorHelper.goHome();
+            } else {
+                IOSSimulatorHelper.swipeRight();
+            }
             Thread.sleep(2000);
         } else {
             this.getDriver().lockDevice(timeSeconds);
