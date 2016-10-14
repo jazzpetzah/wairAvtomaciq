@@ -43,6 +43,8 @@ public class ContactsUiPage extends IOSPage {
 
     public void tapInviteOthersButton() throws Exception {
         getElement(nameInviteOthersButton).click();
+        // Wait for animation
+        Thread.sleep(2000);
     }
 
     public boolean isInviteOthersButtonVisible() throws Exception {
