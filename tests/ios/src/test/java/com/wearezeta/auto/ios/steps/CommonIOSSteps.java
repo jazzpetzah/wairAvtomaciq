@@ -96,7 +96,7 @@ public class CommonIOSSteps {
 
     private static final int DRIVER_CREATION_RETRIES_COUNT = 2;
 
-    private static final long INSTALL_DELAY_MS = 3000;
+    private static final long INSTALL_DELAY_MS = 5000;
 
     // These settings are needed to properly sign WDA for real device tests
     // See https://github.com/appium/appium-xcuitest-driver for more details
