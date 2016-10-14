@@ -1,6 +1,6 @@
 Feature: Ephemeral
 
-  @C261723 @staging
+  @C261723 @ephemeral @staging
   Scenario Outline: Verify sending ephemeral text message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -50,7 +50,7 @@ Feature: Ephemeral
       | user1Email | user1Password | user1Name | user2Name | user2Email | 15   | 15 seconds | 15s       | Hello   |
       | user1Email | user1Password | user1Name | user2Name | user2Email | 60   | 1 minute   | 1m        | Hello   |
 
-  @C261728 @staging
+  @C261728 @ephemeral @staging
   Scenario Outline: Verify switching on/off ephemeral message
     Given There are 2 users where <Name> is me
     #Given user <Contact> adds a new device Device1 with label Label1
@@ -82,7 +82,7 @@ Feature: Ephemeral
       | Login1     | Password      | Name      | Contact   | Time | TimeLong   | TimeShort | Message1 | Message2 |
       | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds  | 5s        | Hello1   | Hello2   |
 
-  @C261727 @staging
+  @C261727 @ephemeral @staging
   Scenario Outline: Verify ephemeral messages are turned off in a group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
