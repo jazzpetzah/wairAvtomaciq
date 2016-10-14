@@ -61,15 +61,14 @@ public final class WebAppLocators {
         public static final String cssParentArchiveListItem = "#archive";
 
         public static final String cssIncomingPendingConvoItem = "[data-uie-name='item-pending-requests']";
-        public static final String cssSelectedIncomingPendingConvoItem = ".left-list-item.text-theme " +
-                cssIncomingPendingConvoItem;
+
+        public static final String cssIncomingPendingConvoItemSelected = ".left-list-item.text-theme " + cssIncomingPendingConvoItem;
 
         public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
 
         public static final Function<String, String> xpathListItemRootWithControlsByName = name -> String
                 .format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/following-sibling::div[contains" +
-                                "(@class, 'controls')]",
-                        name);
+                                "(@class, 'controls')]", name);
 
         public static final String cssArchiveButton = "[data-uie-name='do-archive']";
 
