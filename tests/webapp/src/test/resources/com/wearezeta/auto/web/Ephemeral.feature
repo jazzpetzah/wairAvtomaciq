@@ -47,5 +47,5 @@ Feature: Ephemeral
     Examples:
       | Login1     | Password      | Name      | Contact   | Login2     | Time | TimeLong   | TimeShort | Message |
       | user1Email | user1Password | user1Name | user2Name | user2Email | 5    | 5 seconds  | 5s        | Hello   |
-    #  | user1Email | user1Password | user1Name | user2Name | user2Email | 15   | 15 seconds | 15s       | Hello   |
-    #  | user1Email | user1Password | user1Name | user2Name | user2Email | 60   | 1 minute   | 1m        | Hello   |
+      | user1Email | user1Password | user1Name | user2Name | user2Email | 15   | 15 seconds | 15s       | Hello   |
+      | user1Email | user1Password | user1Name | user2Name | user2Email | 60   | 1 minute   | 1m        | Hello   |

@@ -95,6 +95,9 @@ public class ConversationPage extends WebPage {
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssVideoCallButton)
     private WebElement videoCallButton;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssLastMessage)
+    private WebElement lastGenericMessage;
+
     @FindBy(css = WebAppLocators.ConversationPage.cssLastTextMessage)
     private WebElement lastTextMessage;
 
@@ -1452,5 +1455,9 @@ public class ConversationPage extends WebPage {
         By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessageByIndex.apply(1) + " " +
                 ".message-status");
         return DriverUtils.waitUntilLocatorAppears(getDriver(), lastMessageLocator);
+    }
+
+    public boolean isLastMessageObfuscated() {
+        return lastGenericMessage.findElement(By.cssSelector(".ephemeral-message-obfuscated")).isDisplayed();
     }
 }

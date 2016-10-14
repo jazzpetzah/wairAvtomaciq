@@ -1128,7 +1128,7 @@ public class ConversationPageSteps {
 
     @When("^I see the last message is obfuscated$")
     public void ISeeObfuscatedMessage() throws Exception {
-        //context.getPagesCollection().getPage(ConversationPage.class).
+        assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isLastMessageObfuscated());
     }
 
     /**
