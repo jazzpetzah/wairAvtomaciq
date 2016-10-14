@@ -288,7 +288,7 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C225981 @staging @fastLogin
+  @C225981 @regression @fastLogin
   Scenario Outline: Verify liking a link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -307,7 +307,7 @@ Feature: Likes
       | Name      | Contact   | Link                  |
       | user1Name | user2Name | https://www.wire.com/ |
 
-  @C225982 @staging @fastLogin
+  @C225982 @regression @fastLogin
   Scenario Outline: Verify liking a picture
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -326,7 +326,7 @@ Feature: Likes
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C225983 @staging @fastLogin
+  @C225983 @regression @fastLogin
   Scenario Outline: Verify liking an audio message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
