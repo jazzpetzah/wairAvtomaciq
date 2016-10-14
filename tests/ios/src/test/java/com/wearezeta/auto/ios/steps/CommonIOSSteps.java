@@ -402,9 +402,34 @@ public class CommonIOSSteps {
         }
     }
 
-    @When("^I accept alert$")
-    public void IAcceptAlert() throws Exception {
-        pagesCollection.getCommonPage().acceptAlert();
+    /**
+     * Process on-screen alert
+     *
+     * @step. ^I (accept|dismiss) alert( if visible)?$
+     * @param action either accept or dismiss
+     * @param mayIgnore whether to throw an exception if alert is not present
+     * @throws Exception
+     */
+    @When("^I (accept|dismiss) alert( if visible)?$")
+    public void IAcceptAlert(String action, String mayIgnore) throws Exception {
+        switch (action.toLowerCase()) {
+            case "accept":
+                if (mayIgnore == null) {
+                    pagesCollection.getCommonPage().acceptAlert();
+                } else {
+                    pagesCollection.getCommonPage().acceptAlertIfVisible();
+                }
+                break;
+            case "dismiss":
+                if (mayIgnore == null) {
+                    pagesCollection.getCommonPage().dismissAlert();
+                } else {
+                    pagesCollection.getCommonPage().dismissAlertIfVisible();
+                }
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown alert action: '%s'", action));
+        }
     }
 
     /**
@@ -417,11 +442,6 @@ public class CommonIOSSteps {
     @And("^I tap (.*) button on the alert$")
     public void ITapAlertButton(String caption) throws Exception {
         pagesCollection.getCommonPage().tapAlertButton(caption);
-    }
-
-    @When("^I dismiss alert$")
-    public void IDismissAlert() throws Exception {
-        pagesCollection.getCommonPage().dismissAlert();
     }
 
     /**
