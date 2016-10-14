@@ -479,6 +479,11 @@ public class ConversationPage extends WebPage {
         ephemeralButton.click();
     }
 
+    public List<String> getEphemeralTimers() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), ephemeralTimers.get(0));
+        return ephemeralTimers.stream().map(WebElement::getText).collect(Collectors.toList());
+    }
+
     public void setEphemeralTimer(String label) throws Exception {
         DriverUtils.waitUntilElementClickable(getDriver(), ephemeralTimers.get(0));
         for(WebElement element: ephemeralTimers) {

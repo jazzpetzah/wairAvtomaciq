@@ -1103,7 +1103,10 @@ public class ConversationPageSteps {
 
     @When("^I set the timer for ephemeral to (.*)$")
     public void ISetEphemeralTimer(String label) throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).setEphemeralTimer(label);
+        assertThat("Ephemeral option is available",
+                context.getPagesCollection().getPage(ConversationPage.class).getEphemeralTimers(),
+                hasItem(label.toUpperCase()));
+        context.getPagesCollection().getPage(ConversationPage.class).setEphemeralTimer(label.toUpperCase());
     }
 
     @When("^I see (.*) on ephemeral button$")
@@ -1116,6 +1119,16 @@ public class ConversationPageSteps {
     public void ISeePlaceholderOfInput(String label) throws Exception {
         Assert.assertThat(context.getPagesCollection().getPage(ConversationPage.class).getPlaceholderOfConversationInput(),
                 equalTo(label));
+    }
+
+    @When("^I( do not)? see timer next to the last message$")
+    public void ISeeTimer(String doNot) throws Exception {
+
+    }
+
+    @When("^I see the last message is obfuscated$")
+    public void ISeeObfuscatedMessage() throws Exception {
+        //context.getPagesCollection().getPage(ConversationPage.class).
     }
 
     /**

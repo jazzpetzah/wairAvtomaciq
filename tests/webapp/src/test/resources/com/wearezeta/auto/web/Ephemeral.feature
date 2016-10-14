@@ -15,9 +15,9 @@ Feature: Ephemeral
     When I write message <Message>
     And I send message
     Then I see text message <Message>
-    And I see timer next to the last message
+    #And I see timer next to the last message
     When I wait for <Time> seconds
-    Then I do not see timer next to the last message
+    #Then I do not see timer next to the last message
     And I see the last message is obfuscated
     And I see 2 messages in conversation
     When I open preferences by clicking the gear button
@@ -29,7 +29,7 @@ Feature: Ephemeral
     And I am signed in properly
     And I open conversation with <Name>
     Then I see text message <Message>
-    And I see timer next to the last message
+    #And I see timer next to the last message
     When I wait for <Time> seconds
     Then I do not see text message <Message>
     And I see 1 messages in conversation
@@ -47,5 +47,5 @@ Feature: Ephemeral
     Examples:
       | Login1     | Password      | Name      | Contact   | Login2     | Time | TimeLong   | TimeShort | Message |
       | user1Email | user1Password | user1Name | user2Name | user2Email | 5    | 5 seconds  | 5s        | Hello   |
-      | user1Email | user1Password | user1Name | user2Name | user2Email | 15   | 15 seconds | 15s       | Hello   |
-      | user1Email | user1Password | user1Name | user2Name | user2Email | 60   | 1 minute   | 1m        | Hello   |
+    #  | user1Email | user1Password | user1Name | user2Name | user2Email | 15   | 15 seconds | 15s       | Hello   |
+    #  | user1Email | user1Password | user1Name | user2Name | user2Email | 60   | 1 minute   | 1m        | Hello   |
