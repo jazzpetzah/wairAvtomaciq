@@ -32,8 +32,7 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
     }
 
     private void tapOverlayButton(String name) throws Exception {
-        final WebElement btn = makeOverlayButtonVisible(name);
-        this.tapScreenAt(btn);
+        makeOverlayButtonVisible(name).click();
     }
 
     @Override

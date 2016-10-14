@@ -75,10 +75,10 @@ public abstract class BasePage {
     }
 
     public Optional<BufferedImage> getElementScreenshot(WebElement element) throws Exception {
+        final Point elementLocation = element.getLocation();
+        final Dimension elementSize = element.getSize();
         final Optional<BufferedImage> screenshot = takeScreenshot();
         if (screenshot.isPresent()) {
-            final Point elementLocation = element.getLocation();
-            final Dimension elementSize = element.getSize();
             return Optional.of(screenshot.get().getSubimage(
                     elementLocation.x, elementLocation.y, elementSize.width, elementSize.height));
         } else {
