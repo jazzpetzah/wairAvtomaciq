@@ -8,9 +8,9 @@ Feature: Ephemeral
     Given I Sign in using login <Login1> and password <Password>
     And I am signed in properly
     When I open conversation with <Contact>
-    And I click on ephemeral icon to set the timer
+    And I click on ephemeral button
     And I set the timer for ephemeral to <TimeLong>
-    Then I see <TimeShort> on ephemeral icon
+    Then I see <TimeShort> on ephemeral button
     And I see placeholder of conversation input is Timed message
     When I write message <Message>
     And I send message

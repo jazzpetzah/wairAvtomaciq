@@ -71,6 +71,12 @@ public class ConversationPage extends WebPage {
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssShowParticipantsButton)
     private WebElement showParticipants;
 
+    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssEphemeralButton)
+    private WebElement ephemeralButton;
+
+    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssEphemeralTimers)
+    private List<WebElement> ephemeralTimers;
+
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssSendImageInput)
     private WebElement imagePathInput;
 
@@ -466,6 +472,30 @@ public class ConversationPage extends WebPage {
 
     public int getNumberOfMessagesInCurrentConversation() {
         return messageAmount.size();
+    }
+
+    public void clickEphemeralButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), ephemeralButton);
+        ephemeralButton.click();
+    }
+
+    public void setEphemeralTimer(String label) throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), ephemeralTimers.get(0));
+        for(WebElement element: ephemeralTimers) {
+            if(element.getText().equals(label)) {
+                element.click();
+                return;
+            }
+        }
+    }
+
+    public boolean isTimeShortOnEphemeralButtonVisible(String label) throws Exception {
+        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEphemeralButtonByLabel.apply(label));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public String getPlaceholderOfConversationInput() throws Exception {
+        return conversationInput.getAttribute("placeholder");
     }
 
     public void clickPingButton() throws Exception {

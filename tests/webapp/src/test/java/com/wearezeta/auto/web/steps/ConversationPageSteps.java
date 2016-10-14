@@ -1096,6 +1096,28 @@ public class ConversationPageSteps {
         cpSteps.IChooseToCreateGroupConversation();
     }
 
+    @When("^I click on ephemeral button$")
+    public void IClickEphemeralButton() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickEphemeralButton();
+    }
+
+    @When("^I set the timer for ephemeral to (.*)$")
+    public void ISetEphemeralTimer(String label) throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).setEphemeralTimer(label);
+    }
+
+    @When("^I see (.*) on ephemeral button$")
+    public void ISeeTimeShortOnEphemeralTimer(String label) throws Exception {
+        Assert.assertTrue("TimeShort" + label + "on ephemeral button is not shown",
+                context.getPagesCollection().getPage(ConversationPage.class).isTimeShortOnEphemeralButtonVisible(label));
+    }
+
+    @When("^I see placeholder of conversation input is (.*)$")
+    public void ISeePlaceholderOfInput(String label) throws Exception {
+        Assert.assertThat(context.getPagesCollection().getPage(ConversationPage.class).getPlaceholderOfConversationInput(),
+                equalTo(label));
+    }
+
     /**
      * Click ping button to send ping and hot ping
      *
