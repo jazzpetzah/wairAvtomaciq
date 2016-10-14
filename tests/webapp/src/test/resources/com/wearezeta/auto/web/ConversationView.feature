@@ -414,7 +414,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Message                                  |
       | user1Email | user1Password | user1Name | user2Name | All of these Candlejack jokes aren’t fu- |
 
-  @C1793 @regression @WEBAPP-3258
+  @C1793 @regression
   Scenario Outline: Verify Start (Search) is opened when you press ⌥ ⌘ N (Mac) or alt + ctrl + N (Win)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
