@@ -49,3 +49,35 @@ Feature: Ephemeral
       | user1Email | user1Password | user1Name | user2Name | user2Email | 5    | 5 seconds  | 5s        | Hello   |
       | user1Email | user1Password | user1Name | user2Name | user2Email | 15   | 15 seconds | 15s       | Hello   |
       | user1Email | user1Password | user1Name | user2Name | user2Email | 60   | 1 minute   | 1m        | Hello   |
+
+  @C261728 @staging
+  Scenario Outline: Verify switching on/off ephemeral message
+    Given There are 2 users where <Name> is me
+    #Given user <Contact> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login1> and password <Password>
+    And I am signed in properly
+    When I open conversation with <Contact>
+    And I click on ephemeral button
+    And I set the timer for ephemeral to <TimeLong>
+    Then I see <TimeShort> on ephemeral button
+    And I see placeholder of conversation input is Timed message
+    When I write message <Message1>
+    And I send message
+    Then I see text message <Message1>
+    When I wait for <Time> seconds
+    #And I do not see text message <Message1>
+    And I click on ephemeral button
+    And I set the timer for ephemeral to None
+    And I see placeholder of conversation input is Type a message
+    And I write message <Message2>
+    And I send message
+    Then I see text message <Message2>
+    When I wait for <Time> seconds
+    Then I see text message <Message2>
+    And I see the last message is not obfuscated
+
+    Examples:
+      | Login1     | Password      | Name      | Contact   | Time | TimeLong   | TimeShort | Message1 | Message2 |
+      | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds  | 5s        | Hello1   | Hello2   |

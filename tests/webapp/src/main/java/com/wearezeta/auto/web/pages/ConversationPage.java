@@ -1460,4 +1460,8 @@ public class ConversationPage extends WebPage {
     public boolean isLastMessageObfuscated() {
         return lastGenericMessage.findElement(By.cssSelector(".ephemeral-message-obfuscated")).isDisplayed();
     }
+
+    public boolean isLastMessageNotObfuscated() {
+        return lastTextMessage.getAttribute("class").contains("ephemeral-message-obfuscated");
+    }
 }
