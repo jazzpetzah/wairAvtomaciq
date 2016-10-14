@@ -74,6 +74,13 @@ public class DevicesPageSteps {
         context.getPagesCollection().getPage(DevicesPage.class).clickDevice(device + context.getTestname().hashCode());
     }
 
+    @When("^I click x to remove the device (.*)$")
+    public void IClickXToRemoveDevice(String device) throws Exception {
+        List<String> labels = context.getPagesCollection().getPage(DevicesPage.class).getActiveDevicesLabels();
+        int index = labels.indexOf(device + context.getTestname().hashCode());
+        context.getPagesCollection().getPage(DevicesPage.class).removeDevice(index);
+    }
+
     @Then("^I( do not)? see device (.*) of user (.*) is verified in device section$")
     public void ISeeVerifiedDevice(String donot, String deviceName, String userAlias) throws Exception {
         ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);

@@ -305,6 +305,8 @@ public final class WebAppLocators {
 
         public static final String cssActiveDevicesLabels = "[data-uie-name='preferences-device-active-model']";
 
+        public static final String cssXButtons = "[data-uie-name='do-device-remove']";
+
         public static final Function<String, String> xpathDeviceLabel = (name) -> String
                 .format("//*[@data-uie-name='preferences-device-active-model' and contains(text(),'%s')]", name);
     }

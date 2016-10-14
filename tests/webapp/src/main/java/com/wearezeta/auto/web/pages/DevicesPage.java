@@ -24,6 +24,9 @@ public class DevicesPage extends WebPage {
     @FindBy(css = WebAppLocators.DevicesPage.cssActiveDevicesLabels)
     private List<WebElement> activeDevicesLabels;
 
+    @FindBy(css = WebAppLocators.DevicesPage.cssXButtons)
+    private List<WebElement> xButtons;
+
     public DevicesPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -46,6 +49,11 @@ public class DevicesPage extends WebPage {
         final String locator = WebAppLocators.DevicesPage.xpathDeviceLabel.apply(device);
         DriverUtils.waitUntilElementClickable(getDriver(), getDriver().findElement(By.xpath(locator)));
         getDriver().findElement(By.xpath(locator)).click();
+    }
+
+    public void removeDevice(int index) throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), xButtons.get(index));
+        xButtons.get(index).click();
     }
 
     public List<String> getVerifiedDeviceIds() throws Exception {
