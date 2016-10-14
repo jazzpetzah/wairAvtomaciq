@@ -301,14 +301,7 @@ public class ContactListPageSteps {
                 .openConnectionRequestsList();
     }
 
-    /**
-     * Opens People Picker in Contact List
-     *
-     * @step. ^I open People Picker from Contact List$
-     *
-     * @throws Exception
-     */
-    @When("^I open People Picker from Contact List$")
+    @When("^I open search by clicking the people button$")
     public void IOpenStartUI() throws Exception {
         webappPagesCollection.getPage(ContactListPage.class).openStartUI();
     }

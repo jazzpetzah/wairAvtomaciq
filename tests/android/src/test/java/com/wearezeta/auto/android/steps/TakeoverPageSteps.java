@@ -39,7 +39,7 @@ public class TakeoverPageSteps {
     @When("^I see takeover screen from users? \"(.*)\"$")
     public void ISeeTakeoverScreen(String nameAliases) throws Exception {
         Assert.assertTrue("Takeover screeen text is not visible or not as expected",
-            getTakeoverPage().isTakeoverScreenTextCorrect());
+                getTakeoverPage().isTakeoverScreenTextCorrect());
         String name;
         final String headerText = getTakeoverPage().getHeaderText();
         for (String nameAlias : CommonSteps.splitAliases(nameAliases)) {
@@ -61,7 +61,7 @@ public class TakeoverPageSteps {
             Assert.assertTrue("Takeover page is not visible after timeout", getTakeoverPage().waitForTakeoverScreenVisible());
         } else {
             Assert.assertTrue("Takeover page is still visible after timeout",
-                getTakeoverPage().waitForTakeoverScreenInvisible());
+                    getTakeoverPage().waitForTakeoverScreenInvisible());
         }
     }
 

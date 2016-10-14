@@ -62,5 +62,5 @@ Feature: Video Message
     Then I see Video Message container in the conversation view
 
     Examples:
-      | Name      | Contact   | FileSize | FileFullName      |
-      | user1Name | user2Name | 26.00MB  | random_video.mp4  |
+      | Name      | Contact   | FileSize | FileFullName     |
+      | user1Name | user2Name | 26.00MB  | random_video.mp4 |

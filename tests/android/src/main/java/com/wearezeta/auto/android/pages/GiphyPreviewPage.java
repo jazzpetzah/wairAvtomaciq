@@ -115,7 +115,7 @@ public class GiphyPreviewPage extends AndroidPage {
     }
 
     public By getConfirmationButtonLocator(String buttonName) throws Exception {
-        switch(buttonName.toLowerCase()) {
+        switch (buttonName.toLowerCase()) {
             case "cancel":
                 return idCancelButton;
             case "send":
@@ -142,7 +142,7 @@ public class GiphyPreviewPage extends AndroidPage {
     }
 
     private By getGiphyImageLocator(String index) {
-        if(index.toLowerCase().contains("random")) {
+        if (index.toLowerCase().contains("random")) {
             return idGridImage;
         } else {
             int indexNumber = Integer.valueOf(index.replaceAll("\\D+", "").trim());

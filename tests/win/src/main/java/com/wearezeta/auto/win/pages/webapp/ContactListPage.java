@@ -1,6 +1,5 @@
 package com.wearezeta.auto.win.pages.webapp;
 
-import com.wearezeta.auto.win.pages.win.ContactContextMenuPage;
 import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 import com.wearezeta.auto.common.driver.DriverUtils;
 
@@ -33,8 +32,8 @@ public class ContactListPage extends
     private final WinPagesCollection osxPagesCollection = WinPagesCollection
             .getInstance();
 
-    @FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssSelfProfileButton)
-    private WebElement selfProfileAvatar;
+    @FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssGearButton)
+    private WebElement preferencesButton;
 
     @FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathActiveConversationEntry)
     private WebElement activeConversationEntry;
@@ -108,7 +107,7 @@ public class ContactListPage extends
         // do nothing (safari workaround)
         if (WebAppExecutionContext.getBrowser()
                 .isSupportingNativeMouseActions()) {
-            DriverUtils.moveMouserOver(this.getDriver(), selfProfileAvatar);
+            DriverUtils.moveMouserOver(this.getDriver(), preferencesButton);
         }
         return DriverUtils
                 .waitUntilLocatorDissapears(

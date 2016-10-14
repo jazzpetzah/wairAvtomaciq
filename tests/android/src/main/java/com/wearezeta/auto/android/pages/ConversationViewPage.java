@@ -31,13 +31,13 @@ public class ConversationViewPage extends AndroidPage {
     // Text
     private static final String idStrRowConversationMessage = "tmltv__row_conversation__message";
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
-        .format("//*[@id='%s' and @value='%s']", idStrRowConversationMessage, text);
+            .format("//*[@id='%s' and @value='%s']", idStrRowConversationMessage, text);
     private static final By xpathLastConversationMessage =
-        By.xpath(String.format("(//*[@id='%s'])[last()]", idStrRowConversationMessage));
+            By.xpath(String.format("(//*[@id='%s'])[last()]", idStrRowConversationMessage));
     private static final By xpathFirstConversationMessage =
-        By.xpath(String.format("(//*[@id='%s'])[1]", idStrRowConversationMessage));
+            By.xpath(String.format("(//*[@id='%s'])[1]", idStrRowConversationMessage));
     private static final Function<String, String> xpathStrLinkPreviewTextMessage = text ->
-        String.format("//*[@id='cv__row_conversation__link_preview__text_message' and @value='%s']", text);
+            String.format("//*[@id='cv__row_conversation__link_preview__text_message' and @value='%s']", text);
 
     // Image
     private static final String idStrConversationImages = "fl__row_conversation__message_image_container";
@@ -47,11 +47,11 @@ public class ConversationViewPage extends AndroidPage {
     // System message
     private static final String idStrMissedCallMesage = "ttv__row_conversation__missed_call";
     private static final Function<String, String> xpathStrMissedCallMesageByText = text -> String
-        .format("//*[@id='%s' and @value='%s']", idStrMissedCallMesage, text.toUpperCase());
+            .format("//*[@id='%s' and @value='%s']", idStrMissedCallMesage, text.toUpperCase());
 
     // Ping
     public static final Function<String, String> xpathStrPingMessageByText = text -> String
-        .format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']", text.toUpperCase());
+            .format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']", text.toUpperCase());
 
     //endregion
 
@@ -69,17 +69,17 @@ public class ConversationViewPage extends AndroidPage {
     public static final String idStrCursorEditText = "cet__cursor";
     private static final String CURSOR_EDIT_TOOLTIP = "TYPE A MESSAGE";
     private static final By xpathCursorEditHint = By.xpath(
-        String.format("//*[@id='ttv__cursor_hint' and contains(@value, '%s')]", CURSOR_EDIT_TOOLTIP));
+            String.format("//*[@id='ttv__cursor_hint' and contains(@value, '%s')]", CURSOR_EDIT_TOOLTIP));
     public static final By idCursorEditText = By.id(idStrCursorEditText);
     public static Function<String, String> xpathCursorEditTextByValue = value ->
-        String.format("//*[@id='%s' and contains(@value, '%s')]", idStrCursorEditText, value);
+            String.format("//*[@id='%s' and contains(@value, '%s')]", idStrCursorEditText, value);
     public static Function<String, String> xpathCursorTypingIndicatorByContainsQuery = query ->
-        String.format("//*[@id='ttv__typing_indicator_names'%s]", query);
+            String.format("//*[@id='ttv__typing_indicator_names'%s]", query);
     //endregion
 
     //region Message footer
     private static final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> xpathStrTemplateIdValue
-        = (id, value) -> String.format("//*[@id='%s' and contains(@value,'%s')]", id, value);
+            = (id, value) -> String.format("//*[@id='%s' and contains(@value,'%s')]", id, value);
 
     private static final String strIdMessageMetaLikeButton = "gtv__footer__like__button";
     private static final String strIdMessageMetaLikeDescription = "tv__footer__like__description";
@@ -88,7 +88,7 @@ public class ConversationViewPage extends AndroidPage {
     private static final String strIdMessageMetaSecondLike = "cv__first_like_chathead";
 
     private static final By idResendButton = By.xpath(
-        String.format("//*[@id='%s' and @value='Sending failed. Resend']", strIdMessageMetaStatus));
+            String.format("//*[@id='%s' and @value='Sending failed. Resend']", strIdMessageMetaStatus));
     //endregion
 
     //region Message Bottom Menu
@@ -135,7 +135,7 @@ public class ConversationViewPage extends AndroidPage {
     private static final By idAudioRecordingCancelButton = By.id("fl__audio_message__recording__cancel_button_container");
 
     private static final By xpathAudioMessageDurationText =
-        By.xpath("//*[@id='ttv__audio_message__recording__duration' and not(text())]");
+            By.xpath("//*[@id='ttv__audio_message__recording__duration' and not(text())]");
 
     private static final By idFileActionBtn = By.id("aab__row_conversation__action_button");
 
@@ -148,59 +148,59 @@ public class ConversationViewPage extends AndroidPage {
     private static final By xpathToolbar = By.xpath(xpathStrConversationToolbar);
 
     private static final By xpathToolBarNavigation =
-        By.xpath(String.format("%s/*[@value='' and count(*)=1]", xpathStrConversationToolbar));
+            By.xpath(String.format("%s/*[@value='' and count(*)=1]", xpathStrConversationToolbar));
 
     public static final By idCursorCloseButton = By.id("cursor_button_close");
 
     private static final String idStrNewConversationNameMessage = "ttv__row_conversation__new_conversation_name";
 
     private static Function<String, String> xpathStrNewConversationNameByValue = value -> String
-        .format("//*[@id='%s' and @value='%s']", idStrNewConversationNameMessage, value);
+            .format("//*[@id='%s' and @value='%s']", idStrNewConversationNameMessage, value);
 
     private static final By xpathStrOtrVerifiedMessage = By
-        .xpath("//*[@id='ttv__otr_added_new_device__message' and @value='ALL FINGERPRINTS ARE VERIFIED']");
+            .xpath("//*[@id='ttv__otr_added_new_device__message' and @value='ALL FINGERPRINTS ARE VERIFIED']");
 
     private static final By xpathStrOtrNonVerifiedMessage = By
-        .xpath("//*[@id='ttv__otr_added_new_device__message' and contains(@value,'STARTED USING A NEW DEVICE')]");
+            .xpath("//*[@id='ttv__otr_added_new_device__message' and contains(@value,'STARTED USING A NEW DEVICE')]");
 
     private static final Function<String, String> xpathStrOtrNonVerifiedMessageByValue = value -> String.format(
-        "//*[@id='ttv__otr_added_new_device__message' and @value='%s STARTED USING A NEW DEVICE']", value
-            .toUpperCase());
+            "//*[@id='ttv__otr_added_new_device__message' and @value='%s STARTED USING A NEW DEVICE']", value
+                    .toUpperCase());
 
     public static final String idStrConversationRoot = "clv__conversation_list_view";
     public static final By idConversationRoot = By.id(idStrConversationRoot);
     private static final By xpathConversationContent = By.xpath("//*[@id='" + idStrConversationRoot + "']/*/*/*");
 
     private static final Function<String, String> xpathMessageNotificationByValue = value -> String
-        .format("//*[starts-with(@id,'ttv_message_notification_chathead__label') and @value='%s']", value);
+            .format("//*[starts-with(@id,'ttv_message_notification_chathead__label') and @value='%s']", value);
 
     private static final Function<String, String> xpathConversationTitleByValue = value -> String
-        .format("//*[@id='tv__conversation_toolbar__title' and @value='%s']", value);
+            .format("//*[@id='tv__conversation_toolbar__title' and @value='%s']", value);
 
     private static final Function<String, String> xpathFileNamePlaceHolderByValue = value -> String
-        .format("//*[@id='ttv__row_conversation__file__filename' and @value='%s']", value);
+            .format("//*[@id='ttv__row_conversation__file__filename' and @value='%s']", value);
 
     private static final Function<String, String> xpathFileInfoPlaceHolderByValue = value -> String
-        .format("//*[@id='ttv__row_conversation__file__fileinfo' and @value='%s']", value);
+            .format("//*[@id='ttv__row_conversation__file__fileinfo' and @value='%s']", value);
 
     private static final Function<String, String> xpathConversationPeopleChangedByExp = exp -> String
-        .format("//*[@id='ttv__row_conversation__people_changed__text' and %s]", exp);
+            .format("//*[@id='ttv__row_conversation__people_changed__text' and %s]", exp);
 
     private static final Function<String, String> xpathLinkPreviewUrlByValue = value -> String
-        .format("//*[@id='ttv__row_conversation__link_preview__url' and @value='%s']", value);
+            .format("//*[@id='ttv__row_conversation__link_preview__url' and @value='%s']", value);
 
     private static final String idStrSeparatorName = "ttv__row_conversation__separator__name";
 
     private static final Function<String, String> xpathTrashcanByName = name -> String
-        .format("//*[@id='%s' and @value='%s']/following-sibling::*[@id='gtv__message_recalled']",
-            idStrSeparatorName, name.toLowerCase());
+            .format("//*[@id='%s' and @value='%s']/following-sibling::*[@id='gtv__message_recalled']",
+                    idStrSeparatorName, name.toLowerCase());
 
     private static final Function<String, String> xpathPenByName = name -> String
-        .format("//*[@id='%s' and @value='%s']/following-sibling::*[@id='gtv__message_edited']",
-            idStrSeparatorName, name.toLowerCase());
+            .format("//*[@id='%s' and @value='%s']/following-sibling::*[@id='gtv__message_edited']",
+                    idStrSeparatorName, name.toLowerCase());
 
     private static final Function<String, String> xpathMessageSeparator = name -> String
-        .format("//*[@id='%s' and @value='%s']", idStrSeparatorName, name.toLowerCase());
+            .format("//*[@id='%s' and @value='%s']", idStrSeparatorName, name.toLowerCase());
 
     private static final By idYoutubeContainer = By.id("iv__row_conversation__youtube_image");
 
@@ -266,49 +266,49 @@ public class ConversationViewPage extends AndroidPage {
     // region Screeshot buffer
     public BufferedImage getConvoViewStateScreenshot() throws Exception {
         return this.getElementScreenshot(getElement(idConversationRoot)).orElseThrow(
-            () -> new IllegalStateException("Cannot get a screenshot of conversation view")
+                () -> new IllegalStateException("Cannot get a screenshot of conversation view")
         );
     }
 
     public BufferedImage getShieldStateScreenshot() throws Exception {
         return this.getElementScreenshot(getElement(idVerifiedConversationShield)).orElseThrow(
-            () -> new IllegalStateException("Cannot get a screenshot of verification shield")
+                () -> new IllegalStateException("Cannot get a screenshot of verification shield")
         );
     }
 
     public BufferedImage getMediaButtonState() throws Exception {
         return this.getElementScreenshot(getElement(idPlayPauseMedia)).orElseThrow(
-            () -> new IllegalStateException("Cannot get a screenshot of Play/Pause button")
+                () -> new IllegalStateException("Cannot get a screenshot of Play/Pause button")
         );
     }
 
     public BufferedImage getTopToolbarState() throws Exception {
         return this.getElementScreenshot(getElement(xpathToolbar)).orElseThrow(
-            () -> new IllegalStateException("Cannot get a screenshot of upper toolbar")
+                () -> new IllegalStateException("Cannot get a screenshot of upper toolbar")
         );
     }
 
     public BufferedImage getFilePlaceholderActionButtonState() throws Exception {
         return this.getElementScreenshot(getElement(idFileActionBtn)).orElseThrow(
-            () -> new IllegalStateException("Cannot get a screenshot of file place holder action button")
+                () -> new IllegalStateException("Cannot get a screenshot of file place holder action button")
         );
     }
 
     public BufferedImage getAudioMessageSeekbarState() throws Exception {
         return this.getElementScreenshot(getElement(idAudioContainerSeekbar)).orElseThrow(
-            () -> new IllegalStateException("Cannot get a screenshot of seekbar within audio message container")
+                () -> new IllegalStateException("Cannot get a screenshot of seekbar within audio message container")
         );
     }
 
     public BufferedImage getAudioMessagePreviewSeekbarState() throws Exception {
         return this.getElementScreenshot(getElement(idAudioMessagePreviewSeekbar)).orElseThrow(
-            () -> new IllegalStateException("Cannot get a screenshot of seekbar within audio message preview ")
+                () -> new IllegalStateException("Cannot get a screenshot of seekbar within audio message preview ")
         );
     }
 
     public BufferedImage getAudioMessagePreviewMicrophoneButtonState() throws Exception {
         return this.getElementScreenshot(getElement(idAudioRecordingPlayButton)).orElseThrow(
-            () -> new IllegalStateException("Cannot get a screenshot of Audio message recording slide microphone button")
+                () -> new IllegalStateException("Cannot get a screenshot of Audio message recording slide microphone button")
         );
     }
     //endregion
@@ -349,13 +349,13 @@ public class ConversationViewPage extends AndroidPage {
             ntry++;
         }
         while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathCursorEditTextByValue.apply
-            (message)), 2)
-            && ntry < maxTries);
+                (message)), 2)
+                && ntry < maxTries);
         if (ntry >= maxTries) {
             throw new IllegalStateException(String.format(
-                "The string '%s' was autocorrected. Please disable autocorrection on the device and restart the " +
-                    "test.",
-                message));
+                    "The string '%s' was autocorrected. Please disable autocorrection on the device and restart the " +
+                            "test.",
+                    message));
         }
 
         switch (sendFrom.toLowerCase()) {
@@ -376,9 +376,9 @@ public class ConversationViewPage extends AndroidPage {
     public void typeMessage(String message) throws Exception {
         getElement(idCursorEditText).sendKeys(message);
         if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathCursorEditTextByValue.apply(message)),
-            2)) {
+                2)) {
             log.warn(String.format("The message '%s' was autocorrected. This might cause unpredicted test results",
-                message));
+                    message));
         }
     }
 
@@ -397,7 +397,7 @@ public class ConversationViewPage extends AndroidPage {
             buffer.append(String.format(" and contains(@value,'%s')", name.toLowerCase().trim()));
         }
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-            By.xpath(xpathCursorTypingIndicatorByContainsQuery.apply(buffer.toString())));
+                By.xpath(xpathCursorTypingIndicatorByContainsQuery.apply(buffer.toString())));
     }
 
     private By getCursorToolButtonLocatorByName(String name) {
@@ -434,13 +434,13 @@ public class ConversationViewPage extends AndroidPage {
             return btn.get();
         } else {
             getElementIfDisplayed(idCursorMore, 3).orElseGet(() ->
-                {
-                    try {
-                        return getElement(idCursorLess);
-                    } catch (Exception e) {
-                        throw new IllegalStateException("Cannot find element with Cursor less button");
+                    {
+                        try {
+                            return getElement(idCursorLess);
+                        } catch (Exception e) {
+                            throw new IllegalStateException("Cannot find element with Cursor less button");
+                        }
                     }
-                }
             ).click();
             // Wait for animation
             Thread.sleep(1000);
@@ -471,13 +471,13 @@ public class ConversationViewPage extends AndroidPage {
 
     public void longTapAudioMessageCursorBtnAndSwipeUp(int durationMillis) throws Exception {
         longTapAndSwipe(showCursorToolButtonIfNotVisible(idCursorAudioMessage),
-            () -> getElement(idAudioRecordingSendButton), DEFAULT_SWIPE_DURATION, durationMillis);
+                () -> getElement(idAudioRecordingSendButton), DEFAULT_SWIPE_DURATION, durationMillis);
     }
 
     public void longTapAudioMessageCursorBtnAndRememberIcon(int durationMillis, ElementState elementState)
-        throws Exception {
+            throws Exception {
         longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idCursorAudioMessage),
-            DEFAULT_SWIPE_DURATION, durationMillis, Optional.of(elementState::remember));
+                DEFAULT_SWIPE_DURATION, durationMillis, Optional.of(elementState::remember));
     }
 
     public boolean isAudioMessageRecordingSlideVisible() throws Exception {
@@ -569,7 +569,7 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean waitForOtrNonVerifiedMessageCausedByUser(String userName) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-            By.xpath(xpathStrOtrNonVerifiedMessageByValue.apply(userName)));
+                By.xpath(xpathStrOtrNonVerifiedMessageByValue.apply(userName)));
     }
 
     public boolean waitForMessage(String text) throws Exception {
@@ -589,7 +589,7 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean waitForPeopleMessage(String text) throws Exception {
         final By locator = By.xpath(xpathConversationPeopleChangedByExp.apply(String.format("contains(@value, '%s')",
-            text.toUpperCase())));
+                text.toUpperCase())));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
@@ -603,7 +603,7 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean isImageVisible() throws Exception {
         return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idConversationImageContainer) &&
-            DriverUtils.waitUntilLocatorDissapears(getDriver(), idClickedImageSendingIndicator, 20);
+                DriverUtils.waitUntilLocatorDissapears(getDriver(), idClickedImageSendingIndicator, 20);
     }
 
     public boolean isConversationTitleVisible(String conversationTitle) throws Exception {
@@ -644,7 +644,7 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean isConversationPeopleChangedMessageContainsNames(List<String> names) throws Exception {
         final String xpathExpr = String.join(" and ", names.stream().map(
-            name -> String.format("contains(@value, '%s')", name.toUpperCase())
+                name -> String.format("contains(@value, '%s')", name.toUpperCase())
         ).collect(Collectors.toList()));
         final By locator = By.xpath(xpathConversationPeopleChangedByExp.apply(xpathExpr));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
@@ -683,15 +683,15 @@ public class ConversationViewPage extends AndroidPage {
             throw new IllegalStateException("Play/Pause button is not clickable");
         }
         final BufferedImage initialState = getElementScreenshot(playPauseBtn)
-            .orElseThrow(() -> new IllegalStateException("Failed to get a screenshot of Play/Pause button"));
+                .orElseThrow(() -> new IllegalStateException("Failed to get a screenshot of Play/Pause button"));
         playPauseBtn.click();
         Thread.sleep(2000);
         int clickTry = 1;
         do {
             final BufferedImage currentState = getElementScreenshot(playPauseBtn)
-                .orElseThrow(() -> new AssertionError("Failed to get a screenshot of Play/Pause button"));
+                    .orElseThrow(() -> new AssertionError("Failed to get a screenshot of Play/Pause button"));
             final double overlapScore = ImageUtil.getOverlapScore(currentState, initialState, ImageUtil
-                .RESIZE_TO_MAX_SCORE);
+                    .RESIZE_TO_MAX_SCORE);
             if (overlapScore < MAX_BUTTON_STATE_OVERLAP) {
                 return;
             } else {
@@ -701,7 +701,7 @@ public class ConversationViewPage extends AndroidPage {
             clickTry++;
         } while (clickTry <= MAX_CLICK_RETRIES);
         assert (clickTry > MAX_CLICK_RETRIES) : "Media playback state has not been changed after " + MAX_CLICK_RETRIES
-            + " retries";
+                + " retries";
     }
 
     public boolean waitUntilYoutubePlayButtonVisible() throws Exception {
@@ -743,18 +743,18 @@ public class ConversationViewPage extends AndroidPage {
                                            MessageIndexLocator messageIndexLocator) throws Exception {
         final By locator = By.xpath(xpathStrConversationMessageByText.apply(expectedMessage));
         return CommonUtils.waitUntilTrue(
-            timeoutSeconds,
-            500,
-            () -> {
-                final Optional<WebElement> msgElement = getElementIfDisplayed(locator, 1);
-                if (msgElement.isPresent()) {
-                    final String indexMessage = getElement(messageIndexLocator.getLocator(),
-                        "Cannot find the indexed message in the conversation", 1).getText();
-                    return expectedMessage.equals(indexMessage);
-                } else {
-                    return false;
+                timeoutSeconds,
+                500,
+                () -> {
+                    final Optional<WebElement> msgElement = getElementIfDisplayed(locator, 1);
+                    if (msgElement.isPresent()) {
+                        final String indexMessage = getElement(messageIndexLocator.getLocator(),
+                                "Cannot find the indexed message in the conversation", 1).getText();
+                        return expectedMessage.equals(indexMessage);
+                    } else {
+                        return false;
+                    }
                 }
-            }
         );
     }
 
@@ -807,7 +807,7 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean waitForMessageNotification(String message) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-            By.xpath(xpathMessageNotificationByValue.apply(message)));
+                By.xpath(xpathMessageNotificationByValue.apply(message)));
     }
 
     public void tapMessageNotification(String message) throws Exception {
@@ -816,50 +816,50 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean isMediaBarBelowUptoolbar() throws Exception {
         return isElementABelowElementB(getElement(idMediaToolbar), getElement(xpathToolbar),
-            LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR);
+                LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR);
     }
 
     public void waitUntilFileUploadIsCompleted(int timeoutSeconds, String size, String extension) throws Exception {
         Thread.sleep(2000);
         String fileInfo = StringUtils.isEmpty(extension) ? size :
-            size + FILE_MESSAGE_SEPARATOR + extension.toUpperCase();
+                size + FILE_MESSAGE_SEPARATOR + extension.toUpperCase();
         fileInfo = String.format("%s%s%s", fileInfo, FILE_MESSAGE_SEPARATOR, FILE_UPLOADING_MESSAGE);
         DriverUtils.waitUntilLocatorDissapears(getDriver(),
-            By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeoutSeconds);
+                By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeoutSeconds);
     }
 
     public boolean isFilePlaceHolderVisible(String fileFullName, String size, String extension,
                                             boolean isUpload, boolean isSuccess, int timeout) throws Exception {
         size = size.toUpperCase();
         String fileInfo = StringUtils.isEmpty(extension) ? size :
-            String.format("%s%s%s", size, FILE_MESSAGE_SEPARATOR, extension.toUpperCase());
+                String.format("%s%s%s", size, FILE_MESSAGE_SEPARATOR, extension.toUpperCase());
 
         if (!isSuccess) {
             fileInfo = String.format("%s%s%s", fileInfo, FILE_MESSAGE_SEPARATOR,
-                isUpload ? FILE_UPLOAD_FAILED : FILE_DOWNLOADING_MESSAGE);
+                    isUpload ? FILE_UPLOAD_FAILED : FILE_DOWNLOADING_MESSAGE);
         }
 
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-            By.xpath(xpathFileNamePlaceHolderByValue.apply(fileFullName)), timeout) &&
-            DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeout);
+                By.xpath(xpathFileNamePlaceHolderByValue.apply(fileFullName)), timeout) &&
+                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                        By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeout);
     }
 
     public boolean isFilePlaceHolderInvisible(String fileFullName, String size, String extension,
                                               boolean isUpload, boolean isSuccess, int timeout) throws Exception {
         size = size.toUpperCase();
         String fileInfo = StringUtils.isEmpty(extension) ? size :
-            String.format("%s%s%s", size, FILE_MESSAGE_SEPARATOR, extension.toUpperCase());
+                String.format("%s%s%s", size, FILE_MESSAGE_SEPARATOR, extension.toUpperCase());
 
         if (!isSuccess) {
             fileInfo = String.format("%s%s%s", fileInfo, FILE_MESSAGE_SEPARATOR,
-                isUpload ? FILE_UPLOAD_FAILED : FILE_DOWNLOADING_MESSAGE);
+                    isUpload ? FILE_UPLOAD_FAILED : FILE_DOWNLOADING_MESSAGE);
         }
 
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-            By.xpath(xpathFileNamePlaceHolderByValue.apply(fileFullName)), timeout) &&
-            DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeout);
+                By.xpath(xpathFileNamePlaceHolderByValue.apply(fileFullName)), timeout) &&
+                DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                        By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeout);
     }
 
     public void tapFileActionButton() throws Exception {
@@ -1009,12 +1009,12 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean isCursorToolbarVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorMore)
-            || DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorLess);
+                || DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorLess);
     }
 
     public boolean isCursorToolbarInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorMore)
-            && DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorLess);
+                && DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorLess);
     }
 
     public int getMessageHeight(String msg) throws Exception {
@@ -1041,14 +1041,14 @@ public class ConversationViewPage extends AndroidPage {
                 return idMessageBottomMenuUnlikeButton;
             default:
                 throw new IllegalArgumentException(String.format("There is no '%s' button on Message Bottom Menu",
-                    btnName));
+                        btnName));
         }
     }
 
     public void tapMessageBottomMenuButton(String name) throws Exception {
         final By locator = getMessageBottomMenuButtonLocatorByName(name);
         assert scrollUntilMessageMenuElementVisible(locator, 5) : String
-            .format("Message Menu item '%s' is not present", name);
+                .format("Message Menu item '%s' is not present", name);
         getElement(locator, String.format("Message bottom menu %s button is invisible", name)).click();
     }
 
@@ -1062,7 +1062,7 @@ public class ConversationViewPage extends AndroidPage {
         while (nScrolls < maxScrolls) {
             Optional<WebElement> el = getElementIfDisplayed(locator, 1);
             if (el.isPresent() &&
-                el.get().getLocation().getY() + el.get().getSize().getHeight() - offset <= screenHeight) {
+                    el.get().getLocation().getY() + el.get().getSize().getHeight() - offset <= screenHeight) {
                 return true;
             }
             swipeByCoordinates(500, 50, 95, 50, endHeightPercentage);
@@ -1133,17 +1133,17 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean waitUntilMessageMetaItemVisible(String itemType, String expectedItemText)
-        throws Exception {
+            throws Exception {
         String locatorId = getMessageMetaLocatorIdString(itemType);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-            By.xpath(xpathStrTemplateIdValue.apply(locatorId, expectedItemText)));
+                By.xpath(xpathStrTemplateIdValue.apply(locatorId, expectedItemText)));
     }
 
     public boolean waitUntilMessageMetaItemInvisible(String itemType, String expectedItemText)
-        throws Exception {
+            throws Exception {
         String locatorId = getMessageMetaLocatorIdString(itemType);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-            By.xpath(xpathStrTemplateIdValue.apply(locatorId, expectedItemText)));
+                By.xpath(xpathStrTemplateIdValue.apply(locatorId, expectedItemText)));
     }
 
     public void tapMessageMetaItem(String itemType) throws Exception {
@@ -1154,7 +1154,7 @@ public class ConversationViewPage extends AndroidPage {
     public BufferedImage getMessageLikeButtonState() throws Exception {
         By locator = By.id(strIdMessageMetaLikeButton);
         return this.getElementScreenshot(getElement(locator)).orElseThrow(
-            () -> new IllegalStateException("Cannot get a screenshot for like button")
+                () -> new IllegalStateException("Cannot get a screenshot for like button")
         );
     }
 
@@ -1177,7 +1177,7 @@ public class ConversationViewPage extends AndroidPage {
                 return strIdMessageMetaSecondLike;
             default:
                 throw new IllegalStateException(
-                    String.format("Cannot identify the item type '%s' in Message Meta", itemType));
+                        String.format("Cannot identify the item type '%s' in Message Meta", itemType));
         }
     }
     //endregion

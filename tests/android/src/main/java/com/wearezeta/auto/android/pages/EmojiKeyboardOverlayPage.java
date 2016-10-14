@@ -14,10 +14,11 @@ public class EmojiKeyboardOverlayPage extends AndroidPage {
     }
 
     public enum KeboardTab {
-        RECENT(2), CATEGORY1(3),  CATEGORY2(4), CATEGORY3(5),CATEGORY4(6), CATEGORY5(7), CATEGORY6(8),
-        CATEGORY7(9),CATEGORY8(10), BACKSPACE(11);
+        RECENT(2), CATEGORY1(3), CATEGORY2(4), CATEGORY3(5), CATEGORY4(6), CATEGORY5(7), CATEGORY6(8),
+        CATEGORY7(9), CATEGORY8(10), BACKSPACE(11);
 
         private int index;
+
         KeboardTab(int index) {
             this.index = index;
         }

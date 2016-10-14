@@ -14,8 +14,8 @@ Feature: Registration
     And User <Name> is Me without avatar
     Then I see first time experience with watermark
     When I open preferences by clicking the gear button
-    Then I see user name on self profile page <Name>
-    And I see user email on self profile page <Email>
+    Then I see username <Name> in account preferences
+    And I see user email <Email> in account preferences
 
     Examples: 
       | Email      | Password      | Name      |

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 public abstract class LoggingProfile {
     public abstract Optional<List<String>> getExcludePatterns();
+
     public abstract Optional<List<String>> getIncludePatterns();
 }
 

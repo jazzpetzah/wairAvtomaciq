@@ -287,3 +287,77 @@ Feature: Likes
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C225981 @regression @fastLogin
+  Scenario Outline: Verify liking a link
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given User <Contact> sends encrypted message "<Link>" to user Myself
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I tap at 5% of width and 5% of height of the recent message
+    And I remember the state of Like icon in the conversation
+    And I tap Like icon in the conversation
+    Then I see the state of Like icon is changed in the conversation
+    When I tap Unlike icon in the conversation
+    Then I see the state of Like icon is not changed in the conversation
+
+    Examples:
+      | Name      | Contact   | Link                  |
+      | user1Name | user2Name | https://www.wire.com/ |
+
+  @C225982 @regression @fastLogin
+  Scenario Outline: Verify liking a picture
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I tap at 5% of width and 5% of height of the recent message
+    And I remember the state of Like icon in the conversation
+    And I tap Like icon in the conversation
+    Then I see the state of Like icon is changed in the conversation
+    When I tap Unlike icon in the conversation
+    Then I see the state of Like icon is not changed in the conversation
+
+    Examples:
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
+
+  @C225983 @regression @fastLogin
+  Scenario Outline: Verify liking an audio message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I long tap on audio message placeholder in conversation view
+    And I tap on Like badge item
+    And I tap toolbox of the recent message
+    Then I see user Myself in likers list
+
+    Examples:
+      | Name      | Contact   | FileName | FileMIME  | ContactDevice |
+      | user1Name | user2Name | test.m4a | audio/mp4 | ContactDevice |
+
+  @C225989 @staging @fastLogin
+  Scenario Outline: Verify liking a location
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given User <Contact> shares the default location to user Myself via device <ContactDevice>
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I tap at 5% of width and 5% of height of the recent message
+    And I remember the state of Like icon in the conversation
+    And I tap Like icon in the conversation
+    Then I see the state of Like icon is changed in the conversation
+    When I tap Unlike icon in the conversation
+    Then I see the state of Like icon is not changed in the conversation
+
+    Examples:
+      | Name      | Contact   | ContactDevice |
+      | user1Name | user2Name | ContactDevice |

@@ -1,5 +1,17 @@
 package com.wearezeta.auto.android.steps;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.logging.AndroidLogListener;
@@ -12,7 +24,12 @@ import com.wearezeta.auto.android.pages.SecurityAlertPage;
 import com.wearezeta.auto.android.pages.registration.BackendSelectPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.android.tools.WireDatabase;
-import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.CommonCallingSteps2;
+import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.FileInfo;
+import com.wearezeta.auto.common.Platform;
+import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.AppiumServer;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
@@ -41,16 +58,8 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class CommonAndroidSteps {
+
     static {
         System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
         System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "warn");
@@ -77,7 +86,8 @@ public class CommonAndroidSteps {
     private static final String DEFAULT_USER_AVATAR = "aqaPictureContact600_800.jpg";
     private static final String GCM_TOKEN_PATTERN = "token:\\s+(.*)$";
     //TODO: should I move this list to configuration file?
-    private static final String[] wirePackageList = {"com.wire.candidate", "com.wire.x", "com.waz.zclient.dev", "com.wire.qaavs"};
+    private static final String[] wirePackageList = {"com.wire.candidate", "com.wire.x", "com.waz.zclient.dev", "com.wire" +
+            ".qaavs"};
 
     private static String getUrl() throws Exception {
         return CommonUtils.getAndroidAppiumUrlFromConfig(CommonAndroidSteps.class);
@@ -1288,7 +1298,8 @@ public class CommonAndroidSteps {
      * @throws Exception
      * @step. ^(.*) sends (.*) file having name "(.*)" and MIME type "(.*)" via device (.*) to (user|group conversation) (.*)$
      */
-    @When("^(.*) sends (.*) file having name \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) (.*)$")
+    @When("^(.*) sends (.*) file having name \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) " +
+            " (.*)$")
     public void ContactSendsXFileFromSE(String contact, String size, String fileFullName, String mimeType,
                                         String deviceName, String convoType, String dstConvoName) throws Exception {
         String basePath = AndroidCommonUtils.getBuildPathFromConfig(getClass());
@@ -1300,7 +1311,6 @@ public class CommonAndroidSteps {
         commonSteps.UserSentFileToConversation(contact, dstConvoName, sourceFilePath,
                 mimeType, deviceName, isGroup);
     }
-
 
     /**
      * Send a local file from SE
@@ -1580,16 +1590,17 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Verifyt the Wire build already enable debug mode.
+     * Verify the Wire build already enabled debug mode.
      * http://stackoverflow.com/questions/2409923/what-do-i-have-to-add-to-the-manifest-to-debug-an-android-application-on-an-actu
+     * Check for support debugging by device because of bug: https://code.google.com/p/android/issues/detail?id=58373
      *
      * @throws Exception
-     * @step. ^Wire has Debug mode enabled$
+     * @step. ^(?:Wire|Device) debug mode is (enabled|supported)$
      */
-    @Given("^Wire has Debug mode enabled$")
-    public void WireEnableDebugMode() throws Exception {
-        if (!AndroidCommonUtils.isWireDebugModeEnabled()) {
-            throw new PendingException("The current Wire build doesn't support debuggable mode");
+    @Given("^(?:Wire|Device) debug mode is (enabled|supported)$")
+    public void WireEnableDebugMode(String checkMode) throws Exception {
+        if (!AndroidCommonUtils.isWireDebugModeEnabled(checkMode.equals("supported"))) {
+            throw new PendingException(String.format("Debug mode is not '%s'. Rerun on other device or check build.", checkMode));
         }
     }
 
@@ -1797,7 +1808,6 @@ public class CommonAndroidSteps {
         commonSteps.UserXHasContactsInAddressBook(asUser, contacts);
     }
 
-
     private String recentMsgId = null;
 
     /**
@@ -1860,7 +1870,8 @@ public class CommonAndroidSteps {
         // Wait for 10 seconds until SE register TOKEN on BE
         // Because we still need to wait several seconds after it retrieve the GCM InstanceID from device.
         Thread.sleep(10000);
-        commonSteps.UnregisterPushToken(pushToken.orElseThrow(() -> new IllegalStateException("Cannot find GCM Token from logcat")));
+        commonSteps.UnregisterPushToken(pushToken.orElseThrow(() -> new IllegalStateException("Cannot find GCM Token from " +
+                "logcat")));
     }
 
     /**

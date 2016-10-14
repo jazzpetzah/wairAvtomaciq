@@ -9,13 +9,11 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
-public class SettingsPage extends com.wearezeta.auto.web.pages.SettingsPage {
+public class OptionsPage extends com.wearezeta.auto.web.pages.OptionsPage {
     @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssImportAddressbookButton)
     private WebElement importAddressbookButton;
 
-    
-
-    public SettingsPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
+    public OptionsPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
     

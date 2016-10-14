@@ -11,7 +11,7 @@ public class TakeoverPage extends AndroidPage {
 
     private static final By idTakeoverScreen = By.id("cm__confirm_action_light");
     private static final By xpathTakeoverScreenText = By
-        .xpath("//*[@id='text' and @value='Do you still want to send your message?']");
+            .xpath("//*[@id='text' and @value='Do you still want to send your message?']");
     private static final By idTakeoverCloseBtn = By.id("cancel");
     private static final By idTakeoverHeader = By.id("header");
     private static final By idTakeoverSendAnywayBtn = By.id("positive");
@@ -33,7 +33,7 @@ public class TakeoverPage extends AndroidPage {
         getElement(idTakeoverCloseBtn, "Close button is not present").click();
     }
 
-//    TODO: replace it with function call
+    //    TODO: replace it with function call
     public String getHeaderText() throws Exception {
         return getElement(idTakeoverHeader, "Header is not present").getText();
     }

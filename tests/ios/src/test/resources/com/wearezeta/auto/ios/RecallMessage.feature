@@ -208,7 +208,10 @@ Feature: Recall Message
     Then I see media container in the conversation view
     And User <Contact> remembers the recent message from user Myself via device <HisDevice>
     And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
-    When I long tap on media container in conversation view
+    # This is to hide the keyboard
+    When I navigate back to conversations list
+    And I tap on contact name <Contact>
+    And I long tap on media container in conversation view
     And I tap on Delete badge item
     And I select Delete for Everyone item from Delete menu
     Then I do not see media container in the conversation view

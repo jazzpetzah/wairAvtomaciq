@@ -7,7 +7,7 @@ import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
 
-public class VideoMessagePreviewPage extends AndroidPage{
+public class VideoMessagePreviewPage extends AndroidPage {
 
     private final static String strIdToolbar = "t_video_message_preview_toolbar";
 
@@ -38,7 +38,7 @@ public class VideoMessagePreviewPage extends AndroidPage{
         getElement(idSendVideoBtn).click();
     }
 
-    public void tapOnCancelVideoButton()  throws Exception {
+    public void tapOnCancelVideoButton() throws Exception {
         getElement(xpathBackButton).click();
     }
 }

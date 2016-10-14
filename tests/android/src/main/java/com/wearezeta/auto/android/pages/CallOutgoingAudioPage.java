@@ -20,5 +20,5 @@ public class CallOutgoingAudioPage extends AbstractCallOutgoingPage {
     protected By getOutgoingCallContainer() {
         return xpathOutgoingAudioCallContainer;
     }
-    
+
 }

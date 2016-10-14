@@ -31,7 +31,7 @@ public class AndroidCommonCallingSteps {
             } catch (CallingServiceCallException e) {
                 e.printStackTrace();
                 sleepInterval = (intervalSeconds +
-                    random.nextInt(DEFAULT_RETRY_DELAY)) * 2000;
+                        random.nextInt(DEFAULT_RETRY_DELAY)) * 2000;
                 intervalSeconds *= 2;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -45,7 +45,7 @@ public class AndroidCommonCallingSteps {
             retryNumber++;
         } while (retryNumber <= DEFAULT_RETRIES);
         throw new
-            RuntimeException(
-            String.format("Failed to call to conversation after '%d' retries", DEFAULT_RETRIES));
+                RuntimeException(
+                String.format("Failed to call to conversation after '%d' retries", DEFAULT_RETRIES));
     }
 }

@@ -57,14 +57,11 @@ Feature: Conversation View
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password2>
     Given I am signed in properly
-    Given I see Welcome page
-    Given I confirm keeping picture on Welcome page
     Given I see Contact list with name <Name>
-    Given I open self profile
-    Given I click gear button on self profile page
-    Given I select Log out menu item on self profile page
+    Given I open preferences by clicking the gear button
+    Given I click logout in account preferences
     Given I see the clear data dialog
-    Given I click Logout button on clear data dialog
+    Given I click logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
@@ -73,21 +70,19 @@ Feature: Conversation View
     And I send message
     And I see random message in conversation
     Then I do not see delivery status of last message is Delivered
-    When I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
-    And I see Sign In page
-    And I Sign in using login <Login2> and password <Password2>
+    And I click logout button on clear data dialog
+    Then I see Sign In page
+    When I Sign in using login <Login2> and password <Password2>
     And I am signed in properly
-    And I open conversation with <Name>
+    Then I open conversation with <Name>
     And I see random message in conversation
-    And I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
     And I am signed in properly
@@ -419,7 +414,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Message                                  |
       | user1Email | user1Password | user1Name | user2Name | All of these Candlejack jokes aren’t fu- |
 
-  @C1793 @regression @WEBAPP-3258
+  @C1793 @regression
   Scenario Outline: Verify Start (Search) is opened when you press ⌥ ⌘ N (Mac) or alt + ctrl + N (Win)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -461,11 +456,11 @@ Feature: Conversation View
     And I am signed in properly
     When I open conversation with <Contact>
     And Contact <Contact> sends 35 messages with prefix <READ> via device Device1 to user <Name>
-    And I wait for 5 seconds
+    And I wait for 8 seconds
     Then I really see text message <READ>34
     When I open preferences by clicking the gear button
     And Contact <Contact> sends 35 messages with prefix <UNREAD> via device Device1 to user <Name>
-    And I wait for 5 seconds
+    And I wait for 8 seconds
     And I close preferences
     Then I see unread dot in conversation <Contact>
     When I open conversation with <Contact>

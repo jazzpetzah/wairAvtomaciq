@@ -113,5 +113,5 @@ Feature: Share Location
     Then I see location map container in the conversation view
 
     Examples:
-      | Name      | Contact   | ExpectedAlertText                                           |
-      | user1Name | user2Name | Allow “Wire” to access your location while you use the app? |
+      | Name      | Contact   | ExpectedAlertText    |
+      | user1Name | user2Name | access your location |

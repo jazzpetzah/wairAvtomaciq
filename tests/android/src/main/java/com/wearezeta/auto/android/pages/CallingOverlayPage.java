@@ -40,6 +40,7 @@ public abstract class CallingOverlayPage extends AndroidPage {
     protected boolean specialActionIsVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idRight);
     }
+
     private boolean specialActionIsNotVisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), idRight);
     }

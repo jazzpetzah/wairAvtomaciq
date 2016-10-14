@@ -42,7 +42,7 @@ Feature: Sign In
     When I open preferences by clicking the gear button
     And I open devices in preferences
     Then I verify that the device id of the current device is the same
-    And I see 0 devices in the devices section
+    And I see 0 active devices
 
     Examples:
       | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message1   | Message2     | ImageName1                |
@@ -76,7 +76,7 @@ Feature: Sign In
     When I open preferences by clicking the gear button
     And I open devices in preferences
     Then I verify that the device id of the current device is not the same
-    And I see 0 devices in the devices section
+    And I see 0 active devices
 
     Examples:
       | Email      | Password      | Name      |

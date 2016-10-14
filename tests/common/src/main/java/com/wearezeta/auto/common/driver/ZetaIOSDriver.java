@@ -18,6 +18,7 @@ import com.wearezeta.auto.common.rest.RESTError;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.openqa.selenium.*;
 
 import io.appium.java_client.ios.IOSDriver;
@@ -41,10 +42,20 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
 
     private volatile boolean isSessionLost = false;
     private FBDriverAPI fbDriverAPI;
+    private String osVersion;
 
     public ZetaIOSDriver(URL remoteAddress, Capabilities desiredCapabilities) {
         super(remoteAddress, desiredCapabilities);
+        initOSVersionString();
         this.fbDriverAPI = new FBDriverAPI();
+    }
+
+    public DefaultArtifactVersion getOSVersion() {
+        return new DefaultArtifactVersion(this.osVersion);
+    }
+
+    private void initOSVersionString() {
+        this.osVersion = (String) getCapabilities().getCapability("platformVersion");
     }
 
     private static Map<String, String> cachedBundleIds = new HashMap<>();
@@ -366,7 +377,15 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
         try {
             fbDriverAPI.tap("0", x, y);
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
-           throw new WebDriverException(e);
+            throw new WebDriverException(e);
+        }
+    }
+
+    public void pressHomeButton() {
+        try {
+            fbDriverAPI.switchToHomescreen();
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
+            throw new WebDriverException(e);
         }
     }
 }

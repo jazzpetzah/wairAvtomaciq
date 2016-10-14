@@ -7,7 +7,6 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.DeviceDetailPage;
 
-import com.wearezeta.auto.web.pages.SettingsPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 

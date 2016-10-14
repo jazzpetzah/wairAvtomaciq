@@ -11,6 +11,7 @@ import cucumber.api.java.en.When;
 
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
 
@@ -18,12 +19,33 @@ public class DevicesPageSteps {
 
     private final TestContext context;
 
+    private String currentDeviceId = null;
+
     public DevicesPageSteps() {
         this.context = new TestContext();
     }
 
     public DevicesPageSteps(TestContext context) {
         this.context = context;
+    }
+
+    @When("^I remember the device id of the current device$")
+    public void IRememberCurrentDeviceId() throws Exception {
+        currentDeviceId = context.getPagesCollection().getPage(DevicesPage.class).getCurrentDeviceId();
+    }
+
+    @When("^I verify that the device id of the current device is( not)? the same$")
+    public void IVerifyCurrentDeviceId(String not) throws Exception {
+        if (currentDeviceId == null) {
+            throw new RuntimeException(
+                    "currentDeviceId was not remembered, please use the according step first");
+        } else if (not == null) {
+            assertThat(context.getPagesCollection().getPage(DevicesPage.class)
+                    .getCurrentDeviceId(), equalTo(currentDeviceId));
+        } else {
+            assertThat(context.getPagesCollection().getPage(DevicesPage.class)
+                    .getCurrentDeviceId(), not(equalTo(currentDeviceId)));
+        }
     }
 
     @When("^I wait for devices$")
