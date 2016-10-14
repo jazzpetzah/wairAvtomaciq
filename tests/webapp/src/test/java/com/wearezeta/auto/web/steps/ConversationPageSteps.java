@@ -1096,6 +1096,12 @@ public class ConversationPageSteps {
         cpSteps.IChooseToCreateGroupConversation();
     }
 
+    @Then("^I cannot see ephemeral button$")
+    public void ICannotSeeEphemeralButton() throws Exception {
+        assertTrue("Ephemeral button is visible",
+                context.getPagesCollection().getPage(ConversationPage.class).isEphemeralButtonNotVisible());
+    }
+
     @When("^I click on ephemeral button$")
     public void IClickEphemeralButton() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickEphemeralButton();

@@ -477,6 +477,11 @@ public class ConversationPage extends WebPage {
         return messageAmount.size();
     }
 
+    public boolean isEphemeralButtonNotVisible() throws Exception {
+        return !DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.cssSelector(WebAppLocators.ConversationPage.cssEphemeralButton));
+    }
+
     public void clickEphemeralButton() throws Exception {
         DriverUtils.waitUntilElementClickable(getDriver(), ephemeralButton);
         ephemeralButton.click();
