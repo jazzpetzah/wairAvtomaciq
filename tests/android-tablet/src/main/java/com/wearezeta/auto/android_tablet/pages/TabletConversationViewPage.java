@@ -81,7 +81,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilPingMessageIsVisible(String expectedMessage) throws Exception {
-        return getConversationViewPage().waitForPingMessageWithText(expectedMessage);
+        return getConversationViewPage().waitUntilPingMessageWithTextVisible(expectedMessage);
     }
 
     public boolean waitUntilAPictureAppears() throws Exception {
@@ -103,7 +103,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilPingMessageIsInvisible(String expectedMessage) throws Exception {
-        return getConversationViewPage().waitForPingMessageWithTextDisappears(expectedMessage);
+        return getConversationViewPage().waitUntilPingMessageWithTextInvisible(expectedMessage);
     }
 
     public void doSwipeRight() throws Exception {
