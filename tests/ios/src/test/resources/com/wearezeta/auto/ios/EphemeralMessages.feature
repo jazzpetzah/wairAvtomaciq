@@ -23,7 +23,8 @@ Feature: Ephemeral Messages
     And I see 1 default message in the conversation view
     And I remember the state of the recent message from user <Contact> in the local database
     And I wait for <Timeout> seconds
-    Then I verify the remembered message has been deleted from the local database
+    Then I see 0 default messages in the conversation view
+    And I verify the remembered message has been deleted from the local database
 
     Examples:
       | Name      | Contact   | DeviceName    | Timeout |
