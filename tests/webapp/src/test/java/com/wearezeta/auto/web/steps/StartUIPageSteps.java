@@ -42,7 +42,6 @@ public class StartUIPageSteps {
 	 * @step. ^I select( group)? (.*) from People Picker results$
 	 *
 	 * @param group
-	 *            if null method returns true if found otherwise true if not found
 	 * @param user
 	 *            user name or email
 	 * @throws Exception
