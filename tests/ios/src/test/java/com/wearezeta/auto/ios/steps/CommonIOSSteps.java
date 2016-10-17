@@ -45,7 +45,7 @@ import static com.wearezeta.auto.common.CommonUtils.*;
 public class CommonIOSSteps {
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
-//    private static final String IOS_WD_APP_BUNDLE = "com.apple.test.WebDriverAgentRunner-Runner";
+    //    private static final String IOS_WD_APP_BUNDLE = "com.apple.test.WebDriverAgentRunner-Runner";
 //    private static final String FACEBOOK_WD_APP_BUNDLE = "com.facebook.IntegrationApp";
     private static final String ADDRESSBOOK_HELPER_APP_NAME = "AddressbookApp.ipa";
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -405,10 +405,10 @@ public class CommonIOSSteps {
     /**
      * Process on-screen alert
      *
-     * @step. ^I (accept|dismiss) alert( if visible)?$
-     * @param action either accept or dismiss
+     * @param action    either accept or dismiss
      * @param mayIgnore whether to throw an exception if alert is not present
      * @throws Exception
+     * @step. ^I (accept|dismiss) alert( if visible)?$
      */
     @When("^I (accept|dismiss) alert( if visible)?$")
     public void IAcceptAlert(String action, String mayIgnore) throws Exception {
@@ -1447,6 +1447,51 @@ public class CommonIOSSteps {
                 db.isMessageDeleted(this.recentMsgId));
     }
 
+    private String recentMsg = null;
+
+    /**
+     * Store the id of the recent message into the local variable
+     *
+     * @param fromContact user name/alias
+     * @throws Exception
+     * @step. ^I remember the recent message from user (.*) in the local database$
+     */
+    @When("^I remember the recent message from user (.*) in the local database$")
+    public void IRememberRecentMessageInLocalDatabase(String fromContact) throws Exception {
+        final ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(fromContact);
+        final WireDatabase db = getWireDb();
+        this.recentMsgId = db.getRecentMessageId(dstUser).orElseThrow(
+                () -> new IllegalStateException(
+                        String.format("No messages from user %s have been found in the local database",
+                                dstUser.getName()))
+        );
+        this.recentMsg = db.getMessageContent(this.recentMsgId);
+    }
+
+    /**
+     * Verify whether the previously saved message has been properly removed from the local DB
+     *
+     * @throws Exception
+     * @step. ^I verify the remembered message has (not )?been changed in the local database$
+     */
+    @Then("^I verify the remembered message has (not )?been changed in the local database$")
+    public void IVerifyMessageChangedInLocalDB(String shouldNotChange) throws Exception {
+        if (this.recentMsgId == null || this.recentMsg == null) {
+            throw new IllegalStateException("Please remember the message first");
+        }
+        final WireDatabase db = getWireDb();
+        final String currentMsg = db.getMessageContent(this.recentMsgId);
+        if (shouldNotChange == null) {
+            Assert.assertNotEquals(String.format(
+                    "The previously remembered message should not be equal to the current one: " +
+                            "'%s' == '%s'", this.recentMsg, currentMsg), this.recentMsg, currentMsg);
+        } else {
+            Assert.assertEquals(String.format(
+                    "The previously remembered message should be equal to the current one: " +
+                            "'%s' != '%s'", this.recentMsg, currentMsg), this.recentMsg, currentMsg);
+        }
+    }
+
     /**
      * User X react(like or unlike) the recent message in 1:1 conversation or group conversation
      *
@@ -1490,5 +1535,24 @@ public class CommonIOSSteps {
             default:
                 throw new IllegalArgumentException(String.format("Unknown action keyword: '%s'", action));
         }
+    }
+
+    /**
+     * Switch the corresponding conversation to ephemeral mode
+     *
+     * @param userAs      user name/alias
+     * @param isGroup     whether is 1:1 or group conversation
+     * @param convoName   conversation name
+     * @param timeout     ephemeral messages timeout
+     * @param timeMetrics either seconds or minutes
+     * @throws Exception
+     * @step. ^User (.*) switches (user|group conversation) (.*) to ephemeral mode with (\d+) (seconds?|minutes?) timeout$"
+     */
+    @Given("^User (.*) switches (user|group conversation) (.*) to ephemeral mode with (\\d+) (seconds?|minutes?) timeout$")
+    public void UserSwitchesToEphemeralMode(String userAs, String isGroup, String convoName, int timeout,
+                                            String timeMetrics) throws Exception {
+        final long timeoutMs = timeMetrics.startsWith("minute") ? timeout * 60 * 1000 : timeout * 1000;
+        commonSteps.UserSwitchesToEphemeralMode(userAs, convoName, timeoutMs, isGroup.equals("group conversation"),
+                null);
     }
 }

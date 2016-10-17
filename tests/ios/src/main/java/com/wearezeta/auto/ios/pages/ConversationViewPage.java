@@ -230,8 +230,10 @@ public class ConversationViewPage extends IOSPage {
             FBBy.xpath("//XCUIElementTypeButton[@label='Cancel']/parent::*/preceding-sibling::*[1]");
 
     private static final By nameSendButton = MobileBy.AccessibilityId("sendButton");
-
+    private static final By nameHourglassButton = MobileBy.AccessibilityId("ephemeralTimeSelectionButton");
     private static final By nameEmojiKeyboardButton = MobileBy.AccessibilityId("emojiButton");
+
+    private static final By fbClassPickerWheel = FBBy.className("XCUIElementTypePickerWheel");
 
     private static final Function<Integer, String> xpathStrEmojiKeyByIndex = idx -> String.format(
             "(//XCUIElementTypeCollectionView)[last()]/XCUIElementTypeCell[%s]", idx);
@@ -1077,5 +1079,13 @@ public class ConversationViewPage extends IOSPage {
     public boolean isMessageToolboxTextInvisible(String expectedText) throws Exception {
         final By locator = By.xpath(strXPathMessageToolboxByText.apply(expectedText));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public void tapHourglassButton() throws Exception {
+        getElement(nameHourglassButton).click();
+    }
+
+    public void setMessageExpirationTimer(String value) throws Exception {
+        ((FBElement) getElement(fbClassPickerWheel)).setValue(value);
     }
 }
