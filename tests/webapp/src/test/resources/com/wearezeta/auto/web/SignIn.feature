@@ -133,6 +133,22 @@ Feature: Sign In
       | Name      | PhoneNumber      | Password   |
       | user1Name | user1PhoneNumber | aqa123456! |
 
+  @C246284 @staging
+  Scenario Outline: Verify I see an error message on phone login with invalid password
+    Given There is 1 user where <Name> is me
+    Given I switch to sign in page
+    When I switch to phone number sign in page
+    When I sign in using phone number of user <Name>
+    And I click on sign in button on phone number sign in
+    And I enter password <WrongPassword> on phone login page
+    And I press Sign In button on phone login page
+    And I see error "<ErrorMessage>" on phone login page
+
+    Examples: 
+      | Name      | PhoneNumber      | WrongPassword | ErrorMessage                                  |
+      | user1Name | user1PhoneNumber | wroooong      | Please verify your details and try again.     |
+      | user1Name | user1PhoneNumber | short         | Choose a password with at least 8 characters. |
+
   @C246197 @regression
   Scenario Outline: Verify you can sign in by phone number with already set password and permanent device
     Given There is 1 user where <Name> is me

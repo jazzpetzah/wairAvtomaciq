@@ -939,9 +939,17 @@ public final class WebAppLocators {
 
     public static final class PhoneNumberLoginPage {
 
-        public static final String cssErrorMessage = "#login-method-phone [data-uie-name='status-error']";
+        public static final String cssErrorMessage = "#form-verify-phone-password [data-uie-name='status-error']";
         
         public static final String cssRememberMe = "#wire-login-phone-remember label";
+    }
+    
+    public static final class PhoneNumberPasswordPage {
+        public static final String cssErrorMessage = "#form-verify-phone-password [data-uie-name='status-error']";
+        
+        public static final String cssPasswordInput = "#wire-verify-password-input";
+        
+        public static final String cssSignInButton = "#wire-verify-password";
     }
 
     public static final class HistoryInfoPage {
