@@ -232,6 +232,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameSendButton = MobileBy.AccessibilityId("sendButton");
     private static final By nameHourglassButton = MobileBy.AccessibilityId("ephemeralTimeSelectionButton");
     private static final By nameEmojiKeyboardButton = MobileBy.AccessibilityId("emojiButton");
+    private static final By nameTimeIndicatorButton = MobileBy.AccessibilityId("ephemeralTimeIndicatorButton");
 
     private static final By fbClassPickerWheel = FBBy.className("XCUIElementTypePickerWheel");
 
@@ -1087,5 +1088,9 @@ public class ConversationViewPage extends IOSPage {
 
     public void setMessageExpirationTimer(String value) throws Exception {
         ((FBElement) getElement(fbClassPickerWheel)).setValue(value);
+    }
+
+    public void tapTimeIndicatorButton() throws Exception {
+        getElement(nameTimeIndicatorButton).click();
     }
 }

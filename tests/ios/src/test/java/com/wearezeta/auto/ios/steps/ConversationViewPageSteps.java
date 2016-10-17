@@ -7,6 +7,7 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Assert;
@@ -119,7 +120,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass) button in conversation view
      */
-    @And("^I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass) button in conversation view$")
+    @And("^I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass|Time Indicator) button in conversation view$")
     public void ITapConvoButton(String btnName) throws Exception {
         switch (btnName) {
             case "Emoji Keyboard":
@@ -131,6 +132,9 @@ public class ConversationViewPageSteps {
                 break;
             case "Hourglass":
                 getConversationViewPage().tapHourglassButton();
+                break;
+            case "Time Indicator":
+                getConversationViewPage().tapTimeIndicatorButton();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
@@ -1451,6 +1455,23 @@ public class ConversationViewPageSteps {
     @And("^I set ephemeral messages expiration timer to (Off|5 seconds|15 seconds|1 minute|15 minutes)$")
     public void ISetExpirationTimer(String value) throws Exception {
         getConversationViewPage().setMessageExpirationTimer(value);
+    }
+
+    /**
+     *
+     * @throws Exception
+     */
+    @Then("^I (do not )?see Ephemeral text input field placeholder$")
+    public void iSeeEphemeralTextInputFieldPlaceholder() throws Exception {
+        getConversationViewPage().isEphemeralTextInputFieldPlaceholderVisible();
+    }
+
+    /**
+     *
+     * @throws Exception
+     */
+    @And("^I see Time Indicator button in the conversation view$")
+    public void iSeeTimeIndicatorButtonInTheConversationView() throws Exception {
     }
 }
 
