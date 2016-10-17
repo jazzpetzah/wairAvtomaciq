@@ -161,9 +161,10 @@ Feature: Connect
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I wait until <Name2> exists in backend search results
-    When I open search by clicking the people button
-    Then I see Search is opened
-    When I see Bring Your Friends or Invite People button
+    When I am signed in properly
+    Then I open search by clicking the people button
+    When I see Search is opened
+    And I see Bring Your Friends or Invite People button
     And I type <Login2> in search field of People Picker
     And I see user <Name2> found in People Picker
     And I click on not connected user <Name2> found in People Picker
