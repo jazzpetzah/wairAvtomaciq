@@ -56,7 +56,7 @@ public class ConversationViewPage extends AndroidPage {
     //endregion
 
     //region Conversation Cursor locators
-    public static final By idCursorSendButton = By.id("fl__cursor__send_button_container");
+    public static final By idCursorSendButtonContainer = By.id("fl__cursor__send_button_container");
     private static final By idCursorInputEmojiButton = By.id("fl__cursor__emoji_container");
     private static final By idCursorCamera = By.id("cursor_menu_item_camera");
     private static final By idCursorPing = By.id("cursor_menu_item_ping");
@@ -363,7 +363,7 @@ public class ConversationViewPage extends AndroidPage {
                 pressKeyboardSendButton();
                 break;
             case "cursor":
-                getElement(idCursorSendButton).click();
+                getElement(idCursorSendButtonContainer).click();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify the send button type '%s'", sendFrom));
@@ -405,8 +405,9 @@ public class ConversationViewPage extends AndroidPage {
             case "switch to text":
             case "switch to emoji":
                 return idCursorInputEmojiButton;
+            case "ephemera":
             case "send":
-                return idCursorSendButton;
+                return idCursorSendButtonContainer;
             case "ping":
                 return idCursorPing;
             case "add picture":
@@ -458,11 +459,11 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean waitUntilCursorSendButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorSendButton);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorSendButtonContainer);
     }
 
     public boolean waitUntilCursorSendButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorSendButton);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorSendButtonContainer);
     }
 
     public void longTapAudioMessageCursorBtn(int durationMillis) throws Exception {
