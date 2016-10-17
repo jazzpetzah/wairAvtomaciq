@@ -130,7 +130,7 @@ public class ConversationViewPageSteps {
      * @param shouldNotSee equals to null if the button should be visible
      * @param btnName      the name of the button to check
      * @throws Exception
-     * @step. I (do not )?see (Send MessageEmoji Keyboard|Text Keyboard||Hourglass)button in conversation view$
+     * @step. I (do not )?see (Send MessageEmoji Keyboard|Text Keyboard|Hourglass)button in conversation view$
      */
     @Then("^I (do not )?see (Send Message|Emoji Keyboard|Text Keyboard|Hourglass) button in conversation view$")
     public void ISeeSendMessageButton(String shouldNotSee, String btnName) throws Exception {
