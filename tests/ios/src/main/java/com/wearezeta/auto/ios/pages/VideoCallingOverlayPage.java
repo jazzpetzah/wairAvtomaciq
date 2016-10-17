@@ -21,7 +21,7 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
         if (dstBtn.isPresent()) {
             if (!dstBtn.get().isDisplayed()) {
                 this.tapScreenAt(dstBtn.get());
-                Thread.sleep(300);
+                Thread.sleep(2000);
             }
         } else {
             throw new IllegalStateException(
