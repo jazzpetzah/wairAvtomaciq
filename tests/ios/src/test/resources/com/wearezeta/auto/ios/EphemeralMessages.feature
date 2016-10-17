@@ -12,10 +12,10 @@ Feature: Ephemeral Messages
     Given I set ephemeral messages expiration timer to <Timeout> seconds
     Given I type the default message and send it
     Given I see 1 default message in the conversation view
-    When I remember the recent message from user Myself in the local database
+    When I remember the state of the recent message from user Myself in the local database
     And I wait for <Timeout> seconds
     Then I see 0 default messages in the conversation view
-    And I verify the remembered message has been changed in the local database
+    And I verify the remembered message has been deleted from the local database
     When User <Contact> switches user Myself to ephemeral mode with <Timeout> seconds timeout
     And User <Contact> sends 1 encrypted message to user Myself
     # Wait for the message to be delivered
