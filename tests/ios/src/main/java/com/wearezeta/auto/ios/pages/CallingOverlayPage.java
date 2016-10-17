@@ -39,8 +39,9 @@ public class CallingOverlayPage extends IOSPage {
 
 
     private static final Function<Integer, String> xpathStrGroupCallAvatarsByCount = count ->
-            String.format("//XCUIElementTypeButton[@name='SwitchCameraButton']/" +
-                    "following::XCUIElementTypeCollectionView[count(XCUIElementTypeCell)=%s]", count);
+            String.format("//XCUIElementTypeStaticText[@name='%s']/" +
+                    "following::XCUIElementTypeCollectionView[count(XCUIElementTypeCell)=%s]",
+                    nameStrCallStatusLabel, count);
 
     private static final By xpathCallerAvatar = By.xpath(String.format(
             "//XCUIElementTypeStaticText[@name='%s']/following::*[@name='CallingUsersImage']",
