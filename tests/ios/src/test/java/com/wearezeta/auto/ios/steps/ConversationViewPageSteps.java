@@ -113,14 +113,28 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap Send Message button in conversation
+     * Tap the corresponding button in conversation
      *
+     * @param btnName one of available button names
      * @throws Exception
-     * @step. I tap Send Message button in conversation view
+     * @step. I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass) button in conversation view
      */
-    @And("^I tap Send Message button in conversation view$")
-    public void ITapSendMessageButton() throws Exception {
-        getConversationViewPage().tapSendButton();
+    @And("^I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass) button in conversation view$")
+    public void ITapConvoButton(String btnName) throws Exception {
+        switch (btnName) {
+            case "Emoji Keyboard":
+            case "Text Keyboard":
+                getConversationViewPage().tapEmojiKeyboardButton();
+                break;
+            case "Send Message":
+                getConversationViewPage().tapSendButton();
+                break;
+            case "Hourglass":
+                getConversationViewPage().tapHourglassButton();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
+        }
     }
 
     /**
@@ -1392,17 +1406,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap the corresponding button which invokes Emoji or Text keyboard
-     *
-     * @throws Exception
-     * @step. ^I tap (?:Emoji|Text) Keyboard button in conversation view$
-     */
-    @When("^I tap (?:Emoji|Text) Keyboard button in conversation view$")
-    public void TapEmojiKeyboardButton() throws Exception {
-        getConversationViewPage().tapEmojiKeyboardButton();
-    }
-
-    /**
      * Tap the corresponding key on Emoji keyboard. Tap by name does not work properly there.
      *
      * @param keyIndex Keys enumeration starts at the top left corner and finishes at
@@ -1436,6 +1439,18 @@ public class ConversationViewPageSteps {
                     getConversationViewPage().isMessageToolboxTextInvisible(expectedText)
             );
         }
+    }
+
+    /**
+     * Set ephemeral messages timer to a corresponding value
+     *
+     * @param value one of available timer values
+     * @throws Exception
+     * @step. ^I set ephemeral messages expiration timer to (Off|5 seconds|15 seconds|1 minute|15 minutes)$
+     */
+    @And("^I set ephemeral messages expiration timer to (Off|5 seconds|15 seconds|1 minute|15 minutes)$")
+    public void ISetExpirationTimer(String value) throws Exception {
+        getConversationViewPage().setMessageExpirationTimer(value);
     }
 }
 
