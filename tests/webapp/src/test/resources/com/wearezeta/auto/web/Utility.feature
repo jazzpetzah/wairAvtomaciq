@@ -225,10 +225,8 @@ Feature: Utility
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
     Given I open preferences by clicking the gear button
-    When I select Settings menu item on self profile page
-    And I see Settings dialog
+    Then I see username <Name> in account preferences
     And I click delete account button on settings page
-    And I see email <Email> in delete info text on settings page
     And I click send button to delete account
     And I delete account of user <Name> via email on <Agent>
     And I open Sign In page
@@ -252,10 +250,8 @@ Feature: Utility
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
     Given I open preferences by clicking the gear button
-    When I select Settings menu item on self profile page
-    And I see Settings dialog
+    Then I see username <Name> in account preferences
     And I click delete account button on settings page
-    And I see email <Email> in delete info text on settings page
     And I click send button to delete account
     And I navigate to delete account page of user <Name> on <Agent> with changed key checksum
     And I click delete account button
@@ -275,10 +271,8 @@ Feature: Utility
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
     Given I open preferences by clicking the gear button
-    When I select Settings menu item on self profile page
-    And I see Settings dialog
+    Then I see username <Name> in account preferences
     And I click delete account button on settings page
-    And I see email <Email> in delete info text on settings page
     And I click send button to delete account
     Then I navigate to delete account page of user <Name> on <Agent> with changed code checksum
     And I click delete account button
@@ -298,10 +292,8 @@ Feature: Utility
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
     Given I open preferences by clicking the gear button
-    When I select Settings menu item on self profile page
-    And I see Settings dialog
+    Then I see username <Name> in account preferences
     And I click delete account button on settings page
-    And I see email <Email> in delete info text on settings page
     And I click send button to delete account
     And I remember delete link of user <Name>
     And I use remembered link on <Agent> without key checksum
