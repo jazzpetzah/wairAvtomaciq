@@ -28,3 +28,17 @@ Feature: Ephemeral Messages
     Examples:
       | Name      | Contact   | DeviceName    | Timeout |
       | user1Name | user2Name | ContactDevice | 15      |
+
+  @C259589 @staging @fastLogin
+  Scenario Outline: Verify ephemeral messages are disabled in a group
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    Then I do not see Hourglass button in conversation view
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | TESTCHAT      |
