@@ -250,3 +250,32 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @C261732 @staging
+  Scenario Outline: Verify you can open a group conversation from search
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I see Contact list with name <ChatName>
+    And I open conversation with <Contact1>
+    And I open search by clicking the people button
+    And I see Search is opened
+    And I type <Contact1> in search field of People Picker
+    Then I see user <Contact1> found in People Picker
+    And I see group conversation <ChatName> found in People Picker
+    When I select group <ChatName> from People Picker results
+    Then I see conversation with <ChatName> is selected in conversations list
+    When I open conversation with <Contact1>
+    And I open search by clicking the people button
+    And I see Search is opened
+    And I type <ChatName> in search field of People Picker
+    Then I see group conversation <ChatName> found in People Picker
+    When I select group <ChatName> from People Picker results
+    Then I see conversation with <ChatName> is selected in conversations list
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | OPEN_ME  |
