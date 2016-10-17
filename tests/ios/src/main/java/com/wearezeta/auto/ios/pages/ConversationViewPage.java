@@ -195,7 +195,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameDefaultMapApplication = MobileBy.AccessibilityId("CalloutArrow.png");
 
-    private static final By fbNameLinkPreviewSource = FBBy.AccessibilityId("linkPreviewSource");
+    private static final By fbNameLinkPreview = FBBy.AccessibilityId("linkPreview");
 
     private static final By nameLinkPreviewImage = MobileBy.AccessibilityId("linkPreviewImage");
 
@@ -933,7 +933,7 @@ public class ConversationViewPage extends IOSPage {
             case "video message":
                 return fbNameVideoMessageActionButton;
             case "link preview":
-                return fbNameLinkPreviewSource;
+                return fbNameLinkPreview;
             default:
                 throw new IllegalArgumentException(String.format("Unknown container name '%s'", name));
         }
