@@ -362,9 +362,9 @@ public class RegistrationPageSteps {
 	 */
 	@Then("^I activate user by URL$")
 	public void WhenIActivateUserByUrl() throws Exception {
-		final String link = BackendAPIWrappers
-				.getUserActivationLink(this.activationMessage);
+		final String link = BackendAPIWrappers.getUserActivationLink(this.activationMessage);
 		LOG.info("Get activation link from " + link);
+                context.startPinging();
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpGet httpGet = new HttpGet(link);
 		HttpEntity entity = httpclient.execute(httpGet).getEntity();
@@ -379,17 +379,13 @@ public class RegistrationPageSteps {
 				httpclient.execute(httpGet);
 			}
 		}
+                context.stopPinging();
 
 		// indexes in aliases start from 1
 		final int userIndex = context.getUserManager().appendCustomUser(userToRegister) + 1;
-		userToRegister.addEmailAlias(ClientUsersManager.EMAIL_ALIAS_TEMPLATE
-				.apply(userIndex));
-		userToRegister.addNameAlias(ClientUsersManager.NAME_ALIAS_TEMPLATE
-				.apply(userIndex));
-		userToRegister
-				.addPasswordAlias(ClientUsersManager.PASSWORD_ALIAS_TEMPLATE
-						.apply(userIndex));
-
+		userToRegister.addEmailAlias(ClientUsersManager.EMAIL_ALIAS_TEMPLATE.apply(userIndex));
+		userToRegister.addNameAlias(ClientUsersManager.NAME_ALIAS_TEMPLATE.apply(userIndex));
+		userToRegister.addPasswordAlias(ClientUsersManager.PASSWORD_ALIAS_TEMPLATE.apply(userIndex));
 		context.getPagesCollection().getPage(LoginPage.class).waitForLogin();
 	}
 

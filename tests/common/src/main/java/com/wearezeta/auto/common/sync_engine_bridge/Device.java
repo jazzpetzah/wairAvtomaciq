@@ -368,7 +368,7 @@ class Device extends RemoteEntity implements IDevice {
     }
 
     @Override
-    public void setEphemeraMode(String convId, long expirationMilliseconds) throws Exception {
+    public void setEphemeralMode(String convId, long expirationMilliseconds) throws Exception {
         try {
             askActor(this.ref(), new ActorMessage.SetEphemeral(new RConvId(convId),
                     EphemeralExpiration.getForMillis(expirationMilliseconds)));
