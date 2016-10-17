@@ -62,7 +62,7 @@ public abstract class IOSPage extends BasePage {
             String.format("//XCUIElementTypeAlert//XCUIElementTypeButton[@label='%s']", caption);
 
     private static final Function<String, String> xpathStrAddressBarByUrlPart = urlPart ->
-            String.format("//*[contains(@name, '%s')]", urlPart);
+            String.format("//XCUIElementTypeTextField[@name='Address' and contains(@value, '%s')]", urlPart);
 
     private IOSKeyboard onScreenKeyboard;
 
@@ -501,8 +501,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     public boolean isWebPageVisible(String expectedUrl) throws Exception {
-        final WebElement urlBar = getElement(xpathBrowserURLButton, "The address bar of web browser is not visible");
-        urlBar.click();
+        getElement(xpathBrowserURLButton, "The address bar of web browser is not visible").click();
         return DriverUtils.waitUntilLocatorAppears(getDriver(),
                 By.xpath(xpathStrAddressBarByUrlPart.apply(expectedUrl)));
     }
