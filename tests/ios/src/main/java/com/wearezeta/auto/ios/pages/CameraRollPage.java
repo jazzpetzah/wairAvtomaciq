@@ -7,6 +7,7 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.util.concurrent.Future;
 
@@ -72,8 +73,19 @@ public class CameraRollPage extends IOSPage {
         this.tapAtTheCenterOfElement(btn);
     }
 
+    private final static long CELL_VALUE_READ_TIMEOUT_MS = 3000;
+
     private String getCameraRollCellValue() throws Exception {
-        return getElement(xpathCameraRolCell).getAttribute("value");
+        final WebElement el = getElement(xpathCameraRolCell);
+        final long msStarted = System.currentTimeMillis();
+        do {
+            final String value = el.getAttribute("value");
+            if (!value.isEmpty()) {
+                return value;
+            }
+            Thread.sleep(1000);
+        } while (System.currentTimeMillis() - msStarted <= CELL_VALUE_READ_TIMEOUT_MS);
+        throw new IllegalStateException("Cannot read a value from camera roll cell");
     }
 
     public Integer getCameraRollPhotoCount() throws Exception {
