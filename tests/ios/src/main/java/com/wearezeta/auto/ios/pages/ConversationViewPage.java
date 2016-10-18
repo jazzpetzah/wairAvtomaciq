@@ -694,6 +694,27 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameInputPlaceholderText);
     }
 
+    private static By getInputPlaceholderLocatorByName(String name) {
+        switch (name) {
+            case "Standard ":
+                return nameInputPlaceholderText;
+            case "Ephemeral ":
+                return nameEpheTextInputPlaceholder;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown placeholder text '%s'", name));
+        }
+    }
+
+    public boolean isPlaceholderTextVisible(String placeholder) throws Exception {
+        final By locator = getInputPlaceholderLocatorByName(placeholder);
+        return isElementDisplayed(locator);
+    }
+
+    public boolean isPlaceholderTextInvisible(String placeholder) throws Exception {
+        final By locator = getInputPlaceholderLocatorByName(placeholder);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
     public void scrollToTheBottom() throws Exception {
         getElement(fbNameConversationInput).click();
         if (!isElementDisplayed(xpathRecentEntry)) {

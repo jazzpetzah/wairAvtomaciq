@@ -491,31 +491,22 @@ public class ConversationViewPageSteps {
      * Check whether text or ephemeral input placeholder text is visible or not
      *
      * @param shouldNotBeVisible equals to null if the placeholder should be visible
-     * @param isEphemeral        equals to null if ephemeral placeholder is not visible
+     * @param placeholderText    text of placeholder, either standard or ephemeral
      * @throws Exception
-     * @step. ^I (do not )?see (Ephemeral )?input placeholder text$
+     * @step. ^I (do not )?see (Standard|Ephemeral )?input placeholder text$
      */
-    @Then("^I (do not )?see (Ephemeral )?input placeholder text$")
-    public void ISeeInputPlaceholderText(String shouldNotBeVisible, String isEphemeral) throws Exception {
+    @Then("^I (do not )?see (Standard |Ephemeral )?input placeholder text$")
+    public void ISeeInputPlaceholderText(String shouldNotBeVisible, String placeholderText) throws Exception {
+        boolean result;
         if (shouldNotBeVisible == null) {
-            if (isEphemeral==null){
-                Assert.assertTrue("Input placeholder text is not visible",
-                        getConversationViewPage().isInputPlaceholderTextVisible());
-            } else {
-                Assert.assertTrue(
-                        String.format("The Ephemeral text input placeholder TIMED MESSAGE is not visible."),
-                        getConversationViewPage().isEphemeralTextInputFieldPlaceholderVisible());
-            }
+            result = getConversationViewPage().isPlaceholderTextVisible(placeholderText);
         } else {
-            if (isEphemeral==null){
-                Assert.assertTrue("Input placeholder text is visible",
-                        getConversationViewPage().isInputPlaceholderTextInvisible());
-            } else {
-                Assert.assertTrue(
-                        String.format("The Ephemeral text input placeholder TIMED MESSAGE is visible."),
-                        getConversationViewPage().isEphemeralTextInputFieldPlaceholderIsNotVisible());
-            }
+            result = getConversationViewPage().isPlaceholderTextInvisible(placeholderText);
         }
+        Assert.assertTrue(
+                String.format("'%s' placeholder text should be %s", placeholderText, (shouldNotBeVisible == null) ? "visible" : "not visible"),
+                result
+        );
     }
 
     /**
