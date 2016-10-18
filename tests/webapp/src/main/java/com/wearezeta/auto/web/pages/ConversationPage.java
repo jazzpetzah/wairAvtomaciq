@@ -1467,7 +1467,7 @@ public class ConversationPage extends WebPage {
     }
 
     public boolean isLastMessageNotObfuscated() {
-        return lastTextMessage.getAttribute("class").contains("ephemeral-message-obfuscated");
+        return !lastTextMessage.getAttribute("class").contains("ephemeral-message-obfuscated");
     }
 
     /**
