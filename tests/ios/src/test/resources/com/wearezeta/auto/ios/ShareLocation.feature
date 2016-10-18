@@ -107,6 +107,8 @@ Feature: Share Location
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Share Location button from input tools
+    # Wait until map app is shown
+    And I wait for 5 seconds
     Then I verify the alert contains text <ExpectedAlertText>
     When I dismiss alert
     And I tap Send location button from map view
