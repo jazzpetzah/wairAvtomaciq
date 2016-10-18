@@ -251,7 +251,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @C261732 @staging
+  @C261732 @regression
   Scenario Outline: Verify you can open a group conversation from search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
