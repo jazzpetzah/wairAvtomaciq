@@ -594,7 +594,7 @@ public final class WebAppLocators {
         public static final Function<String, String> xpathEphemeralButtonByLabel = label -> String
                 .format("//*[@data-uie-name='do-set-ephemeral-timer']//div[text()='%s']", label);
 
-        public static final String cssEphemeralTimers = ".ephemeral-menu .bubble-menu li";
+        public static final String cssEphemeralTimers = "[data-context-tag='ephemeral'] .bubble-menu li";
 
         public static final String cssSendImageInput = "input[data-uie-name=do-share-image]";
 
