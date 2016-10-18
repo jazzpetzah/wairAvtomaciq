@@ -32,6 +32,8 @@ public class SettingsPage extends AndroidPage {
 
     private static final By xpathOKButton = By.xpath("//*[starts-with(@id, 'button') and @value='OK']");
 
+    private static final By xpathVerificationOKButton = By.xpath("//*[@id='tv__ok_button' and @value='OK']");
+
     private static final By idEmailEdit = By.id("acet__preferences__email");
 
     private static final By idCountryIdxInput = By.id("acet__preferences__country");
@@ -137,7 +139,6 @@ public class SettingsPage extends AndroidPage {
         final WebElement phoneNumberInput = getElement(idPhoneNumberInput);
         phoneNumberInput.clear();
         phoneNumberInput.sendKeys(phoneNumber.withoutPrefix());
-        this.pressKeyboardSendButton();
         Thread.sleep(1000);
         getElement(xpathOKButton).click();
         // Confirm the alert
@@ -150,8 +151,7 @@ public class SettingsPage extends AndroidPage {
             final By locator = By.id(idStrVerificationCodeDigitInput.apply(charIdx + 1));
             getElement(locator).sendKeys(activationCode.substring(charIdx, charIdx + 1));
         }
-        this.pressKeyboardSendButton();
         Thread.sleep(1000);
-        this.pressKeyboardSendButton();
+        getElement(xpathVerificationOKButton).click();
     }
 }
