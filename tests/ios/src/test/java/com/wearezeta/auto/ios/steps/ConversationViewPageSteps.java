@@ -7,7 +7,6 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Assert;
@@ -122,41 +121,29 @@ public class ConversationViewPageSteps {
      */
     @And("^I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass|Time Indicator) button in conversation view$")
     public void ITapConvoButton(String btnName) throws Exception {
-        switch (btnName) {
-            case "Emoji Keyboard":
-            case "Text Keyboard":
-                getConversationViewPage().tapEmojiKeyboardButton();
-                break;
-            case "Send Message":
-                getConversationViewPage().tapSendButton();
-                break;
-            case "Hourglass":
-                getConversationViewPage().tapHourglassButton();
-                break;
-            case "Time Indicator":
-                getConversationViewPage().tapTimeIndicatorButton();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
-        }
+        getConversationViewPage().tapViewButton(btnName);
     }
 
     /**
-     * Verify Send Message button visiblity in the conversation view
+     * Verify button visibility in the conversation view
      *
      * @param shouldNotSee equals to null if the button should be visible
+     * @param btnName      the name of the button to check
      * @throws Exception
-     * @step. I (do not )?see Send Message button in conversation view$
+     * @step. I (do not )?see (Send Message|Emoji Keyboard|Text Keyboard|Hourglass)button in conversation view$
      */
-    @Then("^I (do not )?see Send Message button in conversation view$")
-    public void ISeeSendMessageButton(String shouldNotSee) throws Exception {
+    @Then("^I (do not )?see (Send Message|Emoji Keyboard|Text Keyboard|Hourglass) button in conversation view$")
+    public void ISeeSendMessageButton(String shouldNotSee, String btnName) throws Exception {
+        boolean result;
         if (shouldNotSee == null) {
-            Assert.assertTrue("Send Message button is not visible",
-                    getConversationViewPage().isSendMessageButtonVisible());
+            result = getConversationViewPage().isViewButtonVisible(btnName);
         } else {
-            Assert.assertTrue("Send Message button should be invisible",
-                    getConversationViewPage().isSendMessageButtonInvisible());
+            result = getConversationViewPage().isViewButtonInvisible(btnName);
         }
+        Assert.assertTrue(
+                String.format("'%s' button should be %s", btnName, (shouldNotSee == null) ? "visible" : "not visible"),
+                result
+        );
     }
 
     /**

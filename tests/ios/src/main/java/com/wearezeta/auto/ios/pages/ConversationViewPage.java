@@ -1051,17 +1051,36 @@ public class ConversationViewPage extends IOSPage {
         return false;
     }
 
-    public boolean isSendMessageButtonVisible() throws Exception {
-        return isElementDisplayed(nameSendButton);
+    private static By getViewButtonLocatorByName(String name) {
+        switch (name) {
+            case "Emoji Keyboard":
+            case "Text Keyboard":
+                return nameEmojiKeyboardButton;
+            case "Send Message":
+                return nameSendButton;
+            case "Hourglass":
+                return nameHourglassButton;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
+        }
     }
 
-    public boolean isSendMessageButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameSendButton);
+    public boolean isViewButtonVisible(String name) throws Exception {
+        final By locator = getViewButtonLocatorByName(name);
+        return isElementDisplayed(locator);
     }
 
-    public void tapEmojiKeyboardButton() throws Exception {
-        getElement(nameEmojiKeyboardButton).click();
-        Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
+    public boolean isViewButtonInvisible(String name) throws Exception {
+        final By locator = getViewButtonLocatorByName(name);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public void tapViewButton(String name) throws Exception {
+        final By locator = getViewButtonLocatorByName(name);
+        getElement(locator).click();
+        if (locator.equals(nameEmojiKeyboardButton)) {
+            Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
+        }
     }
 
     public void tapEmojiKeyboardKey(int keyIndex) throws Exception {
@@ -1081,10 +1100,6 @@ public class ConversationViewPage extends IOSPage {
     public boolean isMessageToolboxTextInvisible(String expectedText) throws Exception {
         final By locator = By.xpath(strXPathMessageToolboxByText.apply(expectedText));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
-    }
-
-    public void tapHourglassButton() throws Exception {
-        getElement(nameHourglassButton).click();
     }
 
     public void setMessageExpirationTimer(String value) throws Exception {

@@ -7,6 +7,7 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.util.concurrent.Future;
 
@@ -20,7 +21,8 @@ public class CameraRollPage extends IOSPage {
     private static final By fbXpathLibraryLastPicture =
             FBBy.xpath("//XCUIElementTypeCollectionView[@name='PhotosGridView']/XCUIElementTypeCell[last()]");
 
-    private static final By xpathCameraRolCell = By.xpath("//XCUIElementTypeCell[@name='Camera Roll']");
+    private static final By xpathCameraRolCell =
+            By.xpath("//XCUIElementTypeCell[@name='Camera Roll' and boolean(string(@value))]");
 
     private static final By nameCancelButton = MobileBy.AccessibilityId("Cancel");
 

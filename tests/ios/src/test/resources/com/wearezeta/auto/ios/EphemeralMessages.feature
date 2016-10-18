@@ -1,6 +1,6 @@
 Feature: Ephemeral Messages
 
-  @C259591 @staging @fastLogin
+  @C259591 @regression @fastLogin
   Scenario Outline: Verify ephemeral messages don't leave a trace in the database
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -12,10 +12,10 @@ Feature: Ephemeral Messages
     Given I set ephemeral messages expiration timer to <Timeout> seconds
     Given I type the default message and send it
     Given I see 1 default message in the conversation view
-    When I remember the state of the recent message from user Myself in the local database
+    When I remember the recent message from user Myself in the local database
     And I wait for <Timeout> seconds
     Then I see 0 default messages in the conversation view
-    And I verify the remembered message has been deleted from the local database
+    And I verify the remembered message has been changed in the local database
     When User <Contact> switches user Myself to ephemeral mode with <Timeout> seconds timeout
     And User <Contact> sends 1 encrypted message to user Myself
     # Wait for the message to be delivered
@@ -23,12 +23,27 @@ Feature: Ephemeral Messages
     And I see 1 default message in the conversation view
     And I remember the state of the recent message from user <Contact> in the local database
     And I wait for <Timeout> seconds
-    Then I verify the remembered message has been deleted from the local database
+    Then I see 0 default messages in the conversation view
+    And I verify the remembered message has been deleted from the local database
 
     Examples:
       | Name      | Contact   | DeviceName    | Timeout |
       | user1Name | user2Name | ContactDevice | 15      |
- 
+
+  @C259589 @regression @fastLogin
+  Scenario Outline: Verify ephemeral messages are disabled in a group
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    Then I do not see Hourglass button in conversation view
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | TESTCHAT      | 
+
   @C259584 @C259585 @staging @fastLogin
   Scenario Outline: Verify sending ephemeral message - no online receiver (negative case)
     Given There are 2 user where <Name> is me
