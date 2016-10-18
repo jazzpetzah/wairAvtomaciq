@@ -1108,19 +1108,11 @@ public class ConversationViewPage extends IOSPage {
         ((FBElement) getElement(fbClassPickerWheel)).setValue(value);
     }
 
-    public void tapTimeIndicatorButton() throws Exception {
-        getElement(nameTimeIndicatorButton).click();
-    }
-
     public boolean isEphemeralTextInputFieldPlaceholderVisible() throws Exception {
         return isElementDisplayed(nameEpheTextInputPlaceholder);
     }
 
     public boolean isEphemeralTextInputFieldPlaceholderIsNotVisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEpheTextInputPlaceholder);
-    }
-
-    public boolean isTimeIndicatorButtonVisible() throws Exception {
-        return isElementDisplayed( nameTimeIndicatorButton);
     }
 }
