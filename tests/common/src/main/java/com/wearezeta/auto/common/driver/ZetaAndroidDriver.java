@@ -176,7 +176,9 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
         tap(1, x, y, 50);
         try {
             Thread.sleep(200);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            throw new WebDriverException(e);
+        }
         tap(1, x, y, 50);
 
     }
