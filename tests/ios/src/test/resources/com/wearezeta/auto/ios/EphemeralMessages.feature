@@ -61,6 +61,7 @@ Feature: Ephemeral Messages
     And I set ephemeral messages expiration timer to 15 seconds
     Then I see Ephemeral text input field placeholder
     And I see Time Indicator button in the conversation view
+    And I type the default message and send it
     When I tap Time Indicator button in conversation view
     And I set ephemeral messages expiration timer to Off
     Then I do not see Ephemeral text input field placeholder
