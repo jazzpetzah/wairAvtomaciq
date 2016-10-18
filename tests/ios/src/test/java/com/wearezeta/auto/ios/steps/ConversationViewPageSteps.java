@@ -132,7 +132,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. I (do not )?see (Send Message|Emoji Keyboard|Text Keyboard|Hourglass)button in conversation view$
      */
-    @Then("^I (do not )?see (Send Message|Emoji Keyboard|Text Keyboard|Hourglass) button in conversation view$")
+    @Then("^I (do not )?see (Send Message|Emoji Keyboard|Text Keyboard|Hourglass|Time Indicator) button in conversation view$")
     public void ISeeSendMessageButton(String shouldNotSee, String btnName) throws Exception {
         boolean result;
         if (shouldNotSee == null) {
@@ -1464,20 +1464,6 @@ public class ConversationViewPageSteps {
                     getConversationViewPage().isEphemeralTextInputFieldPlaceholderIsNotVisible()
             );
         }
-    }
-
-    /**
-     * Verifies that the Time Indicator button is visible
-     *
-     * @throws Exception
-     * @step. ^I see Time Indicator button in the conversation view$
-     */
-    @And("^I see Time Indicator button in the conversation view$")
-    public void ISeeTimeIndicatorButtonInTheConversationView() throws Exception {
-        Assert.assertTrue(
-                String.format("The Time Indicator button is not visible in the conversation view."),
-                getConversationViewPage().isTimeIndicatorButtonVisible()
-        );
     }
 }
 

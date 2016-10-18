@@ -1060,6 +1060,8 @@ public class ConversationViewPage extends IOSPage {
                 return nameSendButton;
             case "Hourglass":
                 return nameHourglassButton;
+            case "Time Indicator":
+                return nameTimeIndicatorButton;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
         }
