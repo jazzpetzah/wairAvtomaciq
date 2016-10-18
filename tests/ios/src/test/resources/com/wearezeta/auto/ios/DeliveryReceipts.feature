@@ -1,6 +1,6 @@
 Feature: Delivery Receipts
 
-  @C228501 @staging @fastLogin @torun
+  @C228501 @staging @fastLogin
   Scenario Outline: Verify Delivered status isn't shown if receiver is on the old build
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
