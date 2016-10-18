@@ -97,3 +97,47 @@ Feature: Ephemeral
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Ephemeral |
+
+  @C262533 @ephemeral @staging
+  Scenario Outline: Verify that messages with previous timer are deleted on start-up when the timeout passed
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I click on ephemeral button
+    And I set the timer for ephemeral to <TimeLong>
+    Then I see <TimeShort> on ephemeral button
+    And I see placeholder of conversation input is Timed message
+    When I write message <Message>
+    And I send message
+    Then I see text message <Message>
+    When I wait for <Time> seconds
+    And I see the last message is obfuscated
+    Then I open preferences by clicking the gear button
+    And I click logout in account preferences
+    And I see the clear data dialog
+    And I click logout button on clear data dialog
+    Given I see Sign In page
+    Given I Sign in using login <Login2> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Name>
+    Then I see text message <Message>
+    And I wait for <Time> seconds
+    And I do not see text message <Message>
+    And I see 1 message in conversation
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
+    And I see the clear data dialog
+    And I click logout button on clear data dialog
+    Given I see Sign In page
+    Given I Sign in using login <Login2> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Name>
+    Then I do not see text message <Message>
+    And I see 1 message in conversation
+
+    Examples:
+      | Login      | Password      | Login2     | Name      | Contact   | TimeLong  | TimeShort | Time | Message |
+      | user1Email | user1Password | user2Email | user1Name | user2Name | 5 seconds | 5s        | 5    | testing |
