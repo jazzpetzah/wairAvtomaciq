@@ -55,7 +55,7 @@ Feature: Ephemeral Messages
     And I set ephemeral messages expiration timer to <Timeout> seconds
     And I type the default message and send it
     And I see 1 default message in the conversation view
-    And I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
+    Then I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
     When I remember the recent message from user Myself in the local database
     And I wait for <Timeout> seconds
     Then I see 1 message in the conversation view

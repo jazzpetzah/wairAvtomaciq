@@ -493,7 +493,7 @@ public class ConversationViewPageSteps {
      * @param shouldNotBeVisible equals to null if the placeholder should be visible
      * @param placeholderText    text of placeholder, either standard or ephemeral
      * @throws Exception
-     * @step. ^I (do not )?see (Standard|Ephemeral )?input placeholder text$
+     * @step. ^I (do not )?see (Standard|Ephemeral) input placeholder text$
      */
     @Then("^I (do not )?see (Standard|Ephemeral) input placeholder text$")
     public void ISeeInputPlaceholderText(String shouldNotBeVisible, String placeholderText) throws Exception {
