@@ -69,7 +69,7 @@ public final class BackendAPIWrappers {
             try {
                 return r.call();
             } catch (BackendRequestException e) {
-                if (e.getReturnCode() != 500) {
+                if (e.getReturnCode() < 500) {
                     throw e;
                 }
                 savedException = e;
@@ -629,15 +629,17 @@ public final class BackendAPIWrappers {
         } else {
             final byte[] srcImageAsByteArray = Files.readAllBytes(Paths.get(picturePath));
 
-            ImageAssetData srcImgData = new ImageAssetData(convId, srcImageAsByteArray, getImageMimeType(picturePath));
+            final ImageAssetData srcImgData =
+                    new ImageAssetData(convId, srcImageAsByteArray, getImageMimeType(picturePath));
             srcImgData.setIsPublic(true);
             srcImgData.setCorrelationId(String.valueOf(UUID.randomUUID()));
             srcImgData.setNonce(srcImgData.getCorrelationId());
-            ImageAssetProcessor imgProcessor = new SelfImageProcessor(srcImgData);
-            ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(imgProcessor);
-            Map<JSONObject, AssetData> sentPictures = BackendREST.sendPicture(
-                    receiveAuthToken(user), convId, reqBuilder);
-            Map<String, AssetData> processedAssets = new LinkedHashMap<>();
+            final ImageAssetProcessor imgProcessor = new SelfImageProcessor(srcImgData);
+            final ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(imgProcessor);
+            final Map<JSONObject, AssetData> sentPictures = retryOnBackendFailure(2,
+                    () -> BackendREST.sendPicture(receiveAuthToken(user), convId, reqBuilder)
+            );
+            final Map<String, AssetData> processedAssets = new LinkedHashMap<>();
             for (Map.Entry<JSONObject, AssetData> entry : sentPictures.entrySet()) {
                 final String postedImageId = entry.getKey().getJSONObject("data").getString("id");
                 processedAssets.put(postedImageId, entry.getValue());
