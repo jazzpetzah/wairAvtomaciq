@@ -20,6 +20,7 @@ import com.wearezeta.auto.web.common.Message;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.pages.ContactListPage;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
@@ -312,6 +313,32 @@ public class ConversationPageSteps {
     public void ISeeXMessagesInConversation(int x) throws Exception {
         assertThat("Number of messages in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
                 .getNumberOfMessagesInCurrentConversation(), equalTo(x));
+    }
+
+    @Then("^I verify the database is( not)? containing the message (.*) from (.*) in active conversation$")
+    public void ISeeNoTraceInDatabase(String not, String message, String nameAlias) throws Exception {
+        String userId = context.getUserManager().findUserByNameOrNameAlias(nameAlias).getId();
+        String conversationId = context.getPagesCollection().getPage(ContactListPage.class).getActiveConversationId();
+        assertThat("Couldn't get id of active conversation!", conversationId, not(isEmptyOrNullString()));
+        if(not != null) {
+            assertThat("Messages still in DB",
+                    context.getPagesCollection().getPage(ConversationPage.class).getMessagesFromDb(conversationId, userId),
+                    not(hasItem(message)));
+        } else {
+            assertThat("Messages not in DB",
+                    context.getPagesCollection().getPage(ConversationPage.class).getMessagesFromDb(conversationId, userId),
+                    hasItem(message));
+        }
+    }
+
+    @Then("^I see (\\d+) messages? in database from (.*) in active conversation$")
+    public void ISeeXMessagesInDatabase(int numberOfMessages, String nameAlias) throws Exception {
+        String userId = context.getUserManager().findUserByNameOrNameAlias(nameAlias).getId();
+        String conversationId = context.getPagesCollection().getPage(ContactListPage.class).getActiveConversationId();
+        assertThat("Couldn't get id of active conversation!", conversationId, not(isEmptyOrNullString()));
+        assertThat("Number of messages in DB",
+                context.getPagesCollection().getPage(ConversationPage.class).getMessagesFromDb(conversationId, userId),
+                hasSize(numberOfMessages));
     }
 
     /**

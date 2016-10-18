@@ -229,6 +229,10 @@ public class ContactListPage extends WebPage {
         return getDriver().findElement(By.cssSelector(locator));
     }
 
+    public String getActiveConversationId() throws Exception {
+        return activeConversationEntry.getAttribute("data-uie-uid");
+    }
+
     public String getActiveConversationName() throws Exception {
         return activeConversationEntry.getText();
     }

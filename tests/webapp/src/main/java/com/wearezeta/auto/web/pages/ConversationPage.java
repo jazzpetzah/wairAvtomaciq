@@ -1469,4 +1469,35 @@ public class ConversationPage extends WebPage {
     public boolean isLastMessageNotObfuscated() {
         return lastTextMessage.getAttribute("class").contains("ephemeral-message-obfuscated");
     }
+
+    /**
+     * Use selenium's executeAsyncScript method to grab message of a specific user from a specific conversation. Because the
+     * framework Dexie.js (the Javascript framework of the webapp that saves data in the indexedDB) is using Promises which are
+     * asyncron, we call the method callback() which allows us to return a value at any time and therefor tell selenium that we
+     * have finished our script.
+     *
+     * @param conversationId id of the conversation
+     * @param userId         id of the user
+     * @return a list of text messages
+     * @throws Exception
+     */
+    public List<String> getMessagesFromDb(String conversationId, String userId) throws Exception {
+        getDriver().manage().timeouts().setScriptTimeout(7, TimeUnit.SECONDS);
+        String backendType = WebCommonUtils.getBackendType(ConversationPage.class);
+        return (List<String>) getDriver().executeAsyncScript("var conversationId = arguments[0];\n" +
+                        "var userId = arguments[1];\n" +
+                        "var backendType = arguments[2];\n" +
+                        "var callback = arguments[arguments.length - 1];\n" +
+                        "var messages = [];\n" +
+                        "db = new Dexie('wire@'+backendType+'@'+userId+'@permanent');\n" +
+                        "    db.open().then(function () {\n" +
+                        "      table=db.table(\"conversation_events\");\n" +
+                        "      table.where(':id').startsWith(conversationId+'@'+userId).each(\n" +
+                        "        function(row){console.log(row.data.content);messages.push(row.data.content)}\n" +
+                        "      ).then(function() {callback(messages)});\n" +
+                        "    });\n",
+                conversationId,
+                userId,
+                backendType);
+    }
 }
