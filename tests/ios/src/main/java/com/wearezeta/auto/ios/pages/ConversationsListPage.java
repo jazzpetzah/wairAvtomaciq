@@ -194,6 +194,8 @@ public class ConversationsListPage extends IOSPage {
 
     public void tapButtonInActionMenu(String buttonTitle) throws Exception {
         getElement(getActionButtonByName(buttonTitle)).click();
+        // Wait for animation
+        Thread.sleep(2000);
     }
 
     public boolean isInviteMorePeopleButtonVisible() throws Exception {

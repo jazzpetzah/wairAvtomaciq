@@ -233,11 +233,7 @@ Feature: Conversation List
     When I navigate back to conversations list
     And I swipe right on a <Contact1>
     And I tap Delete action button
-    # Wait for animation
-    And I wait for 2 seconds
     And I confirm delete conversation content
-    # Wait for animation
-    And I wait for 2 seconds
     And I open search UI
     And I accept alert
     And I tap on Search input on People picker page
