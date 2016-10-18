@@ -909,25 +909,54 @@ public final class CommonSteps {
         if (!recentMessageIds.containsKey(convoKey)) {
             throw new IllegalStateException("You should remember the recent message before you check it");
         }
-        final String rememberedMessage = recentMessageIds.get(convoKey).orElse("");
+        final String rememberedMessageId = recentMessageIds.get(convoKey).orElse("");
         final Optional<String> actualMessageId = CommonUtils.waitUntil(durationSeconds,
                 CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
                 () -> {
-                    Optional<String> messageId = UserGetRecentMessageId(userNameAlias,
-                            dstNameAlias, deviceName, isGroup);
+                    final String result = UserGetRecentMessageId(userNameAlias,
+                            dstNameAlias, deviceName, isGroup).orElse("");
 
-                    String actualMessage = messageId.orElse("");
-                    // Try to wait for a different a message id
-                    if (actualMessage.equals(rememberedMessage)) {
+                    // Go to the next iteration
+                    if (result.equals(rememberedMessageId)) {
                         throw new IllegalStateException(
                                 String.format("The recent remembered message id %s and the current message id %s"
-                                        + " should be different", rememberedMessage, actualMessage));
-                    } else {
-                        return actualMessage;
+                                        + " should be different", rememberedMessageId, result));
                     }
+                    return result;
                 });
-        Assert.assertTrue(String.format("Actual message Id should not equal to '%s'", rememberedMessage),
-                actualMessageId.isPresent());
+        Assert.assertTrue(
+                String.format("The actual message in '%s' conversation should be different from the remembered one",
+                        dstNameAlias),
+                actualMessageId.isPresent()
+        );
+    }
+
+    public void UserXFoundLastMessageNotChanged(String userNameAlias, boolean isGroup, String dstNameAlias,
+                                                String deviceName, int durationSeconds) throws Exception {
+        final String convoKey = generateConversationKey(userNameAlias, dstNameAlias, deviceName);
+        if (!recentMessageIds.containsKey(convoKey)) {
+            throw new IllegalStateException("You should remember the recent message before you check it");
+        }
+        final String rememberedMessageId = recentMessageIds.get(convoKey).orElse("");
+        final Optional<String> actualMessageId = CommonUtils.waitUntil(durationSeconds,
+                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
+                () -> {
+                    final String result = UserGetRecentMessageId(userNameAlias,
+                            dstNameAlias, deviceName, isGroup).orElse("");
+
+                    // Go to the next iteration
+                    if (!result.equals(rememberedMessageId)) {
+                        throw new IllegalStateException(
+                                String.format("The recent remembered message id %s and the current message id %s"
+                                        + " should not be different", rememberedMessageId, result));
+                    }
+                    return result;
+                });
+        Assert.assertTrue(
+                String.format("The actual message in '%s' conversation should not be different from the remembered one",
+                        dstNameAlias),
+                actualMessageId.isPresent()
+        );
     }
 
     private MessageId getFilteredLastMessageId(ActorMessage.MessageInfo[] messageInfos) throws Exception {
@@ -936,7 +965,7 @@ public final class CommonSteps {
                 return messageInfos[i].id();
             }
         }
-        throw new Exception("Could not find any valid message");
+        throw new IllegalStateException("Could not find any valid message");
     }
 
     private MessageId getFilteredSecondLastMessageId(ActorMessage.MessageInfo[] messageInfos) throws Exception {
@@ -950,6 +979,6 @@ public final class CommonSteps {
                 }
             }
         }
-        throw new Exception("Could not find any valid message");
+        throw new IllegalStateException("Could not find any valid message");
     }
 }

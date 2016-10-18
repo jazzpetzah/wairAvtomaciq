@@ -42,7 +42,7 @@ Feature: Ephemeral Messages
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | TESTCHAT      | 
+      | user1Name | user2Name | user3Name | TESTCHAT      |
 
   @C259584 @C259585 @staging @fastLogin
   Scenario Outline: Verify sending ephemeral message - no online receiver (negative case)
@@ -84,3 +84,22 @@ Feature: Ephemeral Messages
     Examples:
       | Name      | Contact   | Timer |
       | user1Name | user2Name | 15    |
+
+  @C259587 @staging @fastLogin
+  Scenario Outline: Verify ephemeral message is not sent to other own device
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User Myself adds new device <DeviceName>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When User Myself remembers the recent message from user <Contact> via device <DeviceName>
+    And I tap Hourglass button in conversation view
+    And I set ephemeral messages expiration timer to <Timeout> seconds
+    And I type the default message and send it
+    And I see 1 default message in the conversation view
+    Then User Myself sees the recent message from user <Contact> via device <DeviceName> is not changed in 5 seconds
+
+    Examples:
+      | Name      | Contact   | DeviceName     | Timeout |
+      | user1Name | user2Name | MySecondDevice | 15      |
