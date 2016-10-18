@@ -233,6 +233,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameHourglassButton = MobileBy.AccessibilityId("ephemeralTimeSelectionButton");
     private static final By nameEmojiKeyboardButton = MobileBy.AccessibilityId("emojiButton");
     private static final By nameTimeIndicatorButton = MobileBy.AccessibilityId("ephemeralTimeIndicatorButton");
+    private static final By nameEpheTextInputPlaceholder = MobileBy.AccessibilityId("TIMED MESSAGE");
 
     private static final By fbClassPickerWheel = FBBy.className("XCUIElementTypePickerWheel");
 
@@ -1092,5 +1093,17 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapTimeIndicatorButton() throws Exception {
         getElement(nameTimeIndicatorButton).click();
+    }
+
+    public boolean isEphemeralTextInputFieldPlaceholderVisible() throws Exception {
+        return isElementDisplayed(nameEpheTextInputPlaceholder);
+    }
+
+    public boolean isEphemeralTextInputFieldPlaceholderIsNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEpheTextInputPlaceholder);
+    }
+
+    public boolean isTimeIndicatorButtonVisible() throws Exception {
+        return isElementDisplayed( nameTimeIndicatorButton);
     }
 }

@@ -1458,20 +1458,39 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Verifies if the ephemeral text input placeholder is visible or not
      *
+     * @param shouldNotSee equals to null if the text should be visible
      * @throws Exception
+     * @step. ^I (do not )?see Ephemeral text input field placeholder$
      */
     @Then("^I (do not )?see Ephemeral text input field placeholder$")
-    public void iSeeEphemeralTextInputFieldPlaceholder() throws Exception {
-        getConversationViewPage().isEphemeralTextInputFieldPlaceholderVisible();
+    public void iSeeEphemeralTextInputFieldPlaceholder(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue(
+                    String.format("The Ephemeral text input placeholder TIMED MESSAGE is not visible."),
+                    getConversationViewPage().isEphemeralTextInputFieldPlaceholderVisible()
+            );
+        } else {
+            Assert.assertTrue(
+                    String.format("The Ephemeral text input placeholder TIMED MESSAGE is visible."),
+                    getConversationViewPage().isEphemeralTextInputFieldPlaceholderIsNotVisible()
+            );
+        }
     }
 
     /**
+     * Verifies that the Time Indicator button is visible
      *
      * @throws Exception
+     * @step. ^I see Time Indicator button in the conversation view$
      */
     @And("^I see Time Indicator button in the conversation view$")
-    public void iSeeTimeIndicatorButtonInTheConversationView() throws Exception {
+    public void ISeeTimeIndicatorButtonInTheConversationView() throws Exception {
+        Assert.assertTrue(
+                String.format("The Time Indicator button is not visible in the conversation view."),
+                getConversationViewPage().isTimeIndicatorButtonVisible()
+        );
     }
 }
 
