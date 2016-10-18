@@ -21,7 +21,8 @@ public class CameraRollPage extends IOSPage {
     private static final By fbXpathLibraryLastPicture =
             FBBy.xpath("//XCUIElementTypeCollectionView[@name='PhotosGridView']/XCUIElementTypeCell[last()]");
 
-    private static final By xpathCameraRolCell = By.xpath("//XCUIElementTypeCell[@name='Camera Roll']");
+    private static final By xpathCameraRolCell =
+            By.xpath("//XCUIElementTypeCell[@name='Camera Roll' and boolean(string(@value))]");
 
     private static final By nameCancelButton = MobileBy.AccessibilityId("Cancel");
 
@@ -73,19 +74,8 @@ public class CameraRollPage extends IOSPage {
         this.tapAtTheCenterOfElement(btn);
     }
 
-    private final static long CELL_VALUE_READ_TIMEOUT_MS = 3000;
-
     private String getCameraRollCellValue() throws Exception {
-        final WebElement el = getElement(xpathCameraRolCell);
-        final long msStarted = System.currentTimeMillis();
-        do {
-            final String value = el.getAttribute("value");
-            if (!value.isEmpty()) {
-                return value;
-            }
-            Thread.sleep(1000);
-        } while (System.currentTimeMillis() - msStarted <= CELL_VALUE_READ_TIMEOUT_MS);
-        throw new IllegalStateException("Cannot read a value from camera roll cell");
+        return getElement(xpathCameraRolCell).getAttribute("value");
     }
 
     public Integer getCameraRollPhotoCount() throws Exception {
