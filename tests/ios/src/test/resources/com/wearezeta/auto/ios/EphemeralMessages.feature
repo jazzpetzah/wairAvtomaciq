@@ -1,6 +1,6 @@
 Feature: Ephemeral Messages
 
-  @C259591 @staging @fastLogin
+  @C259591 @regression @fastLogin
   Scenario Outline: Verify ephemeral messages don't leave a trace in the database
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -30,7 +30,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | DeviceName    | Timeout |
       | user1Name | user2Name | ContactDevice | 15      |
 
-  @C259589 @staging @fastLogin
+  @C259589 @regression @fastLogin
   Scenario Outline: Verify ephemeral messages are disabled in a group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
