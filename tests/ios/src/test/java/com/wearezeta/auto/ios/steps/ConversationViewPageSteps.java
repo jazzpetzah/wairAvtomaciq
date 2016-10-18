@@ -495,7 +495,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I (do not )?see (Standard|Ephemeral )?input placeholder text$
      */
-    @Then("^I (do not )?see (Standard |Ephemeral )?input placeholder text$")
+    @Then("^I (do not )?see (Standard|Ephemeral) input placeholder text$")
     public void ISeeInputPlaceholderText(String shouldNotBeVisible, String placeholderText) throws Exception {
         boolean result;
         if (shouldNotBeVisible == null) {

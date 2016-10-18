@@ -695,10 +695,10 @@ public class ConversationViewPage extends IOSPage {
     }
 
     private static By getInputPlaceholderLocatorByName(String name) {
-        switch (name) {
-            case "Standard ":
+        switch (name.toLowerCase()) {
+            case "standard":
                 return nameInputPlaceholderText;
-            case "Ephemeral ":
+            case "ephemeral":
                 return nameEpheTextInputPlaceholder;
             default:
                 throw new IllegalArgumentException(String.format("Unknown placeholder text '%s'", name));
