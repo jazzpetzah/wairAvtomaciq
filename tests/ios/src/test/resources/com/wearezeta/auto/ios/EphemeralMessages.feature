@@ -58,7 +58,7 @@ Feature: Ephemeral Messages
     And I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
     When I remember the recent message from user Myself in the local database
     And I wait for <Timeout> seconds
-    Then I see 1 messages in the conversation view
+    Then I see 1 message in the conversation view
     And I verify the remembered message has been changed in the local database
 
     Examples:
@@ -73,14 +73,14 @@ Feature: Ephemeral Messages
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Hourglass button in conversation view
-    And I set ephemeral messages expiration timer to 15 seconds
-    Then I see Ephemeral text input field placeholder
+    And I set ephemeral messages expiration timer to <Timer> seconds
+    Then I see Ephemeral input placeholder text
     And I see Time Indicator button in conversation view
     And I type the default message and send it
     When I tap Time Indicator button in conversation view
     And I set ephemeral messages expiration timer to Off
-    Then I do not see Ephemeral text input field placeholder
+    Then I do not see Ephemeral input placeholder text
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | Timer |
+      | user1Name | user2Name | 15    |

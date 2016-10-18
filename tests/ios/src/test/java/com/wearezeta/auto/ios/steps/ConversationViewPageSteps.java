@@ -488,20 +488,33 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Check whether text input placeholder text is visible or not
+     * Check whether text or ephemeral input placeholder text is visible or not
      *
      * @param shouldNotBeVisible equals to null if the placeholder should be visible
+     * @param isEphemeral        equals to null if ephemeral placeholder is not visible
      * @throws Exception
-     * @step. ^I (do not )?see input placeholder text$
+     * @step. ^I (do not )?see (Ephemeral )?input placeholder text$
      */
-    @Then("^I (do not )?see input placeholder text$")
-    public void ISeeInputPlaceholderText(String shouldNotBeVisible) throws Exception {
+    @Then("^I (do not )?see (Ephemeral )?input placeholder text$")
+    public void ISeeInputPlaceholderText(String shouldNotBeVisible, String isEphemeral) throws Exception {
         if (shouldNotBeVisible == null) {
-            Assert.assertTrue("Input placeholder text is not visible",
-                    getConversationViewPage().isInputPlaceholderTextVisible());
+            if (isEphemeral==null){
+                Assert.assertTrue("Input placeholder text is not visible",
+                        getConversationViewPage().isInputPlaceholderTextVisible());
+            } else {
+                Assert.assertTrue(
+                        String.format("The Ephemeral text input placeholder TIMED MESSAGE is not visible."),
+                        getConversationViewPage().isEphemeralTextInputFieldPlaceholderVisible());
+            }
         } else {
-            Assert.assertTrue("Input placeholder text is visible",
-                    getConversationViewPage().isInputPlaceholderTextInvisible());
+            if (isEphemeral==null){
+                Assert.assertTrue("Input placeholder text is visible",
+                        getConversationViewPage().isInputPlaceholderTextInvisible());
+            } else {
+                Assert.assertTrue(
+                        String.format("The Ephemeral text input placeholder TIMED MESSAGE is visible."),
+                        getConversationViewPage().isEphemeralTextInputFieldPlaceholderIsNotVisible());
+            }
         }
     }
 
@@ -1442,28 +1455,6 @@ public class ConversationViewPageSteps {
     @And("^I set ephemeral messages expiration timer to (Off|5 seconds|15 seconds|1 minute|15 minutes)$")
     public void ISetExpirationTimer(String value) throws Exception {
         getConversationViewPage().setMessageExpirationTimer(value);
-    }
-
-    /**
-     * Verifies if the ephemeral text input placeholder is visible or not
-     *
-     * @param shouldNotSee equals to null if the text should be visible
-     * @throws Exception
-     * @step. ^I (do not )?see Ephemeral text input field placeholder$
-     */
-    @Then("^I (do not )?see Ephemeral text input field placeholder$")
-    public void iSeeEphemeralTextInputFieldPlaceholder(String shouldNotSee) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue(
-                    String.format("The Ephemeral text input placeholder TIMED MESSAGE is not visible."),
-                    getConversationViewPage().isEphemeralTextInputFieldPlaceholderVisible()
-            );
-        } else {
-            Assert.assertTrue(
-                    String.format("The Ephemeral text input placeholder TIMED MESSAGE is visible."),
-                    getConversationViewPage().isEphemeralTextInputFieldPlaceholderIsNotVisible()
-            );
-        }
     }
 }
 
