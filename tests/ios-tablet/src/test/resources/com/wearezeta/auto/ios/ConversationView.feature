@@ -532,6 +532,8 @@ Feature: Conversation View
     And I long tap on text input
     And I tap on Paste badge item
     And I confirm my choice
+    # Wait for view update
+    And I wait for 3 seconds
     Then I see 2 photos in the conversation view
 
     Examples:
