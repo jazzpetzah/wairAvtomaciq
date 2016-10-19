@@ -4,7 +4,6 @@ import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 import java.util.concurrent.Future;
-import java.awt.Robot;
 import java.awt.event.KeyEvent;
 
 import org.apache.log4j.Logger;
@@ -18,11 +17,7 @@ public class OwnMessageContextMenuPage extends OSXPage {
     private static final int CONTEXT_DELETE_INDEX = 3;
     private static final int CONTEXT_DELETE_EVERYWHERE_INDEX = 4;
 
-    // TODO hide behind driver impl
-    private final Robot robot = new Robot();
-
-    public OwnMessageContextMenuPage(Future<ZetaOSXDriver> lazyDriver)
-            throws Exception {
+    public OwnMessageContextMenuPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
@@ -47,12 +42,12 @@ public class OwnMessageContextMenuPage extends OSXPage {
         selectByIndex(CONTEXT_DELETE_EVERYWHERE_INDEX, 2000);
     }
 
-    private void selectByIndex(int index, long wait) throws InterruptedException {
+    private void selectByIndex(int index, long wait) throws Exception {
         Thread.sleep(wait);
         for (int i = 0; i < index; i++) {
-            robot.keyPress(KeyEvent.VK_DOWN);
+            this.getDriver().getRobot().keyPress(KeyEvent.VK_DOWN);
             Thread.sleep(wait);
         }
-        robot.keyPress(KeyEvent.VK_ENTER);
+        this.getDriver().getRobot().keyPress(KeyEvent.VK_ENTER);
     }
 }

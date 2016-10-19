@@ -399,24 +399,6 @@ public class DriverUtils {
         return Optional.empty();
     }
     
-    /**
-     * AppiumForMac seems to send screenshots in non-base64 format on certain platforms when requesting bytes 
-     * so we explicitly request base64.
-     * @param driver
-     * @return
-     * @throws Exception 
-     */
-    public static Optional<BufferedImage> takeMacOSFullScreenShot(ZetaDriver driver) throws Exception {
-        try {
-            final byte[] srcImage = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64).getBytes();
-            final BufferedImage bImageFromConvert = ImageIO.read(new ByteArrayInputStream(srcImage));
-            return Optional.ofNullable(bImageFromConvert);
-        } catch (WebDriverException | NoClassDefFoundError e) {
-            log.error("Selenium driver has failed to take macOS screenshot of the current screen!");
-        }
-        return Optional.empty();
-    }
-
     public static void moveMouserOver(RemoteWebDriver driver, WebElement element) {
         /**
          * Method seems to work for Chrome and FireFox but is not working for

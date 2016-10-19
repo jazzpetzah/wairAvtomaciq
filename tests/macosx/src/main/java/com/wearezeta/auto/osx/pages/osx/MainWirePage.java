@@ -30,8 +30,6 @@ public class MainWirePage extends OSXPage {
     private static final int SPACE_FOR_DOCK = 50;
     private static final int TITLEBAR_HANDLE_OFFSET = 100;
 
-    private final Robot robot = new Robot();
-
     @FindBy(how = How.XPATH, using = OSXLocators.MainWirePage.xpathWindow)
     protected WebElement window;
 
@@ -53,8 +51,7 @@ public class MainWirePage extends OSXPage {
     }
 
     public boolean isMainWindowVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-                By.xpath(OSXLocators.MainWirePage.xpathWindow));
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.xpath(OSXLocators.MainWirePage.xpathWindow));
     }
 
     public void minimizeWindow() throws Exception {
@@ -66,6 +63,7 @@ public class MainWirePage extends OSXPage {
     }
 
     public void pressShortCutForQuit() throws Exception {
+        Robot robot = this.getDriver().getRobot();
         robot.keyPress(KeyEvent.VK_META);// command key
         robot.keyPress(KeyEvent.VK_Q);
         robot.keyRelease(KeyEvent.VK_Q);
@@ -73,6 +71,7 @@ public class MainWirePage extends OSXPage {
     }
 
     public void pressShortCutForPreferences() throws Exception {
+        Robot robot = this.getDriver().getRobot();
         robot.keyPress(KeyEvent.VK_META);// command key
         robot.keyPress(KeyEvent.VK_COMMA);
         robot.keyRelease(KeyEvent.VK_COMMA);
@@ -122,12 +121,10 @@ public class MainWirePage extends OSXPage {
     }
 
     public void resizeByHand(int width, int height) throws Exception {
-        final Dimension windowDimensions = getDriver().manage().window()
-                .getSize();
-        final Point windowPosition = getDriver().manage().window()
-                .getPosition();
-        final Point lowerRightWindowHandle = getLowerRightWindowHandle(
-                windowDimensions, windowPosition);
+        Robot robot = this.getDriver().getRobot();
+        final Dimension windowDimensions = getDriver().manage().window().getSize();
+        final Point windowPosition = getDriver().manage().window().getPosition();
+        final Point lowerRightWindowHandle = getLowerRightWindowHandle(windowDimensions, windowPosition);
 
         long newWidthOverflow = windowPosition.getX() + (long) width;
         long newHeightOverflow = windowPosition.getY() + (long) height;
@@ -139,16 +136,15 @@ public class MainWirePage extends OSXPage {
             newHeightOverflow = Integer.MAX_VALUE;
         }
 
-        robot.mouseMove(lowerRightWindowHandle.getX(),
-                lowerRightWindowHandle.getY());
+        robot.mouseMove(lowerRightWindowHandle.getX(), lowerRightWindowHandle.getY());
         robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
         robot.mouseMove((int) newWidthOverflow, (int) newHeightOverflow);
         robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
     }
 
     public void positionByHand(int x, int y) throws Exception {
-        final Point windowPosition = getDriver().manage().window()
-                .getPosition();
+        Robot robot = this.getDriver().getRobot();
+        final Point windowPosition = getDriver().manage().window().getPosition();
 
         final Point titleBar = new Point(windowPosition.getX()
                 + TITLEBAR_HANDLE_OFFSET, windowPosition.getY()
@@ -187,6 +183,7 @@ public class MainWirePage extends OSXPage {
     }
 
     public void pressShortCutForPing() throws Exception {
+        Robot robot = this.getDriver().getRobot();
         robot.keyPress(KeyEvent.VK_META);// command key
         robot.keyPress(KeyEvent.VK_K);
         robot.keyRelease(KeyEvent.VK_K);
@@ -194,6 +191,7 @@ public class MainWirePage extends OSXPage {
     }
 
     public void pressShortCutForUndo() throws Exception {
+        Robot robot = this.getDriver().getRobot();
         robot.keyPress(KeyEvent.VK_META);// command key
         robot.keyPress(KeyEvent.VK_Z);
         robot.keyRelease(KeyEvent.VK_Z);
@@ -201,6 +199,7 @@ public class MainWirePage extends OSXPage {
     }
 
     public void pressShortCutForRedo() throws Exception {
+        Robot robot = this.getDriver().getRobot();
         robot.keyPress(KeyEvent.VK_META);// command key
         robot.keyPress(KeyEvent.VK_SHIFT);
         robot.keyPress(KeyEvent.VK_Z);
@@ -210,6 +209,7 @@ public class MainWirePage extends OSXPage {
     }
 
     public void pressShortCutForSelectAll() throws Exception {
+        Robot robot = this.getDriver().getRobot();
         robot.keyPress(KeyEvent.VK_META);// command key
         robot.keyPress(KeyEvent.VK_A);
         robot.keyRelease(KeyEvent.VK_A);
@@ -217,6 +217,7 @@ public class MainWirePage extends OSXPage {
     }
 
     public void pressShortCutForCut() throws Exception {
+        Robot robot = this.getDriver().getRobot();
         robot.keyPress(KeyEvent.VK_META);// command key
         robot.keyPress(KeyEvent.VK_X);
         robot.keyRelease(KeyEvent.VK_X);
@@ -224,12 +225,12 @@ public class MainWirePage extends OSXPage {
     }
 
     public void pressShortCutForPaste() throws Exception {
-        String script = new String(Files.readAllBytes(Paths.get(getClass()
-                .getResource(PASTE_SCRIPT).toURI())));
+        String script = new String(Files.readAllBytes(Paths.get(getClass().getResource(PASTE_SCRIPT).toURI())));
         getDriver().executeScript(script);
     }
 
     public void pressShortCutForCopy() throws Exception {
+        Robot robot = this.getDriver().getRobot();
         robot.keyPress(KeyEvent.VK_META);// command key
         robot.keyPress(KeyEvent.VK_C);
         robot.keyRelease(KeyEvent.VK_C);
@@ -237,6 +238,7 @@ public class MainWirePage extends OSXPage {
     }
 
     public void pressShortCutToMute() throws Exception {
+        Robot robot = this.getDriver().getRobot();
         robot.keyPress(KeyEvent.VK_META);// command key
         robot.keyPress(KeyEvent.VK_ALT);
         robot.keyPress(KeyEvent.VK_S);
@@ -246,6 +248,7 @@ public class MainWirePage extends OSXPage {
     }
 
     public void pressShortCutToArchive() throws Exception {
+        Robot robot = this.getDriver().getRobot();
         robot.keyPress(KeyEvent.VK_META);// command key
         robot.keyPress(KeyEvent.VK_D);
         robot.keyRelease(KeyEvent.VK_D);
@@ -253,6 +256,7 @@ public class MainWirePage extends OSXPage {
     }
 
     public void pressShortCutForNextConv() throws Exception {
+        Robot robot = this.getDriver().getRobot();
         robot.keyPress(KeyEvent.VK_ALT);
         robot.keyPress(KeyEvent.VK_META);// command key
         robot.keyPress(KeyEvent.VK_UP);
@@ -262,6 +266,7 @@ public class MainWirePage extends OSXPage {
     }
 
     public void pressShortCutForPrevConv() throws Exception {
+        Robot robot = this.getDriver().getRobot();
         robot.keyPress(KeyEvent.VK_ALT);
         robot.keyPress(KeyEvent.VK_META);// command key
         robot.keyPress(KeyEvent.VK_DOWN);
@@ -271,6 +276,7 @@ public class MainWirePage extends OSXPage {
     }
 
     public void pressShortCutForCall() throws Exception {
+        Robot robot = this.getDriver().getRobot();
         robot.keyPress(KeyEvent.VK_META);// command key
         robot.keyPress(KeyEvent.VK_R);
         robot.keyRelease(KeyEvent.VK_R);
@@ -278,6 +284,7 @@ public class MainWirePage extends OSXPage {
     }
 
     public void pressShortCutForSearch() throws Exception {
+        Robot robot = this.getDriver().getRobot();
         robot.keyPress(KeyEvent.VK_META);// command key
         robot.keyPress(KeyEvent.VK_N);
         robot.keyRelease(KeyEvent.VK_N);
