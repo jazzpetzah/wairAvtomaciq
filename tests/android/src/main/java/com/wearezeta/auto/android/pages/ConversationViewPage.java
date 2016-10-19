@@ -642,6 +642,12 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
+    public int getCountOfPingMessagesByText(String pingText) throws Exception {
+        assert waitForPingMessageWithTextDisappears(pingText);
+        final By locator = By.xpath(xpathStrPingMessageByText.apply(pingText));
+        return getDriver().findElements(locator).size();
+    }
+
     public boolean isConversationPeopleChangedMessageContainsNames(List<String> names) throws Exception {
         final String xpathExpr = String.join(" and ", names.stream().map(
                 name -> String.format("contains(@value, '%s')", name.toUpperCase())

@@ -60,6 +60,8 @@ public class ConversationViewPageSteps {
 
     private Boolean wasShieldVisible = null;
 
+    private final CommonSteps commonSteps = CommonSteps.getInstance();
+
     private static String expandMessage(String message) {
         final Map<String, String> specialStrings = new HashMap<>();
         specialStrings.put(LONG_MESSAGE_ALIAS, ANDROID_LONG_MESSAGE);
@@ -317,9 +319,9 @@ public class ConversationViewPageSteps {
      * @param doNotSee
      * @param message  message text
      * @throws Exception
-     * @step. ^I (do not )?see Ping message "(.*)" in the conversation view
+     * @step. ^I (do not )?see Ping message "(.*)" in the conversation view$
      */
-    @Then("^I (do not )?see Ping message \"(.*)\" in the conversation view")
+    @Then("^I (do not )?see Ping message \"(.*)\" in the conversation view$")
     public void ISeePingMessageInTheDialog(String doNotSee, String message) throws Exception {
         message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
         if (doNotSee == null) {
@@ -329,6 +331,24 @@ public class ConversationViewPageSteps {
             Assert.assertTrue(String.format("Ping message '%s' is visible after the timeout", message),
                     getConversationViewPage().waitForPingMessageWithTextDisappears(message));
         }
+    }
+
+    /**
+     * Used to check that num of pings in the conversation
+     *
+     * @param expectedCount   num of pings
+     * @param message message text
+     * @throws Exception
+     * @step. ^I see (.*) Ping messages? "(.*)" in the conversation view$
+     */
+    @Then("^I see (.*) Ping messages? \"(.*)\" in the conversation view$")
+    public void ISeePingMessageInTheDialog(int expectedCount, String message) throws Exception {
+        message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
+        commonSteps.WaitForTime(1);
+        final int actualCount = getConversationViewPage().getCountOfPingMessagesByText(message);
+        Assert.assertTrue(
+                String.format("The expect count of pings is not equal to actual count, actual: %d, expect: %d",
+                        actualCount, expectedCount), actualCount == expectedCount);
     }
 
     /**
@@ -632,7 +652,6 @@ public class ConversationViewPageSteps {
     /**
      * Remember the state of like button
      *
-     * @param messageType Specified message type
      * @throws Exception
      * @step. ^I remember the state of like button$
      */
@@ -1125,9 +1144,9 @@ public class ConversationViewPageSteps {
      *
      * @param message     the message to tap
      * @param messageType the type of message which could be Ping or Text
-     * @param isLongTap   equals to null if the tap should be simple tap
+     * @param tapType     the tap type (long tap, double tap, tap)
      * @throws Exception
-     * @step. ^I (long )?tap the (Ping|Text) message "(.*)" in the conversation view
+     * @step. ^I (long tap|double tap|tap) the (Ping|Text) message "(.*)" in the conversation view$
      */
     @When("^I (long tap|double tap|tap) the (Ping|Text) message \"(.*)\" in the conversation view$")
     public void ITapTheNonTextMessage(String tapType, String messageType, String message) throws Exception {
@@ -1486,7 +1505,6 @@ public class ConversationViewPageSteps {
      * @param itemType       Message Meta Item type
      * @param hasExpectedMsg equals null means you don't specify the expceted content for item
      * @param expectedMsg    specified expected content for item
-     * @param messageType    the message type
      * @throws Exception
      * @step. ^I (do not )?see (Like button|Like description|Message status|First like avatar|Second like avatar)
      * (with expected text "(.*)" )?in conversation view$
@@ -1522,8 +1540,7 @@ public class ConversationViewPageSteps {
     /**
      * Tap on Any msg meta item
      *
-     * @param itemType    Message Meta Item type
-     * @param messageType The message type
+     * @param itemType Message Meta Item type
      * @throws Exception
      * @step. ^^I tap (Like button|Like description|Message status|First like avatar|Second like avatar)
      * in conversation view$
@@ -1538,13 +1555,12 @@ public class ConversationViewPageSteps {
      * Verify the count of Message status within current conversation
      *
      * @param expectedCount expect apperance count
-     * @param expectedText  the expected text within Message Status
      * @throws Exception
      * @step. ^I see (\d+) Message statu(?:s|ses) with expected text "(.*)" in conversation view$
      */
     @Then("^I see (\\d+) Message statu(?:s|ses) in conversation view$")
     public void ISeeMessageStatus(int expectedCount) throws Exception {
-        int actualCount = getConversationViewPage().getMessageStatusCount();
+        final int actualCount = getConversationViewPage().getMessageStatusCount();
         Assert.assertTrue(
                 String.format("The expect count is not equal to actual count, actual: %d, expect: %d",
                         actualCount, expectedCount), actualCount == expectedCount);
