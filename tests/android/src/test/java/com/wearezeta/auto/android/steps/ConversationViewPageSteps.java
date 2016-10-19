@@ -336,8 +336,8 @@ public class ConversationViewPageSteps {
     /**
      * Used to check that num of pings in the conversation
      *
-     * @param expectedCount   num of pings
-     * @param message message text
+     * @param expectedCount num of pings
+     * @param message       message text
      * @throws Exception
      * @step. ^I see (.*) Ping messages? "(.*)" in the conversation view$
      */
@@ -1279,7 +1279,6 @@ public class ConversationViewPageSteps {
         getConversationViewPage().tapAllResendButton();
     }
 
-    private static final double MIN_UPLOAD_TO_PLAY_SCORE = 0.75;
 
     /**
      * Wait until audio message upload completed
@@ -1288,18 +1287,32 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I wait for (\d+) seconds? until audio message (?:download|upload) completed$
      */
-    @Then("^I wait for (\\d+) seconds? until audio message (?:download|upload) completed$")
-    public void IWaitUntilMessageUploaded(int timeoutSeconds) throws Exception {
-        final BufferedImage cancelBntInitialState = ImageUtil.readImageFromFile(
-                AndroidCommonUtils.getImagesPathFromConfig(AndroidCommonUtils.class) + "android_audio_msg_cancel_btn.png");
-        audioMessagePlayButtonState.remember(cancelBntInitialState);
-        Assert.assertTrue(String.format(
-                "After %s seconds audio message is still being uploaded", timeoutSeconds),
-                audioMessagePlayButtonState.isChanged(timeoutSeconds, MIN_UPLOAD_TO_PLAY_SCORE, ImageUtil.RESIZE_TO_MAX_SCORE));
+    @Then("^I wait for (\\d+) seconds? until (video message|audio message) (?:download|upload) completed$")
+    public void IWaitUntilMessageUploaded(int timeoutSeconds, String buttonType) throws Exception {
+        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
+        switch (buttonType.toLowerCase()) {
+            case "video message":
+                verificationFunc = () -> videoMessagePlayButtonState.isChanged(timeoutSeconds,
+                        MIN_PLAY_BUTTON_SCORE);
+                videoMessagePlayButtonState.remember();
+                break;
+            case "audio message":
+                verificationFunc = () -> audioMessagePlayButtonState.isChanged(timeoutSeconds,
+                        MIN_UPLOAD_TO_PLAY_SCORE);
+                final BufferedImage cancelBntInitialState = ImageUtil.readImageFromFile(
+                        AndroidCommonUtils.getImagesPathFromConfig(AndroidCommonUtils.class) + "android_audio_msg_cancel_btn.png");
+                audioMessagePlayButtonState.remember(cancelBntInitialState);
+                break;
+            default:
+                throw new IllegalStateException(String.format("Cannot identify the button type '%s'", buttonType));
+        }
+        Assert.assertTrue(String.format("The current and previous state of the %s button seems to be the same", buttonType),
+                verificationFunc.call());
     }
 
+    private static final double MIN_UPLOAD_TO_PLAY_SCORE = 0.75;
     private static final double MIN_PLAY_BUTTON_SCORE = 0.82;
-    private static final int PLAY_BUTTON_STATE_CHANGE_TIMEOUT = 10; //seconds
+    private static final int PLAY_BUTTON_STATE_CHANGE_TIMEOUT = 20;
 
     /**
      * Verify whether current button state differs from the previous one

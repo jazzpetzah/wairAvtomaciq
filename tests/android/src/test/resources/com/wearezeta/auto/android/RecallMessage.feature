@@ -216,8 +216,7 @@ Feature: Recall Message
     Given I tap on conversation name <Contact>
     When I long tap Audio message button <TapDuration> seconds from cursor toolbar
     And I tap audio recording Send button
-    # Wait for the audio to be fully uploaded
-    And I wait for 15 seconds
+    And I wait for 30 seconds until audio message upload completed
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I long tap Audio Message container in the conversation view
     And I tap Delete for everyone button on the message bottom menu
@@ -241,8 +240,7 @@ Feature: Recall Message
     Given I tap on conversation name <Contact>
     When I tap Video message button from cursor toolbar
     Then I see Video Message container in the conversation view
-  # Wait for the video to be fully uploaded
-    And I wait for 20 seconds
+    And I wait for 60 seconds until video message upload completed
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I long tap Video Message container in the conversation view
     And I tap Delete for everyone button on the message bottom menu
