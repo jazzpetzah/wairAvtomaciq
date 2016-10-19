@@ -185,24 +185,6 @@ public class MainWirePage extends OSXPage {
     public void clickMaximizeButton() {
         zoomButton.click();
     }
-    
-    public void clickMenuBarItem(String firstItem, String... items) throws Exception {
-        String locatorBar = OSXLocators.AppMenu.xpathMenuBarItem.apply(firstItem);
-        By locator = By.xpath(locatorBar);
-        DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
-        WebElement menuElement = getDriver().findElement(locator);
-        DriverUtils.waitUntilElementClickable(getDriver(), menuElement);
-        menuElement.click();
-        String locatorItems = "";
-        for (String item : items) {
-            locatorItems += OSXLocators.AppMenu.xpathMenuItem.apply(item);
-            By itemLocator = By.xpath(locatorBar + locatorItems);
-            DriverUtils.waitUntilLocatorAppears(getDriver(), itemLocator);
-            WebElement itemElement = getDriver().findElement(itemLocator);
-            DriverUtils.waitUntilElementClickable(getDriver(), itemElement);
-            itemElement.click();
-        }
-    }
 
     public void pressShortCutForPing() throws Exception {
         robot.keyPress(KeyEvent.VK_META);// command key
