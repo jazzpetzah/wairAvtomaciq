@@ -385,6 +385,22 @@ public class ConversationViewPageSteps {
         previousMediaContainerState.remember();
     }
 
+//    private ElementState previousAssetsContainerState = new ElementState(
+//            () -> getConversationViewPage().getAssetsContainerStateGlyphScreenshot()
+//    );
+    /**
+     * Store the current assets container state into an internal varibale
+     *
+     * @throws Exception
+     * @step. ^I remember assets container state$
+     */
+    @When("^I remember (Media|Audio|Video|File Share|Location|Image) container state$")
+    public void IRememberAssetsContainerState(String assetType) throws Exception {
+        ElementState previousAssetsContainerState = new ElementState(
+                () -> getConversationViewPage().getAssetsContainerStateGlyphScreenshot(assetType));
+        previousAssetsContainerState.remember();
+    }
+
     private static final int MEDIA_STATE_CHANGE_TIMEOUT = 10;
 
     /**

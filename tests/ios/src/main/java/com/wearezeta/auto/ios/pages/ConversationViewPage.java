@@ -507,6 +507,28 @@ public class ConversationViewPage extends IOSPage {
         return containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
     }
 
+    public BufferedImage getAssetsContainerStateGlyphScreenshot(String assetType) throws Exception {
+        final BufferedImage containerScreen;
+
+        switch (assetType) {
+            case "Audio call":
+                containerScreen = this.getElementScreenshot(getElement(fbXpathMediaContainerCell)).orElseThrow(() ->
+                        new IllegalStateException("Cannot take a screenshot of media container"));
+                break;
+            case "Video call":
+                containerScreen = this.getElementScreenshot(getElement(fbXpathMediaContainerCell)).orElseThrow(() ->
+                        new IllegalStateException("Cannot take a screenshot of media container"));
+                break;
+        }
+        final int stateGlyphWidth = containerScreen.getWidth() / 7;
+        final int stateGlyphHeight = containerScreen.getHeight() / 7;
+        final int stateGlyphX = (containerScreen.getWidth() - stateGlyphWidth) / 2;
+        final int stateGlyphY = (containerScreen.getHeight() - stateGlyphHeight) / 2;
+//        BufferedImage tmp = containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
+//        ImageIO.write(tmp, "png", new File("/Users/elf/Desktop/" + System.currentTimeMillis() + ".png"));
+        return containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
+    }
+
     public boolean areInputToolsVisible() throws Exception {
         return isElementDisplayed(fbNameAddPictureButton) || isElementDisplayed(fbNameEllipsisButton);
     }

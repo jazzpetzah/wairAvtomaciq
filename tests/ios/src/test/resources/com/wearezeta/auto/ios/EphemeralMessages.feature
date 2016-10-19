@@ -100,7 +100,7 @@ Feature: Ephemeral Messages
     And I select the first picture from Keyboard Gallery
     And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
-    And I remember media container state
+    And I remember Image container state
     And I wait for 10 seconds
 
     Examples:
