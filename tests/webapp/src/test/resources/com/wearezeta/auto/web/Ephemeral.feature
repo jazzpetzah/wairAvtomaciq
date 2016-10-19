@@ -146,3 +146,95 @@ Feature: Ephemeral
     Examples:
       | Login      | Password      | Login2     | Name      | Contact   | TimeLong  | TimeShort | Time | Message |
       | user1Email | user1Password | user2Email | user1Name | user2Name | 5 seconds | 5s        | 5    | testing |
+
+  @C261733 @ephemeral @staging @torun
+  Scenario Outline: Verify sending different types of ephemeral messages (ping, picture, video, audio, file)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login1> and password <Password>
+    And I am signed in properly
+    When I open conversation with <Contact>
+    And I click on ephemeral button
+    And I set the timer for ephemeral to <TimeLong>
+    Then I see <TimeShort> on ephemeral button
+    And I see placeholder of conversation input is Timed message
+    #ping
+    When I click ping button
+    Then I see <PING> action in conversation
+    #And I see timer next to the last message
+    When I wait for <Time> seconds
+    Then I see the last message is obfuscated
+    And I see 2 messages in conversation
+    #picture
+    When I send picture <PictureName> to the current conversation
+    Then I see sent picture <PictureName> in the conversation view
+    And I see only 1 picture in the conversation
+    #And I see timer next to the last message
+    When I wait for <Time> seconds
+    #Then I see the message is replaced with an orange block
+    And I see 3 messages in conversation
+    #video
+    When I see file transfer button in conversation input
+    When I send <SizeVideo> sized video with name <VideoFile> to the current conversation
+    And I wait until video <VideoFile> is uploaded completely
+    And I see video message <VideoFile> in the conversation view
+    #And I see timer next to the last message
+    When I wait for <Time> seconds
+    #Then I see the message is replaced with an orange block
+    And I see 4 messages in conversation
+    #audio
+    When I send audio file with length <AudioTime> and name <AudioFile> to the current conversation
+    And I wait until audio <AudioFile> is uploaded completely
+    Then I see audio message <AudioFile> in the conversation view
+    #And I see timer next to the last message
+    When I wait for <Time> seconds
+    Then I see the last message is obfuscated
+    And I see 5 messages in conversation
+    #file
+    When I send <SizeFile> sized file with name <File> to the current conversation
+    And I wait until file <File> is uploaded completely
+    Then I verify size of file <File> is <SizeFile> in the conversation view
+    And I verify type of file <File> is <TypeFile> in the conversation view
+    #And I see timer next to the last message
+    When I wait for <Time> seconds
+    #Then I see the message is replaced with an orange block
+    And I see 6 messages in database from <Name> in active conversation
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
+    And I see the clear data dialog
+    And I click logout button on clear data dialog
+    And I see Sign In page
+    And I Sign in using login <Login2> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Name>
+    Then I see ping action in conversation
+    And I see sent picture <PictureName> in the conversation view
+    And I see video message <VideoFile> in the conversation view
+    And I see audio message <AudioFile> in the conversation view
+    Then I verify size of file <File> is <SizeFile> in the conversation view
+    And I verify type of file <File> is <TypeFile> in the conversation view
+  #And I see timer next to the last message
+    When I wait for <Time> seconds
+    Then I do not see text message <Message>
+    And I see 1 messages in conversation
+    And I see 0 message in database from <Name> in active conversation
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
+    And I see the clear data dialog
+    And I click logout button on clear data dialog
+    And I see Sign In page
+    And I Sign in using login <Login1> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact>
+    Then I do not see ping action in conversation
+    And I do not see any picture in the conversation view
+    And I do not see video message <VideoFile> in the conversation view
+    And I do not see audio message <AudioFile> in the conversation view
+    And I do not see file transfer for file <File> in the conversation view
+    And I see 1 messages in conversation
+    And I see 0 message in database from <Name> in active conversation
+
+    Examples:
+      | Login1     | Password      | Name      | Contact   | Login2     | Time | TimeLong   | TimeShort | PING       | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile | TypeFile |
+      | user1Email | user1Password | user1Name | user2Name | user2Email | 5    | 5 seconds  | 5s        | you pinged | userpicture_landscape.jpg | C123938.mp4 | 5MB       | example.wav | 00:20     | C261733.zip  | 512KB    | ZIP      |
