@@ -7,11 +7,11 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    Then I see Standard input placeholder text
+    Then I see input placeholder text
     When I tap on text input
-    Then I see Standard input placeholder text
+    Then I see input placeholder text
     When I type the default message
-    Then I do not see Standard input placeholder text
+    Then I do not see input placeholder text
 
     Examples:
       | Name      | Contact   |
@@ -538,14 +538,14 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see Standard input placeholder text
+    And I see input placeholder text
     And I see conversation tools buttons
     When <Contact> removes Myself from group chat <GroupChatName>
     Then I do not see conversation tools buttons
     And I do not see text input in conversation view
     When User <Contact> adds user <Name> to group chat <GroupChatName>
     Then I see conversation tools buttons
-    And I see Standard input placeholder text
+    And I see input placeholder text
 
     Examples:
       | Name      | Contact   | GroupChatName |

@@ -119,7 +119,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass) button in conversation view
      */
-    @And("^I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass|Time Indicator) button in conversation view$")
+    @And("^I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass) button in conversation view$")
     public void ITapConvoButton(String btnName) throws Exception {
         getConversationViewPage().tapViewButton(btnName);
     }
@@ -132,7 +132,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. I (do not )?see (Send Message|Emoji Keyboard|Text Keyboard|Hourglass)button in conversation view$
      */
-    @Then("^I (do not )?see (Send Message|Emoji Keyboard|Text Keyboard|Hourglass|Time Indicator) button in conversation view$")
+    @Then("^I (do not )?see (Send Message|Emoji Keyboard|Text Keyboard|Hourglass) button in conversation view$")
     public void ISeeSendMessageButton(String shouldNotSee, String btnName) throws Exception {
         boolean result;
         if (shouldNotSee == null) {
@@ -488,25 +488,21 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Check whether text or ephemeral input placeholder text is visible or not
+     * Check whether text input placeholder text is visible or not
      *
      * @param shouldNotBeVisible equals to null if the placeholder should be visible
-     * @param placeholderText    text of placeholder, either standard or ephemeral
      * @throws Exception
-     * @step. ^I (do not )?see (Standard|Ephemeral) input placeholder text$
+     * @step. ^I (do not )?see input placeholder text$
      */
-    @Then("^I (do not )?see (Standard|Ephemeral) input placeholder text$")
-    public void ISeeInputPlaceholderText(String shouldNotBeVisible, String placeholderText) throws Exception {
-        boolean result;
+    @Then("^I (do not )?see input placeholder text$")
+    public void ISeeInputPlaceholderText(String shouldNotBeVisible) throws Exception {
         if (shouldNotBeVisible == null) {
-            result = getConversationViewPage().isPlaceholderTextVisible(placeholderText);
+            Assert.assertTrue("Input placeholder text is not visible",
+                    getConversationViewPage().isInputPlaceholderTextVisible());
         } else {
-            result = getConversationViewPage().isPlaceholderTextInvisible(placeholderText);
+            Assert.assertTrue("Input placeholder text is visible",
+                    getConversationViewPage().isInputPlaceholderTextInvisible());
         }
-        Assert.assertTrue(
-                String.format("'%s' placeholder text should be %s", placeholderText, (shouldNotBeVisible == null) ? "visible" : "not visible"),
-                result
-        );
     }
 
     /**
