@@ -252,7 +252,7 @@ Feature: Recall Message
 
     Examples:
       | Name      | Contact   | FileSize | FileFullName     | ContactDevice |
-      | user1Name | user2Name | 26.00MB  | random_video.mp4 | Device1       |
+      | user1Name | user2Name | 20.00MB  | random_video.mp4 | Device1       |
 
   @C202330 @C202331 @regression @rc
   Scenario Outline: Verify deleting everywhere is synchronised across own devices when they are online (1:1 and group)
