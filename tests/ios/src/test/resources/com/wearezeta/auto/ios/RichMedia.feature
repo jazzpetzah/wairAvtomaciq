@@ -9,6 +9,8 @@ Feature: Rich Media
     Given I see conversations list
     When I tap on contact name <Contact>
     And I type the "<YouTubeLink>" message and send it
+    # Wait for delivery
+    And I wait for 3 seconds
     And I see "<DeliveredLabel>" on the message toolbox in conversation view
     And I tap on media container in conversation view
     # Wait until web page is loaded
