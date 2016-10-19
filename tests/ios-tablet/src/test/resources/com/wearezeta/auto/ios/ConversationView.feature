@@ -673,13 +673,13 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    Then I see input placeholder text
+    Then I see Standard input placeholder text
     When I tap on text input
-    Then I see input placeholder text
+    Then I see Standard input placeholder text
     When I type the default message
-    Then I do not see input placeholder text
+    Then I do not see Standard input placeholder text
     When I tap Send Message button in conversation view
-    Then I see input placeholder text
+    Then I see Standard input placeholder text
 
     Examples:
       | Name      | Contact   |
