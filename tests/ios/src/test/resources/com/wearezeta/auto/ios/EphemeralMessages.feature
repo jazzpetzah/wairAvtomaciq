@@ -44,7 +44,7 @@ Feature: Ephemeral Messages
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      | 
 
-  @C259584 @C259585 @staging @fastLogin
+  @C259584 @C259585 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral message - no online receiver (negative case)
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -65,7 +65,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timeout | EphemeralTimeLabel |
       | user1Name | user2Name | 15      | seconds            |
 
-  @C259586 @staging @fastLogin
+  @C259586 @regression @fastLogin
   Scenario Outline: Verify switching on/off ephemeral message
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
