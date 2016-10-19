@@ -47,7 +47,9 @@ Feature: File Transfer
     And I wait for 2 seconds
     And I tap file transfer menu item <ItemName>
     Then I see file transfer placeholder
-    And I see "<DeliveredLabel>" on the message toolbox in conversation view
+    # Wait for delivery
+    When I wait for 3 seconds
+    Then I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
       | Name      | Contact   | ItemName                   | DeviceName1 | DeliveredLabel |
