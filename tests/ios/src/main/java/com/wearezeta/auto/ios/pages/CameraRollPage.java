@@ -21,8 +21,7 @@ public class CameraRollPage extends IOSPage {
     private static final By fbXpathLibraryLastPicture =
             FBBy.xpath("//XCUIElementTypeCollectionView[@name='PhotosGridView']/XCUIElementTypeCell[last()]");
 
-    private static final By xpathCameraRolCell =
-            By.xpath("//XCUIElementTypeCell[@name='Camera Roll' and boolean(string(@value))]");
+    private static final By xpathCameraRolCell = By.xpath("//XCUIElementTypeCell[@name='Camera Roll']");
 
     private static final By nameCancelButton = MobileBy.AccessibilityId("Cancel");
 
@@ -74,14 +73,22 @@ public class CameraRollPage extends IOSPage {
         this.tapAtTheCenterOfElement(btn);
     }
 
-    private String getCameraRollCellValue() throws Exception {
-        return getElement(xpathCameraRolCell).getAttribute("value");
-    }
+    private static final long COUNT_VISIBILITY_TIMEOUT_MS = 5000;
 
     public Integer getCameraRollPhotoCount() throws Exception {
-        String countToParse = getCameraRollCellValue();
-        String count = countToParse.replaceAll("[\\D]", "");
-        return Integer.valueOf(count);
+        final WebElement countLabel = getElement(xpathCameraRolCell);
+        final long msStarted = System.currentTimeMillis();
+        do {
+            final String value = countLabel.getAttribute("value");
+            if (value != null) {
+                final String number = value.replaceAll("[\\D]", "");
+                if (!number.isEmpty()) {
+                    return Integer.valueOf(number);
+                }
+            }
+            Thread.sleep(1000);
+        } while (System.currentTimeMillis() - msStarted <= COUNT_VISIBILITY_TIMEOUT_MS);
+        throw new IllegalStateException("Cannot read photos count value");
     }
 
     public void tapCancelButton() throws Exception {
