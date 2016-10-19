@@ -124,7 +124,7 @@ public class OtherUserPersonalInfoPageSteps {
     @When("^I verify username (.*) on Other User Profile page is displayed")
     public void IVerifyUserOtherUserProfilePage(String user) throws Exception {
         String username = usrMgr.findUserByNameOrNameAlias(user).getName();
-        Assert.assertTrue(String.format("Use name '%s' is not visible", username),
+        Assert.assertTrue(String.format("User name '%s' is not visible", username),
                 getOtherUserPersonalInfoPage().isUserNameVisible(username));
     }
 
