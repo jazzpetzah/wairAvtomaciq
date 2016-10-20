@@ -83,6 +83,8 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public void clickConfirmDeleteButton() throws Exception {
         getElement(xpathConfirmDeleteButton, "Confirm button is not visible").click();
+        // Wait for animation
+        Thread.sleep(2000);
     }
 
     public void clickAlsoLeaveButton() throws Exception {

@@ -343,7 +343,7 @@ Feature: Likes
       | Name      | Contact   | FileName | FileMIME  | ContactDevice |
       | user1Name | user2Name | test.m4a | audio/mp4 | ContactDevice |
 
-  @C225989 @staging @fastLogin
+  @C225989 @regression @fastLogin
   Scenario Outline: Verify liking a location
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

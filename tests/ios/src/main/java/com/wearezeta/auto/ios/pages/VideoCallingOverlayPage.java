@@ -21,7 +21,7 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
         if (dstBtn.isPresent()) {
             if (!dstBtn.get().isDisplayed()) {
                 this.tapScreenAt(dstBtn.get());
-                Thread.sleep(300);
+                Thread.sleep(2000);
             }
         } else {
             throw new IllegalStateException(
@@ -32,8 +32,7 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
     }
 
     private void tapOverlayButton(String name) throws Exception {
-        final WebElement btn = makeOverlayButtonVisible(name);
-        this.tapScreenAt(btn);
+        makeOverlayButtonVisible(name).click();
     }
 
     @Override

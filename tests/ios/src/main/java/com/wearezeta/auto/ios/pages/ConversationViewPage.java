@@ -195,7 +195,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameDefaultMapApplication = MobileBy.AccessibilityId("CalloutArrow.png");
 
-    private static final By fbNameLinkPreviewSource = FBBy.AccessibilityId("linkPreviewSource");
+    private static final By fbNameLinkPreview = FBBy.AccessibilityId("linkPreview");
 
     private static final By nameLinkPreviewImage = MobileBy.AccessibilityId("linkPreviewImage");
 
@@ -230,8 +230,12 @@ public class ConversationViewPage extends IOSPage {
             FBBy.xpath("//XCUIElementTypeButton[@label='Cancel']/parent::*/preceding-sibling::*[1]");
 
     private static final By nameSendButton = MobileBy.AccessibilityId("sendButton");
-
+    private static final By nameHourglassButton = MobileBy.AccessibilityId("ephemeralTimeSelectionButton");
     private static final By nameEmojiKeyboardButton = MobileBy.AccessibilityId("emojiButton");
+    private static final By nameTimeIndicatorButton = MobileBy.AccessibilityId("ephemeralTimeIndicatorButton");
+    private static final By nameEpheTextInputPlaceholder = MobileBy.AccessibilityId("TIMED MESSAGE");
+
+    private static final By fbClassPickerWheel = FBBy.className("XCUIElementTypePickerWheel");
 
     private static final Function<Integer, String> xpathStrEmojiKeyByIndex = idx -> String.format(
             "(//XCUIElementTypeCollectionView)[last()]/XCUIElementTypeCell[%s]", idx);
@@ -682,12 +686,25 @@ public class ConversationViewPage extends IOSPage {
         getElement(MobileBy.AccessibilityId(itemName)).click();
     }
 
-    public boolean isInputPlaceholderTextVisible() throws Exception {
-        return isElementDisplayed(nameInputPlaceholderText);
+    private static By getInputPlaceholderLocatorByName(String name) {
+        switch (name.toLowerCase()) {
+            case "standard":
+                return nameInputPlaceholderText;
+            case "ephemeral":
+                return nameEpheTextInputPlaceholder;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown placeholder text '%s'", name));
+        }
     }
 
-    public boolean isInputPlaceholderTextInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameInputPlaceholderText);
+    public boolean isPlaceholderTextVisible(String placeholder) throws Exception {
+        final By locator = getInputPlaceholderLocatorByName(placeholder);
+        return isElementDisplayed(locator);
+    }
+
+    public boolean isPlaceholderTextInvisible(String placeholder) throws Exception {
+        final By locator = getInputPlaceholderLocatorByName(placeholder);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     public void scrollToTheBottom() throws Exception {
@@ -750,9 +767,6 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapRecordControlButton(String buttonName) throws Exception {
-        //sometimes for such dynamic elements like record bar appium do not get the actual page source
-        //in some cases this method helps to refresh elements tree.
-        this.printPageSource();
         By button = getRecordControlButtonByName(buttonName);
         if (button.equals(namePlayAudioRecorderButton)) {
             getElement(button).click();
@@ -835,7 +849,8 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isDefaultMapApplicationVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), nameDefaultMapApplication, 15);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), nameDefaultMapApplication) ||
+                this.isAlertContainsText("access your location");
     }
 
     public boolean isLinkPreviewImageVisible() throws Exception {
@@ -932,7 +947,7 @@ public class ConversationViewPage extends IOSPage {
             case "video message":
                 return fbNameVideoMessageActionButton;
             case "link preview":
-                return fbNameLinkPreviewSource;
+                return fbNameLinkPreview;
             default:
                 throw new IllegalArgumentException(String.format("Unknown container name '%s'", name));
         }
@@ -1046,17 +1061,38 @@ public class ConversationViewPage extends IOSPage {
         return false;
     }
 
-    public boolean isSendMessageButtonVisible() throws Exception {
-        return isElementDisplayed(nameSendButton);
+    private static By getViewButtonLocatorByName(String name) {
+        switch (name) {
+            case "Emoji Keyboard":
+            case "Text Keyboard":
+                return nameEmojiKeyboardButton;
+            case "Send Message":
+                return nameSendButton;
+            case "Hourglass":
+                return nameHourglassButton;
+            case "Time Indicator":
+                return nameTimeIndicatorButton;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
+        }
     }
 
-    public boolean isSendMessageButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameSendButton);
+    public boolean isViewButtonVisible(String name) throws Exception {
+        final By locator = getViewButtonLocatorByName(name);
+        return isElementDisplayed(locator);
     }
 
-    public void tapEmojiKeyboardButton() throws Exception {
-        getElement(nameEmojiKeyboardButton).click();
-        Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
+    public boolean isViewButtonInvisible(String name) throws Exception {
+        final By locator = getViewButtonLocatorByName(name);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public void tapViewButton(String name) throws Exception {
+        final By locator = getViewButtonLocatorByName(name);
+        getElement(locator).click();
+        if (locator.equals(nameEmojiKeyboardButton)) {
+            Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
+        }
     }
 
     public void tapEmojiKeyboardKey(int keyIndex) throws Exception {
@@ -1076,5 +1112,9 @@ public class ConversationViewPage extends IOSPage {
     public boolean isMessageToolboxTextInvisible(String expectedText) throws Exception {
         final By locator = By.xpath(strXPathMessageToolboxByText.apply(expectedText));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public void setMessageExpirationTimer(String value) throws Exception {
+        ((FBElement) getElement(fbClassPickerWheel)).setValue(value);
     }
 }

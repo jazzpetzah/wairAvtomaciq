@@ -95,10 +95,12 @@ Feature: Registration
     Given I enter user email <Email> on Registration page
     Given I enter user password "<Password>" on Registration page
     Given I accept the Terms of Use
+    Given I remember current page
     When I submit registration form
     Then I verify that an envelope icon is shown
     And I see email <Email> on Verification page
-    And I open Sign In page
+    And I navigate to previously remembered page
+    And I switch to sign in page
     When I see Sign In page
     When I Sign in using login <Email> and password <Password>
     Then I verify that an envelope icon is shown

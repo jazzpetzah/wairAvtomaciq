@@ -6,8 +6,11 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.PhoneNumberPasswordPage;
 import com.wearezeta.auto.web.pages.PhoneNumberVerificationPage;
+import cucumber.api.java.en.Then;
 
 import cucumber.api.java.en.When;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class PhoneNumberPasswordPageSteps {
 
@@ -24,30 +27,21 @@ public class PhoneNumberPasswordPageSteps {
         this.context = context;
     }
 
-    /**
-     * Enters password on phone login page
-     *
-     * @step. ^I enter password (.*) on phone login page$
-     *
-     * @param password password of the user
-     * @throws Throwable
-     */
     @When("^I enter password (.*) on phone login page$")
     public void IEnterPhonePassword(String password) throws Throwable {
         context.getPagesCollection().getPage(PhoneNumberPasswordPage.class)
                 .enterPassword(password);
     }
 
-    /**
-     * Presses Sign In button on phone login page
-     *
-     * @step. ^I press Sign In button on phone login page$
-     *
-     * @throws Throwable
-     */
     @When("^I press Sign In button on phone login page$")
     public void IClickSignIn() throws Throwable {
         context.getPagesCollection().getPage(PhoneNumberPasswordPage.class)
                 .clickSignInButton();
+    }
+
+    @Then("^I see error \"(.*)\" on phone login page$")
+    public void ISeeError(String expectedError) throws Throwable {
+        String actualError = context.getPagesCollection().getPage(PhoneNumberPasswordPage.class).getFirstErrorText();
+        assertThat(String.format("Error '%s' is NOT visible", expectedError), actualError, equalTo(expectedError));
     }
 }

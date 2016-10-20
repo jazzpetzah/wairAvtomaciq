@@ -7,6 +7,7 @@ import java.util.concurrent.TimeoutException;
 import akka.actor.ActorRef;
 
 import akka.actor.PoisonPill;
+import com.waz.api.EphemeralExpiration;
 import com.waz.model.MessageId;
 import com.waz.model.RConvId;
 import com.waz.provision.ActorMessage;
@@ -325,8 +326,10 @@ class Device extends RemoteEntity implements IDevice {
                         new ActorMessage.GetMessages(new RConvId(convId)));
                 return convMessages.msgs();
             }
+        } catch (ClassCastException e) {
+            return new ActorMessage.MessageInfo[]{};
         }
-        return null;
+        return new ActorMessage.MessageInfo[]{};
     }
 
     @Override
@@ -364,6 +367,21 @@ class Device extends RemoteEntity implements IDevice {
     public void shareLocation(String convId) throws Exception {
         shareLocation(convId, Constants.DEFAULT_GMAP_LON, Constants.DEFAULT_GMAP_LAT, Constants.DEFAULT_GMAP_ADDRESS,
                 Constants.DEFAULT_GMAP_ZOOM_LEVEL);
+    }
+
+    @Override
+    public void setEphemeralMode(String convId, long expirationMilliseconds) throws Exception {
+        try {
+            askActor(this.ref(), new ActorMessage.SetEphemeral(new RConvId(convId),
+                    EphemeralExpiration.getForMillis(expirationMilliseconds)));
+        } catch (TimeoutException e) {
+            // recreate process and retry
+            respawn();
+            if (hasLoggedInUser()) {
+                askActor(this.ref(), new ActorMessage.SetEphemeral(new RConvId(convId),
+                        EphemeralExpiration.getForMillis(expirationMilliseconds)));
+            }
+        }
     }
 
     @Override

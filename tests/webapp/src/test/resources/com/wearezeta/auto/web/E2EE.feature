@@ -13,6 +13,33 @@ Feature: E2EE
     And I open devices in preferences
     And I wait for devices
     Then I see an active device named <Device>
+    When I click x to remove the device <Device>
+    And I type password "<Password>" into the device remove form
+    And I click the remove button
+    Then I do not see an active device named <Label>,<Device>
+    When I close preferences
+    And I wait for 2 seconds
+    And I open preferences by clicking the gear button
+    And I open devices in preferences
+    Then I do not see an active device named <Device>
+
+    Examples:
+      | Email      | Password      | Name      | Device  | Label  |
+      | user1Email | user1Password | user1Name | Remote1 | Label1 |
+
+  @C261692 @e2ee @regression
+  Scenario Outline: Remove remote device from device list via device details
+    Given There is 1 user where <Name> is me
+    Given user <Name> adds a new device <Device> with label <Label>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    Then I see the history info page
+    When I click confirm on history info page
+    Then I am signed in properly
+    When I open preferences by clicking the gear button
+    And I open devices in preferences
+    And I wait for devices
+    Then I see an active device named <Device>
     When I click on the device <Device>
     Then I see a device named <Device> with label <Label> in the device details
     When I click the remove device link

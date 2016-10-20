@@ -37,20 +37,26 @@ public class StartUIPageSteps {
     }
 
 	/**
-	 * Selects user from search results in People Picker
+	 * Selects user or group from search results in People Picker
 	 *
-	 * @step. ^I select (.*) from People Picker results$
+	 * @step. ^I select( group)? (.*) from People Picker results$
 	 *
+	 * @param group
 	 * @param user
 	 *            user name or email
 	 * @throws Exception
 	 */
-	@When("^I select (.*) from People Picker results$")
-	public void ISelectUserFromStartUIResults(String user)
+	@When("^I select( group)? (.*) from People Picker results$")
+	public void ISelectUserFromStartUIResults(String group, String user)
 			throws Exception {
-		user = context.getUserManager().replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
-		context.getPagesCollection().getPage(StartUIPage.class)
-				.selectUserFromSearchResult(user);
+		if (group == null) {
+			user = context.getUserManager().replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+			context.getPagesCollection().getPage(StartUIPage.class)
+					.selectUserFromSearchResult(user);
+		} else {
+            context.getPagesCollection().getPage(StartUIPage.class)
+                    .selectGroupFromSearchResult(user);
+		}
 	}
 
 	/**

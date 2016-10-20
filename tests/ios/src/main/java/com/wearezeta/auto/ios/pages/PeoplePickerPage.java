@@ -32,9 +32,9 @@ public class PeoplePickerPage extends IOSPage {
 
     private static final By nameUnblockButton = MobileBy.AccessibilityId("UNBLOCK");
 
-    public static final By xpathInviteCopyButton = By.xpath("//XCUIElementTypeCell[@name='Copy']");
+    public static final By nameInviteCopyButton = MobileBy.AccessibilityId("Copy");
 
-    private static final By xpathInviteMorePeopleButton = By.xpath("//XCUIElementTypeButton[@name='INVITE MORE PEOPLE']");
+    private static final By nameInviteMorePeopleButton = MobileBy.AccessibilityId("INVITE MORE PEOPLE");
 
     private static final Function<String, String> xpathStrInstantConnectButtonByUserName = name -> String.format(
             "//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[@name='%s'] ]" +
@@ -48,7 +48,7 @@ public class PeoplePickerPage extends IOSPage {
 
     private static final By nameSendImageButton = MobileBy.AccessibilityId("actionBarCameraButton");
 
-    private static final By xpathContactViewCloseButton = By.xpath("//*[@name='ContactsViewCloseButton']");
+    private static final By nameContactViewCloseButton = MobileBy.AccessibilityId("ContactsViewCloseButton");
 
     private static final Function<String, String> xpathStrFoundContactByName =
             name -> String.format("//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s'] ]", name);
@@ -95,7 +95,6 @@ public class PeoplePickerPage extends IOSPage {
 
     public Optional<WebElement> getSearchResultsElement(String user) throws Exception {
         final By locator = By.xpath(xpathStrFoundContactByName.apply(user));
-        this.printPageSource();
         return getElementIfDisplayed(locator);
     }
 
@@ -146,13 +145,13 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void tapSendInviteButton() throws Exception {
-        getElement(xpathInviteMorePeopleButton).click();
+        getElement(nameInviteMorePeopleButton).click();
     }
 
     public void tapSendInviteCopyButton() throws Exception {
-        final WebElement copyButton = getElement(xpathInviteCopyButton);
+        final WebElement copyButton = getElement(nameInviteCopyButton);
         copyButton.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathInviteCopyButton)) {
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameInviteCopyButton)) {
             copyButton.click();
         }
     }
@@ -182,7 +181,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void closeInviteList() throws Exception {
-        getElement(xpathContactViewCloseButton).click();
+        getElement(nameContactViewCloseButton).click();
     }
 
     public boolean isPeopleYouMayKnowLabelInvisible() throws Exception {

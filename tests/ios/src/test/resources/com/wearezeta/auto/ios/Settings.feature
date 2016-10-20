@@ -111,7 +111,7 @@ Feature: Settings
       | user1Name | 60      |
 
   @C1092 @C1093 @regression @fastLogin
-  Scenario Outline: (ZIOS-7297) Attempt to enter a name with 0/1 chars
+  Scenario Outline: Attempt to enter a name with 0/1 chars
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -119,11 +119,13 @@ Feature: Settings
     Given I select settings item Account
     Given I select settings item Name
     When I clear Name input field on Settings page
+    And I wait for 3 seconds
     And I tap Return button on the keyboard
     Then I verify the alert contains text <ExpectedAlertText>
     And I accept alert
     When I clear Name input field on Settings page
     And I set "<OneCharName>" value to Name input field on Settings page
+    And I wait for 3 seconds
     And I tap Return button on the keyboard
     Then I verify the alert contains text <ExpectedAlertText>
 
@@ -252,7 +254,7 @@ Feature: Settings
       | Name      | Timeout |
       | user1Name | 60      |
 
-  @C1086 @regression
+  @C1086 @regression @useSpecialEmail
   Scenario Outline: Verify adding email to the contact signed up with phone number
     Given I see sign in screen
     Given I enter phone number for <Name>

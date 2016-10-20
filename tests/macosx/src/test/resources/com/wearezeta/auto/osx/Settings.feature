@@ -14,7 +14,7 @@ Feature: Settings
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C2366 @smoke
+  @C2366 @smoke @torun
   Scenario Outline: Open preferences with keyboard shortcut
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

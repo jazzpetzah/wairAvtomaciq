@@ -18,6 +18,7 @@ import io.appium.java_client.MobileBy;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.openqa.selenium.*;
 
 import com.wearezeta.auto.ios.pages.keyboard.IOSKeyboard;
@@ -49,7 +50,7 @@ public abstract class IOSPage extends BasePage {
 
     protected static final By xpathBrowserURLButton = By.xpath("//XCUIElementTypeButton[@name='URL']");
 
-    protected static final By nameBackToWireBrowserButton = MobileBy.AccessibilityId("Back to Wire");
+    protected static final By nameBackToWireBrowserButton = MobileBy.AccessibilityId("Return to Wire");
 
     protected static final By xpathConfirmButton = By.xpath("//XCUIElementTypeButton[@name='OK']");
 
@@ -61,7 +62,7 @@ public abstract class IOSPage extends BasePage {
             String.format("//XCUIElementTypeAlert//XCUIElementTypeButton[@label='%s']", caption);
 
     private static final Function<String, String> xpathStrAddressBarByUrlPart = urlPart ->
-            String.format("//*[contains(@name, '%s')]", urlPart);
+            String.format("//XCUIElementTypeTextField[@name='Address' and contains(@value, '%s')]", urlPart);
 
     private IOSKeyboard onScreenKeyboard;
 
@@ -171,19 +172,35 @@ public abstract class IOSPage extends BasePage {
 
     public void acceptAlertIfVisible() throws Exception {
         try {
-            handleAlert(true, DriverUtils.getDefaultLookupTimeoutSeconds());
+            handleAlert(AlertAction.ACCEPT, DriverUtils.getDefaultLookupTimeoutSeconds());
+        } catch (IllegalStateException e) {
+            // Ignore silently
+        }
+    }
+
+    public void dismissAlertIfVisible() throws Exception {
+        try {
+            handleAlert(AlertAction.DISMISS, DriverUtils.getDefaultLookupTimeoutSeconds());
         } catch (IllegalStateException e) {
             // Ignore silently
         }
     }
 
     public void acceptAlert() throws Exception {
-        handleAlert(true, DriverUtils.getDefaultLookupTimeoutSeconds());
+        handleAlert(AlertAction.ACCEPT, DriverUtils.getDefaultLookupTimeoutSeconds());
+    }
+
+    public void dismissAlert() throws Exception {
+        handleAlert(AlertAction.DISMISS, DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
     private final static int MAX_ALERT_HANDLING_RETRIES = 5;
 
-    public void handleAlert(boolean shouldAccept, int timeoutSeconds) throws Exception {
+    private enum AlertAction {
+        ACCEPT, DISMISS
+    }
+
+    public void handleAlert(AlertAction action, int timeoutSeconds) throws Exception {
         final Optional<String> initialAlertText = readAlertText(timeoutSeconds);
         if (initialAlertText.isPresent()) {
             int retry = 0;
@@ -195,10 +212,17 @@ public abstract class IOSPage extends BasePage {
                         getDriver().rotate(ScreenOrientation.PORTRAIT);
                         wasLandscape = true;
                     }
-                    if (shouldAccept) {
-                        getDriver().switchTo().alert().accept();
-                    } else {
-                        getDriver().switchTo().alert().dismiss();
+                    switch (action) {
+                        case ACCEPT:
+                            getDriver().switchTo().alert().accept();
+                            break;
+                        case DISMISS:
+                            getDriver().switchTo().alert().dismiss();
+                            break;
+                        default:
+                            throw new IllegalArgumentException(
+                                    String.format("Illegal alert action '%s'", action.name())
+                            );
                     }
                     if (wasLandscape) {
                         getDriver().rotate(ScreenOrientation.LANDSCAPE);
@@ -218,11 +242,10 @@ public abstract class IOSPage extends BasePage {
         }
         throw new IllegalStateException(
                 String.format("No alert has been shown after %s seconds or it cannot be %s after %s retries",
-                        timeoutSeconds, shouldAccept ? "accepted" : "dismissed", MAX_ALERT_HANDLING_RETRIES));
-    }
-
-    public void dismissAlert() throws Exception {
-        handleAlert(false, DriverUtils.getDefaultLookupTimeoutSeconds());
+                        timeoutSeconds,
+                        (action == AlertAction.ACCEPT) ? "accepted" : "dismissed",
+                        MAX_ALERT_HANDLING_RETRIES)
+        );
     }
 
     public boolean isAlertContainsText(String expectedText) throws Exception {
@@ -352,7 +375,11 @@ public abstract class IOSPage extends BasePage {
             }
             // this is to show the unlock label if not visible yet
             IOSSimulatorHelper.goHome();
-            IOSSimulatorHelper.swipeRight();
+            if (getDriver().getOSVersion().compareTo(new DefaultArtifactVersion("10.0")) >= 0) {
+                IOSSimulatorHelper.goHome();
+            } else {
+                IOSSimulatorHelper.swipeRight();
+            }
             Thread.sleep(2000);
         } else {
             this.getDriver().lockDevice(timeSeconds);
@@ -474,8 +501,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     public boolean isWebPageVisible(String expectedUrl) throws Exception {
-        final WebElement urlBar = getElement(xpathBrowserURLButton, "The address bar of web browser is not visible");
-        urlBar.click();
+        getElement(xpathBrowserURLButton, "The address bar of web browser is not visible").click();
         return DriverUtils.waitUntilLocatorAppears(getDriver(),
                 By.xpath(xpathStrAddressBarByUrlPart.apply(expectedUrl)));
     }

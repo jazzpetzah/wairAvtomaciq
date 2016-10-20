@@ -54,6 +54,8 @@ public interface IDevice extends IRemoteEntity {
 
     void setLabel(String label) throws Exception;
 
+    void setEphemeralMode(String convId, long expirationMilliseconds) throws Exception;
+
     String getId() throws Exception;
 
     String getFingerprint() throws Exception;

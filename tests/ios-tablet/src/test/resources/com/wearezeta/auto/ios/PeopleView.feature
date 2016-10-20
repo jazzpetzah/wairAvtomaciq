@@ -649,8 +649,6 @@ Feature: People View
     And I tap Delete action button
     And I select Also Leave option on Delete conversation confirmation
     And I confirm delete conversation content
-    # Wait for the popover to be closed
-    And I wait for 2 seconds
     And I open search UI
     And I accept alert
     And I tap on Search input on People picker page
@@ -680,8 +678,6 @@ Feature: People View
     And I tap Delete action button
     And I select Also Leave option on Delete conversation confirmation
     And I confirm delete conversation content
-    # Wait for the popover to be closed
-    And I wait for 2 seconds
     And I open search UI
     And I accept alert
     And I tap on Search input on People picker page
@@ -712,8 +708,6 @@ Feature: People View
     And I open conversation menu
     And I tap Delete action button
     And I confirm delete conversation content
-    # Wait for the popover to be closed
-    And I wait for 2 seconds
     And I open search UI
     And I accept alert
     And I tap on Search input on People picker page
@@ -744,8 +738,6 @@ Feature: People View
     And I open conversation menu
     And I tap Delete action button
     And I confirm delete conversation content
-    # Wait for the popover to be closed
-    And I wait for 2 seconds
     And I open search UI
     And I accept alert
     And I tap on Search input on People picker page
@@ -774,8 +766,6 @@ Feature: People View
     And I open conversation menu
     And I tap Delete action button
     And I confirm delete conversation content
-    # Wait for the popover to be closed
-    And I wait for 2 seconds
     And I open search UI
     And I accept alert
     And I tap on Search input on People picker page
@@ -804,8 +794,6 @@ Feature: People View
     And I open conversation menu
     And I tap Delete action button
     And I confirm delete conversation content
-    # Wait for the popover to be closed
-    And I wait for 2 seconds
     And I open search UI
     And I accept alert
     And I tap on Search input on People picker page

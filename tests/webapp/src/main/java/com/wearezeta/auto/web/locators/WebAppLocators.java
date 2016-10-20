@@ -61,15 +61,14 @@ public final class WebAppLocators {
         public static final String cssParentArchiveListItem = "#archive";
 
         public static final String cssIncomingPendingConvoItem = "[data-uie-name='item-pending-requests']";
-        public static final String cssSelectedIncomingPendingConvoItem = ".left-list-item.text-theme " +
-                cssIncomingPendingConvoItem;
+
+        public static final String cssIncomingPendingConvoItemSelected = ".left-list-item.text-theme " + cssIncomingPendingConvoItem;
 
         public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
 
         public static final Function<String, String> xpathListItemRootWithControlsByName = name -> String
                 .format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/following-sibling::div[contains" +
-                                "(@class, 'controls')]",
-                        name);
+                                "(@class, 'controls')]", name);
 
         public static final String cssArchiveButton = "[data-uie-name='do-archive']";
 
@@ -305,6 +304,8 @@ public final class WebAppLocators {
         public static final String cssActiveDeviceIds = "[data-uie-name='preferences-device-active-id']";
 
         public static final String cssActiveDevicesLabels = "[data-uie-name='preferences-device-active-model']";
+
+        public static final String cssXButtons = "[data-uie-name='do-device-remove']";
 
         public static final Function<String, String> xpathDeviceLabel = (name) -> String
                 .format("//*[@data-uie-name='preferences-device-active-model' and contains(text(),'%s')]", name);
@@ -948,6 +949,14 @@ public final class WebAppLocators {
         public static final String cssErrorMessage = "#login-method-phone [data-uie-name='status-error']";
         
         public static final String cssRememberMe = "#wire-login-phone-remember label";
+    }
+    
+    public static final class PhoneNumberPasswordPage {
+        public static final String cssErrorMessage = "#form-verify-phone-password [data-uie-name='status-error']";
+        
+        public static final String cssPasswordInput = "#wire-verify-password-input";
+        
+        public static final String cssSignInButton = "#wire-verify-password";
     }
 
     public static final class HistoryInfoPage {
