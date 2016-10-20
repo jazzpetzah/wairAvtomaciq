@@ -254,6 +254,8 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final int DEFAULT_SWIPE_DURATION = 2000;
 
+    private static final int CONTAINER_VISIBILITY_TIMEOUT_SECONDS = 20;
+
     public enum MessageIndexLocator {
         FIRST(xpathFirstConversationMessage),
         LAST(xpathLastConversationMessage);
@@ -949,12 +951,12 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean isContainerVisible(String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, CONTAINER_VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean isContainerInvisible(String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, CONTAINER_VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean waitUntilLinkPreviewUrlVisible(String url) throws Exception {
