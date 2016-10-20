@@ -326,8 +326,10 @@ class Device extends RemoteEntity implements IDevice {
                         new ActorMessage.GetMessages(new RConvId(convId)));
                 return convMessages.msgs();
             }
+        } catch (ClassCastException e) {
+            return new ActorMessage.MessageInfo[]{};
         }
-        return null;
+        return new ActorMessage.MessageInfo[]{};
     }
 
     @Override

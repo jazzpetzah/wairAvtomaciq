@@ -8,11 +8,9 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-public class ExtendedCursorCameraOverlayPage extends AndroidPage {
+public class ExtendedCursorCameraOverlayPage extends ExtendedCursorOverlayPage {
 
     private static final String strIdPictureThumbnail = "iv__cursor_gallery_item";
-
-    private static final By idExtendedCursorContainer = By.id("ecc__conversation");
 
     private static final By idCameraSwitchButton = By.id("gtv__cursor_image__front_back");
 
