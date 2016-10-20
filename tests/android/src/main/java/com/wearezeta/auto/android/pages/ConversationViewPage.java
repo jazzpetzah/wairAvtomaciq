@@ -643,7 +643,8 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public int getCountOfPingMessagesByText(String pingText) throws Exception {
-        assert waitForPingMessageWithTextDisappears(pingText);
+        assert waitForPingMessageWithText(pingText);
+        Thread.sleep(1000);
         final By locator = By.xpath(xpathStrPingMessageByText.apply(pingText));
         return getDriver().findElements(locator).size();
     }

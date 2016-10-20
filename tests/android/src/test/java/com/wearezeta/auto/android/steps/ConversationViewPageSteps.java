@@ -60,8 +60,6 @@ public class ConversationViewPageSteps {
 
     private Boolean wasShieldVisible = null;
 
-    private final CommonSteps commonSteps = CommonSteps.getInstance();
-
     private static String expandMessage(String message) {
         final Map<String, String> specialStrings = new HashMap<>();
         specialStrings.put(LONG_MESSAGE_ALIAS, ANDROID_LONG_MESSAGE);
@@ -344,7 +342,6 @@ public class ConversationViewPageSteps {
     @Then("^I see (.*) Ping messages? \"(.*)\" in the conversation view$")
     public void ISeePingMessageInTheDialog(int expectedCount, String message) throws Exception {
         message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
-        commonSteps.WaitForTime(1);
         final int actualCount = getConversationViewPage().getCountOfPingMessagesByText(message);
         Assert.assertTrue(
                 String.format("The expect count of pings is not equal to actual count, actual: %d, expect: %d",
