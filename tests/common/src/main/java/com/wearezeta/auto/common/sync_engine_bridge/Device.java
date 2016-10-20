@@ -269,15 +269,9 @@ class Device extends RemoteEntity implements IDevice {
 
     @Override
     public void markEphemeralRead(String convId, MessageId messageId) throws Exception {
-        try {
-            askActor(this.ref(), new ActorMessage.MarkEphemeralRead(new RConvId(convId), messageId));
-        } catch (TimeoutException e) {
-            // recreate process and retry
-            respawn();
-            if (hasLoggedInUser()) {
-                askActor(this.ref(), new ActorMessage.MarkEphemeralRead(new RConvId(convId), messageId));
-            }
-        }
+        retryOnTimeoutFailure(
+                () -> askActor(this.ref(), new ActorMessage.MarkEphemeralRead(new RConvId(convId), messageId))
+        );
     }
 
     @Override
