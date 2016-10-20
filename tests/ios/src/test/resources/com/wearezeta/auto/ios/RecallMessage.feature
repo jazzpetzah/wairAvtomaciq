@@ -151,7 +151,7 @@ Feature: Recall Message
     And I select Delete for Everyone item from Delete menu
     Then I do not see video message container in the conversation view
     And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in 15 seconds
-    And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in 3 seconds
+    And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in 15 seconds
 
     Examples:
       | Name      | Contact   | HisDevice | MySecondDevice | FileName    |

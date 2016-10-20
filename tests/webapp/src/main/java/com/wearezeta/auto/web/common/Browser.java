@@ -48,15 +48,6 @@ public enum Browser {
 		}
 	}
 
-	public boolean isSupportingInlineVideo() {
-		switch (this) {
-		case Chrome:
-			return true;
-		default:
-			return false;
-		}
-	}
-
 	public boolean isSupportingConsoleLogManagement() {
 		switch (this) {
 		case Chrome:

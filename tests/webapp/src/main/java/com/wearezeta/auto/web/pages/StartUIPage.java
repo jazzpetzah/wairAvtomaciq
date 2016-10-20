@@ -123,6 +123,14 @@ public class StartUIPage extends WebPage {
         userEl.click();
     }
 
+    public void selectGroupFromSearchResult(String group) throws Exception {
+        final By locator = By.xpath(WebAppLocators.StartUIPage.xpathSearchResultGroupByName.apply(group));
+        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),locator);
+        WebElement groupEl = getDriver().findElement(locator);
+        assert DriverUtils.waitUntilElementClickable(this.getDriver(), groupEl);
+        groupEl.click();
+    }
+
     public void clickCreateConversation() {
         openOrCreateConversationButton.click();
     }

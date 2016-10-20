@@ -41,7 +41,7 @@ Feature: Link Preview
     And I navigate back to conversations list
     And I tap on contact name <Contact>
     Then I see the conversation view contains message <Text1>
-    And I see the conversation view contains message <Text1> <Link>
+    And I do not see the conversation view contains message <Text1> <Link>
     And I see link preview container in the conversation view
     # Check text + link + text
     When I type the "<Text1> <Link> <Text>" message and send it

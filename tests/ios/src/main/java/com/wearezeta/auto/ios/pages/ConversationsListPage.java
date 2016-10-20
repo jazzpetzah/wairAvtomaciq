@@ -88,7 +88,7 @@ public class ConversationsListPage extends IOSPage {
                 () -> new IllegalStateException(String.format("The conversation '%s' is not visible in the list", name))
         ).click();
         // Wait for transition animation
-        Thread.sleep(1000);
+        Thread.sleep(1500);
     }
 
     protected Optional<WebElement> findNameInContactList(String name, int timeoutSeconds) throws Exception {
@@ -194,6 +194,8 @@ public class ConversationsListPage extends IOSPage {
 
     public void tapButtonInActionMenu(String buttonTitle) throws Exception {
         getElement(getActionButtonByName(buttonTitle)).click();
+        // Wait for animation
+        Thread.sleep(2000);
     }
 
     public boolean isInviteMorePeopleButtonVisible() throws Exception {

@@ -405,7 +405,7 @@ public final class CommonSteps {
         dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
         final String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
         final ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
-        //TODO: Consider if there messageInfos is empty
+        // TODO: Handle the situation with zero length of messageInfos
         final String actualType = messageInfos[messageInfos.length - 1].tpe().toString().toUpperCase();
         Assert.assertEquals(String.format("The type of the recent conversation message '%s' is not equal to the "
                 + "expected type '%s'", actualType, expectedType), actualType, expectedType);
@@ -873,13 +873,17 @@ public final class CommonSteps {
         SEBridge.getInstance().shareDefaultLocation(msgFromUser, dstConvId, deviceName);
     }
 
-    public void UserSwitchToEphmeraMode(String senderAlias, String dstConversationName, long expirationMilliseconds,
-                                        boolean isGroup, String deviceName) throws Exception {
+    public void UserSwitchesToEphemeralMode(String senderAlias, String dstConversationName,
+                                            long expirationMilliseconds, boolean isGroup, String deviceName)
+            throws Exception {
         final ClientUser msgFromUser = usrMgr.findUserByNameOrNameAlias(senderAlias);
-        final String dstConvId = isGroup
-                ? BackendAPIWrappers.getConversationIdByName(msgFromUser, dstConversationName)
-                : usrMgr.findUserByNameOrNameAlias(dstConversationName).getId();
-        SEBridge.getInstance().setEphemeraMode(msgFromUser, dstConvId, expirationMilliseconds, deviceName);
+        String dstConvId;
+        if (isGroup) {
+            dstConvId = BackendAPIWrappers.getConversationIdByName(msgFromUser, dstConversationName);
+        } else {
+            dstConvId = usrMgr.findUserByNameOrNameAlias(dstConversationName).getId();
+        }
+        SEBridge.getInstance().setEphemeralMode(msgFromUser, dstConvId, expirationMilliseconds, deviceName);
     }
 
     public void UserResetsPassword(String nameAlias, String newPassword) throws Exception {
