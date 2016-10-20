@@ -350,6 +350,27 @@ public final class CommonSteps {
         UserDeleteLatestMessage(msgFromUserNameAlias, dstConversationName, deviceName, isGroup, false);
     }
 
+    public void UserReadEphemeralMessage(String msgFromUserNameAlias, String dstConversationName, MessageId messageId,
+                                      String deviceName, boolean isGroup) throws Exception {
+        ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
+        if (!isGroup) {
+            dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+        }
+        String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
+        seBridge.markEphemeralRead(user, dstConvId, messageId, deviceName);
+    }
+
+    public void UserReadLastEphemeralMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName,
+                                        boolean isGroup, boolean isDeleteEverywhere) throws Exception {
+        ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
+        if (!isGroup) {
+            dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+        }
+        String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
+        ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
+        seBridge.markEphemeralRead(user, dstConvId, getFilteredLastMessageId(messageInfos), deviceName);
+    }
+
     public void UserLikeLatestMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName)
             throws Exception {
         userReactLatestMessage(msgFromUserNameAlias, dstConversationName, deviceName, MessageReactionType.LIKE);
