@@ -216,11 +216,15 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idFileTransferContainer = By.id("ll__row_conversation__file__message_container");
 
+    private static final By idFileTransferPlaceholder = By.id("pdv__row_conversation__file_placeholder_dots");
+
     private static final By idVideoMessageContainer = By.id("fl__video_message_container");
 
     private static final By idVideoContainerButton = By.id("gpv__row_conversation__video_button");
 
     private static final By idAudioMessageContainer = By.id("tfll__audio_message_container");
+
+    private static final By idAudioMessagePlaceholder = By.id("pdv__row_conversation__audio_placeholder_dots");
 
     private static final By idAudioContainerButton = By.id("aab__row_conversation__audio_button");
 
@@ -319,6 +323,14 @@ public class ConversationViewPage extends AndroidPage {
                 () -> new IllegalStateException("Cannot get a screenshot of Audio message recording slide microphone button")
         );
     }
+
+    public BufferedImage getMessageContainerState(String containerType) throws Exception {
+        By locator = getContainerLocatorByName(containerType);
+        return this.getElementScreenshot(getElement(locator)).orElseThrow(
+                () -> new IllegalStateException(
+                        String.format("Cannot get a screenshot of message container '%s'", containerType))
+        );
+    }
     //endregion
 
     //region Cursor
@@ -393,6 +405,7 @@ public class ConversationViewPage extends AndroidPage {
     public void clearMessageInCursorInput() throws Exception {
         getElement(idCursorEditText).clear();
     }
+
 
     public boolean waitUntilCursorInputTextVisible(String text) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathCursorEditTextByValue.apply(text)));
@@ -919,10 +932,14 @@ public class ConversationViewPage extends AndroidPage {
                 return idSoundcloudContainer;
             case "file upload":
                 return idFileTransferContainer;
+            case "file upload placeholder":
+                return idFileTransferPlaceholder;
             case "video message":
                 return idVideoMessageContainer;
             case "audio message":
                 return idAudioMessageContainer;
+            case "audio message placeholder":
+                return idAudioMessagePlaceholder;
             case "share location":
                 return idShareLocationContainer;
             case "link preview":
