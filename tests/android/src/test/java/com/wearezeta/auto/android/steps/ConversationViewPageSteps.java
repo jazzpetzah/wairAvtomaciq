@@ -151,20 +151,20 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify the cursor send button is visible/invisible
+     * Verify the cursor send/ephemera button is visible/invisible
      *
      * @param shouldNotSee equals null means the send button should be visible
      * @throws Exception
-     * @step. ^I( do not)? see Send button in cursor input$
+     * @step. ^I( do not)? see (Send|Ephemeral) button in cursor input$
      */
-    @Then("^I( do not)? see Send button in cursor input$")
-    public void ISeeSendButtonInCursorInput(String shouldNotSee) throws Exception {
+    @Then("^I( do not)? see (Send|Ephemeral) button in cursor input$")
+    public void ISeeSendButtonInCursorInput(String shouldNotSee, String buttonType) throws Exception {
         if (shouldNotSee == null) {
-            Assert.assertTrue("The send button in cursor is expected to be visible",
-                    getConversationViewPage().waitUntilCursorSendButtonVisible());
+            Assert.assertTrue("The send/ephemeral button in cursor is expected to be visible",
+                    getConversationViewPage().waitUntilCursorInputButtonVisible(buttonType));
         } else {
-            Assert.assertTrue("The send button in cursor is expected to be invisible",
-                    getConversationViewPage().waitUntilCursorSendButtonInvisible());
+            Assert.assertTrue("The send/ephemeral button in cursor is expected to be invisible",
+                    getConversationViewPage().waitUntilCursorInputButtonInvisible(buttonType));
         }
     }
 
@@ -179,10 +179,10 @@ public class ConversationViewPageSteps {
      *                               release his finger after tap on an icon. Works for long tap on Audio Message
      *                               icon only
      * @throws Exception
-     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text|Send|Ephemera) button (\d+ seconds )? from cursor
+     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text|Send|Ephemeral) button (\d+ seconds )? from cursor
      * toolbar( without releasing my finger)?$
      */
-    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text|Send|Ephemera)" +
+    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text|Send|Ephemeral)" +
             " button (\\d+ seconds )?from cursor toolbar( without releasing my finger)?$")
     public void ITapCursorToolButton(String longTap, String btnName, String longTapDurationSeconds,
                                      String shouldReleaseFinger) throws Exception {
@@ -324,10 +324,10 @@ public class ConversationViewPageSteps {
         message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
         if (doNotSee == null) {
             Assert.assertTrue(String.format("Ping message '%s' is not visible after the timeout", message),
-                    getConversationViewPage().waitForPingMessageWithText(message));
+                    getConversationViewPage().waitUntilPingMessageWithTextVisible(message));
         } else {
             Assert.assertTrue(String.format("Ping message '%s' is visible after the timeout", message),
-                    getConversationViewPage().waitForPingMessageWithTextDisappears(message));
+                    getConversationViewPage().waitUntilPingMessageWithTextInvisible(message));
         }
     }
 
@@ -402,7 +402,7 @@ public class ConversationViewPageSteps {
         if (shouldNotSee == null) {
             Assert.assertTrue("No new photo is present in the chat", getConversationViewPage().isImageVisible());
         } else {
-            Assert.assertTrue("A photo is present in the chat, but it should not be vivible",
+            Assert.assertTrue("A photo is present in the chat, but it should not be invisible",
                     getConversationViewPage().isImageInvisible());
         }
     }
@@ -1145,10 +1145,18 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I (long tap|double tap|tap) the (Ping|Text) message "(.*)" in the conversation view$
      */
-    @When("^I (long tap|double tap|tap) the (Ping|Text) message \"(.*)\" in the conversation view$")
-    public void ITapTheNonTextMessage(String tapType, String messageType, String message) throws Exception {
-        message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
-        getConversationViewPage().tapMessage(messageType, message, tapType);
+    @When("^I (long tap|double tap|tap) the( obfuscated)? (Ping|Text) message \"(.*)\" in the conversation view$")
+    public void ITapTheNonTextMessage(String tapType, String isObfuscated, String messageType, String message)
+            throws Exception {
+        if(isObfuscated == null) {
+            getConversationViewPage().tapMessage(messageType,
+                    Optional.of(usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS)),
+                    tapType);
+        } else {
+            getConversationViewPage().tapMessage(messageType,
+                    Optional.empty(),
+                    tapType);
+        }
     }
 
     /**
