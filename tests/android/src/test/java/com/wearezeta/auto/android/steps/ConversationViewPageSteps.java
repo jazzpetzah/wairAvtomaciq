@@ -339,7 +339,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I see (.*) Ping messages? "(.*)" in the conversation view$
      */
-    @Then("^I see (.*) Ping messages? \"(.*)\" in the conversation view$")
+    @Then("^I see (\\d+) Ping messages? \"(.*)\" in the conversation view$")
     public void ISeePingMessageInTheDialog(int expectedCount, String message) throws Exception {
         message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
         final int actualCount = getConversationViewPage().getCountOfPingMessagesByText(message);
@@ -1290,9 +1290,9 @@ public class ConversationViewPageSteps {
      *
      * @param timeoutSeconds seconds to wait for upload completed
      * @throws Exception
-     * @step. ^I wait for (\d+) seconds? until audio message (?:download|upload) completed$
+     * @step. ^I wait for (\d+) seconds? until audio message (?:download|upload) is completed$
      */
-    @Then("^I wait for (\\d+) seconds? until (video message|audio message) (?:download|upload) completed$")
+    @Then("^I wait for (\\d+) seconds? until (video message|audio message) (?:download|upload) is completed$")
     public void IWaitUntilMessageUploaded(int timeoutSeconds, String buttonType) throws Exception {
         FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         switch (buttonType.toLowerCase()) {
@@ -1317,7 +1317,7 @@ public class ConversationViewPageSteps {
 
     private static final double MIN_UPLOAD_TO_PLAY_SCORE = 0.75;
     private static final double MIN_PLAY_BUTTON_SCORE = 0.82;
-    private static final int PLAY_BUTTON_STATE_CHANGE_TIMEOUT = 20;
+    private static final int PLAY_BUTTON_STATE_CHANGE_TIMEOUT = 20; //seconds
 
     /**
      * Verify whether current button state differs from the previous one

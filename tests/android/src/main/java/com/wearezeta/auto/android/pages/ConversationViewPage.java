@@ -53,6 +53,8 @@ public class ConversationViewPage extends AndroidPage {
     private static final String strIdPingMessage = "ttv__row_conversation__ping_message";
     public static final Function<String, String> xpathStrPingMessageByText = text -> String
             .format("//*[@id='%s' and @value='%s']", strIdPingMessage, text.toUpperCase());
+    public static final Function<Integer, String> xpathStrPingMessageByIndex = index -> String
+            .format("(//*[@id='%s'])[%d]", strIdPingMessage, index);
     private static final By xpathLastPingMessage =
             By.xpath(String.format("(//*[@id='%s'])[last()]", strIdPingMessage));
 
@@ -665,10 +667,18 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public int getCountOfPingMessagesByText(String pingText) throws Exception {
-        assert waitUntilPingMessageWithTextVisible(pingText);
-        Thread.sleep(1000);
-        final By locator = By.xpath(xpathStrPingMessageByText.apply(pingText));
-        return getDriver().findElements(locator).size();
+        int count = 0;
+        By locator;
+        do {
+            locator = By.xpath(xpathStrPingMessageByIndex.apply(++count));
+            System.out.println("locator=" + locator);
+            try {
+                getDriver().findElement(locator);
+            } catch (org.openqa.selenium.NoSuchElementException e) {
+                break;
+            }
+        } while (true);
+        return --count;
     }
 
     public boolean isConversationPeopleChangedMessageContainsNames(List<String> names) throws Exception {

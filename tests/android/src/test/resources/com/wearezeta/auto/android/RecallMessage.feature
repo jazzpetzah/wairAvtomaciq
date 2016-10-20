@@ -240,7 +240,7 @@ Feature: Recall Message
     Given I tap on conversation name <Contact>
     When I tap Video message button from cursor toolbar
     Then I see Video Message container in the conversation view
-    And I wait for 60 seconds until video message upload completed
+    And I wait for 60 seconds until video message upload is completed
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I long tap Video Message container in the conversation view
     And I tap Delete for everyone button on the message bottom menu
