@@ -1286,9 +1286,9 @@ public class ConversationViewPageSteps {
      *
      * @param timeoutSeconds seconds to wait for upload completed
      * @throws Exception
-     * @step. ^I wait for (\d+) seconds? until audio message (?:download|upload) is completed$
+     * @step. ^I wait up to (\d+) seconds? until (video message|audio message) (?:download|upload) is completed$
      */
-    @Then("^I wait for (\\d+) seconds? until (video message|audio message) (?:download|upload) is completed$")
+    @Then("^I wait up to (\\d+) seconds? until (video message|audio message) (?:download|upload) is completed$")
     public void IWaitUntilMessageUploaded(int timeoutSeconds, String buttonType) throws Exception {
         FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         switch (buttonType.toLowerCase()) {
