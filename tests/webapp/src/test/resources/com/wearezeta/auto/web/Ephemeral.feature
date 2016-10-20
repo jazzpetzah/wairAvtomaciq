@@ -5,6 +5,13 @@ Feature: Ephemeral
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
+    And I Sign in using login <Login2> and password <Password>
+    And I am signed in properly
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
+    And I see the clear data dialog
+    And I click logout button on clear data dialog
+    And I see Sign In page
     Given I Sign in using login <Login1> and password <Password>
     And I am signed in properly
     When I open conversation with <Contact>
