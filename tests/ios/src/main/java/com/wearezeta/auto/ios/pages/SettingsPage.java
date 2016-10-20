@@ -26,8 +26,6 @@ public class SettingsPage extends IOSPage {
             (itemName, expectedValue) -> String.format("%s/*[@value='%s']",
                     xpathStrMenuItemByName.apply(itemName), expectedValue);
 
-    private static final By nameEditButton = MobileBy.AccessibilityId("Edit");
-
     private static final By fbXpathSelfNameEditField =
             FBBy.xpath(String.format("%s/XCUIElementTypeTextField[last()]",
                     xpathStrMenuItemByName.apply("Name")));
@@ -86,10 +84,6 @@ public class SettingsPage extends IOSPage {
 
     public boolean isItemVisible(String itemName) throws Exception {
         return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(xpathStrMenuItemByName.apply(itemName)));
-    }
-
-    public void pressEditButton() throws Exception {
-        getElement(nameEditButton).click();
     }
 
     public void tapDeleteDeviceButton(String deviceName) throws Exception {

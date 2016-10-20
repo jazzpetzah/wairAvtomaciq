@@ -183,7 +183,7 @@ Feature: E2EE
     When I tap settings gear button
     And I accept alert
     And I select settings item Devices
-    And I tap Edit button
+    And I tap Edit navigation button on Settings page
     And I tap Delete <DeviceName> button from devices
     And I confirm with my <Password> the deletion of the device
     Then I do not see device <DeviceName> in devices list
