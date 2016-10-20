@@ -78,6 +78,7 @@ public class SettingsPage extends AndroidPage {
         final By locator = By.xpath(xpathStrSettingsMenuItemByText.apply(name));
         assert scrollUntilMenuElementVisible(locator, 5) : String
                 .format("Menu item '%s' is not present", name);
+        Thread.sleep(500);
         getElement(locator).click();
     }
 
