@@ -665,7 +665,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public int getCountOfPingMessagesByText(String pingText) throws Exception {
-        assert waitForPingMessageWithText(pingText);
+        assert waitUntilPingMessageWithTextVisible(pingText);
         Thread.sleep(1000);
         final By locator = By.xpath(xpathStrPingMessageByText.apply(pingText));
         return getDriver().findElements(locator).size();
