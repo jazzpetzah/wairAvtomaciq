@@ -50,7 +50,7 @@ public abstract class IOSPage extends BasePage {
 
     protected static final By xpathBrowserURLButton = By.xpath("//XCUIElementTypeButton[@name='URL']");
 
-    protected static final By nameBackToWireBrowserButton = MobileBy.AccessibilityId("Back to Wire");
+    protected static final By nameBackToWireBrowserButton = MobileBy.AccessibilityId("Return to Wire");
 
     protected static final By xpathConfirmButton = By.xpath("//XCUIElementTypeButton[@name='OK']");
 
