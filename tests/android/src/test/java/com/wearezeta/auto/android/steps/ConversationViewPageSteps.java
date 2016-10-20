@@ -340,10 +340,8 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see (\\d+) Ping messages? in the conversation view$")
     public void ISeeCountPingMessageInTheDialog(int expectedCount) throws Exception {
-        final int actualCount = getConversationViewPage().getCountOfPingMessages();
-        Assert.assertTrue(
-                String.format("The expect count of pings is not equal to actual count, actual: %d, expect: %d",
-                        actualCount, expectedCount), actualCount == expectedCount);
+        Assert.assertTrue(String.format("The actual count of pings is not equal to expected: %d", expectedCount),
+                getConversationViewPage().isCountOfPingsEqualTo(expectedCount));
     }
 
     /**
@@ -1146,7 +1144,7 @@ public class ConversationViewPageSteps {
     @When("^I (long tap|double tap|tap) the( obfuscated)? (Ping|Text) message \"(.*)\" in the conversation view$")
     public void ITapTheNonTextMessage(String tapType, String isObfuscated, String messageType, String message)
             throws Exception {
-        if(isObfuscated == null) {
+        if (isObfuscated == null) {
             getConversationViewPage().tapMessage(messageType,
                     Optional.of(usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS)),
                     tapType);

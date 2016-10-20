@@ -668,18 +668,10 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public int getCountOfPingMessages() throws Exception {
-        int count = 0;
-        By locator;
-        do {
-            locator = By.xpath(xpathStrPingMessageByIndex.apply(++count));
-            try {
-                getDriver().findElement(locator);
-            } catch (org.openqa.selenium.NoSuchElementException e) {
-                break;
-            }
-        } while (true);
-        return --count;
+    public boolean isCountOfPingsEqualTo(int expectedNumberOfPings) throws Exception {
+        assert expectedNumberOfPings > 0 : "The expected number of avatar should be greater than zero";
+        By locator = By.xpath(xpathStrPingMessageByIndex.apply(expectedNumberOfPings));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isConversationPeopleChangedMessageContainsNames(List<String> names) throws Exception {
