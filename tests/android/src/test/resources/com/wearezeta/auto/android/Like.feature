@@ -435,21 +435,13 @@ Feature: Like
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I type the message "<SoundCloudLink>" and send it by cursor Send button
-    #workaround for AN-4574 & AN-4559
-    And I tap Soundcloud container in the conversation view
     # Double tap to like
     And I double tap Soundcloud container in the conversation view
+    And I see Like description with expected text "<Name>" in conversation view
     And I remember the state of like button
-    #workaround for AN-4574 & AN-4559
-    And I tap Soundcloud container in the conversation view
     # Double tap to unlike
     And I double tap Soundcloud container in the conversation view
     Then I verify the state of like button item is changed
-    And I remember the state of like button
-    # Tap to like
-    And I tap Like button in conversation view
-    Then I verify the state of like button item is changed
-    And I see Like description with expected text "<Name>" in conversation view
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                   |

@@ -783,25 +783,6 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * User A sends a hotping to a conversation
-     *
-     * @param hotPingFromUserNameAlias The user to do the hotpinging
-     * @param dstConversationName      the target converation to send the ping to
-     * @param isSecure                 equals null if ping should not be secure
-     * @throws Exception
-     * @step. ^User (\\w+) (securely )?hotpings? conversation (.*)$
-     */
-    @When("^User (\\w+) (securely )?hotpings? conversation (.*)$")
-    public void UserHotPingedConversation(String hotPingFromUserNameAlias,
-                                          String isSecure, String dstConversationName) throws Exception {
-        if (isSecure == null) {
-            commonSteps.UserHotPingedConversation(hotPingFromUserNameAlias, dstConversationName);
-        } else {
-            commonSteps.UserHotPingedConversationOtr(hotPingFromUserNameAlias, dstConversationName);
-        }
-    }
-
-    /**
      * User A sends a simple text message to user B
      *
      * @param msgFromUserNameAlias the user who sends the message

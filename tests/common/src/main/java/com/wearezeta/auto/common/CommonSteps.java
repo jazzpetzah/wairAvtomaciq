@@ -324,17 +324,6 @@ public final class CommonSteps {
         seBridge.typing(typingFromUser, convId);
     }
 
-    public void UserHotPingedConversationOtr(String pingFromUserNameAlias,
-                                             String dstConversationName) throws Exception {
-        final ClientUser pingFromUser = usrMgr.findUserByNameOrNameAlias(pingFromUserNameAlias);
-        dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
-        final String convId = BackendAPIWrappers.getConversationIdByName(pingFromUser, dstConversationName);
-        for (int i = 0; i < 2; i++) {
-            seBridge.sendPing(pingFromUser, convId);
-            Thread.sleep(500);
-        }
-    }
-
     public void UserDeleteMessage(String msgFromuserNameAlias, String dstConversationName, MessageId messageId,
                                   String deviceName, boolean isGroup) throws Exception {
         //default is local delete, rather than delete everywhere
@@ -467,14 +456,6 @@ public final class CommonSteps {
     public void UserSentOtrMessageToUser(String msgFromUserNameAlias,
                                          String dstUserNameAlias, String message) throws Exception {
         UserSentOtrMessageToUser(msgFromUserNameAlias, dstUserNameAlias, message, null);
-    }
-
-    public void UserHotPingedConversation(String hotPingFromUserNameAlias,
-                                          String dstConversationName) throws Exception {
-        ClientUser hotPingFromUser = usrMgr.findUserByNameOrNameAlias(hotPingFromUserNameAlias);
-        dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
-        BackendAPIWrappers.sendHotPingToConversation(hotPingFromUser, dstConversationName, pingId);
-        Thread.sleep(1000);
     }
 
     public void UserSentMessageToConversation(String userFromNameAlias,
