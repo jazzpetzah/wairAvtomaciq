@@ -34,8 +34,8 @@ Feature: Recall Message
 
   @C225997 @regression
   Scenario Outline: Verify the message deleted everywhere in local Wire database
-    Given Device debug mode supported
-    Given Wire debug mode enabled
+    Given Device debug mode is supported
+    Given Wire debug mode is enabled
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
