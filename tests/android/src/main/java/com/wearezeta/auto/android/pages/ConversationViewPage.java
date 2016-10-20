@@ -671,7 +671,6 @@ public class ConversationViewPage extends AndroidPage {
         By locator;
         do {
             locator = By.xpath(xpathStrPingMessageByIndex.apply(++count));
-            System.out.println("locator=" + locator);
             try {
                 getDriver().findElement(locator);
             } catch (org.openqa.selenium.NoSuchElementException e) {
