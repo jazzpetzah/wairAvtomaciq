@@ -33,6 +33,8 @@ public class GiphyPreviewPage extends IOSPage {
     public void selectFirstItem() throws Exception {
         // FIXME: The driver simply freezes on this page
         clickAt(15, 15);
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     private By getButtonByName(String name) {
