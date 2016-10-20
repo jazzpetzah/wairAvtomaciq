@@ -178,13 +178,6 @@ public class CommonOSXSteps {
                 dstConversationName);
     }
 
-    @When("^User (.*) pinged twice in the conversation with (.*)$")
-    public void UserHotPingedConversation(String pingFromUserNameAlias,
-            String dstConversationName) throws Exception {
-        context.getCommonSteps().UserHotPingedConversation(pingFromUserNameAlias,
-                dstConversationName);
-    }
-
     @When("^User (.*) sent message (.*) to conversation (.*)")
     public void UserSentMessageToConversation(String userFromNameAlias,
             String message, String conversationName) throws Exception {
