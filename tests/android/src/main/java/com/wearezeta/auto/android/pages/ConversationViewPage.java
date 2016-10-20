@@ -406,7 +406,6 @@ public class ConversationViewPage extends AndroidPage {
         getElement(idCursorEditText).clear();
     }
 
-
     public boolean waitUntilCursorInputTextVisible(String text) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathCursorEditTextByValue.apply(text)));
     }

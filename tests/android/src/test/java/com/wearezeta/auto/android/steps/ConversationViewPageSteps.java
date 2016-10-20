@@ -1163,14 +1163,14 @@ public class ConversationViewPageSteps {
                 (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }
 
-
     /**
      * Remember the state of Message Container
      *
      * @param containerType which could be Image/Youtube/Soundcloud/File upload/Video message/Audio Message/Share location
      *                      /Link Preview
      * @throws Exception
-     * @step. ^I remember the state of (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
+     * @step. ^I remember the state of (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|
+     * Share Location|Link Preview) container in the conversation view$
      */
     @When("^I remember the state of (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
             "container in the conversation view$")
