@@ -216,7 +216,7 @@ Feature: Recall Message
     Given I tap on conversation name <Contact>
     When I long tap Audio message button <TapDuration> seconds from cursor toolbar
     And I tap audio recording Send button
-    And I wait for 30 seconds until audio message upload completed
+    And I wait up to 30 seconds until audio message upload is completed
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I long tap Audio Message container in the conversation view
     And I tap Delete for everyone button on the message bottom menu
