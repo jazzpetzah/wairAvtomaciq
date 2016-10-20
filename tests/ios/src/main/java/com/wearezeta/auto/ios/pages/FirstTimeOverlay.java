@@ -1,12 +1,9 @@
 package com.wearezeta.auto.ios.pages;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
-import java.util.Optional;
 import java.util.concurrent.Future;
 
 public class FirstTimeOverlay extends IOSPage {
@@ -17,11 +14,11 @@ public class FirstTimeOverlay extends IOSPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return isElementDisplayed(nameOKButton);
+        return isDisplayed(nameOKButton);
     }
 
     public boolean waitUntilInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameOKButton);
+        return isInvisible(nameOKButton);
     }
 
     public void accept() throws Exception {

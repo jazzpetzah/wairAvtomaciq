@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
@@ -17,11 +16,11 @@ public class ShareContactsOverlay extends IOSPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return isElementDisplayed(xpathShareContactsButton);
+        return isDisplayed(xpathShareContactsButton);
     }
 
     public boolean waitUntilInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathShareContactsButton);
+        return isInvisible(xpathShareContactsButton);
     }
 
     private By getButtonByName(String name) {

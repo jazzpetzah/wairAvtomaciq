@@ -57,14 +57,14 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isVisible() throws Exception {
-        return isElementDisplayed(MobileBy.AccessibilityId(nameStrMainWindow));
+        return isDisplayed(MobileBy.AccessibilityId(nameStrMainWindow));
     }
 
     public void switchToEmailLogin() throws Exception {
         final WebElement emailSwitchBtn = getElement(nameSwitchToEmailLogin);
         emailSwitchBtn.click();
         //Work around: to click again, when it didnt got clicked the first time
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameSwitchToEmailLogin)) {
+        if (!isInvisible(nameSwitchToEmailLogin)) {
             emailSwitchBtn.click();
         }
     }
@@ -74,7 +74,7 @@ public class LoginPage extends IOSPage {
     }
 
     public void waitForLoginToFinish() throws Exception {
-        if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), nameSwitchToLoginButton, LOGIN_TIMEOUT_SECONDS)) {
+        if (!isInvisible(nameSwitchToLoginButton, LOGIN_TIMEOUT_SECONDS)) {
             throw new IllegalStateException("Login button is still visible after the timeout");
         }
     }
@@ -103,7 +103,7 @@ public class LoginPage extends IOSPage {
         final WebElement maybeLaterBtn = getElement(nameMaybeLater, "MAYBE LATER link is not visible",
                 LOGIN_TIMEOUT_SECONDS);
         maybeLaterBtn.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameMaybeLater, 3)) {
+        if (!isInvisible(nameMaybeLater, 3)) {
             maybeLaterBtn.click();
         }
     }
@@ -128,7 +128,7 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean wrongCredentialsNotificationIsShown() throws Exception {
-        return isElementDisplayed(nameWrongCredentialsNotification, 30);
+        return isDisplayed(nameWrongCredentialsNotification, 30);
     }
 
     public void tapForgotPasswordButton() throws Exception {
@@ -136,19 +136,19 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isSetEmailPasswordSuggestionVisible() throws Exception {
-        return isElementDisplayed(xpathSetEmailPasswordSuggestionLabel);
+        return isDisplayed(xpathSetEmailPasswordSuggestionLabel);
     }
 
     public boolean isResendIn10minAlertVisible() throws Exception {
-        return readAlertText().isPresent() && isElementDisplayed(nameResentIn10min);
+        return readAlertText().isPresent() && isDisplayed(nameResentIn10min);
     }
 
     public boolean isInvalidEmailAlertShown() throws Exception {
-        return readAlertText().isPresent() && isElementDisplayed(nameInvalidEmail);
+        return readAlertText().isPresent() && isDisplayed(nameInvalidEmail);
     }
 
     public boolean isAlreadyRegisteredEmailAlertShown() throws Exception {
-        return readAlertText().isPresent() && isElementDisplayed(nameAlreadyRegisteredEmail);
+        return readAlertText().isPresent() && isDisplayed(nameAlreadyRegisteredEmail);
     }
 
     public void tapPhoneNotNow() throws Exception {
@@ -156,7 +156,7 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isSomethingWentWrongAlertShown() throws Exception {
-        return readAlertText().isPresent() && isElementDisplayed(nameSomethingWentWrong);
+        return readAlertText().isPresent() && isDisplayed(nameSomethingWentWrong);
     }
 
     public void switchToLogin() throws Exception {

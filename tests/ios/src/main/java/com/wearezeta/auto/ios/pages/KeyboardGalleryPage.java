@@ -2,7 +2,6 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
@@ -55,10 +54,10 @@ public class KeyboardGalleryPage extends IOSPage {
     }
 
     public boolean isButtonVisible(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getButtonLocatorByName(name));
+        return isDisplayed(getButtonLocatorByName(name));
     }
 
     public boolean isButtonInvisible(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), getButtonLocatorByName(name));
+        return isInvisible(getButtonLocatorByName(name));
     }
 }

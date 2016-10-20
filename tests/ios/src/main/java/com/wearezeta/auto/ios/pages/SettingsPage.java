@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
 import com.wearezeta.auto.common.backend.AccentColor;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
@@ -66,7 +65,7 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathSettingsPage);
+        return isExist(xpathSettingsPage);
     }
 
     public void selectItem(String itemName) throws Exception {
@@ -83,13 +82,13 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean isItemVisible(String itemName) throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(xpathStrMenuItemByName.apply(itemName)));
+        return isExist(By.xpath(xpathStrMenuItemByName.apply(itemName)));
     }
 
     public void tapDeleteDeviceButton(String deviceName) throws Exception {
         final By locator = By.xpath(xpathDeleteDeviceButtonByName.apply(deviceName));
         getElement(locator, String.format("Device '%s' is not visible in Manage Device List", deviceName)).click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator)) {
+        if (!isInvisible(locator)) {
             throw new IllegalStateException("Delete device button is still visible");
         }
     }
@@ -98,7 +97,7 @@ public class SettingsPage extends IOSPage {
         final WebElement deleteButton = getElement(nameDeleteButton);
         deleteButton.click();
 
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDeleteButton)) {
+        if (!isInvisible(nameDeleteButton)) {
             deleteButton.click();
         }
     }
@@ -110,17 +109,17 @@ public class SettingsPage extends IOSPage {
 
     public boolean isDeviceVisibleInList(String device) throws Exception {
         final By locator = By.xpath(xpathDeviceListEntry.apply(device));
-        return isElementDisplayed(locator);
+        return isDisplayed(locator);
     }
 
     public boolean isDeviceInvisibleInList(String device) throws Exception {
         final By locator = By.xpath(xpathDeviceListEntry.apply(device));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+        return isInvisible(locator);
     }
 
     public boolean verificationLabelVisibility(String deviceName, String verificationLabel) throws Exception {
         final By locator = By.xpath(xpathStrDeviceVerificationLabel.apply(deviceName, verificationLabel));
-        return isElementDisplayed(locator);
+        return isDisplayed(locator);
     }
 
     public void tapCurrentDevice() throws Exception {
@@ -128,8 +127,7 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean isItemInvisible(String itemName) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.xpath(xpathStrMenuItemByName.apply(itemName)));
+        return isInvisible(By.xpath(xpathStrMenuItemByName.apply(itemName)));
     }
 
     public void tapNavigationButton(String name) throws Exception {
@@ -139,16 +137,16 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean isResetPasswordPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathChangePasswordPageChangePasswordButton);
+        return isExist(xpathChangePasswordPageChangePasswordButton);
     }
 
     public boolean isSupportWebPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathAskSupport, 15);
+        return isExist(xpathAskSupport, 15);
     }
 
     public boolean isSettingItemValueEqualTo(String itemName, String expectedValue) throws Exception {
         final By locator = FBBy.xpath(xpathStrSettingsValue.apply(itemName, expectedValue));
-        return isElementDisplayed(locator);
+        return isDisplayed(locator);
     }
 
     public void clearSelfName() throws Exception {

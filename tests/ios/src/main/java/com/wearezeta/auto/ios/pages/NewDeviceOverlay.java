@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
@@ -24,7 +23,7 @@ public class NewDeviceOverlay extends IOSPage {
 
     public boolean isContainingLabel(String expectedLabel) throws Exception {
         final By locator = By.xpath(xpathStrLabelByText.apply(expectedLabel));
-        return isElementDisplayed(locator);
+        return isDisplayed(locator);
     }
 
     public void tapShowDeviceButton() throws Exception {

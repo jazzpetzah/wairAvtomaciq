@@ -86,7 +86,7 @@ public class RegistrationPage extends IOSPage {
     private void selectWirestan() throws Exception {
         final WebElement countryPickerBtn = getElement(nameCountryPickerButton);
         countryPickerBtn.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCountryPickerButton, 5)) {
+        if (!isInvisible(nameCountryPickerButton, 5)) {
             countryPickerBtn.click();
         }
         final WebElement searchInput = getElement(nameSearchField);
@@ -104,13 +104,13 @@ public class RegistrationPage extends IOSPage {
         Thread.sleep(2000);
         phoneNumberField.sendKeys(number.withoutPrefix());
         getElement(nameConfirmButton).click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmButton)) {
+        if (!isInvisible(nameConfirmButton)) {
             throw new IllegalStateException("Confirm button is still visible");
         }
     }
 
     public boolean isVerificationCodePageVisible() throws Exception {
-        return isElementDisplayed(xpathVerificationPage);
+        return isDisplayed(xpathVerificationPage);
     }
 
     public void inputActivationCode(PhoneNumber forNumber) throws Exception {
@@ -134,12 +134,12 @@ public class RegistrationPage extends IOSPage {
 
     public boolean isConfirmationShown() throws Exception {
         final By locator = By.xpath(xpathStrConfirmationByMessage.apply(getEmail()));
-        return isElementDisplayed(locator);
+        return isDisplayed(locator);
     }
 
     public void commitName() throws Exception {
         getElement(nameConfirmButton).click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmButton)) {
+        if (!isInvisible(nameConfirmButton)) {
             throw new IllegalStateException("Confirm button is still visible");
         }
     }
@@ -195,11 +195,11 @@ public class RegistrationPage extends IOSPage {
     }
 
     public boolean isEmailVerificationPromptVisible() throws Exception {
-        return isElementDisplayed(xpathEmailVerifPrompt);
+        return isDisplayed(xpathEmailVerifPrompt);
     }
 
     public boolean isInvalidCodeAlertShown() throws Exception {
-        return isElementDisplayed(nameInvalidCode);
+        return isDisplayed(nameInvalidCode);
     }
 
     public void tapChooseOwnPicButton() throws Exception {
@@ -212,7 +212,7 @@ public class RegistrationPage extends IOSPage {
 
     public void waitRegistrationToFinish() throws Exception {
         final By locator = By.xpath(xpathStrConfirmationByMessage.apply(getEmail()));
-        if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator, 40)) {
+        if (!isInvisible(locator, 40)) {
             throw new IllegalStateException("Verification page is still visible after the timeout");
         }
     }
@@ -221,8 +221,7 @@ public class RegistrationPage extends IOSPage {
 
     public void tapKeepThisOneButton() throws Exception {
         getElement(nameKeepThisOneButton).click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameKeepThisOneButton,
-                SELF_PICTURE_LOAD_TIMEOUT_SECONDS)) {
+        if (!isInvisible(nameKeepThisOneButton, SELF_PICTURE_LOAD_TIMEOUT_SECONDS)) {
             log.warn(String.format("The self picture has not been loaded within %s seconds timeout",
                     SELF_PICTURE_LOAD_TIMEOUT_SECONDS));
         }
@@ -233,19 +232,19 @@ public class RegistrationPage extends IOSPage {
     }
 
     public boolean noCodeShowingUpLabelIsDisplayed() throws Exception {
-        return isElementDisplayed(xpathNoCodeShowingUpLabel);
+        return isDisplayed(xpathNoCodeShowingUpLabel);
     }
 
     public boolean noCodeShowingUpLabelIsNotDisplayed() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathNoCodeShowingUpLabel);
+        return isInvisible(xpathNoCodeShowingUpLabel);
     }
 
     public boolean resendButtonIsVisible() throws Exception {
-        return isElementDisplayed(nameResendCodeButton);
+        return isDisplayed(nameResendCodeButton);
     }
 
     public boolean resendButtonIsNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameResendCodeButton);
+        return isInvisible(nameResendCodeButton);
     }
 
     public void inputPhoneNumberAndExpectNoCommit(PhoneNumber phoneNumber) throws Exception {

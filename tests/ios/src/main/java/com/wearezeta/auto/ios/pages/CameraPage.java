@@ -49,6 +49,6 @@ public class CameraPage extends IOSPage {
 
     public boolean isButtonVisible(String name) throws Exception {
         final By locator = getButtonByName(name);
-        return isElementDisplayed(locator);
+        return isDisplayed(locator);
     }
 }

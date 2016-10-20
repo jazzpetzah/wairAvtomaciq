@@ -27,7 +27,7 @@ public class ContactsUiPage extends IOSPage {
     }
 
     public boolean isSearchInputVisible() throws Exception {
-        return isElementDisplayed(xpathSearchInput);
+        return isDisplayed(xpathSearchInput);
     }
 
     public void inputTextToSearch(String text) throws Exception {
@@ -38,7 +38,7 @@ public class ContactsUiPage extends IOSPage {
 
     public boolean isContactPresentedInContactsList(String contact) throws Exception {
         final By locator = By.xpath(xpathStrConvoCellByName.apply(contact));
-        return isElementDisplayed(locator, 5);
+        return isDisplayed(locator, 5);
     }
 
     public void tapInviteOthersButton() throws Exception {
@@ -48,7 +48,7 @@ public class ContactsUiPage extends IOSPage {
     }
 
     public boolean isInviteOthersButtonVisible() throws Exception {
-        return isElementDisplayed(nameInviteOthersButton);
+        return isDisplayed(nameInviteOthersButton);
     }
 
     public void tapOpenButtonNextToUser(String contact) throws Exception {

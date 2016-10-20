@@ -56,7 +56,7 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isCallStatusLabelVisible() throws Exception {
-        return isElementDisplayed(nameCallStatusLabel);
+        return isDisplayed(nameCallStatusLabel);
     }
 
     public boolean isCallStatusLabelInvisible() throws Exception {
@@ -64,7 +64,7 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isSecondCallAlertVisible() throws Exception {
-        return isElementDisplayed(nameSecondCallAlert);
+        return isDisplayed(nameSecondCallAlert);
     }
 
     public void pressAnswerCallAlertButton() throws Exception {
@@ -72,7 +72,7 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isGroupCallFullMessageShown() throws Exception {
-        return isElementDisplayed(nameGroupCallFullMessage, WAIT_FOR_GROUPCALL_FULL_MSG);
+        return isDisplayed(nameGroupCallFullMessage, WAIT_FOR_GROUPCALL_FULL_MSG);
     }
 
     protected String getButtonAccessibilityIdByName(final String name) {
@@ -120,11 +120,11 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isButtonVisible(String name) throws Exception {
-        return isElementDisplayed(getButtonLocatorByName(name), 20);
+        return isDisplayed(getButtonLocatorByName(name), 20);
     }
 
     public boolean isButtonInvisible(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), getButtonLocatorByName(name));
+        return isInvisible(getButtonLocatorByName(name));
     }
 
     public boolean isMuteButtonSelected() throws Exception {
@@ -173,6 +173,6 @@ public class CallingOverlayPage extends IOSPage {
         } else {
             locator = By.xpath(xpathStrGroupCallAvatarsByCount.apply(expectedNumberOfAvatars));
         }
-        return isElementDisplayed(locator, timeoutSeconds);
+        return isDisplayed(locator, timeoutSeconds);
     }
 }

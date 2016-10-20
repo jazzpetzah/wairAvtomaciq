@@ -66,6 +66,13 @@ public abstract class IOSPage extends BasePage {
 
     private IOSKeyboard onScreenKeyboard;
 
+    private IOSKeyboard getOnScreenKeyboard() throws Exception {
+        if (this.onScreenKeyboard == null) {
+            this.onScreenKeyboard = new IOSKeyboard(getLazyDriver());
+        }
+        return this.onScreenKeyboard;
+    }
+
     protected long getDriverInitializationTimeout() {
         return (ZetaIOSDriver.MAX_SESSION_INIT_DURATION_MILLIS + AppiumServer.RESTART_TIMEOUT_MILLIS)
                 * DRIVER_CREATION_RETRIES_COUNT;
@@ -73,8 +80,6 @@ public abstract class IOSPage extends BasePage {
 
     public IOSPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
-
-        this.onScreenKeyboard = new IOSKeyboard(driver);
     }
 
     @Override
@@ -128,7 +133,7 @@ public abstract class IOSPage extends BasePage {
     public void tapBadgeItem(String name) throws Exception {
         final By locator = getBadgeLocatorByName(name);
         getElement(locator).click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, MAX_BADGE_VISIBILITY_TIMEOUT)) {
+        if (!isInvisible(locator, MAX_BADGE_VISIBILITY_TIMEOUT)) {
             log.warn(String.format("%s badge still appears to be visible after %s seconds timeout", name,
                     MAX_BADGE_VISIBILITY_TIMEOUT));
         }
@@ -136,36 +141,40 @@ public abstract class IOSPage extends BasePage {
 
     public boolean isBadgeItemVisible(String name) throws Exception {
         final By locator = getBadgeLocatorByName(name);
-        return isElementDisplayed(locator);
+        return isDisplayed(locator);
     }
 
     public boolean isBadgeItemInvisible(String name) throws Exception {
         final By locator = getBadgeLocatorByName(name);
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+        return isInvisible(locator);
     }
 
     public boolean isKeyboardVisible() throws Exception {
-        return this.onScreenKeyboard.isVisible();
+        return this.getOnScreenKeyboard().isVisible();
+    }
+
+    public boolean isKeyboardInvisible() throws Exception {
+        return this.isKeyboardInvisible(DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
     public boolean isKeyboardInvisible(int timeoutSeconds) throws Exception {
-        return this.onScreenKeyboard.isInvisible(timeoutSeconds);
+        return this.getOnScreenKeyboard().isInvisible(timeoutSeconds);
     }
 
     public void tapKeyboardDeleteButton() throws Exception {
-        this.onScreenKeyboard.pressDeleteButton();
+        this.getOnScreenKeyboard().pressDeleteButton();
     }
 
     public void tapHideKeyboardButton() throws Exception {
-        this.onScreenKeyboard.pressHideButton();
+        this.getOnScreenKeyboard().pressHideButton();
     }
 
     public void tapSpaceKeyboardButton() throws Exception {
-        this.onScreenKeyboard.pressSpaceButton();
+        this.getOnScreenKeyboard().pressSpaceButton();
     }
 
     public void tapKeyboardCommitButton() throws Exception {
-        this.onScreenKeyboard.pressCommitButton();
+        this.getOnScreenKeyboard().pressCommitButton();
         // Wait for animation
         Thread.sleep(1000);
     }
@@ -428,7 +437,7 @@ public abstract class IOSPage extends BasePage {
         do {
             el.click();
             counter++;
-            if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator, 4)) {
+            if (isInvisible(locator, 4)) {
                 return;
             }
         } while (counter < retryCount);
@@ -446,7 +455,7 @@ public abstract class IOSPage extends BasePage {
         do {
             el.click();
             counter++;
-            if (DriverUtils.waitUntilLocatorAppears(this.getDriver(), nextLocator)) {
+            if (isExist(nextLocator)) {
                 return;
             }
         } while (counter < retryCount);
@@ -457,53 +466,162 @@ public abstract class IOSPage extends BasePage {
         tapElementWithRetryIfNextElementNotAppears(locator, nextLocator, DEFAULT_RETRY_COUNT);
     }
 
+    //region Elements location
+
     @Override
     protected WebElement getElement(By locator) throws Exception {
-        try {
-            return super.getElement(locator);
-        } catch (Exception e) {
-            printPageSource();
-            throw e;
-        }
+        return this.getElement(locator,
+                String.format("The element '%s' is not visible", locator),
+                DriverUtils.getDefaultLookupTimeoutSeconds()
+        );
     }
 
     @Override
     protected WebElement getElement(By locator, String message) throws Exception {
-        try {
-            return super.getElement(locator, message);
-        } catch (Exception e) {
-            printPageSource();
-            throw e;
-        }
+        return this.getElement(locator, message, DriverUtils.getDefaultLookupTimeoutSeconds());
     }
+
+    private static final long ELEMENT_QUERY_DELAY_MS = 1000;
 
     @Override
     protected WebElement getElement(By locator, String message, int timeoutSeconds) throws Exception {
-        try {
-            return super.getElement(locator, message, timeoutSeconds);
-        } catch (Exception e) {
-            printPageSource();
-            throw e;
-        }
+        WebDriverException savedException;
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            try {
+                final WebElement el = getDriver().findElement(locator);
+                if (el.isDisplayed()) {
+                    return el;
+                }
+                throw new WebDriverException(String.format("The element '%s' is still not visible after %s ms",
+                        locator, System.currentTimeMillis() - millisecondsStarted));
+            } catch (WebDriverException e) {
+                log.debug(e.getMessage());
+                savedException = e;
+            }
+            Thread.sleep(ELEMENT_QUERY_DELAY_MS);
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+        printPageSource();
+        throw new IllegalStateException(message, savedException);
     }
 
-    protected boolean isElementDisplayed(By locator) throws Exception {
-        return this.isElementDisplayed(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
+    protected boolean isExist(By locator) throws Exception {
+        return this.isExist(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
-    protected boolean isElementDisplayed(By locator, int timeoutSeconds) throws Exception {
-        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, timeoutSeconds)) {
-            return true;
-        } else {
-            this.printPageSource();
-            return false;
-        }
+    protected boolean isExist(By locator, int timeoutSeconds) throws Exception {
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            try {
+                final WebElement el = getDriver().findElement(locator);
+                if (el != null) {
+                    return true;
+                }
+                throw new WebDriverException(String.format("The element '%s' is still not present after %s ms",
+                        locator, System.currentTimeMillis() - millisecondsStarted));
+            } catch (WebDriverException e) {
+                log.debug(e.getMessage());
+            }
+            Thread.sleep(ELEMENT_QUERY_DELAY_MS);
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+        //printPageSource();
+        return false;
     }
+
+    protected boolean isDisplayed(By locator) throws Exception {
+        return this.isDisplayed(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
+    }
+
+    protected boolean isDisplayed(By locator, int timeoutSeconds) throws Exception {
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            try {
+                final WebElement el = getDriver().findElement(locator);
+                if (el.isDisplayed()) {
+                    return true;
+                }
+                throw new WebDriverException(String.format("The element '%s' is still not visible after %s ms",
+                        locator, System.currentTimeMillis() - millisecondsStarted));
+            } catch (WebDriverException e) {
+                log.debug(e.getMessage());
+            }
+            Thread.sleep(ELEMENT_QUERY_DELAY_MS);
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+        printPageSource();
+        return false;
+    }
+
+    protected boolean isInvisible(By locator) throws Exception {
+        return this.isInvisible(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
+    }
+
+    protected boolean isInvisible(By locator, int timeoutSeconds) throws Exception {
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            try {
+                final WebElement el = getDriver().findElement(locator);
+                if (!el.isDisplayed()) {
+                    return true;
+                }
+                log.debug(String.format("The element '%s' is still visible after %s ms",
+                        locator, System.currentTimeMillis() - millisecondsStarted));
+            } catch (WebDriverException e) {
+                return true;
+            }
+            Thread.sleep(ELEMENT_QUERY_DELAY_MS);
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+        return false;
+    }
+
+    @Override
+    protected Optional<WebElement> getElementIfDisplayed(By locator, int timeoutSeconds) throws Exception {
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            try {
+                final WebElement el = getDriver().findElement(locator);
+                if (el.isDisplayed()) {
+                    return Optional.of(el);
+                }
+                throw new WebDriverException(String.format("The element '%s' is still not visible after %s ms",
+                        locator, System.currentTimeMillis() - millisecondsStarted));
+            } catch (WebDriverException e) {
+                log.debug(e.getMessage());
+            }
+            Thread.sleep(ELEMENT_QUERY_DELAY_MS);
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+        printPageSource();
+        return Optional.empty();
+    }
+
+    @Override
+    protected Optional<WebElement> getElementIfExists(By locator) throws Exception {
+        return this.getElementIfExists(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
+    }
+
+    @Override
+    protected Optional<WebElement> getElementIfExists(By locator, int timeoutSeconds) throws Exception {
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            try {
+                final WebElement el = getDriver().findElement(locator);
+                if (el != null) {
+                    return Optional.of(el);
+                }
+                throw new WebDriverException(String.format("The element '%s' is still not present after %s ms",
+                        locator, System.currentTimeMillis() - millisecondsStarted));
+            } catch (WebDriverException e) {
+                log.debug(e.getMessage());
+            }
+            Thread.sleep(ELEMENT_QUERY_DELAY_MS);
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+        return Optional.empty();
+    }
+
+    //endregion
 
     public boolean isWebPageVisible(String expectedUrl) throws Exception {
         getElement(xpathBrowserURLButton, "The address bar of web browser is not visible").click();
-        return DriverUtils.waitUntilLocatorAppears(getDriver(),
-                By.xpath(xpathStrAddressBarByUrlPart.apply(expectedUrl)));
+        return isExist(By.xpath(xpathStrAddressBarByUrlPart.apply(expectedUrl)));
     }
 
     public void tapBackToWire() throws Exception {
@@ -583,10 +701,6 @@ public abstract class IOSPage extends BasePage {
     public void tapAlertButton(String caption) throws Exception {
         final By locator = By.xpath(xpathStrAlertButtonByCaption.apply(caption));
         getElement(locator).click();
-    }
-
-    public boolean isKeyboardInvisible() throws Exception {
-        return this.onScreenKeyboard.isInvisible();
     }
 
     /**

@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.ios.pages.IOSPage;
 import io.appium.java_client.MobileBy;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.openqa.selenium.By;
@@ -15,7 +15,7 @@ import org.openqa.selenium.By;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import org.openqa.selenium.WebElement;
 
-public class IOSKeyboard extends BasePage {
+public class IOSKeyboard extends IOSPage {
     private static final KeyboardState UNKNOWN_STATE = new KeyboardStateUnknown();
     private static final String xpathStrKeyboard = "//XCUIElementTypeKeyboard";
     private static final By xpathKeyboard = By.xpath(xpathStrKeyboard);
@@ -45,17 +45,12 @@ public class IOSKeyboard extends BasePage {
         super(lazyDriver);
     }
 
-    @Override
-    protected ZetaIOSDriver getDriver() throws Exception {
-        return (ZetaIOSDriver) super.getDriver();
-    }
-
     public boolean isVisible(int timeoutSeconds) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathKeyboard, timeoutSeconds);
+        return isDisplayed(xpathKeyboard, timeoutSeconds);
     }
 
     public boolean isInvisible(int timeoutSeconds) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathKeyboard, timeoutSeconds);
+        return isInvisible(xpathKeyboard, timeoutSeconds);
     }
 
     public boolean isVisible() throws Exception {

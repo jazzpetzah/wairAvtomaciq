@@ -10,7 +10,6 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import org.openqa.selenium.WebElement;
 
@@ -58,7 +57,7 @@ public class GroupChatInfoPage extends IOSPage {
 
     public boolean isGroupNameEqualTo(String expectedName) throws Exception {
         final By locator = By.xpath(xpathStrConversationNameByText.apply(expectedName));
-        return isElementDisplayed(locator);
+        return isDisplayed(locator);
     }
 
     public void setGroupChatName(String name) throws Exception {
@@ -75,12 +74,12 @@ public class GroupChatInfoPage extends IOSPage {
                 map(x -> String.format("contains(@value, '%s')", x)).
                 collect(Collectors.toList()));
         final By locator = By.xpath(xpathStrConversationNameByExpr.apply(xpathExpr));
-        return isElementDisplayed(locator);
+        return isDisplayed(locator);
     }
 
     public boolean isNumberOfPeopleEquals(int expectedNumber) throws Exception {
         final By locator = MobileBy.AccessibilityId(nameStrNumberPeopleByCount.apply(expectedNumber));
-        return isElementDisplayed(locator);
+        return isDisplayed(locator);
     }
 
     public int getParticipantsAvatarsCount() throws Exception {
@@ -94,7 +93,7 @@ public class GroupChatInfoPage extends IOSPage {
     public void exitGroupInfoPage() throws Exception {
         final WebElement closeBtn = getElement(nameExitGroupInfoPageButton);
         closeBtn.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameExitGroupInfoPageButton, 3)) {
+        if (!isInvisible(nameExitGroupInfoPageButton, 3)) {
             // Sometimes we don't click this button in time because of animated transitions
             closeBtn.click();
         }
@@ -102,7 +101,7 @@ public class GroupChatInfoPage extends IOSPage {
 
     public void tapLeaveConversation() throws Exception {
         getElement(nameRightActionButton).click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameRightActionButton)) {
+        if (!isInvisible(nameRightActionButton)) {
             throw new IllegalStateException("Menu button is still shown");
         }
         getElement(nameLeaveConversationButton).click();
@@ -120,7 +119,7 @@ public class GroupChatInfoPage extends IOSPage {
     }
 
     public boolean isLeaveConversationAlertVisible() throws Exception {
-        return isElementDisplayed(nameLeaveConversationAlert);
+        return isDisplayed(nameLeaveConversationAlert);
     }
 
     public void clickOnAddButton() throws Exception {
@@ -133,7 +132,7 @@ public class GroupChatInfoPage extends IOSPage {
 
     public boolean waitForContactToDisappear(String contact) throws Exception {
         final By locator = By.xpath(xpathPeopleViewCollectionCellByName.apply(contact));
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
+        return isInvisible(locator);
     }
 
     public int getGroupNameLength() throws Exception {
