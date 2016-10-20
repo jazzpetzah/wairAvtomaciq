@@ -686,14 +686,6 @@ public class ConversationViewPage extends IOSPage {
         getElement(MobileBy.AccessibilityId(itemName)).click();
     }
 
-    public boolean isInputPlaceholderTextVisible() throws Exception {
-        return isElementDisplayed(nameInputPlaceholderText);
-    }
-
-    public boolean isInputPlaceholderTextInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameInputPlaceholderText);
-    }
-
     private static By getInputPlaceholderLocatorByName(String name) {
         switch (name.toLowerCase()) {
             case "standard":
@@ -1124,13 +1116,5 @@ public class ConversationViewPage extends IOSPage {
 
     public void setMessageExpirationTimer(String value) throws Exception {
         ((FBElement) getElement(fbClassPickerWheel)).setValue(value);
-    }
-
-    public boolean isEphemeralTextInputFieldPlaceholderVisible() throws Exception {
-        return isElementDisplayed(nameEpheTextInputPlaceholder);
-    }
-
-    public boolean isEphemeralTextInputFieldPlaceholderIsNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEpheTextInputPlaceholder);
     }
 }
