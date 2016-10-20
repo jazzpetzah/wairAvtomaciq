@@ -175,7 +175,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
     public void doubleTap(int x, int y) {
         tap(1, x, y, 50);
         try {
-            Thread.sleep(200);
+            Thread.sleep(200); //slow devices don't see 2nd tap without this delay
         } catch (Exception e) {
             throw new WebDriverException(e);
         }
