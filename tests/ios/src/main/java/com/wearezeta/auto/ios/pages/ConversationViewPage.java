@@ -775,9 +775,6 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapRecordControlButton(String buttonName) throws Exception {
-        //sometimes for such dynamic elements like record bar appium do not get the actual page source
-        //in some cases this method helps to refresh elements tree.
-        this.printPageSource();
         By button = getRecordControlButtonByName(buttonName);
         if (button.equals(namePlayAudioRecorderButton)) {
             getElement(button).click();
