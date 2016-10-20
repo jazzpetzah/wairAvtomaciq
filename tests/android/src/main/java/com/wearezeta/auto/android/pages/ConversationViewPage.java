@@ -53,7 +53,7 @@ public class ConversationViewPage extends AndroidPage {
     private static final String strIdPingMessage = "ttv__row_conversation__ping_message";
     public static final Function<String, String> xpathStrPingMessageByText = text -> String
             .format("//*[@id='%s' and @value='%s']", strIdPingMessage, text.toUpperCase());
-    public static final Function<Integer, String> xpathStrPingMessageByIndex = index -> String
+    public static final Function<Integer, String> xpathPingMessageByIndex = index -> String
             .format("(//*[@id='%s'])[%d]", strIdPingMessage, index);
     private static final By xpathLastPingMessage =
             By.xpath(String.format("(//*[@id='%s'])[last()]", strIdPingMessage));
@@ -669,8 +669,8 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean isCountOfPingsEqualTo(int expectedNumberOfPings) throws Exception {
-        assert expectedNumberOfPings > 0 : "The expected number of avatar should be greater than zero";
-        By locator = By.xpath(xpathStrPingMessageByIndex.apply(expectedNumberOfPings));
+        assert expectedNumberOfPings > 0 : "The expected number of pings should be greater than zero";
+        By locator = By.xpath(xpathPingMessageByIndex.apply(expectedNumberOfPings));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 

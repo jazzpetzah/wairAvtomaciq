@@ -1305,7 +1305,7 @@ public class ConversationViewPageSteps {
                 audioMessagePlayButtonState.remember(cancelBntInitialState);
                 break;
             default:
-                throw new IllegalStateException(String.format("Cannot identify the button type '%s'", buttonType));
+                throw new IllegalArgumentException(String.format("Cannot identify the button type '%s'", buttonType));
         }
         Assert.assertTrue(String.format("The current and previous state of the %s button seems to be the same", buttonType),
                 verificationFunc.call());
