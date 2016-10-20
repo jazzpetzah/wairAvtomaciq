@@ -335,14 +335,12 @@ public class ConversationViewPageSteps {
      * Used to check that num of pings in the conversation
      *
      * @param expectedCount num of pings
-     * @param message       message text
      * @throws Exception
-     * @step. ^I see (.*) Ping messages? "(.*)" in the conversation view$
+     * @step. ^I see (\d+) Ping messages? in the conversation view
      */
-    @Then("^I see (\\d+) Ping messages? \"(.*)\" in the conversation view$")
-    public void ISeePingMessageInTheDialog(int expectedCount, String message) throws Exception {
-        message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
-        final int actualCount = getConversationViewPage().getCountOfPingMessagesByText(message);
+    @Then("^I see (\\d+) Ping messages? in the conversation view$")
+    public void ISeeCountPingMessageInTheDialog(int expectedCount) throws Exception {
+        final int actualCount = getConversationViewPage().getCountOfPingMessages();
         Assert.assertTrue(
                 String.format("The expect count of pings is not equal to actual count, actual: %d, expect: %d",
                         actualCount, expectedCount), actualCount == expectedCount);

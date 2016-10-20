@@ -11,7 +11,7 @@ Feature: Ping
     And I tap Ping button from cursor toolbar
     Then I see Ping message "<Msg>" in the conversation view
     And I tap Ping button from cursor toolbar
-    Then I see <Count> Ping messages "<Msg>" in the conversation view
+    Then I see <Count> Ping messages in the conversation view
 
     Examples:
       | Name      | Contact   | Msg        | Count |
@@ -29,7 +29,7 @@ Feature: Ping
     And I tap Ping button from cursor toolbar
     Then I see Ping message "<Msg>" in the conversation view
     And I tap Ping button from cursor toolbar
-    Then I see <Count> Ping messages "<Msg>" in the conversation view
+    Then I see <Count> Ping messages in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName     | Msg        | Count |
@@ -47,7 +47,7 @@ Feature: Ping
     And User <Contact1> securely pings conversation <GroupChatName>
     And I see Ping message "<Msg>" in the conversation view
     And User <Contact1> securely pings conversation <GroupChatName>
-    Then I see <Count> Ping messages "<Msg>" in the conversation view
+    Then I see <Count> Ping messages in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName        | Msg              | Count |

@@ -666,7 +666,7 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public int getCountOfPingMessagesByText(String pingText) throws Exception {
+    public int getCountOfPingMessages() throws Exception {
         int count = 0;
         By locator;
         do {
