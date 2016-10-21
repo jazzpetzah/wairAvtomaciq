@@ -23,7 +23,7 @@ public class GiphyPreviewPage extends IOSPage {
     }
 
     public boolean isPreviewVisible() throws Exception {
-        return isLocatorDisplayed(classImagePreview);
+        return selectVisibleElements(classImagePreview).size() > 0;
     }
 
     public boolean isGridVisible() throws Exception {
