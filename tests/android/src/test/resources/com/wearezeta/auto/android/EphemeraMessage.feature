@@ -159,3 +159,23 @@ Feature: Ephemeral Message
     Examples:
       | Name      | Contact   | ContactDevice | Message1 | Message2 | EphemeralTimeout1 | EphemeralTimeout2 |
       | user1Name | user2Name | d1            | y1       | y2       | 5                 | 15                |
+
+
+  @C261710 @staging
+  Scenario Outline: Verify the message is deleted on the sender side when it's read on the receiver side
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given User <Contact> adds new devices <ContactDevice>
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When I tap Ephemeral button from cursor toolbar
+    And I set timeout to <EphemeralTimeout> on Extended cursor ephemeral overlay
+    And I type the message "<Message>" and send it by cursor Send button
+    And User <Contact> reads the recent message from user Myself via device <ContactDevice>
+    Then I do not see any text message in the conversation view
+
+    Examples:
+      | Name      | Contact   | EphemeralTimeout | Message | ContactDevice |
+      | user1Name | user2Name | 5 seconds        | yo      | d1            |

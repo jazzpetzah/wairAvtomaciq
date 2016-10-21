@@ -1368,17 +1368,21 @@ public class CommonAndroidSteps {
      * @param dstNameAlias  the conversation which message is belong to
      * @param deviceName    User X's device
      * @throws Exception
-     * @step. ^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$
+     * @step. ^User (.*) (likes|unlikes) the recent message from (user|group conversation) (.*) via device (.*)$
      */
-    @When("^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$")
-    public void UserReactLastMessage(String userNameAlias, String reactionType, String dstNameAlias, String deviceName)
-            throws Exception {
+    @When("^User (.*) (likes|unlikes|reads) the recent message from (user|group conversation) (.*) via device (.*)$")
+    public void UserReactLastMessage(String userNameAlias, String reactionType, String convoType, String dstNameAlias,
+                                     String deviceName) throws Exception {
         switch (reactionType.toLowerCase()) {
             case "likes":
                 commonSteps.UserLikeLatestMessage(userNameAlias, dstNameAlias, deviceName);
                 break;
             case "unlikes":
                 commonSteps.UserUnlikeLatestMessage(userNameAlias, dstNameAlias, deviceName);
+                break;
+            case "reads":
+                commonSteps.UserReadLastEphemeralMessage(userNameAlias, dstNameAlias, deviceName,
+                        convoType.equals("group conversation"));
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify the reaction type '%s'", reactionType));
