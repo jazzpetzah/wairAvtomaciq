@@ -46,11 +46,11 @@ public class IOSKeyboard extends IOSPage {
     }
 
     public boolean isVisible(int timeoutSeconds) throws Exception {
-        return isDisplayed(xpathKeyboard, timeoutSeconds);
+        return isLocatorDisplayed(xpathKeyboard, timeoutSeconds);
     }
 
     public boolean isInvisible(int timeoutSeconds) throws Exception {
-        return isInvisible(xpathKeyboard, timeoutSeconds);
+        return isLocatorInvisible(xpathKeyboard, timeoutSeconds);
     }
 
     public boolean isVisible() throws Exception {

@@ -23,13 +23,13 @@ public class ImageFullScreenPage extends IOSPage {
     }
 
     public boolean isImageFullScreenShown() throws Exception {
-        return isDisplayed(nameImageFullScreenPage);
+        return isLocatorDisplayed(nameImageFullScreenPage);
     }
 
     public void tapCloseButton() throws Exception {
         final WebElement closeBtn = getElement(nameFullScreenCloseButton);
         closeBtn.click();
-        if (!isInvisible(nameFullScreenCloseButton)) {
+        if (!isLocatorInvisible(nameFullScreenCloseButton)) {
             closeBtn.click();
         }
     }

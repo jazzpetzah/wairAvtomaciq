@@ -28,11 +28,11 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
     }
 
     public boolean isClosePageButtonVisible() throws Exception {
-        return isDisplayed(nameOtherProfilePageCloseButton);
+        return isLocatorDisplayed(nameOtherProfilePageCloseButton);
     }
 
     public boolean isCancelRequestButtonVisible() throws Exception {
-        return isDisplayed(xpathOtherProfileCancelRequestButton);
+        return isLocatorDisplayed(xpathOtherProfileCancelRequestButton);
     }
 
     public void tapCancelRequestButton() throws Exception {
@@ -48,11 +48,11 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
     }
 
     public boolean isUserNameDisplayed(String name) throws Exception {
-        return isDisplayed(MobileBy.AccessibilityId(name), 10);
+        return isLocatorDisplayed(MobileBy.AccessibilityId(name), 10);
     }
 
     public boolean isRemoveFromGroupConversationVisible() throws Exception {
-        return isDisplayed(nameRightActionButton);
+        return isLocatorDisplayed(nameRightActionButton);
     }
 
     public void tapConnectButton() throws Exception {

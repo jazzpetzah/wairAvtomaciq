@@ -73,7 +73,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isPeoplePickerPageVisible() throws Exception {
-        return isDisplayed(fbNamePickerSearch);
+        return isLocatorDisplayed(fbNamePickerSearch);
     }
 
     public void tapOnPeoplePickerSearch() throws Exception {
@@ -83,7 +83,7 @@ public class PeoplePickerPage extends IOSPage {
     public void tapOnPeoplePickerClearBtn() throws Exception {
         final FBElement closeButton = (FBElement) getElement(fbXpathPickerClearButton);
         this.tapAtTheCenterOfElement(closeButton);
-        if (!isInvisible(xpathPickerClearButton, 5)) {
+        if (!isLocatorInvisible(xpathPickerClearButton, 5)) {
             this.tapAtTheCenterOfElement(closeButton);
         }
     }
@@ -112,7 +112,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean addToConversationNotVisible() throws Exception {
-        return isInvisible(namePeoplePickerAddToConversationButton);
+        return isLocatorInvisible(namePeoplePickerAddToConversationButton);
     }
 
     public void tapNumberOfTopConnections(int numberToTap) throws Exception {
@@ -125,7 +125,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isTopPeopleLabelVisible() throws Exception {
-        return isDisplayed(namePeoplePickerTopPeopleLabel, 2);
+        return isLocatorDisplayed(namePeoplePickerTopPeopleLabel, 2);
     }
 
     public void pressBackspaceKeyboardButton() throws Exception {
@@ -137,7 +137,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isPeopleYouMayKnowLabelVisible() throws Exception {
-        return isDisplayed(namePeopleYouMayKnowLabel);
+        return isLocatorDisplayed(namePeopleYouMayKnowLabel);
     }
 
     public void unblockUser() throws Exception {
@@ -151,7 +151,7 @@ public class PeoplePickerPage extends IOSPage {
     public void tapSendInviteCopyButton() throws Exception {
         final WebElement copyButton = getElement(nameInviteCopyButton);
         copyButton.click();
-        if (!isInvisible(nameInviteCopyButton)) {
+        if (!isLocatorInvisible(nameInviteCopyButton)) {
             copyButton.click();
         }
     }
@@ -185,11 +185,11 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isPeopleYouMayKnowLabelInvisible() throws Exception {
-        return isInvisible(namePeopleYouMayKnowLabel);
+        return isLocatorInvisible(namePeopleYouMayKnowLabel);
     }
 
     public boolean waitUntilNoResultsLabelIsVisible() throws Exception {
-        return isDisplayed(nameNoResults);
+        return isLocatorDisplayed(nameNoResults);
     }
 
     private By getActionButtonByName(String name) {
@@ -214,19 +214,19 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isActionButtonVisible(String actionButtonName) throws Exception {
-        return isDisplayed(getActionButtonByName(actionButtonName));
+        return isLocatorDisplayed(getActionButtonByName(actionButtonName));
     }
 
     public boolean isActionButtonInvisible(String actionButtonName) throws Exception {
-        return isInvisible(getActionButtonByName(actionButtonName));
+        return isLocatorInvisible(getActionButtonByName(actionButtonName));
     }
 
     public boolean isShareContactsSettingsWarningShown() throws Exception {
-        return isDisplayed(nameLaterButton);
+        return isLocatorDisplayed(nameLaterButton);
     }
 
     public boolean isFirstItemInSearchResult(String name) throws Exception {
         final By locator = By.xpath(xpathStrFirstSearchResultEntryByName.apply(name));
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 }

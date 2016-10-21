@@ -14,10 +14,10 @@ public class ManageDevicesOverlay extends IOSPage{
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return isDisplayed(nameManageDevicesButton);
+        return isLocatorDisplayed(nameManageDevicesButton);
     }
 
     public boolean waitUntilInvisible() throws Exception {
-        return isInvisible(nameManageDevicesButton);
+        return isLocatorInvisible(nameManageDevicesButton);
     }
 }

@@ -124,11 +124,11 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isPendingRequestInContactList() throws Exception {
-        return isInvisible(xpathPendingRequest, 5);
+        return isLocatorDisplayed(xpathPendingRequest, 5);
     }
 
     public boolean pendingRequestInContactListIsNotShown() throws Exception {
-        return isInvisible(xpathPendingRequest);
+        return isLocatorInvisible(xpathPendingRequest);
     }
 
     public void tapPendingRequest() throws Exception {
@@ -136,7 +136,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isConversationNotInList(String name, int timeoutSeconds) throws Exception {
-        return isInvisible(MobileBy.AccessibilityId(name), timeoutSeconds);
+        return isLocatorInvisible(MobileBy.AccessibilityId(name), timeoutSeconds);
     }
 
     public boolean isConversationNotInList(String name) throws Exception {
@@ -148,7 +148,7 @@ public class ConversationsListPage extends IOSPage {
                 map(x -> String.format("contains(@name, '%s')", x)).
                 collect(Collectors.toList()));
         final By locator = By.xpath(xpathStrContactListItemByExpr.apply(xpathExpr));
-        return isDisplayed(locator, timeoutSeconds);
+        return isLocatorDisplayed(locator, timeoutSeconds);
     }
 
     public BufferedImage getConversationEntryScreenshot(int idx) throws Exception {
@@ -171,7 +171,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isMuteCallButtonVisible() throws Exception {
-        return isDisplayed(nameMuteCallButton);
+        return isLocatorDisplayed(nameMuteCallButton);
     }
 
     public void clickMuteCallButton() throws Exception {
@@ -180,7 +180,7 @@ public class ConversationsListPage extends IOSPage {
 
     public boolean isActionMenuVisibleForConversation(String conversation) throws Exception {
         final By locator = By.xpath(xpathStrActionMenuByConversationName.apply(conversation));
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     private By getActionButtonByName(String buttonTitle) {
@@ -188,7 +188,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isButtonVisibleInActionMenu(String buttonTitle) throws Exception {
-        return isDisplayed(getActionButtonByName(buttonTitle));
+        return isLocatorDisplayed(getActionButtonByName(buttonTitle));
     }
 
     public void tapButtonInActionMenu(String buttonTitle) throws Exception {
@@ -198,11 +198,11 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isInviteMorePeopleButtonVisible() throws Exception {
-        return isDisplayed(nameSendAnInviteButton);
+        return isLocatorDisplayed(nameSendAnInviteButton);
     }
 
     public boolean isInviteMorePeopleButtonNotVisible() throws Exception {
-        return isInvisible(nameSendAnInviteButton);
+        return isLocatorInvisible(nameSendAnInviteButton);
     }
 
     public BufferedImage getSettingsGearStateScreenshot() throws Exception {
@@ -228,7 +228,7 @@ public class ConversationsListPage extends IOSPage {
 
     public boolean isFirstConversationName(String convoName) throws Exception {
         final By locator = By.xpath(xpathStrFirstConversationEntryByName.apply(convoName));
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public void openArchivedConversations() throws Exception {
@@ -236,23 +236,23 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isArchiveButtonVisible() throws Exception {
-        return isDisplayed(nameOpenArchiveButton);
+        return isLocatorDisplayed(nameOpenArchiveButton);
     }
 
     public boolean isArchiveButtonInvisible() throws Exception {
-        return isInvisible(nameOpenArchiveButton);
+        return isLocatorInvisible(nameOpenArchiveButton);
     }
 
     public boolean contactsLabelIsVisible() throws Exception {
-        return isDisplayed(xpathContactsLabel);
+        return isLocatorDisplayed(xpathContactsLabel);
     }
 
     public boolean contactLabelIsNotVisible() throws Exception {
-        return isInvisible(xpathContactsLabel);
+        return isLocatorInvisible(xpathContactsLabel);
     }
 
     public boolean noConversationsMessageIsVisible() throws Exception {
-        return isDisplayed(nameEmptyConversationsListMessage);
+        return isLocatorDisplayed(nameEmptyConversationsListMessage);
     }
 
     public void clickCloseArchivePageButton() throws Exception {
@@ -260,11 +260,11 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean hintTextIsVisible() throws Exception {
-        return isDisplayed(nameConversationsHintTextLabel);
+        return isLocatorDisplayed(nameConversationsHintTextLabel);
     }
 
     public boolean hintTextIsNotVisible() throws Exception {
-        return isInvisible(nameConversationsHintTextLabel);
+        return isLocatorInvisible(nameConversationsHintTextLabel);
     }
 
     public void tapHintText() throws Exception {

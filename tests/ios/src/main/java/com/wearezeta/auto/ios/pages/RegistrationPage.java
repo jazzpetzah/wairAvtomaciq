@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -86,13 +87,19 @@ public class RegistrationPage extends IOSPage {
     private void selectWirestan() throws Exception {
         final WebElement countryPickerBtn = getElement(nameCountryPickerButton);
         countryPickerBtn.click();
-        if (!isInvisible(nameCountryPickerButton, 5)) {
+        if (!isLocatorInvisible(nameCountryPickerButton, 5)) {
             countryPickerBtn.click();
         }
         final WebElement searchInput = getElement(nameSearchField);
         searchInput.click();
         searchInput.sendKeys(WIRE_COUNTRY_NAME_PREFIX);
-        getElement(nameWireCountry).click();
+        // Wait for animation
+        Thread.sleep(1000);
+        final List<WebElement> countryElements = selectVisibleElements(nameWireCountry);
+        if (countryElements.size() == 0) {
+            throw new IllegalStateException(String.format("There are no visible '%s' elements", WIRE_COUNTRY_NAME));
+        }
+        countryElements.get(0).click();
         // Wait for animation
         Thread.sleep(2000);
     }
@@ -104,13 +111,13 @@ public class RegistrationPage extends IOSPage {
         Thread.sleep(2000);
         phoneNumberField.sendKeys(number.withoutPrefix());
         getElement(nameConfirmButton).click();
-        if (!isInvisible(nameConfirmButton)) {
+        if (!isLocatorInvisible(nameConfirmButton)) {
             throw new IllegalStateException("Confirm button is still visible");
         }
     }
 
     public boolean isVerificationCodePageVisible() throws Exception {
-        return isDisplayed(xpathVerificationPage);
+        return isLocatorDisplayed(xpathVerificationPage);
     }
 
     public void inputActivationCode(PhoneNumber forNumber) throws Exception {
@@ -134,12 +141,12 @@ public class RegistrationPage extends IOSPage {
 
     public boolean isConfirmationShown() throws Exception {
         final By locator = By.xpath(xpathStrConfirmationByMessage.apply(getEmail()));
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public void commitName() throws Exception {
         getElement(nameConfirmButton).click();
-        if (!isInvisible(nameConfirmButton)) {
+        if (!isLocatorInvisible(nameConfirmButton)) {
             throw new IllegalStateException("Confirm button is still visible");
         }
     }
@@ -195,11 +202,11 @@ public class RegistrationPage extends IOSPage {
     }
 
     public boolean isEmailVerificationPromptVisible() throws Exception {
-        return isDisplayed(xpathEmailVerifPrompt);
+        return isLocatorDisplayed(xpathEmailVerifPrompt);
     }
 
     public boolean isInvalidCodeAlertShown() throws Exception {
-        return isDisplayed(nameInvalidCode);
+        return isLocatorDisplayed(nameInvalidCode);
     }
 
     public void tapChooseOwnPicButton() throws Exception {
@@ -212,7 +219,7 @@ public class RegistrationPage extends IOSPage {
 
     public void waitRegistrationToFinish() throws Exception {
         final By locator = By.xpath(xpathStrConfirmationByMessage.apply(getEmail()));
-        if (!isInvisible(locator, 40)) {
+        if (!isLocatorInvisible(locator, 40)) {
             throw new IllegalStateException("Verification page is still visible after the timeout");
         }
     }
@@ -221,7 +228,7 @@ public class RegistrationPage extends IOSPage {
 
     public void tapKeepThisOneButton() throws Exception {
         getElement(nameKeepThisOneButton).click();
-        if (!isInvisible(nameKeepThisOneButton, SELF_PICTURE_LOAD_TIMEOUT_SECONDS)) {
+        if (!isLocatorInvisible(nameKeepThisOneButton, SELF_PICTURE_LOAD_TIMEOUT_SECONDS)) {
             log.warn(String.format("The self picture has not been loaded within %s seconds timeout",
                     SELF_PICTURE_LOAD_TIMEOUT_SECONDS));
         }
@@ -232,19 +239,19 @@ public class RegistrationPage extends IOSPage {
     }
 
     public boolean noCodeShowingUpLabelIsDisplayed() throws Exception {
-        return isDisplayed(xpathNoCodeShowingUpLabel);
+        return isLocatorDisplayed(xpathNoCodeShowingUpLabel);
     }
 
     public boolean noCodeShowingUpLabelIsNotDisplayed() throws Exception {
-        return isInvisible(xpathNoCodeShowingUpLabel);
+        return isLocatorInvisible(xpathNoCodeShowingUpLabel);
     }
 
     public boolean resendButtonIsVisible() throws Exception {
-        return isDisplayed(nameResendCodeButton);
+        return isLocatorDisplayed(nameResendCodeButton);
     }
 
     public boolean resendButtonIsNotVisible() throws Exception {
-        return isInvisible(nameResendCodeButton);
+        return isLocatorInvisible(nameResendCodeButton);
     }
 
     public void inputPhoneNumberAndExpectNoCommit(PhoneNumber phoneNumber) throws Exception {

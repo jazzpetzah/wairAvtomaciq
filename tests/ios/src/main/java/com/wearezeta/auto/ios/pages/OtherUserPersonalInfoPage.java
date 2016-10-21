@@ -108,7 +108,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public boolean isOtherUserProfileNameVisible(String name) throws Exception {
         final By locator = By.xpath(xpathStrUserProfileNameByValue.apply(name));
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public void removeFromConversation() throws Exception {
@@ -120,14 +120,14 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     public void confirmRemove() throws Exception {
         final WebElement confirmBtn = getElement(nameConfirmRemoveButton);
         confirmBtn.click();
-        if (!isInvisible(nameConfirmRemoveButton)) {
+        if (!isLocatorInvisible(nameConfirmRemoveButton)) {
             confirmBtn.click();
         }
     }
 
     public boolean isUserNameVisible(String name) throws Exception {
         final By locator = By.xpath(xpathStrOtherPersonalInfoPageNameFieldByName.apply(name));
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public boolean isUserAddressBookNameVisible(String addressbookName) throws Exception {
@@ -137,7 +137,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public boolean isUserEmailVisible(String email) throws Exception {
         final By locator = By.xpath(xpathStrOtherPersonalInfoPageEmailFieldByEmail.apply(email));
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public boolean isUserEmailNotVisible(String email) throws Exception {
@@ -161,12 +161,12 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public boolean isActionMenuVisible() throws Exception {
-        return isDisplayed(xpathActionsMenu);
+        return isLocatorDisplayed(xpathActionsMenu);
     }
 
     public boolean isParticipantDevicesCountEqualTo(int expectedCount) throws Exception {
         final By locator = By.xpath(xpathStrDevicesByCount.apply(expectedCount));
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public void openDeviceDetailsPage(int deviceIndex) throws Exception {
@@ -177,11 +177,11 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public boolean isShieldIconVisible() throws Exception {
-        return isDisplayed(xpathVerifiedShield);
+        return isLocatorDisplayed(xpathVerifiedShield);
     }
 
     public boolean isShieldIconNotVisible() throws Exception {
-        return isInvisible(xpathVerifiedShield);
+        return isLocatorInvisible(xpathVerifiedShield);
     }
 
     public void switchToTab(String tabName) throws Exception {
@@ -200,7 +200,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public boolean isUserDeviceIdVisible(String deviceId) throws Exception {
         String locator = xpathStrDeviceId.apply(convertStringIDtoLocatorTypeID(deviceId));
-        return isExist(By.xpath(locator));
+        return isLocatorExist(By.xpath(locator));
     }
 
     public void tapLink(String expectedLink) throws Exception {
