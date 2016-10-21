@@ -43,7 +43,7 @@ Feature: Ephemeral
     When I wait for <Wait> seconds
     Then I do not see text message <Message>
     And I see 1 messages in conversation
-    And I see 0 message in database from <Name> in active conversation
+    And I see 0 message in database from <Contact> in active conversation
     When I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
