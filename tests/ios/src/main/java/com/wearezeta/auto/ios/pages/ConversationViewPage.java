@@ -1099,6 +1099,8 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapThisDeviceLink() throws Exception {
         getElement(nameThisDeviceLink).click();
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     public boolean isMessageToolboxTextVisible(String expectedText) throws Exception {
