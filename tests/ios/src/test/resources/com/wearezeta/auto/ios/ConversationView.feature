@@ -7,11 +7,11 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    Then I see input placeholder text
+    Then I see Standard input placeholder text
     When I tap on text input
-    Then I see input placeholder text
+    Then I see Standard input placeholder text
     When I type the default message
-    Then I do not see input placeholder text
+    Then I do not see Standard input placeholder text
 
     Examples:
       | Name      | Contact   |
@@ -61,6 +61,8 @@ Feature: Conversation View
     And I select the first picture from Keyboard Gallery
     And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
+    # Wait for delivery
+    And I wait for 3 seconds
     And I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
@@ -404,7 +406,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
     And I accept alert
-    And I accept alert
+    And I accept alert if visible
     And I tap Camera Shutter button on Keyboard Gallery overlay
     And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
@@ -422,7 +424,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
     And I accept alert
-    And I accept alert
+    And I accept alert if visible
     And I tap Toggle Camera button on Keyboard Gallery overlay
     And I tap Camera Shutter button on Keyboard Gallery overlay
     And I tap Confirm button on Picture preview page
@@ -538,14 +540,14 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see input placeholder text
+    And I see Standard input placeholder text
     And I see conversation tools buttons
     When <Contact> removes Myself from group chat <GroupChatName>
     Then I do not see conversation tools buttons
     And I do not see text input in conversation view
     When User <Contact> adds user <Name> to group chat <GroupChatName>
     Then I see conversation tools buttons
-    And I see input placeholder text
+    And I see Standard input placeholder text
 
     Examples:
       | Name      | Contact   | GroupChatName |

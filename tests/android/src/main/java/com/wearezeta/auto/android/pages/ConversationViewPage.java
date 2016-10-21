@@ -50,13 +50,23 @@ public class ConversationViewPage extends AndroidPage {
             .format("//*[@id='%s' and @value='%s']", idStrMissedCallMesage, text.toUpperCase());
 
     // Ping
+    private static final String strIdPingMessage = "ttv__row_conversation__ping_message";
     public static final Function<String, String> xpathStrPingMessageByText = text -> String
-            .format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']", text.toUpperCase());
+            .format("//*[@id='%s' and @value='%s']", strIdPingMessage, text.toUpperCase());
+    public static final Function<Integer, String> xpathPingMessageByIndex = index -> String
+            .format("(//*[@id='%s'])[%d]", strIdPingMessage, index);
+    private static final By xpathLastPingMessage =
+            By.xpath(String.format("(//*[@id='%s'])[last()]", strIdPingMessage));
 
     //endregion
 
     //region Conversation Cursor locators
-    public static final By idCursorSendButton = By.id("fl__cursor__send_button_container");
+    private static final String strIdCusorSendButtonContainer = "fl__cursor__send_button_container";
+    public static final By idCursorSendButtonContainer = By.id(strIdCusorSendButtonContainer);
+    public static final By xpathCursorSendButton = By.xpath(
+            String.format("//*[@id='%s']/*[2]", strIdCusorSendButtonContainer));
+    public static final By xpathCursorEphemeralButton = By.xpath(
+            String.format("//*[@id='%s']/*[3]", strIdCusorSendButtonContainer));
     private static final By idCursorInputEmojiButton = By.id("fl__cursor__emoji_container");
     private static final By idCursorCamera = By.id("cursor_menu_item_camera");
     private static final By idCursorPing = By.id("cursor_menu_item_ping");
@@ -244,6 +254,8 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final int DEFAULT_SWIPE_DURATION = 2000;
 
+    private static final int CONTAINER_VISIBILITY_TIMEOUT_SECONDS = 20;
+
     public enum MessageIndexLocator {
         FIRST(xpathFirstConversationMessage),
         LAST(xpathLastConversationMessage);
@@ -343,7 +355,6 @@ public class ConversationViewPage extends AndroidPage {
         final int maxTries = 5;
         int ntry = 0;
         do {
-            System.out.println("clear");
             cursorInput.clear();
             cursorInput.sendKeys(message);
             ntry++;
@@ -363,7 +374,7 @@ public class ConversationViewPage extends AndroidPage {
                 pressKeyboardSendButton();
                 break;
             case "cursor":
-                getElement(idCursorSendButton).click();
+                getElement(idCursorSendButtonContainer).click();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify the send button type '%s'", sendFrom));
@@ -405,8 +416,9 @@ public class ConversationViewPage extends AndroidPage {
             case "switch to text":
             case "switch to emoji":
                 return idCursorInputEmojiButton;
+            case "ephemeral":
             case "send":
-                return idCursorSendButton;
+                return idCursorSendButtonContainer;
             case "ping":
                 return idCursorPing;
             case "add picture":
@@ -457,12 +469,26 @@ public class ConversationViewPage extends AndroidPage {
         showCursorToolButtonIfNotVisible(name).click();
     }
 
-    public boolean waitUntilCursorSendButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorSendButton);
+    private By getCursorInputButtonLocator(String buttonType) {
+        switch (buttonType.toLowerCase()) {
+            case "send":
+                return xpathCursorSendButton;
+            case "ephemeral":
+                return xpathCursorEphemeralButton;
+            default:
+                throw new IllegalStateException(String.format("Cannot identify cursor input button type '%s'",
+                        buttonType));
+        }
     }
 
-    public boolean waitUntilCursorSendButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorSendButton);
+    public boolean waitUntilCursorInputButtonVisible(String buttonType) throws Exception {
+        By locator = getCursorInputButtonLocator(buttonType);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitUntilCursorInputButtonInvisible(String buttonType) throws Exception {
+        By locator = getCursorInputButtonLocator(buttonType);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     public void longTapAudioMessageCursorBtn(int durationMillis) throws Exception {
@@ -632,14 +658,20 @@ public class ConversationViewPage extends AndroidPage {
         swipeRightCoordinates(timeMilliseconds);
     }
 
-    public boolean waitForPingMessageWithText(String expectedText) throws Exception {
+    public boolean waitUntilPingMessageWithTextVisible(String expectedText) throws Exception {
         final By locator = By.xpath(xpathStrPingMessageByText.apply(expectedText));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean waitForPingMessageWithTextDisappears(String expectedText) throws Exception {
+    public boolean waitUntilPingMessageWithTextInvisible(String expectedText) throws Exception {
         final By locator = By.xpath(xpathStrPingMessageByText.apply(expectedText));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public boolean isCountOfPingsEqualTo(int expectedNumberOfPings) throws Exception {
+        assert expectedNumberOfPings > 0 : "The expected number of pings should be greater than zero";
+        By locator = By.xpath(xpathPingMessageByIndex.apply(expectedNumberOfPings));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isConversationPeopleChangedMessageContainsNames(List<String> names) throws Exception {
@@ -911,12 +943,12 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean isContainerVisible(String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, CONTAINER_VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean isContainerInvisible(String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, CONTAINER_VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean waitUntilLinkPreviewUrlVisible(String url) throws Exception {
@@ -925,29 +957,32 @@ public class ConversationViewPage extends AndroidPage {
 
     public void tapContainer(String tapType, String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
+        final WebElement el = getElement(locator);
+        final Point location = el.getLocation();
+        final Dimension size = el.getSize();
         if (Arrays.asList(idAudioMessageContainer, idVideoMessageContainer, idYoutubeContainer).contains(locator)) {
             // To avoid to tap on play button in Video message and Audio message container.
-            final WebElement el = getElement(locator);
-            final Point location = el.getLocation();
-            final Dimension size = el.getSize();
             getDriver().tap(tapType, location.x + size.width / 5, location.y + size.height / 5);
         } else {
-            DriverUtils.tapInTheCenterOfTheElement(getDriver(), getElement(locator));
+            // Tap on the center of container
+            getDriver().tap(tapType, location.x + size.width / 2, location.y + size.height / 2);
         }
     }
 
-    private By getTextLocatorByTextMessageType(String messageType, String message) {
+    private By getTextLocatorByTextMessageType(String messageType, Optional<String> message) {
         switch (messageType.toLowerCase()) {
             case "ping":
-                return By.xpath(xpathStrPingMessageByText.apply(message));
+                return message.isPresent() ? By.xpath(xpathStrPingMessageByText.apply(message.get()))
+                        : xpathLastPingMessage;
             case "text":
-                return By.xpath(xpathStrConversationMessageByText.apply(message));
+                return message.isPresent() ? By.xpath(xpathStrConversationMessageByText.apply(message.get()))
+                        : xpathLastConversationMessage;
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify the type '%s'", messageType));
         }
     }
 
-    public void tapMessage(String messageType, String message, String tapType) throws Exception {
+    public void tapMessage(String messageType, Optional<String> message, String tapType) throws Exception {
         By locator = getTextLocatorByTextMessageType(messageType, message);
         switch (tapType.toLowerCase()) {
             case "tap":

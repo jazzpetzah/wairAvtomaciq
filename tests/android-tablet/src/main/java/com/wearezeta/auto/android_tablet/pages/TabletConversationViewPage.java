@@ -64,7 +64,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
                 getDriver().tapSendButton();
                 break;
             case "cursor":
-                getElement(ConversationViewPage.idCursorSendButton).click();
+                getElement(ConversationViewPage.idCursorSendButtonContainer).click();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify send button type '%s'", sendFrom));
@@ -81,7 +81,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilPingMessageIsVisible(String expectedMessage) throws Exception {
-        return getConversationViewPage().waitForPingMessageWithText(expectedMessage);
+        return getConversationViewPage().waitUntilPingMessageWithTextVisible(expectedMessage);
     }
 
     public boolean waitUntilAPictureAppears() throws Exception {
@@ -103,7 +103,11 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilPingMessageIsInvisible(String expectedMessage) throws Exception {
-        return getConversationViewPage().waitForPingMessageWithTextDisappears(expectedMessage);
+        return getConversationViewPage().waitUntilPingMessageWithTextInvisible(expectedMessage);
+    }
+
+    public boolean isCountOfPingsEqualTo(int expectedCount) throws Exception {
+        return getConversationViewPage().isCountOfPingsEqualTo(expectedCount);
     }
 
     public void doSwipeRight() throws Exception {
@@ -178,7 +182,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public void tapMessage(String messageType, String message, String tapType) throws Exception {
-        getConversationViewPage().tapMessage(messageType, message, tapType);
+        getConversationViewPage().tapMessage(messageType, Optional.of(message), tapType);
     }
 
     //region Message Bottom Menu

@@ -107,11 +107,13 @@ Feature: Share Location
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Share Location button from input tools
+    # Wait until map app is shown
+    And I wait for 5 seconds
     Then I verify the alert contains text <ExpectedAlertText>
     When I dismiss alert
     And I tap Send location button from map view
     Then I see location map container in the conversation view
 
     Examples:
-      | Name      | Contact   | ExpectedAlertText                                           |
-      | user1Name | user2Name | Allow “Wire” to access your location while you use the app? |
+      | Name      | Contact   | ExpectedAlertText    |
+      | user1Name | user2Name | access your location |

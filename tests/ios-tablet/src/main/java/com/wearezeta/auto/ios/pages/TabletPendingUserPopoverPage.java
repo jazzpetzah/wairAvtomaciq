@@ -20,11 +20,11 @@ public class TabletPendingUserPopoverPage extends OtherUserOnPendingProfilePage 
 
     public boolean isUserNameDisplayed(String name) throws Exception {
         final By locator = By.xpath(xpathStrUserByName.apply(name));
-        return isElementDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public boolean isConnectButtonDisplayed() throws Exception {
-        return isElementDisplayed(xpathConnectButton);
+        return isLocatorDisplayed(xpathConnectButton);
     }
 
 }

@@ -86,7 +86,7 @@ public class AccountPage extends WebPage {
     }
 
     public String getUserName() throws Exception {
-        DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(
+        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(
                 WebAppLocators.AccountPage.cssSelfUserNameInput));
         return userNameInput.getAttribute("value");
     }

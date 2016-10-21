@@ -47,6 +47,8 @@ Feature: File Transfer
     And I wait for 2 seconds
     And I tap file transfer menu item <ItemName>
     Then I see file transfer placeholder
+    #wait tp make sure file was delivered
+    And I wait for 5 seconds
     And I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:

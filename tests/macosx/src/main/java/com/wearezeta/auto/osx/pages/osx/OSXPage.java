@@ -20,8 +20,7 @@ import org.openqa.selenium.WebElement;
 
 public abstract class OSXPage extends BasePage {
 
-    public static final Logger LOG = ZetaLogger.getLog(OSXPage.class
-            .getName());
+    public static final Logger LOG = ZetaLogger.getLog(OSXPage.class.getName());
 
     private static final String MENU_ITEM_VERSION = "Version";
     private static final String MENUBAR_ITEM_HELP = "Help";
@@ -37,8 +36,7 @@ public abstract class OSXPage extends BasePage {
         super(osxDriver);
     }
 
-    public OSXPage(Future<ZetaOSXDriver> osxDriver, String path)
-            throws Exception {
+    public OSXPage(Future<ZetaOSXDriver> osxDriver, String path) throws Exception {
         super(osxDriver);
         this.path = path;
     }
@@ -55,10 +53,8 @@ public abstract class OSXPage extends BasePage {
         clickMenuBarItem(MENUBAR_ITEM_HELP, environmentName);
     }
 
-    public void clickMenuBarItem(String firstItem, String... items)
-            throws Exception {
-        String locatorBar = OSXLocators.AppMenu.xpathMenuBarItem
-                .apply(firstItem);
+    public void clickMenuBarItem(String firstItem, String... items) throws Exception {
+        String locatorBar = OSXLocators.AppMenu.xpathMenuBarItem.apply(firstItem);
         By locator = By.xpath(locatorBar);
         DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
         WebElement menuElement = getDriver().findElement(locator);
@@ -147,6 +143,6 @@ public abstract class OSXPage extends BasePage {
     }
 
     public Optional<BufferedImage> getScreenshot() throws Exception {
-        return DriverUtils.takeMacOSFullScreenShot(getDriver());
+        return DriverUtils.takeFullScreenShot(getDriver());
     }
 }

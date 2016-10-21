@@ -113,32 +113,37 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap Send Message button in conversation
+     * Tap the corresponding button in conversation
      *
+     * @param btnName one of available button names
      * @throws Exception
-     * @step. I tap Send Message button in conversation view
+     * @step. I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass) button in conversation view
      */
-    @And("^I tap Send Message button in conversation view$")
-    public void ITapSendMessageButton() throws Exception {
-        getConversationViewPage().tapSendButton();
+    @And("^I tap (Send Message|Emoji Keyboard|Text Keyboard|Hourglass|Time Indicator) button in conversation view$")
+    public void ITapConvoButton(String btnName) throws Exception {
+        getConversationViewPage().tapViewButton(btnName);
     }
 
     /**
-     * Verify Send Message button visiblity in the conversation view
+     * Verify button visibility in the conversation view
      *
      * @param shouldNotSee equals to null if the button should be visible
+     * @param btnName      the name of the button to check
      * @throws Exception
-     * @step. I (do not )?see Send Message button in conversation view$
+     * @step. I (do not )?see (Send Message|Emoji Keyboard|Text Keyboard|Hourglass)button in conversation view$
      */
-    @Then("^I (do not )?see Send Message button in conversation view$")
-    public void ISeeSendMessageButton(String shouldNotSee) throws Exception {
+    @Then("^I (do not )?see (Send Message|Emoji Keyboard|Text Keyboard|Hourglass|Time Indicator) button in conversation view$")
+    public void ISeeSendMessageButton(String shouldNotSee, String btnName) throws Exception {
+        boolean result;
         if (shouldNotSee == null) {
-            Assert.assertTrue("Send Message button is not visible",
-                    getConversationViewPage().isSendMessageButtonVisible());
+            result = getConversationViewPage().isViewButtonVisible(btnName);
         } else {
-            Assert.assertTrue("Send Message button should be invisible",
-                    getConversationViewPage().isSendMessageButtonInvisible());
+            result = getConversationViewPage().isViewButtonInvisible(btnName);
         }
+        Assert.assertTrue(
+                String.format("'%s' button should be %s", btnName, (shouldNotSee == null) ? "visible" : "not visible"),
+                result
+        );
     }
 
     /**
@@ -483,21 +488,25 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Check whether text input placeholder text is visible or not
+     * Check whether text or ephemeral input placeholder text is visible or not
      *
      * @param shouldNotBeVisible equals to null if the placeholder should be visible
+     * @param placeholderText    text of placeholder, either standard or ephemeral
      * @throws Exception
-     * @step. ^I (do not )?see input placeholder text$
+     * @step. ^I (do not )?see (Standard|Ephemeral) input placeholder text$
      */
-    @Then("^I (do not )?see input placeholder text$")
-    public void ISeeInputPlaceholderText(String shouldNotBeVisible) throws Exception {
+    @Then("^I (do not )?see (Standard|Ephemeral) input placeholder text$")
+    public void ISeeInputPlaceholderText(String shouldNotBeVisible, String placeholderText) throws Exception {
+        boolean result;
         if (shouldNotBeVisible == null) {
-            Assert.assertTrue("Input placeholder text is not visible",
-                    getConversationViewPage().isInputPlaceholderTextVisible());
+            result = getConversationViewPage().isPlaceholderTextVisible(placeholderText);
         } else {
-            Assert.assertTrue("Input placeholder text is visible",
-                    getConversationViewPage().isInputPlaceholderTextInvisible());
+            result = getConversationViewPage().isPlaceholderTextInvisible(placeholderText);
         }
+        Assert.assertTrue(
+                String.format("'%s' placeholder text should be %s", placeholderText, (shouldNotBeVisible == null) ? "visible" : "not visible"),
+                result
+        );
     }
 
     /**
@@ -1392,17 +1401,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap the corresponding button which invokes Emoji or Text keyboard
-     *
-     * @throws Exception
-     * @step. ^I tap (?:Emoji|Text) Keyboard button in conversation view$
-     */
-    @When("^I tap (?:Emoji|Text) Keyboard button in conversation view$")
-    public void TapEmojiKeyboardButton() throws Exception {
-        getConversationViewPage().tapEmojiKeyboardButton();
-    }
-
-    /**
      * Tap the corresponding key on Emoji keyboard. Tap by name does not work properly there.
      *
      * @param keyIndex Keys enumeration starts at the top left corner and finishes at
@@ -1436,6 +1434,18 @@ public class ConversationViewPageSteps {
                     getConversationViewPage().isMessageToolboxTextInvisible(expectedText)
             );
         }
+    }
+
+    /**
+     * Set ephemeral messages timer to a corresponding value
+     *
+     * @param value one of available timer values
+     * @throws Exception
+     * @step. ^I set ephemeral messages expiration timer to (Off|5 seconds|15 seconds|1 minute|15 minutes)$
+     */
+    @And("^I set ephemeral messages expiration timer to (Off|5 seconds|15 seconds|1 minute|15 minutes)$")
+    public void ISetExpirationTimer(String value) throws Exception {
+        getConversationViewPage().setMessageExpirationTimer(value);
     }
 }
 

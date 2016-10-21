@@ -75,10 +75,10 @@ public abstract class BasePage {
     }
 
     public Optional<BufferedImage> getElementScreenshot(WebElement element) throws Exception {
+        final Point elementLocation = element.getLocation();
+        final Dimension elementSize = element.getSize();
         final Optional<BufferedImage> screenshot = takeScreenshot();
         if (screenshot.isPresent()) {
-            final Point elementLocation = element.getLocation();
-            final Dimension elementSize = element.getSize();
             return Optional.of(screenshot.get().getSubimage(
                     elementLocation.x, elementLocation.y, elementSize.width, elementSize.height));
         } else {
@@ -91,15 +91,7 @@ public abstract class BasePage {
     }
 
     protected List<WebElement> selectVisibleElements(By locator) throws Exception {
-        final List<WebElement> result = new ArrayList<>();
-        if (DriverUtils.waitUntilLocatorAppears(getDriver(), locator)) {
-            for (WebElement el : getDriver().findElements(locator)) {
-                if (DriverUtils.isElementPresentAndDisplayed(getDriver(), el)) {
-                    result.add(el);
-                }
-            }
-        }
-        return result;
+        return this.selectVisibleElements(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
     protected List<WebElement> selectVisibleElements(By locator, int timeoutSeconds) throws Exception {

@@ -70,4 +70,23 @@ public class WireDatabase {
             }
         }
     }
+
+    public String getMessageContent(long msgId) throws SQLException {
+        Connection connection = null;
+        try {
+            connection = createConnection();
+            final String zmsgdataQueryTpl = "SELECT * FROM ZGENERICMESSAGEDATA WHERE ZMESSAGE=%s";
+            final ResultSet zmsgdataRS = getQueryResult(connection, zmsgdataQueryTpl, msgId);
+            if (zmsgdataRS.next()) {
+                return zmsgdataRS.getString("ZDATA");
+            }
+            throw new IllegalArgumentException(
+                    String.format("There are no messages in the database with id '%s'", msgId)
+            );
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }
 }

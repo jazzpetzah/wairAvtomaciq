@@ -170,6 +170,7 @@ Feature: Settings
     Given I select settings item Account
     Given I select settings item Name
     When I clear Name input field on Settings page
+    And I wait for 3 seconds
     And I tap Return button on the keyboard
     Then I verify the alert contains text <ExpectedAlertText>
     And I accept alert

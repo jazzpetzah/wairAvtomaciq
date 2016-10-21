@@ -615,13 +615,8 @@ public class ConversationPageSteps {
 
     @Then("^I wait until video (.*) is uploaded completely$")
     public void IWaitUntilVideoIsUploaded(String fileName) throws Exception {
-        if (WebAppExecutionContext.getBrowser().isSupportingInlineVideo()) {
-            assertThat("Upload still not finished for video " + fileName, context.getPagesCollection().getPage(
-                    ConversationPage.class).waitUntilVideoUploaded(fileName));
-        } else {
-            assertThat("Upload still not finished for file " + fileName, context.getPagesCollection().getPage(
-                    ConversationPage.class).waitUntilFileUploaded(fileName));
-        }
+        assertThat("Upload still not finished for video " + fileName, context.getPagesCollection().getPage(
+                ConversationPage.class).waitUntilVideoUploaded(fileName));
     }
 
     @Then("^I click play button of video (.*) in the conversation view$")
@@ -1142,10 +1137,12 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).setEphemeralTimer(label.toUpperCase());
     }
 
-    @When("^I see (.*) on ephemeral button$")
-    public void ISeeTimeShortOnEphemeralTimer(String label) throws Exception {
-        Assert.assertTrue("TimeShort" + label + "on ephemeral button is not shown",
-                context.getPagesCollection().getPage(ConversationPage.class).isTimeShortOnEphemeralButtonVisible(label));
+    @When("^I see (.*) with unit (.*) on ephemeral button$")
+    public void ISeeTimeShortOnEphemeralTimer(String time, String unit) throws Exception {
+        Assert.assertTrue("Time " + time + " on ephemeral button is not shown",
+                context.getPagesCollection().getPage(ConversationPage.class).isTimeShortOnEphemeralButtonVisible(time));
+        Assert.assertTrue("Time unit " + unit + " on ephemeral button is not shown",
+                context.getPagesCollection().getPage(ConversationPage.class).isTimeUnitOnEphemeralButtonVisible(unit));
     }
 
     @When("^I see placeholder of conversation input is (.*)$")

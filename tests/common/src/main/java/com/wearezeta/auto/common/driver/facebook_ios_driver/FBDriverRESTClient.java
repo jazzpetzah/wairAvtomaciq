@@ -297,16 +297,16 @@ final class FBDriverRESTClient {
         );
     }
 
-    public JSONObject dragFromToForDuration(String sessionId, String uuid, FBDragArguments FBDragArguments)
+    public JSONObject dragFromToForDuration(String sessionId, String uuid, FBDragArguments fbDragArguments)
             throws RESTError {
         final Builder webResource = buildDefaultRequest(
                 String.format("uiaTarget/%s/dragfromtoforduration", uuid), sessionId);
         final JSONObject body = new JSONObject();
-        body.put("fromX", FBDragArguments.getFromX());
-        body.put("fromY", FBDragArguments.getFromY());
-        body.put("toX", FBDragArguments.getToX());
-        body.put("toY", FBDragArguments.getToY());
-        body.put("duration", FBDragArguments.getDurationSeconds());
+        body.put("fromX", fbDragArguments.getFromX());
+        body.put("fromY", fbDragArguments.getFromY());
+        body.put("toX", fbDragArguments.getToX());
+        body.put("toY", fbDragArguments.getToY());
+        body.put("duration", fbDragArguments.getDurationSeconds());
         return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 

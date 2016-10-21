@@ -39,8 +39,9 @@ public class CallingOverlayPage extends IOSPage {
 
 
     private static final Function<Integer, String> xpathStrGroupCallAvatarsByCount = count ->
-            String.format("//XCUIElementTypeButton[@name='SwitchCameraButton']/" +
-                    "following::XCUIElementTypeCollectionView[count(XCUIElementTypeCell)=%s]", count);
+            String.format("//XCUIElementTypeStaticText[@name='%s']/" +
+                    "following::XCUIElementTypeCollectionView[count(XCUIElementTypeCell)=%s]",
+                    nameStrCallStatusLabel, count);
 
     private static final By xpathCallerAvatar = By.xpath(String.format(
             "//XCUIElementTypeStaticText[@name='%s']/following::*[@name='CallingUsersImage']",
@@ -55,7 +56,7 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isCallStatusLabelVisible() throws Exception {
-        return isElementDisplayed(nameCallStatusLabel);
+        return isLocatorDisplayed(nameCallStatusLabel);
     }
 
     public boolean isCallStatusLabelInvisible() throws Exception {
@@ -63,7 +64,7 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isSecondCallAlertVisible() throws Exception {
-        return isElementDisplayed(nameSecondCallAlert);
+        return isLocatorDisplayed(nameSecondCallAlert);
     }
 
     public void pressAnswerCallAlertButton() throws Exception {
@@ -71,7 +72,7 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isGroupCallFullMessageShown() throws Exception {
-        return isElementDisplayed(nameGroupCallFullMessage, WAIT_FOR_GROUPCALL_FULL_MSG);
+        return isLocatorDisplayed(nameGroupCallFullMessage, WAIT_FOR_GROUPCALL_FULL_MSG);
     }
 
     protected String getButtonAccessibilityIdByName(final String name) {
@@ -119,11 +120,11 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isButtonVisible(String name) throws Exception {
-        return isElementDisplayed(getButtonLocatorByName(name), 20);
+        return isLocatorDisplayed(getButtonLocatorByName(name), 20);
     }
 
     public boolean isButtonInvisible(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), getButtonLocatorByName(name));
+        return isLocatorInvisible(getButtonLocatorByName(name));
     }
 
     public boolean isMuteButtonSelected() throws Exception {
@@ -172,6 +173,6 @@ public class CallingOverlayPage extends IOSPage {
         } else {
             locator = By.xpath(xpathStrGroupCallAvatarsByCount.apply(expectedNumberOfAvatars));
         }
-        return isElementDisplayed(locator, timeoutSeconds);
+        return isLocatorDisplayed(locator, timeoutSeconds);
     }
 }

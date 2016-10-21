@@ -23,16 +23,18 @@ public class GiphyPreviewPage extends IOSPage {
     }
 
     public boolean isPreviewVisible() throws Exception {
-        return isElementDisplayed(classImagePreview);
+        return selectVisibleElements(classImagePreview).size() > 0;
     }
 
     public boolean isGridVisible() throws Exception {
-        return isElementDisplayed(namePreviewGrid);
+        return isLocatorDisplayed(namePreviewGrid);
     }
 
     public void selectFirstItem() throws Exception {
         // FIXME: The driver simply freezes on this page
         clickAt(15, 15);
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     private By getButtonByName(String name) {
@@ -54,6 +56,6 @@ public class GiphyPreviewPage extends IOSPage {
 
     public boolean isButtonVisible(String btnName) throws Exception {
         final By locator = getButtonByName(btnName);
-        return isElementDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 }

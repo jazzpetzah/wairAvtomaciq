@@ -532,6 +532,8 @@ Feature: Conversation View
     And I long tap on text input
     And I tap on Paste badge item
     And I confirm my choice
+    # Wait for convo list to update
+    And I wait for 3 seconds
     Then I see 2 photos in the conversation view
 
     Examples:
@@ -673,13 +675,13 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    Then I see input placeholder text
+    Then I see Standard input placeholder text
     When I tap on text input
-    Then I see input placeholder text
+    Then I see Standard input placeholder text
     When I type the default message
-    Then I do not see input placeholder text
+    Then I do not see Standard input placeholder text
     When I tap Send Message button in conversation view
-    Then I see input placeholder text
+    Then I see Standard input placeholder text
 
     Examples:
       | Name      | Contact   |

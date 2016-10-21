@@ -5,19 +5,26 @@ Feature: Ephemeral
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
+    Given I Sign in using login <Login2> and password <Password>
+    Given I am signed in properly
+    Given I open preferences by clicking the gear button
+    Given I click logout in account preferences
+    Given I see the clear data dialog
+    Given I click logout button on clear data dialog
+    Given I see Sign In page
     Given I Sign in using login <Login1> and password <Password>
     And I am signed in properly
     When I open conversation with <Contact>
     And I click on ephemeral button
     And I set the timer for ephemeral to <TimeLong>
-    Then I see <TimeShort> on ephemeral button
+    Then I see <Time> with unit <TimeShortUnit> on ephemeral button
     And I see placeholder of conversation input is Timed message
     When I write message <Message>
     And I send message
     Then I see text message <Message>
     And I verify the database is containing the message <Message> from <Name> in active conversation
     #And I see timer next to the last message
-    When I wait for <Time> seconds
+    When I wait for <Wait> seconds
     #Then I do not see timer next to the last message
     And I see the last message is obfuscated
     And I see 2 messages in conversation
@@ -33,7 +40,7 @@ Feature: Ephemeral
     And I open conversation with <Name>
     Then I see text message <Message>
     #And I see timer next to the last message
-    When I wait for <Time> seconds
+    When I wait for <Wait> seconds
     Then I do not see text message <Message>
     And I see 1 messages in conversation
     And I see 0 message in database from <Name> in active conversation
@@ -50,10 +57,10 @@ Feature: Ephemeral
     And I see 0 message in database from <Name> in active conversation
 
     Examples:
-      | Login1     | Password      | Name      | Contact   | Login2     | Time | TimeLong   | TimeShort | Message |
-      | user1Email | user1Password | user1Name | user2Name | user2Email | 5    | 5 seconds  | 5s        | Hello   |
-      | user1Email | user1Password | user1Name | user2Name | user2Email | 15   | 15 seconds | 15s       | Hello   |
-      | user1Email | user1Password | user1Name | user2Name | user2Email | 60   | 1 minute   | 1m        | Hello   |
+      | Login1     | Password      | Name      | Contact   | Login2     | Wait | Time | TimeLong   | TimeShortUnit | Message |
+      | user1Email | user1Password | user1Name | user2Name | user2Email | 5    | 5    | 5 seconds  | s             | Hello   |
+      | user1Email | user1Password | user1Name | user2Name | user2Email | 15   | 15   | 15 seconds | s             | Hello   |
+      | user1Email | user1Password | user1Name | user2Name | user2Email | 60   | 1    | 1 minute   | m             | Hello   |
 
   @C261728 @ephemeral @staging
   Scenario Outline: Verify switching on/off ephemeral message
@@ -66,7 +73,7 @@ Feature: Ephemeral
     When I open conversation with <Contact>
     And I click on ephemeral button
     And I set the timer for ephemeral to <TimeLong>
-    Then I see <TimeShort> on ephemeral button
+    Then I see <Time> with unit <TimeShortUnit> on ephemeral button
     And I see placeholder of conversation input is Timed message
     When I write message <Message1>
     And I send message
@@ -74,7 +81,7 @@ Feature: Ephemeral
     When I wait for <Time> seconds
     #And I do not see text message <Message1>
     And I click on ephemeral button
-    And I set the timer for ephemeral to None
+    And I set the timer for ephemeral to OFF
     And I see placeholder of conversation input is Type a message
     And I write message <Message2>
     And I send message
@@ -84,8 +91,8 @@ Feature: Ephemeral
     And I see the last message is not obfuscated
 
     Examples:
-      | Login1     | Password      | Name      | Contact   | Time | TimeLong   | TimeShort | Message1 | Message2 |
-      | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds  | 5s        | Hello1   | Hello2   |
+      | Login1     | Password      | Name      | Contact   | Time | TimeLong  | TimeShortUnit | Message1 | Message2 |
+      | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds | s             | Hello1   | Hello2   |
 
   @C261727 @ephemeral @staging
   Scenario Outline: Verify ephemeral messages are turned off in a group chat
@@ -108,12 +115,19 @@ Feature: Ephemeral
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
+    Given I Sign in using login <Login2> and password <Password>
+    Given I am signed in properly
+    Given I open preferences by clicking the gear button
+    Given I click logout in account preferences
+    Given I see the clear data dialog
+    Given I click logout button on clear data dialog
+    Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I open conversation with <Contact>
     And I click on ephemeral button
     And I set the timer for ephemeral to <TimeLong>
-    Then I see <TimeShort> on ephemeral button
+    Then I see <Time> with unit <TimeShortUnit> on ephemeral button
     And I see placeholder of conversation input is Timed message
     When I write message <Message>
     And I send message
@@ -144,6 +158,7 @@ Feature: Ephemeral
     And I see 1 message in conversation
 
     Examples:
+
       | Login      | Password      | Login2     | Name      | Contact   | TimeLong  | TimeShort | Time | Message |
       | user1Email | user1Password | user2Email | user1Name | user2Name | 5 seconds | 5s        | 5    | testing |
 
@@ -157,7 +172,7 @@ Feature: Ephemeral
     When I open conversation with <Contact>
     And I click on ephemeral button
     And I set the timer for ephemeral to <TimeLong>
-    Then I see <TimeShort> on ephemeral button
+    #Then I see <TimeShort> on ephemeral button
     And I see placeholder of conversation input is Timed message
     #ping
     When I click ping button

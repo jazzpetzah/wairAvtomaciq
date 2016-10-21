@@ -13,7 +13,6 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class ConversationsListPage extends IOSPage {
@@ -88,7 +87,7 @@ public class ConversationsListPage extends IOSPage {
                 () -> new IllegalStateException(String.format("The conversation '%s' is not visible in the list", name))
         ).click();
         // Wait for transition animation
-        Thread.sleep(1000);
+        Thread.sleep(1500);
     }
 
     protected Optional<WebElement> findNameInContactList(String name, int timeoutSeconds) throws Exception {
@@ -125,11 +124,11 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isPendingRequestInContactList() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), xpathPendingRequest, 5);
+        return isLocatorDisplayed(xpathPendingRequest, 5);
     }
 
     public boolean pendingRequestInContactListIsNotShown() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathPendingRequest);
+        return isLocatorInvisible(xpathPendingRequest);
     }
 
     public void tapPendingRequest() throws Exception {
@@ -137,7 +136,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isConversationNotInList(String name, int timeoutSeconds) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), MobileBy.AccessibilityId(name), timeoutSeconds);
+        return isLocatorInvisible(MobileBy.AccessibilityId(name), timeoutSeconds);
     }
 
     public boolean isConversationNotInList(String name) throws Exception {
@@ -149,7 +148,7 @@ public class ConversationsListPage extends IOSPage {
                 map(x -> String.format("contains(@name, '%s')", x)).
                 collect(Collectors.toList()));
         final By locator = By.xpath(xpathStrContactListItemByExpr.apply(xpathExpr));
-        return isElementDisplayed(locator, timeoutSeconds);
+        return isLocatorDisplayed(locator, timeoutSeconds);
     }
 
     public BufferedImage getConversationEntryScreenshot(int idx) throws Exception {
@@ -172,7 +171,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isMuteCallButtonVisible() throws Exception {
-        return isElementDisplayed(nameMuteCallButton);
+        return isLocatorDisplayed(nameMuteCallButton);
     }
 
     public void clickMuteCallButton() throws Exception {
@@ -181,7 +180,7 @@ public class ConversationsListPage extends IOSPage {
 
     public boolean isActionMenuVisibleForConversation(String conversation) throws Exception {
         final By locator = By.xpath(xpathStrActionMenuByConversationName.apply(conversation));
-        return isElementDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     private By getActionButtonByName(String buttonTitle) {
@@ -189,19 +188,21 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isButtonVisibleInActionMenu(String buttonTitle) throws Exception {
-        return isElementDisplayed(getActionButtonByName(buttonTitle));
+        return isLocatorDisplayed(getActionButtonByName(buttonTitle));
     }
 
     public void tapButtonInActionMenu(String buttonTitle) throws Exception {
         getElement(getActionButtonByName(buttonTitle)).click();
+        // Wait for animation
+        Thread.sleep(2000);
     }
 
     public boolean isInviteMorePeopleButtonVisible() throws Exception {
-        return isElementDisplayed(nameSendAnInviteButton);
+        return isLocatorDisplayed(nameSendAnInviteButton);
     }
 
     public boolean isInviteMorePeopleButtonNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameSendAnInviteButton);
+        return isLocatorInvisible(nameSendAnInviteButton);
     }
 
     public BufferedImage getSettingsGearStateScreenshot() throws Exception {
@@ -227,7 +228,7 @@ public class ConversationsListPage extends IOSPage {
 
     public boolean isFirstConversationName(String convoName) throws Exception {
         final By locator = By.xpath(xpathStrFirstConversationEntryByName.apply(convoName));
-        return isElementDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public void openArchivedConversations() throws Exception {
@@ -235,23 +236,23 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isArchiveButtonVisible() throws Exception {
-        return isElementDisplayed(nameOpenArchiveButton);
+        return isLocatorDisplayed(nameOpenArchiveButton);
     }
 
     public boolean isArchiveButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameOpenArchiveButton);
+        return isLocatorInvisible(nameOpenArchiveButton);
     }
 
     public boolean contactsLabelIsVisible() throws Exception {
-        return isElementDisplayed(xpathContactsLabel);
+        return isLocatorDisplayed(xpathContactsLabel);
     }
 
     public boolean contactLabelIsNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathContactsLabel);
+        return isLocatorInvisible(xpathContactsLabel);
     }
 
     public boolean noConversationsMessageIsVisible() throws Exception {
-        return isElementDisplayed(nameEmptyConversationsListMessage);
+        return isLocatorDisplayed(nameEmptyConversationsListMessage);
     }
 
     public void clickCloseArchivePageButton() throws Exception {
@@ -259,11 +260,11 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean hintTextIsVisible() throws Exception {
-        return isElementDisplayed(nameConversationsHintTextLabel);
+        return isLocatorDisplayed(nameConversationsHintTextLabel);
     }
 
     public boolean hintTextIsNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConversationsHintTextLabel);
+        return isLocatorInvisible(nameConversationsHintTextLabel);
     }
 
     public void tapHintText() throws Exception {
