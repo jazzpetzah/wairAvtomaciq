@@ -800,4 +800,23 @@ public class ConversationPageSteps {
             // TODO: Check for first time experience info not visible
         }
     }
+    
+    @When("^I click on ephemeral button$")
+    public void IClickEphemeralButton() throws Exception {
+        webappPagesCollection.getPage(com.wearezeta.auto.web.pages.ConversationPage.class).clickEphemeralButton();
+    }
+
+    @When("^I see (.*) with unit (.*) on ephemeral button$")
+    public void ISeeTimeShortOnEphemeralTimer(String time, String unit) throws Exception {
+        Assert.assertTrue("Time " + time + " on ephemeral button is not shown",
+                webappPagesCollection.getPage(com.wearezeta.auto.web.pages.ConversationPage.class).isTimeShortOnEphemeralButtonVisible(time));
+        Assert.assertTrue("Time unit " + unit + " on ephemeral button is not shown",
+                webappPagesCollection.getPage(com.wearezeta.auto.web.pages.ConversationPage.class).isTimeUnitOnEphemeralButtonVisible(unit));
+    }
+    
+    @When("^I see placeholder of conversation input is (.*)$")
+    public void ISeePlaceholderOfInput(String label) throws Exception {
+        Assert.assertThat(webappPagesCollection.getPage(com.wearezeta.auto.web.pages.ConversationPage.class).getPlaceholderOfConversationInput(),
+                equalTo(label));
+    }
 }
