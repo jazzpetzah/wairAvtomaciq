@@ -732,4 +732,23 @@ public class ConversationPageSteps {
             // TODO: Check for first time experience info not visible
         }
     }
+    
+    @When("^I click on ephemeral button$")
+    public void IClickEphemeralButton() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickEphemeralButton();
+    }
+
+    @When("^I see (.*) with unit (.*) on ephemeral button$")
+    public void ISeeTimeShortOnEphemeralTimer(String time, String unit) throws Exception {
+        Assert.assertTrue("Time " + time + " on ephemeral button is not shown",
+                context.getPagesCollection().getPage(ConversationPage.class).isTimeShortOnEphemeralButtonVisible(time));
+        Assert.assertTrue("Time unit " + unit + " on ephemeral button is not shown",
+                context.getPagesCollection().getPage(ConversationPage.class).isTimeUnitOnEphemeralButtonVisible(unit));
+    }
+    
+    @When("^I see placeholder of conversation input is (.*)$")
+    public void ISeePlaceholderOfInput(String label) throws Exception {
+        Assert.assertThat(context.getPagesCollection().getPage(ConversationPage.class).getPlaceholderOfConversationInput(),
+                equalTo(label));
+    }
 }
