@@ -1170,6 +1170,23 @@ public class ConversationPageSteps {
     }
 
     /**
+     * Checks if the picture, video, audio, or file is replaced with orange block
+     * @param not
+     * @throws Exception
+     */
+
+    @When("^I see the last message is( not)? replaced with an orange block$")
+    public void ISeeOrangneBlock(String not) throws Exception {
+        if(not == null) {
+            assertTrue("Last message is not replaced with an orange block",
+                    context.getPagesCollection().getPage(ConversationPage.class).isLastMessageReplaced());
+        } else {
+            assertTrue("Last message is replaced with an orange block",
+                    context.getPagesCollection().getPage(ConversationPage.class).isLastMessageNotReplaced());
+        }
+    }
+
+    /**
      * Click ping button to send ping and hot ping
      *
      * @throws Exception

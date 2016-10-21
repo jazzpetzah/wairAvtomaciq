@@ -1470,6 +1470,14 @@ public class ConversationPage extends WebPage {
         return !lastTextMessage.getAttribute("class").contains("ephemeral-message-obfuscated");
     }
 
+    public boolean isLastMessageReplaced() {
+        return lastGenericMessage.findElement(By.cssSelector(".bg-color-ephemeral")).isDisplayed();
+    }
+
+    public boolean isLastMessageNotReplaced() {
+        return !lastTextMessage.getAttribute("class").contains("bg-color-ephemeral");
+    }
+
     /**
      * Use selenium's executeAsyncScript method to grab message of a specific user from a specific conversation. Because the
      * framework Dexie.js (the Javascript framework of the webapp that saves data in the indexedDB) is using Promises which are

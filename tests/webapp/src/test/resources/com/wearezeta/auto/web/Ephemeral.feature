@@ -172,7 +172,7 @@ Feature: Ephemeral
     And I see only 1 picture in the conversation
     #And I see timer next to the last message
     When I wait for <Time> seconds
-    #Then I see the message is replaced with an orange block
+    #Then I see the last message is replaced with an orange block
     And I see 3 messages in conversation
     #video
     When I see file transfer button in conversation input
@@ -181,7 +181,7 @@ Feature: Ephemeral
     And I see video message <VideoFile> in the conversation view
     #And I see timer next to the last message
     When I wait for <Time> seconds
-    #Then I see the message is replaced with an orange block
+    Then I see the last message is replaced with an orange block
     And I see 4 messages in conversation
     #audio
     When I send audio file with length <AudioTime> and name <AudioFile> to the current conversation
@@ -189,16 +189,14 @@ Feature: Ephemeral
     Then I see audio message <AudioFile> in the conversation view
     #And I see timer next to the last message
     When I wait for <Time> seconds
-    Then I see the last message is obfuscated
+    Then I see the last message is replaced with an orange block
     And I see 5 messages in conversation
     #file
     When I send <SizeFile> sized file with name <File> to the current conversation
     And I wait until file <File> is uploaded completely
-    Then I verify size of file <File> is <SizeFile> in the conversation view
-    And I verify type of file <File> is <TypeFile> in the conversation view
     #And I see timer next to the last message
     When I wait for <Time> seconds
-    #Then I see the message is replaced with an orange block
+    Then I see the last message is replaced with an orange block
     And I see 6 messages in database from <Name> in active conversation
     When I open preferences by clicking the gear button
     And I click logout in account preferences
