@@ -361,7 +361,7 @@ public final class CommonSteps {
     }
 
     public void UserReadLastEphemeralMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName,
-                                        boolean isGroup, boolean isDeleteEverywhere) throws Exception {
+                                        boolean isGroup) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
         if (!isGroup) {
             dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
