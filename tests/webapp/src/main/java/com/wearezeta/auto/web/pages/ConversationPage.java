@@ -502,8 +502,13 @@ public class ConversationPage extends WebPage {
         }
     }
 
-    public boolean isTimeShortOnEphemeralButtonVisible(String label) throws Exception {
-        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEphemeralButtonByLabel.apply(label));
+    public boolean isTimeShortOnEphemeralButtonVisible(String time) throws Exception {
+        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEphemeralButtonByTime.apply(time));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+    
+    public boolean isTimeUnitOnEphemeralButtonVisible(String unit) throws Exception {
+        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEphemeralButtonByUnit.apply(unit));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 

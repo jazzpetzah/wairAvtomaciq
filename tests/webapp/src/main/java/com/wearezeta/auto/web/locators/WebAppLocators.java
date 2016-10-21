@@ -592,8 +592,11 @@ public final class WebAppLocators {
 
         public static final String cssEphemeralButton = "[data-uie-name='do-set-ephemeral-timer']";
 
-        public static final Function<String, String> xpathEphemeralButtonByLabel = label -> String
-                .format("//*[@data-uie-name='do-set-ephemeral-timer']//div[text()='%s']", label);
+        public static final Function<String, String> xpathEphemeralButtonByTime = time -> String
+                .format("//*[@data-uie-name='do-set-ephemeral-timer']//div//span[contains(@class, 'full-screen') and text()='%s']", time);
+        
+        public static final Function<String, String> xpathEphemeralButtonByUnit = unit -> String
+                .format("//*[@data-uie-name='do-set-ephemeral-timer']//div//span[contains(@class, 'ephemeral-timer-button-unit') and text()='%s']", unit);
 
         public static final String cssEphemeralTimers = "[data-context-tag='ephemeral'] .bubble-menu li";
 
