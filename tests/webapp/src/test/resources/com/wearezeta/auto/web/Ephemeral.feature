@@ -23,9 +23,9 @@ Feature: Ephemeral
     And I send message
     Then I see text message <Message>
     And I verify the database is containing the message <Message> from <Name> in active conversation
-    #And I see timer next to the last message
+    And I see <Time> with unit <TimeShortUnit> on ephemeral button
     When I wait for <Wait> seconds
-    #Then I do not see timer next to the last message
+    Then I do not see timer next to the last message
     And I see the last message is obfuscated
     And I see 2 messages in conversation
     And I verify the database is not containing the message <Message> from <Name> in active conversation
@@ -39,7 +39,7 @@ Feature: Ephemeral
     And I am signed in properly
     And I open conversation with <Name>
     Then I see text message <Message>
-    #And I see timer next to the last message
+    And I see timer next to the last message
     When I wait for <Wait> seconds
     Then I do not see text message <Message>
     And I see 1 messages in conversation
@@ -79,7 +79,7 @@ Feature: Ephemeral
     And I send message
     Then I see text message <Message1>
     When I wait for <Time> seconds
-    #And I do not see text message <Message1>
+    And I do not see text message <Message1>
     And I click on ephemeral button
     And I set the timer for ephemeral to OFF
     And I see placeholder of conversation input is Type a message
@@ -177,7 +177,7 @@ Feature: Ephemeral
     #ping
     When I click ping button
     Then I see <PING> action in conversation
-    #And I see timer next to the last message
+    And I see timer next to the last message
     When I wait for <Time> seconds
     Then I see the last message is obfuscated
     And I see 2 messages in conversation
@@ -185,7 +185,7 @@ Feature: Ephemeral
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
     And I see only 1 picture in the conversation
-    #And I see timer next to the last message
+    And I see timer next to the last message
     When I wait for <Time> seconds
     #Then I see the last message is replaced with an orange block
     And I see 3 messages in conversation
@@ -194,7 +194,7 @@ Feature: Ephemeral
     When I send <SizeVideo> sized video with name <VideoFile> to the current conversation
     And I wait until video <VideoFile> is uploaded completely
     And I see video message <VideoFile> in the conversation view
-    #And I see timer next to the last message
+    And I see timer next to the last message
     When I wait for <Time> seconds
     Then I see the last message is replaced with an orange block
     And I see 4 messages in conversation
@@ -202,14 +202,14 @@ Feature: Ephemeral
     When I send audio file with length <AudioTime> and name <AudioFile> to the current conversation
     And I wait until audio <AudioFile> is uploaded completely
     Then I see audio message <AudioFile> in the conversation view
-    #And I see timer next to the last message
+    And I see timer next to the last message
     When I wait for <Time> seconds
     Then I see the last message is replaced with an orange block
     And I see 5 messages in conversation
     #file
     When I send <SizeFile> sized file with name <File> to the current conversation
     And I wait until file <File> is uploaded completely
-    #And I see timer next to the last message
+    And I see timer next to the last message
     When I wait for <Time> seconds
     Then I see the last message is replaced with an orange block
     And I see 6 messages in database from <Name> in active conversation
@@ -227,7 +227,7 @@ Feature: Ephemeral
     And I see audio message <AudioFile> in the conversation view
     Then I verify size of file <File> is <SizeFile> in the conversation view
     And I verify type of file <File> is <TypeFile> in the conversation view
-  #And I see timer next to the last message
+    And I see timer next to the last message
     When I wait for <Time> seconds
     Then I do not see text message <Message>
     And I see 1 messages in conversation
@@ -249,5 +249,5 @@ Feature: Ephemeral
     And I see 0 message in database from <Name> in active conversation
 
     Examples:
-      | Login1     | Password      | Name      | Contact   | Login2     | Time | TimeLong   | TimeShort | PING       | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile | TypeFile |
-      | user1Email | user1Password | user1Name | user2Name | user2Email | 5    | 5 seconds  | 5s        | you pinged | userpicture_landscape.jpg | C123938.mp4 | 5MB       | example.wav | 00:20     | C261733.zip  | 512KB    | ZIP      |
+      | Login1     | Password      | Name      | Contact   | Login2     | Time | TimeLong   | PING       | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile | TypeFile |
+      | user1Email | user1Password | user1Name | user2Name | user2Email | 5    | 5 seconds  | you pinged | userpicture_landscape.jpg | C123938.mp4 | 5MB       | example.wav | 00:20     | C261733.zip  | 512KB    | ZIP      |
