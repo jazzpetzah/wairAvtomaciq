@@ -25,6 +25,8 @@ Feature: Audio Messaging
     And I long tap Audio Message button from input tools
     And I tap Send record control button
     Then I see audio message container in the conversation view
+    # Wait for delivery
+    And I wait for 3 seconds
     And I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
