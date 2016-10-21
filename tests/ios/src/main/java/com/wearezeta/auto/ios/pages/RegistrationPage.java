@@ -19,11 +19,11 @@ import java.util.function.Function;
 public class RegistrationPage extends IOSPage {
     private static final String WIRE_COUNTRY_NAME_PREFIX = "Wirestan";
 
-    private static final String WIRE_COUNTRY_NAME = WIRE_COUNTRY_NAME_PREFIX + " ☀️";
-
     private static final By nameSearchField = MobileBy.AccessibilityId("Search");
 
-    private static final By nameWireCountry = MobileBy.AccessibilityId(WIRE_COUNTRY_NAME);
+    private static final By xpathWireCountry =
+            By.xpath(String.format("(//XCUIElementTypeStaticText[starts-with(@name, '%s')])[last()]",
+                    WIRE_COUNTRY_NAME_PREFIX));
 
     private static final By xpathYourName = By.xpath("//XCUIElementTypeTextField[@value='YOUR FULL NAME']");
 
@@ -92,7 +92,9 @@ public class RegistrationPage extends IOSPage {
         final WebElement searchInput = getElement(nameSearchField);
         searchInput.click();
         searchInput.sendKeys(WIRE_COUNTRY_NAME_PREFIX);
-        getElement(nameWireCountry).click();
+        // Wait for animation
+        Thread.sleep(1000);
+        getElement(xpathWireCountry).click();
         // Wait for animation
         Thread.sleep(2000);
     }
