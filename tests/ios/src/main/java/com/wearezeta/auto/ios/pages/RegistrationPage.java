@@ -95,7 +95,7 @@ public class RegistrationPage extends IOSPage {
         searchInput.sendKeys(WIRE_COUNTRY_NAME_PREFIX);
         // Wait for animation
         Thread.sleep(1000);
-        final List<WebElement> countryElements =  selectVisibleElements(nameWireCountry);
+        final List<WebElement> countryElements = selectVisibleElements(nameWireCountry);
         if (countryElements.size() == 0) {
             throw new IllegalStateException(String.format("There are no visible '%s' elements", WIRE_COUNTRY_NAME));
         }
