@@ -23,9 +23,9 @@ Feature: Ephemeral
     And I send message
     Then I see text message <Message>
     And I verify the database is containing the message <Message> from <Name> in active conversation
-    #And I see timer next to the last message
+    And I see timer next to the last message
     When I wait for <Wait> seconds
-    #Then I do not see timer next to the last message
+    Then I do not see timer next to the last message
     And I see the last message is obfuscated
     And I see 2 messages in conversation
     And I verify the database is not containing the message <Message> from <Name> in active conversation
@@ -39,7 +39,7 @@ Feature: Ephemeral
     And I am signed in properly
     And I open conversation with <Name>
     Then I see text message <Message>
-    #And I see timer next to the last message
+    And I see timer next to the last message
     When I wait for <Wait> seconds
     Then I do not see text message <Message>
     And I see 1 messages in conversation
@@ -60,7 +60,9 @@ Feature: Ephemeral
       | Login1     | Password      | Name      | Contact   | Login2     | Wait | Time | TimeLong   | TimeShortUnit | Message |
       | user1Email | user1Password | user1Name | user2Name | user2Email | 5    | 5    | 5 seconds  | s             | Hello   |
       | user1Email | user1Password | user1Name | user2Name | user2Email | 15   | 15   | 15 seconds | s             | Hello   |
+      | user1Email | user1Password | user1Name | user2Name | user2Email | 30   | 30   | 30 seconds | s             | Hello   |
       | user1Email | user1Password | user1Name | user2Name | user2Email | 60   | 1    | 1 minute   | m             | Hello   |
+     #| user1Email | user1Password | user1Name | user2Name | user2Email | 300  | 5    | 5 minutes  | m             | Hello   |
 
   @C261728 @ephemeral @staging
   Scenario Outline: Verify switching on/off ephemeral message
