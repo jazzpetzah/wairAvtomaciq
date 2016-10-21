@@ -16,11 +16,11 @@ public class PendingOutgoingConnectionPage extends IOSPage {
     }
 
     public boolean isConnectButtonVisible() throws Exception {
-        return isDisplayed(xpathConnectOtherUserButton);
+        return isLocatorDisplayed(xpathConnectOtherUserButton);
     }
 
     public boolean isConnectButtonInvisible() throws Exception {
-        return isInvisible(xpathConnectOtherUserButton);
+        return isLocatorInvisible(xpathConnectOtherUserButton);
     }
 
     public void tapConnectButton() throws Exception {

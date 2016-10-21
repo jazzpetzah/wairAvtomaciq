@@ -57,7 +57,7 @@ public class GroupChatInfoPage extends IOSPage {
 
     public boolean isGroupNameEqualTo(String expectedName) throws Exception {
         final By locator = By.xpath(xpathStrConversationNameByText.apply(expectedName));
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public void setGroupChatName(String name) throws Exception {
@@ -74,12 +74,12 @@ public class GroupChatInfoPage extends IOSPage {
                 map(x -> String.format("contains(@value, '%s')", x)).
                 collect(Collectors.toList()));
         final By locator = By.xpath(xpathStrConversationNameByExpr.apply(xpathExpr));
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public boolean isNumberOfPeopleEquals(int expectedNumber) throws Exception {
         final By locator = MobileBy.AccessibilityId(nameStrNumberPeopleByCount.apply(expectedNumber));
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public int getParticipantsAvatarsCount() throws Exception {
@@ -93,7 +93,7 @@ public class GroupChatInfoPage extends IOSPage {
     public void exitGroupInfoPage() throws Exception {
         final WebElement closeBtn = getElement(nameExitGroupInfoPageButton);
         closeBtn.click();
-        if (!isInvisible(nameExitGroupInfoPageButton, 3)) {
+        if (!isLocatorInvisible(nameExitGroupInfoPageButton, 3)) {
             // Sometimes we don't click this button in time because of animated transitions
             closeBtn.click();
         }
@@ -101,7 +101,7 @@ public class GroupChatInfoPage extends IOSPage {
 
     public void tapLeaveConversation() throws Exception {
         getElement(nameRightActionButton).click();
-        if (!isInvisible(nameRightActionButton)) {
+        if (!isLocatorInvisible(nameRightActionButton)) {
             throw new IllegalStateException("Menu button is still shown");
         }
         getElement(nameLeaveConversationButton).click();
@@ -119,7 +119,7 @@ public class GroupChatInfoPage extends IOSPage {
     }
 
     public boolean isLeaveConversationAlertVisible() throws Exception {
-        return isDisplayed(nameLeaveConversationAlert);
+        return isLocatorDisplayed(nameLeaveConversationAlert);
     }
 
     public void clickOnAddButton() throws Exception {
@@ -132,7 +132,7 @@ public class GroupChatInfoPage extends IOSPage {
 
     public boolean waitForContactToDisappear(String contact) throws Exception {
         final By locator = By.xpath(xpathPeopleViewCollectionCellByName.apply(contact));
-        return isInvisible(locator);
+        return isLocatorInvisible(locator);
     }
 
     public int getGroupNameLength() throws Exception {

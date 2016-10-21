@@ -49,11 +49,11 @@ public class IncomingPendingRequestsPage extends IOSPage {
     }
 
     public boolean isConnectButtonDisplayed() throws Exception {
-        return isDisplayed(xpathPendingRequestConnectButton);
+        return isLocatorDisplayed(xpathPendingRequestConnectButton);
     }
 
     public boolean isConnectToNameExist(String expectedName) throws Exception {
         final By locator = By.xpath(xpathStrPendingRequesterByName.apply(expectedName));
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 }

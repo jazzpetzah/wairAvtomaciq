@@ -21,15 +21,15 @@ public class GroupConversationViewPage extends ConversationViewPage {
 
     public boolean isYouAddedUserMessageShown(String user) throws Exception {
         final By locator = By.xpath(xpathStrYouAddedToGroupChatMessageByName.apply(user));
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public boolean isYouRenamedConversationMessageVisible() throws Exception {
-        return isDisplayed(nameYouRenamedConversation);
+        return isLocatorDisplayed(nameYouRenamedConversation);
     }
 
     public boolean isYouLeftMessageShown() throws Exception {
-        return isDisplayed(nameYouLeftMessage);
+        return isLocatorDisplayed(nameYouLeftMessage);
     }
 
 }

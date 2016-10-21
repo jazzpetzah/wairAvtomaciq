@@ -14,11 +14,11 @@ public class FirstTimeOverlay extends IOSPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return isDisplayed(nameOKButton);
+        return isLocatorDisplayed(nameOKButton);
     }
 
     public boolean waitUntilInvisible() throws Exception {
-        return isInvisible(nameOKButton);
+        return isLocatorInvisible(nameOKButton);
     }
 
     public void accept() throws Exception {

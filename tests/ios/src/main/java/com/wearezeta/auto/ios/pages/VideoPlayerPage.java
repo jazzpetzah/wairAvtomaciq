@@ -24,7 +24,7 @@ public class VideoPlayerPage extends IOSPage {
     }
 
     public boolean isVideoPlayerPageOpened() throws Exception {
-        return isExist(xpathVideoMainPage);
+        return isLocatorExist(xpathVideoMainPage);
     }
 
     public void tapVideoPage() throws Exception {
@@ -34,7 +34,7 @@ public class VideoPlayerPage extends IOSPage {
     public void clickVideoDoneButton() throws Exception {
         final FBElement videoDoneButton = (FBElement) getElement(fbNameVideoDoneButton);
         this.tapAtTheCenterOfElement(videoDoneButton);
-        if (!isInvisible(fbNameVideoDoneButton, 5)) {
+        if (!isLocatorInvisible(fbNameVideoDoneButton, 5)) {
             this.tapAtTheCenterOfElement(videoDoneButton);
         }
     }
@@ -50,6 +50,6 @@ public class VideoPlayerPage extends IOSPage {
     }
 
     public boolean isVideoMessagePlayerPageDoneButtonVisible() throws Exception {
-        return isExist(nameVideoDoneButton, 20);
+        return isLocatorExist(nameVideoDoneButton, 20);
     }
 }

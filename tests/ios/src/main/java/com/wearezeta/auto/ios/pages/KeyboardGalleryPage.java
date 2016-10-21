@@ -54,10 +54,10 @@ public class KeyboardGalleryPage extends IOSPage {
     }
 
     public boolean isButtonVisible(String name) throws Exception {
-        return isDisplayed(getButtonLocatorByName(name));
+        return isLocatorDisplayed(getButtonLocatorByName(name));
     }
 
     public boolean isButtonInvisible(String name) throws Exception {
-        return isInvisible(getButtonLocatorByName(name));
+        return isLocatorInvisible(getButtonLocatorByName(name));
     }
 }

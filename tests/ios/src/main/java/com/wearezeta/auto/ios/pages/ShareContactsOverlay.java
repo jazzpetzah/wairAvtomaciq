@@ -16,11 +16,11 @@ public class ShareContactsOverlay extends IOSPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return isDisplayed(xpathShareContactsButton);
+        return isLocatorDisplayed(xpathShareContactsButton);
     }
 
     public boolean waitUntilInvisible() throws Exception {
-        return isInvisible(xpathShareContactsButton);
+        return isLocatorInvisible(xpathShareContactsButton);
     }
 
     private By getButtonByName(String name) {

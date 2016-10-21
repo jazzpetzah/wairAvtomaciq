@@ -23,7 +23,7 @@ public class NewDeviceOverlay extends IOSPage {
 
     public boolean isContainingLabel(String expectedLabel) throws Exception {
         final By locator = By.xpath(xpathStrLabelByText.apply(expectedLabel));
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public void tapShowDeviceButton() throws Exception {

@@ -26,7 +26,7 @@ public class LikersPage extends IOSPage {
 
     public boolean isLikerVisible(String name) throws Exception {
         final By locator = By.xpath(xpathStrContactAvatarByName.apply(name));
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public void tapCloseButton() throws Exception {
@@ -34,11 +34,11 @@ public class LikersPage extends IOSPage {
     }
 
     public boolean likersPageIsVisible() throws Exception {
-        return isDisplayed(nameLikersPageLabel);
+        return isLocatorDisplayed(nameLikersPageLabel);
     }
 
     public boolean isLikerByPositionVisible(String name, int position) throws Exception {
         final By locator = By.xpath(xpathStrLikerByNameAndIndex.apply(position, name));
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 }

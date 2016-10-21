@@ -23,11 +23,11 @@ public class GiphyPreviewPage extends IOSPage {
     }
 
     public boolean isPreviewVisible() throws Exception {
-        return isDisplayed(classImagePreview);
+        return isLocatorDisplayed(classImagePreview);
     }
 
     public boolean isGridVisible() throws Exception {
-        return isDisplayed(namePreviewGrid);
+        return isLocatorDisplayed(namePreviewGrid);
     }
 
     public void selectFirstItem() throws Exception {
@@ -56,6 +56,6 @@ public class GiphyPreviewPage extends IOSPage {
 
     public boolean isButtonVisible(String btnName) throws Exception {
         final By locator = getButtonByName(btnName);
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 }

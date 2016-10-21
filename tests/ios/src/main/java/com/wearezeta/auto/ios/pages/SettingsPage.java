@@ -65,7 +65,7 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return isExist(xpathSettingsPage);
+        return isLocatorExist(xpathSettingsPage);
     }
 
     public void selectItem(String itemName) throws Exception {
@@ -82,13 +82,13 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean isItemVisible(String itemName) throws Exception {
-        return isExist(By.xpath(xpathStrMenuItemByName.apply(itemName)));
+        return isLocatorExist(By.xpath(xpathStrMenuItemByName.apply(itemName)));
     }
 
     public void tapDeleteDeviceButton(String deviceName) throws Exception {
         final By locator = By.xpath(xpathDeleteDeviceButtonByName.apply(deviceName));
         getElement(locator, String.format("Device '%s' is not visible in Manage Device List", deviceName)).click();
-        if (!isInvisible(locator)) {
+        if (!isLocatorInvisible(locator)) {
             throw new IllegalStateException("Delete device button is still visible");
         }
     }
@@ -97,7 +97,7 @@ public class SettingsPage extends IOSPage {
         final WebElement deleteButton = getElement(nameDeleteButton);
         deleteButton.click();
 
-        if (!isInvisible(nameDeleteButton)) {
+        if (!isLocatorInvisible(nameDeleteButton)) {
             deleteButton.click();
         }
     }
@@ -109,17 +109,17 @@ public class SettingsPage extends IOSPage {
 
     public boolean isDeviceVisibleInList(String device) throws Exception {
         final By locator = By.xpath(xpathDeviceListEntry.apply(device));
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public boolean isDeviceInvisibleInList(String device) throws Exception {
         final By locator = By.xpath(xpathDeviceListEntry.apply(device));
-        return isInvisible(locator);
+        return isLocatorInvisible(locator);
     }
 
     public boolean verificationLabelVisibility(String deviceName, String verificationLabel) throws Exception {
         final By locator = By.xpath(xpathStrDeviceVerificationLabel.apply(deviceName, verificationLabel));
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public void tapCurrentDevice() throws Exception {
@@ -127,7 +127,7 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean isItemInvisible(String itemName) throws Exception {
-        return isInvisible(By.xpath(xpathStrMenuItemByName.apply(itemName)));
+        return isLocatorInvisible(By.xpath(xpathStrMenuItemByName.apply(itemName)));
     }
 
     public void tapNavigationButton(String name) throws Exception {
@@ -137,16 +137,16 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean isResetPasswordPageVisible() throws Exception {
-        return isExist(xpathChangePasswordPageChangePasswordButton);
+        return isLocatorExist(xpathChangePasswordPageChangePasswordButton);
     }
 
     public boolean isSupportWebPageVisible() throws Exception {
-        return isExist(xpathAskSupport, 15);
+        return isLocatorExist(xpathAskSupport, 15);
     }
 
     public boolean isSettingItemValueEqualTo(String itemName, String expectedValue) throws Exception {
         final By locator = FBBy.xpath(xpathStrSettingsValue.apply(itemName, expectedValue));
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public void clearSelfName() throws Exception {

@@ -133,7 +133,7 @@ public abstract class IOSPage extends BasePage {
     public void tapBadgeItem(String name) throws Exception {
         final By locator = getBadgeLocatorByName(name);
         getElement(locator).click();
-        if (!isInvisible(locator, MAX_BADGE_VISIBILITY_TIMEOUT)) {
+        if (!isLocatorInvisible(locator, MAX_BADGE_VISIBILITY_TIMEOUT)) {
             log.warn(String.format("%s badge still appears to be visible after %s seconds timeout", name,
                     MAX_BADGE_VISIBILITY_TIMEOUT));
         }
@@ -141,12 +141,12 @@ public abstract class IOSPage extends BasePage {
 
     public boolean isBadgeItemVisible(String name) throws Exception {
         final By locator = getBadgeLocatorByName(name);
-        return isDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public boolean isBadgeItemInvisible(String name) throws Exception {
         final By locator = getBadgeLocatorByName(name);
-        return isInvisible(locator);
+        return isLocatorInvisible(locator);
     }
 
     public boolean isKeyboardVisible() throws Exception {
@@ -437,7 +437,7 @@ public abstract class IOSPage extends BasePage {
         do {
             el.click();
             counter++;
-            if (isInvisible(locator, 4)) {
+            if (isLocatorInvisible(locator, 4)) {
                 return;
             }
         } while (counter < retryCount);
@@ -455,7 +455,7 @@ public abstract class IOSPage extends BasePage {
         do {
             el.click();
             counter++;
-            if (isExist(nextLocator)) {
+            if (isLocatorExist(nextLocator)) {
                 return;
             }
         } while (counter < retryCount);
@@ -505,11 +505,11 @@ public abstract class IOSPage extends BasePage {
         throw new IllegalStateException(message, savedException);
     }
 
-    protected boolean isExist(By locator) throws Exception {
-        return this.isExist(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
+    protected boolean isLocatorExist(By locator) throws Exception {
+        return this.isLocatorExist(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
-    protected boolean isExist(By locator, int timeoutSeconds) throws Exception {
+    protected boolean isLocatorExist(By locator, int timeoutSeconds) throws Exception {
         final long millisecondsStarted = System.currentTimeMillis();
         do {
             try {
@@ -528,11 +528,11 @@ public abstract class IOSPage extends BasePage {
         return false;
     }
 
-    protected boolean isDisplayed(By locator) throws Exception {
-        return this.isDisplayed(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
+    protected boolean isLocatorDisplayed(By locator) throws Exception {
+        return this.isLocatorDisplayed(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
-    protected boolean isDisplayed(By locator, int timeoutSeconds) throws Exception {
+    protected boolean isLocatorDisplayed(By locator, int timeoutSeconds) throws Exception {
         final long millisecondsStarted = System.currentTimeMillis();
         do {
             try {
@@ -551,11 +551,11 @@ public abstract class IOSPage extends BasePage {
         return false;
     }
 
-    protected boolean isInvisible(By locator) throws Exception {
-        return this.isInvisible(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
+    protected boolean isLocatorInvisible(By locator) throws Exception {
+        return this.isLocatorInvisible(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
-    protected boolean isInvisible(By locator, int timeoutSeconds) throws Exception {
+    protected boolean isLocatorInvisible(By locator, int timeoutSeconds) throws Exception {
         final long millisecondsStarted = System.currentTimeMillis();
         do {
             try {
@@ -621,7 +621,7 @@ public abstract class IOSPage extends BasePage {
 
     public boolean isWebPageVisible(String expectedUrl) throws Exception {
         getElement(xpathBrowserURLButton, "The address bar of web browser is not visible").click();
-        return isExist(By.xpath(xpathStrAddressBarByUrlPart.apply(expectedUrl)));
+        return isLocatorExist(By.xpath(xpathStrAddressBarByUrlPart.apply(expectedUrl)));
     }
 
     public void tapBackToWire() throws Exception {
