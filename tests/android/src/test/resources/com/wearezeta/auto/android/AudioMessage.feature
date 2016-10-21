@@ -43,7 +43,7 @@ Feature: Audio Message
     And I tap audio recording Send button
     Then I see cursor toolbar
     And I see Audio Message container in the conversation view
-    And I wait for 30 seconds until audio message upload completed
+    And I wait up to 30 seconds until audio message upload is completed
     When I remember the state of recent audio message seekbar
     And I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
@@ -120,7 +120,7 @@ Feature: Audio Message
     And I tap Retry button on the recent audio message in the conversation view
     # Retry button changes to Play button
     Then I verify the state of Retry button on the recent audio message in the conversation view is changed
-    And I wait for 15 seconds until audio message upload completed
+    And I wait up to 15 seconds until audio message upload is completed
     When I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
     Then I verify the state of Play button on the recent audio message in the conversation view is changed
@@ -163,7 +163,7 @@ Feature: Audio Message
     And I wait for 3 seconds
     When I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
-    Then I wait for 30 seconds until audio message download completed
+    Then I wait up to 30 seconds until audio message download is completed
     And I verify the state of recent audio message seekbar in the conversation view is changed
     When I remember the state of Pause button on the recent audio message in the conversation view
     And I minimize the application
@@ -192,7 +192,7 @@ Feature: Audio Message
     When I see Audio Message container in the conversation view
     And I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
-    Then I wait for 15 seconds until audio message download completed
+    Then I wait up to 15 seconds until audio message download is completed
     And I verify the state of recent audio message seekbar in the conversation view is changed
     When I remember the state of Pause button on the recent audio message in the conversation view
     And <Contact> calls me
@@ -218,7 +218,7 @@ Feature: Audio Message
     When I see Audio Message container in the conversation view
     And I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
-    Then I wait for 15 seconds until audio message download completed
+    Then I wait up to 15 seconds until audio message download is completed
     And I verify the state of recent audio message seekbar in the conversation view is changed
     When I remember the state of Pause button on the recent audio message in the conversation view
     And <Contact> starts a video call to me
