@@ -9,7 +9,7 @@ import org.openqa.selenium.By;
 public class CallOutgoingAudioPage extends AbstractCallOutgoingPage {
 
     private static final By xpathOutgoingAudioCallContainer =
-            By.xpath("//*[@id='ttv__calling__header__subtitle' and contains(@value, 'Ringing') " +
+            By.xpath("//*[@id='ttv__calling__header__subtitle' and contains(@value, 'ringing') " +
                     "and //*[@id='ccbv__button_middle']]");
 
     public CallOutgoingAudioPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
