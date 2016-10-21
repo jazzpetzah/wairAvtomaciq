@@ -64,7 +64,7 @@ Feature: Ephemeral
       | user1Email | user1Password | user1Name | user2Name | user2Email | 60   | 1    | 1 minute   | m             | Hello   |
      #| user1Email | user1Password | user1Name | user2Name | user2Email | 300  | 5    | 5 minutes  | m             | Hello   |
 
-  @C261728 @ephemeral @staging
+  @C261728 @ephemeral @regression
   Scenario Outline: Verify switching on/off ephemeral message
     Given There are 2 users where <Name> is me
     #Given user <Contact> adds a new device Device1 with label Label1
@@ -96,7 +96,7 @@ Feature: Ephemeral
       | Login1     | Password      | Name      | Contact   | Time | TimeLong  | TimeShortUnit | Message1 | Message2 |
       | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds | s             | Hello1   | Hello2   |
 
-  @C261727 @ephemeral @staging
+  @C261727 @ephemeral @regression
   Scenario Outline: Verify ephemeral messages are turned off in a group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -112,7 +112,7 @@ Feature: Ephemeral
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Ephemeral |
 
-  @C262533 @ephemeral @staging
+  @C262533 @ephemeral @regression
   Scenario Outline: Verify that messages with previous timer are deleted on start-up when the timeout passed
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
