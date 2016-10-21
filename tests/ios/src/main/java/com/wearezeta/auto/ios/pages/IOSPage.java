@@ -2,10 +2,13 @@ package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
@@ -486,7 +489,7 @@ public abstract class IOSPage extends BasePage {
     @Override
     protected WebElement getElement(By locator, String message, int timeoutSeconds) throws Exception {
         WebDriverException savedException;
-        final long millisecondsStarted = System.currentTimeMillis();
+        final long msStarted = System.currentTimeMillis();
         do {
             try {
                 final WebElement el = getDriver().findElement(locator);
@@ -494,13 +497,13 @@ public abstract class IOSPage extends BasePage {
                     return el;
                 }
                 throw new WebDriverException(String.format("The element '%s' is still not visible after %s ms",
-                        locator, System.currentTimeMillis() - millisecondsStarted));
+                        locator, System.currentTimeMillis() - msStarted));
             } catch (WebDriverException e) {
                 log.debug(e.getMessage());
                 savedException = e;
             }
             Thread.sleep(ELEMENT_QUERY_DELAY_MS);
-        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
         printPageSource();
         throw new IllegalStateException(message, savedException);
     }
@@ -510,7 +513,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     protected boolean isLocatorExist(By locator, int timeoutSeconds) throws Exception {
-        final long millisecondsStarted = System.currentTimeMillis();
+        final long msStarted = System.currentTimeMillis();
         do {
             try {
                 final WebElement el = getDriver().findElement(locator);
@@ -518,12 +521,12 @@ public abstract class IOSPage extends BasePage {
                     return true;
                 }
                 throw new WebDriverException(String.format("The element '%s' is still not present after %s ms",
-                        locator, System.currentTimeMillis() - millisecondsStarted));
+                        locator, System.currentTimeMillis() - msStarted));
             } catch (WebDriverException e) {
                 log.debug(e.getMessage());
             }
             Thread.sleep(ELEMENT_QUERY_DELAY_MS);
-        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
         //printPageSource();
         return false;
     }
@@ -533,7 +536,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     protected boolean isLocatorDisplayed(By locator, int timeoutSeconds) throws Exception {
-        final long millisecondsStarted = System.currentTimeMillis();
+        final long msStarted = System.currentTimeMillis();
         do {
             try {
                 final WebElement el = getDriver().findElement(locator);
@@ -541,12 +544,12 @@ public abstract class IOSPage extends BasePage {
                     return true;
                 }
                 throw new WebDriverException(String.format("The element '%s' is still not visible after %s ms",
-                        locator, System.currentTimeMillis() - millisecondsStarted));
+                        locator, System.currentTimeMillis() - msStarted));
             } catch (WebDriverException e) {
                 log.debug(e.getMessage());
             }
             Thread.sleep(ELEMENT_QUERY_DELAY_MS);
-        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
         printPageSource();
         return false;
     }
@@ -556,7 +559,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     protected boolean isLocatorInvisible(By locator, int timeoutSeconds) throws Exception {
-        final long millisecondsStarted = System.currentTimeMillis();
+        final long msStarted = System.currentTimeMillis();
         do {
             try {
                 final WebElement el = getDriver().findElement(locator);
@@ -564,18 +567,18 @@ public abstract class IOSPage extends BasePage {
                     return true;
                 }
                 log.debug(String.format("The element '%s' is still visible after %s ms",
-                        locator, System.currentTimeMillis() - millisecondsStarted));
+                        locator, System.currentTimeMillis() - msStarted));
             } catch (WebDriverException e) {
                 return true;
             }
             Thread.sleep(ELEMENT_QUERY_DELAY_MS);
-        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
         return false;
     }
 
     @Override
     protected Optional<WebElement> getElementIfDisplayed(By locator, int timeoutSeconds) throws Exception {
-        final long millisecondsStarted = System.currentTimeMillis();
+        final long msStarted = System.currentTimeMillis();
         do {
             try {
                 final WebElement el = getDriver().findElement(locator);
@@ -583,12 +586,12 @@ public abstract class IOSPage extends BasePage {
                     return Optional.of(el);
                 }
                 throw new WebDriverException(String.format("The element '%s' is still not visible after %s ms",
-                        locator, System.currentTimeMillis() - millisecondsStarted));
+                        locator, System.currentTimeMillis() - msStarted));
             } catch (WebDriverException e) {
                 log.debug(e.getMessage());
             }
             Thread.sleep(ELEMENT_QUERY_DELAY_MS);
-        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
         printPageSource();
         return Optional.empty();
     }
@@ -600,7 +603,7 @@ public abstract class IOSPage extends BasePage {
 
     @Override
     protected Optional<WebElement> getElementIfExists(By locator, int timeoutSeconds) throws Exception {
-        final long millisecondsStarted = System.currentTimeMillis();
+        final long msStarted = System.currentTimeMillis();
         do {
             try {
                 final WebElement el = getDriver().findElement(locator);
@@ -608,13 +611,35 @@ public abstract class IOSPage extends BasePage {
                     return Optional.of(el);
                 }
                 throw new WebDriverException(String.format("The element '%s' is still not present after %s ms",
-                        locator, System.currentTimeMillis() - millisecondsStarted));
+                        locator, System.currentTimeMillis() - msStarted));
             } catch (WebDriverException e) {
                 log.debug(e.getMessage());
             }
             Thread.sleep(ELEMENT_QUERY_DELAY_MS);
-        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
         return Optional.empty();
+    }
+
+    @Override
+    protected List<WebElement> selectVisibleElements(By locator) throws Exception {
+        return this.selectVisibleElements(locator, DriverUtils.getDefaultLookupTimeoutSeconds());
+    }
+
+    @Override
+    protected List<WebElement> selectVisibleElements(By locator, int timeoutSeconds) throws Exception {
+        final List<WebElement> result = new ArrayList<>();
+        final long msStarted = System.currentTimeMillis();
+        do {
+            result.addAll(
+                    getDriver().findElements(locator).stream().
+                            filter(WebElement::isDisplayed).collect(Collectors.toList())
+            );
+            if (result.size() > 0) {
+                return result;
+            }
+            Thread.sleep(ELEMENT_QUERY_DELAY_MS);
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
+        return result;
     }
 
     //endregion
