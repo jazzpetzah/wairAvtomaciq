@@ -23,7 +23,7 @@ public class ExtendedCursorEphemeralOverlayPage extends ExtendedCursorOverlayPag
             value -> String.format("//*[@id='%s' and @value='%s']", strIdNumberPickerInput, value);
 
     public enum EphemeralTimeout {
-        OFF(0), SECONDS5(1), SECONDS15(2), MINUTE1(3);
+        OFF(0), SECONDS5(1), SECONDS15(2), MINUTE1(3), MINUTE5(4);
 
         private int index;
 
@@ -45,21 +45,26 @@ public class ExtendedCursorEphemeralOverlayPage extends ExtendedCursorOverlayPag
                     return SECONDS15;
                 case "1 minute":
                     return MINUTE1;
+                case "5 minutes":
+                    return MINUTE5;
                 default:
                     throw new IllegalArgumentException(String.format("Cannot identify Ephemeral timeout '%s'", value));
             }
         }
-
     }
 
     public void setTimeout(String timeoutStr) throws Exception {
         WebElement numberPickerInputElement = DriverUtils.getElementIfDisplayed(getDriver(), idNumberPickerInput)
                 .orElseThrow(() -> new IllegalStateException("Ephemeral Extended cursor layout is expected to be visible"));
 
-        int height = numberPickerInputElement.getSize().getHeight();
-        int y = numberPickerInputElement.getLocation().getY();
-        int previousPositionY = y - height / 2;
-        int nextPositionY = y + height + height / 2;
+        final int pickerInputHeight = numberPickerInputElement.getSize().getHeight();
+        final int pickerInputWidth = numberPickerInputElement.getSize().getWidth();
+        final int pickerInputY = numberPickerInputElement.getLocation().getY();
+        final int pickerInputX = numberPickerInputElement.getLocation().getX();
+
+        final int pickerInputCenterX = pickerInputX + pickerInputWidth / 2;
+        final int previousPositionY = pickerInputY - pickerInputHeight / 2;
+        final int nextPositionY = pickerInputY + pickerInputHeight + pickerInputHeight / 2;
 
         EphemeralTimeout destinationTimeout = EphemeralTimeout.getByIndex(timeoutStr);
         EphemeralTimeout currentTimeout = EphemeralTimeout.getByIndex(numberPickerInputElement.getText());
@@ -67,10 +72,10 @@ public class ExtendedCursorEphemeralOverlayPage extends ExtendedCursorOverlayPag
         int countOfTaps = destinationTimeout.getIndex() - currentTimeout.getIndex();
         while (countOfTaps != 0) {
             if (countOfTaps > 0) {
-                this.getDriver().tap(1, 50, nextPositionY, DriverUtils.SINGLE_TAP_DURATION);
+                this.getDriver().tap(1, pickerInputCenterX, nextPositionY, DriverUtils.SINGLE_TAP_DURATION);
                 countOfTaps--;
             } else {
-                this.getDriver().tap(1, 50, previousPositionY, DriverUtils.SINGLE_TAP_DURATION);
+                this.getDriver().tap(1, pickerInputCenterX, previousPositionY, DriverUtils.SINGLE_TAP_DURATION);
                 countOfTaps++;
             }
             Thread.sleep(1000);

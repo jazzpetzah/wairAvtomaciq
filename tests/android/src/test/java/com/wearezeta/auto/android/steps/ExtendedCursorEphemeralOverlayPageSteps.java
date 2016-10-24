@@ -15,9 +15,9 @@ public class ExtendedCursorEphemeralOverlayPageSteps {
      *
      * @param timeoutStr which could be Off, 5 seconds, 15 seconds and 1 minute
      * @throws Exception
-     * @step. ^I set timeout to (Off|5 seconds|15 seconds|1 minute) on Extended cursor ephemeral overlay$
+     * @step. ^I set timeout to (Off|5 seconds|15 seconds|1 minute|5 minutes) on Extended cursor ephemeral overlay$
      */
-    @When("^I set timeout to (Off|5 seconds|15 seconds|1 minute) on Extended cursor ephemeral overlay$")
+    @When("^I set timeout to (Off|5 seconds|15 seconds|1 minute|5 minutes) on Extended cursor ephemeral overlay$")
     public void ISetTimeout(String timeoutStr) throws Exception {
         getExtendedCursorEphemeralOverlayPage().setTimeout(timeoutStr);
     }
