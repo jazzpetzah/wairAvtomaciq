@@ -240,11 +240,11 @@ Feature: Audio Messaging
     Given I see conversations list
     When User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     And I tap on contact name <Contact>
-    And I remember media container state
+    And I remember Media container state
     And I tap on media container in conversation view
     And I long tap Audio Message button for 5 seconds from input tools
     Then I see audio message recorder container in the conversation view
-    And I see media container state is not changed
+    And I see asset container state is not changed
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                                   |
@@ -309,9 +309,9 @@ Feature: Audio Messaging
     Given I tap Play audio message button
     # Wait until audio track is loaded
     Given I wait for 7 seconds
-    When I remember media container state
+    When I remember Media container state
     And I wait for 3 seconds
-    Then I see media container state is not changed
+    Then I see asset container state is not changed
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                                   | FileName | FileMIME  | ContactDevice |

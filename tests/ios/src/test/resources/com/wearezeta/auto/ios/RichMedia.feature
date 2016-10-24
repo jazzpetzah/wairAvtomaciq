@@ -133,19 +133,19 @@ Feature: Rich Media
     Given I see conversations list
     Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
     When I tap on contact name <Contact>
-    And I remember media container state
+    And I remember Media container state
     And I tap on media container in conversation view
     And I navigate back to conversations list
     And I wait for 1 second
     And I tap Pause button in conversations list next to <Contact>
     And I tap on contact name <Contact>
-    Then I see media container state is not changed
-    When I remember media container state
+    Then I see asset container state is not changed
+    When I remember Media container state
     And I navigate back to conversations list
     And I wait for 1 second
     And I tap Play button in conversations list next to <Contact>
     And I tap on contact name <Contact>
-    Then I see media container state is changed
+    Then I see asset container state is changed
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                                            |
