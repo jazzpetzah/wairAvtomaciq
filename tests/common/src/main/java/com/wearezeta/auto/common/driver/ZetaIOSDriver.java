@@ -1,21 +1,16 @@
 package com.wearezeta.auto.common.driver;
 
-import java.io.File;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 import java.util.concurrent.TimeoutException;
 
-import com.dd.plist.NSDictionary;
-import com.dd.plist.PropertyListParser;
 import com.google.common.collect.ImmutableMap;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rest.RESTError;
-import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
@@ -56,31 +51,6 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
 
     private void initOSVersionString() {
         this.osVersion = (String) getCapabilities().getCapability("platformVersion");
-    }
-
-    private static Map<String, String> cachedBundleIds = new HashMap<>();
-
-    public static String parseBundleId(File plist) throws Exception {
-        final NSDictionary rootDict = (NSDictionary) PropertyListParser.parse(plist);
-        return rootDict.objectForKey("CFBundleIdentifier").toString();
-    }
-
-    public String getBundleID() throws Exception {
-        final String autPath = (String) getCapabilities().getCapability("app");
-        if (!cachedBundleIds.containsKey(autPath)) {
-            if (autPath.endsWith(".app")) {
-                cachedBundleIds.put(autPath, parseBundleId(new File(autPath + "/Info.plist")));
-            } else {
-                final File appPath = CommonUtils.extractAppFromIpa(new File(autPath));
-                try {
-                    cachedBundleIds.put(autPath,
-                            parseBundleId(new File(appPath.getCanonicalPath() + "/Info.plist")));
-                } finally {
-                    FileUtils.deleteDirectory(appPath);
-                }
-            }
-        }
-        return cachedBundleIds.get(autPath);
     }
 
     @Override

@@ -11,10 +11,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.IOSDistributable;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
@@ -24,7 +26,6 @@ import cucumber.api.Scenario;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import gherkin.formatter.model.Result;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -76,13 +77,25 @@ public class CommonIOSSteps {
         return getIosAppiumUrlFromConfig(CommonIOSSteps.class);
     }
 
-    private static String getAppPath() throws Exception {
-        return getIosApplicationPathFromConfig(CommonIOSSteps.class);
+    private static String getAppPath() {
+        try {
+            return getIosApplicationPathFromConfig(CommonIOSSteps.class);
+        } catch (Exception e) {
+            Throwables.propagate(e);
+        }
+        return null;
     }
 
-    private static String getOldAppPath() throws Exception {
-        return getOldAppPathFromConfig(CommonIOSSteps.class);
+    private static String getOldAppPath() {
+        try {
+            return getOldAppPathFromConfig(CommonIOSSteps.class);
+        } catch (Exception e) {
+            Throwables.propagate(e);
+        }
+        return null;
     }
+
+    private static final IOSDistributable CURRENT_BUILD = IOSDistributable.getInstance(getAppPath());
 
     /**
      * https://github.com/wireapp/wire-automation-addressbook-ios
@@ -97,8 +110,6 @@ public class CommonIOSSteps {
 
     private static final int DRIVER_CREATION_RETRIES_COUNT = 2;
 
-    private static Map<String, String> cachedBundleIds = new HashMap<>();
-
     private static final long INSTALL_DELAY_MS = 5000;
 
     // These settings are needed to properly sign WDA for real device tests
@@ -106,19 +117,6 @@ public class CommonIOSSteps {
     private static final String KEYCHAIN_PATH = String.format("%s/%s",
             System.getProperty("user.home"), "/Library/Keychains/MyKeychain.keychain");
     private static final String KEYCHAIN_PASSWORD = "123456";
-
-    private static void prepareRealDevice(String udid, String ipaPath) throws Exception {
-        if (!cachedBundleIds.containsKey(ipaPath)) {
-            final File appPath = CommonUtils.extractAppFromIpa(new File(ipaPath));
-            try {
-                cachedBundleIds.put(ipaPath, ZetaIOSDriver.parseBundleId(
-                        new File(appPath.getCanonicalPath() + File.separator + "Info.plist")));
-            } finally {
-                FileUtils.deleteDirectory(appPath);
-            }
-        }
-        RealDeviceHelpers.uninstallApp(udid, cachedBundleIds.get(ipaPath));
-    }
 
     @SuppressWarnings("unchecked")
     public Future<ZetaIOSDriver> resetIOSDriver(String ipaPath,
@@ -138,7 +136,6 @@ public class CommonIOSSteps {
             final String udid = RealDeviceHelpers.getUDID().orElseThrow(
                     () -> new IllegalStateException("Cannot detect any connected iDevice")
             );
-            prepareRealDevice(udid, ipaPath);
 
             // We don't really care about which particular real device model we have
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()).split("\\s+")[0]);
@@ -221,11 +218,11 @@ public class CommonIOSSteps {
         }
 
         final Map<String, Object> additionalCaps = new HashMap<>();
-        String appPath = getAppPath();
+        String appPath = CURRENT_BUILD.getAppRoot().getAbsolutePath();
         if (scenario.getSourceTagNames().contains(TAG_NAME_UPGRADE) ||
                 scenario.getSourceTagNames().contains(TAG_NAME_ADDRESSBOOK)) {
             if (scenario.getSourceTagNames().contains(TAG_NAME_UPGRADE)) {
-                appPath = getOldAppPath();
+                appPath = IOSDistributable.getInstance(getOldAppPath()).getAppRoot().getAbsolutePath();
             }
 
             if (scenario.getSourceTagNames().contains(TAG_NAME_ADDRESSBOOK)) {
@@ -338,16 +335,9 @@ public class CommonIOSSteps {
         }
         customCaps.put("noReset", true);
         customCaps.put("fullReset", false);
-        final String appPath = getAppPath();
-        if (appPath.endsWith(".ipa")) {
-            pagesCollection.getCommonPage().installIpa(new File(appPath));
-        } else if (appPath.endsWith(".app")) {
-            pagesCollection.getCommonPage().installApp(new File(appPath));
-        } else {
-            throw new IllegalArgumentException(String.format("Only .app and .ipa package formats are supported. " +
-                    "%s is given instead.", appPath));
-        }
-        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath, Optional.of(customCaps), 1);
+        pagesCollection.getCommonPage().installApp(CURRENT_BUILD.getAppRoot());
+        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(CURRENT_BUILD.getAppRoot().getAbsolutePath(),
+                Optional.of(customCaps), 1);
         updateDriver(lazyDriver);
     }
 
@@ -374,7 +364,8 @@ public class CommonIOSSteps {
         }
         customCaps.put("noReset", true);
         customCaps.put("fullReset", false);
-        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(getAppPath(), Optional.of(customCaps), 1);
+        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(CURRENT_BUILD.getAppRoot().getAbsolutePath(),
+                Optional.of(customCaps), 1);
         updateDriver(lazyDriver);
     }
 

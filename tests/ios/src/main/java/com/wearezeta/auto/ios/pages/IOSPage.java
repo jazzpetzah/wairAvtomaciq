@@ -16,6 +16,7 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.*;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.IOSDistributable;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
 import org.apache.commons.lang3.NotImplementedException;
@@ -28,6 +29,8 @@ import com.wearezeta.auto.ios.pages.keyboard.IOSKeyboard;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.remote.UnreachableBrowserException;
+
+import static com.wearezeta.auto.common.CommonUtils.getIosApplicationPathFromConfig;
 
 
 public abstract class IOSPage extends BasePage {
@@ -270,7 +273,9 @@ public abstract class IOSPage extends BasePage {
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             IOSSimulatorHelper.goHome();
             Thread.sleep(timeSeconds * 1000);
-            IOSSimulatorHelper.launchApp(getDriver().getBundleID());
+            IOSSimulatorHelper.launchApp(
+                    IOSDistributable.getInstance(getIosApplicationPathFromConfig(getClass())).getBundleId()
+            );
             Thread.sleep(1000);
         } else {
             this.getDriver().runAppInBackground(timeSeconds);
@@ -290,7 +295,9 @@ public abstract class IOSPage extends BasePage {
     public void restoreWire() throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            IOSSimulatorHelper.launchApp(getDriver().getBundleID());
+            IOSSimulatorHelper.launchApp(
+                    IOSDistributable.getInstance(getIosApplicationPathFromConfig(getClass())).getBundleId()
+            );
             Thread.sleep(1000);
         } else {
             throw new IllegalStateException("This method works for iOS Simulator only");
