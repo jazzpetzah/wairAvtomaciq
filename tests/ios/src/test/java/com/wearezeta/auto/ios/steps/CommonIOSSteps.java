@@ -1516,14 +1516,19 @@ public class CommonIOSSteps {
      * @throws Exception
      * @step. ^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*))$
      */
-    @When("^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*)$")
-    public void UserReactLastMessage(String userNameAlias, String reactionType, String dstNameAlias) throws Exception {
+    @When("^User (.*) (likes|unlikes|reads) the recent message from (user|group conversation) (.*)$")
+    public void UserReactLastMessage(String userNameAlias, String reactionType, String convType, String dstNameAlias)
+            throws Exception {
         switch (reactionType.toLowerCase()) {
             case "likes":
                 commonSteps.UserLikeLatestMessage(userNameAlias, dstNameAlias, null);
                 break;
             case "unlikes":
                 commonSteps.UserUnlikeLatestMessage(userNameAlias, dstNameAlias, null);
+                break;
+            case "reads":
+                commonSteps.UserReadLastEphemeralMessage(userNameAlias, dstNameAlias, null,
+                        convType.equals("group conversation"));
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify the reaction type '%s'",
