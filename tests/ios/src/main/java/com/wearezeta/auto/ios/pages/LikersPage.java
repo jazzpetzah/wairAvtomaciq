@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
 import io.appium.java_client.MobileBy;
@@ -27,7 +26,7 @@ public class LikersPage extends IOSPage {
 
     public boolean isLikerVisible(String name) throws Exception {
         final By locator = By.xpath(xpathStrContactAvatarByName.apply(name));
-        return isElementDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public void tapCloseButton() throws Exception {
@@ -35,11 +34,11 @@ public class LikersPage extends IOSPage {
     }
 
     public boolean likersPageIsVisible() throws Exception {
-        return isElementDisplayed(nameLikersPageLabel);
+        return isLocatorDisplayed(nameLikersPageLabel);
     }
 
     public boolean isLikerByPositionVisible(String name, int position) throws Exception {
         final By locator = By.xpath(xpathStrLikerByNameAndIndex.apply(position, name));
-        return isElementDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 }

@@ -32,7 +32,7 @@ public class SettingsPage extends AndroidPage {
 
     private static final By xpathOKButton = By.xpath("//*[starts-with(@id, 'button') and @value='OK']");
 
-    private static final By xpathVerificationOKButton = By.xpath("//*[@id='tv__ok_button' and @value='OK']");
+    private static final By idVerificationCodeOKButton = By.id("tv__ok_button");
 
     private static final By idEmailEdit = By.id("acet__preferences__email");
 
@@ -78,6 +78,8 @@ public class SettingsPage extends AndroidPage {
         final By locator = By.xpath(xpathStrSettingsMenuItemByText.apply(name));
         assert scrollUntilMenuElementVisible(locator, 5) : String
                 .format("Menu item '%s' is not present", name);
+        //Stability fix - after scrolling menu doesn't respond during small timeout
+        Thread.sleep(500);
         getElement(locator).click();
     }
 
@@ -152,6 +154,6 @@ public class SettingsPage extends AndroidPage {
             getElement(locator).sendKeys(activationCode.substring(charIdx, charIdx + 1));
         }
         Thread.sleep(1000);
-        getElement(xpathVerificationOKButton).click();
+        getElement(idVerificationCodeOKButton).click();
     }
 }

@@ -783,25 +783,6 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * User A sends a hotping to a conversation
-     *
-     * @param hotPingFromUserNameAlias The user to do the hotpinging
-     * @param dstConversationName      the target converation to send the ping to
-     * @param isSecure                 equals null if ping should not be secure
-     * @throws Exception
-     * @step. ^User (\\w+) (securely )?hotpings? conversation (.*)$
-     */
-    @When("^User (\\w+) (securely )?hotpings? conversation (.*)$")
-    public void UserHotPingedConversation(String hotPingFromUserNameAlias,
-                                          String isSecure, String dstConversationName) throws Exception {
-        if (isSecure == null) {
-            commonSteps.UserHotPingedConversation(hotPingFromUserNameAlias, dstConversationName);
-        } else {
-            commonSteps.UserHotPingedConversationOtr(hotPingFromUserNameAlias, dstConversationName);
-        }
-    }
-
-    /**
      * User A sends a simple text message to user B
      *
      * @param msgFromUserNameAlias the user who sends the message
@@ -1387,17 +1368,21 @@ public class CommonAndroidSteps {
      * @param dstNameAlias  the conversation which message is belong to
      * @param deviceName    User X's device
      * @throws Exception
-     * @step. ^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$
+     * @step. ^User (.*) (likes|unlikes) the recent message from (user|group conversation) (.*) via device (.*)$
      */
-    @When("^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$")
-    public void UserReactLastMessage(String userNameAlias, String reactionType, String dstNameAlias, String deviceName)
-            throws Exception {
+    @When("^User (.*) (likes|unlikes|reads) the recent message from (user|group conversation) (.*) via device (.*)$")
+    public void UserReactLastMessage(String userNameAlias, String reactionType, String convoType, String dstNameAlias,
+                                     String deviceName) throws Exception {
         switch (reactionType.toLowerCase()) {
             case "likes":
                 commonSteps.UserLikeLatestMessage(userNameAlias, dstNameAlias, deviceName);
                 break;
             case "unlikes":
                 commonSteps.UserUnlikeLatestMessage(userNameAlias, dstNameAlias, deviceName);
+                break;
+            case "reads":
+                commonSteps.UserReadLastEphemeralMessage(userNameAlias, dstNameAlias, deviceName,
+                        convoType.equals("group conversation"));
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify the reaction type '%s'", reactionType));
@@ -1422,25 +1407,32 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Check the remembered message is changed
+     * Check the remembered message is changed or not changed
      *
-     * @param userNameAlias user name/alias
-     * @param convoType     either 'user' or 'group conversation'
-     * @param dstNameAlias  destination user name/alias or group convo name
-     * @param deviceName    source device name. Will be created if does not exist yet
+     * @param userNameAlias    user name/alias
+     * @param convoType        either 'user' or 'group conversation'
+     * @param dstNameAlias     destination user name/alias or group convo name
+     * @param deviceName       source device name. Will be created if does not exist yet
+     * @param shouldNotChanged equals null means the recent message should changed
      * @throws Exception
-     * @step. ^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is
+     * @step. ^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is( not)?
      * changed( in \\d+ seconds?)?$
      */
-    @Then("^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is " +
-            "changed( in \\d+ seconds?)?$")
+    @Then("^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is( not)? changed( in \\d+ seconds?)?$")
     public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias,
-                                             String deviceName, String waitDuration) throws Exception {
-        final int durationSeconds = (waitDuration == null) ?
-                CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
+                                             String deviceName, String shouldNotChanged, String waitDuration)
+            throws Exception {
+        final int durationSeconds = (waitDuration == null) ? CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
                 : Integer.parseInt(waitDuration.replaceAll("[\\D]", ""));
-        commonSteps.UserXFoundLastMessageChanged(userNameAlias, convoType.equals("group conversation"), dstNameAlias,
-                deviceName, durationSeconds);
+
+        if (shouldNotChanged == null) {
+            commonSteps.UserXFoundLastMessageChanged(userNameAlias, convoType.equals("group conversation"), dstNameAlias,
+                    deviceName, durationSeconds);
+        } else {
+            commonSteps.UserXFoundLastMessageNotChanged(userNameAlias, convoType.equals("group conversation"), dstNameAlias,
+                    deviceName, durationSeconds);
+        }
+
     }
 
     /**
@@ -1934,5 +1926,25 @@ public class CommonAndroidSteps {
     @Then("^I see Android keyboard$")
     public void ISeeKeyboard() throws Exception {
         Assert.assertTrue("The system keyboard is expected to be visible", AndroidCommonUtils.isKeyboardVisible());
+    }
+
+    /**
+     * Switch the corresponding conversation to ephemeral mode
+     *
+     * @param userAs      user name/alias
+     * @param isGroup     whether is 1:1 or group conversation
+     * @param convoName   conversation name
+     * @param timeout     ephemeral messages timeout
+     * @param timeMetrics either seconds or minutes
+     * @throws Exception
+     * @step. ^User (.*) switches (user|group conversation) (.*) to ephemeral mode with (\d+) (seconds?|minutes?) timeout$"
+     */
+    @When("^User (.*) switches (user|group conversation) (.*) to ephemeral mode (?:via device (.*)\\s)?with " +
+            "(\\d+) (seconds?|minutes?) timeout$")
+    public void UserSwitchesToEphemeralMode(String userAs, String isGroup, String convoName, String deviceName, int timeout,
+                                            String timeMetrics) throws Exception {
+        final long timeoutMs = timeMetrics.startsWith("minute") ? timeout * 60 * 1000 : timeout * 1000;
+        commonSteps.UserSwitchesToEphemeralMode(userAs, convoName, timeoutMs, isGroup.equals("group conversation"),
+                deviceName);
     }
 }

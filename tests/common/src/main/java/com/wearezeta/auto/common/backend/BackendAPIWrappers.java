@@ -297,11 +297,6 @@ public final class BackendAPIWrappers {
         return sendConversationPing(fromUser, id);
     }
 
-    public static void sendHotPingToConversation(ClientUser fromUser, String toChat, String id) throws Exception {
-        String conv_id = getConversationIdByName(fromUser, toChat);
-        sendConvertsationHotPing(fromUser, conv_id, id);
-    }
-
     private static AuthToken receiveAuthToken(ClientUser user) throws Exception {
         return new AuthToken(user.getTokenType(), user.getToken());
     }

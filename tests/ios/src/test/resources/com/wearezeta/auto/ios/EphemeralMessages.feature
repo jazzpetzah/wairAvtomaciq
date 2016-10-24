@@ -44,7 +44,7 @@ Feature: Ephemeral Messages
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      | 
 
-  @C259584 @C259585 @staging @fastLogin
+  @C259584 @C259585 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral message - no online receiver (negative case)
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -55,9 +55,9 @@ Feature: Ephemeral Messages
     And I set ephemeral messages expiration timer to <Timeout> seconds
     And I type the default message and send it
     And I see 1 default message in the conversation view
+    And I remember the recent message from user Myself in the local database
     Then I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
-    When I remember the recent message from user Myself in the local database
-    And I wait for <Timeout> seconds
+    When I wait for <Timeout> seconds
     Then I see 1 message in the conversation view
     And I verify the remembered message has been changed in the local database
 
@@ -65,7 +65,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timeout | EphemeralTimeLabel |
       | user1Name | user2Name | 15      | seconds            |
 
-  @C259586 @staging @fastLogin
+  @C259586 @regression @fastLogin
   Scenario Outline: Verify switching on/off ephemeral message
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>

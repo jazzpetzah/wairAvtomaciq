@@ -9,6 +9,8 @@ Feature: Rich Media
     Given I see conversations list
     When I tap on contact name <Contact>
     And I type the "<YouTubeLink>" message and send it
+    #wait to be sure video is delivered
+    And I wait for 5 seconds
     And I see "<DeliveredLabel>" on the message toolbox in conversation view
     And I tap on media container in conversation view
     # Wait until web page is loaded
@@ -19,7 +21,7 @@ Feature: Rich Media
       | Name      | Contact   | YouTubeLink                                | DeviceName1 | DeliveredLabel |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU | device1     | Delivered      |
 
-  @C3210 @rc @regression @IPv6 @fastLogin
+  @C3210 @regression @IPv6 @fastLogin
   Scenario Outline: (MediaBar disappears on Simulator) Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

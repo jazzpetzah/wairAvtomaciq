@@ -30,7 +30,7 @@ public class MainWirePage extends OSXPage {
     private static final int SPACE_FOR_DOCK = 50;
     private static final int TITLEBAR_HANDLE_OFFSET = 100;
 
-    private final Robot robot = new Robot();
+    private final Robot robot = this.getDriver().getRobot();
 
     @FindBy(how = How.XPATH, using = OSXLocators.MainWirePage.xpathWindow)
     protected WebElement window;

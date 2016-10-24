@@ -144,6 +144,8 @@ Feature: Recall Message
     When I tap on contact name <Contact>
     And I tap Video Message button from input tools
     Then I see video message container in the conversation view
+    # Wait until video preview is fully loaded
+    And I wait for 5 seconds
     When User <Contact> remembers the recent message from user Myself via device <HisDevice>
     And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
     And I long tap on video message in conversation view

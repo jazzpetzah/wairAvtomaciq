@@ -102,17 +102,6 @@ public class SettingsPageSteps {
     }
 
     /**
-     * Presses the Edit Button in Settings Manage devices
-     *
-     * @throws Exception
-     * @step. ^I tap Edit button$
-     */
-    @When("^I tap Edit button$")
-    public void ITapEditButton() throws Exception {
-        getSettingsPage().pressEditButton();
-    }
-
-    /**
      * Presses the delete button for the particular device
      *
      * @param deviceName name of device that should be deleted
@@ -230,9 +219,9 @@ public class SettingsPageSteps {
      *
      * @param name name of the button
      * @throws Exception
-     * @step. ^I tap (Done|Back) navigation button on Settings page$
+     * @step. ^I tap (Done|Back|Edit) navigation button on Settings page$
      */
-    @And("^I tap (Done|Back) navigation button on Settings page$")
+    @And("^I tap (Done|Back|Edit) navigation button on Settings page$")
     public void ITapNavigationButton(String name) throws Exception {
         getSettingsPage().tapNavigationButton(name);
     }

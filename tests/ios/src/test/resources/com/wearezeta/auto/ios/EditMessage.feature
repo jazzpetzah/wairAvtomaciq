@@ -134,6 +134,9 @@ Feature: Edit Message
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I type the "<FacebookPrefix> <FacebookLink>" message and send it
+    # This is to get rid of the keyboard
+    And I navigate back to conversations list
+    And I tap on contact name <Contact>
     And I long tap on link preview in conversation view
     And I tap on Edit badge item
     And I clear conversation text input

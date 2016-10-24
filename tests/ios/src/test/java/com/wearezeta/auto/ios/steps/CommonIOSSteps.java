@@ -24,6 +24,7 @@ import cucumber.api.Scenario;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import gherkin.formatter.model.Result;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -96,6 +97,8 @@ public class CommonIOSSteps {
 
     private static final int DRIVER_CREATION_RETRIES_COUNT = 2;
 
+    private static Map<String, String> cachedBundleIds = new HashMap<>();
+
     private static final long INSTALL_DELAY_MS = 5000;
 
     // These settings are needed to properly sign WDA for real device tests
@@ -104,11 +107,23 @@ public class CommonIOSSteps {
             System.getProperty("user.home"), "/Library/Keychains/MyKeychain.keychain");
     private static final String KEYCHAIN_PASSWORD = "123456";
 
+    private static void prepareRealDevice(String udid, String ipaPath) throws Exception {
+        if (!cachedBundleIds.containsKey(ipaPath)) {
+            final File appPath = CommonUtils.extractAppFromIpa(new File(ipaPath));
+            try {
+                cachedBundleIds.put(ipaPath, ZetaIOSDriver.parseBundleId(
+                        new File(appPath.getCanonicalPath() + File.separator + "Info.plist")));
+            } finally {
+                FileUtils.deleteDirectory(appPath);
+            }
+        }
+        RealDeviceHelpers.uninstallApp(udid, cachedBundleIds.get(ipaPath));
+    }
+
     @SuppressWarnings("unchecked")
     public Future<ZetaIOSDriver> resetIOSDriver(String ipaPath,
                                                 Optional<Map<String, Object>> additionalCaps,
                                                 int retriesCount) throws Exception {
-        Optional<String> udid;
         final boolean isRealDevice = !CommonUtils.getIsSimulatorFromConfig(getClass());
 
         final DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -120,14 +135,14 @@ public class CommonIOSSteps {
         capabilities.setCapability("fullReset", true);
         capabilities.setCapability("appName", getAppName());
         if (isRealDevice) {
-            // https://github.com/appium/appium/issues/6597
+            final String udid = RealDeviceHelpers.getUDID().orElseThrow(
+                    () -> new IllegalStateException("Cannot detect any connected iDevice")
+            );
+            prepareRealDevice(udid, ipaPath);
 
             // We don't really care about which particular real device model we have
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()).split("\\s+")[0]);
-            udid = RealDeviceHelpers.getUDID();
-            capabilities.setCapability("udid", udid.orElseThrow(
-                    () -> new IllegalStateException("Cannot detect any connected iDevice")
-            ));
+            capabilities.setCapability("udid", udid);
             capabilities.setCapability("realDeviceLogger",
                     "/usr/local/lib/node_modules/deviceconsole/deviceconsole");
             capabilities.setCapability("showXcodeLog", true);

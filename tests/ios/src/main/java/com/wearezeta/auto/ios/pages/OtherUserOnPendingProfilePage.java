@@ -5,7 +5,6 @@ import java.util.concurrent.Future;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class OtherUserOnPendingProfilePage extends IOSPage {
@@ -22,18 +21,18 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 
     private static final By nameOtherProfilePageCloseButton = MobileBy.AccessibilityId("OtherUserProfileCloseButton");
 
-    private static final By nameConnectConfirmButton = MobileBy.AccessibilityId("CONNECT");
+    private static final By xpathConnectConfirmButton = By.xpath("(//XCUIElementTypeButton[@name='CONNECT'])[last()]");
 
     public OtherUserOnPendingProfilePage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
     public boolean isClosePageButtonVisible() throws Exception {
-        return isElementDisplayed(nameOtherProfilePageCloseButton);
+        return isLocatorDisplayed(nameOtherProfilePageCloseButton);
     }
 
     public boolean isCancelRequestButtonVisible() throws Exception {
-        return isElementDisplayed(xpathOtherProfileCancelRequestButton);
+        return isLocatorDisplayed(xpathOtherProfileCancelRequestButton);
     }
 
     public void tapCancelRequestButton() throws Exception {
@@ -49,11 +48,11 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
     }
 
     public boolean isUserNameDisplayed(String name) throws Exception {
-        return isElementDisplayed(MobileBy.AccessibilityId(name), 10);
+        return isLocatorDisplayed(MobileBy.AccessibilityId(name), 10);
     }
 
     public boolean isRemoveFromGroupConversationVisible() throws Exception {
-        return isElementDisplayed(nameRightActionButton);
+        return isLocatorDisplayed(nameRightActionButton);
     }
 
     public void tapConnectButton() throws Exception {
@@ -61,7 +60,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
     }
 
     public void confirmConnect() throws Exception {
-        getElement(nameConnectConfirmButton).click();
+        getElement(xpathConnectConfirmButton).click();
     }
 
     public void tapCloseButton() throws Exception {

@@ -9,7 +9,6 @@ import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class VideoPlayerPage extends IOSPage {
@@ -25,7 +24,7 @@ public class VideoPlayerPage extends IOSPage {
     }
 
     public boolean isVideoPlayerPageOpened() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), xpathVideoMainPage);
+        return isLocatorExist(xpathVideoMainPage);
     }
 
     public void tapVideoPage() throws Exception {
@@ -35,7 +34,7 @@ public class VideoPlayerPage extends IOSPage {
     public void clickVideoDoneButton() throws Exception {
         final FBElement videoDoneButton = (FBElement) getElement(fbNameVideoDoneButton);
         this.tapAtTheCenterOfElement(videoDoneButton);
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), fbNameVideoDoneButton, 5)) {
+        if (!isLocatorInvisible(fbNameVideoDoneButton, 5)) {
             this.tapAtTheCenterOfElement(videoDoneButton);
         }
     }
@@ -51,6 +50,6 @@ public class VideoPlayerPage extends IOSPage {
     }
 
     public boolean isVideoMessagePlayerPageDoneButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), nameVideoDoneButton, 20);
+        return isLocatorExist(nameVideoDoneButton, 20);
     }
 }

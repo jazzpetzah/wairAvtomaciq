@@ -5,11 +5,7 @@ import java.util.function.Function;
 
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class GroupConversationViewPage extends ConversationViewPage {
@@ -25,15 +21,15 @@ public class GroupConversationViewPage extends ConversationViewPage {
 
     public boolean isYouAddedUserMessageShown(String user) throws Exception {
         final By locator = By.xpath(xpathStrYouAddedToGroupChatMessageByName.apply(user));
-        return isElementDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public boolean isYouRenamedConversationMessageVisible() throws Exception {
-        return isElementDisplayed(nameYouRenamedConversation);
+        return isLocatorDisplayed(nameYouRenamedConversation);
     }
 
     public boolean isYouLeftMessageShown() throws Exception {
-        return isElementDisplayed(nameYouLeftMessage);
+        return isLocatorDisplayed(nameYouLeftMessage);
     }
 
 }
