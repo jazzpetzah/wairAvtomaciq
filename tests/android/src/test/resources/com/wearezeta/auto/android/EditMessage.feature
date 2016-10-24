@@ -1,6 +1,6 @@
 Feature: Edit Message
 
-  @C202362 @C202366 @regression @rc
+  @C202362 @regression @rc
   Scenario Outline: Verify I can cancel editing a message by button / I can reset my editing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

@@ -35,8 +35,8 @@ Feature: File Transfer
       | Name      | Contact1  | FileFullName  | FileSize | AlertMessage                   |
       | user1Name | user2Name | qa_random.txt | 26.00MB  | You can send files up to 25MB. |
 
-  @C87629 @C87632 @rc @regression
-  Scenario Outline: Verify placeholder is shown for the receiver
+  @C87629 @rc @regression
+  Scenario Outline: Verify I can receive notification and I can see file transfer in conversation when I receive a file sharing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
