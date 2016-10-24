@@ -1923,4 +1923,24 @@ public class CommonAndroidSteps {
     public void ISeeKeyboard() throws Exception {
         Assert.assertTrue("The system keyboard is expected to be visible", AndroidCommonUtils.isKeyboardVisible());
     }
+
+    /**
+     * Switch the corresponding conversation to ephemeral mode
+     *
+     * @param userAs      user name/alias
+     * @param isGroup     whether is 1:1 or group conversation
+     * @param convoName   conversation name
+     * @param timeout     ephemeral messages timeout
+     * @param timeMetrics either seconds or minutes
+     * @throws Exception
+     * @step. ^User (.*) switches (user|group conversation) (.*) to ephemeral mode with (\d+) (seconds?|minutes?) timeout$"
+     */
+    @When("^User (.*) switches (user|group conversation) (.*) to ephemeral mode (?:via device (.*)\\s)?with " +
+            "(\\d+) (seconds?|minutes?) timeout$")
+    public void UserSwitchesToEphemeralMode(String userAs, String isGroup, String convoName, String deviceName, int timeout,
+                                            String timeMetrics) throws Exception {
+        final long timeoutMs = timeMetrics.startsWith("minute") ? timeout * 60 * 1000 : timeout * 1000;
+        commonSteps.UserSwitchesToEphemeralMode(userAs, convoName, timeoutMs, isGroup.equals("group conversation"),
+                deviceName);
+    }
 }
