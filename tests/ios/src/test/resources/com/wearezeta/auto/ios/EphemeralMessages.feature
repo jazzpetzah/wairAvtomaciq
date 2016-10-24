@@ -93,16 +93,37 @@ Feature: Ephemeral Messages
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Hourglass button in conversation view
-    And I set ephemeral messages expiration timer to <Timer> minute
-    And I tap Add Picture button from input tools
-    And I accept alert
-    And I accept alert
-    And I select the first picture from Keyboard Gallery
-    And I tap Confirm button on Picture preview page
-    Then I see 1 photo in the conversation view
-    And I remember Image container state
+    And I set ephemeral messages expiration timer to <Timer> seconds
+    #And I tap Add Picture button from input tools
+    #And I accept alert
+    #And I accept alert
+    #And I select the first picture from Keyboard Gallery
+    #And I tap Confirm button on Picture preview page
+    #Then I see 1 photo in the conversation view
+    #And I remember Image container state
+    #And I wait for 15 seconds
+    #Then I see asset container state is changed
+    #And I long tap Audio Message button from input tools
+    #And I tap Send record control button
+    #Then I see audio message container in the conversation view
+    #And I remember Audio container state
+    #And I tap Share Location button from input tools
+    #And I accept alert
+    # Small delay waiting location detection animation to finish
+    #And I wait for 5 seconds
+    #And I tap Send location button from map view
+    #And I remember Location container state
+    #Then I see location map container in the conversation view
+    And I type the "<GiphyTag>" message
+    And I tap GIF button from input tools
+    # Wait for GIF picture to be downloaded
     And I wait for 10 seconds
+    And I select the first item from Giphy grid
+    And I tap Send button on Giphy preview page
+    And I remember GIF container state
+    And I wait for 15 seconds
+    Then I see asset container state is changed
 
     Examples:
-      | Name      | Contact   | Timer |
-      | user1Name | user2Name | 1     |
+      | Name      | Contact   | Timer | GiphyTag |
+      | user1Name | user2Name | 15    | sun      |

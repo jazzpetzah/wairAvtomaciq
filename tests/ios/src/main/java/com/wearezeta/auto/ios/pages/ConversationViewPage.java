@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -25,6 +26,8 @@ import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+
+import javax.imageio.ImageIO;
 
 public class ConversationViewPage extends IOSPage {
     private static final By nameConversationBackButton = MobileBy.AccessibilityId("ConversationBackButton");
@@ -502,8 +505,8 @@ public class ConversationViewPage extends IOSPage {
         final int stateGlyphHeight = containerScreen.getHeight() / 7;
         final int stateGlyphX = (containerScreen.getWidth() - stateGlyphWidth) / 2;
         final int stateGlyphY = (containerScreen.getHeight() - stateGlyphHeight) / 2;
-//        BufferedImage tmp = containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
-//        ImageIO.write(tmp, "png", new File("/Users/elf/Desktop/" + System.currentTimeMillis() + ".png"));
+        BufferedImage tmp = containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
+        ImageIO.write(tmp, "png", new File("/Users/julianereschke/Desktop/" + System.currentTimeMillis() + ".png"));
         return containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
     }
 
@@ -511,21 +514,43 @@ public class ConversationViewPage extends IOSPage {
         final BufferedImage containerScreen;
 
         switch (assetType) {
-            case "Audio call":
+            case "Media":
                 containerScreen = this.getElementScreenshot(getElement(fbXpathMediaContainerCell)).orElseThrow(() ->
-                        new IllegalStateException("Cannot take a screenshot of media container"));
+                        new IllegalStateException("Cannot take a screenshot of Media container"));
                 break;
-            case "Video call":
+            case "Audio":
+                containerScreen = this.getElementScreenshot(getElement(fbNameAudioActionButton)).orElseThrow(() ->
+                        new IllegalStateException("Cannot take a screenshot of Audio container"));
+                break;
+            case "Video":
                 containerScreen = this.getElementScreenshot(getElement(fbXpathMediaContainerCell)).orElseThrow(() ->
-                        new IllegalStateException("Cannot take a screenshot of media container"));
+                        new IllegalStateException("Cannot take a screenshot of Video container"));
                 break;
+            case "File Share":
+                containerScreen = this.getElementScreenshot(getElement(fbXpathMediaContainerCell)).orElseThrow(() ->
+                        new IllegalStateException("Cannot take a screenshot of File Share container"));
+                break;
+            case "Location":
+                containerScreen = this.getElementScreenshot(getElement(fbXpathShareLocationContainer)).orElseThrow(() ->
+                        new IllegalStateException("Cannot take a screenshot of Location container"));
+                break;
+            case "Image":
+                containerScreen = this.getElementScreenshot(getElement(fbXpathRecentImageCell)).orElseThrow(() ->
+                        new IllegalStateException("Cannot take a screenshot of Image container"));
+                break;
+            case "GIF":
+                containerScreen = this.getElementScreenshot(getElement(xpathGiphyImage)).orElseThrow(() ->
+                        new IllegalStateException("Cannot take a screenshot of Gif container"));
+                break;
+            default:
+                throw new IllegalStateException(String.format("Can not take screenshot of %s container", assetType));
         }
         final int stateGlyphWidth = containerScreen.getWidth() / 7;
         final int stateGlyphHeight = containerScreen.getHeight() / 7;
         final int stateGlyphX = (containerScreen.getWidth() - stateGlyphWidth) / 2;
         final int stateGlyphY = (containerScreen.getHeight() - stateGlyphHeight) / 2;
-//        BufferedImage tmp = containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
-//        ImageIO.write(tmp, "png", new File("/Users/elf/Desktop/" + System.currentTimeMillis() + ".png"));
+        BufferedImage tmp = containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
+        ImageIO.write(tmp, "png", new File("/Users/julianereschke/Desktop/" + System.currentTimeMillis() + ".png"));
         return containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
     }
 
