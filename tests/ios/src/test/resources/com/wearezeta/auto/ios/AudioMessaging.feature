@@ -182,6 +182,8 @@ Feature: Audio Messaging
     # Wait until the audio is downloaded and starts playback
     And I wait for <AudioDownloadTimeout> seconds
     And I tap on media container in conversation view
+    # Wait for audio message playback to stop
+    And I wait for 5 seconds
     Then I verify the state of Pause button on audio message placeholder is not changed
 
     Examples:
