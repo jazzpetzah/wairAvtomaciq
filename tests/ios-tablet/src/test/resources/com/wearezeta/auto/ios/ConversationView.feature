@@ -642,7 +642,8 @@ Feature: Conversation View
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends encrypted image <Picture> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
-    Then I see 4 conversation entries
+    Then I see 1 default message in the conversation view
+    And I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
