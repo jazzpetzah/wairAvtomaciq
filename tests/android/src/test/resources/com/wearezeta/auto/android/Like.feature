@@ -322,7 +322,7 @@ Feature: Like
       | user1Name | user2Name | device1    |
 
   @C226021 @regression @rc
-  Scenario Outline: I can like link
+  Scenario Outline: (AN-4612) I can like link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
