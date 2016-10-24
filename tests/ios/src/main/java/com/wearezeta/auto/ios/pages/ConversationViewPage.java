@@ -83,7 +83,9 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By xpathGiphyImage =
             By.xpath("//XCUIElementTypeCell[ .//*[contains(@value, 'via giphy.com')] ]" +
-                    "/following-sibling::XCUIElementTypeCell[@name='ImageCell']");
+                    "/parent::*/XCUIElementTypeCell[@name='ImageCell']");
+//            By.xpath("//XCUIElementTypeCell[ .//*[contains(@value, 'via giphy.com')] ]" +
+//                    "/following-sibling::XCUIElementTypeCell[@name='ImageCell']");
 
     private static final By namePlayButton = MobileBy.AccessibilityId("mediaBarPlayButton");
 
@@ -523,7 +525,7 @@ public class ConversationViewPage extends IOSPage {
                         new IllegalStateException("Cannot take a screenshot of Audio container"));
                 break;
             case "Video":
-                containerScreen = this.getElementScreenshot(getElement(fbXpathMediaContainerCell)).orElseThrow(() ->
+                containerScreen = this.getElementScreenshot(getElement(fbNameVideoMessageActionButton)).orElseThrow(() ->
                         new IllegalStateException("Cannot take a screenshot of Video container"));
                 break;
             case "File Share":
@@ -534,13 +536,10 @@ public class ConversationViewPage extends IOSPage {
                 containerScreen = this.getElementScreenshot(getElement(fbXpathShareLocationContainer)).orElseThrow(() ->
                         new IllegalStateException("Cannot take a screenshot of Location container"));
                 break;
+            case "GIF":
             case "Image":
                 containerScreen = this.getElementScreenshot(getElement(fbXpathRecentImageCell)).orElseThrow(() ->
-                        new IllegalStateException("Cannot take a screenshot of Image container"));
-                break;
-            case "GIF":
-                containerScreen = this.getElementScreenshot(getElement(xpathGiphyImage)).orElseThrow(() ->
-                        new IllegalStateException("Cannot take a screenshot of Gif container"));
+                        new IllegalStateException("Cannot take a screenshot of Image or GIF container"));
                 break;
             default:
                 throw new IllegalStateException(String.format("Can not take screenshot of %s container", assetType));
