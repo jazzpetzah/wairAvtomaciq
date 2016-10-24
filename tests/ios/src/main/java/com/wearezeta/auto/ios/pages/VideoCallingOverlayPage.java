@@ -2,6 +2,8 @@ package com.wearezeta.auto.ios.pages;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import io.appium.java_client.MobileBy;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 
 import java.awt.image.BufferedImage;
@@ -15,17 +17,15 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
     }
 
     private WebElement makeOverlayButtonVisible(String name) throws Exception {
-        final Optional<WebElement> dstBtn = getElementIfExists(
-                MobileBy.AccessibilityId(getButtonAccessibilityIdByName(name))
-        );
-        if (dstBtn.isPresent()) {
-            if (!dstBtn.get().isDisplayed()) {
-                this.tapScreenAt(dstBtn.get());
-                Thread.sleep(2000);
-            }
-        } else {
-            throw new IllegalStateException(
-                    String.format("the button identified by '%s' is expected to be present", name)
+        final By locator = MobileBy.AccessibilityId(getButtonAccessibilityIdByName(name));
+        final Optional<WebElement> dstBtn = getElementIfDisplayed(locator, 1);
+        if (!dstBtn.isPresent()) {
+            final Dimension screenSize = getDriver().manage().window().getSize();
+            this.tapScreenAt(screenSize.getWidth() / 2, screenSize.getHeight() / 2);
+            Thread.sleep(1000);
+            return getElementIfDisplayed(locator, 1).orElseThrow(
+                    () -> new IllegalStateException(
+                            String.format("The button identified by '%s' is expected to be present", name))
             );
         }
         return dstBtn.get();
