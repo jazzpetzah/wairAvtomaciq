@@ -362,6 +362,10 @@ public class ConversationViewPage extends AndroidPage {
         getElement(idCursorEditText).click();
     }
 
+    public void closeInputOptions() throws Exception {
+        getElement(idCursorCloseButton, "Close cursor button is not visible").click();
+    }
+
     public void typeAndSendMessage(String message, String sendFrom, boolean hideKeyboard) throws Exception {
         final WebElement cursorInput = getElement(idCursorEditText);
         final int maxTries = 5;
@@ -555,6 +559,49 @@ public class ConversationViewPage extends AndroidPage {
 
     //endregion
 
+    //region Text Message
+    public boolean waitUntilMessageWithTextVisible(String text) throws Exception {
+        final By locator = By.xpath(xpathStrConversationMessageByText.apply(text));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+    }
+
+    public boolean waitUntilMessageWithTextInvisible(String msg) throws Exception {
+        final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public boolean waitUntilAnyMessageInvisible() throws Exception {
+        final By locator = By.id(idStrRowConversationMessage);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public boolean waitForXMessages(String msg, int times) throws Exception {
+        By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
+        if (times > 0) {
+            DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+        }
+        return getElements(locator).stream().collect(Collectors.toList()).size() == times;
+    }
+    //endregion
+
+    //region Ping Message
+    public boolean waitUntilPingMessageWithTextVisible(String expectedText) throws Exception {
+        final By locator = By.xpath(xpathStrPingMessageByText.apply(expectedText));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitUntilPingMessageWithTextInvisible(String expectedText) throws Exception {
+        final By locator = By.xpath(xpathStrPingMessageByText.apply(expectedText));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public boolean isCountOfPingsEqualTo(int expectedNumberOfPings) throws Exception {
+        assert expectedNumberOfPings > 0 : "The expected number of pings should be greater than zero";
+        By locator = By.xpath(xpathPingMessageByIndex.apply(expectedNumberOfPings));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+    //endregion
+
     /**
      * It based on the cursor action , scroll to the bottom of view when you tap on input text field and focus on it
      *
@@ -588,10 +635,6 @@ public class ConversationViewPage extends AndroidPage {
         getElement(xpathToolbar, "Top toolbar title is not visible").click();
     }
 
-    public void closeInputOptions() throws Exception {
-        getElement(idCursorCloseButton, "Close cursor button is not visible").click();
-    }
-
     public boolean waitForConversationNameChangedMessage(String expectedName) throws Exception {
         final By locator = By.xpath(xpathStrNewConversationNameByValue.apply(expectedName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
@@ -610,11 +653,6 @@ public class ConversationViewPage extends AndroidPage {
                 By.xpath(xpathStrOtrNonVerifiedMessageByValue.apply(userName)));
     }
 
-    public boolean waitForMessage(String text) throws Exception {
-        final By locator = By.xpath(xpathStrConversationMessageByText.apply(text));
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
-    }
-
     public boolean waitUntilLinkPreviewMessageVisible(String text) throws Exception {
         final By locator = By.xpath(xpathStrLinkPreviewTextMessage.apply(text));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
@@ -629,14 +667,6 @@ public class ConversationViewPage extends AndroidPage {
         final By locator = By.xpath(xpathConversationPeopleChangedByExp.apply(String.format("contains(@value, '%s')",
                 text.toUpperCase())));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
-    }
-
-    public boolean waitForXMessages(String msg, int times) throws Exception {
-        By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
-        if (times > 0) {
-            DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
-        }
-        return getElements(locator).stream().collect(Collectors.toList()).size() == times;
     }
 
     public boolean isImageVisible() throws Exception {
@@ -668,22 +698,6 @@ public class ConversationViewPage extends AndroidPage {
      */
     public void navigateBack(int timeMilliseconds) throws Exception {
         swipeRightCoordinates(timeMilliseconds);
-    }
-
-    public boolean waitUntilPingMessageWithTextVisible(String expectedText) throws Exception {
-        final By locator = By.xpath(xpathStrPingMessageByText.apply(expectedText));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public boolean waitUntilPingMessageWithTextInvisible(String expectedText) throws Exception {
-        final By locator = By.xpath(xpathStrPingMessageByText.apply(expectedText));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
-    }
-
-    public boolean isCountOfPingsEqualTo(int expectedNumberOfPings) throws Exception {
-        assert expectedNumberOfPings > 0 : "The expected number of pings should be greater than zero";
-        By locator = By.xpath(xpathPingMessageByIndex.apply(expectedNumberOfPings));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isConversationPeopleChangedMessageContainsNames(List<String> names) throws Exception {
@@ -922,11 +936,6 @@ public class ConversationViewPage extends AndroidPage {
                 throw new Exception(String.format("Cannot identify the action '%s' in File dialog", action));
 
         }
-    }
-
-    public boolean isMessageInvisible(String msg) throws Exception {
-        final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     private By getContainerLocatorByName(String containerType) {

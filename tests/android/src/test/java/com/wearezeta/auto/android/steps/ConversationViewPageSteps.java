@@ -358,12 +358,24 @@ public class ConversationViewPageSteps {
         msg = expandMessage(msg);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", msg),
-                    getConversationViewPage().waitForMessage(msg));
+                    getConversationViewPage().waitUntilMessageWithTextVisible(msg));
         } else {
             Assert.assertTrue(
                     String.format("The message '%s' is still visible in the conversation view, but should be hidden", msg),
-                    getConversationViewPage().isMessageInvisible(msg));
+                    getConversationViewPage().waitUntilMessageWithTextInvisible(msg));
         }
+    }
+
+    /**
+     * Verify there is no text message in the conversation view
+     *
+     * @throws Exception
+     * @step. ^I do not see any text message in the conversation view$
+     */
+    @Then("^I do not see any text message in the conversation view$")
+    public void IDoNotSeeAnyTextMessage() throws Exception {
+        Assert.assertTrue("Expect that no text message is visible in conversation view",
+                getConversationViewPage().waitUntilAnyMessageInvisible());
     }
 
     /**
