@@ -1,7 +1,7 @@
 Feature: Links Preview
 
-  @C165143 @regression @C165147 @C169222 @rc
-  Scenario Outline: I see preview for sent link and no preview for dead link
+  @C165143 @regression @rc
+  Scenario Outline: I see/do not see link preview in different condition(normal url/dead url/shorten url)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -25,8 +25,8 @@ Feature: Links Preview
       | Name      | Contact   | Link                                                                                               | DeadLink      | ShortenUrl           |
       | user1Name | user2Name | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 | http://q.qqqq | http://goo.gl/bnKrzm |
 
-  @C165144 @regression @C165148 @rc
-  Scenario Outline: I can receive preview for link mixed with text
+  @C165144 @regression @rc
+  Scenario Outline: I see preview for received link which mixed with text
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number

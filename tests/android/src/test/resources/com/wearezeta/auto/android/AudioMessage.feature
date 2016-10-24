@@ -1,6 +1,6 @@
 Feature: Audio Message
 
-  @C131179 @C131175 @regression @rc @rc42
+  @C131179 @regression @rc @rc42
   Scenario Outline: Verify sending voice message by long tap > swipe up
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -31,8 +31,8 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131180 @C131195 @C131197 @regression @rc @rc42
-  Scenario Outline: Verify sending voice message by long tap > release the humb > tap on the check icon -> play/pause audio message
+  @C131180 @regression @rc @rc42
+  Scenario Outline: Verify Play/Pause recorded audio message after long tap the audio cursor icon
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -71,8 +71,8 @@ Feature: Audio Message
       | Name      | Contact1  | Contact2  | FileName | MIMEType  | DeviceName | Notification            |
       | user1Name | user2Name | user3Name | test.m4a | audio/mp4 | Device1    | Shared an audio message |
 
-  @C131192 @C131193 @C131189 @regression @rc @rc42
-  Scenario Outline: Verify failing downloading voice message
+  @C131189 @regression @rc @rc42
+  Scenario Outline: Verify receiving/downloading/re-downloading a voice message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -99,8 +99,8 @@ Feature: Audio Message
       | Name      | Contact   | FileName | MIMEType  | DeviceName | NetworkTimeout |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | 10             |
 
-  @C131183 @C131184 @regression @rc
-  Scenario Outline: Verify failing sending/retrying voice message
+  @C131183 @regression @rc
+  Scenario Outline: Verify sending/resending audio message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -129,8 +129,8 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131182 @C131177 @regression @rc @rc42
-  Scenario Outline: Verify playing/cancelling sending voice message
+  @C131177 @regression @rc @rc42
+  Scenario Outline: Verify playing and cancelling recorded audio message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -149,8 +149,8 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131194 @C131196 @C131202 @regression @rc @rc42
-  Scenario Outline: Verify playing a received voice message + DO NOT playing in the background
+  @C131194 @regression @rc @rc42
+  Scenario Outline: Verify playing/deleting a received voice message and pausing when in background
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
