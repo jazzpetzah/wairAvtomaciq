@@ -11,7 +11,7 @@ import java.util.concurrent.Future;
 public class FastLoginContainer {
     @FunctionalInterface
     public interface IFutureIOSDriverGetter {
-        Future<ZetaIOSDriver> create(String ipaPath,
+        Future<ZetaIOSDriver> create(String appPath,
                                      Optional<Map<String, Object>> additionalCaps,
                                      int retriesCount) throws Exception;
     }
@@ -43,16 +43,16 @@ public class FastLoginContainer {
     public Future<ZetaIOSDriver> executeDriverCreation(ClientUser userToLogIn) throws Exception {
         final IFutureIOSDriverGetter driverToBeCreated = this.driverGetter.orElseThrow(() ->
                 new IllegalStateException("Please enable fast login prior to call this method"));
-        final Optional<Map<String, Object>> initialCapabilites =
+        final Optional<Map<String, Object>> initialCapabilities =
                 (Optional<Map<String, Object>>) this.driverGetterParams[1];
-        final Map<String, Object> capabilites = new HashMap<>();
-        if (initialCapabilites.isPresent()) {
-            for (Map.Entry<String, Object> entry : initialCapabilites.get().entrySet()) {
-                capabilites.put(entry.getKey(), entry.getValue());
+        final Map<String, Object> capabilities = new HashMap<>();
+        if (initialCapabilities.isPresent()) {
+            for (Map.Entry<String, Object> entry : initialCapabilities.get().entrySet()) {
+                capabilities.put(entry.getKey(), entry.getValue());
             }
         }
-        capabilites.put(CAPABILITY_NAME, userToLogIn);
-        return driverToBeCreated.create((String) this.driverGetterParams[0], Optional.of(capabilites),
+        capabilities.put(CAPABILITY_NAME, userToLogIn);
+        return driverToBeCreated.create((String) this.driverGetterParams[0], Optional.of(capabilities),
                 (Integer) this.driverGetterParams[2]);
     }
 

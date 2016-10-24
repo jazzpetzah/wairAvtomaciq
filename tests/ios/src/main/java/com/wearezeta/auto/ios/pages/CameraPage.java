@@ -2,7 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import com.wearezeta.auto.ios.tools.IOSSimulatorHelpers;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
@@ -41,7 +41,7 @@ public class CameraPage extends IOSPage {
         final By locator = getButtonByName(name);
         if (!isTestImageUploaded && locator.equals(xpathCameraRollButton) &&
                 CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            IOSSimulatorHelper.uploadImage();
+            IOSSimulatorHelpers.uploadImage();
             isTestImageUploaded = true;
         }
         getElement(getButtonByName(name)).click();

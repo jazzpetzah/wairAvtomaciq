@@ -77,7 +77,7 @@ public class RealDeviceHelpers {
             if (CommonUtils.isRunningInJenkinsNetwork()) {
                 log.warn("Seems like ideviceinstaller has frozen. Trying to reconnect the IDevice to its VM...");
                 new ProcessBuilder("/usr/bin/python",
-                        getIOSToolsRoot(IOSSimulatorHelper.class) + File.separator + RECONNECT_DEVICE_SCRIPT_NAME
+                        getIOSToolsRoot(RealDeviceHelpers.class) + File.separator + RECONNECT_DEVICE_SCRIPT_NAME
                 ).redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.INHERIT).start().waitFor();
                 waitUntilIsConnected(udid, DEVICE_RECONNECT_TIMEOUT_SECONDS);
                 final Process p1 = new ProcessBuilder(

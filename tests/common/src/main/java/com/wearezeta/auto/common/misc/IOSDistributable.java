@@ -31,7 +31,7 @@ public class IOSDistributable {
             if (path.toLowerCase().endsWith(".app")) {
                 appPath = fPath;
             } else if (path.toLowerCase().endsWith(".ipa")) {
-                appPath = CommonUtils.extractAppFromIpa(appPath);
+                appPath = CommonUtils.extractAppFromIpa(fPath);
                 isAppRootTemporary = true;
             } else {
                 throw new IllegalArgumentException(

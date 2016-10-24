@@ -6,7 +6,7 @@ import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
-import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import com.wearezeta.auto.ios.tools.IOSSimulatorHelpers;
 import cucumber.api.java.en.And;
 import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Assert;
@@ -329,7 +329,7 @@ public class ConversationViewPageSteps {
     public void ICopyPasteAndSendInvitationLinkFrom(String user) throws Exception {
         String link = CommonSteps.getInstance().GetInvitationUrl(user);
         CommonUtils.setStringValueInSystemClipboard(link);
-        IOSSimulatorHelper.copySystemClipboardToSimulatorClipboard();
+        IOSSimulatorHelpers.copySystemClipboardToSimulatorClipboard();
         getConversationViewPage().tapTextInput(false);
         getConversationViewPage().tapTextInput(true);
         getConversationViewPage().tapBadgeItem("Paste");

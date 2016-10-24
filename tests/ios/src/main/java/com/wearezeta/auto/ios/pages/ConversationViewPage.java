@@ -14,7 +14,7 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
-import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import com.wearezeta.auto.ios.tools.IOSSimulatorHelpers;
 import edu.emory.mathcs.backport.java.util.Arrays;
 import io.appium.java_client.MobileBy;
 import org.apache.commons.io.FilenameUtils;
@@ -444,7 +444,7 @@ public class ConversationViewPage extends IOSPage {
     public void scrollToBeginningOfConversation() throws Exception {
         for (int i = 0; i < 2; i++) {
             if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-                IOSSimulatorHelper.swipeDown();
+                IOSSimulatorHelpers.swipeDown();
             } else {
                 DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationPage),
                         500, 50, 10, 50, 90);
@@ -641,7 +641,7 @@ public class ConversationViewPage extends IOSPage {
         final By locator = getInputToolButtonByName(name);
         if (locator.equals(fbNameAddPictureButton) && !isTestImageUploaded &&
                 CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            IOSSimulatorHelper.uploadImage();
+            IOSSimulatorHelpers.uploadImage();
             isTestImageUploaded = true;
         }
         locateCursorToolButton(locator).click();
