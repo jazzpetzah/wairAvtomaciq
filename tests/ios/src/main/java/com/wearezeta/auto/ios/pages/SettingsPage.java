@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
 import com.wearezeta.auto.common.backend.AccentColor;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
@@ -25,8 +24,6 @@ public class SettingsPage extends IOSPage {
     private static final FunctionFor2Parameters<String, String, String> xpathStrSettingsValue =
             (itemName, expectedValue) -> String.format("%s/*[@value='%s']",
                     xpathStrMenuItemByName.apply(itemName), expectedValue);
-
-    private static final By nameEditButton = MobileBy.AccessibilityId("Edit");
 
     private static final By fbXpathSelfNameEditField =
             FBBy.xpath(String.format("%s/XCUIElementTypeTextField[last()]",
@@ -68,7 +65,7 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathSettingsPage);
+        return isLocatorExist(xpathSettingsPage);
     }
 
     public void selectItem(String itemName) throws Exception {
@@ -85,17 +82,13 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean isItemVisible(String itemName) throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(xpathStrMenuItemByName.apply(itemName)));
-    }
-
-    public void pressEditButton() throws Exception {
-        getElement(nameEditButton).click();
+        return isLocatorExist(By.xpath(xpathStrMenuItemByName.apply(itemName)));
     }
 
     public void tapDeleteDeviceButton(String deviceName) throws Exception {
         final By locator = By.xpath(xpathDeleteDeviceButtonByName.apply(deviceName));
         getElement(locator, String.format("Device '%s' is not visible in Manage Device List", deviceName)).click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator)) {
+        if (!isLocatorInvisible(locator)) {
             throw new IllegalStateException("Delete device button is still visible");
         }
     }
@@ -104,7 +97,7 @@ public class SettingsPage extends IOSPage {
         final WebElement deleteButton = getElement(nameDeleteButton);
         deleteButton.click();
 
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDeleteButton)) {
+        if (!isLocatorInvisible(nameDeleteButton)) {
             deleteButton.click();
         }
     }
@@ -116,17 +109,17 @@ public class SettingsPage extends IOSPage {
 
     public boolean isDeviceVisibleInList(String device) throws Exception {
         final By locator = By.xpath(xpathDeviceListEntry.apply(device));
-        return isElementDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public boolean isDeviceInvisibleInList(String device) throws Exception {
         final By locator = By.xpath(xpathDeviceListEntry.apply(device));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+        return isLocatorInvisible(locator);
     }
 
     public boolean verificationLabelVisibility(String deviceName, String verificationLabel) throws Exception {
         final By locator = By.xpath(xpathStrDeviceVerificationLabel.apply(deviceName, verificationLabel));
-        return isElementDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public void tapCurrentDevice() throws Exception {
@@ -134,8 +127,7 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean isItemInvisible(String itemName) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.xpath(xpathStrMenuItemByName.apply(itemName)));
+        return isLocatorInvisible(By.xpath(xpathStrMenuItemByName.apply(itemName)));
     }
 
     public void tapNavigationButton(String name) throws Exception {
@@ -145,16 +137,16 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean isResetPasswordPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathChangePasswordPageChangePasswordButton);
+        return isLocatorExist(xpathChangePasswordPageChangePasswordButton);
     }
 
     public boolean isSupportWebPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathAskSupport, 15);
+        return isLocatorExist(xpathAskSupport, 15);
     }
 
     public boolean isSettingItemValueEqualTo(String itemName, String expectedValue) throws Exception {
         final By locator = FBBy.xpath(xpathStrSettingsValue.apply(itemName, expectedValue));
-        return isElementDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public void clearSelfName() throws Exception {

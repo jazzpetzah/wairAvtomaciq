@@ -173,6 +173,11 @@ public class SEBridge {
         getOrAddDevice(userFrom, deviceName).setEphemeralMode(convId, expirationMilliseconds);
     }
 
+    public void markEphemeralRead(ClientUser userFrom, String convId, MessageId messageId, String deviceName)
+            throws Exception {
+        getOrAddDevice(userFrom, deviceName).markEphemeralRead(convId, messageId);
+    }
+
     public ActorMessage.MessageInfo[] getConversationMessages(ClientUser userFrom, String convId, String deviceName)
             throws Exception {
         return getOrAddDevice(userFrom, deviceName).getConversationMessages(convId);

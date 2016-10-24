@@ -1,7 +1,7 @@
 Feature: Conversations list
 
   @C56396 @regression
-  Scenario Outline: (AN-3523) Verify contacts banner does not appear anymore after you opened contacts once
+  Scenario Outline: (AN-4605) Verify contacts banner does not appear anymore after you opened contacts once
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     When I accept First Time overlay as soon as it is visible
@@ -209,8 +209,8 @@ Feature: Conversations list
   Scenario Outline: I can unmute 1:1 conversation from the Conversations list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given <Contact1> is silenced to user <Name>
     Given I sign in using my email or phone number
+    Given <Contact1> is silenced to user <Name>
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     And Conversation <Contact1> is muted

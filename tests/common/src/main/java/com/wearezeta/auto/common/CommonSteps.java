@@ -324,17 +324,6 @@ public final class CommonSteps {
         seBridge.typing(typingFromUser, convId);
     }
 
-    public void UserHotPingedConversationOtr(String pingFromUserNameAlias,
-                                             String dstConversationName) throws Exception {
-        final ClientUser pingFromUser = usrMgr.findUserByNameOrNameAlias(pingFromUserNameAlias);
-        dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
-        final String convId = BackendAPIWrappers.getConversationIdByName(pingFromUser, dstConversationName);
-        for (int i = 0; i < 2; i++) {
-            seBridge.sendPing(pingFromUser, convId);
-            Thread.sleep(500);
-        }
-    }
-
     public void UserDeleteMessage(String msgFromuserNameAlias, String dstConversationName, MessageId messageId,
                                   String deviceName, boolean isGroup) throws Exception {
         //default is local delete, rather than delete everywhere
@@ -359,6 +348,27 @@ public final class CommonSteps {
                                         boolean isGroup) throws Exception {
         //default is delete local, rather than delete eveywhere
         UserDeleteLatestMessage(msgFromUserNameAlias, dstConversationName, deviceName, isGroup, false);
+    }
+
+    public void UserReadEphemeralMessage(String msgFromUserNameAlias, String dstConversationName, MessageId messageId,
+                                      String deviceName, boolean isGroup) throws Exception {
+        ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
+        if (!isGroup) {
+            dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+        }
+        String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
+        seBridge.markEphemeralRead(user, dstConvId, messageId, deviceName);
+    }
+
+    public void UserReadLastEphemeralMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName,
+                                        boolean isGroup, boolean isDeleteEverywhere) throws Exception {
+        ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
+        if (!isGroup) {
+            dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+        }
+        String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
+        ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
+        seBridge.markEphemeralRead(user, dstConvId, getFilteredLastMessageId(messageInfos), deviceName);
     }
 
     public void UserLikeLatestMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName)
@@ -467,14 +477,6 @@ public final class CommonSteps {
     public void UserSentOtrMessageToUser(String msgFromUserNameAlias,
                                          String dstUserNameAlias, String message) throws Exception {
         UserSentOtrMessageToUser(msgFromUserNameAlias, dstUserNameAlias, message, null);
-    }
-
-    public void UserHotPingedConversation(String hotPingFromUserNameAlias,
-                                          String dstConversationName) throws Exception {
-        ClientUser hotPingFromUser = usrMgr.findUserByNameOrNameAlias(hotPingFromUserNameAlias);
-        dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
-        BackendAPIWrappers.sendHotPingToConversation(hotPingFromUser, dstConversationName, pingId);
-        Thread.sleep(1000);
     }
 
     public void UserSentMessageToConversation(String userFromNameAlias,

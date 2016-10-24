@@ -9,7 +9,7 @@ import java.util.concurrent.Future;
 public class CallOutgoingVideoPage extends AbstractCallOutgoingPage {
 
     private static final By xpathOutgoingVideoCallContainer =
-            By.xpath("//*[@id='ttv__calling__header__subtitle' and contains(@value, 'Ringing') " +
+            By.xpath("//*[@id='ttv__calling__header__subtitle' and contains(@value, 'ringing') " +
                     "and //*[@id='ccbv__button_right']]");
 
     public CallOutgoingVideoPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {

@@ -71,6 +71,12 @@ public class ConversationPage extends WebPage {
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssShowParticipantsButton)
     private WebElement showParticipants;
 
+    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssEphemeralButton)
+    private WebElement ephemeralButton;
+
+    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssEphemeralTimers)
+    private List<WebElement> ephemeralTimers;
+
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssSendImageInput)
     private WebElement imagePathInput;
 
@@ -88,6 +94,9 @@ public class ConversationPage extends WebPage {
 
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssVideoCallButton)
     private WebElement videoCallButton;
+
+    @FindBy(css = WebAppLocators.ConversationPage.cssLastMessage)
+    private WebElement lastGenericMessage;
 
     @FindBy(css = WebAppLocators.ConversationPage.cssLastTextMessage)
     private WebElement lastTextMessage;
@@ -466,6 +475,45 @@ public class ConversationPage extends WebPage {
 
     public int getNumberOfMessagesInCurrentConversation() {
         return messageAmount.size();
+    }
+
+    public boolean isEphemeralButtonNotVisible() throws Exception {
+        return !DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.cssSelector(WebAppLocators.ConversationPage.cssEphemeralButton));
+    }
+
+    public void clickEphemeralButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), ephemeralButton);
+        ephemeralButton.click();
+    }
+
+    public List<String> getEphemeralTimers() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), ephemeralTimers.get(0));
+        return ephemeralTimers.stream().map(WebElement::getText).collect(Collectors.toList());
+    }
+
+    public void setEphemeralTimer(String label) throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), ephemeralTimers.get(0));
+        for(WebElement element: ephemeralTimers) {
+            if(element.getText().equals(label)) {
+                element.click();
+                return;
+            }
+        }
+    }
+
+    public boolean isTimeShortOnEphemeralButtonVisible(String time) throws Exception {
+        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEphemeralButtonByTime.apply(time));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+    
+    public boolean isTimeUnitOnEphemeralButtonVisible(String unit) throws Exception {
+        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEphemeralButtonByUnit.apply(unit));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public String getPlaceholderOfConversationInput() throws Exception {
+        return conversationInput.getAttribute("placeholder");
     }
 
     public void clickPingButton() throws Exception {
@@ -1417,5 +1465,44 @@ public class ConversationPage extends WebPage {
         By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessageByIndex.apply(1) + " " +
                 ".message-status");
         return DriverUtils.waitUntilLocatorAppears(getDriver(), lastMessageLocator);
+    }
+
+    public boolean isLastMessageObfuscated() {
+        return lastGenericMessage.findElement(By.cssSelector(".ephemeral-message-obfuscated")).isDisplayed();
+    }
+
+    public boolean isLastMessageNotObfuscated() {
+        return !lastTextMessage.getAttribute("class").contains("ephemeral-message-obfuscated");
+    }
+
+    /**
+     * Use selenium's executeAsyncScript method to grab message of a specific user from a specific conversation. Because the
+     * framework Dexie.js (the Javascript framework of the webapp that saves data in the indexedDB) is using Promises which are
+     * asyncron, we call the method callback() which allows us to return a value at any time and therefor tell selenium that we
+     * have finished our script.
+     *
+     * @param conversationId id of the conversation
+     * @param userId         id of the user
+     * @return a list of text messages
+     * @throws Exception
+     */
+    public List<String> getMessagesFromDb(String conversationId, String userId) throws Exception {
+        getDriver().manage().timeouts().setScriptTimeout(7, TimeUnit.SECONDS);
+        String backendType = WebCommonUtils.getBackendType(ConversationPage.class);
+        return (List<String>) getDriver().executeAsyncScript("var conversationId = arguments[0];\n" +
+                        "var userId = arguments[1];\n" +
+                        "var backendType = arguments[2];\n" +
+                        "var callback = arguments[arguments.length - 1];\n" +
+                        "var messages = [];\n" +
+                        "db = new Dexie('wire@'+backendType+'@'+userId+'@permanent');\n" +
+                        "    db.open().then(function () {\n" +
+                        "      table=db.table(\"conversation_events\");\n" +
+                        "      table.where(':id').startsWith(conversationId+'@'+userId).each(\n" +
+                        "        function(row){console.log(row.data.content);messages.push(row.data.content)}\n" +
+                        "      ).then(function() {callback(messages)});\n" +
+                        "    });\n",
+                conversationId,
+                userId,
+                backendType);
     }
 }

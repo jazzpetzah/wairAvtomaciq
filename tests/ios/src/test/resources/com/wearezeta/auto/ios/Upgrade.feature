@@ -25,6 +25,8 @@ Feature: Upgrade
     And I accept alert
     And I select the first picture from Keyboard Gallery
     And I tap Confirm button on Picture preview page
+    # Wait until the picture is synchronized
+    And I wait for 3 seconds
     Then I see 2 photos in the conversation view
     When I restart Wire
     Then I see 2 photos in the conversation view

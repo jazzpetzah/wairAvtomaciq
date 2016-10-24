@@ -43,13 +43,13 @@ Feature: File Transfer
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
-    And <Contact1> sends <FileSize> file having name "<FileName>.<FileExtension>" and MIME type "<MimeType>" via device Device1 to user Myself
+    And <Contact1> sends local file named "<FileName>.<FileExtension>" and MIME type "<MimeType>" via device Device1 to user Myself
     Then I see new message notification "Shared a file"
     And I see the result of <FileSize> file received having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
 
     Examples:
-      | Name      | Contact1  | FileName  | FileSize | FileExtension | MimeType   |
-      | user1Name | user2Name | qa_random | 3.00MB   | txt           | text/plain |
+      | Name      | Contact1  | FileName   | FileSize | FileExtension | MimeType  |
+      | user1Name | user2Name | avatarTest | 5.68KB   | png           | image/png |
 
   @C87639 @rc @regression
   Scenario Outline: Verify retry sending a file

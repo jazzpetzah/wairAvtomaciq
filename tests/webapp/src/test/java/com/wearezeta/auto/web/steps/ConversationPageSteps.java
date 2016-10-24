@@ -20,6 +20,7 @@ import com.wearezeta.auto.web.common.Message;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.pages.ContactListPage;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
@@ -312,6 +313,32 @@ public class ConversationPageSteps {
     public void ISeeXMessagesInConversation(int x) throws Exception {
         assertThat("Number of messages in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
                 .getNumberOfMessagesInCurrentConversation(), equalTo(x));
+    }
+
+    @Then("^I verify the database is( not)? containing the message (.*) from (.*) in active conversation$")
+    public void ISeeNoTraceInDatabase(String not, String message, String nameAlias) throws Exception {
+        String userId = context.getUserManager().findUserByNameOrNameAlias(nameAlias).getId();
+        String conversationId = context.getPagesCollection().getPage(ContactListPage.class).getActiveConversationId();
+        assertThat("Couldn't get id of active conversation!", conversationId, not(isEmptyOrNullString()));
+        if(not != null) {
+            assertThat("Messages still in DB",
+                    context.getPagesCollection().getPage(ConversationPage.class).getMessagesFromDb(conversationId, userId),
+                    not(hasItem(message)));
+        } else {
+            assertThat("Messages not in DB",
+                    context.getPagesCollection().getPage(ConversationPage.class).getMessagesFromDb(conversationId, userId),
+                    hasItem(message));
+        }
+    }
+
+    @Then("^I see (\\d+) messages? in database from (.*) in active conversation$")
+    public void ISeeXMessagesInDatabase(int numberOfMessages, String nameAlias) throws Exception {
+        String userId = context.getUserManager().findUserByNameOrNameAlias(nameAlias).getId();
+        String conversationId = context.getPagesCollection().getPage(ContactListPage.class).getActiveConversationId();
+        assertThat("Couldn't get id of active conversation!", conversationId, not(isEmptyOrNullString()));
+        assertThat("Number of messages in DB",
+                context.getPagesCollection().getPage(ConversationPage.class).getMessagesFromDb(conversationId, userId),
+                hasSize(numberOfMessages));
     }
 
     /**
@@ -1089,6 +1116,54 @@ public class ConversationPageSteps {
         cpSteps.ISearchForUser(contact);
         cpSteps.ISelectUserFromSearchResults(contact);
         cpSteps.IChooseToCreateGroupConversation();
+    }
+
+    @Then("^I cannot see ephemeral button$")
+    public void ICannotSeeEphemeralButton() throws Exception {
+        assertTrue("Ephemeral button is visible",
+                context.getPagesCollection().getPage(ConversationPage.class).isEphemeralButtonNotVisible());
+    }
+
+    @When("^I click on ephemeral button$")
+    public void IClickEphemeralButton() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickEphemeralButton();
+    }
+
+    @When("^I set the timer for ephemeral to (.*)$")
+    public void ISetEphemeralTimer(String label) throws Exception {
+        assertThat("Ephemeral option is available",
+                context.getPagesCollection().getPage(ConversationPage.class).getEphemeralTimers(),
+                hasItem(label.toUpperCase()));
+        context.getPagesCollection().getPage(ConversationPage.class).setEphemeralTimer(label.toUpperCase());
+    }
+
+    @When("^I see (.*) with unit (.*) on ephemeral button$")
+    public void ISeeTimeShortOnEphemeralTimer(String time, String unit) throws Exception {
+        Assert.assertTrue("Time " + time + " on ephemeral button is not shown",
+                context.getPagesCollection().getPage(ConversationPage.class).isTimeShortOnEphemeralButtonVisible(time));
+        Assert.assertTrue("Time unit " + unit + " on ephemeral button is not shown",
+                context.getPagesCollection().getPage(ConversationPage.class).isTimeUnitOnEphemeralButtonVisible(unit));
+    }
+
+    @When("^I see placeholder of conversation input is (.*)$")
+    public void ISeePlaceholderOfInput(String label) throws Exception {
+        Assert.assertThat(context.getPagesCollection().getPage(ConversationPage.class).getPlaceholderOfConversationInput(),
+                equalTo(label));
+    }
+
+    @When("^I( do not)? see timer next to the last message$")
+    public void ISeeTimer(String doNot) throws Exception {
+
+    }
+
+    @When("^I see the last message is( not)? obfuscated$")
+    public void ISeeObfuscatedMessage(String not) throws Exception {
+        if(not == null) {
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isLastMessageObfuscated());
+        } else {
+            assertTrue("Last message is obfuscated",
+                    context.getPagesCollection().getPage(ConversationPage.class).isLastMessageNotObfuscated());
+        }
     }
 
     /**

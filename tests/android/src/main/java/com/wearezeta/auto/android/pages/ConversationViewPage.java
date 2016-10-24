@@ -53,6 +53,8 @@ public class ConversationViewPage extends AndroidPage {
     private static final String strIdPingMessage = "ttv__row_conversation__ping_message";
     public static final Function<String, String> xpathStrPingMessageByText = text -> String
             .format("//*[@id='%s' and @value='%s']", strIdPingMessage, text.toUpperCase());
+    public static final Function<Integer, String> xpathPingMessageByIndex = index -> String
+            .format("(//*[@id='%s'])[%d]", strIdPingMessage, index);
     private static final By xpathLastPingMessage =
             By.xpath(String.format("(//*[@id='%s'])[last()]", strIdPingMessage));
 
@@ -256,6 +258,8 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final int DEFAULT_SWIPE_DURATION = 2000;
 
+    private static final int CONTAINER_VISIBILITY_TIMEOUT_SECONDS = 20;
+
     public enum MessageIndexLocator {
         FIRST(xpathFirstConversationMessage),
         LAST(xpathLastConversationMessage);
@@ -363,7 +367,6 @@ public class ConversationViewPage extends AndroidPage {
         final int maxTries = 5;
         int ntry = 0;
         do {
-            System.out.println("clear");
             cursorInput.clear();
             cursorInput.sendKeys(message);
             ntry++;
@@ -677,6 +680,12 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
+    public boolean isCountOfPingsEqualTo(int expectedNumberOfPings) throws Exception {
+        assert expectedNumberOfPings > 0 : "The expected number of pings should be greater than zero";
+        By locator = By.xpath(xpathPingMessageByIndex.apply(expectedNumberOfPings));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
     public boolean isConversationPeopleChangedMessageContainsNames(List<String> names) throws Exception {
         final String xpathExpr = String.join(" and ", names.stream().map(
                 name -> String.format("contains(@value, '%s')", name.toUpperCase())
@@ -950,12 +959,12 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean isContainerVisible(String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, CONTAINER_VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean isContainerInvisible(String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, CONTAINER_VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean waitUntilLinkPreviewUrlVisible(String url) throws Exception {
@@ -964,14 +973,15 @@ public class ConversationViewPage extends AndroidPage {
 
     public void tapContainer(String tapType, String name) throws Exception {
         final By locator = getContainerLocatorByName(name);
+        final WebElement el = getElement(locator);
+        final Point location = el.getLocation();
+        final Dimension size = el.getSize();
         if (Arrays.asList(idAudioMessageContainer, idVideoMessageContainer, idYoutubeContainer).contains(locator)) {
             // To avoid to tap on play button in Video message and Audio message container.
-            final WebElement el = getElement(locator);
-            final Point location = el.getLocation();
-            final Dimension size = el.getSize();
             getDriver().tap(tapType, location.x + size.width / 5, location.y + size.height / 5);
         } else {
-            DriverUtils.tapInTheCenterOfTheElement(getDriver(), getElement(locator));
+            // Tap on the center of container
+            getDriver().tap(tapType, location.x + size.width / 2, location.y + size.height / 2);
         }
     }
 

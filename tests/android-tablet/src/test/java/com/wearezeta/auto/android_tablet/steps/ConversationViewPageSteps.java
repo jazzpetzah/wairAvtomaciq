@@ -309,6 +309,19 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Used to check that num of pings in the conversation
+     *
+     * @param expectedCount num of pings
+     * @throws Exception
+     * @step. ^I see (\d+) Ping messages? in the conversation view
+     */
+    @Then("^I see (\\d+) Ping messages? in the conversation view$")
+    public void ISeeCountPingMessageInTheDialog(int expectedCount) throws Exception {
+        Assert.assertTrue(String.format("The actual count of pings is not equal to expected: %d", expectedCount),
+                getConversationViewPage().isCountOfPingsEqualTo(expectedCount));
+    }
+
+    /**
      * Verify whether missed call notification is visible in conversation view
      *
      * @throws Exception

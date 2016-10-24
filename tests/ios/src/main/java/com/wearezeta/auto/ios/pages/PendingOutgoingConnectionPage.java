@@ -4,7 +4,6 @@ import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class PendingOutgoingConnectionPage extends IOSPage {
@@ -17,11 +16,11 @@ public class PendingOutgoingConnectionPage extends IOSPage {
     }
 
     public boolean isConnectButtonVisible() throws Exception {
-        return isElementDisplayed(xpathConnectOtherUserButton);
+        return isLocatorDisplayed(xpathConnectOtherUserButton);
     }
 
     public boolean isConnectButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathConnectOtherUserButton);
+        return isLocatorInvisible(xpathConnectOtherUserButton);
     }
 
     public void tapConnectButton() throws Exception {

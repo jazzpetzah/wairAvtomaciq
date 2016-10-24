@@ -106,6 +106,10 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return getConversationViewPage().waitUntilPingMessageWithTextInvisible(expectedMessage);
     }
 
+    public boolean isCountOfPingsEqualTo(int expectedCount) throws Exception {
+        return getConversationViewPage().isCountOfPingsEqualTo(expectedCount);
+    }
+
     public void doSwipeRight() throws Exception {
         DriverUtils.swipeByCoordinates(getDriver(), 1000, 10, 50, 90, 50);
     }
@@ -178,7 +182,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public void tapMessage(String messageType, String message, String tapType) throws Exception {
-        getConversationViewPage().tapMessage(messageType, message, tapType);
+        getConversationViewPage().tapMessage(messageType, Optional.of(message), tapType);
     }
 
     //region Message Bottom Menu

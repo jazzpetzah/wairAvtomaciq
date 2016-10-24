@@ -73,7 +73,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isPeoplePickerPageVisible() throws Exception {
-        return isElementDisplayed(fbNamePickerSearch);
+        return isLocatorDisplayed(fbNamePickerSearch);
     }
 
     public void tapOnPeoplePickerSearch() throws Exception {
@@ -83,7 +83,7 @@ public class PeoplePickerPage extends IOSPage {
     public void tapOnPeoplePickerClearBtn() throws Exception {
         final FBElement closeButton = (FBElement) getElement(fbXpathPickerClearButton);
         this.tapAtTheCenterOfElement(closeButton);
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathPickerClearButton, 5)) {
+        if (!isLocatorInvisible(xpathPickerClearButton, 5)) {
             this.tapAtTheCenterOfElement(closeButton);
         }
     }
@@ -95,7 +95,6 @@ public class PeoplePickerPage extends IOSPage {
 
     public Optional<WebElement> getSearchResultsElement(String user) throws Exception {
         final By locator = By.xpath(xpathStrFoundContactByName.apply(user));
-        this.printPageSource();
         return getElementIfDisplayed(locator);
     }
 
@@ -113,7 +112,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean addToConversationNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), namePeoplePickerAddToConversationButton);
+        return isLocatorInvisible(namePeoplePickerAddToConversationButton);
     }
 
     public void tapNumberOfTopConnections(int numberToTap) throws Exception {
@@ -126,7 +125,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isTopPeopleLabelVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), namePeoplePickerTopPeopleLabel, 2);
+        return isLocatorDisplayed(namePeoplePickerTopPeopleLabel, 2);
     }
 
     public void pressBackspaceKeyboardButton() throws Exception {
@@ -138,7 +137,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isPeopleYouMayKnowLabelVisible() throws Exception {
-        return isElementDisplayed(namePeopleYouMayKnowLabel);
+        return isLocatorDisplayed(namePeopleYouMayKnowLabel);
     }
 
     public void unblockUser() throws Exception {
@@ -152,7 +151,7 @@ public class PeoplePickerPage extends IOSPage {
     public void tapSendInviteCopyButton() throws Exception {
         final WebElement copyButton = getElement(nameInviteCopyButton);
         copyButton.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameInviteCopyButton)) {
+        if (!isLocatorInvisible(nameInviteCopyButton)) {
             copyButton.click();
         }
     }
@@ -186,11 +185,11 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isPeopleYouMayKnowLabelInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), namePeopleYouMayKnowLabel);
+        return isLocatorInvisible(namePeopleYouMayKnowLabel);
     }
 
     public boolean waitUntilNoResultsLabelIsVisible() throws Exception {
-        return isElementDisplayed(nameNoResults);
+        return isLocatorDisplayed(nameNoResults);
     }
 
     private By getActionButtonByName(String name) {
@@ -215,19 +214,19 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isActionButtonVisible(String actionButtonName) throws Exception {
-        return isElementDisplayed(getActionButtonByName(actionButtonName));
+        return isLocatorDisplayed(getActionButtonByName(actionButtonName));
     }
 
     public boolean isActionButtonInvisible(String actionButtonName) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), getActionButtonByName(actionButtonName));
+        return isLocatorInvisible(getActionButtonByName(actionButtonName));
     }
 
     public boolean isShareContactsSettingsWarningShown() throws Exception {
-        return isElementDisplayed(nameLaterButton);
+        return isLocatorDisplayed(nameLaterButton);
     }
 
     public boolean isFirstItemInSearchResult(String name) throws Exception {
         final By locator = By.xpath(xpathStrFirstSearchResultEntryByName.apply(name));
-        return isElementDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 }

@@ -12,11 +12,11 @@ Feature: Ping
     When I tap Ping button from cursor toolbar
     Then I see the ping message "<Message1>" in the conversation view
     When I tap Ping button from cursor toolbar
-    Then I see the ping message "<Message2>" in the conversation view
+    Then I see <Count> Ping messages in the conversation view
 
     Examples:
-      | Name      | Contact   | Message1   | Message2         |
-      | user1Name | user2Name | YOU PINGED | YOU PINGED AGAIN |
+      | Name      | Contact   | Message1   | Count |
+      | user1Name | user2Name | YOU PINGED | 2     |
 
   @C727 @regression @rc
   Scenario Outline: Send ping and ping again to contact in landscape mode
@@ -30,11 +30,11 @@ Feature: Ping
     When I tap Ping button from cursor toolbar
     Then I see the ping message "<Message1>" in the conversation view
     And I tap Ping button from cursor toolbar
-    Then I see the ping message "<Message2>" in the conversation view
+    Then I see <Count> Ping messages in the conversation view
 
     Examples:
-      | Name      | Contact   | Message1   | Message2         |
-      | user1Name | user2Name | YOU PINGED | YOU PINGED AGAIN |
+      | Name      | Contact   | Message1   | Count |
+      | user1Name | user2Name | YOU PINGED | 2     |
 
   @C766 @regression @rc
   Scenario Outline: Receive "Ping" and "Ping Again" in group conversation (portrait)
@@ -48,13 +48,12 @@ Feature: Ping
     And I tap the conversation <GroupChatName>
     When User <Contact1> securely pings conversation <GroupChatName>
     Then I see the ping message "<PingMessage>" in the conversation view
-    When User <Contact1> securely hotpings conversation <GroupChatName>
-    Then I see the ping message "<HotPingMessage>" in the conversation view
-    And I do not see the ping message "<PingMessage>" in the conversation view
+    When User <Contact1> securely pings conversation <GroupChatName>
+    Then I see <Count> Ping messages in the conversation view
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | PingMessage      | HotPingMessage         |
-      | user1Name | user2Name | user3Name | PingChat      | user2Name PINGED | user2Name PINGED AGAIN |
+      | Name      | Contact1  | Contact2  | GroupChatName | PingMessage      | Count |
+      | user1Name | user2Name | user3Name | PingChat      | user2Name PINGED | 2     |
 
   @C812 @regression @rc
   Scenario Outline: Receive "Ping" and "Ping Again" in group conversation (landscape)
@@ -68,10 +67,9 @@ Feature: Ping
     And I tap the conversation <GroupChatName>
     When User <Contact1> securely pings conversation <GroupChatName>
     Then I see the ping message "<PingMessage>" in the conversation view
-    When User <Contact1> securely hotpings conversation <GroupChatName>
-    Then I see the ping message "<HotPingMessage>" in the conversation view
-    And I do not see the ping message "<PingMessage>" in the conversation view
+    When User <Contact1> securely pings conversation <GroupChatName>
+    Then I see <Count> Ping messages in the conversation view
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | PingMessage      | HotPingMessage         |
-      | user1Name | user2Name | user3Name | PingChat      | user2Name PINGED | user2Name PINGED AGAIN |
+      | Name      | Contact1  | Contact2  | GroupChatName | PingMessage      | Count |
+      | user1Name | user2Name | user3Name | PingChat      | user2Name PINGED | 2     |

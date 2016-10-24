@@ -7,12 +7,10 @@ import java.util.Optional;
 
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
-import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.common.WrapperTestContext;
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
 import com.wearezeta.auto.web.pages.VideoCallPage;
@@ -79,9 +77,7 @@ public class VideoCallPageSteps {
         Assert.assertTrue("Fullscreen screenshot cannot be captured", localScreenshot.isPresent());
 
         // cutout from screenshot
-        ZetaOSXDriver osxDriver = (ZetaOSXDriver) PlatformDrivers.getInstance().getDrivers().get(
-                OSXExecutionContext.CURRENT_PLATFORM).get();
-        int retinaMultiplicator = OSXCommonUtils.screenPixelsMultiplier(osxDriver);
+        int retinaMultiplicator = OSXCommonUtils.screenPixelsMultiplier((ZetaOSXDriver) context.getOSXDriver());
         int x = mainWirePage.getX() * retinaMultiplicator;
         int y = mainWirePage.getY() * retinaMultiplicator;
         int elementY = elementLocation.getY() * retinaMultiplicator;

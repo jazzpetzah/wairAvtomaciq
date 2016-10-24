@@ -54,4 +54,4 @@ Feature: Sign Out
     Examples:
       | Language | SessionExpiredMessage                                                                |
       | english  | You were signed out because your session expired. Please log in again.               |
-      | german   | Du wurdest abgemeldet, da deine Session abgelaufen ist. Bitte logge dich erneut ein. |
+      | german   | Du wurdest abgemeldet, da deine Session abgelaufen ist. Bitte melde dich erneut an.  |

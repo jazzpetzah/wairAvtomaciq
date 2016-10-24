@@ -29,7 +29,7 @@ public class CallIncomingPageSteps {
      */
     @Then("^I (do not )?see incoming (video )?call$")
     public void ISeeIncomingCall(String not, String isVideoCall) throws Exception {
-        String subtitle = isVideoCall == null ? "Calling" : "Video calling";
+        String subtitle = isVideoCall == null ? "calling" : "video calling";
         if (not == null) {
             assertTrue("Incoming call not visible", getPage().waitUntilVisible(subtitle));
         } else {

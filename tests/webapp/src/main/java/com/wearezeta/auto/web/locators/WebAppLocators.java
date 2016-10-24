@@ -247,8 +247,8 @@ public final class WebAppLocators {
 
         public static final Function<String, String> xpathMuteCallButtonNotPressed = (name) -> String.format("//div[@data-uie-name='do-call-mute'" +
                 " and not(contains(@class, 'toggled'))]", name);
-
-        public static final Function<String, String> cssAvatarInCallControlsByUserId = (id) -> String.format(".conversation-list-call-controls-row-participants [user-id='%s']", id);
+        
+        public static final Function<String, String> cssAvatarInCallControlsByUserId = (id) -> String.format(".calls-controls-row-participants [user-id='%s']", id);
     }
     
     public static final class PreferencesPage {
@@ -589,6 +589,16 @@ public final class WebAppLocators {
         public static final String idConversationInput = "conversation-input-text";
 
         public static final String cssRightControlsPanel = "div.controls-right";
+
+        public static final String cssEphemeralButton = "[data-uie-name='do-set-ephemeral-timer']";
+
+        public static final Function<String, String> xpathEphemeralButtonByTime = time -> String
+                .format("//*[@data-uie-name='do-set-ephemeral-timer']//div//span[contains(@class, 'full-screen') and text()='%s']", time);
+        
+        public static final Function<String, String> xpathEphemeralButtonByUnit = unit -> String
+                .format("//*[@data-uie-name='do-set-ephemeral-timer']//div//span[contains(@class, 'ephemeral-timer-button-unit') and text()='%s']", unit);
+
+        public static final String cssEphemeralTimers = "[data-context-tag='ephemeral'] .bubble-menu li";
 
         public static final String cssSendImageInput = "input[data-uie-name=do-share-image]";
 

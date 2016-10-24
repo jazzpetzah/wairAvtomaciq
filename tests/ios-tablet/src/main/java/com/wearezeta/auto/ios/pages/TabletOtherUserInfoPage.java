@@ -38,7 +38,7 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
     }
 
     public boolean isConnectButtonVisible() throws Exception {
-        return isElementDisplayed(xpathOtherUserConnectButton);
+        return isLocatorDisplayed(xpathOtherUserConnectButton);
     }
 
     public void tapConnectButton() throws Exception {
@@ -55,12 +55,12 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
 
     public boolean isNameVisible(String user) throws Exception {
         final By locator = By.xpath(xpathStrOtherUserNameField.apply(user));
-        return isElementDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     public boolean isEmailVisible(String email) throws Exception {
         final By locator = By.xpath(xpathStrOtherUserEmailField.apply(email));
-        return isElementDisplayed(locator);
+        return isLocatorDisplayed(locator);
     }
 
     @Override
