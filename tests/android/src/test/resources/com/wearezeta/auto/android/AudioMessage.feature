@@ -1,6 +1,6 @@
 Feature: Audio Message
 
-  @C131179 @regression @rc @rc42
+  @C131179 @regression @rc @legacy
   Scenario Outline: Verify sending voice message by long tap > swipe up
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -16,7 +16,7 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131176 @regression @rc @rc42
+  @C131176 @regression @rc @legacy
   Scenario Outline: Verify microphone is changed to play icon after releasing the thumb
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -31,7 +31,7 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131180 @regression @rc @rc42
+  @C131180 @regression @rc @legacy
   Scenario Outline: Verify Play/Pause recorded audio message after long tap the audio cursor icon
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -71,7 +71,7 @@ Feature: Audio Message
       | Name      | Contact1  | Contact2  | FileName | MIMEType  | DeviceName | Notification            |
       | user1Name | user2Name | user3Name | test.m4a | audio/mp4 | Device1    | Shared an audio message |
 
-  @C131189 @regression @rc @rc42
+  @C131189 @regression @rc @legacy
   Scenario Outline: Verify receiving/downloading/re-downloading a voice message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -129,7 +129,7 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131177 @regression @rc @rc42
+  @C131177 @regression @rc @legacy
   Scenario Outline: Verify playing and cancelling recorded audio message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -149,7 +149,7 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131194 @regression @rc @rc42
+  @C131194 @regression @rc @legacy
   Scenario Outline: Verify playing/deleting a received voice message and pausing when in background
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

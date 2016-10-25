@@ -1,6 +1,6 @@
 Feature: Share Location
 
-  @C150028 @rc @rc42 @regression
+  @C150028 @rc @legacy @regression
   Scenario Outline: Verify you can share your location
     Given I am on Android with Google Location Service
     Given There is 2 users where <Name> is me
@@ -17,7 +17,7 @@ Feature: Share Location
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C150029 @rc @rc42 @regression
+  @C150029 @rc @legacy @regression
   Scenario Outline: Verify you can receive location sharing message
     Given I am on Android with Google Location Service
     Given There are 2 users where <Name> is me
