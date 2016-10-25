@@ -267,4 +267,26 @@ Feature: Ephemeral
     Examples:
       | Login1     | Password      | Name      | Contact   | Time | TimeLong   | TimeShortUnit | PING       | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile | TypeFile |
       | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds  | s             | you pinged | userpicture_landscape.jpg | C123938.mp4 | 5MB       | example.wav | 00:20     | C261733.zip  | 512KB    | ZIP      |
+    
+  @C310631 @ephemeral @staging
+  Scenario Outline: Verify sender can not download asset while it is obfuscated
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I click on ephemeral button
+    And I set the timer for ephemeral to <TimeLong>
+    Then I see <Time> with unit <TimeShortUnit> on ephemeral button
+    And I see placeholder of conversation input is Timed message
+    Then I see file transfer button in conversation input
+    When I send <Size> sized file with name <File> to the current conversation
+    When I wait until file <File> is uploaded completely
+    And I wait for <Time> seconds
+    And I click context menu of the last message
+    And I do not see download button in context menu
 
+    Examples:
+      | Login      | Password      | Name      | Contact   | File        | Size | Time | TimeLong  | TimeShortUnit |
+      | user1Email | user1Password | user1Name | user2Name | C123938.txt | 5MB  | 5    | 5 seconds | s             |

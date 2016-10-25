@@ -773,6 +773,12 @@ public class ConversationPageSteps {
         assertTrue("Like button is visible", context.getPagesCollection().getPage(ConversationPage.class)
                 .isLikeButtonInContextMenuInvisible());
     }
+    
+    @When("^I do not see download button in context menu$")
+    public void IDoNotSeeDownloadButtonInContext() throws Exception {
+        assertTrue("Download button is visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isDownloadButtonInContextMenuInvisible());
+    }
 
     @When("^I see delete for me button in context menu$")
     public void ISeeDeleteForMeButtonInContext() throws Exception {
