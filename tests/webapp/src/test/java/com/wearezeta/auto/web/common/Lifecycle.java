@@ -45,6 +45,7 @@ import org.openqa.selenium.safari.SafariOptions;
 public class Lifecycle {
 
     public static final int SAFARI_DRIVER_CREATION_RETRY = 3;
+    private boolean DEBUG = false;
     private TestContext context;
     private TestContext compatContext;
 
@@ -64,6 +65,7 @@ public class Lifecycle {
                 scenario.getId().lastIndexOf(";") + 1);
         setUp(scenario.getName() + "_" + id);
     }
+
     @After
     public void tearDown(Scenario scenario) throws Exception {
         tearDown();
@@ -96,7 +98,7 @@ public class Lifecycle {
         final String url = CommonUtils
                 .getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
         final ExecutorService pool = Executors.newFixedThreadPool(1);
-        
+
         Callable<ZetaWebAppDriver> callableWebAppDriver = new Callable<ZetaWebAppDriver>() {
 
             @Override
@@ -114,8 +116,11 @@ public class Lifecycle {
                             // it for
                             // a new test
                             Thread.sleep(5000);
-                            lazyWebDriver = new ZetaWebAppDriver(hubUrl,
-                                    capabilities);
+                            if (DEBUG) {
+                                lazyWebDriver = (ZetaWebAppDriver) new DebugWebAppDriver(hubUrl, capabilities);
+                            } else {
+                                lazyWebDriver = new ZetaWebAppDriver(hubUrl, capabilities);
+                            }
                             failed = false;
                         } catch (WebDriverException e) {
                             log.warn("Safari driver init failed - retrying", e);
@@ -126,6 +131,8 @@ public class Lifecycle {
                     if (failed) {
                         throw new Exception("Failed to init Safari driver");
                     }
+                } else if (DEBUG) {
+                    lazyWebDriver = (ZetaWebAppDriver) new DebugWebAppDriver(hubUrl, capabilities);
                 } else {
                     lazyWebDriver = new ZetaWebAppDriver(hubUrl, capabilities);
                 }
@@ -174,7 +181,7 @@ public class Lifecycle {
 
         ZetaFormatter.setLazyDriver(lazyWebDriver);
     }
-    
+
     public void tearDown(com.wire.picklejar.gherkin.model.Scenario scenario) throws Exception {
         try {
             Set<String> tagSet = scenario.getTags().stream()
@@ -187,8 +194,8 @@ public class Lifecycle {
         }
         tearDown();
     }
-    
-    private Map<String, String> mapScenario(com.wire.picklejar.gherkin.model.Scenario scenario){
+
+    private Map<String, String> mapScenario(com.wire.picklejar.gherkin.model.Scenario scenario) {
         Map<String, String> stepResultMap = new LinkedHashMap<>();
         for (Step step : scenario.getSteps()) {
             stepResultMap.put(step.getName(), step.getResult().getStatus());
@@ -266,7 +273,8 @@ public class Lifecycle {
         }
     }
 
-    private void writeBrowserLogsIntoMainLog(TestContext context) throws InterruptedException, ExecutionException, TimeoutException {
+    private void writeBrowserLogsIntoMainLog(TestContext context) throws InterruptedException, ExecutionException,
+            TimeoutException {
         List<LogEntry> logEntries = context.getBrowserLog();
         if (!logEntries.isEmpty()) {
             log.debug("BROWSER CONSOLE LOGS:");

@@ -23,6 +23,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import java.util.concurrent.TimeUnit;
 
 public class WebCommonUtils extends CommonUtils {
 
@@ -393,10 +394,28 @@ public class WebCommonUtils extends CommonUtils {
                     + "arguments[0].dispatchEvent(evt);", element);
         }
     }
+    
+    public static void highlightElement(RemoteWebDriver driver, WebElement element, int duration, TimeUnit unit) {
+        if (WebAppExecutionContext.getBrowser().isSupportingAccessToJavascriptContext()) {
+            String original_style = element.getAttribute("style");
+            driver.executeScript(
+                    "arguments[0].setAttribute(arguments[1], arguments[2])",
+                    element, "style", "border: 2px solid red; border-style: dashed;");
+            if (duration > 0) {
+                try {
+                    Thread.sleep(unit.toMillis(duration));
+                } catch (InterruptedException ex) {
+                }
+                driver.executeScript("arguments[0].setAttribute(arguments[1], arguments[2])",
+                        element, "style", original_style);
+            }
+        }
+    }
 
     /**
-     * The UI uses left zero padding for device IDs but for internal processing we need a format without leading zeros.
-     * Note: The SEBridge is returning device IDs with left zero padding as well
+     * The UI uses left zero padding for device IDs but for internal processing we need a format without leading zeros. Note:
+     * The SEBridge is returning device IDs with left zero padding as well
+     *
      * @param deviceId device ID with leading zeros
      * @return device ID without leading zeros
      */
