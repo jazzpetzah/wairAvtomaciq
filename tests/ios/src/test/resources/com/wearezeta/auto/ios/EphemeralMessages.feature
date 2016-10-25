@@ -133,7 +133,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer |
       | user1Name | user2Name | 15    |
 
-  @C259588 @staging @fastLogin
+  @C310632 @staging @fastLogin
   Scenario Outline: Verify sending ephemeral audio message
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -153,7 +153,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer |
       | user1Name | user2Name | 15    |
 
-  @staging @fastLogin
+  @C310633 @staging @fastLogin
   Scenario Outline: Verify sending ephemeral video message
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -175,7 +175,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer | FileName    |
       | user1Name | user2Name | 15    | testing.mp4 |
 
-  @staging @fastLogin
+  @C310634 @staging @fastLogin
   Scenario Outline: Verify sending ephemeral share location
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -198,7 +198,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer |
       | user1Name | user2Name | 15    |
 
-  @staging @fastLogin
+  @C310635 @staging @fastLogin
   Scenario Outline: Verify sending ephemeral file share
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -222,7 +222,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer | ItemName                   |
       | user1Name | user2Name | 15    | FTRANSFER_MENU_DEFAULT_PNG |
 
-  @staging @fastLogin
+  @C310636 @staging @fastLogin
   Scenario Outline: Verify sending ephemeral GIF
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -245,7 +245,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer | GiphyTag |
       | user1Name | user2Name | 15    | sun      |
 
-  @torun @staging @fastLogin
+  @C310637 @staging @fastLogin
   Scenario Outline: Verify sending ephemeral media link
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -257,9 +257,11 @@ Feature: Ephemeral Messages
     And I type the "<SoundCloudLink>" message and send it
     #wait to be sure video is delivered
     And I wait for 5 seconds
-    And I remember Media container state
+    Then I see media container in the conversation view
+    When I remember the recent message from user Myself in the local database
     And I wait for <Timer> seconds
-    Then I see asset container state is changed
+    Then I see 1 message in the conversation view
+    And I verify the remembered message has been changed in the local database
 
     Examples:
       | Name      | Contact   | Timer | SoundCloudLink                                                   |
