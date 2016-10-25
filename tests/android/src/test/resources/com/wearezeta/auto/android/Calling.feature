@@ -215,30 +215,8 @@ Feature: Calling
       | CallBackend | CallBackend2 | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    | Timeout |
       | chrome      | zcall        | user1Name | user2Name | user3Name | user4Name | user5Name | ChatForGroupCall | 60      |
 
-  @C805 @calling_basic @rc
-  Scenario Outline: (AN-3396) I can join group call after I ignored it
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given <Contact1> starts instance using <CallBackend>
-    Given <Contact2> starts instance using chrome
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    When I tap on conversation name <GroupChatName>
-    And <Contact2> accepts next incoming call automatically
-    And <Contact1> calls <GroupChatName>
-    Then I see incoming call
-    When I swipe to ignore the call
-    And I tap Audio Call button from top toolbar
-    Then I see ongoing call
-
-    Examples:
-      | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
-      | zcall       | user1Name | user2Name | user3Name | ChatForGroupCall |
-
   @C802 @calling_basic @rc
-  Scenario Outline: I can join group call after I leave it
+  Scenario Outline: I can join group call after I ignore or leave it
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -249,11 +227,13 @@ Feature: Calling
     When I tap on conversation name <GroupChatName>
     And <Contact1>,<Contact2> calls <GroupChatName>
     Then I see incoming call
-    When I swipe to accept the call
+    When I swipe to ignore the call
+    And I wait for 10 seconds
+    And I tap Audio Call button from top toolbar
     Then I see ongoing call
     When I hang up ongoing call
     Then I do not see incoming call
-    And I wait for 20 seconds
+    And I wait for 10 seconds
     And I tap Audio Call button from top toolbar
     And I see ongoing call
 
