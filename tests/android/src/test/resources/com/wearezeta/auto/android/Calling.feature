@@ -44,7 +44,7 @@ Feature: Calling
       | user1Name | user2Name | chrome      | 60      |
 
   @C710 @calling_basic @rc
-  Scenario Outline: Receive call while Wire is running in the background
+  Scenario Outline: Receive call while Wire in the background or screen locked
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given <Contact> starts instance using <CallBackend>
@@ -56,26 +56,9 @@ Feature: Calling
     # Wait for the call to appear in UI
     And I wait for 7 seconds
     Then I see incoming call from <Contact>
-    When I swipe to accept the call
-    Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
-    And I see ongoing call
     When <Contact> stops calling me
-    Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
     When I restore the application
-    Then I do not see ongoing call
-
-    Examples:
-      | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | zcall       | 60      |
-
-  @C711 @calling_basic @rc
-  Scenario Outline: Receive call while mobile in sleeping mode(screen locked)
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given <Contact> starts instance using <CallBackend>
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
+    Then I do not see incoming call
     When I lock the device
     And <Contact> calls me
     # Wait for the call to appear in UI
