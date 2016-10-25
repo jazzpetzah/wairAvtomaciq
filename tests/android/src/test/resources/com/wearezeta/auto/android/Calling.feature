@@ -299,26 +299,6 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Contact8  | Contact9   | Contact10  | GroupChatName       | AlertTitle              | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | MaxGroupCallNegChat | Too many people to call | zcall       |
 
-  @C427 @calling_advanced
-  Scenario Outline: Verify receiving 1to1 call during group call and accepting it
-    Given There are 4 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
-    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
-    Given <Contact1>,<Contact2>,<Contact3> starts instance using <CallBackend>
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    When I tap on conversation name <GroupChatName>
-    Then I see incoming call
-    When I swipe to accept the call
-    Then I see ongoing call
-    When <Contact3> calls me
-    Then I do not see incoming call
-
-    Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
-      | user1Name | user2Name | user3Name | user4Name | GroupCallChat | zcall       |
-
   @C806 @calling_advanced @regression
   Scenario Outline: Verify incoming group call ignored during ongoing 1:1 call
     Given There are 4 users where <Name> is me
@@ -337,7 +317,6 @@ Feature: Calling
     Then I do not see incoming call
     And <Contact3> stop calling me
     And <Contact1>,<Contact2> stop calling <GroupChatName>
-
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
@@ -365,7 +344,7 @@ Feature: Calling
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | zcall       |
-    
+
   @C803 @calling_basic @rc @legacy
   Scenario Outline: Verify accepting group call in background
     Given There are 3 users where <Name> is me
@@ -462,5 +441,3 @@ Feature: Calling
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | zcall       |
-
-
