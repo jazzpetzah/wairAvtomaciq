@@ -29,9 +29,19 @@ public class CallIncomingPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), by, VISIBILITY_TIMEOUT_SECONDS);
     }
 
+    public boolean waitUntilVisible(String subtitle, int timeoutSeconds) throws Exception {
+        final By by = By.xpath(xpathIncomingCallContainerByName.apply(subtitle));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), by, timeoutSeconds);
+    }
+
     public boolean waitUntilNotVisible(String subtitle) throws Exception {
         final By by = By.xpath(xpathIncomingCallContainerByName.apply(subtitle));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), by);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), by, VISIBILITY_TIMEOUT_SECONDS);
+    }
+
+    public boolean waitUntilNotVisible(String subtitle, int timeoutSeconds) throws Exception {
+        final By by = By.xpath(xpathIncomingCallContainerByName.apply(subtitle));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), by, timeoutSeconds);
     }
 
     public boolean waitUntilNameAppearsOnCallingBarCaption(String name) throws Exception {
@@ -39,9 +49,9 @@ public class CallIncomingPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, VISIBILITY_TIMEOUT_SECONDS);
     }
 
-    public boolean waitUntilNameAppearsOnCallingBarCaption(String name, int timeout) throws Exception {
+    public boolean waitUntilNameAppearsOnCallingBarCaption(String name, int timeoutSeconds) throws Exception {
         final By locator = By.xpath(xpathCallingHeaderByName.apply(name));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, timeout);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, timeoutSeconds);
     }
 
     public void ignoreCall() throws Exception {

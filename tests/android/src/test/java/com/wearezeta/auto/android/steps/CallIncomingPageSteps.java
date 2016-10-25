@@ -38,6 +38,25 @@ public class CallIncomingPageSteps {
     }
 
     /**
+     * Wait for incoming call up to Timeout seconds
+     *
+     * @param timeoutSeconds Timeout in seconds
+     * @param not            equals to null means should see incoming call
+     * @param isVideoCall    equals to null means it is the video incoming call view
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? and (do not )?see incoming (video )?call$
+     */
+    @Then("^I wait up to (\\d+) seconds? and (do not )?see incoming (video )?call$")
+    public void ISeeIncomingCallBeforeTimeout(int timeoutSeconds, String not, String isVideoCall) throws Exception {
+        String subtitle = isVideoCall == null ? "calling" : "video calling";
+        if (not == null) {
+            assertTrue("Incoming call not visible", getPage().waitUntilVisible(subtitle, timeoutSeconds));
+        } else {
+            assertTrue("Incoming call should not be visible", getPage().waitUntilNotVisible(subtitle, timeoutSeconds));
+        }
+    }
+
+    /**
      * Ignores an incoming call
      *
      * @param action either 'accept' or 'ignore'
@@ -77,17 +96,17 @@ public class CallIncomingPageSteps {
     /**
      * Wait for incoming call from user up to TimeOut seconds
      *
-     * @param timeout            Timeout in seconds
+     * @param timeoutSeconds     Timeout in seconds
      * @param expectedCallerName User name who calls
      * @throws Exception
      * @step. ^I wait up to (\d+) seconds for incoming call from (.*)$
      */
     @When("^I wait up to (\\d+) seconds for incoming call from (.*)$")
-    public void ISeeIncomingCallingMessageBeforeTimeout(int timeout, String expectedCallerName)
+    public void ISeeIncomingCallingMessageBeforeTimeout(int timeoutSeconds, String expectedCallerName)
             throws Exception {
         expectedCallerName = usrMgr.findUserByNameOrNameAlias(expectedCallerName).getName();
         Assert.assertTrue(String.format(
                 "The current caller name differs from the expected value '%s'", expectedCallerName),
-                getPage().waitUntilNameAppearsOnCallingBarCaption(expectedCallerName, timeout));
+                getPage().waitUntilNameAppearsOnCallingBarCaption(expectedCallerName, timeoutSeconds));
     }
 }
