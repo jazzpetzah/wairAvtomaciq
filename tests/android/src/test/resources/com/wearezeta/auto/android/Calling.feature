@@ -338,17 +338,17 @@ Feature: Calling
     When <Contact> calls me
     Then I see incoming call
     When I swipe to accept the call
-    Then <Contact1> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     Then I see ongoing call
     When I minimize the application
     And I restore the application
     Then I see ongoing call
-    When <Contact1> stops calling me
-    Then <Contact1> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
+    When <Contact> stops calling me
+    Then <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
     And I do not see ongoing call
 
     Examples:
-      | Name      | Contact1  | CallBackend | Timeout |
+      | Name      | Contact  | CallBackend | Timeout |
       | user1Name | user2Name | zcall       | 60      |
 
   @calling_autoAnswer
