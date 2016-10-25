@@ -586,6 +586,8 @@ Feature: Conversation View
     And I accept alert
     And I accept alert
     And I tap Camera Roll button on Keyboard Gallery overlay
+    # Wait until camera roll is opened and initialized
+    And I wait for 3 seconds
     And I remember count of the photos in Camera Roll
     And I tap Cancel button on Camera Roll page
     And I long tap on image in conversation view
