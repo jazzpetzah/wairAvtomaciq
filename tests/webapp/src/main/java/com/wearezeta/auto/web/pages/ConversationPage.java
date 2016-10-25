@@ -176,6 +176,9 @@ public class ConversationPage extends WebPage {
     @FindBy(css = WebAppLocators.ConversationPage.cssLinkPreviewImage)
     private WebElement previewImage;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssOrangeBlock)
+    private WebElement orangeBlock;
+
     public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -1484,8 +1487,9 @@ public class ConversationPage extends WebPage {
         return lastGenericMessage.findElement(By.cssSelector(".bg-color-ephemeral")).isDisplayed();
     }
 
-    public boolean isLastMessageNotReplaced() {
-        return !lastTextMessage.getAttribute("class").contains("bg-color-ephemeral");
+    public boolean isOrangeBlockNotShown() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssOrangeBlock);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     /**
