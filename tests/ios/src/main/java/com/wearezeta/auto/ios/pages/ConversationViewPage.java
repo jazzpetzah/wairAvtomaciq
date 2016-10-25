@@ -51,7 +51,9 @@ public class ConversationViewPage extends IOSPage {
     private static final String xpathStrAllEntries = "//XCUIElementTypeTable/XCUIElementTypeCell";
     private static final By xpathAllEntries = By.xpath(xpathStrAllEntries);
     private static final String xpathStrRecentEntry = xpathStrAllEntries + "[1]";
+    private static final String xpathStrSecondEntry = xpathStrAllEntries + "[2]";
     private static final By xpathRecentEntry = By.xpath(xpathStrRecentEntry);
+    private static final By xpathSecondEntry = By.xpath(xpathStrSecondEntry);
 
     private static final String xpathStrAllTextMessages = xpathStrAllEntries +
             "/XCUIElementTypeTextView[boolean(string(@value))]";
@@ -512,43 +514,9 @@ public class ConversationViewPage extends IOSPage {
 //        return containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
 //    }
 
-    public BufferedImage getAssetsContainerStateGlyphScreenshot(String assetType) throws Exception {
-        final BufferedImage containerScreen;
-
-        switch (assetType) {
-            case "Media":
-                containerScreen = this.getElementScreenshot(getElement(fbXpathMediaContainerCell)).orElseThrow(() ->
-                        new IllegalStateException("Cannot take a screenshot of Media container"));
-                break;
-            case "Audio":
-                containerScreen = this.getElementScreenshot(getElement(fbNameAudioActionButton)).orElseThrow(() ->
-                        new IllegalStateException("Cannot take a screenshot of Audio container"));
-                break;
-            case "Video":
-                containerScreen = this.getElementScreenshot(getElement(fbNameVideoMessageActionButton)).orElseThrow(() ->
-                        new IllegalStateException("Cannot take a screenshot of Video container"));
-                break;
-            case "File Share":
-                containerScreen = this.getElementScreenshot(getElement(fbNameFileTransferBottomLabel)).orElseThrow(() ->
-                        new IllegalStateException("Cannot take a screenshot of File Share container"));
-                break;
-            case "Location":
-                containerScreen = this.getElementScreenshot(getElement(fbXpathShareLocationContainer)).orElseThrow(() ->
-                        new IllegalStateException("Cannot take a screenshot of Location container"));
-                break;
-            case "GIF":
-            case "Image":
-                containerScreen = this.getElementScreenshot(getElement(fbXpathRecentImageCell)).orElseThrow(() ->
-                        new IllegalStateException("Cannot take a screenshot of Image or GIF container"));
-                break;
-            case "Link Preview":
-                containerScreen = this.getElementScreenshot(getElement(fbNameLinkPreview)).orElseThrow(() ->
-                        new IllegalStateException("Cannot take a screenshot of Link Preview container"));
-                break;
-            default:
-                throw new IllegalStateException(String.format("Can not take screenshot of %s container", assetType));
-        }
-
+    public BufferedImage getAssetsContainerStateScreenshot() throws Exception {
+        final BufferedImage containerScreen = this.getElementScreenshot(getElement(xpathSecondEntry)).orElseThrow(() ->
+                new IllegalStateException("Cannot take a screenshot of File Share container"));
         ImageIO.write(containerScreen, "png", new File("/Users/julianereschke/Desktop/" + System.currentTimeMillis() + ".png"));
         return containerScreen;
     }

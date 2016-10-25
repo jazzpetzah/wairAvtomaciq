@@ -390,12 +390,12 @@ public class ConversationViewPageSteps {
      * Store the current assets container state into an internal varibale
      *
      * @throws Exception
-     * @step. ^I remember assets container state$
+     * @step. ^I remember media asset container state$
      */
-    @When("^I remember (Media|Audio|Video|File Share|Location|Image|GIF|Link Preview) container state$")
+    @When("^I remember media asset container state$")
     public void IRememberAssetsContainerState(String assetType) throws Exception {
         previousAssetsContainerState= new ElementState(
-                () -> getConversationViewPage().getAssetsContainerStateGlyphScreenshot(assetType)
+                () -> getConversationViewPage().getAssetsContainerStateScreenshot()
         );
         previousAssetsContainerState.remember();
     }
@@ -403,14 +403,14 @@ public class ConversationViewPageSteps {
     private static final int ASSET_CONTAINER_STATE_CHANGE_TIMEOUT = 10;
 
     /**
-     * Verify whether the state of a media container is changed
+     * Verify whether the state of a media asset container is changed
      *
      * @param shouldNotChange equals to null if the state should not be changed
      * @throws Exception
-     * @step. ^I see media container state is (not )?changed$
+     * @step. ^I see media asset container state is (not )?changed$
      */
-    @Then("^I see asset container state is (not )?changed$")
-    public void IVerifyAssetContainerState(String shouldNotChange) throws Exception {
+    @Then("^I see media asset container state is (not )?changed$")
+    public void IVerifyMediaAssetContainerState(String shouldNotChange) throws Exception {
         if (this.previousAssetsContainerState == null) {
             throw new IllegalStateException("Please remember the previous container state first");
         }
