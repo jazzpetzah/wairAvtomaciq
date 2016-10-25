@@ -23,7 +23,7 @@ Feature: Ephemeral
     And I send message
     Then I see text message <Message>
     And I verify the database is containing the message <Message> from <Name> in active conversation
-    And I see <Time> with unit <TimeShortUnit> on ephemeral button
+    And I see timer next to the last message
     When I wait for <Wait> seconds
     Then I do not see timer next to the last message
     And I see the last message is obfuscated
@@ -285,6 +285,7 @@ Feature: Ephemeral
     When I send <Size> sized file with name <File> to the current conversation
     When I wait until file <File> is uploaded completely
     And I wait for <Time> seconds
+    And I see the last message is replaced with an orange block
     And I click context menu of the last message
     And I do not see download button in context menu
 
