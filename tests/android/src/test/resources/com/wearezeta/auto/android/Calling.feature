@@ -53,17 +53,18 @@ Feature: Calling
     Given I see Conversations list with conversations
     When I minimize the application
     And <Contact> calls me
-    # Wait for the call to appear in UI
-    And I wait for 7 seconds
-    Then I see incoming call from <Contact>
+    Then I wait up to <Timeout> seconds for incoming call from <Contact>
+    When I swipe to accept the call
+    Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+    And I see ongoing call
     When <Contact> stops calling me
+    Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
     When I restore the application
-    Then I do not see incoming call
+    Then I do not see ongoing call
     When I lock the device
+    And I wait for 1 second
     And <Contact> calls me
-    # Wait for the call to appear in UI
-    And I wait for 7 seconds
-    Then I see incoming call from <Contact>
+    Then I wait up to <Timeout> seconds for incoming call from <Contact>
     When I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing call
