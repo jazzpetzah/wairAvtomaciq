@@ -56,7 +56,7 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @C682 @regression @rc @rc42
+  @C682 @regression @rc @legacy
   Scenario Outline: Send Camera picture to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -73,7 +73,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C700 @regression @rc @rc42
+  @C700 @regression @rc @legacy
   Scenario Outline: Create group conversation from 1:1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -302,7 +302,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | Message1 | Message2 |
       | user1Name | user2Name | user3Name | Msg1     | Msg2     |
 
-  @C111617 @regression @rc @rc42
+  @C111617 @regression @rc @legacy
   Scenario Outline: Verify cursor action buttons are shown together with a text field
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
