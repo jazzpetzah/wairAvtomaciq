@@ -247,8 +247,8 @@ public final class WebAppLocators {
 
         public static final Function<String, String> xpathMuteCallButtonNotPressed = (name) -> String.format("//div[@data-uie-name='do-call-mute'" +
                 " and not(contains(@class, 'toggled'))]", name);
-
-        public static final Function<String, String> cssAvatarInCallControlsByUserId = (id) -> String.format(".conversation-list-call-controls-row-participants [user-id='%s']", id);
+        
+        public static final Function<String, String> cssAvatarInCallControlsByUserId = (id) -> String.format(".calls-controls-row-participants [user-id='%s']", id);
     }
     
     public static final class PreferencesPage {

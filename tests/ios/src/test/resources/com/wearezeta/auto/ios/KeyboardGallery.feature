@@ -88,7 +88,7 @@ Feature: Keyboard Gallery
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
     And I accept alert
-    And I accept alert
+    And I accept alert if visible
     And I tap Camera Shutter button on Keyboard Gallery overlay
     And I tap Sketch button on Picture Preview page
     And I draw a random sketch

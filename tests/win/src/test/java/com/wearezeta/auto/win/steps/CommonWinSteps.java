@@ -513,20 +513,6 @@ public class CommonWinSteps {
     }
 
     /**
-     * Send Hotping into a conversation using the backend
-     *
-     * @step. ^User (.*) pinged twice in the conversation with (.*)$
-     *
-     * @param pingFromUserNameAlias conversations list owner name/alias
-     * @param dstConversationName the name of conversation to send ping to
-     * @throws Exception
-     */
-    @When("^User (.*) pinged twice in the conversation with (.*)$")
-    public void UserHotPingedConversation(String pingFromUserNameAlias, String dstConversationName) throws Exception {
-        commonSteps.UserHotPingedConversation(pingFromUserNameAlias, dstConversationName);
-    }
-
-    /**
      * Send message to a conversation
      *
      * @step. ^User (.*) sent message (.*) to conversation (.*)

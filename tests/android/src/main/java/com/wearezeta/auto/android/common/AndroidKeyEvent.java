@@ -291,7 +291,7 @@ public class AndroidKeyEvent {
      * Key code constant: Backspace key.
      * Deletes characters before the insertion point, unlike {@link #KEYCODE_FORWARD_DEL}.
      */
-    public static final int KEYCODE_DEL = 67;
+    public static final int KEYCODE_BACKSPACE = 67;
     /**
      * Key code constant: '`' (backtick) key.
      */

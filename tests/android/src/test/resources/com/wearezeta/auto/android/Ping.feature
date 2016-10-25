@@ -1,6 +1,6 @@
 Feature: Ping
 
-  @C681 @regression @rc @rc42
+  @C681 @regression @rc @legacy
   Scenario Outline: Send multiple Pings to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

@@ -57,6 +57,7 @@ public class ConversationViewPageSteps {
     private final ElementState audiomessageSlideMicrophoneButtonState = new ElementState(
             () -> getConversationViewPage().getAudioMessagePreviewMicrophoneButtonState());
     private ElementState messageLikeButtonState;
+    private ElementState messageContainerState;
 
     private Boolean wasShieldVisible = null;
 
@@ -357,12 +358,24 @@ public class ConversationViewPageSteps {
         msg = expandMessage(msg);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", msg),
-                    getConversationViewPage().waitForMessage(msg));
+                    getConversationViewPage().waitUntilMessageWithTextVisible(msg));
         } else {
             Assert.assertTrue(
                     String.format("The message '%s' is still visible in the conversation view, but should be hidden", msg),
-                    getConversationViewPage().isMessageInvisible(msg));
+                    getConversationViewPage().waitUntilMessageWithTextInvisible(msg));
         }
+    }
+
+    /**
+     * Verify there is no text message in the conversation view
+     *
+     * @throws Exception
+     * @step. ^I do not see any text message in the conversation view$
+     */
+    @Then("^I do not see any text message in the conversation view$")
+    public void IDoNotSeeAnyTextMessage() throws Exception {
+        Assert.assertTrue("Expect that no text message is visible in conversation view",
+                getConversationViewPage().waitUntilAnyMessageInvisible());
     }
 
     /**
@@ -1159,11 +1172,12 @@ public class ConversationViewPageSteps {
      * Verify whether container is visible in the conversation
      *
      * @param shouldNotSee  equals to null if the container should be visible
-     * @param containerType euiter Youtube or Soundcloud or File Upload or Video Message
+     * @param containerType which could be Image/Youtube/Soundcloud/File upload/Video message/Audio Message/Share location
+     *                      /Link Preview
      * @throws Exception
-     * @step. ^I (do not )?see (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
+     * @step. ^I (do not )?see (Image|Youtube|Soundcloud|File Upload|File Upload Placeholder|Video Message|Audio Message|Audio Message Placeholder|Share Location|Link Preview) container in the conversation view$
      */
-    @Then("^I (do not )?see (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
+    @Then("^I (do not )?see (Image|Youtube|Soundcloud|File Upload|File Upload Placeholder|Video Message|Audio Message|Audio Message Placeholder|Share Location|Link Preview) " +
             "container in the conversation view$")
     public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
         final boolean condition = (shouldNotSee == null) ?
@@ -1171,6 +1185,51 @@ public class ConversationViewPageSteps {
                 getConversationViewPage().isContainerInvisible(containerType);
         Assert.assertTrue(String.format("%s should be %s in the conversation view", containerType,
                 (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
+
+    /**
+     * Remember the state of Message Container
+     *
+     * @param containerType which could be Image/Youtube/Soundcloud/File upload/Video message/Audio Message/Share location
+     *                      /Link Preview
+     * @throws Exception
+     * @step. ^I remember the state of (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|
+     * Share Location|Link Preview) container in the conversation view$
+     */
+    @When("^I remember the state of (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
+            "container in the conversation view$")
+    public void IRememberContainer(String containerType) throws Exception {
+        messageContainerState = new ElementState(
+                () -> getConversationViewPage().getMessageContainerState(containerType)
+        );
+        messageContainerState.remember();
+    }
+
+
+    private static final int MESSAGE_CONTAINER_CHANGE_TIMEOUT = 15;
+    private static final double MESSAGE_CONTAINER_MIN_SIMILARITY_SCORE = 0.6;
+    private static final double MESSAGE_CONTAINER_NOT_CHANGED_MIN_SCORE = -0.5;
+
+    /**
+     * Verify the Message container is changed or not
+     *
+     * @param containerType
+     * @param notChanged
+     * @throws Exception
+     * @step. ^I verify the state of (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container is (not )?changed$
+     */
+    @Then("^I verify the state of (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
+            "container is (not )?changed$")
+    public void IVerifyStateOfMessageContainerChanged(String containerType, String notChanged) throws Exception {
+        if (notChanged == null) {
+            Assert.assertTrue(String.format("The state of %s container is expected to be changed", containerType),
+                    messageContainerState.isChanged(MESSAGE_CONTAINER_CHANGE_TIMEOUT,
+                            MESSAGE_CONTAINER_MIN_SIMILARITY_SCORE));
+        } else {
+            Assert.assertTrue(String.format("The state of %s container is expected to be changed", containerType),
+                    messageContainerState.isNotChanged(MESSAGE_CONTAINER_CHANGE_TIMEOUT,
+                            MESSAGE_CONTAINER_NOT_CHANGED_MIN_SCORE));
+        }
     }
 
     /**

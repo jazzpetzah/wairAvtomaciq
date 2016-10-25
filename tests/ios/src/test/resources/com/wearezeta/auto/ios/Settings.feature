@@ -101,6 +101,8 @@ Feature: Settings
     Given I select settings item Picture
     When I remember my current profile picture
     And I tap Camera Roll button on Camera page
+    # Wait for camera toll opening animation
+    And I wait for 3 seconds
     And I accept alert
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
@@ -119,14 +121,14 @@ Feature: Settings
     Given I select settings item Account
     Given I select settings item Name
     When I clear Name input field on Settings page
-    And I wait for 3 seconds
     And I tap Return button on the keyboard
+    And I tap Return button on the keyboard if visible
     Then I verify the alert contains text <ExpectedAlertText>
     And I accept alert
     When I clear Name input field on Settings page
     And I set "<OneCharName>" value to Name input field on Settings page
-    And I wait for 3 seconds
     And I tap Return button on the keyboard
+    And I tap Return button on the keyboard if visible
     Then I verify the alert contains text <ExpectedAlertText>
 
     Examples:

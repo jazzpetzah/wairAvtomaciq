@@ -382,8 +382,8 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
 
-  @C12066 @C3239 @regression @rc
-  Scenario Outline: Verify I see system message when verify all other user's device in group conversation
+  @C3239 @regression @rc
+  Scenario Outline: Verify I see system message after I verified all participants' devices
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>

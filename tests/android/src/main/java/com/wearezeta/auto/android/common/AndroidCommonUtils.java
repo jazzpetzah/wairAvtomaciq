@@ -167,19 +167,19 @@ public class AndroidCommonUtils extends CommonUtils {
      * @throws Exception
      */
     public static void lockScreen() throws Exception {
-        executeAdb("shell input keyevent 26");
+        executeAdb("shell input keyevent "+AndroidKeyEvent.KEYCODE_POWER);
     }
 
     public static void tapBackButton() throws Exception {
-        executeAdb("shell input keyevent 4");
+        executeAdb("shell input keyevent "+AndroidKeyEvent.KEYCODE_BACK);
     }
 
     public static void tapHomeButton() throws Exception {
-        executeAdb("shell input keyevent 3");
+        executeAdb("shell input keyevent "+AndroidKeyEvent.KEYCODE_HOME);
     }
 
     public static void tapBackspaceButton() throws Exception {
-        executeAdb("shell input keyevent 67");
+        executeAdb("shell input keyevent "+AndroidKeyEvent.KEYCODE_BACKSPACE);
     }
 
     public static double getScreenDensity() throws Exception {

@@ -1,7 +1,7 @@
 Feature: Connect
 
-  @C676 @C677 @regression @rc @rc42
-  Scenario Outline: Send connection request from search
+  @C676 @regression @rc @legacy
+  Scenario Outline: Search non-connected person and send connection request from Start UI
     Given There are 3 users where <Name> is me
     Given Myself is connected to <IntermediateContact>
     Given <IntermediateContact> is connected to <Contact>
@@ -22,7 +22,7 @@ Feature: Connect
       | Name      | Contact   | IntermediateContact |
       | user1Name | user2Name | user3name           |
 
-  @C687 @regression @rc @rc42
+  @C687 @regression @rc @legacy
   Scenario Outline: Accept incoming connection request from Conversations list
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
@@ -38,7 +38,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @C706 @regression @rc @rc42
+  @C706 @regression @rc @legacy
   Scenario Outline: I can see a new inbox for connection when receive new connection request
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -143,7 +143,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @C385 @C111633 @regression @rc
+  @C385 @regression @rc
   Scenario Outline: Accept incoming connection request from search
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
@@ -165,7 +165,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @C388 @C111632 @regression @rc
+  @C388 @regression @rc
   Scenario Outline: I would not know other person has ignored my connection request
     Given There are 3 users where <Name> is me
     Given Myself is connected to <IntermediateContact>

@@ -21,7 +21,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 
     private static final By nameOtherProfilePageCloseButton = MobileBy.AccessibilityId("OtherUserProfileCloseButton");
 
-    private static final By nameConnectConfirmButton = MobileBy.AccessibilityId("CONNECT");
+    private static final By xpathConnectConfirmButton = By.xpath("(//XCUIElementTypeButton[@name='CONNECT'])[last()]");
 
     public OtherUserOnPendingProfilePage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -60,7 +60,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
     }
 
     public void confirmConnect() throws Exception {
-        getElement(nameConnectConfirmButton).click();
+        getElement(xpathConnectConfirmButton).click();
     }
 
     public void tapCloseButton() throws Exception {

@@ -34,7 +34,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | GroupChatName          |
       | user1Name | user3Name | user2Name | PeoplePicker GroupChat |
 
-  @C680 @regression @rc @rc42
+  @C680 @regression @rc @legacy
   Scenario Outline: I can search for contact by partial name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -131,7 +131,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C703 @regression @rc @rc42
+  @C703 @regression @rc @legacy
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

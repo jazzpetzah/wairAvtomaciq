@@ -16,7 +16,7 @@ Feature: Registration
       | Name      |
       | user1Name |
 
-  @C145970 @regression @rc @rc42
+  @C145970 @regression @rc @legacy
   Scenario Outline: Change self picture during registration using gallery
     Given I see welcome screen
     When I input a new phone number for user <Name>

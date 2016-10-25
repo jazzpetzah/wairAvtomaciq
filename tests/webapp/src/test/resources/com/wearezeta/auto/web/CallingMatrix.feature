@@ -289,7 +289,7 @@ Feature: Calling_Matrix
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName1> is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName1>
-    And I see row of avatars on call controls with users <Contact1>
+    And I see row of avatars on call controls with users <Contact1>,<Contact2>
     And I wait for 10 seconds
     And <Contact2> verifies to have 2 flows
     And <Contact2> verifies to get audio data from me

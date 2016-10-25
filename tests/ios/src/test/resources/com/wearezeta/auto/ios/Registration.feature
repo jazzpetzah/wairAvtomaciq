@@ -54,7 +54,7 @@ Feature: Registration
     And I accept alert
     And I tap Take Photo button on Camera page
     And I tap Confirm button on Picture preview page
-    And I accept alert
+    And I accept alert if visible
     And I tap Share Contacts button on Share Contacts overlay
     And I accept alert
     And I tap settings gear button

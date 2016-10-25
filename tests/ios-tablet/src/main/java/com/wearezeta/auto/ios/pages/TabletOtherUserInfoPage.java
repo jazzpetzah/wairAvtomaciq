@@ -12,9 +12,6 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
     private static final By nameOtherUserMetaControllerRightButtonIPadPopover =
             MobileBy.AccessibilityId("OtherUserMetaControllerRightButton");
 
-    private static final Function<String, String> xpathStrOtherUserNameField = name ->
-            String.format("//XCUIElementTypeStaticText[@name='%s']", name);
-
     private static final Function<String, String> xpathStrOtherUserEmailField = email ->
             String.format("//XCUIElementTypeTextView[@value='%s']", email.toUpperCase());
 
@@ -54,8 +51,8 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
     }
 
     public boolean isNameVisible(String user) throws Exception {
-        final By locator = By.xpath(xpathStrOtherUserNameField.apply(user));
-        return isLocatorDisplayed(locator);
+        final By locator = MobileBy.AccessibilityId(user);
+        return selectVisibleElements(locator).size() > 0;
     }
 
     public boolean isEmailVisible(String email) throws Exception {
