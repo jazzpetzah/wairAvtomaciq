@@ -301,16 +301,14 @@ Feature: Calling
     Given I see Conversations list with conversations
     When I minimize the application
     And <Contact1>,<Contact2> calls <GroupChatName>
-    # Wait for the call to appear
-    And I wait for 7 seconds
-    Then I see incoming call
+    Then I wait up to <Timeout> seconds for incoming call from <GroupChatName>
     And I see incoming call from <GroupChatName>
     When I swipe to accept the call
     And I see ongoing call
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |
-      | user1Name | user2Name | user3Name | GroupCallChat | zcall       |
+      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | Timeout |
+      | user1Name | user2Name | user3Name | GroupCallChat | zcall       | 60      |
 
   @C121 @calling_basic
   Scenario Outline: Lock device screen after initiating call
@@ -323,7 +321,6 @@ Feature: Calling
     And I tap Audio Call button from top toolbar
     And I see outgoing call
     When I lock the device
-    And I wait for 2 seconds
     And I unlock the device
     Then I see outgoing call
 
