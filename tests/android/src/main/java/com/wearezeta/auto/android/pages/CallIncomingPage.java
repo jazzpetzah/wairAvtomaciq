@@ -39,6 +39,11 @@ public class CallIncomingPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, VISIBILITY_TIMEOUT_SECONDS);
     }
 
+    public boolean waitUntilNameAppearsOnCallingBarCaption(String name, int timeout) throws Exception {
+        final By locator = By.xpath(xpathCallingHeaderByName.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, timeout);
+    }
+
     public void ignoreCall() throws Exception {
         DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 85, 20, 85);
     }

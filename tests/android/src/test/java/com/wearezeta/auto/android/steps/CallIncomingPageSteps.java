@@ -59,8 +59,7 @@ public class CallIncomingPageSteps {
     }
 
     /**
-     * Verify that incoming calling UI is visible and that the correct caller
-     * name is shown
+     * Verify that incoming calling UI is visible and that the correct caller name is shown
      *
      * @param expectedCallerName User name who calls
      * @throws Exception
@@ -73,5 +72,22 @@ public class CallIncomingPageSteps {
         Assert.assertTrue(String.format(
                 "The current caller name differs from the expected value '%s'", expectedCallerName),
                 getPage().waitUntilNameAppearsOnCallingBarCaption(expectedCallerName));
+    }
+
+    /**
+     * Wait for incoming call from user up to TimeOut seconds
+     *
+     * @param timeout            Timeout in seconds
+     * @param expectedCallerName User name who calls
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds for incoming call from (.*)$
+     */
+    @When("^I wait up to (\\d+) seconds for incoming call from (.*)$")
+    public void ISeeIncomingCallingMessageBeforeTimeout(int timeout, String expectedCallerName)
+            throws Exception {
+        expectedCallerName = usrMgr.findUserByNameOrNameAlias(expectedCallerName).getName();
+        Assert.assertTrue(String.format(
+                "The current caller name differs from the expected value '%s'", expectedCallerName),
+                getPage().waitUntilNameAppearsOnCallingBarCaption(expectedCallerName, timeout));
     }
 }
