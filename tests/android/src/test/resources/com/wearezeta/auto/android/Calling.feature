@@ -61,28 +61,6 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C699 @calling_basic @rc
-  Scenario Outline: I can accept incoming 1:1 call
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given <Contact1> starts instance using <CallBackend>
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    When <Contact1> calls me
-    Then I see incoming call
-    And I see incoming call from <Contact1>
-    When I swipe to accept the call
-    Then <Contact1> verifies that call status to <Name> is changed to active in <Timeout> seconds
-    And I see ongoing call
-    When <Contact1> stops calling me
-    Then <Contact1> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
-    And I do not see ongoing call
-
-    Examples:
-      | Name      | Contact1  | CallBackend | Timeout |
-      | user1Name | user2Name | zcall       | 60      |
-
   @C710 @calling_basic @rc
   Scenario Outline: Receive call while Wire is running in the background
     Given There are 2 users where <Name> is me
@@ -433,8 +411,8 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C708 @calling_basic @rc @legacy
-  Scenario Outline: Put client into background when in the call
+  @C699 @calling_basic @rc @legacy
+  Scenario Outline: I can accept incoming 1:1 call and put wire to background
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given <Contact> starts instance using <CallBackend>
@@ -444,14 +422,18 @@ Feature: Calling
     When <Contact> calls me
     Then I see incoming call
     When I swipe to accept the call
+    Then <Contact1> verifies that call status to <Name> is changed to active in <Timeout> seconds
     Then I see ongoing call
     When I minimize the application
     And I restore the application
     Then I see ongoing call
+    When <Contact1> stops calling me
+    Then <Contact1> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
+    And I do not see ongoing call
 
     Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | zcall       |
+      | Name      | Contact1  | CallBackend | Timeout |
+      | user1Name | user2Name | zcall       | 60      |
 
   @C405 @calling_advanced
   Scenario Outline: (AN-3510) Other user trying to call me while I'm already in zeta call
