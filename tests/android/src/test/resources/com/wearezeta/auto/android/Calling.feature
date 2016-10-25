@@ -20,24 +20,6 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | zcall       | 60      |
 
-  @C713 @calling_basic @rc
-  Scenario Outline: Silence an incoming call
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given <Contact> starts instance using <CallBackend>
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    When <Contact> calls me
-    Then I see incoming call
-    And I see incoming call from <Contact>
-    When I swipe to ignore the call
-    Then I do not see incoming call
-
-    Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | zcall       |
-
   @C698 @calling_basic @rc
   Scenario Outline: I can start 1:1 call
     Given There are 2 users where <Name> is me
