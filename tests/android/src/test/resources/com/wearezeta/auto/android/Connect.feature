@@ -23,38 +23,28 @@ Feature: Connect
       | user1Name | user2Name | user3name           |
 
   @C687 @regression @rc @legacy
-  Scenario Outline: Accept incoming connection request from Conversations list
-    Given There are 2 users where <Name> is me
-    Given <Contact> sent connection request to <Name>
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    When I tap on conversation name <WaitingMess>
-    Then I see connect to <Contact> dialog
-    When I Connect with contact by pressing button
-    Then I see Conversations list with name <Contact>
-
-    Examples:
-      | Name      | Contact   | WaitingMess      |
-      | user1Name | user2Name | 1 person waiting |
-
-  @C706 @regression @rc @legacy
-  Scenario Outline: I can see a new inbox for connection when receive new connection request
-    Given There are 2 users where <Name> is me
+  Scenario Outline: Accept/ignore incoming connection requests from Conversations list
+    Given There are 3 users where <Name> is me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with no conversations
     Given I do not see Conversations list with name <WaitingMess>
-    Given <Contact> sent connection request to <Name>
+    Given <Contact1> sent connection request to <Name>
     When I tap on conversation name <WaitingMess>
-    Then I see connect to <Contact> dialog
+    Then I see connect to <Contact1> dialog
     When I press Ignore connect button
     Then I see Conversations list
     And I do not see Conversations list with name <WaitingMess>
+    When <Contact2> sent connection request to <Name>
+    Then I see Conversations list with name <WaitingMess>
+    When I tap on conversation name <WaitingMess>
+    Then I see connect to <Contact2> dialog
+    When I Connect with contact by pressing button
+    Then I see Conversations list with name <Contact2>
 
     Examples:
-      | Name      | Contact   | WaitingMess      |
-      | user1Name | user2Name | 1 person waiting |
+      | Name      | Contact1  | Contact2  | WaitingMess      |
+      | user1Name | user2Name | user3Name | 1 person waiting |
 
   @C383 @C386 @regression
   Scenario Outline: I can see a inbox count increasing/decreasing correctly + I ignore someone from people picker and clear my inbox
