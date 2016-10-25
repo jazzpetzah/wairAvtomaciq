@@ -29,7 +29,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C679 @regression @rc @rc42
+  @C679 @regression @rc @legacy
   Scenario Outline: Change user picture with gallery image
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -49,7 +49,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C691 @regression @rc @rc42
+  @C691 @regression @rc @legacy
   Scenario Outline: I can change my name
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number

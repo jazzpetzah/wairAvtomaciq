@@ -121,7 +121,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C131213 @rc @rc42 @regression
+  @C131213 @rc @legacy @regression
   Scenario Outline: Verify you see first time usage overlay on first login by mail
     Given There is 1 user where <Name> is me
     Given I sign in using my email
