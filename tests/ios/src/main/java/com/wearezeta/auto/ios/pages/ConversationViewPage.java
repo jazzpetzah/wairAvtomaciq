@@ -714,17 +714,12 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapMessageByText(boolean isLongTap, boolean isDoubleTap, String msg) throws Exception {
         final FBElement el = (FBElement) getElement(FBBy.xpath(xpathStrMessageByTextPart.apply(msg)));
-        // The tap should be performed precisely on the text
-        final int tapPercentX = 10;
-        final int tapPercentY = 50;
         if (isDoubleTap) {
-            doubleClickAt(el, tapPercentX, tapPercentY);
+            el.doubleTap();
+        } else if (isLongTap) {
+            el.longTap();
         } else {
-            if (isLongTap) {
-                longClickAt(el, tapPercentX, tapPercentY);
-            } else {
-                this.tapByPercentOfElementSize(el, tapPercentX, tapPercentY);
-            }
+            el.click();
         }
     }
 
