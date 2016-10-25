@@ -370,20 +370,20 @@ public class ConversationViewPageSteps {
         getConversationViewPage().stopMediaContent();
     }
 
-    private ElementState previousMediaContainerState = new ElementState(
-            () -> getConversationViewPage().getMediaContainerStateGlyphScreenshot()
-    );
-
-    /**
-     * Store the current media container state into an internal varibale
-     *
-     * @throws Exception
-     * @step. ^I remember media container state$
-     */
-    @When("^I remember media container state$")
-    public void IRememberContainerState() throws Exception {
-        previousMediaContainerState.remember();
-    }
+//    private ElementState previousMediaContainerState = new ElementState(
+//            () -> getConversationViewPage().getMediaContainerStateGlyphScreenshot()
+//    );
+//
+//    /**
+//     * Store the current media container state into an internal varibale
+//     *
+//     * @throws Exception
+//     * @step. ^I remember media container state$
+//     */
+//    @When("^I remember media container state$")
+//    public void IRememberContainerState() throws Exception {
+//        previousMediaContainerState.remember();
+//    }
 
     private ElementState previousAssetsContainerState;
     /**
@@ -392,7 +392,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I remember assets container state$
      */
-    @When("^I remember (Media|Audio|Video|File Share|Location|Image|GIF) container state$")
+    @When("^I remember (Media|Audio|Video|File Share|Location|Image|GIF|Link Preview) container state$")
     public void IRememberAssetsContainerState(String assetType) throws Exception {
         previousAssetsContainerState= new ElementState(
                 () -> getConversationViewPage().getAssetsContainerStateGlyphScreenshot(assetType)
@@ -426,31 +426,31 @@ public class ConversationViewPageSteps {
         }
     }
 
-    private static final int MEDIA_STATE_CHANGE_TIMEOUT = 10;
-
-    /**
-     * Verify whether the state of a media container is changed
-     *
-     * @param shouldNotChange equals to null if the state should not be changed
-     * @throws Exception
-     * @step. ^I see media container state is (not )?changed$
-     */
-    @Then("^I see media container state is (not )?changed$")
-    public void IVerifyContainerState(String shouldNotChange) throws Exception {
-        if (this.previousMediaContainerState == null) {
-            throw new IllegalStateException("Please remember the previous container state first");
-        }
-        final double minScore = 0.8;
-        if (shouldNotChange == null) {
-            Assert.assertTrue(String.format("The current media state is not different from the expected one after " +
-                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
-                    previousMediaContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT, minScore));
-        } else {
-            Assert.assertTrue(String.format("The current media state is different from the expected one after " +
-                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
-                    previousMediaContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT, minScore));
-        }
-    }
+     private static final int MEDIA_STATE_CHANGE_TIMEOUT = 10;
+//
+//    /**
+//     * Verify whether the state of a media container is changed
+//     *
+//     * @param shouldNotChange equals to null if the state should not be changed
+//     * @throws Exception
+//     * @step. ^I see media container state is (not )?changed$
+//     */
+//    @Then("^I see media container state is (not )?changed$")
+//    public void IVerifyContainerState(String shouldNotChange) throws Exception {
+//        if (this.previousMediaContainerState == null) {
+//            throw new IllegalStateException("Please remember the previous container state first");
+//        }
+//        final double minScore = 0.8;
+//        if (shouldNotChange == null) {
+//            Assert.assertTrue(String.format("The current media state is not different from the expected one after " +
+//                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+//                    previousMediaContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT, minScore));
+//        } else {
+//            Assert.assertTrue(String.format("The current media state is different from the expected one after " +
+//                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+//                    previousMediaContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT, minScore));
+//        }
+//    }
 
     @Then("^I see media is (playing|stopped|paused) on [Mm]edia [Bb]ar$")
     public void TheMediaIs(String expectedState) throws Exception {

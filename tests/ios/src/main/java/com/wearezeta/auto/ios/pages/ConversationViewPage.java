@@ -499,18 +499,18 @@ public class ConversationViewPage extends IOSPage {
         getElement(nameRecentMessageToolbox).click();
     }
 
-    public BufferedImage getMediaContainerStateGlyphScreenshot() throws Exception {
-        final BufferedImage containerScreen =
-                this.getElementScreenshot(getElement(fbXpathMediaContainerCell)).orElseThrow(() ->
-                        new IllegalStateException("Cannot take a screenshot of media container"));
-        final int stateGlyphWidth = containerScreen.getWidth() / 7;
-        final int stateGlyphHeight = containerScreen.getHeight() / 7;
-        final int stateGlyphX = (containerScreen.getWidth() - stateGlyphWidth) / 2;
-        final int stateGlyphY = (containerScreen.getHeight() - stateGlyphHeight) / 2;
-        BufferedImage tmp = containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
-        ImageIO.write(tmp, "png", new File("/Users/julianereschke/Desktop/" + System.currentTimeMillis() + ".png"));
-        return containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
-    }
+//    public BufferedImage getMediaContainerStateGlyphScreenshot() throws Exception {
+//        final BufferedImage containerScreen =
+//                this.getElementScreenshot(getElement(fbXpathMediaContainerCell)).orElseThrow(() ->
+//                        new IllegalStateException("Cannot take a screenshot of media container"));
+//        final int stateGlyphWidth = containerScreen.getWidth() / 7;
+//        final int stateGlyphHeight = containerScreen.getHeight() / 7;
+//        final int stateGlyphX = (containerScreen.getWidth() - stateGlyphWidth) / 2;
+//        final int stateGlyphY = (containerScreen.getHeight() - stateGlyphHeight) / 2;
+//        BufferedImage tmp = containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
+//        ImageIO.write(tmp, "png", new File("/Users/julianereschke/Desktop/" + System.currentTimeMillis() + ".png"));
+//        return containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
+//    }
 
     public BufferedImage getAssetsContainerStateGlyphScreenshot(String assetType) throws Exception {
         final BufferedImage containerScreen;
@@ -529,7 +529,7 @@ public class ConversationViewPage extends IOSPage {
                         new IllegalStateException("Cannot take a screenshot of Video container"));
                 break;
             case "File Share":
-                containerScreen = this.getElementScreenshot(getElement(fbXpathMediaContainerCell)).orElseThrow(() ->
+                containerScreen = this.getElementScreenshot(getElement(fbNameFileTransferBottomLabel)).orElseThrow(() ->
                         new IllegalStateException("Cannot take a screenshot of File Share container"));
                 break;
             case "Location":
@@ -541,16 +541,16 @@ public class ConversationViewPage extends IOSPage {
                 containerScreen = this.getElementScreenshot(getElement(fbXpathRecentImageCell)).orElseThrow(() ->
                         new IllegalStateException("Cannot take a screenshot of Image or GIF container"));
                 break;
+            case "Link Preview":
+                containerScreen = this.getElementScreenshot(getElement(fbNameLinkPreview)).orElseThrow(() ->
+                        new IllegalStateException("Cannot take a screenshot of Link Preview container"));
+                break;
             default:
                 throw new IllegalStateException(String.format("Can not take screenshot of %s container", assetType));
         }
-        final int stateGlyphWidth = containerScreen.getWidth() / 7;
-        final int stateGlyphHeight = containerScreen.getHeight() / 7;
-        final int stateGlyphX = (containerScreen.getWidth() - stateGlyphWidth) / 2;
-        final int stateGlyphY = (containerScreen.getHeight() - stateGlyphHeight) / 2;
-        BufferedImage tmp = containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
-        ImageIO.write(tmp, "png", new File("/Users/julianereschke/Desktop/" + System.currentTimeMillis() + ".png"));
-        return containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
+
+        ImageIO.write(containerScreen, "png", new File("/Users/julianereschke/Desktop/" + System.currentTimeMillis() + ".png"));
+        return containerScreen;
     }
 
     public boolean areInputToolsVisible() throws Exception {

@@ -198,23 +198,25 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer |
       | user1Name | user2Name | 15    |
 
-  @C310635 @staging @fastLogin
+  @torun @C310635 @staging @fastLogin
   Scenario Outline: Verify sending ephemeral file share
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And I tap Hourglass button in conversation view
-    And I set ephemeral messages expiration timer to <Timer> seconds
-    And I tap File Transfer button from input tools
+    Given I tap on contact name <Contact>
+    Given I tap Hourglass button in conversation view
+    Given I set ephemeral messages expiration timer to <Timer> seconds
+    Given I navigate back to conversations list
+    Given I tap on contact name <Contact>
+    Given I tap File Transfer button from input tools
     # Wait for transition
-    And I wait for 2 seconds
-    And I tap file transfer menu item <ItemName>
-    Then I see file transfer placeholder
+    Given I wait for 2 seconds
+    Given I tap file transfer menu item <ItemName>
+    Given I see file transfer placeholder
     #wait tp make sure file was delivered
-    And I wait for 5 seconds
-    And I remember File Share container state
+    Given I wait for 5 seconds
+    When I remember File Share container state
     And I wait for <Timer> seconds
     Then I see asset container state is changed
 
@@ -245,6 +247,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer | GiphyTag |
       | user1Name | user2Name | 15    | sun      |
 
+  #works with message content in database and count of messages
   @C310637 @staging @fastLogin
   Scenario Outline: Verify sending ephemeral media link
     Given There are 2 user where <Name> is me
@@ -266,3 +269,23 @@ Feature: Ephemeral Messages
     Examples:
       | Name      | Contact   | Timer | SoundCloudLink                                                   |
       | user1Name | user2Name | 15    | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
+
+  #works with screenshot comparison
+  @C311066 @staging @fastLogin
+  Scenario Outline: Verify sending ephemeral link preview
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I tap Hourglass button in conversation view
+    And I set ephemeral messages expiration timer to <Timer> seconds
+    And I type the "<Link>" message and send it
+    Then I see link preview container in the conversation view
+    And I remember Link Preview container state
+    And I wait for <Timer> seconds
+    Then I see asset container state is changed
+
+    Examples:
+      | Name      | Contact   | Timer | Link                 |
+      | user1Name | user2Name | 15    | https://www.wire.com |
