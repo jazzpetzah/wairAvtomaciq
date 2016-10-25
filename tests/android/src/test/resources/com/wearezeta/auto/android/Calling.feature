@@ -302,7 +302,6 @@ Feature: Calling
     When I minimize the application
     And <Contact1>,<Contact2> calls <GroupChatName>
     Then I wait up to <Timeout> seconds for incoming call from <GroupChatName>
-    And I see incoming call from <GroupChatName>
     When I swipe to accept the call
     And I see ongoing call
 
