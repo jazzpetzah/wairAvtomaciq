@@ -319,8 +319,8 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | zcall       |
 
-  @C806 @calling_advanced @rc
-  Scenario Outline: (AN-3140, AN-3510) Verify receiving group call during 1to1 call and accepting it
+  @C806 @calling_advanced @regression
+  Scenario Outline: Verify incoming group call ignored during ongoing 1:1 call
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
@@ -335,18 +335,13 @@ Feature: Calling
     Then I see ongoing call
     When <Contact1>,<Contact2> calls <GroupChatName>
     Then I do not see incoming call
-#    Then I see incoming call
-#    And I see incoming call from <GroupChatName>
-#    When I swipe to accept the call
-#    Then I see ongoing call
-#    And I see 2 users take part in call
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | zcall       |
 
   @C428 @calling_advanced
-  Scenario Outline: (AN-3510) Verify receiving 1to1 call during group call and ignoring it
+  Scenario Outline: Verify incoming 1:1 call ignored during ongoing group call
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
@@ -361,10 +356,6 @@ Feature: Calling
     Then I see ongoing call
     When <Contact3> calls <Name>
     Then I do not see incoming call
-#    And I see incoming call
-#    When I swipe to ignore the call
-#    Then I see ongoing call
-#    And I see 2 users take part in call
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
