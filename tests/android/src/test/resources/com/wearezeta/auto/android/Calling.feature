@@ -44,7 +44,7 @@ Feature: Calling
       | user1Name | user2Name | chrome      | 60      |
 
   @C710 @calling_basic @rc
-  Scenario Outline: Receive call while Wire in the background or screen locked
+  Scenario Outline: I can join 1:1 call while Wire in the background or screen locked
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given <Contact> starts instance using <CallBackend>
@@ -180,6 +180,25 @@ Feature: Calling
       | CallBackend | CallBackend2 | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    | Timeout |
       | chrome      | zcall        | user1Name | user2Name | user3Name | user4Name | user5Name | ChatForGroupCall | 60      |
 
+  @C803 @calling_basic @rc @legacy
+  Scenario Outline: I can join group call while Wire in the background
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> starts instance using <CallBackend>
+    Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I minimize the application
+    And <Contact1>,<Contact2> calls <GroupChatName>
+    Then I wait up to <Timeout> seconds for incoming call from <GroupChatName>
+    When I swipe to accept the call
+    And I see ongoing call
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | Timeout |
+      | user1Name | user2Name | user3Name | GroupCallChat | zcall       | 60      |
+
   @C802 @calling_basic @rc
   Scenario Outline: I can join group call after I ignore or leave it
     Given There are 3 users where <Name> is me
@@ -289,25 +308,6 @@ Feature: Calling
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | zcall       |
-
-  @C803 @calling_basic @rc @legacy
-  Scenario Outline: Verify accepting group call in background
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> starts instance using <CallBackend>
-    Given I sign in using my email
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    When I minimize the application
-    And <Contact1>,<Contact2> calls <GroupChatName>
-    Then I wait up to <Timeout> seconds for incoming call from <GroupChatName>
-    When I swipe to accept the call
-    And I see ongoing call
-
-    Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | Timeout |
-      | user1Name | user2Name | user3Name | GroupCallChat | zcall       | 60      |
 
   @C121 @calling_basic
   Scenario Outline: Lock device screen after initiating call
