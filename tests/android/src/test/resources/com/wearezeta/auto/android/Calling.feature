@@ -403,7 +403,7 @@ Feature: Calling
       | user1Name | user2Name |
 
   @C699 @calling_basic @rc @legacy
-  Scenario Outline: I can accept incoming 1:1 call and put wire to background
+  Scenario Outline: I can accept incoming 1:1 call, put wire to background and restore
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given <Contact> starts instance using <CallBackend>
