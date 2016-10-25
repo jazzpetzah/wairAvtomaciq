@@ -366,15 +366,24 @@ public class IOSSimulatorHelpers {
         return resultList;
     }
 
-    private static final String DEFAULT_APPLICATION_PATH =
-            "/Applications/Xcode.app/Contents/Developer/Applications/Simulator.app";
+    private static Optional<String> applicationPath = Optional.empty();
+
+    // https://github.com/plu/simctl/blob/master/lib/simctl/command/launch.rb
+
+    public static String getApplicationPath() throws Exception {
+        if (!applicationPath.isPresent()) {
+            final String xCodeRoot = getCommandOutput("/usr/bin/xcode-select", "-p").trim();
+            applicationPath = Optional.of(String.format("%s/Applications/Simulator.app", xCodeRoot));
+        }
+        return applicationPath.get();
+    }
 
     private static String getDefaultScaleFactor() throws Exception {
+        // Available scale factors: 1.0, 0.75, 0.5, 0.33 and 0.25
         final String model = CommonUtils.getDeviceName(IOSSimulatorHelpers.class).toLowerCase();
         if (model.contains("ipad")) {
             return "0.33";
         }
-        // Available scale factors: 1.0, 0.75, 0.5, 0.33 and 0.25
         return "0.5";
     }
 
@@ -384,7 +393,7 @@ public class IOSSimulatorHelpers {
     }
 
     public static void start() throws Exception {
-        log.debug(getCommandOutput("/usr/bin/open", "-Fn", DEFAULT_APPLICATION_PATH,
+        log.debug(getCommandOutput("/usr/bin/open", "-Fn", getApplicationPath(),
                 "--args",
                 "-CurrentDeviceUDID", getId(),
                 String.format("-SimulatorWindowLastScale-%s", getInternalDeviceType()), getDefaultScaleFactor())

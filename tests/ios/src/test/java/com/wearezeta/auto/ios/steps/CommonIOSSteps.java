@@ -61,8 +61,8 @@ public class CommonIOSSteps {
     public static final String CAPABILITY_NAME_ADDRESSBOOK = "addressbookStart";
     public static final String TAG_NAME_ADDRESSBOOK = "@" + CAPABILITY_NAME_ADDRESSBOOK;
 
-    public static final String CAPABILITY_NAME_UPGRADE = "upgrade";
-    public static final String TAG_NAME_UPGRADE = "@" + CAPABILITY_NAME_UPGRADE;
+    public static final String CAPABILITY_NAME_NO_UNINSTALL = "noUninstall";
+    public static final String TAG_NAME_UPGRADE = "@upgrade";
 
     static {
         System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
@@ -96,8 +96,6 @@ public class CommonIOSSteps {
         }
         return null;
     }
-
-    private static final IOSDistributable CURRENT_BUILD = IOSDistributable.getInstance(getAppPath());
 
     /**
      * https://github.com/wireapp/wire-automation-addressbook-ios
@@ -204,7 +202,7 @@ public class CommonIOSSteps {
         if (!IOSSimulatorHelpers.isRunning()) {
             IOSSimulatorHelpers.start();
         }
-        if (!caps.is(CAPABILITY_NAME_UPGRADE)) {
+        if (!caps.is(CAPABILITY_NAME_NO_UNINSTALL)) {
             IOSSimulatorHelpers.uninstallApp(IOSDistributable.getInstance(
                     (String) caps.getCapability("app")).getBundleId()
             );
@@ -238,7 +236,7 @@ public class CommonIOSSteps {
         }
 
         final Map<String, Object> additionalCaps = new HashMap<>();
-        String appPath = CURRENT_BUILD.getAppRoot().getAbsolutePath();
+        String appPath = IOSDistributable.getInstance(getAppPath()).getAppRoot().getAbsolutePath();
         if (scenario.getSourceTagNames().contains(TAG_NAME_UPGRADE) ||
                 scenario.getSourceTagNames().contains(TAG_NAME_ADDRESSBOOK)) {
             if (scenario.getSourceTagNames().contains(TAG_NAME_UPGRADE)) {
@@ -344,9 +342,11 @@ public class CommonIOSSteps {
             }
         }
         customCaps.put("noReset", true);
-        customCaps.put(CAPABILITY_NAME_UPGRADE, true);
-        pagesCollection.getCommonPage().installApp(CURRENT_BUILD.getAppRoot());
-        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(CURRENT_BUILD.getAppRoot().getAbsolutePath(),
+        customCaps.put(CAPABILITY_NAME_NO_UNINSTALL, true);
+        final File currentBuildRoot = IOSDistributable.getInstance(getAppPath()).getAppRoot();
+        pagesCollection.getCommonPage().installApp(currentBuildRoot);
+        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(
+                currentBuildRoot.getAbsolutePath(),
                 Optional.of(customCaps), 1);
         updateDriver(lazyDriver);
     }
@@ -373,9 +373,11 @@ public class CommonIOSSteps {
             customCaps.put(capabilityItem.getKey(), capabilityItem.getValue());
         }
         customCaps.put("noReset", true);
-        customCaps.put("fullReset", false);
-        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(CURRENT_BUILD.getAppRoot().getAbsolutePath(),
-                Optional.of(customCaps), 1);
+        customCaps.put(CAPABILITY_NAME_NO_UNINSTALL, true);
+        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(
+                IOSDistributable.getInstance(getAppPath()).getAppRoot().getAbsolutePath(),
+                Optional.of(customCaps),
+                1);
         updateDriver(lazyDriver);
     }
 
