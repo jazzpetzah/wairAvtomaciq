@@ -163,6 +163,47 @@ Feature: Ephemeral
       | Login      | Password      | Login2     | Name      | Contact   | TimeLong  | TimeShortUnit | Time | Message |
       | user1Email | user1Password | user2Email | user1Name | user2Name | 5 seconds | s             | 5    | testing |
 
+  @C262540 @ephemeral @staging
+  Scenario Outline: Verify opening picture fullscreen with a short timer
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login2> and password <Password>
+    Given I am signed in properly
+    Given I open preferences by clicking the gear button
+    Given I click logout in account preferences
+    Given I see the clear data dialog
+    Given I click logout button on clear data dialog
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I click on ephemeral button
+    And I set the timer for ephemeral to <TimeLong>
+    Then I see <Time> with unit <TimeShortUnit> on ephemeral button
+    And I see placeholder of conversation input is Timed message
+    When I send picture <PictureName> to the current conversation
+    And I see only 1 picture in the conversation
+    And I see sent picture <PictureName> in the conversation view
+    Then I open preferences by clicking the gear button
+    And I click logout in account preferences
+    And I see the clear data dialog
+    And I click logout button on clear data dialog
+    Given I Sign in using login <Login2> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Name>
+    Then I see sent picture <PictureName> in the conversation view
+    When I click on picture
+    And I see picture <PictureName> in fullscreen
+    And I wait for 5 seconds
+    And I see picture <PictureName> in fullscreen
+    And I click x button to close fullscreen mode
+    Then I do not see picture <PictureName> in fullscreen
+    And I do not see any picture in the conversation view
+
+    Examples:
+      | Login      | Password      | Login2     | Name      | Contact   | TimeLong  | TimeShortUnit | Time | PictureName               |
+      | user1Email | user1Password | user2Email | user1Name | user2Name | 5 seconds | s             | 5    | userpicture_landscape.jpg |
+
   @C264664 @ephemeral @staging
   Scenario Outline: Verify I can not edit my last ephemeral message by pressing the up arrow key
     Given There are 2 users where <Name> is me
