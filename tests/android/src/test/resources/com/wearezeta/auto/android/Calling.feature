@@ -335,6 +335,9 @@ Feature: Calling
     Then I see ongoing call
     When <Contact1>,<Contact2> calls <GroupChatName>
     Then I do not see incoming call
+    And <Contact3> stop calling me
+    And <Contact1>,<Contact2> stop calling <GroupChatName>
+
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
@@ -356,11 +359,13 @@ Feature: Calling
     Then I see ongoing call
     When <Contact3> calls <Name>
     Then I do not see incoming call
+    And <Contact3> stop calling me
+    And <Contact1>,<Contact2> stop calling <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | zcall       |
-
+    
   @C803 @calling_basic @rc @legacy
   Scenario Outline: Verify accepting group call in background
     Given There are 3 users where <Name> is me
@@ -425,27 +430,6 @@ Feature: Calling
     Examples:
       | Name      | Contact1  | CallBackend | Timeout |
       | user1Name | user2Name | zcall       | 60      |
-
-  @C405 @calling_advanced
-  Scenario Outline: Other user trying to call me while I'm already in zeta call
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> starts instance using <CallBackend>
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    When I tap on conversation name <Contact1>
-    And <Contact1> calls me
-    Then I see incoming call from <Contact1>
-    When I swipe to accept the call
-    Then I see ongoing call
-    When <Contact2> calls me
-    Then I do not see incoming call
-    And <Contact1>,<Contact2> stop calling me
-
-    Examples:
-      | Name      | Contact1  | Contact2  | CallBackend |
-      | user1Name | user2Name | user3Name | zcall       |
 
   @calling_autoAnswer
   Scenario Outline: Auto Answer Call
