@@ -949,7 +949,7 @@ public class ConversationViewPage extends IOSPage {
         final By locator = getContainerLocatorByName(name);
         final FBElement dstElement = (FBElement) getElement(locator);
         if (isDoubleTap) {
-            doubleClickAt(dstElement);
+            dstElement.doubleTap();
         } else if (isLongTap) {
             dstElement.longTap();
         } else {
