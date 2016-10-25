@@ -427,7 +427,7 @@ Feature: Calling
       | user1Name | user2Name | zcall       | 60      |
 
   @C405 @calling_advanced
-  Scenario Outline: (AN-3510) Other user trying to call me while I'm already in zeta call
+  Scenario Outline: Other user trying to call me while I'm already in zeta call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <CallBackend>
@@ -441,7 +441,6 @@ Feature: Calling
     Then I see ongoing call
     When <Contact2> calls me
     Then I do not see incoming call
-    #Then I see incoming call
     And <Contact1>,<Contact2> stop calling me
 
     Examples:
