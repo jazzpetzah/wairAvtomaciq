@@ -690,9 +690,10 @@ public class CommonWebAppSteps {
      * @param dstNameAlias the conversation which message is belong to
      * @param deviceName User X's device
      * @throws Exception
-     * @step. ^User (.*) reads the recent message from (?:user|group conversation) (.*) via device (.*)$
+     * @step. ^User (.*) reads the recent message from (?:user|group conversation) (.*) via device (.*)
      */
-    @When("^User (.*) reads the recent message from (?:user|group conversation) (.*) via device (.*)$")
+
+    @When("^User (.*) reads the recent message from (user|group conversation) (.*) via device (.*)")
     public void UserReadsLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
             throws Exception {
         boolean isGroup = convoType.equals("group conversation");

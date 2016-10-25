@@ -193,7 +193,7 @@ Feature: Ephemeral
       | Login      | Password      | Name      | Contact   | OriginalMessage | EditedMessage | Time | TimeLong   | TimeShortUnit |
       | user1Email | user1Password | user1Name | user2Name | edit me         | edited        | 30   | 30 seconds | s             |
 
-  @C261733 @ephemeral @staging @torun
+  @C261733 @ephemeral @staging
   Scenario Outline: Verify sending different types of ephemeral messages (ping, picture, video, audio, file)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -205,11 +205,11 @@ Feature: Ephemeral
     And I click on ephemeral button
     And I set the timer for ephemeral to <TimeLong>
   #timer
+    Then I see <Time> with unit <TimeShortUnit> on ephemeral button
     And I see placeholder of conversation input is Timed message
   #ping
     When I click ping button
     Then I see <PING> action in conversation
-    And I see timer next to the last message
     When I wait for <Time> seconds
     Then I see the last message is obfuscated
     And I see 2 messages in conversation
@@ -223,7 +223,7 @@ Feature: Ephemeral
     And I see only 1 picture in the conversation
     And I see timer next to the last message
     When I wait for <Time> seconds
-    #Then I see the last message is replaced with an orange block
+    Then I see the last message is replaced with an orange block
     And I see 2 messages in conversation
     When User <Contact> reads the recent message from user <Name> via device Device1
     And I do not see any picture in the conversation view
@@ -235,10 +235,11 @@ Feature: Ephemeral
     And I see video message <VideoFile> in the conversation view
     And I see timer next to the last message
     When I wait for <Time> seconds
-    #Then I see the last message is replaced with an orange block
+    Then I see the last message is replaced with an orange block
     And I see 2 messages in conversation
     When User <Contact> reads the recent message from user <Name> via device Device1
     And I do not see video message <VideoFile> in the conversation view
+    And I wait for 5 seconds
     And I see 1 messages in conversation
   #audio
     When I send audio file with length <AudioTime> and name <AudioFile> to the current conversation
@@ -246,17 +247,17 @@ Feature: Ephemeral
     Then I see audio message <AudioFile> in the conversation view
     And I see timer next to the last message
     When I wait for <Time> seconds
-    #Then I see the last message is replaced with an orange block
+    Then I see the last message is replaced with an orange block
     And I see 2 messages in conversation
     When User <Contact> reads the recent message from user <Name> via device Device1
     And I do not see audio message <AudioFile> in the conversation view
     And I see 1 messages in conversation
-  #file
+    #file
     When I send <SizeFile> sized file with name <File> to the current conversation
     And I wait until file <File> is uploaded completely
     And I see timer next to the last message
     When I wait for <Time> seconds
-    #Then I see the last message is replaced with an orange block
+    Then I see the last message is replaced with an orange block
     And I see 2 messages in conversation
     When User <Contact> reads the recent message from user <Name> via device Device1
     And I do not see file transfer for file <File> in the conversation view
@@ -264,6 +265,6 @@ Feature: Ephemeral
     And I see 0 messages in database from <Name> in active conversation
 
     Examples:
-      | Login1     | Password      | Name      | Contact   | Time | TimeLong   | PING       | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile | TypeFile |
-      | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds  | you pinged | userpicture_landscape.jpg | C123938.mp4 | 5MB       | example.wav | 00:20     | C261733.zip  | 512KB    | ZIP      |
+      | Login1     | Password      | Name      | Contact   | Time | TimeLong   | TimeShortUnit | PING       | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile | TypeFile |
+      | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds  | s             | you pinged | userpicture_landscape.jpg | C123938.mp4 | 5MB       | example.wav | 00:20     | C261733.zip  | 512KB    | ZIP      |
 
