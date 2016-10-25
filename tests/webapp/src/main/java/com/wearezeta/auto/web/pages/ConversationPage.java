@@ -1247,6 +1247,11 @@ public class ConversationPage extends WebPage {
         By locator = By.xpath(WebAppLocators.ConversationPage.xpathUnlikeInContext);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
+    
+    public boolean isDownloadButtonInContextMenuInvisible() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDownloadInContext);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
 
     public void clickDeleteEverywhereInContextMenuOfLastMessage() throws Exception {
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteEverywhereByMessageId.apply(getMessageId(1)));
