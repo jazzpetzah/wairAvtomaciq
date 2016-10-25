@@ -62,7 +62,6 @@ Feature: Calling
     When I restore the application
     Then I do not see ongoing call
     When I lock the device
-    And I wait for 1 second
     And <Contact> calls me
     Then I wait up to <Timeout> seconds for incoming call from <Contact>
     When I swipe to accept the call

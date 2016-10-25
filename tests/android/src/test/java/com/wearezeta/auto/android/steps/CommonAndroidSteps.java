@@ -491,8 +491,10 @@ public class CommonAndroidSteps {
     public void ILockUnlockTheDevice(String shouldUnlock) throws Exception {
         if (shouldUnlock == null) {
             AndroidCommonUtils.lockScreen();
+            WaitForTime(UI_DELAY_TIME);
         } else {
             AndroidCommonUtils.unlockDevice();
+            WaitForTime(UI_DELAY_TIME);
             // FIXME: Unlock selendroid app does not restore the previously active application
             AndroidCommonUtils.switchToApplication(getPackageName());
         }
