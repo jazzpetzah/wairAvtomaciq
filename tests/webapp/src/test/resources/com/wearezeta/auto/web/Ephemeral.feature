@@ -1,6 +1,6 @@
 Feature: Ephemeral
 
-  @C261723 @ephemeral @staging
+  @C261723 @ephemeral @staging @WEBAPP-3302
   Scenario Outline: Verify sending ephemeral text message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -204,7 +204,7 @@ Feature: Ephemeral
       | Login      | Password      | Login2     | Name      | Contact   | TimeLong  | TimeShortUnit | Time | PictureName               |
       | user1Email | user1Password | user2Email | user1Name | user2Name | 5 seconds | s             | 5    | userpicture_landscape.jpg |
 
-  @C264664 @ephemeral @staging
+  @C264664 @ephemeral @regression
   Scenario Outline: Verify I can not edit my last ephemeral message by pressing the up arrow key
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
