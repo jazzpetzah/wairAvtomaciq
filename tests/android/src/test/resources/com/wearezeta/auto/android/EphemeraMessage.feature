@@ -186,3 +186,29 @@ Feature: Ephemeral Message
     Examples:
       | Name      | Contact   | EphemeralTimeout | Message | ContactDevice |
       | user1Name | user2Name | 5 seconds        | yo      | d1            |
+
+  @C261719 @staging
+  Scenario Outline: If ephemeral message can’t be sent due to bad network, it can be resend and will not get obfuscated
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When I tap Ephemeral button from cursor toolbar
+    And I set timeout to <EphemeralTimeout> on Extended cursor ephemeral overlay
+    And I enable Airplane mode on the device
+    And I see No Internet bar in <NetworkTimeout> seconds
+    And I type the message "<Message>" and send it by cursor Send button
+    And I see Message status with expected text "<MessageStatus>" in conversation view
+    And I wait for <EphemeralTimeout>
+    And I disable Airplane mode on the device
+    Then I see the message "<Message>" in the conversation view
+    When I do not see No Internet bar in <NetworkTimeout> seconds
+    And I resend all the visible messages in conversation view
+    And I wait for <EphemeralTimeout>
+    Then I do not see the message "<Message>" in the conversation view
+
+    Examples:
+      | Name      | Contact   | EphemeralTimeout | NetworkTimeout | Message | MessageStatus          |
+      | user1Name | user2Name | 5 seconds        | 15             | Yo      | Sending failed. Resend |
