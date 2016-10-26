@@ -1,7 +1,7 @@
 Feature: Connect
 
   @C676 @regression @rc @legacy
-  Scenario Outline: Search non-connected person and send connection request from Start UI
+  Scenario Outline: I can send/cancel sending connection request from Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <IntermediateContact>
     Given <IntermediateContact> is connected to <Contact>
@@ -13,6 +13,10 @@ Feature: Connect
     And I type user name "<Contact>" in search field
     And I tap on user name found on Search page <Contact>
     Then I see connect to <Contact> dialog
+    And I close Connect To dialog
+    And I see Search page
+    And I tap on user name found on Search page <Contact>
+    Then I see connect to <Contact> dialog
     When I click Connect button on connect to page
     Then I see Search page
     When I press Clear button
@@ -22,7 +26,7 @@ Feature: Connect
       | Name      | Contact   | IntermediateContact |
       | user1Name | user2Name | user3name           |
 
-  @C687 @regression @rc @legacy
+  @C687 @legacy
   Scenario Outline: Accept/ignore incoming connection requests from Conversations list
     Given There are 3 users where <Name> is me
     Given I sign in using my email or phone number
@@ -182,26 +186,6 @@ Feature: Connect
       | Name      | Contact   | IntermediateContact |
       | user1Name | user2Name | user3Name           |
 
-  @C695 @regression @rc
-  Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <IntermediateContact>
-    Given <IntermediateContact> is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    When I open Search UI
-    And I wait until <Contact> exists in backend search results
-    And I type user name "<Contact>" in search field
-    And I tap on user name found on Search page <Contact>
-    Then I see connect to <Contact> dialog
-    And I close Connect To dialog
-    And I see Search page
-
-    Examples:
-      | Name      | Contact   | IntermediateContact |
-      | user1Name | user2Name | user3Name           |
-
   @C389 @regression
   Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
     Given There are 3 users where <Name> is me
@@ -291,7 +275,7 @@ Feature: Connect
       | user1Name | user2Name | user3Name |
 
   @C392 @regression
-  Scenario Outline: I want to be seen in the search results of someone I blocked
+  Scenario Outline: I can find user in search even he blocked me
     Given There are 3 users where <Name> is me
     # Having the extra user is a workaround for an app bug
     Given Myself is connected to <Contact1>,<Contact2>
@@ -363,14 +347,14 @@ Feature: Connect
   @C409 @regression
   Scenario Outline: Verify you do not receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
+    Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap on text input
     And I type the message "<Message>" and send it by cursor Send button
-    And User <Name> blocks user <Contact>
+    And User Myself blocks user <Contact>
     And User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     And User <Contact> sends encrypted message to user <Name>
     And User <Contact> securely pings conversation Myself
@@ -381,7 +365,7 @@ Feature: Connect
       | user1Name | user2Name | Hello my friend! | testing.jpg |
 
   @C82540 @regression
-  Scenario Outline: Verify you cannot create a new group conversation with a person who blocked you
+  Scenario Outline: Verify I cannot create a new group conversation with a person who blocked me
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given User <Contact1> blocks user Myself
