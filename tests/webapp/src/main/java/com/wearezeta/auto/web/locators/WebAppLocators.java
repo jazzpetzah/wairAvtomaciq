@@ -485,8 +485,6 @@ public final class WebAppLocators {
 
         public static final String cssLikeListAvatars = cssLastLikeList + " .user-avatar-xs";
 
-        public static final String cssOrangeBlock = ".bg-color-ephemeral";
-
         //Link preview
 
         public static final String cssLinkTitle = ".link-preview-title";

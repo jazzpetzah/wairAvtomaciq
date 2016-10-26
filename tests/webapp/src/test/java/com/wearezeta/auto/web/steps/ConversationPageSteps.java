@@ -1185,7 +1185,7 @@ public class ConversationPageSteps {
                     context.getPagesCollection().getPage(ConversationPage.class).isLastMessageReplaced());
         } else {
             assertTrue("Orange block is still shown on the last message",
-                    context.getPagesCollection().getPage(ConversationPage.class).isOrangeBlockNotShown());
+                    context.getPagesCollection().getPage(ConversationPage.class).isOrangeBlockInLastMessageNotVisible());
         }
     }
 
