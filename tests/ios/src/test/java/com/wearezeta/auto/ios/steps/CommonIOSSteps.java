@@ -131,6 +131,8 @@ public class CommonIOSSteps {
                 ZetaIOSDriver.AUTOMATION_MODE_XCUITEST);
         capabilities.setCapability("app", appPath);
         capabilities.setCapability("appName", getAppName());
+        capabilities.setCapability("autoLaunch", false);
+        capabilities.setCapability("bundleId", IOSDistributable.getInstance(appPath).getBundleId());
         if (isRealDevice) {
             final String udid = RealDeviceHelpers.getUDID().orElseThrow(
                     () -> new IllegalStateException("Cannot detect any connected iDevice")
