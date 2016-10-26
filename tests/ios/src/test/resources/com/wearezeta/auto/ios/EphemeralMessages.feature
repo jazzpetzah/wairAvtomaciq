@@ -50,14 +50,14 @@ Feature: Ephemeral Messages
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And I tap Hourglass button in conversation view
-    And I set ephemeral messages expiration timer to <Timeout> seconds
-    And I type the default message and send it
-    And I see 1 default message in the conversation view
-    And I remember the recent message from user Myself in the local database
-    Then I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
-    When I wait for <Timeout> seconds
+    Given I tap on contact name <Contact>
+    Given I tap Hourglass button in conversation view
+    Given I set ephemeral messages expiration timer to <Timeout> seconds
+    Given I type the default message and send it
+    Given I see 1 default message in the conversation view
+    When I remember the recent message from user Myself in the local database
+    And I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
+    And I wait for <Timeout> seconds
     Then I see 1 message in the conversation view
     And I verify the remembered message has been changed in the local database
 
@@ -72,19 +72,18 @@ Feature: Ephemeral Messages
     Given User <Contact> adds new device <DeviceName>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And I tap Hourglass button in conversation view
-    And I set ephemeral messages expiration timer to <Timeout> seconds
-    And I type the default message and send it
-    And I see 1 default message in the conversation view
-    And I remember the recent message from user Myself in the local database
-    Then I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
-    When I wait for <Timeout> seconds
+    Given I tap on contact name <Contact>
+    Given I tap Hourglass button in conversation view
+    Given I set ephemeral messages expiration timer to <Timeout> seconds
+    Given I type the default message and send it
+    Given I see 1 default message in the conversation view
+    When I remember the recent message from user Myself in the local database
+    And I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
+    And I wait for <Timeout> seconds
     And I verify the remembered message has been changed in the local database
     And User <Contact> reads the recent message from user <Name>
     And I wait for <Timeout> seconds
-    Then I see 0 message in the conversation view
-
+    Then I see 0 messages in the conversation view
 
     Examples:
       | Name      | Contact   | Timeout | EphemeralTimeLabel | DeviceName    |
@@ -96,13 +95,13 @@ Feature: Ephemeral Messages
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And I tap Hourglass button in conversation view
+    Given I tap on contact name <Contact>
+    When I tap Hourglass button in conversation view
     And I set ephemeral messages expiration timer to <Timer> seconds
     Then I see Ephemeral input placeholder text
     And I see Time Indicator button in conversation view
-    When I type the default message and send it
-    And I tap Time Indicator button in conversation view
+    And I type the default message and send it
+    When I tap Time Indicator button in conversation view
     And I set ephemeral messages expiration timer to Off
     Then I see Standard input placeholder text
 

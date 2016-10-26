@@ -386,7 +386,7 @@ public class ConversationViewPageSteps {
     }
 
     private ElementState previousAssetsContainerState = new ElementState(
-            () -> getConversationViewPage().getAssetsContainerStateScreenshot()
+            () -> getConversationViewPage().getAssetContainerStateScreenshot()
     );
 
     /**
@@ -412,18 +412,18 @@ public class ConversationViewPageSteps {
         if (this.previousAssetsContainerState == null) {
             throw new IllegalStateException("Please remember the previous container state first");
         }
-        final double minScore = 0.8;
         if (shouldNotChange == null) {
             Assert.assertTrue(String.format("The current asset container state is not different from the expected one after " +
                             "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
-                    previousAssetsContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT, minScore));
+                    previousAssetsContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT, CONTAINER_COMPARE_MIN_SCORE));
         } else {
             Assert.assertTrue(String.format("The current asset container state is different from the expected one after " +
                             "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
-                    previousAssetsContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT, minScore));
+                    previousAssetsContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT, CONTAINER_COMPARE_MIN_SCORE));
         }
     }
 
+     private static final double CONTAINER_COMPARE_MIN_SCORE = 0.8;
      private static final int MEDIA_STATE_CHANGE_TIMEOUT = 10;
 
     /**
@@ -438,15 +438,14 @@ public class ConversationViewPageSteps {
         if (this.previousMediaContainerState == null) {
             throw new IllegalStateException("Please remember the previous container state first");
         }
-        final double minScore = 0.8;
         if (shouldNotChange == null) {
             Assert.assertTrue(String.format("The current media state is not different from the expected one after " +
                             "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
-                    previousMediaContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT, minScore));
+                    previousMediaContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT, CONTAINER_COMPARE_MIN_SCORE));
         } else {
             Assert.assertTrue(String.format("The current media state is different from the expected one after " +
                             "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
-                    previousMediaContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT, minScore));
+                    previousMediaContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT, CONTAINER_COMPARE_MIN_SCORE));
         }
     }
 
