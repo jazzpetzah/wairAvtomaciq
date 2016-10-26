@@ -339,7 +339,7 @@ Feature: Ephemeral
       | user1Email | user1Password | user1Name | user2Name | C123938.txt | 5MB  | 5    | 5 seconds | s             |
 
   @C262135 @ephemeral @staging @torun
-  Scenario Outline: Verify I get missed call notification when I call
+  Scenario Outline: Verify that missed call has stayed after receiver saw it
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -348,24 +348,12 @@ Feature: Ephemeral
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     When I open conversation with <Contact>
-    #I call contact
-    And I click on ephemeral button
-    And I set the timer for ephemeral to <TimeLong>
-    Then I see <Time> with unit <TimeShortUnit> on ephemeral button
-    And I see placeholder of conversation input is Timed message
-    And I call
-    Then I wait for 5 seconds
-    And I hang up call with conversation <Contact>
-    Then I see <Message> action in conversation
-    #Contact should see the conversation
-    And I wait for <Time> seconds
-    Then I see <Message> action in conversation
-    And I see 2 messages in conversation
-    #Contacts calls me
+    #Contact calls me
+    When User <Contact> switches user Myself to ephemeral mode via device Device1 with <TimeLong> timeout
     When <Contact> calls me
     And <Contact> stops calling me
-    Then I see <Message2> action in conversation
+    Then I see <Message> action in conversation
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Message    | Time | TimeLong  | TimeShortUnit | Message2 |
-      | user1Email | user1Password | user1Name | user2Name | you called | 5    | 5 seconds | s             | called   |
+      | Login      | Password      | Name      | Contact   | Message | Time | TimeLong  | TimeShortUnit |
+      | user1Email | user1Password | user1Name | user2Name |  called | 5    | 5 seconds | s             |
