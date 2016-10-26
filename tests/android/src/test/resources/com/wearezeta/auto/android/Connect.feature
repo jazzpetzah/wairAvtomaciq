@@ -27,7 +27,7 @@ Feature: Connect
       | user1Name | user2Name | user3name           |
 
   @C383 @regression @rc @legacy
-  Scenario Outline: I can connect/ignore connection requests from search/conversation list and inbox updated correctly
+  Scenario Outline: I can accept/ignore connection requests from search/conversation list and inbox updated correctly
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
     Given I sign in using my email or phone number
