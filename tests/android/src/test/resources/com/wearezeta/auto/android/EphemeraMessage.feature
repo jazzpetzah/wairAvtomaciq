@@ -259,3 +259,26 @@ Feature: Ephemeral Message
     Examples:
       | Name      | Contact   | EphemeralTimeout | NetworkTimeout | Message1 | Message2 | ContactDevice |
       | user1Name | user2Name | 5 seconds        | 15             | YO1      | YO2      | d1            |
+
+  @C262550 @staging
+  Scenario Outline: (Not implemented) Verify I can delete unsent ephemera message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When I tap Ephemeral button from cursor toolbar
+    And I set timeout to <EphemeralTimeout> on Extended cursor ephemeral overlay
+    And I enable Airplane mode on the device
+    And I see No Internet bar in <NetworkTimeout> seconds
+    And I type the message "<Message>" and send it by cursor Send button
+    And I see Message status with expected text "<MessageStatus>" in conversation view
+    And I long tap the Text message "<Message>" in the conversation view
+    And I tap Delete only for me button on the message bottom menu
+    And I tap Delete button on the alert
+    Then I do not see the message "<Message>" in the conversation view
+
+    Examples:
+      | Name      | Contact   | Message | NetworkTimeout | MessageStatus          | EphemeralTimeout |
+      | user1Name | user2Name | Yo      | 15             | Sending failed. Resend | 5 seconds        |
