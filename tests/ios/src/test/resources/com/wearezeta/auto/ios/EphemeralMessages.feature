@@ -125,10 +125,12 @@ Feature: Ephemeral Messages
     Given I accept alert
     Given I select the first picture from Keyboard Gallery
     Given I tap Confirm button on Picture preview page
+    #wait to make the transition and image arrival
+    Given I wait for 3 seconds
     Given User <Name> sends 1 encrypted message using device <DeviceName> to user <Contact>
-    When I remember media asset container state
+    When I remember asset container state
     And I wait for <Timer> seconds
-    Then I see media asset container state is changed
+    Then I see asset container state is changed
 
     Examples:
       | Name      | Contact   | Timer | DeviceName |
@@ -148,9 +150,9 @@ Feature: Ephemeral Messages
     Given I tap Send record control button
     Given I see audio message container in the conversation view
     Given User <Name> sends 1 encrypted message using device <DeviceName> to user <Contact>
-    When I remember media asset container state
+    When I remember asset container state
     And I wait for <Timer> seconds
-    Then I see media asset container state is changed
+    Then I see asset container state is changed
 
     Examples:
       | Name      | Contact   | Timer | DeviceName |
@@ -167,14 +169,16 @@ Feature: Ephemeral Messages
     Given I tap on contact name <Contact>
     Given I tap Hourglass button in conversation view
     Given I set ephemeral messages expiration timer to <Timer> seconds
+    Given I navigate back to conversations list
+    Given I tap on contact name <Contact>
     Given I tap Video Message button from input tools
     Given I see video message container in the conversation view
     Given User <Name> sends 1 encrypted message using device <DeviceName> to user <Contact>
     # Wait for delivery of video
     Given I wait for 3 seconds
-    When I remember media asset container state
+    When I remember asset container state
     And I wait for <Timer> seconds
-    Then I see media asset container state is changed
+    Then I see asset container state is changed
 
     Examples:
       | Name      | Contact   | Timer | FileName    | DeviceName |
@@ -190,15 +194,17 @@ Feature: Ephemeral Messages
     Given I tap on contact name <Contact>
     Given I tap Hourglass button in conversation view
     Given I set ephemeral messages expiration timer to <Timer> seconds
+    Given I navigate back to conversations list
+    Given I tap on contact name <Contact>
     Given I tap Share Location button from input tools
     Given I accept alert
     # Small delay waiting location detection animation to finish
     Given I wait for 5 seconds
     Given I tap Send location button from map view
     Given User <Name> sends 1 encrypted message using device <DeviceName> to user <Contact>
-    When I remember media asset container state
+    When I remember asset container state
     And I wait for <Timer> seconds
-    Then I see media asset container state is changed
+    Then I see asset container state is changed
 
     Examples:
       | Name      | Contact   | Timer | DeviceName |
@@ -221,9 +227,9 @@ Feature: Ephemeral Messages
     Given I wait for 2 seconds
     Given I tap file transfer menu item <ItemName>
     Given User <Name> sends 1 encrypted message using device <DeviceName> to user <Contact>
-    When I remember media asset container state
+    When I remember asset container state
     And I wait for <Timer> seconds
-    Then I see media asset container state is changed
+    Then I see asset container state is changed
 
     Examples:
       | Name      | Contact   | Timer | ItemName                   | DeviceName |
@@ -241,14 +247,14 @@ Feature: Ephemeral Messages
     Given I set ephemeral messages expiration timer to <Timer> seconds
     Given I type the "<GiphyTag>" message
     Given I tap GIF button from input tools
-    # Wait for GIF picture to be downloaded
-    Given I wait for 10 seconds
     Given I select the first item from Giphy grid
     Given I tap Send button on Giphy preview page
+    #wait for transition and gif is loaded in view
+    Given I wait for 3 seconds
     Given User <Name> sends 1 encrypted message using device <DeviceName> to user <Contact>
-    When I remember media asset container state
+    When I remember asset container state
     And I wait for <Timer> seconds
-    Then I see media asset container state is changed
+    Then I see asset container state is changed
 
     Examples:
       | Name      | Contact   | Timer | GiphyTag | DeviceName |
@@ -287,12 +293,13 @@ Feature: Ephemeral Messages
     Given I tap Hourglass button in conversation view
     Given I set ephemeral messages expiration timer to <Timer> seconds
     Given I type the "<Link>" message and send it
-    Given I see link preview container in the conversation view
+    Given I navigate back to conversations list
+    Given I tap on contact name <Contact>
     Given User <Name> sends 1 encrypted message using device <DeviceName> to user <Contact>
-    When I remember media asset container state
-    And I wait for <Timer> seconds
-    Then I see media asset container state is changed
+    When I remember asset container state
+    And I wait for 20 seconds
+    Then I see asset container state is changed
 
     Examples:
       | Name      | Contact   | Timer | Link                 | DeviceName |
-      | user1Name | user2Name | 15    | https://www.wire.com | myDevice2  |
+      | user1Name | user2Name | 30    | https://www.wire.com | myDevice2  |

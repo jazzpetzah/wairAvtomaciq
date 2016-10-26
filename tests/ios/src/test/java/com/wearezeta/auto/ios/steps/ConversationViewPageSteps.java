@@ -385,32 +385,32 @@ public class ConversationViewPageSteps {
 //        previousMediaContainerState.remember();
 //    }
 
-    private ElementState previousAssetsContainerState;
+    private ElementState previousAssetsContainerState = new ElementState(
+            () -> getConversationViewPage().getAssetsContainerStateScreenshot()
+    );
+
     /**
      * Store the current assets container state into an internal varibale
      *
      * @throws Exception
      * @step. ^I remember media asset container state$
      */
-    @When("^I remember media asset container state$")
-    public void IRememberAssetsContainerState(String assetType) throws Exception {
-        previousAssetsContainerState= new ElementState(
-                () -> getConversationViewPage().getAssetsContainerStateScreenshot()
-        );
+    @When("^I remember asset container state$")
+    public void IRememberAssetsContainerState() throws Exception {
         previousAssetsContainerState.remember();
     }
 
     private static final int ASSET_CONTAINER_STATE_CHANGE_TIMEOUT = 10;
 
     /**
-     * Verify whether the state of a media asset container is changed
+     * Verify whether the state of a asset container is changed
      *
      * @param shouldNotChange equals to null if the state should not be changed
      * @throws Exception
-     * @step. ^I see media asset container state is (not )?changed$
+     * @step. ^I see asset container state is (not )?changed$
      */
-    @Then("^I see media asset container state is (not )?changed$")
-    public void IVerifyMediaAssetContainerState(String shouldNotChange) throws Exception {
+    @Then("^I see asset container state is (not )?changed$")
+    public void IVerifyAssetContainerState(String shouldNotChange) throws Exception {
         if (this.previousAssetsContainerState == null) {
             throw new IllegalStateException("Please remember the previous container state first");
         }
@@ -1484,7 +1484,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I set ephemeral messages expiration timer to (Off|5 seconds|15 seconds|1 minute|15 minutes)$
      */
-    @And("^I set ephemeral messages expiration timer to (Off|5 seconds|15 seconds|1 minute|15 minutes)$")
+    @And("^I set ephemeral messages expiration timer to (Off|5 seconds|15 seconds|30 seconds|1 minute|15 minutes)$")
     public void ISetExpirationTimer(String value) throws Exception {
         getConversationViewPage().setMessageExpirationTimer(value);
     }
