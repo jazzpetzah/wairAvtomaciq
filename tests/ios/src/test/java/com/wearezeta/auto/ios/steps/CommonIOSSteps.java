@@ -30,6 +30,7 @@ import cucumber.api.java.en.Then;
 import gherkin.formatter.model.Result;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.openqa.selenium.Capabilities;
@@ -120,6 +121,9 @@ public class CommonIOSSteps {
             System.getProperty("user.home"), "/Library/Keychains/MyKeychain.keychain");
     private static final String KEYCHAIN_PASSWORD = "123456";
 
+    // https://github.com/wireapp/wire-ios/pull/339
+    private static final String ARGS_FILE_PATH = "/tmp/wire_arguments.txt";
+
     @SuppressWarnings("unchecked")
     public Future<ZetaIOSDriver> resetIOSDriver(String appPath,
                                                 Optional<Map<String, Object>> additionalCaps,
@@ -195,6 +199,10 @@ public class CommonIOSSteps {
 
         if (!isRealDevice) {
             initSimulator(capabilities);
+            if (new DefaultArtifactVersion(getPlatformVersion()).compareTo(new DefaultArtifactVersion("10.0")) < 0) {
+                // Workaround for https://github.com/appium/appium/issues/7091
+                Files.write(Paths.get(ARGS_FILE_PATH), String.join(" ", processArgs).getBytes());
+            }
         }
 
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance().resetDriver(
