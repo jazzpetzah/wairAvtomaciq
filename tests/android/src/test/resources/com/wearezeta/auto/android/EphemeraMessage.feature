@@ -115,18 +115,25 @@ Feature: Ephemeral Message
     And I do not see Ping message "YOU PINGED" in the conversation view
     # File
     When I tap File button from cursor toolbar
-    And I see File Upload container in the conversation view
+    Then I see File Upload container in the conversation view
     And I do not see Message status with expected text "<MessageStatus>" in conversation view
     And I wait for <EphemeraTimeout>
     And I do not see File Upload container in the conversation view
-    And I do not see File Upload Placeholder container in the conversation view
-    # Link Preview(Bug here: No preview anymore)
+    And I see File Upload Placeholder container in the conversation view
+    # Location
+    When I tap Share location button from cursor toolbar
+    And I tap Send button on Share Location page
+    Then I see Share Location container in the conversation view
+    And I do not see Message status with expected text "<MessageStatus>" in conversation view
+    And I remember the state of Share Location container in the conversation view
+    And I wait for <EphemeraTimeout>
+    And I verify the state of Share Location container is changed
+    # Link Preview
+    # TODO: Link preview should be obfuscated with container instead of pure url text.
     When I type the message "<Link>" and send it by cursor Send button
     Then I see Link Preview container in the conversation view
     And I do not see Message status with expected text "<MessageStatus>" in conversation view
-    And I remember the state of Link Preview container in the conversation view
-    And I wait for <EphemeraTimeout>
-    And I verify the state of Link Preview container is changed
+    And I do not see Link Preview container in the conversation view
 
     Examples:
       | Name      | Contact   | EphemeraTimeout | Link                                                                                               | MessageStatus | PingMsg    | FileSize |
