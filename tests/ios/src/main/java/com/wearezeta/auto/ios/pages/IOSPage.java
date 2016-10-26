@@ -683,6 +683,14 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
+    public void uninstallApp(String bundleId) throws Exception {
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            IOSSimulatorHelpers.uninstallApp(bundleId);
+        } else {
+            throw new NotImplementedException("Application uninstall is only available for Simulator");
+        }
+    }
+
     public void tapByPercentOfElementSize(FBElement el, int percentX, int percentY) throws Exception {
         final Dimension size = el.getSize();
         el.tap(percentX * size.getWidth() / 100, percentY * size.getHeight() / 100);

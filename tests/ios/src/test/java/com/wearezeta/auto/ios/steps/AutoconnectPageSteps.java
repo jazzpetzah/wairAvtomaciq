@@ -27,9 +27,11 @@ public class AutoconnectPageSteps {
      */
     @Given("^I install Address Book Helper app$")
     public void IInstallAddressbookHelperApp() throws Exception {
-        pagesCollection.getCommonPage().installApp(
-                IOSDistributable.getInstance(CommonIOSSteps.getiOSAddressbookAppPath()).getAppRoot()
-        );
+        final IOSDistributable addressBookHelperDist =
+                IOSDistributable.getInstance(CommonIOSSteps.getiOSAddressbookAppPath());
+        // remove the previous version of this app if present
+        pagesCollection.getCommonPage().uninstallApp(addressBookHelperDist.getBundleId());
+        pagesCollection.getCommonPage().installApp(addressBookHelperDist.getAppRoot());
     }
 
     private static final String ADDRESSBOOK_APP_BUNDLE = "com.wire.addressbookautomation";
@@ -104,7 +106,7 @@ public class AutoconnectPageSteps {
     public void IAddXUsersToAddressBook(int numberOfUsers) throws Exception {
         Assert.assertTrue("Number of users is bigger than allowed maximum user count",
                 numberOfUsers <= ClientUsersManager.MAX_USERS);
-        for (int i = 2; i <= numberOfUsers+1 ; i++) {
+        for (int i = 2; i <= numberOfUsers + 1; i++) {
             ClientUser user = usrMgr.findUserByNameOrNameAlias(String.format("user%sName", i));
             String name = user.getName();
             String phoneNumber = user.getPhoneNumber().toString();
