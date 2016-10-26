@@ -172,11 +172,13 @@ Feature: Settings
     When I clear Name input field on Settings page
     And I wait for 3 seconds
     And I tap Return button on the keyboard
+    And I tap Return button on the keyboard if visible
     Then I verify the alert contains text <ExpectedAlertText>
     And I accept alert
     When I clear Name input field on Settings page
     And I set "<OneCharName>" value to Name input field on Settings page
     And I tap Return button on the keyboard
+    And I tap Return button on the keyboard if visible
     Then I verify the alert contains text <ExpectedAlertText>
 
     Examples:

@@ -1253,12 +1253,20 @@ public class CommonIOSSteps {
     /**
      * Clicks the send button on the keyboard
      *
+     * @param canSkip equals to null if this step should throw an error if the button is not available for tapping
      * @throws Exception
-     * @step. ^I tap (?:Commit|Return|Send|Enter) button on the keyboard$
+     * @step. ^I tap (?:Commit|Return|Send|Enter) button on the keyboard( if visible)?$
      */
-    @When("^I tap (?:Commit|Return|Send|Enter) button on the keyboard$")
-    public void ITapCommitButtonOnKeyboard() throws Exception {
-        pagesCollection.getCommonPage().tapKeyboardCommitButton();
+    @When("^I tap (?:Commit|Return|Send|Enter) button on the keyboard( if visible)?$")
+    public void ITapCommitButtonOnKeyboard(String canSkip) throws Exception {
+        try {
+            pagesCollection.getCommonPage().tapKeyboardCommitButton();
+        } catch (IllegalStateException e) {
+            if (canSkip != null) {
+                return;
+            }
+            throw e;
+        }
     }
 
     /**

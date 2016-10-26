@@ -1,6 +1,6 @@
 Feature: Giphy
 
-  @C787 @regression @rc @rc42
+  @C787 @regression @rc @legacy
   Scenario Outline: I can send giphy image by typing massage and clicking GIF cursor button and confirm the selection
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

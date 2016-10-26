@@ -47,8 +47,8 @@ Feature: Conversation View
     And I see localytics event <Event> with attributes <Attributes>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Event                        | Attributes                                                                                           |
-      | user1Email | user1Password | user1Name | user2Name | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":false,\"with_bot\":false} |
+      | Login      | Password      | Name      | Contact   | Event                        | Attributes                                                                                                       |
+      | user1Email | user1Password | user1Name | user2Name | media.completed_media_action | {\\"action\\":\\"text\\",\\"conversation_type\\":\\"one_to_one\\",\\"is_ephemeral\\":false,\\"with_bot\\":false} |
 
   @C259599 @regression @WEBAPP-3247
   Scenario Outline: Verify delivery receipt of message in 1on1 that was read by webapp
@@ -223,8 +223,8 @@ Feature: Conversation View
     And I see localytics event <Event> with attributes <Attributes>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | PictureName               | Event                        | Attributes                                                                                       |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | SendPictureGroupChat | userpicture_landscape.jpg | media.completed_media_action | {\"action\":\"photo\",\"conversation_type\":\"group\",\"is_ephemeral\":false,\"with_bot\":false} |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | PictureName               | Event                        | Attributes                                                                                                   |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | SendPictureGroupChat | userpicture_landscape.jpg | media.completed_media_action | {\\"action\\":\\"photo\\",\\"conversation_type\\":\\"group\\",\\"is_ephemeral\\":false,\\"with_bot\\":false} |
 
   @C1764 @regression @e2ee
   Scenario Outline: I cannot see missed messages when rejoining a conversation after leaving it
@@ -394,8 +394,8 @@ Feature: Conversation View
     And I see localytics event <Event> with attributes <Attributes>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Message | ExpectedMessage     | Event                        | Attributes                                                                                            |
-      | user1Email | user1Password | user1Name | user2Name | cat     | cat • via giphy.com | media.completed_media_action | {\"action\":\"photo\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":false,\"with_bot\":false} |
+      | Login      | Password      | Name      | Contact   | Message | ExpectedMessage     | Event                        | Attributes                                                                                                        |
+      | user1Email | user1Password | user1Name | user2Name | cat     | cat • via giphy.com | media.completed_media_action | {\\"action\\":\\"photo\\",\\"conversation_type\\":\\"one_to_one\\",\\"is_ephemeral\\":false,\\"with_bot\\":false} |
 
   @C1797 @regression
   Scenario Outline: Verify that typed-in messages are not lost

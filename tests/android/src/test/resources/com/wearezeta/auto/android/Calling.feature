@@ -133,7 +133,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | zcall       | 60      |
 
-  @C721 @calling_basic @rc @rc42
+  @C721 @calling_basic @rc @legacy
   Scenario Outline: Calling bar buttons are clickable and change their states
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -188,7 +188,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName    | CallBackend |
       | user1Name | user2Name | user3Name | ChatForGroupCall | zcall       |
 
-  @C807 @calling_basic @rc @rc42
+  @C807 @calling_basic @rc @legacy
   Scenario Outline: I can start group call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -209,7 +209,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName    | CallBackend |
       | user1Name | user2Name | user3Name | ChatForGroupCall | chrome      |
 
-  @C804 @regression @rc @rc42
+  @C804 @regression @rc @legacy
   Scenario Outline: I can join group call in foreground
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
@@ -392,7 +392,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | zcall       |
 
-  @C803 @calling_basic @rc @rc42
+  @C803 @calling_basic @rc @legacy
   Scenario Outline: Verify accepting group call in background
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -433,7 +433,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C708 @calling_basic @rc @rc42
+  @C708 @calling_basic @rc @legacy
   Scenario Outline: Put client into background when in the call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

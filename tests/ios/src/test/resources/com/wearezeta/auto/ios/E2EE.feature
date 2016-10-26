@@ -129,6 +129,8 @@ Feature: E2EE
     And I close user profile page
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And User <Contact1> sends 1 encrypted message using device <DeviceName2> to user Myself
+    # Wait for sync
+    And I wait for 4 seconds
     Then I do not see shield icon in the conversation view
     And I see "<Contact1>  <StartedUsingMsg>" system message in the conversation view
 

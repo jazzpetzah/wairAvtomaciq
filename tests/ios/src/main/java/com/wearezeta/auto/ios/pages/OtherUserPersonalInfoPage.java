@@ -58,9 +58,6 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final Function<Integer, String> xpathStrDeviceByIndex =
             idx -> String.format("%s[%s]", xpathStrDevicesList, idx);
 
-    private static final Function<String, String> xpathStrUserProfileNameByValue = value ->
-            String.format("//XCUIElementTypeStaticText[@name='%s']", value);
-
     private static final By xpathVerifiedShield = MobileBy.AccessibilityId("VerifiedShield");
 
     private static final Function<String, String> xpathStrDeviceId = id ->
@@ -107,8 +104,8 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public boolean isOtherUserProfileNameVisible(String name) throws Exception {
-        final By locator = By.xpath(xpathStrUserProfileNameByValue.apply(name));
-        return isLocatorDisplayed(locator);
+        final By locator = MobileBy.AccessibilityId(name);
+        return selectVisibleElements(locator).size() > 0;
     }
 
     public void removeFromConversation() throws Exception {

@@ -1,6 +1,6 @@
 Feature: Sketch
 
-  @C809 @regression @rc @rc42
+  @C809 @regression @rc @legacy
   Scenario Outline: (CM-717) I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -18,7 +18,7 @@ Feature: Sketch
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 2         |
 
-  @C810 @regression @rc @rc42
+  @C810 @regression @rc @legacy
   Scenario Outline: (CM-717) I can send sketch on image from gallery
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

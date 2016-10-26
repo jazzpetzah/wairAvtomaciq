@@ -19,8 +19,8 @@ Feature: Audio Message
     And I see localytics event <Event> with attributes <Attributes>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File        | Time  | Event                        | Attributes                                                                                           |
-      | user1Email | user1Password | user1Name | user2Name | example.wav | 00:20 | media.completed_media_action | {\"action\":\"file\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":false,\"with_bot\":false} |
+      | Login      | Password      | Name      | Contact   | File        | Time  | Event                        | Attributes                                                                                                       |
+      | user1Email | user1Password | user1Name | user2Name | example.wav | 00:20 | media.completed_media_action | {\\"action\\":\\"file\\",\\"conversation_type\\":\\"one_to_one\\",\\"is_ephemeral\\":false,\\"with_bot\\":false} |
 
   @C129783 @audiomessage @regression
   Scenario Outline: Verify you can delete an audio message
