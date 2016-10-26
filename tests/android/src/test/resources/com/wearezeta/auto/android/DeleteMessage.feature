@@ -1,7 +1,7 @@
 Feature: Delete Message
 
-  @C111638 @regression @rc @C111637
-  Scenario Outline: Verify deleting own text message
+  @C111637 @regression @rc
+  Scenario Outline: Verify I could delete own text message from Message bottom menu
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -152,7 +152,7 @@ Feature: Delete Message
       | Name      | Contact1  | FileName  | FileExtension | FileSize | UploadingTimeout |
       | user1Name | user2Name | qa_random | txt           | 1.00MB   | 20               |
 
-  @C111645 @regression @rc @C111647
+  @C111645 @regression @rc
   Scenario Outline: Verify deleting is synchronised across own devices when one of them was offline
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

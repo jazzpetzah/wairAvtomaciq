@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
@@ -39,6 +38,10 @@ public class PicturePreviewPage extends IOSPage {
 
     public void tapButton(String name) throws Exception {
         final By locator = getButtonLocatorByName(name);
-        getElement(locator).click();
+        if (locator.equals(nameConfirmButton) || locator.equals(xpathCancelButton)) {
+            selectVisibleElements(locator).get(0).click();
+        } else {
+            getElement(locator).click();
+        }
     }
 }

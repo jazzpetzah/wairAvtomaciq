@@ -176,8 +176,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I swipe right on iPad the conversation named <GroupChatName>
-    Then I see conversation <GroupChatName> name in action menu in Contact List
-    And I see Mute action button
+    Then I see Mute action button
     And I see Archive action button
     And I see Delete action button
     And I see Leave action button
@@ -195,8 +194,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I swipe right on iPad the conversation named <Contact>
-    Then I see conversation <Contact> name in action menu in Contact List
-    And I see Mute action button
+    Then I see Mute action button
     And I see Archive action button
     And I see Delete action button
     And I see Block action button

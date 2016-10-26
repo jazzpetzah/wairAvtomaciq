@@ -1,7 +1,7 @@
 Feature: Recall Message
 
-  @C202326 @C202328 @regression @rc
-  Scenario Outline: Verify I can delete my message everywhere (1:1) (myview and other view)
+  @C202326 @regression @rc
+  Scenario Outline: Verify I can delete my message everywhere and I see others delete the message everywhere(1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given User <Contact1> adds new device <ContactDevice>
@@ -53,8 +53,8 @@ Feature: Recall Message
       | Name      | Contact   | Text |
       | user1Name | user2Name | Hi   |
 
-  @C202327 @C202329 @regression @rc
-  Scenario Outline: Verify I can delete my message everywhere (group) (myview and other view)
+  @C202327 @regression @rc
+  Scenario Outline: Verify I can delete my message everywhere and I see others delete the message everywhere(group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
@@ -142,9 +142,9 @@ Feature: Recall Message
   Scenario Outline: Verify delete everywhere works for link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
+    Given User <Contact> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I type the message "<Link>" and send it by cursor Send button
@@ -252,7 +252,7 @@ Feature: Recall Message
       | Name      | Contact   | FileSize | FileFullName     | ContactDevice |
       | user1Name | user2Name | 20.00MB  | random_video.mp4 | Device1       |
 
-  @C202330 @C202331 @regression @rc
+  @C202330 @regression @rc
   Scenario Outline: Verify deleting everywhere is synchronised across own devices when they are online (1:1 and group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

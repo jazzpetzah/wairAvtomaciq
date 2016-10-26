@@ -26,8 +26,8 @@ Feature: Like
       | Name      | Contact   | Txt | MessageStatus | ContactDevice |
       | user1Name | user2Name | Hi  | Delivered     | D1            |
 
-  @C226018 @C226020 @regression @rc
-  Scenario Outline: I can unlike/like message by tap on like icon & I can like text message
+  @C226018 @regression @rc
+  Scenario Outline: I can unlike/like text message by tap on like icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User <Contact> adds new devices <ContactDevice>
@@ -100,8 +100,8 @@ Feature: Like
       | Name      | Contact   | Message | ContactDevice |
       | user1Name | user2Name | Hi      | Device1       |
 
-  @C226045 @C226048 @regression @rc
-  Scenario Outline: Likes should be reset if I edited message / also could like again
+  @C226045 @regression @rc
+  Scenario Outline: Verify I can like an edited message whose like list is reseted after edition
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given User <Contact1> adds new devices <ContactDevice>
@@ -130,7 +130,7 @@ Feature: Like
       | Name      | Contact1  | Message | Device | NewMessage | MessageStatus | ContactDevice |
       | user1Name | user2Name | Yo      | D1     | Hello      | Delivered     | D2            |
 
-  @C226049 @C226037 @regression @rс
+  @C226049 @regression @rс
   Scenario Outline: Verify local delete for my/others message doesn't reappear after someone liked it (negative)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -139,20 +139,14 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
-    # C226049
     When I type the message "<Message>" and send it by cursor Send button
     And I long tap the Text message "<Message>" in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And User <Contact> likes the recent message from user Myself via device <Device>
     Then I do not see the message "<Message>" in the conversation view
-    # C226037
     When User <Contact> sends encrypted message "<OtherMessage>" via device <Device> to user Myself
-    # TODO: Remove following 1 lines once the message present automatic when receive a message.
-    And I tap the Text message "<OtherMessage>" in the conversation view
-    Then I see Like description with expected text "Tap to like" in conversation view
-    # C226050
-    When I long tap the Text message "<OtherMessage>" in the conversation view
+    And I long tap the Text message "<OtherMessage>" in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And User <Contact> likes the recent message from user Myself via device <Device>
@@ -204,8 +198,8 @@ Feature: Like
       | Name      | Contact   | Message | Device  |
       | user1Name | user2Name | Yo      | Device1 |
 
-  @C226041 @C226042 @regression @rc
-  Scenario Outline: I see likers count instead of names with first/second liker avatars, and could open likers list
+  @C226041 @regression @rc
+  Scenario Outline: Verify I see likers count instead of names (liker > 4) with first/second likes avatars and liker list which could be opened
     Given There are 5 users where <Name> is me
     Given <Contact1> is connected to Myself,<Contact2>,<Contact3>,<Contact4>
     Given <Contact1> has group chat <Group> with Myself,<Contact2>,<Contact3>,<Contact4>
@@ -255,7 +249,7 @@ Feature: Like
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C226024 @C226038 @regression @rc
+  @C226024 @regression @rc
   Scenario Outline: I can like/unlike a sketch by tap on heart button/long tap/double tap
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -322,7 +316,7 @@ Feature: Like
       | user1Name | user2Name | device1    |
 
   @C226021 @regression @rc
-  Scenario Outline: I can like link
+  Scenario Outline: (AN-4612) I can like link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number

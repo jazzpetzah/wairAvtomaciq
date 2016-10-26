@@ -50,7 +50,12 @@ public class KeyboardGalleryPage extends IOSPage {
     }
 
     public void tapButton(String name) throws Exception {
-        getElement(getButtonLocatorByName(name)).click();
+        final By locator = getButtonLocatorByName(name);
+        getElement(locator).click();
+        if (locator.equals(xpathOpenCameraRollButton)) {
+            // Wait for Camera Roll initialization
+            Thread.sleep(3000);
+        }
     }
 
     public boolean isButtonVisible(String name) throws Exception {

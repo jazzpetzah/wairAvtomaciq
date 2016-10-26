@@ -1,7 +1,7 @@
 Feature: Rich Media
 
-  @C714 @C77959 @regression @rc @rc42
-  Scenario Outline: (load bug AN-4559) Verify you can play/pause SoundCloud media from the Media Bar in conversation
+  @C714 @regression @rc @legacy
+  Scenario Outline: (load bug AN-4559) Verify you can play/pause SoundCloud media from the Media Bar which is shown below the upper toolbar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -77,7 +77,7 @@ Feature: Rich Media
       | Name      | Contact1  | Contact2  | SoundCloudLink                                   |
       | user1Name | user2Name | user3Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
-  @C675 @regression @rc @rc42
+  @C675 @regression @rc @legacy
   Scenario Outline: Verify you can send youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
