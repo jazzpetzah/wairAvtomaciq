@@ -345,6 +345,8 @@ Feature: Conversation List
     Then I verify active conversation is at index 3
     When I type shortcut combination for previous conversation
     Then I verify active conversation is at index 3
+    When I type shortcut combination for next conversation
+    And I verify active conversation is at index 2
 
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | ChatName  |
