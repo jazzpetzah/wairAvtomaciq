@@ -140,7 +140,7 @@ Feature: Ephemeral Message
       | user1Name | user2Name | 5 seconds       | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 | Sending       | YOU PINGED | 1.00MB   |
 
   @C261715 @staging
-  Scenario Outline: I can receive ephemeral text message (5s/15s) timeout starts with being in viewport
+  Scenario Outline: Verify I can receive ephemeral text message and which is deleted after timeout
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User <Contact> adds new devices <ContactDevice>
@@ -149,14 +149,14 @@ Feature: Ephemeral Message
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When User <Contact> switches user Myself to ephemeral mode via device <ContactDevice> with <EphemeralTimeout1> seconds timeout
-    And User <Contact> sends encrypted message <Message1> to user Myself
+    And User <Contact> sends encrypted message "<Message1>" to user Myself
     # Wait for the message to be deliveredÎ
     And I wait for 3 seconds
     Then I see the message "<Message1>" in the conversation view
     And I wait for 5 seconds
     And I do not see the message "<Message1>" in the conversation view
     When User <Contact> switches user Myself to ephemeral mode via device <ContactDevice> with <EphemeralTimeout2> seconds timeout
-    And User <Contact> sends encrypted message <Message2> to user Myself
+    And User <Contact> sends encrypted message "<Message2>" to user Myself
     # Wait for the message to be delivered
     And I wait for 3 seconds
     Then I see the message "<Message2>" in the conversation view
