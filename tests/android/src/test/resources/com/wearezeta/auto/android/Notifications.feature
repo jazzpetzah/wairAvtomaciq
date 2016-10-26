@@ -24,7 +24,7 @@ Feature: Notifications
       | user1Name | user2Name | hello   |
 
   @C131187 @regression
-  Scenario Outline: (CM-1071) Verify push notifications after receiving any type of message
+  Scenario Outline: Verify push notifications after receiving any type of message
     Given I am on Android with Google Location Service
     Given I am on Android 4.4 or better
     Given There are 2 users where <Name> is me
@@ -54,15 +54,19 @@ Feature: Notifications
     And I clear Wire push notifications
     # Video msg
     When <Contact> sends local file named "<VideoFileName>" and MIME type "<VideoMIMEType>" via device <DeviceName> to user Myself
-    Then I see the message "Shared a video message" in push notifications list
+    Then I see the message "Shared a video" in push notifications list
     And I clear Wire push notifications
     # Audio msg
     When <Contact> sends local file named "<AudioFileName>" and MIME type "<AudioMIMEType>" via device <DeviceName> to user Myself
     Then I see the message "Shared an audio message" in push notifications list
+    # Ephemeral msg
+    When User <Contact> switches user Myself to ephemeral mode via device <DeviceName> with <EphemeralTimeout> timeout
+    And User <Contact> sends encrypted message "Yo" to user Myself
+    Then I see the message "Someone sent you a message" in push notifications list
 
     Examples:
-      | Name      | Contact   | VideoFileName | VideoMIMEType | DeviceName | AudioFileName | AudioMIMEType | TxtMsg | Image       | FileSize | FileName      | FileMIMEType |
-      | user1Name | user2Name | testing.mp4   | video/mp4     | Device1    | test.m4a      | audio/mp4     | OMG    | testing.jpg | 3.00MB   | qa_random.txt | text/plain   |
+      | Name      | Contact   | VideoFileName | VideoMIMEType | DeviceName | AudioFileName | AudioMIMEType | TxtMsg | Image       | FileSize | FileName      | FileMIMEType | EphemeralTimeout |
+      | user1Name | user2Name | testing.mp4   | video/mp4     | Device1    | test.m4a      | audio/mp4     | OMG    | testing.jpg | 1.00MB   | qa_random.txt | text/plain   | 5 seconds        |
 
   @C165125 @regression @rc
   Scenario Outline: Verify no GCM notifications are shown for muted chats
