@@ -25,9 +25,9 @@ Feature: File Transfer
     And I see localytics event <Event> with attributes <Attributes>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File       | Size  | Type | Event                        | Attributes                                                                                                       |
-      | user1Email | user1Password | user1Name | user2Name | C82815.txt | 0B    | TXT  | media.completed_media_action | {\\"action\\":\\"file\\",\\"conversation_type\\":\\"one_to_one\\",\\"is_ephemeral\\":false,\\"with_bot\\":false} |
-      | user1Email | user1Password | user1Name | user2Name | C82815.zip | 512KB | ZIP  | media.completed_media_action | {\\"action\\":\\"file\\",\\"conversation_type\\":\\"one_to_one\\",\\"is_ephemeral\\":false,\\"with_bot\\":false} |
+      | Login      | Password      | Name      | Contact   | File       | Size  | Type | Event                        | Attributes                                                                                            |
+      | user1Email | user1Password | user1Name | user2Name | C82815.txt | 0B    | TXT  | media.completed_media_action | {\"action\":\"file\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":false,\"with_bot\":false}" |
+      | user1Email | user1Password | user1Name | user2Name | C82815.zip | 512KB | ZIP  | media.completed_media_action | {\"action\":\"file\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":false,\"with_bot\":false}" |
 
   @C95632 @filetransfer @regression
   Scenario Outline: Verify file can be uploaded and re-downloaded by sender himself in group

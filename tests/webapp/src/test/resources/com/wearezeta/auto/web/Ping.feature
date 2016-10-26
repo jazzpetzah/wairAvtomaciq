@@ -16,8 +16,8 @@ Feature: Ping
     And I see localytics event <Event> with attributes <Attributes>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | PING       | Event                        | Attributes                                                                                                       |
-      | user1Email | user1Password | user1Name | user2Name | you pinged | media.completed_media_action | {\\"action\\":\\"ping\\",\\"conversation_type\\":\\"one_to_one\\",\\"is_ephemeral\\":false,\\"with_bot\\":false} |
+      | Login      | Password      | Name      | Contact   | PING       | Event                        | Attributes                                                                                            |
+      | user1Email | user1Password | user1Name | user2Name | you pinged | media.completed_media_action | {\"action\":\"ping\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":false,\"with_bot\":false}" |
 
   @C1718 @regression
   Scenario Outline: Verify you can Ping several times in a row

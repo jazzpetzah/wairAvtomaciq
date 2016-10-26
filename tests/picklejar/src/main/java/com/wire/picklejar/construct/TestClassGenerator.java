@@ -107,7 +107,7 @@ public class TestClassGenerator {
         private String buildExamplesMap() {
             StringBuilder mapString = new StringBuilder("Map<String, String> examples = new HashMap<>();\n");
             for (Map.Entry<String, String> entry : examples.entrySet()) {
-                mapString.append(String.format("examples.put(\"%s\", \"%s\");\n", entry.getKey(), entry.getValue()));
+                mapString.append(String.format("examples.put(\"%s\", \"%s\");\n", entry.getKey(), StringEscapeUtils.escapeJava(entry.getValue())));
             }
             return mapString.toString();
         }

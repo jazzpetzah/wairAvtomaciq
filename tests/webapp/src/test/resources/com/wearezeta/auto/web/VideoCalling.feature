@@ -29,8 +29,8 @@ Feature: VideoCalling
     And I see localytics event <Event> with attributes <Attributes>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout | Event                        | Attributes                                                                                                             |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      | media.completed_media_action | {\\"action\\":\\"video_call\\",\\"conversation_type\\":\\"one_to_one\\",\\"is_ephemeral\\":false,\\"with_bot\\":false} |
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout | Event                        | Attributes                                                                                                  |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      | media.completed_media_action | {\"action\":\"video_call\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":false,\"with_bot\":false}" |
 
   @C12070 @videocalling @smoke
   Scenario Outline: Verify I can accept Video call
