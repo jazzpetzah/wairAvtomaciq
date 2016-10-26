@@ -251,13 +251,14 @@ Feature: Ephemeral Message
     And I wait for 5 seconds
     And User <Contact> sends encrypted message "<Message2>" to user Myself
     And I disable Airplane mode on the device
+    And I do not see No Internet bar in <NetworkTimeout> seconds
     Then I see the message "<Message1>" in the conversation view
     When I wait for <EphemeralTimeout>
     Then I do not see any text message in the conversation view
 
     Examples:
       | Name      | Contact   | EphemeralTimeout | NetworkTimeout | Message1 | Message2 | ContactDevice |
-      | user1Name | user2Name | 5 seconds        | 15             | YO1      | YO2      | d1            |
+      | user1Name | user2Name | 15 seconds       | 15             | YO1      | YO2      | d1            |
 
   @C262550 @staging
   Scenario Outline: (Not implemented) Verify I can delete unsent ephemera message
