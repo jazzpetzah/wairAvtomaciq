@@ -167,7 +167,6 @@ Feature: Ephemeral Message
       | Name      | Contact   | ContactDevice | Message1 | Message2 | EphemeralTimeout1 | EphemeralTimeout2 |
       | user1Name | user2Name | d1            | y1       | y2       | 5                 | 15                |
 
-
   @C261710 @staging
   Scenario Outline: Verify the message is deleted on the sender side when it's read on the receiver side
     Given There are 2 users where <Name> is me
@@ -212,3 +211,28 @@ Feature: Ephemeral Message
     Examples:
       | Name      | Contact   | EphemeralTimeout | NetworkTimeout | Message | MessageStatus          |
       | user1Name | user2Name | 5 seconds        | 15             | Yo      | Sending failed. Resend |
+
+  @C261712 @staging
+  Scenario Outline: Verify that missed call has stayed after receiver saw it
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given User <Contact> adds new devices <ContactDevice>
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When User <Contact> switches user Myself to ephemeral mode via device <ContactDevice> with <EphemeralTimeout> timeout
+    And User <Contact> sends encrypted message "<Message1>" to user Myself
+    And <Contact> calls me
+    And I wait for 5 seconds
+    And <Contact> stops calling me
+    And User <Contact> sends encrypted message "<Message2>" to user Myself
+    And I wait for 5 seconds
+    Then I do not see the message "<Message1>" in the conversation view
+    And I do not see the message "<Message2>" in the conversation view
+    And I see missed call from <Contact> in the conversation
+
+    Examples:
+      | Name      | Contact   | EphemeralTimeout | ContactDevice | Message1 | Message2 | CallBackend |
+      | user1Name | user2Name | 5 seconds        | d1            | Yo1      | Yo2      | zcall       |
