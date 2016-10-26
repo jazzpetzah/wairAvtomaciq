@@ -773,6 +773,12 @@ public class ConversationPageSteps {
         assertTrue("Like button is visible", context.getPagesCollection().getPage(ConversationPage.class)
                 .isLikeButtonInContextMenuInvisible());
     }
+    
+    @When("^I do not see download button in context menu$")
+    public void IDoNotSeeDownloadButtonInContext() throws Exception {
+        assertTrue("Download button is visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isDownloadButtonInContextMenuInvisible());
+    }
 
     @When("^I see delete for me button in context menu$")
     public void ISeeDeleteForMeButtonInContext() throws Exception {
@@ -1165,6 +1171,24 @@ public class ConversationPageSteps {
                     context.getPagesCollection().getPage(ConversationPage.class).isLastMessageNotObfuscated());
         }
     }
+
+    /**
+     * Checks if the picture, video, audio, or file is replaced with orange block
+     * @param doNot
+     * @throws Exception
+     */
+
+    @When("^I (do not )?see orange block replaces the last message in the conversation view$")
+    public void ISeeOrangeBlock(String doNot) throws Exception {
+        if(doNot == null) {
+            assertTrue("Last message is not replaced with an orange block",
+                    context.getPagesCollection().getPage(ConversationPage.class).isLastMessageReplaced());
+        } else {
+            assertTrue("Orange block is still shown on the last message",
+                    context.getPagesCollection().getPage(ConversationPage.class).isOrangeBlockInLastMessageNotVisible());
+        }
+    }
+
 
     /**
      * Click ping button to send ping and hot ping

@@ -944,9 +944,9 @@ Feature: Calling
     And I see localytics event <Event> with attributes <Attributes>
 
     Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout | Event                        | Attributes                                                                                            |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 20      | media.completed_media_action | {\"action\":\"audio_call\",\"conversation_type\":\"group\",\"is_ephemeral\":false,\"with_bot\":false} |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | firefox     | 20      | media.completed_media_action | {\"action\":\"audio_call\",\"conversation_type\":\"group\",\"is_ephemeral\":false,\"with_bot\":false} |
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout | Event                        | Attributes                                                                                                        |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 20      | media.completed_media_action | {\\"action\\":\\"audio_call\\",\\"conversation_type\\":\\"group\\",\\"is_ephemeral\\":false,\\"with_bot\\":false} |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | firefox     | 20      | media.completed_media_action | {\\"action\\":\\"audio_call\\",\\"conversation_type\\":\\"group\\",\\"is_ephemeral\\":false,\\"with_bot\\":false} |
 
   @C1800 @regression @calling @group
   Scenario Outline: Verify ignoring group call

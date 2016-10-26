@@ -424,6 +424,8 @@ public final class WebAppLocators {
         public static final String xpathLikeInContext = "//li[contains(@data-context-action, 'react') and text()='Like']";
 
         public static final String xpathUnlikeInContext = "//li[contains(@data-context-action, 'react') and text()='Unlike']";
+        
+        public static final String cssDownloadInContext = "[data-context-action='download']";
 
         public static final Function<String, String> cssDeleteButtonByMessageId = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='do-message-delete']", text);

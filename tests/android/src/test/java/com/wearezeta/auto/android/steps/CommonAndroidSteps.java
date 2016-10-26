@@ -1281,7 +1281,7 @@ public class CommonAndroidSteps {
      * @throws Exception
      * @step. ^(.*) sends (.*) file having name "(.*)" and MIME type "(.*)" via device (.*) to (user|group conversation) (.*)$
      */
-    @When("^(.*) sends (.*) file having name \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) " +
+    @When("^(.*) sends (.*) file having name \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation)" +
             " (.*)$")
     public void ContactSendsXFileFromSE(String contact, String size, String fileFullName, String mimeType,
                                         String deviceName, String convoType, String dstConvoName) throws Exception {
