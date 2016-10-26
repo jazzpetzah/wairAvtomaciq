@@ -684,6 +684,24 @@ public class CommonWebAppSteps {
     }
 
     /**
+     * User X reads the latest ephemeral message in 1:1 conversation or group conversation
+     *
+     * @param userNameAlias User X's name or alias
+     * @param dstNameAlias the conversation which message is belong to
+     * @param deviceName User X's device
+     * @throws Exception
+     * @step. ^User (.*) reads the recent message from (?:user|group conversation) (.*) via device (.*)
+     */
+
+    @When("^User (.*) reads the recent message from (user|group conversation) (.*) via device (.*)")
+    public void UserReadsLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
+            throws Exception {
+        boolean isGroup = convoType.equals("group conversation");
+                context.getCommonSteps().UserReadLastEphemeralMessage(userNameAlias, dstNameAlias,
+                        deviceName + context.getTestname().hashCode(), isGroup);
+    }
+
+    /**
      * Send personal invitation over the backend
      *
      * @param userToNameAlias the name/alias of conversations list owner
