@@ -348,7 +348,7 @@ Feature: Calling
     And I do not see ongoing call
 
     Examples:
-      | Name      | Contact  | CallBackend | Timeout |
+      | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | zcall       | 60      |
 
   @calling_autoAnswer

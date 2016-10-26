@@ -8,8 +8,8 @@ import java.awt.image.BufferedImage;
 import java.util.Optional;
 import java.util.concurrent.Future;
 
-public abstract class AbstractTabletPeoplePickerPage extends AndroidTabletPage {
-    public AbstractTabletPeoplePickerPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+public abstract class AbstractTabletSearchPage extends AndroidTabletPage {
+    public AbstractTabletSearchPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 

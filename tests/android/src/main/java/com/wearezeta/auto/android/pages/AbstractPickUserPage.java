@@ -21,7 +21,7 @@ public abstract class AbstractPickUserPage extends AndroidPage {
 
     private static final By idCreateOrOpenConversationButton = By.id(idStrCreateOrOpenConversationButton);
 
-    private static final By idPeoplePickerClearbtn = By.id("gtv_pickuser__clearbutton");
+    private static final By idSearchClearbtn = By.id("gtv_pickuser__clearbutton");
 
     public static final By idQuickMenuCameraButton = By.id("gtv__conversation_quick_menu__camera_button");
 
@@ -85,11 +85,11 @@ public abstract class AbstractPickUserPage extends AndroidPage {
 
     public void tapCreateConversation() throws Exception {
         getElement(idCreateOrOpenConversationButton,
-                "Create/Open Conversation button is not visible in People Picker").click();
+                "Create/Open Conversation button is not visible in Search").click();
     }
 
     public void tapClearButton() throws Exception {
-        getElement(idPeoplePickerClearbtn, "Clear button is not visible").click();
+        getElement(idSearchClearbtn, "Clear button is not visible").click();
     }
 
     public boolean waitUntilNameVisible(boolean isGroup, String name) throws Exception {
@@ -153,12 +153,12 @@ public abstract class AbstractPickUserPage extends AndroidPage {
 
     protected void tapOnUserName(By locator, String name) throws Exception {
         scrollUntilLocatorVisible(locator).orElseThrow(() -> new IllegalStateException(
-                String.format("A user '%s' is not present on People Picker page", name))).click();
+                String.format("A user '%s' is not present on Search page", name))).click();
     }
 
     protected void tapOnGroupName(By locator, String name) throws Exception {
         scrollUntilLocatorVisible(locator).orElseThrow(() -> new IllegalStateException(
-                String.format("A group '%s' is not present on People Picker page", name))).click();
+                String.format("A group '%s' is not present on Search page", name))).click();
     }
 
     protected abstract By getNameLocator(boolean isGroup, String name);

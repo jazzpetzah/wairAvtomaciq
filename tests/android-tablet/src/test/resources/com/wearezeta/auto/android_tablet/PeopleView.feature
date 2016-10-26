@@ -133,7 +133,7 @@ Feature: People View
     Given I see the conversations list with conversations
     And I open Search UI
     And I tap <Contact1> avatar in Top People
-    When I tap Open Conversation action button on People Picker page
+    When I tap Open Conversation action button on Search page
     Then I see the conversation view
 
     Examples:
@@ -151,9 +151,9 @@ Feature: People View
     Given Myself wait until 1 person is in the Top People list on the backend
     And I open Search UI
     And I tap <Contact1> avatar in Top People
-    When I tap Open Conversation action button on People Picker page
+    When I tap Open Conversation action button on Search page
     Then I see the conversation view
-    And I do not see Open Conversation action button on People Picker page
+    And I do not see Open Conversation action button on Search page
     And I see the conversation <Contact1> in my conversations list
 
     Examples:

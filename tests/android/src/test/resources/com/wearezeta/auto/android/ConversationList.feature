@@ -73,8 +73,8 @@ Feature: Conversations list
     When I wait until <Contact1> exists in backend search results
     And I open Search UI
     And I type user name "<Contact1>" in search field
-    And I tap on user name found on People picker page <Contact1>
-    And I tap Open Conversation action button on People Picker page
+    And I tap on user name found on Search page <Contact1>
+    And I tap Open Conversation action button on Search page
     Then I see conversation view
 
     Examples:

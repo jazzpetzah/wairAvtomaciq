@@ -5,7 +5,7 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 import java.util.concurrent.Future;
 
-public class TabletContactListPage extends AbstractTabletPeoplePickerPage {
+public class TabletContactListPage extends AbstractTabletSearchPage {
 
     public TabletContactListPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {

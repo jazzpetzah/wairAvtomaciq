@@ -197,8 +197,8 @@ Feature: VideoCalling
     Given I wait until <Contact> exists in backend search results
     When I open Search UI
     And I type user name "<Contact>" in search field
-    And I tap on user name found on People picker page <Contact>
-    And I tap Video Call action button on People Picker page
+    And I tap on user name found on Search page <Contact>
+    And I tap Video Call action button on Search page
     Then I see outgoing video call
     When <Contact> accepts next incoming video call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds

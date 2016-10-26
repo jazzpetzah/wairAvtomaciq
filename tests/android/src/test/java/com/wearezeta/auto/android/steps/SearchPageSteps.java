@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Future;
 
-public class PeoplePickerPageSteps {
+public class SearchPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private static final Random random = new Random();
@@ -39,29 +39,29 @@ public class PeoplePickerPageSteps {
     private ElementState avatarState = null;
 
     /**
-     * Checks to see that the people picker page (search view) is visible
+     * Checks to see that the Search page (search view) is visible
      *
      * @throws Exception
-     * @step. ^I see People picker page$
+     * @step. ^I see [Ss]earch page$
      */
-    @Then("^I see People picker page$")
-    public void ISeePeoplePickerPage() throws Exception {
-        Assert.assertTrue("People Picker is not visible", getSearchListPage().waitUntilPageVisible());
+    @Then("^I see [Ss]earch page$")
+    public void ISeeSearchPage() throws Exception {
+        Assert.assertTrue("Search page is not visible", getSearchListPage().waitUntilPageVisible());
     }
 
     /**
-     * Taps on the search bar in the people picker page
+     * Taps on the search bar on the Search page
      *
      * @throws Exception
-     * @step. ^I tap on Search input on People picker page$
+     * @step. ^I tap on Search input on [Ss]earch page$
      */
-    @When("^I tap on Search input on People picker page$")
-    public void ITapOnSearchInputOnPeoplePickerPage() throws Exception {
+    @When("^I tap on Search input on [Ss]earch page$")
+    public void ITapOnSearchInputOnSearchPage() throws Exception {
         getSearchListPage().tapPeopleSearch();
     }
 
     /**
-     * Selects a contact from the top people section in the people picker page
+     * Selects a contact from the top people section in the Search page
      *
      * @param contact user name/alias
      * @throws Exception
@@ -89,7 +89,7 @@ public class PeoplePickerPageSteps {
     }
 
     /**
-     * Presses the close button in the people picker page
+     * Presses the close button in the Search page
      *
      * @throws Exception
      * @step. ^I press Clear button$
@@ -172,7 +172,7 @@ public class PeoplePickerPageSteps {
      */
     @Then("^I see that no results found$")
     public void ISeeNoResultsFound() throws Exception {
-        Assert.assertTrue("Some results were found in People Picker",
+        Assert.assertTrue("Some results were found in search",
                 getSearchListPage().isErrorVisible());
     }
 
@@ -181,9 +181,9 @@ public class PeoplePickerPageSteps {
      *
      * @param shouldNotSee equal null means the error message should be visible
      * @throws Exception
-     * @step. ^I( do not)? see No matching result placeholder on People picker page$
+     * @step. ^I( do not)? see No matching result placeholder on [Ss]earch page$
      */
-    @Then("^I( do not)? see No matching result placeholder on People picker page$")
+    @Then("^I( do not)? see No matching result placeholder on [Ss]earch page$")
     public void ISeeTheAddPeopleErrorMessage(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue("Add people error message should be visible", getSearchListPage().isErrorVisible());
@@ -193,14 +193,14 @@ public class PeoplePickerPageSteps {
     }
 
     /**
-     * Taps on a name found in the people picker page
+     * Taps on a name found in the Search page
      *
      * @param contact user name/alias
      * @throws Exception
-     * @step. ^I tap on user name found on People picker page (.*)$
+     * @step. ^I tap on user name found on [Ss]earch page (.*)$
      */
-    @When("^I tap on user name found on People picker page (.*)$")
-    public void ITapOnUserNameFoundOnPeoplePickerPage(String contact)
+    @When("^I tap on user name found on [Ss]earch page (.*)$")
+    public void ITapOnUserNameFoundOnSearchPage(String contact)
             throws Exception {
         try {
             contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
@@ -211,14 +211,14 @@ public class PeoplePickerPageSteps {
     }
 
     /**
-     * Taps on a group found in the people picker page
+     * Taps on a group found in the Search page
      *
      * @param contact user name/alias
      * @throws Exception
-     * @step. ^I tap on group found on People picker page (.*)$
+     * @step. ^I tap on group found on [Ss]earch page (.*)$
      */
-    @When("^I tap on group found on People picker page (.*)$")
-    public void ITapOnGroupFoundOnPeoplePickerPage(String contact)
+    @When("^I tap on group found on [Ss]earch page (.*)$")
+    public void ITapOnGroupFoundOnSearchPage(String contact)
             throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         getSearchListPage().tapOnGroupName(contact);
@@ -269,7 +269,7 @@ public class PeoplePickerPageSteps {
     }
 
     /**
-     * Wait for Top People list to appear in People picker
+     * Wait for Top People list to appear in search
      *
      * @throws Exception
      * @step. ^I wait until Top People list appears$
@@ -286,9 +286,11 @@ public class PeoplePickerPageSteps {
      * @param shouldNotSee equals to null if the button should be visible
      * @param buttonName   one of possible action button names
      * @throws Exception
-     * @step. ^I (do not )?see (Open Conversation|Create Conversation|Send Image|Call|Video Call) action button on People Picker page$
+     * @step. ^I (do not )?see (Open Conversation|Create Conversation|Send Image|Call|Video Call) action button on [Ss]earch
+     * page$
      */
-    @Then("^I (do not )?see (Open Conversation|Create Conversation|Send Image|Call|Video Call) action button on People Picker page$")
+    @Then("^I (do not )?see (Open Conversation|Create Conversation|Send Image|Call|Video Call) action button on [Ss]earch " +
+            "page$")
     public void ISeeActionButton(String shouldNotSee, String buttonName) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("'%s' action button is not visible", buttonName),
@@ -332,21 +334,21 @@ public class PeoplePickerPageSteps {
      *
      * @param buttonName one of possible action button names
      * @throws Exception
-     * @step. ^I tap (Open Conversation|Create Conversation|Send Image|Call|Video Call) action button on People Picker page$
+     * @step. ^I tap (Open Conversation|Create Conversation|Send Image|Call|Video Call) action button on [Ss]earch page$
      */
-    @When("^I tap (Open Conversation|Create Conversation|Send Image|Call|Video Call) action button on People Picker page$")
+    @When("^I tap (Open Conversation|Create Conversation|Send Image|Call|Video Call) action button on [Ss]earch page$")
     public void ITapActionButtons(String buttonName) throws Exception {
         getSearchListPage().tapActionButton(buttonName);
     }
 
     /**
-     * Swipe right on caontact avatar found on People Picker page
+     * Swipe right on contact avatar found on Search page
      *
      * @param name contact name/alias
      * @throws Exception
-     * @step. ^I swipe right on contact avatar (.*) in [Pp]eople [Pp]icker$
+     * @step. ^I swipe right on contact avatar (.*) in [Ss]earch$
      */
-    @When("^I swipe right on contact avatar (.*) in [Pp]eople [Pp]icker$")
+    @When("^I swipe right on contact avatar (.*) in [Ss]earch$")
     public void ISwipeRightOnContact(String name) throws Exception {
         name = usrMgr.findUserByNameOrNameAlias(name).getName();
         getSearchListPage().swipeRightOnContactAvatar(name);

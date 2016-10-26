@@ -84,10 +84,10 @@ Feature: Conversation View
     And I tap conversation name from top toolbar
     And I see <Contact1> user profile page
     And I press add contact button
-    And I tap on Search input on People picker page
+    And I tap on Search input on Search page
     And I type user name "<Contact2>" in search field
     And I see user <Contact2> in Search result list
-    And I tap on user name found on People picker page <Contact2>
+    And I tap on user name found on Search page <Contact2>
     And I see Add to conversation button
     And I click on Add to conversation button
     # Workaround for AN-4011, for following two steps
@@ -352,7 +352,7 @@ Feature: Conversation View
     And I see Conversations list
     And I open Search UI
     And I type group name "<GroupChatName>" in search field
-    And I tap on group found on People picker page <GroupChatName>
+    And I tap on group found on Search page <GroupChatName>
     Then I see the upper toolbar
     And I do not see text input
     And I do not see cursor toolbar
