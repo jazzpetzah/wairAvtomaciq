@@ -1,6 +1,6 @@
 Feature: Ephemeral
 
-  @C261723 @ephemeral @staging
+  @C261723 @ephemeral @staging @WEBAPP-3302
   Scenario Outline: Verify sending ephemeral text message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
