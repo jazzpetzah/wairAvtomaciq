@@ -46,8 +46,8 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | WaitingMess      |
       | user1Name | user2Name | user3Name | 1 person waiting |
 
-  @C383 @regression
-  Scenario Outline: I can see a inbox count increasing/decreasing correctly + open inbox from search
+  @C383 @regression @rc
+  Scenario Outline: I can connect/ignore connection requests from search/conversation list and inbox updated correctly
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
     Given I sign in using my email or phone number
@@ -57,8 +57,9 @@ Feature: Connect
     When I wait for 2 seconds
     Then I see Conversations list with name <WaitingMess2>
     When I tap on conversation name <WaitingMess2>
-    And I press Ignore connect button
-    And I navigate back from connect page
+    When I Connect with contact by pressing button
+    And I wait for 5 seconds
+    And I navigate back from conversation
     Then I see Conversations list with name <WaitingMess1>
     And <Contact3> sent connection request to me
     And <Contact4> sent connection request to me
@@ -70,9 +71,12 @@ Feature: Connect
     And I press Ignore connect button
     And I navigate back from connect page
     Then I see Conversations list with name <WaitingMess2>
-    When I tap on conversation name <WaitingMess2>
-    And I press Ignore connect button
-    And I navigate back from connect page
+    When I open Search UI
+    And I type user name "<Contact4>" in search field
+    And I tap on user name found on Search page <Contact4>
+    When I Connect with contact by pressing button
+    And I wait for 5 seconds
+    And I navigate back from conversation
     Then I see Conversations list with name <WaitingMess1>
     When I tap on conversation name <WaitingMess1>
     And I press Ignore connect button
@@ -81,33 +85,6 @@ Feature: Connect
     Examples:
       | Name      | Contact1  | WaitingMess1     | Contact2  | WaitingMess2     | Contact3  | Contact4  | WaitingMess3     |
       | user1Name | user2Name | 1 person waiting | user3Name | 2 people waiting | user4Name | user5Name | 3 people waiting |
-
-  @C387 @regression
-  Scenario Outline: I accept someone from Search and -1 from inbox as well
-    Given There are 5 users where <Name> is me
-    Given <Contact1> sent connection request to <Name>
-    Given <Contact2> sent connection request to <Name>
-    Given <Contact4> sent connection request to <Name>
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    Given <Contact3> sent connection request to <Name>
-    Then I see Conversations list with name <WaitingMess1>
-    And I wait until <Contact3> exists in backend search results
-    When I open Search UI
-    And I type user name "<Contact3>" in search field
-    And I tap on user name found on Search page <Contact3>
-    Then I see Accept and Ignore buttons
-    When I scroll to inbox contact <Contact3>
-    Then I see connect to <Contact3> dialog
-    When I Connect with contact by pressing button
-    And I wait for 5 seconds
-    And I navigate back from conversation
-    Then I see Conversations list with name <WaitingMess2>
-
-    Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | WaitingMess1     | WaitingMess2     |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | 4 people waiting | 3 people waiting |
 
   @C384 @regression
   Scenario Outline: I can ignore a connect request and reconnect later
@@ -128,28 +105,6 @@ Feature: Connect
     When I Connect with contact by pressing button
     And I wait for 5 seconds
     Then I see conversation view
-
-    Examples:
-      | Name      | Contact   | WaitingMess      |
-      | user1Name | user2Name | 1 person waiting |
-
-  @C385 @regression @rc
-  Scenario Outline: Accept incoming connection request from search
-    Given There are 2 users where <Name> is me
-    Given <Contact> sent connection request to <Name>
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    Then I see Conversations list with name <WaitingMess>
-    And I wait until <Contact> exists in backend search results
-    When I open Search UI
-    And I type user name "<Contact>" in search field
-    And I tap on user name found on Search page <Contact>
-    Then I see connect to <Contact> dialog
-    And I do not see text input
-    And I do not see cursor toolbar
-    When I Connect with contact by pressing button
-    Then I see Conversations list with name <Contact>
 
     Examples:
       | Name      | Contact   | WaitingMess      |
