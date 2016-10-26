@@ -15,21 +15,21 @@ Feature: Ephemeral Message
     And I type the message "<Message>" and send it by cursor Send button
     Then I see the message "<Message>" in the conversation view
     And I see Message status with expected text "<EphemeralStatus>" in conversation view
-    When I wait for 5 seconds
+    When I wait for <EphemeralTimeout>
     Then I see Message status with expected text "Sent" in conversation view
     And I do not see the message "<Message>" in the conversation view
     And User Myself sees the recent message from user <Contact> via device <Mydevice> is not changed in 5 seconds
     When I tap Ephemeral button from cursor toolbar
     And I set timeout to Off on Extended cursor ephemeral overlay
     And I type the message "<Message2>" and send it by cursor Send button
-    And I wait for 5 seconds
+    And I wait for <EphemeralTimeout>
     Then I see Message status with expected text "Sent" in conversation view
     And I see the message "<Message2>" in the conversation view
     And User Myself sees the recent message from user <Contact> via device <Mydevice> is changed in 15 seconds
 
     Examples:
       | Name      | Contact   | EphemeralTimeout | Message | EphemeralStatus | Message2 | Mydevice |
-      | user1Name | user2Name | 5 seconds        | test5s  | left            | ok       | d1       |
+      | user1Name | user2Name | 15 seconds       | test5s  | left            | ok       | d1       |
 
   @C261705 @staging
   Scenario Outline: Verify ephemeral messages are turned off in a group chat
