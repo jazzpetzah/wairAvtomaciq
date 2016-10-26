@@ -1,7 +1,7 @@
 Feature: Ephemeral Message
 
-  @C261701 @C261702 @C261703 @staging
-  Scenario Outline: Verify sending ephemeral text message, which will be obfuscated and not been delivered to my other devices
+  @C261701 @staging
+  Scenario Outline: Verify sending ephemeral text message will be obfuscated when receiver is offline and not been delivered to my other devices
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -9,7 +9,6 @@ Feature: Ephemeral Message
     Given User Myself adds new device <Mydevice>
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
-    # C261701 & C261703
     When User Myself remembers the recent message from user <Contact> via device <Mydevice>
     And I tap Ephemeral button from cursor toolbar
     And I set timeout to <EphemeralTimeout> on Extended cursor ephemeral overlay
@@ -20,7 +19,6 @@ Feature: Ephemeral Message
     Then I see Message status with expected text "Sent" in conversation view
     And I do not see the message "<Message>" in the conversation view
     And User Myself sees the recent message from user <Contact> via device <Mydevice> is not changed in 5 seconds
-    # C261702
     When I tap Ephemeral button from cursor toolbar
     And I set timeout to Off on Extended cursor ephemeral overlay
     And I type the message "<Message2>" and send it by cursor Send button
@@ -71,7 +69,7 @@ Feature: Ephemeral Message
       | user1Name | user2Name | 5 seconds        | yo      |
 
   @C261704 @staging
-  Scenario Outline: Verify sending ping, location, picture, text with link, video, audio, file ephemeral messages
+  Scenario Outline: Verify sending all types of messages after I enable ephemeral mode
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -167,7 +165,6 @@ Feature: Ephemeral Message
       | Name      | Contact   | ContactDevice | Message1 | Message2 | EphemeralTimeout1 | EphemeralTimeout2 |
       | user1Name | user2Name | d1            | y1       | y2       | 5                 | 15                |
 
-
   @C261710 @staging
   Scenario Outline: Verify the message is deleted on the sender side when it's read on the receiver side
     Given There are 2 users where <Name> is me
@@ -186,3 +183,79 @@ Feature: Ephemeral Message
     Examples:
       | Name      | Contact   | EphemeralTimeout | Message | ContactDevice |
       | user1Name | user2Name | 5 seconds        | yo      | d1            |
+
+  @C261721 @staging
+  Scenario Outline: If ephemeral message can’t be sent due to bad network, it can be resend and will not get obfuscated
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When I tap Ephemeral button from cursor toolbar
+    And I set timeout to <EphemeralTimeout> on Extended cursor ephemeral overlay
+    And I enable Airplane mode on the device
+    And I see No Internet bar in <NetworkTimeout> seconds
+    And I type the message "<Message>" and send it by cursor Send button
+    And I see Message status with expected text "<MessageStatus>" in conversation view
+    And I wait for <EphemeralTimeout>
+    And I disable Airplane mode on the device
+    Then I see the message "<Message>" in the conversation view
+    When I do not see No Internet bar in <NetworkTimeout> seconds
+    And I resend all the visible messages in conversation view
+    And I wait for <EphemeralTimeout>
+    Then I do not see the message "<Message>" in the conversation view
+
+    Examples:
+      | Name      | Contact   | EphemeralTimeout | NetworkTimeout | Message | MessageStatus          |
+      | user1Name | user2Name | 5 seconds        | 15             | Yo      | Sending failed. Resend |
+
+  @C261712 @staging
+  Scenario Outline: Verify that missed call has stayed after receiver saw it
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given User <Contact> adds new devices <ContactDevice>
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When User <Contact> switches user Myself to ephemeral mode via device <ContactDevice> with <EphemeralTimeout> timeout
+    And User <Contact> sends encrypted message "<Message1>" to user Myself
+    And <Contact> calls me
+    And I wait for 5 seconds
+    And <Contact> stops calling me
+    And User <Contact> sends encrypted message "<Message2>" to user Myself
+    And I wait for 5 seconds
+    Then I do not see the message "<Message1>" in the conversation view
+    And I do not see the message "<Message2>" in the conversation view
+    And I see missed call from <Contact> in the conversation
+
+    Examples:
+      | Name      | Contact   | EphemeralTimeout | ContactDevice | Message1 | Message2 | CallBackend |
+      | user1Name | user2Name | 5 seconds        | d1            | Yo1      | Yo2      | zcall       |
+
+  @C261722 @staging
+  Scenario Outline: If a user receives multiple ephemeral messages after being offline, all get the same timer
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds new devices <ContactDevice>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When I enable Airplane mode on the device
+    And I see No Internet bar in <NetworkTimeout> seconds
+    And User <Contact> switches user Myself to ephemeral mode via device <ContactDevice> with <EphemeralTimeout> timeout
+    And User <Contact> sends encrypted message "<Message1>" to user Myself
+    And I wait for 5 seconds
+    And User <Contact> sends encrypted message "<Message2>" to user Myself
+    And I disable Airplane mode on the device
+    Then I see the message "<Message1>" in the conversation view
+    And I see the message "<Message2>" in the conversation view
+    When I wait for <EphemeralTimeout>
+    Then I do not see any text message in the conversation view
+
+    Examples:
+      | Name      | Contact   | EphemeralTimeout | NetworkTimeout | Message1 | Message2 | ContactDevice |
+      | user1Name | user2Name | 5 seconds        | 15             | YO1      | YO2      | d1            |

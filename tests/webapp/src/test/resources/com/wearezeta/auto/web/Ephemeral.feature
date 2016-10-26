@@ -1,6 +1,6 @@
 Feature: Ephemeral
 
-  @C261723 @ephemeral @staging @WEBAPP-3302
+  @C261723 @ephemeral @regression @localytics @WEBAPP-3302
   Scenario Outline: Verify sending ephemeral text message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -55,14 +55,15 @@ Feature: Ephemeral
     Then I do not see text message <Message>
     And I see 1 messages in conversation
     And I see 0 message in database from <Name> in active conversation
+    And I see localytics event <Event> with attributes <Attributes>
 
     Examples:
-      | Login1     | Password      | Name      | Contact   | Login2     | Wait | Time | TimeLong   | TimeShortUnit | Message |
-      | user1Email | user1Password | user1Name | user2Name | user2Email | 5    | 5    | 5 seconds  | s             | Hello   |
-      | user1Email | user1Password | user1Name | user2Name | user2Email | 15   | 15   | 15 seconds | s             | Hello   |
-      | user1Email | user1Password | user1Name | user2Name | user2Email | 30   | 30   | 30 seconds | s             | Hello   |
-      | user1Email | user1Password | user1Name | user2Name | user2Email | 60   | 1    | 1 minute   | m             | Hello   |
-     #| user1Email | user1Password | user1Name | user2Name | user2Email | 300  | 5    | 5 minutes  | m             | Hello   |
+      | Login1     | Password      | Name      | Contact   | Login2     | Wait | Time | TimeLong   | TimeShortUnit | Message | Event                        | Attributes                                                                                                                  |
+      | user1Email | user1Password | user1Name | user2Name | user2Email | 5    | 5    | 5 seconds  | s             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":true,\"ephemeral_time\":5,\"with_bot\":false}"   |
+      | user1Email | user1Password | user1Name | user2Name | user2Email | 15   | 15   | 15 seconds | s             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":true,\"ephemeral_time\":15,\"with_bot\":false}"  |
+      | user1Email | user1Password | user1Name | user2Name | user2Email | 30   | 30   | 30 seconds | s             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":true,\"ephemeral_time\":30,\"with_bot\":false}"  |
+      | user1Email | user1Password | user1Name | user2Name | user2Email | 60   | 1    | 1 minute   | m             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":true,\"ephemeral_time\":60,\"with_bot\":false}"  |
+     #| user1Email | user1Password | user1Name | user2Name | user2Email | 300  | 5    | 5 minutes  | m             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":true,\"ephemeral_time\":300,\"with_bot\":false}" |
 
   @C261728 @ephemeral @regression
   Scenario Outline: Verify switching on/off ephemeral message
@@ -234,7 +235,7 @@ Feature: Ephemeral
       | Login      | Password      | Name      | Contact   | OriginalMessage | EditedMessage | Time | TimeLong   | TimeShortUnit |
       | user1Email | user1Password | user1Name | user2Name | edit me         | edited        | 30   | 30 seconds | s             |
 
-  @C261733 @ephemeral @staging
+  @C261733 @ephemeral @regression
   Scenario Outline: Verify sending different types of ephemeral messages (ping, picture, video, audio, file)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -314,7 +315,7 @@ Feature: Ephemeral
       | Login1     | Password      | Name      | Contact   | Time | TimeLong   | TimeShortUnit | PING       | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile | TypeFile |
       | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds  | s             | you pinged | userpicture_landscape.jpg | C123938.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    | ZIP      |
 
-  @C310631 @ephemeral @staging
+  @C310631 @ephemeral @regression
   Scenario Outline: Verify sender can not download asset while it is obfuscated
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
