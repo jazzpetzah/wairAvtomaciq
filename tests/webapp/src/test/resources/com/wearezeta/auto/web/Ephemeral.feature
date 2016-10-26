@@ -330,7 +330,7 @@ Feature: Ephemeral
     When I send <Size> sized file with name <File> to the current conversation
     When I wait until file <File> is uploaded completely
     And I wait for <Time> seconds
-    And I see the last message is replaced with an orange block
+    And I see orange block replaces the last message in the conversation view
     And I click context menu of the last message
     And I do not see download button in context menu
 
