@@ -2,7 +2,7 @@ Feature: Conversation View
 
   @C3182 @regression @fastLogin
   Scenario Outline: Verify tooltip is shown when cursor area is empty and in/not in focus
-    Given There are 2 user where <Name> is me
+    Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -17,7 +17,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C3181 @rc @regression @clumsy @IPv6 @fastLogin @torun
+  @C3181 @rc @regression @clumsy @IPv6 @fastLogin
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

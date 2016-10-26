@@ -14,7 +14,7 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
-import com.wearezeta.auto.ios.tools.IOSSimulatorHelpers;
+import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import edu.emory.mathcs.backport.java.util.Arrays;
 import io.appium.java_client.MobileBy;
 import org.apache.commons.io.FilenameUtils;

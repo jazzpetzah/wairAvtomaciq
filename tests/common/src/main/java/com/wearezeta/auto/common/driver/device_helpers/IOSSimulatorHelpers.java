@@ -1,4 +1,4 @@
-package com.wearezeta.auto.ios.tools;
+package com.wearezeta.auto.common.driver.device_helpers;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.common.process.UnixProcessHelpers;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
@@ -278,19 +279,21 @@ public class IOSSimulatorHelpers {
         return executeXcRun("simctl", cmd);
     }
 
+    private static final String[] IOS_SIMULATOR_PROCESSES_NAMES = new String[] {
+            "Simulator", "osascript", "configd_sim", "xpcproxy_sim", "backboardd",
+            "platform_launch_", "companionappd", "ids_simd", "launchd_sim",
+            "CoreSimulatorBridge", "SimulatorBridge", "SpringBoard",
+            "locationd", "MobileGestaltHelper", "cfprefsd",
+            "assetsd", "fileproviderd", "mediaremoted",
+            "routined", "assetsd", "mstreamd", "healthd", "MobileCal",
+            "callservicesd", "revisiond", "touchsetupd", "calaccessd",
+            "ServerFileProvider", "mobileassetd", "IMDPersistenceAgent",
+            "itunesstored", "profiled", "passd", "carkitd"
+    };
+
     public static void kill() throws Exception {
         log.debug("Force killing Simulator app...");
-        UnixProcessHelpers.killProcessesGracefully(
-                "Simulator", "osascript", "configd_sim", "xpcproxy_sim", "backboardd",
-                "platform_launch_", "companionappd", "ids_simd", "launchd_sim",
-                "CoreSimulatorBridge", "SimulatorBridge", "SpringBoard",
-                "locationd", "MobileGestaltHelper", "cfprefsd",
-                "assetsd", "fileproviderd", "mediaremoted",
-                "routined", "assetsd", "mstreamd", "healthd", "MobileCal",
-                "callservicesd", "revisiond", "touchsetupd", "calaccessd",
-                "ServerFileProvider", "mobileassetd", "IMDPersistenceAgent",
-                "itunesstored", "profiled", "passd", "carkitd"
-        );
+        UnixProcessHelpers.killProcessesGracefully(IOS_SIMULATOR_PROCESSES_NAMES);
     }
 
     public static void shutdown() throws Exception {
@@ -303,22 +306,44 @@ public class IOSSimulatorHelpers {
         executeSimctl("erase", getId());
     }
 
-    private static final long INSTALL_SYNC_TIMEOUT = 3; // seconds
+    private static final long INSTALL_SYNC_TIMEOUT_MS = 3000;
+
+    private static final long SIMULATOR_BOOTING_INTERVAL_CHECK_MS = 5000;
+    private static final long SIMULATOR_BOOT_TIMEOUT_MS = 80000;
+
+
+    private static String retryUntilSimulatorBooted(FunctionalInterfaces.ISupplierWithException<String> f)
+            throws Exception {
+        final long msStarted = System.currentTimeMillis();
+        do {
+            final String output = f.call();
+            if (!output.contains("No devices are booted")) {
+                return output;
+            }
+            Thread.sleep(SIMULATOR_BOOTING_INTERVAL_CHECK_MS);
+        } while (System.currentTimeMillis() - msStarted <= SIMULATOR_BOOT_TIMEOUT_MS);
+        throw new IllegalStateException(String.format("Cannot apply simctl command after %s seconds timeout",
+                SIMULATOR_BOOT_TIMEOUT_MS / 1000));
+    }
 
     public static void installApp(File appPath) throws Exception {
-        executeSimctl("install", "booted", appPath.getCanonicalPath());
-        log.debug(String.format("Sleeping %s seconds to sync application install...", INSTALL_SYNC_TIMEOUT));
-        Thread.sleep(INSTALL_SYNC_TIMEOUT * 1000);
+        retryUntilSimulatorBooted(
+                () -> executeSimctl("install", "booted", appPath.getCanonicalPath())
+        );
+        log.debug(String.format("Sleeping %s seconds to sync application install...", INSTALL_SYNC_TIMEOUT_MS / 1000));
+        Thread.sleep(INSTALL_SYNC_TIMEOUT_MS);
     }
 
     public static void uninstallApp(String bundleId) throws Exception {
-        executeSimctl("uninstall", "booted", bundleId);
-        log.debug(String.format("Sleeping %s seconds to sync application uninstall...", INSTALL_SYNC_TIMEOUT));
-        Thread.sleep(INSTALL_SYNC_TIMEOUT * 1000 / 2);
+        retryUntilSimulatorBooted(
+                () -> executeSimctl("uninstall", "booted", bundleId)
+        );
     }
 
     public static void launchApp(String bundleId) throws Exception {
-        executeSimctl("launch", "booted", bundleId);
+        retryUntilSimulatorBooted(
+                () -> executeSimctl("launch", "booted", bundleId)
+        );
     }
 
     public static void uploadImage(File img) throws Exception {
@@ -327,7 +352,9 @@ public class IOSSimulatorHelpers {
                     "Please make sure the image %s exists and is accessible", img.getCanonicalPath()
             ));
         }
-        executeSimctl("addphoto", "booted", img.getCanonicalPath());
+        retryUntilSimulatorBooted(
+                () -> executeSimctl("addphoto", "booted", img.getCanonicalPath())
+        );
         // Let Simulator to update the lib
         Thread.sleep(3000);
     }
@@ -395,9 +422,12 @@ public class IOSSimulatorHelpers {
     public static void start() throws Exception {
         log.debug(getCommandOutput("/usr/bin/open", "-Fn", getApplicationPath(),
                 "--args",
+                "-ConnectHardwareKeyboard", "1",
                 "-CurrentDeviceUDID", getId(),
                 String.format("-SimulatorWindowLastScale-%s", getInternalDeviceType()), getDefaultScaleFactor())
         );
+        // This is to wait until simulator booting is completed
+        uninstallApp("com.wait_until_simulator.booted");
     }
 
     public static boolean isRunning() throws Exception {

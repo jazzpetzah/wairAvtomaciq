@@ -14,6 +14,8 @@ import java.util.concurrent.TimeUnit;
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.*;
+import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
+import com.wearezeta.auto.common.driver.device_helpers.IOSRealDeviceHelpers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.IOSDistributable;
@@ -48,8 +50,8 @@ import static com.wearezeta.auto.common.CommonUtils.*;
 public class CommonIOSSteps {
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
-    //    private static final String IOS_WD_APP_BUNDLE = "com.apple.test.WebDriverAgentRunner-Runner";
-//    private static final String FACEBOOK_WD_APP_BUNDLE = "com.facebook.IntegrationApp";
+    // private static final String IOS_WD_APP_BUNDLE = "com.apple.test.WebDriverAgentRunner-Runner";
+    // private static final String FACEBOOK_WD_APP_BUNDLE = "com.facebook.IntegrationApp";
     private static final String ADDRESSBOOK_HELPER_APP_NAME = "AddressbookApp.ipa";
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
@@ -134,7 +136,7 @@ public class CommonIOSSteps {
         capabilities.setCapability("autoLaunch", false);
         capabilities.setCapability("bundleId", IOSDistributable.getInstance(appPath).getBundleId());
         if (isRealDevice) {
-            final String udid = RealDeviceHelpers.getUDID().orElseThrow(
+            final String udid = IOSRealDeviceHelpers.getUDID().orElseThrow(
                     () -> new IllegalStateException("Cannot detect any connected iDevice")
             );
 
@@ -208,10 +210,10 @@ public class CommonIOSSteps {
             IOSSimulatorHelpers.uninstallApp(IOSDistributable.getInstance(
                     (String) caps.getCapability("app")).getBundleId()
             );
-            IOSSimulatorHelpers.installApp(IOSDistributable.getInstance(
-                    (String) caps.getCapability("app")).getAppRoot()
-            );
         }
+        IOSSimulatorHelpers.installApp(IOSDistributable.getInstance(
+                (String) caps.getCapability("app")).getAppRoot()
+        );
     }
 
     @Before

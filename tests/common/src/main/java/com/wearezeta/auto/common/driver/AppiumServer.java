@@ -87,11 +87,6 @@ public class AppiumServer {
         }
     }
 
-    public void resetIOS() throws Exception {
-        UnixProcessHelpers.killProcessesGracefully("xcodebuild", "XCTRunner");
-        restart();
-    }
-
     public synchronized void restart() throws Exception {
         final String hostname = InetAddress.getLocalHost().getHostName();
         log.info(String.format("Trying to (re)start Appium server on %s:%s...", hostname, PORT));

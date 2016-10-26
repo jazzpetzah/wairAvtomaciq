@@ -6,6 +6,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
+import com.wearezeta.auto.common.process.UnixProcessHelpers;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
@@ -68,8 +70,13 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                         platformDriver = new ZetaOSXDriver(new URL(url), capabilities);
                         break;
                     case iOS:
+                        UnixProcessHelpers.killProcessesGracefully("xcodebuild", "XCTRunner");
                         if (!appiumServer.isRunning() || ntry > 1) {
-                            appiumServer.resetIOS();
+                            appiumServer.restart();
+                            if (ntry > 1 && capabilities.getCapability("udid") == null) {
+                                IOSSimulatorHelpers.kill();
+                                IOSSimulatorHelpers.start();
+                            }
                         }
                         platformDriver = new ZetaIOSDriver(new URL(url), capabilities);
                         platformDriver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);

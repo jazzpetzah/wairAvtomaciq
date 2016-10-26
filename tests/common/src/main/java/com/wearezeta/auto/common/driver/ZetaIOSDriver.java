@@ -32,7 +32,6 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     public static final String AUTOMATION_NAME_CAPABILITY_NAME = "automationName";
     public static final String AUTOMATION_MODE_XCUITEST = "XCUITest";
 
-
     private static final Logger log = ZetaLogger.getLog(ZetaIOSDriver.class.getSimpleName());
 
     private volatile boolean isSessionLost = false;

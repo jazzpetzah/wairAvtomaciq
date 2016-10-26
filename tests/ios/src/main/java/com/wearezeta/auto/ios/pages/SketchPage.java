@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.ios.tools.IOSSimulatorHelpers;
+import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
