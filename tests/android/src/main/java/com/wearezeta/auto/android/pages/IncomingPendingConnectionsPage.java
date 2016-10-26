@@ -111,9 +111,9 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
         return selectVisibleElements(idPendingUserAvatar).size() > 0;
     }
 
-    public void pressLeftConnectButton() throws Exception {
-        getElement(By.xpath(xpathStrUserDetailsLeftButtonByLabel.apply("Connect")),
-                "Connect button is not visible").click();
+    public void pressLeftButtonByLabel(String label) throws Exception {
+        getElement(By.xpath(xpathStrUserDetailsLeftButtonByLabel.apply(label)),
+                label + " button is not visible").click();
     }
 
     public void pressConnectButton() throws Exception {

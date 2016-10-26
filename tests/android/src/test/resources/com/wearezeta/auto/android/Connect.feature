@@ -90,7 +90,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @C388 @regression @rc
+  @C388 @regression
   Scenario Outline: I would not know other person has ignored my connection request
     Given There are 3 users where <Name> is me
     Given Myself is connected to <IntermediateContact>
@@ -165,8 +165,7 @@ Feature: Connect
   @C389 @regression
   Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
     Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Name>
-    Given <Contact1> is connected to <Contact2>
+    Given <Contact1> is connected to <Name>,<Contact2>
     Given <Contact1> has group chat <ChatName> with <Name>, <Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -212,43 +211,39 @@ Feature: Connect
       | user1Name | user2Name | user3Name |
 
   @C391 @regression
-  Scenario Outline: I want to see user has been blocked within the Start UI
+  Scenario Outline: I can unblock/connect to user from group conversation
     Given There are 3 users where <Name> is me
-    # Having the extra user is a workaround for an app bug
-    Given Myself is connected to <Contact1>
-    # if Contact2 doesn't have any contacts, it cannot be found by Myself
-    Given <Contact1> is connected to <Contact2>
+    Given <Contact1> is connected to Myself, <Contact2>
+    Given <Contact1> has group chat <ChatName> with Myself, <Contact2>
+    Given User Myself blocks user <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    When I open Search UI
-    And I wait until <Contact2> exists in backend search results
-    And I type user name "<Contact2>" in search field
-    And I tap on user name found on Search page <Contact2>
+    Then I do not see Conversations list with name <Contact1>
+    Then I do not see Conversations list with name <Contact2>
+    #connect
+    When I tap on conversation name <ChatName>
+    And I tap conversation name from top toolbar
+    #Sometimes here only one user visible (backend issue)
+    And I tap on group chat contact <Contact2>
     Then I see connect to <Contact2> dialog
-    When I click Connect button on connect to page
-    And I press Clear button
+    When I click left Connect button
+    And I click Connect button on connect to page
+    Then I close participant page by UI button
+    When I navigate back from conversation
     Then I see Conversations list with name <Contact2>
-    When I tap on conversation name <Contact2>
-    Then I see that connection is pending
-    When I click ellipsis button
-    And I click Block button
-    And I confirm block on connect to page
-    Then I see Conversations list with conversations
-    And I do not see Conversations list with name <Contact2>
-    And I wait until <Contact2> exists in backend search results
-    When I open Search UI
-    And I type user name "<Contact2>" in search field
-    And I see user <Contact2> in Search result list
-    And I tap on user name found on Search page <Contact2>
-    Then User info should be shown with Unblock button
-    When I click Unblock button
+    #unblock
+    When I tap on conversation name <ChatName>
+    And I tap conversation name from top toolbar
+    And I tap on group chat contact <Contact1>
+    When I click left Blocked button
+    Then I Unblock contact by pressing button
     And I navigate back from conversation
-    Then I see Conversations list with name <Contact2>
+    Then I see Conversations list with name <Contact1>
 
     Examples:
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
+      | Name      | Contact1  | Contact2  | ChatName         |
+      | user1Name | user2Name | user3Name | ContactGroupChat |
 
   @C392 @regression
   Scenario Outline: I can find user in search even he blocked me
@@ -271,7 +266,7 @@ Feature: Connect
       | user1Name | user2Name | user3Name |
 
   @C407 @regression
-  Scenario Outline: (BUG AN-2721) I want to unblock someone from their Profile view
+  Scenario Outline: (BUG AN-2721) I can find blocked user in Search and unblock
     Given There are 4 users where <Name> is me
       # Having the extra user is a workaround for an app bug
     Given Myself is connected to <Contact1>,<Contact2>

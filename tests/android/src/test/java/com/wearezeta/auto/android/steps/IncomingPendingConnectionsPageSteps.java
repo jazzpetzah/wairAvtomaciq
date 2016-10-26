@@ -85,7 +85,7 @@ public class IncomingPendingConnectionsPageSteps {
      * @throws Exception
      * @step. ^I Connect with contact by pressing button$
      */
-    @When("^I Connect with contact by pressing button$")
+    @When("^I (?:Connect with|Unblock) contact by pressing button$")
     public void IConnectWithContactByPressionButton() throws Exception {
         getIncomingPendingConnectionsPage().pressAcceptConnectButton();
     }
@@ -152,14 +152,15 @@ public class IncomingPendingConnectionsPageSteps {
     }
 
     /**
-     * Taps the connect button to send a connection request
+     * Taps the left button by label
      *
+     * @param buttonLabel Connect or Blocked
      * @throws Exception
-     * @step. ^I click left Connect button$
+     * @step. ^I click left (.*) button$
      */
-    @When("^I click left Connect button$")
-    public void IClickLeftConnectButton() throws Exception {
-        getIncomingPendingConnectionsPage().pressLeftConnectButton();
+    @When("^I click left (.*) button$")
+    public void IClickLeftButtonByLabel(String buttonLabel) throws Exception {
+        getIncomingPendingConnectionsPage().pressLeftButtonByLabel(buttonLabel);
     }
 
     /**
