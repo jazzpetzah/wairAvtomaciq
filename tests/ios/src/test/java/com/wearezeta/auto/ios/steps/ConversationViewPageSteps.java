@@ -400,8 +400,6 @@ public class ConversationViewPageSteps {
         previousAssetsContainerState.remember();
     }
 
-    private static final int ASSET_CONTAINER_STATE_CHANGE_TIMEOUT = 10;
-
     /**
      * Verify whether the state of a asset container is changed - especially for ephemeral assets
      *
@@ -417,12 +415,12 @@ public class ConversationViewPageSteps {
         final double minScore = 0.8;
         if (shouldNotChange == null) {
             Assert.assertTrue(String.format("The current asset container state is not different from the expected one after " +
-                            "%s seconds timeout", ASSET_CONTAINER_STATE_CHANGE_TIMEOUT),
-                    previousAssetsContainerState.isChanged(ASSET_CONTAINER_STATE_CHANGE_TIMEOUT, minScore));
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+                    previousAssetsContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT, minScore));
         } else {
             Assert.assertTrue(String.format("The current asset container state is different from the expected one after " +
-                            "%s seconds timeout", ASSET_CONTAINER_STATE_CHANGE_TIMEOUT),
-                    previousAssetsContainerState.isNotChanged(ASSET_CONTAINER_STATE_CHANGE_TIMEOUT, minScore));
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+                    previousAssetsContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT, minScore));
         }
     }
 
