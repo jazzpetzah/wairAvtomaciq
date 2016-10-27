@@ -214,53 +214,8 @@ class IOSSimulator(BaseNodeVerifier):
     def get_timeout(self):
         return IOS_SIM_VERIFICATION_JOB_TIMEOUT
 
-    def _adjust_simulator_size(self, ssh_client, scale_factor):
-        """
-        :param ssh_client:
-        :param scale_factor: 1 to 5, where 1 is 100% and 5 is 25%
-        :return:
-        """
-        simulator_size_setter_script = \
-            """#!/bin/bash
-            /usr/bin/osascript -e "tell application \\"System Events\\"" \\
-                        -e "tell application \\"Simulator\\" to activate" \\
-                        -e "do shell script \\"/bin/sleep 3\\"" \\
-                        -e "tell application \\"System Events\\" to keystroke \\"{}\\" using {{command down}}" \\
-                        -e "end tell"
-            """.format(scale_factor)
-        _, path = tempfile.mkstemp(suffix=".sh")
-        with open(path, 'w') as f:
-            f.write(simulator_size_setter_script)
-        sftp = ssh_client.open_sftp()
-        try:
-            dst_path = '/tmp/simscale.sh'
-            sftp.put(path, dst_path)
-        finally:
-            sftp.close()
-        ssh_client.exec_command('/bin/chmod u+x ' + dst_path)
-        ssh_client.exec_command('/usr/bin/open -a Terminal ' + dst_path)
-
     def _is_verification_passed(self):
-        result = super(IOSSimulator, self)._is_verification_passed()
-        if not result:
-            return False
-        client = paramiko.SSHClient()
-        try:
-            client.load_system_host_keys()
-            client.set_missing_host_key_policy(paramiko.WarningPolicy())
-            client.connect(self._node_hostname, username=self._verification_kwargs['node_user'],
-                           password=self._verification_kwargs['node_password'])
-            simulator_name = self._verification_kwargs['ios_simulator_name']
-
-            if result is True:
-                sys.stderr.write('Adjusting simulator scale...')
-                scale_factor = 4
-                if simulator_name.lower().find('iphone') >= 0 and simulator_name.lower().find('plus') < 0:
-                    scale_factor = 3
-                self._adjust_simulator_size(client, scale_factor)
-            return result
-        finally:
-            client.close()
+        return super(IOSSimulator, self)._is_verification_passed()
 
 
 POWER_CYCLE_SCRIPT = lambda devnum: """
