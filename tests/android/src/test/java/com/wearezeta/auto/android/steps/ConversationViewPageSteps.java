@@ -225,9 +225,9 @@ public class ConversationViewPageSteps {
      *
      * @param durationSeconds
      * @throws Exception
-     * @step. ^I long tap Audio message microphone button (\d+) seconds and remember icon$
+     * @step. ^I long tap Audio message microphone button (\d+) seconds? and remember icon$
      */
-    @When("^I long tap Audio message microphone button (\\d+) seconds and remember icon$")
+    @When("^I long tap Audio message microphone button (\\d+) seconds? and remember icon$")
     public void LongTapAudioMessageCursorAndRememberIcon(int durationSeconds) throws Exception {
         getConversationViewPage().longTapAudioMessageCursorBtnAndRememberIcon(durationSeconds * 1000,
                 audiomessageSlideMicrophoneButtonState);

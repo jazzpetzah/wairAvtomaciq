@@ -99,9 +99,9 @@ public class CallIncomingPageSteps {
      * @param timeoutSeconds     Timeout in seconds
      * @param expectedCallerName User name who calls
      * @throws Exception
-     * @step. ^I wait up to (\d+) seconds for incoming call from (.*)$
+     * @step. ^I wait up to (\d+) seconds? for incoming call from (.*)$
      */
-    @When("^I wait up to (\\d+) seconds for incoming call from (.*)$")
+    @When("^I wait up to (\\d+) seconds? for incoming call from (.*)$")
     public void ISeeIncomingCallingMessageBeforeTimeout(int timeoutSeconds, String expectedCallerName)
             throws Exception {
         expectedCallerName = usrMgr.findUserByNameOrNameAlias(expectedCallerName).getName();
