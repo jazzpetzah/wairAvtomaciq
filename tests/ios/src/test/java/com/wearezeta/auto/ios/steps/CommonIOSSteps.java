@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import java.io.File;
+import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -218,18 +219,32 @@ public class CommonIOSSteps {
     }
 
     private static void prepareSimulator(final Capabilities caps, final List<String> args) throws Exception {
-        if (!IOSSimulatorHelpers.isRunning()) {
-            IOSSimulatorHelpers.start();
-        }
-        if (!caps.is(CAPABILITY_NAME_NO_UNINSTALL)) {
-            IOSSimulatorHelpers.uninstallApp(IOSDistributable.getInstance(
-                    (String) caps.getCapability("app")).getBundleId()
+        int ntry = 0;
+        do {
+            try {
+                if (!IOSSimulatorHelpers.isRunning()) {
+                    IOSSimulatorHelpers.start();
+                }
+                if (!caps.is(CAPABILITY_NAME_NO_UNINSTALL)) {
+                    IOSSimulatorHelpers.uninstallApp(IOSDistributable.getInstance(
+                            (String) caps.getCapability("app")).getBundleId()
+                    );
+                }
+                IOSSimulatorHelpers.installApp(IOSDistributable.getInstance(
+                        (String) caps.getCapability("app")).getAppRoot()
+                );
+                break;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            ntry++;
+        } while (ntry < DRIVER_CREATION_RETRIES_COUNT);
+        if (ntry >= DRIVER_CREATION_RETRIES_COUNT) {
+            throw new IllegalStateException(String.format("Cannot start %s (%s) Simulator on %s after %s retries",
+                    getDeviceName(CommonIOSSteps.class), getPlatformVersion(),
+                    InetAddress.getLocalHost().getHostName(),DRIVER_CREATION_RETRIES_COUNT)
             );
         }
-        IOSSimulatorHelpers.installApp(IOSDistributable.getInstance(
-                (String) caps.getCapability("app")).getAppRoot()
-        );
-
         // if (new DefaultArtifactVersion(getPlatformVersion()).compareTo(new DefaultArtifactVersion("10.0")) < 0) {
         // Workaround for https://github.com/appium/appium/issues/7091
         for (File tmpRoot : createInternalWireTempRoots()) {
