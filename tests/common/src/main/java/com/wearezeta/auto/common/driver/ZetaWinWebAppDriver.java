@@ -25,7 +25,6 @@ import org.openqa.selenium.remote.UnreachableBrowserException;
 
 public class ZetaWinWebAppDriver extends ZetaWebAppDriver {
 
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(ZetaWinWebAppDriver.class
 		.getName());
 	private ExecutorService pool;
