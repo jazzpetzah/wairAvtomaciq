@@ -220,6 +220,7 @@ public class CommonIOSSteps {
 
     private static void prepareSimulator(final Capabilities caps, final List<String> args) throws Exception {
         int ntry = 0;
+        Exception storedException = null;
         do {
             try {
                 if (ntry > 0 || !IOSSimulatorHelpers.isRunning()) {
@@ -236,13 +237,16 @@ public class CommonIOSSteps {
                 break;
             } catch (Exception e) {
                 e.printStackTrace();
+                storedException = e;
             }
             ntry++;
         } while (ntry < DRIVER_CREATION_RETRIES_COUNT);
         if (ntry >= DRIVER_CREATION_RETRIES_COUNT) {
-            throw new IllegalStateException(String.format("Cannot start %s (%s) Simulator on %s after %s retries",
-                    getDeviceName(CommonIOSSteps.class), getPlatformVersion(),
-                    InetAddress.getLocalHost().getHostName(),DRIVER_CREATION_RETRIES_COUNT)
+            throw new IllegalStateException(
+                    String.format("Cannot start %s (%s) Simulator on %s after %s retries",
+                            getDeviceName(CommonIOSSteps.class), getPlatformVersion(),
+                            InetAddress.getLocalHost().getHostName(), DRIVER_CREATION_RETRIES_COUNT),
+                    storedException
             );
         }
         // if (new DefaultArtifactVersion(getPlatformVersion()).compareTo(new DefaultArtifactVersion("10.0")) < 0) {
