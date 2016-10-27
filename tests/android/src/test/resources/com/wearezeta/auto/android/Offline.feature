@@ -37,15 +37,21 @@ Feature: Offline
     Given I see Conversations list with conversations
     And I tap on conversation name <Contact>
     And I enable Airplane mode on the device
+    And I see No Internet bar in <NetworkTimeout> seconds
     When I tap on text input
     And I type the message "<Message>" and send it by cursor Send button
-    Then I see Message status with expected text "Sending failed. Resend" in conversation view
+    Then I see Message status with expected text "<MessageStatusFailed>" in conversation view
     When I tap Add picture button from cursor toolbar
     And I tap Take Photo button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
     And I scroll to the bottom of conversation view
-    Then I see Message status with expected text "Sending failed. Resend" in conversation view
+    Then I see Message status with expected text "<MessageStatusFailed>" in conversation view
+    When I disable Airplane mode on the device
+    And I do not see No Internet bar in <NetworkTimeout> seconds
+    And I type the message "<Message2>" and send it by cursor Send button
+    Then I see Message status with expected text "<MessageStatusFailed>" in conversation view
+    Then I see Message status with expected text "<MessageStatusOK>" in conversation view
 
     Examples:
-      | Name      | Contact   | Message    |
-      | user1Name | user2Name | My message |
+      | Name      | Contact   | Message    | NetworkTimeout | Message2 | MessageStatusFailed    | MessageStatusOK |
+      | user1Name | user2Name | My message | 15             | Yo       | Sending failed. Resend | Sent            |

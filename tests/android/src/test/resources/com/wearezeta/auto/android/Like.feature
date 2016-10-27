@@ -12,13 +12,11 @@ Feature: Like
     And I type the message "<Txt>" and send it by cursor Send button
     And I long tap the Text message "<Txt>" in the conversation view
     And I tap Like button on the message bottom menu
-    # C226091
     Then I see Like description with expected text "<Name>" in conversation view
     And I see Like button in conversation view
     When I remember the state of like button
     And I long tap the Text message "<Txt>" in the conversation view
     And I tap Unlike button on the message bottom menu
-    # C226035
     Then I verify the state of like button item is changed
     And I see Message status with expected text "<MessageStatus>" in conversation view
 
@@ -27,7 +25,7 @@ Feature: Like
       | user1Name | user2Name | Hi  | Delivered     | D1            |
 
   @C226018 @regression @rc
-  Scenario Outline: I can unlike/like text message by tap on like icon
+  Scenario Outline: I can unlike/like text message by tap on like icon which is revealed by tapping on text
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User <Contact> adds new devices <ContactDevice>
@@ -36,14 +34,11 @@ Feature: Like
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     Given I type the message "<Txt>" and send it by cursor Send button
-    # C226018
     When I tap the Text message "<Txt>" in the conversation view
     And I remember the state of like button
     Then I see Like button in conversation view
-    # C226020
     When I tap Like button in conversation view
     Then I verify the state of like button item is changed
-    # C226018
     When I remember the state of like button
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed
@@ -86,14 +81,11 @@ Feature: Like
     Given I tap on conversation name <Contact>
     When I type the message "<Message>" and send it by cursor Send button
     And User <Contact> likes the recent message from user Myself via device <ContactDevice>
-    # C226040
     Then I see Like description with expected text "<Contact>" in conversation view
     And I see Like button in conversation view
     When I remember the state of like button
     And I tap Like button in conversation view
-    # C226033
     Then I verify the state of like button item is changed
-    # C226043
     And I see Like description with expected text "<Name>, <Contact>" in conversation view
 
     Examples:
@@ -109,7 +101,6 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given User Myself adds new device <Device>
     Given I see Conversations list with conversations
-    # C226045
     When I tap on conversation name <Contact1>
     And I type the message "<Message>" and send it by cursor Send button
     And I tap the Text message "<Message>" in the conversation view
@@ -117,10 +108,8 @@ Feature: Like
     Then I see Like description with expected text "<Name>" in conversation view
     When User Myself edits the recent message to "<NewMessage>" from user <Contact1> via device <Device>
     Then I see the message "<NewMessage>" in the conversation view
-    # TODO : remove it once msg meta show automatic
-    When I tap the Text message "<NewMessage>" in the conversation view
-    Then I see Message status with expected text "<MessageStatus>" in conversation view
-    # C226048
+    And I tap the Text message "<NewMessage>" in the conversation view
+    And I see Message status with expected text "<MessageStatus>" in conversation view
     When I remember the state of like button
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed
@@ -216,13 +205,10 @@ Feature: Like
     And User <Contact2> likes the recent message from group conversation <Group> via device <D2>
     And User <Contact3> likes the recent message from group conversation <Group> via device <D3>
     And User <Contact4> likes the recent message from group conversation <Group> via device <D4>
-    # C226041
     Then I see Like description with expected text "4 people" in conversation view
-    # С232581
     And I see First like avatar in conversation view
     And I see Second like avatar in conversation view
     When I tap First like avatar in conversation view
-    # C226042
     Then I see user <Contact1> in Liker list
 
     Examples:
@@ -344,9 +330,6 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
-    # TODO: Remove following 3 lines once the message present automatic when receive a message.
-    And I scroll to the bottom of conversation view
-    And I tap Audio Message container in the conversation view
     And I scroll to the bottom of conversation view
     And I remember the state of like button
     And I tap Like button in conversation view
@@ -366,9 +349,6 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
-    # TODO: Remove following 3 lines once the message present automatic when receive a message.
-    And I scroll to the bottom of conversation view
-    And I tap Video Message container in the conversation view
     And I scroll to the bottom of conversation view
     And I remember the state of like button
     And I tap Like button in conversation view
