@@ -13,7 +13,6 @@ import com.wearezeta.auto.win.pages.webapp.ContactListPage;
 import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
-import com.wearezeta.auto.web.steps.StartUIPageSteps;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
