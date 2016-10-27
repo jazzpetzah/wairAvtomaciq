@@ -15,21 +15,21 @@ Feature: Ephemeral Message
     And I type the message "<Message>" and send it by cursor Send button
     Then I see the message "<Message>" in the conversation view
     And I see Message status with expected text "<EphemeralStatus>" in conversation view
-    When I wait for 5 seconds
+    When I wait for <EphemeralTimeout>
     Then I see Message status with expected text "Sent" in conversation view
     And I do not see the message "<Message>" in the conversation view
     And User Myself sees the recent message from user <Contact> via device <Mydevice> is not changed in 5 seconds
     When I tap Ephemeral button from cursor toolbar
     And I set timeout to Off on Extended cursor ephemeral overlay
     And I type the message "<Message2>" and send it by cursor Send button
-    And I wait for 5 seconds
+    And I wait for <EphemeralTimeout>
     Then I see Message status with expected text "Sent" in conversation view
     And I see the message "<Message2>" in the conversation view
     And User Myself sees the recent message from user <Contact> via device <Mydevice> is changed in 15 seconds
 
     Examples:
       | Name      | Contact   | EphemeralTimeout | Message | EphemeralStatus | Message2 | Mydevice |
-      | user1Name | user2Name | 5 seconds        | test5s  | left            | ok       | d1       |
+      | user1Name | user2Name | 15 seconds       | test5s  | left            | ok       | d1       |
 
   @C261705 @staging
   Scenario Outline: Verify ephemeral messages are turned off in a group chat
@@ -138,32 +138,32 @@ Feature: Ephemeral Message
       | user1Name | user2Name | 5 seconds       | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 | Sending       | YOU PINGED | 1.00MB   |
 
   @C261715 @staging
-  Scenario Outline: Verify I can receive ephemeral text message and which is deleted after timeout
+  Scenario Outline: Verify I can receive ephemeral text message which is deleted after timeout and timer starts once I open conversation
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User <Contact> adds new devices <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    Given I tap on conversation name <Contact>
     When User <Contact> switches user Myself to ephemeral mode via device <ContactDevice> with <EphemeralTimeout1> seconds timeout
     And User <Contact> sends encrypted message "<Message1>" to user Myself
-    # Wait for the message to be deliveredÎ
-    And I wait for 3 seconds
+    And I wait for 8 seconds
+    And I tap on conversation name <Contact>
     Then I see the message "<Message1>" in the conversation view
-    And I wait for 5 seconds
+    And I see Message status with expected text "<EphemeralStatus>" in conversation view
+    And I wait for <EphemeralTimeout1> seconds
     And I do not see the message "<Message1>" in the conversation view
     When User <Contact> switches user Myself to ephemeral mode via device <ContactDevice> with <EphemeralTimeout2> seconds timeout
     And User <Contact> sends encrypted message "<Message2>" to user Myself
     # Wait for the message to be delivered
     And I wait for 3 seconds
     Then I see the message "<Message2>" in the conversation view
-    And I wait for 15 seconds
+    And I wait for <EphemeralTimeout2> seconds
     And I do not see the message "<Message2>" in the conversation view
 
     Examples:
-      | Name      | Contact   | ContactDevice | Message1 | Message2 | EphemeralTimeout1 | EphemeralTimeout2 |
-      | user1Name | user2Name | d1            | y1       | y2       | 5                 | 15                |
+      | Name      | Contact   | ContactDevice | Message1 | Message2 | EphemeralTimeout1 | EphemeralTimeout2 | EphemeralStatus |
+      | user1Name | user2Name | d1            | y1       | y2       | 15                | 5                 | left            |
 
   @C261710 @staging
   Scenario Outline: Verify the message is deleted on the sender side when it's read on the receiver side
@@ -251,11 +251,97 @@ Feature: Ephemeral Message
     And I wait for 5 seconds
     And User <Contact> sends encrypted message "<Message2>" to user Myself
     And I disable Airplane mode on the device
+    And I do not see No Internet bar in <NetworkTimeout> seconds
     Then I see the message "<Message1>" in the conversation view
-    And I see the message "<Message2>" in the conversation view
     When I wait for <EphemeralTimeout>
     Then I do not see any text message in the conversation view
 
     Examples:
       | Name      | Contact   | EphemeralTimeout | NetworkTimeout | Message1 | Message2 | ContactDevice |
-      | user1Name | user2Name | 5 seconds        | 15             | YO1      | YO2      | d1            |
+      | user1Name | user2Name | 15 seconds       | 15             | YO1      | YO2      | d1            |
+
+  @C262550 @staging
+  Scenario Outline: (Not implemented) Verify I can delete unsent ephemera message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    When I tap Ephemeral button from cursor toolbar
+    And I set timeout to <EphemeralTimeout> on Extended cursor ephemeral overlay
+    And I enable Airplane mode on the device
+    And I see No Internet bar in <NetworkTimeout> seconds
+    And I type the message "<Message>" and send it by cursor Send button
+    And I see Message status with expected text "<MessageStatus>" in conversation view
+    And I long tap the Text message "<Message>" in the conversation view
+    And I tap Delete only for me button on the message bottom menu
+    And I tap Delete button on the alert
+    Then I do not see the message "<Message>" in the conversation view
+
+    Examples:
+      | Name      | Contact   | Message | NetworkTimeout | MessageStatus          | EphemeralTimeout |
+      | user1Name | user2Name | Yo      | 15             | Sending failed. Resend | 5 seconds        |
+
+  @C261724 @staging
+  Scenario Outline: Verify receiving all types of ephemeral messages
+    Given There is 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds new devices <ContactDevice>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
+    Given User <Contact> switches user Myself to ephemeral mode via device <ContactDevice> with <EphemeralTimeout> seconds timeout
+    # Ping
+    When User <Contact> securely pings conversation Myself
+    And I wait for <SyncTimeout> seconds
+    And I see Ping message "<Contact> PINGED" in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I do not see Ping message "<Contact> PINGED" in the conversation view
+    # Video
+    When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <ContactDevice> to user Myself
+    And I wait for <SyncTimeout> seconds
+    And I see Video Message container in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I do not see Video Message container in the conversation view
+    # Picture
+    When User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    And I wait for <SyncTimeout> seconds
+    And I see Image container in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I do not see Image container in the conversation view
+    # Audio
+    When <Contact> sends local file named "<AudioFileName>" and MIME type "<AudioMIMEType>" via device <ContactDevice> to user Myself
+    And I wait for <SyncTimeout> seconds
+    And I see Audio Message container in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I do not see Audio Message container in the conversation view
+    # Location
+    When User <Contact> shares his location to user Myself via device <ContactDevice>
+    And I wait for <SyncTimeout> seconds
+    And I see Share Location container in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I do not see Share Location container in the conversation view
+    # Link Preview
+    When User <Contact> send encrypted message "<URL>" to user Myself
+    And I wait for <SyncTimeout> seconds
+    And I see Link Preview container in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I do not see Link Preview container in the conversation view
+    # Soundcloud
+    When User <Contact> send encrypted message "<SoundCloud>" to user Myself
+    And I wait for <SyncTimeout> seconds
+    And I see Soundcloud container in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I do not see Soundcloud container in the conversation view
+    # Youtube
+    When User <Contact> send encrypted message "<Youtube>" to user Myself
+    And I wait for <SyncTimeout> seconds
+    And I see Youtube container in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I do not see Youtube container in the conversation view
+
+    Examples:
+      | Name      | Contact   | ContactDevice | EphemeralTimeout | FileName    | MIMEType  | SyncTimeout | Picture     | AudioFileName | AudioMIMEType | URL                     | SoundCloud                                       | Youtube                                     |
+      | user1Name | user2Name | d1            | 5                | testing.mp4 | video/mp4 | 3           | testing.jpg | test.m4a      | audio/mp4     | http://www.facebook.com | https://soundcloud.com/sodab/256-ra-robag-wruhme | https://www.youtube.com/watch?v=wTcNtgA6gHs |

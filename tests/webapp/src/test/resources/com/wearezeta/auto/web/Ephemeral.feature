@@ -339,6 +339,35 @@ Feature: Ephemeral
       | Login      | Password      | Name      | Contact   | File        | Size | Time | TimeLong  | TimeShortUnit |
       | user1Email | user1Password | user1Name | user2Name | C123938.txt | 5MB  | 5    | 5 seconds | s             |
 
+  @C262135 @ephemeral @staging
+  Scenario Outline: Verify that missed call has stayed after receiver saw it
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given <Contact> starts instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    When I open conversation with <Contact>
+    #Contact calls me
+    When User <Contact> switches user Myself to ephemeral mode via device Device1 with <TimeLong> timeout
+    And Contact <Contact> sends message "<Message1>" via device Device1 to user Myself
+    And <Contact> calls me
+    And I wait for 2 seconds
+    And <Contact> stops calling me
+    And Contact <Contact> sends message "<Message1>" via device Device1 to user Myself
+    And I see 4 messages in conversation
+    And I wait for 10 seconds
+    Then I do not see text message "<Message1>"
+    And I do not see text message "<Message2>"
+    Then I see <ActionMessage> action in conversation
+    And I see 2 messages in conversation
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | Message1 | Message2 | TimeLong  | CallBackend | ActionMessage |
+      | user1Email | user1Password | user1Name | user2Name | message1 | message2 | 5 seconds | zcall       | called        |
+
   @C261726 @ephemeral @staging
   Scenario Outline: Verify ephemeral messages are not sent to my other devices
     Given There are 2 users where <Name> is me
