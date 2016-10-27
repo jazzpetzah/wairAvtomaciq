@@ -772,7 +772,8 @@ Feature: People View
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
-    Then I see 0 conversation entries
+    Then I see 0 default messages in the conversation view
+    And I see 0 photos in the conversation view
 
     Examples:
       | Name      | Contact1  | Image       |
@@ -800,8 +801,9 @@ Feature: People View
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
-    Then I see 0 conversation entries
-
+    Then I see 0 default messages in the conversation view
+    And I see 0 photos in the conversation view
+    
     Examples:
       | Name      | Contact1  | Image       |
       | user1Name | user2Name | testing.jpg |
