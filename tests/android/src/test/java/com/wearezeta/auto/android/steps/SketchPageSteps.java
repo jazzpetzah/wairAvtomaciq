@@ -44,7 +44,7 @@ public class SketchPageSteps {
     }
 
     /**
-     * Tapes the send button from the sketch page
+     * Tap the send button from the sketch page
      *
      * @throws Exception
      * @step. ^I send my sketch$

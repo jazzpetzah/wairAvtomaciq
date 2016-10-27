@@ -429,7 +429,7 @@ public class ConversationsListPageSteps {
     }
 
     /**
-     * Tapes Delete on the delete confirmation alert
+     * Tap Delete on the delete confirmation alert
      *
      * @throws Exception
      * @step. ^I tap DELETE on the confirm alert$
@@ -440,7 +440,7 @@ public class ConversationsListPageSteps {
     }
 
     /**
-     * Tapes the leave as well during delete checkbox
+     * Tap the leave as well during delete checkbox
      *
      * @throws Exception
      * @step. ^I tap the Leave check box$

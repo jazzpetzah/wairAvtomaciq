@@ -29,7 +29,7 @@ public class RegistrationSteps {
     public Future<String> activationMessage;
 
     /**
-     * Tapes the camera button to bring up the camera app
+     * Tap the camera button to bring up the camera app
      *
      * @throws Exception
      * @step. ^I tap Picture button$

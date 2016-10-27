@@ -362,7 +362,7 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Tapes the android back button
+     * Tap the android back button
      *
      * @throws Exception
      * @step. ^I tap [Bb]ack button$
@@ -373,7 +373,7 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Tapes the android back button X times
+     * Tap the android back button X times
      *
      * @param times how many times to press
      * @throws Exception

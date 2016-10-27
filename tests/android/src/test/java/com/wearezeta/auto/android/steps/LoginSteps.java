@@ -153,7 +153,7 @@ public class LoginSteps {
     }
 
     /**
-     * Tapes the Log in Button underneath the email and password fields
+     * Tap the Log in Button underneath the email and password fields
      *
      * @throws Exception
      * @step. ^I tap Log in button$

@@ -89,7 +89,7 @@ public class SearchPageSteps {
     }
 
     /**
-     * Tapes the close button in the Search page
+     * Tap the close button in the Search page
      *
      * @throws Exception
      * @step. ^I tap Clear button$

@@ -93,7 +93,7 @@ public class OtherUserPersonalInfoPageSteps {
     }
 
     /**
-     * Tapes the "add people to conversation" button from another user's
+     * Tap the "add people to conversation" button from another user's
      * profile
      *
      * @throws Exception
@@ -245,7 +245,7 @@ public class OtherUserPersonalInfoPageSteps {
     }
 
     /**
-     * Tapes the ellipses ("...") on the right hand side of the other user's
+     * Tap the ellipses ("...") on the right hand side of the other user's
      * profile page -unclear
      *
      * @throws Exception
