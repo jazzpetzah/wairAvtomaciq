@@ -222,7 +222,7 @@ public class CommonIOSSteps {
         int ntry = 0;
         do {
             try {
-                if (!IOSSimulatorHelpers.isRunning()) {
+                if (ntry > 0 || !IOSSimulatorHelpers.isRunning()) {
                     IOSSimulatorHelpers.start();
                 }
                 if (!caps.is(CAPABILITY_NAME_NO_UNINSTALL)) {
