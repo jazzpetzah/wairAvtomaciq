@@ -313,7 +313,7 @@ Feature: Ephemeral
 
     Examples:
       | Login1     | Password      | Name      | Contact   | Time | TimeLong   | TimeShortUnit | PING       | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile | TypeFile |
-      | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds  | s             | you pinged | userpicture_landscape.jpg | C123938.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    | ZIP      |
+      | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds  | s             | you pinged | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    | ZIP      |
 
   @C310631 @ephemeral @regression
   Scenario Outline: Verify sender can not download asset while it is obfuscated
@@ -337,7 +337,7 @@ Feature: Ephemeral
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size | Time | TimeLong  | TimeShortUnit |
-      | user1Email | user1Password | user1Name | user2Name | C123938.txt | 5MB  | 5    | 5 seconds | s             |
+      | user1Email | user1Password | user1Name | user2Name | C310631.txt | 5MB  | 5    | 5 seconds | s             |
 
   @C262135 @ephemeral @staging
   Scenario Outline: Verify that missed call has stayed after receiver saw it
