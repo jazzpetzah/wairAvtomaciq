@@ -339,7 +339,7 @@ Feature: Ephemeral
       | Login      | Password      | Name      | Contact   | File        | Size | Time | TimeLong  | TimeShortUnit |
       | user1Email | user1Password | user1Name | user2Name | C123938.txt | 5MB  | 5    | 5 seconds | s             |
 
-  @C262135 @ephemeral @staging @torun
+  @C262135 @ephemeral @staging
   Scenario Outline: Verify that missed call has stayed after receiver saw it
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -358,7 +358,7 @@ Feature: Ephemeral
     And <Contact> stops calling me
     And Contact <Contact> sends message "<Message1>" via device Device1 to user Myself
     And I see 4 messages in conversation
-    And I wait for 20 seconds
+    And I wait for 10 seconds
     Then I do not see text message "<Message1>"
     And I do not see text message "<Message2>"
     Then I see <ActionMessage> action in conversation
