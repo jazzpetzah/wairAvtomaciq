@@ -64,8 +64,8 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timeout | EphemeralTimeLabel |
       | user1Name | user2Name | 15      | seconds            |
 
-  @C264665 @staging @fastLogin
-  Scenario Outline: Verify sending ephemeral message - online receiver (positive case)
+  @C259597 @staging @fastLogin
+  Scenario Outline: Verify the message is deleted on the sender side when it's read on the receiver side
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
     Given User <Contact> adds new device <DeviceName>
