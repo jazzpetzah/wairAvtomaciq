@@ -30,6 +30,7 @@ Feature: Ephemeral
     And I see 2 messages in conversation
     And I verify the database is not containing the message <Message> from <Name> in active conversation
     And I see 1 message in database from <Name> in active conversation
+    And I see localytics event <Event> with attributes <Attributes>
     When I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
@@ -55,7 +56,6 @@ Feature: Ephemeral
     Then I do not see text message <Message>
     And I see 1 messages in conversation
     And I see 0 message in database from <Name> in active conversation
-    And I see localytics event <Event> with attributes <Attributes>
 
     Examples:
       | Login1     | Password      | Name      | Contact   | Login2     | Wait | Time | TimeLong   | TimeShortUnit | Message | Event                        | Attributes                                                                                                                  |
