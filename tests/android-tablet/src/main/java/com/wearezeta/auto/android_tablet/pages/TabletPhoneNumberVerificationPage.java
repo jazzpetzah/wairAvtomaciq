@@ -15,7 +15,7 @@ public class TabletPhoneNumberVerificationPage extends AndroidTabletPage {
 	}
 
 	public void tapCommitButton() throws Exception {
-        getPhoneNumberVerificationPage().clickConfirm();
+        getPhoneNumberVerificationPage().tapConfirm();
 	}
 
     public void inputConfirmationCode(String code) throws Exception {

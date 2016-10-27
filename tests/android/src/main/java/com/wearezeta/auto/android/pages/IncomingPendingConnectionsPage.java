@@ -48,7 +48,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
         getElement(OtherUserPersonalInfoPage.xpathRightActionButton).click();
     }
 
-    public void clickBlockBtn() throws Exception {
+    public void tapBlockBtn() throws Exception {
         final By blockButtonLocator = By.xpath(xpathStrConnectMenuItemByText.apply("Block"));
         final WebElement blockButton = getElement(blockButtonLocator, "Block button is not visible");
         if (!DriverUtils.waitUntilElementClickable(getDriver(), blockButton)) {
@@ -130,7 +130,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
         return Integer.parseInt(getElement(idConnectToCharCounter).getText());
     }
 
-    public void clickCloseButton() throws Exception {
+    public void tapCloseButton() throws Exception {
         getElement(xpathCloseButton).click();
     }
 

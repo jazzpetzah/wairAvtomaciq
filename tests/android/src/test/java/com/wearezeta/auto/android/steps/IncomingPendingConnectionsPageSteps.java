@@ -183,7 +183,7 @@ public class IncomingPendingConnectionsPageSteps {
      */
     @When("^I tap Block button$")
     public void ITapBlockButton() throws Exception {
-        getIncomingPendingConnectionsPage().clickBlockBtn();
+        getIncomingPendingConnectionsPage().tapBlockBtn();
     }
 
     /**
@@ -216,6 +216,6 @@ public class IncomingPendingConnectionsPageSteps {
      */
     @Then("I close Connect To dialog")
     public void CloseConnectToDialog() throws Exception {
-        getIncomingPendingConnectionsPage().clickCloseButton();
+        getIncomingPendingConnectionsPage().tapCloseButton();
     }
 }

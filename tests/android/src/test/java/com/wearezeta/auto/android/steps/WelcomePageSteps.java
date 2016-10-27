@@ -72,12 +72,12 @@ public class WelcomePageSteps {
      */
     @When("^I input a new phone number for user (.*)$")
     public void IInputANewPhoneNumber(String name) throws Exception {
-        getWelcomePage().clickAreaCodeSelector();
+        getWelcomePage().tapAreaCodeSelector();
         getAreaCodePage().selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
 
         this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
         getWelcomePage().inputPhoneNumber(this.userToRegister.getPhoneNumber());
-        getWelcomePage().clickConfirm();
+        getWelcomePage().tapConfirm();
     }
 
     /**
@@ -92,7 +92,7 @@ public class WelcomePageSteps {
         final PhoneNumber phoneNumber = this.userToRegister.getPhoneNumber();
         final String verificationCode = BackendAPIWrappers.getActivationCodeByPhoneNumber(phoneNumber);
         getVerificationPage().inputVerificationCode(verificationCode);
-        getVerificationPage().clickConfirm();
+        getVerificationPage().tapConfirm();
     }
 
     /**
@@ -105,7 +105,7 @@ public class WelcomePageSteps {
     public void IInputMyName() throws Exception {
         final String name = this.userToRegister.getName();
         getAddNamePage().inputName(name);
-        getAddNamePage().clickConfirm();
+        getAddNamePage().tapConfirm();
     }
 
     /**
@@ -118,7 +118,7 @@ public class WelcomePageSteps {
     public void IInputRandomActivationCode() throws Exception {
         final String randomVerificationCode = CommonUtils.generateRandomNumericString(6);
         getVerificationPage().inputVerificationCode(randomVerificationCode);
-        getVerificationPage().clickConfirm();
+        getVerificationPage().tapConfirm();
     }
 
     /**

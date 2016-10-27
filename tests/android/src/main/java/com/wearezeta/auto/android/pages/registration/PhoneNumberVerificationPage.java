@@ -49,7 +49,7 @@ public class PhoneNumberVerificationPage extends AndroidPage {
         }
     }
 
-    public void clickConfirm() throws Exception {
+    public void tapConfirm() throws Exception {
         getElement(idConfirmButton).click();
     }
 
