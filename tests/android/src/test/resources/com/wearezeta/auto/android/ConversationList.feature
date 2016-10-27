@@ -14,7 +14,7 @@ Feature: Conversations list
     And I select "Log out" settings menu item
     And I confirm sign out
     And I sign in using my email
-    # Workaround, it should not see First time overlay
+    #AN-4605 Workaround: I should not see First time overlay
     Then I accept First Time overlay as soon as it is visible
     And I see Conversations list
     And I do not see contact hint banner
