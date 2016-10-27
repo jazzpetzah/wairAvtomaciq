@@ -244,7 +244,7 @@ Feature: Conversations list
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    #When "Group <GroupChatName> gets silenced for user <Name>" before login >> we getting force email login screen
+    #When If we silence contact or group to myself before login >> we getting force email login screen
     Given Group <GroupChatName> gets silenced for user <Name>
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
