@@ -20,8 +20,8 @@ Feature: Registration
     And I see localytics event <Event> with attributes <Attributes>
 
     Examples: 
-      | Email      | Password      | Name      | Event                  | Attributes                  |
-      | user1Email | user1Password | user1Name | registration.succeeded | {\\"content\\":\\"email\\"} |
+      | Email      | Password      | Name      | Event                  | Attributes               |
+      | user1Email | user1Password | user1Name | registration.succeeded | {\"content\":\"email\"}" |
 
   @C1822 @regression @useSpecialEmail
   Scenario Outline: Verify I can accept personal invitation
