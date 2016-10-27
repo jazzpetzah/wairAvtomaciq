@@ -89,26 +89,26 @@ public class SearchPageSteps {
     }
 
     /**
-     * Presses the close button in the Search page
+     * Tapes the close button in the Search page
      *
      * @throws Exception
-     * @step. ^I press Clear button$
+     * @step. ^I tap Clear button$
      */
-    @When("^I press Clear button$")
-    public void IPressClearButton() throws Exception {
+    @When("^I tap Clear button$")
+    public void ITapClearButton() throws Exception {
         getSearchListPage().tapClearButton();
     }
 
     /**
-     * Random to clear search result by click clear button or click navigate back button
+     * Random to clear search result by tap clear button or tap navigate back button
      *
      * @throws Exception
-     * @step. ^I clear search result by press clear button or back button$
+     * @step. ^I clear search result by tap clear button or back button$
      */
     @When("^I clear search result by tap clear button or back button$")
-    public void IClearSearchResultByPressClearButtonOrPressBackButton() throws Exception {
+    public void IClearSearchResultByTapClearButtonOrTapBackButton() throws Exception {
         if (random.nextInt(100) % 2 == 0) {
-            IPressClearButton();
+            ITapClearButton();
         } else {
             pagesCollection.getCommonPage().navigateBack();
         }
@@ -240,10 +240,10 @@ public class SearchPageSteps {
      * Clicks on the Add to conversation button
      *
      * @throws Exception
-     * @step. ^I click on (?:Add to|Create) to conversation button$
+     * @step. ^I tap on (?:Add to|Create) to conversation button$
      */
-    @When("^I click on (?:Add to|Create) conversation button$")
-    public void IClickOnAddToConversationButton() throws Exception {
+    @When("^I tap on (?:Add to|Create) conversation button$")
+    public void ITapOnAddToConversationButton() throws Exception {
         getSearchListPage().tapPickUserConfirmationButton();
     }
 

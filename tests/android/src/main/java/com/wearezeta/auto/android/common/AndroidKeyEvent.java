@@ -726,7 +726,7 @@ public class AndroidKeyEvent {
      * Key code constant: Volume Mute key.
      * Mutes the speaker, unlike {@link #KEYCODE_MUTE}.
      * This key should normally be implemented as a toggle such that the first press
-     * mutes the speaker and the second press restores the original volume.
+     * mutes the speaker and the second tap restores the original volume.
      */
     public static final int KEYCODE_VOLUME_MUTE = 164;
     /**

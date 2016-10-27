@@ -43,7 +43,7 @@ Feature: Emoji
     # Disable at first
     And I select "Options" settings menu item
     And I select "Send button" settings menu item
-    And I press Back button 2 times
+    And I tap Back button 2 times
     And I see Conversations list
     And I tap on conversation name <Contact>
     And I tap Switch to emoji button from cursor toolbar

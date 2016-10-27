@@ -31,8 +31,8 @@ Feature: People View
     Given I see Conversations list with conversations
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
-    And I press options menu button
-    And I press LEAVE conversation menu button
+    And I tap options menu button
+    And I tap LEAVE conversation menu button
     And I confirm leaving
     Then I see Conversations list
 
@@ -53,7 +53,7 @@ Feature: People View
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap on group chat contact <Contact2>
-    And I click Remove
+    And I tap Remove
     And I confirm remove
     Then I do not see <Contact2> on group chat info page
     When I close participants page by UI button
@@ -104,7 +104,7 @@ Feature: People View
     And I tap conversation name from top toolbar
     And I rename group conversation to <NewConversationName>
     # Clicking X button to close participants view crashes the app
-    And I press back button
+    And I tap back button
     Then I see a message informing me that I renamed the conversation to <NewConversationName>
     And I navigate back from conversation
     And I see Conversations list with name <NewConversationName>
@@ -123,19 +123,19 @@ Feature: People View
     When I tap on conversation name <Contact>
     And I tap conversation name from top toolbar
     And I see <Contact> user profile page
-    And I press options menu button
+    And I tap options menu button
     Then I see correct 1:1 options menu
-    When I press back button
+    When I tap back button
     Then I see participant page
     And I do not see 1:1 options menu
-    When I press options menu button
+    When I tap options menu button
     And I swipe down
     Then I see participant page
     And I do not see 1:1 options menu
-    When I press options menu button
+    When I tap options menu button
     And I see correct 1:1 options menu
     When I tap on center of screen
-    And I press options menu button
+    And I tap options menu button
     And I swipe left
     And I swipe right
     And I swipe up
@@ -157,11 +157,11 @@ Feature: People View
     And I tap conversation name from top toolbar
     And I tap on group chat contact <Contact2>
     Then I see user name <Contact2> on non connected user page
-    When I click Connect button on non connected user page
-    And I click Connect button on connect to page
+    When I tap Connect button on non connected user page
+    And I tap Connect button on connect to page
     And I tap on group chat contact <Contact2>
     Then I see Pending button on pending user page
-    When I click Pending button on pending user page
+    When I tap Pending button on pending user page
     Then I see Pending button on pending user page
 
     Examples:
@@ -188,7 +188,7 @@ Feature: People View
     And I see conversation view
     When I tap conversation name from top toolbar
     Then I see participants page
-    When I press back button
+    When I tap back button
     Then I do not see participants page
     And I see conversation view
     When I tap conversation name from top toolbar
@@ -215,7 +215,7 @@ Feature: People View
     And I tap conversation name from top toolbar
     And I tap on group chat contact <Contact1>
     Then I see <Contact1> user profile page
-    And I click Open Conversation button on connected user page
+    And I tap Open Conversation button on connected user page
     When I tap conversation name from top toolbar
     Then I see <Contact1> user name and email
     When I close participants page by UI button

@@ -17,9 +17,9 @@ Feature: Connect
     And I see Search page
     And I tap on user name found on Search page <Contact>
     Then I see connect to <Contact> dialog
-    When I click Connect button on connect to page
+    When I tap Connect button on connect to page
     Then I see Search page
-    When I press Clear button
+    When I tap Clear button
     Then I see Conversations list with name <Contact>
 
     Examples:
@@ -38,7 +38,7 @@ Feature: Connect
     When I wait for 2 seconds
     Then I see Conversations list with name <WaitingMess2>
     When I tap on conversation name <WaitingMess2>
-    And I press Ignore connect button
+    And I tap Ignore connect button
     And I navigate back from connect page
     Then I see Conversations list with name <WaitingMess1>
     When I tap on conversation name <WaitingMess1>
@@ -65,7 +65,7 @@ Feature: Connect
     When I open Search UI
     And I type user name "<Contact1>" in search field
     And I tap on user name found on Search page <Contact1>
-    And I press Ignore connect button
+    And I tap Ignore connect button
     And I navigate back from connect page
     Then I see Conversations list with name <WaitingMess1>
     When I open Search UI
@@ -90,7 +90,7 @@ Feature: Connect
     Given I see Conversations list with conversations
     Then I see Conversations list with name <WaitingMess>
     When I tap on conversation name <WaitingMess>
-    And I press Ignore connect button
+    And I tap Ignore connect button
     Then I do not see Conversations list with name <WaitingMess>
     And I wait until <Contact> exists in backend search results
     When I open Search UI
@@ -118,9 +118,9 @@ Feature: Connect
     And I type user name "<Contact>" in search field
     And I tap on user name found on Search page <Contact>
     Then I see connect to <Contact> dialog
-    When I click Connect button on connect to page
+    When I tap Connect button on connect to page
     And <Contact> ignore all requests
-    And I press Clear button
+    And I tap Clear button
     And I tap on conversation name <Contact>
     Then I see that connection is pending
     And I do not see cursor toolbar
@@ -145,7 +145,7 @@ Feature: Connect
     When I tap on conversation name <WaitingMess>
     Then I see connect to <Contact> dialog
     And I see Accept and Ignore buttons
-    And I press Ignore connect button
+    And I tap Ignore connect button
 
     Examples:
       | Name      | Contact   | WaitingMess      |
@@ -164,11 +164,11 @@ Feature: Connect
     And I type user name "<Contact>" in search field
     And I tap on user name found on Search page <Contact>
     Then I see connect to <Contact> dialog
-    When I click Connect button on connect to page
+    When I tap Connect button on connect to page
     And I wait for 2 seconds
     And <Contact> accept all requests
     And I wait for 2 seconds
-    And I press Clear button
+    And I tap Clear button
     Then I see Conversations list with name <Contact>
     When I tap on conversation name <Contact>
     And I see conversation view
@@ -190,8 +190,8 @@ Feature: Connect
     #Sometimes here only one user visible (backend issue)
     And I tap on group chat contact <Contact2>
     Then I see connect to <Contact2> dialog
-    When I click left Connect button
-    And I click Connect button on connect to page
+    When I tap left Connect button
+    And I tap Connect button on connect to page
     Then I close participant page by UI button
     When I navigate back from conversation
     Then I see Conversations list with name <Contact2>
@@ -210,8 +210,8 @@ Feature: Connect
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
-    And I press options menu button
-    And I press BLOCK conversation menu button
+    And I tap options menu button
+    And I tap BLOCK conversation menu button
     And I confirm block
     Then I do not see Conversations list with name <Contact1>
     And I wait until <Contact1> exists in backend search results
@@ -242,8 +242,8 @@ Feature: Connect
     #Sometimes here only one user visible (backend issue)
     And I tap on group chat contact <Contact2>
     Then I see connect to <Contact2> dialog
-    When I click left Connect button
-    And I click Connect button on connect to page
+    When I tap left Connect button
+    And I tap Connect button on connect to page
     Then I close participant page by UI button
     When I navigate back from conversation
     Then I see Conversations list with name <Contact2>
@@ -251,7 +251,7 @@ Feature: Connect
     When I tap on conversation name <ChatName>
     And I tap conversation name from top toolbar
     And I tap on group chat contact <Contact1>
-    When I click left Blocked button
+    When I tap left Blocked button
     Then I Unblock contact by pressing button
     And I navigate back from conversation
     Then I see Conversations list with name <Contact1>
@@ -297,7 +297,7 @@ Feature: Connect
     And I see user <Contact1> in Search result list
     And I tap on user name found on Search page <Contact1>
     Then User info should be shown with Unblock button
-    When I click Unblock button
+    When I tap Unblock button
     Then I see conversation view
     When I navigate back from conversation
     Then I see Conversations list with name <Contact1>
@@ -320,7 +320,7 @@ Feature: Connect
     And I type user name "<Contact>" in search field
     And I tap on user name found on Search page <Contact>
     Then I see connect to <Contact> dialog
-    When I click Connect button on connect to page
+    When I tap Connect button on connect to page
     Then I see Search page
     And I see user <Contact> in Search result list
     When I tap on user name found on Search page <Contact>
@@ -360,10 +360,10 @@ Feature: Connect
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact2>
     And I tap conversation name from top toolbar
-    And I press create group button
+    And I tap create group button
     And I type user name "<Contact1>" in search field
     And I tap on user name found on Search page <Contact1>
-    And I click on Add to conversation button
+    And I tap on Add to conversation button
     Then I see Unable to Create Group Conversation overlay
     When I accept Unable to Create Group Conversation overlay
     Then I see Conversations list with conversations

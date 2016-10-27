@@ -8,7 +8,7 @@ Feature: Settings
     Given I see Conversations list with no conversations
     When I tap conversations list settings button
     Then I see settings page
-    When I press back button
+    When I tap back button
     Then I see Conversations list with no conversations
 
     Examples:
@@ -41,8 +41,8 @@ Feature: Settings
     And I select "Picture" settings menu item
     And I tap Gallery Camera button on Take Picture view
     And I tap Confirm button on Take Picture view
-    And I press Back button
-    And I press Back button
+    And I tap Back button
+    And I tap Back button
     Then I verify the previous and the current screenshots are different
 
     Examples:
@@ -77,8 +77,8 @@ Feature: Settings
     And I select "Picture" settings menu item
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
-    And I press Back button
-    And I press Back button
+    And I tap Back button
+    And I tap Back button
     Then I verify the previous and the current screenshots are different
 
     Examples:
@@ -155,7 +155,7 @@ Feature: Settings
     And I select "Remove device" settings menu item
     And I see "<OtherDevice>" settings menu item
     And I do not see "<DeviceToRemoveWithoutPassword>" settings menu item
-    And I press Back button 2 times
+    And I tap Back button 2 times
     Then I do not see Manage Devices overlay
     And I see Conversations list with no conversations
 
@@ -217,7 +217,7 @@ Feature: Settings
     # Disable at first
     And I select "Options" settings menu item
     And I select "Send button" settings menu item
-    And I press Back button 2 times
+    And I tap Back button 2 times
     And I see Conversations list
     And I tap on conversation name <Contact>
     And I type the message "<Message1>" and send it by keyboard Send button
@@ -227,7 +227,7 @@ Feature: Settings
     And I tap conversations list settings button
     And I select "Options" settings menu item
     And I select "Send button" settings menu item
-    And I press Back button 2 times
+    And I tap Back button 2 times
     And I see Conversations list
     And I tap on conversation name <Contact>
     And I type the message "<Message2>" and send it by cursor Send button

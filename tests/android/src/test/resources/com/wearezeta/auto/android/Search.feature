@@ -75,7 +75,7 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with no conversations
     When I open Search UI
-    And I press Clear button
+    And I tap Clear button
     Then I see Conversations list
 
     Examples:
@@ -124,7 +124,7 @@ Feature: Search
     And I tap on create conversation
     # Workaround for AN-4011, for following two steps
     And I tap conversation name from top toolbar
-    And I press back button
+    And I tap back button
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
@@ -307,7 +307,7 @@ Feature: Search
     And I tap Create Conversation action button on Search page
     # Workaround for issue AN-4011 with following two stpes
     And I tap conversation name from top toolbar
-    And I press back button
+    And I tap back button
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:

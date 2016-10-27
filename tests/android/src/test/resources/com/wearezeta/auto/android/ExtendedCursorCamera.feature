@@ -94,7 +94,7 @@ Feature: Extended Cursor Camera
     When I tap Add picture button from cursor toolbar
     And I see extended cursor camera overlay
     And I tap conversation name from top toolbar
-    And I press Back button
+    And I tap Back button
     Then I do not see extended cursor camera overlay
 
     Examples:

@@ -90,8 +90,8 @@ public class IncomingPendingConnectionsPageSteps {
      * @throws Exception
      * @step. ^I tap Ignore connect button$
      */
-    @When("^I press Ignore connect button$")
-    public void ItapIgnoreConnectButton() throws Exception {
+    @When("^I tap Ignore connect button$")
+    public void ITapIgnoreConnectButton() throws Exception {
         getIncomingPendingConnectionsPage().tapIgnoreButton();
     }
 
@@ -146,10 +146,10 @@ public class IncomingPendingConnectionsPageSteps {
      *
      * @param buttonLabel Connect or Blocked
      * @throws Exception
-     * @step. ^I click left (.*) button$
+     * @step. ^I tap left (.*) button$
      */
-    @When("^I click left (.*) button$")
-    public void IClickLeftButtonByLabel(String buttonLabel) throws Exception {
+    @When("^I tap left (.*) button$")
+    public void ITapLeftButtonByLabel(String buttonLabel) throws Exception {
         getIncomingPendingConnectionsPage().tapLeftButtonByLabel(buttonLabel);
     }
 
@@ -157,10 +157,10 @@ public class IncomingPendingConnectionsPageSteps {
      * Taps the connect button to send a connection request
      *
      * @throws Exception
-     * @step. ^I click [Cc]onnect button on connect to page$
+     * @step. ^I tap [Cc]onnect button on connect to page$
      */
-    @When("^I click [Cc]onnect button on connect to page$")
-    public void IClickConnectButton() throws Exception {
+    @When("^I tap [Cc]onnect button on connect to page$")
+    public void ITapConnectButton() throws Exception {
         getIncomingPendingConnectionsPage().tapConnectButton();
     }
 
@@ -168,10 +168,10 @@ public class IncomingPendingConnectionsPageSteps {
      * Click ellipsis button to open additional menu items
      *
      * @throws Exception
-     * @step. ^I click ellipsis button$"
+     * @step. ^I tap ellipsis button$"
      */
-    @When("^I click ellipsis button$")
-    public void IClickEllipsisButton() throws Exception {
+    @When("^I tap ellipsis button$")
+    public void ITapEllipsisButton() throws Exception {
         getIncomingPendingConnectionsPage().clickEllipsisButton();
     }
 
@@ -179,10 +179,10 @@ public class IncomingPendingConnectionsPageSteps {
      * Blocks an incoming connection request
      *
      * @throws Exception
-     * @step. ^I click Block button on connect to page$
+     * @step. ^I tap Block button on connect to page$
      */
-    @When("^I click Block button$")
-    public void IClickBlockButton() throws Exception {
+    @When("^I tap Block button$")
+    public void ITapBlockButton() throws Exception {
         getIncomingPendingConnectionsPage().clickBlockBtn();
     }
 
@@ -190,10 +190,10 @@ public class IncomingPendingConnectionsPageSteps {
      * Unblocks an incoming connection request
      *
      * @throws Exception
-     * @step. ^I click Unblock button on connect to page$
+     * @step. ^I tap Unblock button on connect to page$
      */
-    @When("^I click Unblock button$")
-    public void IClickUnblockButton() throws Exception {
+    @When("^I tap Unblock button$")
+    public void ITapUnblockButton() throws Exception {
         getIncomingPendingConnectionsPage().clickUnblockBtn();
     }
 

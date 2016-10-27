@@ -29,13 +29,13 @@ public class RegistrationSteps {
     public Future<String> activationMessage;
 
     /**
-     * Presses the camera button to bring up the camera app
+     * Tapes the camera button to bring up the camera app
      *
      * @throws Exception
-     * @step. ^I press Picture button$
+     * @step. ^I tap Picture button$
      */
-    @When("^I press Picture button$")
-    public void IPressPictureButton() throws Exception {
+    @When("^I tap Picture button$")
+    public void ITapPictureButton() throws Exception {
         getRegistrationPage().selectPicture();
     }
 
@@ -113,7 +113,7 @@ public class RegistrationSteps {
     }
 
     /**
-     * Select picture picture on the corresponding confirmation alert after I click "choose my own" button
+     * Select picture picture on the corresponding confirmation alert after I tap "choose my own" button
      * during registration
      *
      * @param src either Camera or Gallery

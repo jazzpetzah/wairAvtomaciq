@@ -178,12 +178,12 @@ Feature: E2EE
     When User <Contact1> sends encrypted message <EncMessage> to user Myself
     And I tap on conversation name <Contact1>
     Then I see message <EncMessage> 1 times in the conversation view
-    When I press back button
+    When I tap back button
     And I tap conversations list settings button
     And I select "Devices" settings menu item
     And I tap current device in devices settings menu
     Then I remember the device id shown in the device detail view
-    When I press back button 2 times
+    When I tap back button 2 times
     When I select "Account" settings menu item
     And I select "Log out" settings menu item
     Then I confirm sign out
@@ -192,7 +192,7 @@ Feature: E2EE
     And I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     Then I see message <EncMessage> 1 times in the conversation view
-    When I press back button
+    When I tap back button
     And I tap conversations list settings button
     And I select "Devices" settings menu item
     And I tap current device in devices settings menu
@@ -286,7 +286,7 @@ Feature: E2EE
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
     And I verify 1st device
-    When I press back button
+    When I tap back button
     Then I see a message informing me conversation is verified
     And User <Contact1> adds new device Device2
     When User <Contact1> sends encrypted message "<Message1>" via device Device2 to user Myself
@@ -312,13 +312,13 @@ Feature: E2EE
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
     And I verify 1st device
-    And I press back button
+    And I tap back button
     And I select contact <Contact2>
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
     And I verify 1st device
-    And I press back button
-    And I press back button
+    And I tap back button
+    And I tap back button
     Then I see a message informing me conversation is verified
     And User <Contact1> adds new device Device2
     When User <Contact1> sends encrypted message "<Message1>" via device Device2 to group conversation <GroupChatName>
@@ -342,7 +342,7 @@ Feature: E2EE
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
     And I verify 1st device
-    When I press back button
+    When I tap back button
     Then I see a message informing me conversation is verified
     And I see verified conversation shield state has changed
 
@@ -368,14 +368,14 @@ Feature: E2EE
     When I verify 1st device
     And I select single participant tab "Devices"
     And I verify 2nd device
-    And I press back button
+    And I tap back button
     Then I see the verified participant avatar for <Contact1>
     When I select contact <Contact2>
     And I select single participant tab "Devices"
     When I verify 1st device
-    And I press back button
+    And I tap back button
     Then I see the verified participant avatars for <Contact1>,<Contact2>
-    When I press back button
+    When I tap back button
     Then I see a message informing me conversation is verified
 
     Examples:
@@ -404,7 +404,7 @@ Feature: E2EE
     Then I see 1 device is shown in single participant devices tab
     And I verify 1st device
     When I close single participant page by UI button
-    And I press back button
+    And I tap back button
     And I see a message informing me conversation is verified
 
     Examples:
@@ -431,7 +431,7 @@ Feature: E2EE
     And I select single participant tab "Devices"
     And I verify 1st device
     And I close single participant page by UI button
-    And I press back button
+    And I tap back button
     Then I see a message informing me conversation is verified
     When User <Contact1> adds new device Device1
     And I tap on text input
@@ -469,7 +469,7 @@ Feature: E2EE
     Then I see forced email login page
     And I have entered login <Email>
     And I have entered password <Password>
-    And I press Log in button
+    And I tap Log in button
     And I accept First Time overlay as soon as it is visible
     Then I see Conversations list with no conversations
 
@@ -490,7 +490,7 @@ Feature: E2EE
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
     And I verify 1st device
-    When I press back button
+    When I tap back button
     Then I see a message informing me conversation is verified
     And User <Contact1> adds new device <Device>
     And I tap on text input
@@ -518,7 +518,7 @@ Feature: E2EE
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
     And I verify 1st device
-    When I press back button
+    When I tap back button
     Then I see a message informing me conversation is verified
     And User <Contact1> adds new device <Device>
     And I tap on text input
@@ -532,7 +532,7 @@ Feature: E2EE
     #TODO: detect new device and verify it instead of trying to verify each device
     And I verify 1st device
     And I verify 2nd device
-    When I press back button
+    When I tap back button
     Then I see a message informing me conversation is verified
 
     Examples:

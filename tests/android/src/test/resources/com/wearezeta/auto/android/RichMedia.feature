@@ -21,7 +21,7 @@ Feature: Rich Media
     And I tap Play button on SoundCloud container
     And I remember the state of Play button on SoundCloud container
     And I swipe down on conversation until Mediabar appears
-    And I press PlayPause on Mediabar button
+    And I tap PlayPause on Mediabar button
     Then I verify the state of upper toolbar item is not changed
     And I see the media bar is below the upper toolbar
     When I scroll to the bottom of conversation view
@@ -45,7 +45,7 @@ Feature: Rich Media
     And I scroll to the bottom of conversation view
     And I scroll up the conversation view
     And I tap Play button on SoundCloud container
-    And I press back button
+    And I tap back button
     Then I see PlayPause media content button for conversation <Contact1>
 
     Examples:
@@ -64,10 +64,10 @@ Feature: Rich Media
     And I type the message "<SoundCloudLink>" and send it by cursor Send button
     And I scroll to the bottom of conversation view
     And I tap Play button on SoundCloud container
-    And I press back button
+    And I tap back button
     Then I see PlayPause media content button for conversation <Contact1>
     When I tap on conversation name <Contact2>
-    And I press back button
+    And I tap back button
     Then I see PlayPause media content button for conversation <Contact1>
     When I remember the state of PlayPause button next to the <Contact1> conversation
     And I tap PlayPause button next to the <Contact1> conversation
