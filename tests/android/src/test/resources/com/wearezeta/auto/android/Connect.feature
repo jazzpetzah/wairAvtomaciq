@@ -27,8 +27,33 @@ Feature: Connect
       | user1Name | user2Name | user3name           |
 
   @C383 @regression @rc @legacy
-  Scenario Outline: I can accept/ignore connection requests from search/conversation list and inbox updated correctly
-    Given There are 5 users where <Name> is me
+  Scenario Outline: I can accept/ignore connection requests from conversation list and inbox updated correctly
+    Given There are 3 users where <Name> is me
+    Given <Contact1> sent connection request to me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Then I see Conversations list with name <WaitingMess1>
+    And <Contact2> sent connection request to me
+    When I wait for 2 seconds
+    Then I see Conversations list with name <WaitingMess2>
+    When I tap on conversation name <WaitingMess2>
+    And I press Ignore connect button
+    And I navigate back from connect page
+    Then I see Conversations list with name <WaitingMess1>
+    When I tap on conversation name <WaitingMess1>
+    When I Connect with contact by pressing button
+    And I wait for 5 seconds
+    And I navigate back from conversation
+    Then I do not see Conversations list with name <WaitingMess1>
+
+    Examples:
+      | Name      | Contact1  | Contact2  | WaitingMess1     | WaitingMess2     |
+      | user1Name | user2Name | user3Name | 1 person waiting | 2 people waiting |
+
+  @C311220 @regression @rc
+  Scenario Outline: I can accept/ignore connection requests from search and inbox updated correctly
+    Given There are 3 users where <Name> is me
     Given <Contact1> sent connection request to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -36,35 +61,25 @@ Feature: Connect
     Given <Contact2> sent connection request to me
     When I wait for 2 seconds
     Then I see Conversations list with name <WaitingMess2>
-    When I tap on conversation name <WaitingMess2>
-    When I Connect with contact by pressing button
-    And I wait for 5 seconds
-    And I navigate back from conversation
-    Then I see Conversations list with name <WaitingMess1>
-    And <Contact3> sent connection request to me
-    And <Contact4> sent connection request to me
-    And I see Conversations list with name <WaitingMess3>
-    And I wait until <Contact3> exists in backend search results
+    And I wait until <Contact1> exists in backend search results
     When I open Search UI
-    And I type user name "<Contact3>" in search field
-    And I tap on user name found on Search page <Contact3>
+    And I type user name "<Contact1>" in search field
+    And I tap on user name found on Search page <Contact1>
     And I press Ignore connect button
     And I navigate back from connect page
-    Then I see Conversations list with name <WaitingMess2>
+    Then I see Conversations list with name <WaitingMess1>
     When I open Search UI
-    And I type user name "<Contact4>" in search field
-    And I tap on user name found on Search page <Contact4>
+    And I type user name "<Contact2>" in search field
+    And I tap on user name found on Search page <Contact2>
     When I Connect with contact by pressing button
     And I wait for 5 seconds
     And I navigate back from conversation
-    Then I see Conversations list with name <WaitingMess1>
-    When I tap on conversation name <WaitingMess1>
-    And I press Ignore connect button
+    Then I see Conversations list with name <Contact2>
     Then I do not see Conversations list with name <WaitingMess1>
 
     Examples:
-      | Name      | Contact1  | WaitingMess1     | Contact2  | WaitingMess2     | Contact3  | Contact4  | WaitingMess3     |
-      | user1Name | user2Name | 1 person waiting | user3Name | 2 people waiting | user4Name | user5Name | 3 people waiting |
+      | Name      | Contact1  | Contact2  | WaitingMess1     | WaitingMess2     |
+      | user1Name | user2Name | user3Name | 1 person waiting | 2 people waiting |
 
   @C384 @regression
   Scenario Outline: I can ignore a connect request and reconnect later

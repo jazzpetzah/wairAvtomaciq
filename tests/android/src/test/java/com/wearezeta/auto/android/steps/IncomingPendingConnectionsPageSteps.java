@@ -79,7 +79,7 @@ public class IncomingPendingConnectionsPageSteps {
      * @throws Exception
      * @step. ^I Connect with contact by taping button$
      */
-    @When("^I (?:Connect with|Unblock) contact by taping button$")
+    @When("^I (?:Connect with|Unblock) contact by pressing button$")
     public void IConnectWithContactBytapionButton() throws Exception {
         getIncomingPendingConnectionsPage().tapAcceptConnectButton();
     }
@@ -90,7 +90,7 @@ public class IncomingPendingConnectionsPageSteps {
      * @throws Exception
      * @step. ^I tap Ignore connect button$
      */
-    @When("^I tap Ignore connect button$")
+    @When("^I press Ignore connect button$")
     public void ItapIgnoreConnectButton() throws Exception {
         getIncomingPendingConnectionsPage().tapIgnoreButton();
     }
