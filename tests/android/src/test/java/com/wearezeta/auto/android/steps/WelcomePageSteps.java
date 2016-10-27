@@ -54,7 +54,7 @@ public class WelcomePageSteps {
     }
 
     /**
-     * Press the "I have an account" button on the welcome page to switch to
+     * Tap the "I have an account" button on the welcome page to switch to
      * sign in using email address
      *
      * @throws Exception

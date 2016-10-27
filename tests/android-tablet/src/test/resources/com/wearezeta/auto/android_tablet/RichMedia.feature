@@ -92,7 +92,7 @@ Feature: Rich Media
       | user1Name | user2Name | https://soundcloud.com/scottisbell/scott-isbell-tonight-feat-adessi |
 
   @C788 @regression @rc
-  Scenario Outline: I can send giphy image by typing some massage and clicking GIF button (portrait)
+  Scenario Outline: I can send giphy image by typing some massage and tapping GIF button (portrait)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
@@ -116,7 +116,7 @@ Feature: Rich Media
       | user1Name | user2Name | H       |
 
   @C797 @regression @rc
-  Scenario Outline: I can send giphy image by typing some massage and clicking GIF button (landscape)
+  Scenario Outline: I can send giphy image by typing some massage and tapping GIF button (landscape)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape

@@ -63,7 +63,7 @@ Feature: Edit Message
     When I long tap the Text message "<Message>" in the conversation view
     And I tap Edit button on the message bottom menu
     And I tap conversation name from top toolbar
-    And I press Back button
+    And I tap Back button
     Then I do not see edit message toolbar
 
     Examples:

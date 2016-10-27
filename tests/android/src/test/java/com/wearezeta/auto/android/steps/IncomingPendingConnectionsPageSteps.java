@@ -9,8 +9,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class IncomingPendingConnectionsPageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-            .getInstance();
+    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
     private IncomingPendingConnectionsPage getIncomingPendingConnectionsPage() throws Exception {
         return pagesCollection.getPage(IncomingPendingConnectionsPage.class);
@@ -19,8 +18,7 @@ public class IncomingPendingConnectionsPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     /**
-     * Verifies that the current screen shows the connect to dialog with a user
-     * you have not yet connected with
+     * Verifies that the current screen shows the connect to dialog with a user you have not yet connected with
      *
      * @param contact The name of the user with whom you are not yet connected.
      * @throws Throwable
@@ -29,10 +27,7 @@ public class IncomingPendingConnectionsPageSteps {
     @Then("^I see connect to (.*) dialog$")
     public void ISeeConnectToUserDialog(String contact) throws Throwable {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue(
-                String.format(
-                        "Connect To header with text '%s' is not visible, but should be",
-                        contact),
+        Assert.assertTrue(String.format("Connect To header with text '%s' is not visible, but should be", contact),
                 getIncomingPendingConnectionsPage().isConnectToHeaderVisible(contact));
     }
 
@@ -52,8 +47,8 @@ public class IncomingPendingConnectionsPageSteps {
     }
 
     /**
-     * Verifies that the connect and ignore buttons are visible when viewing the
-     * dialog of a user who has sent you a connection request.
+     * Verifies that the connect and ignore buttons are visible when viewing the dialog of a user who has sent you a
+     * connection request
      *
      * @throws Exception
      * @step. ^I see Accept and Ignore buttons$
@@ -79,27 +74,25 @@ public class IncomingPendingConnectionsPageSteps {
     }
 
     /**
-     * Presses the accept connection request button from within the dialog of a
-     * user who has sent you a connection request.
+     * Click the accept connection request button from within the dialog of a user who has sent you a connection request
      *
      * @throws Exception
-     * @step. ^I Connect with contact by pressing button$
+     * @step. ^I Connect with contact by taping button$
      */
-    @When("^I Connect with contact by pressing button$")
-    public void IConnectWithContactByPressionButton() throws Exception {
-        getIncomingPendingConnectionsPage().pressAcceptConnectButton();
+    @When("^I (?:Connect with|Unblock) contact by pressing button$")
+    public void IConnectWithContactBytapionButton() throws Exception {
+        getIncomingPendingConnectionsPage().tapAcceptConnectButton();
     }
 
     /**
-     * Presses the ignore connection request button from within the dialog of a
-     * user who has sent you a connection request.
+     * Click the ignore connection request button from within the dialog of a user who has sent you a connection request
      *
      * @throws Exception
-     * @step. ^I press Ignore connect button$
+     * @step. ^I tap Ignore connect button$
      */
-    @When("^I press Ignore connect button$")
-    public void IPressIgnoreConnectButton() throws Exception {
-        getIncomingPendingConnectionsPage().pressIgnoreButton();
+    @When("^I tap Ignore connect button$")
+    public void ITapIgnoreConnectButton() throws Exception {
+        getIncomingPendingConnectionsPage().tapIgnoreButton();
     }
 
     /**
@@ -121,13 +114,11 @@ public class IncomingPendingConnectionsPageSteps {
      */
     @Then("^I see that connection is pending$")
     public void ConnectionIsPending() throws Exception {
-        Assert.assertTrue("Pending connection screen is not visible",
-                getIncomingPendingConnectionsPage().isPending());
+        Assert.assertTrue("Pending connection screen is not visible", getIncomingPendingConnectionsPage().isPending());
     }
 
     /**
-     * Checks to see if the connect button is either enabled or disabled (true
-     * or false)
+     * Checks to see if the connect button is either enabled or disabled (true or false)
      *
      * @param state
      * @throws Throwable
@@ -139,8 +130,7 @@ public class IncomingPendingConnectionsPageSteps {
     }
 
     /**
-     * Checks to see that the counter value has a given number of remaining
-     * characters
+     * Checks to see that the counter value has a given number of remaining characters
      *
      * @param value
      * @throws Throwable
@@ -152,35 +142,36 @@ public class IncomingPendingConnectionsPageSteps {
     }
 
     /**
-     * Taps the connect button to send a connection request
+     * Taps the left button by label
      *
+     * @param buttonLabel Connect or Blocked
      * @throws Exception
-     * @step. ^I click left Connect button$
+     * @step. ^I tap left (.*) button$
      */
-    @When("^I click left Connect button$")
-    public void IClickLeftConnectButton() throws Exception {
-        getIncomingPendingConnectionsPage().pressLeftConnectButton();
+    @When("^I tap left (.*) button$")
+    public void ITapLeftButtonByLabel(String buttonLabel) throws Exception {
+        getIncomingPendingConnectionsPage().tapLeftButtonByLabel(buttonLabel);
     }
 
     /**
      * Taps the connect button to send a connection request
      *
      * @throws Exception
-     * @step. ^I click [Cc]onnect button on connect to page$
+     * @step. ^I tap [Cc]onnect button on connect to page$
      */
-    @When("^I click [Cc]onnect button on connect to page$")
-    public void IClickConnectButton() throws Exception {
-        getIncomingPendingConnectionsPage().pressConnectButton();
+    @When("^I tap [Cc]onnect button on connect to page$")
+    public void ITapConnectButton() throws Exception {
+        getIncomingPendingConnectionsPage().tapConnectButton();
     }
 
     /**
      * Click ellipsis button to open additional menu items
      *
      * @throws Exception
-     * @step. ^I click ellipsis button$"
+     * @step. ^I tap ellipsis button$"
      */
-    @When("^I click ellipsis button$")
-    public void IClickEllipsisButton() throws Exception {
+    @When("^I tap ellipsis button$")
+    public void ITapEllipsisButton() throws Exception {
         getIncomingPendingConnectionsPage().clickEllipsisButton();
     }
 
@@ -188,10 +179,10 @@ public class IncomingPendingConnectionsPageSteps {
      * Blocks an incoming connection request
      *
      * @throws Exception
-     * @step. ^I click Block button on connect to page$
+     * @step. ^I tap Block button on connect to page$
      */
-    @When("^I click Block button$")
-    public void IClickBlockButton() throws Exception {
+    @When("^I tap Block button$")
+    public void ITapBlockButton() throws Exception {
         getIncomingPendingConnectionsPage().clickBlockBtn();
     }
 
@@ -199,16 +190,15 @@ public class IncomingPendingConnectionsPageSteps {
      * Unblocks an incoming connection request
      *
      * @throws Exception
-     * @step. ^I click Unblock button on connect to page$
+     * @step. ^I tap Unblock button on connect to page$
      */
-    @When("^I click Unblock button$")
-    public void IClickUnblockButton() throws Exception {
+    @When("^I tap Unblock button$")
+    public void ITapUnblockButton() throws Exception {
         getIncomingPendingConnectionsPage().clickUnblockBtn();
     }
 
     /**
-     * Presses the "Confirm Block" button that appears after pressing the block
-     * button (Should the two steps be merged?)
+     * Click the "Confirm Block" button that appears after taping the block button (Should the two steps be merged?)
      *
      * @throws Exception
      * @step. ^I confirm block on connect to page$
@@ -219,8 +209,7 @@ public class IncomingPendingConnectionsPageSteps {
     }
 
     /**
-     * Closes the connect to dialog by pressing the cross in the connect to
-     * dialog
+     * Closes the connect to dialog by taping the cross in the connect to dialog
      *
      * @throws Exception
      * @step. ^I close Connect To dialog$

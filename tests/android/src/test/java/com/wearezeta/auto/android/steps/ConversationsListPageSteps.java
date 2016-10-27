@@ -429,24 +429,24 @@ public class ConversationsListPageSteps {
     }
 
     /**
-     * Presses Delete on the delete confirmation alert
+     * Tap Delete on the delete confirmation alert
      *
      * @throws Exception
-     * @step. ^I press DELETE on the confirm alert$
+     * @step. ^I tap DELETE on the confirm alert$
      */
-    @When("^I press DELETE on the confirm alert$")
-    public void IPressDELETEOnTheConfirmAlert() throws Exception {
+    @When("^I tap DELETE on the confirm alert$")
+    public void ITapDELETEOnTheConfirmAlert() throws Exception {
         getConversationsListPage().confirmDeleteConversationAlert();
     }
 
     /**
-     * Presses the leave as well during delete checkbox
+     * Tap the leave as well during delete checkbox
      *
      * @throws Exception
-     * @step. ^I click the Leave check box$
+     * @step. ^I tap the Leave check box$
      */
-    @When("^I click the Leave check box$")
-    public void IClickLeave() throws Exception {
+    @When("^I tap the Leave check box$")
+    public void ITapLeave() throws Exception {
         getConversationsListPage().checkLeaveWhileDeleteCheckbox();
     }
 
@@ -495,10 +495,10 @@ public class ConversationsListPageSteps {
      * Taps the three dot button to open the option menu
      *
      * @throws Exception
-     * @step. ^I press the three dots option menu button$
+     * @step. ^I tap the three dots option menu button$
      */
-    @When("^I press the three dots option menu button$")
-    public void IPressTheThreeDotsOptionMenuButton() throws Exception {
+    @When("^I tap the three dots option menu button$")
+    public void ITapTheThreeDotsOptionMenuButton() throws Exception {
         getConversationsListPage().tapThreeDotOptionMenuButton();
     }
 }

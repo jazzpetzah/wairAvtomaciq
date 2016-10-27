@@ -362,25 +362,25 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Presses the android back button
+     * Tap the android back button
      *
      * @throws Exception
-     * @step. ^I press [Bb]ack button$
+     * @step. ^I tap [Bb]ack button$
      */
-    @When("^I press [Bb]ack button$")
-    public void PressBackButton() throws Exception {
+    @When("^I tap [Bb]ack button$")
+    public void TapBackButton() throws Exception {
         pagesCollection.getCommonPage().navigateBack();
     }
 
     /**
-     * Presses the android back button X times
+     * Tap the android back button X times
      *
      * @param times how many times to press
      * @throws Exception
-     * @step. ^I press [Bb]ack button (\\d+) times$
+     * @step. ^I tap [Bb]ack button (\\d+) times$
      */
-    @When("^I press [Bb]ack button (\\d+) times$")
-    public void PressBackButtonXTimes(int times) throws Exception {
+    @When("^I tap [Bb]ack button (\\d+) times$")
+    public void TapBackButtonXTimes(int times) throws Exception {
         for (int i = 0; i < times; i++) {
             pagesCollection.getCommonPage().navigateBack();
         }
@@ -491,8 +491,12 @@ public class CommonAndroidSteps {
     public void ILockUnlockTheDevice(String shouldUnlock) throws Exception {
         if (shouldUnlock == null) {
             AndroidCommonUtils.lockScreen();
+            //UI need time to react action
+            WaitForTime(UI_DELAY_TIME);
         } else {
             AndroidCommonUtils.unlockDevice();
+            //UI need time to react action
+            WaitForTime(UI_DELAY_TIME);
             // FIXME: Unlock selendroid app does not restore the previously active application
             AndroidCommonUtils.switchToApplication(getPackageName());
         }
@@ -1150,13 +1154,13 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Press Send button on OnScreen keyboard (the keyboard should be already populated)
+     * Tap Send button on OnScreen keyboard (the keyboard should be already populated)
      *
      * @throws Exception
-     * @step. ^I press Send button at Android keyboard$
+     * @step. ^I tap Send button at Android keyboard$
      */
-    @And("^I press Send button at Android keyboard$")
-    public void IPressSendButton() throws Exception {
+    @And("^I tap Send button at Android keyboard$")
+    public void ITapSendButton() throws Exception {
         pagesCollection.getCommonPage().pressKeyboardSendButton();
     }
 
@@ -1514,14 +1518,14 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Press back button until Wire app is in foreground
+     * Tap back button until Wire app is in foreground
      *
      * @param timeoutSeconds timeout in seconds for try process
      * @throws Exception
-     * @step. ^I press [Bb]ack button until Wire app is in foreground in (\d+) seconds$
+     * @step. ^I tap [Bb]ack button until Wire app is in foreground in (\d+) seconds$
      */
-    @When("^I press [Bb]ack button until Wire app is in foreground in (\\d+) seconds$")
-    public void IPressBackButtonUntilWireAppInForeground(int timeoutSeconds) throws Exception {
+    @When("^I tap [Bb]ack button until Wire app is in foreground in (\\d+) seconds$")
+    public void ITapBackButtonUntilWireAppInForeground(int timeoutSeconds) throws Exception {
         final String packageId = AndroidCommonUtils.getAndroidPackageFromConfig(getClass());
         CommonUtils.waitUntilTrue(
                 timeoutSeconds,

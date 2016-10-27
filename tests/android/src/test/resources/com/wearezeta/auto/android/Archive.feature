@@ -10,7 +10,7 @@ Feature: Archive
     Given I see Conversations list with conversations
     # This is to eliminate invitation banner
     Given I open Search UI
-    Given I press Clear button
+    Given I tap Clear button
     And I see Conversations list with name <Contact1>
     When I swipe right on a <Contact1>
     And I select ARCHIVE from conversation settings menu
@@ -35,7 +35,7 @@ Feature: Archive
     Given I see Conversations list with conversations
     # This is to eliminate invitation banner
     Given I open Search UI
-    Given I press Clear button
+    Given I tap Clear button
     Then I see Conversations list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I select ARCHIVE from conversation settings menu

@@ -116,7 +116,7 @@ public class GiphySteps {
      * @step. ^I tap on the giphy (Send|Cancel) button$
      */
     @When("^I tap on the giphy (Send|Cancel) button$")
-    public void IClickOnTheGiphySendButton(String buttonName) throws Exception {
+    public void ITapOnTheGiphySendButton(String buttonName) throws Exception {
         getGiphyPreviewPage().tapOnConfirmationButton(buttonName);
     }
 

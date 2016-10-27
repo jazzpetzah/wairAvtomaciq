@@ -13,28 +13,27 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 public class IncomingPendingConnectionsPage extends AndroidPage {
     private static final By idSendConnectionRequestButton = By.id("zb__send_connect_request__connect_button");
 
-    private static final Function<String, String> xpathStrConnectToHeaderByText = text -> String
-            .format("//*[@id='taet__participants__header' and contains(@value, '%s')]", text);
+    private static final Function<String, String> xpathStrConnectToHeaderByText =
+            text -> String.format("//*[@id='taet__participants__header' and contains(@value, '%s')]", text);
 
     private static final String idStrConnectRequestAccept = "zb__connect_request__accept_button";
     private static final By idConnectRequestAccept = By.id(idStrConnectRequestAccept);
-    private static final Function<String, String> xpathStrAcceptButtonByHeaderText = text -> String
-            .format("//*[@id='ll__connect_request__main_container' and .%s]//*[@id='%s']",
+    private static final Function<String, String> xpathStrAcceptButtonByHeaderText =
+            text -> String.format("//*[@id='ll__connect_request__main_container' and .%s]//*[@id='%s']",
                     xpathStrConnectToHeaderByText.apply(text), idStrConnectRequestAccept);
 
     private static final By idConnectRequestIgnore = By.id("zb__connect_request__ignore_button");
 
-    private static final Function<String, String> xpathStrUserDetailsLeftButtonByLabel = label -> String
-            .format("//*[@id='ttv__participants__left_label' and @value='%s']", label);
+    private static final Function<String, String> xpathStrUserDetailsLeftButtonByLabel =
+            label -> String.format("//*[@id='ttv__participants__left_label' and @value='%s']", label);
 
-    private static final By idConnectToCharCounter =
-            By.id("ttv__send_connect_request__connect_button__character_counter");
+    private static final By idConnectToCharCounter = By.id("ttv__send_connect_request__connect_button__character_counter");
 
-    private static final By xpathCloseButton =
-            By.xpath("//*[@id='fl__conversation_list__profile_overlay']//*[@id='gtv__participants__close']");
+    private static final By xpathCloseButton = By.xpath
+            ("//*[@id='fl__conversation_list__profile_overlay']//*[@id='gtv__participants__close']");
 
-    private static final Function<String, String> xpathStrConnectMenuItemByText = text -> String
-            .format("//*[@id='ttv__settings_box__item' and @value='%s']/parent::*//*[@id='fl_options_menu_button']",
+    private static final Function<String, String> xpathStrConnectMenuItemByText = text -> String.format
+            ("//*[@id='ttv__settings_box__item' and @value='%s']/parent::*//*[@id='fl_options_menu_button']",
                     text.toUpperCase());
 
     private static final By xpathConfirmBlockButton = By.xpath("//*[@id='positive' and @value='BLOCK']");
@@ -67,8 +66,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public void scrollToInboxContact(String contactName, final int maxUsers)
-            throws Exception {
+    public void scrollToInboxContact(String contactName, final int maxUsers) throws Exception {
         final By locator = By.xpath(xpathStrAcceptButtonByHeaderText.apply(contactName));
         int ntry = 1;
         final int SCROLL_POS_START = 48;
@@ -85,13 +83,11 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
                 contactName, maxScrolls));
     }
 
-    public void pressAcceptConnectButton() throws Exception {
+    public void tapAcceptConnectButton() throws Exception {
         // FIXME: Use better locators to detect the button
-        final Optional<WebElement> connectAcceptBtn = DriverUtils.getElementIfDisplayed(getDriver(),
-                idConnectRequestAccept);
+        final Optional<WebElement> connectAcceptBtn = DriverUtils.getElementIfDisplayed(getDriver(), idConnectRequestAccept);
         final int windowHeight = this.getDriver().manage().window().getSize().getHeight();
-        if (connectAcceptBtn.isPresent() &&
-                connectAcceptBtn.get().getLocation().getY() > windowHeight / 2
+        if (connectAcceptBtn.isPresent() && connectAcceptBtn.get().getLocation().getY() > windowHeight / 2
                 && connectAcceptBtn.get().getLocation().getY() < windowHeight) {
             connectAcceptBtn.get().click();
         } else {
@@ -99,7 +95,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
         }
     }
 
-    public void pressIgnoreButton() throws Exception {
+    public void tapIgnoreButton() throws Exception {
         getElement(idConnectRequestIgnore, "Ignore button is not visible").click();
     }
 
@@ -111,12 +107,11 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
         return selectVisibleElements(idPendingUserAvatar).size() > 0;
     }
 
-    public void pressLeftConnectButton() throws Exception {
-        getElement(By.xpath(xpathStrUserDetailsLeftButtonByLabel.apply("Connect")),
-                "Connect button is not visible").click();
+    public void tapLeftButtonByLabel(String label) throws Exception {
+        getElement(By.xpath(xpathStrUserDetailsLeftButtonByLabel.apply(label)), label + " button is not visible").click();
     }
 
-    public void pressConnectButton() throws Exception {
+    public void tapConnectButton() throws Exception {
         getElement(idSendConnectionRequestButton, "Connect button is not visible").click();
     }
 

@@ -9,10 +9,10 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
-    And I press options menu button
-    And I press MUTE conversation menu button
-    And I press back button
-    And I press back button
+    And I tap options menu button
+    And I tap MUTE conversation menu button
+    And I tap back button
+    And I tap back button
     Then Conversation <Contact1> is muted
 
     Examples:
@@ -23,16 +23,17 @@ Feature: Conversation View
   Scenario Outline: Verify unsilence the conversation from conversation view
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to me
-    Given <Contact1> is silenced to user <Name>
     Given I sign in using my email or phone number
+    #When If we silence contact or group to myself before login >> we getting force email login screen
+    Given <Contact1> is silenced to user <Name>
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given Conversation <Contact1> is muted
     When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
-    And I press options menu button
-    And I press UNMUTE conversation menu button
-    And I press back button
+    And I tap options menu button
+    And I tap UNMUTE conversation menu button
+    And I tap back button
     And I navigate back from conversation
     Then Conversation <Contact1> is not muted
 
@@ -83,16 +84,16 @@ Feature: Conversation View
     When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
     And I see <Contact1> user profile page
-    And I press add contact button
-    And I tap on Search input on People picker page
+    And I tap add contact button
+    And I tap on Search input on Search page
     And I type user name "<Contact2>" in search field
     And I see user <Contact2> in Search result list
-    And I tap on user name found on People picker page <Contact2>
+    And I tap on user name found on Search page <Contact2>
     And I see Add to conversation button
-    And I click on Add to conversation button
+    And I tap on Add to conversation button
     # Workaround for AN-4011, for following two steps
     And I tap conversation name from top toolbar
-    And I press back button
+    And I tap back button
     Then I see group chat page with users <Contact1>,<Contact2>
     And I navigate back from conversation
     And I see group conversation with <Contact1>,<Contact2> in conversations list
@@ -112,7 +113,7 @@ Feature: Conversation View
     When I tap on conversation name <GroupChatName>
     # Workaround for AN-4011, for following two steps
     And I tap conversation name from top toolbar
-    And I press back button
+    And I tap back button
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
@@ -291,7 +292,7 @@ Feature: Conversation View
     Then I see the message "<Message1>" in the conversation view
     And the conversation title should be "<Contact2>"
     And I tap conversation name from top toolbar
-    And I press back button
+    And I tap back button
     When I tap Back button from top toolbar
     And I tap on conversation name <Contact1>
     And User <Contact2> sends encrypted message "<Message2>" to user Myself
@@ -346,13 +347,13 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
-    And I press options menu button
-    And I press LEAVE conversation menu button
+    And I tap options menu button
+    And I tap LEAVE conversation menu button
     And I confirm leaving
     And I see Conversations list
     And I open Search UI
     And I type group name "<GroupChatName>" in search field
-    And I tap on group found on People picker page <GroupChatName>
+    And I tap on group found on Search page <GroupChatName>
     Then I see the upper toolbar
     And I do not see text input
     And I do not see cursor toolbar

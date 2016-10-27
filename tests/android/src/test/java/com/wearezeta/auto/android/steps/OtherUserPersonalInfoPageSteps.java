@@ -52,10 +52,10 @@ public class OtherUserPersonalInfoPageSteps {
      * Removes a contact from a group conversation
      *
      * @throws Exception
-     * @step. ^I click Remove$
+     * @step. ^I tap Remove$
      */
-    @When("^I click Remove$")
-    public void IClickRemove() throws Exception {
+    @When("^I tap Remove$")
+    public void ITapRemove() throws Exception {
         getOtherUserPersonalInfoPage().tapRightActionButton();
     }
 
@@ -93,14 +93,14 @@ public class OtherUserPersonalInfoPageSteps {
     }
 
     /**
-     * Presses the "add people to conversation" button from another user's
+     * Tap the "add people to conversation" button from another user's
      * profile
      *
      * @throws Exception
-     * @step. ^I press (?:add contact|create group) button$
+     * @step. ^I tap (?:add contact|create group) button$
      */
-    @When("^I press (?:add contact|create group) button$")
-    public void IPressAddContactButton() throws Exception {
+    @When("^I tap (?:add contact|create group) button$")
+    public void ITapAddContactButton() throws Exception {
         getOtherUserPersonalInfoPage().tapLeftActionBtn();
     }
 
@@ -245,14 +245,14 @@ public class OtherUserPersonalInfoPageSteps {
     }
 
     /**
-     * Presses the ellipses ("...") on the right hand side of the other user's
+     * Tap the ellipses ("...") on the right hand side of the other user's
      * profile page -unclear
      *
      * @throws Exception
-     * @step. ^I press Right conversation button$
+     * @step. ^I tap Right conversation button$
      */
-    @When("^I press options menu button$")
-    public void IPressOptionsMenuButton() throws Exception {
+    @When("^I tap options menu button$")
+    public void ITapOptionsMenuButton() throws Exception {
         getOtherUserPersonalInfoPage().pressOptionsMenuButton();
     }
 
@@ -261,10 +261,10 @@ public class OtherUserPersonalInfoPageSteps {
      *
      * @param itemName menu item name
      * @throws Exception
-     * @step. ^I press (.*) conversation menu button$
+     * @step. ^I tap (.*) conversation menu button$
      */
-    @And("^I press (.*) conversation menu button$")
-    public void IPressConvOptionsMenuItem(String itemName) throws Exception {
+    @And("^I tap (.*) conversation menu button$")
+    public void ITapConvOptionsMenuItem(String itemName) throws Exception {
         getOtherUserPersonalInfoPage().selectConvoSettingsMenuItem(itemName);
     }
 
@@ -472,10 +472,10 @@ public class OtherUserPersonalInfoPageSteps {
      * unconnected user from a group chat
      *
      * @throws Exception
-     * @step. ^I click Connect button on non connected user page$
+     * @step. ^I tap Connect button on non connected user page$
      */
-    @Then("^I click Connect button on non connected user page$")
-    public void IClickOnUnconnectedUserConnectButton() throws Exception {
+    @Then("^I tap Connect button on non connected user page$")
+    public void ITapOnUnconnectedUserConnectButton() throws Exception {
         getUnknownUserDetailsPage().tapConnectButton();
     }
 
@@ -484,10 +484,10 @@ public class OtherUserPersonalInfoPageSteps {
      * already connected user from a group chat
      *
      * @throws Exception
-     * @step. ^I click Open Conversation button on connected user page$
+     * @step. ^I tap Open Conversation button on connected user page$
      */
-    @Then("^I click Open Conversation button on connected user page$")
-    public void IClickOpenConversationButton() throws Exception {
+    @Then("^I tap Open Conversation button on connected user page$")
+    public void ITapOpenConversationButton() throws Exception {
         getOtherUserPersonalInfoPage().tapLeftActionBtn();
     }
 
@@ -496,10 +496,10 @@ public class OtherUserPersonalInfoPageSteps {
      * user from a group chat
      *
      * @throws Exception
-     * @step. ^I click Pending button on pending user page$
+     * @step. ^I tap Pending button on pending user page$
      */
-    @When("^I click Pending button on pending user page$")
-    public void IClickPendingButton() throws Exception {
+    @When("^I tap Pending button on pending user page$")
+    public void ITapPendingButton() throws Exception {
         getUnknownUserDetailsPage().tapPendingButton();
     }
 

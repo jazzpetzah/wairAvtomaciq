@@ -11,13 +11,13 @@ Feature: Connect
     Given I see the Conversations list with conversations
     And I wait until <Contact> exists in backend search results
     When I open Search UI
-    And I enter "<Contact>" into Search input on People Picker page
-    And I tap the found item <Contact> on People Picker page
+    And I enter "<Contact>" into Search input on Search page
+    And I tap the found item <Contact> on Search page
     And I see Outgoing Connection popover
     And I see the name <Contact> on Outgoing Connection popover
     And I tap Connect button on Outgoing Connection popover
     And I do not see Outgoing Connection popover
-    And I close People Picker
+    And I close Search
     Then I see the conversation <Contact> in my conversations list
 
     Examples:
@@ -35,14 +35,14 @@ Feature: Connect
     Given I see the Conversations list with conversations
     And I wait until <Contact> exists in backend search results
     When I open Search UI
-    And I enter "<Contact>" into Search input on People Picker page
-    And I tap the found item <Contact> on People Picker page
+    And I enter "<Contact>" into Search input on Search page
+    And I tap the found item <Contact> on Search page
     And I see Outgoing Connection popover
     And I see the name <Contact> on Outgoing Connection popover
     And I tap Connect button on Outgoing Connection popover
     And I do not see Outgoing Connection popover
     And I swipe right to show the conversations list
-    And I close People Picker
+    And I close Search
     Then I see the conversation <Contact> in my conversations list
 
     Examples:
@@ -145,14 +145,14 @@ Feature: Connect
     Given I see the Conversations list with no conversations
     And I wait until <ContactEmail> exists in backend search results
     When I open Search UI
-    And I enter "<ContactEmail>" into Search input on People Picker page
-    And I tap the found item <Contact> on People Picker page
+    And I enter "<ContactEmail>" into Search input on Search page
+    And I tap the found item <Contact> on Search page
     And I see Outgoing Connection popover
     And I see the name <Contact> on Outgoing Connection popover
     And I tap Connect button on Outgoing Connection popover
     And I do not see Outgoing Connection popover
     And I swipe right to show the conversations list
-    And I close People Picker
+    And I close Search
     Then I see the conversation <Contact> in my conversations list
 
     Examples:
@@ -168,13 +168,13 @@ Feature: Connect
     Given I see the Conversations list with no conversations
     And I wait until <ContactEmail> exists in backend search results
     When I open Search UI
-    And I enter "<ContactEmail>" into Search input on People Picker page
-    And I tap the found item <Contact> on People Picker page
+    And I enter "<ContactEmail>" into Search input on Search page
+    And I tap the found item <Contact> on Search page
     And I see Outgoing Connection popover
     And I see the name <Contact> on Outgoing Connection popover
     And I tap Connect button on Outgoing Connection popover
     And I do not see Outgoing Connection popover
-    And I close People Picker
+    And I close Search
     Then I see the conversation <Contact> in my conversations list
 
     Examples:
@@ -199,14 +199,14 @@ Feature: Connect
     And I do not see the conversation <WaitingMess> in my conversations list
     And I wait until <Contact> exists in backend search results
     And I open Search UI
-    And I enter "<Contact>" into Search input on People Picker page
-    And I tap the found item <Contact> on People Picker page
+    And I enter "<Contact>" into Search input on Search page
+    And I tap the found item <Contact> on Search page
     And I see Incoming Connection popover
     And I see the name <Contact> on Incoming Connection popover
     And I tap Accept button on Incoming Connection popover
     And I do not see Incoming Connection popover
     And I swipe right to show the conversations list
-    And I close People Picker
+    And I close Search
     Then I see the conversation <Contact> in my conversations list
 
     Examples:
@@ -228,13 +228,13 @@ Feature: Connect
     And I do not see the conversation <WaitingMess> in my conversations list
     And I wait until <Contact> exists in backend search results
     And I open Search UI
-    And I enter "<Contact>" into Search input on People Picker page
-    And I tap the found item <Contact> on People Picker page
+    And I enter "<Contact>" into Search input on Search page
+    And I tap the found item <Contact> on Search page
     And I see Incoming Connection popover
     And I see the name <Contact> on Incoming Connection popover
     And I tap Accept button on Incoming Connection popover
     And I do not see Incoming Connection popover
-    And I close People Picker
+    And I close Search
     Then I see the conversation <Contact> in my conversations list
 
     Examples:

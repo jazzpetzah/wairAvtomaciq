@@ -169,7 +169,7 @@ Feature: Like
     And I navigate back from conversation
     And I swipe right on a <Contact>
     And I select DELETE from conversation settings menu
-    And I press DELETE on the confirm alert
+    And I tap DELETE on the confirm alert
     And User <Contact> likes the recent message from user Myself via device <Device>
     Then I see Conversations list with no conversations
 
@@ -305,7 +305,7 @@ Feature: Like
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap Share Location container in the conversation view
-    And I press Back button until Wire app is in foreground in 10 seconds
+    And I tap Back button until Wire app is in foreground in 10 seconds
     And I remember the state of like button
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed
@@ -325,7 +325,7 @@ Feature: Like
     When I tap on conversation name <Contact>
     And I type the message "<Url>" and send it by cursor Send button
     And I tap Link Preview container in the conversation view
-    And I press Back button until Wire app is in foreground in 10 seconds
+    And I tap Back button until Wire app is in foreground in 10 seconds
     And I remember the state of like button
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed

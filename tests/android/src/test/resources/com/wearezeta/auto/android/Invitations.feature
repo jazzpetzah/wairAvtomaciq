@@ -31,7 +31,7 @@ Feature: Invitations
     Given I verify user <Contact> has received an email invitation
     Given I see welcome screen
     When I hide keyboard
-    And I press back button
+    And I tap back button
     And I broadcast the invitation for <ContactEmail>
     And I restore the application
     And I input password "<ContactPassword>"
@@ -83,8 +83,8 @@ Feature: Invitations
     And I open Search UI
     And I see user <Contact> in Contact list
     And I tap Invite button next to <Contact> in Contact list
-    And I press back button
-    And I press Clear button
+    And I tap back button
+    And I tap Clear button
     Then I see Conversations list with name <Contact>
     When I tap on conversation name <Contact>
     Then I see outgoing pending connection to <Contact>
