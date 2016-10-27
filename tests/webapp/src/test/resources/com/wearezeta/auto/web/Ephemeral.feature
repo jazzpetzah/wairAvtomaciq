@@ -338,3 +338,45 @@ Feature: Ephemeral
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size | Time | TimeLong  | TimeShortUnit |
       | user1Email | user1Password | user1Name | user2Name | C123938.txt | 5MB  | 5    | 5 seconds | s             |
+
+  @C261726 @ephemeral @staging
+  Scenario Outline: Verify ephemeral messages are not sent to my other devices
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Email1> and password <Password>
+    Given I am signed in properly
+    Given I open preferences by clicking the gear button
+    Given I click logout in account preferences
+    Given I see the clear data dialog
+    Given I click logout button on clear data dialog
+    Given I see Sign In page
+    When I enter email "<Email1>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    Then I see the history info page
+    When I click confirm on history info page
+    And I am signed in properly
+    When I open conversation with <Contact>
+    And I click on ephemeral button
+    And I set the timer for ephemeral to <TimeLong>
+    Then I see <Time> with unit <TimeShortUnit> on ephemeral button
+    And I see placeholder of conversation input is Timed message
+    When I write message <Message>
+    And I send message
+    Then I see text message <Message>
+    And I see timer next to the last message
+    And I see 2 messages in conversation
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
+    And I see Sign In page
+    And I Sign in using login <Email1> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact>
+    And I see 1 messages in conversation
+    Then I do not see text message <Message>
+    And I see 0 message in database from <Name> in active conversation
+
+    Examples:
+      | Email1     | Password      | Name      | Contact   | Time | TimeLong | TimeShortUnit | Message |
+      | user1Email | user1Password | user1Name | user2Name | 1    | 1 day    | d             | Hello   |
