@@ -54,7 +54,6 @@ Feature: Ephemeral Messages
     Given I tap Hourglass button in conversation view
     Given I set ephemeral messages expiration timer to <Timeout> seconds
     Given I type the default message and send it
-    Given I see 1 default message in the conversation view
     When I remember the recent message from user Myself in the local database
     And I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
     And I wait for <Timeout> seconds
