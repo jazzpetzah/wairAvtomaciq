@@ -7,6 +7,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -234,9 +235,8 @@ public class IOSSimulatorHelpers {
     }
 
     public static String getLogsAndCrashes() throws Exception {
-        final String simId = getId();
         final File logFile = new File(String.format("%s/Library/Logs/CoreSimulator/%s/system.log",
-                System.getProperty("user.home"), simId));
+                System.getProperty("user.home"), getId()));
         final StringBuilder result = new StringBuilder();
         if (logFile.exists()) {
             result.append(new String(Files.readAllBytes(logFile.toPath()), Charset.forName("UTF-8")));
@@ -255,9 +255,16 @@ public class IOSSimulatorHelpers {
     private static final int COMMAND_TIMEOUT_SECONDS = 60;
 
     private static String getCommandOutput(String... cmd) throws Exception {
+        return getCommandOutput(COMMAND_TIMEOUT_SECONDS, cmd);
+    }
+
+    private static String getCommandOutput(int timeoutSeconds, String... cmd) throws Exception {
         log.debug(String.format("Executing: %s", Arrays.toString(cmd)));
         final Process process = new ProcessBuilder(cmd).redirectErrorStream(true).start();
-        process.waitFor(COMMAND_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        if (!process.waitFor(timeoutSeconds, TimeUnit.SECONDS)) {
+            throw new TimeoutException(String.format("'%s' command execution has expired after %s seconds timeout",
+                    Arrays.toString(cmd), timeoutSeconds));
+        }
         final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         final StringBuilder builder = new StringBuilder();
         String line;
@@ -269,17 +276,25 @@ public class IOSSimulatorHelpers {
         return output;
     }
 
-    private static String executeXcRun(String verb, String... cmd) throws Exception {
+    private static String executeXcRun(String verb, int timeoutSeconds, String... cmd) throws Exception {
         final String[] firstCmdPart = new String[]{XCRUN_PATH, verb};
         final String[] fullCmd = ArrayUtils.addAll(firstCmdPart, cmd);
-        return getCommandOutput(fullCmd);
+        return getCommandOutput(timeoutSeconds, fullCmd);
+    }
+
+    private static String executeXcRun(String verb, String... cmd) throws Exception {
+        return executeXcRun(verb, COMMAND_TIMEOUT_SECONDS, cmd);
     }
 
     private static String executeSimctl(String... cmd) throws Exception {
         return executeXcRun("simctl", cmd);
     }
 
-    private static final String[] IOS_SIMULATOR_PROCESSES_NAMES = new String[] {
+    private static String executeSimctl(int timeoutSeconds, String... cmd) throws Exception {
+        return executeXcRun("simctl", timeoutSeconds, cmd);
+    }
+
+    private static final String[] IOS_SIMULATOR_PROCESSES_NAMES = new String[]{
             "Simulator", "osascript", "configd_sim", "xpcproxy_sim", "backboardd",
             "platform_launch_", "companionappd", "ids_simd", "launchd_sim",
             "CoreSimulatorBridge", "SimulatorBridge", "SpringBoard",
@@ -291,18 +306,23 @@ public class IOSSimulatorHelpers {
             "itunesstored", "profiled", "passd", "carkitd"
     };
 
-    public static void kill() throws Exception {
+    private static void kill() throws Exception {
         log.debug("Force killing Simulator app...");
         UnixProcessHelpers.killProcessesGracefully(IOS_SIMULATOR_PROCESSES_NAMES);
     }
 
+    private static final int SHUTDOWN_TIMEOUT_SECONDS = 5;
+
     public static void shutdown() throws Exception {
-        executeSimctl("shutdown", getId());
+        try {
+            executeSimctl(SHUTDOWN_TIMEOUT_SECONDS, "shutdown", getId());
+        } catch (TimeoutException e) {
+            kill();
+        }
     }
 
     public static void reset() throws Exception {
         shutdown();
-        kill();
         executeSimctl("erase", getId());
     }
 
@@ -382,9 +402,24 @@ public class IOSSimulatorHelpers {
         }
     }
 
+    public static List<File> getInternalApplicationsRoots() throws Exception {
+        final File internalApplicationsRoot = new File(
+                String.format("%s/data/Containers/Data/Application", getInternalFSRoot())
+        );
+        final File[] appRoots = internalApplicationsRoot.listFiles();
+        if (appRoots == null) {
+            return Collections.emptyList();
+        }
+        return Arrays.asList(appRoots);
+    }
+
+    public static String getInternalFSRoot() throws Exception {
+        return String.format("%s/Library/Developer/CoreSimulator/Devices/%s",
+                System.getProperty("user.home"), getId());
+    }
+
     public static List<File> locateFilesOnInternalFS(String name) throws Exception {
-        final File root = new File(String.format("%s/Library/Developer/CoreSimulator/Devices/%s",
-                System.getProperty("user.home"), getId()));
+        final File root = new File(getInternalFSRoot());
         if (!root.exists()) {
             return Collections.emptyList();
         }
@@ -420,17 +455,31 @@ public class IOSSimulatorHelpers {
     }
 
     public static void start() throws Exception {
+        if (UnixProcessHelpers.isProcessRunning("Simulator")) {
+            // Kill other simulator if running
+            kill();
+        }
         log.debug(getCommandOutput("/usr/bin/open", "-Fn", getApplicationPath(),
                 "--args",
                 "-ConnectHardwareKeyboard", "1",
                 "-CurrentDeviceUDID", getId(),
                 String.format("-SimulatorWindowLastScale-%s", getInternalDeviceType()), getDefaultScaleFactor())
         );
-        // This is to wait until simulator booting is completed
-        uninstallApp("com.wait_until_simulator.booted");
+        // This to to wait until simulator is started properly
+        uninstallApp("com.check_if_simulator.booted");
     }
 
     public static boolean isRunning() throws Exception {
-        return UnixProcessHelpers.isProcessRunning("Simulator");
+        if (!UnixProcessHelpers.isProcessRunning("Simulator")) {
+            return false;
+        }
+        final String id = getId();
+        final String output = executeSimctl("list");
+        for (String line : output.split("\n")) {
+            if (line.contains(id) && line.contains("Booted")) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -74,7 +74,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                         if (!appiumServer.isRunning() || ntry > 1) {
                             appiumServer.restart();
                             if (ntry > 1 && capabilities.getCapability("udid") == null) {
-                                IOSSimulatorHelpers.kill();
+                                IOSSimulatorHelpers.shutdown();
                                 IOSSimulatorHelpers.start();
                             }
                         }

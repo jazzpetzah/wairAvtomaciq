@@ -30,7 +30,6 @@ import cucumber.api.java.en.Then;
 import gherkin.formatter.model.Result;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
-import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.openqa.selenium.Capabilities;
@@ -122,7 +121,7 @@ public class CommonIOSSteps {
     private static final String KEYCHAIN_PASSWORD = "123456";
 
     // https://github.com/wireapp/wire-ios/pull/339
-    private static final String ARGS_FILE_PATH = "/tmp/wire_arguments.txt";
+    private static final String ARGS_FILE_NAME = "wire_arguments.txt";
 
     @SuppressWarnings("unchecked")
     public Future<ZetaIOSDriver> resetIOSDriver(String appPath,
@@ -198,11 +197,7 @@ public class CommonIOSSteps {
         capabilities.setCapability("processArguments", argsValue.toString());
 
         if (!isRealDevice) {
-            initSimulator(capabilities);
-            if (new DefaultArtifactVersion(getPlatformVersion()).compareTo(new DefaultArtifactVersion("10.0")) < 0) {
-                // Workaround for https://github.com/appium/appium/issues/7091
-                Files.write(Paths.get(ARGS_FILE_PATH), String.join(" ", processArgs).getBytes());
-            }
+            prepareSimulator(capabilities, processArgs);
         }
 
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance().resetDriver(
@@ -210,7 +205,19 @@ public class CommonIOSSteps {
         );
     }
 
-    private static void initSimulator(final Capabilities caps) throws Exception {
+    // We don't know Wire Application ID for sure,
+    // so we do create tmp folder for every application under the current simulator
+    private static List<File> createInternalWireTempRoots() throws Exception {
+        final List<File> result = new ArrayList<>();
+        for (File appRoot : IOSSimulatorHelpers.getInternalApplicationsRoots()) {
+            final File tmpRoot = new File(String.format("%s/tmp", appRoot.getCanonicalPath()));
+            tmpRoot.mkdirs();
+            result.add(tmpRoot);
+        }
+        return result;
+    }
+
+    private static void prepareSimulator(final Capabilities caps, final List<String> args) throws Exception {
         if (!IOSSimulatorHelpers.isRunning()) {
             IOSSimulatorHelpers.start();
         }
@@ -222,6 +229,13 @@ public class CommonIOSSteps {
         IOSSimulatorHelpers.installApp(IOSDistributable.getInstance(
                 (String) caps.getCapability("app")).getAppRoot()
         );
+
+        // if (new DefaultArtifactVersion(getPlatformVersion()).compareTo(new DefaultArtifactVersion("10.0")) < 0) {
+        // Workaround for https://github.com/appium/appium/issues/7091
+        for (File tmpRoot : createInternalWireTempRoots()) {
+            final File argsFile = new File(String.format("%s/%s", tmpRoot.getCanonicalPath(), ARGS_FILE_NAME));
+            Files.write(argsFile.toPath(), String.join(" ", args).getBytes());
+        }
     }
 
     @Before
