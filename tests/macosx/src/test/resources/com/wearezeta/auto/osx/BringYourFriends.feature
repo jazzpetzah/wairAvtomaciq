@@ -29,7 +29,8 @@ Feature: Bring Your Friends
     And I click button to import contacts from Gmail
     And I see Google login popup
     And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456!
-    Then I see more than 5 suggestions in people picker
+    Then I see Search is opened
+    And I see more than 5 suggestions in people picker
 
     Examples:
       | Login      | Password      | Name      |
