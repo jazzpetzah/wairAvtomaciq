@@ -370,7 +370,7 @@ Feature: Connect
     And I navigate back to conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search UI
-    And I accept alert
+    And I accept alert if visible
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
