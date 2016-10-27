@@ -163,7 +163,7 @@ Feature: Ephemeral Message
 
     Examples:
       | Name      | Contact   | ContactDevice | Message1 | Message2 | EphemeralTimeout1 | EphemeralTimeout2 | EphemeralStatus |
-      | user1Name | user2Name | d1            | y1       | y2       | 5                 | 15                | left            |
+      | user1Name | user2Name | d1            | y1       | y2       | 15                | 5                 | left            |
 
   @C261710 @staging
   Scenario Outline: Verify the message is deleted on the sender side when it's read on the receiver side
