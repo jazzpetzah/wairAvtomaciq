@@ -70,8 +70,7 @@ public class CommonAndroidSteps {
     private static final Logger log = ZetaLogger.getLog(CommonAndroidSteps.class.getSimpleName());
 
     private final ElementState screenState = new ElementState(() -> pagesCollection.getCommonPage().takeScreenshot()
-            .orElseThrow(() -> new IllegalStateException("Cannot take a screenshot of the whole screen"))
-    );
+            .orElseThrow(() -> new IllegalStateException("Cannot take a screenshot of the whole screen")));
 
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
