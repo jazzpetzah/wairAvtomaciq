@@ -18,6 +18,9 @@ Feature: Delete
     And I send picture <Picture1> to the current conversation
     And I see sent picture <Picture1> in the conversation view
     And I send picture <Picture2> to the current conversation
+# FIX FIREFOX step is needed to wait until seconds picture is properly loaded
+# otherwise it would check the first picture and does a wrong comparison
+    And I see only 2 pictures in the conversation
     And I see sent picture <Picture2> in the conversation view
     And I see 4 messages in conversation
     And I click context menu of the last message
