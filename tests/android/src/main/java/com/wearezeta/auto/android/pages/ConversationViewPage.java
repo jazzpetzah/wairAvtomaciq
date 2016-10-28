@@ -260,6 +260,8 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final int CONTAINER_VISIBILITY_TIMEOUT_SECONDS = 20;
 
+    private static final int TYPING_VISIBILITY_TIMEOUT_SECONDS = 40;
+
     public enum MessageIndexLocator {
         FIRST(xpathFirstConversationMessage),
         LAST(xpathLastConversationMessage);
@@ -424,7 +426,7 @@ public class ConversationViewPage extends AndroidPage {
             buffer.append(String.format(" and contains(@value,'%s')", name.toLowerCase().trim()));
         }
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathCursorTypingIndicatorByContainsQuery.apply(buffer.toString())), CONTAINER_VISIBILITY_TIMEOUT_SECONDS);
+                By.xpath(xpathCursorTypingIndicatorByContainsQuery.apply(buffer.toString())), TYPING_VISIBILITY_TIMEOUT_SECONDS);
     }
 
     private By getCursorToolButtonLocatorByName(String name) {
