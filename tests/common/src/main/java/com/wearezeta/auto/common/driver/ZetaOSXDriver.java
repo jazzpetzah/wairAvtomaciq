@@ -62,7 +62,7 @@ public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDrive
     }
 
     private WireRemoteWebElement wrapElement(WebElement element) {
-        return new WireRemoteWebElement((RemoteWebElement)element);
+        return new WireRemoteWebElement((RemoteWebElement) element);
     }
 
     @Override
@@ -131,8 +131,8 @@ public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDrive
             throw new WebDriverException("Unsupported OutputType selection");
         }
     }
-    
-    public Robot getRobot(){
+
+    public Robot getRobot() {
         return robot;
     }
 
@@ -160,7 +160,7 @@ public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDrive
         public WireRemoteWebElement(RemoteWebElement element) {
             this.originalElement = element;
         }
-        
+
         @Override
         public String getId() {
             return originalElement.getId();
@@ -269,8 +269,9 @@ public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDrive
                         elLocation.getX(), elLocation.getY(), elSize.getWidth(), elSize.getHeight())));
             } else if (OutputType.FILE.equals(outputType)) {
                 throw new WebDriverException("File screenshot not supported yet");
+            } else {
+                throw new WebDriverException("Unsupported OutputType selection");
             }
-            return null;
         }
 
         @Override
@@ -295,7 +296,7 @@ public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDrive
             private final WireRemoteWebElement window;
 
             public ZetaRemoteWindow(WebElement window) {
-                this.window = new WireRemoteWebElement((RemoteWebElement)window);
+                this.window = new WireRemoteWebElement((RemoteWebElement) window);
             }
 
             public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException {

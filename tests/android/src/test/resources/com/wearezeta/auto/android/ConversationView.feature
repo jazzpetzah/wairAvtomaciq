@@ -24,7 +24,6 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to me
     Given I sign in using my email or phone number
-    #When If we silence contact or group to myself before login >> we getting force email login screen
     Given <Contact1> is silenced to user <Name>
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations

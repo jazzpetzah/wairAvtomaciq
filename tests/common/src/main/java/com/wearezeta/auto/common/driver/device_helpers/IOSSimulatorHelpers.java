@@ -28,6 +28,14 @@ public class IOSSimulatorHelpers {
 
     private static final String TESTING_IMAGE_NAME = "testing.jpg";
 
+    private static final long INSTALL_SYNC_TIMEOUT_MS = 3000;
+
+    private static final long SIMULATOR_BOOT_TIMEOUT_MS = 80000;
+    private static final long SIMULATOR_BOOTING_INTERVAL_CHECK_MS = SIMULATOR_BOOT_TIMEOUT_MS / 20;
+
+    private static final String XCRUN_PATH = "/usr/bin/xcrun";
+    private static final long COMMAND_TIMEOUT_MS = SIMULATOR_BOOT_TIMEOUT_MS / 2;
+
     private static Logger log = ZetaLogger.getLog(IOSSimulatorHelpers.class.getSimpleName());
 
     public IOSSimulatorHelpers() {
@@ -250,20 +258,16 @@ public class IOSSimulatorHelpers {
         return result.toString();
     }
 
-    private static final String XCRUN_PATH = "/usr/bin/xcrun";
-
-    private static final int COMMAND_TIMEOUT_SECONDS = 60;
-
     private static String getCommandOutput(String... cmd) throws Exception {
-        return getCommandOutput(COMMAND_TIMEOUT_SECONDS, cmd);
+        return getCommandOutput(COMMAND_TIMEOUT_MS, cmd);
     }
 
-    private static String getCommandOutput(int timeoutSeconds, String... cmd) throws Exception {
+    private static String getCommandOutput(long timeoutMs, String... cmd) throws Exception {
         log.debug(String.format("Executing: %s", Arrays.toString(cmd)));
         final Process process = new ProcessBuilder(cmd).redirectErrorStream(true).start();
-        if (!process.waitFor(timeoutSeconds, TimeUnit.SECONDS)) {
+        if (!process.waitFor(timeoutMs, TimeUnit.MILLISECONDS)) {
             throw new TimeoutException(String.format("'%s' command execution has expired after %s seconds timeout",
-                    Arrays.toString(cmd), timeoutSeconds));
+                    Arrays.toString(cmd), timeoutMs / 1000));
         }
         final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         final StringBuilder builder = new StringBuilder();
@@ -276,14 +280,14 @@ public class IOSSimulatorHelpers {
         return output;
     }
 
-    private static String executeXcRun(String verb, int timeoutSeconds, String... cmd) throws Exception {
+    private static String executeXcRun(String verb, long timeoutMs, String... cmd) throws Exception {
         final String[] firstCmdPart = new String[]{XCRUN_PATH, verb};
         final String[] fullCmd = ArrayUtils.addAll(firstCmdPart, cmd);
-        return getCommandOutput(timeoutSeconds, fullCmd);
+        return getCommandOutput(timeoutMs, fullCmd);
     }
 
     private static String executeXcRun(String verb, String... cmd) throws Exception {
-        return executeXcRun(verb, COMMAND_TIMEOUT_SECONDS, cmd);
+        return executeXcRun(verb, COMMAND_TIMEOUT_MS, cmd);
     }
 
     private static String executeSimctl(String... cmd) throws Exception {
@@ -303,7 +307,7 @@ public class IOSSimulatorHelpers {
             "routined", "assetsd", "mstreamd", "healthd", "MobileCal",
             "callservicesd", "revisiond", "touchsetupd", "calaccessd",
             "ServerFileProvider", "mobileassetd", "IMDPersistenceAgent",
-            "itunesstored", "profiled", "passd", "carkitd"
+            "itunesstored", "profiled", "passd", "carkitd", "xcrun"
     };
 
     private static void kill() throws Exception {
@@ -326,19 +330,19 @@ public class IOSSimulatorHelpers {
         executeSimctl("erase", getId());
     }
 
-    private static final long INSTALL_SYNC_TIMEOUT_MS = 3000;
-
-    private static final long SIMULATOR_BOOTING_INTERVAL_CHECK_MS = 5000;
-    private static final long SIMULATOR_BOOT_TIMEOUT_MS = 80000;
-
-
     private static String retryUntilSimulatorBooted(FunctionalInterfaces.ISupplierWithException<String> f)
             throws Exception {
         final long msStarted = System.currentTimeMillis();
         do {
-            final String output = f.call();
-            if (!output.contains("No devices are booted")) {
-                return output;
+            try {
+                final String output = f.call();
+                if (!output.contains("No devices are booted")) {
+                    return output;
+                }
+            } catch (InterruptedException e) {
+                throw e;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             Thread.sleep(SIMULATOR_BOOTING_INTERVAL_CHECK_MS);
         } while (System.currentTimeMillis() - msStarted <= SIMULATOR_BOOT_TIMEOUT_MS);
