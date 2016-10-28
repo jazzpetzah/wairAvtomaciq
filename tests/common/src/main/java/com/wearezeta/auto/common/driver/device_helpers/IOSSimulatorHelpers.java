@@ -296,8 +296,8 @@ public class IOSSimulatorHelpers {
         return executeXcRun("simctl", cmd);
     }
 
-    private static String executeSimctl(int timeoutSeconds, String... cmd) throws Exception {
-        return executeXcRun("simctl", timeoutSeconds, cmd);
+    private static String executeSimctl(long timeoutMs, String... cmd) throws Exception {
+        return executeXcRun("simctl", timeoutMs, cmd);
     }
 
     private static final String[] DEPENDENT_PROCESSES_NAMES = new String[]{
@@ -310,11 +310,11 @@ public class IOSSimulatorHelpers {
         UnixProcessHelpers.killProcessesGracefully(DEPENDENT_PROCESSES_NAMES);
     }
 
-    private static final int SHUTDOWN_TIMEOUT_SECONDS = 5;
+    private static final long SHUTDOWN_TIMEOUT_MS = 5000;
 
     public static void shutdown() throws Exception {
         try {
-            executeSimctl(SHUTDOWN_TIMEOUT_SECONDS, "shutdown", getId());
+            executeSimctl(SHUTDOWN_TIMEOUT_MS, "shutdown", getId());
             Thread.sleep(1000);
         } catch (TimeoutException e) {
             e.printStackTrace();
