@@ -18,6 +18,8 @@ Feature: Connect
     And I tap on user name found on Search page <Contact>
     Then I see connect to <Contact> dialog
     When I tap Connect button on connect to page
+    #wait UI animation to finish
+    And I wait for 1 second
     Then I see Search page
     When I tap Clear button
     Then I see Conversations list with name <Contact>
