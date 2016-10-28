@@ -451,5 +451,5 @@ Feature: Ephemeral
     And I do not see any picture in the conversation view
 
     Examples:
-      | Login      | Login2     | Password      | Name      | Contact   | Time | TimeLong  | TimeShortUnit | PictureName               |
-      | user1Email | user2Email | user1Password | user1Name | user2Name | 5    | 5 seconds | s             | userpicture_landscape.jpg |
+      | Login      | Login2     | Password      | Name      | Contact   | Time  | TimeLong   | TimeShortUnit | PictureName               |
+      | user1Email | user2Email | user1Password | user1Name | user2Name | 15    | 15 seconds | s             | userpicture_landscape.jpg |
