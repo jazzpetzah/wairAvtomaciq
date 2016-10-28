@@ -396,8 +396,7 @@ public class CommonAndroidSteps {
      */
     @Given("^(\\w+) (?:wait|waits) until (\\d+) (?:person|people) (?:is|are) in the Top People list on the backend$")
     public void UserWaitsUntilContactExistsInTopPeopleResults(String searchByNameAlias, int size) throws Exception {
-        commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(
-                searchByNameAlias, size);
+        commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(searchByNameAlias, size);
     }
 
     /**
@@ -548,13 +547,11 @@ public class CommonAndroidSteps {
     public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent(String shouldBeEqual) throws Exception {
         final int timeoutSeconds = 10;
         if (shouldBeEqual == null) {
-            Assert.assertTrue(
-                    String.format("The current screen state seems to be similar to the previous one after %s seconds",
-                            timeoutSeconds), screenState.isChanged(timeoutSeconds, 0.98));
+            Assert.assertTrue(String.format("The current screen state seems to be similar to the previous one after %s " +
+                    "seconds", timeoutSeconds), screenState.isChanged(timeoutSeconds, 0.98));
         } else {
-            Assert.assertTrue(
-                    String.format("The current screen state seems to be different to the previous one after %s seconds",
-                            timeoutSeconds), screenState.isNotChanged(timeoutSeconds, 0.75));
+            Assert.assertTrue(String.format("The current screen state seems to be different to the previous one after %s " +
+                    "seconds", timeoutSeconds), screenState.isNotChanged(timeoutSeconds, 0.75));
         }
     }
 
@@ -644,8 +641,8 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Silences a given user from the perspective of the another user through
-     * the backend
+     * Silences a given user from the perspective of the another user through the backend
+     * Note: should be used after login
      *
      * @param mutedUser the user to silence
      * @param otherUser the user who does the silencing
@@ -671,7 +668,6 @@ public class CommonAndroidSteps {
     public void GroupGetsSilenced(String mutedGroup, String otherUser) throws Throwable {
         mutedGroup = usrMgr.replaceAliasesOccurences(mutedGroup, ClientUsersManager.FindBy.NAME_ALIAS);
         otherUser = usrMgr.findUserByNameOrNameAlias(otherUser).getName();
-
         commonSteps.MuteConversationWithGroup(otherUser, mutedGroup);
     }
 
@@ -701,8 +697,8 @@ public class CommonAndroidSteps {
      * @step. ^(.*) has group chat (.*) with (.*)$
      */
     @Given("^(.*) has group chat (.*) with (.*)$")
-    public void UserHasGroupChatWithContacts(String chatOwnerNameAlias, String chatName,
-                                             String otherParticipantsNameAliases) throws Exception {
+    public void UserHasGroupChatWithContacts(String chatOwnerNameAlias, String chatName, String otherParticipantsNameAliases)
+            throws Exception {
         commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName, otherParticipantsNameAliases);
     }
 
@@ -764,8 +760,8 @@ public class CommonAndroidSteps {
      * @step. ^User (\\w+) (securely )?pings? conversation (.*)$
      */
     @When("^User (\\w+) (securely )?pings? conversation (.*)$")
-    public void UserPingedConversation(String pingFromUserNameAlias,
-                                       String isSecure, String dstConversationName) throws Exception {
+    public void UserPingedConversation(String pingFromUserNameAlias, String isSecure, String dstConversationName)
+            throws Exception {
         if (isSecure == null) {
             commonSteps.UserPingedConversation(pingFromUserNameAlias, dstConversationName);
         } else {
@@ -799,11 +795,9 @@ public class CommonAndroidSteps {
      * @step. ^User (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$
      */
     @When("^User (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
-    public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
-                                              String msg, String deviceName, String convoType, String dstConvoName) throws
-            Exception {
-        final String msgToSend = (msg == null || msg.trim().length() == 0) ?
-                CommonUtils.generateRandomString(10) : msg.trim();
+    public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted, String msg, String deviceName,
+                                              String convoType, String dstConvoName) throws Exception {
+        final String msgToSend = (msg == null || msg.trim().length() == 0) ? CommonUtils.generateRandomString(10) : msg.trim();
         if (convoType.equals("user")) {
             if (isEncrypted == null) {
                 commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
@@ -1004,8 +998,7 @@ public class CommonAndroidSteps {
     @Given("^My device runs Android (.*) or higher$")
     public void MyDeviceRunsAndroid(String targetVersion) throws Exception {
         if (AndroidCommonUtils.compareAndroidVersion(targetVersion) < 0) {
-            throw new PendingException(
-                    "This test isn't suitable to run on " + "anything lower than Android " + targetVersion);
+            throw new PendingException("This test isn't suitable to run on " + "anything lower than Android " + targetVersion);
         }
     }
 
@@ -1849,8 +1842,7 @@ public class CommonAndroidSteps {
      */
     @When("^I unregister GCM push token in (\\d+) seconds$")
     public void IUnresgisterGCMToekn(int timeoutSeconds) throws Exception {
-        Optional<String> pushToken = CommonUtils.waitUntil(
-                timeoutSeconds,
+        Optional<String> pushToken = CommonUtils.waitUntil( timeoutSeconds,
                 CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
                 () -> {
                     String GCMTokenOutput = AndroidLogListener.getInstance(ListenerType.GCMToken).getStdOut();
