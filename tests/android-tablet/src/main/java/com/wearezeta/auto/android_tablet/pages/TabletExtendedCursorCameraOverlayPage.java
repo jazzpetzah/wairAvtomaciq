@@ -1,7 +1,7 @@
 package com.wearezeta.auto.android_tablet.pages;
 
 
-import com.wearezeta.auto.android.pages.ExtendedCursorCameraOverlayPage;
+import com.wearezeta.auto.android.pages.cursor.CameraOverlayPage;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 import java.util.concurrent.Future;
@@ -11,8 +11,8 @@ public class TabletExtendedCursorCameraOverlayPage extends AndroidTabletPage {
         super(lazyDriver);
     }
 
-    private ExtendedCursorCameraOverlayPage getExtendedCursorCameraOverlayPage() throws Exception {
-        return this.getAndroidPageInstance(ExtendedCursorCameraOverlayPage.class);
+    private CameraOverlayPage getExtendedCursorCameraOverlayPage() throws Exception {
+        return this.getAndroidPageInstance(CameraOverlayPage.class);
     }
 
     public void tapOnButton(String buttonName) throws Exception {

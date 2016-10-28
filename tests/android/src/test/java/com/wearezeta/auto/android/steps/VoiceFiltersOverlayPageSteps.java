@@ -1,6 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
-import com.wearezeta.auto.android.pages.VoiceFiltersOverlayPage;
+import com.wearezeta.auto.android.pages.cursor.VoiceFiltersOverlayPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;

@@ -1,4 +1,4 @@
-package com.wearezeta.auto.android.pages;
+package com.wearezeta.auto.android.pages.cursor;
 
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-public class ExtendedCursorCameraOverlayPage extends ExtendedCursorOverlayPage {
+public class CameraOverlayPage extends CursorOverlayPage {
 
     private static final String strIdPictureThumbnail = "iv__cursor_gallery_item";
 
@@ -31,7 +31,7 @@ public class ExtendedCursorCameraOverlayPage extends ExtendedCursorOverlayPage {
 
     private static final int NUMBER_OF_EACH_COLUMN = 3;
 
-    public ExtendedCursorCameraOverlayPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+    public CameraOverlayPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
