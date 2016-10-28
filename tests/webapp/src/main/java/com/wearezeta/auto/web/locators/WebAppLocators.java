@@ -160,7 +160,7 @@ public final class WebAppLocators {
         public static final Function<String, String> xpathMuteIconByContactName = (
                 name) -> String.format(
                 "//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/following::"
-                        + "*[@data-uie-name='status-silence']", name);
+                        + "*[@data-uie-name='status-silence' and contains(@class, 'conversation-muted')]", name);
 
         // leave warning
         public static final String cssLeaveModal = ".modal-leave";
