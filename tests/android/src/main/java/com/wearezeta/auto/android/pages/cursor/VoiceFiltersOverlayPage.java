@@ -1,6 +1,5 @@
 package com.wearezeta.auto.android.pages.cursor;
 
-import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import org.openqa.selenium.By;
@@ -8,7 +7,7 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-public class VoiceFiltersOverlayPage extends AndroidPage {
+public class VoiceFiltersOverlayPage extends CursorOverlayPage {
 
     private static final By idVoiceRecordingContainer = By.id("vfc");
     private static final By idRecordButton = By.id("gtv__record_button");

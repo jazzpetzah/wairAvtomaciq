@@ -1,7 +1,6 @@
 package com.wearezeta.auto.android.pages.cursor;
 
 
-import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import org.openqa.selenium.By;
@@ -9,7 +8,7 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-public class EmojiKeyboardOverlayPage extends AndroidPage {
+public class EmojiKeyboardOverlayPage extends CursorOverlayPage {
     public EmojiKeyboardOverlayPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }

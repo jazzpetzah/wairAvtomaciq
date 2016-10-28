@@ -3,7 +3,7 @@ package com.wearezeta.auto.android.steps;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.common.AbstractPagesCollection;
 
-final class AndroidPagesCollection extends AbstractPagesCollection<AndroidPage> {
+public final class AndroidPagesCollection extends AbstractPagesCollection<AndroidPage> {
 
     private static AndroidPagesCollection instance = null;
 
