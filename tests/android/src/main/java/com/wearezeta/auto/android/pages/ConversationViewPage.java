@@ -424,7 +424,7 @@ public class ConversationViewPage extends AndroidPage {
             buffer.append(String.format(" and contains(@value,'%s')", name.toLowerCase().trim()));
         }
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathCursorTypingIndicatorByContainsQuery.apply(buffer.toString())));
+                By.xpath(xpathCursorTypingIndicatorByContainsQuery.apply(buffer.toString())), CONTAINER_VISIBILITY_TIMEOUT_SECONDS);
     }
 
     private By getCursorToolButtonLocatorByName(String name) {
