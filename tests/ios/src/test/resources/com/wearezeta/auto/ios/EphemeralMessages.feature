@@ -64,7 +64,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timeout | EphemeralTimeLabel |
       | user1Name | user2Name | 15      | seconds            |
 
-  @C259597 @staging @fastLogin
+  @C259597 @regression @fastLogin
   Scenario Outline: Verify the message is deleted on the sender side when it's read on the receiver side
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -108,7 +108,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer |
       | user1Name | user2Name | 15    |
 
-  @C259588 @staging @fastLogin
+  @C259588 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral picture
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -134,7 +134,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer | DeviceName |
       | user1Name | user2Name | 15    | myDevice2  |
 
-  @C310632 @staging @fastLogin
+  @C310632 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral audio message
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -156,7 +156,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer | DeviceName |
       | user1Name | user2Name | 15    | myDevice2  |
 
-  @C310633 @staging @fastLogin
+  @C310633 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral video message
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -208,7 +208,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer | DeviceName |
       | user1Name | user2Name | 15    | myDevice2  |
 
-  @C310635 @staging @fastLogin
+  @C310635 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral file share
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -233,7 +233,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer | ItemName                   | DeviceName |
       | user1Name | user2Name | 15    | FTRANSFER_MENU_DEFAULT_PNG | myDevice2  |
 
-  @C310636 @staging @fastLogin
+  @C310636 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral GIF
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -258,7 +258,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer | GiphyTag | DeviceName |
       | user1Name | user2Name | 15    | sun      | myDevice2  |
 
-  @C310637 @staging @fastLogin
+  @C310637 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral media link
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -280,7 +280,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer | SoundCloudLink                                                   |
       | user1Name | user2Name | 15    | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
-  @C311066 @staging @fastLogin
+  @C311066 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral link preview
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
