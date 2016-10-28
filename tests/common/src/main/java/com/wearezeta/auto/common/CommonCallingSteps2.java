@@ -392,7 +392,7 @@ public final class CommonCallingSteps2 {
             Thread.sleep(POLLING_FREQUENCY_MILLISECONDS);
         }
         throw new TimeoutException(String.format("Call status '%s' for instance '%s' has not been changed to '%s' after %s " +
-                "second(s) timeout", currentStatus.toString(), instance.getId(), expectedStatuses, secondsTimeout));
+                "second(s) timeout", currentStatus, instance.getId(), expectedStatuses, secondsTimeout));
     }
 
     private static String makeKey(ClientUser from) {
