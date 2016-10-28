@@ -260,7 +260,7 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final int CONTAINER_VISIBILITY_TIMEOUT_SECONDS = 20;
 
-    private static final int TYPING_VISIBILITY_TIMEOUT_SECONDS = 40;
+    private static final int TYPING_VISIBILITY_TIMEOUT_SECONDS = 60;
 
     public enum MessageIndexLocator {
         FIRST(xpathFirstConversationMessage),
