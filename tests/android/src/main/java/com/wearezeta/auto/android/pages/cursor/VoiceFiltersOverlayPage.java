@@ -1,5 +1,6 @@
-package com.wearezeta.auto.android.pages;
+package com.wearezeta.auto.android.pages.cursor;
 
+import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import org.openqa.selenium.By;

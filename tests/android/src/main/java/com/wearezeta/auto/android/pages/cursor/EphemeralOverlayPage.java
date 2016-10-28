@@ -1,4 +1,4 @@
-package com.wearezeta.auto.android.pages;
+package com.wearezeta.auto.android.pages.cursor;
 
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -9,9 +9,9 @@ import org.openqa.selenium.WebElement;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-public class ExtendedCursorEphemeralOverlayPage extends ExtendedCursorOverlayPage {
+public class EphemeralOverlayPage extends CursorOverlayPage {
 
-    public ExtendedCursorEphemeralOverlayPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+    public EphemeralOverlayPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
