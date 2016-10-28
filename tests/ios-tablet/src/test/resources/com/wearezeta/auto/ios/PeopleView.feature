@@ -9,7 +9,7 @@ Feature: People View
     Given I wait until <Contact1> exists in backend search results
     Given I wait until <Contact2> exists in backend search results
     When I open search UI
-    And I accept alert
+    And I accept alert if visible
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
@@ -33,7 +33,7 @@ Feature: People View
     Given I wait until <Contact1> exists in backend search results
     Given I wait until <Contact2> exists in backend search results
     When I open search UI
-    And I accept alert
+    And I accept alert if visible
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
@@ -650,7 +650,7 @@ Feature: People View
     And I select Also Leave option on Delete conversation confirmation
     And I confirm delete conversation content
     And I open search UI
-    And I accept alert
+    And I accept alert if visible
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
@@ -679,7 +679,7 @@ Feature: People View
     And I select Also Leave option on Delete conversation confirmation
     And I confirm delete conversation content
     And I open search UI
-    And I accept alert
+    And I accept alert if visible
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
@@ -709,7 +709,7 @@ Feature: People View
     And I tap Delete action button
     And I confirm delete conversation content
     And I open search UI
-    And I accept alert
+    And I accept alert if visible
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
@@ -739,7 +739,7 @@ Feature: People View
     And I tap Delete action button
     And I confirm delete conversation content
     And I open search UI
-    And I accept alert
+    And I accept alert if visible
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
@@ -767,7 +767,7 @@ Feature: People View
     And I tap Delete action button
     And I confirm delete conversation content
     And I open search UI
-    And I accept alert
+    And I accept alert if visible
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
@@ -796,7 +796,7 @@ Feature: People View
     And I tap Delete action button
     And I confirm delete conversation content
     And I open search UI
-    And I accept alert
+    And I accept alert if visible
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result

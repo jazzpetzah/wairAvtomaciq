@@ -119,8 +119,8 @@ Feature: Ephemeral Messages
     Given I tap Hourglass button in conversation view
     Given I set ephemeral messages expiration timer to <Timer> seconds
     Given I tap Add Picture button from input tools
-    Given I accept alert
-    Given I accept alert
+    Given I accept alert if visible
+    Given I accept alert if visible
     Given I select the first picture from Keyboard Gallery
     Given I tap Confirm button on Picture preview page
     #wait to make the transition and image arrival
@@ -195,7 +195,7 @@ Feature: Ephemeral Messages
     Given I navigate back to conversations list
     Given I tap on contact name <Contact>
     Given I tap Share Location button from input tools
-    Given I accept alert
+    Given I accept alert if visible
     # Small delay waiting location detection animation to finish
     Given I wait for 5 seconds
     Given I tap Send location button from map view

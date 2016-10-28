@@ -7,13 +7,13 @@ Feature: Registration
     And I enter activation code
     And I accept terms of service
     And I input name <Name> and hit Enter
-    And I accept alert
+    And I accept alert if visible
     And I tap Choose Own Picture button
     And I tap Choose Photo button
-    And I accept alert
+    And I accept alert if visible
     And I select the first picture from Camera Roll
     And I tap Share Contacts button on Share Contacts overlay
-    And I accept alert
+    And I accept alert if visible
     Then I see conversations list
 
     Examples:
@@ -48,15 +48,15 @@ Feature: Registration
     And I enter activation code
     And I accept terms of service
     And I input name <Name> and hit Enter
-    And I accept alert
+    And I accept alert if visible
     And I tap Choose Own Picture button
     And I tap Take Photo button
-    And I accept alert
+    And I accept alert if visible
     And I tap Take Photo button on Camera page
     And I tap Confirm button on Picture preview page
     And I accept alert if visible
     And I tap Share Contacts button on Share Contacts overlay
-    And I accept alert
+    And I accept alert if visible
     And I tap settings gear button
     And I select settings item Account
     And I select settings item Picture
@@ -73,7 +73,7 @@ Feature: Registration
     Given I enter activation code
     Given I accept terms of service
     Given I input Non-English name <ArabicName> and hit Enter
-    Given I accept alert
+    Given I accept alert if visible
     Given I tap Keep This One button
     When I tap Not Now button on Share Contacts overlay
     Then I see conversations list

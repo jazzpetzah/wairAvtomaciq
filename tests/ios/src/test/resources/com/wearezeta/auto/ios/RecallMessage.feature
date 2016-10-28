@@ -74,8 +74,8 @@ Feature: Recall Message
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
-    And I accept alert
-    And I accept alert
+    And I accept alert if visible
+    And I accept alert if visible
     And I select the first picture from Keyboard Gallery
     And I tap Confirm button on Picture preview page
     And I see 1 photo in the conversation view

@@ -187,7 +187,7 @@ public abstract class IOSPage extends BasePage {
 
     public void acceptAlertIfVisible() throws Exception {
         try {
-            handleAlert(AlertAction.ACCEPT, DriverUtils.getDefaultLookupTimeoutSeconds());
+            handleAlert(AlertAction.ACCEPT, 3);
         } catch (IllegalStateException e) {
             // Ignore silently
         }
@@ -195,7 +195,7 @@ public abstract class IOSPage extends BasePage {
 
     public void dismissAlertIfVisible() throws Exception {
         try {
-            handleAlert(AlertAction.DISMISS, DriverUtils.getDefaultLookupTimeoutSeconds());
+            handleAlert(AlertAction.DISMISS, 3);
         } catch (IllegalStateException e) {
             // Ignore silently
         }

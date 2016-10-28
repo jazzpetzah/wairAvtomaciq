@@ -8,7 +8,7 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I tap Login button
-    And I accept alert
+    And I accept alert if visible
     And I accept First Time overlay
     And I dismiss settings warning
     Then I see conversations list
@@ -26,7 +26,7 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I tap Login button
-    And I accept alert
+    And I accept alert if visible
     And I accept First Time overlay
     And I dismiss settings warning
     Then I see conversations list
@@ -58,7 +58,7 @@ Feature: Sign In
     Given I switch to Phone Log In tab
     When I enter phone number for Myself
     When I enter login verification code for Myself
-    And I accept alert
+    And I accept alert if visible
     And I accept First Time overlay
     And I dismiss settings warning
     Then I see conversations list
@@ -76,7 +76,7 @@ Feature: Sign In
     Given I switch to Phone Log In tab
     When I enter phone number for Myself
     When I enter login verification code for Myself
-    And I accept alert
+    And I accept alert if visible
     Then I see set email/password suggestion page
     When I have entered login <Email>
     And I start activation email monitoring
@@ -145,7 +145,7 @@ Feature: Sign In
     Given I switch to Phone Log In tab
     And I enter phone number for Myself
     And I enter login verification code for Myself
-    And I accept alert
+    And I accept alert if visible
     And I see set email/password suggestion page
     And I have entered login <Email>
     And I start activation email monitoring
@@ -173,7 +173,7 @@ Feature: Sign In
     Given I switch to Phone Log In tab
     When I enter phone number for Myself
     When I enter login verification code for Myself
-    And I accept alert
+    And I accept alert if visible
     And I see set email/password suggestion page
     When I have entered login <Email>
     And I have entered password <Password>

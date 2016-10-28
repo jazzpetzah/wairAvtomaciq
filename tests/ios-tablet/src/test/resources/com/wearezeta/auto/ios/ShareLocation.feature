@@ -11,10 +11,9 @@ Feature: Share Location
     Given I see conversations list
     When I tap on contact name <Contact1>
     Then I see location map container in the conversation view
-    And I see the default received Share Location address in the conversation view
     When I tap on group chat with name <GroupChatName>
     And I tap Share Location button from input tools
-    And I accept alert
+    And I accept alert if visible
     # Small delay waiting location detection animation to finish(animation for iPad takes longer)
     And I wait for 10 seconds
     And I tap Send location button from map view

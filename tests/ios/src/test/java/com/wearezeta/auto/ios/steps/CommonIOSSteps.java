@@ -67,6 +67,9 @@ public class CommonIOSSteps {
     public static final String CAPABILITY_NAME_NO_UNINSTALL = "noUninstall";
     public static final String TAG_NAME_UPGRADE = "@upgrade";
 
+    public static final String CAPABILITY_NAME_FORCE_RESET = "forceReset";
+    public static final String TAG_NAME_FORCE_RESET = "@" + CAPABILITY_NAME_FORCE_RESET;
+
     static {
         System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
         System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "warn");
@@ -223,6 +226,9 @@ public class CommonIOSSteps {
         Exception storedException = null;
         do {
             try {
+                if (caps.is(CAPABILITY_NAME_FORCE_RESET)) {
+                    IOSSimulatorHelpers.reset();
+                }
                 if (ntry > 0 || !IOSSimulatorHelpers.isRunning()) {
                     IOSSimulatorHelpers.start();
                 }
@@ -302,6 +308,10 @@ public class CommonIOSSteps {
                 throw new NotImplementedException("Reset action is only available for Simulator");
             }
             additionalCaps.put("noReset", true);
+        }
+
+        if (scenario.getSourceTagNames().contains(TAG_NAME_FORCE_RESET)) {
+            additionalCaps.put(CAPABILITY_NAME_FORCE_RESET, true);
         }
 
         if (scenario.getSourceTagNames().contains(FastLoginContainer.TAG_NAME)) {

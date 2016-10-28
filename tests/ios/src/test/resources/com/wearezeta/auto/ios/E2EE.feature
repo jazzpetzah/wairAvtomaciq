@@ -169,7 +169,7 @@ Feature: E2EE
     And I have entered login <Login>
     And I have entered password <Password>
     And I tap Login button
-    And I accept alert
+    And I accept alert if visible
     Then I see First Time overlay
 
     Examples:

@@ -81,7 +81,7 @@ Feature: Settings
     And I select settings item Account
     And I start waiting for <Name> account removal notification
     And I select settings item Delete Account
-    And I accept alert
+    And I accept alert if visible
     Then I see sign in screen
     And I verify account removal notification is received
 
@@ -103,7 +103,7 @@ Feature: Settings
     And I tap Camera Roll button on Camera page
     # Wait for camera toll opening animation
     And I wait for 3 seconds
-    And I accept alert
+    And I accept alert if visible
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
     Then I wait up to <Timeout> seconds until my profile picture is changed
@@ -163,7 +163,7 @@ Feature: Settings
     Given I have entered login <Email>
     Given I have entered password <Password>
     Given I tap Login button
-    Given I accept alert
+    Given I accept alert if visible
     Given I tap Not Now to not add phone number
     Given I accept First Time overlay
     Given I dismiss settings warning
@@ -188,7 +188,7 @@ Feature: Settings
     Given I have entered login <Email>
     Given I have entered password <Password>
     Given I tap Login button
-    Given I accept alert
+    Given I accept alert if visible
     Given I tap Not Now to not add phone number
     Given I accept First Time overlay
     Given I dismiss settings warning
@@ -209,7 +209,7 @@ Feature: Settings
     Given I have entered login <Email>
     Given I have entered password <Password>
     Given I tap Login button
-    Given I accept alert
+    Given I accept alert if visible
     Given I tap Not Now to not add phone number
     Given I accept First Time overlay
     Given I dismiss settings warning
@@ -247,7 +247,7 @@ Feature: Settings
     And I select settings item Picture
     And I remember my current profile picture
     And I tap Take Photo button on Camera page
-    And I accept alert
+    And I accept alert if visible
     And I tap Take Photo button on Camera page
     And I tap Confirm button on Picture preview page
     Then I wait up to <Timeout> seconds until my profile picture is changed
@@ -263,10 +263,10 @@ Feature: Settings
     Given I enter activation code
     Given I accept terms of service
     Given I input name <Name> and hit Enter
-    Given I accept alert
+    Given I accept alert if visible
     Given I tap Keep This One button
     Given I tap Share Contacts button on Share Contacts overlay
-    Given I accept alert
+    Given I accept alert if visible
     Given I see conversations list
     Given I tap settings gear button
     Given I select settings item Account

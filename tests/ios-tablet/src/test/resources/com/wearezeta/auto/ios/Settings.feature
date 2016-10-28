@@ -130,7 +130,7 @@ Feature: Settings
     And I select settings item Picture
     And I remember my current profile picture
     And I tap Camera Roll button on Camera page
-    And I accept alert
+    And I accept alert if visible
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
     Then I wait up to <Timeout> seconds until my profile picture is changed
@@ -152,7 +152,7 @@ Feature: Settings
     And I select settings item Picture
     And I remember my current profile picture
     And I tap Camera Roll button on Camera page
-    And I accept alert
+    And I accept alert if visible
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
     Then I wait up to <Timeout> seconds until my profile picture is changed
@@ -233,7 +233,7 @@ Feature: Settings
     Given I have entered login <Email>
     Given I have entered password <Password>
     Given I tap Login button
-    Given I accept alert
+    Given I accept alert if visible
     Given I tap Not Now to not add phone number
     Given I accept First Time overlay
     Given I dismiss settings warning
@@ -260,7 +260,7 @@ Feature: Settings
     Given I have entered login <Email>
     Given I have entered password <Password>
     Given I tap Login button
-    Given I accept alert
+    Given I accept alert if visible
     Given I tap Not Now to not add phone number
     Given I accept First Time overlay
     Given I dismiss settings warning
