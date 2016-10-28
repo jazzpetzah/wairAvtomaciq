@@ -139,7 +139,6 @@ public class CommonIOSSteps {
                 ZetaIOSDriver.AUTOMATION_MODE_XCUITEST);
         capabilities.setCapability("app", appPath);
         capabilities.setCapability("appName", getAppName());
-        capabilities.setCapability("autoLaunch", false);
         capabilities.setCapability("bundleId", IOSDistributable.getInstance(appPath).getBundleId());
         if (isRealDevice) {
             final String udid = IOSRealDeviceHelpers.getUDID().orElseThrow(
@@ -159,6 +158,7 @@ public class CommonIOSSteps {
             // https://github.com/appium/appium-xcuitest-driver/pull/184/files
             capabilities.setCapability("iosInstallPause", INSTALL_DELAY_MS);
             capabilities.setCapability("noReset", true);
+            capabilities.setCapability("autoLaunch", false);
         }
         capabilities.setCapability("platformVersion", getPlatformVersion());
         capabilities.setCapability("launchTimeout", ZetaIOSDriver.MAX_SESSION_INIT_DURATION_MILLIS);
