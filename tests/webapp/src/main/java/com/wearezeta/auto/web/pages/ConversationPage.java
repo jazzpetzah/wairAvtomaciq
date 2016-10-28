@@ -1404,7 +1404,7 @@ public class ConversationPage extends WebPage {
         return pictures;
     }
 
-    private List<WebElement> getPreviewImages() throws Exception {
+    protected List<WebElement> getPreviewImages() throws Exception {
         By picturesLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLinkPreviewImage);
         List<WebElement> all = getDriver().findElements(picturesLocator);
         return all;

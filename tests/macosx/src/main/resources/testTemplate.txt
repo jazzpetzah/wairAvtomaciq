@@ -96,7 +96,7 @@ public class $(TESTNAME)Test extends PickleJarTest{
                         PickleExecutor.getThrowableStacktraceString(ex) + "\n" + tailBrowserLog(MAX_LOG_TAIL_SIZE)));
             }
             try {
-                byte[] screenshot = lifecycle.getContext().getOSXDriver().getScreenshotAs(OutputType.BASE64).getBytes();
+                byte[] screenshot = lifecycle.getContext().getOSXDriver().getScreenshotAs(OutputType.BYTES);
                 saveScreenshot(reportStep, screenshot);
             } catch (Exception e) {
                 LOG.warn("Can not make sceenshot", e);

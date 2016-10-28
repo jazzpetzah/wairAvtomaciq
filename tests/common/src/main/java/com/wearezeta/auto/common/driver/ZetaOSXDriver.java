@@ -62,7 +62,7 @@ public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDrive
     }
 
     private WireRemoteWebElement wrapElement(WebElement element) {
-        return new WireRemoteWebElement(element);
+        return new WireRemoteWebElement((RemoteWebElement)element);
     }
 
     @Override
@@ -136,7 +136,7 @@ public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDrive
         return robot;
     }
 
-    private byte[] bufferedImageAsByteArray(BufferedImage image) {
+    protected byte[] bufferedImageAsByteArray(BufferedImage image) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         try {
             ImageIO.write(image, "png", stream);
@@ -155,10 +155,20 @@ public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDrive
 
     protected class WireRemoteWebElement extends RemoteWebElement {
 
-        private final WebElement originalElement;
+        private final RemoteWebElement originalElement;
 
-        public WireRemoteWebElement(WebElement element) {
+        public WireRemoteWebElement(RemoteWebElement element) {
             this.originalElement = element;
+        }
+        
+        @Override
+        public String getId() {
+            return originalElement.getId();
+        }
+
+        @Override
+        public void setId(String id) {
+            originalElement.setId(id);
         }
 
         @Override
@@ -285,7 +295,7 @@ public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDrive
             private final WireRemoteWebElement window;
 
             public ZetaRemoteWindow(WebElement window) {
-                this.window = new WireRemoteWebElement(window);
+                this.window = new WireRemoteWebElement((RemoteWebElement)window);
             }
 
             public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException {
