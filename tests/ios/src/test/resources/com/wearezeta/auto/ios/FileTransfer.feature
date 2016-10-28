@@ -44,7 +44,7 @@ Feature: File Transfer
     When I tap on contact name <Contact>
     And I tap File Transfer button from input tools
     # Wait for transition
-    And I wait for 2 seconds
+    And I wait for 5 seconds
     And I tap file transfer menu item <ItemName>
     Then I see file transfer placeholder
     #wait tp make sure file was delivered
@@ -85,7 +85,7 @@ Feature: File Transfer
     When I tap on contact name <Contact>
     And I tap File Transfer button from input tools
     # Wait for the placeholder
-    And I wait for 2 seconds
+    And I wait for 5 seconds
     And I tap file transfer menu item <ItemName>
     Then I see file transfer placeholder
     When I type the default message and send it
@@ -104,7 +104,7 @@ Feature: File Transfer
     When I tap on contact name <Contact>
     And I tap File Transfer button from input tools
     # Wait for the placeholder
-    And I wait for 2 seconds
+    And I wait for 5 seconds
     And I tap file transfer menu item <ItemName>
     Then I verify the alert contains text <ExpectedAlertText>
     When I accept alert

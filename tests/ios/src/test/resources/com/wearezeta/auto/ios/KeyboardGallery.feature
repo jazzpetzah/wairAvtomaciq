@@ -51,6 +51,8 @@ Feature: Keyboard Gallery
     And I accept alert if visible
     Then I see Camera Roll button on Keyboard Gallery overlay
     When I tap File Transfer button from input tools
+    # Wait for animation
+    And I wait for 5 seconds
     Then I see file transfer menu item <ItemName>
     And I do not see Camera Roll button on Keyboard Gallery overlay
     And I do not see the on-screen keyboard

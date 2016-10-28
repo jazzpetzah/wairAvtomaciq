@@ -222,7 +222,7 @@ Feature: Ephemeral Messages
     Given I tap on contact name <Contact>
     Given I tap File Transfer button from input tools
     # Wait for transition
-    Given I wait for 2 seconds
+    Given I wait for 5 seconds
     Given I tap file transfer menu item <ItemName>
     Given User <Name> sends 1 encrypted message using device <DeviceName> to user <Contact>
     When I remember asset container state
