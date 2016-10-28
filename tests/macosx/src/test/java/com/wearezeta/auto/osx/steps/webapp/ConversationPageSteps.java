@@ -10,18 +10,21 @@ import java.util.regex.Pattern;
 import com.wearezeta.auto.common.CommonSteps;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.osx.common.WrapperTestContext;
+import com.wearezeta.auto.osx.pages.webapp.ConversationPage;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
-import com.wearezeta.auto.web.pages.ConversationPage;
+import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import java.awt.image.BufferedImage;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -735,20 +738,75 @@ public class ConversationPageSteps {
     
     @When("^I click on ephemeral button$")
     public void IClickEphemeralButton() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clickEphemeralButton();
+        context.getWebappPagesCollection().getPage(ConversationPage.class).clickEphemeralButton();
     }
 
     @When("^I see (.*) with unit (.*) on ephemeral button$")
     public void ISeeTimeShortOnEphemeralTimer(String time, String unit) throws Exception {
         Assert.assertTrue("Time " + time + " on ephemeral button is not shown",
-                context.getPagesCollection().getPage(ConversationPage.class).isTimeShortOnEphemeralButtonVisible(time));
+                context.getWebappPagesCollection().getPage(ConversationPage.class).isTimeShortOnEphemeralButtonVisible(time));
         Assert.assertTrue("Time unit " + unit + " on ephemeral button is not shown",
-                context.getPagesCollection().getPage(ConversationPage.class).isTimeUnitOnEphemeralButtonVisible(unit));
+                context.getWebappPagesCollection().getPage(ConversationPage.class).isTimeUnitOnEphemeralButtonVisible(unit));
     }
     
     @When("^I see placeholder of conversation input is (.*)$")
     public void ISeePlaceholderOfInput(String label) throws Exception {
-        Assert.assertThat(context.getPagesCollection().getPage(ConversationPage.class).getPlaceholderOfConversationInput(),
+        Assert.assertThat(context.getWebappPagesCollection().getPage(ConversationPage.class).getPlaceholderOfConversationInput(),
                 equalTo(label));
     }
+    
+    @Then("^I see link (.*) in link preview message$")
+    public void ISeeLinkInLinkPreview(String link) throws Exception {
+        context.getWebappPagesCollection().getPage(ConversationPage.class).waitForLinkPreviewContains(link);
+    }
+    
+    @Then("^I (do not )?see a title (.*) in link preview in the conversation view$")
+    public void ISeeLinkTitle(String doNot, String linkTitle) throws Exception {
+        if (doNot == null) {
+            assertThat("Could not find link title " + linkTitle,
+                    context.getWebappPagesCollection().getPage(ConversationPage.class).getLinkTitle(), containsString(linkTitle));
+        } else {
+            assertThat("link title " + linkTitle + "is shown",
+                    context.getWebappPagesCollection().getPage(ConversationPage.class).isLinkTitleNotShownInConversationView());
+        }
+    }
+    
+    @Then("^I (do not )?see a picture (.*) from link preview$")
+    public void ISeePictureInLinkPreview(String doNot, String pictureName) throws Exception {
+        if (doNot == null) {
+            assertThat("I do not see a picture from link preview in the conversation",
+                    context.getWebappPagesCollection().getPage(ConversationPage.class).isImageFromLinkPreviewVisible());
+
+            BufferedImage expectedImage = ImageUtil.readImageFromFile(WebCommonUtils.getFullPicturePath(pictureName));
+            BufferedImage actualImage = context.getWebappPagesCollection().getPage(ConversationPage.class).
+                    getImageFromLastLinkPreview();
+
+            assertThat("Not enough good matches", ImageUtil.getMatches(expectedImage, actualImage), greaterThan(100));
+        } else {
+            assertThat("I see a picture in the conversation", context.getWebappPagesCollection().getPage(ConversationPage.class)
+                    .isImageFromLinkPreviewNotVisible());
+        }
+    }
+    
+    @When("^I click context menu of the (second |third )?last message$")
+    public void IClickContextMenuOfNthMessage(String indexNumber) throws Exception {
+        int messageId = getXLastMessageIndex(indexNumber);
+        context.getWebappPagesCollection().getPage(ConversationPage.class).clickContextMenuOnMessage(messageId);
+    }
+    
+    private int getXLastMessageIndex(String indexValue) throws Exception {
+        int indexNummer = 1;
+        if (indexValue == null)
+            return indexNummer;
+        switch (indexValue) {
+            case "third ": indexNummer = 3;
+                break;
+            case "second ": indexNummer = 2;
+                break;
+            default: indexNummer = 1;
+                break;
+        }
+        return indexNummer;
+    }
+    
 }
