@@ -153,6 +153,7 @@ public class CommonIOSSteps {
             capabilities.setCapability("showXcodeLog", true);
             capabilities.setCapability("keychainPath", KEYCHAIN_PATH);
             capabilities.setCapability("keychainPassword", KEYCHAIN_PASSWORD);
+            capabilities.setCapability("fullReset", true);
         } else {
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()));
             // https://github.com/appium/appium-xcuitest-driver/pull/184/files
