@@ -29,6 +29,8 @@ Feature: Upgrade
     And I wait for 3 seconds
     Then I see 2 photos in the conversation view
     When I restart Wire
+    # Wait until UI is loaded
+    And I wait for 5 seconds
     Then I see 2 photos in the conversation view
 
     Examples:
