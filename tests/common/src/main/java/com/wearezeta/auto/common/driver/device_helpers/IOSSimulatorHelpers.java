@@ -303,7 +303,7 @@ public class IOSSimulatorHelpers {
             "routined", "assetsd", "mstreamd", "healthd", "MobileCal",
             "callservicesd", "revisiond", "touchsetupd", "calaccessd",
             "ServerFileProvider", "mobileassetd", "IMDPersistenceAgent",
-            "itunesstored", "profiled", "passd", "carkitd"
+            "itunesstored", "profiled", "passd", "carkitd", "xcrun"
     };
 
     private static void kill() throws Exception {
@@ -336,9 +336,15 @@ public class IOSSimulatorHelpers {
             throws Exception {
         final long msStarted = System.currentTimeMillis();
         do {
-            final String output = f.call();
-            if (!output.contains("No devices are booted")) {
-                return output;
+            try {
+                final String output = f.call();
+                if (!output.contains("No devices are booted")) {
+                    return output;
+                }
+            } catch (InterruptedException e) {
+                throw e;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             Thread.sleep(SIMULATOR_BOOTING_INTERVAL_CHECK_MS);
         } while (System.currentTimeMillis() - msStarted <= SIMULATOR_BOOT_TIMEOUT_MS);
