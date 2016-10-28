@@ -69,10 +69,8 @@ public class CommonAndroidSteps {
 
     private static final Logger log = ZetaLogger.getLog(CommonAndroidSteps.class.getSimpleName());
 
-    private final ElementState screenState = new ElementState(
-            () -> pagesCollection.getCommonPage().takeScreenshot().orElseThrow(
-                    () -> new IllegalStateException("Cannot take a screenshot of the whole screen")
-            )
+    private final ElementState screenState = new ElementState(() -> pagesCollection.getCommonPage().takeScreenshot()
+            .orElseThrow(() -> new IllegalStateException("Cannot take a screenshot of the whole screen"))
     );
 
     private final CommonSteps commonSteps = CommonSteps.getInstance();
@@ -125,8 +123,8 @@ public class CommonAndroidSteps {
 
         devicePreparationThread.get(DEVICE_PREPARATION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
-        return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance().resetDriver(url, capabilities,
-                retriesCount, this::onDriverInitFinished, null);
+        return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance().resetDriver(url, capabilities, retriesCount,
+                this::onDriverInitFinished, null);
     }
 
     private static Void prepareDevice() throws Exception {
@@ -201,9 +199,8 @@ public class CommonAndroidSteps {
             }
         } while (System.currentTimeMillis() - millisecondsStarted <= INTERFACE_INIT_TIMEOUT_MILLISECONDS);
         if (System.currentTimeMillis() - millisecondsStarted > INTERFACE_INIT_TIMEOUT_MILLISECONDS) {
-            log.error(String.format(
-                    "UI views have not been initialized properly after %s seconds. Restarting Selendroid usually helps ;-)",
-                    INTERFACE_INIT_TIMEOUT_MILLISECONDS));
+            log.error(String.format("UI views have not been initialized properly after %s seconds. Restarting Selendroid " +
+                    "usually helps ;-)", INTERFACE_INIT_TIMEOUT_MILLISECONDS));
             throw savedException;
         }
         // Break the glass in case of fire!
@@ -773,13 +770,15 @@ public class CommonAndroidSteps {
      * User X typing in specified conversation
      *
      * @param fromUserNameAlias   The user who is typing
+     * @param deviceName          Device for typing
      * @param dstConversationName The conversation where the user is typing
      * @throws Exception
-     * @step. ^User (\w+) is typing in the conversation (.*)$
+     * @step. ^User (\w+) is typing (?:via device (.*)\s)?in the conversation (.*)$
      */
-    @When("^User (\\w+) is typing in the conversation (.*)$")
-    public void UserTypingInConversation(String fromUserNameAlias, String dstConversationName) throws Exception {
-        commonSteps.UserIsTypingInConversation(fromUserNameAlias, dstConversationName);
+    @When("^User (\\w+) is typing (?:via device (.*)\\s)?in the conversation (.*)$")
+    public void UserTypingInConversation(String fromUserNameAlias, String deviceName, String dstConversationName)
+            throws Exception {
+        commonSteps.UserIsTypingInConversation(fromUserNameAlias, dstConversationName, deviceName);
     }
 
     /**
@@ -956,17 +955,14 @@ public class CommonAndroidSteps {
      * @step. ^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)$
      */
     @When("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)$")
-    public void ContactSendImageToConversation(String imageSenderUserNameAlias, String isEncrypted,
-                                               String imageFileName, String conversationType,
-                                               String dstConversationName) throws Exception {
+    public void ContactSendImageToConversation(String imageSenderUserNameAlias, String isEncrypted, String imageFileName,
+                                               String conversationType, String dstConversationName) throws Exception {
         final String imagePath = CommonUtils.getImagesPathFromConfig(getClass()) + imageFileName;
         final boolean isGroup = conversationType.equals("group");
         if (isEncrypted == null) {
-            commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
-                    imagePath, dstConversationName, isGroup);
+            commonSteps.UserSentImageToConversation(imageSenderUserNameAlias, imagePath, dstConversationName, isGroup);
         } else {
-            commonSteps.UserSentImageToConversationOtr(imageSenderUserNameAlias,
-                    imagePath, dstConversationName, isGroup);
+            commonSteps.UserSentImageToConversationOtr(imageSenderUserNameAlias, imagePath, dstConversationName, isGroup);
         }
     }
 
@@ -1066,10 +1062,8 @@ public class CommonAndroidSteps {
      * @step. ^(.*) send personal invitation to mail (.*) with message (.*)$
      */
     @When("^(.*) sends personal invitation to mail (.*) with message (.*)$")
-    public void UserXSendsPersonalInvitation(String userToNameAlias,
-                                             String toMail, String message) throws Exception {
-        commonSteps.UserXSendsPersonalInvitationWithMessageToUserWithMail(
-                userToNameAlias, toMail, message);
+    public void UserXSendsPersonalInvitation(String userToNameAlias, String toMail, String message) throws Exception {
+        commonSteps.UserXSendsPersonalInvitationWithMessageToUserWithMail(userToNameAlias, toMail, message);
     }
 
     /**
@@ -1111,8 +1105,7 @@ public class CommonAndroidSteps {
      * @step. User (.*) adds a new device (.*)$
      */
     @When("^User (.*) adds a new device (.*) with label (.*)$")
-    public void UserAddRemoteDeviceToAccount(String userNameAlias,
-                                             String deviceName, String label) throws Exception {
+    public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceName, String label) throws Exception {
         commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
     }
 
@@ -1220,8 +1213,7 @@ public class CommonAndroidSteps {
      * @step. ^User (.*) deletes? (single user|group) conversation (.*) using device (.*)
      */
     @Given("^User (.*) deletes? (single user|group) conversation (.*) using device (.*)")
-    public void UserDeletedConversation(String userAs, String convoType, String convoName, String deviceName)
-            throws Exception {
+    public void UserDeletedConversation(String userAs, String convoType, String convoName, String deviceName) throws Exception {
         commonSteps.UserClearsConversation(userAs, convoName, deviceName, convoType.equals("group"));
     }
 
@@ -1305,8 +1297,8 @@ public class CommonAndroidSteps {
      * @step. ^(.*) sends local file named "(.*)" and MIME type "(.*)" via device (.*) to (user|group conversation) (.*)$
      */
     @When("^(.*) sends local file named \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) (.*)$")
-    public void ContactSendsXLocalFileFromSE(String contact, String fileFullName, String mimeType,
-                                             String deviceName, String convoType, String dstConvoName) throws Exception {
+    public void ContactSendsXLocalFileFromSE(String contact, String fileFullName, String mimeType, String deviceName,
+                                             String convoType, String dstConvoName) throws Exception {
         String basePath = CommonUtils.getAudioPathFromConfig(getClass());
         if (mimeType.toLowerCase().startsWith("image")) {
             basePath = CommonUtils.getImagesPathFromConfig(getClass());
@@ -1315,8 +1307,7 @@ public class CommonAndroidSteps {
         String sourceFilePath = basePath + File.separator + fileFullName;
 
         boolean isGroup = convoType.equals("group conversation");
-        commonSteps.UserSentFileToConversation(contact, dstConvoName, sourceFilePath,
-                mimeType, deviceName, isGroup);
+        commonSteps.UserSentFileToConversation(contact, dstConvoName, sourceFilePath, mimeType, deviceName, isGroup);
     }
 
     /**
@@ -1332,8 +1323,8 @@ public class CommonAndroidSteps {
      * @step. ^User (.*) deletes? the recent message (everywhere )?from (user|group conversation) (.*) via device (.*)$
      */
     @When("^User (.*) deletes? the recent message (everywhere )?from (user|group conversation) (.*) via device (.*)$")
-    public void UserXDeleteLastMessage(String userNameAlias, String deleteEverywhere, String convoType,
-                                       String dstNameAlias, String deviceName) throws Exception {
+    public void UserXDeleteLastMessage(String userNameAlias, String deleteEverywhere, String convoType, String dstNameAlias,
+                                       String deviceName) throws Exception {
         boolean isGroup = convoType.equals("group conversation");
         boolean isDeleteEverywhere = deleteEverywhere != null;
         commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup, isDeleteEverywhere);
@@ -1351,8 +1342,8 @@ public class CommonAndroidSteps {
      * @step. ^User (.*) edits? the recent message to "(.*)" from (user|group conversation) (.*) via device (.*)$
      */
     @When("^User (.*) edits? the recent message to \"(.*)\" from (user|group conversation) (.*) via device (.*)$")
-    public void UserXEditLastMessage(String userNameAlias, String newMessage, String convoType,
-                                     String dstNameAlias, String deviceName) throws Exception {
+    public void UserXEditLastMessage(String userNameAlias, String newMessage, String convoType, String dstNameAlias,
+                                     String deviceName) throws Exception {
         boolean isGroup = convoType.equals("group conversation");
         commonSteps.UserUpdateLatestMessage(userNameAlias, dstNameAlias, newMessage, deviceName, isGroup);
     }
@@ -1399,8 +1390,7 @@ public class CommonAndroidSteps {
     @When("^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$")
     public void UserXRemembersLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
             throws Exception {
-        commonSteps.UserXRemembersLastMessage(userNameAlias, convoType.equals("group conversation"),
-                dstNameAlias, deviceName);
+        commonSteps.UserXRemembersLastMessage(userNameAlias, convoType.equals("group conversation"), dstNameAlias, deviceName);
     }
 
     /**
@@ -1445,11 +1435,11 @@ public class CommonAndroidSteps {
     public void TheXFileSavedInDownloadFolder(int timeoutSeconds, String size, String fileFullName)
             throws Exception {
         Optional<FileInfo> fileInfo = CommonUtils.waitUntil(timeoutSeconds,
-                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS, () -> {
+                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
+                () -> {
                     AndroidCommonUtils.pullFileFromSdcardDownload(fileFullName);
-                    return CommonUtils.retrieveFileInfo(
-                            AndroidCommonUtils.getBuildPathFromConfig(CommonAndroidSteps.class)
-                                    + File.separator + fileFullName);
+                    return CommonUtils.retrieveFileInfo(AndroidCommonUtils.getBuildPathFromConfig(CommonAndroidSteps.class) +
+                            File.separator + fileFullName);
                 });
 
         fileInfo.orElseThrow(() -> new IllegalStateException(String.format("File '%s' doesn't exist after %s seconds",
@@ -1458,8 +1448,7 @@ public class CommonAndroidSteps {
         long expectedSize = CommonUtils.getFileSizeFromString(size);
         long actualSize = fileInfo.get().getFileSize();
 
-        Assert.assertEquals(String.format("File name should be %s", fileFullName),
-                fileFullName, fileInfo.get().getFileName());
+        Assert.assertEquals(String.format("File name should be %s", fileFullName), fileFullName, fileInfo.get().getFileName());
         Assert.assertTrue(String.format("File size should around %s bytes, but it is %s", expectedSize, actualSize),
                 Math.abs(expectedSize - actualSize) < 100);
     }
@@ -1573,8 +1562,8 @@ public class CommonAndroidSteps {
     public void IAmOnAndroidXOrHigher(String minVersion) throws Exception {
         final DefaultArtifactVersion currentOsVersion = pagesCollection.getCommonPage().getOSVersion();
         if (currentOsVersion.compareTo(new DefaultArtifactVersion(minVersion)) < 0) {
-            throw new PendingException(String.format("The current Android OS version %s is too low to run this test." +
-                    "%s version is expected.", currentOsVersion, minVersion));
+            throw new PendingException(String.format("The current Android OS version %s is too low to run this test. %s " +
+                    "version is expected.", currentOsVersion, minVersion));
         }
     }
 
@@ -1589,7 +1578,8 @@ public class CommonAndroidSteps {
     @Given("^(?:Wire|Device) debug mode is (enabled|supported)$")
     public void WireEnableDebugMode(String checkMode) throws Exception {
         if (!AndroidCommonUtils.isWireDebugModeEnabled(checkMode.equals("supported"))) {
-            throw new PendingException(String.format("Debug mode is not '%s'. Rerun on other device or check build.", checkMode));
+            throw new PendingException(String.format("Debug mode is not '%s'. Rerun on other device or check build.",
+                    checkMode));
         }
     }
 
@@ -1714,11 +1704,11 @@ public class CommonAndroidSteps {
     @Then("^I (do not )?see chathead notification$")
     public void ISeeChatheadNotification(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
-            Assert.assertTrue("Chathead notification is not visible",
-                    pagesCollection.getCommonPage().waitForChatheadNotification().isPresent());
+            Assert.assertTrue("Chathead notification is not visible", pagesCollection.getCommonPage()
+                    .waitForChatheadNotification().isPresent());
         } else {
-            Assert.assertTrue("Chathead notification is still visible",
-                    pagesCollection.getCommonPage().waitUntilChatheadNotificationInvisible());
+            Assert.assertTrue("Chathead notification is still visible", pagesCollection.getCommonPage()
+                    .waitUntilChatheadNotificationInvisible());
         }
     }
 
@@ -1733,10 +1723,9 @@ public class CommonAndroidSteps {
      * @step. ^User (.*) shares? his location to (user|group conversation) (.*) via device (.*)
      */
     @When("^User (.*) shares? his location to (user|group conversation) (.*) via device (.*)")
-    public void UserXSharesLocationTo(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
-            throws Exception {
-        commonSteps.UserSharesLocationTo(userNameAlias, dstNameAlias, convoType.equals("group conversation"),
-                deviceName);
+    public void UserXSharesLocationTo(String userNameAlias, String convoType, String dstNameAlias, String deviceName) throws
+            Exception {
+        commonSteps.UserSharesLocationTo(userNameAlias, dstNameAlias, convoType.equals("group conversation"), deviceName);
     }
 
     private static final long LOG_SEARCH_TIMEOUT_MILLIS = 5000;
@@ -1765,9 +1754,8 @@ public class CommonAndroidSteps {
             }
         } while (System.currentTimeMillis() - msStarted <= LOG_SEARCH_TIMEOUT_MILLIS);
 
-        Assert.assertTrue(
-                String.format("The %s log does not contain '%s' substring %d times, (actural %d times)",
-                        logType, expectedString, expectedTimes, result), result >= expectedTimes);
+        Assert.assertTrue(String.format("The %s log does not contain '%s' substring %d times, (actural %d times)",
+                logType, expectedString, expectedTimes, result), result >= expectedTimes);
     }
 
     /**
@@ -1813,8 +1801,7 @@ public class CommonAndroidSteps {
         final WireDatabase db = new WireDatabase();
         this.recentMsgId = db.getRecentMessageId(myself, dstUser).orElseThrow(
                 () -> new IllegalStateException(
-                        String.format("No messages from user %s have been found in the local database",
-                                dstUser.getName()))
+                        String.format("No messages from user %s have been found in the local database", dstUser.getName()))
         );
     }
 
@@ -1933,14 +1920,14 @@ public class CommonAndroidSteps {
      * @param timeout     ephemeral messages timeout
      * @param timeMetrics either seconds or minutes
      * @throws Exception
-     * @step. ^User (.*) switches (user|group conversation) (.*) to ephemeral mode with (\d+) (seconds?|minutes?) timeout$"
+     * @step. ^User (.*) switches (user|group conversation) (.*) to ephemeral mode (?:via device (.*)\s)?with (\d+)
+     * (seconds?|minutes?) timeout$
      */
     @When("^User (.*) switches (user|group conversation) (.*) to ephemeral mode (?:via device (.*)\\s)?with " +
             "(\\d+) (seconds?|minutes?) timeout$")
     public void UserSwitchesToEphemeralMode(String userAs, String isGroup, String convoName, String deviceName, int timeout,
                                             String timeMetrics) throws Exception {
         final long timeoutMs = timeMetrics.startsWith("minute") ? timeout * 60 * 1000 : timeout * 1000;
-        commonSteps.UserSwitchesToEphemeralMode(userAs, convoName, timeoutMs, isGroup.equals("group conversation"),
-                deviceName);
+        commonSteps.UserSwitchesToEphemeralMode(userAs, convoName, timeoutMs, isGroup.equals("group conversation"), deviceName);
     }
 }
