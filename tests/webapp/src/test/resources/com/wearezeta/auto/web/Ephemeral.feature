@@ -339,7 +339,7 @@ Feature: Ephemeral
       | Login      | Password      | Name      | Contact   | File        | Size | Time | TimeLong  | TimeShortUnit |
       | user1Email | user1Password | user1Name | user2Name | C310631.txt | 5MB  | 5    | 5 seconds | s             |
 
-  @C262135 @ephemeral @staging
+  @C262135 @ephemeral @regression
   Scenario Outline: Verify that missed call has stayed after receiver saw it
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -368,7 +368,7 @@ Feature: Ephemeral
       | Login      | Password      | Name      | Contact   | Message1 | Message2 | TimeLong  | CallBackend | ActionMessage |
       | user1Email | user1Password | user1Name | user2Name | message1 | message2 | 5 seconds | zcall       | called        |
 
-  @C261726 @ephemeral @staging
+  @C261726 @ephemeral @regression
   Scenario Outline: Verify ephemeral messages are not sent to my other devices
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -451,5 +451,5 @@ Feature: Ephemeral
     And I do not see any picture in the conversation view
 
     Examples:
-      | Login      | Login2     | Password      | Name      | Contact   | Time | TimeLong  | TimeShortUnit | PictureName               |
-      | user1Email | user2Email | user1Password | user1Name | user2Name | 5    | 5 seconds | s             | userpicture_landscape.jpg |
+      | Login      | Login2     | Password      | Name      | Contact   | Time  | TimeLong   | TimeShortUnit | PictureName               |
+      | user1Email | user2Email | user1Password | user1Name | user2Name | 15    | 15 seconds | s             | userpicture_landscape.jpg |
