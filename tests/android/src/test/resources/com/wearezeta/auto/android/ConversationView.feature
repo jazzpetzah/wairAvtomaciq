@@ -411,6 +411,7 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And User <Contact> is typing in the conversation Myself
+    And I wait for 7 seconds
     Then I see <Contact> is typing
 
     Examples:
@@ -428,6 +429,7 @@ Feature: Conversation View
     When I tap on conversation name <GroupChatName>
     And User <Contact1> is typing in the conversation <GroupChatName>
     And User <Contact2> is typing in the conversation <GroupChatName>
+    And I wait for 7 seconds
     Then I see <Contact1>,<Contact2> are typing
 
     Examples:
