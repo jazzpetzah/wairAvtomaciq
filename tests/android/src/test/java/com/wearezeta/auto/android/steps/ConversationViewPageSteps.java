@@ -75,6 +75,8 @@ public class ConversationViewPageSteps {
         return pagesCollection.getPage(ConversationViewPage.class);
     }
 
+    private final CommonSteps commonSteps = CommonSteps.getInstance();
+
     /**
      * Waits for the conversation page to appear
      *
@@ -1649,6 +1651,22 @@ public class ConversationViewPageSteps {
     @Then("^I see (.*) (?:is|are) typing$")
     public void ISeeTyping(String userNames) throws Exception {
         String names = usrMgr.replaceAliasesOccurences(userNames, FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("%s are expected to be visible in typing list", userNames),
+                getConversationViewPage().waitUntilTypingVisible(names));
+    }
+
+    /**
+     * User X typing in specified conversation and I verity that typing indicator is visible
+     *
+     * @param userNames Typing user(s) name(s)
+     * @param dstConversationName The conversation where the user(s) is typing
+     * @throws Exception
+     * @step. ^I see typing indicator while users? (.*) (?:is|are) typing in the conversation (.*)$
+     */
+    @When("^I see typing indicator while users? (.*) (?:is|are) typing in the conversation (.*)$")
+    public void ISeeIndicatorWhileUsersTypingInConversation(String userNames, String dstConversationName) throws Exception {
+        commonSteps.UsersAreTypingInConversation(userNames, dstConversationName);
+        String names = usrMgr.replaceAliasesOccurences(userNames, ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("%s are expected to be visible in typing list", userNames),
                 getConversationViewPage().waitUntilTypingVisible(names));
     }

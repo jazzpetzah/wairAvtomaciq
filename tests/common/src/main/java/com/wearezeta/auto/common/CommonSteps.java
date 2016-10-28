@@ -317,12 +317,22 @@ public final class CommonSteps {
         seBridge.sendPing(pingFromUser, convId);
     }
 
-    public void UserIsTypingInConversation(String typingFromUserNameAlias, String dstConversationName, String deviceName) throws
-            Exception {
+    public void UserIsTypingInConversation(String typingFromUserNameAlias, String dstConversationName, String deviceName)
+            throws Exception {
         final ClientUser typingFromUser = usrMgr.findUserByNameOrNameAlias(typingFromUserNameAlias);
         dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
         final String convId = BackendAPIWrappers.getConversationIdByName(typingFromUser, dstConversationName);
-        seBridge.typing(typingFromUser, convId, deviceName);
+        seBridge.typing(typingFromUser, convId);
+    }
+
+    public void UsersAreTypingInConversation(String typingFromUserNameAliases, String dstConversationName)
+            throws Exception {
+        dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+        for (String userToName : splitAliases(typingFromUserNameAliases)) {
+            final ClientUser typingFromUser = usrMgr.findUserByNameOrNameAlias(userToName);
+            final String convId = BackendAPIWrappers.getConversationIdByName(typingFromUser, dstConversationName);
+            seBridge.typing(typingFromUser, convId);
+        }
     }
 
     public void UserDeleteMessage(String msgFromuserNameAlias, String dstConversationName, MessageId messageId,

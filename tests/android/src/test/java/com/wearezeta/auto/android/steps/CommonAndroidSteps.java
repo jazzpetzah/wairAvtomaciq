@@ -768,16 +768,15 @@ public class CommonAndroidSteps {
     /**
      * User X typing in specified conversation
      *
-     * @param fromUserNameAlias   The user who is typing
-     * @param deviceName          Device for typing
+     * @param fromUserNameAliases   The user who is typing
      * @param dstConversationName The conversation where the user is typing
      * @throws Exception
-     * @step. ^User (\w+) is typing (?:via device (.*)\s)?in the conversation (.*)$
+     * @step. ^Users? (\w+) (?:is|are) typing in the conversation (.*)$
      */
-    @When("^User (\\w+) is typing (?:via device (.*)\\s)?in the conversation (.*)$")
-    public void UserTypingInConversation(String fromUserNameAlias, String deviceName, String dstConversationName)
+    @When("^Users? (\\w+) (?:is|are) typing in the conversation (.*)$")
+    public void UsersTypingInConversation(String fromUserNameAliases, String dstConversationName)
             throws Exception {
-        commonSteps.UserIsTypingInConversation(fromUserNameAlias, dstConversationName, deviceName);
+        commonSteps.UsersAreTypingInConversation(fromUserNameAliases, dstConversationName);
     }
 
     /**
