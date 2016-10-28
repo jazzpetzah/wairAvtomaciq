@@ -260,7 +260,7 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final int CONTAINER_VISIBILITY_TIMEOUT_SECONDS = 20;
 
-    private static final int TYPING_VISIBILITY_TIMEOUT_SECONDS = 60;
+    private static final int VISIBILITY_TIMEOUT_SECONDS = 60;
 
     public enum MessageIndexLocator {
         FIRST(xpathFirstConversationMessage),
@@ -426,7 +426,7 @@ public class ConversationViewPage extends AndroidPage {
             buffer.append(String.format(" and contains(@value,'%s')", name.toLowerCase().trim()));
         }
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathCursorTypingIndicatorByContainsQuery.apply(buffer.toString())), TYPING_VISIBILITY_TIMEOUT_SECONDS);
+                By.xpath(xpathCursorTypingIndicatorByContainsQuery.apply(buffer.toString())), VISIBILITY_TIMEOUT_SECONDS);
     }
 
     private By getCursorToolButtonLocatorByName(String name) {
@@ -1198,7 +1198,7 @@ public class ConversationViewPage extends AndroidPage {
             throws Exception {
         String locatorId = getMessageMetaLocatorIdString(itemType);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathStrTemplateIdValue.apply(locatorId, expectedItemText)), CONTAINER_VISIBILITY_TIMEOUT_SECONDS);
+                By.xpath(xpathStrTemplateIdValue.apply(locatorId, expectedItemText)), VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean waitUntilMessageMetaItemInvisible(String itemType, String expectedItemText)
