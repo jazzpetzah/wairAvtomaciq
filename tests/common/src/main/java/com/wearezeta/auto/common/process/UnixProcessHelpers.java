@@ -20,14 +20,29 @@ public class UnixProcessHelpers {
     }
 
     public static boolean isProcessRunning(String name) throws Exception {
-        final Process p = new ProcessBuilder("/bin/ps", "axco", "command").start();
+        return isProcessRunning(name, Optional.empty());
+    }
+
+    public static boolean isProcessRunning(String name, Optional<String> pathPart) throws Exception {
+        Process p;
+        if (pathPart.isPresent()) {
+            p = new ProcessBuilder("/bin/ps", "axo", "command").start();
+        } else {
+            p = new ProcessBuilder("/bin/ps", "axco", "command").start();
+        }
         p.waitFor();
         final InputStream stream = p.getInputStream();
         final BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         String line;
         while ((line = reader.readLine()) != null) {
             if (line.matches(".*\\b" + name.trim() + "\\b.*")) {
-                return true;
+                if (pathPart.isPresent()) {
+                    if (line.contains(pathPart.get())) {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
             }
         }
         return false;

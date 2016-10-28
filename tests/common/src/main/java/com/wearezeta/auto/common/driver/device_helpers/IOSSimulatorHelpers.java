@@ -33,6 +33,8 @@ public class IOSSimulatorHelpers {
     private static final long SIMULATOR_BOOT_TIMEOUT_MS = 80000;
     private static final long SIMULATOR_BOOTING_INTERVAL_CHECK_MS = SIMULATOR_BOOT_TIMEOUT_MS / 20;
 
+    private static final String SIMULATOR_PROCESS_NAME = "Simulator";
+
     private static final String XCRUN_PATH = "/usr/bin/xcrun";
     private static final long COMMAND_TIMEOUT_MS = SIMULATOR_BOOT_TIMEOUT_MS / 2;
 
@@ -294,33 +296,30 @@ public class IOSSimulatorHelpers {
         return executeXcRun("simctl", cmd);
     }
 
-    private static String executeSimctl(int timeoutSeconds, String... cmd) throws Exception {
-        return executeXcRun("simctl", timeoutSeconds, cmd);
+    private static String executeSimctl(long timeoutMs, String... cmd) throws Exception {
+        return executeXcRun("simctl", timeoutMs, cmd);
     }
 
-    private static final String[] IOS_SIMULATOR_PROCESSES_NAMES = new String[]{
-            "Simulator", "osascript", "configd_sim", "xpcproxy_sim", "backboardd",
-            "platform_launch_", "companionappd", "ids_simd", "launchd_sim",
-            "CoreSimulatorBridge", "SimulatorBridge", "SpringBoard",
-            "locationd", "MobileGestaltHelper", "cfprefsd",
-            "assetsd", "fileproviderd", "mediaremoted",
-            "routined", "assetsd", "mstreamd", "healthd", "MobileCal",
-            "callservicesd", "revisiond", "touchsetupd", "calaccessd",
-            "ServerFileProvider", "mobileassetd", "IMDPersistenceAgent",
-            "itunesstored", "profiled", "passd", "carkitd", "xcrun"
+    private static final String[] DEPENDENT_PROCESSES_NAMES = new String[]{
+            "Simulator", "osascript", "configd_sim", "xpcproxy_sim",
+            "ids_simd", "launchd_sim", "xcrun"
     };
 
     private static void kill() throws Exception {
         log.debug("Force killing Simulator app...");
-        UnixProcessHelpers.killProcessesGracefully(IOS_SIMULATOR_PROCESSES_NAMES);
+        UnixProcessHelpers.killProcessesGracefully(DEPENDENT_PROCESSES_NAMES);
     }
 
-    private static final int SHUTDOWN_TIMEOUT_SECONDS = 5;
+    private static final long SHUTDOWN_TIMEOUT_MS = 5000;
 
     public static void shutdown() throws Exception {
         try {
-            executeSimctl(SHUTDOWN_TIMEOUT_SECONDS, "shutdown", getId());
+            executeSimctl(SHUTDOWN_TIMEOUT_MS, "shutdown", getId());
+            Thread.sleep(1000);
         } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        if (UnixProcessHelpers.isProcessRunning(SIMULATOR_PROCESS_NAME)) {
             kill();
         }
     }
@@ -459,7 +458,10 @@ public class IOSSimulatorHelpers {
     }
 
     public static void start() throws Exception {
-        if (UnixProcessHelpers.isProcessRunning("Simulator")) {
+        if (isBooted() && isRunning()) {
+            return;
+        }
+        if (UnixProcessHelpers.isProcessRunning(SIMULATOR_PROCESS_NAME)) {
             // Kill other simulator if running
             kill();
         }
@@ -469,12 +471,25 @@ public class IOSSimulatorHelpers {
                 "-CurrentDeviceUDID", getId(),
                 String.format("-SimulatorWindowLastScale-%s", getInternalDeviceType()), getDefaultScaleFactor())
         );
-        // This to to wait until simulator is started properly
-        uninstallApp("com.check_if_simulator.booted");
+        long msStarted = System.currentTimeMillis();
+        do {
+            if (isBooted()) {
+                return;
+            }
+            Thread.sleep(SIMULATOR_BOOTING_INTERVAL_CHECK_MS);
+        } while (System.currentTimeMillis() - msStarted <= SIMULATOR_BOOT_TIMEOUT_MS);
+        if (!isBooted()) {
+            throw new IllegalStateException(String.format("iOS Simulator booting failed after %s seconds timeout",
+                    SIMULATOR_BOOT_TIMEOUT_MS / 1000));
+        }
+    }
+
+    public static boolean isBooted() throws Exception {
+        return UnixProcessHelpers.isProcessRunning("nsurlstoraged", Optional.of("Simulator"));
     }
 
     public static boolean isRunning() throws Exception {
-        if (!UnixProcessHelpers.isProcessRunning("Simulator")) {
+        if (!UnixProcessHelpers.isProcessRunning(SIMULATOR_PROCESS_NAME)) {
             return false;
         }
         final String id = getId();

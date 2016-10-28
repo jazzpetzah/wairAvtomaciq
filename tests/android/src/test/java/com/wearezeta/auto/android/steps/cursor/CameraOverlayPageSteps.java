@@ -1,15 +1,16 @@
-package com.wearezeta.auto.android.steps;
+package com.wearezeta.auto.android.steps.cursor;
 
-import com.wearezeta.auto.android.pages.ExtendedCursorCameraOverlayPage;
+import com.wearezeta.auto.android.pages.cursor.CameraOverlayPage;
+import com.wearezeta.auto.android.steps.AndroidPagesCollection;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
-public class ExtendedCursorCameraOverlayPageSteps {
+public class CameraOverlayPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
-    private ExtendedCursorCameraOverlayPage getExtendedCursorCameraOverlayPage() throws Exception {
-        return pagesCollection.getPage(ExtendedCursorCameraOverlayPage.class);
+    private CameraOverlayPage getExtendedCursorCameraOverlayPage() throws Exception {
+        return pagesCollection.getPage(CameraOverlayPage.class);
     }
 
     /**

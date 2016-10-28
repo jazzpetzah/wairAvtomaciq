@@ -1,7 +1,8 @@
-package com.wearezeta.auto.android.steps;
+package com.wearezeta.auto.android.steps.cursor;
 
 
-import com.wearezeta.auto.android.pages.EmojiKeyboardOverlayPage;
+import com.wearezeta.auto.android.pages.cursor.EmojiKeyboardOverlayPage;
+import com.wearezeta.auto.android.steps.AndroidPagesCollection;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;

@@ -1,4 +1,4 @@
-package com.wearezeta.auto.android.pages;
+package com.wearezeta.auto.android.pages.cursor;
 
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -7,11 +7,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.util.concurrent.Future;
-import java.util.function.Function;
 
-public class ExtendedCursorEphemeralOverlayPage extends ExtendedCursorOverlayPage {
+public class EphemeralOverlayPage extends CursorOverlayPage {
 
-    public ExtendedCursorEphemeralOverlayPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+    public EphemeralOverlayPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
@@ -19,11 +18,8 @@ public class ExtendedCursorEphemeralOverlayPage extends ExtendedCursorOverlayPag
 
     private static final By idNumberPickerInput = By.id(strIdNumberPickerInput);
 
-    private static final Function<String, String> xpathStrNumberPickerInputByValue =
-            value -> String.format("//*[@id='%s' and @value='%s']", strIdNumberPickerInput, value);
-
     public enum EphemeralTimeout {
-        OFF(0), SECONDS5(1), SECONDS15(2), MINUTE1(3), MINUTE5(4);
+        OFF(0), SECONDS5(1), SECONDS15(2), MINUTE1(3), MINUTE5(4), DAY1(5);
 
         private int index;
 
@@ -47,6 +43,8 @@ public class ExtendedCursorEphemeralOverlayPage extends ExtendedCursorOverlayPag
                     return MINUTE1;
                 case "5 minutes":
                     return MINUTE5;
+                case "1 day":
+                    return DAY1;
                 default:
                     throw new IllegalArgumentException(String.format("Cannot identify Ephemeral timeout '%s'", value));
             }
