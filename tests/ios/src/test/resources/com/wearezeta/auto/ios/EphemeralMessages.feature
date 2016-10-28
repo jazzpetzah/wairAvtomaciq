@@ -336,7 +336,7 @@ Feature: Ephemeral Messages
     And I wait for <EphemeralTimeout> seconds
     Then I see 0 photos in the conversation view
     # Video
-    When User <Contact> sends file <FileName> having MIME type <MIMEType> to single user conversation <Name> using device <DeviceName>
+    When User <Contact> sends file <FileName> having MIME type <VideoMIME> to single user conversation <Name> using device <DeviceName>
     And I wait for <SyncTimeout> seconds
     And I see video message container in the conversation view
     And I wait for <EphemeralTimeout> seconds
@@ -355,11 +355,10 @@ Feature: Ephemeral Messages
     Then I do not see link preview container in the conversation view
     # Location
     When User <Contact> shares the default location to user Myself via device <DeviceName>
-    And I wait for <SyncTimeout> seconds
     And I see location map container in the conversation view
     And I wait for <EphemeralTimeout> seconds
     Then I do not see location map container in the conversation view
 
     Examples:
-      | Name      | Contact   | SyncTimeout | EphemeralTimeout | DeviceName    | Picture     | FileName    | MIMEType  | AudioFileName | AudioMIME | Link         |
-      | user1Name | user2Name | 3           | 5                | ContactDevice | testing.jpg | testing.mp4 | video/mp4 | test.m4a      | audio/mp4 | www.wire.com |
+      | Name      | Contact   | SyncTimeout | EphemeralTimeout | DeviceName    | Picture     | FileName    | VideoMIME  | AudioFileName | AudioMIME | Link         |
+      | user1Name | user2Name | 3           | 5                | ContactDevice | testing.jpg | testing.mp4 | video/mp4  | test.m4a      | audio/mp4 | www.wire.com |
