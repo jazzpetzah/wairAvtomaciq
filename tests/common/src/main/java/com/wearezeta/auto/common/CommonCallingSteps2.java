@@ -383,16 +383,16 @@ public final class CommonCallingSteps2 {
     private void waitForExpectedCallStatuses(Instance instance, Call call, List<CallStatus> expectedStatuses,
                                              int secondsTimeout) throws Exception {
         long millisecondsStarted = System.currentTimeMillis();
+        CallStatus currentStatus = null;
         while (System.currentTimeMillis() - millisecondsStarted <= secondsTimeout * 1000) {
-            final CallStatus currentStatus = client.getCall(instance,
-                    call).getStatus();
+            currentStatus = client.getCall(instance, call).getStatus();
             if (expectedStatuses.contains(currentStatus)) {
                 return;
             }
             Thread.sleep(POLLING_FREQUENCY_MILLISECONDS);
         }
-        throw new TimeoutException(String.format("Call status for instance '%s' has not been changed to '%s' after %s second" +
-                "(s) timeout", instance.getId(), expectedStatuses, secondsTimeout));
+        throw new TimeoutException(String.format("Call status '%s' for instance '%s' has not been changed to '%s' after %s " +
+                "second(s) timeout", currentStatus.toString(), instance.getId(), expectedStatuses, secondsTimeout));
     }
 
     private static String makeKey(ClientUser from) {
