@@ -1114,6 +1114,7 @@ Feature: Calling
     Then I see another call warning modal
     When I click on "Answer" button in another call warning modal
     Then I do not see another call warning modal
+    And <Contact3> verifies that call status to Myself is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact3>
     And <Contact3> verifies to have 1 flow
     And <Contact3> verifies to get audio data from me
