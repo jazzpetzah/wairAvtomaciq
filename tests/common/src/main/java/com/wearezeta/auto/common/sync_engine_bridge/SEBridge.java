@@ -93,8 +93,8 @@ public class SEBridge {
         getOrAddDevice(userFrom).sendPing(convId);
     }
 
-    public void typing(ClientUser userFrom, String convId) throws Exception {
-        getOrAddDevice(userFrom).typing(convId);
+    public void typing(ClientUser userFrom, String convId, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).typing(convId);
     }
 
     public void clearConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
