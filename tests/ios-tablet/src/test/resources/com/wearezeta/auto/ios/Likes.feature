@@ -20,7 +20,7 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C246224 @C246225 @staging @fastLogin @torun
+  @C246224 @C246225 @staging @fastLogin
   Scenario Outline: Verify liking image and link [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
