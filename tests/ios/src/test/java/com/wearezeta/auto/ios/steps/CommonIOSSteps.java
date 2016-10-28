@@ -140,6 +140,8 @@ public class CommonIOSSteps {
         capabilities.setCapability("app", appPath);
         capabilities.setCapability("appName", getAppName());
         capabilities.setCapability("bundleId", IOSDistributable.getInstance(appPath).getBundleId());
+        capabilities.setCapability("noReset", true);
+        capabilities.setCapability("autoLaunch", false);
         if (isRealDevice) {
             final String udid = IOSRealDeviceHelpers.getUDID().orElseThrow(
                     () -> new IllegalStateException("Cannot detect any connected iDevice")
@@ -153,13 +155,10 @@ public class CommonIOSSteps {
             capabilities.setCapability("showXcodeLog", true);
             capabilities.setCapability("keychainPath", KEYCHAIN_PATH);
             capabilities.setCapability("keychainPassword", KEYCHAIN_PASSWORD);
-            capabilities.setCapability("fullReset", true);
         } else {
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()));
             // https://github.com/appium/appium-xcuitest-driver/pull/184/files
             capabilities.setCapability("iosInstallPause", INSTALL_DELAY_MS);
-            capabilities.setCapability("noReset", true);
-            capabilities.setCapability("autoLaunch", false);
         }
         capabilities.setCapability("platformVersion", getPlatformVersion());
         capabilities.setCapability("launchTimeout", ZetaIOSDriver.MAX_SESSION_INIT_DURATION_MILLIS);
@@ -200,7 +199,9 @@ public class CommonIOSSteps {
         argsValue.put("args", processArgs);
         capabilities.setCapability("processArguments", argsValue.toString());
 
-        if (!isRealDevice) {
+        if (isRealDevice) {
+            prepareRealDevice(capabilities);
+        } else {
             prepareSimulator(capabilities, processArgs);
         }
 
@@ -208,6 +209,17 @@ public class CommonIOSSteps {
                 getUrl(), capabilities, retriesCount
         );
     }
+
+    private static void prepareRealDevice(final Capabilities caps) throws Exception {
+        final String udid = (String) caps.getCapability("udid");
+        final IOSDistributable currentPackage =
+                IOSDistributable.getInstance((String) caps.getCapability("app"));
+        if (!caps.is(CAPABILITY_NAME_NO_UNINSTALL)) {
+            IOSRealDeviceHelpers.uninstallApp(udid, currentPackage.getBundleId());
+        }
+        IOSRealDeviceHelpers.installApp(udid, currentPackage.getAppRoot());
+    }
+
 
     // We don't know Wire Application ID for sure,
     // so we do create tmp folder for every application under the current simulator
@@ -234,14 +246,12 @@ public class CommonIOSSteps {
                     IOSSimulatorHelpers.shutdown();
                 }
                 IOSSimulatorHelpers.start();
+                final IOSDistributable currentPackage =
+                        IOSDistributable.getInstance((String) caps.getCapability("app"));
                 if (!caps.is(CAPABILITY_NAME_NO_UNINSTALL)) {
-                    IOSSimulatorHelpers.uninstallApp(IOSDistributable.getInstance(
-                            (String) caps.getCapability("app")).getBundleId()
-                    );
+                    IOSSimulatorHelpers.uninstallApp(currentPackage.getBundleId());
                 }
-                IOSSimulatorHelpers.installApp(IOSDistributable.getInstance(
-                        (String) caps.getCapability("app")).getAppRoot()
-                );
+                IOSSimulatorHelpers.installApp(currentPackage.getAppRoot());
                 break;
             } catch (Exception e) {
                 e.printStackTrace();

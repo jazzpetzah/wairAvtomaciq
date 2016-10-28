@@ -2,6 +2,7 @@ package com.wearezeta.auto.common.driver.device_helpers;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -65,33 +66,57 @@ public class IOSRealDeviceHelpers {
     }
 
     private static final String RECONNECT_DEVICE_SCRIPT_NAME = "reconnectIDevice.py";
+    private static final String IDEVEICEINSTALLER = "/usr/local/bin/ideviceinstaller";
 
-    public static void uninstallApp(final String udid, final String bundleId) throws Exception {
-        final Process p = new ProcessBuilder(
-                "/usr/local/bin/ideviceinstaller", "-u", udid, "-U", bundleId
-        ).redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.INHERIT).start();
+    private static void retryOperation(String udid, FunctionalInterfaces.ISupplierWithException<ProcessBuilder> f,
+                                       String errorMsg) throws Exception {
+        final Process p = f.call().start();
         if (!p.waitFor(APP_UNINSTALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
             // FIXME: Workaround for https://github.com/appium/appium/issues/5039
             p.destroy();
 
             if (CommonUtils.isRunningInJenkinsNetwork()) {
-                log.warn("Seems like ideviceinstaller has frozen. Trying to reconnect the IDevice to its VM...");
+                log.warn("Seems like command line is frozen. Trying to reconnect the IDevice to its VM...");
                 new ProcessBuilder("/usr/bin/python",
                         getIOSToolsRoot(IOSRealDeviceHelpers.class) + File.separator + RECONNECT_DEVICE_SCRIPT_NAME
                 ).redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.INHERIT).start().waitFor();
                 waitUntilIsConnected(udid, DEVICE_RECONNECT_TIMEOUT_SECONDS);
-                final Process p1 = new ProcessBuilder(
-                        "/usr/local/bin/ideviceinstaller", "-u", udid, "-U", bundleId
-                ).redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.INHERIT).start();
+                final Process p1 = f.call().start();
                 if (!p1.waitFor(APP_UNINSTALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
-                    throw new IllegalStateException("ideviceinstaller has failed to perform application uninstall.\n" +
-                            "Please try to reconnect the device.");
+                    throw new IllegalStateException(errorMsg);
                 }
             } else {
-                throw new IllegalStateException("ideviceinstaller has failed to perform application uninstall.\n" +
-                        "Please try to reconnect the device.");
+                throw new IllegalStateException(errorMsg);
             }
         }
+    }
+
+    public static void uninstallApp(final String udid, final String bundleId) throws Exception {
+        if (!new File(IDEVEICEINSTALLER).exists()) {
+            throw new IllegalStateException(
+                    String.format("ideviceinstaller tool is not installed at path %s. " +
+                            "Execute `brew install --HEAD libimobiledevice` to install it", IDEVEICEINSTALLER));
+        }
+        retryOperation(udid,
+                () -> new ProcessBuilder(IDEVEICEINSTALLER, "-u", udid, "-U", bundleId).
+                        redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.INHERIT),
+                String.format("ideviceinstaller has failed to perform '%s' uninstall.\n" +
+                        "Please try to reconnect the device manually.", bundleId)
+        );
+    }
+
+    public static void installApp(String udid, File appRoot) throws Exception {
+        if (!new File(IDEVEICEINSTALLER).exists()) {
+            throw new IllegalStateException(
+                    String.format("ideviceinstaller tool is not installed at path %s. " +
+                            "Execute `brew install --HEAD libimobiledevice` to install it", IDEVEICEINSTALLER));
+        }
+        retryOperation(udid,
+                () -> new ProcessBuilder(IDEVEICEINSTALLER, "-u", udid, "-i", appRoot.getCanonicalPath()).
+                        redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.INHERIT),
+                String.format("ideviceinstaller has failed to perform '%s' install.\n" +
+                        "Please try to reconnect the device manually.", appRoot.getName())
+        );
     }
 
     private static final String IDEVICEINFO = "/usr/local/bin/ideviceinfo";
@@ -100,7 +125,7 @@ public class IOSRealDeviceHelpers {
         if (!new File(IDEVICEINFO).exists()) {
             throw new IllegalStateException(
                     String.format("ideviceinfo tool is not installed at path %s. " +
-                            "Execute `brew install ideviceutils` to install it", IDEVICEINFO));
+                            "Execute `brew install --HEAD libimobiledevice` to install it", IDEVICEINFO));
         }
         final Process arp = new ProcessBuilder(new String[]{IDEVICEINFO}).start();
         arp.waitFor();
@@ -109,7 +134,7 @@ public class IOSRealDeviceHelpers {
         String line;
         final String regex = "WiFiAddress:\\s+([0-9a-f]+:[0-9a-f]+:[0-9a-f]+:[0-9a-f]+:[0-9a-f]+:[0-9a-f]+)";
         final Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        while ( (line = reader.readLine()) != null) {
+        while ((line = reader.readLine()) != null) {
             final Matcher m = p.matcher(line);
             if (m.find()) {
                 return m.group(1);
@@ -127,7 +152,6 @@ public class IOSRealDeviceHelpers {
     /**
      * This method requires fping tool to be installed on the machine where the test is riunning:
      * brew install fping
-     *
      */
     public static String getIP() throws Exception {
         final String nodeIP = CommonUtils.getLocalIP4Address();
@@ -151,7 +175,7 @@ public class IOSRealDeviceHelpers {
         final String deviceMAC = CommonUtils.normalizeMACAddress(getMAC());
         final StringBuilder output = new StringBuilder();
         String line;
-        while ( (line = reader.readLine()) != null) {
+        while ((line = reader.readLine()) != null) {
             final Matcher macMatcher = macPattern.matcher(line);
             if (macMatcher.find() && CommonUtils.normalizeMACAddress(macMatcher.group(1)).equals(deviceMAC)) {
                 final Matcher ipMatcher = ipPattern.matcher(line);
