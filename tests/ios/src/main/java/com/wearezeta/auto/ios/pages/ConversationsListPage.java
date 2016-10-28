@@ -7,60 +7,54 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.driver.DummyElement;
-import com.wearezeta.auto.ios.tools.FastLoginContainer;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDragArguments;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
-import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.*;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class ConversationsListPage extends IOSPage {
-    private static final int CONV_SWIPE_TIME = 500;
-
     private static final By nameSettingsGearButton = MobileBy.AccessibilityId("bottomBarSettingsButton");
 
     private static final By nameOpenArchiveButton = MobileBy.AccessibilityId("bottomBarArchivedButton");
 
-    private static final String xpathStrContactListRoot = xpathStrMainWindow + "/UIACollectionView[1]";
-    private static final By xpathContactListRoot = By.xpath(xpathStrContactListRoot);
+    private static final String xpathStrContactListRoot = "//XCUIElementTypeCollectionView";
 
-    protected static final String xpathStrContactListItems = xpathStrContactListRoot + "/UIACollectionCell";
+    protected static final String xpathStrContactListItems = xpathStrContactListRoot + "/XCUIElementTypeCell";
     private static final Function<String, String> xpathStrContactListItemByExpr = xpathExpr ->
-            String.format("%s/UIAStaticText[%s]", xpathStrContactListItems, xpathExpr);
+            String.format("%s//XCUIElementTypeStaticText[%s]", xpathStrContactListItems, xpathExpr);
     protected static final Function<String, String> xpathStrConvoListEntryByName = name ->
-            String.format("%s/UIAStaticText[@value='%s']/parent::*", xpathStrContactListItems, name);
+            String.format("%s[ .//XCUIElementTypeStaticText[@value='%s'] ]", xpathStrContactListItems, name);
     private static final Function<Integer, String> xpathStrConvoListEntryByIdx = idx ->
             String.format("%s[%s]", xpathStrContactListItems, idx);
     private static final Function<String, String> xpathStrFirstConversationEntryByName = name ->
-            String.format("%s[1]/UIAStaticText[@value='%s']", xpathStrContactListItems, name);
+            String.format("%s[1][ .//XCUIElementTypeStaticText[@value='%s'] ]", xpathStrContactListItems, name);
 
     private static final String strNameContactsButton = "bottomBarContactsButton";
 
     public static final By nameContactsButton = MobileBy.AccessibilityId(strNameContactsButton);
 
-    protected static final By xpathContactsLabel = By.xpath(String.format("//UIAButton[@name='%s' and @label='CONTACTS']",
-            strNameContactsButton));
+    protected static final By xpathContactsLabel = By.xpath(
+            String.format("//XCUIElementTypeButton[@name='%s' and @label='CONTACTS']", strNameContactsButton));
 
     private static final By xpathPendingRequest =
-            By.xpath("//UIACollectionCell[contains(@name,' waiting')]/UIAStaticText[1]");
+            By.xpath("//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[contains(@name,' waiting')] ]");
 
     private static final By nameMuteCallButton = MobileBy.AccessibilityId("MuteVoiceButton");
 
-    public static final By nameCancelActionButton = MobileBy.AccessibilityId("CANCEL");
+    // public static final By nameCancelActionButton = MobileBy.AccessibilityId("CANCEL");
 
     private static final By nameSendAnInviteButton = MobileBy.AccessibilityId("INVITE MORE PEOPLE");
 
 
     private static final Function<String, String> xpathStrContactListPlayPauseButtonByConvoName = name ->
-            String.format("//UIACollectionCell[@name='%s']/UIAButton[@name='mediaCellButton']", name);
-
-    private static final Function<String, String> xpathStrSelectedConversationEntryByName = name ->
-            String.format("%s/UIACollectionView[1]/UIACollectionCell[@name='%s']", xpathStrMainWindow, name);
+            String.format("//XCUIElementTypeCell[ .//*[@name='%s'] ]" +
+                    "//XCUIElementTypeButton[@name='mediaCellButton']", name);
 
     private static final Function<String, String> xpathStrActionMenuByConversationName = name ->
-            String.format("//UIAStaticText[@name='%s' and @visible='true']", name.toUpperCase());
+            String.format("//XCUIElementTypeStaticText[@name='%s']", name.toUpperCase());
 
     private static final By nameEmptyConversationsListMessage = MobileBy.AccessibilityId(
             "NO ACTIVE CONVERSATIONS TAP CONTACTS TO START A CONVERSATION");
@@ -69,20 +63,12 @@ public class ConversationsListPage extends IOSPage {
 
     private static final By nameConversationsHintTextLabel = MobileBy.AccessibilityId("Conversations start here");
 
-    private static final By shareContactsAlertOKButton = By.xpath(xpathStrAlertButtonByCaption.apply("OK"));
-
     public ConversationsListPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
     public void tapContactsButton() throws Exception {
         getElement(nameContactsButton).click();
-        if (FastLoginContainer.getInstance().isEnabled()) {
-            getElementIfDisplayed(shareContactsAlertOKButton, 3).orElseGet(DummyElement::new).click();
-        } else {
-            // Wait until animation is completed
-            DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.xpathPickerClearButton, 3);
-        }
     }
 
     public void tapPlayPauseButtonNextTo(String name) throws Exception {
@@ -92,6 +78,8 @@ public class ConversationsListPage extends IOSPage {
 
     public void tapSettingsGearButton() throws Exception {
         getElement(nameSettingsGearButton).click();
+        // Wait for transition animation
+        Thread.sleep(1000);
     }
 
     public void tapOnName(String name) throws Exception {
@@ -99,25 +87,15 @@ public class ConversationsListPage extends IOSPage {
                 () -> new IllegalStateException(String.format("The conversation '%s' is not visible in the list", name))
         ).click();
         // Wait for transition animation
-        Thread.sleep(1000);
+        Thread.sleep(1500);
     }
 
-    private Optional<WebElement> findNameInContactList(String name, int timeoutSeconds) throws Exception {
-        final By locator = By.xpath(xpathStrConvoListEntryByName.apply(name));
-        final Optional<WebElement> contactCell = getElementIfDisplayed(locator, timeoutSeconds);
-        if (contactCell.isPresent()) {
-            return contactCell;
-        } else {
-            try {
-                return Optional.of(((IOSElement) getElement(xpathContactListRoot, "Conversations list is not visible",
-                        timeoutSeconds)).scrollToExact(name));
-            } catch (WebDriverException e) {
-                return Optional.empty();
-            }
-        }
+    protected Optional<WebElement> findNameInContactList(String name, int timeoutSeconds) throws Exception {
+        final By locator = FBBy.xpath(xpathStrConvoListEntryByName.apply(name));
+        return getElementIfDisplayed(locator, timeoutSeconds);
     }
 
-    private Optional<WebElement> findNameInContactList(String name) throws Exception {
+    protected Optional<WebElement> findNameInContactList(String name) throws Exception {
         return findNameInContactList(name,
                 Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass())));
     }
@@ -130,46 +108,39 @@ public class ConversationsListPage extends IOSPage {
         return findNameInContactList(name, timeoutSeconds).isPresent();
     }
 
-    public void swipeRightOnContact(String contact) throws Exception {
-        DriverUtils.swipeRight(this.getDriver(),
-                findNameInContactList(contact).orElseThrow(IllegalStateException::new), CONV_SWIPE_TIME, 90, 50);
+    private void swipeRightOnContact(String name) throws Exception {
+        final FBElement dstElement = (FBElement) findNameInContactList(name).orElseThrow(
+                () -> new IllegalStateException(String.format("Cannot find a conversation named '%s'", name))
+        );
+        final Dimension elSize = dstElement.getSize();
+        final double y = elSize.getHeight() * 8 / 9;
+        dstElement.dragFromToForDuration(
+                new FBDragArguments(elSize.getWidth() / 10, y, elSize.getWidth() * 3 / 4, y, 1)
+        );
     }
 
     public void swipeRightConversationToRevealActionButtons(String conversation) throws Exception {
-        int count = 0;
-        do {
-            swipeRightOnContact(conversation);
-            count++;
-        } while ((count < 5) && !isCancelActionButtonVisible());
+        swipeRightOnContact(conversation);
     }
 
     public boolean isPendingRequestInContactList() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), xpathPendingRequest, 5);
+        return isLocatorDisplayed(xpathPendingRequest, 5);
     }
 
     public boolean pendingRequestInContactListIsNotShown() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathPendingRequest);
+        return isLocatorInvisible(xpathPendingRequest);
     }
 
-    public void clickPendingRequest() throws Exception {
+    public void tapPendingRequest() throws Exception {
         getElement(xpathPendingRequest).click();
     }
 
     public boolean isConversationNotInList(String name, int timeoutSeconds) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), MobileBy.AccessibilityId(name), timeoutSeconds);
+        return isLocatorInvisible(MobileBy.AccessibilityId(name), timeoutSeconds);
     }
 
     public boolean isConversationNotInList(String name) throws Exception {
         return isConversationNotInList(name, 5);
-    }
-
-    @Override
-    public void swipeDown(int time) throws Exception {
-        Point coords = getElement(nameMainWindow).getLocation();
-        Dimension elementSize = getElement(nameMainWindow).getSize();
-        this.getDriver().swipe(coords.x + elementSize.width / 2,
-                coords.y + 150, coords.x + elementSize.width / 2,
-                coords.y + elementSize.height - 150, time);
     }
 
     public boolean isConversationWithUsersExist(List<String> names, int timeoutSeconds) throws Exception {
@@ -177,11 +148,7 @@ public class ConversationsListPage extends IOSPage {
                 map(x -> String.format("contains(@name, '%s')", x)).
                 collect(Collectors.toList()));
         final By locator = By.xpath(xpathStrContactListItemByExpr.apply(xpathExpr));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, timeoutSeconds);
-    }
-
-    private boolean isCancelActionButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameCancelActionButton);
+        return isLocatorDisplayed(locator, timeoutSeconds);
     }
 
     public BufferedImage getConversationEntryScreenshot(int idx) throws Exception {
@@ -204,7 +171,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isMuteCallButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameMuteCallButton);
+        return isLocatorDisplayed(nameMuteCallButton);
     }
 
     public void clickMuteCallButton() throws Exception {
@@ -213,7 +180,7 @@ public class ConversationsListPage extends IOSPage {
 
     public boolean isActionMenuVisibleForConversation(String conversation) throws Exception {
         final By locator = By.xpath(xpathStrActionMenuByConversationName.apply(conversation));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isLocatorDisplayed(locator);
     }
 
     private By getActionButtonByName(String buttonTitle) {
@@ -221,28 +188,21 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean isButtonVisibleInActionMenu(String buttonTitle) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getActionButtonByName(buttonTitle));
+        return isLocatorDisplayed(getActionButtonByName(buttonTitle));
     }
 
     public void tapButtonInActionMenu(String buttonTitle) throws Exception {
         getElement(getActionButtonByName(buttonTitle)).click();
-    }
-
-    public Optional<String> getSelectedConversationCellValue(String conversation) throws Exception {
-        final By locator = By.xpath(xpathStrSelectedConversationEntryByName.apply(conversation));
-        final Optional<WebElement> cell = getElementIfDisplayed(locator);
-        if (cell.isPresent()) {
-            return Optional.of(cell.get().getAttribute("value"));
-        }
-        return Optional.empty();
+        // Wait for animation
+        Thread.sleep(2000);
     }
 
     public boolean isInviteMorePeopleButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSendAnInviteButton);
+        return isLocatorDisplayed(nameSendAnInviteButton);
     }
 
     public boolean isInviteMorePeopleButtonNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameSendAnInviteButton);
+        return isLocatorInvisible(nameSendAnInviteButton);
     }
 
     public BufferedImage getSettingsGearStateScreenshot() throws Exception {
@@ -268,31 +228,31 @@ public class ConversationsListPage extends IOSPage {
 
     public boolean isFirstConversationName(String convoName) throws Exception {
         final By locator = By.xpath(xpathStrFirstConversationEntryByName.apply(convoName));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isLocatorDisplayed(locator);
     }
 
     public void openArchivedConversations() throws Exception {
-        clickElementWithRetryIfStillDisplayed(nameOpenArchiveButton);
+        tapElementWithRetryIfStillDisplayed(nameOpenArchiveButton);
     }
 
     public boolean isArchiveButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameOpenArchiveButton);
+        return isLocatorDisplayed(nameOpenArchiveButton);
     }
 
     public boolean isArchiveButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameOpenArchiveButton);
+        return isLocatorInvisible(nameOpenArchiveButton);
     }
 
     public boolean contactsLabelIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathContactsLabel);
+        return isLocatorDisplayed(xpathContactsLabel);
     }
 
     public boolean contactLabelIsNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathContactsLabel);
+        return isLocatorInvisible(xpathContactsLabel);
     }
 
     public boolean noConversationsMessageIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEmptyConversationsListMessage);
+        return isLocatorDisplayed(nameEmptyConversationsListMessage);
     }
 
     public void clickCloseArchivePageButton() throws Exception {
@@ -300,11 +260,11 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public boolean hintTextIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConversationsHintTextLabel);
+        return isLocatorDisplayed(nameConversationsHintTextLabel);
     }
 
     public boolean hintTextIsNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConversationsHintTextLabel);
+        return isLocatorInvisible(nameConversationsHintTextLabel);
     }
 
     public void tapHintText() throws Exception {

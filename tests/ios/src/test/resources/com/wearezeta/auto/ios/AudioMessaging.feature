@@ -14,6 +14,25 @@ Feature: Audio Messaging
       | Name      | Contact   |
       | user1Name | user2Name |
 
+  @C129327 @fastLogin @regression
+  Scenario Outline:  Verify sending voice message by long tap > release the thumb > tap on the check icon
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <DeviceName1>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I long tap Audio Message button from input tools
+    And I tap Send record control button
+    Then I see audio message container in the conversation view
+    # Wait for delivery
+    And I wait for 3 seconds
+    And I see "<DeliveredLabel>" on the message toolbox in conversation view
+
+    Examples:
+      | Name      | Contact   | DeviceName1 | DeliveredLabel |
+      | user1Name | user2Name | device1     | Delivered      |
+
   @C129341 @C129345 @rc @regression @fastLogin
   Scenario Outline: Verify receiving a voice message and deleting it
     Given There are 2 users where <Name> is me
@@ -122,12 +141,11 @@ Feature: Audio Messaging
     Then I see state of button on audio message placeholder number 2 is play
 
     Examples:
-      | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
-      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
-
+      | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
 
   @C139855 @regression @fastLogin
-  Scenario Outline: (ZIOS-6759) Verify playback is stopped when incoming call has appeared
+  Scenario Outline: (ZIOS-6688) Verify playback is stopped when incoming call has appeared
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
@@ -149,26 +167,6 @@ Feature: Audio Messaging
       | Name      | Contact   | FileName | FileMIME  | ContactDevice | CallBackend | AudioDownloadTimeout |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | chrome      | 5                    |
 
-  @C139857 @regression @fastLogin
-  Scenario Outline: Verify recording is stopped when incoming call has appeared
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given <Contact> starts instance using <CallBackend>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    Given I tap on contact name <Contact>
-    When I long tap Audio Message button from input tools without releasing my finger
-    # Let it record something
-    And I wait for 3 seconds
-    And <Contact> calls me
-    And I see call status message contains "<Contact> calling"
-    And I tap Ignore button on Calling overlay
-    Then I see Cancel record control button
-
-    Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
-
   @C139860 @regression @fastLogin
   Scenario Outline: Verify playback is stopped when Soundcloud playback is started
     Given There are 2 users where <Name> is me
@@ -184,6 +182,8 @@ Feature: Audio Messaging
     # Wait until the audio is downloaded and starts playback
     And I wait for <AudioDownloadTimeout> seconds
     And I tap on media container in conversation view
+    # Wait for audio message playback to stop
+    And I wait for 5 seconds
     Then I verify the state of Pause button on audio message placeholder is not changed
 
     Examples:
@@ -212,7 +212,7 @@ Feature: Audio Messaging
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
 
   @C139856 @regression @fastLogin
-  Scenario Outline: (ZIOS-6759) Verify playback is stopped when outgoing call is started
+  Scenario Outline: (ZIOS-6688) Verify playback is stopped when outgoing call is started
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -299,16 +299,19 @@ Feature: Audio Messaging
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
-    And User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    And I tap on contact name <Contact>
-    And User Me sends 1 encrypted message to user <Contact>
-    And I remember media container state
-    And I tap on media container in conversation view
-    And I see media container state is changed
-    And I remember media container state
-    And I tap Play audio message button
-    Then I see media container state is changed
+    Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
+    Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given I tap on contact name <Contact>
+    Given I tap on media container in conversation view
+    Given User Me sends 1 encrypted message to user <Contact>
+    # Wait until audio message is fully loaded
+    Given I wait for 7 seconds
+    Given I tap Play audio message button
+    # Wait until audio track is loaded
+    Given I wait for 7 seconds
+    When I remember media container state
+    And I wait for 3 seconds
+    Then I see media container state is not changed
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                                   | FileName | FileMIME  | ContactDevice |

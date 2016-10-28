@@ -38,6 +38,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.io.File;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -362,9 +363,9 @@ public class CommonAndroidTabletSteps {
      *
      * @param orientation either landscape or portrait
      * @throws Exception
-     * @step. ^I rotate UI to (landscape|portrait$)
+     * @step. ^I rotate UI to (landscape|portrait)$
      */
-    @When("^I rotate UI to (landscape|portrait$)$")
+    @When("^I rotate UI to (landscape|portrait)$")
     public void WhenIRotateUILandscape(String orientation) throws Exception {
         switch (orientation.toLowerCase()) {
             case "landscape":
@@ -579,22 +580,20 @@ public class CommonAndroidTabletSteps {
     }
 
     /**
-     * User A sends a hotping to a conversation
+     * Send location sharing message
      *
-     * @param hotPingFromUserNameAlias The user to do the hotpinging
-     * @param dstConversationName      the target converation to send the ping to
-     * @param isSecure                 equals null if ping should not be secure
+     * @param userNameAlias sender name/alias
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  user name/alias or group conversation name
+     * @param deviceName    destination device
      * @throws Exception
-     * @step. ^User (\\w+) (securely )?hotpings? conversation (.*)$
+     * @step. ^User (.*) shares? his location to (user|group conversation) (.*) via device (.*)
      */
-    @When("^User (\\w+) (securely )?hotpings? conversation (.*)$")
-    public void UserHotPingedConversation(String hotPingFromUserNameAlias,
-                                          String isSecure, String dstConversationName) throws Exception {
-        if (isSecure == null) {
-            commonSteps.UserHotPingedConversation(hotPingFromUserNameAlias, dstConversationName);
-        } else {
-            commonSteps.UserHotPingedConversationOtr(hotPingFromUserNameAlias, dstConversationName);
-        }
+    @When("^User (.*) shares? his location to (user|group conversation) (.*) via device (.*)")
+    public void UserXSharesLocationTo(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
+            throws Exception {
+        commonSteps.UserSharesLocationTo(userNameAlias, dstNameAlias, convoType.equals("group conversation"),
+                deviceName);
     }
 
     /**
@@ -602,28 +601,30 @@ public class CommonAndroidTabletSteps {
      *
      * @param msgFromUserNameAlias the user who sends the message
      * @param msg                  a message to send. Random string will be sent if it is empty
+     * @param deviceName           the device to use when using encryption
      * @param dstConvoName         The user to receive the message
      * @param isEncrypted          whether the message has to be encrypted
      * @param convoType            either 'user' or 'group conversation'
      * @throws Exception
-     * @step. ^User (.*) sends? (encrypted )?message (.*)to user (.*)$
+     * @step. ^User (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$
      */
-    @When("^User (.*) sends? (encrypted )?message (.*)to (user|group conversation) (.*)$")
+    @When("^User (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
     public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
-                                              String msg, String convoType, String dstConvoName) throws Exception {
+                                              String msg, String deviceName, String convoType, String dstConvoName) throws
+            Exception {
         final String msgToSend = (msg == null || msg.trim().length() == 0) ?
                 CommonUtils.generateRandomString(10) : msg.trim();
         if (convoType.equals("user")) {
             if (isEncrypted == null) {
                 commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
             } else {
-                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, null);
+                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
             }
         } else {
             if (isEncrypted == null) {
                 commonSteps.UserSentMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend);
             } else {
-                commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, null);
+                commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
             }
         }
     }
@@ -634,15 +635,16 @@ public class CommonAndroidTabletSteps {
      * @param msgFromUserNameAlias the user who sends the message
      * @param count                number of messages to send
      * @param dstUserNameAlias     The user to receive the message
+     * @param deviceName           the device to use when using encryption
      * @param areEncrypted         Whether the messages should be encrypted
      * @throws Exception
-     * @step. ^User (.*) sends? (\d+) (encrypted )?messages? to user (.*)$
+     * @step. ^User (.*) sends? (\\d+) (encrypted )?messages? (?:via device (.*)\\s)?to user (.*)$
      */
-    @When("^User (.*) sends? (\\d+) (encrypted )?messages? to user (.*)$")
+    @When("^User (.*) sends? (\\d+) (encrypted )?messages? (?:via device (.*)\\s)?to user (.*)$")
     public void UserSendXMessagesToConversation(String msgFromUserNameAlias, int count, String areEncrypted,
-                                                String dstUserNameAlias) throws Exception {
+                                                String deviceName, String dstUserNameAlias) throws Exception {
         for (int i = 0; i < count; i++) {
-            UserSendMessageToConversation(msgFromUserNameAlias, areEncrypted, null, "user", dstUserNameAlias);
+            UserSendMessageToConversation(msgFromUserNameAlias, areEncrypted, null, deviceName, "user", dstUserNameAlias);
         }
     }
 
@@ -663,7 +665,7 @@ public class CommonAndroidTabletSteps {
     public void ContactSendImageToConversation(String imageSenderUserNameAlias, String isEncrypted,
                                                String imageFileName, String conversationType,
                                                String dstConversationName) throws Exception {
-        final String imagePath = CommonUtils.getImagesPath(CommonAndroidTabletSteps.class) + imageFileName;
+        final String imagePath = CommonUtils.getImagesPathFromConfig(getClass()) + imageFileName;
         final boolean isGroup = conversationType.equals("group");
         if (isEncrypted == null) {
             commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
@@ -721,7 +723,7 @@ public class CommonAndroidTabletSteps {
      */
     @Given("^(.*) has an avatar picture from file (.*)$")
     public void GivenUserHasAnAvatarPicture(String name, String picture) throws Exception {
-        String picturePath = CommonUtils.getImagesPath(this.getClass()) + "/" + picture;
+        String picturePath = CommonUtils.getImagesPathFromConfig(this.getClass()) + File.separator + picture;
         try {
             name = usrMgr.findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
@@ -942,5 +944,154 @@ public class CommonAndroidTabletSteps {
     @Given("^I push local file named \"(.*)\" to the device$")
     public void IPushLocalFileNamedYToDevice(String fileFullName) throws Exception {
         AndroidCommonUtils.pushLocalFileToSdcardDownload(fileFullName);
+    }
+
+    /**
+     * Press back button until Wire app is in foreground
+     *
+     * @param timeoutSeconds timeout in seconds for try process
+     * @throws Exception
+     * @step. ^I press [Bb]ack button until Wire app is in foreground in (\d+) seconds$
+     */
+    @When("^I press [Bb]ack button until Wire app is in foreground in (\\d+) seconds$")
+    public void IPressBackButtonUntilWireAppInForeground(int timeoutSeconds) throws Exception {
+        final String packageId = AndroidCommonUtils.getAndroidPackageFromConfig(getClass());
+        CommonUtils.waitUntilTrue(
+                timeoutSeconds,
+                1000,
+                () -> {
+                    if (AndroidCommonUtils.isAppNotInForeground(packageId, FOREGROUND_TIMEOUT_MILLIS)) {
+                        pagesCollection.getCommonPage().navigateBack();
+                    }
+                    return AndroidCommonUtils.isAppInForeground(packageId, FOREGROUND_TIMEOUT_MILLIS);
+                }
+        );
+    }
+
+    /**
+     * Send a local file from SE
+     *
+     * @param contact      user name/alias
+     * @param fileFullName the name of an existing file
+     * @param mimeType     MIME type of the file, for example text/plain. Check
+     *                     http://www.freeformatter.com/mime-types-list.html to get the full list of available MIME
+     *                     types
+     * @param convoType    either 'single user' or 'group'
+     * @param dstConvoName conversation name
+     * @param deviceName   the name of user device. The device will be created automatically if it does not exist yet
+     * @throws Exception
+     * @step. ^(.*) sends local file named "(.*)" and MIME type "(.*)" via device (.*) to (user|group conversation) (.*)$
+     */
+    @When("^(.*) sends local file named \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) (.*)$")
+    public void ContactSendsXLocalFileFromSE(String contact, String fileFullName, String mimeType,
+                                             String deviceName, String convoType, String dstConvoName) throws Exception {
+        String basePath = CommonUtils.getAudioPathFromConfig(getClass());
+        String sourceFilePath = basePath + File.separator + fileFullName;
+
+        boolean isGroup = convoType.equals("group conversation");
+        commonSteps.UserSentFileToConversation(contact, dstConvoName, sourceFilePath,
+                mimeType, deviceName, isGroup);
+    }
+
+    /**
+     * User X react(like or unlike) the recent message in 1:1 conversation or group conversation
+     *
+     * @param userNameAlias User X's name or alias
+     * @param reactionType  User X's reaction , could be like or unlike, be careful you should use like before unlike
+     * @param dstNameAlias  the conversation which message is belong to
+     * @param deviceName    User X's device
+     * @throws Exception
+     * @step. ^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$
+     */
+    @When("^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$")
+    public void UserReactLastMessage(String userNameAlias, String reactionType, String dstNameAlias, String deviceName)
+            throws Exception {
+        switch (reactionType.toLowerCase()) {
+            case "likes":
+                commonSteps.UserLikeLatestMessage(userNameAlias, dstNameAlias, deviceName);
+                break;
+            case "unlikes":
+                commonSteps.UserUnlikeLatestMessage(userNameAlias, dstNameAlias, deviceName);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify the reaction type '%s'", reactionType));
+        }
+    }
+
+    /**
+     * User X delete message from User/Group via specified device
+     * Note : The recent message means the recent message sent from specified device by SE, the device should online.
+     *
+     * @param userNameAlias    user name/alias
+     * @param deleteEverywhere not null means delete everywhere, otherwise delete local
+     * @param convoType        either 'user' or 'group conversation'
+     * @param dstNameAlias     destination user name/alias or group convo name
+     * @param deviceName       source device name. Will be created if does not exist yet
+     * @throws Exception
+     * @step. ^User (.*) deletes? the recent message (everywhere )?from (user|group conversation) (.*) via device (.*)$
+     */
+    @When("^User (.*) deletes? the recent message (everywhere )?from (user|group conversation) (.*) via device (.*)$")
+    public void UserXDeleteLastMessage(String userNameAlias, String deleteEverywhere, String convoType,
+                                       String dstNameAlias, String deviceName) throws Exception {
+        boolean isGroup = convoType.equals("group conversation");
+        boolean isDeleteEverywhere = deleteEverywhere != null;
+        commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup, isDeleteEverywhere);
+    }
+
+    /**
+     * Remember the recent message Id
+     *
+     * @param userNameAlias user name/alias
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  destination user name/alias or group convo name
+     * @param deviceName    source device name. Will be created if does not exist yet
+     * @throws Exception
+     * @step. ^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$
+     */
+    @When("^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$")
+    public void UserXRemembersLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
+            throws Exception {
+        commonSteps.UserXRemembersLastMessage(userNameAlias, convoType.equals("group conversation"),
+                dstNameAlias, deviceName);
+    }
+
+    /**
+     * Check the remembered message is changed
+     *
+     * @param userNameAlias user name/alias
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  destination user name/alias or group convo name
+     * @param deviceName    source device name. Will be created if does not exist yet
+     * @throws Exception
+     * @step. ^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is
+     * changed( in \\d+ seconds?)?$
+     */
+    @Then("^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is " +
+            "changed( in \\d+ seconds?)?$")
+    public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias,
+                                             String deviceName, String waitDuration) throws Exception {
+        final int durationSeconds = (waitDuration == null) ?
+                CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
+                : Integer.parseInt(waitDuration.replaceAll("[\\D]", ""));
+        commonSteps.UserXFoundLastMessageChanged(userNameAlias, convoType.equals("group conversation"), dstNameAlias,
+                deviceName, durationSeconds);
+    }
+
+    /**
+     * User X edit his own messages, be careful this message will not control the type of the message you edit.
+     *
+     * @param userNameAlias user name/alias
+     * @param newMessage    the message you want to update to
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  estination user name/alias or group convo name
+     * @param deviceName    source device name. Will be created if does not exist yet
+     * @throws Exception
+     * @step. ^User (.*) edits? the recent message to "(.*)" from (user|group conversation) (.*) via device (.*)$
+     */
+    @When("^User (.*) edits? the recent message to \"(.*)\" from (user|group conversation) (.*) via device (.*)$")
+    public void UserXEditLastMessage(String userNameAlias, String newMessage, String convoType,
+                                     String dstNameAlias, String deviceName) throws Exception {
+        boolean isGroup = convoType.equals("group conversation");
+        commonSteps.UserUpdateLatestMessage(userNameAlias, dstNameAlias, newMessage, deviceName, isGroup);
     }
 }

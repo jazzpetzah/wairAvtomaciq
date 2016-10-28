@@ -32,6 +32,8 @@ public class SettingsPage extends AndroidPage {
 
     private static final By xpathOKButton = By.xpath("//*[starts-with(@id, 'button') and @value='OK']");
 
+    private static final By idVerificationCodeOKButton = By.id("tv__ok_button");
+
     private static final By idEmailEdit = By.id("acet__preferences__email");
 
     private static final By idCountryIdxInput = By.id("acet__preferences__country");
@@ -76,6 +78,8 @@ public class SettingsPage extends AndroidPage {
         final By locator = By.xpath(xpathStrSettingsMenuItemByText.apply(name));
         assert scrollUntilMenuElementVisible(locator, 5) : String
                 .format("Menu item '%s' is not present", name);
+        //Stability fix - after scrolling menu doesn't respond during small timeout
+        Thread.sleep(500);
         getElement(locator).click();
     }
 
@@ -92,10 +96,6 @@ public class SettingsPage extends AndroidPage {
 
     public void tapOKButtonOnPasswordConfirmationDialog() throws Exception {
         getElement(xpathOKButton).click();
-        // TODO: How to defect that element has changed his location?
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOKButton, 5)) {
-            DriverUtils.tapByCoordinatesWithPercentOffcet(getDriver(), getElement(xpathOKButton), 50, -200);
-        }
     }
 
     public void tapCurrentDevice() throws Exception {
@@ -128,7 +128,7 @@ public class SettingsPage extends AndroidPage {
         emailEdit.clear();
         emailEdit.sendKeys(newValue);
 
-        if(password.isPresent()) {
+        if (password.isPresent()) {
             getElement(idEmailPasswordInput, "The password input is not visible").sendKeys(password.get());
         }
         getElement(xpathOKButton).click();
@@ -141,7 +141,6 @@ public class SettingsPage extends AndroidPage {
         final WebElement phoneNumberInput = getElement(idPhoneNumberInput);
         phoneNumberInput.clear();
         phoneNumberInput.sendKeys(phoneNumber.withoutPrefix());
-        this.pressKeyboardSendButton();
         Thread.sleep(1000);
         getElement(xpathOKButton).click();
         // Confirm the alert
@@ -154,8 +153,7 @@ public class SettingsPage extends AndroidPage {
             final By locator = By.id(idStrVerificationCodeDigitInput.apply(charIdx + 1));
             getElement(locator).sendKeys(activationCode.substring(charIdx, charIdx + 1));
         }
-        this.pressKeyboardSendButton();
         Thread.sleep(1000);
-        this.pressKeyboardSendButton();
+        getElement(idVerificationCodeOKButton).click();
     }
 }

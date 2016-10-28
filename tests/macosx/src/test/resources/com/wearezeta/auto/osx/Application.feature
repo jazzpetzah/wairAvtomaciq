@@ -39,6 +39,7 @@ Feature: Application
 
   @C3144 @smoke
   Scenario: Verify size of sign in screen window
+    Given I switch to Sign In page
     When I ensure initial positioning
     Then I verify app width is 400 px and height is 576 px
     And I resize the app to the max by hand
@@ -67,7 +68,7 @@ Feature: Application
     And I am signed in properly
     When I click menu bar item "Wire" and menu item "Log Out"
     Then I see the clear data dialog
-    When I click Logout button on clear data dialog
+    When I click logout button on clear data dialog
     Then I see Sign In page
 
     Examples: 

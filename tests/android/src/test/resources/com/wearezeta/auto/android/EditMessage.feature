@@ -1,6 +1,6 @@
 Feature: Edit Message
 
-  @C202362 @C202366 @regression @rc
+  @C202362 @regression @rc
   Scenario Outline: Verify I can cancel editing a message by button / I can reset my editing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -8,7 +8,7 @@ Feature: Edit Message
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     And I long tap the Text message "<Message>" in the conversation view
     And I tap Edit button on the message bottom menu
     And I see edit message toolbar
@@ -37,7 +37,7 @@ Feature: Edit Message
     Given I see Conversations list with conversations
     # Check for back button
     When I tap on conversation name <Contact1>
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     And I long tap the Text message "<Message>" in the conversation view
     And I tap Edit button on the message bottom menu
     And I see edit message toolbar
@@ -63,7 +63,7 @@ Feature: Edit Message
     When I long tap the Text message "<Message>" in the conversation view
     And I tap Edit button on the message bottom menu
     And I tap conversation name from top toolbar
-    And I press Back button
+    And I tap Back button
     Then I do not see edit message toolbar
 
     Examples:
@@ -137,7 +137,7 @@ Feature: Edit Message
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     And User <Contact1> remembers the recent message from user Myself via device <ContactDevice>
     And I long tap the Text message "<Message>" in the conversation view
     And I tap Edit button on the message bottom menu
@@ -161,7 +161,7 @@ Feature: Edit Message
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     And I long tap the Text message "<Message>" in the conversation view
     And I tap Edit button on the message bottom menu
     And I see edit message toolbar
@@ -193,7 +193,7 @@ Feature: Edit Message
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     # Empty message
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     And I long tap the Text message "<Message>" in the conversation view
     And I tap Edit button on the message bottom menu
     And I clear cursor input
@@ -201,7 +201,7 @@ Feature: Edit Message
     Then I do not see the message "<Message>" in the conversation view
     And I do not see the message separator of Myself in 10 seconds
     # Empty space message
-    When I type the message "<Message>" and send it
+    When I type the message "<Message>" and send it by cursor Send button
     And I long tap the Text message "<Message>" in the conversation view
     And I tap Edit button on the message bottom menu
     And I clear cursor input
@@ -222,8 +222,8 @@ Feature: Edit Message
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
-    And I type the message "<Message1>" and send it
-    And I type the message "<Message2>" and send it
+    And I type the message "<Message1>" and send it by cursor Send button
+    And I type the message "<Message2>" and send it by cursor Send button
     And I long tap the Text message "<Message1>" in the conversation view
     And I tap Edit button on the message bottom menu
     And I long tap the Text message "<Message2>" in the conversation view
@@ -247,9 +247,9 @@ Feature: Edit Message
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
-    And I type the message "<Message1>" and send it without hiding keyboard
-    And I type the message "<Message2>" and send it without hiding keyboard
-    And I type the message "<Message3>" and send it
+    And I type the message "<Message1>" and send it by cursor Send button without hiding keyboard
+    And I type the message "<Message2>" and send it by cursor Send button without hiding keyboard
+    And I type the message "<Message3>" and send it by cursor Send button
     And I long tap the Text message "<Message2>" in the conversation view
     And I tap Edit button on the message bottom menu
     And I clear cursor input
@@ -293,7 +293,7 @@ Feature: Edit Message
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     And I see the message "<Message>" in the conversation view
     And User <Contact1> remembers the recent message from user Myself via device <ContactDevice>
     And I enable Airplane mode on the device

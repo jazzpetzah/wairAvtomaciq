@@ -1,6 +1,6 @@
 Feature: Audio Message
 
-  @C129782 @audiomessage @regression
+  @C129782 @audiomessage @regression @localytics
   Scenario Outline: Verify you can send and play the audio file in 1:1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -16,10 +16,11 @@ Feature: Audio Message
     Then I wait until audio <File> is downloaded and starts to play
     And I verify time for audio <File> is changing in the conversation view
     And I verify seek bar is shown for audio <File> in the conversation view
+    And I see localytics event <Event> with attributes <Attributes>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File        | Time  |
-      | user1Email | user1Password | user1Name | user2Name | example.wav | 00:20 |
+      | Login      | Password      | Name      | Contact   | File        | Time  | Event                        | Attributes                                                                                            |
+      | user1Email | user1Password | user1Name | user2Name | example.wav | 00:20 | media.completed_media_action | {\"action\":\"file\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":false,\"with_bot\":false}" |
 
   @C129783 @audiomessage @regression
   Scenario Outline: Verify you can delete an audio message
@@ -33,7 +34,7 @@ Feature: Audio Message
     And I see file transfer button in conversation input
     And I send audio file with length <Time> and name <File> to the current conversation
     And I wait until audio <File> is uploaded completely
-    And I click context menu of the latest message
+    And I click context menu of the last message
     And I click to delete message for me in context menu
     And I click confirm to delete message for me
     Then I do not see audio message <File> in the conversation view

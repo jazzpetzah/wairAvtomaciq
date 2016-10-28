@@ -12,8 +12,8 @@ Feature: Link Preview
     Then I see link preview container in the conversation view
 
     Examples:
-      | Name      | Contact   | Link                                                                                  |
-      | user1Name | user2Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 |
+      | Name      | Contact   | Link             |
+      | user1Name | user2Name | https://wire.com |
 
   @C169219 @rc @regression @fastLogin
   Scenario Outline: Verify deleting link preview
@@ -24,6 +24,7 @@ Feature: Link Preview
     Given I see conversations list
     When I tap on contact name <Contact>
     And I type the "<Link>" message and send it
+    And I tap Hide keyboard button
     Then I see link preview container in the conversation view
     When I long tap on link preview in conversation view
     And I tap on Delete badge item
@@ -31,8 +32,8 @@ Feature: Link Preview
     Then I do not see link preview container in the conversation view
 
     Examples:
-      | Name      | Contact   | Link                                                                                  |
-      | user1Name | user2Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 |
+      | Name      | Contact   | Link             |
+      | user1Name | user2Name | https://wire.com |
 
   @C169218 @rc @regression @fastLogin
   Scenario Outline: Verify preview is shown for received link
@@ -46,5 +47,5 @@ Feature: Link Preview
     Then I see link preview container in the conversation view
 
     Examples:
-      | Name      | Contact   | Link                                                                                  |
-      | user1Name | user2Name | https://twitter.com/wire/status/752800171608535040 |
+      | Name      | Contact   | Link             |
+      | user1Name | user2Name | https://wire.com |

@@ -18,8 +18,8 @@ public class TabletSketchPage extends AndroidTabletPage {
 		return this.getAndroidPageInstance(SketchPage.class);
 	}
 
-	public void setColor(int colorIdx) throws Exception {
-		getAndroidSketchPage().setColor(colorIdx);
+	public void setColor(SketchPage.SketchColor color) throws Exception {
+		getAndroidSketchPage().setColor(color);
 	}
 
 	public void drawRandomLines(int count) throws Exception {

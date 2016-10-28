@@ -70,16 +70,12 @@ public class SEBridge {
     }
 
     public void sendConversationMessage(ClientUser userFrom, String convId, String message) throws Exception {
-        getOrAddRandomDevice(userFrom).sendMessage(convId, message);
+        getOrAddDevice(userFrom).sendMessage(convId, message);
     }
 
     public void sendConversationMessage(ClientUser userFrom, String convId, String message, String deviceName) throws
             Exception {
-        if (deviceName == null) {
-            sendConversationMessage(userFrom, convId, message);
-        } else {
-            getOrAddDevice(userFrom, deviceName).sendMessage(convId, message);
-        }
+        getOrAddDevice(userFrom, deviceName).sendMessage(convId, message);
     }
 
     public void addRemoteDeviceToAccount(ClientUser user, String deviceName, String label) throws Exception {
@@ -90,23 +86,51 @@ public class SEBridge {
 
     public void sendImage(ClientUser userFrom, String convId, String path) throws Exception {
         verifyPathExists(path);
-        getOrAddRandomDevice(userFrom).sendImage(convId, path);
+        getOrAddDevice(userFrom).sendImage(convId, path);
     }
 
     public void sendPing(ClientUser userFrom, String convId) throws Exception {
-        getOrAddRandomDevice(userFrom).sendPing(convId);
+        getOrAddDevice(userFrom).sendPing(convId);
+    }
+
+    public void typing(ClientUser userFrom, String convId) throws Exception {
+        getOrAddDevice(userFrom).typing(convId);
     }
 
     public void clearConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
         getOrAddDevice(userFrom, deviceName).clearConversation(convId);
     }
 
+    public void muteConversation(ClientUser userFrom, String convId) throws Exception {
+        getOrAddDevice(userFrom).muteConversation(convId);
+    }
+
     public void muteConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
         getOrAddDevice(userFrom, deviceName).muteConversation(convId);
     }
 
+    public void unmuteConversation(ClientUser userFrom, String convId) throws Exception {
+        getOrAddDevice(userFrom).unmuteConversation(convId);
+    }
+
     public void unmuteConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
         getOrAddDevice(userFrom, deviceName).unmuteConversation(convId);
+    }
+
+    public void archiveConversation(ClientUser userFrom, String convId) throws Exception {
+        getOrAddDevice(userFrom).archiveConversation(convId);
+    }
+
+    public void archiveConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).archiveConversation(convId);
+    }
+
+    public void unarchiveConversation(ClientUser userFrom, String convId) throws Exception {
+        getOrAddDevice(userFrom).unarchiveConversation(convId);
+    }
+
+    public void unarchiveConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).unarchiveConversation(convId);
     }
 
     public void sendFile(ClientUser userFrom, String convId, String path, String mime, String deviceName)
@@ -120,68 +144,42 @@ public class SEBridge {
         getOrAddDevice(userFrom, deviceName).shareLocation(convId, longitude, latitude, locationName, zoom);
     }
 
-    public void deleteMessage(ClientUser userFrom, String convId, MessageId messageId) throws Exception {
-        getOrAddRandomDevice(userFrom).deleteMessage(convId, messageId);
-    }
-
-    public void deleteMessageEverywhere(ClientUser userFrom, String convId, MessageId messageId) throws Exception {
-        getOrAddRandomDevice(userFrom).deleteMessageEveryWhere(convId, messageId);
-    }
-
     public void deleteMessage(ClientUser userFrom, String convId, MessageId messageId, String deviceName)
             throws Exception {
-        if (deviceName == null) {
-            deleteMessage(userFrom, convId, messageId);
-        } else {
-            getOrAddDevice(userFrom, deviceName).deleteMessage(convId, messageId);
-        }
+        getOrAddDevice(userFrom, deviceName).deleteMessage(convId, messageId);
     }
 
     public void deleteMessageEverywhere(ClientUser userFrom, String convId, MessageId messageId, String deviceName)
             throws Exception {
-        if (deviceName == null) {
-            deleteMessageEverywhere(userFrom, convId, messageId);
-        } else {
-            getOrAddDevice(userFrom, deviceName).deleteMessageEveryWhere(convId, messageId);
-        }
-    }
-
-    public void updateMessage(ClientUser userFrom, MessageId messageId, String message) throws Exception {
-        getOrAddRandomDevice(userFrom).updateMessage(messageId, message);
+        getOrAddDevice(userFrom, deviceName).deleteMessageEveryWhere(convId, messageId);
     }
 
     public void updateMessage(ClientUser userFrom, MessageId messageId, String newMessage, String deviceName)
             throws Exception {
-        if(deviceName == null) {
-            updateMessage(userFrom, messageId, newMessage);
-        } else {
-            getOrAddDevice(userFrom, deviceName).updateMessage(messageId, newMessage);
-        }
-    }
-
-    public void reactMessage(ClientUser userFrom, String convId, MessageId messageId, MessageReactionType reactionType)
-            throws Exception {
-        getOrAddRandomDevice(userFrom).reactMessage(convId, messageId, reactionType);
+        getOrAddDevice(userFrom, deviceName).updateMessage(messageId, newMessage);
     }
 
     public void reactMessage(ClientUser userFrom, String convId, MessageId messageId,
                              MessageReactionType reactionType, String deviceName) throws Exception {
-        if (deviceName == null) {
-            reactMessage(userFrom, convId, messageId, reactionType);
-        } else {
-            getOrAddDevice(userFrom, deviceName).reactMessage(convId, messageId, reactionType);
-        }
+        getOrAddDevice(userFrom, deviceName).reactMessage(convId, messageId, reactionType);
     }
 
     public void shareDefaultLocation(ClientUser userFrom, String convId, String deviceName) throws Exception {
         getOrAddDevice(userFrom, deviceName).shareLocation(convId);
     }
 
+    public void setEphemeralMode(ClientUser userFrom, String convId, long expirationMilliseconds, String deviceName)
+            throws Exception {
+        getOrAddDevice(userFrom, deviceName).setEphemeralMode(convId, expirationMilliseconds);
+    }
+
+    public void markEphemeralRead(ClientUser userFrom, String convId, MessageId messageId, String deviceName)
+            throws Exception {
+        getOrAddDevice(userFrom, deviceName).markEphemeralRead(convId, messageId);
+    }
+
     public ActorMessage.MessageInfo[] getConversationMessages(ClientUser userFrom, String convId, String deviceName)
             throws Exception {
-        if (deviceName == null) {
-            return getOrAddRandomDevice(userFrom).getConversationMessages(convId);
-        }
         return getOrAddDevice(userFrom, deviceName).getConversationMessages(convId);
     }
 
@@ -211,11 +209,14 @@ public class SEBridge {
         return this.devicePool;
     }
 
-    private IDevice getOrAddRandomDevice(ClientUser user) throws Exception {
-        return getDevicePool().getOrAddRandomDevice(user);
+    private IDevice getOrAddDevice(ClientUser user) throws Exception {
+        return getOrAddDevice(user, null);
     }
 
     private IDevice getOrAddDevice(ClientUser user, String deviceName) throws Exception {
+        if (deviceName == null) {
+            return getDevicePool().getOrAddRandomDevice(user);
+        }
         return getDevicePool().getOrAddDevice(user, deviceName);
     }
 

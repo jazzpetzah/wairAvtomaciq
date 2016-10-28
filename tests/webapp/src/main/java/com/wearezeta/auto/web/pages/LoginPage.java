@@ -92,7 +92,7 @@ public class LoginPage extends WebPage {
     }
 
     public boolean isSignInButtonDisabled() throws Exception {
-        DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
                 By.xpath(WebAppLocators.LoginPage.xpathSignInButton));
         return !signInButton.isEnabled();
     }
@@ -154,7 +154,7 @@ public class LoginPage extends WebPage {
 
         // TODO: This is commented because the button always redirects to
         // production site and we usually need staging one
-        // changePasswordButton.click();
+        //changePasswordButton.click();
         webappPagesCollection.getPage(PasswordChangeRequestPage.class)
                 .navigateTo();
     }

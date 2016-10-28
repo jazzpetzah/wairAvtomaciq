@@ -8,8 +8,12 @@ Feature: Giphy
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I type tag for giphy preview <GiphyTag> and open preview overlay
-    And I see giphy preview page
+    And I type the "<GiphyTag>" message
+    And I tap GIF button from input tools
+    # Wait for GIF picture to be downloaded
+    And I wait for 10 seconds
+    And I select the first item from Giphy grid
+    Then I see Giphy preview page
 
     Examples: 
       | Name      | Contact   | GiphyTag |
@@ -23,8 +27,12 @@ Feature: Giphy
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I type tag for giphy preview <GiphyTag> and open preview overlay
-    And I send gif from giphy preview page
+    And I type the "<GiphyTag>" message
+    And I tap GIF button from input tools
+    # Wait for GIF picture to be downloaded
+    And I wait for 10 seconds
+    And I select the first item from Giphy grid
+    And I tap Send button on Giphy preview page
     Then I see 1 photo in the conversation view
 
     Examples: 
@@ -39,10 +47,9 @@ Feature: Giphy
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I type tag for giphy preview <GiphyTag> and open preview overlay
-    And I wait for 5 seconds
-    When I click more giphy button
-    Then I see giphy grid preview
+    And I type the "<GiphyTag>" message
+    And I tap GIF button from input tools
+    Then I see Giphy grid preview
 
     Examples: 
       | Name      | Contact   | GiphyTag |

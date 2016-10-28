@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableMap;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.ocr.OnScreenKeyboardScanner;
-import io.appium.java_client.MobileCommand;
 import io.appium.java_client.android.AndroidDriver;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
@@ -175,7 +174,14 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
 
     public void doubleTap(int x, int y) {
         tap(1, x, y, 50);
-        tap(1, x, y, 100);
+        try {
+            //slow devices don't see 2nd tap without this delay
+            Thread.sleep(200);
+        } catch (Exception e) {
+            throw new WebDriverException(e);
+        }
+        tap(1, x, y, 50);
+
     }
 
     public void tap(String tapType, int x, int y) {
@@ -287,7 +293,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
         return outputType.convertFromBase64Png(base64EncodedPng);
     }
 
-    private static final long DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS = 2000;
+    private static final long DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS = 5000;
     private static final String SERVER_SIDE_ERROR_SIGNATURE = "unknown server-side error";
     private static final String NO_OPEN_WINDOWS_ERROR_SIGNATURE = "No open windows";
 
@@ -326,7 +332,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
             return future.get(MAX_COMMAND_DURATION_MILLIS, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             if (e instanceof ExecutionException) {
-                if (driverCommand.equals(MobileCommand.HIDE_KEYBOARD)) {
+                if (driverCommand.equals(HIDE_KEYBOARD_COMMAND)) {
                     log.debug("The keyboard seems to be already hidden.");
                     final Response response = new Response();
                     response.setSessionId(this.getSessionId().toString());

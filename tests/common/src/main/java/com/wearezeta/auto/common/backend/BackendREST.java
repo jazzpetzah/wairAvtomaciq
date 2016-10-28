@@ -1,13 +1,9 @@
 package com.wearezeta.auto.common.backend;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
@@ -27,7 +23,6 @@ import com.wearezeta.auto.common.onboarding.AddressBook;
 import com.wearezeta.auto.common.rest.CommonRESTHandlers;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 
-import java.awt.image.BufferedImage;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -58,15 +53,12 @@ final class BackendREST {
     private static String backendUrl = null;
     private static Client client;
 
-    private static final String DEFAULT_ISO8601_TIME = "1970-01-01T00:00:00.000Z";
-
     static {
         java.security.Security.setProperty("networkaddress.cache.ttl", "10800");
         log.setLevel(Level.DEBUG);
         System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
         ClientConfig config = new ClientConfig();
-        config.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION,
-                true);
+        config.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
         client = initClient(config);
     }
 
@@ -286,15 +278,14 @@ final class BackendREST {
     private static final String BASIC_AUTH_HEADER_VALUE_STAGING = "Basic d2lyZS1zdGFnaW5nOnRqNGEzbl1BQzpFcn5yJTQ=";
 
     private static String getAuthValue() throws Exception {
-        String authValue = null;
+        String authValue;
         final String host = getBaseURI().getHost();
         if (host.toLowerCase().contains("edge")) {
             authValue = BASIC_AUTH_HEADER_VALUE_EDGE;
         } else if (host.toLowerCase().contains("staging")) {
             authValue = BASIC_AUTH_HEADER_VALUE_STAGING;
         } else {
-            throw new RuntimeException(String.format("Unknown backend host %s",
-                    host));
+            throw new RuntimeException(String.format("Unknown backend host %s", host));
         }
         return authValue;
     }
@@ -440,45 +431,6 @@ final class BackendREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject getEventsFromConversation(AuthToken token,
-                                                       String convId) throws Exception {
-        Builder webResource = buildDefaultRequestWithAuth(
-                String.format("conversations/%s/events", convId),
-                MediaType.APPLICATION_JSON, token);
-        final String output = restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK});
-        return new JSONObject(output);
-    }
-
-    public static JSONObject getLastEventIDs(AuthToken token) throws Exception {
-        Builder webResource = buildDefaultRequestWithAuth(
-                String.format("conversations/last-events"),
-                MediaType.APPLICATION_JSON, token);
-        final String output = restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK});
-        return new JSONObject(output);
-    }
-
-    public static String getLastEventFromConversation(AuthToken token,
-                                                      String convId) throws Exception {
-        JSONArray convsWithLastIds = BackendREST.getLastEventIDs(token).getJSONArray("conversations");
-        for (int i = 0; i < convsWithLastIds.length(); i++) {
-            if (convsWithLastIds.getJSONObject(i).getString("id").equals(convId)) {
-                return convsWithLastIds.getJSONObject(i).getString("event");
-            }
-        }
-        throw new IOException("Invalid conversation ID");
-    }
-
-    public static BufferedImage getAssetsDownload(AuthToken token,
-                                                  String convId, String assetId) throws Exception {
-        Builder webResource = buildDefaultRequestWithAuth(
-                String.format("assets/%s/?conv_id=%s", assetId, convId),
-                MediaType.MEDIA_TYPE_WILDCARD, token);
-        final BufferedImage assetDownload = restHandlers.httpGet(webResource, new GenericType<BufferedImage>() {
-                },
-                new int[]{HttpStatus.SC_OK});
-        return assetDownload;
-    }
-
     private static JSONArray generateRequestForSelfPicture(
             Map<String, AssetData> publishedPictureAssets) {
         JSONArray result = new JSONArray();
@@ -525,42 +477,6 @@ final class BackendREST {
             requestBody.put("name", name);
         }
         restHandlers.httpPut(webResource, requestBody.toString(), new int[]{HttpStatus.SC_OK});
-    }
-
-    private static String getCurrentISO8601Time() {
-        final TimeZone tz = TimeZone.getTimeZone("UTC");
-        final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-        df.setTimeZone(tz);
-        return df.format(new Date());
-    }
-
-    private static Set<String> archivedIds = new HashSet<>();
-    private static Set<String> mutedIds = new HashSet<>();
-
-    public static void updateConvSelfInfo(AuthToken token, String convId, Optional<Boolean> muted,
-                                          Optional<Boolean> archived) throws Exception {
-        Builder webResource = buildDefaultRequestWithAuth(String.format("conversations/%s/self", convId),
-                MediaType.APPLICATION_JSON, token);
-        JSONObject requestBody = new JSONObject();
-        if (muted.isPresent()) {
-            requestBody.put("otr_muted", muted.get());
-            if (mutedIds.contains(convId)) {
-                requestBody.put("otr_muted_ref", getCurrentISO8601Time());
-            } else {
-                requestBody.put("otr_muted_ref", DEFAULT_ISO8601_TIME);
-                mutedIds.add(convId);
-            }
-        }
-        if (archived.isPresent()) {
-            requestBody.put("otr_archived", archived.get());
-            if (archivedIds.contains(convId)) {
-                requestBody.put("otr_archived_ref", getCurrentISO8601Time());
-            } else {
-                requestBody.put("otr_archived_ref", DEFAULT_ISO8601_TIME);
-                archivedIds.add(convId);
-            }
-        }
-        restHandlers.httpPut(webResource, requestBody.toString(), new int[]{HttpStatus.SC_OK, HttpStatus.SC_CREATED});
     }
 
     public static JSONObject searchForContacts(AuthToken token, String query) throws Exception {
@@ -656,8 +572,11 @@ final class BackendREST {
                 HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT});
     }
 
-    public static void setDefaultBackendURL(String url) {
-        backendUrl = url;
+    public static void unregisterPushToken(AuthToken token, String pushToken) throws Exception {
+        Builder webResource = buildDefaultRequestWithAuth(
+                String.format("push/tokens/%s", pushToken),
+                MediaType.APPLICATION_JSON, token);
+        restHandlers.httpDelete(webResource, "{}", new int[]{HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT});
     }
 
     public static URI getBaseURI() throws Exception {

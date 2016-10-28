@@ -1,10 +1,11 @@
 Feature: Registration
 
-  @C1761 @smoke @useSpecialEmail
+  @C1761 @smoke @useSpecialEmail @localytics
   Scenario Outline: Verify new user can be registered
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password "<Password>" on Registration page
+    And Create Account button is disabled
     And I accept the Terms of Use
     And I start activation email monitoring
     And I submit registration form
@@ -12,16 +13,15 @@ Feature: Registration
     And I see email <Email> on Verification page
     When I activate user by URL
     And User <Name> is Me without avatar
-    And I see Welcome page
-    And I confirm keeping picture on Welcome page
-    Then I see user name on self profile page <Name>
-    Then I see user email on self profile page <Email>
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I see first time experience with watermark
+    And I open preferences by clicking the gear button
+    Then I see username <Name> in account preferences
+    Then I see user email <Email> in account preferences
+    And I see localytics event <Event> with attributes <Attributes>
 
     Examples: 
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Email      | Password      | Name      | Event                  | Attributes               |
+      | user1Email | user1Password | user1Name | registration.succeeded | {\"content\":\"email\"}" |
 
   @C1822 @regression @useSpecialEmail
   Scenario Outline: Verify I can accept personal invitation
@@ -31,58 +31,17 @@ Feature: Registration
     When <Contact> navigates to personal invitation registration page
     Then <Contact> verifies email is correct on Registration page
     And <Contact> verifies username is correct on Registration page
+    And I verify text about Wire is visible
+    And I see intro about Wire saying <TextWire>
     And I enter user password "<Password>" on Registration page
     And I accept the Terms of Use
     And I submit registration form
-    And I see Welcome page
-    And I confirm keeping picture on Welcome page
+    And I see first time experience with watermark
     And I see Contact list with name <Name>
 
     Examples: 
-      | Login      | Password      | Name      | ContactMail | Contact    | Message |
-      | user1Email | user1Password | user1Name | user2Email  | user2Name  | Hello   |
-
-  @C1770 @smoke
-  Scenario Outline: Upload own picture on Welcome page
-    Given There is 1 user where <Name> is me without avatar picture
-    Given I switch to Sign In page
-    And I Sign in using login <Login> and password <Password>
-    When I see Welcome page
-    And Myself take snapshot of current profile picture
-    And I choose <PictureName> as my self picture on Welcome page
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
-    And I see the clear data dialog
-    And I click Logout button on clear data dialog
-    And I see Sign In page
-    And I Sign in using login <Login> and password <Password>
-    Then I do not see Welcome page
-    And I am signed in properly
-    And I verify that current profile picture snapshot of Myself differs from the previous one
-
-    Examples: 
-      | Login      | Password      | Name      | PictureName               |
-      | user1Email | user1Password | user1Name | userpicture_landscape.jpg |
-
-  @C1771 @smoke
-  Scenario Outline: Keep picture on Welcome page
-    Given There is 1 user where <Name> is me without avatar picture
-    Given I switch to Sign In page
-    When I Sign in using login <Login> and password <Password>
-    And I see Welcome page
-    And I confirm keeping picture on Welcome page
-    And I am signed in properly
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
-    And I see the clear data dialog
-    And I click Logout button on clear data dialog
-    And I see Sign In page
-    When I Sign in using login <Login> and password <Password>
-    Then I do not see Welcome page
-
-    Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Password      | Name      | ContactMail | Contact    | Message | TextWire                                                                                        |
+      | user1Password | user1Name | user2Email  | user2Name  | Hello   | Simple, private & secure messenger for chat, calls, sharing pics, music, videos, GIFs and more. |
 
   @C1762 @regression
   Scenario Outline: I want to be notified if the email address I entered during registration has already been registered
@@ -101,8 +60,8 @@ Feature: Registration
     And I see email <UnusedEmail> on Verification page
 
     Examples: 
-      | Name      | UsedEmail  | UnusedEmail | Password      |
-      | user1Name | user1Email | user2Email  | user2Password |
+      | Name      | UsedEmail  | UnusedEmail |
+      | user1Name | user1Email | user2Email  |
 
   @C1763 @regression
   Scenario Outline: I want to see an error message if the email address is forbidden
@@ -118,7 +77,7 @@ Feature: Registration
       | Name      | Email              | Password      |
       | user1Name | nope@wearezeta.com | user1Password |
 
-  @C3219 @smoke
+  @C3219 @mute
   Scenario Outline: I want to see an error message if Terms of Use are not accepted
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
@@ -136,10 +95,12 @@ Feature: Registration
     Given I enter user email <Email> on Registration page
     Given I enter user password "<Password>" on Registration page
     Given I accept the Terms of Use
+    Given I remember current page
     When I submit registration form
     Then I verify that an envelope icon is shown
     And I see email <Email> on Verification page
-    And I open Sign In page
+    And I navigate to previously remembered page
+    And I switch to sign in page
     When I see Sign In page
     When I Sign in using login <Email> and password <Password>
     Then I verify that an envelope icon is shown
@@ -154,6 +115,7 @@ Feature: Registration
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password "<Password>" on Registration page
+    And I accept the Terms of Use
     And I submit registration form
     Then I verify that the email field on the registration form is marked as error
     And I see error "Please enter a valid email address." on Verification page

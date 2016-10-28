@@ -4,6 +4,7 @@ Feature: Link Preview
   Scenario Outline: Verify preview is shown for sent link (link only)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <DeviceName1>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
@@ -14,10 +15,13 @@ Feature: Link Preview
     Then I see link preview container in the conversation view
     # This is to make sure the image appears in the preview (we had this bug) and good enough check here once in the test suite
     Then I see link preview image in the conversation view
+    # Wait for the delivery
+    And I wait for 8 seconds
+    And I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
-      | Name      | Contact   | Link                 |
-      | user1Name | user2Name | https://www.wire.com |
+      | Name      | Contact   | Link                 | DeviceName1 | DeliveredLabel |
+      | user1Name | user2Name | https://www.wire.com | devcie1     | Delivered      |
 
   @C167030 @C167031 @C167032 @regression @fastLogin
   Scenario Outline: Verify preview is shown for mixed link and text
@@ -50,8 +54,8 @@ Feature: Link Preview
     And I see the conversation view contains message <Text1> <Link> <Text>
 
     Examples:
-      | Name      | Contact   | Link                                                                                  | Text    | Text1      |
-      | user1Name | user2Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 | My text | Text first |
+      | Name      | Contact   | Link             | Text    | Text1      |
+      | user1Name | user2Name | https://wire.com | My text | Text first |
 
   @C169224 @regression @fastLogin
   Scenario Outline: Verify preview is shown for shortened URL
@@ -61,13 +65,11 @@ Feature: Link Preview
     Given I see conversations list
     When I tap on contact name <Contact>
     And I type the "<Shortenlink>" message and send it
-    And I navigate back to conversations list
-    And I tap on contact name <Contact>
     Then I see link preview container in the conversation view
 
     Examples:
-      | Name      | Contact   | Shortenlink          |
-      | user1Name | user2Name | http://goo.gl/pA9mgH |
+      | Name      | Contact   | Shortenlink           |
+      | user1Name | user2Name | https://goo.gl/pywMuA |
 
   @C167039 @rc @regression @fastLogin
   Scenario Outline: Verify preview is shown for different formats of link
@@ -102,24 +104,26 @@ Feature: Link Preview
   @C167038 @rc @regression @fastLogin
   Scenario Outline: Verify copying link preview
     Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact>, <Contact1>
+    Given Myself is connected to <Contact>,<Contact1>
     Given I sign in using my email or phone number
+    Given User <Contact> sends encrypted message "<Link>" to user Myself
     Given I see conversations list
-    When I tap on contact name <Contact>
-    When I type the "<Link>" message and send it
-    Then I see link preview container in the conversation view
-    When I long tap on link preview in conversation view
-    And I tap on Copy badge item
-    And I navigate back to conversations list
-    And I tap on contact name <Contact1>
-    And I paste and commit the text
-    And I navigate back to conversations list
+    Given I tap on contact name <Contact>
+    Given I long tap on link preview in conversation view
+    Given I tap on Copy badge item
+    Given I navigate back to conversations list
+    Given I tap on contact name <Contact1>
+    Given I tap on text input
+    Given I long tap on text input
+    Given I tap on Paste badge item
+    Given I tap Send Message button in conversation view
+    Given I navigate back to conversations list
     When I tap on contact name <Contact1>
     Then I see link preview container in the conversation view
 
     Examples:
-      | Name      | Contact   | Contact1  | Link                                                                                  |
-      | user1Name | user2Name | user3Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 |
+      | Name      | Contact   | Contact1  | Link             |
+      | user1Name | user2Name | user3Name | https://wire.com |
 
   @C167033 @regression @fastLogin
   Scenario Outline: Verify preview is shown without picture when there are none
@@ -154,12 +158,16 @@ Feature: Link Preview
     Then I see the conversation view contains message <SoundCloudLink>
     And I do not see link preview container in the conversation view
     When User <Contact> sends encrypted message "<VimeoLink>" to user <Name>
+    # Wait for the message to be delivered
+    And I wait for 5 seconds
     Then I see the conversation view contains message <VimeoLink>
     And I do not see link preview container in the conversation view
-    When I type tag for giphy preview <GiphyTag> and open preview overlay
+    When I type the "<GiphyTag>" message
+    And I tap GIF button from input tools
     # Wait for GIF picture to be downloaded
     And I wait for 10 seconds
-    And I send gif from giphy preview page
+    And I select the first item from Giphy grid
+    And I tap Send button on Giphy preview page
     Then I see 1 photo in the conversation view
     And I see last message in the conversation view is expected message <GiphyTag> · via giphy.com
     And I do not see link preview container in the conversation view

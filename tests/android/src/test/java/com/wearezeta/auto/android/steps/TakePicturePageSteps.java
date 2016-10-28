@@ -22,7 +22,7 @@ public class TakePicturePageSteps {
      * @step. ^I tap "(Take Photo|Confirm|Cancel|Gallery|Gallery Camera|Image Close|Switch Camera|Sketch Image Paint|Close)" button on Take Picture view$
      */
     @When("^I tap (Take Photo|Change Photo|Confirm|Cancel|Gallery|Gallery Camera|Image Close|Switch Camera|Sketch Image Paint|Close) button on Take Picture view$")
-    public void IPressButton(String buttonName) throws Exception {
+    public void ITapButton(String buttonName) throws Exception {
         switch (buttonName.toLowerCase()) {
             case "take photo":
                 getTakePicturePage().takePhoto();
@@ -80,7 +80,7 @@ public class TakePicturePageSteps {
                         getTakePicturePage()::isChangePhotoButtonInvisible;
                 break;
             case "gallery camera":
-                verificationFunc =( shouldNotSee == null) ? getTakePicturePage()::isGalleryCameraButtonVisible :
+                verificationFunc = (shouldNotSee == null) ? getTakePicturePage()::isGalleryCameraButtonVisible :
                         getTakePicturePage()::isGalleryCameraButtonInvisible;
                 break;
             default:

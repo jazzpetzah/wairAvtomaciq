@@ -9,6 +9,8 @@ Feature: Keyboard Gallery
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
+    And I accept alert if visible
+    And I accept alert if visible
     And I tap Camera Roll button on Keyboard Gallery overlay
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
@@ -26,6 +28,8 @@ Feature: Keyboard Gallery
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
+    And I accept alert if visible
+    And I accept alert if visible
     And I select the first picture from Keyboard Gallery
     And I tap Sketch button on Picture Preview page
     And I draw a random sketch

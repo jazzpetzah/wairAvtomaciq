@@ -3,44 +3,49 @@ package com.wearezeta.auto.ios.pages;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import io.appium.java_client.MobileBy;
-import io.appium.java_client.ios.IOSElement;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
 public class RegistrationPage extends IOSPage {
+    private static final String WIRE_COUNTRY_NAME_PREFIX = "Wirestan";
 
-    private static final By xpathYourName = By.xpath(xpathStrMainWindow + "/UIATextField[@value='YOUR FULL NAME']");
+    private static final String WIRE_COUNTRY_NAME = WIRE_COUNTRY_NAME_PREFIX + " ☀️";
 
-    private static final By xpathNameField = By.xpath(xpathStrMainWindow + "/UIATextField[1]");
+    private static final By nameSearchField = MobileBy.AccessibilityId("Search");
+
+    private static final By nameWireCountry = MobileBy.AccessibilityId(WIRE_COUNTRY_NAME);
+
+    private static final By xpathYourName = By.xpath("//XCUIElementTypeTextField[@value='YOUR FULL NAME']");
 
     private static final By nameYourEmail = MobileBy.AccessibilityId("EmailField");
 
     private static final By nameYourPassword = MobileBy.AccessibilityId("PasswordField");
 
     private static final By xpathCreateAccountButton = By
-            .xpath("//UIASecureTextField[contains(@name, 'PasswordField')]/UIAButton");
+            .xpath("//XCUIElementTypeSecureTextField[contains(@name, 'PasswordField')]/XCUIElementTypeButton");
 
     private static final Function<String, String> xpathStrConfirmationByMessage = msg -> String.format(
-            "//UIAStaticText[contains(@name, 'We sent an email to %s')]", msg);
+            "//XCUIElementTypeStaticText[contains(@name, 'We sent an email to %s')]", msg);
 
     private static final By xpathEmailVerifPrompt =
-            By.xpath("//UIAStaticText[contains(@name, 'We sent an email to ')]");
+            By.xpath("//XCUIElementTypeStaticText[contains(@name, 'We sent an email to ')]");
 
-    private static final By namePhoneNumberField = MobileBy.AccessibilityId("PhoneNumberField");
+    private static final By fbNamePhoneNumberField = FBBy.AccessibilityId("PhoneNumberField");
 
-    public static final By xpathVerificationCodeInput = By.xpath(xpathStrMainWindow + "//UIATextField");
+    public static final By xpathVerificationCodeInput = By.xpath("//XCUIElementTypeTextField");
 
     private static final By nameCountryPickerButton = MobileBy.AccessibilityId("CountryPickerButton");
-
-    public static final By xpathCountryList = By.xpath(xpathStrMainWindow + "/UIATableView[1]");
 
     public static final By nameConfirmButton = MobileBy.AccessibilityId("RegistrationConfirmButton");
 
@@ -49,7 +54,7 @@ public class RegistrationPage extends IOSPage {
     private static final By nameTakePhotoButton = MobileBy.AccessibilityId("Take photo");
 
     private static final By xpathVerificationPage = By
-            .xpath("//UIAStaticText[contains(@name, 'Enter the verification code we sent to')]");
+            .xpath("//XCUIElementTypeStaticText[contains(@name, 'Enter the verification code we sent to')]");
 
     private static final By nameResendCodeButton = MobileBy.AccessibilityId("RESEND");
 
@@ -62,7 +67,7 @@ public class RegistrationPage extends IOSPage {
     private static final By nameKeepThisOneButton = MobileBy.AccessibilityId("KeepDefaultPictureButton");
 
     private static final By xpathNoCodeShowingUpLabel = By.
-            xpath("//UIAStaticText[contains(@name, 'NO CODE SHOWING UP?')]");
+            xpath("//XCUIElementTypeStaticText[contains(@name, 'NO CODE SHOWING UP?')]");
 
     private static final Logger log = ZetaLogger.getLog(RegistrationPage.class.getSimpleName());
 
@@ -76,36 +81,43 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void clickAgreeButton() throws Exception {
-        clickElementWithRetryIfStillDisplayed(nameAgreeButton);
+        tapElementWithRetryIfStillDisplayed(nameAgreeButton);
     }
-
-    private static final String WIRE_COUNTRY_NAME = "Wirestan";
 
     private void selectWirestan() throws Exception {
         final WebElement countryPickerBtn = getElement(nameCountryPickerButton);
         countryPickerBtn.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCountryPickerButton, 5)) {
+        if (!isLocatorInvisible(nameCountryPickerButton, 5)) {
             countryPickerBtn.click();
         }
-        ((IOSElement) getElement(xpathCountryList)).scrollTo(WIRE_COUNTRY_NAME).click();
+        final WebElement searchInput = getElement(nameSearchField);
+        searchInput.click();
+        searchInput.sendKeys(WIRE_COUNTRY_NAME_PREFIX);
+        // Wait for animation
+        Thread.sleep(1000);
+        final List<WebElement> countryElements = selectVisibleElements(nameWireCountry);
+        if (countryElements.size() == 0) {
+            throw new IllegalStateException(String.format("There are no visible '%s' elements", WIRE_COUNTRY_NAME));
+        }
+        countryElements.get(0).click();
         // Wait for animation
         Thread.sleep(2000);
     }
 
     public void inputPhoneNumber(PhoneNumber number) throws Exception {
         selectWirestan();
-        final WebElement phoneNumberField = getElement(namePhoneNumberField);
-        DriverUtils.tapInTheCenterOfTheElement(getDriver(), phoneNumberField);
+        final FBElement phoneNumberField = (FBElement) getElement(fbNamePhoneNumberField);
+        this.tapAtTheCenterOfElement(phoneNumberField);
         Thread.sleep(2000);
         phoneNumberField.sendKeys(number.withoutPrefix());
         getElement(nameConfirmButton).click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmButton)) {
+        if (!isLocatorInvisible(nameConfirmButton)) {
             throw new IllegalStateException("Confirm button is still visible");
         }
     }
 
     public boolean isVerificationCodePageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathVerificationPage);
+        return isLocatorDisplayed(xpathVerificationPage);
     }
 
     public void inputActivationCode(PhoneNumber forNumber) throws Exception {
@@ -129,30 +141,30 @@ public class RegistrationPage extends IOSPage {
 
     public boolean isConfirmationShown() throws Exception {
         final By locator = By.xpath(xpathStrConfirmationByMessage.apply(getEmail()));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isLocatorDisplayed(locator);
     }
 
-    public void inputName() throws Exception {
+    public void commitName() throws Exception {
         getElement(nameConfirmButton).click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmButton)) {
+        if (!isLocatorInvisible(nameConfirmButton)) {
             throw new IllegalStateException("Confirm button is still visible");
         }
     }
 
-    public void clickCreateAccountButton() throws Exception {
+    public void tapCreateAccountButton() throws Exception {
         getElement(xpathCreateAccountButton, "Create Account button is not visible").click();
     }
 
     public void typeEmail() throws Exception {
-        try {
-            ((IOSElement) getElement(nameYourEmail)).setValue(getEmail());
-        } catch (Exception e) {
-            getElement(nameYourEmail).sendKeys(getEmail());
-        }
+        final WebElement emailInput = getElement(nameYourEmail);
+        emailInput.click();
+        emailInput.sendKeys(getEmail());
     }
 
     public void typeUsername() throws Exception {
-        getElement(xpathYourName, "Name input is not visible").sendKeys(getName());
+        final WebElement yourNameInput = getElement(xpathYourName);
+        yourNameInput.click();
+        yourNameInput.sendKeys(getName());
     }
 
     public String getName() {
@@ -179,11 +191,9 @@ public class RegistrationPage extends IOSPage {
     }
 
     private void typePassword() throws Exception {
-        try {
-            ((IOSElement) getElement(nameYourPassword)).setValue(getPassword());
-        } catch (Exception e) {
-            getElement(nameYourPassword).sendKeys(getPassword());
-        }
+        final WebElement passwordInput = getElement(nameYourPassword);
+        passwordInput.click();
+        passwordInput.sendKeys(getPassword());
     }
 
     public void setPassword(String password) throws Exception {
@@ -192,38 +202,33 @@ public class RegistrationPage extends IOSPage {
     }
 
     public boolean isEmailVerificationPromptVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathEmailVerifPrompt);
+        return isLocatorDisplayed(xpathEmailVerifPrompt);
     }
 
     public boolean isInvalidCodeAlertShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidCode);
+        return isLocatorDisplayed(nameInvalidCode);
     }
 
     public void tapChooseOwnPicButton() throws Exception {
-        clickElementWithRetryIfNextElementAppears(nameChooseOwnPictureButton, nameChoosePhotoButton);
+        tapElementWithRetryIfNextElementAppears(nameChooseOwnPictureButton, nameChoosePhotoButton);
     }
 
     public void tapChoosePhotoButton() throws Exception {
         getElement(nameChoosePhotoButton, "Choose photo button is not visible").click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameChoosePhotoButton)) {
-            throw new IllegalStateException("Confirm button is still visible");
-        }
     }
 
     public void waitRegistrationToFinish() throws Exception {
         final By locator = By.xpath(xpathStrConfirmationByMessage.apply(getEmail()));
-        if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator, 40)) {
+        if (!isLocatorInvisible(locator, 40)) {
             throw new IllegalStateException("Verification page is still visible after the timeout");
         }
-        instantiatePage(FirstTimeOverlay.class).acceptIfVisible(2);
     }
 
     private static final int SELF_PICTURE_LOAD_TIMEOUT_SECONDS = 30;
 
     public void tapKeepThisOneButton() throws Exception {
         getElement(nameKeepThisOneButton).click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameKeepThisOneButton,
-                SELF_PICTURE_LOAD_TIMEOUT_SECONDS)) {
+        if (!isLocatorInvisible(nameKeepThisOneButton, SELF_PICTURE_LOAD_TIMEOUT_SECONDS)) {
             log.warn(String.format("The self picture has not been loaded within %s seconds timeout",
                     SELF_PICTURE_LOAD_TIMEOUT_SECONDS));
         }
@@ -233,35 +238,26 @@ public class RegistrationPage extends IOSPage {
         getElement(nameTakePhotoButton).click();
     }
 
-    /**
-     * Send extra space keys (workaround for simulator bug)
-     *
-     * @throws Exception
-     */
-    public void tapNameInputField() throws Exception {
-        getElement(xpathNameField).sendKeys("\n\n");
-    }
-
     public boolean noCodeShowingUpLabelIsDisplayed() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathNoCodeShowingUpLabel);
+        return isLocatorDisplayed(xpathNoCodeShowingUpLabel);
     }
 
     public boolean noCodeShowingUpLabelIsNotDisplayed() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathNoCodeShowingUpLabel);
+        return isLocatorInvisible(xpathNoCodeShowingUpLabel);
     }
 
     public boolean resendButtonIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameResendCodeButton);
+        return isLocatorDisplayed(nameResendCodeButton);
     }
 
     public boolean resendButtonIsNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameResendCodeButton);
+        return isLocatorInvisible(nameResendCodeButton);
     }
 
     public void inputPhoneNumberAndExpectNoCommit(PhoneNumber phoneNumber) throws Exception {
         selectWirestan();
-        final WebElement phoneNumberField = getElement(namePhoneNumberField);
-        DriverUtils.tapInTheCenterOfTheElement(getDriver(), phoneNumberField);
+        final FBElement phoneNumberField = (FBElement) getElement(fbNamePhoneNumberField);
+        this.tapAtTheCenterOfElement(phoneNumberField);
         Thread.sleep(2000);
         phoneNumberField.sendKeys(phoneNumber.withoutPrefix());
         if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConfirmButton, 3)) {

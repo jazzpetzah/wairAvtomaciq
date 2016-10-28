@@ -32,8 +32,11 @@ public class ContactListPage extends WebPage {
 
     private static final Logger log = ZetaLogger.getLog(ContactListPage.class.getSimpleName());
 
-    @FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssSelfProfileButton)
-    private WebElement selfProfileButton;
+    private static final String DEFAULT_GROUP_CONVO_NAMES_SEPARATOR = ",";
+    private static final int CONVO_LIST_ENTRY_VISIBILITY_TIMEOUT = 15; // seconds
+
+    @FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssGearButton)
+    private WebElement gearButton;
 
     @FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathContactListEntries)
     private List<WebElement> contactListEntries;
@@ -112,8 +115,6 @@ public class ContactListPage extends WebPage {
         super(lazyDriver);
     }
 
-    private static final String DEFAULT_GROUP_CONVO_NAMES_SEPARATOR = ",";
-
     /**
      * Fixes default group conversation name, because we never know the original order of participant names in group convo name
      *
@@ -180,7 +181,7 @@ public class ContactListPage extends WebPage {
 
     public void waitForSelfProfileButton() throws Exception {
         assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-                selfProfileButton);
+                gearButton);
     }
 
     public boolean isConvoListEntryWithNameExist(String name) throws Exception {
@@ -226,6 +227,10 @@ public class ContactListPage extends WebPage {
         final String locator = WebAppLocators.ContactListPage.cssContactListEntryByName
                 .apply(name);
         return getDriver().findElement(By.cssSelector(locator));
+    }
+
+    public String getActiveConversationId() throws Exception {
+        return activeConversationEntry.getAttribute("data-uie-uid");
     }
 
     public String getActiveConversationName() throws Exception {
@@ -349,7 +354,7 @@ public class ContactListPage extends WebPage {
         // do nothing (safari workaround)
         if (WebAppExecutionContext.getBrowser()
                 .isSupportingNativeMouseActions()) {
-            DriverUtils.moveMouserOver(this.getDriver(), selfProfileButton);
+            DriverUtils.moveMouserOver(this.getDriver(), gearButton);
         }
         return DriverUtils
                 .waitUntilLocatorIsDisplayed(
@@ -364,7 +369,7 @@ public class ContactListPage extends WebPage {
         // do nothing (safari workaround)
         if (WebAppExecutionContext.getBrowser()
                 .isSupportingNativeMouseActions()) {
-            DriverUtils.moveMouserOver(this.getDriver(), selfProfileButton);
+            DriverUtils.moveMouserOver(this.getDriver(), gearButton);
         }
         return DriverUtils
                 .waitUntilLocatorDissapears(
@@ -415,41 +420,47 @@ public class ContactListPage extends WebPage {
                                 cssSelector));
     }
 
-    private static final int OPEN_CONVO_LIST_ENTRY_TIMEOUT = 8; // seconds
-
     public void openConversation(String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
         By locator = By.cssSelector(WebAppLocators.ContactListPage.cssContactListEntryByName.apply(conversationName));
-        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
         WebElement conversation = getDriver().findElement(locator);
         DriverUtils.waitUntilElementClickable(this.getDriver(), conversation);
         conversation.click();
-        By selected = By.cssSelector(WebAppLocators.ContactListPage.cssSelectedContactListEntryByName.apply(conversationName));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                selected, OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Conversation is not selected within "
-                + OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
+    }
+
+    public boolean isConversationVisible(String conversationName) throws Exception {
+        conversationName = fixDefaultGroupConvoName(conversationName, false);
+        By locator = By.cssSelector(WebAppLocators.ContactListPage.cssContactListEntryByName.apply(conversationName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, CONVO_LIST_ENTRY_VISIBILITY_TIMEOUT);
     }
 
     public boolean isConversationSelected(String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
         By selected = By.cssSelector(WebAppLocators.ContactListPage.cssSelectedContactListEntryByName.apply(conversationName));
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                selected, OPEN_CONVO_LIST_ENTRY_TIMEOUT);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), selected);
+    }
+
+    public boolean isConnectionRequestsListVisible() throws Exception{
+        By locator = By.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, CONVO_LIST_ENTRY_VISIBILITY_TIMEOUT);
     }
 
     public void openConnectionRequestsList() throws Exception {
         final By locator = By.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
-        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
         this.getDriver().findElement(locator).click();
-        By selected = By.cssSelector(WebAppLocators.ContactListPage.cssSelectedIncomingPendingConvoItem);
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                selected, OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Conversation is not selected within "
-                + OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
     }
 
-    public void openSelfProfile() throws Exception {
-        waitForSelfProfileButton();
-        selfProfileButton.click();
+    public boolean isConnectionRequestsListSelected() throws Exception {
+        By selected = By.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItemSelected);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), selected);
+    }
+
+    public boolean isPreferencesButtonClickable() throws Exception {
+        return DriverUtils.waitUntilElementClickable(this.getDriver(), gearButton);
+    }
+
+    public void openPreferences() throws Exception {
+        gearButton.click();
     }
 
     public void openStartUI() throws Exception {

@@ -1,6 +1,6 @@
 Feature: Audio Message
 
-  @C131179 @C131175 @regression @rc @rc42
+  @C131179 @regression @rc @legacy
   Scenario Outline: Verify sending voice message by long tap > swipe up
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -16,7 +16,7 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131176 @regression @rc @rc42
+  @C131176 @regression @rc @legacy
   Scenario Outline: Verify microphone is changed to play icon after releasing the thumb
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -31,8 +31,8 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131180 @C131195 @C131197 @regression @rc @rc42
-  Scenario Outline: Verify sending voice message by long tap > release the humb > tap on the check icon -> play/pause audio message
+  @C131180 @regression @rc @legacy
+  Scenario Outline: Verify Play/Pause recorded audio message after long tap the audio cursor icon
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -43,7 +43,7 @@ Feature: Audio Message
     And I tap audio recording Send button
     Then I see cursor toolbar
     And I see Audio Message container in the conversation view
-    And I wait for 25 seconds until audio message upload completed
+    And I wait up to 30 seconds until audio message upload is completed
     When I remember the state of recent audio message seekbar
     And I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
@@ -71,8 +71,8 @@ Feature: Audio Message
       | Name      | Contact1  | Contact2  | FileName | MIMEType  | DeviceName | Notification            |
       | user1Name | user2Name | user3Name | test.m4a | audio/mp4 | Device1    | Shared an audio message |
 
-  @C131192 @C131193 @C131189 @regression @rc @rc42
-  Scenario Outline: Verify failing downloading voice message
+  @C131189 @regression @rc @legacy
+  Scenario Outline: Verify receiving/downloading/re-downloading a voice message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -99,8 +99,8 @@ Feature: Audio Message
       | Name      | Contact   | FileName | MIMEType  | DeviceName | NetworkTimeout |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | 10             |
 
-  @C131183 @C131184 @regression @rc
-  Scenario Outline: Verify failing sending/retrying voice message
+  @C131183 @regression @rc
+  Scenario Outline: Verify sending/resending audio message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -120,7 +120,7 @@ Feature: Audio Message
     And I tap Retry button on the recent audio message in the conversation view
     # Retry button changes to Play button
     Then I verify the state of Retry button on the recent audio message in the conversation view is changed
-    And I wait for 15 seconds until audio message upload completed
+    And I wait up to 15 seconds until audio message upload is completed
     When I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
     Then I verify the state of Play button on the recent audio message in the conversation view is changed
@@ -129,8 +129,8 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131182 @C131177 @regression @rc @rc42
-  Scenario Outline: Verify playing/cancelling sending voice message
+  @C131177 @regression @rc @legacy
+  Scenario Outline: Verify playing and cancelling recorded audio message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -149,8 +149,8 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131194 @C131196 @C131202 @regression @rc @rc42
-  Scenario Outline: Verify playing a received voice message + DO NOT playing in the background
+  @C131194 @regression @rc @legacy
+  Scenario Outline: Verify playing/deleting a received voice message and pausing when in background
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -163,14 +163,10 @@ Feature: Audio Message
     And I wait for 3 seconds
     When I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
-    Then I wait for 15 seconds until audio message download completed
+    Then I wait up to 30 seconds until audio message download is completed
     And I verify the state of recent audio message seekbar in the conversation view is changed
-    # Wait until play button changes to pause button
-    And I wait for 2 seconds
     When I remember the state of Pause button on the recent audio message in the conversation view
     And I minimize the application
-    # Wait until Wire is minimized
-    And I wait for 3 seconds
     And I restore the application
     Then I verify the state of Pause button on the recent audio message in the conversation view is changed
     When I long tap Audio Message container in the conversation view
@@ -196,7 +192,7 @@ Feature: Audio Message
     When I see Audio Message container in the conversation view
     And I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
-    Then I wait for 15 seconds until audio message download completed
+    Then I wait up to 15 seconds until audio message download is completed
     And I verify the state of recent audio message seekbar in the conversation view is changed
     When I remember the state of Pause button on the recent audio message in the conversation view
     And <Contact> calls me
@@ -207,7 +203,7 @@ Feature: Audio Message
 
     Examples:
       | Name      | Contact   | FileName | MIMEType  | DeviceName | CallBackend |
-      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | autocall    |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | zcall       |
 
   @C139851 @regression
   Scenario Outline: (AN-4067) Verify that play of audio message will be stopped by incoming video call
@@ -222,7 +218,7 @@ Feature: Audio Message
     When I see Audio Message container in the conversation view
     And I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
-    Then I wait for 15 seconds until audio message download completed
+    Then I wait up to 15 seconds until audio message download is completed
     And I verify the state of recent audio message seekbar in the conversation view is changed
     When I remember the state of Pause button on the recent audio message in the conversation view
     And <Contact> starts a video call to me
@@ -254,7 +250,7 @@ Feature: Audio Message
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | zcall       |
 
   @C165127 @C165128 @C165137 @regression
   Scenario Outline: Single tap on mic button open voice recording dialog

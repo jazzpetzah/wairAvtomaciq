@@ -77,7 +77,7 @@ public class PerformanceSteps {
     }
 
     /**
-     * Inputs the login details for the self user and then clicks the sign in
+     * Inputs the login details for the self user and then taps the sign in
      * button.
      *
      * @param timeoutSeconds sign in timeout
@@ -174,7 +174,7 @@ public class PerformanceSteps {
      * Starts standard actions loop (read messages/send messages) to measure
      * application performance
      *
-     * @param timeoutMinutes     number of minutes to run the loop
+     * @param timeoutMinutes number of minutes to run the loop
      * @throws Exception
      * @step. ^I start test cycle for (\\d+) minutes? with messages received
      * from (.*)
@@ -234,7 +234,7 @@ public class PerformanceSteps {
     /**
      * Check whether a call is still in progress
      *
-     * @param caller caller name/alias
+     * @param caller          caller name/alias
      * @param durationMinutes for how long we have to check that the call is in progress
      * @throws Exception
      * @step. ^I verify the call from (.*) is in progress for (\d+) minutes?$

@@ -83,6 +83,30 @@ public class GroupPopoverPageSteps {
 	}
 
 	/**
+	 * Verifies that leave group chat button on Group Participants popover is not shown
+	 *
+	 * @step. ^I do not see Leave button on Group Participants popover$
+	 *
+	 */
+	@When("^I do not see Leave button on Group Participants popover$")
+	public void IDoNotSeeLeaveButtonOnGroupPopoverC() throws Exception {
+		Assert.assertTrue("Leave button is still visible", context.getPagesCollection()
+				.getPage(GroupPopoverContainer.class).isLeaveButtonOnGroupPopoverInvisible());
+	}
+
+	/**
+	 * Verifies that Add People button on Group Participants popover is not shown
+	 *
+	 * @step. ^I do not see Add People button on Group Participants popover$
+	 *
+	 */
+	@When("^I do not see Add People button on Group Participants popover$")
+	public void IDoNotSeeAddPeopleButtonOnGroupPopoverC() throws Exception {
+		Assert.assertTrue("Add people button is still visible", context.getPagesCollection()
+				.getPage(GroupPopoverContainer.class).isAddPeopleButtonOnGroupPopoverInvisible());
+	}
+
+	/**
 	 * Confirm leaving group chat by clicking LEAVE button on Group Participants
 	 * popover
 	 *
@@ -335,14 +359,21 @@ public class GroupPopoverPageSteps {
 	/**
 	 * Verifies whether Remove button is visible on Group Participants popover
 	 *
-	 * @step. ^I see Remove button on Group Participants popover$
+	 * @step. ^I (do not )?see Remove button on Group Participants popover$
+	 * @param doNot  is set to null if "do not" part does not exist
 	 *
 	 * @throws Exception
 	 */
-	@When("^I see Remove button on Group Participants popover$")
-	public void ISeeRemoveUserFromGroupChat() throws Exception {
-		context.getPagesCollection().getPage(GroupPopoverContainer.class)
-				.isRemoveButtonVisible();
+	@When("^I (do not )?see Remove button on Group Participants popover$")
+	public void ISeeRemoveUserFromGroupChat(String doNot) throws Exception {
+		if (doNot == null){
+		 Assert.assertTrue("Remove Button is not visible on Group Participants Popover",
+					context.getPagesCollection().getPage(GroupPopoverContainer.class).isRemoveButtonVisible());
+		}
+		else {
+			Assert.assertTrue("Remove Button is visible on Group Participants Popover",
+					context.getPagesCollection().getPage(GroupPopoverContainer.class).isRemoveButtonInvisible());
+		}
 	}
 
 	/**

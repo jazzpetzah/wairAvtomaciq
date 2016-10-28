@@ -1,6 +1,6 @@
 Feature: VideoCalling
 
-  @C12071 @videocalling @smoke
+  @C12071 @videocalling @smoke @localytics
   Scenario Outline: Verify I can start Video call from conversation view
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -26,10 +26,11 @@ Feature: VideoCalling
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
     And I do not see my self video view
+    And I see localytics event <Event> with attributes <Attributes>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout | Event                        | Attributes                                                                                                  |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      | media.completed_media_action | {\"action\":\"video_call\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":false,\"with_bot\":false}" |
 
   @C12070 @videocalling @smoke
   Scenario Outline: Verify I can accept Video call
@@ -391,7 +392,7 @@ Feature: VideoCalling
     And I am signed in properly
     And I wait until <Contact> exists in backend search results
     And I see Contact list with name <Contact>
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <Contact> in search field of People Picker
     And I see user <Contact> found in People Picker
     And I select <Contact> from People Picker results
@@ -424,7 +425,7 @@ Feature: VideoCalling
     And I am signed in properly
     And I wait until <Contact1> exists in backend search results
     And I wait until <Contact2> exists in backend search results
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <Contact1> in search field of People Picker
     And I see user <Contact1> found in People Picker
     And I select <Contact1> from People Picker results
@@ -503,11 +504,10 @@ Feature: VideoCalling
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I am signed in properly
-    When I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     Then I see Sign In page
     And <Contact> starts a video call to me
     When I Sign in using login <Login> and password <Password>
@@ -532,28 +532,28 @@ Feature: VideoCalling
   @C12076 @videocalling @regression
   Scenario Outline: Verify I get missed call indication when someone called (video)
     Given My browser supports calling
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given <Contact> starts instance using <CallBackend>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I am signed in properly
-    Then I open self profile
-    When <Contact> starts a video call to me
-    Then I see the incoming call controls for conversation <Contact>
-    And I see accept video call button for conversation <Contact>
-    When <Contact> stops calling me
-    Then I do not see the call controls for conversation <Contact>
-    And <Contact> verifies that call status to <Name> is changed to DESTROYED in <Timeout> seconds
-    And I do not see accept video call button for conversation <Contact>
-    And I see missed call notification in the conversation list for conversation <Contact>
-    When I open conversation with <Contact>
-    Then I do not see missed call notification in the conversation list for conversation <Contact>
-    And I see <Action> action for <Contact> in conversation
+    And I open conversation with <Contact2>
+    And <Contact1> starts a video call to me
+    Then I see the incoming call controls for conversation <Contact1>
+    And I see accept video call button for conversation <Contact1>
+    When <Contact1> stops calling me
+    Then I do not see the call controls for conversation <Contact1>
+    And <Contact1> verifies that call status to <Name> is changed to DESTROYED in <Timeout> seconds
+    And I do not see accept video call button for conversation <Contact1>
+    And I see missed call notification in the conversation list for conversation <Contact1>
+    When I open conversation with <Contact1>
+    Then I do not see missed call notification in the conversation list for conversation <Contact1>
+    And I see <Action> action for <Contact1> in conversation
     
     Examples:
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout | Action |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      | called |
+      | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout | Action |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name  | chrome      | 30      | called |
 
   @C87624 @videocalling @regression
   Scenario Outline: Verify I see notification when I start a second video call
@@ -662,7 +662,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 30      | userpicture_landscape.jpg |
 
-  @C165129 @regression @videocalling
+  @C165129 @regression @videocalling @WEBAPP-3259
   Scenario Outline: Verify that current video call is terminated if you want to call someone else
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -806,7 +806,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 20      |
 
-  @C12074 @videocalling @staging
+  @C12074 @videocalling @regression
   Scenario Outline: Verify I can disable video in Video call and enable it back
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -831,28 +831,38 @@ Feature: VideoCalling
     When I click on video button
     And I see video button unpressed
     And <Contact> verify that all audio flows have greater than 0 bytes
+    And <Contact> verifies to get audio data from me
 #    And <Contact> verifies to not get video data from me
     Then I see my self video is off
-    And I see video from other user is not black
+    And I see video call is maximized
     When I click on video button
     And I see video button pressed
     And <Contact> verify that all audio flows have greater than 0 bytes
     And <Contact> verify that all video flows have greater than 0 bytes
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
     Then I see my self video is on
     And I see my self video is not black
-    And I see video from other user is not black
+    And I see video call is maximized
     When I minimize video call
     Then I see broadcast indicator is shown for video
     When I click on video button
     And I see video button unpressed
     Then I see broadcast indicator is not shown for video
+    And <Contact> verifies to get audio data from me
     When I click on video button
     Then I see video button pressed
     And I see broadcast indicator is shown for video
     When <Contact> switches video off
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
     When I maximize video call via titlebar
     When <Contact> switches video on
-    Then I see video from other user is not black
+    And I see video call is maximized
+    And <Contact> verify that all audio flows have greater than 0 bytes
+    And <Contact> verify that all video flows have greater than 0 bytes
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
     And I do not see my self video view

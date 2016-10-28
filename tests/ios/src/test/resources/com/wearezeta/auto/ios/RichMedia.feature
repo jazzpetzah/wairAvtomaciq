@@ -4,20 +4,24 @@ Feature: Rich Media
   Scenario Outline: I can send and play inline youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <DeviceName1>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
     And I type the "<YouTubeLink>" message and send it
-    And I click video container for the first time
+    #wait to be sure video is delivered
+    And I wait for 5 seconds
+    And I see "<DeliveredLabel>" on the message toolbox in conversation view
+    And I tap on media container in conversation view
     # Wait until web page is loaded
     And I wait for 5 seconds
     Then I see video player page is opened
 
     Examples:
-      | Name      | Contact   | YouTubeLink                                |
-      | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
+      | Name      | Contact   | YouTubeLink                                | DeviceName1 | DeliveredLabel |
+      | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU | device1     | Delivered      |
 
-  @C3210 @rc @regression @IPv6 @fastLogin
+  @C3210 @regression @IPv6 @fastLogin
   Scenario Outline: (MediaBar disappears on Simulator) Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -28,7 +32,7 @@ Feature: Rich Media
     When I tap on contact name <Contact>
     And I tap on text input
     And I tap on media container in conversation view
-    And I scroll media out of sight until media bar appears
+    And I scroll to the bottom of the conversation
     And I pause playing the media in media bar
     Then I see media is paused on Media Bar
     And I tap Play in media bar
@@ -51,7 +55,7 @@ Feature: Rich Media
     When I tap on contact name <Contact>
     And I scroll to the bottom of the conversation
     And I tap on media container in conversation view
-    And I scroll media out of sight until media bar appears
+    And I scroll to the bottom of the conversation
     And I tap on the media bar
     Then I see conversation view is scrolled back to the playing media link <SoundCloudLink>
 
@@ -70,7 +74,7 @@ Feature: Rich Media
     And I tap on contact name <Contact>
     And I scroll to the bottom of the conversation
     When I tap on media container in conversation view
-    And I scroll media out of sight until media bar appears
+    And I scroll to the bottom of the conversation
     Then I wait up to 35 seconds for media bar to disappear
 
     Examples:
@@ -88,8 +92,7 @@ Feature: Rich Media
     When I tap on contact name <Contact1>
     And I scroll to the bottom of the conversation
     And I tap on media container in conversation view
-    When I scroll media out of sight until media bar appears
-    And I scroll to the bottom of the conversation
+    When I scroll to the bottom of the conversation
     Then I do not see media bar in the conversation view
 
     Examples:
@@ -115,7 +118,7 @@ Feature: Rich Media
     And I navigate back to conversations list
     And I tap Pause button in conversations list next to <Contact2>
     And I tap on contact name <Contact2>
-    And I scroll media out of sight until media bar appears
+    And I scroll to the bottom of the conversation
     Then I see media is paused on Media Bar
 
     Examples:

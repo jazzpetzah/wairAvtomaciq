@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 public class ClientUsersManager {
-    private static final int NUMBER_OF_REGISTRATION_RETRIES = 3;
+    private static final int NUMBER_OF_REGISTRATION_RETRIES = 5;
 
     private boolean useSpecialEmail = false;
 
@@ -41,7 +41,7 @@ public class ClientUsersManager {
             .format("user%dEmail", idx);
     public static final Function<Integer, String> PHONE_NUMBER_ALIAS_TEMPLATE = idx -> String
             .format("user%dPhoneNumber", idx);
-    private static final int MAX_USERS = 1001;
+    public static final int MAX_USERS = 3001;
 
     private static final Logger log = ZetaLogger.getLog(ClientUsersManager.class.getSimpleName());
 
@@ -326,7 +326,7 @@ public class ClientUsersManager {
                             usersCreationTimeout));
         }
         if (createdClientsCount.get() != usersToCreate.size()) {
-            throw new RuntimeException("Failed to create new users or contacts on the backend");
+            throw new RuntimeException("Failed to create new users or contacts on the backend (created " + createdClientsCount.get() + " users)");
         }
     }
 
@@ -346,6 +346,14 @@ public class ClientUsersManager {
         }
         this.resetClientsList(MAX_USERS);
         generateUsers(syncCreatedState(countToCreate), strategy);
+    }
+
+    public void createSpecificUsersOnBackend(List<ClientUser> usersToCreate,
+                                             final RegistrationStrategy strategy) throws Exception {
+        for (ClientUser user : usersToCreate){
+            appendCustomUser(user);
+            generateUsers(Collections.singletonList(user), strategy);
+        }
     }
 
     public void createAndAppendUsers(int countToAppend, RegistrationStrategy strategy) throws Exception {

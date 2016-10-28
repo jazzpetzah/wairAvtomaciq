@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
@@ -17,18 +16,26 @@ public class ShareContactsOverlay extends IOSPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathShareContactsButton);
+        return isLocatorDisplayed(xpathShareContactsButton);
     }
 
     public boolean waitUntilInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathShareContactsButton);
+        return isLocatorInvisible(xpathShareContactsButton);
     }
 
-    public void tapShareContactsButton() throws Exception {
-        getElement(xpathShareContactsButton).click();
+    private By getButtonByName(String name) {
+        switch (name.toLowerCase()) {
+            case "not now":
+                return nameNotNowButton;
+            case "share contacts":
+                return xpathShareContactsButton;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
+        }
     }
 
-    public void tapNotNowButton() throws Exception {
-        getElement(nameNotNowButton).click();
+    public void tapButton(String name) throws Exception {
+        final By locator = getButtonByName(name);
+        getElement(locator).click();
     }
 }

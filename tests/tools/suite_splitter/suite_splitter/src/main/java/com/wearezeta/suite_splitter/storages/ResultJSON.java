@@ -21,11 +21,11 @@ public class ResultJSON extends TestcasesStorage {
 	}
 
 	@Override
-	public List<Testcase> getTestcases() throws Throwable {
+	public List<Testcase> getTestcases() throws Exception {
 		throw new RuntimeException("Not implemented");
 	}
 
-	private static Map<String, Integer> statusPriorityMap = new HashMap<String, Integer>();
+	private static Map<String, Integer> statusPriorityMap = new HashMap<>();
 	static {
 		statusPriorityMap.put("failed", 3);
 		statusPriorityMap.put("skipped", 2);
@@ -33,8 +33,7 @@ public class ResultJSON extends TestcasesStorage {
 		statusPriorityMap.put("passed", 0);
 	}
 
-	private static void setWorstResult(JSONObject srcElement,
-			JSONObject dstElement) {
+	private static void setWorstResult(JSONObject srcElement, JSONObject dstElement) {
 		if (srcElement.has("steps") && dstElement.has("steps")) {
 			final JSONArray srcSteps = srcElement.getJSONArray("steps");
 			final JSONArray dstSteps = dstElement.getJSONArray("steps");
@@ -92,7 +91,7 @@ public class ResultJSON extends TestcasesStorage {
 	}
 
 	private static void updateMainReport(JSONArray mainArray, JSONArray nextPart) {
-		Map<String, JSONObject> existingItems = new HashMap<String, JSONObject>();
+		Map<String, JSONObject> existingItems = new HashMap<>();
 		for (int mainIdx = 0; mainIdx < mainArray.length(); mainIdx++) {
 			existingItems.put(mainArray.getJSONObject(mainIdx).getString("id"),
 					mainArray.getJSONObject(mainIdx));
@@ -110,7 +109,7 @@ public class ResultJSON extends TestcasesStorage {
 	}
 
 	public static ResultJSON createFromSetOfResults(String resultPath,
-			Set<String> srcPaths) throws Throwable {
+			Set<String> srcPaths) throws Exception {
 		JSONArray resultJSON = new JSONArray();
 		List<String> sortedPaths = new ArrayList<String>(srcPaths);
 		Collections.sort(sortedPaths);

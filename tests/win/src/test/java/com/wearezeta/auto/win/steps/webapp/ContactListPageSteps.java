@@ -13,7 +13,6 @@ import com.wearezeta.auto.win.pages.webapp.ContactListPage;
 import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
-import com.wearezeta.auto.web.steps.StartUIPageSteps;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -140,8 +139,11 @@ public class ContactListPageSteps {
     @Given("^I open conversation with (.*)")
     public void GivenIOpenConversationWith(String contact) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-        webappPagesCollection.getPage(ContactListPage.class).openConversation(
-                contact);
+        Assert.assertTrue(String.format("Conversation with name '%s' is not visible", contact),
+                webappPagesCollection.getPage(ContactListPage.class).isConversationVisible(contact));
+        webappPagesCollection.getPage(ContactListPage.class).openConversation(contact);
+        Assert.assertTrue(String.format("Conversation '%s' should be selected", contact),
+                webappPagesCollection.getPage(ContactListPage.class).isConversationSelected(contact));
     }
 
     /**
@@ -179,15 +181,15 @@ public class ContactListPageSteps {
     }
 
     /**
-     * Clicks the self name item in the convo list to open self profile page
+     * Opens preferences by clicking the gear button
      *
-     * @step. ^I open self profile$
+     * @step. ^I open preferences by clicking the gear button$
      *
      * @throws Exception
      */
-    @When("^I open self profile$")
-    public void IOpenSelfProfile() throws Exception {
-        webappPagesCollection.getPage(ContactListPage.class).openSelfProfile();
+    @When("^I open preferences by clicking the gear button$")
+    public void IOpenPreferences() throws Exception {
+        webappPagesCollection.getPage(com.wearezeta.auto.web.pages.ContactListPage.class).openPreferences();
     }
 
     /**
@@ -298,14 +300,7 @@ public class ContactListPageSteps {
                 .openConnectionRequestsList();
     }
 
-    /**
-     * Opens People Picker in Contact List
-     *
-     * @step. ^I open People Picker from Contact List$
-     *
-     * @throws Exception
-     */
-    @When("^I open People Picker from Contact List$")
+    @When("^I open search by clicking the people button$")
     public void IOpenStartUI() throws Exception {
         webappPagesCollection.getPage(ContactListPage.class).openStartUI();
     }

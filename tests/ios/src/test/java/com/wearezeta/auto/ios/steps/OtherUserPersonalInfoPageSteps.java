@@ -128,6 +128,34 @@ public class OtherUserPersonalInfoPageSteps {
                 getOtherUserPersonalInfoPage().isUserNameVisible(username));
     }
 
+    private String userAddressBookName;
+    /**
+     * Remembers the name of the user how he is saved in the Address Book
+     *
+     * @param addressbookName name of user in Address Book
+     * @throws Exception
+     * @step. ^I remember the name of user (.*) in Address Book$
+     */
+    @When("^I remember the name of user (.*) in Address Book$")
+    public void IRememberTheUsersAddressBookName(String addressbookName) throws Exception {
+        userAddressBookName = usrMgr.replaceAliasesOccurences(addressbookName, ClientUsersManager.FindBy.NAME_ALIAS);
+    }
+
+    /**
+     * Verifies that the Address Book name of the user is displayed
+     *
+     * @throws Exception
+     * @step. ^I verify the previously remembered user name from Address Book is displayed on Other User Profile page$
+     */
+    @Then("^I verify the previously remembered user name from Address Book is displayed on Other User Profile page$")
+    public void IVerifyUsersAddressBookNameOnOtherUserProfilePageIsDisplayed() throws Exception {
+        if(userAddressBookName == null){
+            throw new IllegalStateException("Save the Address Book name of the user first!");
+        }
+        Assert.assertTrue(String.format("User Address Book name '%s' is not visible", userAddressBookName),
+                getOtherUserPersonalInfoPage().isUserAddressBookNameVisible(userAddressBookName));
+    }
+
     /**
      * Verify that user email on Other User Profile page is displayed and correct
      *
@@ -171,9 +199,10 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @When("^I see (\\d+) devices shown in participant devices tab$")
     public void ISeeDevicesShownInDevicesTab(int expectedNumDevices) throws Exception {
-        int numDevices = getOtherUserPersonalInfoPage().getParticipantDevicesCount();
-        Assert.assertTrue("The expected number of devices: " + expectedNumDevices +
-                " is not equals to actual count: " + numDevices, expectedNumDevices == numDevices);
+        Assert.assertTrue(
+                String.format("The expected number of devices: %s is not equals to actual count", expectedNumDevices),
+                getOtherUserPersonalInfoPage().isParticipantDevicesCountEqualTo(expectedNumDevices)
+        );
     }
 
     /**
@@ -205,20 +234,20 @@ public class OtherUserPersonalInfoPageSteps {
                     getOtherUserPersonalInfoPage().isShieldIconNotVisible());
         }
     }
-    
+
     /**
      * Verify all device with correct IDs are presented on participant devices tab
-     * 
-     * @step. ^I see user (.*) devices? IDs? (?:is|are) presented on participant devices tab$
+     *
      * @param name username
      * @throws Exception
+     * @step. ^I see user (.*) devices? IDs? (?:is|are) presented on participant devices tab$
      */
     @Then("^I see user (.*) devices? IDs? (?:is|are) presented on participant devices tab$")
     public void ISeeUserDeveceIDPresentedOnDetailsPage(String name) throws Exception {
         List<String> deviceIDs = CommonSteps.getInstance().GetDevicesIDsForUser(name);
         for (String id : deviceIDs) {
             Assert.assertTrue(String.format("Device ID '%s' is not visible", id), getOtherUserPersonalInfoPage()
-                .isUserDeviceIdVisible(id));
+                    .isUserDeviceIdVisible(id));
         }
     }
 
@@ -226,9 +255,9 @@ public class OtherUserPersonalInfoPageSteps {
      * Tap the corresponding link on user details page. Since we cannot detect the exact link position
      * we just assume this link is located at the bottom left corner of the container text block.
      *
-     * @step. ^I tap "(.*)" link in user details$
      * @param expectedLink the full text of the link to be clicked
      * @throws Exception
+     * @step. ^I tap "(.*)" link in user details$
      */
     @When("^I tap \"(.*)\" link in user details$")
     public void ITapLink(String expectedLink) throws Exception {

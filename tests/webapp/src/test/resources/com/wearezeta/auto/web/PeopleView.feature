@@ -91,8 +91,8 @@ Feature: People View
     Then I see conversation with <UnknownContact> is selected in conversations list
 
     Examples: 
-      | Login      | Password      | Name      | KnownContact | UnknownContact | ChatName               | Message   |
-      | user1Email | user1Password | user1Name | user2Name    | user3Name      | PeoplePopoverGroupChat | YOU ADDED |
+      | Login      | Password      | Name      | KnownContact | UnknownContact | ChatName               |
+      | user1Email | user1Password | user1Name | user2Name    | user3Name      | PeoplePopoverGroupChat |
 
   @C1778 @regression
   Scenario Outline: Verify I can see participant profile of user who has requested to connect with you in a group conversation
@@ -122,8 +122,8 @@ Feature: People View
     Then I see conversation with <UnknownContact> is selected in conversations list
 
     Examples: 
-      | Login      | Password      | Name      | KnownContact | UnknownContact | UnknownContactMail | ChatName               | Message   |
-      | user1Email | user1Password | user1Name | user2Name    | user3Name      | user3Email         | PeoplePopoverGroupChat | YOU ADDED |
+      | Login      | Password      | Name      | KnownContact | UnknownContact | UnknownContactMail | ChatName               |
+      | user1Email | user1Password | user1Name | user2Name    | user3Name      | user3Email         | PeoplePopoverGroupChat |
 
   @C1779 @regression
   Scenario Outline: Verify I can see participant profile of connected user in a group conversation
@@ -145,8 +145,8 @@ Feature: People View
     Then I see conversation with <KnownContact> is selected in conversations list
 
     Examples: 
-      | Login      | Password      | Name      | KnownContact | KnownContactMail | UnknownContact | ChatName               | Message   |
-      | user1Email | user1Password | user1Name | user2Name    | user2Email       | user3Name      | PeoplePopoverGroupChat | YOU ADDED |
+      | Login      | Password      | Name      | KnownContact | KnownContactMail | UnknownContact | ChatName               |
+      | user1Email | user1Password | user1Name | user2Name    | user2Email       | user3Name      | PeoplePopoverGroupChat |
 
   @C1780 @regression
   Scenario Outline: Verify I can see participant profile of user I blocked in a group conversation
@@ -175,8 +175,8 @@ Feature: People View
     Then I see Contact list with name <KnownContact>
 
     Examples: 
-      | Login      | Password      | Name      | KnownContact | KnownContactMail | UnknownContact | ChatName               | Message   |
-      | user1Email | user1Password | user1Name | user2Name    | user2Email       | user3Name      | PeoplePopoverGroupChat | YOU ADDED |
+      | Login      | Password      | Name      | KnownContact | KnownContactMail | UnknownContact | ChatName               |
+      | user1Email | user1Password | user1Name | user2Name    | user2Email       | user3Name      | PeoplePopoverGroupChat |
 
   @C1693 @regression
   Scenario Outline: Verify I can ignore connection request in a group conversation
@@ -201,8 +201,8 @@ Feature: People View
     Then I do not see connection request from one user
 
     Examples: 
-      | Login      | Password      | Name      | KnownContact | UnknownContact | UnknownContactMail | ChatName               | Message   |
-      | user1Email | user1Password | user1Name | user2Name    | user3Name      | user3Email         | PeoplePopoverGroupChat | YOU ADDED |
+      | Login      | Password      | Name      | KnownContact | UnknownContact | UnknownContactMail | ChatName               |
+      | user1Email | user1Password | user1Name | user2Name    | user3Name      | user3Email         | PeoplePopoverGroupChat |
 
   @C1715 @regression
   Scenario Outline: Verify users can properly leave a group conversation on the other end
@@ -216,11 +216,10 @@ Feature: People View
     Given I Sign in using login <KnownContact> and password <KnownContactPassword>
     Given I am signed in properly
     Given I see Contact list with name <ChatName>
-    Given I open self profile
-    Given I click gear button on self profile page
-    Given I select Log out menu item on self profile page
+    Given I open preferences by clicking the gear button
+    Given I click logout in account preferences
     Given I see the clear data dialog
-    Given I click Logout button on clear data dialog
+    Given I click logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
@@ -236,11 +235,10 @@ Feature: People View
     When I open archive
     Then I see archive list with name <ChatName>
     And I close archive
-    When I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     Then I see Sign In page
     And I Sign in using login <KnownContact> and password <KnownContactPassword>
     And I open conversation with <ChatName>
@@ -317,11 +315,10 @@ Feature: People View
     Given I switch to Sign In page
     Given I Sign in using login <Contact1> and password <Contact1Password>
     Given I am signed in properly
-    Given I open self profile
-    Given I click gear button on self profile page
-    Given I select Log out menu item on self profile page
+    Given I open preferences by clicking the gear button
+    Given I click logout in account preferences
     Given I see the clear data dialog
-    Given I click Logout button on clear data dialog
+    Given I click logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
@@ -336,11 +333,10 @@ Feature: People View
     And I see Contact list with name <Contact1>,<Contact2>
     And I open conversation with <Contact1>,<Contact2>
     Then I see <Message> action for <Contact2>,<Contact1> in conversation
-    And I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And I see Sign In page
     And User <Contact1> is me
     And I Sign in using login <Contact1> and password <Password>
@@ -348,11 +344,10 @@ Feature: People View
     And I see Contact list with name <Name>,<Contact2>
     And I open conversation with <Name>,<Contact2>
     And I see <Message2> action for <Name>,<Contact2>,You in conversation
-    And I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And I see Sign In page
     And User <Contact2> is me
     And I Sign in using login <Contact2> and password <Password>

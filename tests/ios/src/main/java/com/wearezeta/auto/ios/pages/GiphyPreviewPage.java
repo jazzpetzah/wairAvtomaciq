@@ -2,65 +2,60 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class GiphyPreviewPage extends IOSPage {
-    private static final By nameGiphyRefreshButton = MobileBy.AccessibilityId("leftButton");
-
-    private static final By nameGiphyLinkButton = MobileBy.AccessibilityId("rightButton");
-
-    private static final By nameGiphyTitleButton = MobileBy.AccessibilityId("centerButton");
-
     // TODO: assign a name to Giphy image element
-    private static final By xpathGiphyImage = By.xpath("//UIAImage[@visible='true']");
+    private static final By classImagePreview = FBBy.className("XCUIElementTypeImage");
 
-    private static final By nameGiphyCancelRequestButton = MobileBy.AccessibilityId("rejectButton");
+    private static final By nameCancelButton = MobileBy.AccessibilityId("CANCEL");
 
-    public static final By xpathGiphySendButton = By.xpath("//UIAButton[@label='SEND']");
+    public static final By nameSendButton = MobileBy.AccessibilityId("SEND");
 
-    private static final By nameGiphyGrid = MobileBy.AccessibilityId("giphyCollectionView");
+    private static final By namePreviewGrid = MobileBy.AccessibilityId("giphyCollectionView");
 
     public GiphyPreviewPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
     }
 
-    public void tapSendGiphyButton() throws Exception {
-        getElement(xpathGiphySendButton).click();
+    public boolean isPreviewVisible() throws Exception {
+        return selectVisibleElements(classImagePreview).size() > 0;
     }
 
-    public boolean isGiphyRefreshButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameGiphyRefreshButton);
+    public boolean isGridVisible() throws Exception {
+        return isLocatorDisplayed(namePreviewGrid);
     }
 
-    public boolean isGiphyLinkButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameGiphyLinkButton);
+    public void selectFirstItem() throws Exception {
+        // FIXME: The driver simply freezes on this page
+        clickAt(15, 15);
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
-    public boolean isGiphyTitleButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameGiphyTitleButton);
+    private By getButtonByName(String name) {
+        switch (name.toLowerCase()) {
+            case "send":
+                return nameSendButton;
+            case "cancel":
+                return nameCancelButton;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s' on Giphy preview page",
+                        name));
+        }
     }
 
-    public boolean isGiphyImageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGiphyImage);
+    public void tapButton(String btnName) throws Exception {
+        final By locator = getButtonByName(btnName);
+        getElement(locator).click();
     }
 
-    public boolean isGiphyRejectButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameGiphyCancelRequestButton);
-    }
-
-    public boolean isGiphySendButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGiphySendButton);
-    }
-
-    public void clickGiphyMoreButton() throws Exception {
-        getElement(nameGiphyRefreshButton, "Giphy Refresh button is not visible").click();
-    }
-
-    public boolean isGiphyGridShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameGiphyGrid);
+    public boolean isButtonVisible(String btnName) throws Exception {
+        final By locator = getButtonByName(btnName);
+        return isLocatorDisplayed(locator);
     }
 }

@@ -37,32 +37,26 @@ public class StartUIPageSteps {
     }
 
 	/**
-	 * Verifies the presence of the People Picker
+	 * Selects user or group from search results in People Picker
 	 *
-	 * @step. ^I see [Pp]eople [Pp]icker$
+	 * @step. ^I select( group)? (.*) from People Picker results$
 	 *
-	 * @throws Exception
-	 */
-	@When("^I see [Pp]eople [Pp]icker$")
-	public void ISeeStartUI() throws Exception {
-		assertTrue("Start UI is NOT visible", context.getPagesCollection().getPage(StartUIPage.class).isVisible());
-	}
-
-	/**
-	 * Selects user from search results in People Picker
-	 *
-	 * @step. ^I select (.*) from People Picker results$
-	 *
+	 * @param group
 	 * @param user
 	 *            user name or email
 	 * @throws Exception
 	 */
-	@When("^I select (.*) from People Picker results$")
-	public void ISelectUserFromStartUIResults(String user)
+	@When("^I select( group)? (.*) from People Picker results$")
+	public void ISelectUserFromStartUIResults(String group, String user)
 			throws Exception {
-		user = context.getUserManager().replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
-		context.getPagesCollection().getPage(StartUIPage.class)
-				.selectUserFromSearchResult(user);
+		if (group == null) {
+			user = context.getUserManager().replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+			context.getPagesCollection().getPage(StartUIPage.class)
+					.selectUserFromSearchResult(user);
+		} else {
+            context.getPagesCollection().getPage(StartUIPage.class)
+                    .selectGroupFromSearchResult(user);
+		}
 	}
 
 	/**
@@ -408,7 +402,12 @@ public class StartUIPageSteps {
 
     @When("^I open remembered users conversation$")
     public void IOpenSecondRememberedUsersConversation() throws Exception {
-        context.getPagesCollection().getPage(ContactListPage.class).openConversation(rememberedUser);
+        ContactListPage contactListPage = context.getPagesCollection().getPage(ContactListPage.class);
+        Assert.assertTrue(String.format("Conversation with name '%s' is not visible", rememberedUser),
+                contactListPage.isConversationVisible(rememberedUser));
+        contactListPage.openConversation(rememberedUser);
+        Assert.assertTrue(String.format("Conversation '%s' should be selected", rememberedUser),
+                contactListPage.isConversationSelected(rememberedUser));
     }
 
     @When("^I see connecting message in conversation with remembered contact$")

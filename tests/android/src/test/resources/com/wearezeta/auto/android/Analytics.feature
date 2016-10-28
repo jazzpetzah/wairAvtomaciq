@@ -41,7 +41,7 @@ Feature: Analytics
     Then I verify that <LogType> log contains string "media.sent_audio_message"
     And I verify that <LogType> log contains string "ACTION=audio"
     # Text message
-    When I type the message "<Message>" and send it
+    When I type the message "<Message>" and send it by cursor Send button
     Then I verify that <LogType> log contains string "media.completed_media_action"
     And I verify that <LogType> log contains string "ACTION=text"
     # Ping
@@ -54,9 +54,10 @@ Feature: Analytics
     Then I verify that <LogType> log contains string "ACTION=photo"
     # Gif viq Giphy
     When I type the message "<Message>"
-    And I click on the GIF button
+    And I tap Gif button from cursor toolbar
+    And I select a random gif from the grid preview
     And I see giphy preview page
-    And I click on the giphy send button
+    And I tap on the giphy Send button
     Then I verify that <LogType> log contains string "ACTION=photo" 2 times
     # Photo from camera
     When I tap Add picture button from cursor toolbar

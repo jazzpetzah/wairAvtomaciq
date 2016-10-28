@@ -39,7 +39,7 @@ Feature: VideoCalling
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
-    
+
   @C36362 @calling_basic @rc
   Scenario Outline: Verify I can accept Video call from locked device
     Given There are 2 users where <Name> is me
@@ -50,8 +50,7 @@ Feature: VideoCalling
     Given I see Conversations list with conversations
     When I lock the device
     And <Contact> starts a video call to me
-    # Wait until the call appears in UI
-    And I wait for 7 seconds
+    And I wait up to <Timeout> seconds and see incoming video call
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
@@ -110,15 +109,14 @@ Feature: VideoCalling
     Given I see Conversations list with conversations
     When I lock the device
     And <Contact> starts a video call to me
-    And I wait for 10 seconds
-    And I see incoming video call
+    And I wait up to <Timeout> seconds and see incoming video call
     And I swipe to ignore the call
     And I unlock the device
     Then I do not see incoming video call
 
     Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | chrome      |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |
 
   @C36389 @calling_basic @rc
   Scenario Outline: Verify I can start Video call from the conversation
@@ -199,8 +197,8 @@ Feature: VideoCalling
     Given I wait until <Contact> exists in backend search results
     When I open Search UI
     And I type user name "<Contact>" in search field
-    And I tap on user name found on People picker page <Contact>
-    And I tap Video Call action button on People Picker page
+    And I tap on user name found on Search page <Contact>
+    And I tap Video Call action button on Search page
     Then I see outgoing video call
     When <Contact> accepts next incoming video call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -259,7 +257,7 @@ Feature: VideoCalling
       | user1Name | user2Name | chrome      | 60      |
 
   @C49973 @calling_advanced
-  Scenario Outline: Verify you cannot make audio call to user A while he makes video call
+  Scenario Outline: (AN-4545) Verify you cannot make audio call to user A while he makes video call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given <Contact> starts instance using <CallBackend>
@@ -403,9 +401,7 @@ Feature: VideoCalling
     Given I see Conversations list with conversations
     When I minimize the application
     And <Contact> starts a video call to me
-    # Wait for a while until the call is established with UI
-    And I wait for 7 seconds
-    And I see incoming video call
+    And I wait up to <Timeout> seconds and see incoming video call
     And I swipe to accept the call
     Then I see ongoing video call
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
@@ -415,7 +411,7 @@ Feature: VideoCalling
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | chrome      | 30      |
+      | user1Name | user2Name | chrome      | 60      |
 
   @C58888 @calling_advanced @rc
   Scenario Outline: Verify video call is not terminated after putting client to background and restore
@@ -431,7 +427,6 @@ Feature: VideoCalling
     And I see ongoing video call
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     When I minimize the application
-    And I wait for 5 seconds
     And I restore the application
     Then <Contact> verifies that call status to me is changed to active in 3 seconds
     And I see ongoing video call
@@ -454,7 +449,6 @@ Feature: VideoCalling
     And I see ongoing video call
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     When I lock the device
-    And I wait for 5 seconds
     And I unlock the device
     Then <Contact> verifies that call status to me is changed to active in 3 seconds
     And I see ongoing video call
@@ -492,13 +486,11 @@ Feature: VideoCalling
     Given I see Conversations list with conversations
     When I minimize the application
     And <Contact> starts a video call to me
-    # Wait until the call is shown in the UI
-    And I wait for 10 seconds
-    And I see incoming video call
+    And I wait up to <Timeout> seconds and see incoming video call
     And I swipe to ignore the call
     And I restore the application
     Then I do not see ongoing video call
 
     Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | chrome      |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |

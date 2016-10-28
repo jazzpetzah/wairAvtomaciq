@@ -8,6 +8,7 @@ import com.wearezeta.auto.common.email.PasswordResetMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.image_send.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.common.onboarding.AddressBook;
 import com.wearezeta.auto.common.onboarding.Card;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
@@ -34,13 +35,9 @@ public final class BackendAPIWrappers {
     private static final int AUTH_FAILED_ERROR = 403;
     private static final int SERVER_SIDE_ERROR = 500;
     private static final int PHONE_NUMBER_ALREADY_REGISTERED_ERROR = 409;
-    private static final int MAX_BACKEND_RETRIES = 5;
+    private static final int MAX_BACKEND_RETRIES = 3;
 
     private static final Logger log = ZetaLogger.getLog(BackendAPIWrappers.class.getSimpleName());
-
-    public static void setDefaultBackendURL(String url) {
-        BackendREST.setDefaultBackendURL(url);
-    }
 
     public static Future<String> initMessageListener(ClientUser forUser,
                                                      Map<String, String> additionalExpectedHeaders) throws Exception {
@@ -62,6 +59,25 @@ public final class BackendAPIWrappers {
             expectedHeaders.putAll(additionalExpectedHeaders);
         }
         return mbox.getMessage(expectedHeaders, ACTIVATION_TIMEOUT);
+    }
+
+    private static <T> T retryOnBackendFailure(int retriesCount,
+                                               FunctionalInterfaces.ISupplierWithException<T> r) throws Exception {
+        int ntry = 1;
+        BackendRequestException savedException = null;
+        while (ntry <= retriesCount) {
+            try {
+                return r.call();
+            } catch (BackendRequestException e) {
+                if (e.getReturnCode() != 500) {
+                    throw e;
+                }
+                savedException = e;
+                Thread.sleep(1000 * ntry);
+            }
+            ntry++;
+        }
+        throw savedException;
     }
 
     /**
@@ -232,7 +248,14 @@ public final class BackendAPIWrappers {
         BackendREST.updateSelfEmail(receiveAuthToken(user), user.getEmail());
         final String activationCode = getActivationCodeForRegisteredEmail(user.getEmail());
         activateRegisteredEmailByBackdoorCode(user.getEmail(), activationCode, false);
-        changeUserPassword(user, null, user.getPassword());
+        try {
+            changeUserPassword(user, null, user.getPassword());
+        } catch (BackendRequestException e) {
+            // FIXME: I have no idea why this happens randomly
+            if (e.getReturnCode() == LOGIN_CODE_HAS_NOT_BEEN_USED_ERROR) {
+                changeUserPassword(user, user.getPassword(), user.getPassword());
+            }
+        }
     }
 
     public static String getUserActivationLink(Future<String> activationMessage) throws Exception {
@@ -272,11 +295,6 @@ public final class BackendAPIWrappers {
     public static String sendPingToConversation(ClientUser fromUser, String toChat) throws Exception {
         String id = getConversationIdByName(fromUser, toChat);
         return sendConversationPing(fromUser, id);
-    }
-
-    public static void sendHotPingToConversation(ClientUser fromUser, String toChat, String id) throws Exception {
-        String conv_id = getConversationIdByName(fromUser, toChat);
-        sendConvertsationHotPing(fromUser, conv_id, id);
     }
 
     private static AuthToken receiveAuthToken(ClientUser user) throws Exception {
@@ -619,7 +637,12 @@ public final class BackendAPIWrappers {
                 final String postedImageId = entry.getKey().getJSONObject("data").getString("id");
                 processedAssets.put(postedImageId, entry.getValue());
             }
-            BackendREST.updateSelfInfo(receiveAuthToken(user), null, processedAssets, null);
+            retryOnBackendFailure(2,
+                    () -> {
+                        BackendREST.updateSelfInfo(receiveAuthToken(user), null, processedAssets, null);
+                        return null;
+                    }
+            );
         }
 
     }
@@ -634,46 +657,13 @@ public final class BackendAPIWrappers {
         user.setAccentColor(color);
     }
 
-    public static void updateConvMutedState(ClientUser user,
-                                            ClientUser mutedUser, boolean muted) throws Exception {
-        final String convId = getConversationWithSingleUser(user, mutedUser);
-        BackendREST.updateConvSelfInfo(receiveAuthToken(user), convId,
-                Optional.of(muted), Optional.empty());
-    }
-
-    public static void updateGroupConvMutedState(ClientUser user,
-                                                 String groupConvName, boolean muted) throws Exception {
-        BackendREST.updateConvSelfInfo(receiveAuthToken(user), getConversationIdByName(user, groupConvName),
-                Optional.of(muted), Optional.empty());
-    }
-
-    public static void archiveUserConv(ClientUser ownerUser, ClientUser archivedUser) throws Exception {
-        final String convId = getConversationWithSingleUser(ownerUser, archivedUser);
-        BackendREST.updateConvSelfInfo(receiveAuthToken(ownerUser), convId,
-                Optional.empty(), Optional.of(true));
-    }
-
-    public static void archiveGroupConv(ClientUser selfUser, String conversationToArchive) throws Exception {
-        BackendREST.updateConvSelfInfo(receiveAuthToken(selfUser), conversationToArchive,
-                Optional.empty(), Optional.of(true));
-    }
-
-    public static void unarchiveUserConv(ClientUser ownerUser,
-                                         ClientUser archivedUser) throws Exception {
-        final String convId = getConversationWithSingleUser(ownerUser, archivedUser);
-        BackendREST.updateConvSelfInfo(receiveAuthToken(ownerUser), convId,
-                Optional.empty(), Optional.of(false));
-    }
-
-    public static void unarchiveGroupConv(ClientUser ownerUser,
-                                          String conversationToUnarchive) throws Exception {
-        BackendREST.updateConvSelfInfo(receiveAuthToken(ownerUser), conversationToUnarchive,
-                Optional.empty(), Optional.of(false));
-    }
-
     public static void changeGroupChatName(ClientUser asUser, String conversationIDToRename, String newConversationName)
             throws Exception {
         BackendREST.changeConversationName(receiveAuthToken(asUser), conversationIDToRename, newConversationName);
+    }
+
+    public static void unregisterPushToken(ClientUser asUser, String pushToken) throws Exception {
+        BackendREST.unregisterPushToken(receiveAuthToken(asUser), pushToken);
     }
 
     public static class NoContactsFoundException extends Exception {
@@ -716,8 +706,8 @@ public final class BackendAPIWrappers {
     }
 
     public static void waitUntilSuggestionFound(ClientUser searchByUser,
-                                                         String query, int expectedCount, boolean orMore,
-                                                         int timeoutSeconds) throws Exception {
+                                                String query, int expectedCount, boolean orMore,
+                                                int timeoutSeconds) throws Exception {
         final long startTimestamp = System.currentTimeMillis();
         int currentCount;
         AuthToken token = receiveAuthToken(searchByUser);

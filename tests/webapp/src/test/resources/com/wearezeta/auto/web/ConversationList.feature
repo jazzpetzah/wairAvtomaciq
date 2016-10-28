@@ -33,19 +33,19 @@ Feature: Conversation List
 
   @C1757 @smoke
   Scenario Outline: Mute 1on1 conversation
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    Given I see Contact list with name <Contact>
-    When I set muted state for conversation <Contact>
-    And I open self profile
-    Then I see that conversation <Contact> is muted
+    Given I see Contact list with name <Contact1>
+    When I set muted state for conversation <Contact1>
+    And I open conversation with <Contact2>
+    Then I see that conversation <Contact1> is muted
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |
 
   @C1758 @regression
   Scenario Outline: Unmute 1on1 conversation
@@ -61,7 +61,7 @@ Feature: Conversation List
     Given I muted conversation with user <Contact> on device SecondDevice
     And I see that conversation <Contact> is muted
     When I set unmuted state for conversation <Contact>
-    And I open self profile
+    And I open preferences by clicking the gear button
     Then I see that conversation <Contact> is not muted
 
     Examples: 
@@ -70,19 +70,19 @@ Feature: Conversation List
 
   @C1721 @regression
   Scenario Outline: Verify Ping icon in the conversation list
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
-    When I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    And I open self profile
-    When User <Contact> pinged in the conversation with <Name>
-    And I see ping icon in conversation with <Contact>
-    Then I verify ping icon in conversation with <Contact> has <ColorName> color
+    Given I open conversation with <Contact2>
+    When User <Contact1> pinged in the conversation with <Name>
+    And I see ping icon in conversation with <Contact1>
+    Then I verify ping icon in conversation with <Contact1> has <ColorName> color
 
-    Examples: 
-      | Login      | Password      | Name      | ColorName  | Contact   |
-      | user1Email | user1Password | user1Name | StrongBlue | user2Name |
+    Examples:
+      | Login      | Password      | Name      | ColorName  | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | StrongBlue | user2Name | user3Name |
 
   @C1796 @regression
   Scenario Outline: Verify you mute the conversation when you press ⌥⇧⌘S (Mac) or alt + ctrl + S (Win)
@@ -155,17 +155,16 @@ Feature: Conversation List
     Then I see a delete warning modal for group conversations
     And I click delete button in the delete warning for group conversations
     Then I do not see Contact list with name <ChatName>
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <ChatName> in search field of People Picker
     Then I see group conversation <ChatName> found in People Picker
     And I close People Picker
     When Contact <Contact1> sends message <Msg1> to group conversation <ChatName>
     Then I see Contact list with name <ChatName>
-    And I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -187,11 +186,10 @@ Feature: Conversation List
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password2>
     Given I am signed in properly
-    Given I open self profile
-    Given I click gear button on self profile page
-    Given I select Log out menu item on self profile page
+    Given I open preferences by clicking the gear button
+    Given I click logout in account preferences
     Given I see the clear data dialog
-    Given I click Logout button on clear data dialog
+    Given I click logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
@@ -203,11 +201,10 @@ Feature: Conversation List
     Then I do not see Contact list with name <Contact>
     When Contact <Contact> sends message <Msg1> to user <Name>
     Then I do not see Contact list with name <Contact>
-    When I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <Contact> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -228,11 +225,10 @@ Feature: Conversation List
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password2>
     Given I am signed in properly
-    Given I open self profile
-    Given I click gear button on self profile page
-    Given I select Log out menu item on self profile page
+    Given I open preferences by clicking the gear button
+    Given I click logout in account preferences
     Given I see the clear data dialog
-    Given I click Logout button on clear data dialog
+    Given I click logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
@@ -249,11 +245,10 @@ Feature: Conversation List
     And I see <Action1> action in conversation
     When Contact <Contact1> sends message <Msg1> to group conversation <ChatName>
     Then I do not see text message <Msg1>
-    When I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -317,7 +312,7 @@ Feature: Conversation List
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Message | Action | PING   | Image                     | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | hello   | START  | pinged | userpicture_landscape.jpg | autocall    |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | hello   | START  | pinged | userpicture_landscape.jpg | zcall       |
 
   @C1814 @regression
   Scenario Outline: Verify I can delete and leave a group conversation from conversation list
@@ -328,11 +323,10 @@ Feature: Conversation List
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password2>
     Given I am signed in properly
-    Given I open self profile
-    Given I click gear button on self profile page
-    Given I select Log out menu item on self profile page
+    Given I open preferences by clicking the gear button
+    Given I click logout in account preferences
     Given I see the clear data dialog
-    Given I click Logout button on clear data dialog
+    Given I click logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
@@ -343,17 +337,16 @@ Feature: Conversation List
     When I click Leave checkbox on a delete warning modal for group conversations
     And I click delete button in the delete warning for group conversations
     Then I do not see Contact list with name <ChatName>
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <ChatName> in search field of People Picker
     Then I do not see group conversation <ChatName> found in People Picker
     And I close People Picker
     When Contact <Contact1> sends message <Msg1> to group conversation <ChatName>
     Then I do not see Contact list with name <ChatName>
-    And I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -399,7 +392,7 @@ Feature: Conversation List
     Then I see a delete warning modal for 1:1 conversations
     And I click delete button in the delete warning for 1:1 conversations
     Then I do not see Contact list with name <Contact1>
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <Contact1> in search field of People Picker
     Then I see user <Contact1> found in People Picker
     And I close People Picker
@@ -408,11 +401,10 @@ Feature: Conversation List
     And I open conversation with <Contact1>
     And I see text message <Msg2>
     And I do not see text message <Msg1>
-    And I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -460,25 +452,21 @@ Feature: Conversation List
     And I send message
     And I see random message in conversation
     Then I see conversation <Contact1> is on the top
-    When I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     Then I see Sign In page
     When I Sign in using login <Login2> and password <Password2>
     And I am signed in properly
-    And I see Welcome page
-    And I confirm keeping picture on Welcome page
     And I open conversation with <Name>
     And user <Name> adds a new device Device1 with label Label1
     And Contact <Name> sends message <Message> via device Device1 to user <Contact2>
     Then I see text message <Message>
-    When I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     Then I see Sign In page
     When I Sign in using login <Login> and password <Password>
     And I am signed in properly
@@ -488,3 +476,38 @@ Feature: Conversation List
     Examples:
       | Login      | Password      | Login2     | Password2     | Name      | Contact1  | Contact2  | Message |
       | user1Email | user1Password | user3Email | user3Password | user1Name | user2Name | user3Name | TESTING |
+
+  @C250830 @staging
+  Scenario Outline: Verify muted conversation should not update page title
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given user <Contact2> adds a new device Device2 with label Label2
+    Given user <Contact3> adds a new device Device3 with label Label3
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact1>
+    And Contact <Contact2> sends message <Message> via device Device2 to user <Name>
+    And Contact <Contact3> sends message <Message> via device Device3 to user <Name>
+    And I see unread dot in conversation <Contact2>
+    And I see unread dot in conversation <Contact3>
+    And I wait for 1 seconds
+    Then I see unread number 2 in page title
+    When I open conversation with <Contact2>
+    And I open conversation with <Contact3>
+    And I see that conversation <Contact3> is not muted
+    And I click on options button for conversation <Contact3>
+    And I see correct tooltip for mute button in options popover
+    And I click the option to mute in the options popover
+    And I see that conversation <Contact3> is muted
+    And I open conversation with <Contact1>
+    Then I do not see unread number in page title
+    When Contact <Contact2> sends message <Message> via device Device2 to user <Name>
+    And Contact <Contact3> sends message <Message> via device Device3 to user <Name>
+    And I see unread dot in conversation <Contact2>
+    And I see unread dot in conversation <Contact3>
+    Then I see unread number 1 in page title
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Message |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | TESTING |

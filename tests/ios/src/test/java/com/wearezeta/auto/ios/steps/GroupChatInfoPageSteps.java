@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.ios.pages.PeoplePickerPage;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -23,25 +24,18 @@ public class GroupChatInfoPageSteps {
         return pagesCollection.getPage(GroupChatInfoPage.class);
     }
 
+    private PeoplePickerPage getPeoplePickerPage() throws Exception {
+        return pagesCollection.getPage(PeoplePickerPage.class);
+    }
+
     @When("^I tap Leave Conversation button$")
     public void ITapLeaveConversationButton() throws Exception {
         getGroupChatInfoPage().tapLeaveConversation();
     }
 
-    @When("I change group conversation name to (.*)")
+    @When("^I change group conversation name to \"(.*)\"$")
     public void IChangeConversationNameTo(String name) throws Exception {
         getGroupChatInfoPage().setGroupChatName(name);
-    }
-
-    /**
-     * Try to input empty conversation name
-     *
-     * @throws Exception
-     * @step. ^I try to change group conversation name to empty$
-     */
-    @When("^I try to change group conversation name to empty$")
-    public void IChangeConversationNameToEmpty() throws Exception {
-        getGroupChatInfoPage().setGroupChatName("");
     }
 
     /**
@@ -135,7 +129,11 @@ public class GroupChatInfoPageSteps {
         PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
         pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact);
         pickerSteps.ITapOnConversationFromSearch(contact);
-        pickerSteps.WhenIClickOnAddToConversationButton();
+        if (getPeoplePickerPage().isKeyboardVisible()) {
+            getPeoplePickerPage().tapKeyboardCommitButton();
+        } else {
+            getPeoplePickerPage().tapAddToConversationButton();
+        }
     }
 
     /**
@@ -149,5 +147,19 @@ public class GroupChatInfoPageSteps {
     public void ISeeContactIsNotPresentOnGroupChatPage(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         Assert.assertTrue(getGroupChatInfoPage().waitForContactToDisappear(contact));
+    }
+
+    /**
+     * Verify current length of group name
+     *
+     * @param expectedLength the expected number of chars in group name
+     * @throws Exception
+     * @step. ^I see the length of group conversation name equals to (\d+)$
+     */
+    @Then("^I see the length of group conversation name equals to (\\d+)$")
+    public void IVerifyNameLength(int expectedLength) throws Exception {
+        final int actualLength = getGroupChatInfoPage().getGroupNameLength();
+        Assert.assertTrue(String.format("The actual group name length %d is not equal to the expected length %d",
+                actualLength, expectedLength), actualLength == expectedLength);
     }
 }

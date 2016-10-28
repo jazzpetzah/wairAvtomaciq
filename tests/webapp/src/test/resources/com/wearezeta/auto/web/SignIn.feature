@@ -20,16 +20,16 @@ Feature: Sign In
     And User <Contact2> sends image <ImageName1> to group conversation <GroupChatName>
     Then I see text message <Message2>
     And I see sent picture <ImageName1> in the conversation view
-    When I open self profile
-    And I click gear button on self profile page
-    And I select Settings menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I open devices in preferences
     And I remember the device id of the current device
-    And I click close settings page button
+    And I close preferences
     And I wait for 2 seconds
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I open preferences by clicking the gear button
+    And I open account in preferences
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And I see Sign In page
     And I Sign in using login <Email> and password <Password>
     Then I am signed in properly
@@ -39,11 +39,10 @@ Feature: Sign In
     And I open conversation with <GroupChatName>
     And I see text message <Message2>
     And I see sent picture <ImageName1> in the conversation view
-    When I open self profile
-    And I click gear button on self profile page
-    And I select Settings menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I open devices in preferences
     Then I verify that the device id of the current device is the same
-    And I see 0 devices in the devices section
+    And I see 0 active devices
 
     Examples:
       | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message1   | Message2     | ImageName1                |
@@ -60,13 +59,13 @@ Feature: Sign In
     Then I see the history info page
     When I click confirm on history info page
     Then I am signed in properly
-    When I click gear button on self profile page
-    And I select Settings menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I open devices in preferences
     And I remember the device id of the current device
-    And I click close settings page button
+    And I close preferences
     And I wait for 2 seconds
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see Sign In page
     And I enter email "<Email>"
     And I enter password "<Password>"
@@ -74,10 +73,10 @@ Feature: Sign In
     And I see the history info page
     And I click confirm on history info page
     Then I am signed in properly
-    When I click gear button on self profile page
-    And I select Settings menu item on self profile page
+    When I open preferences by clicking the gear button
+    And I open devices in preferences
     Then I verify that the device id of the current device is not the same
-    And I see 0 devices in the devices section
+    And I see 0 active devices
 
     Examples:
       | Email      | Password      | Name      |
@@ -114,7 +113,7 @@ Feature: Sign In
       | Email      | Password      |
       | user1Email | user1Password |
 
-  @C246200 @staging
+  @C246200 @regression
   Scenario Outline: Verify you can sign in by phone number with already set password and temporary device
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
@@ -126,15 +125,68 @@ Feature: Sign In
     And I see the history info page
     And I click confirm on history info page
     Then I am signed in properly
-    And I see user name on self profile page <Name>
-    And I see user phone number on self profile page <PhoneNumber>
+    And I open preferences by clicking the gear button
+    And I see username <Name> in account preferences
+    And I see user phone number <PhoneNumber> in account preferences
 
     Examples: 
       | Name      | PhoneNumber      | Password   |
       | user1Name | user1PhoneNumber | aqa123456! |
 
-  @C1788 @mute
-  Scenario Outline: Verify you see correct error message when sign in with incorrect phone number
+  @C246284 @regression
+  Scenario Outline: Verify I see an error message on phone login with invalid password
+    Given There is 1 user where <Name> is me
+    Given I switch to sign in page
+    When I switch to phone number sign in page
+    When I sign in using phone number of user <Name>
+    And I click on sign in button on phone number sign in
+    And I enter password <WrongPassword> on phone login page
+    And I press Sign In button on phone login page
+    And I see error "<ErrorMessage>" on phone login page
+
+    Examples: 
+      | Name      | WrongPassword | ErrorMessage                                  |
+      | user1Name | wroooong      | Please verify your details and try again.     |
+      | user1Name | short         | Choose a password with at least 8 characters. |
+
+  @C246197 @regression
+  Scenario Outline: Verify you can sign in by phone number with already set password and permanent device
+    Given There is 1 user where <Name> is me
+    Given I switch to sign in page
+    When I switch to phone number sign in page
+    And I check option to remember me on phone login page
+    And I sign in using phone number of user <Name>
+    And I click on sign in button on phone number sign in
+    And I enter password <Password> on phone login page
+    And I press Sign In button on phone login page
+    Then I am signed in properly
+    And I open preferences by clicking the gear button
+    And I see username <Name> in account preferences
+    And I see user phone number <PhoneNumber> in account preferences
+
+    Examples: 
+      | Name      | PhoneNumber      | Password   |
+      | user1Name | user1PhoneNumber | aqa123456! |
+
+  @C246199 @regression
+  Scenario Outline: Verify you can sign by phone number on email signin page
+    Given There is 1 user where <Name> is me
+    Given I switch to sign in page
+    When I enter phone number "<PhoneNumber>"
+    And I enter password "<Password>"
+    And I check option to remember me
+    And I press Sign In button
+    Then I am signed in properly
+    And I open preferences by clicking the gear button
+    And I see username <Name> in account preferences
+    And I see user phone number <PhoneNumber> in account preferences
+
+    Examples: 
+      | Name      | Email      | PhoneNumber      | Password   |
+      | user1Name | user1Email | user1PhoneNumber | aqa123456! |
+
+  @C246201 @regression
+  Scenario Outline: Verify I see a proper error when I try to sign in with invalid phone number
     Given I switch to sign in page
     When I switch to phone number sign in page
     And I enter country code <CountryCode> on phone number sign in
@@ -143,10 +195,10 @@ Feature: Sign In
     Then I see invalid phone number error message saying <Error>
 
     Examples: 
-      | CountryCode | PhoneNumber | Error                |
-      | +49         | 9999999999  | Unknown Phone Number |
-      | +49         | qwerqwer    | Invalid Phone Number |
-      | +49         | !@$!@$      | Invalid Phone Number |
+      | CountryCode | PhoneNumber | Error                                  |
+      | +49         | 9999999999  | Sorry. This phone number is forbidden. |
+      | +49         | 1qwerqwer   | Invalid Phone Number                   |
+      | +49         | 1!@$!@$     | Invalid Phone Number                   |
 
   @C1789 @mute
   Scenario Outline: Verify you see correct error message when sign in with a phone number with incorrect code
@@ -162,8 +214,8 @@ Feature: Sign In
       | Name      | Error        |
       | user1Name | Invalid Code |
 
-  @C1786 @mute
-  Scenario Outline: Verify you are asked to add an email address after sign in with a phone number
+  @C246198 @regression
+  Scenario Outline: Verify you are asked to add an email address after sign in with a phone number and unset password
     Given There is 1 user where <Name> is me with phone number only
     Given I switch to sign in page
     When I switch to phone number sign in page
@@ -208,7 +260,7 @@ Feature: Sign In
     And I verify that an envelope icon is shown
     When I click on Verify later button on Verification page
     Then I am signed in properly
-    And I see Welcome page
+    And I see first time experience with watermark
 
     Examples: 
       | Name      | PasswordOfOtherUser |
@@ -219,10 +271,10 @@ Feature: Sign In
     Given I switch to sign in page
     Given I open <Language> login page as if I was redirected from get.wire.com
     Then I see Registration page
-    And I verify description message is visible
-    And I verify description message is equal to <DescriptionMessage>
+    And I verify text about Wire is visible
+    And I see intro about Wire saying <TextWire>
 
     Examples:
-      | Language | DescriptionMessage                                                                                    |
+      | Language | TextWire                                                                                   |
       | english  | Simple, private & secure messenger for chat, calls, sharing pics, music, videos, GIFs and more.       |
       | german   | Ein moderner und sicherer Messenger für Unterhaltungen, Anrufe, Bilder, Musik, Videos, GIFs und mehr. |

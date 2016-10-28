@@ -38,16 +38,22 @@ Feature: File Transfer
   Scenario Outline: Verify placeholder is shown for the sender
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <DeviceName1>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap File Transfer button from input tools
+    # Wait for transition
+    And I wait for 2 seconds
     And I tap file transfer menu item <ItemName>
     Then I see file transfer placeholder
+    #wait tp make sure file was delivered
+    And I wait for 5 seconds
+    And I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
-      | Name      | Contact   | ItemName                   |
-      | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
+      | Name      | Contact   | ItemName                   | DeviceName1 | DeliveredLabel |
+      | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG | device1     | Delivered      |
 
   @C82529 @regression @fastLogin
   Scenario Outline: Verify not supported file has no preview and share menu is opened
@@ -78,6 +84,8 @@ Feature: File Transfer
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap File Transfer button from input tools
+    # Wait for the placeholder
+    And I wait for 2 seconds
     And I tap file transfer menu item <ItemName>
     Then I see file transfer placeholder
     When I type the default message and send it
@@ -87,7 +95,7 @@ Feature: File Transfer
       | Name      | Contact   | ItemName                   |
       | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
 
-  @C82523 @regression @noAcceptAlert @fastLogin
+  @C82523 @regression @fastLogin
   Scenario Outline: Verify notification is shown if file size is more than 25 MB
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -95,9 +103,11 @@ Feature: File Transfer
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap File Transfer button from input tools
+    # Wait for the placeholder
+    And I wait for 2 seconds
     And I tap file transfer menu item <ItemName>
     Then I verify the alert contains text <ExpectedAlertText>
-    When I tap OK button on the alert
+    When I accept alert
     Then I do not see file transfer placeholder
 
     Examples:

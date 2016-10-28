@@ -28,6 +28,8 @@ Feature: Edit Message
     When I tap on contact name <GroupChatName>
     And I type the default message and send it
     And <Contact1> removes Myself from group chat <GroupChatName>
+    # Wait for conversation view update
+    And I wait for 2 seconds
     And I long tap default message in conversation view
     Then I do not see Edit badge item
     And I tap on Delete badge item
@@ -69,7 +71,7 @@ Feature: Edit Message
     And I tap Cancel button on Edit control
     Then I do not see Confirm button on Edit Message control
     And I see 1 default message in the conversation view
-    And I see input placeholder text
+    And I see Standard input placeholder text
     When I long tap default message in conversation view
     And I tap on Edit badge item
     And I type the "<Text>" message
@@ -77,7 +79,7 @@ Feature: Edit Message
     And I tap Leave button on Calling overlay
     Then I do not see Confirm button on Edit Message control
     And I see 1 default message in the conversation view
-    And I see input placeholder text
+    And I see Standard input placeholder text
 
     Examples:
       | Name      | Contact   | Text    |
@@ -132,6 +134,9 @@ Feature: Edit Message
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I type the "<FacebookPrefix> <FacebookLink>" message and send it
+    # This is to get rid of the keyboard
+    And I navigate back to conversations list
+    And I tap on contact name <Contact>
     And I long tap on link preview in conversation view
     And I tap on Edit badge item
     And I clear conversation text input
@@ -272,15 +277,13 @@ Feature: Edit Message
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap on text input
-    Then I see Myself username exists in conversation view 1 time
-    And I see message "<Message2>" is on 2 position in conversation view
+    Then I see message "<Message2>" is on 2 position in conversation view
     When I long tap "<Message2>" message in conversation view
     And I tap on Edit badge item
     And I clear conversation text input
     And I type the "<EditMessage>" message
     And I tap Confirm button on Edit control
     Then I see message "<EditMessage>" is on 2 position in conversation view
-    And I see Myself username exists in conversation view 2 times
 
     Examples:
       | Name      | Contact   | Message1    | Message2    | Message3      | EditMessage    |

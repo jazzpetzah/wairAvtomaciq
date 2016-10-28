@@ -13,11 +13,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <skipTests>false</skipTests>
-        <TestRun>DevRun</TestRun>
-        <osxClientInfoPlist>/Project/builds_info/Info_osx.plist</osxClientInfoPlist>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <defaultEmail>smoketester@wire.com</defaultEmail>
-        <wireConfigDomain>com.wearezeta.zclient.mac.development</wireConfigDomain>
         <!--<backendType>staging</backendType> -->
         <!-- The levels in descending order are: SEVERE (highest value), WARNING, 
         INFO, CONFIG, FINE, FINER, FINEST (lowest value). In addition there is a 
@@ -32,7 +30,6 @@
         <com.wire.driver.timeout.seconds>10</com.wire.driver.timeout.seconds>
         <com.wire.environment>staging</com.wire.environment>
         <com.wire.environment.url>https://wire-webapp-staging.zinfra.io/?hl=en</com.wire.environment.url>
-        <pictureResultsPath>target</pictureResultsPath>
         <rcNotificationsRecepients>michael@wire.com,sven.jost@wire.com,nick@wire.com</rcNotificationsRecepients>
         <com.wire.database.keep>false</com.wire.database.keep>
     </properties>
@@ -62,7 +59,7 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>2.47.1</version>
+            <version>3.0.0-beta2</version>
         </dependency>
 
         <dependency>
@@ -77,32 +74,6 @@
         <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.9.1</version>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>src/test/java</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.4</version>
@@ -115,38 +86,6 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.17</version>
-                <configuration>
-                    <skipTests>${skipTests}</skipTests>
-                    <includes>
-                        <include>**/${TestRun}.java</include>
-                    </includes>
-                    <disableXmlReport>true</disableXmlReport>
-                    <argLine>-Djava.library.path=../common/native_lib</argLine>
-                    <systemPropertyVariables>
-                        <java.awt.headless>false</java.awt.headless>
-                        <org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>
-                        <org.apache.commons.logging.simplelog.log.org.apache.http>warn</org.apache.commons.logging.simplelog.log.org.apache.http>
-                        <com.wire.os.name>${com.wire.os.name}</com.wire.os.name>
-                        <com.wire.os.version>${com.wire.os.version}</com.wire.os.version>
-                        <com.wire.browser.name>${com.wire.browser.name}</com.wire.browser.name>
-                        <com.wire.browser.version>${com.wire.browser.version}</com.wire.browser.version>
-                        <com.wire.app.path>${com.wire.app.path}</com.wire.app.path>
-                        <com.wire.electron.path.suffix>${com.wire.electron.path.suffix}</com.wire.electron.path.suffix>
-                        <com.wire.appium.hub.url>${com.wire.appium.hub.url}</com.wire.appium.hub.url>
-                        <com.wire.appium.mac.path>${com.wire.appium.mac.path}</com.wire.appium.mac.path>
-                        <com.wire.chromedriver.path>${com.wire.chromedriver.path}</com.wire.chromedriver.path>
-                        <com.wire.driver.timeout.seconds>${com.wire.driver.timeout.seconds}</com.wire.driver.timeout.seconds>
-                        <com.wire.environment>${com.wire.environment}</com.wire.environment>
-                        <wireConfigDomain>${wireConfigDomain}</wireConfigDomain>
-                        <extendedLoggingLevel>${extendedLoggingLevel}</extendedLoggingLevel>
-                        <com.wire.database.keep>${com.wire.database.keep}</com.wire.database.keep>
-                    </systemPropertyVariables>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -186,4 +125,166 @@
         </resources>
 
     </build>
+    
+    <profiles>
+        <profile>
+            <id>picklejar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <picklejar.tag></picklejar.tag>
+                <picklejar.parallel.max>1</picklejar.parallel.max>
+                <picklejar.steps.package>com.wearezeta.auto.osx.steps</picklejar.steps.package>
+                <picklejar.feature.package>com.wearezeta.auto.osx</picklejar.feature.package>
+                <picklejar.cucumber.report.path>target/</picklejar.cucumber.report.path>
+                <picklejar.screenshot.path>${pictureResultsPath}</picklejar.screenshot.path>
+                <picklejar.random>0</picklejar.random>
+            </properties>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <id>gen-test-classes</id>
+                                <phase>test-compile</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <property name="picklejar.tag" value="${picklejar.tag}"/>
+                                        <property name="picklejar.feature.package" value="${picklejar.feature.package}"/>
+                                        <property name="picklejar.random" value="${picklejar.random}"/>
+                                        <property name="basedir" value="${project.build.directory}" />
+                                        <property name="runtime_classpath" refid="maven.runtime.classpath" />
+                                        <exec executable="java" spawn="false">
+                                            <arg value="-classpath"/>
+                                            <arg value="${runtime_classpath}:${basedir}/target/test-classes"/>
+                                            <arg value="-Dpicklejar.tag=${picklejar.tag}"/>
+                                            <arg value="-Dpicklejar.feature.package=${picklejar.feature.package}"/>
+                                            <arg value="-Dpicklejar.random=${picklejar.random}"/>
+                                            <arg value="-Dlog4j.rootLogger=DEBUG"/>
+                                            <arg value="com.wire.picklejar.construct.TestClassGenerator"/>
+                                        </exec>  
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>2.19.1</version>
+                        <configuration>
+                            <parallel>suites</parallel>
+                            <perCoreThreadCount>false</perCoreThreadCount>
+                            <!--number of threads per fork, default is one fork-->
+                            <threadCount>${picklejar.parallel.max}</threadCount>
+                            <skipTests>${skipTests}</skipTests>
+                            <trimStackTrace>false</trimStackTrace>
+                            <!--<rerunFailingTestsCount>1</rerunFailingTestsCount>-->
+                            <excludes>
+                                <exclude>**/DevRun.java</exclude>
+                                <exclude>**/LocalyticsRun.java</exclude>
+                                <exclude>**/RegressionRun.java</exclude>
+                                <exclude>**/SmokeRun.java</exclude>
+                                <exclude>**/StagingRun.java</exclude>
+                                <exclude>**/TestRun.java</exclude>
+                                <exclude>**/VerificationRun.java</exclude>
+                                <exclude>**/PickleJarInheritedTest.java</exclude>
+                                <exclude>**/PickleJarStandaloneTest.java</exclude>
+                            </excludes>
+                            <argLine>-Djava.library.path=../common/native_lib</argLine>
+                            <properties>
+                                <property>
+                                    <name>listener</name>
+                                    <value>com.wire.picklejar.execution.PickleJarExecutionListener</value>
+                                </property>
+                            </properties>
+                            <systemPropertyVariables>
+                                <picklejar.tag>${picklejar.tag}</picklejar.tag>
+                                <picklejar.steps.package>${picklejar.steps.package}</picklejar.steps.package>
+                                <picklejar.feature.package>${picklejar.feature.package}</picklejar.feature.package>
+                                <picklejar.parallel.max>${picklejar.parallel.max}</picklejar.parallel.max>
+                                <picklejar.cucumber.report.path>${picklejar.cucumber.report.path}</picklejar.cucumber.report.path>
+                                <picklejar.screenshot.path>${picklejar.screenshot.path}</picklejar.screenshot.path>
+                                <picklejar.random>${picklejar.random}</picklejar.random>
+                                <java.awt.headless>false</java.awt.headless>
+                                <org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>
+                                <org.apache.commons.logging.simplelog.log.org.apache.http>warn</org.apache.commons.logging.simplelog.log.org.apache.http>
+                                <extendedLoggingLevel>${extendedLoggingLevel}</extendedLoggingLevel>
+                                <com.wire.os.name>${com.wire.os.name}</com.wire.os.name>
+                                <com.wire.os.version>${com.wire.os.version}</com.wire.os.version>
+                                <com.wire.browser.name>${com.wire.browser.name}</com.wire.browser.name>
+                                <com.wire.browser.version>${com.wire.browser.version}</com.wire.browser.version>
+                                <com.wire.calling.env>${com.wire.calling.env}</com.wire.calling.env>
+                                <com.wire.app.path>${com.wire.app.path}</com.wire.app.path>
+                                <com.wire.electron.path.suffix>${com.wire.electron.path.suffix}</com.wire.electron.path.suffix>
+                                <com.wire.appium.hub.url>${com.wire.appium.hub.url}</com.wire.appium.hub.url>
+                                <com.wire.appium.mac.path>${com.wire.appium.mac.path}</com.wire.appium.mac.path>
+                                <com.wire.chromedriver.path>${com.wire.chromedriver.path}</com.wire.chromedriver.path>
+                                <com.wire.driver.timeout.seconds>${com.wire.driver.timeout.seconds}</com.wire.driver.timeout.seconds>
+                                <com.wire.environment>${com.wire.environment}</com.wire.environment>
+                                <com.wire.database.keep>${com.wire.database.keep}</com.wire.database.keep>
+                                <hubHost>${hubHost}</hubHost>
+                                <hubPort>${hubPort}</hubPort>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>cucumber</id>
+            <activation>
+                <property>
+                    <name>TestRun</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>2.17</version>
+                        <configuration>
+                            <skipTests>${skipTests}</skipTests>
+                            <includes>
+                                <!--includes only the {TestRun}.java class-->
+                                <include>**/${TestRun}.java</include>
+                            </includes>
+                            <disableXmlReport>true</disableXmlReport>
+                            <argLine>-Djava.library.path=../common/native_lib</argLine>
+                            <systemPropertyVariables>
+                                <java.awt.headless>false</java.awt.headless>
+                                <org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>
+                                <org.apache.commons.logging.simplelog.log.org.apache.http>warn</org.apache.commons.logging.simplelog.log.org.apache.http>
+                                <extendedLoggingLevel>${extendedLoggingLevel}</extendedLoggingLevel>
+                                <com.wire.os.name>${com.wire.os.name}</com.wire.os.name>
+                                <com.wire.os.version>${com.wire.os.version}</com.wire.os.version>
+                                <com.wire.browser.name>${com.wire.browser.name}</com.wire.browser.name>
+                                <com.wire.browser.version>${com.wire.browser.version}</com.wire.browser.version>
+                                <com.wire.calling.env>${com.wire.calling.env}</com.wire.calling.env>
+                                <com.wire.app.path>${com.wire.app.path}</com.wire.app.path>
+                                <com.wire.electron.path.suffix>${com.wire.electron.path.suffix}</com.wire.electron.path.suffix>
+                                <com.wire.appium.hub.url>${com.wire.appium.hub.url}</com.wire.appium.hub.url>
+                                <com.wire.appium.mac.path>${com.wire.appium.mac.path}</com.wire.appium.mac.path>
+                                <com.wire.chromedriver.path>${com.wire.chromedriver.path}</com.wire.chromedriver.path>
+                                <com.wire.driver.timeout.seconds>${com.wire.driver.timeout.seconds}</com.wire.driver.timeout.seconds>
+                                <com.wire.environment>${com.wire.environment}</com.wire.environment>
+                                <com.wire.database.keep>${com.wire.database.keep}</com.wire.database.keep>
+                                <hubHost>${hubHost}</hubHost>
+                                <hubPort>${hubPort}</hubPort>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

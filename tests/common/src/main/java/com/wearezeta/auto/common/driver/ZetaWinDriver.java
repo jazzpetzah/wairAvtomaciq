@@ -11,7 +11,6 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebElement;
 
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -36,311 +35,317 @@ import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.remote.Response;
 import org.openqa.selenium.remote.SessionNotFoundException;
 import org.openqa.selenium.remote.UnreachableBrowserException;
+import org.openqa.selenium.remote.internal.JsonToWebElementConverter;
 
 public class ZetaWinDriver extends AppiumDriver<WebElement> implements ZetaDriver {
 
-	private static final String APP_NAME = "Wire";
+    private static final String APP_NAME = "Wire";
 
-	private static final Logger log = ZetaLogger.getLog(ZetaOSXWebAppDriver.class.getSimpleName());
-	private ExecutorService pool;
-	private volatile boolean isSessionLost = false;
+    private static final Logger log = ZetaLogger.getLog(ZetaOSXWebAppDriver.class.getSimpleName());
+    private ExecutorService pool;
+    private volatile boolean isSessionLost = false;
 
-	public ZetaWinDriver(URL remoteAddress, Capabilities desiredCapabilities) {
-		super(remoteAddress, desiredCapabilities);
-	}
+    public ZetaWinDriver(URL remoteAddress, Capabilities desiredCapabilities) {
+        super(remoteAddress, desiredCapabilities, JsonToWebElementConverter.class);
+    }
 
-	@Override
-	public List<WebElement> findElements(By by) {
-		return super.findElements(by).stream().map(e -> wrapElement(e)).collect(Collectors.toList());
-	}
+    @Override
+    public List<WebElement> findElements(By by) {
+        return super.findElements(by).stream().map(e -> wrapElement(e)).collect(Collectors.toList());
+    }
 
-	@Override
-	public WebElement findElement(By by) {
-		return wrapElement(super.findElement(by));
-	}
+    @Override
+    public WebElement findElement(By by) {
+        return wrapElement(super.findElement(by));
+    }
 
-	private WireRemoteWebElement wrapElement(WebElement element) {
-		return new WireRemoteWebElement(element);
-	}
+    private WireRemoteWebElement wrapElement(WebElement element) {
+        return new WireRemoteWebElement((RemoteWebElement)element);
+    }
 
-	@Override
-	public Options manage() {
-		return new ZetaRemoteWebDriverOptions();
-	}
+    @Override
+    public Options manage() {
+        return new ZetaRemoteWebDriverOptions();
+    }
 
-	@Override
-	public MobileElement scrollTo(String text) {
-		throw new RuntimeException("Not implemented for OSX");
-	}
+    @Override
+    public boolean isSessionLost() {
+        return this.isSessionLost;
+    }
 
-	@Override
-	public MobileElement scrollToExact(String text) {
-		throw new RuntimeException("Not implemented for OSX");
-	}
+    private void setSessionLost(boolean isSessionLost) {
+        if (isSessionLost != this.isSessionLost) {
+            log.warn(String.format("Changing isSessionLost to %s", isSessionLost));
+            this.isSessionLost = isSessionLost;
+        }
+    }
 
-	@Override
-	public boolean isSessionLost() {
-		return this.isSessionLost;
-	}
+    @Override
+    protected Response execute(String command) {
+        return this.execute(command, ImmutableMap.<String, Object>of());
+    }
 
-	private void setSessionLost(boolean isSessionLost) {
-		if (isSessionLost != this.isSessionLost) {
-			log.warn(String.format("Changing isSessionLost to %s", isSessionLost));
-			this.isSessionLost = isSessionLost;
-		}
-	}
+    @Override
+    public void swipe(int i, int i1, int i2, int i3, int i4) {
+        throw new RuntimeException("Not implemented for OSX");
+    }
 
-	@Override
-	protected Response execute(String command) {
-		return this.execute(command, ImmutableMap.<String, Object>of());
-	}
+    @Override
+    public Response execute(String driverCommand, Map<String, ?> parameters) {
+        if (this.isSessionLost()) {
+            log.warn(String.format("Driver session is dead. Skipping execution of '%s' command...", driverCommand));
+            return null;
+        }
+        final Callable<Response> task = () -> super.execute(driverCommand, parameters);
+        final Future<Response> future = getPool().submit(task);
+        try {
+            return future.get(DEFAULT_MAX_COMMAND_DURATION, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            if (e instanceof ExecutionException) {
+                if ((e.getCause() instanceof UnreachableBrowserException)
+                        || (e.getCause() instanceof SessionNotFoundException)) {
+                    setSessionLost(true);
+                }
+                Throwables.propagate(e.getCause());
+            } else {
+                setSessionLost(true);
+                Throwables.propagate(e);
+            }
+        }
+        // This should never happen
+        return super.execute(driverCommand, parameters);
+    }
 
-	@Override
-	public Response execute(String driverCommand, Map<String, ?> parameters) {
-		if (this.isSessionLost()) {
-			log.warn(String.format("Driver session is dead. Skipping execution of '%s' command...", driverCommand));
-			return null;
-		}
-		final Callable<Response> task = () -> super.execute(driverCommand, parameters);
-		final Future<Response> future = getPool().submit(task);
-		try {
-			return future.get(DEFAULT_MAX_COMMAND_DURATION, TimeUnit.SECONDS);
-		} catch (Exception e) {
-			if (e instanceof ExecutionException) {
-				if ((e.getCause() instanceof UnreachableBrowserException)
-					|| (e.getCause() instanceof SessionNotFoundException)) {
-					setSessionLost(true);
-				}
-				Throwables.propagate(e.getCause());
-			} else {
-				setSessionLost(true);
-				Throwables.propagate(e);
-			}
-		}
-		// This should never happen
-		return super.execute(driverCommand, parameters);
-	}
+    private synchronized ExecutorService getPool() {
+        if (this.pool == null) {
+            this.pool = Executors.newSingleThreadExecutor();
+        }
+        return this.pool;
+    }
 
-	private synchronized ExecutorService getPool() {
-		if (this.pool == null) {
-			this.pool = Executors.newSingleThreadExecutor();
-		}
-		return this.pool;
-	}
+    protected class WireRemoteWebElement extends RemoteWebElement {
 
-	protected class WireRemoteWebElement extends RemoteWebElement {
+        private final RemoteWebElement originalElement;
 
-		private final WebElement originalElement;
+        public WireRemoteWebElement(RemoteWebElement element) {
+            this.originalElement = element;
+        }
 
-		public WireRemoteWebElement(WebElement element) {
-			this.originalElement = element;
-		}
+        @Override
+        public String getId() {
+            return originalElement.getId();
+        }
 
-		@Override
-		public void click() {
-			originalElement.click();
-		}
+        @Override
+        public void setId(String id) {
+            originalElement.setId(id);
+        }
 
-		@Override
-		public void submit() {
-			originalElement.submit();
-		}
+        @Override
+        public void click() {
+            originalElement.click();
+        }
 
-		@Override
-		public void sendKeys(CharSequence... keysToSend) {
-			originalElement.sendKeys(keysToSend);
-		}
+        @Override
+        public void submit() {
+            originalElement.submit();
+        }
 
-		@Override
-		public void clear() {
-			originalElement.clear();
-		}
+        @Override
+        public void sendKeys(CharSequence... keysToSend) {
+            originalElement.sendKeys(keysToSend);
+        }
 
-		@Override
-		public String getTagName() {
-			return originalElement.getTagName();
-		}
+        @Override
+        public void clear() {
+            originalElement.clear();
+        }
 
-		@Override
-		public String getAttribute(String name) {
-			return originalElement.getAttribute(name);
-		}
+        @Override
+        public String getTagName() {
+            return originalElement.getTagName();
+        }
 
-		@Override
-		public boolean isSelected() {
-			return originalElement.isSelected();
-		}
+        @Override
+        public String getAttribute(String name) {
+            return originalElement.getAttribute(name);
+        }
 
-		@Override
-		public boolean isEnabled() {
-			return originalElement.isEnabled();
-		}
+        @Override
+        public boolean isSelected() {
+            return originalElement.isSelected();
+        }
 
-		@Override
-		public String getText() {
-			return originalElement.getText();
-		}
+        @Override
+        public boolean isEnabled() {
+            return originalElement.isEnabled();
+        }
 
-		@Override
-		public String getCssValue(String propertyName) {
-			return originalElement.getCssValue(propertyName);
-		}
+        @Override
+        public String getText() {
+            return originalElement.getText();
+        }
 
-		@Override
-		public List<WebElement> findElements(By by) {
-			return originalElement.findElements(by);
-		}
+        @Override
+        public String getCssValue(String propertyName) {
+            return originalElement.getCssValue(propertyName);
+        }
 
-		@Override
-		public WebElement findElement(By by) {
-			return originalElement.findElement(by);
-		}
+        @Override
+        public List<WebElement> findElements(By by) {
+            return originalElement.findElements(by);
+        }
 
-		@Override
-		public boolean equals(Object obj) {
-			return originalElement.equals(obj);
-		}
+        @Override
+        public WebElement findElement(By by) {
+            return originalElement.findElement(by);
+        }
 
-		@Override
-		public int hashCode() {
-			return originalElement.hashCode();
-		}
+        @Override
+        public boolean equals(Object obj) {
+            return originalElement.equals(obj);
+        }
 
-		@Override
-		public boolean isDisplayed() {
-			return originalElement.isDisplayed();
-		}
+        @Override
+        public int hashCode() {
+            return originalElement.hashCode();
+        }
 
-		@Override
-		public Dimension getSize() {
-			String bounds = this.getAttribute("BoundingRectangle");
-			WinSize winSize = new WinSize(bounds);
-			return new Dimension(winSize.getWidth(), winSize.getHeight());
-		}
+        @Override
+        public boolean isDisplayed() {
+            return originalElement.isDisplayed();
+        }
 
-		@Override
-		public Point getLocation() {
-			String bounds = this.getAttribute("BoundingRectangle");
-			WinPoint winPoint = new WinPoint(bounds);
-			return new Point(winPoint.getX(), winPoint.getY());
-		}
+        @Override
+        public Dimension getSize() {
+            String bounds = this.getAttribute("BoundingRectangle");
+            WinSize winSize = new WinSize(bounds);
+            return new Dimension(winSize.getWidth(), winSize.getHeight());
+        }
 
-		@Beta
-		@Override
-		public <X> X getScreenshotAs(OutputType<X> outputType)
-			throws WebDriverException {
-			return originalElement.getScreenshotAs(outputType);
-		}
+        @Override
+        public Point getLocation() {
+            String bounds = this.getAttribute("BoundingRectangle");
+            WinPoint winPoint = new WinPoint(bounds);
+            return new Point(winPoint.getX(), winPoint.getY());
+        }
 
-		@Override
-		public String toString() {
-			return originalElement.toString();
-		}
+        @Beta
+        @Override
+        public <X> X getScreenshotAs(OutputType<X> outputType)
+                throws WebDriverException {
+            return originalElement.getScreenshotAs(outputType);
+        }
 
-	}
+        @Override
+        public String toString() {
+            return originalElement.toString();
+        }
 
-	protected class ZetaRemoteWebDriverOptions extends RemoteWebDriverOptions {
+    }
 
-		private static final String WINDOW_LOCATOR = "/*[@ClassName='Chrome_WidgetWin_1' and contains(@Name,'"
-			+ APP_NAME + "')]";
+    protected class ZetaRemoteWebDriverOptions extends RemoteWebDriverOptions {
 
-		@Beta
-		@Override
-		public WebDriver.Window window() {
-			final String xpathWindow = WINDOW_LOCATOR;
-			final WebElement window = findElement(By.xpath(xpathWindow));
-			return new ZetaRemoteWindow(window);
-		}
+        private static final String WINDOW_LOCATOR = "/*[@ClassName='Chrome_WidgetWin_1' and contains(@Name,'"
+                + APP_NAME + "')]";
 
-		@Beta
-		protected class ZetaRemoteWindow extends RemoteWindow {
+        @Beta
+        @Override
+        public WebDriver.Window window() {
+            final String xpathWindow = WINDOW_LOCATOR;
+            final WebElement window = findElement(By.xpath(xpathWindow));
+            return new ZetaRemoteWindow(window);
+        }
 
-			private final WebElement window;
+        @Beta
+        protected class ZetaRemoteWindow extends RemoteWindow {
 
-			public ZetaRemoteWindow(WebElement window) {
-				this.window = window;
-			}
+            private final WebElement window;
 
-			@Override
-			public Dimension getSize() {
-				return window.getSize();
-			}
+            public ZetaRemoteWindow(WebElement window) {
+                this.window = window;
+            }
 
-			@Override
-			public Point getPosition() {
-				return window.getLocation();
-			}
+            @Override
+            public Dimension getSize() {
+                return window.getSize();
+            }
 
-		}
-	}
+            @Override
+            public Point getPosition() {
+                return window.getLocation();
+            }
 
-	private class WinPoint {
+        }
+    }
 
-		private final int x;
-		private final int y;
+    private class WinPoint {
 
-		private static final String POINT_PARSING_STRING = "^([\\-]?[0-9]*),([\\-]?[0-9]*).*";
+        private final int x;
+        private final int y;
 
-		public WinPoint(String string) {
-			Pattern pattern = Pattern
-				.compile(POINT_PARSING_STRING);
-			Matcher matcher = pattern.matcher(string);
+        private static final String POINT_PARSING_STRING = "^([\\-]?[0-9]*),([\\-]?[0-9]*).*";
 
-			WinPoint point = null;
-			while (matcher.find()) {
-				point = new WinPoint(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
-			}
-			this.x = point.getX();
-			this.y = point.getY();
-		}
+        public WinPoint(String string) {
+            Pattern pattern = Pattern
+                    .compile(POINT_PARSING_STRING);
+            Matcher matcher = pattern.matcher(string);
 
-		public WinPoint(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
+            WinPoint point = null;
+            while (matcher.find()) {
+                point = new WinPoint(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
+            }
+            this.x = point.getX();
+            this.y = point.getY();
+        }
 
-		public int getX() {
-			return x;
-		}
+        public WinPoint(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
 
-		public int getY() {
-			return y;
-		}
+        public int getX() {
+            return x;
+        }
 
-	}
+        public int getY() {
+            return y;
+        }
 
-	private class WinSize {
+    }
 
-		private final int width;
-		private final int height;
+    private class WinSize {
 
-		private static final String POINT_PARSING_STRING = ".*,([0-9]*),([0-9]*)$";
+        private final int width;
+        private final int height;
 
-		public WinSize(String string) {
-			Pattern pattern = Pattern
-				.compile(POINT_PARSING_STRING);
-			Matcher matcher = pattern.matcher(string);
+        private static final String POINT_PARSING_STRING = ".*,([0-9]*),([0-9]*)$";
 
-			WinSize location = null;
-			while (matcher.find()) {
-				location = new WinSize(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
-			}
-			this.width = location.getWidth();
-			this.height = location.getHeight();
-		}
+        public WinSize(String string) {
+            Pattern pattern = Pattern
+                    .compile(POINT_PARSING_STRING);
+            Matcher matcher = pattern.matcher(string);
 
-		public WinSize(int width, int height) {
-			this.width = width;
-			this.height = height;
-		}
+            WinSize location = null;
+            while (matcher.find()) {
+                location = new WinSize(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
+            }
+            this.width = location.getWidth();
+            this.height = location.getHeight();
+        }
 
-		public int getWidth() {
-			return width;
-		}
+        public WinSize(int width, int height) {
+            this.width = width;
+            this.height = height;
+        }
 
-		public int getHeight() {
-			return height;
-		}
+        public int getWidth() {
+            return width;
+        }
 
-	}
+        public int getHeight() {
+            return height;
+        }
+
+    }
 }

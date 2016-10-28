@@ -37,25 +37,25 @@ public class PhoneNumberVerificationPage extends AndroidPage {
 
     public void inputVerificationCode(String verificationCode) throws Exception {
         final Optional<WebElement> codeInput = getElementIfDisplayed(idCodeInput, 15);
-        if (codeInput.isPresent()){
+        if (codeInput.isPresent()) {
             codeInput.get().sendKeys(verificationCode);
         } else {
             final Optional<WebElement> oldCodeInput = getElementIfDisplayed(idCodeOldInput, 15);
             if (oldCodeInput.isPresent()) {
                 oldCodeInput.get().sendKeys(verificationCode);
-            } else{
+            } else {
                 getElement(idCodeInput, "Verification code input has not been shown in time", 1);
             }
         }
     }
 
-    public void clickConfirm() throws Exception {
+    public void tapConfirm() throws Exception {
         getElement(idConfirmButton).click();
     }
 
     public boolean waitUntilConfirmButtonDisappears() throws Exception {
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), idConfirmButton)) {
-            // Try to click the button again if we did it too fast for the first time
+            // Try to tap the button again if we did it too fast for the first time
             DriverUtils.tapByCoordinates(getDriver(), getElement(idConfirmButton));
             return DriverUtils.waitUntilLocatorDissapears(getDriver(), idConfirmButton, 60);
         }

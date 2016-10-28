@@ -209,6 +209,20 @@ public class RegistrationPageSteps {
 	}
 
 	/**
+	 * Checks if Create Account button on the corresponding page is disabled
+	 *
+	 * @step. ^Create Account button is disabled$
+	 *
+	 * @throws Exception
+	 *             if Selenium fails to wait until sign in action completes
+	 */
+	@When("^Create Account button is disabled$")
+	public void CreateAccountButtonIsDisabled() throws Exception {
+		Assert.assertTrue(context.getPagesCollection().getPage(RegistrationPage.class)
+				.isCreateAccountButtonDisabled());
+	}
+
+	/**
 	 * Start monitoring thread for activation email. Please put this step BEFORE
 	 * you submit the registration form
 	 * 
@@ -348,9 +362,9 @@ public class RegistrationPageSteps {
 	 */
 	@Then("^I activate user by URL$")
 	public void WhenIActivateUserByUrl() throws Exception {
-		final String link = BackendAPIWrappers
-				.getUserActivationLink(this.activationMessage);
+		final String link = BackendAPIWrappers.getUserActivationLink(this.activationMessage);
 		LOG.info("Get activation link from " + link);
+                context.startPinging();
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpGet httpGet = new HttpGet(link);
 		HttpEntity entity = httpclient.execute(httpGet).getEntity();
@@ -365,17 +379,13 @@ public class RegistrationPageSteps {
 				httpclient.execute(httpGet);
 			}
 		}
+                context.stopPinging();
 
 		// indexes in aliases start from 1
 		final int userIndex = context.getUserManager().appendCustomUser(userToRegister) + 1;
-		userToRegister.addEmailAlias(ClientUsersManager.EMAIL_ALIAS_TEMPLATE
-				.apply(userIndex));
-		userToRegister.addNameAlias(ClientUsersManager.NAME_ALIAS_TEMPLATE
-				.apply(userIndex));
-		userToRegister
-				.addPasswordAlias(ClientUsersManager.PASSWORD_ALIAS_TEMPLATE
-						.apply(userIndex));
-
+		userToRegister.addEmailAlias(ClientUsersManager.EMAIL_ALIAS_TEMPLATE.apply(userIndex));
+		userToRegister.addNameAlias(ClientUsersManager.NAME_ALIAS_TEMPLATE.apply(userIndex));
+		userToRegister.addPasswordAlias(ClientUsersManager.PASSWORD_ALIAS_TEMPLATE.apply(userIndex));
 		context.getPagesCollection().getPage(LoginPage.class).waitForLogin();
 	}
 
@@ -419,8 +429,7 @@ public class RegistrationPageSteps {
 	 */
 	@Given("^I switch to [Ss]ign [Ii]n page$")
 	public void ISwitchToLoginPage() throws Exception {
-		context.getPagesCollection().getPage(RegistrationPage.class)
-				.switchToLoginPage();
+		context.getPagesCollection().getPage(RegistrationPage.class).switchToLoginPage();
 	}
         
 	/**
@@ -432,7 +441,6 @@ public class RegistrationPageSteps {
 	 */
 	@Then("^I click on Verify later button on Verification page$")
 	public void IClickVerifyLaterButton() throws Exception {
-		context.getPagesCollection().getPage(RegistrationPage.class)
-				.clickVerifyLaterButton();
+		context.getPagesCollection().getPage(RegistrationPage.class).clickVerifyLaterButton();
 	}
 }

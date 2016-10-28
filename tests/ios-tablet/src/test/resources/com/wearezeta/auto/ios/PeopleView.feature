@@ -9,12 +9,14 @@ Feature: People View
     Given I wait until <Contact1> exists in backend search results
     Given I wait until <Contact2> exists in backend search results
     When I open search UI
+    And I accept alert if visible
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact2>
     And I tap on conversation <Contact2> in search result
-    And I click on Go button
+    And I tap Create conversation action button on People picker page
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
@@ -31,12 +33,14 @@ Feature: People View
     Given I wait until <Contact1> exists in backend search results
     Given I wait until <Contact2> exists in backend search results
     When I open search UI
+    And I accept alert if visible
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact2>
     And I tap on conversation <Contact2> in search result
-    And I click on Go button
+    And I tap Create conversation action button on People picker page
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
@@ -53,9 +57,9 @@ Feature: People View
     And I open conversation details
     And I see <Contact1> user profile page in iPad popover
     And I tap Create Group button
-    And I click on connected user <Contact2> on People picker on iPad popover
-    And I click on connected user <Contact3> on People picker on iPad popover
-    And I click on Create button on iPad popover
+    And I tap connected user <Contact2> on People picker on iPad popover
+    And I tap connected user <Contact3> on People picker on iPad popover
+    And I tap Create button on iPad popover
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I navigate back to conversations list
     Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
@@ -75,9 +79,9 @@ Feature: People View
     And I open conversation details
     And I see <Contact1> user profile page in iPad popover
     And I tap Create Group button
-    And I click on connected user <Contact2> on People picker on iPad popover
-    And I click on connected user <Contact3> on People picker on iPad popover
-    And I click on Create button on iPad popover
+    And I tap connected user <Contact2> on People picker on iPad popover
+    And I tap connected user <Contact3> on People picker on iPad popover
+    And I tap Create button on iPad popover
     And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 
@@ -134,9 +138,9 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
-    And I click Remove on iPad
-    And I confirm remove on iPad
-    And I click Go back button on user profile popover
+    And I tap Remove button on iPad popover
+    And I confirm removal on iPad popover
+    And I tap Go Back button on user profile popover
     Then I see that <Contact2> is not present on group chat info page
 
     Examples:
@@ -154,9 +158,9 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
-    And I click Remove on iPad
-    And I confirm remove on iPad
-    And I click Go back button on user profile popover
+    And I tap Remove button on iPad popover
+    And I confirm removal on iPad popover
+    And I tap Go Back button on user profile popover
     Then I see that <Contact2> is not present on group chat info page
 
     Examples:
@@ -174,7 +178,7 @@ Feature: People View
     And I open group conversation details
     And I open conversation menu on iPad
     And I select Rename action from iPad ellipsis menu
-    And I change group conversation name to <ChatName>
+    And I change group conversation name to "<ChatName>"
     And I dismiss popover on iPad
     Then I see You Renamed Conversation message shown in conversation view
     When I navigate back to conversations list
@@ -197,7 +201,7 @@ Feature: People View
     And I open group conversation details
     And I open conversation menu on iPad
     And I select Rename action from iPad ellipsis menu
-    And I change group conversation name to <ChatName>
+    And I change group conversation name to "<ChatName>"
     And I dismiss popover on iPad
     Then I see You Renamed Conversation message shown in conversation view
     And I see conversation <ChatName> in conversations list
@@ -443,8 +447,8 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Add People button
-    And I click on connected user <Contact3> on People picker on iPad popover
-    And I click on Add to Conversation button on iPad popover
+    And I tap connected user <Contact3> on People picker on iPad popover
+    And I tap Add to Conversation button on iPad popover
     And I open conversation details
     Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
 
@@ -463,8 +467,8 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Add People button
-    And I click on connected user <Contact3> on People picker on iPad popover
-    And I click on Add to Conversation button on iPad popover
+    And I tap connected user <Contact3> on People picker on iPad popover
+    And I tap Add to Conversation button on iPad popover
     And I open conversation details
     Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
 
@@ -485,7 +489,7 @@ Feature: People View
     And I tap Block action button
     And I confirm blocking alert
     Then I do not see conversation <Contact1> in conversations list
-    Then I see conversation <Contact2> is selected in list
+    And I see conversation <Contact2> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -505,7 +509,7 @@ Feature: People View
     And I tap Block action button
     And I confirm blocking alert
     Then I do not see conversation <Contact1> in conversations list
-    Then I see conversation <Contact2> is selected in list
+    And I see conversation <Contact2> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -523,9 +527,9 @@ Feature: People View
     And I open group conversation details
     And I select participant <Contact1>
     And I see <Contact1> user profile page
-    And I unblock user
+    And I tap Unblock button
     And I navigate back to conversations list
-    Then I see conversation <Contact1> is selected in list
+    Then I see conversation <Contact1> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName    |
@@ -544,8 +548,8 @@ Feature: People View
     And I open group conversation details
     And I select participant <Contact1>
     And I see <Contact1> user profile page
-    And I unblock user
-    Then I see conversation <Contact1> is selected in list
+    And I tap Unblock button
+    Then I see conversation <Contact1> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName    |
@@ -602,7 +606,6 @@ Feature: People View
     And I open conversation menu
     And I tap Delete action button
     And I confirm delete conversation content
-    And I wait until popover is closed
     Then I do not see conversation <GroupChatName> in conversations list
     And I do not see Archive button at the bottom of conversations list
 
@@ -625,7 +628,6 @@ Feature: People View
     And I open conversation menu
     And I tap Delete action button
     And I confirm delete conversation content
-    And I wait until popover is closed
     Then I do not see conversation <GroupChatName> in conversations list
     And I do not see Archive button at the bottom of conversations list
 
@@ -647,11 +649,12 @@ Feature: People View
     And I tap Delete action button
     And I select Also Leave option on Delete conversation confirmation
     And I confirm delete conversation content
-    And I wait until popover is closed
     And I open search UI
+    And I accept alert if visible
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
-    When I click close button to dismiss people view
+    When I tap X button in People Picker input field
     Then I do not see conversation <GroupChatName> in conversations list
     # Workaround for ZIOS-6195
     # And I do not see Archive button at the bottom of conversations list
@@ -675,11 +678,12 @@ Feature: People View
     And I tap Delete action button
     And I select Also Leave option on Delete conversation confirmation
     And I confirm delete conversation content
-    And I wait until popover is closed
     And I open search UI
+    And I accept alert if visible
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
-    When I click close button to dismiss people view
+    When I tap X button in People Picker input field
     Then I do not see conversation <GroupChatName> in conversations list
     # Workaround for ZIOS-6195
     # And I do not see Archive button at the bottom of conversations list
@@ -704,8 +708,8 @@ Feature: People View
     And I open conversation menu
     And I tap Delete action button
     And I confirm delete conversation content
-    And I wait until popover is closed
     And I open search UI
+    And I accept alert if visible
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
@@ -734,8 +738,8 @@ Feature: People View
     And I open conversation menu
     And I tap Delete action button
     And I confirm delete conversation content
-    And I wait until popover is closed
     And I open search UI
+    And I accept alert if visible
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
@@ -762,12 +766,14 @@ Feature: People View
     And I open conversation menu
     And I tap Delete action button
     And I confirm delete conversation content
-    And I wait until popover is closed
     And I open search UI
+    And I accept alert if visible
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
-    Then I see 0 conversation entries
+    Then I see 0 default messages in the conversation view
+    And I see 0 photos in the conversation view
 
     Examples:
       | Name      | Contact1  | Image       |
@@ -789,13 +795,15 @@ Feature: People View
     And I open conversation menu
     And I tap Delete action button
     And I confirm delete conversation content
-    And I wait until popover is closed
     And I open search UI
+    And I accept alert if visible
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
-    Then I see 0 conversation entries
-
+    Then I see 0 default messages in the conversation view
+    And I see 0 photos in the conversation view
+    
     Examples:
       | Name      | Contact1  | Image       |
       | user1Name | user2Name | testing.jpg |
@@ -814,7 +822,8 @@ Feature: People View
     And I tap Leave Conversation button
     And I see leave conversation alert
     And I confirm leaving
-    And I wait until popover is closed
+    # Wait for the popover to be closed
+    And I wait for 2 seconds
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
@@ -839,7 +848,8 @@ Feature: People View
     And I tap Leave Conversation button
     And I see leave conversation alert
     And I confirm leaving
-    And I wait until popover is closed
+    # Wait for the popover to be closed
+    And I wait for 2 seconds
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
@@ -930,14 +940,14 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I try to change group conversation name to empty
+    And I change group conversation name to ""
     Then I see correct conversation name <GroupChatName>
-    When I try to change group conversation name to random with length <MaxGroupChatNameLength>
-    Then I see correct conversation name <GroupChatName>
+    When I try to change group conversation name to random with length <ActualLength>
+    Then I see the length of group conversation name equals to <ExpectedLength>
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLength |
-      | user1Name | user2Name | user3Name | TESTCHAT      | 65                     |
+      | Name      | Contact1  | Contact2  | GroupChatName | ActualLength | ExpectedLength |
+      | user1Name | user2Name | user3Name | TESTCHAT      | 70           | 64             |
 
   @C2725 @regression @fastLogin
   Scenario Outline: Verify length limit for group conversation name [LANDSCAPE]
@@ -949,11 +959,11 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I try to change group conversation name to empty
+    And I change group conversation name to ""
     Then I see correct conversation name <GroupChatName>
-    When I try to change group conversation name to random with length <MaxGroupChatNameLenght>
-    Then I see correct conversation name <GroupChatName>
+    When I try to change group conversation name to random with length <ActualLength>
+    Then I see the length of group conversation name equals to <ExpectedLength>
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLenght |
-      | user1Name | user2Name | user3Name | TESTCHAT      | 65                     |
+      | Name      | Contact1  | Contact2  | GroupChatName | ActualLength | ExpectedLength |
+      | user1Name | user2Name | user3Name | TESTCHAT      | 70           | 64             |

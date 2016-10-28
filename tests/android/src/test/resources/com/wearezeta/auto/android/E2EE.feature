@@ -178,12 +178,12 @@ Feature: E2EE
     When User <Contact1> sends encrypted message <EncMessage> to user Myself
     And I tap on conversation name <Contact1>
     Then I see message <EncMessage> 1 times in the conversation view
-    When I press back button
+    When I tap back button
     And I tap conversations list settings button
     And I select "Devices" settings menu item
     And I tap current device in devices settings menu
     Then I remember the device id shown in the device detail view
-    When I press back button 2 times
+    When I tap back button 2 times
     When I select "Account" settings menu item
     And I select "Log out" settings menu item
     Then I confirm sign out
@@ -192,7 +192,7 @@ Feature: E2EE
     And I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     Then I see message <EncMessage> 1 times in the conversation view
-    When I press back button
+    When I tap back button
     And I tap conversations list settings button
     And I select "Devices" settings menu item
     And I tap current device in devices settings menu
@@ -286,7 +286,7 @@ Feature: E2EE
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
     And I verify 1st device
-    When I press back button
+    When I tap back button
     Then I see a message informing me conversation is verified
     And User <Contact1> adds new device Device2
     When User <Contact1> sends encrypted message "<Message1>" via device Device2 to user Myself
@@ -312,13 +312,13 @@ Feature: E2EE
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
     And I verify 1st device
-    And I press back button
+    And I tap back button
     And I select contact <Contact2>
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
     And I verify 1st device
-    And I press back button
-    And I press back button
+    And I tap back button
+    And I tap back button
     Then I see a message informing me conversation is verified
     And User <Contact1> adds new device Device2
     When User <Contact1> sends encrypted message "<Message1>" via device Device2 to group conversation <GroupChatName>
@@ -342,7 +342,7 @@ Feature: E2EE
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
     And I verify 1st device
-    When I press back button
+    When I tap back button
     Then I see a message informing me conversation is verified
     And I see verified conversation shield state has changed
 
@@ -368,22 +368,22 @@ Feature: E2EE
     When I verify 1st device
     And I select single participant tab "Devices"
     And I verify 2nd device
-    And I press back button
+    And I tap back button
     Then I see the verified participant avatar for <Contact1>
     When I select contact <Contact2>
     And I select single participant tab "Devices"
     When I verify 1st device
-    And I press back button
+    And I tap back button
     Then I see the verified participant avatars for <Contact1>,<Contact2>
-    When I press back button
+    When I tap back button
     Then I see a message informing me conversation is verified
 
     Examples:
       | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
 
-  @C12066 @C3239 @regression @rc
-  Scenario Outline: Verify I see system message when verify all other user's device in group conversation
+  @C3239 @regression @rc
+  Scenario Outline: Verify I see system message after I verified all participants' devices
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -404,7 +404,7 @@ Feature: E2EE
     Then I see 1 device is shown in single participant devices tab
     And I verify 1st device
     When I close single participant page by UI button
-    And I press back button
+    And I tap back button
     And I see a message informing me conversation is verified
 
     Examples:
@@ -431,11 +431,11 @@ Feature: E2EE
     And I select single participant tab "Devices"
     And I verify 1st device
     And I close single participant page by UI button
-    And I press back button
+    And I tap back button
     Then I see a message informing me conversation is verified
     When User <Contact1> adds new device Device1
     And I tap on text input
-    And I type the message "<Message2>" and send it without hiding keyboard
+    And I type the message "<Message2>" and send it by cursor Send button without hiding keyboard
     When I see takeover screen from user "<Contact1>"
     Then I tap send anyway button
     And I do not see takeover screen
@@ -469,7 +469,7 @@ Feature: E2EE
     Then I see forced email login page
     And I have entered login <Email>
     And I have entered password <Password>
-    And I press Log in button
+    And I tap Log in button
     And I accept First Time overlay as soon as it is visible
     Then I see Conversations list with no conversations
 
@@ -478,7 +478,7 @@ Feature: E2EE
       | user1Name | user1Email | user1Password | device1 |
 
   @C12081 @regression
-  Scenario Outline: When 1:1 conversation was degraded - I can ignore takeover screen and send message
+  Scenario Outline: (AN-4546) When 1:1 conversation was degraded - I can ignore takeover screen and send message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -490,12 +490,12 @@ Feature: E2EE
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
     And I verify 1st device
-    When I press back button
+    When I tap back button
     Then I see a message informing me conversation is verified
     And User <Contact1> adds new device <Device>
     And I tap on text input
     And I type the message "<Message2>"
-    And I press Send button
+    And I tap Send button from cursor toolbar
     When I see takeover screen from user "<Contact1>"
     Then I tap send anyway button
     And I do not see takeover screen
@@ -506,7 +506,7 @@ Feature: E2EE
       | user1Name | user2Name | device2 | Msg1     | MsgToSendAnyway |
 
   @C12065 @regression
-  Scenario Outline: (AN-3683) When 1:1 conversation was degraded - I can manage new device to verified and resend message
+  Scenario Outline: (AN-4546) When 1:1 conversation was degraded - I can manage new device to verified and resend message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -518,12 +518,12 @@ Feature: E2EE
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
     And I verify 1st device
-    When I press back button
+    When I tap back button
     Then I see a message informing me conversation is verified
     And User <Contact1> adds new device <Device>
     And I tap on text input
     And I type the message "<Message2>"
-    And I press Send button
+    And I tap Send button from cursor toolbar
     When I see takeover screen from user "<Contact1>"
     Then I tap show device button
     And I do not see takeover screen
@@ -532,7 +532,7 @@ Feature: E2EE
     #TODO: detect new device and verify it instead of trying to verify each device
     And I verify 1st device
     And I verify 2nd device
-    When I press back button
+    When I tap back button
     Then I see a message informing me conversation is verified
 
     Examples:

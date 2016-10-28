@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.LoginPage;
@@ -88,9 +89,9 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Presses Sign In button on the corresponding page
+	 * Checks if Sign In button on the corresponding page is disabled
 	 *
-	 * @step. ^I press Sign In button$
+	 * @step. ^Sign In button is disabled$
 	 *
 	 * @throws Exception
 	 *             if Selenium fails to wait until sign in action completes
@@ -175,6 +176,21 @@ public class LoginPageSteps {
 		}
 		context.getPagesCollection().getPage(LoginPage.class).inputEmail(email);
 	}
+    
+    /**
+     * Types phone number string into the corresponding email input field on sign in page
+     *
+     * @throws java.lang.Exception
+     * @step. ^I enter phone number \"([^\"]*)\"$
+     *
+     * @param phoneNumber user phoneNumber string
+     */
+    @When("^I enter phone number \"([^\"]*)\"$")
+    public void IEnterPhoneNumber(String phoneNumber) throws Exception {
+        phoneNumber = context.getUserManager().replaceAliasesOccurences(phoneNumber,
+                ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+        context.getPagesCollection().getPage(LoginPage.class).inputEmail(phoneNumber);
+    }
 
 	/**
 	 * Types password string into the corresponding input field on sign in page
@@ -303,15 +319,15 @@ public class LoginPageSteps {
 		context.getPagesCollection().getPage(LoginPage.class).visitRedirectedPage(langKey);
 	}
 
-	@Then("^I verify description message is visible$")
-	public void i_verify_description_message_is_visible() throws Throwable {
-		Assert.assertTrue("description message is not visible", context.getPagesCollection().getPage(LoginPage.class)
-				.isDescriptionMessageVisible());
+	@Then("^I verify text about Wire is visible$")
+	public void IVerifyTextAboutWireIsvisible() throws Throwable {
+		Assert.assertTrue("description message is not visible on " + context.getDriver().getCurrentUrl(),
+				context.getPagesCollection().getPage(LoginPage.class).isDescriptionMessageVisible());
 	}
 
-	@Then("^I verify description message is equal to (.*)$")
-	public void i_verify_description_message_is_x(String descriptionMessage) throws Throwable {
-		Assert.assertEquals("description message does not match expected value", descriptionMessage,
+	@Then("^I see intro about Wire saying (.*)$")
+	public void ISeeIntroAboutWireSayingX(String expectedIntro) throws Throwable {
+		Assert.assertEquals("description message does not match expected value", expectedIntro,
 				context.getPagesCollection().getPage(LoginPage.class)
 						.getDescriptionMessage());
 	}

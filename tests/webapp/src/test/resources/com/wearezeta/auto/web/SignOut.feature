@@ -10,30 +10,32 @@ Feature: Sign Out
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
     And I am signed in properly
-    When I open self profile
-    Then I see user name on self profile page <Name>
-    And I see user email on self profile page <Email>
+    When I open preferences by clicking the gear button
+    Then I see username <Name> in account preferences
+    And I see user email <Email> in account preferences
+    And I close preferences
     When I open conversation with <GroupChatName>
     And I write message <Message>
     And I send message
     And I open conversation with <Contact1>
     And I write message <Message>
     And I send message
-    And I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
     And I enable checkbox to clear all data
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And I see Sign In page
     And I Sign in using login <Email3> and password <Password3>
-    And I see Welcome page
-    And I confirm keeping picture on Welcome page
     And I am signed in properly
+    And I see first time experience with watermark
+    When I open search by clicking the people button
     Then I see Search is opened
     And I see Bring Your Friends or Invite People button
-    Then I see user name on self profile page <Contact3>
-    And I see user email on self profile page <Email3>
+    When I close People Picker
+    And I open preferences by clicking the gear button
+    Then I see username <Contact3> in account preferences
+    And I see user email <Email3> in account preferences
     And I do not see Contact list with name <GroupChatName>
     And I do not see Contact list with name <Contact1>
 
@@ -52,4 +54,4 @@ Feature: Sign Out
     Examples:
       | Language | SessionExpiredMessage                                                                |
       | english  | You were signed out because your session expired. Please log in again.               |
-      | german   | Du wurdest abgemeldet, da deine Session abgelaufen ist. Bitte logge dich erneut ein. |
+      | german   | Du wurdest abgemeldet, da deine Session abgelaufen ist. Bitte melde dich erneut an.  |

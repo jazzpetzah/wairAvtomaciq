@@ -5,13 +5,12 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
-import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 public class GroupChatInfoPage extends IOSPage {
@@ -19,17 +18,21 @@ public class GroupChatInfoPage extends IOSPage {
 
     private static final By nameLeaveConversationButton = MobileBy.AccessibilityId("LEAVE");
 
-    private static final By nameConversationNameTextField = MobileBy.AccessibilityId("ParticipantsView_GroupName");
+    private static final String strNameConversationNameTextField = "ParticipantsView_GroupName";
+    private static final By fbNameConversationNameTextField =
+            FBBy.AccessibilityId(strNameConversationNameTextField);
 
     private static final Function<String, String> xpathStrConversationNameByText = text ->
-            String.format("//*[@name='ParticipantsView_GroupName' and @value='%s']", text);
+            String.format("//*[@name='%s' and @value='%s']", strNameConversationNameTextField, text);
 
     private static final Function<String, String> xpathStrConversationNameByExpr = expr ->
-            String.format("//*[@name='ParticipantsView_GroupName' and %s]", expr);
+            String.format("//*[@name='%s' and %s]", strNameConversationNameTextField, expr);
 
-    private static final By nameExitParticipantInfoPageButton = MobileBy.AccessibilityId("OtherUserProfileCloseButton");
+    private static final By nameExitParticipantInfoPageButton =
+            MobileBy.AccessibilityId("OtherUserProfileCloseButton");
 
-    private static final By nameExitGroupInfoPageButton = MobileBy.AccessibilityId("metaControllerCancelButton");
+    private static final By nameExitGroupInfoPageButton =
+            MobileBy.AccessibilityId("metaControllerCancelButton");
 
     private static final By namLeftActionButton = MobileBy.AccessibilityId("metaControllerLeftButton");
 
@@ -37,38 +40,32 @@ public class GroupChatInfoPage extends IOSPage {
 
     private static final By nameLeaveConversationAlert = MobileBy.AccessibilityId("Leave conversation?");
 
-    private static final Function<String, String> xpathStrUserNameLabelByText = text ->
-            String.format("//UIACollectionView[preceding-sibling::UIATextView[@name='ParticipantsView_GroupName']]" +
-                    "/UIACollectionCell/UIAStaticText[last() and @name='%s']", text);
-
     private static final Function<Integer, String> nameStrNumberPeopleByCount =
             count -> String.format("%s PEOPLE", count);
 
     private static final Function<String, String> xpathPeopleViewCollectionCellByName = name ->
-            String.format("//UIAButton[@name='metaControllerCancelButton']/following-sibling::" +
-                    "UIACollectionView/UIACollectionCell/UIAStaticText[@name='%s']", name.toUpperCase());
+            String.format("//XCUIElementTypeButton[@name='metaControllerCancelButton']/following::" +
+                            "XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s'] ]",
+                    name.toUpperCase());
 
-    private static final By classNameParticipantAvatarCell = By.className("UIACollectionCell");
-    
+    private static final By xpathNameParticipantAvatarCell =
+            By.xpath("//XCUIElementTypeCollectionView/XCUIElementTypeCell[ ./XCUIElementTypeStaticText ]");
+
     public GroupChatInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
     public boolean isGroupNameEqualTo(String expectedName) throws Exception {
         final By locator = By.xpath(xpathStrConversationNameByText.apply(expectedName));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isLocatorDisplayed(locator);
     }
 
     public void setGroupChatName(String name) throws Exception {
-        final WebElement nameInputField = getElement(nameConversationNameTextField);
-        nameInputField.click();
+        final FBElement nameInputField = (FBElement) getElement(fbNameConversationNameTextField);
+        tapAtTheCenterOfElement(nameInputField);
         this.isKeyboardVisible();
-        try {
-            ((IOSElement) nameInputField).setValue(name);
-        } catch (WebDriverException e) {
-            nameInputField.clear();
-            nameInputField.sendKeys(name);
-        }
+        nameInputField.clear();
+        nameInputField.sendKeys(name);
         tapKeyboardCommitButton();
     }
 
@@ -77,16 +74,16 @@ public class GroupChatInfoPage extends IOSPage {
                 map(x -> String.format("contains(@value, '%s')", x)).
                 collect(Collectors.toList()));
         final By locator = By.xpath(xpathStrConversationNameByExpr.apply(xpathExpr));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isLocatorDisplayed(locator);
     }
 
     public boolean isNumberOfPeopleEquals(int expectedNumber) throws Exception {
         final By locator = MobileBy.AccessibilityId(nameStrNumberPeopleByCount.apply(expectedNumber));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isLocatorDisplayed(locator);
     }
 
     public int getParticipantsAvatarsCount() throws Exception {
-        return selectVisibleElements(classNameParticipantAvatarCell).size();
+        return selectVisibleElements(xpathNameParticipantAvatarCell).size();
     }
 
     public void exitParticipantInfoPage() throws Exception {
@@ -96,7 +93,7 @@ public class GroupChatInfoPage extends IOSPage {
     public void exitGroupInfoPage() throws Exception {
         final WebElement closeBtn = getElement(nameExitGroupInfoPageButton);
         closeBtn.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameExitGroupInfoPageButton, 3)) {
+        if (!isLocatorInvisible(nameExitGroupInfoPageButton, 3)) {
             // Sometimes we don't click this button in time because of animated transitions
             closeBtn.click();
         }
@@ -104,7 +101,7 @@ public class GroupChatInfoPage extends IOSPage {
 
     public void tapLeaveConversation() throws Exception {
         getElement(nameRightActionButton).click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameRightActionButton)) {
+        if (!isLocatorInvisible(nameRightActionButton)) {
             throw new IllegalStateException("Menu button is still shown");
         }
         getElement(nameLeaveConversationButton).click();
@@ -114,14 +111,15 @@ public class GroupChatInfoPage extends IOSPage {
         getElement(nameLeaveConversationButton).click();
     }
 
-    public void selectParticipant(String name)
-            throws Exception {
-        final By locator = By.xpath(xpathPeopleViewCollectionCellByName.apply(name));
-        DriverUtils.tapByCoordinates(this.getDriver(), getElement(locator));
+    public void selectParticipant(String name) throws Exception {
+        final By locator = FBBy.xpath(xpathPeopleViewCollectionCellByName.apply(name));
+        getElement(locator).click();
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     public boolean isLeaveConversationAlertVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameLeaveConversationAlert);
+        return isLocatorDisplayed(nameLeaveConversationAlert);
     }
 
     public void clickOnAddButton() throws Exception {
@@ -133,7 +131,11 @@ public class GroupChatInfoPage extends IOSPage {
     }
 
     public boolean waitForContactToDisappear(String contact) throws Exception {
-        final By locator = By.xpath(xpathStrUserNameLabelByText.apply(contact));
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
+        final By locator = By.xpath(xpathPeopleViewCollectionCellByName.apply(contact));
+        return isLocatorInvisible(locator);
+    }
+
+    public int getGroupNameLength() throws Exception {
+        return getElement(fbNameConversationNameTextField).getText().length();
     }
 }

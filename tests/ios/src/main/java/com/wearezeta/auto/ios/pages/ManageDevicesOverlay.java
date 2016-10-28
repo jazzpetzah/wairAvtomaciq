@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
@@ -14,11 +13,11 @@ public class ManageDevicesOverlay extends IOSPage{
         super(lazyDriver);
     }
 
-    public boolean waitUntiVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameManageDevicesButton);
+    public boolean waitUntilVisible() throws Exception {
+        return isLocatorDisplayed(nameManageDevicesButton);
     }
 
-    public boolean waitUntiInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameManageDevicesButton);
+    public boolean waitUntilInvisible() throws Exception {
+        return isLocatorInvisible(nameManageDevicesButton);
     }
 }

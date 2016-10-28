@@ -7,8 +7,8 @@ import java.util.concurrent.Future;
 
 public class TabletDeviceDetailsPage extends DeviceDetailsPage {
     private static final By nameOtherUserProfilePageCloseButton =
-            By.xpath(TabletGroupConversationDetailPopoverPage.xpathStrPopover +
-                    "/UIAButton[@name='SHOW MY DEVICE FINGERPRINT']/preceding-sibling::UIAButton");
+            By.xpath("//XCUIElementTypeButton[@name='SHOW MY DEVICE FINGERPRINT']" +
+                    "/preceding-sibling::XCUIElementTypeButton[1]");
 
     public TabletDeviceDetailsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);

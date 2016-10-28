@@ -8,7 +8,7 @@ Feature: Settings
     Given I see Conversations list with no conversations
     When I tap conversations list settings button
     Then I see settings page
-    When I press back button
+    When I tap back button
     Then I see Conversations list with no conversations
 
     Examples:
@@ -23,13 +23,13 @@ Feature: Settings
     Given I see Conversations list with no conversations
     When I tap conversations list settings button
     And I select "About" settings menu item
-    Then I see "Wire Website" settings menu item
+    Then I see "Wire website" settings menu item
 
     Examples:
       | Name      |
       | user1Name |
 
-  @C679 @regression @rc @rc42
+  @C679 @regression @rc @legacy
   Scenario Outline: Change user picture with gallery image
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -41,15 +41,15 @@ Feature: Settings
     And I select "Picture" settings menu item
     And I tap Gallery Camera button on Take Picture view
     And I tap Confirm button on Take Picture view
-    And I press Back button
-    And I press Back button
+    And I tap Back button
+    And I tap Back button
     Then I verify the previous and the current screenshots are different
 
     Examples:
       | Name      |
       | user1Name |
 
-  @C691 @regression @rc @rc42
+  @C691 @regression @rc @legacy
   Scenario Outline: I can change my name
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -77,8 +77,8 @@ Feature: Settings
     And I select "Picture" settings menu item
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
-    And I press Back button
-    And I press Back button
+    And I tap Back button
+    And I tap Back button
     Then I verify the previous and the current screenshots are different
 
     Examples:
@@ -155,7 +155,7 @@ Feature: Settings
     And I select "Remove device" settings menu item
     And I see "<OtherDevice>" settings menu item
     And I do not see "<DeviceToRemoveWithoutPassword>" settings menu item
-    And I press Back button 2 times
+    And I tap Back button 2 times
     Then I do not see Manage Devices overlay
     And I see Conversations list with no conversations
 
@@ -205,3 +205,34 @@ Feature: Settings
     Examples:
       | Name      | CurrentNumber    | NewNumber        |
       | user1Name | user1PhoneNumber | user2PhoneNumber |
+
+  @C250836 @regression
+  Scenario Outline: I can enable/disable send button in Settings
+    Given There is 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap conversations list settings button
+    # Disable at first
+    And I select "Options" settings menu item
+    And I select "Send button" settings menu item
+    And I tap Back button 2 times
+    And I see Conversations list
+    And I tap on conversation name <Contact>
+    And I type the message "<Message1>" and send it by keyboard Send button
+    Then I see the message "<Message1>" in the conversation view
+    # Enable now
+    When I navigate back from conversation
+    And I tap conversations list settings button
+    And I select "Options" settings menu item
+    And I select "Send button" settings menu item
+    And I tap Back button 2 times
+    And I see Conversations list
+    And I tap on conversation name <Contact>
+    And I type the message "<Message2>" and send it by cursor Send button
+    Then I see the message "<Message2>" in the conversation view
+
+    Examples:
+      | Name      | Contact   | Message1 | Message2 |
+      | user1Name | user2Name | Yo       | NoPb     |

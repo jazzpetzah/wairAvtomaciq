@@ -2,16 +2,16 @@ Feature: Conversation View
 
   @C3182 @regression @fastLogin
   Scenario Outline: Verify tooltip is shown when cursor area is empty and in/not in focus
-    Given There are 2 user where <Name> is me
+    Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    Then I see input placeholder text
+    Then I see Standard input placeholder text
     When I tap on text input
-    Then I see input placeholder text
+    Then I see Standard input placeholder text
     When I type the default message
-    Then I do not see input placeholder text
+    Then I do not see Standard input placeholder text
 
     Examples:
       | Name      | Contact   |
@@ -21,15 +21,17 @@ Feature: Conversation View
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <DeviceName1>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
     And I type the default message and send it
     Then I see 1 default message in the conversation view
+    And I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | DeviceName1 | DeliveredLabel |
+      | user1Name | user2Name | device1     | Delivered      |
 
   @C923 @regression @fastLogin
   Scenario Outline: Send Hello to contact
@@ -49,17 +51,23 @@ Feature: Conversation View
   Scenario Outline: Send a camera roll picture to user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <DeviceName1>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
+    And I accept alert if visible
+    And I accept alert if visible
     And I select the first picture from Keyboard Gallery
     And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
+    # Wait for delivery
+    And I wait for 3 seconds
+    And I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | DeviceName1 | DeliveredLabel |
+      | user1Name | user2Name | device1     | Delivered      |
 
   @C924 @regression @fastLogin
   Scenario Outline: Send message to group chat
@@ -101,7 +109,7 @@ Feature: Conversation View
     And I navigate back to conversations list
     And I tap on contact name <Contact>
     And I tap on text input
-    And I tap Send button on the keyboard
+    And I tap Send Message button in conversation view
     Then I see 1 default message in the conversation view
 
     Examples:
@@ -121,13 +129,15 @@ Feature: Conversation View
     And I have entered login <Login>
     And I have entered password <Password>
     And I tap Login button
-    And I accept First Time overlay if it is visible
+    And I accept alert if visible
+    And I accept First Time overlay
     And I dismiss settings warning
     And I see conversations list
     And I tap on contact name <Contact>
     And I tap on text input
-    And I tap and hold on message input
-    And I paste and commit the text
+    And I long tap on text input
+    And I tap on Paste badge item
+    And I tap Send Message button in conversation view
     Then I see last message in the conversation view is expected message <Text>
 
     Examples:
@@ -141,8 +151,8 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     And I tap on contact name <Contact>
-    When I type the "   " message and send it
-    Then I see 0 default messages in the conversation view
+    When I type the "   " message
+    Then I do not see Send Message button in conversation view
     When I type the default message
     And I type the "   " message and send it
     Then I see 1 default message in the conversation view
@@ -159,6 +169,8 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
+    And I accept alert if visible
+    And I accept alert if visible
     And I select the first picture from Keyboard Gallery
     And I tap Confirm button on Picture preview page
     And I see 1 photo in the conversation view
@@ -280,6 +292,8 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
+    And I accept alert if visible
+    And I accept alert if visible
     And I select the first picture from Keyboard Gallery
     And I tap Sketch button on Picture preview page
     And I draw a random sketch
@@ -331,6 +345,8 @@ Feature: Conversation View
     Then I do not see conversation <Contact1> in conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search UI
+    And I accept alert if visible
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
     When I tap Open conversation action button on People picker page
@@ -341,8 +357,8 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C879 @regression @ZIOS-6517 @fastLogin
-  Scenario Outline: (BUG-ZIOS-6517) Verify possibility to copy image in the conversation view
+  @C879 @regression @fastLogin
+  Scenario Outline: (ZIOS-6517) Verify possibility to copy image in the conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -353,10 +369,12 @@ Feature: Conversation View
     And I long tap on image in conversation view
     And I tap on Copy badge item
     And I tap on text input
-    And I tap and hold on message input
+    And I long tap on text input
     And I tap on Paste badge item
     And I confirm my choice
-    Then I see 2 photo in the conversation view
+    # Wait for animation
+    And I wait for 2 seconds
+    Then I see 2 photos in the conversation view
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -373,30 +391,12 @@ Feature: Conversation View
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends encrypted image <Picture> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
-    Then I see 4 conversation entries
+    And I see 1 default message in the conversation view
+    Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | Caramba!      | testing.jpg |
-
-  @C886 @regression @fastLogin
-  Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    Then I do not see user avatar icon near the conversation input field
-    When I tap on text input
-    Then I see user avatar icon near the conversation input field
-    # This is to hide keyboard
-    When I navigate back to conversations list
-    And I tap on contact name <Contact>
-    Then I do not see user avatar icon near the conversation input field
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
 
   @C917 @real_rc @real
   Scenario Outline: Verify sending photo from a back camera
@@ -406,6 +406,8 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
+    And I accept alert if visible
+    And I accept alert if visible
     And I tap Camera Shutter button on Keyboard Gallery overlay
     And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
@@ -422,6 +424,8 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
+    And I accept alert if visible
+    And I accept alert if visible
     And I tap Toggle Camera button on Keyboard Gallery overlay
     And I tap Camera Shutter button on Keyboard Gallery overlay
     And I tap Confirm button on Picture preview page
@@ -482,9 +486,9 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see conversation name <Contact> in Upper Toolbar
+    And I see the conversation with <Contact>
     And User <Contact> changes name to <NewName>
-    Then I see conversation name <NewName> in Upper Toolbar
+    Then I see the conversation with <NewName>
 
     Examples:
       | Name      | Contact   | NewName |
@@ -498,9 +502,9 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see conversation name <GroupChatName> in Upper Toolbar
+    And I see the conversation with <GroupChatName>
     And User <Contact> renames conversation <GroupChatName> to <NewChatName>
-    Then I see conversation name <NewChatName> in Upper Toolbar
+    Then I see the conversation with <NewChatName>
 
     Examples:
       | Name      | Contact   | GroupChatName  | UsersAmount | NewChatName |
@@ -537,14 +541,14 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see input placeholder text
+    And I see Standard input placeholder text
     And I see conversation tools buttons
     When <Contact> removes Myself from group chat <GroupChatName>
     Then I do not see conversation tools buttons
     And I do not see text input in conversation view
     When User <Contact> adds user <Name> to group chat <GroupChatName>
     Then I see conversation tools buttons
-    And I see input placeholder text
+    And I see Standard input placeholder text
 
     Examples:
       | Name      | Contact   | GroupChatName |
@@ -579,6 +583,8 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see 1 photo in the conversation view
     And I tap Add Picture button from input tools
+    And I accept alert if visible
+    And I accept alert if visible
     And I tap Camera Roll button on Keyboard Gallery overlay
     And I remember count of the photos in Camera Roll
     And I tap Cancel button on Camera Roll page
@@ -591,5 +597,3 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
-
-

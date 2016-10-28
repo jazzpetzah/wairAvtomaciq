@@ -35,23 +35,6 @@ public class YouAreInvitedPage extends WebPage {
 		super(lazyDriver);
 	}
 
-	@Override
-	public void setUrl(String url) {
-		// To make sure that we are redirected to staging site
-		try {
-			super.setUrl(transformSiteUrl(url));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private static String transformSiteUrl(String url)
-			throws Exception {
-		final URI uri = new URI(url);
-		final String website = CommonUtils.getWebsitePathFromConfig(DownloadPage.class);
-		return website + uri.getPath();
-	}
-
 	public void waitUntilConnectButtonVisible() throws Exception {
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(

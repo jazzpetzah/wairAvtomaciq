@@ -4,9 +4,10 @@ import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DummyElement;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import io.appium.java_client.MobileBy;
-import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -23,9 +24,9 @@ public class LoginPage extends IOSPage {
 
     private static final By nameLoginButton = MobileBy.AccessibilityId("RegistrationConfirmButton");
 
-    private static final By nameLoginField = MobileBy.AccessibilityId("EmailField");
+    private static final By fbNameLoginField = FBBy.AccessibilityId("EmailField");
 
-    private static final By namePasswordField = MobileBy.AccessibilityId("PasswordField");
+    private static final By fbNamePasswordField = FBBy.AccessibilityId("PasswordField");
 
     private static final By nameWrongCredentialsNotification = MobileBy.AccessibilityId("Please verify your details and try again.");
 
@@ -34,7 +35,7 @@ public class LoginPage extends IOSPage {
     private static final By nameMaybeLater = MobileBy.AccessibilityId("MAYBE LATER");
 
     private static final By xpathSetEmailPasswordSuggestionLabel = By.xpath(
-            "//UIAStaticText[contains(@name, 'Add your email and password.')]");
+            "//XCUIElementTypeStaticText[contains(@name, 'Add your email and password.')]");
 
 
     public static final By nameResentIn10min = MobileBy.AccessibilityId(
@@ -56,14 +57,14 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), MobileBy.AccessibilityId(nameStrMainWindow));
+        return isLocatorDisplayed(MobileBy.AccessibilityId(nameStrMainWindow));
     }
 
     public void switchToEmailLogin() throws Exception {
         final WebElement emailSwitchBtn = getElement(nameSwitchToEmailLogin);
         emailSwitchBtn.click();
         //Work around: to click again, when it didnt got clicked the first time
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameSwitchToEmailLogin)) {
+        if (!isLocatorInvisible(nameSwitchToEmailLogin)) {
             emailSwitchBtn.click();
         }
     }
@@ -73,7 +74,7 @@ public class LoginPage extends IOSPage {
     }
 
     public void waitForLoginToFinish() throws Exception {
-        if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), nameSwitchToLoginButton, LOGIN_TIMEOUT_SECONDS)) {
+        if (!isLocatorInvisible(nameSwitchToLoginButton, LOGIN_TIMEOUT_SECONDS)) {
             throw new IllegalStateException("Login button is still visible after the timeout");
         }
     }
@@ -83,11 +84,17 @@ public class LoginPage extends IOSPage {
     }
 
     public void setLogin(String login) throws Exception {
-        ((IOSElement) getElement(nameLoginField)).setValue(login);
+        final FBElement el = ((FBElement) getElement(fbNameLoginField));
+        el.click();
+        el.clear();
+        el.sendKeys(login);
     }
 
     public void setPassword(String password) throws Exception {
-        ((IOSElement) getElement(namePasswordField)).setValue(password);
+        final FBElement el = ((FBElement) getElement(fbNamePasswordField));
+        el.click();
+        el.clear();
+        el.sendKeys(password);
     }
 
     public static final int LOGIN_TIMEOUT_SECONDS = 30;
@@ -96,9 +103,13 @@ public class LoginPage extends IOSPage {
         final WebElement maybeLaterBtn = getElement(nameMaybeLater, "MAYBE LATER link is not visible",
                 LOGIN_TIMEOUT_SECONDS);
         maybeLaterBtn.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameMaybeLater, 3)) {
+        if (!isLocatorInvisible(nameMaybeLater, 3)) {
             maybeLaterBtn.click();
         }
+    }
+
+    public void dismissSettingsWarningIfVisible() throws Exception {
+        getElementIfDisplayed(nameMaybeLater).orElseGet(DummyElement::new).click();
     }
 
     public Boolean isContactsButtonVisible() throws Exception {
@@ -107,17 +118,17 @@ public class LoginPage extends IOSPage {
     }
 
     public void tapHoldEmailInput() throws Exception {
-        final WebElement loginField = getElement(nameLoginField);
+        final FBElement loginField = (FBElement) getElement(fbNameLoginField);
         message = loginField.getText();
-        this.getDriver().tap(1, loginField, 1000);
+        loginField.longTap();
     }
 
     public void tapPasswordField() throws Exception {
-        getElement(namePasswordField).click();
+        getElement(fbNamePasswordField).click();
     }
 
     public boolean wrongCredentialsNotificationIsShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameWrongCredentialsNotification);
+        return isLocatorDisplayed(nameWrongCredentialsNotification, 30);
     }
 
     public void tapForgotPasswordButton() throws Exception {
@@ -125,32 +136,27 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isSetEmailPasswordSuggestionVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSetEmailPasswordSuggestionLabel);
+        return isLocatorDisplayed(xpathSetEmailPasswordSuggestionLabel);
     }
 
     public boolean isResendIn10minAlertVisible() throws Exception {
-        return waitUntilAlertAppears() && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameResentIn10min);
+        return readAlertText().isPresent() && isLocatorDisplayed(nameResentIn10min);
     }
 
     public boolean isInvalidEmailAlertShown() throws Exception {
-        return waitUntilAlertAppears() && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidEmail);
+        return readAlertText().isPresent() && isLocatorDisplayed(nameInvalidEmail);
     }
 
     public boolean isAlreadyRegisteredEmailAlertShown() throws Exception {
-        return waitUntilAlertAppears() && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                nameAlreadyRegisteredEmail);
+        return readAlertText().isPresent() && isLocatorDisplayed(nameAlreadyRegisteredEmail);
     }
 
-    public void clickPhoneNotNow() throws Exception {
+    public void tapPhoneNotNow() throws Exception {
         getElement(nameNotNowButton).click();
     }
 
     public boolean isSomethingWentWrongAlertShown() throws Exception {
-        return waitUntilAlertAppears() && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSomethingWentWrong);
-    }
-
-    public void dismissSettingsWarningIfVisible(int timeoutSeconds) throws Exception {
-        getElementIfDisplayed(nameMaybeLater, timeoutSeconds).orElseGet(DummyElement::new).click();
+        return readAlertText().isPresent() && isLocatorDisplayed(nameSomethingWentWrong);
     }
 
     public void switchToLogin() throws Exception {

@@ -6,7 +6,7 @@ import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.common.process.AsyncProcess;
+import com.wearezeta.auto.common.process.AsyncProcess;
 
 public final class AndroidLogListener {
     private static final Logger log = ZetaLogger.getLog(AndroidLogListener.class.getSimpleName());
@@ -16,6 +16,7 @@ public final class AndroidLogListener {
     public enum ListenerType {
         DEFAULT(null),
         PERF("LoadTimeLoggerController"),
+        GCMToken("InstanceID"),
         ANALYTICS("TrackingController");
 
         // https://developer.android.com/studio/command-line/logcat.html

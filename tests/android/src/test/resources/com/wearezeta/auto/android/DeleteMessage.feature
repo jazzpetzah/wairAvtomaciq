@@ -1,7 +1,7 @@
 Feature: Delete Message
 
-  @C111638 @regression @rc @C111637
-  Scenario Outline: Verify deleting own text message
+  @C111637 @regression @rc
+  Scenario Outline: Verify I could delete own text message from Message bottom menu
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -9,7 +9,7 @@ Feature: Delete Message
     Given I see Conversations list with conversations
     And I tap on conversation name <Contact>
     And I tap on text input
-    And I type the message "<Message1>" and send it
+    And I type the message "<Message1>" and send it by cursor Send button
     When I long tap the Text message "<Message1>" in the conversation view
     # C111638
     Then I see Copy button on the message bottom menu
@@ -62,14 +62,14 @@ Feature: Delete Message
     Given I see Conversations list with conversations
     And I tap on conversation name <Contact>
     And I tap on text input
-    And I type the message "<YoutubeLink>" and send it
+    And I type the message "<YoutubeLink>" and send it by cursor Send button
     And I hide keyboard
     And I long tap Youtube container in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     Then I do not see the message "<YoutubeLink>" in the conversation view
     And I do not see Youtube container in the conversation view
-    When I type the message "<SoundcloudLink>" and send it
+    When I type the message "<SoundcloudLink>" and send it by cursor Send button
     And I hide keyboard
     And I long tap Soundcloud container in the conversation view
     And I tap Delete only for me button on the message bottom menu
@@ -130,7 +130,7 @@ Feature: Delete Message
 
     Examples:
       | Name      | Contact   | Message1   | CallBackend | Message2         |
-      | user1Name | user2Name | You pinged | autocall    | user2Name pinged |
+      | user1Name | user2Name | You pinged | zcall       | user2Name pinged |
 
   @C111642 @regression @rc
   Scenario Outline: (AN-4171) Verify deleting the shared file
@@ -152,7 +152,7 @@ Feature: Delete Message
       | Name      | Contact1  | FileName  | FileExtension | FileSize | UploadingTimeout |
       | user1Name | user2Name | qa_random | txt           | 1.00MB   | 20               |
 
-  @C111645 @regression @rc @C111647
+  @C111645 @regression @rc
   Scenario Outline: Verify deleting is synchronised across own devices when one of them was offline
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -177,7 +177,7 @@ Feature: Delete Message
     When I tap Back button from top toolbar
     And I tap on conversation name <Contact1>
     Then I do not see the message "<Message>" in the conversation view
-    When I type the message "<Message2>" and send it
+    When I type the message "<Message2>" and send it by cursor Send button
     And User Myself remember the recent message from user <Contact1> via device <Device>
     And I enable Airplane mode on the device
     And I see No Internet bar in 20 seconds
@@ -205,9 +205,10 @@ Feature: Delete Message
     When I tap on conversation name <Contact>
     And I tap on text input
     And I type the message "<Message>"
-    And I click on the GIF button
+    And I tap Gif button from cursor toolbar
+    And I select a random gif from the grid preview
     Then I see giphy preview page
-    When I click on the giphy send button
+    When I tap on the giphy Send button
     Then I see a picture in the conversation view
     When I long tap Image container in the conversation view
     And I tap Delete only for me button on the message bottom menu
@@ -228,7 +229,7 @@ Feature: Delete Message
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I enable Airplane mode on the device
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     And I long tap the Text message "<Message>" in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert

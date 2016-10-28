@@ -12,10 +12,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- v1: http://192.168.10.44:21980 || v2: https://192.168.10.44:25443
-            || local: http://localhost:8080 -->
         <!-- note there's no trailing slash -->
-        <defaultCallingServiceUrl>https://192.168.10.44:27443</defaultCallingServiceUrl>
+        <defaultCallingServiceUrl>https://192.168.10.44:35443</defaultCallingServiceUrl>
         <!-- JavaX | REST -->
         <mailboxHandlerType>REST</mailboxHandlerType>
         <defaultEmailListenerServiceHost>192.168.10.44</defaultEmailListenerServiceHost>
@@ -32,7 +30,7 @@
         <syncIsAutomated>False</syncIsAutomated>
         <syncIsMuted>False</syncIsMuted>
         <cachedOtrDevicesCount>3</cachedOtrDevicesCount>
-        <zmessaging.actor.version>78.531</zmessaging.actor.version>
+        <zmessaging.actor.version>82.553</zmessaging.actor.version>
         <backendType>staging</backendType>
     </properties>
 
@@ -88,7 +86,7 @@
         <dependency>
             <groupId>io.appium</groupId>
             <artifactId>java-client</artifactId>
-            <version>3.3.0</version>
+            <version>4.1.2</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.ow2.asm</groupId>
@@ -161,6 +159,12 @@
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.8.11.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.plist</groupId>
+            <artifactId>dd-plist</artifactId>
+            <version>1.8</version>
         </dependency>
 
         <dependency>

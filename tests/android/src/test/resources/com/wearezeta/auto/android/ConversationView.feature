@@ -9,10 +9,10 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
-    And I press options menu button
-    And I press MUTE conversation menu button
-    And I press back button
-    And I press back button
+    And I tap options menu button
+    And I tap MUTE conversation menu button
+    And I tap back button
+    And I tap back button
     Then Conversation <Contact1> is muted
 
     Examples:
@@ -23,16 +23,16 @@ Feature: Conversation View
   Scenario Outline: Verify unsilence the conversation from conversation view
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to me
-    Given <Contact1> is silenced to user <Name>
     Given I sign in using my email or phone number
+    Given <Contact1> is silenced to user <Name>
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given Conversation <Contact1> is muted
     When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
-    And I press options menu button
-    And I press UNMUTE conversation menu button
-    And I press back button
+    And I tap options menu button
+    And I tap UNMUTE conversation menu button
+    And I tap back button
     And I navigate back from conversation
     Then Conversation <Contact1> is not muted
 
@@ -49,14 +49,14 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap on text input
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     Then I see the message "<Message>" in the conversation view
 
     Examples:
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @C682 @regression @rc @rc42
+  @C682 @regression @rc @legacy
   Scenario Outline: Send Camera picture to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -73,7 +73,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C700 @regression @rc @rc42
+  @C700 @regression @rc @legacy
   Scenario Outline: Create group conversation from 1:1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -83,16 +83,16 @@ Feature: Conversation View
     When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
     And I see <Contact1> user profile page
-    And I press add contact button
-    And I tap on Search input on People picker page
+    And I tap add contact button
+    And I tap on Search input on Search page
     And I type user name "<Contact2>" in search field
     And I see user <Contact2> in Search result list
-    And I tap on user name found on People picker page <Contact2>
+    And I tap on user name found on Search page <Contact2>
     And I see Add to conversation button
-    And I click on Add to conversation button
+    And I tap on Add to conversation button
     # Workaround for AN-4011, for following two steps
     And I tap conversation name from top toolbar
-    And I press back button
+    And I tap back button
     Then I see group chat page with users <Contact1>,<Contact2>
     And I navigate back from conversation
     And I see group conversation with <Contact1>,<Contact2> in conversations list
@@ -112,7 +112,7 @@ Feature: Conversation View
     When I tap on conversation name <GroupChatName>
     # Workaround for AN-4011, for following two steps
     And I tap conversation name from top toolbar
-    And I press back button
+    And I tap back button
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
@@ -129,7 +129,7 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <GroupChatName>
     And I tap on text input
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     Then I see the message "<Message>" in the conversation view
 
     Examples:
@@ -145,7 +145,7 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap on text input
-    And I type the message "LONG_MESSAGE" and send it
+    And I type the message "LONG_MESSAGE" and send it by cursor Send button
     Then I see the message "LONG_MESSAGE" in the conversation view
 
     Examples:
@@ -182,10 +182,8 @@ Feature: Conversation View
     And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
     And I tap Image container in the conversation view
-    And I rotate UI to landscape
-    And I scroll down the conversation view
-    And I rotate UI to portrait
-    Then I tap Image container in the conversation view
+    And I wait for 1 seconds
+    And I tap on Fullscreen button on the recent image in the conversation view
     And I rotate UI to landscape
     And I tap Image Close button on Take Picture view
     Then I rotate UI to portrait
@@ -195,81 +193,6 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
-
-  @C809 @regression @rc @rc42
-  Scenario Outline: (CM-717) I can send a sketch
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    When I tap on conversation name <Contact1>
-    And I tap Sketch button from cursor toolbar
-    And I draw a sketch with <NumColors> colors
-    And I send my sketch
-    And I tap Image container in the conversation view
-
-    Examples:
-      | Name      | Contact1  | NumColors |
-      | user1Name | user2Name | 2         |
-
-  @C810 @regression @rc @rc42
-  Scenario Outline: (CM-717) I can send sketch on image from gallery
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    When I tap on conversation name <Contact1>
-    And I tap Add picture button from cursor toolbar
-    And I tap Gallery button on Extended cursor camera overlay
-    And I tap Sketch Image Paint button on Take Picture view
-    And I draw a sketch on image with <NumColors> colors
-    Then I send my sketch
-    And I tap Image container in the conversation view
-
-    Examples:
-      | Name      | Contact1  | NumColors |
-      | user1Name | user2Name | 2         |
-
-  @C432 @regression
-  Scenario Outline: I can send sketch on photo
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    When I tap on conversation name <Contact1>
-    And I tap Add picture button from cursor toolbar
-    And I tap Take Photo button on Extended cursor camera overlay
-    And I tap Sketch Image Paint button on Take Picture view
-    And I draw a sketch on image with <NumColors> colors
-    Then I send my sketch
-    And I tap Image container in the conversation view
-
-    Examples:
-      | Name      | Contact1  | NumColors |
-      | user1Name | user2Name | 6         |
-
-  @C787 @regression @rc @rc42
-  Scenario Outline: I can send giphy image by typing some massage and clicking GIF button
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    When I tap on conversation name <Contact>
-    And I tap on text input
-    And I type the message "<Message>"
-    And I click on the GIF button
-    Then I see giphy preview page
-    When I click on the giphy send button
-    Then I see a picture in the conversation view
-    And I see the most recent conversation message is "<Message> · via giphy.com"
-
-    Examples:
-      | Name      | Contact   | Message |
-      | user1Name | user2Name | Yo      |
 
   @C674 @regression @rc
   Scenario Outline: Send GIF format pic
@@ -283,13 +206,16 @@ Feature: Conversation View
     And I scroll to the bottom of conversation view
     Then I see a picture in the conversation view
     And I see the picture in the conversation is animated
-    When I tap Image container in the conversation view
+    #workaround for AN-4574
+    When User <Contact> sends encrypted message "<Message>" to user Myself
+    And I tap Image container in the conversation view
+    And I wait for 1 seconds
     And I tap on Fullscreen button on the recent image in the conversation view
     Then I see the picture in the preview is animated
 
     Examples:
-      | Name      | Contact   | GifName      |
-      | user1Name | user2Name | animated.gif |
+      | Name      | Contact   | GifName      | Message |
+      | user1Name | user2Name | animated.gif | Yo      |
 
   @C672 @regression @rc
   Scenario Outline: Send image with non default camera (portrait) in group chat
@@ -309,32 +235,8 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C236 @regression @rc
-  Scenario Outline: I can send giphy image from the giphy grid preview
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Conversations list with conversations
-    When I tap on conversation name <Contact>
-    And I tap on text input
-    And I type the message "<Message>"
-    And I click on the GIF button
-    Then I see giphy preview page
-    Then I click on the giphy link button
-    Then I see the giphy grid preview
-    Then I select a random gif from the grid preview
-    Then I see giphy preview page
-    When I click on the giphy send button
-    Then I see a picture in the conversation view
-    And I see the most recent conversation message is "<Message> · via giphy.com"
-
-    Examples:
-      | Name      | Contact   | Message |
-      | user1Name | user2Name | Yo      |
-
-  @C77948 @C77950 @regression @rc
-  Scenario Outline: Upper toolbar displayed in conversation view, I can back to Conversations list by toolbar arrow
+  @C77948 @regression @rc
+  Scenario Outline: Verify the upper toolbar and back arrow are visible
     Given There is 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -389,7 +291,7 @@ Feature: Conversation View
     Then I see the message "<Message1>" in the conversation view
     And the conversation title should be "<Contact2>"
     And I tap conversation name from top toolbar
-    And I press back button
+    And I tap back button
     When I tap Back button from top toolbar
     And I tap on conversation name <Contact1>
     And User <Contact2> sends encrypted message "<Message2>" to user Myself
@@ -400,8 +302,8 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | Message1 | Message2 |
       | user1Name | user2Name | user3Name | Msg1     | Msg2     |
 
-  @C77966 @C87626 @C111617 @regression @rc @rc42
-  Scenario Outline: Verify there are no video and audio calling icons under the + button bar
+  @C111617 @regression @rc @legacy
+  Scenario Outline: Verify cursor action buttons are shown together with a text field
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -415,7 +317,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C111622 @C111625 @regression @rc
+  @C111622 @regression @rc
   Scenario Outline: Verify tooltip is shown in different condition
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -427,7 +329,6 @@ Feature: Conversation View
     Then I see tooltip of text input
     When I tap on text input
     Then I see tooltip of text input
-    And I see self avatar on text input
     When I type the message "<Message>"
     And I do not see tooltip of text input
 
@@ -435,8 +336,8 @@ Feature: Conversation View
       | Name      | Contact1  | Message |
       | user1Name | user2Name | testing |
 
-  @C111631 @C111634 @rc @regression
-  Scenario Outline: Verify cursor and toolbar are not shown on left/removed from conversation
+  @C111631 @rc @regression
+  Scenario Outline: Verify cursor and toolbar are not shown when I left/was removed from group and show when I was re-join the group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -445,13 +346,13 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
-    And I press options menu button
-    And I press LEAVE conversation menu button
+    And I tap options menu button
+    And I tap LEAVE conversation menu button
     And I confirm leaving
     And I see Conversations list
     And I open Search UI
     And I type group name "<GroupChatName>" in search field
-    And I tap on group found on People picker page <GroupChatName>
+    And I tap on group found on Search page <GroupChatName>
     Then I see the upper toolbar
     And I do not see text input
     And I do not see cursor toolbar
@@ -470,7 +371,7 @@ Feature: Conversation View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given Myself leave group chat <GroupChatName>
     Given Myself is unarchived group chat <GroupChatName>
-    When I sign in using my email or phone number
+    When I sign in using my email
     And I accept First Time overlay as soon as it is visible
     And I see Conversations list with conversations
     And I tap on conversation name <GroupChatName>
@@ -480,3 +381,55 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | LeaveGroupChat |
+
+  @C250837 @C250838 @regression
+  Scenario Outline: Verify cursor send button is visible when input is not empty although you switch conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
+    And I type the message "<Message>"
+    Then I see Send button in cursor input
+    When I navigate back from conversation
+    And I tap on conversation name <Contact2>
+    And I navigate back from conversation
+    And I tap on conversation name <Contact1>
+    Then I see Send button in cursor input
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Message |
+      | user1Name | user2Name | user3Name | YoNo    |
+
+  @C250856 @regression
+  Scenario Outline: Verify I see someone is typing in 1:1 conversation
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
+    And User <Contact> is typing in the conversation Myself
+    Then I see <Contact> is typing
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @C250857 @regression
+  Scenario Outline: Verify I see someone are typing in group conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
+    And User <Contact1> is typing in the conversation <GroupChatName>
+    And User <Contact2> is typing in the conversation <GroupChatName>
+    Then I see <Contact1>,<Contact2> are typing
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | TypingGroup   |

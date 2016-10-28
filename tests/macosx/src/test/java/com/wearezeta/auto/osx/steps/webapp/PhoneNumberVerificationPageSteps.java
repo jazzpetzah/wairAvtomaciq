@@ -8,9 +8,8 @@ import org.apache.log4j.Logger;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.osx.common.WrapperTestContext;
 import com.wearezeta.auto.web.pages.PhoneNumberVerificationPage;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -21,10 +20,15 @@ public class PhoneNumberVerificationPageSteps {
     private static final Logger LOG = ZetaLogger
             .getLog(PhoneNumberVerificationPageSteps.class.getName());
 
-    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-            .getInstance();
+    private final WrapperTestContext context;
 
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+    public PhoneNumberVerificationPageSteps() {
+        this.context = new WrapperTestContext();
+    }
+
+    public PhoneNumberVerificationPageSteps(WrapperTestContext context) {
+        this.context = context;
+    }
 
     /**
      * Fills out correct country code and phone number for a user
@@ -37,10 +41,10 @@ public class PhoneNumberVerificationPageSteps {
     @When("^I enter phone verification code for user (.*)$")
     public void IEnterPhoneVerificationCodeForUser(String name)
             throws Throwable {
-        ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
+        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(name);
         String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
                 .getPhoneNumber());
-        webappPagesCollection.getPage(PhoneNumberVerificationPage.class)
+        context.getWebappPagesCollection().getPage(PhoneNumberVerificationPage.class)
                 .enterCode(code);
     }
 
@@ -55,10 +59,10 @@ public class PhoneNumberVerificationPageSteps {
     @When("^I enter phone verification code for emailless user (.*)$")
     public void IEnterPhoneVerificationCodeForEmaillessUser(String name)
             throws Throwable {
-        ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
+        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(name);
         String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
                 .getPhoneNumber());
-        webappPagesCollection.getPage(PhoneNumberVerificationPage.class)
+        context.getWebappPagesCollection().getPage(PhoneNumberVerificationPage.class)
                 .enterCodeForEmaillessUser(code);
     }
 
@@ -73,7 +77,7 @@ public class PhoneNumberVerificationPageSteps {
     @When("^I enter wrong phone verification code for user (.*)$")
     public void i_enter_wrong_phone_verification_code_for_user_user_Name(
             String name) throws Throwable {
-        ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
+        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(name);
         String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
                 .getPhoneNumber());
         String wrongcode = "";
@@ -82,7 +86,7 @@ public class PhoneNumberVerificationPageSteps {
         } else {
             wrongcode = "0" + code.substring(1);
         }
-        webappPagesCollection.getPage(PhoneNumberVerificationPage.class)
+        context.getWebappPagesCollection().getPage(PhoneNumberVerificationPage.class)
                 .enterCode(wrongcode);
     }
 
@@ -97,7 +101,7 @@ public class PhoneNumberVerificationPageSteps {
     @Then("^I see invalid phone code error message saying (.*)")
     public void TheSignInErrorMessageReads(String message) throws Exception {
         assertThat("invalid phone code error",
-                webappPagesCollection
+                context.getWebappPagesCollection()
                 .getPage(PhoneNumberVerificationPage.class)
                 .getErrorMessage(), equalTo(message));
     }

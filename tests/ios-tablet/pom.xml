@@ -16,14 +16,11 @@
         <TestRun>DevRun</TestRun>
         <Url>http://127.0.0.1:4723/wd/hub</Url>
         <appPath>/Project/ZClient_ios.app</appPath>
-        <platformVersion>9.2</platformVersion>
+        <platformVersion>9.3</platformVersion>
         <appName>Wire</appName>
-        <useNativeInstrumentsLib>true</useNativeInstrumentsLib>
         <isSimulator>true</isSimulator>
         <driverTimeoutSeconds>7</driverTimeoutSeconds>
         <pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
-        <defaultImagesPath>${project.basedir}/../tools/img/</defaultImagesPath>
-        <iOSToolsRoot>${project.basedir}/../tools/ios</iOSToolsRoot>
         <defaultEmail>smoketester@wire.com</defaultEmail>
         <specialEmail>smoketester.android@wire.com</specialEmail>
         <specialPassword>aqa12345678</specialPassword>
@@ -54,13 +51,6 @@
             <classifier>tests</classifier>
             <type>jar</type>
         </dependency>
-
-        <dependency>
-            <groupId>com.googlecode.plist</groupId>
-            <artifactId>dd-plist</artifactId>
-            <version>1.8</version> <!-- corresponds to r108 -->
-        </dependency>
-
     </dependencies>
 
     <build>

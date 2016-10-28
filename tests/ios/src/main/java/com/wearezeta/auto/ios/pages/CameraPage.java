@@ -1,9 +1,8 @@
 package com.wearezeta.auto.ios.pages;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
@@ -12,10 +11,10 @@ import java.util.concurrent.Future;
 public class CameraPage extends IOSPage {
 
     private static final By xpathCameraRollButton =
-            By.xpath("//UIAButton[@name='cameraLibraryButton' or @name='CameraLibraryButton']");
+            By.xpath("//XCUIElementTypeButton[@name='cameraLibraryButton' or @name='CameraLibraryButton']");
 
     private static final By xpathTakePhotoButton =
-            By.xpath("//UIAButton[@name='cameraShutterButton' or @name='cameraButton' or @name='PhotoCapture']");
+            By.xpath("//XCUIElementTypeButton[@name='cameraShutterButton' or @name='cameraButton' or @name='PhotoCapture']");
 
     private static final By nameCloseButton = MobileBy.AccessibilityId("cameraCloseButton");
 
@@ -42,7 +41,7 @@ public class CameraPage extends IOSPage {
         final By locator = getButtonByName(name);
         if (!isTestImageUploaded && locator.equals(xpathCameraRollButton) &&
                 CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            IOSSimulatorHelper.uploadImage();
+            IOSSimulatorHelpers.uploadImage();
             isTestImageUploaded = true;
         }
         getElement(getButtonByName(name)).click();
@@ -50,6 +49,6 @@ public class CameraPage extends IOSPage {
 
     public boolean isButtonVisible(String name) throws Exception {
         final By locator = getButtonByName(name);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isLocatorDisplayed(locator);
     }
 }

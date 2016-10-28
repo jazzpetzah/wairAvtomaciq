@@ -2,20 +2,25 @@ package com.wearezeta.auto.osx.steps.webapp;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.osx.common.WrapperTestContext;
 import com.wearezeta.auto.osx.pages.webapp.GroupPeoplePopoverPage;
 import com.wearezeta.auto.osx.pages.webapp.SingleUserPeoplePopoverPage;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PeopleViewSteps {
 
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-            .getInstance();
+    private final WrapperTestContext context;
+
+    public PeopleViewSteps() {
+        this.context = new WrapperTestContext();
+    }
+
+    public PeopleViewSteps(WrapperTestContext context) {
+        this.context = context;
+    }
 
     /**
      * Verify that Single User Profile popover is visible or not
@@ -29,10 +34,10 @@ public class PeopleViewSteps {
     @When("^I( do not)? see Single User Profile popover$")
     public void ISeeSingleUserPopup(String shouldNotBeVisible) throws Exception {
         if (shouldNotBeVisible == null) {
-            webappPagesCollection.getPage(SingleUserPeoplePopoverPage.class)
+            context.getWebappPagesCollection().getPage(SingleUserPeoplePopoverPage.class)
                     .waitUntilVisibleOrThrowException();
         } else {
-            webappPagesCollection.getPage(SingleUserPeoplePopoverPage.class)
+            context.getWebappPagesCollection().getPage(SingleUserPeoplePopoverPage.class)
                     .waitUntilNotVisibleOrThrowException();
         }
     }
@@ -47,9 +52,9 @@ public class PeopleViewSteps {
      */
     @When("^I see username (.*) on Single User Profile popover$")
     public void IseeUserNameOnUserProfilePage(String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         Assert.assertEquals(name,
-                webappPagesCollection
+                context.getWebappPagesCollection()
                 .getPage(SingleUserPeoplePopoverPage.class)
                 .getUserName());
     }
@@ -68,24 +73,24 @@ public class PeopleViewSteps {
     public void ISeeUserProfilePopupPage(String shouldNotBeVisible)
             throws Exception {
         if (shouldNotBeVisible == null) {
-            webappPagesCollection.getPage(GroupPeoplePopoverPage.class)
+            context.getWebappPagesCollection().getPage(GroupPeoplePopoverPage.class)
                     .waitUntilVisibleOrThrowException();
         } else {
-            webappPagesCollection.getPage(GroupPeoplePopoverPage.class)
+            context.getWebappPagesCollection().getPage(GroupPeoplePopoverPage.class)
                     .waitUntilNotVisibleOrThrowException();
         }
     }
 
     @When("^I input user name (.*) in search field on Group Participants popover$")
     public void ISearchForUser(String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-        webappPagesCollection.getPage(GroupPeoplePopoverPage.class).searchForUser(name);
+        name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        context.getWebappPagesCollection().getPage(GroupPeoplePopoverPage.class).searchForUser(name);
     }
 
     @When("^I select user (.*) from Group Participants popover search results$")
     public void ISelectUserFromSearchResults(String user) throws Exception {
-        user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
-        webappPagesCollection.getPage(GroupPeoplePopoverPage.class).selectUserFromSearchResult(user);
+        user = context.getUserManager().replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+        context.getWebappPagesCollection().getPage(GroupPeoplePopoverPage.class).selectUserFromSearchResult(user);
     }
 
     /**
@@ -97,7 +102,7 @@ public class PeopleViewSteps {
      */
     @When("^I see Add to conversation button on Single User popover$")
     public void ISeeAddToConversationButton() throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(GroupPeoplePopoverPage.class)
+        Assert.assertTrue(context.getWebappPagesCollection().getPage(GroupPeoplePopoverPage.class)
                 .isAddToConversationButtonShown());
     }
 
@@ -112,7 +117,7 @@ public class PeopleViewSteps {
     @Then("^I see conversation title (.*) on Group Participants popover$")
     public void ISeeConversationTitle(String title) throws Exception {
         Assert.assertEquals(title,
-                webappPagesCollection.getPage(GroupPeoplePopoverPage.class)
+                context.getWebappPagesCollection().getPage(GroupPeoplePopoverPage.class)
                 .getConversationTitle());
     }
 }

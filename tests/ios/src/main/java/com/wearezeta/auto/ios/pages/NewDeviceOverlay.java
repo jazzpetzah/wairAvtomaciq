@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
@@ -10,7 +9,7 @@ import java.util.function.Function;
 
 public class NewDeviceOverlay extends IOSPage {
     private static final Function<String, String> xpathStrLabelByText = text ->
-            String.format("//UIAStaticText[contains(@name, '%s')]", text);
+            String.format("//XCUIElementTypeStaticText[contains(@name, '%s')]", text);
 
     private static final By nameSendAnywayButton = MobileBy.AccessibilityId("SEND ANYWAY");
 
@@ -24,7 +23,7 @@ public class NewDeviceOverlay extends IOSPage {
 
     public boolean isContainingLabel(String expectedLabel) throws Exception {
         final By locator = By.xpath(xpathStrLabelByText.apply(expectedLabel));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isLocatorDisplayed(locator);
     }
 
     public void tapShowDeviceButton() throws Exception {

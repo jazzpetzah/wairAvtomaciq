@@ -5,8 +5,9 @@ Feature: Bring Your Friends
     Given There are 1 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I am signed in properly
-    Then I click button to bring friends from Gmail
+    When I am signed in properly
+    Then I open search by clicking the people button
+    And I click button to bring friends from Gmail
     And I see Google login popup
     And I sign up at Google with email <Gmail> and password <GmailPassword>
     Then I see Search is opened
@@ -23,10 +24,11 @@ Feature: Bring Your Friends
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I type shortcut combination for preferences
-    And I see Settings dialog
+    And I open options in preferences
     And I click button to import contacts from Gmail
     And I see Google login popup
     And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456!
+    Then I see Search is opened
     Then I see more than 5 suggestions in people picker
 
     Examples:

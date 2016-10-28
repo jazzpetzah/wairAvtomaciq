@@ -1,5 +1,17 @@
 package com.wearezeta.auto.android.steps;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.logging.AndroidLogListener;
@@ -12,7 +24,12 @@ import com.wearezeta.auto.android.pages.SecurityAlertPage;
 import com.wearezeta.auto.android.pages.registration.BackendSelectPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.android.tools.WireDatabase;
-import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.CommonCallingSteps2;
+import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.FileInfo;
+import com.wearezeta.auto.common.Platform;
+import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.AppiumServer;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
@@ -41,15 +58,8 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.*;
-import java.util.regex.Pattern;
-
 public class CommonAndroidSteps {
+
     static {
         System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
         System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "warn");
@@ -72,7 +82,12 @@ public class CommonAndroidSteps {
     public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
     public static final int DEFAULT_SWIPE_TIME = 1500;
     public static final int FIRST_TIME_OVERLAY_TIMEOUT = 3; // seconds
+    public static final int UI_DELAY_TIME = 2; // seconds
     private static final String DEFAULT_USER_AVATAR = "aqaPictureContact600_800.jpg";
+    private static final String GCM_TOKEN_PATTERN = "token:\\s+(.*)$";
+    //TODO: should I move this list to configuration file?
+    private static final String[] wirePackageList = {"com.wire.candidate", "com.wire.x", "com.waz.zclient.dev", "com.wire" +
+            ".qaavs"};
 
     private static String getUrl() throws Exception {
         return CommonUtils.getAndroidAppiumUrlFromConfig(CommonAndroidSteps.class);
@@ -228,12 +243,15 @@ public class CommonAndroidSteps {
 
         isAutoAnswerCallEnabled = scenario.getSourceTagNames().contains("@calling_autoAnswer");
 
+        //Start Listenter
         int retriesCount = AndroidPage.DRIVER_CREATION_RETRIES_COUNT;
         if (scenario.getSourceTagNames().contains("@performance")) {
             AndroidLogListener.getInstance(ListenerType.PERF).start();
             retriesCount++;
         } else if (scenario.getSourceTagNames().contains("@analytics")) {
             AndroidLogListener.getInstance(ListenerType.ANALYTICS).start();
+        } else if (scenario.getSourceTagNames().contains("@GCMToken")) {
+            AndroidLogListener.getInstance(ListenerType.GCMToken).start();
         }
         if (isLogcatEnabled) {
             AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
@@ -344,25 +362,25 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Presses the android back button
+     * Tap the android back button
      *
      * @throws Exception
-     * @step. ^I press [Bb]ack button$
+     * @step. ^I tap [Bb]ack button$
      */
-    @When("^I press [Bb]ack button$")
-    public void PressBackButton() throws Exception {
+    @When("^I tap [Bb]ack button$")
+    public void TapBackButton() throws Exception {
         pagesCollection.getCommonPage().navigateBack();
     }
 
     /**
-     * Presses the android back button X times
+     * Tap the android back button X times
      *
      * @param times how many times to press
      * @throws Exception
-     * @step. ^I press [Bb]ack button (\\d+) times$
+     * @step. ^I tap [Bb]ack button (\\d+) times$
      */
-    @When("^I press [Bb]ack button (\\d+) times$")
-    public void PressBackButtonXTimes(int times) throws Exception {
+    @When("^I tap [Bb]ack button (\\d+) times$")
+    public void TapBackButtonXTimes(int times) throws Exception {
         for (int i = 0; i < times; i++) {
             pagesCollection.getCommonPage().navigateBack();
         }
@@ -378,8 +396,7 @@ public class CommonAndroidSteps {
      */
     @Given("^(\\w+) (?:wait|waits) until (\\d+) (?:person|people) (?:is|are) in the Top People list on the backend$")
     public void UserWaitsUntilContactExistsInTopPeopleResults(String searchByNameAlias, int size) throws Exception {
-        commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(
-                searchByNameAlias, size);
+        commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(searchByNameAlias, size);
     }
 
     /**
@@ -455,8 +472,10 @@ public class CommonAndroidSteps {
     public void IMinimizeApplication(String action) throws Exception {
         if (action.equals("minimize")) {
             AndroidCommonUtils.tapHomeButton();
+            WaitForTime(UI_DELAY_TIME);
         } else {
             AndroidCommonUtils.switchToApplication(getPackageName());
+            WaitForTime(UI_DELAY_TIME);
         }
     }
 
@@ -471,8 +490,12 @@ public class CommonAndroidSteps {
     public void ILockUnlockTheDevice(String shouldUnlock) throws Exception {
         if (shouldUnlock == null) {
             AndroidCommonUtils.lockScreen();
+            //UI need time to react action
+            WaitForTime(UI_DELAY_TIME);
         } else {
             AndroidCommonUtils.unlockDevice();
+            //UI need time to react action
+            WaitForTime(UI_DELAY_TIME);
             // FIXME: Unlock selendroid app does not restore the previously active application
             AndroidCommonUtils.switchToApplication(getPackageName());
         }
@@ -524,13 +547,11 @@ public class CommonAndroidSteps {
     public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent(String shouldBeEqual) throws Exception {
         final int timeoutSeconds = 10;
         if (shouldBeEqual == null) {
-            Assert.assertTrue(
-                    String.format("The current screen state seems to be similar to the previous one after %s seconds",
-                            timeoutSeconds), screenState.isChanged(timeoutSeconds, 0.98));
+            Assert.assertTrue(String.format("The current screen state seems to be similar to the previous one after %s " +
+                    "seconds", timeoutSeconds), screenState.isChanged(timeoutSeconds, 0.98));
         } else {
-            Assert.assertTrue(
-                    String.format("The current screen state seems to be different to the previous one after %s seconds",
-                            timeoutSeconds), screenState.isNotChanged(timeoutSeconds, 0.75));
+            Assert.assertTrue(String.format("The current screen state seems to be different to the previous one after %s " +
+                    "seconds", timeoutSeconds), screenState.isNotChanged(timeoutSeconds, 0.75));
         }
     }
 
@@ -558,7 +579,7 @@ public class CommonAndroidSteps {
      */
     @Given("^(.*) has an avatar picture from file (.*)$")
     public void UserHasAnAvatarPicture(String name, String picture) throws Exception {
-        String picturePath = CommonUtils.getImagesPath(CommonAndroidSteps.class) + "/" + picture;
+        String picturePath = CommonUtils.getImagesPathFromConfig(getClass()) + picture;
         try {
             name = usrMgr.findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
@@ -620,8 +641,8 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Silences a given user from the perspective of the another user through
-     * the backend
+     * Silences a given user from the perspective of the another user through the backend
+     * Note: should be used after login
      *
      * @param mutedUser the user to silence
      * @param otherUser the user who does the silencing
@@ -647,7 +668,6 @@ public class CommonAndroidSteps {
     public void GroupGetsSilenced(String mutedGroup, String otherUser) throws Throwable {
         mutedGroup = usrMgr.replaceAliasesOccurences(mutedGroup, ClientUsersManager.FindBy.NAME_ALIAS);
         otherUser = usrMgr.findUserByNameOrNameAlias(otherUser).getName();
-
         commonSteps.MuteConversationWithGroup(otherUser, mutedGroup);
     }
 
@@ -677,8 +697,8 @@ public class CommonAndroidSteps {
      * @step. ^(.*) has group chat (.*) with (.*)$
      */
     @Given("^(.*) has group chat (.*) with (.*)$")
-    public void UserHasGroupChatWithContacts(String chatOwnerNameAlias, String chatName,
-                                             String otherParticipantsNameAliases) throws Exception {
+    public void UserHasGroupChatWithContacts(String chatOwnerNameAlias, String chatName, String otherParticipantsNameAliases)
+            throws Exception {
         commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName, otherParticipantsNameAliases);
     }
 
@@ -740,8 +760,8 @@ public class CommonAndroidSteps {
      * @step. ^User (\\w+) (securely )?pings? conversation (.*)$
      */
     @When("^User (\\w+) (securely )?pings? conversation (.*)$")
-    public void UserPingedConversation(String pingFromUserNameAlias,
-                                       String isSecure, String dstConversationName) throws Exception {
+    public void UserPingedConversation(String pingFromUserNameAlias, String isSecure, String dstConversationName)
+            throws Exception {
         if (isSecure == null) {
             commonSteps.UserPingedConversation(pingFromUserNameAlias, dstConversationName);
         } else {
@@ -750,22 +770,16 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * User A sends a hotping to a conversation
+     * User X typing in specified conversation
      *
-     * @param hotPingFromUserNameAlias The user to do the hotpinging
-     * @param dstConversationName      the target converation to send the ping to
-     * @param isSecure                 equals null if ping should not be secure
+     * @param fromUserNameAlias   The user who is typing
+     * @param dstConversationName The conversation where the user is typing
      * @throws Exception
-     * @step. ^User (\\w+) (securely )?hotpings? conversation (.*)$
+     * @step. ^User (\w+) is typing in the conversation (.*)$
      */
-    @When("^User (\\w+) (securely )?hotpings? conversation (.*)$")
-    public void UserHotPingedConversation(String hotPingFromUserNameAlias,
-                                          String isSecure, String dstConversationName) throws Exception {
-        if (isSecure == null) {
-            commonSteps.UserHotPingedConversation(hotPingFromUserNameAlias, dstConversationName);
-        } else {
-            commonSteps.UserHotPingedConversationOtr(hotPingFromUserNameAlias, dstConversationName);
-        }
+    @When("^User (\\w+) is typing in the conversation (.*)$")
+    public void UserTypingInConversation(String fromUserNameAlias, String dstConversationName) throws Exception {
+        commonSteps.UserIsTypingInConversation(fromUserNameAlias, dstConversationName);
     }
 
     /**
@@ -781,11 +795,9 @@ public class CommonAndroidSteps {
      * @step. ^User (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$
      */
     @When("^User (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
-    public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
-                                              String msg, String deviceName, String convoType, String dstConvoName) throws
-            Exception {
-        final String msgToSend = (msg == null || msg.trim().length() == 0) ?
-                CommonUtils.generateRandomString(10) : msg.trim();
+    public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted, String msg, String deviceName,
+                                              String convoType, String dstConvoName) throws Exception {
+        final String msgToSend = (msg == null || msg.trim().length() == 0) ? CommonUtils.generateRandomString(10) : msg.trim();
         if (convoType.equals("user")) {
             if (isEncrypted == null) {
                 commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
@@ -947,7 +959,7 @@ public class CommonAndroidSteps {
     public void ContactSendImageToConversation(String imageSenderUserNameAlias, String isEncrypted,
                                                String imageFileName, String conversationType,
                                                String dstConversationName) throws Exception {
-        final String imagePath = CommonUtils.getImagesPath(CommonAndroidSteps.class) + imageFileName;
+        final String imagePath = CommonUtils.getImagesPathFromConfig(getClass()) + imageFileName;
         final boolean isGroup = conversationType.equals("group");
         if (isEncrypted == null) {
             commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
@@ -986,8 +998,7 @@ public class CommonAndroidSteps {
     @Given("^My device runs Android (.*) or higher$")
     public void MyDeviceRunsAndroid(String targetVersion) throws Exception {
         if (AndroidCommonUtils.compareAndroidVersion(targetVersion) < 0) {
-            throw new PendingException(
-                    "This test isn't suitable to run on " + "anything lower than Android " + targetVersion);
+            throw new PendingException("This test isn't suitable to run on " + "anything lower than Android " + targetVersion);
         }
     }
 
@@ -1136,13 +1147,13 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Press Send button on OnScreen keyboard (the keyboard should be already populated)
+     * Tap Send button on OnScreen keyboard (the keyboard should be already populated)
      *
      * @throws Exception
-     * @step. ^I press Send button$
+     * @step. ^I tap Send button at Android keyboard$
      */
-    @And("^I press Send button$")
-    public void IPressSendButton() throws Exception {
+    @And("^I tap Send button at Android keyboard$")
+    public void ITapSendButton() throws Exception {
         pagesCollection.getCommonPage().pressKeyboardSendButton();
     }
 
@@ -1265,10 +1276,11 @@ public class CommonAndroidSteps {
      * @throws Exception
      * @step. ^(.*) sends (.*) file having name "(.*)" and MIME type "(.*)" via device (.*) to (user|group conversation) (.*)$
      */
-    @When("^(.*) sends (.*) file having name \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) (.*)$")
+    @When("^(.*) sends (.*) file having name \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation)" +
+            " (.*)$")
     public void ContactSendsXFileFromSE(String contact, String size, String fileFullName, String mimeType,
                                         String deviceName, String convoType, String dstConvoName) throws Exception {
-        String basePath = AndroidCommonUtils.getBuildPathFromConfig(AndroidCommonUtils.class);
+        String basePath = AndroidCommonUtils.getBuildPathFromConfig(getClass());
         String sourceFilePath = basePath + File.separator + fileFullName;
 
         CommonUtils.createRandomAccessFile(sourceFilePath, size);
@@ -1277,7 +1289,6 @@ public class CommonAndroidSteps {
         commonSteps.UserSentFileToConversation(contact, dstConvoName, sourceFilePath,
                 mimeType, deviceName, isGroup);
     }
-
 
     /**
      * Send a local file from SE
@@ -1296,7 +1307,11 @@ public class CommonAndroidSteps {
     @When("^(.*) sends local file named \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) (.*)$")
     public void ContactSendsXLocalFileFromSE(String contact, String fileFullName, String mimeType,
                                              String deviceName, String convoType, String dstConvoName) throws Exception {
-        String basePath = AndroidCommonUtils.getImagesPath(AndroidCommonUtils.class);
+        String basePath = CommonUtils.getAudioPathFromConfig(getClass());
+        if (mimeType.toLowerCase().startsWith("image")) {
+            basePath = CommonUtils.getImagesPathFromConfig(getClass());
+        }
+
         String sourceFilePath = basePath + File.separator + fileFullName;
 
         boolean isGroup = convoType.equals("group conversation");
@@ -1350,17 +1365,21 @@ public class CommonAndroidSteps {
      * @param dstNameAlias  the conversation which message is belong to
      * @param deviceName    User X's device
      * @throws Exception
-     * @step. ^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$
+     * @step. ^User (.*) (likes|unlikes) the recent message from (user|group conversation) (.*) via device (.*)$
      */
-    @When("^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$")
-    public void UserReactLastMessage(String userNameAlias, String reactionType, String dstNameAlias, String deviceName)
-            throws Exception {
+    @When("^User (.*) (likes|unlikes|reads) the recent message from (user|group conversation) (.*) via device (.*)$")
+    public void UserReactLastMessage(String userNameAlias, String reactionType, String convoType, String dstNameAlias,
+                                     String deviceName) throws Exception {
         switch (reactionType.toLowerCase()) {
             case "likes":
                 commonSteps.UserLikeLatestMessage(userNameAlias, dstNameAlias, deviceName);
                 break;
             case "unlikes":
                 commonSteps.UserUnlikeLatestMessage(userNameAlias, dstNameAlias, deviceName);
+                break;
+            case "reads":
+                commonSteps.UserReadLastEphemeralMessage(userNameAlias, dstNameAlias, deviceName,
+                        convoType.equals("group conversation"));
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify the reaction type '%s'", reactionType));
@@ -1385,25 +1404,32 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Check the remembered message is changed
+     * Check the remembered message is changed or not changed
      *
-     * @param userNameAlias user name/alias
-     * @param convoType     either 'user' or 'group conversation'
-     * @param dstNameAlias  destination user name/alias or group convo name
-     * @param deviceName    source device name. Will be created if does not exist yet
+     * @param userNameAlias    user name/alias
+     * @param convoType        either 'user' or 'group conversation'
+     * @param dstNameAlias     destination user name/alias or group convo name
+     * @param deviceName       source device name. Will be created if does not exist yet
+     * @param shouldNotChanged equals null means the recent message should changed
      * @throws Exception
-     * @step. ^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is
+     * @step. ^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is( not)?
      * changed( in \\d+ seconds?)?$
      */
-    @Then("^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is " +
-            "changed( in \\d+ seconds?)?$")
+    @Then("^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is( not)? changed( in \\d+ seconds?)?$")
     public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias,
-                                             String deviceName, String waitDuration) throws Exception {
-        final int durationSeconds = (waitDuration == null) ?
-                CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
+                                             String deviceName, String shouldNotChanged, String waitDuration)
+            throws Exception {
+        final int durationSeconds = (waitDuration == null) ? CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
                 : Integer.parseInt(waitDuration.replaceAll("[\\D]", ""));
-        commonSteps.UserXFoundLastMessageChanged(userNameAlias, convoType.equals("group conversation"), dstNameAlias,
-                deviceName, durationSeconds);
+
+        if (shouldNotChanged == null) {
+            commonSteps.UserXFoundLastMessageChanged(userNameAlias, convoType.equals("group conversation"), dstNameAlias,
+                    deviceName, durationSeconds);
+        } else {
+            commonSteps.UserXFoundLastMessageNotChanged(userNameAlias, convoType.equals("group conversation"), dstNameAlias,
+                    deviceName, durationSeconds);
+        }
+
     }
 
     /**
@@ -1485,14 +1511,14 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Press back button until Wire app is in foreground
+     * Tap back button until Wire app is in foreground
      *
      * @param timeoutSeconds timeout in seconds for try process
      * @throws Exception
-     * @step. ^I press [Bb]ack button until Wire app is in foreground in (\d+) seconds$
+     * @step. ^I tap [Bb]ack button until Wire app is in foreground in (\d+) seconds$
      */
-    @When("^I press [Bb]ack button until Wire app is in foreground in (\\d+) seconds$")
-    public void IPressBackButtonUntilWireAppInForeground(int timeoutSeconds) throws Exception {
+    @When("^I tap [Bb]ack button until Wire app is in foreground in (\\d+) seconds$")
+    public void ITapBackButtonUntilWireAppInForeground(int timeoutSeconds) throws Exception {
         final String packageId = AndroidCommonUtils.getAndroidPackageFromConfig(getClass());
         CommonUtils.waitUntilTrue(
                 timeoutSeconds,
@@ -1553,16 +1579,17 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Verifyt the Wire build already enable debug mode.
+     * Verify the Wire build already enabled debug mode.
      * http://stackoverflow.com/questions/2409923/what-do-i-have-to-add-to-the-manifest-to-debug-an-android-application-on-an-actu
+     * Check for support debugging by device because of bug: https://code.google.com/p/android/issues/detail?id=58373
      *
      * @throws Exception
-     * @step. ^Wire has Debug mode enabled$
+     * @step. ^(?:Wire|Device) debug mode is (enabled|supported)$
      */
-    @Given("^Wire has Debug mode enabled$")
-    public void WireEnableDebugMode() throws Exception {
-        if (!AndroidCommonUtils.isWireDebugModeEnabled()) {
-            throw new PendingException("The current Wire build doesn't support debuggable mode");
+    @Given("^(?:Wire|Device) debug mode is (enabled|supported)$")
+    public void WireEnableDebugMode(String checkMode) throws Exception {
+        if (!AndroidCommonUtils.isWireDebugModeEnabled(checkMode.equals("supported"))) {
+            throw new PendingException(String.format("Debug mode is not '%s'. Rerun on other device or check build.", checkMode));
         }
     }
 
@@ -1576,6 +1603,19 @@ public class CommonAndroidSteps {
     public void IAmOnAndroidWithGoogleService() throws Exception {
         if (!AndroidCommonUtils.verifyGoogleLocationServiceInstalled()) {
             throw new PendingException("The current Android doesn't install Google Location Service");
+        }
+    }
+
+    /**
+     * Verify whether Android with GCM Service, if not supported, it will throw a Pending Exception
+     *
+     * @throws Exception
+     * @step. ^I am on Android with GCM Service$
+     */
+    @Given("^I am on Android with GCM Service$")
+    public void IAmOnAndroidWithGCM() throws Exception {
+        if (!AndroidCommonUtils.verifyGoogleGCMServiceInstalled()) {
+            throw new PendingException("The current Android doesn't support GCM service");
         }
     }
 
@@ -1757,7 +1797,6 @@ public class CommonAndroidSteps {
         commonSteps.UserXHasContactsInAddressBook(asUser, contacts);
     }
 
-
     private String recentMsgId = null;
 
     /**
@@ -1795,4 +1834,113 @@ public class CommonAndroidSteps {
                 "from the local database", this.recentMsgId), db.isMessageDeleted(this.recentMsgId));
     }
 
+    /**
+     * Unregister GCM Token, the step should be called after You already login device.
+     *
+     * @throws Exception
+     * @step. I unregister GCM push token in (\d+) seconds$
+     */
+    @When("^I unregister GCM push token in (\\d+) seconds$")
+    public void IUnresgisterGCMToekn(int timeoutSeconds) throws Exception {
+        Optional<String> pushToken = CommonUtils.waitUntil( timeoutSeconds,
+                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
+                () -> {
+                    String GCMTokenOutput = AndroidLogListener.getInstance(ListenerType.GCMToken).getStdOut();
+                    final Pattern p = Pattern.compile(GCM_TOKEN_PATTERN, Pattern.MULTILINE);
+                    final Matcher m = p.matcher(GCMTokenOutput);
+                    if (m.find()) {
+                        return m.group(1);
+                    } else {
+                        throw new IllegalStateException(String.format("Cannot find GCM Token from Logcat: %s", GCMTokenOutput));
+                    }
+                }
+        );
+        // Wait for 10 seconds until SE register TOKEN on BE
+        // Because we still need to wait several seconds after it retrieve the GCM InstanceID from device.
+        Thread.sleep(10000);
+        commonSteps.UnregisterPushToken(pushToken.orElseThrow(() -> new IllegalStateException("Cannot find GCM Token from " +
+                "logcat")));
+    }
+
+    /**
+     * Try to remove all other Wire packages
+     *
+     * @throws Exception
+     * @step. ^I uninstall all other version of Wire apps$
+     */
+    @When("^I uninstall all other version of Wire apps$")
+    public void IUninstallAllOtherWires() throws Exception {
+        String currentPackage = CommonUtils.getAndroidPackageFromConfig(getClass());
+        for (String packageName : wirePackageList) {
+            if (!packageName.equals(currentPackage)) {
+                AndroidCommonUtils.uninstallPackage(packageName);
+            }
+        }
+    }
+
+    /**
+     * Mute/Archive conversation from SE
+     * Please note, there are also archieve/unarchive/mute/unmute functions by BE directly
+     *
+     * @param userToNameAlias  user who want to mute conversation
+     * @param dstUserNameAlias conversation or user to be muted/archived
+     * @throws Exception
+     * @step. ^(.*) (mutes?|unmutes?|archives?|unarchives?)  conversation with (.*)$
+     */
+    @When("^(.*) (mutes?|unmutes?|archives?|unarchives?) conversation with (user|group) (.*) on device (.*)$")
+    public void MuteConversationWithUser(String userToNameAlias, String action, String convType,
+                                         String dstUserNameAlias, String deviceName) throws Exception {
+        boolean isGroup = convType.equals("group");
+        switch (action.toLowerCase()) {
+            case "mutes":
+            case "mute":
+                commonSteps.UserMutesConversation(userToNameAlias, dstUserNameAlias, deviceName, isGroup);
+                break;
+            case "unmutes":
+            case "unmute":
+                commonSteps.UserUnmutesConversation(userToNameAlias, dstUserNameAlias, deviceName, isGroup);
+                break;
+            case "archives":
+            case "archive":
+                commonSteps.UserArchiveConversation(userToNameAlias, dstUserNameAlias, deviceName, isGroup);
+                break;
+            case "unarchives":
+            case "unarchive":
+                commonSteps.UserUnarchiveConversation(userToNameAlias, dstUserNameAlias, deviceName, isGroup);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify action '%s'", action));
+        }
+    }
+
+    /**
+     * Verify the virtual keyboard is visible in the screen
+     *
+     * @throws Exception
+     * @step. ^I see Android keyboard$
+     */
+    @Then("^I see Android keyboard$")
+    public void ISeeKeyboard() throws Exception {
+        Assert.assertTrue("The system keyboard is expected to be visible", AndroidCommonUtils.isKeyboardVisible());
+    }
+
+    /**
+     * Switch the corresponding conversation to ephemeral mode
+     *
+     * @param userAs      user name/alias
+     * @param isGroup     whether is 1:1 or group conversation
+     * @param convoName   conversation name
+     * @param timeout     ephemeral messages timeout
+     * @param timeMetrics either seconds or minutes
+     * @throws Exception
+     * @step. ^User (.*) switches (user|group conversation) (.*) to ephemeral mode with (\d+) (seconds?|minutes?) timeout$"
+     */
+    @When("^User (.*) switches (user|group conversation) (.*) to ephemeral mode (?:via device (.*)\\s)?with " +
+            "(\\d+) (seconds?|minutes?) timeout$")
+    public void UserSwitchesToEphemeralMode(String userAs, String isGroup, String convoName, String deviceName, int timeout,
+                                            String timeMetrics) throws Exception {
+        final long timeoutMs = timeMetrics.startsWith("minute") ? timeout * 60 * 1000 : timeout * 1000;
+        commonSteps.UserSwitchesToEphemeralMode(userAs, convoName, timeoutMs, isGroup.equals("group conversation"),
+                deviceName);
+    }
 }

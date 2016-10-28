@@ -1,6 +1,6 @@
 Feature: Likes
 
-  @C225979 @regression @fastLogin
+  @C225979 @rc @regression @fastLogin
   Scenario Outline: Verify liking/unliking a message by tapping on like icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -19,7 +19,7 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C225980 @regression @fastLogin
+  @C225980 @rc @regression @fastLogin
   Scenario Outline: Verify liking/unliking a message from a message menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -39,17 +39,17 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C226008 @regression @fastLogin
+  @C226008 @rc @regression @fastLogin
   Scenario Outline: Verify impossibility of liking the message after leaving (being removed) from a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to group conversation <Group>
+    Given I see conversations list
+    Given <Contact1> removes Myself from group chat <Group>
     Given I tap on contact name <Group>
-    When <Contact1> removes Myself from group chat <Group>
-    And I tap default message in conversation view
+    When I tap default message in conversation view
     Then I do not see Like icon in the conversation
     When I double tap default message in conversation view
     Then I do not see Like icon in the conversation
@@ -60,7 +60,7 @@ Feature: Likes
       | Name      | Contact1  | Contact2  | Group            |
       | user1Name | user2Name | user3Name | RemovedFromGroup |
 
-  @C225993 @regression @fastLogin
+  @C225993 @rc @regression @fastLogin
   Scenario Outline: Verify liking a message tapping on like icon, when someone liked this message before
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -100,7 +100,7 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C225998 @C226001 @regression @fastLogin
+  @C225998 @rc @regression @fastLogin
   Scenario Outline: Verify editing already liked message and like after edit
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -126,7 +126,7 @@ Feature: Likes
       | Name      | Contact   | Text  |
       | user1Name | user2Name | aloha |
 
-  @C226004 @regression @fastLogin
+  @C226004 @rc @regression @fastLogin
   Scenario Outline: Verify receiving a like in a conversation which was removed
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -140,6 +140,8 @@ Feature: Likes
     And User <Contact1> likes the recent message from group conversation <Group>
     Then I do not see conversation <Group> in conversations list
     When I open search UI
+    And I accept alert if visible
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <Group>
     And I tap on conversation <Group> in search result
     Then I see 0 photos in the conversation view
@@ -163,7 +165,7 @@ Feature: Likes
     When I do not see Like icon in the conversation
     And User <Contact1> likes the recent message from group conversation <Group>
     And I tap toolbox of the recent message
-    Then I see <Contact1> in likers list
+    Then I see user <Contact1> in likers list
 
     Examples:
       | Name      | Contact1  | Contact2  | Group            | FileName | FileMIME  | Contact1Device | Contact1DeviceLabel | MyDevice |
@@ -183,13 +185,13 @@ Feature: Likes
     And I long tap on file transfer placeholder in conversation view
     And I tap on Like badge item
     And I tap toolbox of the recent message
-    Then I see Myself in likers list
+    Then I see user Myself in likers list
 
     Examples:
       | Name      | Contact1  | Contact2  | Group         | FileName | FileExt | FileSize | FileMIME                 | Contact1Device |
       | user1Name | user2Name | user3Name | FileLikeGroup | testing  | tmp     | 240 KB   | application/octet-stream | C1Device       |
 
-  @C225984 @regression @fastLogin
+  @C225984 @rc @regression @fastLogin
   Scenario Outline: Verify liking a video message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -202,13 +204,13 @@ Feature: Likes
     And I long tap on video message in conversation view
     And I tap on Like badge item
     And I tap toolbox of the recent message
-    Then I see Myself in likers list
+    Then I see user Myself in likers list
 
     Examples:
       | Name      | Contact1  | Contact2  | Group          | FileName    | MIMEType  | Contact1Device |
       | user1Name | user2Name | user3Name | VideoLikeGroup | testing.mp4 | video/mp4 | C1Device       |
 
-  @C225985 @regression @fastLogin
+  @C225985 @rc @regression @fastLogin
   Scenario Outline: Verify liking Soundcloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -216,7 +218,7 @@ Feature: Likes
     Given User <Contact> sends encrypted message "<SCLink>" to user Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
-    When I tap at 90% of width and 90% of height of the recent message from <Contact>
+    When I tap at 90% of width and 90% of height of the recent message
     And I remember the state of Like icon in the conversation
     And I tap Like icon in the conversation
     Then I see the state of Like icon is changed in the conversation
@@ -246,9 +248,8 @@ Feature: Likes
     Examples:
       | Name      | Contact1  | Contact2  | Picture     | Group        |
       | user1Name | user2Name | user3Name | testing.jpg | ArchiveGroup |
-      | user1Name | user2Name | user3Name | BlockedContGroup | test.m4a | audio/mp4 | C1Device       | C1DeviceLabel       | MyDev    |
 
-  @C225992 @C225996 @staging @fastLogin
+  @C225992 @C225996 @regression @fastLogin
   Scenario Outline: Verify liking/unliking a message by double tapping
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -267,3 +268,96 @@ Feature: Likes
       | Name      | Contact   |
       | user1Name | user2Name |
 
+  @C226000 @regression @fastLogin
+  Scenario Outline: Verify deleted for myself someone else message doesn't reappear after someone liked it
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given User <Contact> sends 1 encrypted message to user Myself
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I long tap default message in conversation view
+    And I tap on Delete badge item
+    And I select Delete for Me item from Delete menu
+    Then I see 0 default messages in the conversation view
+    When User <Contact> likes the recent message from user Myself
+    Then I see 0 default messages in the conversation view
+    And I do not see Like icon in the conversation
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @C225981 @regression @fastLogin
+  Scenario Outline: Verify liking a link
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given User <Contact> sends encrypted message "<Link>" to user Myself
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I tap at 5% of width and 5% of height of the recent message
+    And I remember the state of Like icon in the conversation
+    And I tap Like icon in the conversation
+    Then I see the state of Like icon is changed in the conversation
+    When I tap Unlike icon in the conversation
+    Then I see the state of Like icon is not changed in the conversation
+
+    Examples:
+      | Name      | Contact   | Link                  |
+      | user1Name | user2Name | https://www.wire.com/ |
+
+  @C225982 @regression @fastLogin
+  Scenario Outline: Verify liking a picture
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I tap at 5% of width and 5% of height of the recent message
+    And I remember the state of Like icon in the conversation
+    And I tap Like icon in the conversation
+    Then I see the state of Like icon is changed in the conversation
+    When I tap Unlike icon in the conversation
+    Then I see the state of Like icon is not changed in the conversation
+
+    Examples:
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
+
+  @C225983 @regression @fastLogin
+  Scenario Outline: Verify liking an audio message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I long tap on audio message placeholder in conversation view
+    And I tap on Like badge item
+    And I tap toolbox of the recent message
+    Then I see user Myself in likers list
+
+    Examples:
+      | Name      | Contact   | FileName | FileMIME  | ContactDevice |
+      | user1Name | user2Name | test.m4a | audio/mp4 | ContactDevice |
+
+  @C225989 @regression @fastLogin
+  Scenario Outline: Verify liking a location
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given User <Contact> shares the default location to user Myself via device <ContactDevice>
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I tap at 5% of width and 5% of height of the recent message
+    And I remember the state of Like icon in the conversation
+    And I tap Like icon in the conversation
+    Then I see the state of Like icon is changed in the conversation
+    When I tap Unlike icon in the conversation
+    Then I see the state of Like icon is not changed in the conversation
+
+    Examples:
+      | Name      | Contact   | ContactDevice |
+      | user1Name | user2Name | ContactDevice |

@@ -3,7 +3,6 @@
 import inspect
 from threading import Thread, Lock
 import paramiko
-from pprint import pformat
 import random
 import re
 import smtplib
@@ -212,81 +211,11 @@ class RealAndroidDevice(BaseNodeVerifier):
 
 
 class IOSSimulator(BaseNodeVerifier):
-    def _get_installed_simulators(self, ssh_client):
-        try:
-            _, stdout, _ = ssh_client.exec_command('/usr/bin/instruments -s', timeout=10)
-            matches = re.findall(r'([\w\s\(\)\.]+)\[(\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12})\]', stdout.read())
-            result = {}
-            if matches:
-                for match in matches:
-                    result[match[0].strip()] = match[1].strip()
-            return result
-        except Exception:
-            traceback.print_exc()
-        return ''
-
     def get_timeout(self):
         return IOS_SIM_VERIFICATION_JOB_TIMEOUT
 
-    def _adjust_simulator_size(self, ssh_client, scale_factor):
-        """
-        :param ssh_client:
-        :param scale_factor: 1 to 5, where 1 is 100% and 5 is 25%
-        :return:
-        """
-        simulator_size_setter_script = \
-            """#!/bin/bash
-            /usr/bin/osascript -e "tell application \\"System Events\\"" \\
-                        -e "tell application \\"Simulator\\" to activate" \\
-                        -e "do shell script \\"/bin/sleep 3\\"" \\
-                        -e "tell application \\"System Events\\" to keystroke \\"{}\\" using {{command down}}" \\
-                        -e "end tell"
-            """.format(scale_factor)
-        _, path = tempfile.mkstemp(suffix=".sh")
-        with open(path, 'w') as f:
-            f.write(simulator_size_setter_script)
-        sftp = ssh_client.open_sftp()
-        try:
-            dst_path = '/tmp/simscale.sh'
-            sftp.put(path, dst_path)
-        finally:
-            sftp.close()
-        ssh_client.exec_command('/bin/chmod u+x ' + dst_path)
-        ssh_client.exec_command('/usr/bin/open -a Terminal ' + dst_path)
-
     def _is_verification_passed(self):
-        result = super(IOSSimulator, self)._is_verification_passed()
-        if not result:
-            return False
-        client = paramiko.SSHClient()
-        try:
-            client.load_system_host_keys()
-            client.set_missing_host_key_policy(paramiko.WarningPolicy())
-            client.connect(self._node_hostname, username=self._verification_kwargs['node_user'],
-                           password=self._verification_kwargs['node_password'])
-            simulator_name = self._verification_kwargs['ios_simulator_name']
-
-            available_simulators = self._get_installed_simulators(client)
-            dst_name = filter(lambda x: x.lower().find(simulator_name.lower()) >= 0, available_simulators.iterkeys())
-            result = True
-            if dst_name:
-                simulator_name = dst_name[0]
-            else:
-                msg = 'There is no "{}" simulator available. The list of available simulators for the node "{}":\n{}\n'. \
-                    format(simulator_name, self._node.name, pformat(available_simulators))
-                sys.stderr.write(msg)
-                self._send_email_notification('Non-existing simulator name "{}" has been provided'.
-                                              format(simulator_name), msg)
-                return False
-            if result is True:
-                sys.stderr.write('Adjusting simulator scale...')
-                scale_factor = 4
-                if simulator_name.lower().find('iphone') >= 0 and simulator_name.lower().find('plus') < 0:
-                    scale_factor = 3
-                self._adjust_simulator_size(client, scale_factor)
-            return result
-        finally:
-            client.close()
+        return super(IOSSimulator, self)._is_verification_passed()
 
 
 POWER_CYCLE_SCRIPT = lambda devnum: """

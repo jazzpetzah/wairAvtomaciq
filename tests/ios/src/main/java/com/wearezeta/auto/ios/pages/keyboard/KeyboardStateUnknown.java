@@ -3,7 +3,7 @@ package com.wearezeta.auto.ios.pages.keyboard;
 class KeyboardStateUnknown extends KeyboardState {
 
     public KeyboardStateUnknown() {
-        super(null, null);
+        super(null);
     }
 
     @Override

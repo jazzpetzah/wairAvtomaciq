@@ -1,40 +1,36 @@
 package com.wearezeta.auto.android.common;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.email.MessagingUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.ScreenOrientation;
 
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-
 import static com.wearezeta.auto.common.driver.ZetaAndroidDriver.ADB_PREFIX;
-
-import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 
 public class AndroidCommonUtils extends CommonUtils {
 
     private static final Logger log = ZetaLogger.getLog(AndroidCommonUtils.class.getSimpleName());
 
-    private static final String stagingBackend =
-            "[\"https://staging-nginz-https.zinfra.io\", \"https://staging-nginz-ssl.zinfra.io/await\", \"723990470614\"]";
-    private static final String edgeBackend =
-            "[\"https://edge-nginz-https.zinfra.io\", \"https://edge-nginz-ssl.zinfra.io/await\", \"258787940529\"]";
-    private static final String productionBackend =
-            "[\"https://prod-nginz-https.wire.com\", \"https://prod-nginz-ssl.wire.com/await\", \"782078216207\"]";
-
-    private static final String BACKEND_JSON = "customBackend.json";
-    private static final String BACKEND_FILE_LOCATION = "/mnt/sdcard/customBackend.json";
     private static final String FILE_TRANSFER_SOURCE_LOCATION = "/mnt/sdcard/Download/";
 
     private static final String IMAGE_FOR_VIDEO_GENERATION = "about_page_logo_iPad.png";
@@ -158,34 +154,6 @@ public class AndroidCommonUtils extends CommonUtils {
         return CommonUtils.getValueFromConfig(c, "androidToolsPath");
     }
 
-    public static void deployBackendFile(String fileName) throws Exception {
-        executeAdb(String.format("push %s %s", fileName, BACKEND_FILE_LOCATION));
-    }
-
-    public static String createBackendJSON(String bt)
-            throws FileNotFoundException, UnsupportedEncodingException {
-        File file = new File(BACKEND_JSON);
-        if (file.exists()) {
-            FileUtils.deleteQuietly(file);
-        }
-        PrintWriter writer = new PrintWriter(file);
-
-        switch (bt) {
-            case "edge":
-                writer.println(edgeBackend);
-                break;
-            case "production":
-                writer.println(productionBackend);
-                break;
-            case "staging":
-                writer.println(stagingBackend);
-                break;
-        }
-
-        writer.close();
-        return file.getAbsolutePath();
-    }
-
     /**
      * http://stackoverflow.com/questions/29931318/launch-app-via-adb-without-knowing-activity-name
      */
@@ -199,19 +167,19 @@ public class AndroidCommonUtils extends CommonUtils {
      * @throws Exception
      */
     public static void lockScreen() throws Exception {
-        executeAdb("shell input keyevent 26");
+        executeAdb("shell input keyevent "+AndroidKeyEvent.KEYCODE_POWER);
     }
 
     public static void tapBackButton() throws Exception {
-        executeAdb("shell input keyevent 4");
+        executeAdb("shell input keyevent "+AndroidKeyEvent.KEYCODE_BACK);
     }
 
     public static void tapHomeButton() throws Exception {
-        executeAdb("shell input keyevent 3");
+        executeAdb("shell input keyevent "+AndroidKeyEvent.KEYCODE_HOME);
     }
 
     public static void tapBackspaceButton() throws Exception {
-        executeAdb("shell input keyevent 67");
+        executeAdb("shell input keyevent "+AndroidKeyEvent.KEYCODE_BACKSPACE);
     }
 
     public static double getScreenDensity() throws Exception {
@@ -468,7 +436,7 @@ public class AndroidCommonUtils extends CommonUtils {
             in = new BufferedReader(new InputStreamReader(
                     process.getInputStream()));
             final Pattern pattern = Pattern.compile("versionName='(.*)'");
-            Matcher matcher = null;
+            Matcher matcher;
             String s;
             while ((s = in.readLine()) != null) {
                 output += s + '\n';
@@ -621,7 +589,7 @@ public class AndroidCommonUtils extends CommonUtils {
         String fileName = FilenameUtils.getBaseName(fileFullName);
 
         if (isVideo) {
-            String imagesDirectoryPath = getImagesPath(CommonUtils.class);
+            String imagesDirectoryPath = getImagesPathFromConfig(CommonUtils.class);
             CommonUtils.generateVideoFile(basePath + File.separator + fileFullName, size, imagesDirectoryPath
                     + IMAGE_FOR_VIDEO_GENERATION);
         } else {
@@ -638,7 +606,7 @@ public class AndroidCommonUtils extends CommonUtils {
      * @throws Exception
      */
     public static void pushLocalFileToSdcardDownload(String fileFullName) throws Exception {
-        String basePath = getImagesPath(AndroidCommonUtils.class);
+        String basePath = getImagesPathFromConfig(AndroidCommonUtils.class);
         String extension = FilenameUtils.getExtension(fileFullName);
         String fileName = FilenameUtils.getBaseName(fileFullName);
 
@@ -671,7 +639,6 @@ public class AndroidCommonUtils extends CommonUtils {
                 "--bind date_added:i:%s " +
                 "--where 'title=\"%s\"'", fileFullName, futureTimestamp, fileName));
     }
-
 
     public static void pullFileFromSdcardDownload(String fileFullName) throws Exception {
         pullFileFromSdcard(FILE_TRANSFER_SOURCE_LOCATION, fileFullName);
@@ -708,7 +675,8 @@ public class AndroidCommonUtils extends CommonUtils {
         final DefaultArtifactVersion deviceVersion =
                 new DefaultArtifactVersion(getPropertyFromAdb("ro.build.version.release"));
 
-        // Related issue for Android 4.2: http://stackoverflow.com/questions/13588668/adb-throws-securityexception-while-starting-service-after-system-update-to-nexus
+        // Related issue for Android 4.2: http://stackoverflow
+        // .com/questions/13588668/adb-throws-securityexception-while-starting-service-after-system-update-to-nexus
 
         if (deviceVersion.compareTo(new DefaultArtifactVersion("4.3")) <= 0) {
             executeAdb("shell am startservice --user 0 -n ca.zgrs.clipper/.ClipboardService");
@@ -733,7 +701,6 @@ public class AndroidCommonUtils extends CommonUtils {
         executeAdb(String.format("shell am broadcast -a clipper.set -e text \"%s\"", content));
     }
 
-
     // ***
 
     /**
@@ -749,7 +716,6 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     // ***
-
 
     // ***
     // http://stackoverflow.com/questions/11420617/android-emulator-screen-rotation/14253321#14253321
@@ -809,16 +775,34 @@ public class AndroidCommonUtils extends CommonUtils {
         }
     }
 
-    public static boolean isWireDebugModeEnabled() throws Exception {
+    public static boolean isWireDebugModeEnabled(boolean checkSupport) throws Exception {
         final String packageName = CommonUtils.getAndroidPackageFromConfig(AndroidCommonUtils.class);
         final String output = AndroidCommonUtils.getAdbOutput(String.format("shell run-as %s ls", packageName));
-        final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("not debuggable") + "\\b");
+        final Pattern pattern = (checkSupport) ? Pattern.compile("\\b" + Pattern.quote("is unknown") + "\\b") :
+                Pattern.compile("\\b" + Pattern.quote("not debuggable") + "\\b");
         return !pattern.matcher(output).find();
     }
 
     public static boolean verifyGoogleLocationServiceInstalled() throws Exception {
         String output = AndroidCommonUtils.getAdbOutput("shell 'pm list packages'");
-        final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("com.google.android.location") + "\\b");
+        final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("com.android.location.fused") + "\\b");
+        return pattern.matcher(output).find();
+    }
+
+    public static boolean verifyGoogleGCMServiceInstalled() throws Exception {
+        String output = AndroidCommonUtils.getAdbOutput("shell 'pm list packages'");
+        final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("com.google.android.gms") + "\\b");
+        return pattern.matcher(output).find();
+    }
+
+    public static void openWebsiteFromADB(String url) throws Exception {
+        AndroidCommonUtils.executeAdb(String.
+                format("shell am start -a android.intent.action.VIEW -d %s", url));
+    }
+
+    public static boolean isKeyboardVisible() throws Exception {
+        String output = AndroidCommonUtils.getAdbOutput("shell dumpsys input_method | grep mInputShown");
+        final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("mInputShown=true") + "\\b");
         return pattern.matcher(output).find();
     }
 }

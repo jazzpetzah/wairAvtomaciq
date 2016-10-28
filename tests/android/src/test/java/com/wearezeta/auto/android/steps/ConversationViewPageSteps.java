@@ -57,6 +57,7 @@ public class ConversationViewPageSteps {
     private final ElementState audiomessageSlideMicrophoneButtonState = new ElementState(
             () -> getConversationViewPage().getAudioMessagePreviewMicrophoneButtonState());
     private ElementState messageLikeButtonState;
+    private ElementState messageContainerState;
 
     private Boolean wasShieldVisible = null;
 
@@ -99,16 +100,19 @@ public class ConversationViewPageSteps {
 
 
     /**
-     * Send message to the chat
+     * Send message to the chat, there are 2 ways to send
+     * 1) Send from Cursor Input Send button (By default)
+     * 2) Send from Keyboard Enter button (Need to disable Send button in Settings->Options)
      *
      * @param msg               message to type. There are several special shortcuts: LONG_MESSAGE - to type long message
+     * @param sendFrom          identify send button
      * @param doNotHideKeyboard if it equals null, should hide keyboard
      * @throws Exception
-     * @step. ^I type the message "(.*)" and send it( without hiding keyboard)?$
+     * @step. ^I type the message "(.*)" and send it by (keyboard|cursor) Send button( without hiding keyboard)?$
      */
-    @When("^I type the message \"(.*)\" and send it( without hiding keyboard)?$")
-    public void ITypeMessageAndSendIt(String msg, String doNotHideKeyboard) throws Exception {
-        getConversationViewPage().typeAndSendMessage(expandMessage(msg), doNotHideKeyboard == null);
+    @When("^I type the message \"(.*)\" and send it by (keyboard|cursor) Send button( without hiding keyboard)?$")
+    public void ITypeMessageAndSendIt(String msg, String sendFrom, String doNotHideKeyboard) throws Exception {
+        getConversationViewPage().typeAndSendMessage(expandMessage(msg), sendFrom, doNotHideKeyboard == null);
     }
 
     /**
@@ -148,7 +152,25 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Press the corresponding button in the input controls
+     * Verify the cursor send/ephemera button is visible/invisible
+     *
+     * @param shouldNotSee equals null means the send button should be visible
+     * @throws Exception
+     * @step. ^I( do not)? see (Send|Ephemeral) button in cursor input$
+     */
+    @Then("^I( do not)? see (Send|Ephemeral) button in cursor input$")
+    public void ISeeSendButtonInCursorInput(String shouldNotSee, String buttonType) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("The send/ephemeral button in cursor is expected to be visible",
+                    getConversationViewPage().waitUntilCursorInputButtonVisible(buttonType));
+        } else {
+            Assert.assertTrue("The send/ephemeral button in cursor is expected to be invisible",
+                    getConversationViewPage().waitUntilCursorInputButtonInvisible(buttonType));
+        }
+    }
+
+    /**
+     * Tap the corresponding button in the input controls
      * Tap file button will send file directly when you installed testing_gallery-debug.apk
      *
      * @param longTap                equals not null means long tap on the cursor button
@@ -158,27 +180,15 @@ public class ConversationViewPageSteps {
      *                               release his finger after tap on an icon. Works for long tap on Audio Message
      *                               icon only
      * @throws Exception
-     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location) button (\d+ seconds )? from cursor
+     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text|Send|Ephemeral) button (\d+ seconds )? from cursor
      * toolbar( without releasing my finger)?$
      */
-    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location) button " +
-            "(\\d+ seconds )?from cursor toolbar( without releasing my finger)?$")
+    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text|Send|Ephemeral)" +
+            " button (\\d+ seconds )?from cursor toolbar( without releasing my finger)?$")
     public void ITapCursorToolButton(String longTap, String btnName, String longTapDurationSeconds,
                                      String shouldReleaseFinger) throws Exception {
         if (longTap == null) {
-            switch (btnName.toLowerCase()) {
-                case "video message":
-                case "audio message":
-                case "ping":
-                case "add picture":
-                case "sketch":
-                case "file":
-                case "share location":
-                    getConversationViewPage().tapCursorToolButton(btnName);
-                    break;
-                default:
-                    throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
-            }
+            getConversationViewPage().tapCursorToolButton(btnName);
         } else {
             int longTapDuration = (longTapDurationSeconds == null) ? DriverUtils.LONG_TAP_DURATION :
                     Integer.parseInt(longTapDurationSeconds.replaceAll("[\\D]", "")) * 1000;
@@ -215,16 +225,16 @@ public class ConversationViewPageSteps {
      *
      * @param durationSeconds
      * @throws Exception
-     * @step. ^I long tap Audio message microphone button (\d+) seconds and remember icon$
+     * @step. ^I long tap Audio message microphone button (\d+) seconds? and remember icon$
      */
-    @When("^I long tap Audio message microphone button (\\d+) seconds and remember icon$")
+    @When("^I long tap Audio message microphone button (\\d+) seconds? and remember icon$")
     public void LongTapAudioMessageCursorAndRememberIcon(int durationSeconds) throws Exception {
         getConversationViewPage().longTapAudioMessageCursorBtnAndRememberIcon(durationSeconds * 1000,
                 audiomessageSlideMicrophoneButtonState);
     }
 
     /**
-     * Press the corresponding button in the top toolbar
+     * Tap the corresponding button in the top toolbar
      *
      * @param btnName button name
      * @throws Exception
@@ -236,7 +246,7 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Press close button for input options
+     * Tap close button for input options
      *
      * @throws Exception
      * @step. ^I close input options$
@@ -275,7 +285,7 @@ public class ConversationViewPageSteps {
      * @step. ^I tap (?:Play|Pause) button on SoundCloud container$
      */
     @When("^I tap (?:Play|Pause) button on SoundCloud container$")
-    public void IPressPlayPauseButton() throws Exception {
+    public void ITapPlayPauseButton() throws Exception {
         getConversationViewPage().tapPlayPauseBtn();
     }
 
@@ -295,10 +305,10 @@ public class ConversationViewPageSteps {
      * Tap on Play/Pause button on Media Bar
      *
      * @throws Exception
-     * @step. ^I press PlayPause on Mediabar button$
+     * @step. ^I tap PlayPause on Mediabar button$
      */
-    @When("^I press PlayPause on Mediabar button$")
-    public void IPressPlayPauseOnMediaBarButton() throws Exception {
+    @When("^I tap PlayPause on Mediabar button$")
+    public void ITapPlayPauseOnMediaBarButton() throws Exception {
         getConversationViewPage().tapPlayPauseMediaBarBtn();
     }
 
@@ -308,18 +318,31 @@ public class ConversationViewPageSteps {
      * @param doNotSee
      * @param message  message text
      * @throws Exception
-     * @step. ^I (do not )?see Ping message "(.*)" in the conversation view
+     * @step. ^I (do not )?see Ping message "(.*)" in the conversation view$
      */
-    @Then("^I (do not )?see Ping message \"(.*)\" in the conversation view")
+    @Then("^I (do not )?see Ping message \"(.*)\" in the conversation view$")
     public void ISeePingMessageInTheDialog(String doNotSee, String message) throws Exception {
         message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
         if (doNotSee == null) {
             Assert.assertTrue(String.format("Ping message '%s' is not visible after the timeout", message),
-                    getConversationViewPage().waitForPingMessageWithText(message));
+                    getConversationViewPage().waitUntilPingMessageWithTextVisible(message));
         } else {
             Assert.assertTrue(String.format("Ping message '%s' is visible after the timeout", message),
-                    getConversationViewPage().waitForPingMessageWithTextDisappears(message));
+                    getConversationViewPage().waitUntilPingMessageWithTextInvisible(message));
         }
+    }
+
+    /**
+     * Used to check that num of pings in the conversation
+     *
+     * @param expectedCount num of pings
+     * @throws Exception
+     * @step. ^I see (\d+) Ping messages? in the conversation view
+     */
+    @Then("^I see (\\d+) Ping messages? in the conversation view$")
+    public void ISeeCountPingMessageInTheDialog(int expectedCount) throws Exception {
+        Assert.assertTrue(String.format("The actual count of pings is not equal to expected: %d", expectedCount),
+                getConversationViewPage().isCountOfPingsEqualTo(expectedCount));
     }
 
     /**
@@ -335,12 +358,24 @@ public class ConversationViewPageSteps {
         msg = expandMessage(msg);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", msg),
-                    getConversationViewPage().waitForMessage(msg));
+                    getConversationViewPage().waitUntilMessageWithTextVisible(msg));
         } else {
             Assert.assertTrue(
                     String.format("The message '%s' is still visible in the conversation view, but should be hidden", msg),
-                    getConversationViewPage().isMessageInvisible(msg));
+                    getConversationViewPage().waitUntilMessageWithTextInvisible(msg));
         }
+    }
+
+    /**
+     * Verify there is no text message in the conversation view
+     *
+     * @throws Exception
+     * @step. ^I do not see any text message in the conversation view$
+     */
+    @Then("^I do not see any text message in the conversation view$")
+    public void IDoNotSeeAnyTextMessage() throws Exception {
+        Assert.assertTrue("Expect that no text message is visible in conversation view",
+                getConversationViewPage().waitUntilAnyMessageInvisible());
     }
 
     /**
@@ -376,7 +411,7 @@ public class ConversationViewPageSteps {
         if (shouldNotSee == null) {
             Assert.assertTrue("No new photo is present in the chat", getConversationViewPage().isImageVisible());
         } else {
-            Assert.assertTrue("A photo is present in the chat, but it should not be vivible",
+            Assert.assertTrue("A photo is present in the chat, but it should not be invisible",
                     getConversationViewPage().isImageInvisible());
         }
     }
@@ -444,7 +479,7 @@ public class ConversationViewPageSteps {
      * @step. ^I tap new message notification "(.*)"$
      */
     @When("^I tap new message notification \"(.*)\"$")
-    public void IChangeConversationByClickMessageNotification(String message) throws Exception {
+    public void IChangeConversationByTapMessageNotification(String message) throws Exception {
         getConversationViewPage().tapMessageNotification(message);
     }
 
@@ -623,7 +658,6 @@ public class ConversationViewPageSteps {
     /**
      * Remember the state of like button
      *
-     * @param messageType Specified message type
      * @throws Exception
      * @step. ^I remember the state of like button$
      */
@@ -1084,18 +1118,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Check the self avatar on text input
-     *
-     * @throws Exception
-     * @step. ^I see self avatar on text input$
-     */
-    @Then("^I see self avatar on text input$")
-    public void ISeeSelfAvatarOnTextInput() throws Exception {
-        Assert.assertTrue("The self avatar should be visible on text input",
-                getConversationViewPage().isSelfAvatarOnTextInputVisible());
-    }
-
-    /**
      * Check the corresponding message bottom menu button.
      *
      * @param name one of possible message bottom menu button name
@@ -1128,25 +1150,34 @@ public class ConversationViewPageSteps {
      *
      * @param message     the message to tap
      * @param messageType the type of message which could be Ping or Text
-     * @param isLongTap   equals to null if the tap should be simple tap
+     * @param tapType     the tap type (long tap, double tap, tap)
      * @throws Exception
-     * @step. ^I (long )?tap the (Ping|Text) message "(.*)" in the conversation view
+     * @step. ^I (long tap|double tap|tap) the (Ping|Text) message "(.*)" in the conversation view$
      */
-    @When("^I (long tap|double tap|tap) the (Ping|Text) message \"(.*)\" in the conversation view$")
-    public void ITapTheNonTextMessage(String tapType, String messageType, String message) throws Exception {
-        message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
-        getConversationViewPage().tapMessage(messageType, message, tapType);
+    @When("^I (long tap|double tap|tap) the( obfuscated)? (Ping|Text) message \"(.*)\" in the conversation view$")
+    public void ITapTheNonTextMessage(String tapType, String isObfuscated, String messageType, String message)
+            throws Exception {
+        if (isObfuscated == null) {
+            getConversationViewPage().tapMessage(messageType,
+                    Optional.of(usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS)),
+                    tapType);
+        } else {
+            getConversationViewPage().tapMessage(messageType,
+                    Optional.empty(),
+                    tapType);
+        }
     }
 
     /**
      * Verify whether container is visible in the conversation
      *
      * @param shouldNotSee  equals to null if the container should be visible
-     * @param containerType euiter Youtube or Soundcloud or File Upload or Video Message
+     * @param containerType which could be Image/Youtube/Soundcloud/File upload/Video message/Audio Message/Share location
+     *                      /Link Preview
      * @throws Exception
-     * @step. ^I (do not )?see (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
+     * @step. ^I (do not )?see (Image|Youtube|Soundcloud|File Upload|File Upload Placeholder|Video Message|Audio Message|Audio Message Placeholder|Share Location|Link Preview) container in the conversation view$
      */
-    @Then("^I (do not )?see (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
+    @Then("^I (do not )?see (Image|Youtube|Soundcloud|File Upload|File Upload Placeholder|Video Message|Audio Message|Audio Message Placeholder|Share Location|Link Preview) " +
             "container in the conversation view$")
     public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
         final boolean condition = (shouldNotSee == null) ?
@@ -1154,6 +1185,51 @@ public class ConversationViewPageSteps {
                 getConversationViewPage().isContainerInvisible(containerType);
         Assert.assertTrue(String.format("%s should be %s in the conversation view", containerType,
                 (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
+
+    /**
+     * Remember the state of Message Container
+     *
+     * @param containerType which could be Image/Youtube/Soundcloud/File upload/Video message/Audio Message/Share location
+     *                      /Link Preview
+     * @throws Exception
+     * @step. ^I remember the state of (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|
+     * Share Location|Link Preview) container in the conversation view$
+     */
+    @When("^I remember the state of (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
+            "container in the conversation view$")
+    public void IRememberContainer(String containerType) throws Exception {
+        messageContainerState = new ElementState(
+                () -> getConversationViewPage().getMessageContainerState(containerType)
+        );
+        messageContainerState.remember();
+    }
+
+
+    private static final int MESSAGE_CONTAINER_CHANGE_TIMEOUT = 15;
+    private static final double MESSAGE_CONTAINER_MIN_SIMILARITY_SCORE = 0.6;
+    private static final double MESSAGE_CONTAINER_NOT_CHANGED_MIN_SCORE = -0.5;
+
+    /**
+     * Verify the Message container is changed or not
+     *
+     * @param containerType
+     * @param notChanged
+     * @throws Exception
+     * @step. ^I verify the state of (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container is (not )?changed$
+     */
+    @Then("^I verify the state of (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
+            "container is (not )?changed$")
+    public void IVerifyStateOfMessageContainerChanged(String containerType, String notChanged) throws Exception {
+        if (notChanged == null) {
+            Assert.assertTrue(String.format("The state of %s container is expected to be changed", containerType),
+                    messageContainerState.isChanged(MESSAGE_CONTAINER_CHANGE_TIMEOUT,
+                            MESSAGE_CONTAINER_MIN_SIMILARITY_SCORE));
+        } else {
+            Assert.assertTrue(String.format("The state of %s container is expected to be changed", containerType),
+                    messageContainerState.isNotChanged(MESSAGE_CONTAINER_CHANGE_TIMEOUT,
+                            MESSAGE_CONTAINER_NOT_CHANGED_MIN_SCORE));
+        }
     }
 
     /**
@@ -1263,27 +1339,40 @@ public class ConversationViewPageSteps {
         getConversationViewPage().tapAllResendButton();
     }
 
-    private static final double MIN_UPLOAD_TO_PLAY_SCORE = 0.75;
 
     /**
      * Wait until audio message upload completed
      *
      * @param timeoutSeconds seconds to wait for upload completed
      * @throws Exception
-     * @step. ^I wait for (\d+) seconds? until audio message (?:download|upload) completed$
+     * @step. ^I wait up to (\d+) seconds? until (video message|audio message) (?:download|upload) is completed$
      */
-    @Then("^I wait for (\\d+) seconds? until audio message (?:download|upload) completed$")
-    public void IWaitUntilMessageUploaded(int timeoutSeconds) throws Exception {
-        final BufferedImage cancelBntInitialState = ImageUtil.readImageFromFile(
-                AndroidCommonUtils.getImagesPath(AndroidCommonUtils.class) + "android_audio_msg_cancel_btn.png");
-        audioMessagePlayButtonState.remember(cancelBntInitialState);
-        Assert.assertTrue(String.format(
-                "After %s seconds audio message is still being uploaded", timeoutSeconds),
-                audioMessagePlayButtonState.isChanged(timeoutSeconds, MIN_UPLOAD_TO_PLAY_SCORE, ImageUtil.RESIZE_TO_MAX_SCORE));
+    @Then("^I wait up to (\\d+) seconds? until (video message|audio message) (?:download|upload) is completed$")
+    public void IWaitUntilMessageUploaded(int timeoutSeconds, String buttonType) throws Exception {
+        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
+        switch (buttonType.toLowerCase()) {
+            case "video message":
+                verificationFunc = () -> videoMessagePlayButtonState.isChanged(timeoutSeconds,
+                        MIN_PLAY_BUTTON_SCORE);
+                videoMessagePlayButtonState.remember();
+                break;
+            case "audio message":
+                verificationFunc = () -> audioMessagePlayButtonState.isChanged(timeoutSeconds,
+                        MIN_UPLOAD_TO_PLAY_SCORE);
+                final BufferedImage cancelBntInitialState = ImageUtil.readImageFromFile(
+                        AndroidCommonUtils.getImagesPathFromConfig(AndroidCommonUtils.class) + "android_audio_msg_cancel_btn.png");
+                audioMessagePlayButtonState.remember(cancelBntInitialState);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify the button type '%s'", buttonType));
+        }
+        Assert.assertTrue(String.format("The current and previous state of the %s button seems to be the same", buttonType),
+                verificationFunc.call());
     }
 
+    private static final double MIN_UPLOAD_TO_PLAY_SCORE = 0.75;
     private static final double MIN_PLAY_BUTTON_SCORE = 0.82;
-    private static final int PLAY_BUTTON_STATE_CHANGE_TIMEOUT = 10; //seconds
+    private static final int PLAY_BUTTON_STATE_CHANGE_TIMEOUT = 20; //seconds
 
     /**
      * Verify whether current button state differs from the previous one
@@ -1489,7 +1578,6 @@ public class ConversationViewPageSteps {
      * @param itemType       Message Meta Item type
      * @param hasExpectedMsg equals null means you don't specify the expceted content for item
      * @param expectedMsg    specified expected content for item
-     * @param messageType    the message type
      * @throws Exception
      * @step. ^I (do not )?see (Like button|Like description|Message status|First like avatar|Second like avatar)
      * (with expected text "(.*)" )?in conversation view$
@@ -1525,8 +1613,7 @@ public class ConversationViewPageSteps {
     /**
      * Tap on Any msg meta item
      *
-     * @param itemType    Message Meta Item type
-     * @param messageType The message type
+     * @param itemType Message Meta Item type
      * @throws Exception
      * @step. ^^I tap (Like button|Like description|Message status|First like avatar|Second like avatar)
      * in conversation view$
@@ -1541,15 +1628,28 @@ public class ConversationViewPageSteps {
      * Verify the count of Message status within current conversation
      *
      * @param expectedCount expect apperance count
-     * @param expectedText  the expected text within Message Status
      * @throws Exception
      * @step. ^I see (\d+) Message statu(?:s|ses) with expected text "(.*)" in conversation view$
      */
     @Then("^I see (\\d+) Message statu(?:s|ses) in conversation view$")
     public void ISeeMessageStatus(int expectedCount) throws Exception {
-        int actualCount = getConversationViewPage().getMessageStatusCount();
+        final int actualCount = getConversationViewPage().getMessageStatusCount();
         Assert.assertTrue(
                 String.format("The expect count is not equal to actual count, actual: %d, expect: %d",
                         actualCount, expectedCount), actualCount == expectedCount);
+    }
+
+    /**
+     * Verify Someone is/are typing
+     *
+     * @param userNames name or name alias comma separated list
+     * @throws Exception
+     * @step. ^I see (.*) (?:is|are) typing$
+     */
+    @Then("^I see (.*) (?:is|are) typing$")
+    public void ISeeTyping(String userNames) throws Exception {
+        String names = usrMgr.replaceAliasesOccurences(userNames, FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("%s are expected to be visible in typing list", userNames),
+                getConversationViewPage().waitUntilTypingVisible(names));
     }
 }

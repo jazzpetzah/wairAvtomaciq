@@ -9,25 +9,13 @@ import java.util.zip.ZipInputStream;
 
 import org.apache.log4j.Logger;
 
-import com.dd.plist.NSDictionary;
-import com.dd.plist.PropertyListParser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
-import com.wearezeta.auto.ios.pages.IOSPage;
 
 public class IOSCommonUtils {
     private static Logger log = ZetaLogger.getLog(IOSCommonUtils.class.getSimpleName());
-
-    private static NSDictionary parsePlist(File plist) throws Exception {
-        if (!plist.exists()) {
-            throw new IllegalArgumentException(String.format(
-                    "Please make sure the file %s exists and is accessible", plist.getCanonicalPath())
-            );
-        }
-        return (NSDictionary) PropertyListParser.parse(plist);
-    }
 
     public static BuildVersionInfo readClientVersionFromPlist() {
         String clientBuild = "no info";
@@ -54,8 +42,9 @@ public class IOSCommonUtils {
 
     public static ClientDeviceInfo readDeviceInfo() throws Exception {
         String os = "iOS";
-        String osBuild = (String) IOSPage.executeScript("UIATarget.localTarget().systemVersion();");
-        String deviceName = (String) IOSPage.executeScript("UIATarget.localTarget().model();");
+        // FIXME: get the necessary information
+        String osBuild = "";
+        String deviceName = "";
         String gsmNetworkType = "";
         Boolean isWifiEnabled = true;
 
@@ -64,61 +53,5 @@ public class IOSCommonUtils {
 
     public static String getPerfReportPathFromConfig(Class<?> c) throws Exception {
         return CommonUtils.getValueFromConfig(c, "perfReportPath");
-    }
-
-    private static final int BUFFER_SIZE = 4096;
-
-    private static void extractFile(ZipInputStream zipIn, File resultFile) throws IOException {
-        byte[] bytesIn = new byte[BUFFER_SIZE];
-        try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(resultFile))) {
-            int read;
-            while ((read = zipIn.read(bytesIn)) != -1) {
-                bos.write(bytesIn, 0, read);
-            }
-        }
-    }
-
-    public static File extractAppFromIpa(File ipaFile) throws Exception {
-        if (!ipaFile.exists()) {
-            throw new IllegalArgumentException(String.format(
-                    "Please make sure the file %s exists and is accessible", ipaFile.getCanonicalPath())
-            );
-        }
-        final Path root = Files.createTempDirectory(null);
-        Optional<File> result = Optional.empty();
-        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(ipaFile))) {
-            ZipEntry zipEntry;
-            while ((zipEntry = zis.getNextEntry()) != null) {
-                try {
-                    final String entryName = zipEntry.getName();
-                    final File currentPath = new File(root.toString() + File.separator + entryName);
-                    if (!result.isPresent() && entryName.endsWith(".app/")) {
-                        result = Optional.of(currentPath);
-                    }
-                    if (entryName.contains(".app")) {
-                        if (zipEntry.isDirectory()) {
-                            if (!currentPath.mkdirs()) {
-                                throw new IllegalStateException(String.format(
-                                        "Cannot create %s output folder", currentPath.getCanonicalPath())
-                                );
-                            }
-                        } else {
-                            extractFile(zis, currentPath);
-                        }
-                    }
-                } finally {
-                    zis.closeEntry();
-                }
-            }
-        }
-        return result.orElseThrow(
-                () -> new IllegalArgumentException(String.format("Cannot find a compressed .app inside %s",
-                        ipaFile.getAbsolutePath()))
-        );
-    }
-
-    public static String getBundleId(File plist) throws Exception {
-        final NSDictionary rootDict = parsePlist(plist);
-        return rootDict.objectForKey("CFBundleIdentifier").toString();
     }
 }

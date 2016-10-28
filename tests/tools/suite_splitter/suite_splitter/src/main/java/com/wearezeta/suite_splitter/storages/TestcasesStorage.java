@@ -18,10 +18,10 @@ public abstract class TestcasesStorage {
 		return this.path;
 	}
 
-	public abstract List<? extends Testcase> getTestcases() throws Throwable;
+	public abstract List<? extends Testcase> getTestcases() throws Exception;
 
 	public List<? extends Testcase> getTestcases(Set<String> includeTags,
-			Set<String> excludeTags) throws Throwable {
+			Set<String> excludeTags) throws Exception {
 		List<Testcase> resultList = new ArrayList<Testcase>();
 
 		for (Testcase tc : this.getTestcases()) {

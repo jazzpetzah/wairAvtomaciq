@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -68,7 +69,7 @@ public final class PlatformDrivers {
     }
 
     public static boolean isMobileDriver(RemoteWebDriver driver) {
-        return (driver instanceof ZetaIOSDriver) || (driver instanceof ZetaAndroidDriver);
+        return (driver instanceof ZetaIOSDriver) || (driver instanceof ZetaAndroidDriver) || (driver instanceof ZetaOSXDriver);
     }
 
     public static void setDefaultImplicitWaitTimeout(RemoteWebDriver driver) throws Exception {
@@ -99,6 +100,14 @@ public final class PlatformDrivers {
             if (!futureDriver.isCancelled()) {
                 try {
                     final RemoteWebDriver driver = futureDriver.get(DRIVER_CANCELLATION_TIMEOUT, TimeUnit.SECONDS);
+                    if (platform == Platform.iOS) {
+                        // Do not keep non-closed alerts on iOS
+                        try {
+                            driver.switchTo().alert().accept();
+                        } catch (Exception e) {
+                            // just ignore it
+                        }
+                    }
                     driver.quit();
                     log.debug(String.format("Successfully quit driver instance for platform '%s'", platform.name()));
                 } catch (Exception e) {

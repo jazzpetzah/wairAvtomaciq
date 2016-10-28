@@ -5,18 +5,15 @@ import java.util.function.Function;
 
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class GroupConversationViewPage extends ConversationViewPage {
     private static final By nameYouLeftMessage = MobileBy.AccessibilityId("YOU LEFT");
 
     private static final Function<String, String> xpathStrYouAddedToGroupChatMessageByName =
-            name -> String.format("//UIAStaticText[starts-with(@name,'YOU ADDED %s')]", name.toUpperCase());
+            name -> String.format("//XCUIElementTypeStaticText[starts-with(@name,'YOU ADDED %s')]",
+                    name.toUpperCase());
 
     public GroupConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -24,25 +21,15 @@ public class GroupConversationViewPage extends ConversationViewPage {
 
     public boolean isYouAddedUserMessageShown(String user) throws Exception {
         final By locator = By.xpath(xpathStrYouAddedToGroupChatMessageByName.apply(user));
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+        return isLocatorDisplayed(locator);
     }
 
     public boolean isYouRenamedConversationMessageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),nameYouRenamedConversation);
-    }
-
-    @Override
-    public void swipeUp(int time) throws Exception {
-        final WebElement element = getElement(nameMainWindow);
-        final Point coords = element.getLocation();
-        final Dimension elementSize = element.getSize();
-        this.getDriver().swipe(coords.x + elementSize.width / 2,
-                coords.y + elementSize.height - 170,
-                coords.x + elementSize.width / 2, coords.y + 40, time);
+        return isLocatorDisplayed(nameYouRenamedConversation);
     }
 
     public boolean isYouLeftMessageShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameYouLeftMessage);
+        return isLocatorDisplayed(nameYouLeftMessage);
     }
 
 }

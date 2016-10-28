@@ -75,17 +75,17 @@ Feature: Permissions
     And I select "Picture" settings menu item
     And I dismiss security alert
     Then I do not see Take Photo button on Take Picture view
-    And I press Back button
-    And I press Back button
-    And I press Back button
-    And I press Back button
+    And I tap Back button
+    And I tap Back button
+    And I tap Back button
+    And I tap Back button
     # --- Verify no user if visible in invites list if contacts access is denied
     And I open Search UI
     Then I do not see user <Contact3> in Contact list
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | CallBackend | CallBackend2 |
-      | user1Name | user2Name | user3Name | user4Name | autocall    | chrome       |
+      | user1Name | user2Name | user3Name | user4Name | zcall       | chrome       |
 
   @C136785 @noAcceptAlert @permissionsTest
   Scenario Outline: Verify you can successfully register a new user and log in automatically denying all permission requests
@@ -100,8 +100,8 @@ Feature: Permissions
     # deny access to camera
     And I dismiss security alert
     # Workaround for AN-4119
-    And I press Back button
-    And I press Back button
+    And I tap Back button
+    And I tap Back button
     And I select to keep the current picture
     Then I see Conversations list with no conversations
 

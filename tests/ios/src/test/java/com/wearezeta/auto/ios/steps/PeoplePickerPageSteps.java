@@ -23,11 +23,6 @@ public class PeoplePickerPageSteps {
         Assert.assertTrue(getPeoplePickerPage().isPeoplePickerPageVisible());
     }
 
-    @When("I click Continue button on Upload dialog")
-    public void IClickContinueButtonOnUploadDialog() throws Exception {
-        getPeoplePickerPage().clickContinueButton();
-    }
-
     /**
      * Verifies that CONNECT label is visible
      *
@@ -42,16 +37,6 @@ public class PeoplePickerPageSteps {
         } else {
             Assert.assertTrue("CONNECT label is visible", getPeoplePickerPage().isPeopleYouMayKnowLabelInvisible());
         }
-    }
-
-    /**
-     * Click maybe later to dismiss contacts import
-     *
-     * @throws Exception
-     */
-    @When("^I press maybe later button$")
-    public void IPressMaybeLater() throws Exception {
-        getPeoplePickerPage().clickMaybeLaterButton();
     }
 
     @When("^I tap on Search input on People picker page$")
@@ -146,23 +131,13 @@ public class PeoplePickerPageSteps {
         Assert.assertTrue("Add to conversation button is visible", getPeoplePickerPage().addToConversationNotVisible());
     }
 
-    @When("^I click on Go button$")
-    public void WhenIClickOnGoButton() throws Exception {
-        getPeoplePickerPage().clickOnGoButton();
-    }
-
-    @When("^I click clear button$")
-    public void WhenIClickClearButton() throws Exception {
-        getPeoplePickerPage().dismissPeoplePicker();
-    }
-
     /**
      * Click on close button to dismiss Invite list
      *
      * @throws Exception
-     * @step. ^I click close Invite list button$
+     * @step. ^I tap Close Invite list button$
      */
-    @When("^I click close Invite list button$")
+    @When("^I tap Close Invite list button$")
     public void WhenIClickCloseInviteListButton() throws Exception {
         getPeoplePickerPage().closeInviteList();
     }
@@ -208,21 +183,9 @@ public class PeoplePickerPageSteps {
         Assert.assertTrue("Top People label is not shown", getPeoplePickerPage().isTopPeopleLabelVisible());
     }
 
-    @When("I see user (.*) on People picker page is selected")
-    public void ISeeUserIsSelectedOnPeoplePickerPage(String name) throws Exception {
-        name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        Assert.assertTrue(getPeoplePickerPage().isUserSelected(name));
-    }
-
-    @When("I see user (.*) on People picker page is NOT selected")
-    public void ISeeUserIsNotSelectedOnPeoplePickerPage(String name) throws Exception {
-        name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        Assert.assertFalse(getPeoplePickerPage().isUserSelected(name));
-    }
-
     @When("^I press Backspace button in search field$")
     public void IPressBackspaceBtn() throws Exception {
-        getPeoplePickerPage().pressBackspaceButton();
+        getPeoplePickerPage().pressBackspaceKeyboardButton();
     }
 
     /**
@@ -238,17 +201,8 @@ public class PeoplePickerPageSteps {
         getPeoplePickerPage().selectElementInSearchResults(name);
     }
 
-    @When("^I click on Add to conversation button$")
-    public void WhenIClickOnAddToConversationButton() throws Exception {
-        if (getPeoplePickerPage().isKeyboardVisible()) {
-            getPeoplePickerPage().clickOnGoButton();
-        } else {
-            getPeoplePickerPage().clickAddToConversationButton();
-        }
-    }
-
-    @When("^I click close button to dismiss people view$")
-    public void IClickCloseButtonDismissPeopleView() throws Exception {
+    @When("^I tap X button in People Picker input field$")
+    public void ITapXButton() throws Exception {
         getPeoplePickerPage().tapOnPeoplePickerClearBtn();
     }
 
@@ -256,36 +210,11 @@ public class PeoplePickerPageSteps {
      * Unblocks a blocked user by clicking the unblock button
      *
      * @throws Exception
-     * @step. I unblock user
+     * @step. ^I tap Unblock button
      */
-    @When("^I unblock user$")
+    @When("^I tap Unblock button$")
     public void IUnblockUser() throws Exception {
         getPeoplePickerPage().unblockUser();
-    }
-
-    /**
-     * Unblocks a blocked user by clicking the unblock button for iPad
-     *
-     * @throws Exception
-     * @step. I unblock user on iPad
-     */
-    @When("^I unblock user on iPad$")
-    public void IUnblockUserOniPad() throws Exception {
-        getPeoplePickerPage().unblockUserOniPad();
-    }
-
-    /**
-     * This step checks if the number of the selected contacts is correct.
-     *
-     * @param number expected number of contacts
-     * @throws Exception
-     * @step. ^I see that (\\d+) contacts are selected$
-     */
-    @Then("^I see that (\\d+) contacts are selected$")
-    public void ISeeThatContactsAreSelected(int number) throws Exception {
-        int numberOfSelectedTopPeople = getPeoplePickerPage().getNumberOfSelectedTopPeople();
-        Assert.assertEquals("Expected selected contacts: " + number + " but actual selected contacts: "
-                + numberOfSelectedTopPeople, number, numberOfSelectedTopPeople);
     }
 
     /**
@@ -354,8 +283,9 @@ public class PeoplePickerPageSteps {
 
     /**
      * Verifies that Share your contacts settings message is shown
-     * @step. I see Share Contacts settings warning
+     *
      * @throws Exception
+     * @step. I see Share Contacts settings warning
      */
     @Then("^I see Share Contacts settings warning$")
     public void ISeeShareContactsSettingsWarning() throws Exception {

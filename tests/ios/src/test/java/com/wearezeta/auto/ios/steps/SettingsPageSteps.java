@@ -1,8 +1,10 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.AccountDeletionMessage;
 import com.wearezeta.auto.common.email.WireMessage;
+import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.SettingsPage;
@@ -50,26 +52,20 @@ public class SettingsPageSteps {
     }
 
     /**
-     * Tap back button on settings page
+     * Verify the current value of a setting
      *
+     * @param itemName      setting option name
+     * @param expectedValue the expected value. Can be user name/email/phone number alias
      * @throws Exception
-     * @step. ^I switch to the previous settings page$
+     * @step. ^I verify the value of settings item (.*) equals to "(.*)"
      */
-    @And("^I switch to the previous settings page$")
-    public void ISwitchToThePreviousSettingsPage() throws Exception {
-        getSettingsPage().goBack();
-    }
-
-    /**
-     * Verify that alert settings are set to default values
-     *
-     * @throws Exception
-     * @step. ^I verify sound alerts settings are set to default values$
-     */
-    @When("^I verify sound alerts settings are set to default values$")
-    public void IVerifyAllIsDefaultValue() throws Exception {
-        Assert.assertTrue("Sound alerts settings are NOT set to their default values",
-                getSettingsPage().isSoundAlertsSetToDefault());
+    @Then("^I verify the value of settings item (.*) equals to \"(.*)\"")
+    public void IVerifySettingsItemValue(String itemName, String expectedValue) throws Exception {
+        expectedValue = usrMgr.replaceAliasesOccurences(expectedValue, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        expectedValue = usrMgr.replaceAliasesOccurences(expectedValue, ClientUsersManager.FindBy.NAME_ALIAS);
+        expectedValue = usrMgr.replaceAliasesOccurences(expectedValue, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+        Assert.assertTrue(String.format("The value of '%s' setting item is not equal to '%s'", itemName, expectedValue),
+                getSettingsPage().isSettingItemValueEqualTo(itemName, expectedValue));
     }
 
     /**
@@ -103,17 +99,6 @@ public class SettingsPageSteps {
         Assert.assertTrue(String.format("Label '%s' is not visible for device '%s'", label, deviceName), getSettingsPage()
                 .verificationLabelVisibility(deviceName, label));
 
-    }
-
-    /**
-     * Presses the Edit Button in Settings Manage devices
-     *
-     * @throws Exception
-     * @step. ^I tap Edit button$
-     */
-    @When("^I tap Edit button$")
-    public void ITapEditButton() throws Exception {
-        getSettingsPage().pressEditButton();
     }
 
     /**
@@ -201,5 +186,133 @@ public class SettingsPageSteps {
             throw new IllegalStateException("Please init email confirmation listener first");
         }
         new AccountDeletionMessage(accountRemovalConfirmation.get());
+    }
+
+    private ElementState previousProfilePictureScreenshot = new ElementState(
+            () -> getSettingsPage().takeScreenshot().
+                    orElseThrow(() -> new IllegalStateException("Cannot take a screenshot of self profile page"))
+    );
+
+    /**
+     * Take a screenshot of self profile page and save it into internal var
+     *
+     * @throws Exception
+     * @step. ^I remember my current profile picture$
+     */
+    @When("^I remember my current profile picture$")
+    public void IRememberMyProfilePicture() throws Exception {
+        previousProfilePictureScreenshot.remember();
+    }
+
+    @Then("I wait up to (\\d+) seconds? until my profile picture is changed")
+    public void IWaitUntilProfilePictureIsChanged(int secondsTimeout) throws Exception {
+        if (previousProfilePictureScreenshot == null) {
+            throw new IllegalStateException("Please take a screenshot of previous profile picture first");
+        }
+        final double minScore = 0.87;
+        Assert.assertTrue("The previous and the current profile pictures seem to be the same",
+                this.previousProfilePictureScreenshot.isChanged(secondsTimeout, minScore));
+    }
+
+    /**
+     * Tap navigation button on Setitngs page
+     *
+     * @param name name of the button
+     * @throws Exception
+     * @step. ^I tap (Done|Back|Edit) navigation button on Settings page$
+     */
+    @And("^I tap (Done|Back|Edit) navigation button on Settings page$")
+    public void ITapNavigationButton(String name) throws Exception {
+        getSettingsPage().tapNavigationButton(name);
+    }
+
+    /**
+     * Verify whether Reset Password page is opened in browser
+     *
+     * @throws Exception
+     * @step. ^I see Reset Password page$
+     */
+    @Then("^I see Reset Password page$")
+    public void ISeeResetPasswordPage() throws Exception {
+        Assert.assertTrue("Change Password button is not shown", getSettingsPage().isResetPasswordPageVisible());
+    }
+
+    /**
+     * Verifies that it sees the Support web page
+     *
+     * @throws Exception
+     * @step. ^I see Support web page$
+     */
+    @Then("^I see Support web page$")
+    public void ISeeSupportWebPage() throws Exception {
+        Assert.assertTrue("Customer support page has not been loaded", getSettingsPage().isSupportWebPageVisible());
+    }
+
+    /**
+     * Resets the content of Self Name input
+     *
+     * @throws Exception
+     * @step. ^I clear Name input field on Settings page$
+     */
+    @When("^I clear Name input field on Settings page$")
+    public void IClearSelfName() throws Exception {
+        getSettingsPage().clearSelfName();
+    }
+
+    /**
+     * Sets the value of Self Name input to a new one
+     *
+     * @param newValue can be also an alias
+     * @throws Exception
+     * @step. ^I set "(.*)" value to Name input field on Settings page$
+     */
+    @When("^I set \"(.*)\" value to Name input field on Settings page$")
+    public void ISetSelfName(String newValue) throws Exception {
+        newValue = usrMgr.replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.NAME_ALIAS);
+        getSettingsPage().setSelfName(newValue);
+    }
+
+    private ElementState colorPickerState = new ElementState(
+            () -> getSettingsPage().getColorPickerStateScreenshot()
+    );
+
+    private static final int COLOR_PICKER_STATE_CHANGE_TIMEOUT = 10;
+    private static final double MIN_COLOR_PICKER_SIMILARITY_SCORE = 0.999;
+
+    /**
+     * Get and remember the screenshot of People Picker
+     *
+     * @throws Exception
+     * @step. ^I remember the state of Color Picker$
+     */
+    @When("^I remember the state of Color Picker$")
+    public void IRememberColorPickerState() throws Exception {
+        colorPickerState.remember();
+    }
+
+    /**
+     * Verify that color picker state has been changed
+     *
+     * @throws Exception
+     * @step. ^I verify the state of Color Picker is changed$
+     */
+    @Then("^I verify the state of Color Picker is changed$")
+    public void IVerifyColorPickerState() throws Exception {
+        Assert.assertTrue("Color Picker state has not been changed",
+                colorPickerState.isChanged(COLOR_PICKER_STATE_CHANGE_TIMEOUT, MIN_COLOR_PICKER_SIMILARITY_SCORE));
+    }
+
+    /**
+     * Changes the accent color by clicking the color picker
+     *
+     * @param color one of possible color values
+     * @throws Exception
+     * @step. ^I set my accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)
+     * on Settings page$$
+     */
+    @When("^I set my accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)" +
+            " on Settings page$")
+    public void IChangeMyAccentColor(String color) throws Exception {
+        getSettingsPage().selectAccentColor(AccentColor.getByName(color));
     }
 }

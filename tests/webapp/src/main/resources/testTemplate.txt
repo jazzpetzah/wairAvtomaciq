@@ -33,6 +33,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.logging.LogEntry;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 
 @RunWith(Parameterized.class)
 public class $(TESTNAME)Test extends PickleJarTest{
@@ -134,6 +135,9 @@ public class $(TESTNAME)Test extends PickleJarTest{
     }
 
     private String tailBrowserLog(int maxLogTailSize) throws InterruptedException, ExecutionException, TimeoutException {
+        if (!WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
+            return "No tailed log available";
+        }
         try {
             List<LogEntry> browserLog = lifecycle.getContext().getBrowserLog();
             if (browserLog.size() >= maxLogTailSize) {
@@ -150,6 +154,10 @@ public class $(TESTNAME)Test extends PickleJarTest{
 
     private void checkLogForErrors() throws Exception {
         List<LogEntry> browserLog = new ArrayList<>();
+        if (!WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
+            LOG.warn("No error log check available");
+            return;
+        }
         try {
             browserLog = lifecycle.getContext().getBrowserLog();
             browserLog = browserLog.stream()
@@ -205,6 +213,9 @@ public class $(TESTNAME)Test extends PickleJarTest{
                     // filter failed asset download
                     .filter((entry)
                             -> !entry.getMessage().contains("Failed to download asset"))
+                    // filter failed group renaming
+                    .filter((entry)
+                            -> !entry.getMessage().contains("Failed to rename conversation"))
                     // filter encryption precondition
                     .filter((entry)
                             -> !entry.getMessage().contains("otr") && !entry.getMessage().contains("412 (Precondition Failed)"))

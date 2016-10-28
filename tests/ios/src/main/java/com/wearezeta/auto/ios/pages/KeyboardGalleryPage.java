@@ -2,7 +2,6 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
@@ -14,12 +13,14 @@ public class KeyboardGalleryPage extends IOSPage {
 
     private static final By nameTakePictureButton = MobileBy.AccessibilityId("takePictureButton");
 
-    private static final By nameToggleCameraButton = MobileBy.AccessibilityId("changeCameraButton");
+    private static final String nameStrToggleCameraButton = "changeCameraButton";
+    private static final By nameToggleCameraButton = MobileBy.AccessibilityId(nameStrToggleCameraButton);
 
     private static final By nameFullscreenCameraButton = MobileBy.AccessibilityId("fullscreenCameraButton");
 
-    private static final By xpathFirstPicture =
-            By.xpath("//UIACollectionCell[@name='changeCameraButton']/following-sibling::UIACollectionCell");
+    private static final By xpathFirstPicture = By.xpath(String.format(
+            "//XCUIElementTypeCollectionView[ .//XCUIElementTypeButton[@name='%s'] ]" +
+                    "/XCUIElementTypeCell[2]", nameStrToggleCameraButton));
 
     private static final By nameBackButton = MobileBy.AccessibilityId("goBackButton");
 
@@ -49,14 +50,19 @@ public class KeyboardGalleryPage extends IOSPage {
     }
 
     public void tapButton(String name) throws Exception {
-        getElement(getButtonLocatorByName(name)).click();
+        final By locator = getButtonLocatorByName(name);
+        getElement(locator).click();
+        if (locator.equals(xpathOpenCameraRollButton)) {
+            // Wait for Camera Roll initialization
+            Thread.sleep(3000);
+        }
     }
 
     public boolean isButtonVisible(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getButtonLocatorByName(name));
+        return isLocatorDisplayed(getButtonLocatorByName(name));
     }
 
     public boolean isButtonInvisible(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), getButtonLocatorByName(name));
+        return isLocatorInvisible(getButtonLocatorByName(name));
     }
 }

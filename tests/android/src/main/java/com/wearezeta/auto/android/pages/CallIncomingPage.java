@@ -4,7 +4,9 @@ import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+
 import java.util.function.Function;
+
 import org.openqa.selenium.By;
 
 public class CallIncomingPage extends AndroidPage {
@@ -12,7 +14,7 @@ public class CallIncomingPage extends AndroidPage {
             .format("//*[@id='ttv__calling__header__subtitle' and @value='%s']", name);
 
     public static final By idMainContent = By.id("icl_incoming_controls");
-    
+
     private static final Function<String, String> xpathCallingHeaderByName = name -> String
             .format("//*[@id='ttv__calling__header__name' and contains(@value, '%s')]", name);
 
@@ -27,20 +29,35 @@ public class CallIncomingPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), by, VISIBILITY_TIMEOUT_SECONDS);
     }
 
+    public boolean waitUntilVisible(String subtitle, int timeoutSeconds) throws Exception {
+        final By by = By.xpath(xpathIncomingCallContainerByName.apply(subtitle));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), by, timeoutSeconds);
+    }
+
     public boolean waitUntilNotVisible(String subtitle) throws Exception {
         final By by = By.xpath(xpathIncomingCallContainerByName.apply(subtitle));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), by);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), by, VISIBILITY_TIMEOUT_SECONDS);
     }
-    
+
+    public boolean waitUntilNotVisible(String subtitle, int timeoutSeconds) throws Exception {
+        final By by = By.xpath(xpathIncomingCallContainerByName.apply(subtitle));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), by, timeoutSeconds);
+    }
+
     public boolean waitUntilNameAppearsOnCallingBarCaption(String name) throws Exception {
         final By locator = By.xpath(xpathCallingHeaderByName.apply(name));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, VISIBILITY_TIMEOUT_SECONDS);
     }
-    
+
+    public boolean waitUntilNameAppearsOnCallingBarCaption(String name, int timeoutSeconds) throws Exception {
+        final By locator = By.xpath(xpathCallingHeaderByName.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, timeoutSeconds);
+    }
+
     public void ignoreCall() throws Exception {
         DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 85, 20, 85);
     }
-    
+
     public void acceptCall() throws Exception {
         DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 85, 80, 85);
     }

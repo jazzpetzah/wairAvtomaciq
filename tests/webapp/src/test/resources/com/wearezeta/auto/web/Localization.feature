@@ -43,8 +43,7 @@ Feature: Localization
     When I switch language to <Language>
     And I see Contact list with name <Contact>
     And I see a string <ConversationViewText> on the page
-    And I see a string <ContactListText> on the page
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     Then I see a placeholder <SearchPlaceHolder> on the page
     When I close People Picker
     And I click on options button for conversation <Contact>
@@ -54,8 +53,8 @@ Feature: Localization
     And I see a conversation option <ConvOption4> on the page
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Language | ConversationViewText | ContactListText  | SearchPlaceHolder                | ConvOption1   | ConvOption2 | ConvOption3 | ConvOption4 |
-      | user1Email | user1Password | user1Name | user2Name | de       | HINZUGEFÜGT          | KONTAKTE         | Namen oder E-Mail-Adresse suchen | Stummschalten | Archivieren | Löschen     | Blockieren  |
+      | Login      | Password      | Name      | Contact   | Language | ConversationViewText | SearchPlaceHolder                | ConvOption1   | ConvOption2 | ConvOption3 | ConvOption4 |
+      | user1Email | user1Password | user1Name | user2Name | de       | HINZUGEFÜGT          | Namen oder E-Mail-Adresse suchen | Stummschalten | Archivieren | Löschen     | Blockieren  |
 
   @C136458 @regression
   Scenario Outline: Verify support pages are opened in language <Language>
@@ -64,21 +63,19 @@ Feature: Localization
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I switch language to <Language>
-    Then I see People Picker
-    And I close People Picker
-    Then I open self profile
-    And I click gear button on self profile page
-    And I select <SupportButton> menu item on self profile page
-    And I switch to support page tab
+    Then I am signed in properly
+    When I open preferences by clicking the gear button
+    And I open about in preferences
+    And I click support link on about page
     Then I see ask support link
     And I see a title <PageTitle> on the page
     And I see a placeholder <SearchFieldPlaceholder> on the page
     And I see localized <Language> support page
 
     Examples:
-      | Login      | Password      | Name      | Language | SupportButton | PageTitle      | SearchFieldPlaceholder |
-      | user1Email | user1Password | user1Name | de       | Hilfe         | Wire Hilfe     | Gib ein Schlagwort ein |
-      | user1Email | user1Password | user1Name | en       | Support       | Wire – Support | Enter a keyword        |
+      | Login      | Password      | Name      | Language | PageTitle      | SearchFieldPlaceholder |
+      | user1Email | user1Password | user1Name | de       | Wire Hilfe     | Gib ein Schlagwort ein |
+      | user1Email | user1Password | user1Name | en       | Wire – Support | Enter a keyword        |
 
   @C150023 @regression
   Scenario Outline: Verify registration email is <Language>
@@ -99,7 +96,7 @@ Feature: Localization
       | user1Email | user1Password | user1Name | de       | Wenn du kein Wire-Benutzerkonto mit dieser E-Mail-Adresse erstellt hast |
       | user1Email | user1Password | user1Name | en       | If you didn't create a Wire account using this email address            |
 
-  @C165102 @staging
+  @C165102 @regression
   Scenario Outline: Verify new device email is <Language>
     Given I see Registration page
     When I switch language to <Language>
@@ -112,8 +109,9 @@ Feature: Localization
     Then I verify that an envelope icon is shown
     And I see email <Email> on Verification page
     When I activate user by URL
-    And I confirm keeping picture on Welcome page
+    And I am signed in properly
     And I switch language to en
+    And I am signed in properly
     And <Name> starts listening for new device mail
     And user <Name> adds a new device Device with label Label
     Then I see new device mail in <Language> with <Message>
@@ -136,12 +134,13 @@ Feature: Localization
     Then I verify that an envelope icon is shown
     And I see email <Email> on Verification page
     When I activate user by URL
-    And I confirm keeping picture on Welcome page
+    And I am signed in properly
     And I switch language to en
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I am signed in properly
+    And I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And I see Sign In page
     And I click Change Password button
     And I see Password Change Request page

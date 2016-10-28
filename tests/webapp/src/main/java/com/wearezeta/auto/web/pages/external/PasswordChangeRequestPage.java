@@ -19,7 +19,7 @@ public class PasswordChangeRequestPage extends WebPage {
 
     private static final Logger LOG = ZetaLogger.getLog(PasswordChangeRequestPage.class.getName());
 
-	@FindBy(id = ExternalLocators.PasswordChangeRequestPage.idEmailInput)
+	@FindBy(css = ExternalLocators.PasswordChangeRequestPage.cssEmailInput)
 	private WebElement emailField;
 
 	@FindBy(css = ExternalLocators.PasswordChangeRequestPage.cssSubmitButton)
@@ -28,7 +28,7 @@ public class PasswordChangeRequestPage extends WebPage {
 	public PasswordChangeRequestPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
-		final String website = CommonUtils.getWebsitePathFromConfig(DownloadPage.class) + "/forgot/";
+		final String website = CommonUtils.getAccountPagesFromConfig(DownloadPage.class) + "forgot/";
         LOG.info(website);
 		super.setUrl(website);
 	}
@@ -46,6 +46,6 @@ public class PasswordChangeRequestPage extends WebPage {
 
 	public boolean isEmailFieldVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(ExternalLocators.PasswordChangeRequestPage.idEmailInput));
+				By.cssSelector(ExternalLocators.PasswordChangeRequestPage.cssEmailInput));
 	}
 }

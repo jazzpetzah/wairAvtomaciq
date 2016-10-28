@@ -90,4 +90,8 @@ public class EmailSignInPage extends AndroidPage {
     public boolean waitForForcedEmailLoginScreen() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idForcedLoginInput, 30);
     }
+
+    public boolean waitForForcedEmailLoginScreenNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idForcedLoginInput, 5);
+    }
 }

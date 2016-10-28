@@ -1,7 +1,8 @@
 Feature: Lock/Unlock
 
+  #TODO: Need to recheck the spec
   @C472 @regression
-  Scenario Outline: (AN-2898) UI saves its state after device lock/unlock (portrait)
+  Scenario Outline: UI saves its state after device lock/unlock (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -18,8 +19,8 @@ Feature: Lock/Unlock
     When I open Search UI
     When I lock the device
     And I unlock the device
-    Then I see People Picker page
-    When I close People Picker
+    Then I see Search page
+    When I close Search
     And I tap conversations list settings button
     And I see settings page
     And I lock the device

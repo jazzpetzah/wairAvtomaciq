@@ -81,7 +81,7 @@ public abstract class PickleJarTest {
         LOG.info("\n"
                 + ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\n"
                 + "::          [{} {}: {}]\n"
-                + "''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''", 
+                + "''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''",
                 new Object[]{tags, feature, testcase});
         pickle.reset();
         List<Scenario> scenariosForFeature = FEATURE_SCENARIO_MAP.getOrDefault(reportFeature, new ArrayList<>());
@@ -105,13 +105,13 @@ public abstract class PickleJarTest {
 
     protected void saveScreenshot(Step step, byte[] screenshot) throws IOException {
         final String featureName = reportFeature.getName().replaceAll("[^a-zA-Z0-9]", "_");
-        
+
         // cucumber does not replace characters like " with _ but just removes them beforehand
         // needs more investigation what characters are removed and which are replaced by _
         String scenarioName = reportScenario.getName().replaceAll("[\"!,]", "");
         scenarioName = scenarioName.replaceAll("[^a-zA-Z0-9]", "_");
         scenarioName = scenarioName.replaceAll("__", "_").replaceAll("__", "_");
-        
+
         // cucumber does not replace characters like " with _ but just removes them beforehand
         // needs more investigation what characters are removed and which are replaced by _
         String stepName = step.getName().replaceAll("[\"!']", "");
@@ -131,17 +131,23 @@ public abstract class PickleJarTest {
         Files.write(desiredPicture, screenshot);
     }
 
-    private byte[] adjustScreenshotSize (byte[] screenshot, final int maxWidth, final int maxHeight) throws IOException {
-        BufferedImage imgScreenshot =  ImageIO.read(new ByteArrayInputStream(screenshot));
+    private byte[] adjustScreenshotSize(byte[] screenshot, final int maxWidth, final int maxHeight) throws IOException {
+        ByteArrayInputStream in = new ByteArrayInputStream(screenshot);
+//        Arrays.asList(ImageIO.getReaderFormatNames()).stream().forEach((String r) -> LOG.debug(r));
+        BufferedImage imgScreenshot = ImageIO.read(in);
         try {
             imgScreenshot = scaleTo(imgScreenshot, maxWidth, maxHeight);
-        } catch (IOException e){}
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(imgScreenshot, "png", baos);
-        return baos.toByteArray();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(imgScreenshot, "png", baos);
+            return baos.toByteArray();
+        } catch (Exception e) {
+            LOG.warn("Could not resize image", e);
+            return screenshot;
+        }
     }
 
-    private static BufferedImage scaleTo(BufferedImage originalImage, final int maxWidth, final int maxHeight) throws IOException {
+    private static BufferedImage scaleTo(BufferedImage originalImage, final int maxWidth, final int maxHeight) throws
+            IOException {
         final int height = originalImage.getHeight();
         final int width = originalImage.getWidth();
         float resizeRatio = 1;

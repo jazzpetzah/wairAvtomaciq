@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.android.pages.FirstTimeOverlay;
+import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -12,6 +13,10 @@ public class FirstTimeOverlaySteps {
 
     private FirstTimeOverlay getFirstTimeOverlay() throws Exception {
         return pagesCollection.getPage(FirstTimeOverlay.class);
+    }
+
+    private EmailSignInPage getEmailSignInPage() throws Exception {
+        return pagesCollection.getPage(EmailSignInPage.class);
     }
 
     /**
@@ -35,9 +40,8 @@ public class FirstTimeOverlaySteps {
     /**
      * Tap Got It button
      *
-     * @step. ^I tap Got It button on First Time overlay$
-     *
      * @throws Exception
+     * @step. ^I tap Got It button on First Time overlay$
      */
     @When("^I tap Got It button on First Time overlay$")
     public void ITapGotItButton() throws Exception {
@@ -47,12 +51,12 @@ public class FirstTimeOverlaySteps {
     /**
      * Accept the First Time overlay as soon as it is visible
      *
-     * @step. ^I accept First Time overlay as soon as it is visible$
-     *
      * @throws Exception
+     * @step. ^I accept First Time overlay as soon as it is visible$
      */
     @And("^I accept First Time overlay as soon as it is visible$")
     public void IAcceptTheOverLayWhenItIsVisible() throws Exception {
         getFirstTimeOverlay().acceptWhenVisible(CommonAndroidSteps.FIRST_TIME_OVERLAY_TIMEOUT);
+        Assert.assertTrue("Forced email login page is shown", getEmailSignInPage().waitForForcedEmailLoginScreenNotVisible());
     }
 }

@@ -1,7 +1,7 @@
 Feature: Rich Media
 
-  @C714 @C77959 @regression @rc @rc42
-  Scenario Outline: Verify you can play/pause SoundCloud media from the Media Bar in conversation
+  @C714 @regression @rc @legacy
+  Scenario Outline: (load bug AN-4559) Verify you can play/pause SoundCloud media from the Media Bar which is shown below the upper toolbar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -14,13 +14,14 @@ Feature: Rich Media
     # Wait until message fully loaded
     And I wait for 3 seconds
     And I tap on text input
-    And I type the message "<SoundCloudLink>" and send it
+    And I type the message "<SoundCloudLink>" and send it by cursor Send button
     And User <Contact1> sends encrypted message to user Myself
     And I scroll to the bottom of conversation view
+    And I wait for 3 seconds
     And I tap Play button on SoundCloud container
     And I remember the state of Play button on SoundCloud container
     And I swipe down on conversation until Mediabar appears
-    And I press PlayPause on Mediabar button
+    And I tap PlayPause on Mediabar button
     Then I verify the state of upper toolbar item is not changed
     And I see the media bar is below the upper toolbar
     When I scroll to the bottom of conversation view
@@ -39,12 +40,12 @@ Feature: Rich Media
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap on text input
-    And I type the message "<SoudCloudLink>" and send it
+    And I type the message "<SoudCloudLink>" and send it by cursor Send button
     # Workaround for bug with autoscroll for next two lines
     And I scroll to the bottom of conversation view
     And I scroll up the conversation view
     And I tap Play button on SoundCloud container
-    And I press back button
+    And I tap back button
     Then I see PlayPause media content button for conversation <Contact1>
 
     Examples:
@@ -60,13 +61,13 @@ Feature: Rich Media
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap on text input
-    And I type the message "<SoundCloudLink>" and send it
+    And I type the message "<SoundCloudLink>" and send it by cursor Send button
     And I scroll to the bottom of conversation view
     And I tap Play button on SoundCloud container
-    And I press back button
+    And I tap back button
     Then I see PlayPause media content button for conversation <Contact1>
     When I tap on conversation name <Contact2>
-    And I press back button
+    And I tap back button
     Then I see PlayPause media content button for conversation <Contact1>
     When I remember the state of PlayPause button next to the <Contact1> conversation
     And I tap PlayPause button next to the <Contact1> conversation
@@ -76,7 +77,7 @@ Feature: Rich Media
       | Name      | Contact1  | Contact2  | SoundCloudLink                                   |
       | user1Name | user2Name | user3Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
-  @C675 @regression @rc @rc42
+  @C675 @regression @rc @legacy
   Scenario Outline: Verify you can send youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -85,7 +86,7 @@ Feature: Rich Media
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap on text input
-    And I type the message "<YoutubeLink>" and send it
+    And I type the message "<YoutubeLink>" and send it by cursor Send button
     Then I see Play button on Youtube container
 
     Examples:
@@ -114,7 +115,7 @@ Feature: Rich Media
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                   | CallBackend |
-      | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme | autocall    |
+      | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme | zcall       |
 
   @C139850 @regression
   Scenario Outline: Verify that play of soundcloud track will be stopped by incoming video call

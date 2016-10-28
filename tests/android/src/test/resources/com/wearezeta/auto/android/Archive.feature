@@ -10,7 +10,7 @@ Feature: Archive
     Given I see Conversations list with conversations
     # This is to eliminate invitation banner
     Given I open Search UI
-    Given I press Clear button
+    Given I tap Clear button
     And I see Conversations list with name <Contact1>
     When I swipe right on a <Contact1>
     And I select ARCHIVE from conversation settings menu
@@ -25,7 +25,7 @@ Feature: Archive
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C718 @regression @rc @rc42
+  @C718 @regression @rc @legacy
   Scenario Outline: Verify you can archive and unarchive group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -35,7 +35,7 @@ Feature: Archive
     Given I see Conversations list with conversations
     # This is to eliminate invitation banner
     Given I open Search UI
-    Given I press Clear button
+    Given I tap Clear button
     Then I see Conversations list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I select ARCHIVE from conversation settings menu

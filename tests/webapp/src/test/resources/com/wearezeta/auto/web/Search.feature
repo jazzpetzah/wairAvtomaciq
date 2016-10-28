@@ -9,7 +9,7 @@ Feature: Search
     And I am signed in properly
     And I wait until <Contact1> exists in backend search results
     And I wait until <Contact2> exists in backend search results
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <Contact1> in search field of People Picker
     And I select <Contact1> from People Picker results
     And I wait for the search field of People Picker to be empty
@@ -30,7 +30,7 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I wait until <Contact1> exists in backend search results
     And I type <Contact1> in search field of People Picker
     And I select <Contact1> from People Picker results
@@ -41,21 +41,19 @@ Feature: Search
     And I choose to create conversation from People Picker
     And I am signed in properly
     Then I see Contact list with name <Contact1>,<Contact2>
-    And I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Contact1Email> and password <Contact1Password>
     And I am signed in properly
     Then I see Contact list with name <Name>,<Contact2>
-    And I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <Contact2> is me
     And I see Sign In page
     And I Sign in using login <Contact2Email> and password <Contact2Password>
@@ -82,7 +80,7 @@ Feature: Search
     And I confirm user blocking on Single User Profile popover
     Then I do not see Contact list with name <Contact>
     Then I do not see Single User Profile popover
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <ContactEmail> in search field of People Picker
     And I select <Contact> from People Picker results
     And I see Unblock button on Single User Profile popover
@@ -99,7 +97,9 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I wait until <Name2> exists in backend search results
-    And I see People Picker
+    And I am signed in properly
+    And I open search by clicking the people button
+    And I see Search is opened
     And I type <Login2> in search field of People Picker
     Then I see user <Name2> found in People Picker
     When I click on not connected user <Name2> found in People Picker
@@ -108,11 +108,10 @@ Feature: Search
     Then I see conversation with <Name2> is selected in conversations list
     And I see cancel pending request button in the conversation view
     And I verify that conversation input and buttons are not visible
-    And I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <Name2> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -122,11 +121,10 @@ Feature: Search
     When I accept connection request from user <Name>
     Then I see conversation with <Name> is selected in conversations list
     And I see connected message for <Name> in conversation
-    And I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I open preferences by clicking the gear button
+    And I click logout in account preferences
     And I see the clear data dialog
-    And I click Logout button on clear data dialog
+    And I click logout button on clear data dialog
     And User <Name> is me
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
@@ -153,7 +151,7 @@ Feature: Search
     Given I click confirm on history info page
     When I am signed in properly
     And Myself waits until 2 people in backend top people results
-    And I open People Picker from Contact List
+    And I open search by clicking the people button
     And I wait till Top People list appears
     When I select <Contact1> from Top People
     And I choose to create conversation from People Picker
@@ -179,7 +177,7 @@ Feature: Search
     Given I click confirm on history info page
     When I am signed in properly
     And Myself waits until 3 people in backend top people results
-    And I open People Picker from Contact List
+    And I open search by clicking the people button
     When I select <Contact1>,<Contact2> from Top People
     And I choose to create conversation from People Picker
     Then I see Contact list with name <Contact1>,<Contact2>
@@ -194,6 +192,8 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I wait until <Name2> exists in backend search results
+    Given I am signed in properly
+    When I open search by clicking the people button
     When I see Search is opened
     And I see Bring Your Friends or Invite People button
     And I type <Email2> in search field of People Picker
@@ -212,7 +212,7 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     And I wait until <Contact1> exists in backend search results
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <Contact1> in search field of People Picker
     And I see user <Contact1> found in People Picker
     And I select <Contact1> from People Picker results
@@ -235,7 +235,7 @@ Feature: Search
     And I am signed in properly
     And I wait until <Contact1> exists in backend search results
     And I wait until <Contact2> exists in backend search results
-    When I open People Picker from Contact List
+    When I open search by clicking the people button
     And I type <Contact1> in search field of People Picker
     And I see user <Contact1> found in People Picker
     And I select <Contact1> from People Picker results
@@ -250,3 +250,32 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @C261732 @regression
+  Scenario Outline: Verify you can open a group conversation from search
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I see Contact list with name <ChatName>
+    And I open conversation with <Contact1>
+    And I open search by clicking the people button
+    And I see Search is opened
+    And I type <Contact1> in search field of People Picker
+    Then I see user <Contact1> found in People Picker
+    And I see group conversation <ChatName> found in People Picker
+    When I select group <ChatName> from People Picker results
+    Then I see conversation with <ChatName> is selected in conversations list
+    When I open conversation with <Contact1>
+    And I open search by clicking the people button
+    And I see Search is opened
+    And I type <ChatName> in search field of People Picker
+    Then I see group conversation <ChatName> found in People Picker
+    When I select group <ChatName> from People Picker results
+    Then I see conversation with <ChatName> is selected in conversations list
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | OPEN_ME  |

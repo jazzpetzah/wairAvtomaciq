@@ -9,7 +9,7 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
-    And I type the message "<Txt>" and send it
+    And I type the message "<Txt>" and send it by cursor Send button
     And I long tap the Text message "<Txt>" in the conversation view
     And I tap Like button on the message bottom menu
     # C226091
@@ -24,10 +24,10 @@ Feature: Like
 
     Examples:
       | Name      | Contact   | Txt | MessageStatus | ContactDevice |
-      | user1Name | user2Name | Hi  | Sent          | D1            |
+      | user1Name | user2Name | Hi  | Delivered     | D1            |
 
-  @C226018 @C226020 @regression @rc
-  Scenario Outline: I can unlike/like message by tap on like icon & I can like text message
+  @C226018 @regression @rc
+  Scenario Outline: I can unlike/like text message by tap on like icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User <Contact> adds new devices <ContactDevice>
@@ -35,7 +35,7 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
-    Given I type the message "<Txt>" and send it
+    Given I type the message "<Txt>" and send it by cursor Send button
     # C226018
     When I tap the Text message "<Txt>" in the conversation view
     And I remember the state of like button
@@ -51,7 +51,7 @@ Feature: Like
 
     Examples:
       | Name      | Contact   | Txt | MessageStatus | ContactDevice |
-      | user1Name | user2Name | Hi  | Sent          | D1            |
+      | user1Name | user2Name | Hi  | Delivered     | D1            |
 
   @C226036 @regression @rc
   Scenario Outline: I can double tap on txt to like and unlike
@@ -62,7 +62,7 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
-    And I type the message "<Txt>" and send it
+    And I type the message "<Txt>" and send it by cursor Send button
     And I double tap the Text message "<Txt>" in the conversation view
     Then I see Like button in conversation view
     And I see Like description with expected text "<Name>" in conversation view
@@ -73,7 +73,7 @@ Feature: Like
 
     Examples:
       | Name      | Contact   | Txt | MessageStatus | ContactDevice |
-      | user1Name | user2Name | Hi  | Sent          | D1            |
+      | user1Name | user2Name | Hi  | Delivered     | D1            |
 
   @C226040 @regression @rc
   Scenario Outline: If message was liked by somebody, like icon is visible and sorted liker name next to the like icon, and I could like it.
@@ -84,7 +84,7 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
-    When I type the message "<Message>" and send it
+    When I type the message "<Message>" and send it by cursor Send button
     And User <Contact> likes the recent message from user Myself via device <ContactDevice>
     # C226040
     Then I see Like description with expected text "<Contact>" in conversation view
@@ -100,8 +100,8 @@ Feature: Like
       | Name      | Contact   | Message | ContactDevice |
       | user1Name | user2Name | Hi      | Device1       |
 
-  @C226045 @C226048 @regression @rc
-  Scenario Outline: Likes should be reset if I edited message / also could like again
+  @C226045 @regression @rc
+  Scenario Outline: Verify I can like an edited message whose like list is reseted after edition
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given User <Contact1> adds new devices <ContactDevice>
@@ -111,7 +111,7 @@ Feature: Like
     Given I see Conversations list with conversations
     # C226045
     When I tap on conversation name <Contact1>
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     And I tap the Text message "<Message>" in the conversation view
     And I tap Like button in conversation view
     Then I see Like description with expected text "<Name>" in conversation view
@@ -128,9 +128,9 @@ Feature: Like
 
     Examples:
       | Name      | Contact1  | Message | Device | NewMessage | MessageStatus | ContactDevice |
-      | user1Name | user2Name | Yo      | D1     | Hello      | Sent          | D2            |
+      | user1Name | user2Name | Yo      | D1     | Hello      | Delivered     | D2            |
 
-  @C226049 @C226037 @regression @rc
+  @C226049 @regression @rс
   Scenario Outline: Verify local delete for my/others message doesn't reappear after someone liked it (negative)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -139,20 +139,14 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
-    # C226049
-    When I type the message "<Message>" and send it
+    When I type the message "<Message>" and send it by cursor Send button
     And I long tap the Text message "<Message>" in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And User <Contact> likes the recent message from user Myself via device <Device>
     Then I do not see the message "<Message>" in the conversation view
-    # C226037
     When User <Contact> sends encrypted message "<OtherMessage>" via device <Device> to user Myself
-    # TODO: Remove following 1 lines once the message present automatic when receive a message.
-    And I tap the Text message "<OtherMessage>" in the conversation view
-    Then I see Like description with expected text "Tap to like" in conversation view
-    # C226050
-    When I long tap the Text message "<OtherMessage>" in the conversation view
+    And I long tap the Text message "<OtherMessage>" in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And User <Contact> likes the recent message from user Myself via device <Device>
@@ -171,11 +165,11 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
-    When I type the message "<Message>" and send it
+    When I type the message "<Message>" and send it by cursor Send button
     And I navigate back from conversation
     And I swipe right on a <Contact>
     And I select DELETE from conversation settings menu
-    And I press DELETE on the confirm alert
+    And I tap DELETE on the confirm alert
     And User <Contact> likes the recent message from user Myself via device <Device>
     Then I see Conversations list with no conversations
 
@@ -192,7 +186,7 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
-    When I type the message "<Message>" and send it
+    When I type the message "<Message>" and send it by cursor Send button
     And User <Contact> blocks user Myself
     And I tap the Text message "<Message>" in the conversation view
     And I remember the state of like button
@@ -204,8 +198,8 @@ Feature: Like
       | Name      | Contact   | Message | Device  |
       | user1Name | user2Name | Yo      | Device1 |
 
-  @C226041 @C226042 @regression @rc
-  Scenario Outline: I see likers count instead of names with first/second liker avatars, and could open likers list
+  @C226041 @regression @rc
+  Scenario Outline: Verify I see likers count instead of names (liker > 4) with first/second likes avatars and liker list which could be opened
     Given There are 5 users where <Name> is me
     Given <Contact1> is connected to Myself,<Contact2>,<Contact3>,<Contact4>
     Given <Contact1> has group chat <Group> with Myself,<Contact2>,<Contact3>,<Contact4>
@@ -217,7 +211,7 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Group>
-    Given I type the message "<Message>" and send it
+    Given I type the message "<Message>" and send it by cursor Send button
     When User <Contact1> likes the recent message from group conversation <Group> via device <D1>
     And User <Contact2> likes the recent message from group conversation <Group> via device <D2>
     And User <Contact3> likes the recent message from group conversation <Group> via device <D3>
@@ -255,7 +249,7 @@ Feature: Like
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C226024 @C226038 @regression @rc
+  @C226024 @regression @rc
   Scenario Outline: I can like/unlike a sketch by tap on heart button/long tap/double tap
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -311,7 +305,7 @@ Feature: Like
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap Share Location container in the conversation view
-    And I press Back button until Wire app is in foreground in 10 seconds
+    And I tap Back button until Wire app is in foreground in 10 seconds
     And I remember the state of like button
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed
@@ -322,16 +316,16 @@ Feature: Like
       | user1Name | user2Name | device1    |
 
   @C226021 @regression @rc
-  Scenario Outline: I can like link
+  Scenario Outline: (AN-4612) I can like link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
-    And I type the message "<Url>" and send it
+    And I type the message "<Url>" and send it by cursor Send button
     And I tap Link Preview container in the conversation view
-    And I press Back button until Wire app is in foreground in 10 seconds
+    And I tap Back button until Wire app is in foreground in 10 seconds
     And I remember the state of like button
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed
@@ -415,7 +409,7 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
-    And I type the message "<YoutubeLink>" and send it
+    And I type the message "<YoutubeLink>" and send it by cursor Send button
     And I tap Youtube container in the conversation view
     And I remember the state of like button
     And I tap Like button in conversation view
@@ -434,14 +428,14 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
-    And I type the message "<SoundCloudLink>" and send it
-    And I scroll to the bottom of conversation view
-    And I tap Soundcloud container in the conversation view
-    And I scroll to the bottom of conversation view
-    And I remember the state of like button
-    And I tap Like button in conversation view
-    Then I verify the state of like button item is changed
+    And I type the message "<SoundCloudLink>" and send it by cursor Send button
+    # Double tap to like
+    And I double tap Soundcloud container in the conversation view
     And I see Like description with expected text "<Name>" in conversation view
+    And I remember the state of like button
+    # Double tap to unlike
+    And I double tap Soundcloud container in the conversation view
+    Then I verify the state of like button item is changed
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                   |
@@ -458,7 +452,7 @@ Feature: Like
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Group>
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     And User <Contact1> likes the recent message from group conversation <Group> via device <ContactDevice>
     Then I see Like description with expected text "<Contact1>" in conversation view
 

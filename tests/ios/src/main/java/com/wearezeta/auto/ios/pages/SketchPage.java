@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
@@ -13,7 +13,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 
 public class SketchPage extends IOSPage {
     private static final By nameSketchSendButton = MobileBy.AccessibilityId("SketchConfirmButton");
-    private static final By xpathTapColorLabel = By.xpath("//UIAStaticText[contains(@name, 'TAP COLOR')]");
+    private static final By xpathTapColorLabel = By.xpath("//XCUIElementTypeStaticText[contains(@name, 'TAP COLOR')]");
 
     public SketchPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
@@ -28,9 +28,9 @@ public class SketchPage extends IOSPage {
             final int endX = startX + rand.nextInt(80);
             final int endY = startY + rand.nextInt(30);
             if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-                IOSSimulatorHelper.swipe(startX / 100.0, startY / 100.0, endX / 100.0, endY / 100.0);
+                IOSSimulatorHelpers.swipe(startX / 100.0, startY / 100.0, endX / 100.0, endY / 100.0);
             } else {
-                DriverUtils.swipeByCoordinates(getDriver(), 0, startX, startY, endX, endY);
+                DriverUtils.swipeByCoordinates(getDriver(), 1000, startX, startY, endX, endY);
             }
         }
     }

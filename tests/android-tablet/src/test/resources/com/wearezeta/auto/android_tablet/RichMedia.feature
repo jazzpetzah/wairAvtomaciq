@@ -54,7 +54,7 @@ Feature: Rich Media
     And I tap the conversation <Contact>
     And I tap on text input
     When I type the message "<SoundCloudLink>" in the conversation view
-    And I send the typed message in the conversation view
+    And I send the typed message by cursor Send button in the conversation view
     And I scroll to the bottom of the conversation view
     And I tap Play button in the conversation view
     And I swipe right to show the conversations list
@@ -79,7 +79,7 @@ Feature: Rich Media
     And I tap the conversation <Contact>
     And I tap on text input
     When I type the message "<SoundCloudLink>" in the conversation view
-    And I send the typed message in the conversation view
+    And I send the typed message by cursor Send button in the conversation view
     And I scroll to the bottom of the conversation view
     And I tap Play button in the conversation view
     Then I see Pause button next to the conversation name <Contact>
@@ -92,7 +92,7 @@ Feature: Rich Media
       | user1Name | user2Name | https://soundcloud.com/scottisbell/scott-isbell-tonight-feat-adessi |
 
   @C788 @regression @rc
-  Scenario Outline: I can send giphy image by typing some massage and clicking GIF button (portrait)
+  Scenario Outline: I can send giphy image by typing some massage and tapping GIF button (portrait)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
@@ -101,10 +101,9 @@ Feature: Rich Media
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
     When I tap on text input
-    Then I do not see Giphy button in the conversation view
-    When I type the message "<Message>" in the conversation view
-    Then I see Giphy button in the conversation view
-    When I tap Giphy button in the conversation view
+    And I type the message "<Message>" in the conversation view
+    And I tap Gif button from cursor toolbar
+    And I select a random gif from the grid preview
     Then I see Giphy preview page
     When I tap Send button on the Giphy preview page
     Then I see the conversation view
@@ -117,7 +116,7 @@ Feature: Rich Media
       | user1Name | user2Name | H       |
 
   @C797 @regression @rc
-  Scenario Outline: I can send giphy image by typing some massage and clicking GIF button (landscape)
+  Scenario Outline: I can send giphy image by typing some massage and tapping GIF button (landscape)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
@@ -126,10 +125,9 @@ Feature: Rich Media
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
     When I tap on text input
-    Then I do not see Giphy button in the conversation view
-    When I type the message "<Message>" in the conversation view
-    Then I see Giphy button in the conversation view
-    When I tap Giphy button in the conversation view
+    And I type the message "<Message>" in the conversation view
+    And I tap Gif button from cursor toolbar
+    And I select a random gif from the grid preview
     Then I see Giphy preview page
     When I tap Send button on the Giphy preview page
     Then I see the conversation view
@@ -154,7 +152,7 @@ Feature: Rich Media
     And I tap the conversation <Contact>
     And I tap on text input
     When I type the message "<SoundCloudLink>" in the conversation view
-    And I send the typed message in the conversation view
+    And I send the typed message by cursor Send button in the conversation view
     And I scroll to the bottom of the conversation view
     And I tap Play button in the conversation view
     And I remember the state of media button in the conversation view

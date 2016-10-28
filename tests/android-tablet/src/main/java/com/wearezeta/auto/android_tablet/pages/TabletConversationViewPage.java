@@ -31,7 +31,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     private static final By idSketchButtonOnPicturePreviewOverlay = By.id("gtv__single_image_message__sketch");
 
     public static final Function<String, String> xpathConversationMessageByValue = value -> String
-            .format("//*[@id='ltv__row_conversation__message' and @value='%s']", value);
+            .format("//*[@id='tmltv__row_conversation__message' and @value='%s']", value);
 
     public TabletConversationViewPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -58,8 +58,17 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getConversationViewPage().typeMessage(message);
     }
 
-    public void sendMessage() throws Exception {
-        getDriver().tapSendButton();
+    public void sendMessage(String sendFrom) throws Exception {
+        switch (sendFrom.toLowerCase()) {
+            case "keyboard":
+                getDriver().tapSendButton();
+                break;
+            case "cursor":
+                getElement(ConversationViewPage.idCursorSendButtonContainer).click();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify send button type '%s'", sendFrom));
+        }
     }
 
     public boolean waitUntilMessageIsVisible(String expectedMessage) throws Exception {
@@ -72,7 +81,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilPingMessageIsVisible(String expectedMessage) throws Exception {
-        return getConversationViewPage().waitForPingMessageWithText(expectedMessage);
+        return getConversationViewPage().waitUntilPingMessageWithTextVisible(expectedMessage);
     }
 
     public boolean waitUntilAPictureAppears() throws Exception {
@@ -94,7 +103,11 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilPingMessageIsInvisible(String expectedMessage) throws Exception {
-        return getConversationViewPage().waitForPingMessageWithTextDisappears(expectedMessage);
+        return getConversationViewPage().waitUntilPingMessageWithTextInvisible(expectedMessage);
+    }
+
+    public boolean isCountOfPingsEqualTo(int expectedCount) throws Exception {
+        return getConversationViewPage().isCountOfPingsEqualTo(expectedCount);
     }
 
     public void doSwipeRight() throws Exception {
@@ -152,18 +165,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getElement(idCloseImageBtn).click();
     }
 
-    public boolean waitUntilGiphyButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idGiphyPreviewButton);
-    }
-
-    public boolean waitUntilGiphyButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idGiphyPreviewButton);
-    }
-
-    public void tapGiphyButton() throws Exception {
-        getElement(idGiphyPreviewButton).click();
-    }
-
     public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries) throws Exception {
         return getConversationViewPage().scrollUpUntilMediaBarVisible(maxScrollRetries);
     }
@@ -181,7 +182,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public void tapMessage(String messageType, String message, String tapType) throws Exception {
-        getConversationViewPage().tapMessage(messageType, message, tapType);
+        getConversationViewPage().tapMessage(messageType, Optional.of(message), tapType);
     }
 
     //region Message Bottom Menu
@@ -279,4 +280,41 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     public void tapImageContainerButton(String buttonName) throws Exception {
         getConversationViewPage().tapImageContainerButton(buttonName);
     }
+
+    public BufferedImage getMessageLikeButtonState() throws Exception {
+        return getConversationViewPage().getMessageLikeButtonState();
+    }
+
+    public void tapMessageMetaItem(String itemType) throws Exception {
+        getConversationViewPage().tapMessageMetaItem(itemType);
+    }
+
+    public int getMessageStatusCount() throws Exception {
+        return getConversationViewPage().getMessageStatusCount();
+    }
+
+    public boolean waitUntilTrashIconVisible(String name) throws Exception {
+        return getConversationViewPage().waitUntilTrashIconVisible(name);
+    }
+
+    public boolean waitUntilTrashIconInvisible(String name) throws Exception {
+        return getConversationViewPage().waitUntilTrashIconInvisible(name);
+    }
+
+    public boolean waitUntilPenIconVisible(String name) throws Exception {
+        return getConversationViewPage().waitUntilPenIconVisible(name);
+    }
+
+    public boolean waitUntilPenIconInvisible(String name) throws Exception {
+        return getConversationViewPage().waitUntilPenIconInvisible(name);
+    }
+
+    public void clearMessageInCursorInput() throws Exception {
+        getConversationViewPage().clearMessageInCursorInput();
+    }
+
+    public boolean waitUntilCursorInputTextVisible(String text) throws Exception {
+        return getConversationViewPage().waitUntilCursorInputTextVisible(text);
+    }
+
 }

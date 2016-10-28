@@ -2,41 +2,60 @@ package com.wearezeta.auto.web.pages;
 
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.web.locators.WebAppLocators;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import org.openqa.selenium.support.How;
 
 public class DeviceDetailPage extends WebPage {
 
-    @FindBy(css = ".self-settings-section header div")
-    private WebElement deviceName;
+    @FindBy(css = "[data-uie-name='preferences-devices-details'] [data-uie-name='go-back']")
+    private WebElement backButton;
 
-    @FindBy(css = ".self-settings-section .device-info .label-xs")
-    private WebElement deviceLabel;
+    @FindBy(css = "[data-uie-name='preferences-devices-details'] [data-uie-name='device-model']")
+    private WebElement deviceModel;
 
-    @FindBy(css = ".self-settings-section [data-uie-name='go-remove-device']")
+    @FindBy(css = "[data-uie-name='preferences-devices-details'] [data-uie-name='device-id']")
+    private WebElement deviceId;
+
+    @FindBy(css = "[data-uie-name='preferences-devices-details'] [data-uie-name='do-verify']")
+    private WebElement verificationToggle;
+
+    @FindBy(css = "[data-uie-name='preferences-devices-details'] [data-uie-name='go-remove-device']")
     private WebElement removeDeviceLink;
 
-    @FindBy(css = ".self-settings-section [data-uie-name='remove-device-password']")
+    @FindBy(css = "[data-uie-name='modal-remove-device'] input")
     private WebElement passwordInput;
 
-    @FindBy(css = ".self-settings-section [data-uie-name='do-remove-device']")
+    @FindBy(css = "[data-uie-name='modal-remove-device'] [data-uie-name='do-delete']")
     private WebElement removeButton;
 
-    @FindBy(css = ".self-settings-section .self-settings-reset-session-button-label")
+    @FindBy(css = "[data-uie-name='preferences-devices-details'] [data-uie-name='do-session-reset']")
     private WebElement resetSessionButton;
 
     public DeviceDetailPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
-    public String getDeviceName() {
-        return deviceName.getText();
+    public void clickBackButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), backButton);
+        backButton.click();
     }
 
-    public String getDeviceLabel() {
-        return deviceLabel.getText();
+    public String getDeviceName() {
+        return deviceModel.getText();
+    }
+
+    public String getDeviceId() {
+        return deviceId.getText();
+    }
+
+    public void verifyDevice() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), verificationToggle);
+        verificationToggle.click();
     }
 
     public void clickRemoveDeviceLink() {

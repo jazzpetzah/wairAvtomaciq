@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.not;
 
 public class ContactListPageSteps {
 
@@ -41,23 +42,7 @@ public class ContactListPageSteps {
         this.context = context;
     }
 
-    /**
-     * Checks that contact list is loaded and waits for profile avatar to be
-     * shown
-     *
-     * @throws AssertionError if contact list is not loaded or avatar does not appear at
-     *                        the top of Contact List
-     * @step. ^I see my avatar on top of Contact list$
-     */
-    @Given("^I see my avatar on top of Contact list$")
-    public void ISeeMyNameOnTopOfContactList() throws Exception {
-        Assert.assertTrue("No contact list loaded.", context.getPagesCollection()
-                .getPage(ContactListPage.class).waitForContactListVisible());
-        context.getPagesCollection().getPage(ContactListPage.class)
-                .waitForSelfProfileButton();
-    }
-
-    @Given("^I verify a badge is shown on self profile button$")
+    @Given("^I verify a badge is shown on gear button$")
     public void ISeeBadgeOnSelfProfileButton() throws Exception {
         Assert.assertTrue("No badge visible.", context.getPagesCollection()
                 .getPage(ContactListPage.class).waitForBadgeVisible());
@@ -107,15 +92,19 @@ public class ContactListPageSteps {
     /**
      * Opens conversation by choosing it from Contact List
      *
-     * @param contact conversation name string
+     * @param conversation conversation name string
      * @throws Exception
      * @step. ^I open conversation with (.*)
      */
     @Given("^I open conversation with (.*)")
-    public void GivenIOpenConversationWith(String contact) throws Exception {
-        contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-        context.getPagesCollection().getPage(ContactListPage.class).openConversation(
-                contact);
+    public void IOpenConversationWith(String conversation) throws Exception {
+        conversation = context.getUserManager().replaceAliasesOccurences(conversation, FindBy.NAME_ALIAS);
+        ContactListPage contactListPage = context.getPagesCollection().getPage(ContactListPage.class);
+        Assert.assertTrue(String.format("Conversation with name '%s' is not visible", conversation),
+                contactListPage.isConversationVisible(conversation));
+        contactListPage.openConversation(conversation);
+        Assert.assertTrue(String.format("Conversation '%s' should be selected", conversation),
+                contactListPage.isConversationSelected(conversation));
     }
 
     /**
@@ -150,14 +139,16 @@ public class ContactListPageSteps {
     }
 
     /**
-     * Clicks the self name item in the convo list to open self profile page
+     * Clicks the gear button to open preferences
      *
      * @throws Exception
-     * @step. ^I open self profile$
+     * @step. ^I open preferences by clicking the gear button$
      */
-    @When("^I open self profile$")
-    public void IOpenSelfProfile() throws Exception {
-        context.getPagesCollection().getPage(ContactListPage.class).openSelfProfile();
+    @When("^I open preferences by clicking the gear button$")
+    public void IOpenPreferences() throws Exception {
+        assertTrue("gear button is NOT clickable", 
+                context.getPagesCollection().getPage(ContactListPage.class).isPreferencesButtonClickable());
+        context.getPagesCollection().getPage(ContactListPage.class).openPreferences();
     }
 
     /**
@@ -167,7 +158,7 @@ public class ContactListPageSteps {
      * @throws Exception
      * @step. ^I archive conversation (.*)$
      */
-    @When("^I archive conversation (.*)$")
+    @When("^I archive conversation (.*)")
     public void IClickArchiveButton(String contact) throws Exception {
         contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         ContactListPage contactListPage = context.getPagesCollection()
@@ -277,8 +268,10 @@ public class ContactListPageSteps {
      */
     @Given("^I open the list of incoming connection requests$")
     public void IOpenIncomingConnectionRequestsList() throws Exception {
-        context.getPagesCollection().getPage(ContactListPage.class)
-                .openConnectionRequestsList();
+        ContactListPage contactListPage = context.getPagesCollection().getPage(ContactListPage.class);
+        Assert.assertTrue("ConnectionRequestsList is not visible", contactListPage.isConnectionRequestsListVisible());
+        contactListPage.openConnectionRequestsList();
+        Assert.assertTrue("ConnectionRequestList is not selected", contactListPage.isConnectionRequestsListSelected());
     }
 
     /**
@@ -287,7 +280,7 @@ public class ContactListPageSteps {
      * @throws Exception
      * @step. ^I open People Picker from Contact List$
      */
-    @When("^I open People Picker from Contact List$")
+    @When("^I open search by clicking the people button$")
     public void IOpenStartUI() throws Exception {
         context.getPagesCollection().getPage(ContactListPage.class).openStartUI();
     }
@@ -680,6 +673,20 @@ public class ContactListPageSteps {
     }
 
     /**
+     * Click the mute option
+     *
+     * @throws Exception
+     * @step. ^I click the option to mute in the options popover$
+     */
+    @When("^I click the option to mute in the options popover$")
+    public void IClickMuteButton() throws Exception {
+        Assert.assertTrue("Mute button is not clickable", context.getPagesCollection().getPage(ContactListPage.class)
+                .isMuteButtonClickable());
+        context.getPagesCollection().getPage(ContactListPage.class)
+                .clickMuteConversation();
+    }
+
+    /**
      * Click the leave option
      *
      * @throws Exception
@@ -918,5 +925,18 @@ public class ContactListPageSteps {
                 context.getPagesCollection().getPage(ContactListPage.class).isArchiveButtonClickable());
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickArchiveConversation();
+    }
+
+    @When("^I see unread number (\\d+) in page title$")
+    public void ISeeUnreadNumberInPageTitle(Integer number) throws Exception {
+        String pageTitle = context.getPagesCollection().getPage(ContactListPage.class).getPageTitle();
+        String unreadNumber = "(" + number + ")";
+        assertThat("Unread number is not visible in page title", pageTitle, containsString(unreadNumber));
+    }
+
+    @Then("^I do not see unread number in page title$")
+    public void IDoNotSeeUnreadNumberInPageTitle() throws Exception {
+        String pageTitle = context.getPagesCollection().getPage(ContactListPage.class).getPageTitle();
+        assertThat("Part of unread number is visible", pageTitle, not(containsString("(")));
     }
 }

@@ -6,9 +6,9 @@ import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(format = { "html:target/report",
-		"json:target/smoke_report.json",
-		"com.wearezeta.auto.common.ZetaFormatter" }, tags = { "@battery_performance" })
+@CucumberOptions(format = {"html:target/report",
+        "json:target/smoke_report.json",
+        "com.wearezeta.auto.common.ZetaFormatter"}, tags = {"@battery_performance"})
 public class BatteryPerformanceRun {
 
 }

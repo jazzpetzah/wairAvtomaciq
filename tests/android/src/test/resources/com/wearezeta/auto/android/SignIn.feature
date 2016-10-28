@@ -7,7 +7,7 @@ Feature: Sign In
     When I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <Password>
-    And I press Log in button
+    And I tap Log in button
     And I accept First Time overlay as soon as it is visible
     Then I see Conversations list with no conversations
 
@@ -17,8 +17,19 @@ Feature: Sign In
 
   @C43808 @rc @regression
   Scenario Outline: Sign in to Wire by phone
-    Given There are 1 users where <Name> is me
+    Given There is 1 user where <Name> is me
     When I sign in using my phone number
+    Then I see Conversations list with no conversations
+
+    Examples:
+      | Name      |
+      | user1Name |
+
+  @C250820 @regression
+  Scenario Outline: Verify I can sign in by phone number with Verification URL
+    Given There is 1 user with phone number only where <Name> is me
+    Given I uninstall all other version of Wire apps
+    When I sign in using my phone number with SMS verification
     Then I see Conversations list with no conversations
 
     Examples:
@@ -50,7 +61,7 @@ Feature: Sign In
     When I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <Password>
-    And I press Log in button
+    And I tap Log in button
     Then I see alert message containing "<ErrMessage>" in the body
 
     Examples:
@@ -66,11 +77,11 @@ Feature: Sign In
     When I enable Airplane mode on the device
     And I have entered login <Email>
     And I have entered password <Password>
-    And I press Log in button
+    And I tap Log in button
     Then I see alert message containing "<ErrMessage>" in the body
     When I disable Airplane mode on the device
     And I accept the error message
-    And I press Log in button
+    And I tap Log in button
     And I accept First Time overlay as soon as it is visible
     Then I see Conversations list with conversations
 
@@ -85,7 +96,7 @@ Feature: Sign In
     When I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <Password>
-    And I press Log in button
+    And I tap Log in button
     And I input a new phone number for user <Name>
     And I input the verification code
     Then I see Conversations list with no conversations
@@ -101,7 +112,7 @@ Feature: Sign In
     When I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <Password>
-    And I press Log in button
+    And I tap Log in button
     And I postpone Add Phone Number action
     And I accept First Time overlay as soon as it is visible
     Then I see Conversations list with no conversations
@@ -110,7 +121,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C131213 @rc @rc42 @regression
+  @C131213 @rc @legacy @regression
   Scenario Outline: Verify you see first time usage overlay on first login by mail
     Given There is 1 user where <Name> is me
     Given I sign in using my email
@@ -145,10 +156,10 @@ Feature: Sign In
     And I select "Remove device" settings menu item
     And I see "<OtherDevice>" settings menu item
     And I do not see "<DeviceToRemoveWithoutPassword>" settings menu item
-    And I press Back button 2 times
+    And I tap Back button 2 times
     When I do not see Manage Devices overlay
     Then I see Conversations list with no conversations
 
     Examples:
       | Password      | Name      | DeviceToRemoveWithoutPassword | DeviceToRemove | OtherDevice |
-      | user1Password | user1Name | Device1                       |  Device2       | Device3     |
+      | user1Password | user1Name | Device1                       | Device2        | Device3     |

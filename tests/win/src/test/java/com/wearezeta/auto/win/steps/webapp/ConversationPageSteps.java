@@ -780,4 +780,43 @@ public class ConversationPageSteps {
         webappPagesCollection.getPage(ConversationPage.class).confirmDelete();
     }
 
+    /**
+     * Verify that the conversation list shows the info "Start a conversation or invite people to join" and the conversation
+     * shows a watermark of the wire logo
+     *
+     * @param shouldNotBeVisible is set to null if "do not" part does not exist
+     * @throws Exception
+     * @step. ^I( do not)? see first time experience with watermark$
+     */
+    @And("^I( do not)? see first time experience with watermark$")
+    public void ISeeWelcomePage(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            assertThat("No watermark wire logo shown",
+                    webappPagesCollection.getPage(ConversationPage.class).isWatermarkVisible());
+            // TODO: Check for first time experience info visible
+        } else {
+            assertThat("Watermark wire logo shown",
+                    webappPagesCollection.getPage(ConversationPage.class).isWatermarkNotVisible());
+            // TODO: Check for first time experience info not visible
+        }
+    }
+    
+    @When("^I click on ephemeral button$")
+    public void IClickEphemeralButton() throws Exception {
+        webappPagesCollection.getPage(com.wearezeta.auto.web.pages.ConversationPage.class).clickEphemeralButton();
+    }
+
+    @When("^I see (.*) with unit (.*) on ephemeral button$")
+    public void ISeeTimeShortOnEphemeralTimer(String time, String unit) throws Exception {
+        Assert.assertTrue("Time " + time + " on ephemeral button is not shown",
+                webappPagesCollection.getPage(com.wearezeta.auto.web.pages.ConversationPage.class).isTimeShortOnEphemeralButtonVisible(time));
+        Assert.assertTrue("Time unit " + unit + " on ephemeral button is not shown",
+                webappPagesCollection.getPage(com.wearezeta.auto.web.pages.ConversationPage.class).isTimeUnitOnEphemeralButtonVisible(unit));
+    }
+    
+    @When("^I see placeholder of conversation input is (.*)$")
+    public void ISeePlaceholderOfInput(String label) throws Exception {
+        Assert.assertThat(webappPagesCollection.getPage(com.wearezeta.auto.web.pages.ConversationPage.class).getPlaceholderOfConversationInput(),
+                equalTo(label));
+    }
 }

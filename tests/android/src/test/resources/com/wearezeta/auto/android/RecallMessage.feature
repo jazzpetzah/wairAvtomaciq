@@ -1,7 +1,7 @@
 Feature: Recall Message
 
-  @C202326 @C202328 @regression @rc
-  Scenario Outline: Verify I can delete my message everywhere (1:1) (myview and other view)
+  @C202326 @regression @rc
+  Scenario Outline: Verify I can delete my message everywhere and I see others delete the message everywhere(1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given User <Contact1> adds new device <ContactDevice>
@@ -34,14 +34,15 @@ Feature: Recall Message
 
   @C225997 @regression
   Scenario Outline: Verify the message deleted everywhere in local Wire database
-    Given Wire has Debug mode enabled
+    Given Device debug mode is supported
+    Given Wire debug mode is enabled
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
-    When I type the message "<Text>" and send it
+    When I type the message "<Text>" and send it by cursor Send button
     And I remember the state of the recent message from user <Contact> in the local database
     And I long tap the Text message "<Text>" in the conversation view
     And I tap Delete for everyone button on the message bottom menu
@@ -52,8 +53,8 @@ Feature: Recall Message
       | Name      | Contact   | Text |
       | user1Name | user2Name | Hi   |
 
-  @C202327 @C202329 @regression @rc
-  Scenario Outline: Verify I can delete my message everywhere (group) (myview and other view)
+  @C202327 @regression @rc
+  Scenario Outline: Verify I can delete my message everywhere and I see others delete the message everywhere(group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
     Given Myself has group chat <Group> with <Contact1>,<Contact2>
@@ -119,10 +120,13 @@ Feature: Recall Message
     When I tap on conversation name <Contact>
     And I tap on text input
     And I type the message "<Message>"
-    And I click on the GIF button
+    And I tap Gif button from cursor toolbar
+    And I select a random gif from the grid preview
     Then I see giphy preview page
-    When I click on the giphy send button
-    And I long tap Image container in the conversation view
+    When I tap on the giphy Send button
+    Then I see a picture in the conversation view
+    And I see the picture in the conversation is animated
+    When I long tap Image container in the conversation view
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I tap Delete for everyone button on the message bottom menu
     And I tap Delete button on the alert
@@ -138,12 +142,12 @@ Feature: Recall Message
   Scenario Outline: Verify delete everywhere works for link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
+    Given User <Contact> adds new device <ContactDevice>
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
-    When I type the message "<Link>" and send it
+    When I type the message "<Link>" and send it by cursor Send button
     And I long tap Link Preview container in the conversation view
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I tap Delete for everyone button on the message bottom menu
@@ -212,8 +216,7 @@ Feature: Recall Message
     Given I tap on conversation name <Contact>
     When I long tap Audio message button <TapDuration> seconds from cursor toolbar
     And I tap audio recording Send button
-    # Wait for the audio to be fully uploaded
-    And I wait for 15 seconds
+    And I wait up to 30 seconds until audio message upload is completed
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I long tap Audio Message container in the conversation view
     And I tap Delete for everyone button on the message bottom menu
@@ -237,8 +240,7 @@ Feature: Recall Message
     Given I tap on conversation name <Contact>
     When I tap Video message button from cursor toolbar
     Then I see Video Message container in the conversation view
-  # Wait for the video to be fully uploaded
-    And I wait for 20 seconds
+    And I wait up to 60 seconds until video message upload is completed
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I long tap Video Message container in the conversation view
     And I tap Delete for everyone button on the message bottom menu
@@ -248,9 +250,9 @@ Feature: Recall Message
 
     Examples:
       | Name      | Contact   | FileSize | FileFullName     | ContactDevice |
-      | user1Name | user2Name | 26.00MB  | random_video.mp4 | Device1       |
+      | user1Name | user2Name | 20.00MB  | random_video.mp4 | Device1       |
 
-  @C202330 @C202331 @regression @rc
+  @C202330 @regression @rc
   Scenario Outline: Verify deleting everywhere is synchronised across own devices when they are online (1:1 and group)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -296,7 +298,7 @@ Feature: Recall Message
       | Name      | Contact1  | ContactDevice |
       | user1Name | user2Name | Device1       |
 
-  @C206252 @C226046 @staging
+  @C206252 @C226046 @regression
   Scenario Outline: (AN-4394) Verify I cannot delete message everywhere/like message when I was removed from group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -305,7 +307,7 @@ Feature: Recall Message
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <GroupChatName>
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     And <Contact1> removes Myself from group <GroupChatName>
     And I tap the Text message "<Message>" in the conversation view
     # C226046
@@ -328,7 +330,7 @@ Feature: Recall Message
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     # Youtube
-    When I type the message "<YoutubeLink>" and send it
+    When I type the message "<YoutubeLink>" and send it by cursor Send button
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I long tap Youtube container in the conversation view
     And I tap Delete for everyone button on the message bottom menu
@@ -336,7 +338,7 @@ Feature: Recall Message
     Then I do not see Youtube container in the conversation view
     And User <Contact> see the recent message from user Myself via device <ContactDevice> is changed in 15 seconds
     # Soundcloud
-    When I type the message "<SoundCloudLink>" and send it
+    When I type the message "<SoundCloudLink>" and send it by cursor Send button
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I long tap Soundcloud container in the conversation view
     And I tap Delete for everyone button on the message bottom menu
@@ -403,7 +405,7 @@ Feature: Recall Message
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
-    And I type the message "<Message>" and send it
+    And I type the message "<Message>" and send it by cursor Send button
     And I see the message "<Message>" in the conversation view
     And User <Contact1> remembers the recent message from user Myself via device <ContactDevice>
     And I enable Airplane mode on the device

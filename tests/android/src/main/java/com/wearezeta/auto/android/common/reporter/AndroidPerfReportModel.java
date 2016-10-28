@@ -11,69 +11,69 @@ import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.common.performance.PerfReportModel;
 
 public class AndroidPerfReportModel extends PerfReportModel {
-	private static final String APP_LAUNCH_TIME_REGEX = "App launch time ([\\d]+)";
+    private static final String APP_LAUNCH_TIME_REGEX = "App launch time ([\\d]+)";
 
-	private static final String LOGIN_STARTED_REGEX = "Login pressed at ([\\d]+)";
+    private static final String LOGIN_STARTED_REGEX = "Login pressed at ([\\d]+)";
 
-	private static final String LOGIN_COMPLETED_REGEX = "Login completed at ([\\d]+)";
+    private static final String LOGIN_COMPLETED_REGEX = "Login completed at ([\\d]+)";
 
-	private static final String CONVERSATION_PAGE_VISIBLE_REGEX = "Conversation page visible after ([\\d]+)";
+    private static final String CONVERSATION_PAGE_VISIBLE_REGEX = "Conversation page visible after ([\\d]+)";
 
-	private static final Logger log = ZetaLogger
-			.getLog(AndroidPerfReportModel.class.getSimpleName());
+    private static final Logger log = ZetaLogger
+            .getLog(AndroidPerfReportModel.class.getSimpleName());
 
-	public AndroidPerfReportModel() {
-		try {
-			this.setBuildNumber(AndroidCommonUtils.readClientVersionFromAdb());
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(e.getMessage());
-		}
+    public AndroidPerfReportModel() {
+        try {
+            this.setBuildNumber(AndroidCommonUtils.readClientVersionFromAdb());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+        }
 
-		try {
-			final ClientDeviceInfo deviceInfo = AndroidCommonUtils
-					.readDeviceInfo();
-			loadValuesFromDeviceInfo(deviceInfo);
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(e.getMessage());
-		}
-	}
+        try {
+            final ClientDeviceInfo deviceInfo = AndroidCommonUtils
+                    .readDeviceInfo();
+            loadValuesFromDeviceInfo(deviceInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+        }
+    }
 
-	private static long nanosecondsToMilliseconds(long nano) {
-		return nano / 1000000L;
-	}
+    private static long nanosecondsToMilliseconds(long nano) {
+        return nano / 1000000L;
+    }
 
-	@Override
-	protected long readLogValue(final String patternStr, final String output) {
-		return nanosecondsToMilliseconds(super.readLogValue(patternStr, output));
-	}
+    @Override
+    protected long readLogValue(final String patternStr, final String output) {
+        return nanosecondsToMilliseconds(super.readLogValue(patternStr, output));
+    }
 
-	@Override
-	protected List<Long> readLogValues(final String patternStr,
-			final String output) {
-		final List<Long> rawLogValues = super.readLogValues(patternStr, output);
-		List<Long> result = new ArrayList<>();
-		for (long item: rawLogValues) {
-			result.add(nanosecondsToMilliseconds(item));
-		}
-		return result;
-	}
+    @Override
+    protected List<Long> readLogValues(final String patternStr,
+                                       final String output) {
+        final List<Long> rawLogValues = super.readLogValues(patternStr, output);
+        List<Long> result = new ArrayList<>();
+        for (long item : rawLogValues) {
+            result.add(nanosecondsToMilliseconds(item));
+        }
+        return result;
+    }
 
-	public void loadDataFromLogCat(final String output) {
-		this.setAppStartupTime(readLogValue(APP_LAUNCH_TIME_REGEX, output));
-		List<Long> signInStartedTimestamps = readLogValues(LOGIN_STARTED_REGEX,
-				output);
-		List<Long> signInCompletedTimestamps = readLogValues(
-				LOGIN_COMPLETED_REGEX, output);
-		// The last recorded value contains what we need
-		this.setSignInTime(signInCompletedTimestamps
-				.get(signInCompletedTimestamps.size() - 1)
-				- signInStartedTimestamps.get(0));
-		this.clearConvoStartupTimes();
-		for (long timeMillis : readLogValues(CONVERSATION_PAGE_VISIBLE_REGEX,
-				output)) {
-			this.addConvoStartupTime(timeMillis);
-		}
-	}
+    public void loadDataFromLogCat(final String output) {
+        this.setAppStartupTime(readLogValue(APP_LAUNCH_TIME_REGEX, output));
+        List<Long> signInStartedTimestamps = readLogValues(LOGIN_STARTED_REGEX,
+                output);
+        List<Long> signInCompletedTimestamps = readLogValues(
+                LOGIN_COMPLETED_REGEX, output);
+        // The last recorded value contains what we need
+        this.setSignInTime(signInCompletedTimestamps
+                .get(signInCompletedTimestamps.size() - 1)
+                - signInStartedTimestamps.get(0));
+        this.clearConvoStartupTimes();
+        for (long timeMillis : readLogValues(CONVERSATION_PAGE_VISIBLE_REGEX,
+                output)) {
+            this.addConvoStartupTime(timeMillis);
+        }
+    }
 }
