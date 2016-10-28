@@ -319,3 +319,47 @@ Feature: Ephemeral Messages
     Examples:
       | Name      | Contact   | Message | Timeout | DeviceName    |
       | user1Name | user2Name | y1      | 15      | ContactDevice |
+
+  @C311221 @staging @fastLogin
+  Scenario Outline: Verify receiving ephemeral assets (picture, video, audio, link preview, location)
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <DeviceName>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    Given User <Contact> switches user Myself to ephemeral mode with <EphemeralTimeout> seconds timeout
+    # Picture
+    When User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    And I wait for <SyncTimeout> seconds
+    And I see 1 photo in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I see 0 photos in the conversation view
+    # Video
+    When User <Contact> sends file <FileName> having MIME type <MIMEType> to single user conversation <Name> using device <DeviceName>
+    And I wait for <SyncTimeout> seconds
+    And I see video message container in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I do not see video message container in the conversation view
+    # Audio
+    When User <Contact> sends file <AudioFileName> having MIME type <AudioMIME> to single user conversation <Name> using device <DeviceName>
+    And I wait for <SyncTimeout> seconds
+    And I see audio message container in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I do not see audio message container in the conversation view
+    # Link Preview
+    When User <Contact> sends encrypted message "<Link>" to user Myself
+    And I wait for <SyncTimeout> seconds
+    And I see link preview container in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I do not see link preview container in the conversation view
+    # Location
+    When User <Contact> shares the default location to user Myself via device <DeviceName>
+    And I wait for <SyncTimeout> seconds
+    And I see location map container in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I do not see location map container in the conversation view
+
+    Examples:
+      | Name      | Contact   | SyncTimeout | EphemeralTimeout | DeviceName    | Picture     | FileName    | MIMEType  | AudioFileName | AudioMIME | Link         |
+      | user1Name | user2Name | 3           | 5                | ContactDevice | testing.jpg | testing.mp4 | video/mp4 | test.m4a      | audio/mp4 | www.wire.com |
