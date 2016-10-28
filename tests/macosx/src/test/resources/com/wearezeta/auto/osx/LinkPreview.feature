@@ -1,4 +1,4 @@
-Feature: LinkPreview
+Feature: Link Preview
 
   @C169204 @smoke
   Scenario Outline: Verify you can see preview for sent link in 1:1
@@ -36,9 +36,9 @@ Feature: LinkPreview
     When I click context menu of the last message
     And I click delete in message context menu for my own message
     And I click confirm to delete message for me
-    And I see 1 messages in conversation
     Then I do not see a title <LinkTitle> in link preview in the conversation view
     And I do not see a picture <LinkPreviewImage> from link preview
+    And I see 1 messages in conversation
 
     Examples:
       | Login      | Password      | Name      | Contact   | Link             | LinkInPreview | LinkTitle                                                                            | LinkPreviewImage |
