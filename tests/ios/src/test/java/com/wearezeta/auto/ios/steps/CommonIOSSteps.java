@@ -222,13 +222,14 @@ public class CommonIOSSteps {
     }
 
     private static void prepareSimulator(final Capabilities caps, final List<String> args) throws Exception {
+        if (caps.is(CAPABILITY_NAME_FORCE_RESET)) {
+            IOSSimulatorHelpers.reset();
+        }
+        
         int ntry = 0;
         Exception storedException = null;
         do {
             try {
-                if (caps.is(CAPABILITY_NAME_FORCE_RESET)) {
-                    IOSSimulatorHelpers.reset();
-                }
                 if (ntry > 0 || !IOSSimulatorHelpers.isRunning()) {
                     IOSSimulatorHelpers.start();
                 }
