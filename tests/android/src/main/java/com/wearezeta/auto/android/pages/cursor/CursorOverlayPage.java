@@ -1,13 +1,14 @@
-package com.wearezeta.auto.android.pages;
+package com.wearezeta.auto.android.pages.cursor;
 
+import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
 
-public class ExtendedCursorOverlayPage extends AndroidPage {
+public class CursorOverlayPage extends AndroidPage {
 
-    public ExtendedCursorOverlayPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+    public CursorOverlayPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 

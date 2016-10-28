@@ -1,13 +1,13 @@
 package com.wearezeta.auto.android.steps;
 
-import com.wearezeta.auto.android.pages.ExtendedCursorEphemeralOverlayPage;
+import com.wearezeta.auto.android.pages.cursor.EphemeralOverlayPage;
 import cucumber.api.java.en.When;
 
 public class ExtendedCursorEphemeralOverlayPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
-    private ExtendedCursorEphemeralOverlayPage getExtendedCursorEphemeralOverlayPage() throws Exception {
-        return pagesCollection.getPage(ExtendedCursorEphemeralOverlayPage.class);
+    private EphemeralOverlayPage getExtendedCursorEphemeralOverlayPage() throws Exception {
+        return pagesCollection.getPage(EphemeralOverlayPage.class);
     }
 
     /**
