@@ -785,7 +785,7 @@ public class AndroidCommonUtils extends CommonUtils {
 
     public static boolean verifyGoogleLocationServiceInstalled() throws Exception {
         String output = AndroidCommonUtils.getAdbOutput("shell 'pm list packages'");
-        final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("com.google.android.location") + "\\b");
+        final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("com.android.location.fused") + "\\b");
         return pattern.matcher(output).find();
     }
 

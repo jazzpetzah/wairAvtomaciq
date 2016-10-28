@@ -16,7 +16,8 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.*;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import com.wearezeta.auto.common.misc.IOSDistributable;
+import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import io.appium.java_client.MobileBy;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -28,6 +29,8 @@ import com.wearezeta.auto.ios.pages.keyboard.IOSKeyboard;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.remote.UnreachableBrowserException;
+
+import static com.wearezeta.auto.common.CommonUtils.getIosApplicationPathFromConfig;
 
 
 public abstract class IOSPage extends BasePage {
@@ -184,7 +187,7 @@ public abstract class IOSPage extends BasePage {
 
     public void acceptAlertIfVisible() throws Exception {
         try {
-            handleAlert(AlertAction.ACCEPT, DriverUtils.getDefaultLookupTimeoutSeconds());
+            handleAlert(AlertAction.ACCEPT, 3);
         } catch (IllegalStateException e) {
             // Ignore silently
         }
@@ -192,7 +195,7 @@ public abstract class IOSPage extends BasePage {
 
     public void dismissAlertIfVisible() throws Exception {
         try {
-            handleAlert(AlertAction.DISMISS, DriverUtils.getDefaultLookupTimeoutSeconds());
+            handleAlert(AlertAction.DISMISS, 3);
         } catch (IllegalStateException e) {
             // Ignore silently
         }
@@ -268,9 +271,11 @@ public abstract class IOSPage extends BasePage {
     public void pressHomeButton(int timeSeconds) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            IOSSimulatorHelper.goHome();
+            IOSSimulatorHelpers.goHome();
             Thread.sleep(timeSeconds * 1000);
-            IOSSimulatorHelper.launchApp(getDriver().getBundleID());
+            IOSSimulatorHelpers.launchApp(
+                    IOSDistributable.getInstance(getIosApplicationPathFromConfig(getClass())).getBundleId()
+            );
             Thread.sleep(1000);
         } else {
             this.getDriver().runAppInBackground(timeSeconds);
@@ -280,7 +285,7 @@ public abstract class IOSPage extends BasePage {
     public void pressHomeButton() throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            IOSSimulatorHelper.goHome();
+            IOSSimulatorHelpers.goHome();
             Thread.sleep(1000);
         } else {
             throw new IllegalStateException("This method works for iOS Simulator only");
@@ -290,7 +295,9 @@ public abstract class IOSPage extends BasePage {
     public void restoreWire() throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            IOSSimulatorHelper.launchApp(getDriver().getBundleID());
+            IOSSimulatorHelpers.launchApp(
+                    IOSDistributable.getInstance(getIosApplicationPathFromConfig(getClass())).getBundleId()
+            );
             Thread.sleep(1000);
         } else {
             throw new IllegalStateException("This method works for iOS Simulator only");
@@ -304,7 +311,7 @@ public abstract class IOSPage extends BasePage {
         final Dimension elSize = el.getSize();
         final Point elLocation = el.getLocation();
         final Dimension windowSize = getDriver().manage().window().getSize();
-        IOSSimulatorHelper.doubleClickAt(
+        IOSSimulatorHelpers.doubleClickAt(
                 String.format("%.2f", (elLocation.x + elSize.width * percentX / 100.0) / windowSize.width),
                 String.format("%.2f", (elLocation.y + elSize.height * percentY / 100.0) / windowSize.height));
     }
@@ -339,7 +346,7 @@ public abstract class IOSPage extends BasePage {
             px = percentX / 100.0;
             py = percentY / 100.0;
         }
-        IOSSimulatorHelper.clickAt(String.format("%.2f", px),
+        IOSSimulatorHelpers.clickAt(String.format("%.2f", px),
                 String.format("%.2f", py),
                 String.format("%.3f", durationSeconds));
     }
@@ -378,7 +385,7 @@ public abstract class IOSPage extends BasePage {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             final long millisecondsStarted = System.currentTimeMillis();
-            IOSSimulatorHelper.lock();
+            IOSSimulatorHelpers.lock();
             final long lockDuration = (System.currentTimeMillis() - millisecondsStarted) / 1000;
             if (timeSeconds > lockDuration + 1) {
                 Thread.sleep((timeSeconds - lockDuration) * 1000);
@@ -386,11 +393,11 @@ public abstract class IOSPage extends BasePage {
                 Thread.sleep(2000);
             }
             // this is to show the unlock label if not visible yet
-            IOSSimulatorHelper.goHome();
+            IOSSimulatorHelpers.goHome();
             if (getDriver().getOSVersion().compareTo(new DefaultArtifactVersion("10.0")) >= 0) {
-                IOSSimulatorHelper.goHome();
+                IOSSimulatorHelpers.goHome();
             } else {
-                IOSSimulatorHelper.swipeRight();
+                IOSSimulatorHelpers.swipeRight();
             }
             Thread.sleep(2000);
         } else {
@@ -406,7 +413,7 @@ public abstract class IOSPage extends BasePage {
         final Point location = el.getLocation();
         final Dimension size = el.getSize();
         final Dimension screenSize = getDriver().manage().window().getSize();
-        IOSSimulatorHelper.swipe(
+        IOSSimulatorHelpers.swipe(
                 (location.getX() + percentStartX * size.getWidth() / 100.0) / screenSize.getWidth(),
                 (location.getY() + percentStartY * size.getHeight() / 100.0) / screenSize.getHeight(),
                 (location.getX() + percentEndX * size.getWidth() / 100.0) / screenSize.getWidth(),
@@ -656,15 +663,6 @@ public abstract class IOSPage extends BasePage {
         Thread.sleep(3000);
     }
 
-    public void installIpa(File ipaFile) throws Exception {
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            IOSSimulatorHelper.installIpa(ipaFile);
-        } else {
-            throw new NotImplementedException("Application install is only available for Simulator");
-        }
-
-    }
-
     public void tapConfirmButton() throws Exception {
         getElement(xpathConfirmButton).click();
     }
@@ -679,9 +677,17 @@ public abstract class IOSPage extends BasePage {
 
     public void installApp(File appFile) throws Exception {
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            IOSSimulatorHelper.installApp(appFile);
+            IOSSimulatorHelpers.installApp(appFile);
         } else {
             throw new NotImplementedException("Application install is only available for Simulator");
+        }
+    }
+
+    public void uninstallApp(String bundleId) throws Exception {
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            IOSSimulatorHelpers.uninstallApp(bundleId);
+        } else {
+            throw new NotImplementedException("Application uninstall is only available for Simulator");
         }
     }
 

@@ -2,7 +2,7 @@ Feature: Conversation View
 
   @C3182 @regression @fastLogin
   Scenario Outline: Verify tooltip is shown when cursor area is empty and in/not in focus
-    Given There are 2 user where <Name> is me
+    Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -56,8 +56,8 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
-    And I accept alert
-    And I accept alert
+    And I accept alert if visible
+    And I accept alert if visible
     And I select the first picture from Keyboard Gallery
     And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
@@ -129,7 +129,7 @@ Feature: Conversation View
     And I have entered login <Login>
     And I have entered password <Password>
     And I tap Login button
-    And I accept alert
+    And I accept alert if visible
     And I accept First Time overlay
     And I dismiss settings warning
     And I see conversations list
@@ -169,8 +169,8 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
-    And I accept alert
-    And I accept alert
+    And I accept alert if visible
+    And I accept alert if visible
     And I select the first picture from Keyboard Gallery
     And I tap Confirm button on Picture preview page
     And I see 1 photo in the conversation view
@@ -292,8 +292,8 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
-    And I accept alert
-    And I accept alert
+    And I accept alert if visible
+    And I accept alert if visible
     And I select the first picture from Keyboard Gallery
     And I tap Sketch button on Picture preview page
     And I draw a random sketch
@@ -345,7 +345,7 @@ Feature: Conversation View
     Then I do not see conversation <Contact1> in conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search UI
-    And I accept alert
+    And I accept alert if visible
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
@@ -406,7 +406,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
-    And I accept alert
+    And I accept alert if visible
     And I accept alert if visible
     And I tap Camera Shutter button on Keyboard Gallery overlay
     And I tap Confirm button on Picture preview page
@@ -424,7 +424,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
-    And I accept alert
+    And I accept alert if visible
     And I accept alert if visible
     And I tap Toggle Camera button on Keyboard Gallery overlay
     And I tap Camera Shutter button on Keyboard Gallery overlay
@@ -583,8 +583,8 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see 1 photo in the conversation view
     And I tap Add Picture button from input tools
-    And I accept alert
-    And I accept alert
+    And I accept alert if visible
+    And I accept alert if visible
     And I tap Camera Roll button on Keyboard Gallery overlay
     And I remember count of the photos in Camera Roll
     And I tap Cancel button on Camera Roll page

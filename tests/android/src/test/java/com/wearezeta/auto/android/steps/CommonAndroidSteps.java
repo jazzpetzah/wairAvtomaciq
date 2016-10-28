@@ -362,25 +362,25 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Presses the android back button
+     * Tap the android back button
      *
      * @throws Exception
-     * @step. ^I press [Bb]ack button$
+     * @step. ^I tap [Bb]ack button$
      */
-    @When("^I press [Bb]ack button$")
-    public void PressBackButton() throws Exception {
+    @When("^I tap [Bb]ack button$")
+    public void TapBackButton() throws Exception {
         pagesCollection.getCommonPage().navigateBack();
     }
 
     /**
-     * Presses the android back button X times
+     * Tap the android back button X times
      *
      * @param times how many times to press
      * @throws Exception
-     * @step. ^I press [Bb]ack button (\\d+) times$
+     * @step. ^I tap [Bb]ack button (\\d+) times$
      */
-    @When("^I press [Bb]ack button (\\d+) times$")
-    public void PressBackButtonXTimes(int times) throws Exception {
+    @When("^I tap [Bb]ack button (\\d+) times$")
+    public void TapBackButtonXTimes(int times) throws Exception {
         for (int i = 0; i < times; i++) {
             pagesCollection.getCommonPage().navigateBack();
         }
@@ -396,8 +396,7 @@ public class CommonAndroidSteps {
      */
     @Given("^(\\w+) (?:wait|waits) until (\\d+) (?:person|people) (?:is|are) in the Top People list on the backend$")
     public void UserWaitsUntilContactExistsInTopPeopleResults(String searchByNameAlias, int size) throws Exception {
-        commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(
-                searchByNameAlias, size);
+        commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(searchByNameAlias, size);
     }
 
     /**
@@ -491,8 +490,12 @@ public class CommonAndroidSteps {
     public void ILockUnlockTheDevice(String shouldUnlock) throws Exception {
         if (shouldUnlock == null) {
             AndroidCommonUtils.lockScreen();
+            //UI need time to react action
+            WaitForTime(UI_DELAY_TIME);
         } else {
             AndroidCommonUtils.unlockDevice();
+            //UI need time to react action
+            WaitForTime(UI_DELAY_TIME);
             // FIXME: Unlock selendroid app does not restore the previously active application
             AndroidCommonUtils.switchToApplication(getPackageName());
         }
@@ -544,13 +547,11 @@ public class CommonAndroidSteps {
     public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent(String shouldBeEqual) throws Exception {
         final int timeoutSeconds = 10;
         if (shouldBeEqual == null) {
-            Assert.assertTrue(
-                    String.format("The current screen state seems to be similar to the previous one after %s seconds",
-                            timeoutSeconds), screenState.isChanged(timeoutSeconds, 0.98));
+            Assert.assertTrue(String.format("The current screen state seems to be similar to the previous one after %s " +
+                    "seconds", timeoutSeconds), screenState.isChanged(timeoutSeconds, 0.98));
         } else {
-            Assert.assertTrue(
-                    String.format("The current screen state seems to be different to the previous one after %s seconds",
-                            timeoutSeconds), screenState.isNotChanged(timeoutSeconds, 0.75));
+            Assert.assertTrue(String.format("The current screen state seems to be different to the previous one after %s " +
+                    "seconds", timeoutSeconds), screenState.isNotChanged(timeoutSeconds, 0.75));
         }
     }
 
@@ -640,8 +641,8 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Silences a given user from the perspective of the another user through
-     * the backend
+     * Silences a given user from the perspective of the another user through the backend
+     * Note: should be used after login
      *
      * @param mutedUser the user to silence
      * @param otherUser the user who does the silencing
@@ -667,7 +668,6 @@ public class CommonAndroidSteps {
     public void GroupGetsSilenced(String mutedGroup, String otherUser) throws Throwable {
         mutedGroup = usrMgr.replaceAliasesOccurences(mutedGroup, ClientUsersManager.FindBy.NAME_ALIAS);
         otherUser = usrMgr.findUserByNameOrNameAlias(otherUser).getName();
-
         commonSteps.MuteConversationWithGroup(otherUser, mutedGroup);
     }
 
@@ -697,8 +697,8 @@ public class CommonAndroidSteps {
      * @step. ^(.*) has group chat (.*) with (.*)$
      */
     @Given("^(.*) has group chat (.*) with (.*)$")
-    public void UserHasGroupChatWithContacts(String chatOwnerNameAlias, String chatName,
-                                             String otherParticipantsNameAliases) throws Exception {
+    public void UserHasGroupChatWithContacts(String chatOwnerNameAlias, String chatName, String otherParticipantsNameAliases)
+            throws Exception {
         commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName, otherParticipantsNameAliases);
     }
 
@@ -760,8 +760,8 @@ public class CommonAndroidSteps {
      * @step. ^User (\\w+) (securely )?pings? conversation (.*)$
      */
     @When("^User (\\w+) (securely )?pings? conversation (.*)$")
-    public void UserPingedConversation(String pingFromUserNameAlias,
-                                       String isSecure, String dstConversationName) throws Exception {
+    public void UserPingedConversation(String pingFromUserNameAlias, String isSecure, String dstConversationName)
+            throws Exception {
         if (isSecure == null) {
             commonSteps.UserPingedConversation(pingFromUserNameAlias, dstConversationName);
         } else {
@@ -795,11 +795,9 @@ public class CommonAndroidSteps {
      * @step. ^User (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$
      */
     @When("^User (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
-    public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
-                                              String msg, String deviceName, String convoType, String dstConvoName) throws
-            Exception {
-        final String msgToSend = (msg == null || msg.trim().length() == 0) ?
-                CommonUtils.generateRandomString(10) : msg.trim();
+    public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted, String msg, String deviceName,
+                                              String convoType, String dstConvoName) throws Exception {
+        final String msgToSend = (msg == null || msg.trim().length() == 0) ? CommonUtils.generateRandomString(10) : msg.trim();
         if (convoType.equals("user")) {
             if (isEncrypted == null) {
                 commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
@@ -1000,8 +998,7 @@ public class CommonAndroidSteps {
     @Given("^My device runs Android (.*) or higher$")
     public void MyDeviceRunsAndroid(String targetVersion) throws Exception {
         if (AndroidCommonUtils.compareAndroidVersion(targetVersion) < 0) {
-            throw new PendingException(
-                    "This test isn't suitable to run on " + "anything lower than Android " + targetVersion);
+            throw new PendingException("This test isn't suitable to run on " + "anything lower than Android " + targetVersion);
         }
     }
 
@@ -1150,13 +1147,13 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Press Send button on OnScreen keyboard (the keyboard should be already populated)
+     * Tap Send button on OnScreen keyboard (the keyboard should be already populated)
      *
      * @throws Exception
-     * @step. ^I press Send button at Android keyboard$
+     * @step. ^I tap Send button at Android keyboard$
      */
-    @And("^I press Send button at Android keyboard$")
-    public void IPressSendButton() throws Exception {
+    @And("^I tap Send button at Android keyboard$")
+    public void ITapSendButton() throws Exception {
         pagesCollection.getCommonPage().pressKeyboardSendButton();
     }
 
@@ -1279,7 +1276,7 @@ public class CommonAndroidSteps {
      * @throws Exception
      * @step. ^(.*) sends (.*) file having name "(.*)" and MIME type "(.*)" via device (.*) to (user|group conversation) (.*)$
      */
-    @When("^(.*) sends (.*) file having name \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) " +
+    @When("^(.*) sends (.*) file having name \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation)" +
             " (.*)$")
     public void ContactSendsXFileFromSE(String contact, String size, String fileFullName, String mimeType,
                                         String deviceName, String convoType, String dstConvoName) throws Exception {
@@ -1514,14 +1511,14 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Press back button until Wire app is in foreground
+     * Tap back button until Wire app is in foreground
      *
      * @param timeoutSeconds timeout in seconds for try process
      * @throws Exception
-     * @step. ^I press [Bb]ack button until Wire app is in foreground in (\d+) seconds$
+     * @step. ^I tap [Bb]ack button until Wire app is in foreground in (\d+) seconds$
      */
-    @When("^I press [Bb]ack button until Wire app is in foreground in (\\d+) seconds$")
-    public void IPressBackButtonUntilWireAppInForeground(int timeoutSeconds) throws Exception {
+    @When("^I tap [Bb]ack button until Wire app is in foreground in (\\d+) seconds$")
+    public void ITapBackButtonUntilWireAppInForeground(int timeoutSeconds) throws Exception {
         final String packageId = AndroidCommonUtils.getAndroidPackageFromConfig(getClass());
         CommonUtils.waitUntilTrue(
                 timeoutSeconds,
@@ -1845,8 +1842,7 @@ public class CommonAndroidSteps {
      */
     @When("^I unregister GCM push token in (\\d+) seconds$")
     public void IUnresgisterGCMToekn(int timeoutSeconds) throws Exception {
-        Optional<String> pushToken = CommonUtils.waitUntil(
-                timeoutSeconds,
+        Optional<String> pushToken = CommonUtils.waitUntil( timeoutSeconds,
                 CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
                 () -> {
                     String GCMTokenOutput = AndroidLogListener.getInstance(ListenerType.GCMToken).getStdOut();

@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import java.io.File;
+import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,10 +12,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.*;
+import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
+import com.wearezeta.auto.common.driver.device_helpers.IOSRealDeviceHelpers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.IOSDistributable;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
@@ -24,11 +29,10 @@ import cucumber.api.Scenario;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import gherkin.formatter.model.Result;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.junit.Assert;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -46,8 +50,8 @@ import static com.wearezeta.auto.common.CommonUtils.*;
 public class CommonIOSSteps {
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
-    //    private static final String IOS_WD_APP_BUNDLE = "com.apple.test.WebDriverAgentRunner-Runner";
-//    private static final String FACEBOOK_WD_APP_BUNDLE = "com.facebook.IntegrationApp";
+    // private static final String IOS_WD_APP_BUNDLE = "com.apple.test.WebDriverAgentRunner-Runner";
+    // private static final String FACEBOOK_WD_APP_BUNDLE = "com.facebook.IntegrationApp";
     private static final String ADDRESSBOOK_HELPER_APP_NAME = "AddressbookApp.ipa";
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
@@ -59,7 +63,11 @@ public class CommonIOSSteps {
     public static final String CAPABILITY_NAME_ADDRESSBOOK = "addressbookStart";
     public static final String TAG_NAME_ADDRESSBOOK = "@" + CAPABILITY_NAME_ADDRESSBOOK;
 
+    public static final String CAPABILITY_NAME_NO_UNINSTALL = "noUninstall";
     public static final String TAG_NAME_UPGRADE = "@upgrade";
+
+    public static final String CAPABILITY_NAME_FORCE_RESET = "forceReset";
+    public static final String TAG_NAME_FORCE_RESET = "@" + CAPABILITY_NAME_FORCE_RESET;
 
     static {
         System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
@@ -76,12 +84,22 @@ public class CommonIOSSteps {
         return getIosAppiumUrlFromConfig(CommonIOSSteps.class);
     }
 
-    private static String getAppPath() throws Exception {
-        return getIosApplicationPathFromConfig(CommonIOSSteps.class);
+    private static String getAppPath() {
+        try {
+            return getIosApplicationPathFromConfig(CommonIOSSteps.class);
+        } catch (Exception e) {
+            Throwables.propagate(e);
+        }
+        return null;
     }
 
-    private static String getOldAppPath() throws Exception {
-        return getOldAppPathFromConfig(CommonIOSSteps.class);
+    private static String getOldAppPath() {
+        try {
+            return getOldAppPathFromConfig(CommonIOSSteps.class);
+        } catch (Exception e) {
+            Throwables.propagate(e);
+        }
+        return null;
     }
 
     /**
@@ -97,8 +115,6 @@ public class CommonIOSSteps {
 
     private static final int DRIVER_CREATION_RETRIES_COUNT = 2;
 
-    private static Map<String, String> cachedBundleIds = new HashMap<>();
-
     private static final long INSTALL_DELAY_MS = 5000;
 
     // These settings are needed to properly sign WDA for real device tests
@@ -107,21 +123,11 @@ public class CommonIOSSteps {
             System.getProperty("user.home"), "/Library/Keychains/MyKeychain.keychain");
     private static final String KEYCHAIN_PASSWORD = "123456";
 
-    private static void prepareRealDevice(String udid, String ipaPath) throws Exception {
-        if (!cachedBundleIds.containsKey(ipaPath)) {
-            final File appPath = CommonUtils.extractAppFromIpa(new File(ipaPath));
-            try {
-                cachedBundleIds.put(ipaPath, ZetaIOSDriver.parseBundleId(
-                        new File(appPath.getCanonicalPath() + File.separator + "Info.plist")));
-            } finally {
-                FileUtils.deleteDirectory(appPath);
-            }
-        }
-        RealDeviceHelpers.uninstallApp(udid, cachedBundleIds.get(ipaPath));
-    }
+    // https://github.com/wireapp/wire-ios/pull/339
+    private static final String ARGS_FILE_NAME = "wire_arguments.txt";
 
     @SuppressWarnings("unchecked")
-    public Future<ZetaIOSDriver> resetIOSDriver(String ipaPath,
+    public Future<ZetaIOSDriver> resetIOSDriver(String appPath,
                                                 Optional<Map<String, Object>> additionalCaps,
                                                 int retriesCount) throws Exception {
         final boolean isRealDevice = !CommonUtils.getIsSimulatorFromConfig(getClass());
@@ -131,14 +137,14 @@ public class CommonIOSSteps {
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
         capabilities.setCapability(ZetaIOSDriver.AUTOMATION_NAME_CAPABILITY_NAME,
                 ZetaIOSDriver.AUTOMATION_MODE_XCUITEST);
-        capabilities.setCapability("app", ipaPath);
-        capabilities.setCapability("fullReset", true);
+        capabilities.setCapability("app", appPath);
         capabilities.setCapability("appName", getAppName());
+        capabilities.setCapability("autoLaunch", false);
+        capabilities.setCapability("bundleId", IOSDistributable.getInstance(appPath).getBundleId());
         if (isRealDevice) {
-            final String udid = RealDeviceHelpers.getUDID().orElseThrow(
+            final String udid = IOSRealDeviceHelpers.getUDID().orElseThrow(
                     () -> new IllegalStateException("Cannot detect any connected iDevice")
             );
-            prepareRealDevice(udid, ipaPath);
 
             // We don't really care about which particular real device model we have
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()).split("\\s+")[0]);
@@ -152,6 +158,7 @@ public class CommonIOSSteps {
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()));
             // https://github.com/appium/appium-xcuitest-driver/pull/184/files
             capabilities.setCapability("iosInstallPause", INSTALL_DELAY_MS);
+            capabilities.setCapability("noReset", true);
         }
         capabilities.setCapability("platformVersion", getPlatformVersion());
         capabilities.setCapability("launchTimeout", ZetaIOSDriver.MAX_SESSION_INIT_DURATION_MILLIS);
@@ -192,9 +199,68 @@ public class CommonIOSSteps {
         argsValue.put("args", processArgs);
         capabilities.setCapability("processArguments", argsValue.toString());
 
+        if (!isRealDevice) {
+            prepareSimulator(capabilities, processArgs);
+        }
+
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance().resetDriver(
                 getUrl(), capabilities, retriesCount
         );
+    }
+
+    // We don't know Wire Application ID for sure,
+    // so we do create tmp folder for every application under the current simulator
+    private static List<File> createInternalWireTempRoots() throws Exception {
+        final List<File> result = new ArrayList<>();
+        for (File appRoot : IOSSimulatorHelpers.getInternalApplicationsRoots()) {
+            final File tmpRoot = new File(String.format("%s/tmp", appRoot.getCanonicalPath()));
+            tmpRoot.mkdirs();
+            result.add(tmpRoot);
+        }
+        return result;
+    }
+
+    private static void prepareSimulator(final Capabilities caps, final List<String> args) throws Exception {
+        if (caps.is(CAPABILITY_NAME_FORCE_RESET)) {
+            IOSSimulatorHelpers.reset();
+        }
+
+        int ntry = 0;
+        Exception storedException = null;
+        do {
+            try {
+                if (ntry > 0 || !IOSSimulatorHelpers.isRunning()) {
+                    IOSSimulatorHelpers.start();
+                }
+                if (!caps.is(CAPABILITY_NAME_NO_UNINSTALL)) {
+                    IOSSimulatorHelpers.uninstallApp(IOSDistributable.getInstance(
+                            (String) caps.getCapability("app")).getBundleId()
+                    );
+                }
+                IOSSimulatorHelpers.installApp(IOSDistributable.getInstance(
+                        (String) caps.getCapability("app")).getAppRoot()
+                );
+                break;
+            } catch (Exception e) {
+                e.printStackTrace();
+                storedException = e;
+            }
+            ntry++;
+        } while (ntry < DRIVER_CREATION_RETRIES_COUNT);
+        if (ntry >= DRIVER_CREATION_RETRIES_COUNT) {
+            throw new IllegalStateException(
+                    String.format("Cannot start %s (%s) Simulator on %s after %s retries",
+                            getDeviceName(CommonIOSSteps.class), getPlatformVersion(),
+                            InetAddress.getLocalHost().getHostName(), DRIVER_CREATION_RETRIES_COUNT),
+                    storedException
+            );
+        }
+        // if (new DefaultArtifactVersion(getPlatformVersion()).compareTo(new DefaultArtifactVersion("10.0")) < 0) {
+        // Workaround for https://github.com/appium/appium/issues/7091
+        for (File tmpRoot : createInternalWireTempRoots()) {
+            final File argsFile = new File(String.format("%s/%s", tmpRoot.getCanonicalPath(), ARGS_FILE_NAME));
+            Files.write(argsFile.toPath(), String.join(" ", args).getBytes());
+        }
     }
 
     @Before
@@ -212,7 +278,6 @@ public class CommonIOSSteps {
         }
 
         if (scenario.getSourceTagNames().contains("@performance")) {
-            CommonUtils.defineNoHeadlessEnvironment();
             try {
                 IOSLogListener.getInstance().start();
             } catch (Exception e) {
@@ -221,33 +286,28 @@ public class CommonIOSSteps {
         }
 
         final Map<String, Object> additionalCaps = new HashMap<>();
-        String appPath = getAppPath();
+        String appPath = IOSDistributable.getInstance(getAppPath()).getAppRoot().getAbsolutePath();
         if (scenario.getSourceTagNames().contains(TAG_NAME_UPGRADE) ||
                 scenario.getSourceTagNames().contains(TAG_NAME_ADDRESSBOOK)) {
             if (scenario.getSourceTagNames().contains(TAG_NAME_UPGRADE)) {
-                appPath = getOldAppPath();
+                appPath = IOSDistributable.getInstance(getOldAppPath()).getAppRoot().getAbsolutePath();
             }
 
             if (scenario.getSourceTagNames().contains(TAG_NAME_ADDRESSBOOK)) {
                 additionalCaps.put(CAPABILITY_NAME_ADDRESSBOOK, true);
             }
 
-            if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
-            }
-            if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-                IOSSimulatorHelper.reset();
-            } else {
-                // TODO: Make sure the app is uninstalled from the real device
-                throw new NotImplementedException("Reset action is only available for Simulator");
-            }
-            additionalCaps.put("noReset", true);
-            additionalCaps.put("fullReset", false);
+            additionalCaps.put(CAPABILITY_NAME_FORCE_RESET, true);
+        }
+
+        if (scenario.getSourceTagNames().contains(TAG_NAME_FORCE_RESET)) {
+            additionalCaps.put(CAPABILITY_NAME_FORCE_RESET, true);
         }
 
         if (scenario.getSourceTagNames().contains(FastLoginContainer.TAG_NAME)) {
-            FastLoginContainer.getInstance().enable(this::resetIOSDriver, appPath,
-                    additionalCaps.isEmpty() ? Optional.empty() : Optional.of(additionalCaps),
+            FastLoginContainer.getInstance().enable(this::resetIOSDriver,
+                    appPath,
+                    Optional.of(additionalCaps),
                     DRIVER_CREATION_RETRIES_COUNT);
         } else {
             final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath,
@@ -281,7 +341,7 @@ public class CommonIOSSteps {
 
         try {
             if (!scenario.getStatus().equals(Result.PASSED) && getIsSimulatorFromConfig(getClass())) {
-                log.debug(IOSSimulatorHelper.getLogsAndCrashes() + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                log.debug(IOSSimulatorHelpers.getLogsAndCrashes() + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
             } else if (scenario.getSourceTagNames().contains("@performance")) {
                 IOSLogListener.forceStopAll();
                 IOSLogListener.writeDeviceLogsToConsole(IOSLogListener.getInstance());
@@ -302,16 +362,6 @@ public class CommonIOSSteps {
             usrMgr.resetUsers();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-
-        if (scenario.getSourceTagNames().contains(TAG_NAME_UPGRADE)) {
-            try {
-                if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-                    IOSSimulatorHelper.kill();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -336,18 +386,13 @@ public class CommonIOSSteps {
                 e.printStackTrace();
             }
         }
-        customCaps.put("noReset", true);
-        customCaps.put("fullReset", false);
-        final String appPath = getAppPath();
-        if (appPath.endsWith(".ipa")) {
-            pagesCollection.getCommonPage().installIpa(new File(appPath));
-        } else if (appPath.endsWith(".app")) {
-            pagesCollection.getCommonPage().installApp(new File(appPath));
-        } else {
-            throw new IllegalArgumentException(String.format("Only .app and .ipa package formats are supported. " +
-                    "%s is given instead.", appPath));
-        }
-        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath, Optional.of(customCaps), 1);
+        customCaps.put(CAPABILITY_NAME_FORCE_RESET, false);
+        customCaps.put(CAPABILITY_NAME_NO_UNINSTALL, true);
+        final File currentBuildRoot = IOSDistributable.getInstance(getAppPath()).getAppRoot();
+        pagesCollection.getCommonPage().installApp(currentBuildRoot);
+        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(
+                currentBuildRoot.getAbsolutePath(),
+                Optional.of(customCaps), 1);
         updateDriver(lazyDriver);
     }
 
@@ -372,9 +417,12 @@ public class CommonIOSSteps {
         for (Map.Entry<String, ?> capabilityItem : currentCapabilities.entrySet()) {
             customCaps.put(capabilityItem.getKey(), capabilityItem.getValue());
         }
-        customCaps.put("noReset", true);
-        customCaps.put("fullReset", false);
-        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(getAppPath(), Optional.of(customCaps), 1);
+        customCaps.put(CAPABILITY_NAME_FORCE_RESET, false);
+        customCaps.put(CAPABILITY_NAME_NO_UNINSTALL, true);
+        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(
+                IOSDistributable.getInstance(getAppPath()).getAppRoot().getAbsolutePath(),
+                Optional.of(customCaps),
+                1);
         updateDriver(lazyDriver);
     }
 
@@ -942,7 +990,7 @@ public class CommonIOSSteps {
     @When("^I click at ([\\d\\.]+),([\\d\\.]+) of Simulator window$")
     public void ReturnToWireApp(String strX, String strY) throws Exception {
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            IOSSimulatorHelper.clickAt(strX, strY, String.format("%.3f", DriverUtils.SINGLE_TAP_DURATION / 1000.0));
+            IOSSimulatorHelpers.clickAt(strX, strY, String.format("%.3f", DriverUtils.SINGLE_TAP_DURATION / 1000.0));
         } else {
             throw new PendingException("This step is not available for non-simulator devices");
         }
@@ -1027,7 +1075,7 @@ public class CommonIOSSteps {
     @When("^I press Enter key in Simulator window$")
     public void IPressEnterKey() throws Exception {
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            IOSSimulatorHelper.pressEnterKey();
+            IOSSimulatorHelpers.pressEnterKey();
         } else {
             pagesCollection.getCommonPage().tapKeyboardCommitButton();
         }
@@ -1428,7 +1476,7 @@ public class CommonIOSSteps {
         if (!CommonUtils.getIsSimulatorFromConfig(getClass())) {
             throw new IllegalStateException("This step is only supported on Simulator");
         }
-        final List<File> files = IOSSimulatorHelper.locateFilesOnInternalFS(WireDatabase.DB_FILE_NAME);
+        final List<File> files = IOSSimulatorHelpers.locateFilesOnInternalFS(WireDatabase.DB_FILE_NAME);
         if (files.isEmpty()) {
             throw new IllegalStateException("The internal Wire database file cannot be located");
         }
@@ -1524,14 +1572,19 @@ public class CommonIOSSteps {
      * @throws Exception
      * @step. ^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*))$
      */
-    @When("^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*)$")
-    public void UserReactLastMessage(String userNameAlias, String reactionType, String dstNameAlias) throws Exception {
+    @When("^User (.*) (likes|unlikes|reads) the recent message from (user|group conversation) (.*)$")
+    public void UserReactLastMessage(String userNameAlias, String reactionType, String convType, String dstNameAlias)
+            throws Exception {
         switch (reactionType.toLowerCase()) {
             case "likes":
                 commonSteps.UserLikeLatestMessage(userNameAlias, dstNameAlias, null);
                 break;
             case "unlikes":
                 commonSteps.UserUnlikeLatestMessage(userNameAlias, dstNameAlias, null);
+                break;
+            case "reads":
+                commonSteps.UserReadLastEphemeralMessage(userNameAlias, dstNameAlias, null,
+                        convType.equals("group conversation"));
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify the reaction type '%s'",

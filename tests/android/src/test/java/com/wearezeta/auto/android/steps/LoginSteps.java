@@ -43,7 +43,7 @@ public class LoginSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     /**
-     * Inputs the login details for the self user and then clicks the sign in
+     * Inputs the login details for the self user and then taps the sign in
      * button.
      *
      * @throws Exception
@@ -79,14 +79,14 @@ public class LoginSteps {
     public void ISignInUsingMyPhoneNumber(String verifiedBySmsURL) throws Exception {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
         assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
-        getWelcomePage().clickAreaCodeSelector();
+        getWelcomePage().tapAreaCodeSelector();
         getAreaCodePage().selectAreaCode(self.getPhoneNumber().getPrefix());
         getWelcomePage().inputPhoneNumber(self.getPhoneNumber());
-        getWelcomePage().clickConfirm();
+        getWelcomePage().tapConfirm();
         final String verificationCode = BackendAPIWrappers.getLoginCodeByPhoneNumber(self.getPhoneNumber());
         if (verifiedBySmsURL == null) {
             getVerificationPage().inputVerificationCode(verificationCode);
-            getVerificationPage().clickConfirm();
+            getVerificationPage().tapConfirm();
         } else {
             AndroidCommonUtils.openWebsiteFromADB(String.format("http://wire.com/v/%s", verificationCode));
         }
@@ -103,7 +103,7 @@ public class LoginSteps {
 
     /**
      * Enter self user credentials into the corresponding fields on sign in
-     * screen and click Sign In button. Sometimes this step uses phone number to
+     * screen and tap Sign In button. Sometimes this step uses phone number to
      * sign in and sometimes it uses email address
      *
      * @throws Exception
@@ -153,18 +153,18 @@ public class LoginSteps {
     }
 
     /**
-     * Presses the Log in Button underneath the email and password fields
+     * Tap the Log in Button underneath the email and password fields
      *
      * @throws Exception
-     * @step. ^I press Log in button$
+     * @step. ^I tap Log in button$
      */
-    @When("I press Log in button")
-    public void IPressLogInButton() throws Exception {
+    @When("I tap Log in button")
+    public void ITapLogInButton() throws Exception {
         getEmailSignInPage().logIn(false, DEFAULT_LOGIN_SCREEN_TIMEOUT_SECONDS);
     }
 
     /**
-     * Accept an error message by clicking OK button
+     * Accept an error message by tapping OK button
      *
      * @throws Exception
      * @step. ^I accept the error message$

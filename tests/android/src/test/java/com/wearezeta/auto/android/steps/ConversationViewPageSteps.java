@@ -170,7 +170,7 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Press the corresponding button in the input controls
+     * Tap the corresponding button in the input controls
      * Tap file button will send file directly when you installed testing_gallery-debug.apk
      *
      * @param longTap                equals not null means long tap on the cursor button
@@ -225,16 +225,16 @@ public class ConversationViewPageSteps {
      *
      * @param durationSeconds
      * @throws Exception
-     * @step. ^I long tap Audio message microphone button (\d+) seconds and remember icon$
+     * @step. ^I long tap Audio message microphone button (\d+) seconds? and remember icon$
      */
-    @When("^I long tap Audio message microphone button (\\d+) seconds and remember icon$")
+    @When("^I long tap Audio message microphone button (\\d+) seconds? and remember icon$")
     public void LongTapAudioMessageCursorAndRememberIcon(int durationSeconds) throws Exception {
         getConversationViewPage().longTapAudioMessageCursorBtnAndRememberIcon(durationSeconds * 1000,
                 audiomessageSlideMicrophoneButtonState);
     }
 
     /**
-     * Press the corresponding button in the top toolbar
+     * Tap the corresponding button in the top toolbar
      *
      * @param btnName button name
      * @throws Exception
@@ -246,7 +246,7 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Press close button for input options
+     * Tap close button for input options
      *
      * @throws Exception
      * @step. ^I close input options$
@@ -285,7 +285,7 @@ public class ConversationViewPageSteps {
      * @step. ^I tap (?:Play|Pause) button on SoundCloud container$
      */
     @When("^I tap (?:Play|Pause) button on SoundCloud container$")
-    public void IPressPlayPauseButton() throws Exception {
+    public void ITapPlayPauseButton() throws Exception {
         getConversationViewPage().tapPlayPauseBtn();
     }
 
@@ -305,10 +305,10 @@ public class ConversationViewPageSteps {
      * Tap on Play/Pause button on Media Bar
      *
      * @throws Exception
-     * @step. ^I press PlayPause on Mediabar button$
+     * @step. ^I tap PlayPause on Mediabar button$
      */
-    @When("^I press PlayPause on Mediabar button$")
-    public void IPressPlayPauseOnMediaBarButton() throws Exception {
+    @When("^I tap PlayPause on Mediabar button$")
+    public void ITapPlayPauseOnMediaBarButton() throws Exception {
         getConversationViewPage().tapPlayPauseMediaBarBtn();
     }
 
@@ -479,7 +479,7 @@ public class ConversationViewPageSteps {
      * @step. ^I tap new message notification "(.*)"$
      */
     @When("^I tap new message notification \"(.*)\"$")
-    public void IChangeConversationByClickMessageNotification(String message) throws Exception {
+    public void IChangeConversationByTapMessageNotification(String message) throws Exception {
         getConversationViewPage().tapMessageNotification(message);
     }
 

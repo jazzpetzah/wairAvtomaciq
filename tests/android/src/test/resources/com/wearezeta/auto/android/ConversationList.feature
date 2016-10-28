@@ -7,14 +7,14 @@ Feature: Conversations list
     When I accept First Time overlay as soon as it is visible
     Then I see contact hint banner
     When I open Search UI
-    And I press Clear button
+    And I tap Clear button
     Then I do not see contact hint banner
     When I tap conversations list settings button
     And I select "Account" settings menu item
     And I select "Log out" settings menu item
     And I confirm sign out
     And I sign in using my email
-    # Workaround, it should not see First time overlay
+    #AN-4605 Workaround: I should not see First time overlay
     Then I accept First Time overlay as soon as it is visible
     And I see Conversations list
     And I do not see contact hint banner
@@ -68,13 +68,13 @@ Feature: Conversations list
     And I navigate back from conversation
     And I swipe right on a <Contact1>
     And I select DELETE from conversation settings menu
-    And I press DELETE on the confirm alert
+    And I tap DELETE on the confirm alert
     Then I see Conversations list with no conversations
     When I wait until <Contact1> exists in backend search results
     And I open Search UI
     And I type user name "<Contact1>" in search field
-    And I tap on user name found on People picker page <Contact1>
-    And I tap Open Conversation action button on People Picker page
+    And I tap on user name found on Search page <Contact1>
+    And I tap Open Conversation action button on Search page
     Then I see conversation view
 
     Examples:
@@ -117,12 +117,12 @@ Feature: Conversations list
     And I navigate back from conversation
     And I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
-    And I press DELETE on the confirm alert
+    And I tap DELETE on the confirm alert
     Then I do not see Conversations list with name <GroupChatName>
     And I open Search UI
     And I type group name "<GroupChatName>" in search field
     And I see group <GroupChatName> in Search result list
-    When I press Clear button
+    When I tap Clear button
     And User <Contact1> sends encrypted message <Message> to group conversation <GroupChatName>
     Then I see Conversations list with name <GroupChatName>
     When I tap on conversation name <GroupChatName>
@@ -142,13 +142,13 @@ Feature: Conversations list
     Given I see Conversations list with conversations
     And I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
-    And I click the Leave check box
-    And I press DELETE on the confirm alert
+    And I tap the Leave check box
+    And I tap DELETE on the confirm alert
     Then I do not see Conversations list with name <GroupChatName>
     And I open Search UI
     And I type group name "<GroupChatName>" in search field
     Then I do not see group <GroupChatName> in Search result list
-    And I press Clear button
+    And I tap Clear button
     And User <Contact1> sends encrypted message <Message> to group conversation <GroupChatName>
     Then I do not see Conversations list with name <GroupChatName>
     And I swipe up Conversations list
@@ -169,19 +169,19 @@ Feature: Conversations list
     Given I see Conversations list with conversations
     When I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
-    And I press DELETE on the confirm alert
+    And I tap DELETE on the confirm alert
     Then I do not see Conversations list with name <GroupChatName>
     When User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     Then I see Conversations list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
-    And I press DELETE on the confirm alert
+    And I tap DELETE on the confirm alert
     Then I do not see Conversations list with name <GroupChatName>
     When User <Contact1> securely pings conversation <GroupChatName>
     Then I see Conversations list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
-    And I press DELETE on the confirm alert
+    And I tap DELETE on the confirm alert
     Then I do not see Conversations list with name <GroupChatName>
     When <Contact1> calls <GroupChatName>
     Then I see Conversations list with name <GroupChatName>
@@ -243,8 +243,8 @@ Feature: Conversations list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given Group <GroupChatName> gets silenced for user <Name>
     Given I sign in using my email or phone number
+    Given Group <GroupChatName> gets silenced for user <Name>
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     And Conversation <GroupChatName> is muted
@@ -297,10 +297,10 @@ Feature: Conversations list
     And I see ARCHIVE button in conversation settings menu
     And I see DELETE button in conversation settings menu
     And I see BLOCK button in conversation settings menu
-    And I press back button
+    And I tap back button
     When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
-    When I press options menu button
+    When I tap options menu button
     Then I see MUTE button in option menu
     And I see ARCHIVE button in option menu
     And I see DELETE button in option menu
@@ -323,10 +323,10 @@ Feature: Conversations list
     And I see ARCHIVE button in conversation settings menu
     And I see DELETE button in conversation settings menu
     And I see LEAVE button in conversation settings menu
-    And I press back button
+    And I tap back button
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
-    When I press options menu button
+    When I tap options menu button
     Then I see MUTE button in option menu
     And I see RENAME button in option menu
     And I see ARCHIVE button in option menu
@@ -363,7 +363,7 @@ Feature: Conversations list
     Given I see Conversations list with conversations
     When I short swipe right on a <Contact1>
     And I see three dots option menu button
-    And I press the three dots option menu button
+    And I tap the three dots option menu button
     Then I see MUTE button in conversation settings menu
 
     Examples:

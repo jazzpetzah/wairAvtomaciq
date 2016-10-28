@@ -7,7 +7,7 @@ Feature: Sign In
     When I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <Password>
-    And I press Log in button
+    And I tap Log in button
     And I accept First Time overlay as soon as it is visible
     Then I see Conversations list with no conversations
 
@@ -61,7 +61,7 @@ Feature: Sign In
     When I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <Password>
-    And I press Log in button
+    And I tap Log in button
     Then I see alert message containing "<ErrMessage>" in the body
 
     Examples:
@@ -77,11 +77,11 @@ Feature: Sign In
     When I enable Airplane mode on the device
     And I have entered login <Email>
     And I have entered password <Password>
-    And I press Log in button
+    And I tap Log in button
     Then I see alert message containing "<ErrMessage>" in the body
     When I disable Airplane mode on the device
     And I accept the error message
-    And I press Log in button
+    And I tap Log in button
     And I accept First Time overlay as soon as it is visible
     Then I see Conversations list with conversations
 
@@ -96,7 +96,7 @@ Feature: Sign In
     When I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <Password>
-    And I press Log in button
+    And I tap Log in button
     And I input a new phone number for user <Name>
     And I input the verification code
     Then I see Conversations list with no conversations
@@ -112,7 +112,7 @@ Feature: Sign In
     When I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <Password>
-    And I press Log in button
+    And I tap Log in button
     And I postpone Add Phone Number action
     And I accept First Time overlay as soon as it is visible
     Then I see Conversations list with no conversations
@@ -156,7 +156,7 @@ Feature: Sign In
     And I select "Remove device" settings menu item
     And I see "<OtherDevice>" settings menu item
     And I do not see "<DeviceToRemoveWithoutPassword>" settings menu item
-    And I press Back button 2 times
+    And I tap Back button 2 times
     When I do not see Manage Devices overlay
     Then I see Conversations list with no conversations
 

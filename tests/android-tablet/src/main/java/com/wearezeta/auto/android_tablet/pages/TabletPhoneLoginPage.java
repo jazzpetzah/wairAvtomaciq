@@ -32,7 +32,7 @@ public class TabletPhoneLoginPage extends AndroidTabletPage {
     }
 
     public void selectWireCountry() throws Exception {
-        getWelcomePage().clickAreaCodeSelector();
+        getWelcomePage().tapAreaCodeSelector();
         getAreaCodePage().selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
     }
 }

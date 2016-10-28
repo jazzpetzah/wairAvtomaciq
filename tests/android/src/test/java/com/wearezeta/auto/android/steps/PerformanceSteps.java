@@ -77,7 +77,7 @@ public class PerformanceSteps {
     }
 
     /**
-     * Inputs the login details for the self user and then clicks the sign in
+     * Inputs the login details for the self user and then taps the sign in
      * button.
      *
      * @param timeoutSeconds sign in timeout

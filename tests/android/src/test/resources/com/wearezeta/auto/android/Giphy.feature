@@ -1,7 +1,7 @@
 Feature: Giphy
 
   @C787 @regression @rc @legacy
-  Scenario Outline: I can send giphy image by typing massage and clicking GIF cursor button and confirm the selection
+  Scenario Outline: I can send giphy image by typing massage and tapping GIF cursor button and confirm the selection
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -72,7 +72,7 @@ Feature: Giphy
       | user1Name | user2Name | TEST     | Yo       |
 
   @C250821 @regression
-  Scenario Outline: I can search a GIF image by clicking GIF cursor button
+  Scenario Outline: I can search a GIF image by tapping GIF cursor button
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number

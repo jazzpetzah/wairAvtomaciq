@@ -14,7 +14,7 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
-import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import edu.emory.mathcs.backport.java.util.Arrays;
 import io.appium.java_client.MobileBy;
 import org.apache.commons.io.FilenameUtils;
@@ -25,6 +25,7 @@ import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+
 
 public class ConversationViewPage extends IOSPage {
     private static final By nameConversationBackButton = MobileBy.AccessibilityId("ConversationBackButton");
@@ -48,7 +49,9 @@ public class ConversationViewPage extends IOSPage {
     private static final String xpathStrAllEntries = "//XCUIElementTypeTable/XCUIElementTypeCell";
     private static final By xpathAllEntries = By.xpath(xpathStrAllEntries);
     private static final String xpathStrRecentEntry = xpathStrAllEntries + "[1]";
+    private static final String xpathStrEntryAboveTheRecent = xpathStrAllEntries + "[2]";
     private static final By xpathRecentEntry = By.xpath(xpathStrRecentEntry);
+    private static final By xpathEntryAboveTheRecent = By.xpath(xpathStrEntryAboveTheRecent);
 
     private static final String xpathStrAllTextMessages = xpathStrAllEntries +
             "/XCUIElementTypeTextView[boolean(string(@value))]";
@@ -80,7 +83,9 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By xpathGiphyImage =
             By.xpath("//XCUIElementTypeCell[ .//*[contains(@value, 'via giphy.com')] ]" +
-                    "/following-sibling::XCUIElementTypeCell[@name='ImageCell']");
+                    "/parent::*/XCUIElementTypeCell[@name='ImageCell']");
+//            By.xpath("//XCUIElementTypeCell[ .//*[contains(@value, 'via giphy.com')] ]" +
+//                    "/following-sibling::XCUIElementTypeCell[@name='ImageCell']");
 
     private static final By namePlayButton = MobileBy.AccessibilityId("mediaBarPlayButton");
 
@@ -444,7 +449,7 @@ public class ConversationViewPage extends IOSPage {
     public void scrollToBeginningOfConversation() throws Exception {
         for (int i = 0; i < 2; i++) {
             if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-                IOSSimulatorHelper.swipeDown();
+                IOSSimulatorHelpers.swipeDown();
             } else {
                 DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationPage),
                         500, 50, 10, 50, 90);
@@ -503,8 +508,15 @@ public class ConversationViewPage extends IOSPage {
         final int stateGlyphX = (containerScreen.getWidth() - stateGlyphWidth) / 2;
         final int stateGlyphY = (containerScreen.getHeight() - stateGlyphHeight) / 2;
 //        BufferedImage tmp = containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
-//        ImageIO.write(tmp, "png", new File("/Users/elf/Desktop/" + System.currentTimeMillis() + ".png"));
+//        ImageIO.write(tmp, "png", new File("/Users/julianereschke/Desktop/" + System.currentTimeMillis() + ".png"));
         return containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
+    }
+
+    public BufferedImage getAssetContainerStateScreenshot() throws Exception {
+        final BufferedImage containerScreen = this.getElementScreenshot(getElement(xpathEntryAboveTheRecent)).orElseThrow(() ->
+                new IllegalStateException("Cannot take a screenshot of asset container"));
+//        ImageIO.write(containerScreen, "png", new File("/Users/julianereschke/Desktop/" + System.currentTimeMillis() + ".png"));
+        return containerScreen;
     }
 
     public boolean areInputToolsVisible() throws Exception {
@@ -641,7 +653,7 @@ public class ConversationViewPage extends IOSPage {
         final By locator = getInputToolButtonByName(name);
         if (locator.equals(fbNameAddPictureButton) && !isTestImageUploaded &&
                 CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            IOSSimulatorHelper.uploadImage();
+            IOSSimulatorHelpers.uploadImage();
             isTestImageUploaded = true;
         }
         locateCursorToolButton(locator).click();
@@ -717,7 +729,7 @@ public class ConversationViewPage extends IOSPage {
         if (isDoubleTap) {
             el.doubleTap();
         } else if (isLongTap) {
-            el.longTap();
+            longClickAt(el, 10, 50);
         } else {
             el.click();
         }
@@ -951,7 +963,7 @@ public class ConversationViewPage extends IOSPage {
         if (isDoubleTap) {
             dstElement.doubleTap();
         } else if (isLongTap) {
-            dstElement.longTap();
+            longClickAt(dstElement, 15, 50);
         } else {
             dstElement.click();
         }

@@ -1,6 +1,6 @@
 Feature: Autoconnect
 
-  @C2034 @regression @addressbookStart
+  @C2034 @regression @addressbookStart @forceReset
   Scenario Outline: Verify autoconnect users by direct match phone numbers
     Given There are 2 users
     Given I minimize Wire
@@ -27,7 +27,7 @@ Feature: Autoconnect
       | Contact1  | Contact2  | ContactPhone     | Contact2Phone    | Name      |
       | user1Name | user2Name | user1PhoneNumber | user2PhoneNumber | user3Name |
 
-  @C202304 @regression @addressbookStart
+  @C202304 @regression @addressbookStart @forceReset
   Scenario Outline: Verify autoconnect users by direct match phone numbers - delayed
     Given There are 3 users where <Name> is me
     Given I minimize Wire
@@ -50,7 +50,7 @@ Feature: Autoconnect
       | Contact1  | Contact2  | ContactPhone     | Contact2Phone    | Name      |
       | user3Name | user2Name | user3PhoneNumber | user2PhoneNumber | user1Name |
 
-  @C202303 @regression @addressbookStart
+  @C202303 @regression @addressbookStart @forceReset
   Scenario Outline: Verify direct matching email - delayed
     Given There are 2 users where <Name> is me
     Given I minimize Wire
@@ -72,7 +72,7 @@ Feature: Autoconnect
       | Contact   | ContactEmail | Name      |
       | user2Name | user2Email   | user1Name |
 
-  @C206254 @regression @addressbookStart
+  @C206254 @regression @addressbookStart @forceReset
   Scenario Outline: Verify direct matching of emails
     Given There is 1 user
     Given I minimize Wire
@@ -103,7 +103,7 @@ Feature: Autoconnect
       | Contact   | ContactEmail | Name      |
       | user1Name | user1Email   | user2Name |
 
-  @C79 @addressbookStart @regression
+  @C79 @addressbookStart @regression @forceReset
   Scenario Outline: Verify name from the address book is shown as a subtitle
     Given There are 2 users where <Name> is me
     Given I minimize Wire

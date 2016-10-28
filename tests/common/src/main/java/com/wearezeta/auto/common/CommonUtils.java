@@ -412,10 +412,6 @@ public class CommonUtils {
         return getValueFromCommonConfig(c, "defaultCallingServiceUrl");
     }
 
-    public static void defineNoHeadlessEnvironment() {
-        System.setProperty("java.awt.headless", "false");
-    }
-
     public static String encodeSHA256Base64(String item) throws Exception {
         final MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(item.getBytes("UTF-8"));

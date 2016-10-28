@@ -9,7 +9,7 @@ Feature: Video Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Video Call button
-    And I accept alert
+    And I accept alert if visible
     Then I see call status message contains "<Contact> ringing"
     When I tap Leave button on Calling overlay
     And I do not see Calling overlay
@@ -30,7 +30,7 @@ Feature: Video Calling
     When <Contact> starts a video call to me
     And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
-    And I accept alert
+    And I accept alert if visible
     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes

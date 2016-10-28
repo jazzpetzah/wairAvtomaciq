@@ -21,8 +21,8 @@ Feature: Upgrade
     When I tap on contact name <Contact>
     Then I see 2 default messages in the conversation view
     When I tap Add Picture button from input tools
-    And I accept alert
-    And I accept alert
+    And I accept alert if visible
+    And I accept alert if visible
     And I select the first picture from Keyboard Gallery
     And I tap Confirm button on Picture preview page
     # Wait until the picture is synchronized

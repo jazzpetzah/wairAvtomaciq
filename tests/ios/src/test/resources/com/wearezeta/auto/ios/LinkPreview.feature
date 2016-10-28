@@ -15,6 +15,8 @@ Feature: Link Preview
     Then I see link preview container in the conversation view
     # This is to make sure the image appears in the preview (we had this bug) and good enough check here once in the test suite
     Then I see link preview image in the conversation view
+    # Wait for the delivery
+    And I wait for 8 seconds
     And I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:

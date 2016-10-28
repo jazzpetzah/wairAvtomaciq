@@ -256,7 +256,7 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final int SCROLL_TO_BOTTOM_INTERVAL_MILLISECONDS = 1000;
 
-    private static final int DEFAULT_SWIPE_DURATION = 2000;
+    private static final int DEFAULT_SWIPE_DURATION_MILLISECONDS = 40;
 
     private static final int CONTAINER_VISIBILITY_TIMEOUT_SECONDS = 20;
 
@@ -513,13 +513,13 @@ public class ConversationViewPage extends AndroidPage {
 
     public void longTapAudioMessageCursorBtnAndSwipeUp(int durationMillis) throws Exception {
         longTapAndSwipe(showCursorToolButtonIfNotVisible(idCursorAudioMessage),
-                () -> getElement(idAudioRecordingSendButton), DEFAULT_SWIPE_DURATION, durationMillis);
+                () -> getElement(idAudioRecordingSendButton), DEFAULT_SWIPE_DURATION_MILLISECONDS, durationMillis);
     }
 
     public void longTapAudioMessageCursorBtnAndRememberIcon(int durationMillis, ElementState elementState)
             throws Exception {
         longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idCursorAudioMessage),
-                DEFAULT_SWIPE_DURATION, durationMillis, Optional.of(elementState::remember));
+                DEFAULT_SWIPE_DURATION_MILLISECONDS, durationMillis, Optional.of(elementState::remember));
     }
 
     public boolean isAudioMessageRecordingSlideVisible() throws Exception {

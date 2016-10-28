@@ -21,7 +21,7 @@ public class AddNamePage extends AndroidPage {
         getElement(idNameInput).sendKeys(name);
     }
 
-    public void clickConfirm() throws Exception {
+    public void tapConfirm() throws Exception {
         getElement(idConfirmButton).click();
     }
 }

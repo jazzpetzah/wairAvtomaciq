@@ -1,4 +1,4 @@
-package com.wearezeta.auto.ios.tools;
+package com.wearezeta.auto.common.driver.device_helpers;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -17,8 +17,8 @@ import java.util.regex.Pattern;
 
 import static com.wearezeta.auto.common.CommonUtils.getIOSToolsRoot;
 
-public class RealDeviceHelpers {
-    private static Logger log = ZetaLogger.getLog(RealDeviceHelpers.class.getSimpleName());
+public class IOSRealDeviceHelpers {
+    private static Logger log = ZetaLogger.getLog(IOSRealDeviceHelpers.class.getSimpleName());
 
 
     private static final int APP_UNINSTALL_TIMEOUT_SECONDS = 10;
@@ -77,7 +77,7 @@ public class RealDeviceHelpers {
             if (CommonUtils.isRunningInJenkinsNetwork()) {
                 log.warn("Seems like ideviceinstaller has frozen. Trying to reconnect the IDevice to its VM...");
                 new ProcessBuilder("/usr/bin/python",
-                        getIOSToolsRoot(IOSSimulatorHelper.class) + File.separator + RECONNECT_DEVICE_SCRIPT_NAME
+                        getIOSToolsRoot(IOSRealDeviceHelpers.class) + File.separator + RECONNECT_DEVICE_SCRIPT_NAME
                 ).redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.INHERIT).start().waitFor();
                 waitUntilIsConnected(udid, DEVICE_RECONNECT_TIMEOUT_SECONDS);
                 final Process p1 = new ProcessBuilder(

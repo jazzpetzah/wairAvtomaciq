@@ -170,9 +170,9 @@ Feature: Conversation List
     And I do not see conversation <Contact1> in my conversations list
     And I wait until <Contact1> exists in backend search results
     When I open Search UI
-    And I enter "<Contact1>" into Search input on People Picker page
+    And I enter "<Contact1>" into Search input on Search page
     Then I see "<Contact1>" avatar in Search result list
-    And I close People Picker
+    And I close Search
     When User <Contact1> sends encrypted message <Msg2> to user Myself
     When I tap the conversation <Contact1>
     And I see the message "<Msg2>" in the conversation view
@@ -199,9 +199,9 @@ Feature: Conversation List
     Then I do not see Conversation Actions overlay
     And I do not see conversation <GroupChatName> in my conversations list
     When I open Search UI
-    And I enter "<GroupChatName>" into Search input on People Picker page
+    And I enter "<GroupChatName>" into Search input on Search page
     Then I see "<GroupChatName>" group avatar in Search result list
-    And I close People Picker
+    And I close Search
     And User <Contact1> sends encrypted message <Msg2> to group conversation <GroupChatName>
     When I tap the conversation <GroupChatName>
     And I see the message "<Msg2>" in the conversation view
@@ -229,9 +229,9 @@ Feature: Conversation List
     Then I do not see Conversation Actions overlay
     And I do not see conversation <GroupChatName> in my conversations list
     When I open Search UI
-    And I enter "<GroupChatName>" into Search input on People Picker page
+    And I enter "<GroupChatName>" into Search input on Search page
     Then I see "<GroupChatName>" group avatar in Search result list
-    And I close People Picker
+    And I close Search
     And User <Contact1> sends encrypted message <Msg2> to group conversation <GroupChatName>
     When I tap the conversation <GroupChatName>
     And I see the message "<Msg2>" in the conversation view
@@ -258,9 +258,9 @@ Feature: Conversation List
     Then I do not see Conversation Actions overlay
     And I do not see conversation <GroupChatName> in my conversations list
     When I open Search UI
-    And I enter "<GroupChatName>" into Search input on People Picker page
+    And I enter "<GroupChatName>" into Search input on Search page
     Then I do not see "<GroupChatName>" group avatar in Search result list
-    And I close People Picker
+    And I close Search
     And User <Contact1> sends encrypted message <Message> to group conversation <GroupChatName>
     Then I do not see conversation <GroupChatName> in my conversations list
     When I do long swipe up on conversations list
@@ -288,9 +288,9 @@ Feature: Conversation List
     Then I do not see Conversation Actions overlay
     And I do not see conversation <GroupChatName> in my conversations list
     When I open Search UI
-    And I enter "<GroupChatName>" into Search input on People Picker page
+    And I enter "<GroupChatName>" into Search input on Search page
     Then I do not see "<GroupChatName>" group avatar in Search result list
-    And I close People Picker
+    And I close Search
     And User <Contact1> sends encrypted message <Message> to group conversation <GroupChatName>
     Then I do not see conversation <GroupChatName> in my conversations list
     When I do long swipe up on conversations list
@@ -318,9 +318,9 @@ Feature: Conversation List
     Then I do not see Conversation Actions overlay
     And I do not see conversation <GroupChatName> in my conversations list
     When I open Search UI
-    And I enter "<GroupChatName>" into Search input on People Picker page
+    And I enter "<GroupChatName>" into Search input on Search page
     Then I see "<GroupChatName>" group avatar in Search result list
-    And I close People Picker
+    And I close Search
     And User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     Then I see conversation <GroupChatName> in my conversations list
     When I swipe right the conversations list item <GroupChatName>
@@ -359,9 +359,9 @@ Feature: Conversation List
     Then I do not see Conversation Actions overlay
     And I do not see conversation <GroupChatName> in my conversations list
     When I open Search UI
-    And I enter "<GroupChatName>" into Search input on People Picker page
+    And I enter "<GroupChatName>" into Search input on Search page
     Then I see "<GroupChatName>" group avatar in Search result list
-    And I close People Picker
+    And I close Search
     And User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     Then I see conversation <GroupChatName> in my conversations list
     When I swipe right the conversations list item <GroupChatName>

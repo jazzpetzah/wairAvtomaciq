@@ -169,7 +169,7 @@ Feature: Like
     And I navigate back from conversation
     And I swipe right on a <Contact>
     And I select DELETE from conversation settings menu
-    And I press DELETE on the confirm alert
+    And I tap DELETE on the confirm alert
     And User <Contact> likes the recent message from user Myself via device <Device>
     Then I see Conversations list with no conversations
 
@@ -305,7 +305,7 @@ Feature: Like
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap Share Location container in the conversation view
-    And I press Back button until Wire app is in foreground in 10 seconds
+    And I tap Back button until Wire app is in foreground in 10 seconds
     And I remember the state of like button
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed
@@ -325,7 +325,7 @@ Feature: Like
     When I tap on conversation name <Contact>
     And I type the message "<Url>" and send it by cursor Send button
     And I tap Link Preview container in the conversation view
-    And I press Back button until Wire app is in foreground in 10 seconds
+    And I tap Back button until Wire app is in foreground in 10 seconds
     And I remember the state of like button
     And I tap Like button in conversation view
     Then I verify the state of like button item is changed
@@ -459,3 +459,25 @@ Feature: Like
     Examples:
       | Name      | Contact1  | Contact2  | Message | Group      | ContactDevice |
       | user1Name | user2Name | user3Name | M1      | BlockGroup | D1            |
+
+  @C255425 @staging
+  Scenario Outline: Verify conversation lists ordering is not changed if someone likes any message in the conversation
+    Given There are 3 users where <Name> is me
+    Given User <Contact1> adds new device <ContactDevice>
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact1>
+    Given I type the message "<Message>" and send it by cursor Send button
+    Given I navigate back from conversation
+    Given I tap on conversation name <Contact2>
+    Given I type the message "<Message>" and send it by cursor Send button
+    Given I navigate back from conversation
+    When I take screenshot
+    And User <Contact1> likes the recent message from user Myself via device <ContactDevice>
+    Then I verify the previous and the current screenshots are not different
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Message | ContactDevice |
+      | user1Name | user2Name | user3Name | M1      | D1            |

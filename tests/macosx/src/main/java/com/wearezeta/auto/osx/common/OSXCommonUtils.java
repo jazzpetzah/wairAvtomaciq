@@ -3,17 +3,13 @@ package com.wearezeta.auto.osx.common;
 import java.awt.image.BufferedImage;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.util.NSPoint;
 import java.util.Arrays;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 
 public class OSXCommonUtils extends CommonUtils {
 
@@ -35,15 +31,6 @@ public class OSXCommonUtils extends CommonUtils {
 
     public static int screenPixelsMultiplier(ZetaOSXDriver driver) throws Exception {
         return (isRetinaDisplay(driver)) ? OSXConstants.Common.SIZE_MULTIPLIER_RETINA : OSXConstants.Common.SIZE_MULTIPLIER_NO_RETINA;
-    }
-
-    public static BufferedImage takeElementScreenshot(WebElement element, ZetaOSXDriver driver) throws Exception {
-        int multiply = screenPixelsMultiplier(driver);
-        BufferedImage screenshot = DriverUtils.takeFullScreenShot((ZetaDriver) driver).orElseThrow(IllegalStateException::new);
-        Point elPoint = element.getLocation();
-        Dimension elSize = element.getSize();
-        return screenshot.getSubimage(elPoint.x * multiply, elPoint.y * multiply, elSize.width * multiply,
-                elSize.height * multiply);
     }
 
     public static int clearAppData() throws Exception {
@@ -73,14 +60,6 @@ public class OSXCommonUtils extends CommonUtils {
             "tccutil reset AddressBook"};
         LOG.debug("executing command: " + Arrays.toString(commands));
         return executeOsXCommand(commands);
-    }
-
-    public static int getNumberOfWireProcesses() throws Exception {
-        String[] command = new String[]{"/bin/sh", "-c", "ps aux | grep Wire.*app | wc -l"};
-        LOG.debug("executing command: " + Arrays.toString(command));
-        String numberString = executeOsXCommandWithOutput(command);
-        int numberProcesses = Integer.parseInt(numberString.trim()) - 2;//substract grep and wc process
-        return numberProcesses;
     }
 
     public static int killAllApps() throws Exception {

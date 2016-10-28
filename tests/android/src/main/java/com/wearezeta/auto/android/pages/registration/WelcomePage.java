@@ -39,7 +39,7 @@ public class WelcomePage extends AndroidPage {
         phoneInputField.sendKeys(number.withoutPrefix());
     }
 
-    public void clickConfirm() throws Exception {
+    public void tapConfirm() throws Exception {
         getElement(idPhoneConfirmationButton).click();
     }
 
@@ -55,7 +55,7 @@ public class WelcomePage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idScreenRoot, 30);
     }
 
-    public void clickAreaCodeSelector() throws Exception {
+    public void tapAreaCodeSelector() throws Exception {
         final WebElement areaCodeSelector = getElement(idAreaCodeSelector, "Area code selector is not visible");
         areaCodeSelector.click();
         if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), AreaCodePage.idCode)) {

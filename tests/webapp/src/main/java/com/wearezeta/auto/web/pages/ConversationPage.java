@@ -1404,7 +1404,7 @@ public class ConversationPage extends WebPage {
         return pictures;
     }
 
-    private List<WebElement> getPreviewImages() throws Exception {
+    protected List<WebElement> getPreviewImages() throws Exception {
         By picturesLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLinkPreviewImage);
         List<WebElement> all = getDriver().findElements(picturesLocator);
         return all;
@@ -1478,6 +1478,14 @@ public class ConversationPage extends WebPage {
 
     public boolean isLastMessageNotObfuscated() {
         return !lastTextMessage.getAttribute("class").contains("ephemeral-message-obfuscated");
+    }
+
+    public boolean isLastMessageReplaced() {
+        return lastGenericMessage.findElement(By.cssSelector(".bg-color-ephemeral")).isDisplayed();
+    }
+
+    public boolean isOrangeBlockInLastMessageNotVisible() throws Exception {
+        return !lastGenericMessage.getAttribute("class").contains("bg-color-ephemeral");
     }
 
     /**

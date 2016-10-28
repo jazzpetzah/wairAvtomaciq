@@ -1,4 +1,4 @@
-package com.wearezeta.auto.ios.tools;
+package com.wearezeta.auto.common.driver.device_helpers;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,14 +7,15 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.common.process.UnixProcessHelpers;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
 
@@ -22,14 +23,22 @@ import static com.wearezeta.auto.common.CommonUtils.getDeviceName;
 import static com.wearezeta.auto.common.CommonUtils.getIOSToolsRoot;
 import static com.wearezeta.auto.common.CommonUtils.getImagesPathFromConfig;
 
-public class IOSSimulatorHelper {
+public class IOSSimulatorHelpers {
     public static final int SIMULATOR_INTERACTION_TIMEOUT = 3 * 60; //seconds
 
     private static final String TESTING_IMAGE_NAME = "testing.jpg";
 
-    private static Logger log = ZetaLogger.getLog(IOSSimulatorHelper.class.getSimpleName());
+    private static final long INSTALL_SYNC_TIMEOUT_MS = 3000;
 
-    public IOSSimulatorHelper() {
+    private static final long SIMULATOR_BOOT_TIMEOUT_MS = 80000;
+    private static final long SIMULATOR_BOOTING_INTERVAL_CHECK_MS = SIMULATOR_BOOT_TIMEOUT_MS / 20;
+
+    private static final String XCRUN_PATH = "/usr/bin/xcrun";
+    private static final long COMMAND_TIMEOUT_MS = SIMULATOR_BOOT_TIMEOUT_MS / 2;
+
+    private static Logger log = ZetaLogger.getLog(IOSSimulatorHelpers.class.getSimpleName());
+
+    public IOSSimulatorHelpers() {
     }
 
     private static final String SWIPE_SCRIPT_NAME = "swipeInWindow.py";
@@ -46,7 +55,7 @@ public class IOSSimulatorHelper {
     public static void swipe(double startX, double startY, double endX, double endY) throws Exception {
         CommonUtils.executeUIShellScript(new String[]{
                 String.format("/usr/bin/python '%s/%s' %.2f %.2f %.2f %.2f",
-                        getIOSToolsRoot(IOSSimulatorHelper.class), SWIPE_SCRIPT_NAME,
+                        getIOSToolsRoot(IOSSimulatorHelpers.class), SWIPE_SCRIPT_NAME,
                         startX, startY, endX, endY)
         }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
@@ -63,7 +72,7 @@ public class IOSSimulatorHelper {
                              long durationMillis) throws Exception {
         CommonUtils.executeUIShellScript(new String[]{
                 String.format("/usr/bin/python '%s/%s' %.2f %.2f %.2f %.2f %d",
-                        getIOSToolsRoot(IOSSimulatorHelper.class), SWIPE_SCRIPT_NAME,
+                        getIOSToolsRoot(IOSSimulatorHelpers.class), SWIPE_SCRIPT_NAME,
                         startX, startY, endX, endY, durationMillis)
         }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
@@ -79,14 +88,14 @@ public class IOSSimulatorHelper {
     public static void doubleClickAt(String relativeX, String relativeY) throws Exception {
         CommonUtils.executeUIShellScript(new String[]{
                 String.format("/usr/bin/python '%s/%s' %s %s",
-                        getIOSToolsRoot(IOSSimulatorHelper.class), DOUBLE_CLICK_SCRIPT_NAME, relativeX, relativeY)
+                        getIOSToolsRoot(IOSSimulatorHelpers.class), DOUBLE_CLICK_SCRIPT_NAME, relativeX, relativeY)
         }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 
     public static void clickAt(String relativeX, String relativeY, String durationSeconds) throws Exception {
         CommonUtils.executeUIShellScript(new String[]{
                 String.format("/usr/bin/python '%s/%s' %s %s %s",
-                        getIOSToolsRoot(IOSSimulatorHelper.class), CLICK_SCRIPT_NAME, relativeX, relativeY, durationSeconds)
+                        getIOSToolsRoot(IOSSimulatorHelpers.class), CLICK_SCRIPT_NAME, relativeX, relativeY, durationSeconds)
         }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 
@@ -96,7 +105,7 @@ public class IOSSimulatorHelper {
                 "set frontmost to false",
                 "set frontmost to true",
                 "end tell"
-        }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
         // To make sure the window is really activated
         Thread.sleep(4000);
     }
@@ -108,35 +117,35 @@ public class IOSSimulatorHelper {
                 "keystroke \"h\" using {command down, shift down}",
                 "keystroke \"h\" using {command down, shift down}",
                 "end tell"
-        }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 
     public static void lock() throws Exception {
         activateWindow();
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to keystroke \"l\" using {command down}"
-        }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 
     public static void goHome() throws Exception {
         activateWindow();
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}"
-        }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 
     public static void pressEnterKey() throws Exception {
         activateWindow();
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to keystroke return"
-        }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 
     public static void toggleSoftwareKeyboard() throws Exception {
         activateWindow();
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to keystroke \"k\" using {command down}"
-        }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 
     public static void selectPasteMenuItem() throws Exception {
@@ -150,7 +159,7 @@ public class IOSSimulatorHelper {
                 "    end tell",
                 "  end tell",
                 "end tell",
-        }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        }).get(IOSSimulatorHelpers.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 
     private static final String SUBSECTION_MARKER = "--";
@@ -189,8 +198,8 @@ public class IOSSimulatorHelper {
     private static Map<String, String> simIdsMapping = new HashMap<>();
 
     public static String getId() throws Exception {
-        final String deviceName = getDeviceName(IOSSimulatorHelper.class);
-        final String platformVersion = CommonUtils.getPlatformVersionFromConfig(IOSSimulatorHelper.class);
+        final String deviceName = getDeviceName(IOSSimulatorHelpers.class);
+        final String platformVersion = CommonUtils.getPlatformVersionFromConfig(IOSSimulatorHelpers.class);
         if (!simIdsMapping.containsKey(deviceName)) {
             final String output = executeSimctl("list");
             simIdsMapping.put(deviceName, parseSimulatorId(output, deviceName, platformVersion).orElseThrow(
@@ -234,9 +243,8 @@ public class IOSSimulatorHelper {
     }
 
     public static String getLogsAndCrashes() throws Exception {
-        final String simId = getId();
         final File logFile = new File(String.format("%s/Library/Logs/CoreSimulator/%s/system.log",
-                System.getProperty("user.home"), simId));
+                System.getProperty("user.home"), getId()));
         final StringBuilder result = new StringBuilder();
         if (logFile.exists()) {
             result.append(new String(Files.readAllBytes(logFile.toPath()), Charset.forName("UTF-8")));
@@ -250,14 +258,17 @@ public class IOSSimulatorHelper {
         return result.toString();
     }
 
-    private static final String XCRUN_PATH = "/usr/bin/xcrun";
+    private static String getCommandOutput(String... cmd) throws Exception {
+        return getCommandOutput(COMMAND_TIMEOUT_MS, cmd);
+    }
 
-    private static final int COMMAND_TIMEOUT_SECONDS = 60;
-
-    private static String getCommandOutput(String[] cmd) throws Exception {
+    private static String getCommandOutput(long timeoutMs, String... cmd) throws Exception {
         log.debug(String.format("Executing: %s", Arrays.toString(cmd)));
         final Process process = new ProcessBuilder(cmd).redirectErrorStream(true).start();
-        process.waitFor(COMMAND_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        if (!process.waitFor(timeoutMs, TimeUnit.MILLISECONDS)) {
+            throw new TimeoutException(String.format("'%s' command execution has expired after %s seconds timeout",
+                    Arrays.toString(cmd), timeoutMs / 1000));
+        }
         final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         final StringBuilder builder = new StringBuilder();
         String line;
@@ -269,51 +280,94 @@ public class IOSSimulatorHelper {
         return output;
     }
 
-    private static String executeXcRun(String verb, String[] cmd) throws Exception {
+    private static String executeXcRun(String verb, long timeoutMs, String... cmd) throws Exception {
         final String[] firstCmdPart = new String[]{XCRUN_PATH, verb};
         final String[] fullCmd = ArrayUtils.addAll(firstCmdPart, cmd);
-        return getCommandOutput(fullCmd);
+        return getCommandOutput(timeoutMs, fullCmd);
+    }
+
+    private static String executeXcRun(String verb, String... cmd) throws Exception {
+        return executeXcRun(verb, COMMAND_TIMEOUT_MS, cmd);
     }
 
     private static String executeSimctl(String... cmd) throws Exception {
         return executeXcRun("simctl", cmd);
     }
 
-    public static void kill() throws Exception {
-        log.debug("Force killing Simulator app...");
-        UnixProcessHelpers.killProcessesGracefully("Simulator");
-        Thread.sleep(2000);
+    private static String executeSimctl(int timeoutSeconds, String... cmd) throws Exception {
+        return executeXcRun("simctl", timeoutSeconds, cmd);
     }
 
+    private static final String[] IOS_SIMULATOR_PROCESSES_NAMES = new String[]{
+            "Simulator", "osascript", "configd_sim", "xpcproxy_sim", "backboardd",
+            "platform_launch_", "companionappd", "ids_simd", "launchd_sim",
+            "CoreSimulatorBridge", "SimulatorBridge", "SpringBoard",
+            "locationd", "MobileGestaltHelper", "cfprefsd",
+            "assetsd", "fileproviderd", "mediaremoted",
+            "routined", "assetsd", "mstreamd", "healthd", "MobileCal",
+            "callservicesd", "revisiond", "touchsetupd", "calaccessd",
+            "ServerFileProvider", "mobileassetd", "IMDPersistenceAgent",
+            "itunesstored", "profiled", "passd", "carkitd", "xcrun"
+    };
+
+    private static void kill() throws Exception {
+        log.debug("Force killing Simulator app...");
+        UnixProcessHelpers.killProcessesGracefully(IOS_SIMULATOR_PROCESSES_NAMES);
+    }
+
+    private static final int SHUTDOWN_TIMEOUT_SECONDS = 5;
+
     public static void shutdown() throws Exception {
-        executeSimctl("shutdown", getId());
+        try {
+            executeSimctl(SHUTDOWN_TIMEOUT_SECONDS, "shutdown", getId());
+        } catch (TimeoutException e) {
+            kill();
+        }
     }
 
     public static void reset() throws Exception {
         shutdown();
-        kill();
         executeSimctl("erase", getId());
     }
 
-    private static final long INSTALL_SYNC_TIMEOUT = 15; // seconds
-
-    public static void installApp(File appPath) throws Exception {
-        executeSimctl("install", "booted", appPath.getCanonicalPath());
-        log.debug(String.format("Sleeping %s seconds to sync application install...", INSTALL_SYNC_TIMEOUT));
-        Thread.sleep(INSTALL_SYNC_TIMEOUT * 1000);
+    private static String retryUntilSimulatorBooted(FunctionalInterfaces.ISupplierWithException<String> f)
+            throws Exception {
+        final long msStarted = System.currentTimeMillis();
+        do {
+            try {
+                final String output = f.call();
+                if (!output.contains("No devices are booted")) {
+                    return output;
+                }
+            } catch (InterruptedException e) {
+                throw e;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Thread.sleep(SIMULATOR_BOOTING_INTERVAL_CHECK_MS);
+        } while (System.currentTimeMillis() - msStarted <= SIMULATOR_BOOT_TIMEOUT_MS);
+        throw new IllegalStateException(String.format("Cannot apply simctl command after %s seconds timeout",
+                SIMULATOR_BOOT_TIMEOUT_MS / 1000));
     }
 
-    public static void installIpa(File ipaPath) throws Exception {
-        final File app = CommonUtils.extractAppFromIpa(ipaPath);
-        try {
-            installApp(app);
-        } finally {
-            FileUtils.deleteDirectory(app);
-        }
+    public static void installApp(File appPath) throws Exception {
+        retryUntilSimulatorBooted(
+                () -> executeSimctl("install", "booted", appPath.getCanonicalPath())
+        );
+        log.debug(String.format("Sleeping %s seconds to sync application install...", INSTALL_SYNC_TIMEOUT_MS / 1000));
+        Thread.sleep(INSTALL_SYNC_TIMEOUT_MS);
+    }
+
+    public static void uninstallApp(String bundleId) throws Exception {
+        retryUntilSimulatorBooted(
+                () -> executeSimctl("uninstall", "booted", bundleId)
+        );
     }
 
     public static void launchApp(String bundleId) throws Exception {
-        executeSimctl("launch", "booted", bundleId);
+        retryUntilSimulatorBooted(
+                () -> executeSimctl("launch", "booted", bundleId)
+        );
     }
 
     public static void uploadImage(File img) throws Exception {
@@ -322,13 +376,15 @@ public class IOSSimulatorHelper {
                     "Please make sure the image %s exists and is accessible", img.getCanonicalPath()
             ));
         }
-        executeSimctl("addphoto", "booted", img.getCanonicalPath());
+        retryUntilSimulatorBooted(
+                () -> executeSimctl("addphoto", "booted", img.getCanonicalPath())
+        );
         // Let Simulator to update the lib
         Thread.sleep(3000);
     }
 
     public static void uploadImage() throws Exception {
-        uploadImage(new File(getImagesPathFromConfig(IOSSimulatorHelper.class) + File.separator + TESTING_IMAGE_NAME));
+        uploadImage(new File(getImagesPathFromConfig(IOSSimulatorHelpers.class) + File.separator + TESTING_IMAGE_NAME));
     }
 
     public static void copySystemClipboardToSimulatorClipboard() throws Exception {
@@ -350,14 +406,84 @@ public class IOSSimulatorHelper {
         }
     }
 
+    public static List<File> getInternalApplicationsRoots() throws Exception {
+        final File internalApplicationsRoot = new File(
+                String.format("%s/data/Containers/Data/Application", getInternalFSRoot())
+        );
+        final File[] appRoots = internalApplicationsRoot.listFiles();
+        if (appRoots == null) {
+            return Collections.emptyList();
+        }
+        return Arrays.asList(appRoots);
+    }
+
+    public static String getInternalFSRoot() throws Exception {
+        return String.format("%s/Library/Developer/CoreSimulator/Devices/%s",
+                System.getProperty("user.home"), getId());
+    }
+
     public static List<File> locateFilesOnInternalFS(String name) throws Exception {
-        final File root = new File(String.format("%s/Library/Developer/CoreSimulator/Devices/%s",
-                System.getProperty("user.home"), getId()));
+        final File root = new File(getInternalFSRoot());
         if (!root.exists()) {
             return Collections.emptyList();
         }
         final List<File> resultList = new ArrayList<>();
         findFiles(name, root, resultList);
         return resultList;
+    }
+
+    private static Optional<String> applicationPath = Optional.empty();
+
+    // https://github.com/plu/simctl/blob/master/lib/simctl/command/launch.rb
+
+    public static String getApplicationPath() throws Exception {
+        if (!applicationPath.isPresent()) {
+            final String xCodeRoot = getCommandOutput("/usr/bin/xcode-select", "-p").trim();
+            applicationPath = Optional.of(String.format("%s/Applications/Simulator.app", xCodeRoot));
+        }
+        return applicationPath.get();
+    }
+
+    private static String getDefaultScaleFactor() throws Exception {
+        // Available scale factors: 1.0, 0.75, 0.5, 0.33 and 0.25
+        final String model = CommonUtils.getDeviceName(IOSSimulatorHelpers.class).toLowerCase();
+        if (model.contains("ipad")) {
+            return "0.33";
+        }
+        return "0.5";
+    }
+
+    private static String getInternalDeviceType() throws Exception {
+        final String model = CommonUtils.getDeviceName(IOSSimulatorHelpers.class);
+        return String.format("com.apple.CoreSimulator.SimDeviceType.%s", model.replace(" ", "-"));
+    }
+
+    public static void start() throws Exception {
+        if (UnixProcessHelpers.isProcessRunning("Simulator")) {
+            // Kill other simulator if running
+            kill();
+        }
+        log.debug(getCommandOutput("/usr/bin/open", "-Fn", getApplicationPath(),
+                "--args",
+                "-ConnectHardwareKeyboard", "1",
+                "-CurrentDeviceUDID", getId(),
+                String.format("-SimulatorWindowLastScale-%s", getInternalDeviceType()), getDefaultScaleFactor())
+        );
+        // This to to wait until simulator is started properly
+        uninstallApp("com.check_if_simulator.booted");
+    }
+
+    public static boolean isRunning() throws Exception {
+        if (!UnixProcessHelpers.isProcessRunning("Simulator")) {
+            return false;
+        }
+        final String id = getId();
+        final String output = executeSimctl("list");
+        for (String line : output.split("\n")) {
+            if (line.contains(id) && line.contains("Booted")) {
+                return true;
+            }
+        }
+        return false;
     }
 }

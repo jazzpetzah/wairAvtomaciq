@@ -4,10 +4,9 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
-import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import java.util.concurrent.Future;
 
@@ -30,7 +29,7 @@ public class CameraRollPage extends IOSPage {
         super(lazyDriver);
 
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            IOSSimulatorHelper.uploadImage();
+            IOSSimulatorHelpers.uploadImage();
         }
     }
 

@@ -1,19 +1,15 @@
 package com.wearezeta.auto.ios.steps;
 
 
-import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.misc.IOSDistributable;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.RegistrationStrategy;
-import com.wearezeta.auto.ios.pages.ConversationsListPage;
 import com.wearezeta.auto.ios.tools.ABProvisioner.ABContact;
 import com.wearezeta.auto.ios.tools.ABProvisioner.ABProvisionerAPI;
-import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 import org.junit.Assert;
 
-import java.io.File;
 import java.util.*;
 
 
@@ -22,11 +18,6 @@ public class AutoconnectPageSteps {
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
     private final ABProvisionerAPI addressbookProvisioner = ABProvisionerAPI.getInstance();
-    private final CommonSteps commonSteps = CommonSteps.getInstance();
-
-    private ConversationsListPage getConversationsListPage() throws Exception {
-        return pagesCollection.getPage(ConversationsListPage.class);
-    }
 
     /**
      * Installs the Addressbook helper app on to the simulator
@@ -36,8 +27,11 @@ public class AutoconnectPageSteps {
      */
     @Given("^I install Address Book Helper app$")
     public void IInstallAddressbookHelperApp() throws Exception {
-        final File ipaFile = new File(CommonIOSSteps.getiOSAddressbookAppPath());
-        pagesCollection.getCommonPage().installIpa(ipaFile);
+        final IOSDistributable addressBookHelperDist =
+                IOSDistributable.getInstance(CommonIOSSteps.getiOSAddressbookAppPath());
+        // remove the previous version of this app if present
+        pagesCollection.getCommonPage().uninstallApp(addressBookHelperDist.getBundleId());
+        pagesCollection.getCommonPage().installApp(addressBookHelperDist.getAppRoot());
     }
 
     private static final String ADDRESSBOOK_APP_BUNDLE = "com.wire.addressbookautomation";
@@ -50,12 +44,12 @@ public class AutoconnectPageSteps {
      */
     @Given("^I launch Address Book Helper app$")
     public void ILaunchAddressbookHelperApp() throws Exception {
-        IOSSimulatorHelper.launchApp(ADDRESSBOOK_APP_BUNDLE);
+        IOSSimulatorHelpers.launchApp(ADDRESSBOOK_APP_BUNDLE);
         Thread.sleep(2000);
         //To be sure its get pressed tap a second time, if it got pressed 1st time nothing will happen
         //there is no ui in the app...sometimes it fails here, so the second press
         for (int i = 0; i <= 1; i++) {
-            IOSSimulatorHelper.clickAt("0.68", "0.58", "1");
+            IOSSimulatorHelpers.clickAt("0.68", "0.58", "1");
         }
     }
 
@@ -111,8 +105,8 @@ public class AutoconnectPageSteps {
     @Given("^I add (\\d+) users to Address Book$")
     public void IAddXUsersToAddressBook(int numberOfUsers) throws Exception {
         Assert.assertTrue("Number of users is bigger than allowed maximum user count",
-                numberOfUsers <= usrMgr.MAX_USERS);
-        for (int i = 2; i <= numberOfUsers+1 ; i++) {
+                numberOfUsers <= ClientUsersManager.MAX_USERS);
+        for (int i = 2; i <= numberOfUsers + 1; i++) {
             ClientUser user = usrMgr.findUserByNameOrNameAlias(String.format("user%sName", i));
             String name = user.getName();
             String phoneNumber = user.getPhoneNumber().toString();

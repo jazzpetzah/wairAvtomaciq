@@ -19,6 +19,20 @@ public class UnixProcessHelpers {
         killProcessesGracefully(DEFAULT_PKILL_TIMEOUT_SECONDS, expectedNames);
     }
 
+    public static boolean isProcessRunning(String name) throws Exception {
+        final Process p = new ProcessBuilder("/bin/ps", "axco", "command").start();
+        p.waitFor();
+        final InputStream stream = p.getInputStream();
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (line.matches(".*\\b" + name.trim() + "\\b.*")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void killProcessesGracefully(int timeoutSecondsUntilForceKill, String... expectedNames)
             throws Exception {
         new ProcessBuilder(ArrayUtils.addAll(new String[]{"/usr/bin/killall"}, expectedNames)).start().waitFor();

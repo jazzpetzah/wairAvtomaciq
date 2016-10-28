@@ -11,7 +11,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.osx.common.WrapperTestContext;
 import com.wearezeta.auto.web.pages.ContactListPage;
 import com.wearezeta.auto.web.locators.WebAppLocators;
-import com.wearezeta.auto.web.steps.StartUIPageSteps;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;

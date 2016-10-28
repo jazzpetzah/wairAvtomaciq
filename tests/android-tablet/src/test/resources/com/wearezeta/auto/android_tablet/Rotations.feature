@@ -1,7 +1,7 @@
 Feature: Rotations
 
   @C476 @regression
-  Scenario Outline: Conversation view
+  Scenario Outline: Conversation view rotations
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
@@ -21,7 +21,7 @@ Feature: Rotations
       | user1Name | user2Name | Msg1    |
 
   @C475 @regression
-  Scenario Outline: (AN-2901) Search (people picker)
+  Scenario Outline: (AN-2901) Search rotations
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to me
     Given <Contact2> is connected to <Contact1>
@@ -31,8 +31,8 @@ Feature: Rotations
     Given I see the conversations list with conversations
     Given I wait until <Contact2> exists in backend search results
     When I open Search UI
-    And I enter "<Contact2>" into Search input on People Picker page
-    And I tap the found item <Contact2> on People Picker page
+    And I enter "<Contact2>" into Search input on Search page
+    And I tap the found item <Contact2> on Search page
     Then I see Outgoing Connection popover
     When I rotate UI to landscape
     Then I do not see Outgoing Connection popover

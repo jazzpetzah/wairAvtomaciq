@@ -2,8 +2,6 @@ package com.wearezeta.auto.android_tablet.pages;
 
 
 import com.wearezeta.auto.android.pages.AbstractCallOutgoingPage;
-import com.wearezeta.auto.android.pages.CallOutgoingAudioPage;
-import com.wearezeta.auto.android.pages.CallOutgoingVideoPage;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 import java.util.concurrent.Future;

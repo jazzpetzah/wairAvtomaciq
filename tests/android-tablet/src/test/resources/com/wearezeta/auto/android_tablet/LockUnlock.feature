@@ -19,8 +19,8 @@ Feature: Lock/Unlock
     When I open Search UI
     When I lock the device
     And I unlock the device
-    Then I see People Picker page
-    When I close People Picker
+    Then I see Search page
+    When I close Search
     And I tap conversations list settings button
     And I see settings page
     And I lock the device

@@ -78,7 +78,7 @@ public class EmailSignInPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I tap Sign In button$")
-	public void IClickSignInButton() throws Exception {
+	public void ITapSignInButton() throws Exception {
 		getEmailSignInPage().tapSignInButton();
 	}
 

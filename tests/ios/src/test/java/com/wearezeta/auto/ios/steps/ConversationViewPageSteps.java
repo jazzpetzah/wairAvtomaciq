@@ -6,7 +6,7 @@ import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
-import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import cucumber.api.java.en.And;
 import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Assert;
@@ -329,7 +329,7 @@ public class ConversationViewPageSteps {
     public void ICopyPasteAndSendInvitationLinkFrom(String user) throws Exception {
         String link = CommonSteps.getInstance().GetInvitationUrl(user);
         CommonUtils.setStringValueInSystemClipboard(link);
-        IOSSimulatorHelper.copySystemClipboardToSimulatorClipboard();
+        IOSSimulatorHelpers.copySystemClipboardToSimulatorClipboard();
         getConversationViewPage().tapTextInput(false);
         getConversationViewPage().tapTextInput(true);
         getConversationViewPage().tapBadgeItem("Paste");
@@ -375,7 +375,7 @@ public class ConversationViewPageSteps {
     );
 
     /**
-     * Store the current media container state into an internal varibale
+     * Store the current media container state into an internal varibale - soundcloud play button
      *
      * @throws Exception
      * @step. ^I remember media container state$
@@ -385,10 +385,49 @@ public class ConversationViewPageSteps {
         previousMediaContainerState.remember();
     }
 
-    private static final int MEDIA_STATE_CHANGE_TIMEOUT = 10;
+    private ElementState previousAssetsContainerState = new ElementState(
+            () -> getConversationViewPage().getAssetContainerStateScreenshot()
+    );
 
     /**
-     * Verify whether the state of a media container is changed
+     * Store the current assets container state into an internal varibale - especially for ephemeral assets
+     *
+     * @throws Exception
+     * @step. ^I remember media asset container state$
+     */
+    @When("^I remember asset container state$")
+    public void IRememberAssetsContainerState() throws Exception {
+        previousAssetsContainerState.remember();
+    }
+
+    /**
+     * Verify whether the state of a asset container is changed - especially for ephemeral assets
+     *
+     * @param shouldNotChange equals to null if the state should not be changed
+     * @throws Exception
+     * @step. ^I see asset container state is (not )?changed$
+     */
+    @Then("^I see asset container state is (not )?changed$")
+    public void IVerifyAssetContainerState(String shouldNotChange) throws Exception {
+        if (this.previousAssetsContainerState == null) {
+            throw new IllegalStateException("Please remember the previous container state first");
+        }
+        if (shouldNotChange == null) {
+            Assert.assertTrue(String.format("The current asset container state is not different from the expected one after " +
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+                    previousAssetsContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT, CONTAINER_COMPARE_MIN_SCORE));
+        } else {
+            Assert.assertTrue(String.format("The current asset container state is different from the expected one after " +
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+                    previousAssetsContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT, CONTAINER_COMPARE_MIN_SCORE));
+        }
+    }
+
+     private static final double CONTAINER_COMPARE_MIN_SCORE = 0.8;
+     private static final int MEDIA_STATE_CHANGE_TIMEOUT = 10;
+
+    /**
+     * Verify whether the state of a media container is changed - soundclound play button
      *
      * @param shouldNotChange equals to null if the state should not be changed
      * @throws Exception
@@ -399,15 +438,14 @@ public class ConversationViewPageSteps {
         if (this.previousMediaContainerState == null) {
             throw new IllegalStateException("Please remember the previous container state first");
         }
-        final double minScore = 0.8;
         if (shouldNotChange == null) {
             Assert.assertTrue(String.format("The current media state is not different from the expected one after " +
                             "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
-                    previousMediaContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT, minScore));
+                    previousMediaContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT, CONTAINER_COMPARE_MIN_SCORE));
         } else {
             Assert.assertTrue(String.format("The current media state is different from the expected one after " +
                             "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
-                    previousMediaContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT, minScore));
+                    previousMediaContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT, CONTAINER_COMPARE_MIN_SCORE));
         }
     }
 
@@ -1443,7 +1481,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I set ephemeral messages expiration timer to (Off|5 seconds|15 seconds|1 minute|15 minutes)$
      */
-    @And("^I set ephemeral messages expiration timer to (Off|5 seconds|15 seconds|1 minute|15 minutes)$")
+    @And("^I set ephemeral messages expiration timer to (Off|5 seconds|15 seconds|30 seconds|1 minute|15 minutes)$")
     public void ISetExpirationTimer(String value) throws Exception {
         getConversationViewPage().setMessageExpirationTimer(value);
     }

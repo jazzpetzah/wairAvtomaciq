@@ -87,21 +87,6 @@ public class AppiumServer {
         }
     }
 
-    public void resetIOS() throws Exception {
-        UnixProcessHelpers.killProcessesGracefully("osascript",
-                "Simulator", "configd_sim", "xpcproxy_sim", "backboardd",
-                "platform_launch_", "companionappd", "ids_simd", "launchd_sim",
-                "CoreSimulatorBridge", "SimulatorBridge", "SpringBoard",
-                "locationd", "MobileGestaltHelper", "cfprefsd",
-                "assetsd", "fileproviderd", "mediaremoted",
-                "routined", "assetsd", "mstreamd", "healthd", "MobileCal",
-                "callservicesd", "revisiond", "touchsetupd", "calaccessd",
-                "ServerFileProvider", "mobileassetd", "IMDPersistenceAgent",
-                "itunesstored", "profiled", "passd", "carkitd", "instruments",
-                "xcodebuild", "XCTRunner");
-        restart();
-    }
-
     public synchronized void restart() throws Exception {
         final String hostname = InetAddress.getLocalHost().getHostName();
         log.info(String.format("Trying to (re)start Appium server on %s:%s...", hostname, PORT));
@@ -122,10 +107,11 @@ public class AppiumServer {
         log.info(String.format("Waiting for Appium to be (re)started on %s:%s...", hostname, PORT));
         final long msStarted = System.currentTimeMillis();
         if (!waitUntilIsRunning(RESTART_TIMEOUT_MILLIS)) {
-            throw new WebDriverException(String.format(
-                    "Appium server has failed to start after %s seconds timeout on server '%s'.\n" +
-                            "Please make sure that NodeJS and Appium packages are installed properly on this machine.\n" +
-                            "Appium logs:\n\n%s\n\n\n", RESTART_TIMEOUT_MILLIS / 1000, hostname, getLog().orElse("")));
+            throw new WebDriverException(
+                    String.format("Appium server has failed to start after %s seconds timeout on server '%s'.\n"
+                            + "Please make sure that NodeJS and Appium packages are installed properly on this machine.\n"
+                            + "Appium logs:\n\n%s\n\n\n", RESTART_TIMEOUT_MILLIS / 1000, hostname, getLog().orElse(""))
+            );
         }
 
         log.info(String.format("Appium server has been successfully (re)started after %.1f seconds " +
