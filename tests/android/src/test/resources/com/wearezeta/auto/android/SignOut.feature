@@ -1,7 +1,7 @@
 Feature: Sign Out
 
   @C692 @regression @rc @legacy
-  Scenario Outline: Sign out from Wire
+  Scenario Outline: (AN-4605) Sign out from Wire
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
