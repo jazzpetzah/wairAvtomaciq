@@ -414,11 +414,10 @@ Feature: Connect
   @C194553 @regression
   Scenario Outline: Direct matching emails -  delayed
     Given There are 2 users where <UserA> is me
+    Given User <UserB> has email <UserAEmail> in address book
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with no conversations
-    Given User <UserB> has email <UserAEmail> in address book
-    When I wait for 10 seconds
     When I open Search UI
     And I type the first 5 chars of user name "<UserB>" in search field
     Then I see user <UserB> in Search result list
@@ -432,7 +431,7 @@ Feature: Connect
     And I accept First Time overlay as soon as it is visible
     And I see Conversations list with no conversations
     And I open Search UI
-    And I type the first 1 chars of user name "<UserA>" in search field
+    And I type the first 5 chars of user name "<UserA>" in search field
     Then I see user <UserA> in Search result list
 
     Examples:
