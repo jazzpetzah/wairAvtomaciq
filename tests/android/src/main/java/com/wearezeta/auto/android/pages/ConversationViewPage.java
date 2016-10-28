@@ -1198,7 +1198,7 @@ public class ConversationViewPage extends AndroidPage {
             throws Exception {
         String locatorId = getMessageMetaLocatorIdString(itemType);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathStrTemplateIdValue.apply(locatorId, expectedItemText)));
+                By.xpath(xpathStrTemplateIdValue.apply(locatorId, expectedItemText)), CONTAINER_VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean waitUntilMessageMetaItemInvisible(String itemType, String expectedItemText)
