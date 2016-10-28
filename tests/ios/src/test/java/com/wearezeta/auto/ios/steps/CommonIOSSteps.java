@@ -229,9 +229,10 @@ public class CommonIOSSteps {
         Exception storedException = null;
         do {
             try {
-                if (ntry > 0 || !IOSSimulatorHelpers.isRunning()) {
-                    IOSSimulatorHelpers.start();
+                if (ntry > 0) {
+                    IOSSimulatorHelpers.shutdown();
                 }
+                IOSSimulatorHelpers.start();
                 if (!caps.is(CAPABILITY_NAME_NO_UNINSTALL)) {
                     IOSSimulatorHelpers.uninstallApp(IOSDistributable.getInstance(
                             (String) caps.getCapability("app")).getBundleId()
