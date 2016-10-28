@@ -29,7 +29,6 @@ import cucumber.api.Scenario;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import gherkin.formatter.model.Result;
-import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -225,7 +224,7 @@ public class CommonIOSSteps {
         if (caps.is(CAPABILITY_NAME_FORCE_RESET)) {
             IOSSimulatorHelpers.reset();
         }
-        
+
         int ntry = 0;
         Exception storedException = null;
         do {
@@ -279,7 +278,6 @@ public class CommonIOSSteps {
         }
 
         if (scenario.getSourceTagNames().contains("@performance")) {
-            CommonUtils.defineNoHeadlessEnvironment();
             try {
                 IOSLogListener.getInstance().start();
             } catch (Exception e) {
@@ -299,16 +297,7 @@ public class CommonIOSSteps {
                 additionalCaps.put(CAPABILITY_NAME_ADDRESSBOOK, true);
             }
 
-            if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
-            }
-            if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-                IOSSimulatorHelpers.reset();
-            } else {
-                // TODO: Make sure the app is uninstalled from the real device
-                throw new NotImplementedException("Reset action is only available for Simulator");
-            }
-            additionalCaps.put("noReset", true);
+            additionalCaps.put(CAPABILITY_NAME_FORCE_RESET, true);
         }
 
         if (scenario.getSourceTagNames().contains(TAG_NAME_FORCE_RESET)) {
@@ -397,7 +386,7 @@ public class CommonIOSSteps {
                 e.printStackTrace();
             }
         }
-        customCaps.put("noReset", true);
+        customCaps.put(CAPABILITY_NAME_FORCE_RESET, false);
         customCaps.put(CAPABILITY_NAME_NO_UNINSTALL, true);
         final File currentBuildRoot = IOSDistributable.getInstance(getAppPath()).getAppRoot();
         pagesCollection.getCommonPage().installApp(currentBuildRoot);
@@ -428,7 +417,7 @@ public class CommonIOSSteps {
         for (Map.Entry<String, ?> capabilityItem : currentCapabilities.entrySet()) {
             customCaps.put(capabilityItem.getKey(), capabilityItem.getValue());
         }
-        customCaps.put("noReset", true);
+        customCaps.put(CAPABILITY_NAME_FORCE_RESET, false);
         customCaps.put(CAPABILITY_NAME_NO_UNINSTALL, true);
         final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(
                 IOSDistributable.getInstance(getAppPath()).getAppRoot().getAbsolutePath(),
