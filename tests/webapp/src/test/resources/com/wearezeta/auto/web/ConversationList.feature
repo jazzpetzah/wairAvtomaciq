@@ -61,7 +61,6 @@ Feature: Conversation List
     Given I muted conversation with user <Contact> on device SecondDevice
     And I see that conversation <Contact> is muted
     When I set unmuted state for conversation <Contact>
-    And I open preferences by clicking the gear button
     Then I see that conversation <Contact> is not muted
 
     Examples: 
