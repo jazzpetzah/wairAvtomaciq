@@ -301,3 +301,21 @@ Feature: Ephemeral Messages
     Examples:
       | Name      | Contact   | Timer | Link                 | DeviceName |
       | user1Name | user2Name | 30    | https://www.wire.com | myDevice2  |
+
+  @C259596 @staging @fastLogin
+  Scenario Outline: Verify the message is deleted on the receiver side when timer is over
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <DeviceName>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given User <Contact> switches user Myself to ephemeral mode with <Timeout> seconds timeout
+    Given User <Contact> sends encrypted message "<Message>" to user Myself
+    When I tap on contact name <Contact>
+    Then I see the conversation view contains message <Message>
+    And I wait for <Timeout> seconds
+    And I see 0 message in the conversation view
+
+    Examples:
+      | Name      | Contact   | Message | Timeout | DeviceName    |
+      | user1Name | user2Name | y1      | 15      | ContactDevice |
