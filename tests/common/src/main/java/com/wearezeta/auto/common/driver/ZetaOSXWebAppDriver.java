@@ -247,8 +247,9 @@ public class ZetaOSXWebAppDriver extends ZetaWebAppDriver {
                 return (X) getOsxDriver().bufferedImageAsByteArray(elementScreenshot);
             } else if (OutputType.FILE.equals(outputType)) {
                 throw new WebDriverException("File screenshot not supported yet");
+            } else {
+                throw new WebDriverException("Unsupported OutputType selection");
             }
-            return null;
         }
 
         @Override
