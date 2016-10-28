@@ -330,9 +330,8 @@ public class ContactListPageSteps {
     @When("^I see that conversation (.*) is muted$")
     public void ISeeConversationIsMuted(String contact) throws Exception {
         contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-
-        Assert.assertTrue(context.getPagesCollection().getPage(ContactListPage.class)
-                .isConversationMuted(contact));
+        Assert.assertTrue(String.format("Mute button NOT visible for conversation '%s'", contact), context.getPagesCollection().
+                getPage(ContactListPage.class).isConversationMuted(contact));
     }
 
     /**
@@ -345,9 +344,8 @@ public class ContactListPageSteps {
     @When("^I see that conversation (.*) is not muted$")
     public void ISeeConversationIsNotMuted(String contact) throws Exception {
         contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-
-        Assert.assertFalse(context.getPagesCollection().getPage(ContactListPage.class)
-                .isConversationMuted(contact));
+        Assert.assertFalse(String.format("Mute button visible for conversation '%s'", contact), context.getPagesCollection().
+                getPage(ContactListPage.class).isConversationMuted(contact));
     }
 
     /**
