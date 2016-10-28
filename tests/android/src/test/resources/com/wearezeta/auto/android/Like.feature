@@ -459,3 +459,25 @@ Feature: Like
     Examples:
       | Name      | Contact1  | Contact2  | Message | Group      | ContactDevice |
       | user1Name | user2Name | user3Name | M1      | BlockGroup | D1            |
+
+  @C255425 @staging
+  Scenario Outline: Verify conversation lists ordering is not changed if someone likes any message in the conversation
+    Given There are 3 users where <Name> is me
+    Given User <Contact1> adds new device <ContactDevice>
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact1>
+    Given I type the message "<Message>" and send it by cursor Send button
+    Given I navigate back from conversation
+    Given I tap on conversation name <Contact2>
+    Given I type the message "<Message>" and send it by cursor Send button
+    Given I navigate back from conversation
+    When I take screenshot
+    And User <Contact1> likes the recent message from user Myself via device <ContactDevice>
+    Then I verify the previous and the current screenshots are not different
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Message | ContactDevice |
+      | user1Name | user2Name | user3Name | M1      | D1            |
