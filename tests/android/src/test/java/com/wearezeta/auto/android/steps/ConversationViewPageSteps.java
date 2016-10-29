@@ -1619,11 +1619,9 @@ public class ConversationViewPageSteps {
      *
      * @param itemType Message Meta Item type
      * @throws Exception
-     * @step. ^^I tap (Like button|Like description|Message status|First like avatar|Second like avatar)
-     * in conversation view$
+     * @step. ^I tap (Like button|Like description|Message status|First like avatar|Second like avatar) in conversation view$
      */
-    @When("^I tap (Like button|Like description|Message status|First like avatar|Second like avatar)" +
-            " in conversation view$")
+    @When("^I tap (Like button|Like description|Message status|First like avatar|Second like avatar) in conversation view$")
     public void ITapMessageMeta(String itemType) throws Exception {
         getConversationViewPage().tapMessageMetaItem(itemType);
     }
@@ -1638,9 +1636,8 @@ public class ConversationViewPageSteps {
     @Then("^I see (\\d+) Message statu(?:s|ses) in conversation view$")
     public void ISeeMessageStatus(int expectedCount) throws Exception {
         final int actualCount = getConversationViewPage().getMessageStatusCount();
-        Assert.assertTrue(
-                String.format("The expect count is not equal to actual count, actual: %d, expect: %d",
-                        actualCount, expectedCount), actualCount == expectedCount);
+        Assert.assertTrue(String.format("The expect count is not equal to actual count, actual: %d, expect: %d",
+                actualCount, expectedCount), actualCount == expectedCount);
     }
 
     /**
@@ -1655,43 +1652,5 @@ public class ConversationViewPageSteps {
         String names = usrMgr.replaceAliasesOccurences(userNames, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("%s are expected to be visible in typing list", userNames),
                 getConversationViewPage().waitUntilTypingVisible(names));
-    }
-
-    private static final int DEFAULT_RETRIES = 3;
-    private static final int DEFAULT_RETRY_DELAY = 30;
-    private final Random random = new Random();
-    private static final Logger log = ZetaLogger.getLog(CommonUtils.class.getSimpleName());
-
-    /**
-     * User X typing in specified conversation and I verity that typing indicator is visible
-     *
-     * @param userNames Typing user(s) name(s)
-     * @param dstConversationName The conversation where the user(s) is typing
-     * @throws Exception
-     * @step. ^I see typing indicator while users? (.*) (?:is|are) typing in the conversation (.*)$
-     */
-    @When("^I see typing indicator while users? (.*) (?:is|are) typing in the conversation (.*)$")
-    public void ISeeIndicatorWhileUsersTypingInConversation(String userNames, String dstConversationName) throws Exception {
-        int retryNumber = 1;
-        int intervalSeconds = 1;
-        do {
-            long sleepInterval = 1000;
-            commonSteps.UsersAreTypingInConversation(userNames, dstConversationName);
-            String names = usrMgr.replaceAliasesOccurences(userNames, ClientUsersManager.FindBy.NAME_ALIAS);
-            if (getConversationViewPage().waitUntilTypingVisible(names)) {
-                return;
-            } else {
-                sleepInterval = (intervalSeconds + random.nextInt(DEFAULT_RETRY_DELAY)) * 2000;
-                intervalSeconds *= 2;
-            }
-            log.debug(String.format("Typing indicator is not visible in the conversation. Retrying (%d of %d)...", retryNumber,
-                    DEFAULT_RETRIES));
-            retryNumber++;
-            Thread.sleep(sleepInterval);
-
-        } while (retryNumber <= DEFAULT_RETRIES);
-        throw new
-                RuntimeException(
-                String.format("Typing indicator is not visible in the conversation after '%d' retries", DEFAULT_RETRIES));
     }
 }

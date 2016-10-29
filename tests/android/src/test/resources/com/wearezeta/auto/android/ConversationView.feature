@@ -413,13 +413,12 @@ Feature: Conversation View
     When I tap on conversation name <Contact>
     And User <Contact> is typing in the conversation <Name>
     Then I see <Contact> is typing
-#    Then I see typing indicator while user <Contact> is typing in the conversation <Name>
 
     Examples:
       | Name      | Contact   | ContactDevice |
       | user1Name | user2Name | Device1       |
 
-  @C250857 @regression
+  @C250857 @unstable
   Scenario Outline: Verify I see someone are typing in group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -430,10 +429,10 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <GroupChatName>
-#    And User <Contact1> is typing in the conversation <GroupChatName>
-#    And User <Contact2> is typing in the conversation <GroupChatName>
-#    Then I see <Contact1>,<Contact2> are typing
-    Then I see typing indicator while users <Contact1>,<Contact2> are typing in the conversation <GroupChatName>
+    #TODO: User <Contact1> is typing in the conversation <GroupChatName> is not stable on jenkins (nothing happens on device)
+    And User <Contact1> is typing in the conversation <GroupChatName>
+    And User <Contact2> is typing in the conversation <GroupChatName>
+    Then I see <Contact1>,<Contact2> are typing
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | D1 | D2 |
