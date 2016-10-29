@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -16,6 +17,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 public class ConversationViewPageSteps {
@@ -1655,6 +1657,11 @@ public class ConversationViewPageSteps {
                 getConversationViewPage().waitUntilTypingVisible(names));
     }
 
+    private static final int DEFAULT_RETRIES = 3;
+    private static final int DEFAULT_RETRY_DELAY = 30;
+    private final Random random = new Random();
+    private static final Logger log = ZetaLogger.getLog(CommonUtils.class.getSimpleName());
+
     /**
      * User X typing in specified conversation and I verity that typing indicator is visible
      *
@@ -1665,9 +1672,26 @@ public class ConversationViewPageSteps {
      */
     @When("^I see typing indicator while users? (.*) (?:is|are) typing in the conversation (.*)$")
     public void ISeeIndicatorWhileUsersTypingInConversation(String userNames, String dstConversationName) throws Exception {
-        commonSteps.UsersAreTypingInConversation(userNames, dstConversationName);
-        String names = usrMgr.replaceAliasesOccurences(userNames, ClientUsersManager.FindBy.NAME_ALIAS);
-        Assert.assertTrue(String.format("%s are expected to be visible in typing list", userNames),
-                getConversationViewPage().waitUntilTypingVisible(names));
+        int retryNumber = 1;
+        int intervalSeconds = 1;
+        do {
+            long sleepInterval = 1000;
+            commonSteps.UsersAreTypingInConversation(userNames, dstConversationName);
+            String names = usrMgr.replaceAliasesOccurences(userNames, ClientUsersManager.FindBy.NAME_ALIAS);
+            if (getConversationViewPage().waitUntilTypingVisible(names)) {
+                return;
+            } else {
+                sleepInterval = (intervalSeconds + random.nextInt(DEFAULT_RETRY_DELAY)) * 2000;
+                intervalSeconds *= 2;
+            }
+            log.debug(String.format("Typing indicator is not visible in the conversation. Retrying (%d of %d)...", retryNumber,
+                    DEFAULT_RETRIES));
+            retryNumber++;
+            Thread.sleep(sleepInterval);
+
+        } while (retryNumber <= DEFAULT_RETRIES);
+        throw new
+                RuntimeException(
+                String.format("Typing indicator is not visible in the conversation after '%d' retries", DEFAULT_RETRIES));
     }
 }
