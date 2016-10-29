@@ -774,8 +774,7 @@ public class CommonAndroidSteps {
      * @step. ^User (\w+) is typing in the conversation (.*)$
      */
     @When("^User (\\w+) is typing in the conversation (.*)$")
-    public void UsersTypingInConversation(String fromUserNameAlias, String dstConversationName)
-            throws Exception {
+    public void UsersTypingInConversation(String fromUserNameAlias, String dstConversationName) throws Exception {
         commonSteps.UserIsTypingInConversation(fromUserNameAlias, dstConversationName);
     }
 
