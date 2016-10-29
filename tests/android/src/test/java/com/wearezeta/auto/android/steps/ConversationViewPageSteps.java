@@ -9,7 +9,6 @@ import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -17,7 +16,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 public class ConversationViewPageSteps {
@@ -76,8 +74,6 @@ public class ConversationViewPageSteps {
     private ConversationViewPage getConversationViewPage() throws Exception {
         return pagesCollection.getPage(ConversationViewPage.class);
     }
-
-    private final CommonSteps commonSteps = CommonSteps.getInstance();
 
     /**
      * Waits for the conversation page to appear
