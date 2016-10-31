@@ -15,12 +15,12 @@ Feature: Share Location
     And I tap Share Location button from input tools
     And I accept alert if visible
     # Small delay waiting location detection animation to finish(animation for iPad takes longer)
-    And I wait for 10 seconds
+    And I wait for 5 seconds
     And I tap Send location button from map view
     Then I see location map container in the conversation view
-    #TODO Stabilize sent address verification step
-    #And I see the default sent Share Location address in the conversation view
     When I tap on location map in conversation view
+    # Wait for map application to be opened
+    And I wait for 5 seconds
     Then I see map application is opened
 
     Examples:
