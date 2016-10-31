@@ -302,7 +302,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer | Link                 | DeviceName |
       | user1Name | user2Name | 30    | https://www.wire.com | myDevice2  |
 
-  @C259596 @staging @fastLogin
+  @C259596 @regression @fastLogin
   Scenario Outline: Verify the message is deleted on the receiver side when timer is over
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -355,6 +355,7 @@ Feature: Ephemeral Messages
     Then I do not see link preview container in the conversation view
     # Location
     When User <Contact> shares the default location to user Myself via device <DeviceName>
+    And I wait for <SyncTimeout> seconds
     And I see location map container in the conversation view
     And I wait for <EphemeralTimeout> seconds
     Then I do not see location map container in the conversation view

@@ -1099,9 +1099,12 @@ public class ConversationViewPage extends IOSPage {
         }
     }
 
-    public void tapEmojiKeyboardKey(int keyIndex) throws Exception {
-        final By locator = By.xpath(xpathStrEmojiKeyByIndex.apply(keyIndex));
-        getElement(locator).click();
+    public void tapEmojiKeyboardKey(String keyName) throws Exception {
+        final List<WebElement> elements = getDriver().findElements(MobileBy.AccessibilityId(keyName));
+        if (elements.size() > 0) {
+            elements.get(elements.size() - 1).click();
+        }
+        throw new IllegalArgumentException(String.format("There is no '%s' key on Emoji keyboard", keyName));
     }
 
     public void tapThisDeviceLink() throws Exception {

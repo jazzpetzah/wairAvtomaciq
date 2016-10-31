@@ -163,7 +163,13 @@ public class LoginPage extends IOSPage {
         final WebElement switchToLoginButton = getElement(nameSwitchToLoginButton);
         // Wait for a while until the button is 100% accessible
         Thread.sleep(1000);
-        switchToLoginButton.click();
+        try {
+            switchToLoginButton.click();
+        } catch (IllegalStateException e) {
+            // Retry in case of network error
+            acceptAlertIfVisible();
+            switchToLoginButton.click();
+        }
     }
 
     public void inputLoginCode(PhoneNumber forNumber) throws Exception {
