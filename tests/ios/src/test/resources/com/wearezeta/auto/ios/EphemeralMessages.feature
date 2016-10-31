@@ -364,7 +364,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | SyncTimeout | EphemeralTimeout | DeviceName    | Picture     | FileName    | VideoMIME | AudioFileName | AudioMIME | Link         |
       | user1Name | user2Name | 3           | 5                | ContactDevice | testing.jpg | testing.mp4 | video/mp4 | test.m4a      | audio/mp4 | www.wire.com |
 
-  @C259590 @staging @fastLogin
+  @C259590 @regression @fastLogin
   Scenario Outline: Verify edit/delete/like/copy/forward are switched off
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
