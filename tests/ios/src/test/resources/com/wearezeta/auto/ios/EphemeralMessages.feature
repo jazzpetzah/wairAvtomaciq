@@ -78,15 +78,15 @@ Feature: Ephemeral Messages
     Given I see 1 default message in the conversation view
     When I remember the recent message from user Myself in the local database
     And I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
-    And I wait for <Timeout> seconds
+    And I wait for 35 seconds
     And I verify the remembered message has been changed in the local database
     And User <Contact> reads the recent message from user <Name>
-    And I wait for <Timeout> seconds
+    And I wait for 40 seconds
     Then I see 0 messages in the conversation view
 
     Examples:
       | Name      | Contact   | Timeout | EphemeralTimeLabel | DeviceName    |
-      | user1Name | user2Name | 15      | seconds            | ContactDevice |
+      | user1Name | user2Name | 30      | seconds            | ContactDevice |
 
   @C259586 @regression @fastLogin
   Scenario Outline: Verify switching on/off ephemeral message
@@ -268,8 +268,6 @@ Feature: Ephemeral Messages
     Given I tap Hourglass button in conversation view
     Given I set ephemeral messages expiration timer to <Timer> seconds
     Given I type the "<SoundCloudLink>" message and send it
-    #wait to be sure video is delivered
-    Given I wait for 5 seconds
     Given I see media container in the conversation view
     When I remember the recent message from user Myself in the local database
     And I wait for <Timer> seconds
@@ -289,18 +287,18 @@ Feature: Ephemeral Messages
     Given I see conversations list
     Given I tap on contact name <Contact>
     Given I tap Hourglass button in conversation view
-    Given I set ephemeral messages expiration timer to <Timer> seconds
+    Given I set ephemeral messages expiration timer to <Timer> minute
     Given I type the "<Link>" message and send it
     Given I navigate back to conversations list
     Given I tap on contact name <Contact>
     Given User <Name> sends 1 encrypted message using device <DeviceName> to user <Contact>
     When I remember asset container state
-    And I wait for 20 seconds
+    And I wait for 60 seconds
     Then I see asset container state is changed
 
     Examples:
       | Name      | Contact   | Timer | Link                 | DeviceName |
-      | user1Name | user2Name | 30    | https://www.wire.com | myDevice2  |
+      | user1Name | user2Name | 1     | https://www.wire.com | myDevice2  |
 
   @C259596 @regression @fastLogin
   Scenario Outline: Verify the message is deleted on the receiver side when timer is over
