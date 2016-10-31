@@ -364,7 +364,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | SyncTimeout | EphemeralTimeout | DeviceName    | Picture     | FileName    | VideoMIME | AudioFileName | AudioMIME | Link         |
       | user1Name | user2Name | 3           | 5                | ContactDevice | testing.jpg | testing.mp4 | video/mp4 | test.m4a      | audio/mp4 | www.wire.com |
 
-  @C259590 @staging @fastLogin @torun
+  @C259590 @staging @fastLogin
   Scenario Outline: Verify edit/delete/like/copy/forward are switched off
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -376,19 +376,19 @@ Feature: Ephemeral Messages
     Given I tap Hourglass button in conversation view
     Given I set ephemeral messages expiration timer to <EphemeralTimeout> seconds
     Given I type the "<Message1>" message and send it
-    When 
-    Then I see message "<Message2>" is on 2 position in conversation view
-    When I long tap "<Message2>" message in conversation view
-    And I tap on Edit badge item
-    And I clear conversation text input
-    And I type the "<EditMessage>" message
-    And I tap Confirm button on Edit control
-    Then I see message "<EditMessage>" is on 2 position in conversation view
-
-    Given User Myself sends encrypted message "<Message1>" to user <Contact>
-    Given User Myself sends encrypted message "<Message2>" to user <Contact>
-    Given User Myself sends encrypted message "<Message3>" to user <Contact>
-
+    When I long tap "<Message1>" message in conversation view
+    Then I do not see Edit badge item
+    And I do not see Delete badge item
+    And I do not see Like badge item
+    And I do not see Copy badge item
+    And I do not see Forward badge item
+    When User <Contact> sends encrypted message "<Message2>" to user Myself
+    And I long tap "<Message2>" message in conversation view
+    Then I do not see Edit badge item
+    And I do not see Delete badge item
+    And I do not see Like badge item
+    And I do not see Copy badge item
+    And I do not see Forward badge item
 
     Examples:
       | Name      | Contact   | Message1    | Message2    | DeviceName | DeviceLabel | EphemeralTimeout |
