@@ -77,7 +77,7 @@ Feature: Localization
       | user1Email | user1Password | user1Name | de       | Wire Hilfe     | Gib ein Schlagwort ein |
       | user1Email | user1Password | user1Name | en       | Wire – Support | Enter a keyword        |
 
-  @C150023 @regression
+  @C150023 @regression @useSpecialEmail
   Scenario Outline: Verify registration email is <Language>
     Given I see Registration page
     When I switch language to <Language>
@@ -121,7 +121,7 @@ Feature: Localization
       | user1Email | user1Password | user1Name | de          | Ein neues Gerät wurde deinem Wire-Benutzerkonto hinzugefügt |
       | user1Email | user1Password | user1Name | en          | Your Wire account was used on                               |
 
-  @C234619 @regression
+  @C234619 @regression @useSpecialEmail
   Scenario Outline: Verify password reset email is <Language>
     Given I see Registration page
     When I switch language to <Language>
