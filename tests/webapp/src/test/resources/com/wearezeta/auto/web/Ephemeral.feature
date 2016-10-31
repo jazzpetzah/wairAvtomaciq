@@ -354,9 +354,9 @@ Feature: Ephemeral
     When User <Contact> switches user Myself to ephemeral mode via device Device1 with <TimeLong> timeout
     And Contact <Contact> sends message "<Message1>" via device Device1 to user Myself
     And <Contact> calls me
-    And I wait for 2 seconds
+    And I wait for 1 second
     And <Contact> stops calling me
-    And Contact <Contact> sends message "<Message1>" via device Device1 to user Myself
+    And Contact <Contact> sends message "<Message2>" via device Device1 to user Myself
     And I see 4 messages in conversation
     And I wait for 10 seconds
     Then I do not see text message "<Message1>"
