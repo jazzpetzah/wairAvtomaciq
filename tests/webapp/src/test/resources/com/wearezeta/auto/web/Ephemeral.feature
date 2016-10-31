@@ -433,7 +433,7 @@ Feature: Ephemeral
     And I see sent picture <PictureName> in the conversation view
     When I click on picture
     And I see picture <PictureName> in fullscreen
-    And I wait for 5 seconds
+    And I wait for <Time> seconds
 #    This fails at the moment
     Then I do not see picture <PictureName> in fullscreen
     And I open preferences by clicking the gear button

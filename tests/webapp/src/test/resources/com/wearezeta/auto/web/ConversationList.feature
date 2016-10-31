@@ -476,7 +476,7 @@ Feature: Conversation List
       | Login      | Password      | Login2     | Password2     | Name      | Contact1  | Contact2  | Message |
       | user1Email | user1Password | user3Email | user3Password | user1Name | user2Name | user3Name | TESTING |
 
-  @C250830 @staging
+  @C250830 @regression
   Scenario Outline: Verify muted conversation should not update page title
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
