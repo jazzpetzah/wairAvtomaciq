@@ -153,17 +153,10 @@ Feature: Ephemeral Message
     And I see Message status with expected text "<EphemeralStatus>" in conversation view
     And I wait for <EphemeralTimeout1> seconds
     And I do not see the message "<Message1>" in the conversation view
-    When User <Contact> switches user Myself to ephemeral mode via device <ContactDevice> with <EphemeralTimeout2> seconds timeout
-    And User <Contact> sends encrypted message "<Message2>" to user Myself
-    # Wait for the message to be delivered
-    And I wait for 3 seconds
-    Then I see the message "<Message2>" in the conversation view
-    And I wait for <EphemeralTimeout2> seconds
-    And I do not see the message "<Message2>" in the conversation view
 
     Examples:
-      | Name      | Contact   | ContactDevice | Message1 | Message2 | EphemeralTimeout1 | EphemeralTimeout2 | EphemeralStatus |
-      | user1Name | user2Name | d1            | y1       | y2       | 15                | 5                 | left            |
+      | Name      | Contact   | ContactDevice | Message1 | EphemeralTimeout1 | EphemeralStatus |
+      | user1Name | user2Name | d1            | y1       | 15                | left            |
 
   @C261710 @staging
   Scenario Outline: Verify the message is deleted on the sender side when it's read on the receiver side
@@ -344,4 +337,4 @@ Feature: Ephemeral Message
 
     Examples:
       | Name      | Contact   | ContactDevice | EphemeralTimeout | FileName    | MIMEType  | SyncTimeout | Picture     | AudioFileName | AudioMIMEType | URL                     | SoundCloud                                       | Youtube                                     |
-      | user1Name | user2Name | d1            | 5                | testing.mp4 | video/mp4 | 3           | testing.jpg | test.m4a      | audio/mp4     | http://www.facebook.com | https://soundcloud.com/sodab/256-ra-robag-wruhme | https://www.youtube.com/watch?v=wTcNtgA6gHs |
+      | user1Name | user2Name | d1            | 5                | testing.mp4 | video/mp4 | 1           | testing.jpg | test.m4a      | audio/mp4     | http://www.facebook.com | https://soundcloud.com/sodab/256-ra-robag-wruhme | https://www.youtube.com/watch?v=wTcNtgA6gHs |
