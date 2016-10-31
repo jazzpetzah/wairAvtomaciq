@@ -42,7 +42,7 @@ Feature: Ephemeral Messages
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | TESTCHAT      | 
+      | user1Name | user2Name | user3Name | TESTCHAT      |
 
   @C259584 @C259585 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral message - no online receiver (negative case)
@@ -361,5 +361,35 @@ Feature: Ephemeral Messages
     Then I do not see location map container in the conversation view
 
     Examples:
-      | Name      | Contact   | SyncTimeout | EphemeralTimeout | DeviceName    | Picture     | FileName    | VideoMIME  | AudioFileName | AudioMIME | Link         |
-      | user1Name | user2Name | 3           | 5                | ContactDevice | testing.jpg | testing.mp4 | video/mp4  | test.m4a      | audio/mp4 | www.wire.com |
+      | Name      | Contact   | SyncTimeout | EphemeralTimeout | DeviceName    | Picture     | FileName    | VideoMIME | AudioFileName | AudioMIME | Link         |
+      | user1Name | user2Name | 3           | 5                | ContactDevice | testing.jpg | testing.mp4 | video/mp4 | test.m4a      | audio/mp4 | www.wire.com |
+
+  @C259590 @staging @fastLogin @torun
+  Scenario Outline: Verify edit/delete/like/copy/forward are switched off
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds a new device <DeviceName> with label <DeviceLabel>
+    Given I sign in using my email or phone number
+    Given User <Contact> switches user Myself to ephemeral mode with <EphemeralTimeout> seconds timeout
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    Given I tap Hourglass button in conversation view
+    Given I set ephemeral messages expiration timer to <EphemeralTimeout> seconds
+    Given I type the "<Message1>" message and send it
+    When 
+    Then I see message "<Message2>" is on 2 position in conversation view
+    When I long tap "<Message2>" message in conversation view
+    And I tap on Edit badge item
+    And I clear conversation text input
+    And I type the "<EditMessage>" message
+    And I tap Confirm button on Edit control
+    Then I see message "<EditMessage>" is on 2 position in conversation view
+
+    Given User Myself sends encrypted message "<Message1>" to user <Contact>
+    Given User Myself sends encrypted message "<Message2>" to user <Contact>
+    Given User Myself sends encrypted message "<Message3>" to user <Contact>
+
+
+    Examples:
+      | Name      | Contact   | Message1    | Message2    | DeviceName | DeviceLabel | EphemeralTimeout |
+      | user1Name | user2Name | message one | message two | ContactDev | DevLabel    | 15               |
