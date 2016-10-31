@@ -237,7 +237,7 @@ Feature: Settings
       | Name      | ThemeItemName |
       | user1Name | Dark Theme    |
 
-  @C3168 @real @real_rc
+  @C3168 @real @real_rc @fastLogin
   Scenario Outline: Verify changing profile picture using camera
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number

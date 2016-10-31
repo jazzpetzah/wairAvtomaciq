@@ -398,7 +398,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | Caramba!      | testing.jpg |
 
-  @C917 @real_rc @real
+  @C917 @real_rc @real @fastLogin
   Scenario Outline: Verify sending photo from a back camera
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -416,7 +416,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C918 @real @rc @real_rc
+  @C918 @real @rc @real_rc @fastLogin
   Scenario Outline: Verify sending photo from a front camera
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
