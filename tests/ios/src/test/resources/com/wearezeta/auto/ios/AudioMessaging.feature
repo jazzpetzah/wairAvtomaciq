@@ -14,7 +14,7 @@ Feature: Audio Messaging
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C129327 @fastLogin @regression
+  @C129327 @rc @fastLogin @regression
   Scenario Outline:  Verify sending voice message by long tap > release the thumb > tap on the check icon
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
