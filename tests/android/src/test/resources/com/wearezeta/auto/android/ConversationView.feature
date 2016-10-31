@@ -405,31 +405,35 @@ Feature: Conversation View
   @C250856 @regression
   Scenario Outline: Verify I see someone is typing in 1:1 conversation
     Given There are 2 users where <Name> is me
+    Given User <Contact> adds new device <ContactDevice>
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
-    And User <Contact> is typing in the conversation Myself
+    And User <Contact> is typing in the conversation <Name>
     Then I see <Contact> is typing
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | ContactDevice |
+      | user1Name | user2Name | Device1       |
 
-  @C250857 @regression
+  @C250857 @unstable
   Scenario Outline: Verify I see someone are typing in group conversation
     Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given User <Contact1> adds new device <D1>
+    Given User <Contact2> adds new device <D2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <GroupChatName>
+    #TODO: User <Contact1> is typing in the conversation <GroupChatName> is not stable on jenkins (nothing happens on device)
     And User <Contact1> is typing in the conversation <GroupChatName>
     And User <Contact2> is typing in the conversation <GroupChatName>
     Then I see <Contact1>,<Contact2> are typing
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | TypingGroup   |
+      | Name      | Contact1  | Contact2  | GroupChatName | D1 | D2 |
+      | user1Name | user2Name | user3Name | TypingGroup   | D1 | D2 |

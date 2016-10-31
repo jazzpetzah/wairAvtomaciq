@@ -440,7 +440,7 @@ Feature: Like
       | Name      | Contact1  | Contact2  | Message | Group      | ContactDevice |
       | user1Name | user2Name | user3Name | M1      | BlockGroup | D1            |
 
-  @C255425 @staging
+  @C255425 @regression
   Scenario Outline: Verify conversation lists ordering is not changed if someone likes any message in the conversation
     Given There are 3 users where <Name> is me
     Given User <Contact1> adds new device <ContactDevice>

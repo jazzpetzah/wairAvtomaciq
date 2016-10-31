@@ -1,6 +1,6 @@
 Feature: Delivery
 
-  @C232561 @C232563 @staging
+  @C232561 @C232563 @regression
   Scenario Outline: Verify I can see message status for latest message and the previous no-like message will hide status completely
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -22,7 +22,7 @@ Feature: Delivery
       | Name      | Contact   | Msg1 | Msg2 | MessageStatus | ContactDevice |
       | user1Name | user2Name | M1   | M2   | Delivered     | D1            |
 
-  @C232568 @staging
+  @C232568 @regression
   Scenario Outline: Verify status is changed to Sent and Delivered
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -41,7 +41,7 @@ Feature: Delivery
       | Name      | Contact   | Msg | MessageStatus1 | ContactDevice | MessageStatus1 |
       | user1Name | user2Name | M1  | Sent           | D1            | Delivered      |
 
-  @C232574 @staging
+  @C232574 @regression
   Scenario Outline: Delivery status in group for the last sent message is not shown by default and when I open it - it is 'Sent'
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -59,7 +59,7 @@ Feature: Delivery
       | Name      | Contact1  | Contact2  | Message | Group   | MessageStatus |
       | user1Name | user2Name | user3Name | M1      | YoGroup | Sent          |
 
-  @C232565 @staging
+  @C232565 @regression
   Scenario Outline: Verify the message status of not last message is changed when someone likes the message in 1:1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
