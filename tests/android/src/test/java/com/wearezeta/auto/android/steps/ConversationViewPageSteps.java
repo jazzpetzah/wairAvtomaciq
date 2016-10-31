@@ -1615,11 +1615,9 @@ public class ConversationViewPageSteps {
      *
      * @param itemType Message Meta Item type
      * @throws Exception
-     * @step. ^^I tap (Like button|Like description|Message status|First like avatar|Second like avatar)
-     * in conversation view$
+     * @step. ^I tap (Like button|Like description|Message status|First like avatar|Second like avatar) in conversation view$
      */
-    @When("^I tap (Like button|Like description|Message status|First like avatar|Second like avatar)" +
-            " in conversation view$")
+    @When("^I tap (Like button|Like description|Message status|First like avatar|Second like avatar) in conversation view$")
     public void ITapMessageMeta(String itemType) throws Exception {
         getConversationViewPage().tapMessageMetaItem(itemType);
     }
@@ -1634,9 +1632,8 @@ public class ConversationViewPageSteps {
     @Then("^I see (\\d+) Message statu(?:s|ses) in conversation view$")
     public void ISeeMessageStatus(int expectedCount) throws Exception {
         final int actualCount = getConversationViewPage().getMessageStatusCount();
-        Assert.assertTrue(
-                String.format("The expect count is not equal to actual count, actual: %d, expect: %d",
-                        actualCount, expectedCount), actualCount == expectedCount);
+        Assert.assertTrue(String.format("The expect count is not equal to actual count, actual: %d, expect: %d",
+                actualCount, expectedCount), actualCount == expectedCount);
     }
 
     /**
