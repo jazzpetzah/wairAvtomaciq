@@ -89,7 +89,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C3211 @regression @fastLogin
+  @C3211 @rc @regression @fastLogin
   Scenario Outline: Change your profile picture
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number

@@ -15,6 +15,7 @@ import com.wearezeta.auto.web.common.Message;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
 import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
@@ -619,6 +620,15 @@ public class CommonWebAppSteps {
                     hashCode(), isGroup, isDeleteEverywhere);
         }
     }
+
+    @When("^User (.*) has seen recent (\\d+) ephemeral messages? from user (.*) via device (.*)$")
+    public void UserXSeenRecentEphemeralMessage(String deviceUserNameAlias, int amount, String messageNameAlias, String deviceName)
+            throws Exception {
+        for (int deleteCounter = 0; deleteCounter < amount; deleteCounter++) {
+            context.getCommonSteps().UserDeleteLatestMessage(deviceUserNameAlias, messageNameAlias, deviceName + context.getTestname().
+                    hashCode(), false, true);
+        }
+    }
     
     /**
      * User X edit his own messages, be careful this message will not control the type of the message you edit.
@@ -692,13 +702,20 @@ public class CommonWebAppSteps {
      * @throws Exception
      * @step. ^User (.*) reads the recent message from (?:user|group conversation) (.*) via device (.*)
      */
-
     @When("^User (.*) reads the recent message from (user|group conversation) (.*) via device (.*)")
     public void UserReadsLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
             throws Exception {
         boolean isGroup = convoType.equals("group conversation");
                 context.getCommonSteps().UserReadLastEphemeralMessage(userNameAlias, dstNameAlias,
                         deviceName + context.getTestname().hashCode(), isGroup);
+    }
+
+    @When("^User (.*) reads the second last message from (user|group conversation) (.*) via device (.*)")
+    public void UserReadsSecondLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
+            throws Exception {
+        boolean isGroup = convoType.equals("group conversation");
+        context.getCommonSteps().UserReadSecondLastEphemeralMessage(userNameAlias, dstNameAlias,
+                deviceName + context.getTestname().hashCode(), isGroup);
     }
 
     /**
