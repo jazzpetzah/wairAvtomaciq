@@ -150,11 +150,15 @@ public class SettingsPage extends IOSPage {
     }
 
     public void clearSelfName() throws Exception {
-        getElement(fbXpathSelfNameEditField).clear();
+        final WebElement selfName = getElement(fbXpathSelfNameEditField);
+        this.tapByPercentOfElementSize((FBElement) selfName, 98, 50);
+        selfName.clear();
     }
 
     public void setSelfName(String newName) throws Exception {
-        getElement(fbXpathSelfNameEditField).sendKeys(newName);
+        final WebElement selfName = getElement(fbXpathSelfNameEditField);
+        this.tapByPercentOfElementSize((FBElement) selfName, 98, 50);
+        selfName.sendKeys(newName);
     }
 
     public BufferedImage getColorPickerStateScreenshot() throws Exception {
