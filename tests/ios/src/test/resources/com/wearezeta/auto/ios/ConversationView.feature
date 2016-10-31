@@ -347,7 +347,7 @@ Feature: Conversation View
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field conversation name <Contact1>
+    And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
     When I tap Open conversation action button on People picker page
     And I type the default message and send it

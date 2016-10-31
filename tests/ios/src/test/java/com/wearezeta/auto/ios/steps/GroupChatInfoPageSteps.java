@@ -127,7 +127,7 @@ public class GroupChatInfoPageSteps {
         IClickOnContinueButtonInAddPeopleToGroupChatDialog();
 
         SearchUIPageSteps pickerSteps = new SearchUIPageSteps();
-        pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact);
+        pickerSteps.ITypeInSearchInput(contact);
         pickerSteps.ITapOnConversationFromSearch(contact);
         if (getPeoplePickerPage().isKeyboardVisible()) {
             getPeoplePickerPage().tapKeyboardCommitButton();

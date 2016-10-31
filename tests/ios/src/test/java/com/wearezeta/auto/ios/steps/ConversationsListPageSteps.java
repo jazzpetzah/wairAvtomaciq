@@ -255,7 +255,7 @@ public class ConversationsListPageSteps {
 
         SearchUIPageSteps pickerSteps = new SearchUIPageSteps();
         pickerSteps.ITapSearchInput();
-        pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact2);
+        pickerSteps.ITypeInSearchInput(contact2);
         pickerSteps.ITapOnConversationFromSearch(contact2);
         if (getPeoplePickerPage().isKeyboardVisible()) {
             getPeoplePickerPage().tapKeyboardCommitButton();

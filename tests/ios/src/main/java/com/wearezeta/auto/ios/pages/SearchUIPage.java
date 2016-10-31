@@ -84,7 +84,7 @@ public class SearchUIPage extends IOSPage {
         }
     }
 
-    public void fillTextInPeoplePickerSearch(String text) throws Exception {
+    public void typeText(String text) throws Exception {
         final WebElement searchInput = getElement(fbNamePickerSearch);
         searchInput.sendKeys(text + " ");
     }

@@ -29,7 +29,7 @@ Feature: Search
     When I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field user name <Contact>
+    And I type "<Contact>" in Search UI input field
     Then I see the conversation "<Contact>" exists in Search results
 
     Examples:
@@ -135,7 +135,7 @@ Feature: Search
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field user name <Contact>
+    And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
     And I tap Unblock button
     And I type the default message and send it
@@ -158,7 +158,7 @@ Feature: Search
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field user name <Contact>
+    And I type "<Contact>" in Search UI input field
     And I tap Hide keyboard button
     And I tap on conversation <Contact> in search result
     And I tap Unblock button
@@ -219,7 +219,7 @@ Feature: Search
     And I accept alert if visible
     And I tap on 1 top connection but not <Contact>
     And I tap input field on Search UI page
-    And I input in People picker search field user name <Contact>
+    And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
     And I tap Create conversation action button on People picker page
     Then I see group chat page with users <Contact>,<Contact2>
@@ -239,7 +239,7 @@ Feature: Search
     When I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field user name <Contact>
+    And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
     And I tap Call action button on People picker page
     Then I see Calling overlay
@@ -259,7 +259,7 @@ Feature: Search
     When I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field user name <Contact>
+    And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
     And I tap Call action button on People picker page
     Then I see Calling overlay
@@ -346,7 +346,7 @@ Feature: Search
     When I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field user name <Contact>
+    And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
     Then I see Open conversation action button on People picker page
 
@@ -475,7 +475,7 @@ Feature: Search
     And I do not see Open conversation action button on People picker page
     And I see Invite more people button
     And I tap input field on Search UI page
-    And I input in People picker search field user name <Contact>
+    And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
     And I do not see Invite more people button
     And I see Open conversation action button on People picker page

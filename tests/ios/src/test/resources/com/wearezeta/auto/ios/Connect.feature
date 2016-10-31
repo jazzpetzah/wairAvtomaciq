@@ -11,7 +11,7 @@ Feature: Connect
     When I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field user name <Contact>
+    And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
     And I tap X button in People Picker input field
@@ -79,7 +79,7 @@ Feature: Connect
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field conversation name <Contact1>
+    And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
     Then I see Incoming Pending Requests page
 
@@ -119,7 +119,7 @@ Feature: Connect
     When I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field user name <Contact>
+    And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
     And I tap on conversation <Contact> in search result
@@ -145,7 +145,7 @@ Feature: Connect
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field user name <Contact>
+    And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
     And I tap Unblock button
     Then I see 0 default messages in the conversation view
@@ -170,7 +170,7 @@ Feature: Connect
     When I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field user name <Contact>
+    And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
     And I tap X button in People Picker input field
@@ -178,7 +178,7 @@ Feature: Connect
     When I wait until <Contact> exists in backend search results
     And I open search UI
     And I tap input field on Search UI page
-    And I input in People picker search field user name <Contact>
+    And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
     Then I see Cancel Request button on pending profile page
 
@@ -264,7 +264,7 @@ Feature: Connect
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field user name <Contact1>
+    And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
     And I tap Connect button on Pending outgoing connection page
     And I tap X button in People Picker input field
@@ -284,7 +284,7 @@ Feature: Connect
     When I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field user name <Contact1>
+    And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
     And I tap Cancel Request button on pending profile page
     And I confirm Cancel Request action on pending profile page
@@ -355,7 +355,7 @@ Feature: Connect
     When I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field user name <Contact>
+    And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
     And I tap Unblock button
     Then I see conversation view page

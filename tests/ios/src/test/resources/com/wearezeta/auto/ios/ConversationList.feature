@@ -211,7 +211,7 @@ Feature: Conversation List
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field conversation name <GroupChatName>
+    And I type "<GroupChatName>" in Search UI input field
     And I tap on conversation <GroupChatName> in search result
     Then I see 0 conversation entries
 
@@ -237,7 +237,7 @@ Feature: Conversation List
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field conversation name <Contact1>
+    And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
     Then I see conversation view page
@@ -354,7 +354,7 @@ Feature: Conversation List
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field conversation name <GroupChatName>
+    And I type "<GroupChatName>" in Search UI input field
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I tap X button in People Picker input field
     And I do not see conversation <GroupChatName> in conversations list
@@ -383,7 +383,7 @@ Feature: Conversation List
     When I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field conversation name <GroupChatName>
+    And I type "<GroupChatName>" in Search UI input field
     And I tap on conversation <GroupChatName> in search result
     Then I see 0 conversation entries
     When I type the default message and send it
@@ -444,7 +444,7 @@ Feature: Conversation List
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field user name <Contact>
+    And I type "<Contact>" in Search UI input field
     Then I see the conversation "<Contact>" exists in Search results
 
     Examples:

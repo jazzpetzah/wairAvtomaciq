@@ -23,10 +23,10 @@ public class SearchUIPageSteps {
         getSearchUIPage().tapSearchInput();
     }
 
-    @When("^I input in People picker search field (?:user|conversation) name (.*)$")
-    public void WhenIInputInPeoplePickerSearchFieldUserName(String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        getSearchUIPage().fillTextInPeoplePickerSearch(name);
+    @When("^I type \"(.*)\" in Search UI input field$")
+    public void ITypeInSearchInput(String text) throws Exception {
+        text = usrMgr.replaceAliasesOccurences(text, ClientUsersManager.FindBy.NAME_ALIAS);
+        getSearchUIPage().typeText(text);
     }
 
     /**
@@ -38,10 +38,10 @@ public class SearchUIPageSteps {
      * @step. ^I input in People picker search field first (\\d+) letters? of (?:user|conversation) name (.*)$
      */
     @When("^I input in People picker search field first (\\d+) letters? of (?:user|conversation) name (.*)$")
-    public void WhenIInputInPeoplePickerSearchFieldUserName(int number, String name) throws Exception {
+    public void ITypeInSearchInput(int number, String name) throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         if (name.length() > number) {
-            getSearchUIPage().fillTextInPeoplePickerSearch(name.substring(0, number));
+            getSearchUIPage().typeText(name.substring(0, number));
         } else {
             throw new IllegalArgumentException(String.format("Name is only %s chars length. Put in step a less value",
                     name.length()));
@@ -55,7 +55,7 @@ public class SearchUIPageSteps {
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
-        getSearchUIPage().fillTextInPeoplePickerSearch(email);
+        getSearchUIPage().typeText(email);
     }
 
     /**
