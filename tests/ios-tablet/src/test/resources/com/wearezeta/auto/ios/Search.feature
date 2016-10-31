@@ -177,12 +177,12 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Then I wait until <LastName> exists in backend search results
-    # FIXME: This is unstable on Jenkins
-#    When I open search UI
-#    And I tap input field on Search UI page
-#    And I input in People picker search field user name <LastName>
-#    Then I see the conversation "<NewName>" exists in Search results
+    Given I wait until <LastName> exists in backend search results
+    Given I open search UI
+    Given I accept alert if visible
+    Given I tap input field on Search UI page
+    When I type "<LastName>" in Search UI input field
+    Then I see the conversation "<NewName>" exists in Search results
 
     Examples:
       | Name      | Contact   | NewName  | LastName |
@@ -221,7 +221,7 @@ Feature: Search
     And I tap input field on Search UI page
     And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
-    And I tap Create conversation action button on Search UIpage
+    And I tap Create conversation action button on Search UI page
     Then I see group chat page with users <Contact>,<Contact2>
 
     Examples:
@@ -387,7 +387,7 @@ Feature: Search
     When I tap on 1st top connection contact
     Then I see Open conversation action button on Search UI page
     When I tap on 1st top connection contact
-    Then I do not see Open conversation action button on Search UIpage
+    Then I do not see Open conversation action button on Search UI page
 
     Examples:
       | Name      |
