@@ -349,7 +349,7 @@ Feature: Conversation View
     And I tap input field on Search UI page
     And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
-    When I tap Open conversation action button on People picker page
+    When I tap Open conversation action button on Search UI page
     And I type the default message and send it
     Then I see 1 default message in the conversation view
 

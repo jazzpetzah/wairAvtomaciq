@@ -13,10 +13,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class SearchUIPage extends IOSPage {
-    private static final By fbNamePickerSearch = FBBy.AccessibilityId("textViewSearch");
-
-    public static final By xpathPickerClearButton =
-            By.xpath("//*[@name='PeoplePickerClearButton' or @name='ContactsViewCloseButton']");
+    private static final By fbNameSearchInput = FBBy.AccessibilityId("textViewSearch");
 
     public static final By fbXpathPickerClearButton =
             FBBy.xpath("//*[@name='PeoplePickerClearButton' or @name='ContactsViewCloseButton']");
@@ -24,11 +21,9 @@ public class SearchUIPage extends IOSPage {
     private static final By xpathCreateConversationButton =
             By.xpath("//XCUIElementTypeButton[@name='CREATE GROUP']");
 
-    private static final By namePeoplePickerTopPeopleLabel = MobileBy.AccessibilityId("TOP PEOPLE");
+    private static final By nameTopPeopleLabel = MobileBy.AccessibilityId("TOP PEOPLE");
 
-    private static final By namePeoplePickerAddToConversationButton = MobileBy.AccessibilityId("ADD");
-
-    private static final By namePeopleYouMayKnowLabel = MobileBy.AccessibilityId("CONNECT");
+    private static final By nameAddToConversationButton = MobileBy.AccessibilityId("ADD");
 
     private static final By nameUnblockButton = MobileBy.AccessibilityId("UNBLOCK");
 
@@ -53,11 +48,11 @@ public class SearchUIPage extends IOSPage {
     private static final Function<String, String> xpathStrFoundContactByName =
             name -> String.format("//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s'] ]", name);
 
-    private static final Function<Integer, String> xpathStrPeoplePickerTopConnectionsAvatarByIdx = idx ->
+    private static final Function<Integer, String> xpathStrTopPeopleAvatarByIdx = idx ->
             String.format("//XCUIElementTypeCollectionView/XCUIElementTypeCell" +
                     "//XCUIElementTypeCollectionView/XCUIElementTypeCell[%s]", idx);
 
-    private static final Function<Integer, String> xpathStrPeoplePickerTopConnectionsItemByIdx = idx ->
+    private static final Function<Integer, String> xpathStrTopPeopleItemByIdx = idx ->
             String.format("//XCUIElementTypeCollectionView/XCUIElementTypeCell/XCUIElementTypeCollectionView/" +
                     "XCUIElementTypeCell[%d]/XCUIElementTypeStaticText[last()]", idx);
 
@@ -73,19 +68,23 @@ public class SearchUIPage extends IOSPage {
     }
 
     public void tapSearchInput() throws Exception {
-        this.tapAtTheCenterOfElement((FBElement) getElement(fbNamePickerSearch));
+        this.tapAtTheCenterOfElement((FBElement) getElement(fbNameSearchInput));
     }
 
-    public void tapOnPeoplePickerClearBtn() throws Exception {
+    public void tapXButton() throws Exception {
         final FBElement closeButton = (FBElement) getElement(fbXpathPickerClearButton);
         this.tapAtTheCenterOfElement(closeButton);
-        if (!isLocatorInvisible(xpathPickerClearButton, 5)) {
+        if (!isLocatorInvisible(fbXpathPickerClearButton, 5)) {
             this.tapAtTheCenterOfElement(closeButton);
         }
     }
 
+    public boolean isVisible() throws Exception {
+        return isLocatorDisplayed(fbNameSearchInput);
+    }
+
     public void typeText(String text) throws Exception {
-        final WebElement searchInput = getElement(fbNamePickerSearch);
+        final WebElement searchInput = getElement(fbNameSearchInput);
         searchInput.sendKeys(text + " ");
     }
 
@@ -107,13 +106,9 @@ public class SearchUIPage extends IOSPage {
         Thread.sleep(1000);
     }
 
-    public boolean addToConversationNotVisible() throws Exception {
-        return isLocatorInvisible(namePeoplePickerAddToConversationButton);
-    }
-
     public void tapNumberOfTopConnections(int numberToTap) throws Exception {
         for (int i = 1; i <= numberToTap; i++) {
-            final By locator = By.xpath(xpathStrPeoplePickerTopConnectionsAvatarByIdx.apply(i));
+            final By locator = By.xpath(xpathStrTopPeopleAvatarByIdx.apply(i));
             getElement(locator).click();
             // Wait for animation
             Thread.sleep(1000);
@@ -121,7 +116,7 @@ public class SearchUIPage extends IOSPage {
     }
 
     public boolean isTopPeopleLabelVisible() throws Exception {
-        return isLocatorDisplayed(namePeoplePickerTopPeopleLabel, 2);
+        return isLocatorDisplayed(nameTopPeopleLabel, 2);
     }
 
     public void pressBackspaceKeyboardButton() throws Exception {
@@ -129,14 +124,10 @@ public class SearchUIPage extends IOSPage {
     }
 
     public void tapAddToConversationButton() throws Exception {
-        getElement(namePeoplePickerAddToConversationButton).click();
+        getElement(nameAddToConversationButton).click();
     }
 
-    public boolean isPeopleYouMayKnowLabelVisible() throws Exception {
-        return isLocatorDisplayed(namePeopleYouMayKnowLabel);
-    }
-
-    public void unblockUser() throws Exception {
+    public void tapUnblockButton() throws Exception {
         getElement(nameUnblockButton).click();
     }
 
@@ -161,7 +152,7 @@ public class SearchUIPage extends IOSPage {
 
     public void tapNumberOfTopConnectionsButNotUser(int numberToTap, String contact) throws Exception {
         for (int i = 1; i <= numberToTap; i++) {
-            final By locator = By.xpath(xpathStrPeoplePickerTopConnectionsItemByIdx.apply(i));
+            final By locator = By.xpath(xpathStrTopPeopleItemByIdx.apply(i));
             final WebElement el = getElement(locator);
             if (!contact.equalsIgnoreCase(el.getAttribute("name"))) {
                 el.click();
@@ -172,16 +163,12 @@ public class SearchUIPage extends IOSPage {
     }
 
     public void tapOnTopConnectionAvatarByOrder(int i) throws Exception {
-        final By locator = By.xpath(xpathStrPeoplePickerTopConnectionsAvatarByIdx.apply(i));
+        final By locator = By.xpath(xpathStrTopPeopleAvatarByIdx.apply(i));
         getElement(locator).click();
     }
 
     public void closeInviteList() throws Exception {
         getElement(nameContactViewCloseButton).click();
-    }
-
-    public boolean isPeopleYouMayKnowLabelInvisible() throws Exception {
-        return isLocatorInvisible(namePeopleYouMayKnowLabel);
     }
 
     public boolean waitUntilNoResultsLabelIsVisible() throws Exception {
@@ -205,7 +192,7 @@ public class SearchUIPage extends IOSPage {
         }
     }
 
-    public void clickActionButton(String actionButtonName) throws Exception {
+    public void tapActionButton(String actionButtonName) throws Exception {
         getElement(getActionButtonByName(actionButtonName)).click();
     }
 

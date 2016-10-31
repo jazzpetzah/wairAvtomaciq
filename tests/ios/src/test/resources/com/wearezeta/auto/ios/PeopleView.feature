@@ -14,7 +14,7 @@ Feature: People View
     And I tap input field on Search UI page
     And I type "<Contact2>" in Search UI input field
     And I tap on conversation <Contact2> in search result
-    And I tap Create conversation action button on People picker page
+    And I tap Create conversation action button on Search UI page
     And I wait for 2 seconds
     Then I see group chat page with users <Contact1>,<Contact2>
 
@@ -190,7 +190,7 @@ Feature: People View
     When I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact2> in search result
-    And I tap Create conversation action button on People picker page
+    And I tap Create conversation action button on Search UI page
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
@@ -206,10 +206,9 @@ Feature: People View
     When I tap on contact name <Contact1>
     And I open conversation details
     And I tap Create Group button
-    And I don't see Add to conversation button
     And I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact3> in search result
-    And I tap Create conversation action button on People picker page
+    And I tap Create conversation action button on Search UI page
     And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I navigate back to conversations list
     And I see conversations list
@@ -230,9 +229,9 @@ Feature: People View
     Given I tap Create Group button
     When I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact3> in search result
-    And I tap X button in People Picker input field
+    And I tap X button on Search UI page
     And I tap Create Group button
-    And I tap X button in People Picker input field
+    And I tap X button on Search UI page
     And I close user profile page
     And I navigate back to conversations list
     Then I don't see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
@@ -314,7 +313,7 @@ Feature: People View
     And I open group conversation details
     And I select participant <Contact1>
     And I see <Contact1> user profile page
-    And I tap Unblock button
+    And I tap Unblock button on Search UI page
     Then I see conversation view page
 
     Examples:
@@ -334,7 +333,7 @@ Feature: People View
     And I tap input field on Search UI page
     And I type "<Contact3>" in Search UI input field
     And I see the conversation "<Contact3>" exists in Search results
-    And I tap X button in People Picker input field
+    And I tap X button on Search UI page
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I wait until <Contact2> exists in backend search results
@@ -387,7 +386,7 @@ Feature: People View
     And I tap input field on Search UI page
     And I type "<GroupChatName>" in Search UI input field
     Then I see the conversation "<GroupChatName>" does not exist in Search results
-    When I tap X button in People Picker input field
+    When I tap X button on Search UI page
     Then I do not see conversation <GroupChatName> in conversations list
     And I see Archive button at the bottom of conversations list
     And I open archived conversations
@@ -445,7 +444,7 @@ Feature: People View
     And I tap input field on Search UI page
     And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
-    And I tap Open conversation action button on People picker page
+    And I tap Open conversation action button on Search UI page
     Then I see the conversation with <Contact1>
 
     Examples:

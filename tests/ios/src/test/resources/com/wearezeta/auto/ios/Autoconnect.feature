@@ -42,7 +42,7 @@ Feature: Autoconnect
     And I wait until <Contact2> exists in backend search results
     When I open search UI
     And I accept alert
-    And I tap X button in People Picker input field
+    And I tap X button on Search UI page
     Then I see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
 
@@ -65,7 +65,7 @@ Feature: Autoconnect
     And I accept alert
     And I wait until <Contact> is first search result on backend
     And I tap input field on Search UI page
-    And I input in People picker search field first 1 letter of user name <Contact>
+    And I type first 1 letter of user name "<Contact>" into Search UI input field
     Then I see the first item in Search result is <Contact>
 
     Examples:
@@ -96,7 +96,7 @@ Feature: Autoconnect
     When I open search UI
     And I wait until <Contact> is first search result on backend
     And I tap input field on Search UI page
-    And I input in People picker search field first 1 letter of user name <Contact>
+    And I type first 1 letter of user name "<Contact>" into Search UI input field
     Then I see the first item in Search result is <Contact>
 
     Examples:
@@ -118,7 +118,7 @@ Feature: Autoconnect
     Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I accept alert
-    And I tap X button in People Picker input field
+    And I tap X button on Search UI page
     And I tap on contact name <Contact>
     And I open conversation details
     Then I verify username <Contact> on Other User Profile page is displayed

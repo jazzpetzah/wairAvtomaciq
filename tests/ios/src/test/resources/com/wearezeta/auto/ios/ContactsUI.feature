@@ -10,10 +10,10 @@ Feature: ContactsUI
     When I do not see conversation <Contact> in conversations list
     And I open search UI
     And I accept alert if visible
-    And I tap Send Invite button
+    And I tap Send Invite button on Search UI page
     And I see ContactsUI page
     And I input user name <Contact> in search on ContactsUI
-    Then I DONT see contact <Contact> in ContactsUI page list
+    Then I do not see contact <Contact> in ContactsUI page list
 
     Examples: 
       | Name      | Contact   |
@@ -27,7 +27,7 @@ Feature: ContactsUI
     Given I see conversations list
     Given I open search UI
     Given I accept alert if visible
-    Given I tap Send Invite button
+    Given I tap Send Invite button on Search UI page
     When I tap Open button next to user name <Contact> on ContactsUI
     Then I see the conversation with <Contact>
 

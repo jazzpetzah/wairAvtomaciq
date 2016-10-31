@@ -142,7 +142,7 @@ Feature: Likes
     When I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
-    And I input in People picker search field conversation name <Group>
+    And I type "<Group>" in Search UI input field
     And I tap on conversation <Group> in search result
     Then I see 0 photos in the conversation view
     And I do not see Like icon in the conversation

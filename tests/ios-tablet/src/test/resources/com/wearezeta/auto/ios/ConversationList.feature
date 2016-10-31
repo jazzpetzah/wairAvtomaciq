@@ -59,7 +59,7 @@ Feature: Conversation List
     Given I see conversations list
     When I open search UI
     And I accept alert if visible
-    Then I see People picker page
+    Then I see Search UI
 
     Examples:
       | Name      |
@@ -346,7 +346,7 @@ Feature: Conversation List
     And I tap input field on Search UI page
     And I type "<GroupChatName>" in Search UI input field
     Then I see the conversation "<GroupChatName>" does not exist in Search results
-    When I tap X button in People Picker input field
+    When I tap X button on Search UI page
     And I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
     Then I see conversation <GroupChatName> in conversations list
@@ -428,8 +428,8 @@ Feature: Conversation List
     Given I see conversations list
     When I tap on Conversations hint text
     And I accept alert if visible
-    Then I see People Picker page
-    When I tap X button in People Picker input field
+    Then I see Search UI
+    When I tap X button on Search UI page
     Then I see conversations list
     And I do not see Conversations hint text
 

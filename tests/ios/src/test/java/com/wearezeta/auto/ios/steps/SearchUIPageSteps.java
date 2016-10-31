@@ -3,7 +3,6 @@ package com.wearezeta.auto.ios.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.SearchUIPage;
 
 import cucumber.api.java.en.Then;
@@ -18,6 +17,17 @@ public class SearchUIPageSteps {
         return pagesCollection.getPage(SearchUIPage.class);
     }
 
+    /**
+     * Verify whether Search UI is visible
+     *
+     * @step. ^I see Search UI$
+     * @throws Exception
+     */
+    @Then("^I see Search UI$")
+    public void ISeeSearchUI() throws Exception {
+        Assert.assertTrue("Search UI is not visible", getSearchUIPage().isVisible());
+    }
+
     @When("^I tap input field on Search UI page$")
     public void ITapSearchInput() throws Exception {
         getSearchUIPage().tapSearchInput();
@@ -26,36 +36,27 @@ public class SearchUIPageSteps {
     @When("^I type \"(.*)\" in Search UI input field$")
     public void ITypeInSearchInput(String text) throws Exception {
         text = usrMgr.replaceAliasesOccurences(text, ClientUsersManager.FindBy.NAME_ALIAS);
+        text = usrMgr.replaceAliasesOccurences(text, ClientUsersManager.FindBy.EMAIL_ALIAS);
         getSearchUIPage().typeText(text);
     }
 
     /**
      * Fills in search field pointed amount of letters from username/conversation starting from the first one
      *
-     * @param number amount of letters to be input
-     * @param name   user name
+     * @param count amount of letters to be input
+     * @param name  user name
      * @throws Exception
-     * @step. ^I input in People picker search field first (\\d+) letters? of (?:user|conversation) name (.*)$
+     * @step. ^I type first (\d+) letters? of (?:user|conversation) name "(.*)" into Search UI input field$
      */
-    @When("^I input in People picker search field first (\\d+) letters? of (?:user|conversation) name (.*)$")
-    public void ITypeInSearchInput(int number, String name) throws Exception {
+    @When("^I type first (\\d+) letters? of (?:user|conversation) name \"(.*)\" into Search UI input field$")
+    public void ITypeXLettersIntoSearchInput(int count, String name) throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        if (name.length() > number) {
-            getSearchUIPage().typeText(name.substring(0, number));
+        if (name.length() > count) {
+            getSearchUIPage().typeText(name.substring(0, count));
         } else {
             throw new IllegalArgumentException(String.format("Name is only %s chars length. Put in step a less value",
                     name.length()));
         }
-    }
-
-    @When("^I input in People picker search field user email (.*)$")
-    public void WhenIInputInPeoplePickerSearchFieldUserEmail(String email) throws Exception {
-        try {
-            email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-        } catch (NoSuchUserException e) {
-            // Ignore silently
-        }
-        getSearchUIPage().typeText(email);
     }
 
     /**
@@ -97,28 +98,12 @@ public class SearchUIPageSteps {
      * Verify whether No Results label is visible in search results
      *
      * @throws Exception
-     * @step. ^I see No Results label in People picker search result$
+     * @step. ^I see No Results label on Search UI page$
      */
-    @Then("^I see No Results label in People picker search result$")
+    @Then("^I see No Results label on Search UI page$")
     public void ISeeNoResultsLabel() throws Exception {
         Assert.assertTrue("'No Results' label is not visible",
                 getSearchUIPage().waitUntilNoResultsLabelIsVisible());
-    }
-
-    @When("^I don't see Add to conversation button$")
-    public void WhenIDontSeeAddToConversationButton() throws Exception {
-        Assert.assertTrue("Add to conversation button is visible", getSearchUIPage().addToConversationNotVisible());
-    }
-
-    /**
-     * Click on close button to dismiss Invite list
-     *
-     * @throws Exception
-     * @step. ^I tap Close Invite list button$
-     */
-    @When("^I tap Close Invite list button$")
-    public void WhenIClickCloseInviteListButton() throws Exception {
-        getSearchUIPage().closeInviteList();
     }
 
     /**
@@ -157,8 +142,8 @@ public class SearchUIPageSteps {
         getSearchUIPage().tapOnTopConnectionAvatarByOrder(i);
     }
 
-    @When("I see top people list on People picker page")
-    public void ISeeTopPeopleListOnPeoplePickerPage() throws Exception {
+    @When("^I see top people list on Search UI page$")
+    public void ISeeTopPeopleList() throws Exception {
         Assert.assertTrue("Top People label is not shown", getSearchUIPage().isTopPeopleLabelVisible());
     }
 
@@ -180,42 +165,27 @@ public class SearchUIPageSteps {
         getSearchUIPage().selectElementInSearchResults(name);
     }
 
-    @When("^I tap X button in People Picker input field$")
-    public void ITapXButton() throws Exception {
-        getSearchUIPage().tapOnPeoplePickerClearBtn();
-    }
-
-    /**
-     * Unblocks a blocked user by clicking the unblock button
-     *
-     * @throws Exception
-     * @step. ^I tap Unblock button
-     */
-    @When("^I tap Unblock button$")
-    public void IUnblockUser() throws Exception {
-        getSearchUIPage().unblockUser();
-    }
-
-    /**
-     * Presses the Send An Invite button in the people picker. To invite people via mail.
-     *
-     * @throws Exception
-     * @step. ^I tap Send Invite button$
-     */
-    @When("^I tap Send Invite button$")
-    public void ITapSendAnInviteButton() throws Exception {
-        getSearchUIPage().tapSendInviteButton();
-    }
-
-    /**
-     * Presses the Copy button on the Send Invitation pop up
-     *
-     * @throws Exception
-     * @step. ^I tap Copy button$
-     */
-    @When("^I tap Copy button$")
-    public void ITapCopyButton() throws Exception {
-        getSearchUIPage().tapSendInviteCopyButton();
+    @When("^I tap (X|Unblock|Send Invite|Copy Invite|Close Invite List) button on Search UI page$")
+    public void ITapButton(String btnName) throws Exception {
+        switch (btnName.toLowerCase()) {
+            case "x":
+                getSearchUIPage().tapXButton();
+                break;
+            case "unblock":
+                getSearchUIPage().tapUnblockButton();
+                break;
+            case "send invite":
+                getSearchUIPage().tapSendInviteButton();
+                break;
+            case "copy":
+                getSearchUIPage().tapSendInviteCopyButton();
+                break;
+            case "close invite list":
+                getSearchUIPage().closeInviteList();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("There is no '%s' button on Search UI page", btnName));
+        }
     }
 
     /**
@@ -235,11 +205,11 @@ public class SearchUIPageSteps {
      * click the corresponding action button on People Picker page
      *
      * @throws Exception
-     * @step. ^I tap (Create conversation|Open conversation|Video call|Send image|Call) action button on People picker page$
+     * @step. ^I tap (Create conversation|Open conversation|Video call|Send image|Call) action button on Search UI page$
      */
-    @When("^I tap (Create conversation|Open conversation|Video call|Send image|Call) action button on People picker page$")
-    public void ITapActionButtonOnPeoplePickerPage(String actionButtonName) throws Exception {
-        getSearchUIPage().clickActionButton(actionButtonName);
+    @When("^I tap (Create conversation|Open conversation|Video call|Send image|Call) action button on Search UI page$")
+    public void ITapActionButton(String actionButtonName) throws Exception {
+        getSearchUIPage().tapActionButton(actionButtonName);
     }
 
 
@@ -247,10 +217,10 @@ public class SearchUIPageSteps {
      * Verify if an action button is visible
      *
      * @throws Exception
-     * @step. ^I (do not )?see (Create conversation|Open conversation|Video call|Send image|Call) action button on People picker page$
+     * @step. ^I (do not )?see (Create conversation|Open conversation|Video call|Send image|Call) action button on Search UI page$
      */
-    @When("^I (do not )?see (Create conversation|Open conversation|Video call|Send image|Call) action button on People picker page$")
-    public void ISeenActionButton(String shouldNotBeVisible, String actionButtonName) throws Exception {
+    @When("^I (do not )?see (Create conversation|Open conversation|Video call|Send image|Call) action button on Search UI page$")
+    public void ISeeActionButton(String shouldNotBeVisible, String actionButtonName) throws Exception {
         if (shouldNotBeVisible == null) {
             Assert.assertTrue(String.format("'%s' action button is not visible", actionButtonName),
                     getSearchUIPage().isActionButtonVisible(actionButtonName));

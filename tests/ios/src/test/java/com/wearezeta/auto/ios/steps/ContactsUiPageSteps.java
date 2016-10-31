@@ -12,8 +12,7 @@ import cucumber.api.java.en.When;
 public class ContactsUiPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection
-            .getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
     private ContactsUiPage getContactsUiPage() throws Exception {
         return pagesCollection.getPage(ContactsUiPage.class);
@@ -56,9 +55,9 @@ public class ContactsUiPageSteps {
      * @param shouldNotBeVisible equals to null if the contact should be visible
      * @param contact            user name
      * @throws Exception
-     * @step. I (DONT )?see contact (.*) in ContactsUI page list$
+     * @step. I (do not )?see contact (.*) in ContactsUI page list$
      */
-    @Then("^I (DONT )?see contact (.*) in ContactsUI page list$")
+    @Then("^I (do not )?see contact (.*) in ContactsUI page list$")
     public void ISeeContactInContactsUIList(String shouldNotBeVisible, String contact) throws Exception {
         try {
             contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
@@ -81,9 +80,9 @@ public class ContactsUiPageSteps {
      * via mail.
      *
      * @throws Exception
-     * @step. ^I tap Invite Others button$
+     * @step. ^I tap Invite Others button on Contacts UI page$
      */
-    @When("^I tap Invite Others button$")
+    @When("^I tap Invite Others button on Contacts UI page$")
     public void ITapInviteOthersButton() throws Exception {
         getContactsUiPage().tapInviteOthersButton();
     }

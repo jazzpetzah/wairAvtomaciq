@@ -14,7 +14,7 @@ Feature: Connect
     And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
-    And I tap X button in People Picker input field
+    And I tap X button on Search UI page
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
     And I see Pending Connect to <Contact> message in the conversation view
@@ -40,7 +40,7 @@ Feature: Connect
     And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
-    And I tap X button in People Picker input field
+    And I tap X button on Search UI page
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
     And I see Pending Connect to <Contact> message in the conversation view
@@ -236,7 +236,7 @@ Feature: Connect
     And I tap input field on Search UI page
     And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
-    And I tap Unblock button
+    And I tap Unblock button on Search UI page
     Then I see 0 default messages in the conversation view
     And I see 0 photos in the conversation view
 
@@ -263,7 +263,7 @@ Feature: Connect
     And I tap input field on Search UI page
     And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
-    And I tap Unblock button
+    And I tap Unblock button on Search UI page
     Then I see 0 default messages in the conversation view
     And I see 0 photos in the conversation view
 
@@ -286,7 +286,7 @@ Feature: Connect
     And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
-    And I tap X button in People Picker input field
+    And I tap X button on Search UI page
     Then I see first item in contact list named <Contact>
     When I open search UI
     And I tap input field on Search UI page
@@ -307,11 +307,11 @@ Feature: Connect
     Given I see conversations list
     When I open search UI
     And I accept alert if visible
-    And I tap Send Invite button
-    And I tap Invite Others button
-    And I tap Copy button
-    And I tap Close Invite list button
-    And I tap X button in People Picker input field
+    And I tap Send Invite button on Search UI page
+    And I tap Invite Others button on Contacts UI page
+    And I tap Copy Invite button on Search UI page
+    And I tap Close Invite List button on Search UI page
+    And I tap X button on Search UI page
     And I tap on contact name <Contact>
     And I tap on text input
     And I long tap on text input
@@ -376,7 +376,7 @@ Feature: Connect
     And I tap on conversation <Contact1> in search result
     And I tap Connect button on Pending outgoing connection page
     And I do not see Pending outgoing connection page
-    And I tap X button in People Picker input field
+    And I tap X button on Search UI page
     Then I see first item in contact list named <Contact1>
 
     Examples:
@@ -402,7 +402,7 @@ Feature: Connect
     And I tap on conversation <Contact1> in search result
     And I tap Connect button on Pending outgoing connection page
     And I do not see Pending outgoing connection page
-    And I tap X button in People Picker input field
+    And I tap X button on Search UI page
     Then I see first item in contact list named <Contact1>
 
     Examples:
@@ -611,11 +611,11 @@ Feature: Connect
     Given I see conversations list
     When I open search UI
     And I accept alert if visible
-    And I tap Send Invite button
-    And I tap Invite Others button
-    And I tap Copy button
-    And I tap Close Invite list button
-    And I tap X button in People Picker input field
+    And I tap Send Invite button on Search UI page
+    And I tap Invite Others button on Contacts UI page
+    And I tap Copy Invite button on Search UI page
+    And I tap Close Invite List button on Search UI page
+    And I tap X button on Search UI page
     And I tap on contact name <Contact>
     And I tap on text input
     And I long tap on text input
