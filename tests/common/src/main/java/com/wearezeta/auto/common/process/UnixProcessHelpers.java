@@ -30,10 +30,6 @@ public class UnixProcessHelpers {
         } else {
             p = new ProcessBuilder("/bin/ps", "axco", "command").redirectErrorStream(true).start();
         }
-        if (!p.waitFor(DEFAULT_COMMAND_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
-            p.destroy();
-            return false;
-        }
         final InputStream stream = p.getInputStream();
         final BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         String line;
@@ -59,11 +55,6 @@ public class UnixProcessHelpers {
         boolean areAllProcessesTerminated = true;
         while (System.currentTimeMillis() - millisecondsStarted <= timeoutSecondsUntilForceKill * 1000) {
             final Process p = new ProcessBuilder("/bin/ps", "axco", "command").redirectErrorStream(true).start();
-            if (!p.waitFor(DEFAULT_COMMAND_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
-                p.destroy();
-                Thread.sleep(300);
-                continue;
-            }
             final InputStream stream = p.getInputStream();
             final BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
             String line;

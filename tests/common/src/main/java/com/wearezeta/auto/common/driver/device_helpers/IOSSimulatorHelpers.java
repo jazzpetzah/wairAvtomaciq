@@ -7,7 +7,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,7 +35,6 @@ public class IOSSimulatorHelpers {
     private static final String SIMULATOR_PROCESS_NAME = "Simulator";
 
     private static final String XCRUN_PATH = "/usr/bin/xcrun";
-    private static final long COMMAND_TIMEOUT_MS = SIMULATOR_BOOT_TIMEOUT_MS / 2;
 
     private static Logger log = ZetaLogger.getLog(IOSSimulatorHelpers.class.getSimpleName());
 
@@ -261,16 +259,8 @@ public class IOSSimulatorHelpers {
     }
 
     private static String getCommandOutput(String... cmd) throws Exception {
-        return getCommandOutput(COMMAND_TIMEOUT_MS, cmd);
-    }
-
-    private static String getCommandOutput(long timeoutMs, String... cmd) throws Exception {
         log.debug(String.format("Executing: %s", Arrays.toString(cmd)));
         final Process process = new ProcessBuilder(cmd).redirectErrorStream(true).start();
-        if (!process.waitFor(timeoutMs, TimeUnit.MILLISECONDS)) {
-            throw new TimeoutException(String.format("'%s' command execution has expired after %s seconds timeout",
-                    Arrays.toString(cmd), timeoutMs / 1000));
-        }
         final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         final StringBuilder builder = new StringBuilder();
         String line;
@@ -282,22 +272,14 @@ public class IOSSimulatorHelpers {
         return output;
     }
 
-    private static String executeXcRun(String verb, long timeoutMs, String... cmd) throws Exception {
+    private static String executeXcRun(String verb, String... cmd) throws Exception {
         final String[] firstCmdPart = new String[]{XCRUN_PATH, verb};
         final String[] fullCmd = ArrayUtils.addAll(firstCmdPart, cmd);
-        return getCommandOutput(timeoutMs, fullCmd);
-    }
-
-    private static String executeXcRun(String verb, String... cmd) throws Exception {
-        return executeXcRun(verb, COMMAND_TIMEOUT_MS, cmd);
+        return getCommandOutput(fullCmd);
     }
 
     private static String executeSimctl(String... cmd) throws Exception {
         return executeXcRun("simctl", cmd);
-    }
-
-    private static String executeSimctl(long timeoutMs, String... cmd) throws Exception {
-        return executeXcRun("simctl", timeoutMs, cmd);
     }
 
     private static final String[] DEPENDENT_PROCESSES_NAMES = new String[]{
@@ -310,13 +292,11 @@ public class IOSSimulatorHelpers {
         UnixProcessHelpers.killProcessesGracefully(DEPENDENT_PROCESSES_NAMES);
     }
 
-    private static final long SHUTDOWN_TIMEOUT_MS = 5000;
-
     public static void shutdown() throws Exception {
         try {
-            executeSimctl(SHUTDOWN_TIMEOUT_MS, "shutdown", getId());
+            executeSimctl("shutdown", getId());
             Thread.sleep(1000);
-        } catch (TimeoutException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (UnixProcessHelpers.isProcessRunning(SIMULATOR_PROCESS_NAME)) {

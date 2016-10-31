@@ -93,9 +93,8 @@ public class IOSRealDeviceHelpers {
                     String.format("ideviceinfo tool is not installed at path %s. " +
                             "Execute `brew install --HEAD libimobiledevice` to install it", IDEVICEINFO));
         }
-        final Process arp = new ProcessBuilder(IDEVICEINFO).redirectErrorStream(true).start();
-        arp.waitFor(10, TimeUnit.SECONDS);
-        final BufferedReader reader = new BufferedReader(new InputStreamReader(arp.getInputStream()));
+        final Process process = new ProcessBuilder(IDEVICEINFO).redirectErrorStream(true).start();
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         final StringBuilder output = new StringBuilder();
         String line;
         final String regex = "WiFiAddress:\\s+([0-9a-f]+:[0-9a-f]+:[0-9a-f]+:[0-9a-f]+:[0-9a-f]+:[0-9a-f]+)";
@@ -130,10 +129,11 @@ public class IOSRealDeviceHelpers {
                     String.format("fping tool is not installed at path %s. Execute `brew install fping` to install it",
                             FPING));
         }
-        new ProcessBuilder(FPING, "-c", "1", "-g", fullIP).redirectErrorStream(true).start().
-                waitFor(120, TimeUnit.SECONDS);
+        if (!new ProcessBuilder(FPING, "-c", "1", "-g", fullIP).redirectErrorStream(true).start().
+                waitFor(120, TimeUnit.SECONDS)) {
+            throw new IllegalStateException("Cannot fping the subnetwork within 120 seconds timeout");
+        }
         final Process arp = new ProcessBuilder(ARP, "-a").redirectErrorStream(true).start();
-        arp.waitFor(60, TimeUnit.SECONDS);
         final BufferedReader reader = new BufferedReader(new InputStreamReader(arp.getInputStream()));
         final String macRegex = "([0-9a-f]+:[0-9a-f]+:[0-9a-f]+:[0-9a-f]+:[0-9a-f]+:[0-9a-f]+)";
         final Pattern macPattern = Pattern.compile(macRegex, Pattern.CASE_INSENSITIVE);
