@@ -136,7 +136,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | Link     | LinkInPreview |
       | user1Email | user1Password | user1Name | user2Name | wire.com | wire.com      |
 
-  @C226428 @staging
+  @C226428 @regression
   Scenario Outline: Verify liking someone's picture
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -234,7 +234,7 @@ Feature: Like
       | Login      | Password      | Name      | Contact   | File        | Size  |
       | user1Email | user1Password | user1Name | user2Name | C226430.mp4 | 15MB  |
 
-  @C226431 @staging
+  @C226431 @regression
   Scenario Outline: Verify liking someone's Soundcloud, youtube, vimeo and spotify
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
