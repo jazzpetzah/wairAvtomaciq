@@ -453,7 +453,7 @@ Feature: Ephemeral
       | Login      | Login2     | Password      | Name      | Contact   | Time  | TimeLong   | TimeShortUnit | PictureName               |
       | user1Email | user2Email | user1Password | user1Name | user2Name | 15    | 15 seconds | s             | userpicture_landscape.jpg |
 
-  @C262537 @ephemeral @staging @torun
+  @C262537 @ephemeral @staging
   Scenario Outline: Verify I can receive ephemeral text message (5s/15s/1m/5m) timeout starts with being in viewport
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -464,9 +464,8 @@ Feature: Ephemeral
     And I am signed in properly
     When I open conversation with <Contact>
     And Contact <Contact> sends message "<Message>" via device Device1 to user Myself
-    And I see text message "<Message>"
+    And I see text message <Message>
     And I see 2 messages in conversation
-    And I verify the database is containing the message <Message> from <Name> in active conversation
     And I see timer next to the last message
     And I wait for <Wait> seconds
     Then I do not see text message "<Message>"
@@ -475,7 +474,7 @@ Feature: Ephemeral
     Examples:
       | Login      | Password      | Name      | Contact   | Wait | TimeLong   | Message |
       | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds  | Hello   |
-      #| user1Email | user1Password | user1Name | user2Name | 15   | 15 seconds | Hello   |
-      #| user1Email | user1Password | user1Name | user2Name | 30   | 30 seconds | Hello   |
-      #| user1Email | user1Password | user1Name | user2Name | 60   | 1 minute   | Hello   |
+      | user1Email | user1Password | user1Name | user2Name | 15   | 15 seconds | Hello   |
+      | user1Email | user1Password | user1Name | user2Name | 30   | 30 seconds | Hello   |
+      | user1Email | user1Password | user1Name | user2Name | 60   | 1 minute   | Hello   |
      #| user1Email | user1Password | user1Name | user2Name | 300  | 5 minutes  | Hello   |
