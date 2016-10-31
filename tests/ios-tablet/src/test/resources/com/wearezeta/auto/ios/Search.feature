@@ -9,7 +9,7 @@ Feature: Search
     Given I wait until <ContactEmail> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user email <ContactEmail>
     Then I see the conversation "<ContactName>" exists in Search results
 
@@ -28,7 +28,7 @@ Feature: Search
     Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
 
@@ -134,7 +134,7 @@ Feature: Search
     And I wait until <Contact> exists in backend search results
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Unblock button
@@ -157,7 +157,7 @@ Feature: Search
     And I wait until <Contact> exists in backend search results
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     And I tap Hide keyboard button
     And I tap on conversation <Contact> in search result
@@ -180,7 +180,7 @@ Feature: Search
     Then I wait until <LastName> exists in backend search results
     # FIXME: This is unstable on Jenkins
 #    When I open search UI
-#    And I tap on Search input on People picker page
+#    And I tap input field on Search UI page
 #    And I input in People picker search field user name <LastName>
 #    Then I see the conversation "<NewName>" exists in Search results
 
@@ -198,7 +198,7 @@ Feature: Search
     Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field first 7 letters of user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
 
@@ -218,7 +218,7 @@ Feature: Search
     When I open search UI
     And I accept alert if visible
     And I tap on 1 top connection but not <Contact>
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Create conversation action button on People picker page
@@ -238,7 +238,7 @@ Feature: Search
     Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Call action button on People picker page
@@ -258,7 +258,7 @@ Feature: Search
     Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Call action button on People picker page
@@ -345,7 +345,7 @@ Feature: Search
     Given I see conversations list
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     Then I see Open conversation action button on People picker page
@@ -404,7 +404,7 @@ Feature: Search
     When I open search UI
     And I accept alert if visible
     And I see top people list on People picker page
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I tap on 1st top connection contact
     And I see Open conversation action button on People picker page
     And I tap on 2nd top connection contact
@@ -474,7 +474,7 @@ Feature: Search
     And I tap on 1st top connection contact
     And I do not see Open conversation action button on People picker page
     And I see Invite more people button
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I do not see Invite more people button

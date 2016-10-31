@@ -4,28 +4,17 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.ios.pages.TabletPeoplePickerPage;
+import com.wearezeta.auto.ios.pages.TabletSearchUIPage;
 
 import cucumber.api.java.en.When;
 
-public class TabletPeoplePickerPageSteps {
+public class TabletSearchUIPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private TabletPeoplePickerPage getTabletPeoplePickerPage() throws Exception {
-        return pagesCollection.getPage(TabletPeoplePickerPage.class);
-    }
-
-    /**
-     * Taps in the search field in the people picker popover
-     *
-     * @throws Exception
-     * @step. ^I tap on Search input on People picker on iPad popover$
-     */
-    @When("^I tap on Search input on People picker on iPad popover$")
-    public void ITapOnSearchInputOnPeoplePickerOniPadPopover() throws Exception {
-        getTabletPeoplePickerPage().pressIntoSearchField();
+    private TabletSearchUIPage getSearchUIPage() throws Exception {
+        return pagesCollection.getPage(TabletSearchUIPage.class);
     }
 
     /**
@@ -39,7 +28,7 @@ public class TabletPeoplePickerPageSteps {
     @When("^I input user name (.*) in People picker search field on iPad popover$")
     public void IInputUserNameInPeoplePickerSearchFieldOniPadPopover(String name) throws Exception {
         name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        getTabletPeoplePickerPage().fillTextInTabletPeoplePickerSearchField(
+        getSearchUIPage().fillTextInTabletPeoplePickerSearchField(
                 name);
     }
 
@@ -59,7 +48,7 @@ public class TabletPeoplePickerPageSteps {
         }
         Assert.assertTrue("User :" + name
                         + " is not presented on Pepople picker page",
-                getTabletPeoplePickerPage().getSearchResultsElement(name).isPresent());
+                getSearchUIPage().getSearchResultsElement(name).isPresent());
     }
 
     /**
@@ -72,7 +61,7 @@ public class TabletPeoplePickerPageSteps {
     @When("^I tap connected user (.*) on People picker on iPad popover$")
     public void ITapConnectedUserOnPeoplePickerOniPadPopover(String name) throws Exception {
         name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        getTabletPeoplePickerPage().selectConnectedUser(name);
+        getSearchUIPage().selectConnectedUser(name);
     }
 
     /**
@@ -86,10 +75,10 @@ public class TabletPeoplePickerPageSteps {
     public void IClickOnAddToConversationButtonOniPadPopover(String btnName) throws Exception {
         switch (btnName) {
             case "Add to Conversation":
-                getTabletPeoplePickerPage().clickAddToConversationButtonOniPadPopover();
+                getSearchUIPage().clickAddToConversationButtonOniPadPopover();
                 break;
             case "Create":
-                getTabletPeoplePickerPage().clickCreateConversationButtonOniPadPopover();
+                getSearchUIPage().clickCreateConversationButtonOniPadPopover();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));

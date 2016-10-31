@@ -10,7 +10,7 @@ Feature: Connect
     Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
@@ -36,7 +36,7 @@ Feature: Connect
     Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
@@ -107,7 +107,7 @@ Feature: Connect
     And I wait until <Contact1> exists in backend search results
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
     Then I see incoming pending popover from user <Contact1> on iPad
@@ -134,7 +134,7 @@ Feature: Connect
     And I wait until <Contact1> exists in backend search results
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
     Then I see incoming pending popover from user <Contact1> on iPad
@@ -233,7 +233,7 @@ Feature: Connect
     When I wait until <Contact> exists in backend search results
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Unblock button
@@ -260,7 +260,7 @@ Feature: Connect
     When I wait until <Contact> exists in backend search results
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Unblock button
@@ -282,14 +282,14 @@ Feature: Connect
     Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
     And I tap X button in People Picker input field
     Then I see first item in contact list named <Contact>
     When I open search UI
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     Then I see <Contact> user pending profile popover on iPad
@@ -371,7 +371,7 @@ Feature: Connect
     And I wait until <Contact1> exists in backend search results
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Connect button on Pending outgoing connection page
@@ -397,7 +397,7 @@ Feature: Connect
     And I wait until <Contact1> exists in backend search results
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Connect button on Pending outgoing connection page
@@ -418,7 +418,7 @@ Feature: Connect
     Given I wait until <Contact1> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Cancel Request button on pending profile page
@@ -439,7 +439,7 @@ Feature: Connect
     Given I wait until <Contact1> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Cancel Request button on pending profile page

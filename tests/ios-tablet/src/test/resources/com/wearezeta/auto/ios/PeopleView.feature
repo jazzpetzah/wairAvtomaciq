@@ -10,10 +10,10 @@ Feature: People View
     Given I wait until <Contact2> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact2>
     And I tap on conversation <Contact2> in search result
     And I tap Create conversation action button on People picker page
@@ -34,10 +34,10 @@ Feature: People View
     Given I wait until <Contact2> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact2>
     And I tap on conversation <Contact2> in search result
     And I tap Create conversation action button on People picker page
@@ -565,7 +565,7 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Add People button
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact3>
     Then I see No Results label in People picker search result
 
@@ -584,7 +584,7 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Add People button
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact3>
     Then I see No Results label in People picker search result
 
@@ -651,7 +651,7 @@ Feature: People View
     And I confirm delete conversation content
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I tap X button in People Picker input field
@@ -680,7 +680,7 @@ Feature: People View
     And I confirm delete conversation content
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I tap X button in People Picker input field
@@ -710,7 +710,7 @@ Feature: People View
     And I confirm delete conversation content
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
     Then I see conversation view page
@@ -740,7 +740,7 @@ Feature: People View
     And I confirm delete conversation content
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
     Then I see conversation view page
@@ -768,7 +768,7 @@ Feature: People View
     And I confirm delete conversation content
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
@@ -797,7 +797,7 @@ Feature: People View
     And I confirm delete conversation content
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page

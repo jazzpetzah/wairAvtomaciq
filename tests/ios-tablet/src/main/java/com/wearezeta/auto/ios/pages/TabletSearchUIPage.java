@@ -10,7 +10,7 @@ import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
-public class TabletPeoplePickerPage extends PeoplePickerPage {
+public class TabletSearchUIPage extends SearchUIPage {
     public static final By xpathSearchField =
             By.xpath("(//XCUIElementTypeTextView[@name='textViewSearch'])[last()]");
 
@@ -22,13 +22,9 @@ public class TabletPeoplePickerPage extends PeoplePickerPage {
     public static final Function<String,String> xpathStrIPADPeoplePickerResultUserName = name ->
             String.format("(//XCUIElementTypeStaticText[@name='%s'])[last()]", name);
 
-    public TabletPeoplePickerPage(Future<ZetaIOSDriver> lazyDriver)
+    public TabletSearchUIPage(Future<ZetaIOSDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
-    }
-
-    public void pressIntoSearchField() throws Exception {
-        getElement(xpathSearchField).click();
     }
 
     public void selectConnectedUser(String name) throws Exception {

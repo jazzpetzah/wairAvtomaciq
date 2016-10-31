@@ -12,7 +12,7 @@ import org.openqa.selenium.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
-public class PeoplePickerPage extends IOSPage {
+public class SearchUIPage extends IOSPage {
     private static final By fbNamePickerSearch = FBBy.AccessibilityId("textViewSearch");
 
     public static final By xpathPickerClearButton =
@@ -68,15 +68,11 @@ public class PeoplePickerPage extends IOSPage {
 
     private static final By nameVideoCallButton = MobileBy.AccessibilityId("actionBarVideoCallButton");
 
-    public PeoplePickerPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+    public SearchUIPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
-    public boolean isPeoplePickerPageVisible() throws Exception {
-        return isLocatorDisplayed(fbNamePickerSearch);
-    }
-
-    public void tapOnPeoplePickerSearch() throws Exception {
+    public void tapSearchInput() throws Exception {
         this.tapAtTheCenterOfElement((FBElement) getElement(fbNamePickerSearch));
     }
 

@@ -139,7 +139,7 @@ Feature: Video Calling
     Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Video call action button on People picker page

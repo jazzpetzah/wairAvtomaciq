@@ -10,7 +10,7 @@ Feature: Connect
     Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
@@ -78,7 +78,7 @@ Feature: Connect
     And I wait until <Contact1> exists in backend search results
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
     Then I see Incoming Pending Requests page
@@ -118,7 +118,7 @@ Feature: Connect
     Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
@@ -144,7 +144,7 @@ Feature: Connect
     When I wait until <Contact> exists in backend search results
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Unblock button
@@ -169,7 +169,7 @@ Feature: Connect
     Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Pending outgoing connection page
@@ -177,7 +177,7 @@ Feature: Connect
     Then I see first item in contact list named <Contact>
     When I wait until <Contact> exists in backend search results
     And I open search UI
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     Then I see Cancel Request button on pending profile page
@@ -218,7 +218,7 @@ Feature: Connect
     Given I wait until <ContactEmail> exists in backend search results
     Given I open search UI
     Given I accept alert if visible
-    Given I tap on Search input on People picker page
+    Given I tap input field on Search UI page
     Given I input in People picker search field user email <ContactEmail>
     # Wait for animation
     Given I wait for 3 seconds
@@ -263,7 +263,7 @@ Feature: Connect
     And I wait until <Contact1> exists in backend search results
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Connect button on Pending outgoing connection page
@@ -283,7 +283,7 @@ Feature: Connect
     Given I wait until <Contact1> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Cancel Request button on pending profile page
@@ -354,7 +354,7 @@ Feature: Connect
     Then I do not see conversation <Contact> in conversations list
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
+    And I tap input field on Search UI page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Unblock button
