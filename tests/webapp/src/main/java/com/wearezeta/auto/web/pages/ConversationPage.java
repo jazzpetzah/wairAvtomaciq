@@ -98,6 +98,9 @@ public class ConversationPage extends WebPage {
     @FindBy(css = WebAppLocators.ConversationPage.cssLastMessage)
     private WebElement lastGenericMessage;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssSecondLastMessage)
+    private WebElement secondLastGenericMessage;
+
     @FindBy(css = WebAppLocators.ConversationPage.cssLastTextMessage)
     private WebElement lastTextMessage;
 
@@ -1478,6 +1481,10 @@ public class ConversationPage extends WebPage {
 
     public boolean isLastMessageNotObfuscated() {
         return !lastTextMessage.getAttribute("class").contains("ephemeral-message-obfuscated");
+    }
+
+    public boolean isSecondLastMessageObfuscated() {
+        return secondLastGenericMessage.findElement(By.cssSelector(".ephemeral-message-obfuscated")).isDisplayed();
     }
 
     public boolean isLastMessageReplaced() {

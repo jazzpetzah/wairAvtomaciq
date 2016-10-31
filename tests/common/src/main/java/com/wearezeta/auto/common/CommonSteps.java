@@ -371,6 +371,17 @@ public final class CommonSteps {
         seBridge.markEphemeralRead(user, dstConvId, getFilteredLastMessageId(messageInfos), deviceName);
     }
 
+    public void UserReadSecondLastEphemeralMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName,
+                                             boolean isGroup) throws Exception {
+        ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
+        if (!isGroup) {
+            dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+        }
+        String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
+        ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
+        seBridge.markEphemeralRead(user, dstConvId, getFilteredSecondLastMessageId(messageInfos), deviceName);
+    }
+
     public void UserLikeLatestMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName)
             throws Exception {
         userReactLatestMessage(msgFromUserNameAlias, dstConversationName, deviceName, MessageReactionType.LIKE);
