@@ -210,8 +210,8 @@ Feature: Conversation List
     And I confirm delete conversation content
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field conversation name <GroupChatName>
+    And I tap input field on Search UI page
+    And I type "<GroupChatName>" in Search UI input field
     And I tap on conversation <GroupChatName> in search result
     Then I see 0 conversation entries
 
@@ -236,10 +236,10 @@ Feature: Conversation List
     And I confirm delete conversation content
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field conversation name <Contact1>
+    And I tap input field on Search UI page
+    And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
-    And I tap Open conversation action button on People picker page
+    And I tap Open conversation action button on Search UI page
     Then I see conversation view page
     And I see 0 conversation entries
 
@@ -353,10 +353,10 @@ Feature: Conversation List
     And I confirm delete conversation content
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field conversation name <GroupChatName>
+    And I tap input field on Search UI page
+    And I type "<GroupChatName>" in Search UI input field
     Then I see the conversation "<GroupChatName>" does not exist in Search results
-    When I tap X button in People Picker input field
+    When I tap X button on Search UI page
     And I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
     Then I see conversation <GroupChatName> in conversations list
@@ -382,8 +382,8 @@ Feature: Conversation List
     Then I do not see conversation <GroupChatName> in conversations list
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field conversation name <GroupChatName>
+    And I tap input field on Search UI page
+    And I type "<GroupChatName>" in Search UI input field
     And I tap on conversation <GroupChatName> in search result
     Then I see 0 conversation entries
     When I type the default message and send it
@@ -443,8 +443,8 @@ Feature: Conversation List
     And I wait until <Contact> exists in backend search results
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact>
+    And I tap input field on Search UI page
+    And I type "<Contact>" in Search UI input field
     Then I see the conversation "<Contact>" exists in Search results
 
     Examples:
@@ -538,8 +538,8 @@ Feature: Conversation List
     Given I see Conversations hint text
     When I tap on Conversations hint text
     And I accept alert if visible
-    Then I see People Picker page
-    When I tap X button in People Picker input field
+    Then I see Search UI
+    When I tap X button on Search UI page
     Then I see conversations list
     And I do not see Conversations hint text
 

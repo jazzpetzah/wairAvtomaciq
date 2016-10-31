@@ -161,9 +161,43 @@ Feature: Ephemeral
     And I see 1 message in conversation
 
     Examples:
+      | Login      | Password      | Login2     | Name      | Contact   | TimeLong  | TimeShort | Time | Message |
+      | user1Email | user1Password | user2Email | user1Name | user2Name | 5 seconds | 5s        | 5    | testing |
 
-      | Login      | Password      | Login2     | Name      | Contact   | TimeLong  | TimeShortUnit | Time | Message |
-      | user1Email | user1Password | user2Email | user1Name | user2Name | 5 seconds | s             | 5    | testing |
+  @C262134 @ephemeral @staging
+  Scenario Outline: Verify timer is applied to the all messages until turning it off
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I click on ephemeral button
+    And I set the timer for ephemeral to <TimeLong>
+    And I write message <Message1>
+    And I send message
+    And I wait for <Halftime> seconds
+    And I write message <Message2>
+    And I send message
+    And I see text message <Message1>
+    And I see text message <Message2>
+    When I wait for <Halftime> seconds
+    Then I see the second last message is obfuscated
+    When I wait for <Halftime> seconds
+    Then I see the last message is obfuscated
+    When User <Contact> reads the second last message from user <Name> via device Device1
+    And I wait for <Time> seconds
+    Then I do not see text message <Message1>
+    And I do not see text message <Message2>
+    Then I see 2 messages in conversation
+    When User <Contact> reads the recent message from user <Name> via device Device1
+    And I wait for <Time> seconds
+    Then I see 1 message in conversation
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | TimeLong   | Time | Halftime | Message1 | Message2 |
+      | user1Email | user1Password | user1Name | user2Name | 15 seconds | 15   | 8        | testing1 | testing2 |
 
   @C262540 @ephemeral @staging
   Scenario Outline: Verify opening picture fullscreen with a short timer
@@ -409,7 +443,7 @@ Feature: Ephemeral
       | Email1     | Password      | Name      | Contact   | Time | TimeLong | TimeShortUnit | Message |
       | user1Email | user1Password | user1Name | user2Name | 1    | 1 day    | d             | Hello   |
 
-  @C311067 @ephemeral @staging
+  @C311067 @ephemeral @regression @WEBAPP-3314
   Scenario Outline: Verify on sender and receiver side picture fullscreen automatically closes when timer exceeds
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -478,3 +512,4 @@ Feature: Ephemeral
       | user1Email | user1Password | user1Name | user2Name | 30   | 30 seconds | Hello   |
       | user1Email | user1Password | user1Name | user2Name | 60   | 1 minute   | Hello   |
      #| user1Email | user1Password | user1Name | user2Name | 300  | 5 minutes  | Hello   |
+

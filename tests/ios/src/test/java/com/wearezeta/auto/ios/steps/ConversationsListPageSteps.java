@@ -27,8 +27,8 @@ public class ConversationsListPageSteps {
         return pagesCollection.getPage(LoginPage.class);
     }
 
-    private PeoplePickerPage getPeoplePickerPage() throws Exception {
-        return pagesCollection.getPage(PeoplePickerPage.class);
+    private SearchUIPage getPeoplePickerPage() throws Exception {
+        return pagesCollection.getPage(SearchUIPage.class);
     }
 
     @Given("^I see conversations list$")
@@ -253,9 +253,9 @@ public class ConversationsListPageSteps {
         OtherUserPersonalInfoPageSteps infoPageSteps = new OtherUserPersonalInfoPageSteps();
         infoPageSteps.ITapCreateGroupButton();
 
-        PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
-        pickerSteps.WhenITapOnSearchInputOnPeoplePickerPage();
-        pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact2);
+        SearchUIPageSteps pickerSteps = new SearchUIPageSteps();
+        pickerSteps.ITapSearchInput();
+        pickerSteps.ITypeInSearchInput(contact2);
         pickerSteps.ITapOnConversationFromSearch(contact2);
         if (getPeoplePickerPage().isKeyboardVisible()) {
             getPeoplePickerPage().tapKeyboardCommitButton();

@@ -30,7 +30,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | DeviceName    | Timeout |
       | user1Name | user2Name | ContactDevice | 15      |
 
-  @C259589 @regression @fastLogin
+  @C259589 @rc @regression @fastLogin
   Scenario Outline: Verify ephemeral messages are disabled in a group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -44,7 +44,7 @@ Feature: Ephemeral Messages
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @C259584 @C259585 @regression @fastLogin
+  @C259584 @rc @regression @fastLogin
   Scenario Outline: Verify sending ephemeral message - no online receiver (negative case)
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -64,7 +64,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timeout | EphemeralTimeLabel |
       | user1Name | user2Name | 15      | seconds            |
 
-  @C259597 @regression @fastLogin
+  @C259597 @rc @regression @fastLogin
   Scenario Outline: Verify the message is deleted on the sender side when it's read on the receiver side
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -88,7 +88,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timeout | EphemeralTimeLabel | DeviceName    |
       | user1Name | user2Name | 30      | seconds            | ContactDevice |
 
-  @C259586 @regression @fastLogin
+  @C259586 @rc @regression @fastLogin
   Scenario Outline: Verify switching on/off ephemeral message
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>

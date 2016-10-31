@@ -1172,6 +1172,11 @@ public class ConversationPageSteps {
         }
     }
 
+    @When("^I see the second last message is obfuscated$")
+    public void ISeeSecondLastObfuscatedMessage() throws Exception {
+        assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isSecondLastMessageObfuscated());
+    }
+
     /**
      * Checks if the picture, video, audio, or file is replaced with orange block
      * @param doNot

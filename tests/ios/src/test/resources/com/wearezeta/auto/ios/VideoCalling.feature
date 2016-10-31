@@ -139,10 +139,10 @@ Feature: Video Calling
     Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact>
+    And I tap input field on Search UI page
+    And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
-    And I tap Video call action button on People picker page
+    And I tap Video call action button on Search UI page
     And I accept alert if visible
     Then I see call status message contains "<Contact> ringing"
     And I see Leave button on Video Calling overlay

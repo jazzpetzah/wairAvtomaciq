@@ -346,10 +346,10 @@ Feature: Conversation View
     And I wait until <Contact1> exists in backend search results
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field conversation name <Contact1>
+    And I tap input field on Search UI page
+    And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
-    When I tap Open conversation action button on People picker page
+    When I tap Open conversation action button on Search UI page
     And I type the default message and send it
     Then I see 1 default message in the conversation view
 
@@ -398,7 +398,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | Caramba!      | testing.jpg |
 
-  @C917 @real_rc @real
+  @C917 @real_rc @real @fastLogin
   Scenario Outline: Verify sending photo from a back camera
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -416,7 +416,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C918 @real @rc @real_rc
+  @C918 @real @rc @real_rc @fastLogin
   Scenario Outline: Verify sending photo from a front camera
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

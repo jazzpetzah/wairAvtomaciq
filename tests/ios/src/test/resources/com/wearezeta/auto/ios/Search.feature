@@ -7,8 +7,8 @@ Feature: Search
     Given I see conversations list
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field user email <ContactEmail>
+    And I tap input field on Search UI page
+    And I type "<ContactEmail>" in Search UI input field
     Then I see the conversation "<ContactName>" exists in Search results
 
     Examples:
@@ -24,8 +24,8 @@ Feature: Search
     Given I see conversations list
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact>
+    And I tap input field on Search UI page
+    And I type "<Contact>" in Search UI input field
     Then I see the conversation "<Contact>" exists in Search results
 
     Examples:
@@ -41,9 +41,9 @@ Feature: Search
     Given I wait until my Top People list is not empty on the backend
     And I open search UI
     And I accept alert if visible
-    And I see top people list on People picker page
+    And I see top people list on Search UI page
     Then I tap on first 1 top connections
-    And I tap Open conversation action button on People picker page
+    And I tap Open conversation action button on Search UI page
     And I wait for 2 seconds
     And I see conversation view page
 
@@ -60,9 +60,9 @@ Feature: Search
     Given I wait until my Top People list is not empty on the backend
     And I open search UI
     And I accept alert if visible
-    And I see top people list on People picker page
+    And I see top people list on Search UI page
     Then I tap on first 2 top connections
-    When I tap Create conversation action button on People picker page
+    When I tap Create conversation action button on Search UI page
     And I see conversation view page
     And I open group conversation details
     Then I see <ParticipantsCount> participant avatars
@@ -81,11 +81,11 @@ Feature: Search
     Given I wait until <UnconnectedUser> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field conversation name <UnconnectedUser>
+    And I tap input field on Search UI page
+    And I type "<UnconnectedUser>" in Search UI input field
     And I tap on conversation <UnconnectedUser> in search result
     And I tap Connect button on Pending outgoing connection page
-    And I tap X button in People Picker input field
+    And I tap X button on Search UI page
     And I tap on contact name <UnconnectedUser>
     And I open conversation details
     And I see <UnconnectedUser> user pending profile page
@@ -104,10 +104,10 @@ Feature: Search
     When I open search UI
     And I accept alert if visible
     And I tap on 1 top connection but not <Contact>
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact>
+    And I tap input field on Search UI page
+    And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
-    And I tap Create conversation action button on People picker page
+    And I tap Create conversation action button on Search UI page
     Then I see group chat page with users <Contact>,<Contact2>
 
     Examples:
@@ -125,10 +125,10 @@ Feature: Search
     And I wait until <Contact> exists in backend search results
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact>
+    And I tap input field on Search UI page
+    And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
-    And I tap Unblock button
+    And I tap Unblock button on Search UI page
     And I type the default message and send it
     Then I see 1 default message in the conversation view
 
@@ -145,13 +145,13 @@ Feature: Search
     Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field first 5 letters of user name <Contact>
+    And I tap input field on Search UI page
+    And I type first <LettersCount> letters of user name "<Contact>" into Search UI input field
     Then I see the conversation "<Contact>" exists in Search results
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | LettersCount |
+      | user1Name | user2Name | 5            |
 
   @C1049 @rc @clumsy @regression @fastLogin
   Scenario Outline: Verify starting a call with action button
@@ -162,10 +162,10 @@ Feature: Search
     Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact>
+    And I tap input field on Search UI page
+    And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
-    And I tap Call action button on People picker page
+    And I tap Call action button on Search UI page
     Then I see Calling overlay
 
     Examples:
@@ -181,10 +181,10 @@ Feature: Search
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
     And I accept alert if visible
-    And I see top people list on People picker page
+    And I see top people list on Search UI page
     Then I tap on first 3 top connections
-    When I see Send image action button on People picker page
-    And I tap Send image action button on People picker page
+    When I see Send image action button on Search UI page
+    And I tap Send image action button on Search UI page
     And I tap Camera Roll button on Camera page
     # Wait for animation
     And I wait for 3 seconds
@@ -209,9 +209,9 @@ Feature: Search
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
     And I accept alert if visible
-    And I see top people list on People picker page
+    And I see top people list on Search UI page
     When I tap on first 1 top connections
-    Then I see Open conversation action button on People picker page
+    Then I see Open conversation action button on Search UI page
 
     Examples:
       | Name      | Contact   |
@@ -225,10 +225,10 @@ Feature: Search
     Given I see conversations list
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact>
+    And I tap input field on Search UI page
+    And I type "<Contact>" in Search UI input field
     When I tap on conversation <Contact> in search result
-    Then I see Open conversation action button on People picker page
+    Then I see Open conversation action button on Search UI page
 
     Examples:
       | Name      | Contact   |
@@ -243,11 +243,11 @@ Feature: Search
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
     And I accept alert if visible
-    And I see top people list on People picker page
+    And I see top people list on Search UI page
     When I tap on 1st top connection contact
-    Then I see Open conversation action button on People picker page
+    Then I see Open conversation action button on Search UI page
     When I tap on 2nd top connection contact
-    Then I see Create conversation action button on People picker page
+    Then I see Create conversation action button on Search UI page
 
     Examples:
       | Name      |
@@ -262,11 +262,11 @@ Feature: Search
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
     And I accept alert if visible
-    And I see top people list on People picker page
+    And I see top people list on Search UI page
     When I tap on 1st top connection contact
-    Then I see Open conversation action button on People picker page
+    Then I see Open conversation action button on Search UI page
     When I tap on 1st top connection contact
-    Then I do not see Open conversation action button on People picker page
+    Then I do not see Open conversation action button on Search UI page
 
     Examples:
       | Name      |
@@ -281,19 +281,19 @@ Feature: Search
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
     And I accept alert if visible
-    And I see top people list on People picker page
-    When I tap on Search input on People picker page
+    And I see top people list on Search UI page
+    When I tap input field on Search UI page
     And I tap on 1st top connection contact
-    And I see Open conversation action button on People picker page
+    And I see Open conversation action button on Search UI page
     And I tap on 2nd top connection contact
-    Then I see Create conversation action button on People picker page
+    Then I see Create conversation action button on Search UI page
     # We need to tap the button twice, because first tap only selects the element
     When I press Backspace button in search field
     And I press Backspace button in search field
-    Then I do not see Create conversation action button on People picker page
+    Then I do not see Create conversation action button on Search UI page
     When I press Backspace button in search field
     And I press Backspace button in search field
-    Then I do not see Open conversation action button on People picker page
+    Then I do not see Open conversation action button on Search UI page
 
     Examples:
       | Name      |
@@ -308,9 +308,9 @@ Feature: Search
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
     And I accept alert if visible
-    And I see top people list on People picker page
+    And I see top people list on Search UI page
     And I tap on 1st top connection contact
-    And I tap Open conversation action button on People picker page
+    And I tap Open conversation action button on Search UI page
     Then I see conversation view page
 
     Examples:
@@ -329,18 +329,18 @@ Feature: Search
     And I see Invite more people button
     And I tap on 1st top connection contact
     And I do not see Invite more people button
-    And I see Open conversation action button on People picker page
+    And I see Open conversation action button on Search UI page
     And I tap on 1st top connection contact
-    And I do not see Open conversation action button on People picker page
+    And I do not see Open conversation action button on Search UI page
     And I see Invite more people button
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact>
+    And I tap input field on Search UI page
+    And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
     And I do not see Invite more people button
-    And I see Open conversation action button on People picker page
+    And I see Open conversation action button on Search UI page
     And I press Backspace button in search field
     And I press Backspace button in search field
-    And I do not see Open conversation action button on People picker page
+    And I do not see Open conversation action button on Search UI page
     Then I see Invite more people button
 
     Examples:

@@ -10,13 +10,13 @@ Feature: People View
     Given I wait until <Contact2> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact1>
+    And I tap input field on Search UI page
+    And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact2>
+    And I tap input field on Search UI page
+    And I type "<Contact2>" in Search UI input field
     And I tap on conversation <Contact2> in search result
-    And I tap Create conversation action button on People picker page
+    And I tap Create conversation action button on Search UI page
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
@@ -34,13 +34,13 @@ Feature: People View
     Given I wait until <Contact2> exists in backend search results
     When I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact1>
+    And I tap input field on Search UI page
+    And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact2>
+    And I tap input field on Search UI page
+    And I type "<Contact2>" in Search UI input field
     And I tap on conversation <Contact2> in search result
-    And I tap Create conversation action button on People picker page
+    And I tap Create conversation action button on Search UI page
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
@@ -57,8 +57,8 @@ Feature: People View
     And I open conversation details
     And I see <Contact1> user profile page in iPad popover
     And I tap Create Group button
-    And I tap connected user <Contact2> on People picker on iPad popover
-    And I tap connected user <Contact3> on People picker on iPad popover
+    And I tap connected user <Contact2> in Search UI on iPad popover
+    And I tap connected user <Contact3> in Search UI on iPad popover
     And I tap Create button on iPad popover
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I navigate back to conversations list
@@ -79,8 +79,8 @@ Feature: People View
     And I open conversation details
     And I see <Contact1> user profile page in iPad popover
     And I tap Create Group button
-    And I tap connected user <Contact2> on People picker on iPad popover
-    And I tap connected user <Contact3> on People picker on iPad popover
+    And I tap connected user <Contact2> in Search UI on iPad popover
+    And I tap connected user <Contact3> in Search UI on iPad popover
     And I tap Create button on iPad popover
     And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
@@ -447,7 +447,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Add People button
-    And I tap connected user <Contact3> on People picker on iPad popover
+    And I tap connected user <Contact3> in Search UI on iPad popover
     And I tap Add to Conversation button on iPad popover
     And I open conversation details
     Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
@@ -467,7 +467,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Add People button
-    And I tap connected user <Contact3> on People picker on iPad popover
+    And I tap connected user <Contact3> in Search UI on iPad popover
     And I tap Add to Conversation button on iPad popover
     And I open conversation details
     Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
@@ -527,7 +527,7 @@ Feature: People View
     And I open group conversation details
     And I select participant <Contact1>
     And I see <Contact1> user profile page
-    And I tap Unblock button
+    And I tap Unblock button on Search UI page
     And I navigate back to conversations list
     Then I see conversation <Contact1> in conversations list
 
@@ -548,7 +548,7 @@ Feature: People View
     And I open group conversation details
     And I select participant <Contact1>
     And I see <Contact1> user profile page
-    And I tap Unblock button
+    And I tap Unblock button on Search UI page
     Then I see conversation <Contact1> in conversations list
 
     Examples:
@@ -565,9 +565,9 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Add People button
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact3>
-    Then I see No Results label in People picker search result
+    And I tap input field on Search UI page
+    And I type "<Contact3>" in Search UI input field
+    Then I see No Results label on Search UI page
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
@@ -584,9 +584,9 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Add People button
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact3>
-    Then I see No Results label in People picker search result
+    And I tap input field on Search UI page
+    And I type "<Contact3>" in Search UI input field
+    Then I see No Results label on Search UI page
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
@@ -651,10 +651,10 @@ Feature: People View
     And I confirm delete conversation content
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field conversation name <GroupChatName>
+    And I tap input field on Search UI page
+    And I type "<GroupChatName>" in Search UI input field
     Then I see the conversation "<GroupChatName>" does not exist in Search results
-    When I tap X button in People Picker input field
+    When I tap X button on Search UI page
     Then I do not see conversation <GroupChatName> in conversations list
     # Workaround for ZIOS-6195
     # And I do not see Archive button at the bottom of conversations list
@@ -680,10 +680,10 @@ Feature: People View
     And I confirm delete conversation content
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field conversation name <GroupChatName>
+    And I tap input field on Search UI page
+    And I type "<GroupChatName>" in Search UI input field
     Then I see the conversation "<GroupChatName>" does not exist in Search results
-    When I tap X button in People Picker input field
+    When I tap X button on Search UI page
     Then I do not see conversation <GroupChatName> in conversations list
     # Workaround for ZIOS-6195
     # And I do not see Archive button at the bottom of conversations list
@@ -710,8 +710,8 @@ Feature: People View
     And I confirm delete conversation content
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field conversation name <GroupChatName>
+    And I tap input field on Search UI page
+    And I type "<GroupChatName>" in Search UI input field
     When I tap on conversation <GroupChatName> in search result
     Then I see conversation view page
     # TODO: There should be a system message there
@@ -740,8 +740,8 @@ Feature: People View
     And I confirm delete conversation content
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field conversation name <GroupChatName>
+    And I tap input field on Search UI page
+    And I type "<GroupChatName>" in Search UI input field
     When I tap on conversation <GroupChatName> in search result
     Then I see conversation view page
     # TODO: There should be a system message there
@@ -768,10 +768,10 @@ Feature: People View
     And I confirm delete conversation content
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact1>
+    And I tap input field on Search UI page
+    And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
-    And I tap Open conversation action button on People picker page
+    And I tap Open conversation action button on Search UI page
     Then I see 0 default messages in the conversation view
     And I see 0 photos in the conversation view
 
@@ -797,10 +797,10 @@ Feature: People View
     And I confirm delete conversation content
     And I open search UI
     And I accept alert if visible
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact1>
+    And I tap input field on Search UI page
+    And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
-    And I tap Open conversation action button on People picker page
+    And I tap Open conversation action button on Search UI page
     Then I see 0 default messages in the conversation view
     And I see 0 photos in the conversation view
     
