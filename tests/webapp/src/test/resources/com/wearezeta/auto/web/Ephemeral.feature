@@ -443,7 +443,7 @@ Feature: Ephemeral
       | Email1     | Password      | Name      | Contact   | Time | TimeLong | TimeShortUnit | Message |
       | user1Email | user1Password | user1Name | user2Name | 1    | 1 day    | d             | Hello   |
 
-  @C311067 @ephemeral @staging
+  @C311067 @ephemeral @regression @WEBAPP-3314
   Scenario Outline: Verify on sender and receiver side picture fullscreen automatically closes when timer exceeds
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
