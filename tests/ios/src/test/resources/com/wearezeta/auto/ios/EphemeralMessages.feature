@@ -353,7 +353,7 @@ Feature: Ephemeral Messages
     Then I do not see link preview container in the conversation view
     # Location
     When User <Contact> shares the default location to user Myself via device <DeviceName>
-    And I wait for <SyncTimeout> seconds
+    #And I wait for <SyncTimeout> seconds
     And I see location map container in the conversation view
     And I wait for <EphemeralTimeout> seconds
     Then I do not see location map container in the conversation view
