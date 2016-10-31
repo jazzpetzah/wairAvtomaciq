@@ -85,6 +85,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                         if (!appiumServer.isRunning() || ntry > 1) {
                             new ProcessBuilder("/bin/bash", "-c",
                                     ADB_PREFIX + "adb shell am start -n io.appium.unlock/.Unlock")
+                                    .redirectErrorStream(true)
                                     .start()
                                     .waitFor(10, TimeUnit.SECONDS);
                             appiumServer.restart();

@@ -100,22 +100,23 @@ public class AppiumServer {
             try (Writer output = new BufferedWriter(new FileWriter(scriptFile))) {
                 output.write(String.join("\n", scriptContent));
             }
-            new ProcessBuilder(new String[]{"/bin/bash", scriptFile.getCanonicalPath()}).start().waitFor();
+            log.info(String.format("Waiting for Appium to be (re)started on %s:%s...", hostname, PORT));
+            final long msStarted = System.currentTimeMillis();
+            new ProcessBuilder("/bin/bash", scriptFile.getCanonicalPath()).
+                    redirectErrorStream(true).start().waitFor(RESTART_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+            if (!waitUntilIsRunning(RESTART_TIMEOUT_MILLIS)) {
+                throw new WebDriverException(
+                        String.format("Appium server has failed to start after %s seconds timeout on server '%s'.\n"
+                                + "Please make sure that NodeJS and Appium packages are installed properly on this machine.\n"
+                                + "Appium logs:\n\n%s\n\n\n", RESTART_TIMEOUT_MILLIS / 1000, hostname, getLog().orElse(""))
+                );
+            }
+
+            log.info(String.format("Appium server has been successfully (re)started after %.1f seconds " +
+                    "and now is listening on %s:%s", (System.currentTimeMillis() - msStarted) / 1000.0, hostname, PORT));
         } finally {
             scriptFile.delete();
         }
-        log.info(String.format("Waiting for Appium to be (re)started on %s:%s...", hostname, PORT));
-        final long msStarted = System.currentTimeMillis();
-        if (!waitUntilIsRunning(RESTART_TIMEOUT_MILLIS)) {
-            throw new WebDriverException(
-                    String.format("Appium server has failed to start after %s seconds timeout on server '%s'.\n"
-                            + "Please make sure that NodeJS and Appium packages are installed properly on this machine.\n"
-                            + "Appium logs:\n\n%s\n\n\n", RESTART_TIMEOUT_MILLIS / 1000, hostname, getLog().orElse(""))
-            );
-        }
-
-        log.info(String.format("Appium server has been successfully (re)started after %.1f seconds " +
-                "and now is listening on %s:%s", (System.currentTimeMillis() - msStarted) / 1000.0, hostname, PORT));
     }
 
     public boolean isRunning() throws Exception {

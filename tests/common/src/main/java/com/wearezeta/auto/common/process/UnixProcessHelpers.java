@@ -26,9 +26,9 @@ public class UnixProcessHelpers {
     public static boolean isProcessRunning(String name, Optional<String> pathPart) throws Exception {
         Process p;
         if (pathPart.isPresent()) {
-            p = new ProcessBuilder("/bin/ps", "axo", "command").start();
+            p = new ProcessBuilder("/bin/ps", "axo", "command").redirectErrorStream(true).start();
         } else {
-            p = new ProcessBuilder("/bin/ps", "axco", "command").start();
+            p = new ProcessBuilder("/bin/ps", "axco", "command").redirectErrorStream(true).start();
         }
         if (!p.waitFor(DEFAULT_COMMAND_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
             p.destroy();
@@ -53,11 +53,12 @@ public class UnixProcessHelpers {
 
     public static void killProcessesGracefully(int timeoutSecondsUntilForceKill, String... expectedNames)
             throws Exception {
-        new ProcessBuilder(ArrayUtils.addAll(new String[]{"/usr/bin/killall"}, expectedNames)).start().waitFor();
+        new ProcessBuilder(ArrayUtils.addAll(new String[]{"/usr/bin/killall"}, expectedNames)).
+                redirectErrorStream(true).start().waitFor(5, TimeUnit.SECONDS);
         final long millisecondsStarted = System.currentTimeMillis();
         boolean areAllProcessesTerminated = true;
         while (System.currentTimeMillis() - millisecondsStarted <= timeoutSecondsUntilForceKill * 1000) {
-            final Process p = new ProcessBuilder("/bin/ps", "axco", "command").start();
+            final Process p = new ProcessBuilder("/bin/ps", "axco", "command").redirectErrorStream(true).start();
             if (!p.waitFor(DEFAULT_COMMAND_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
                 p.destroy();
                 Thread.sleep(300);
@@ -87,7 +88,7 @@ public class UnixProcessHelpers {
             log.warn(String.format("Not all processes managed to stop gracefully in %s seconds. Force killing of %s...",
                     timeoutSecondsUntilForceKill, Arrays.toString(expectedNames)));
             new ProcessBuilder(ArrayUtils.addAll(new String[]{"/usr/bin/killall", "-9"}, expectedNames)).
-                    start().waitFor(1, TimeUnit.SECONDS);
+                    redirectErrorStream(true).start().waitFor(1, TimeUnit.SECONDS);
         }
     }
 }

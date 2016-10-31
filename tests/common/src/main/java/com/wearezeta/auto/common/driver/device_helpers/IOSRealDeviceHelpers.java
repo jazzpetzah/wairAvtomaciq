@@ -93,8 +93,8 @@ public class IOSRealDeviceHelpers {
                     String.format("ideviceinfo tool is not installed at path %s. " +
                             "Execute `brew install --HEAD libimobiledevice` to install it", IDEVICEINFO));
         }
-        final Process arp = new ProcessBuilder(new String[]{IDEVICEINFO}).start();
-        arp.waitFor();
+        final Process arp = new ProcessBuilder(IDEVICEINFO).redirectErrorStream(true).start();
+        arp.waitFor(10, TimeUnit.SECONDS);
         final BufferedReader reader = new BufferedReader(new InputStreamReader(arp.getInputStream()));
         final StringBuilder output = new StringBuilder();
         String line;
@@ -130,9 +130,10 @@ public class IOSRealDeviceHelpers {
                     String.format("fping tool is not installed at path %s. Execute `brew install fping` to install it",
                             FPING));
         }
-        new ProcessBuilder(new String[]{FPING, "-c", "1", "-g", fullIP}).start().waitFor();
-        final Process arp = new ProcessBuilder(new String[]{ARP, "-a"}).start();
-        arp.waitFor();
+        new ProcessBuilder(FPING, "-c", "1", "-g", fullIP).redirectErrorStream(true).start().
+                waitFor(120, TimeUnit.SECONDS);
+        final Process arp = new ProcessBuilder(ARP, "-a").redirectErrorStream(true).start();
+        arp.waitFor(60, TimeUnit.SECONDS);
         final BufferedReader reader = new BufferedReader(new InputStreamReader(arp.getInputStream()));
         final String macRegex = "([0-9a-f]+:[0-9a-f]+:[0-9a-f]+:[0-9a-f]+:[0-9a-f]+:[0-9a-f]+)";
         final Pattern macPattern = Pattern.compile(macRegex, Pattern.CASE_INSENSITIVE);
