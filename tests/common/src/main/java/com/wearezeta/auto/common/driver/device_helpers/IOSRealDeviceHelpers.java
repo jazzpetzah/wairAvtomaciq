@@ -2,7 +2,6 @@ package com.wearezeta.auto.common.driver.device_helpers;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -11,19 +10,18 @@ import java.io.InputStreamReader;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.wearezeta.auto.common.CommonUtils.getIOSToolsRoot;
-
 public class IOSRealDeviceHelpers {
     private static Logger log = ZetaLogger.getLog(IOSRealDeviceHelpers.class.getSimpleName());
 
-
-    private static final int APP_UNINSTALL_TIMEOUT_SECONDS = 10;
-    private static final int DEVICE_RECONNECT_TIMEOUT_SECONDS = 30;
+    private static final int CMDLINE_TIMEOUT_SECONDS = 30;
 
     /**
      * This will return only UDID of the first connected iDevice
@@ -46,76 +44,44 @@ public class IOSRealDeviceHelpers {
         return Optional.empty();
     }
 
-    private static void waitUntilIsConnected(String udid, int timeoutSeconds) throws Exception {
-        log.debug(String.format("Waiting %s seconds until the device is connected...",
-                DEVICE_RECONNECT_TIMEOUT_SECONDS));
-        final long millisecondsStarted = System.currentTimeMillis();
-        while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000) {
-            final Process p = new ProcessBuilder(
-                    "/usr/local/bin/idevicediagnostics", "-u", udid, "diagnostics", "WiFi"
-            ).redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.INHERIT).start();
-            final int retCode = p.waitFor();
-            if (retCode == 0) {
-                return;
-            } else {
-                Thread.sleep(2000);
-            }
+    private static final String IOS_DEPLOY = "/usr/local/bin/ios-deploy";
+
+    private static void executeIOSDeploy(String errorMsg, String... args) throws Exception {
+        if (!new File(IOS_DEPLOY).exists()) {
+            throw new IllegalStateException(
+                    String.format("ios-deploy tool is not installed at path %s. " +
+                            "Execute `npm install -g ios-deploy` to install it", IOS_DEPLOY));
         }
-        throw new IllegalStateException(String.format(
-                "iOS device with UDID %s has NOT been successfully reconnected after %s seconds", udid, timeoutSeconds));
-    }
-
-    private static final String RECONNECT_DEVICE_SCRIPT_NAME = "reconnectIDevice.py";
-    private static final String IDEVEICEINSTALLER = "/usr/local/bin/ideviceinstaller";
-
-    private static void retryOperation(String udid, FunctionalInterfaces.ISupplierWithException<ProcessBuilder> f,
-                                       String errorMsg) throws Exception {
-        final Process p = f.call().start();
-        if (!p.waitFor(APP_UNINSTALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
-            // FIXME: Workaround for https://github.com/appium/appium/issues/5039
+        final List<String> resultArgs = new ArrayList<>();
+        resultArgs.add(IOS_DEPLOY);
+        Collections.addAll(resultArgs, args);
+        final Process p = new ProcessBuilder(resultArgs).
+                redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.INHERIT).start();
+        if (!p.waitFor(CMDLINE_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
             p.destroy();
 
-            if (CommonUtils.isRunningInJenkinsNetwork()) {
-                log.warn("Seems like command line is frozen. Trying to reconnect the IDevice to its VM...");
-                new ProcessBuilder("/usr/bin/python",
-                        getIOSToolsRoot(IOSRealDeviceHelpers.class) + File.separator + RECONNECT_DEVICE_SCRIPT_NAME
-                ).redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.INHERIT).start().waitFor();
-                waitUntilIsConnected(udid, DEVICE_RECONNECT_TIMEOUT_SECONDS);
-                final Process p1 = f.call().start();
-                if (!p1.waitFor(APP_UNINSTALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
-                    throw new IllegalStateException(errorMsg);
-                }
-            } else {
-                throw new IllegalStateException(errorMsg);
-            }
+            throw new IllegalStateException(errorMsg);
         }
     }
 
     public static void uninstallApp(final String udid, final String bundleId) throws Exception {
-        if (!new File(IDEVEICEINSTALLER).exists()) {
-            throw new IllegalStateException(
-                    String.format("ideviceinstaller tool is not installed at path %s. " +
-                            "Execute `brew install --HEAD libimobiledevice` to install it", IDEVEICEINSTALLER));
-        }
-        retryOperation(udid,
-                () -> new ProcessBuilder(IDEVEICEINSTALLER, "-u", udid, "-U", bundleId).
-                        redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.INHERIT),
-                String.format("ideviceinstaller has failed to perform '%s' uninstall.\n" +
-                        "Please try to reconnect the device manually.", bundleId)
+        executeIOSDeploy(
+                String.format("ios-deploy` has failed to perform '%s' uninstall.\n" +
+                        "Please try to reconnect the device manually.", bundleId),
+                "--id", udid, "--uninstall_only", "--bundle_id", bundleId
         );
     }
 
-    public static void installApp(String udid, File appRoot) throws Exception {
-        if (!new File(IDEVEICEINSTALLER).exists()) {
-            throw new IllegalStateException(
-                    String.format("ideviceinstaller tool is not installed at path %s. " +
-                            "Execute `brew install --HEAD libimobiledevice` to install it", IDEVEICEINSTALLER));
+    public static void installApp(String udid, boolean shouldPerformAppReset, File appRoot) throws Exception {
+        final List<String> defaultArgs = new ArrayList<>();
+        Collections.addAll(defaultArgs, "--id", udid, "--bundle", appRoot.getCanonicalPath());
+        if (shouldPerformAppReset) {
+            defaultArgs.add("--uninstall");
         }
-        retryOperation(udid,
-                () -> new ProcessBuilder(IDEVEICEINSTALLER, "-u", udid, "-i", appRoot.getCanonicalPath()).
-                        redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.INHERIT),
-                String.format("ideviceinstaller has failed to perform '%s' install.\n" +
-                        "Please try to reconnect the device manually.", appRoot.getName())
+        executeIOSDeploy(
+                String.format("ios-deploy` has failed to perform '%s' install.\n" +
+                        "Please try to reconnect the device manually.", appRoot.getName()),
+                defaultArgs.toArray(new String[defaultArgs.size()])
         );
     }
 

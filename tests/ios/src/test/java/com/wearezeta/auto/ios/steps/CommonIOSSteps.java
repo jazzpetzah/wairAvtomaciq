@@ -214,10 +214,7 @@ public class CommonIOSSteps {
         final String udid = (String) caps.getCapability("udid");
         final IOSDistributable currentPackage =
                 IOSDistributable.getInstance((String) caps.getCapability("app"));
-        if (!caps.is(CAPABILITY_NAME_NO_UNINSTALL)) {
-            IOSRealDeviceHelpers.uninstallApp(udid, currentPackage.getBundleId());
-        }
-        IOSRealDeviceHelpers.installApp(udid, currentPackage.getAppRoot());
+        IOSRealDeviceHelpers.installApp(udid, !caps.is(CAPABILITY_NAME_NO_UNINSTALL), currentPackage.getAppRoot());
     }
 
 
