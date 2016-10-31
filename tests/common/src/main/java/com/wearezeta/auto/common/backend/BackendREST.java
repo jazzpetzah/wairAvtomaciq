@@ -274,18 +274,15 @@ final class BackendREST {
 
     // Don't share these values with anyone!!!
     // Otherwise backend guys will find your cunning ass
-    private static final String BASIC_AUTH_HEADER_VALUE_EDGE = "Basic d2lyZS1lZGdlOiQyXVxTbihGYD8rUlkiLkM=";
     private static final String BASIC_AUTH_HEADER_VALUE_STAGING = "Basic d2lyZS1zdGFnaW5nOnRqNGEzbl1BQzpFcn5yJTQ=";
 
     private static String getAuthValue() throws Exception {
-        String authValue;
         final String host = getBaseURI().getHost();
-        if (host.toLowerCase().contains("edge")) {
-            authValue = BASIC_AUTH_HEADER_VALUE_EDGE;
-        } else if (host.toLowerCase().contains("staging")) {
+        String authValue;
+        if (host.toLowerCase().contains("staging")) {
             authValue = BASIC_AUTH_HEADER_VALUE_STAGING;
         } else {
-            throw new RuntimeException(String.format("Unknown backend host %s", host));
+            throw new IllegalArgumentException(String.format("Unknown backend host %s", host));
         }
         return authValue;
     }
