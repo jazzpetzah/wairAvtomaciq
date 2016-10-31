@@ -182,7 +182,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer | FileName    | DeviceName |
       | user1Name | user2Name | 15    | testing.mp4 | myDevice2  |
 
-  @C310634 @staging @fastLogin
+  @C310634 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral share location
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
