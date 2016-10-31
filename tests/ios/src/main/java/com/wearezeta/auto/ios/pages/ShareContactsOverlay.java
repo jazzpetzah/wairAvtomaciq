@@ -35,7 +35,6 @@ public class ShareContactsOverlay extends IOSPage {
     }
 
     public void tapButton(String name) throws Exception {
-        final By locator = getButtonByName(name);
-        getElement(locator).click();
+        this.tapElementWithRetryIfStillDisplayed(getButtonByName(name));
     }
 }
