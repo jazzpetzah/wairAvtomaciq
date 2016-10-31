@@ -186,6 +186,8 @@ Feature: Search
     When I see Send image action button on People picker page
     And I tap Send image action button on People picker page
     And I tap Camera Roll button on Camera page
+    # Wait for animation
+    And I wait for 3 seconds
     And I accept alert if visible
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
