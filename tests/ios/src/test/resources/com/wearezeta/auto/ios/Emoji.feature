@@ -24,6 +24,8 @@ Feature: Emoji
     Given I tap on contact name <Contact>
     When I tap Emoji Keyboard button in conversation view
     And I tap "<EmojiChar>" key on Emoji Keyboard
+    # Search is faster if Emoji keyboard is not visible
+    And I tap Text Keyboard button in conversation view
     And I tap Send Message button in conversation view
     Then I see last message in the conversation view is expected message <EmojiChar>
 
