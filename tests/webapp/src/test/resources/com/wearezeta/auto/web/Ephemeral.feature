@@ -488,7 +488,7 @@ Feature: Ephemeral
       | user1Email | user2Email | user1Password | user1Name | user2Name | 15    | 15 seconds | s             | userpicture_landscape.jpg |
 
   @C262537 @ephemeral @staging
-  Scenario Outline: Verify I can receive ephemeral text message (5s/15s/1m/5m) timeout starts with being in viewport
+  Scenario Outline: Verify I can receive ephemeral text message (5s/15s/1m/5m) timeout starts while being in the conversation
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given user <Contact> adds a new device Device1 with label Label1
