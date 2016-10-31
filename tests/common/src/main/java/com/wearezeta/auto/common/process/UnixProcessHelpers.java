@@ -13,10 +13,10 @@ import java.util.concurrent.TimeUnit;
 public class UnixProcessHelpers {
     private static final Logger log = ZetaLogger.getLog(UnixProcessHelpers.class.getSimpleName());
 
-    private static final int DEFAULT_PKILL_TIMEOUT_SECONDS = 5;
+    private static final int DEFAULT_COMMAND_TIMEOUT_SECONDS = 5;
 
     public static void killProcessesGracefully(String... expectedNames) throws Exception {
-        killProcessesGracefully(DEFAULT_PKILL_TIMEOUT_SECONDS, expectedNames);
+        killProcessesGracefully(DEFAULT_COMMAND_TIMEOUT_SECONDS, expectedNames);
     }
 
     public static boolean isProcessRunning(String name) throws Exception {
@@ -30,7 +30,10 @@ public class UnixProcessHelpers {
         } else {
             p = new ProcessBuilder("/bin/ps", "axco", "command").start();
         }
-        p.waitFor();
+        if (!p.waitFor(DEFAULT_COMMAND_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
+            p.destroy();
+            return false;
+        }
         final InputStream stream = p.getInputStream();
         final BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         String line;
@@ -55,7 +58,11 @@ public class UnixProcessHelpers {
         boolean areAllProcessesTerminated = true;
         while (System.currentTimeMillis() - millisecondsStarted <= timeoutSecondsUntilForceKill * 1000) {
             final Process p = new ProcessBuilder("/bin/ps", "axco", "command").start();
-            p.waitFor();
+            if (!p.waitFor(DEFAULT_COMMAND_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
+                p.destroy();
+                Thread.sleep(300);
+                continue;
+            }
             final InputStream stream = p.getInputStream();
             final BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
             String line;
