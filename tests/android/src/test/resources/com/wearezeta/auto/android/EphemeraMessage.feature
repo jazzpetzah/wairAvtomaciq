@@ -1,6 +1,6 @@
 Feature: Ephemeral Message
 
-  @C261701 @staging
+  @C261701 @regression
   Scenario Outline: Verify sending ephemeral text message will be obfuscated when receiver is offline and not been delivered to my other devices
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -31,7 +31,7 @@ Feature: Ephemeral Message
       | Name      | Contact   | EphemeralTimeout | Message | EphemeralStatus | Message2 | Mydevice |
       | user1Name | user2Name | 15 seconds       | test5s  | left            | ok       | d1       |
 
-  @C261705 @staging
+  @C261705 @regression
   Scenario Outline: Verify ephemeral messages are turned off in a group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -46,7 +46,7 @@ Feature: Ephemeral Message
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | MyGroup       |
 
-  @C261706 @staging
+  @C261706 @regression
   Scenario Outline: Verify edit/delete/like/copy/forward is disabled for ephemeral messages
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -68,7 +68,7 @@ Feature: Ephemeral Message
       | Name      | Contact   | EphemeralTimeout | Message |
       | user1Name | user2Name | 5 seconds        | yo      |
 
-  @C261704 @staging
+  @C261704 @regression
   Scenario Outline: Verify sending all types of messages after I enable ephemeral mode
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -137,7 +137,7 @@ Feature: Ephemeral Message
       | Name      | Contact   | EphemeraTimeout | Link                                                                                               | MessageStatus | PingMsg    | FileSize |
       | user1Name | user2Name | 5 seconds       | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 | Sending       | YOU PINGED | 1.00MB   |
 
-  @C261715 @staging
+  @C261715 @regression
   Scenario Outline: Verify I can receive ephemeral text message which is deleted after timeout and timer starts once I open conversation
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -158,7 +158,7 @@ Feature: Ephemeral Message
       | Name      | Contact   | ContactDevice | Message1 | EphemeralTimeout1 | EphemeralStatus |
       | user1Name | user2Name | d1            | y1       | 15                | left            |
 
-  @C261710 @staging
+  @C261710 @regression
   Scenario Outline: Verify the message is deleted on the sender side when it's read on the receiver side
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -177,7 +177,7 @@ Feature: Ephemeral Message
       | Name      | Contact   | EphemeralTimeout | Message | ContactDevice |
       | user1Name | user2Name | 5 seconds        | yo      | d1            |
 
-  @C261721 @staging
+  @C261721 @regression
   Scenario Outline: If ephemeral message can’t be sent due to bad network, it can be resend and will not get obfuscated
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -203,7 +203,7 @@ Feature: Ephemeral Message
       | Name      | Contact   | EphemeralTimeout | NetworkTimeout | Message | MessageStatus          |
       | user1Name | user2Name | 5 seconds        | 15             | Yo      | Sending failed. Resend |
 
-  @C261712 @staging
+  @C261712 @regression
   Scenario Outline: Verify that missed call has stayed after receiver saw it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -228,7 +228,7 @@ Feature: Ephemeral Message
       | Name      | Contact   | EphemeralTimeout | ContactDevice | Message1 | Message2 | CallBackend |
       | user1Name | user2Name | 5 seconds        | d1            | Yo1      | Yo2      | zcall       |
 
-  @C261722 @staging
+  @C261722 @regression
   Scenario Outline: If a user receives multiple ephemeral messages after being offline, all get the same timer
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -276,7 +276,7 @@ Feature: Ephemeral Message
       | Name      | Contact   | Message | NetworkTimeout | MessageStatus          | EphemeralTimeout |
       | user1Name | user2Name | Yo      | 15             | Sending failed. Resend | 5 seconds        |
 
-  @C261724 @staging
+  @C261724 @regression
   Scenario Outline: Verify receiving all types of ephemeral messages
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
