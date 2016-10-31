@@ -42,7 +42,7 @@ Feature: Ephemeral Messages
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | TESTCHAT      | 
+      | user1Name | user2Name | user3Name | TESTCHAT      |
 
   @C259584 @C259585 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral message - no online receiver (negative case)
@@ -361,5 +361,35 @@ Feature: Ephemeral Messages
     Then I do not see location map container in the conversation view
 
     Examples:
-      | Name      | Contact   | SyncTimeout | EphemeralTimeout | DeviceName    | Picture     | FileName    | VideoMIME  | AudioFileName | AudioMIME | Link         |
-      | user1Name | user2Name | 3           | 5                | ContactDevice | testing.jpg | testing.mp4 | video/mp4  | test.m4a      | audio/mp4 | www.wire.com |
+      | Name      | Contact   | SyncTimeout | EphemeralTimeout | DeviceName    | Picture     | FileName    | VideoMIME | AudioFileName | AudioMIME | Link         |
+      | user1Name | user2Name | 3           | 5                | ContactDevice | testing.jpg | testing.mp4 | video/mp4 | test.m4a      | audio/mp4 | www.wire.com |
+
+  @C259590 @staging @fastLogin
+  Scenario Outline: Verify edit/delete/like/copy/forward are switched off
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds a new device <DeviceName> with label <DeviceLabel>
+    Given I sign in using my email or phone number
+    Given User <Contact> switches user Myself to ephemeral mode with <EphemeralTimeout> seconds timeout
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    Given I tap Hourglass button in conversation view
+    Given I set ephemeral messages expiration timer to <EphemeralTimeout> seconds
+    Given I type the "<Message1>" message and send it
+    When I long tap "<Message1>" message in conversation view
+    Then I do not see Edit badge item
+    And I do not see Delete badge item
+    And I do not see Like badge item
+    And I do not see Copy badge item
+    And I do not see Forward badge item
+    When User <Contact> sends encrypted message "<Message2>" to user Myself
+    And I long tap "<Message2>" message in conversation view
+    Then I do not see Edit badge item
+    And I do not see Delete badge item
+    And I do not see Like badge item
+    And I do not see Copy badge item
+    And I do not see Forward badge item
+
+    Examples:
+      | Name      | Contact   | Message1    | Message2    | DeviceName | DeviceLabel | EphemeralTimeout |
+      | user1Name | user2Name | message one | message two | ContactDev | DevLabel    | 15               |
