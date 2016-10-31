@@ -23,7 +23,7 @@ Feature: Emoji
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I tap Emoji Keyboard button in conversation view
-    And I tap key number 1 on Emoji Keyboard
+    And I tap "<EmojiChar>" key on Emoji Keyboard
     And I tap Send Message button in conversation view
     Then I see last message in the conversation view is expected message <EmojiChar>
 

@@ -1103,8 +1103,11 @@ public class ConversationViewPage extends IOSPage {
         final List<WebElement> elements = getDriver().findElements(MobileBy.AccessibilityId(keyName));
         if (elements.size() > 0) {
             elements.get(elements.size() - 1).click();
+            // Wait for animation
+            Thread.sleep(1000);
+        } else {
+            throw new IllegalArgumentException(String.format("There is no '%s' key on Emoji keyboard", keyName));
         }
-        throw new IllegalArgumentException(String.format("There is no '%s' key on Emoji keyboard", keyName));
     }
 
     public void tapThisDeviceLink() throws Exception {
