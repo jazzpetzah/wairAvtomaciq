@@ -400,3 +400,21 @@ Feature: Ephemeral Messages
     Examples:
       | Name      | Contact   | Message1    | Message2    | DeviceName | DeviceLabel | EphemeralTimeout |
       | user1Name | user2Name | message one | message two | ContactDev | DevLabel    | 15               |
+
+  @C259587 @staging @fastLogin
+  Scenario Outline: Verify ephemeral messages are not sent to my other devices
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User Myself adds new device <DeviceName>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    Given I tap Hourglass button in conversation view
+    Given I set ephemeral messages expiration timer to <Timer> seconds
+    When User Myself remembers the recent message from user <Contact> via device <DeviceName>
+    And I type the default message and send it
+    Then User Myself sees the recent message from user <Contact> via device <DeviceName> is not changed in 5 seconds
+
+    Examples:
+      | Name      | Contact   | Timer | DeviceName |
+      | user1Name | user2Name | 15    | myDevice2  |

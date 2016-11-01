@@ -1379,23 +1379,32 @@ public class CommonIOSSteps {
     /**
      * Check the remembered message is changed
      *
-     * @param userNameAlias user name/alias
-     * @param convoType     either 'user' or 'group conversation'
-     * @param dstNameAlias  destination user name/alias or group convo name
-     * @param deviceName    source device name. Will be created if does not exist yet
+     * @param userNameAlias      user name/alias
+     * @param convoType          either 'user' or 'group conversation'
+     * @param dstNameAlias       destination user name/alias or group convo name
+     * @param shouldNotBeChanged equals to null if the message is expected to be changed
+     * @param deviceName         source device name. Will be created if does not exist yet
+     * @param waitDuration       how much seconds to wait until the event happens
      * @throws Exception
      * @step. ^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is
      * changed( in \\d+ seconds?)?$
      */
     @Then("^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is " +
-            "changed( in \\d+ seconds?)?$")
+            "(not )?changed( in \\d+ seconds?)?$")
     public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias,
-                                             String deviceName, String waitDuration) throws Exception {
+                                             String deviceName, String shouldNotBeChanged, String waitDuration)
+            throws Exception {
         final int durationSeconds = (waitDuration == null) ?
                 CommonSteps.DEFAULT_WAIT_UNTIL_TIMEOUT_SECONDS
                 : Integer.parseInt(waitDuration.replaceAll("[\\D]", ""));
-        commonSteps.UserXFoundLastMessageChanged(userNameAlias, convoType.equals("group conversation"), dstNameAlias,
-                deviceName, durationSeconds);
+        final boolean isGroup = convoType.equals("group conversation");
+        if (shouldNotBeChanged == null) {
+            commonSteps.UserXFoundLastMessageChanged(userNameAlias, isGroup, dstNameAlias, deviceName,
+                    durationSeconds);
+        } else {
+            commonSteps.UserXFoundLastMessageNotChanged(userNameAlias, isGroup, dstNameAlias, deviceName,
+                    durationSeconds);
+        }
     }
 
     /**
