@@ -37,7 +37,7 @@ public class SketchPage extends IOSPage {
         }
     }
 
-    private By getButtonByName(String name) {
+    private static By getButtonByName(String name) {
         switch (name.toLowerCase()) {
             case "send":
                 return nameSendButton;
