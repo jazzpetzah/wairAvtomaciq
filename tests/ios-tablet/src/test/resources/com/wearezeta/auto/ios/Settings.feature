@@ -121,6 +121,7 @@ Feature: Settings
   @C2869 @regression @fastLogin
   Scenario Outline: Change your profile picture [PORTRAIT]
     Given There is 1 user where <Name> is me
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap settings gear button
@@ -164,6 +165,7 @@ Feature: Settings
   @C2878 @C2886 @regression @fastLogin
   Scenario Outline: Attempt to enter a name with 0/1 chars [PORTRAIT]
     Given There is 1 user where <Name> is me
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I tap settings gear button
@@ -213,6 +215,7 @@ Feature: Settings
     Given Myself is connected to <Contact>
     Given User Myself changes accent color to <Color1>
     Given User Myself removes his avatar picture
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I tap settings gear button
@@ -229,6 +232,7 @@ Feature: Settings
   @C2860 @regression
   Scenario Outline: Verify adding phone number to the contact signed up with email [PORTRAIT]
     Given There is 1 users where <Name> is me with email only
+    Given I rotate UI to portrait
     Given I switch to Log In tab
     Given I have entered login <Email>
     Given I have entered password <Password>

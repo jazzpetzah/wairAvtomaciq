@@ -4,6 +4,7 @@ Feature: People View
   Scenario Outline: Start group chat with users from contact list [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I wait until <Contact1> exists in backend search results
@@ -51,6 +52,7 @@ Feature: People View
   Scenario Outline: Start group chat from 1:1 conversation [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
@@ -94,6 +96,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
@@ -133,6 +136,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
@@ -172,6 +176,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
@@ -215,6 +220,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact2>,<Contact1>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
@@ -248,6 +254,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>,<ConnectedContact>
     Given Myself has group chat <GroupChatName> with <Contact2>,<ConnectedContact>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
@@ -282,6 +289,7 @@ Feature: People View
     Given <GroupCreator> is connected to me
     Given <GroupCreator> is connected to <NonConnectedContact>
     Given <GroupCreator> has group chat <GroupChatName> with Myself,<NonConnectedContact>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
@@ -318,6 +326,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
@@ -358,6 +367,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given User Myself silences group conversation <GroupChatName>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I remember the right side state of <GroupChatName> conversation item on iPad
@@ -401,6 +411,7 @@ Feature: People View
     Given User Myself removes his avatar picture
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I remember the right side state of <GroupChatName> conversation item on iPad
@@ -442,6 +453,7 @@ Feature: People View
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
@@ -480,6 +492,7 @@ Feature: People View
   Scenario Outline: ZIOS-6762 Verify you can block a person from profile view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
@@ -521,6 +534,7 @@ Feature: People View
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given User <Name> blocks user <Contact1>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
@@ -560,6 +574,7 @@ Feature: People View
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     And I tap on group chat with name <GroupChatName>
@@ -597,6 +612,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
@@ -640,6 +656,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
@@ -697,6 +714,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User Myself securely pings conversation <GroupChatName>
@@ -755,6 +773,7 @@ Feature: People View
   Scenario Outline: Verify removing the content from 1-to-1 via participant view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User Myself securely pings conversation <Contact1>
@@ -813,6 +832,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
@@ -865,6 +885,7 @@ Feature: People View
     Given <Contact1> is connected to <Contact3>,<Contact2>,<Name>
     Given <Contact1> has group chat <GroupChatName> with <Contact3>,<Contact2>,<Name>
     Given Myself sent connection request to <Contact3>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
@@ -900,6 +921,7 @@ Feature: People View
   Scenario Outline: Verify canceling blocking person from participant list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to all other users
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
@@ -936,6 +958,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>

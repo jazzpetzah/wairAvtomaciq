@@ -5,6 +5,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given <Contact2> is connected to <Contact>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I wait until <Contact> exists in backend search results
@@ -57,6 +58,7 @@ Feature: Connect
     Given Myself is connected to <GroupCreator>
     Given <GroupCreator> is connected to <UnconnectedUser>
     Given <GroupCreator> has group chat <GroupChatName> with <UnconnectedUser>,Myself
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
@@ -98,6 +100,7 @@ Feature: Connect
     Given <Contact2> sent connection request to me
     Given <Contact3> sent connection request to me
     Given Myself is connected to <Contact4>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap Incoming Pending Requests item in conversations list
@@ -150,6 +153,7 @@ Feature: Connect
     Given <Contact2> sent connection request to me
     Given <Contact3> sent connection request to me
     Given Myself is connected to <Contact4>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap Incoming Pending Requests item in conversations list
@@ -190,6 +194,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given Me sent connection request to <Contact>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     And I see conversation <Contact> in conversations list
@@ -223,6 +228,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
@@ -327,6 +333,7 @@ Feature: Connect
   Scenario Outline: Verify possibility of disconnecting from conversation list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
@@ -361,6 +368,7 @@ Feature: Connect
   Scenario Outline: (ZIOS-6323) Verify sending connection request after disconnecting [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
@@ -413,6 +421,7 @@ Feature: Connect
   Scenario Outline: Verify possibility of disconnecting from Search UI [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I wait until <Contact1> exists in backend search results
@@ -457,6 +466,7 @@ Feature: Connect
     Given <Contact3> sent connection request to me
     Given <Contact1> is connected to <Contact2>,<Contact3>
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>,<Contact3>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I see Pending request link in conversations list
@@ -524,6 +534,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to Me
     Given User <Contact> changes name to <NewName>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap Incoming Pending Requests item in conversations list
@@ -553,6 +564,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given <Contact> sent connection request to Me
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I see Pending request link in conversations list

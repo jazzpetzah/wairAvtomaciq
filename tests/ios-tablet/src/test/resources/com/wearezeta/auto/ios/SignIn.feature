@@ -3,6 +3,7 @@ Feature: Sign In
   @C3119 @regression
   Scenario Outline: Sign in to ZClient [PORTRAIT]
     Given There is 1 user where <Name> is me
+    Given I rotate UI to portrait
     Given I see sign in screen
     When I switch to Log In tab
     And I have entered login <Login>

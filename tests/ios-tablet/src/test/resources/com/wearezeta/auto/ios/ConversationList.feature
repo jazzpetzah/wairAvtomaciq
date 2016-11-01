@@ -70,6 +70,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given User Myself removes his avatar picture
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact2>
@@ -126,6 +127,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>,<Contact1>
     Given User Myself removes his avatar picture
     Given <Contact> starts instance using <CallBackend>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact1>
@@ -147,8 +149,9 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given User Myself removes his avatar picture
     Given Myself is connected to all other
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
-    And I see conversations list
+    Given I see conversations list
     When I tap on contact name <Contact2>
     And I navigate back to conversations list
     And I remember the left side state of <Contact> conversation item on iPad

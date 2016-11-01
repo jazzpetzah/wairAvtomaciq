@@ -40,6 +40,7 @@ Feature: Search
   Scenario Outline: Start 1:1 chat with users from Top Connections [PORTRAIT]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
@@ -81,6 +82,7 @@ Feature: Search
   Scenario Outline: Start group chat with users from Top Connections [PORTRAIT]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
@@ -128,6 +130,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I do not see conversation <Contact> in conversations list
@@ -233,6 +236,7 @@ Feature: Search
   Scenario Outline: Verify starting a call with action button [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I wait until <Contact> exists in backend search results
@@ -272,6 +276,7 @@ Feature: Search
   Scenario Outline: Verify sharing a photo to a newly created group conversation with action button [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to all other users
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
@@ -424,6 +429,7 @@ Feature: Search
   Scenario Outline: Verify opening conversation with action button [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend

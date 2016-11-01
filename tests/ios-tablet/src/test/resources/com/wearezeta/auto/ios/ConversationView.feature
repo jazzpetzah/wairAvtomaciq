@@ -34,8 +34,9 @@ Feature: Conversation View
   Scenario Outline: Verify sending image [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
-    And I see conversations list
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
     And I accept alert if visible
@@ -104,6 +105,7 @@ Feature: Conversation View
   Scenario Outline: Receive a camera roll picture from user from contact list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to <ConversationType> conversation <Name>
@@ -199,6 +201,7 @@ Feature: Conversation View
   Scenario Outline: I can send a sketch[PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
@@ -279,6 +282,7 @@ Feature: Conversation View
   Scenario Outline: Verify you can see conversation images in fullscreen [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
@@ -326,6 +330,7 @@ Feature: Conversation View
   Scenario Outline: I can send and play inline youtube link [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
@@ -384,6 +389,7 @@ Feature: Conversation View
   Scenario Outline: Verify archiving conversation from ellipsis menu [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
@@ -424,6 +430,7 @@ Feature: Conversation View
     Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
     Given I leave group chat <GroupChatName>
     Given Me sent connection request to <Contact1>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
@@ -459,6 +466,7 @@ Feature: Conversation View
   Scenario Outline: Verify player is displayed for vimeo links with video IDs [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given User Myself sends encrypted message "<VimeoLink>" to user <Contact1>
     Given I see conversations list
@@ -519,6 +527,7 @@ Feature: Conversation View
   Scenario Outline: Verify possibility to copy image in the conversation view [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
@@ -596,6 +605,7 @@ Feature: Conversation View
   Scenario Outline: Verify downloading images in fullscreen [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     Given I see conversations list
