@@ -51,7 +51,7 @@ public class SettingsPage extends IOSPage {
     private static final By xpathChangePasswordPageChangePasswordButton =
             By.xpath("//XCUIElementTypeButton[@name='RESET PASSWORD']");
 
-    private static final By xpathAskSupport = By.xpath("//*[@name='Ask Support']");
+    private static final By classSupportSearchField = By.className("XCUIElementTypeSearchField");
 
     private static final String xpathStrColorPicker = "//*[@name='COLOR']/following::XCUIElementTypeTable[1]";
     private static final By xpathColorPicker = By.xpath(xpathStrColorPicker);
@@ -141,7 +141,7 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean isSupportWebPageVisible() throws Exception {
-        return isLocatorExist(xpathAskSupport, 15);
+        return isLocatorExist(classSupportSearchField, 15);
     }
 
     public boolean isSettingItemValueEqualTo(String itemName, String expectedValue) throws Exception {
