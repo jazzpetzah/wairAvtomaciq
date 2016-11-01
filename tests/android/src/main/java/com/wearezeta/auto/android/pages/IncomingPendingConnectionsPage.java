@@ -109,15 +109,13 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
     public void tapAcceptConnectionButton(String contactName) throws Exception {
         scrollToInboxContact(contactName);
         final By locator = By.xpath(xpathStrAcceptButtonByHeaderText.apply(contactName));
-        final Optional<WebElement> connectAcceptBtn = DriverUtils.getElementIfDisplayed(getDriver(), locator);
-        connectAcceptBtn.get().click();
+        getElement(locator, String.format("Connect button for user '%s' is not visible", contactName)).click();
     }
 
     public void tapIgnoreConnectionButton(String contactName) throws Exception {
         scrollToInboxContact(contactName);
         final By locator = By.xpath(xpathStrIgnoreButtonByHeaderText.apply(contactName));
-        final Optional<WebElement> connectIgnoreBtn = DriverUtils.getElementIfDisplayed(getDriver(), locator);
-        connectIgnoreBtn.get().click();
+        getElement(locator, String.format("Ignore button for user '%s' is not visible", contactName)).click();
     }
 
     public void tapIgnoreButton() throws Exception {
