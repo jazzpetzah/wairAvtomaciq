@@ -125,7 +125,7 @@ Feature: Giphy
     And I remember the state of Giphy Image Preview
     And I tap on the giphy Cancel button
     And I see the giphy grid preview
-    And I select 2nd gif from the grid preview
+    And I select 4th gif from the grid preview
     Then I verify the state of Giphy Image Preview is changed
 
     Examples:
