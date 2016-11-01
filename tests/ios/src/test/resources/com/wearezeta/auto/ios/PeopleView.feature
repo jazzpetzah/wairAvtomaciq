@@ -352,13 +352,13 @@ Feature: People View
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User Myself sends 1 message to group conversation <GroupChatName>
-    When I tap on group chat with name <GroupChatName>
-    And I open group conversation details
-    And I open conversation menu
-    And I tap Delete action button
+    Given I see conversations list
+    Given I tap on group chat with name <GroupChatName>
+    Given I open group conversation details
+    Given I open conversation menu
+    When I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
     And I do not see Archive button at the bottom of conversations list
@@ -373,18 +373,18 @@ Feature: People View
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
-    When I tap on group chat with name <GroupChatName>
-    And I open group conversation details
-    And I open conversation menu
-    And I tap Delete action button
-    And I select Also Leave option on Delete conversation confirmation
-    And I confirm delete conversation content
-    And I open search UI
-    And I accept alert if visible
-    And I tap input field on Search UI page
-    And I type "<GroupChatName>" in Search UI input field
+    Given I see conversations list
+    Given I tap on group chat with name <GroupChatName>
+    Given I open group conversation details
+    Given I open conversation menu
+    Given I tap Delete action button
+    Given I select Also Leave option on Delete conversation confirmation
+    Given I confirm delete conversation content
+    Given I open search UI
+    Given I accept alert if visible
+    Given I tap input field on Search UI page
+    When I type "<GroupChatName>" in Search UI input field
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I tap X button on Search UI page
     Then I do not see conversation <GroupChatName> in conversations list

@@ -146,8 +146,6 @@ Feature: E2EE
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given I see conversations list
     Given I tap on contact name <Contact1>
-    # Wait for sync
-    Given I wait for 5 seconds
     Given I open conversation details
     Given I switch to Devices tab
     Given I open details page of device number 1
@@ -242,8 +240,6 @@ Feature: E2EE
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given I see conversations list
     Given I tap on contact name <Contact1>
-    # Wait for sync
-    Given I wait for 5 seconds
     Given I open conversation details
     Given I switch to Devices tab
     Given I open details page of device number 1
