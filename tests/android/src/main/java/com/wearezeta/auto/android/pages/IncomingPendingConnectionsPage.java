@@ -70,18 +70,18 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    private final static int MAX_USERS = 5;
+    private final static int MAX_USERS_TO_SCROLL = 5;
 
     public void scrollToInboxContact(String contactName) throws Exception {
-        scrollToInboxContact(contactName, MAX_USERS);
+        scrollToInboxContact(contactName, MAX_USERS_TO_SCROLL);
     }
 
-    public void scrollToInboxContact(String contactName, final int maxUsers) throws Exception {
+    public void scrollToInboxContact(String contactName, final int maxUsersToScroll) throws Exception {
         final By locator = By.xpath(xpathStrAcceptButtonByHeaderText.apply(contactName));
         int ntry = 1;
         final int SCROLL_POS_START = 48;
         final int SCROLL_POS_END = 70;
-        final int maxScrolls = maxUsers * (100 / (SCROLL_POS_END - SCROLL_POS_START) + 1);
+        final int maxScrolls = maxUsersToScroll * (100 / (SCROLL_POS_END - SCROLL_POS_START) + 1);
         do {
             if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
                 return;
