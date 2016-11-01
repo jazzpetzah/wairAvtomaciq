@@ -100,7 +100,7 @@ Feature: Connect
     And I type user name "<Contact>" in search field
     And I tap on user name found on Search page <Contact>
     Then I see connect to <Contact> dialog
-    When I Connect with contact by tapping button
+    When I tap Connect button for <Contact>
     And I wait for 5 seconds
     Then I see conversation view
 
@@ -255,7 +255,7 @@ Feature: Connect
     And I tap conversation name from top toolbar
     And I tap on group chat contact <Contact1>
     When I tap left Blocked button
-    Then I Unblock contact by tapping button
+    Then I tap Unblock button on contact profile
     And I navigate back from conversation
     Then I see Conversations list with name <Contact1>
 
@@ -300,7 +300,7 @@ Feature: Connect
     And I see user <Contact1> in Search result list
     And I tap on user name found on Search page <Contact1>
     Then User info should be shown with Unblock button
-    When I tap Unblock button
+    When I tap Unblock button on Blocked connection
     Then I see conversation view
     When I navigate back from conversation
     Then I see Conversations list with name <Contact1>

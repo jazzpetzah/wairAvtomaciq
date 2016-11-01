@@ -16,8 +16,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
     private static final Function<String, String> xpathStrConnectToHeaderByText = text -> String.format
             ("//*[@id='taet__participants__header' and contains(@value, '%s')]", text);
 
-    private static final String idStrConnectRequestAccept = "zb__connect_request__accept_button";
-    private static final By idConnectRequestAccept = By.id(idStrConnectRequestAccept);
+    public static final String idStrConnectRequestAccept = "zb__connect_request__accept_button";
     private static final Function<String, String> xpathStrAcceptButtonByHeaderText = text -> String.format
             ("//*[@id='ll__connect_request__main_container' and .%s]//*[@id='%s']", xpathStrConnectToHeaderByText.apply(text)
                     , idStrConnectRequestAccept);
@@ -95,15 +94,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
     }
 
     public void tapAcceptConnectButton() throws Exception {
-        // FIXME: Use better locators to detect the button
-        final Optional<WebElement> connectAcceptBtn = DriverUtils.getElementIfDisplayed(getDriver(), idConnectRequestAccept);
-        final int windowHeight = this.getDriver().manage().window().getSize().getHeight();
-        if (connectAcceptBtn.isPresent() && connectAcceptBtn.get().getLocation().getY() > windowHeight / 2 &&
-                (connectAcceptBtn.get().getLocation().getY() + connectAcceptBtn.get().getSize().getHeight()) < windowHeight) {
-            connectAcceptBtn.get().click();
-        } else {
-            selectVisibleElements(idConnectRequestAccept).get(1).click();
-        }
+        getElement(By.id(idStrConnectRequestAccept)).click();
     }
 
     public void tapAcceptConnectionButton(String contactName) throws Exception {

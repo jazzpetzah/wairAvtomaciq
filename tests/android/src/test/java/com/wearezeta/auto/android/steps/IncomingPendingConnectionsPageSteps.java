@@ -74,17 +74,6 @@ public class IncomingPendingConnectionsPageSteps {
     }
 
     /**
-     * Click the accept connection request button from within the dialog of a user who has sent you a connection request
-     *
-     * @throws Exception
-     * @step. ^I (?:Connect with|Unblock) contact by tapping button$
-     */
-    @When("^I (?:Connect with|Unblock) contact by tapping button$")
-    public void IConnectWithContactByTapOnButton() throws Exception {
-        getIncomingPendingConnectionsPage().tapAcceptConnectButton();
-    }
-
-    /**
      * Click the ignore connection request button from within the dialog of a user who has sent you a connection request
      *
      * @throws Exception
@@ -211,17 +200,6 @@ public class IncomingPendingConnectionsPageSteps {
     }
 
     /**
-     * Unblocks an incoming connection request
-     *
-     * @throws Exception
-     * @step. ^I tap Unblock button on connect to page$
-     */
-    @When("^I tap Unblock button$")
-    public void ITapUnblockButton() throws Exception {
-        getIncomingPendingConnectionsPage().clickUnblockBtn();
-    }
-
-    /**
      * Click the "Confirm Block" button that appears after tapping the block button (Should the two steps be merged?)
      *
      * @throws Exception
@@ -242,4 +220,15 @@ public class IncomingPendingConnectionsPageSteps {
     public void CloseConnectToDialog() throws Exception {
         getIncomingPendingConnectionsPage().tapCloseButton();
     }
-}
+
+    /**
+     * Unblocks an incoming connection request
+     *
+     * @throws Exception
+     * @step. ^I tap Unblock button on Blocked connection
+     */
+    @When("^I tap Unblock button on Blocked connection$")
+    public void ITapUnblockButtonOnBlockedConnection() throws Exception {
+        getIncomingPendingConnectionsPage().clickUnblockBtn();
+    }
+ }

@@ -89,7 +89,7 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @When("^I confirm block$")
     public void IConfirmBlock() throws Exception {
-        getOtherUserPersonalInfoPage().pressConfirmBlock();
+        getOtherUserPersonalInfoPage().tapConfirmBlock();
     }
 
     /**
@@ -575,5 +575,16 @@ public class OtherUserPersonalInfoPageSteps {
         Assert.assertTrue(
                 String.format("Shield state for device '%s' seems not changed", deviceNum),
                 savedDeviceShieldStates.get(deviceNum).isChanged(10, SHIELD_STATE_OVERLAP_MAX_SCORE));
+    }
+
+    /**
+     * Unblocks a user from other user profile
+     *
+     * @throws Exception
+     * @step. ^I tap Unblock button on contact profile$
+     */
+    @When("^I tap Unblock button on contact profile$")
+    public void ITapUnblockButtonOnOtherUserProfile() throws Exception {
+        getOtherUserPersonalInfoPage().tapUnblockButton();
     }
 }
