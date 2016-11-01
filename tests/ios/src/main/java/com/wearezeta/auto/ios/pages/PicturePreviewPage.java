@@ -7,7 +7,9 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 
 public class PicturePreviewPage extends IOSPage {
-    private static final By nameSketchButton = MobileBy.AccessibilityId("editNotConfirmedImageButton");
+    private static final By nameSketchButton = MobileBy.AccessibilityId("sketchButton");
+
+    private static final By nameEmojiButton = MobileBy.AccessibilityId("emojiButton");
 
     private static final By nameRetakeButton = MobileBy.AccessibilityId("Retake");
 
@@ -31,6 +33,8 @@ public class PicturePreviewPage extends IOSPage {
                 return nameRetakeButton;
             case "use photo":
                 return nameUsePhotoButton;
+            case "emoji":
+                return nameEmojiButton;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
         }

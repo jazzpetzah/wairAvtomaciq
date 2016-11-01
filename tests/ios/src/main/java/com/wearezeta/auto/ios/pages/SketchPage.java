@@ -12,8 +12,10 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.DriverUtils;
 
 public class SketchPage extends IOSPage {
-    private static final By nameSketchSendButton = MobileBy.AccessibilityId("SketchConfirmButton");
-    private static final By xpathTapColorLabel = By.xpath("//XCUIElementTypeStaticText[contains(@name, 'TAP COLOR')]");
+    private static final By nameSendButton = MobileBy.AccessibilityId("sendButton");
+    private static final By nameDrawButton = MobileBy.AccessibilityId("drawButton");
+    private static final By nameEmojiButton = MobileBy.AccessibilityId("emojiButton");
+    private static final By nameOpenGalleryButton = MobileBy.AccessibilityId("photoButton");
 
     public SketchPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
@@ -35,11 +37,23 @@ public class SketchPage extends IOSPage {
         }
     }
 
-    public void sendSketch() throws Exception {
-        getElement(nameSketchSendButton).click();
+    private By getButtonByName(String name) {
+        switch (name.toLowerCase()) {
+            case "send":
+                return nameSendButton;
+            case "draw":
+                return nameDrawButton;
+            case "emoji":
+                return nameEmojiButton;
+            case "open gallery":
+                return nameOpenGalleryButton;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name: '%s'", name));
+        }
     }
 
-    private void tapColorLabel() throws Exception {
-        getElement(xpathTapColorLabel).click();
+    public void tapButton(String name) throws Exception {
+        final By locator = getButtonByName(name);
+        getElement(locator).click();
     }
 }

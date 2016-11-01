@@ -207,7 +207,7 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I tap Sketch button from input tools
     And I draw a random sketch
-    And I send my sketch
+    And I tap Send button on Sketch page
     Then I see 1 photo in the conversation view
 
     Examples:
@@ -224,7 +224,7 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I tap Sketch button from input tools
     And I draw a random sketch
-    And I send my sketch
+    And I tap Send button on Sketch page
     Then I see 1 photo in the conversation view
 
     Examples:

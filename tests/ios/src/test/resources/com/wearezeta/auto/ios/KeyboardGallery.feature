@@ -74,7 +74,7 @@ Feature: Keyboard Gallery
     And I select the first picture from Keyboard Gallery
     And I tap Sketch button on Picture Preview page
     And I draw a random sketch
-    And I send my sketch
+    And I tap Send button on Sketch page
     Then I see 1 photo in the conversation view
 
     Examples:
@@ -94,7 +94,7 @@ Feature: Keyboard Gallery
     And I tap Camera Shutter button on Keyboard Gallery overlay
     And I tap Sketch button on Picture Preview page
     And I draw a random sketch
-    And I send my sketch
+    And I tap Send button on Sketch page
     Then I see 1 photo in the conversation view
 
     Examples:
