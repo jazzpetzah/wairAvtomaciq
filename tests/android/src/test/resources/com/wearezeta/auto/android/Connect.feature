@@ -100,7 +100,7 @@ Feature: Connect
     And I type user name "<Contact>" in search field
     And I tap on user name found on Search page <Contact>
     Then I see connect to <Contact> dialog
-    When I Connect with contact by tapping button
+    When I Connect with contact by taping button
     And I wait for 5 seconds
     Then I see conversation view
 
@@ -255,7 +255,7 @@ Feature: Connect
     And I tap conversation name from top toolbar
     And I tap on group chat contact <Contact1>
     When I tap left Blocked button
-    Then I Unblock contact by tapping button
+    Then I Unblock contact by taping button
     And I navigate back from conversation
     Then I see Conversations list with name <Contact1>
 

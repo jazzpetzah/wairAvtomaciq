@@ -77,10 +77,10 @@ public class IncomingPendingConnectionsPageSteps {
      * Click the accept connection request button from within the dialog of a user who has sent you a connection request
      *
      * @throws Exception
-     * @step. ^I (?:Connect with|Unblock) contact by tapping button$
+     * @step. ^I (?:Connect with|Unblock) contact by taping button$
      */
-    @When("^I (?:Connect with|Unblock) contact by tapping button$")
-    public void IConnectWithContactBytapionButton() throws Exception {
+    @When("^I (?:Connect with|Unblock) contact by taping button$")
+    public void IConnectWithContactByTapOnButton() throws Exception {
         getIncomingPendingConnectionsPage().tapAcceptConnectButton();
     }
 
