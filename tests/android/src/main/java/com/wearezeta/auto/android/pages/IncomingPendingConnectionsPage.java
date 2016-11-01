@@ -17,6 +17,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
             ("//*[@id='taet__participants__header' and contains(@value, '%s')]", text);
 
     public static final String idStrConnectRequestAccept = "zb__connect_request__accept_button";
+    public static final By idConnectRequestAccept = By.id(idStrConnectRequestAccept);
     private static final Function<String, String> xpathStrAcceptButtonByHeaderText = text -> String.format
             ("//*[@id='ll__connect_request__main_container' and .%s]//*[@id='%s']", xpathStrConnectToHeaderByText.apply(text)
                     , idStrConnectRequestAccept);
@@ -94,7 +95,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
     }
 
     public void tapAcceptConnectButton() throws Exception {
-        getElement(By.id(idStrConnectRequestAccept)).click();
+        getElement(idConnectRequestAccept).click();
     }
 
     public void tapAcceptConnectionButton(String contactName) throws Exception {
