@@ -40,7 +40,7 @@ public class RegistrationSteps {
     }
 
     /**
-     * Submits all of the data given in the registration process by taping the
+     * Submits all of the data given in the registration process by tapping the
      * "create account" button Also waits at the inbox of the user to check to
      * receive the verification email
      *

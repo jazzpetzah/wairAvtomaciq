@@ -354,7 +354,8 @@ Feature: Ephemeral Messages
     And I wait for <EphemeralTimeout> seconds
     Then I do not see audio message container in the conversation view
     # Link Preview
-    When User <Contact> sends encrypted message "<Link>" to user Myself
+    When User <Contact> switches user Myself to ephemeral mode with 15 seconds timeout
+    And User <Contact> sends encrypted message "<Link>" to user Myself
     And I wait for <SyncTimeout> seconds
     And I see link preview container in the conversation view
     And I wait for <EphemeralTimeout> seconds
