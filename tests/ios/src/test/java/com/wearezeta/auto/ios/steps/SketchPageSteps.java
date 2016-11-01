@@ -30,7 +30,7 @@ public class SketchPageSteps {
      * @step. ^I tap (Send|Draw|Open Gallery|Emoji) button on Sketch page$
      */
     @When("^I tap (Send|Draw|Open Gallery|Emoji) button on Sketch page$")
-    public void IRememberMySketch(String btnName) throws Exception {
+    public void ITapButton(String btnName) throws Exception {
         getSketchPage().tapButton(btnName);
     }
 }
