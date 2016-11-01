@@ -42,7 +42,7 @@ public class ShareLocationPage extends AndroidPage {
 
         if (!tapButtonComplete) {
             throw new IllegalStateException(
-                    String.format("Wait for taping on button '%s' timeout in %d seconds", btnName, timeoutSeconds));
+                    String.format("Wait for tapping on button '%s' timeout in %d seconds", btnName, timeoutSeconds));
         }
     }
 }

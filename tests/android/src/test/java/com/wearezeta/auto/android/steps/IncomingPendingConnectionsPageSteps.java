@@ -74,17 +74,6 @@ public class IncomingPendingConnectionsPageSteps {
     }
 
     /**
-     * Click the accept connection request button from within the dialog of a user who has sent you a connection request
-     *
-     * @throws Exception
-     * @step. ^I Connect with contact by taping button$
-     */
-    @When("^I (?:Connect with|Unblock) contact by pressing button$")
-    public void IConnectWithContactBytapionButton() throws Exception {
-        getIncomingPendingConnectionsPage().tapAcceptConnectButton();
-    }
-
-    /**
      * Click the ignore connection request button from within the dialog of a user who has sent you a connection request
      *
      * @throws Exception
@@ -93,6 +82,30 @@ public class IncomingPendingConnectionsPageSteps {
     @When("^I tap Ignore connect button$")
     public void ITapIgnoreConnectButton() throws Exception {
         getIncomingPendingConnectionsPage().tapIgnoreButton();
+    }
+
+    /**
+     * Click the connect/ignore button in connection request from given user
+     *
+     * @param action      Connect/Ignore
+     * @param contactName User Name
+     * @throws Exception
+     * @step. ^I tap (Connect|Ignore) button for (.*)$
+     */
+    @When("^I tap (Connect|Ignore) button for (.*)$")
+    public void ITapIgnoreConnectButtonForUser(String action, String contactName) throws Exception {
+        switch (action) {
+            case "Connect":
+                contactName = usrMgr.findUserByNameOrNameAlias(contactName).getName();
+                getIncomingPendingConnectionsPage().tapAcceptConnectionButton(contactName);
+                break;
+            case "Ignore":
+                contactName = usrMgr.findUserByNameOrNameAlias(contactName).getName();
+                getIncomingPendingConnectionsPage().tapIgnoreConnectionButton(contactName);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown action name '%s'", action));
+        }
     }
 
     /**
@@ -187,18 +200,7 @@ public class IncomingPendingConnectionsPageSteps {
     }
 
     /**
-     * Unblocks an incoming connection request
-     *
-     * @throws Exception
-     * @step. ^I tap Unblock button on connect to page$
-     */
-    @When("^I tap Unblock button$")
-    public void ITapUnblockButton() throws Exception {
-        getIncomingPendingConnectionsPage().clickUnblockBtn();
-    }
-
-    /**
-     * Click the "Confirm Block" button that appears after taping the block button (Should the two steps be merged?)
+     * Click the "Confirm Block" button that appears after tapping the block button (Should the two steps be merged?)
      *
      * @throws Exception
      * @step. ^I confirm block on connect to page$
@@ -209,7 +211,7 @@ public class IncomingPendingConnectionsPageSteps {
     }
 
     /**
-     * Closes the connect to dialog by taping the cross in the connect to dialog
+     * Closes the connect to dialog by tapping the cross in the connect to dialog
      *
      * @throws Exception
      * @step. ^I close Connect To dialog$
@@ -218,4 +220,15 @@ public class IncomingPendingConnectionsPageSteps {
     public void CloseConnectToDialog() throws Exception {
         getIncomingPendingConnectionsPage().tapCloseButton();
     }
-}
+
+    /**
+     * Unblocks an incoming connection request
+     *
+     * @throws Exception
+     * @step. ^I tap Unblock button on Blocked connection
+     */
+    @When("^I tap Unblock button on Blocked connection$")
+    public void ITapUnblockButtonOnBlockedConnection() throws Exception {
+        getIncomingPendingConnectionsPage().tapUnblockConnectionButton();
+    }
+ }

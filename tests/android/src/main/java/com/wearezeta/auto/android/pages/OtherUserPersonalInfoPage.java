@@ -65,6 +65,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
     public static final By idParticipantsClose = By.id("gtv__participants__close");
 
+    public static final By idUnblockButton = By.id(IncomingPendingConnectionsPage.idStrConnectRequestAccept);
+
     private static final Function<String, String> xpathConvOptionsMenuItemByName = name -> String
             .format("//*[@id='fl__participant__settings_box']"
                     + "//*[starts-with(@id, 'ttv__settings_box__item') and @value='%s']"
@@ -323,7 +325,11 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         getElement(xpathConfirmRemoveButton).click();
     }
 
-    public void pressConfirmBlock() throws Exception {
+    public void tapConfirmBlock() throws Exception {
         getElement(xpathConfirmBlockButton).click();
+    }
+
+    public void tapUnblockContactButton() throws Exception {
+        getElement(idUnblockButton).click();
     }
 }
