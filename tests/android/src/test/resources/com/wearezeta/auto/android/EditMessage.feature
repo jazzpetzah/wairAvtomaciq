@@ -226,6 +226,8 @@ Feature: Edit Message
     And I type the message "<Message2>" and send it by cursor Send button
     And I long tap the Text message "<Message1>" in the conversation view
     And I tap Edit button on the message bottom menu
+    And I tap Close button in edit message toolbar
+    And I scroll to the bottom of conversation view
     And I long tap the Text message "<Message2>" in the conversation view
     And I tap Edit button on the message bottom menu
     And I clear cursor input
