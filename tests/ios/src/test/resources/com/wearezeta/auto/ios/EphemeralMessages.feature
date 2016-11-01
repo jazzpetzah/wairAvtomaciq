@@ -1,6 +1,6 @@
 Feature: Ephemeral Messages
 
-  @C259591 @regression @fastLogin
+  @torun @C259591 @regression @fastLogin
   Scenario Outline: Verify ephemeral messages don't leave a trace in the database
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -48,7 +48,7 @@ Feature: Ephemeral Messages
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @C259584 @rc @regression @fastLogin
+  @torun @C259584 @rc @regression @fastLogin
   Scenario Outline: Verify sending ephemeral message - no online receiver (negative case)
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
