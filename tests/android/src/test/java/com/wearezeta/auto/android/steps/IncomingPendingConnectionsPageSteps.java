@@ -77,9 +77,9 @@ public class IncomingPendingConnectionsPageSteps {
      * Click the accept connection request button from within the dialog of a user who has sent you a connection request
      *
      * @throws Exception
-     * @step. ^I Connect with contact by taping button$
+     * @step. ^I (?:Connect with|Unblock) contact by tapping button$
      */
-    @When("^I (?:Connect with|Unblock) contact by pressing button$")
+    @When("^I (?:Connect with|Unblock) contact by tapping button$")
     public void IConnectWithContactBytapionButton() throws Exception {
         getIncomingPendingConnectionsPage().tapAcceptConnectButton();
     }
@@ -93,6 +93,30 @@ public class IncomingPendingConnectionsPageSteps {
     @When("^I tap Ignore connect button$")
     public void ITapIgnoreConnectButton() throws Exception {
         getIncomingPendingConnectionsPage().tapIgnoreButton();
+    }
+
+    /**
+     * Click the connect/ignore button in connection request from given user
+     *
+     * @param action      Connect/Ignore
+     * @param contactName User Name
+     * @throws Exception
+     * @step. ^I tap (Connect|Ignore) button for (.*)$
+     */
+    @When("^I tap (Connect|Ignore) button for (.*)$")
+    public void ITapIgnoreConnectButtonForUser(String action, String contactName) throws Exception {
+        switch (action) {
+            case "Connect":
+                contactName = usrMgr.findUserByNameOrNameAlias(contactName).getName();
+                getIncomingPendingConnectionsPage().tapAcceptConnectionButton(contactName);
+                break;
+            case "Ignore":
+                contactName = usrMgr.findUserByNameOrNameAlias(contactName).getName();
+                getIncomingPendingConnectionsPage().tapIgnoreConnectionButton(contactName);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown action name '%s'", action));
+        }
     }
 
     /**

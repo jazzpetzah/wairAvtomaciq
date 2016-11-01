@@ -40,13 +40,14 @@ Feature: Connect
     When I wait for 2 seconds
     Then I see Conversations list with name <WaitingMess2>
     When I tap on conversation name <WaitingMess2>
-    And I tap Ignore connect button
+    And I tap Ignore button for <Contact1>
     And I navigate back from connect page
     Then I see Conversations list with name <WaitingMess1>
     When I tap on conversation name <WaitingMess1>
-    When I Connect with contact by pressing button
+    And I tap Connect button for <Contact2>
     And I wait for 5 seconds
     And I navigate back from conversation
+    Then I see Conversations list with name <Contact2>
     Then I do not see Conversations list with name <WaitingMess1>
 
     Examples:
@@ -67,13 +68,13 @@ Feature: Connect
     When I open Search UI
     And I type user name "<Contact1>" in search field
     And I tap on user name found on Search page <Contact1>
-    And I tap Ignore connect button
+    And I tap Ignore button for <Contact1>
     And I navigate back from connect page
     Then I see Conversations list with name <WaitingMess1>
     When I open Search UI
     And I type user name "<Contact2>" in search field
     And I tap on user name found on Search page <Contact2>
-    When I Connect with contact by pressing button
+    When I tap Connect button for <Contact2>
     And I wait for 5 seconds
     And I navigate back from conversation
     Then I see Conversations list with name <Contact2>
@@ -99,7 +100,7 @@ Feature: Connect
     And I type user name "<Contact>" in search field
     And I tap on user name found on Search page <Contact>
     Then I see connect to <Contact> dialog
-    When I Connect with contact by pressing button
+    When I Connect with contact by tapping button
     And I wait for 5 seconds
     Then I see conversation view
 
@@ -254,7 +255,7 @@ Feature: Connect
     And I tap conversation name from top toolbar
     And I tap on group chat contact <Contact1>
     When I tap left Blocked button
-    Then I Unblock contact by pressing button
+    Then I Unblock contact by tapping button
     And I navigate back from conversation
     Then I see Conversations list with name <Contact1>
 
