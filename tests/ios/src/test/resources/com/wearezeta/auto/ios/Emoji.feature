@@ -15,7 +15,7 @@ Feature: Emoji
       | Name      | Contact   | NormalText | EmojiText | MinHeightDiff |
       | user1Name | user2Name | Yo👿       | 👿        | 100           |
 
-  @C250854 @fastLogin @staging
+  @C250854 @fastLogin @regression
   Scenario Outline: Verify opening emoji keyboard on tapping on smiley face
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
