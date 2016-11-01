@@ -143,15 +143,17 @@ Feature: E2EE
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email
-    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to user Myself
-    And I tap on contact name <Contact1>
-    And I open conversation details
-    And I switch to Devices tab
-    And I open details page of device number 1
-    And I tap Verify switcher on Device Details page
-    And I navigate back from Device Details page
-    And I close user profile page
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    # Wait for sync
+    Given I wait for 5 seconds
+    Given I open conversation details
+    Given I switch to Devices tab
+    Given I open details page of device number 1
+    Given I tap Verify switcher on Device Details page
+    Given I navigate back from Device Details page
+    Given I close user profile page
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And I type the default message and send it
     Then I see the label "<Contact1> <ExpectedSuffix>" on New Device overlay
@@ -237,15 +239,17 @@ Feature: E2EE
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email
-    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to user Myself
-    And I tap on contact name <Contact1>
-    And I open conversation details
-    And I switch to Devices tab
-    And I open details page of device number 1
-    And I tap Verify switcher on Device Details page
-    And I navigate back from Device Details page
-    And I close user profile page
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    # Wait for sync
+    Given I wait for 5 seconds
+    Given I open conversation details
+    Given I switch to Devices tab
+    Given I open details page of device number 1
+    Given I tap Verify switcher on Device Details page
+    Given I navigate back from Device Details page
+    Given I close user profile page
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And I type the default message and send it
     And I close New Device overlay
