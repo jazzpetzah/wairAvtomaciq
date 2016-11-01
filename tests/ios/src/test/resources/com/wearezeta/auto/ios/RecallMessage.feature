@@ -342,6 +342,8 @@ Feature: Recall Message
     Given User <Contact1> adds new device <DeviceName>
     Given I sign in using my email or phone number
     Given User <Contact1> sends 1 encrypted message to user Myself
+    # Wait for message to be delivered
+    Given I wait for 3 seconds
     Given I see conversations list
     When I remember the state of <Contact1> conversation item
     And I tap on contact name <Contact1>

@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
@@ -160,16 +161,19 @@ public class LoginPage extends IOSPage {
     }
 
     public void switchToLogin() throws Exception {
-        final WebElement switchToLoginButton = getElement(nameSwitchToLoginButton);
         // Wait for a while until the button is 100% accessible
         Thread.sleep(1000);
-        try {
-            switchToLoginButton.click();
-        } catch (IllegalStateException e) {
-            // Retry in case of network error
-            acceptAlertIfVisible();
-            switchToLoginButton.click();
+        final Optional<WebElement> switchToLoginButton = getElementIfExists(nameSwitchToLoginButton);
+        if (switchToLoginButton.isPresent()) {
+            try {
+                switchToLoginButton.get().click();
+                return;
+            } catch (IllegalStateException e) {
+                // just ignore
+            }
         }
+        acceptAlertIfVisible();
+        getElement(nameSwitchToLoginButton).click();
     }
 
     public void inputLoginCode(PhoneNumber forNumber) throws Exception {

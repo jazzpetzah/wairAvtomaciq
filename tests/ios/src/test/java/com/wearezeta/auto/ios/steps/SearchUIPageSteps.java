@@ -177,7 +177,7 @@ public class SearchUIPageSteps {
             case "send invite":
                 getSearchUIPage().tapSendInviteButton();
                 break;
-            case "copy":
+            case "copy invite":
                 getSearchUIPage().tapSendInviteCopyButton();
                 break;
             case "close invite list":
