@@ -229,6 +229,6 @@ public class IncomingPendingConnectionsPageSteps {
      */
     @When("^I tap Unblock button on Blocked connection$")
     public void ITapUnblockButtonOnBlockedConnection() throws Exception {
-        getIncomingPendingConnectionsPage().clickUnblockBtn();
+        getIncomingPendingConnectionsPage().tapUnblockConnectionButton();
     }
  }

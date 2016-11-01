@@ -585,6 +585,6 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @When("^I tap Unblock button on contact profile$")
     public void ITapUnblockButtonOnOtherUserProfile() throws Exception {
-        getOtherUserPersonalInfoPage().tapUnblockButton();
+        getOtherUserPersonalInfoPage().tapUnblockContactButton();
     }
 }

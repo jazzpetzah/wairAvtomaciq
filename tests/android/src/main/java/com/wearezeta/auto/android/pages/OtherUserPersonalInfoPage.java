@@ -329,7 +329,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         getElement(xpathConfirmBlockButton).click();
     }
 
-    public void tapUnblockButton() throws Exception {
+    public void tapUnblockContactButton() throws Exception {
         getElement(idUnblockButton).click();
     }
 }

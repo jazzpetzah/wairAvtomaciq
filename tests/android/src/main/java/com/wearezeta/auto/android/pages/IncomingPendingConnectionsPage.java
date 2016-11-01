@@ -61,7 +61,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
         blockButton.click();
     }
 
-    public void clickUnblockBtn() throws Exception {
+    public void tapUnblockConnectionButton() throws Exception {
         getElement(OtherUserPersonalInfoPage.xpathUnblockButton).click();
     }
 
