@@ -26,6 +26,8 @@ Feature: Share Location
     Given User <Contact> shares the default location to user Myself via device <DeviceName>
     Given I see conversations list
     When I tap on contact name <Contact>
+    # wait for sync
+    And I wait for 5 seconds
     Then I see location map container in the conversation view
     And I long tap on location map in conversation view
     And I tap on Delete badge item
