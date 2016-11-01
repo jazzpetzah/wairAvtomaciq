@@ -27,9 +27,9 @@ public class SketchPageSteps {
      *
      * @param btnName one of available button names
      * @throws Exception
-     * @step. ^I tap (Send|Draw|Open Gallery|Emoji) button on Sketch page$
+     * @step. ^I tap (Send|Draw|Open Gallery|Emoji|Undo) button on Sketch page$
      */
-    @When("^I tap (Send|Draw|Open Gallery|Emoji) button on Sketch page$")
+    @When("^I tap (Send|Draw|Open Gallery|Emoji|Undo) button on Sketch page$")
     public void ITapButton(String btnName) throws Exception {
         getSketchPage().tapButton(btnName);
     }

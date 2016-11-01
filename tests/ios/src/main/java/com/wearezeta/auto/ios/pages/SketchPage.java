@@ -16,6 +16,7 @@ public class SketchPage extends IOSPage {
     private static final By nameDrawButton = MobileBy.AccessibilityId("drawButton");
     private static final By nameEmojiButton = MobileBy.AccessibilityId("emojiButton");
     private static final By nameOpenGalleryButton = MobileBy.AccessibilityId("photoButton");
+    private static final By nameUndoButton = MobileBy.AccessibilityId("undoButton");
 
     public SketchPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
@@ -47,6 +48,8 @@ public class SketchPage extends IOSPage {
                 return nameEmojiButton;
             case "open gallery":
                 return nameOpenGalleryButton;
+            case "undo":
+                return nameUndoButton;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name: '%s'", name));
         }
