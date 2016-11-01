@@ -86,6 +86,8 @@ public class SearchUIPage extends IOSPage {
     public void typeText(String text) throws Exception {
         final WebElement searchInput = getElement(fbNameSearchInput);
         searchInput.sendKeys(text + " ");
+        // Wait for a user to be found
+        Thread.sleep(2000);
     }
 
     public Optional<WebElement> getSearchResultsElement(String user) throws Exception {
