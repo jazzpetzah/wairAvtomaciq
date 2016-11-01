@@ -71,6 +71,8 @@ public abstract class IOSPage extends BasePage {
     private static final Function<String, String> xpathStrAddressBarByUrlPart = urlPart ->
             String.format("//XCUIElementTypeTextField[@name='Address' and contains(@value, '%s')]", urlPart);
 
+    private static final By nameDefaultMapApplication = MobileBy.AccessibilityId("CalloutArrow.png");
+
     private IOSKeyboard onScreenKeyboard;
 
     private IOSKeyboard getOnScreenKeyboard() throws Exception {
@@ -757,5 +759,9 @@ public abstract class IOSPage extends BasePage {
             }
         }
         return screenshotImage;
+    }
+
+    public boolean isDefaultMapApplicationVisible() throws Exception {
+        return isLocatorExist(nameDefaultMapApplication) || this.isAlertContainsText("access your location");
     }
 }

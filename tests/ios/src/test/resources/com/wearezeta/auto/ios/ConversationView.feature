@@ -312,7 +312,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Name> sends encrypted message "<VimeoLink>" to user <Contact>
     When I tap on contact name <Contact>
-    Then I see vimeo link <VimeoLink> but NO media player
+    Then I see vimeo link <VimeoLink> without media preview in the conversation view
 
     Examples:
       | Name      | Contact   | VimeoLink                    |
@@ -326,7 +326,7 @@ Feature: Conversation View
     Given User <Name> sends encrypted message "<VimeoLink>" to user <Contact1>
     Given I see conversations list
     When I tap on contact name <Contact1>
-    Then I see vimeo link <VimeoLink> and media in the conversation view
+    Then I see vimeo link <VimeoLink> with media preview in the conversation view
 
     Examples:
       | Name      | Contact1  | VimeoLink                   |

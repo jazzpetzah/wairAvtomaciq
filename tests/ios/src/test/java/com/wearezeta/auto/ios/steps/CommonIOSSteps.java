@@ -1640,4 +1640,16 @@ public class CommonIOSSteps {
         commonSteps.UserSwitchesToEphemeralMode(userAs, convoName, timeoutMs, isGroup.equals("group conversation"),
                 null);
     }
+
+    /**
+     * Verify visibility of default Map application
+     *
+     * @throws Exception
+     * @step. ^I see map application is opened$
+     */
+    @Then("^I see map application is opened$")
+    public void VerifyMapDefaultApplicationVisibility() throws Exception {
+        Assert.assertTrue("The default map application is not visible",
+                pagesCollection.getCommonPage().isDefaultMapApplicationVisible());
+    }
 }

@@ -81,12 +81,6 @@ public class ConversationViewPage extends IOSPage {
             "(//XCUIElementTypeTextView[@name='Message' and contains(@value, '://')]/preceding-sibling::" +
                     "*[ .//XCUIElementTypeButton ])[last()]");
 
-    private static final By xpathGiphyImage =
-            By.xpath("//XCUIElementTypeCell[ .//*[contains(@value, 'via giphy.com')] ]" +
-                    "/parent::*/XCUIElementTypeCell[@name='ImageCell']");
-//            By.xpath("//XCUIElementTypeCell[ .//*[contains(@value, 'via giphy.com')] ]" +
-//                    "/following-sibling::XCUIElementTypeCell[@name='ImageCell']");
-
     private static final By namePlayButton = MobileBy.AccessibilityId("mediaBarPlayButton");
 
     private static final By namePauseButton = MobileBy.AccessibilityId("mediaBarPauseButton");
@@ -198,8 +192,6 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By fbXpathShareLocationContainer = FBBy.xpath("//XCUIElementTypeMap/parent::*");
 
-    private static final By nameDefaultMapApplication = MobileBy.AccessibilityId("CalloutArrow.png");
-
     private static final By fbNameLinkPreview = FBBy.AccessibilityId("linkPreview");
 
     private static final By nameLinkPreviewImage = MobileBy.AccessibilityId("linkPreviewImage");
@@ -241,9 +233,6 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameEpheTextInputPlaceholder = MobileBy.AccessibilityId("TIMED MESSAGE");
 
     private static final By fbClassPickerWheel = FBBy.className("XCUIElementTypePickerWheel");
-
-    private static final Function<Integer, String> xpathStrEmojiKeyByIndex = idx -> String.format(
-            "(//XCUIElementTypeCollectionView)[last()]/XCUIElementTypeCell[%s]", idx);
 
     private static final By nameThisDeviceLink = MobileBy.AccessibilityId("THIS DEVICE");
 
@@ -481,10 +470,6 @@ public class ConversationViewPage extends IOSPage {
     public boolean isConnectingToUserConversationLabelVisible(String username) throws Exception {
         final By locator = By.xpath(xpathStrConnectingToUserLabelByName.apply(username));
         return isLocatorDisplayed(locator);
-    }
-
-    public boolean isGiphyImageVisible() throws Exception {
-        return isLocatorDisplayed(xpathGiphyImage);
     }
 
     public boolean isShieldIconVisible() throws Exception {
@@ -851,10 +836,6 @@ public class ConversationViewPage extends IOSPage {
     public boolean isRecordControlButtonState(String buttonState) throws Exception {
         final By locator = By.xpath(recordControlButtonWithState.apply(buttonState));
         return isLocatorDisplayed(locator);
-    }
-
-    public boolean isDefaultMapApplicationVisible() throws Exception {
-        return isLocatorExist(nameDefaultMapApplication) || this.isAlertContainsText("access your location");
     }
 
     public boolean isLinkPreviewImageVisible() throws Exception {

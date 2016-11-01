@@ -423,8 +423,8 @@ public class ConversationViewPageSteps {
         }
     }
 
-     private static final double CONTAINER_COMPARE_MIN_SCORE = 0.8;
-     private static final int MEDIA_STATE_CHANGE_TIMEOUT = 10;
+    private static final double CONTAINER_COMPARE_MIN_SCORE = 0.8;
+    private static final int MEDIA_STATE_CHANGE_TIMEOUT = 10;
 
     /**
      * Verify whether the state of a media container is changed - soundclound play button
@@ -548,18 +548,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify giphy is presented in conversation
-     *
-     * @throws Exception
-     * @step. I see giphy in conversation
-     */
-    @When("I see giphy in conversation")
-    public void ISeeGiphyInConversation() throws Exception {
-        Assert.assertTrue("There is no giphy in conversation", getConversationViewPage()
-                .isGiphyImageVisible());
-    }
-
-    /**
      * Verify if conversation view page with pointed user is shown.
      *
      * @param contact contact name
@@ -592,31 +580,22 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verifies that vimeo link without ID is shown but NO player
-     *
-     * @param link of the vimeo video without ID
-     * @throws Exception
-     * @step. ^I see vimeo link (.*) but NO media player$
-     */
-    @Then("^I see vimeo link (.*) but NO media player$")
-    public void ISeeVimeoLinkButNOMediaPlayer(String link) throws Exception {
-        Assert.assertFalse("Media player is visible, but should be hidden",
-                getConversationViewPage().isMediaContainerVisible());
-        Assert.assertTrue(String.format("The last conversation message does not contain %s link", link),
-                getConversationViewPage().isRecentMessageContain(link));
-    }
-
-    /**
      * Verifies that vimeo link and the video container is visible
      *
-     * @param link of vimeo video
+     * @param link                 of vimeo video
+     * @param expectedPreviewState equals to 'with' if vimeo preview should be visible
      * @throws Exception
-     * @step. ^I see vimeo link (.*) and media in the conversation view$
+     * @step. ^I see vimeo link (.*) (with|without) media preview in the conversation view$
      */
-    @Then("^I see vimeo link (.*) and media in the conversation view$")
-    public void ISeeVimeoLinkAndMediaInDialog(String link) throws Exception {
-        Assert.assertTrue("Media player is missing in the conversation",
-                getConversationViewPage().isMediaContainerVisible());
+    @Then("^I see vimeo link (.*) (with|without) media preview in the conversation view$")
+    public void ISeeVimeoLink(String link, String expectedPreviewState) throws Exception {
+        if (expectedPreviewState.equals("with")) {
+            Assert.assertTrue("Media player is missing in the conversation",
+                    getConversationViewPage().isMediaContainerVisible());
+        } else {
+            Assert.assertFalse("Media player is visible, but should be hidden",
+                    getConversationViewPage().isMediaContainerVisible());
+        }
         Assert.assertTrue(String.format("The recent conversation message does not contain %s link", link),
                 getConversationViewPage().isRecentMessageContain(link));
     }
@@ -736,7 +715,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see Upper Toolbar in the conversation view$")
     public void ISeeUpperToolbar() throws Exception {
-        Assert.assertTrue(getConversationViewPage().isUpperToolbarVisible());
+        Assert.assertTrue("Upper toolbar is not visible", getConversationViewPage().isUpperToolbarVisible());
     }
 
     /**
@@ -1159,18 +1138,6 @@ public class ConversationViewPageSteps {
     public void IseeRecordToolbarButtonStateIs(String buttonState) throws Exception {
         Assert.assertTrue(String.format("Wrong button state. Expected state is '%s'", buttonState),
                 getConversationViewPage().isRecordControlButtonState(buttonState));
-    }
-
-    /**
-     * Verify visibility of default Map application
-     *
-     * @throws Exception
-     * @step. ^I see map application is opened$
-     */
-    @Then("^I see map application is opened$")
-    public void VerifyMapDefaultApplicationVisibility() throws Exception {
-        Assert.assertTrue("The default map application is not visible",
-                getConversationViewPage().isDefaultMapApplicationVisible());
     }
 
     /**
