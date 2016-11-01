@@ -62,7 +62,7 @@ Feature: Conversation View
     And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
     # Wait for delivery
-    And I wait for 3 seconds
+    And I wait for 6 seconds
     And I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
