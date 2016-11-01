@@ -1,7 +1,7 @@
 Feature: Ephemeral
 
   @C261723 @ephemeral @regression @localytics @WEBAPP-3302
-  Scenario Outline: Verify sending ephemeral text message
+  Scenario Outline: Verify sending ephemeral text message in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -66,7 +66,7 @@ Feature: Ephemeral
      #| user1Email | user1Password | user1Name | user2Name | user2Email | 300  | 5    | 5 minutes  | m             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":true,\"ephemeral_time\":300,\"with_bot\":false}" |
 
   @C261728 @ephemeral @regression
-  Scenario Outline: Verify switching on/off ephemeral message
+  Scenario Outline: Verify switching on/off ephemeral message in 1:1
     Given There are 2 users where <Name> is me
     #Given user <Contact> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact>
@@ -114,7 +114,7 @@ Feature: Ephemeral
       | user1Email | user1Password | user1Name | user2Name | user3Name | Ephemeral |
 
   @C262533 @ephemeral @regression
-  Scenario Outline: Verify that messages with previous timer are deleted on start-up when the timeout passed
+  Scenario Outline: Verify that messages with previous timer are deleted on start-up when the timeout passed in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -165,7 +165,7 @@ Feature: Ephemeral
       | user1Email | user1Password | user2Email | user1Name | user2Name | 5 seconds | 5s        | 5    | testing |
 
   @C262134 @ephemeral @staging
-  Scenario Outline: Verify timer is applied to the all messages until turning it off
+  Scenario Outline: Verify timer is applied to the all messages until turning it off in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given user <Contact> adds a new device Device1 with label Label1
@@ -200,7 +200,7 @@ Feature: Ephemeral
       | user1Email | user1Password | user1Name | user2Name | 15 seconds | 15   | 8        | testing1 | testing2 |
 
   @C262540 @ephemeral @staging
-  Scenario Outline: Verify opening picture fullscreen with a short timer
+  Scenario Outline: Verify opening picture fullscreen with a short timer in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -241,7 +241,7 @@ Feature: Ephemeral
       | user1Email | user1Password | user2Email | user1Name | user2Name | 5 seconds | s             | 5    | userpicture_landscape.jpg |
 
   @C264664 @ephemeral @regression
-  Scenario Outline: Verify I can not edit my last ephemeral message by pressing the up arrow key
+  Scenario Outline: Verify I can not edit my last ephemeral message by pressing the up arrow key in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -270,7 +270,7 @@ Feature: Ephemeral
       | user1Email | user1Password | user1Name | user2Name | edit me         | edited        | 30   | 30 seconds | s             |
 
   @C261733 @ephemeral @regression
-  Scenario Outline: Verify sending different types of ephemeral messages (ping, picture, video, audio, file)
+  Scenario Outline: Verify sending different types of ephemeral messages (ping, picture, video, audio, file) in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -350,7 +350,7 @@ Feature: Ephemeral
       | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds  | s             | you pinged | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    | ZIP      |
 
   @C310631 @ephemeral @regression
-  Scenario Outline: Verify sender can not download asset while it is obfuscated
+  Scenario Outline: Verify sender can not download asset while it is obfuscated in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -374,7 +374,7 @@ Feature: Ephemeral
       | user1Email | user1Password | user1Name | user2Name | C310631.txt | 5MB  | 5    | 5 seconds | s             |
 
   @C262135 @ephemeral @regression
-  Scenario Outline: Verify that missed call has stayed after receiver saw it
+  Scenario Outline: Verify that missed call has stayed after receiver saw it in 1:1
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -402,7 +402,7 @@ Feature: Ephemeral
       | user1Email | user1Password | user1Name | user2Name | message1 | message2 | 5 seconds | zcall       | called        |
 
   @C261726 @ephemeral @regression
-  Scenario Outline: Verify ephemeral messages are not sent to my other devices
+  Scenario Outline: Verify ephemeral messages are not sent to my other devices while sending in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -444,7 +444,7 @@ Feature: Ephemeral
       | user1Email | user1Password | user1Name | user2Name | 1    | 1 day    | d             | Hello   |
 
   @C311067 @ephemeral @regression @WEBAPP-3314
-  Scenario Outline: Verify on sender and receiver side picture fullscreen automatically closes when timer exceeds
+  Scenario Outline: Verify on sender and receiver side picture fullscreen automatically closes when timer exceeds in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -488,7 +488,7 @@ Feature: Ephemeral
       | user1Email | user2Email | user1Password | user1Name | user2Name | 15    | 15 seconds | s             | userpicture_landscape.jpg |
 
   @C262537 @ephemeral @regression
-  Scenario Outline: Verify I can receive ephemeral text message (5s/15s/1m/5m) timeout starts while being in the conversation
+  Scenario Outline: Verify I can receive ephemeral text message (5s/15s/1m/5m) timeout starts while being in the conversation in 1:1
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given user <Contact> adds a new device Device1 with label Label1
