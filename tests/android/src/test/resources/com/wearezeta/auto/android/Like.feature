@@ -244,7 +244,7 @@ Feature: Like
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap Sketch button from cursor toolbar
-    And I draw a sketch with 1 colors
+    And I draw a sketch with 2 colors
     And I send my sketch
     And I do not see Message status with expected text "Sending" in conversation view
     And I tap Image container in the conversation view

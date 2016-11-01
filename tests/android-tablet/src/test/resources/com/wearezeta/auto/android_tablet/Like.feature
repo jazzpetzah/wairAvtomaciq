@@ -98,7 +98,7 @@ Feature: Like
     Given I see Conversations list with conversations
     When I tap the conversation <Contact>
     And I tap Sketch button from cursor toolbar
-    And I draw a sketch with 1 colors on Sketch page
+    And I draw a sketch with 2 colors on Sketch page
     And I tap Send button on Sketch page
     And I scroll to the bottom of the Conversation view
     And I tap Image container in the conversation view

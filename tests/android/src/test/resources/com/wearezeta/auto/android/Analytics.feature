@@ -49,7 +49,7 @@ Feature: Analytics
     Then I verify that <LogType> log contains string "ACTION=ping"
     # Sketch
     When I tap Sketch button from cursor toolbar
-    And I draw a sketch with 1 color
+    And I draw a sketch with 2 colors
     And I send my sketch
     Then I verify that <LogType> log contains string "ACTION=photo"
     # Gif viq Giphy
