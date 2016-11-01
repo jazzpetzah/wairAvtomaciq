@@ -8,8 +8,8 @@ Feature: Delivery
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    Given I tap on conversation name <Contact>
-    When I type the message "<Msg1>" and send it by cursor Send button
+    When I tap on conversation name <Contact>
+    And I type the message "<Msg1>" and send it by cursor Send button
     Then I see Message status with expected text "<MessageStatus>" in conversation view
     When I type the message "<Msg2>" and send it by cursor Send button
     Then I see 1 Message status in conversation view
