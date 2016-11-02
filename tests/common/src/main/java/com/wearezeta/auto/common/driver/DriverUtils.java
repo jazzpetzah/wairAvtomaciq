@@ -1,8 +1,6 @@
 package com.wearezeta.auto.common.driver;
 
-import io.appium.java_client.AppiumDriver;
-
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.util.List;
@@ -11,17 +9,28 @@ import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
+import io.appium.java_client.AppiumDriver;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.InvalidElementStateException;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionNotFoundException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
-
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class DriverUtils {
     public static final int DEFAULT_PERCENTAGE = 50;
@@ -66,6 +75,14 @@ public class DriverUtils {
         final Dimension dim = driver.manage().window().getSize();
         final Rectangle windowRect = new Rectangle(dim.getWidth(), dim.getHeight());
         return elementRect.intersects(windowRect);
+    }
+
+    public static boolean isElementCompletelyOnScreen(WebDriver driver, final WebElement el) {
+        final Rectangle elementRect = new Rectangle(el.getLocation().x, el.getLocation().y,
+                el.getSize().width, el.getSize().height);
+        final Dimension dim = driver.manage().window().getSize();
+        final Rectangle windowRect = new Rectangle(dim.getWidth(), dim.getHeight());
+        return elementRect.contains(windowRect);
     }
 
     public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver, By by) throws Exception {
