@@ -125,6 +125,15 @@ public class DriverUtils {
         }
     }
 
+    /**
+     * Wait until element is not completely present on screen or not displayed at all.
+     * DO NOT use this method if you want to check whether the element not present. Use "waitUntilLocatorDissapears" method
+     * instead.
+     *
+     * @param driver selenium driver instance
+     * @param by     element id or xpath
+     * @return true or false
+     */
     public static boolean waitUntilLocatorIsNotDisplayed(RemoteWebDriver driver,
                                                      final By by, int timeoutSeconds) throws Exception {
         if (!PlatformDrivers.isMobileDriver(driver)) {
