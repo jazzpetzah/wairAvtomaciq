@@ -98,8 +98,7 @@ public class ConversationViewPage extends IOSPage {
     public static final By xpathStrMissedCallButtonByYourself =
             By.xpath(xpathStrMissedCallButtonByContact.apply("you"));
 
-    public static final Function<String, String> xpathStrConnectingToUserLabelByName = name -> String.format(
-            "//XCUIElementTypeStaticText[contains(@value, 'CONNECTING TO %s.')]", name.toUpperCase());
+    public static final By xpathCancelRequestButton = By.xpath("//XCUIElementTypeButton[@label='CANCEL REQUEST']");
 
     public static final String MEDIA_STATE_PLAYING = "playing";
 
@@ -467,9 +466,9 @@ public class ConversationViewPage extends IOSPage {
         typeMessage(message, false);
     }
 
-    public boolean isConnectingToUserConversationLabelVisible(String username) throws Exception {
-        final By locator = By.xpath(xpathStrConnectingToUserLabelByName.apply(username));
-        return isLocatorDisplayed(locator);
+    public boolean isPendingOutgoingConnectionVisible(String toUserName) throws Exception {
+        return isLocatorDisplayed(xpathCancelRequestButton) &&
+                isLocatorDisplayed(MobileBy.AccessibilityId(toUserName));
     }
 
     public boolean isShieldIconVisible() throws Exception {
