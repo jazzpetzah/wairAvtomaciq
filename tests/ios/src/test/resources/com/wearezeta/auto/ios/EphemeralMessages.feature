@@ -326,7 +326,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Message | Timeout | DeviceName    |
       | user1Name | user2Name | y1      | 15      | ContactDevice |
 
-  @C311221 @C259598 @staging @fastLogin
+  @C311221 @C259598 @staging @fastLogin @torun
   Scenario Outline: Verify receiving ephemeral assets (picture, video, audio, link preview, location)
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
