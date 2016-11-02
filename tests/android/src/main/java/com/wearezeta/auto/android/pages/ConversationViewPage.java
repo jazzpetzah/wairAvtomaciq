@@ -262,6 +262,8 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final int VISIBILITY_TIMEOUT_SECONDS = 30;
 
+    private static final int JENKINS_STABILITY_TIMEOUT_SECONDS = 15;
+
     public enum MessageIndexLocator {
         FIRST(xpathFirstConversationMessage),
         LAST(xpathLastConversationMessage);
@@ -1186,7 +1188,7 @@ public class ConversationViewPage extends AndroidPage {
     //region Message Meta
     public boolean waitUntilMessageMetaItemVisible(String itemType) throws Exception {
         String locatorId = getMessageMetaLocatorIdString(itemType);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(locatorId));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(locatorId), JENKINS_STABILITY_TIMEOUT_SECONDS);
     }
 
     public boolean waitUntilMessageMetaItemInvisible(String itemType) throws Exception {

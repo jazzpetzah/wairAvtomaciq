@@ -22,7 +22,7 @@ public class IncomingPendingRequestsPage extends IOSPage {
         super(lazyDriver);
     }
 
-    private By getButtonLocatorByName(String name) {
+    private static By getButtonLocatorByName(String name) {
         switch (name.toLowerCase()) {
             case "ignore":
                 return xpathPendingRequestIgnoreButton;
@@ -40,7 +40,7 @@ public class IncomingPendingRequestsPage extends IOSPage {
         for (int i = 0; i < times; i++) {
             getElement(locator).click();
             // Wait for animation
-            Thread.sleep(1000);
+            Thread.sleep(2000);
         }
     }
 

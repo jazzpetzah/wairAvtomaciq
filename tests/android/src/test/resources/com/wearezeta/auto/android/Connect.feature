@@ -100,7 +100,7 @@ Feature: Connect
     And I type user name "<Contact>" in search field
     And I tap on user name found on Search page <Contact>
     Then I see connect to <Contact> dialog
-    When I tap Connect button for <Contact>
+    When I tap Connect button
     And I wait for 5 seconds
     Then I see conversation view
 

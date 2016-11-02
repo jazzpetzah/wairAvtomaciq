@@ -98,8 +98,7 @@ public class ConversationViewPage extends IOSPage {
     public static final By xpathStrMissedCallButtonByYourself =
             By.xpath(xpathStrMissedCallButtonByContact.apply("you"));
 
-    public static final Function<String, String> xpathStrConnectingToUserLabelByName = name -> String.format(
-            "//XCUIElementTypeStaticText[contains(@value, 'CONNECTING TO %s.')]", name.toUpperCase());
+    public static final By xpathCancelRequestButton = By.xpath("//XCUIElementTypeButton[@label='CANCEL REQUEST']");
 
     public static final String MEDIA_STATE_PLAYING = "playing";
 
@@ -215,8 +214,9 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameLikeButton = MobileBy.AccessibilityId("likeButton");
 
-    private static final By nameSketchOnImageButton = MobileBy.AccessibilityId("sketchOnImageButton");
-    private static final By nameFullScreenOnImageButton = MobileBy.AccessibilityId("openFullScreenButton");
+    private static final By nameSketchOnImageButton = MobileBy.AccessibilityId("sketchButton");
+    private static final By nameFullScreenOnImageButton = MobileBy.AccessibilityId("expandButton");
+    private static final By nameEmojiOnImageButton = MobileBy.AccessibilityId("emojiButton");
 
     private static final String nameStrRecentMessageToolbox = "MessageToolbox";
     private static final By nameRecentMessageToolbox = MobileBy.AccessibilityId(nameStrRecentMessageToolbox);
@@ -467,9 +467,9 @@ public class ConversationViewPage extends IOSPage {
         typeMessage(message, false);
     }
 
-    public boolean isConnectingToUserConversationLabelVisible(String username) throws Exception {
-        final By locator = By.xpath(xpathStrConnectingToUserLabelByName.apply(username));
-        return isLocatorDisplayed(locator);
+    public boolean isPendingOutgoingConnectionVisible(String toUserName) throws Exception {
+        return isLocatorDisplayed(xpathCancelRequestButton) &&
+                isLocatorDisplayed(MobileBy.AccessibilityId(toUserName));
     }
 
     public boolean isShieldIconVisible() throws Exception {
@@ -714,7 +714,7 @@ public class ConversationViewPage extends IOSPage {
         if (isDoubleTap) {
             el.doubleTap();
         } else if (isLongTap) {
-            longClickAt(el, 10, 50);
+            longClickAt(el, 25, 50);
         } else {
             el.click();
         }
@@ -944,7 +944,7 @@ public class ConversationViewPage extends IOSPage {
         if (isDoubleTap) {
             dstElement.doubleTap();
         } else if (isLongTap) {
-            longClickAt(dstElement, 15, 50);
+            longClickAt(dstElement, 25, 50);
         } else {
             dstElement.click();
         }
@@ -990,14 +990,16 @@ public class ConversationViewPage extends IOSPage {
         this.tapScreenAt(dstElement);
     }
 
-    private By getImageButtonByName(String buttonName) throws Exception {
+    private static By getImageButtonByName(String buttonName) throws Exception {
         switch (buttonName.toLowerCase()) {
             case "sketch":
                 return nameSketchOnImageButton;
             case "fullscreen":
                 return nameFullScreenOnImageButton;
+            case "emoji":
+                return nameEmojiOnImageButton;
             default:
-                throw new Exception("Not recognized button name. Available 'sketch', 'fullscreen'");
+                throw new IllegalArgumentException(String.format("Button name '%s' is not known", buttonName));
         }
     }
 

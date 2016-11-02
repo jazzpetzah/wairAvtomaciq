@@ -338,3 +338,91 @@ Feature: Ephemeral Message
     Examples:
       | Name      | Contact   | ContactDevice | EphemeralTimeout | FileName    | MIMEType  | SyncTimeout | Picture     | AudioFileName | AudioMIMEType | URL                     | SoundCloud                                       | Youtube                                     |
       | user1Name | user2Name | d1            | 5                | testing.mp4 | video/mp4 | 1           | testing.jpg | test.m4a      | audio/mp4     | http://www.facebook.com | https://soundcloud.com/sodab/256-ra-robag-wruhme | https://www.youtube.com/watch?v=wTcNtgA6gHs |
+
+  @C318631 @staging
+  Scenario Outline: (AN-4591) Verify ephemeral icon is not missed from cursor after I edit message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact1>
+    Given I type the message "<Message>" and send it by cursor Send button
+    Given I long tap the Text message "<Message>" in the conversation view
+    Given I tap Edit button on the message bottom menu
+    When I tap Close button in edit message toolbar
+    Then I see Ephemeral button in cursor input
+
+    Examples:
+      | Name      | Contact1  | Message |
+      | user1Name | user2Name | YO      |
+
+  @C318635 @staging
+  Scenario Outline: Verify sending all types of messages after I enable ephemeral mode in group conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
+    Given Myself has group chat <Group> with <Contact>,<Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I push <FileSize> video file having name "random_qa.mp4" to the device
+    Given I push local file named "avatarTest.png" to the device
+    Given I push <FileSize> file having name "qa_random.txt" to the device
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Group>
+    Given I tap Ephemeral button from cursor toolbar
+    Given I set timeout to <EphemeraTimeout> on Extended cursor ephemeral overlay
+    Given I tap on text input
+    # Video
+    When I tap Video message button from cursor toolbar
+    And I see Video Message container in the conversation view
+    And I do not see Message status with expected text "Sending" in conversation view
+    And I remember the state of Video Message container in the conversation view
+    And I wait for <EphemeraTimeout>
+    Then I verify the state of Video Message container is changed
+    # Picture
+    When I tap Add picture button from cursor toolbar
+    And I tap Gallery button on Extended cursor camera overlay
+    And I tap Confirm button on Take Picture view
+    Then I see a picture in the conversation view
+    And I do not see Message status with expected text "<MessageStatus>" in conversation view
+    And I remember the state of Image container in the conversation view
+    And I wait for <EphemeraTimeout>
+    And I verify the state of Image container is changed
+    # Audio message
+    When I long tap Audio message cursor button 2 seconds and swipe up
+    Then I see Audio Message container in the conversation view
+    And I do not see Message status with expected text "<MessageStatus>" in conversation view
+    And I wait for <EphemeraTimeout>
+    And I do not see Audio Message container in the conversation view
+    And I see Audio Message Placeholder container in the conversation view
+    # Ping
+    When I tap Ping button from cursor toolbar
+    Then I see Ping message "<PingMsg>" in the conversation view
+    And I do not see Message status with expected text "<MessageStatus>" in conversation view
+    And I wait for <EphemeraTimeout>
+    And I do not see Ping message "YOU PINGED" in the conversation view
+    # File
+    When I tap File button from cursor toolbar
+    Then I see File Upload container in the conversation view
+    And I do not see Message status with expected text "<MessageStatus>" in conversation view
+    And I wait for <EphemeraTimeout>
+    And I do not see File Upload container in the conversation view
+    And I see File Upload Placeholder container in the conversation view
+    # Location
+    When I tap Share location button from cursor toolbar
+    And I tap Send button on Share Location page
+    Then I see Share Location container in the conversation view
+    And I do not see Message status with expected text "<MessageStatus>" in conversation view
+    And I remember the state of Share Location container in the conversation view
+    And I wait for <EphemeraTimeout>
+    And I verify the state of Share Location container is changed
+    # Link Preview
+    # TODO: Link preview should be obfuscated with container instead of pure url text.
+    When I type the message "<Link>" and send it by cursor Send button
+    Then I see Link Preview container in the conversation view
+    And I do not see Message status with expected text "<MessageStatus>" in conversation view
+    And I do not see Link Preview container in the conversation view
+
+    Examples:
+      | Name      | Group | Contact   | Contact1  | EphemeraTimeout | Link                                                                                               | MessageStatus | PingMsg    | FileSize |
+      | user1Name | YoG   | user2Name | user3Name | 5 seconds       | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 | Sending       | YOU PINGED | 1.00MB   |

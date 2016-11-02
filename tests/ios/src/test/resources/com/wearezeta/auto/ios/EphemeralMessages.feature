@@ -12,8 +12,6 @@ Feature: Ephemeral Messages
     Given I set ephemeral messages expiration timer to <Timeout> seconds
     Given I type the default message and send it
     Given I see 1 default message in the conversation view
-    # make sure the message arrives before saved
-    Given I wait for 5 seconds
     When I remember the recent message from user Myself in the local database
     And I wait for <Timeout> seconds
     Then I see 0 default messages in the conversation view
@@ -23,8 +21,6 @@ Feature: Ephemeral Messages
     # Wait for the message to be delivered
     And I wait for 3 seconds
     And I see 1 default message in the conversation view
-    # make sure the message arrives before saved
-    And I wait for 5 seconds
     And I remember the state of the recent message from user <Contact> in the local database
     And I wait for <Timeout> seconds
     Then I see 0 default messages in the conversation view
@@ -58,8 +54,6 @@ Feature: Ephemeral Messages
     Given I tap Hourglass button in conversation view
     Given I set ephemeral messages expiration timer to <Timeout> seconds
     Given I type the default message and send it
-    # make sure the message arrives before saved
-    Given I wait for 5 seconds
     When I remember the recent message from user Myself in the local database
     And I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
     And I wait for <Timeout> seconds
@@ -138,7 +132,7 @@ Feature: Ephemeral Messages
 
     Examples:
       | Name      | Contact   | Timer | DeviceName |
-      | user1Name | user2Name | 15    | myDevice2  |
+      | user1Name | user2Name | 30    | myDevice2  |
 
   @C310632 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral audio message
@@ -240,7 +234,7 @@ Feature: Ephemeral Messages
       | user1Name | user2Name | 15    | FTRANSFER_MENU_DEFAULT_PNG | myDevice2  |
 
   @C310636 @regression @fastLogin
-  Scenario Outline: Verify sending ephemeral GIF
+  Scenario Outline: ZIOS-7555 Verify sending ephemeral GIF
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
     Given User Myself adds new device <DeviceName>
@@ -254,7 +248,7 @@ Feature: Ephemeral Messages
     Given I select the first item from Giphy grid
     Given I tap Send button on Giphy preview page
     #wait for transition and gif is loaded in view
-    Given I wait for 3 seconds
+    Given I wait for 5 seconds
     Given User <Name> sends 1 encrypted message using device <DeviceName> to user <Contact>
     When I remember asset container state
     And I wait for <Timer> seconds
@@ -262,7 +256,7 @@ Feature: Ephemeral Messages
 
     Examples:
       | Name      | Contact   | Timer | GiphyTag | DeviceName |
-      | user1Name | user2Name | 15    | sun      | myDevice2  |
+      | user1Name | user2Name | 30    | sun      | myDevice2  |
 
   @C310637 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral media link
@@ -275,8 +269,6 @@ Feature: Ephemeral Messages
     Given I set ephemeral messages expiration timer to <Timer> seconds
     Given I type the "<SoundCloudLink>" message and send it
     Given I see media container in the conversation view
-    # make sure the message arrives before saved
-    Given I wait for 5 seconds
     When I remember the recent message from user Myself in the local database
     And I wait for <Timer> seconds
     Then I see 1 message in the conversation view
@@ -399,6 +391,25 @@ Feature: Ephemeral Messages
 
     Examples:
       | Name      | Contact   | Message1    | Message2    | DeviceName | DeviceLabel | EphemeralTimeout |
+      | user1Name | user2Name | message one | message two | ContactDev | DevLabel    | 15               |
+
+  @C259587 @staging @fastLogin
+  Scenario Outline: Verify ephemeral messages are not sent to my other devices
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User Myself adds new device <DeviceName>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    Given I tap Hourglass button in conversation view
+    Given I set ephemeral messages expiration timer to <Timer> seconds
+    When User Myself remembers the recent message from user <Contact> via device <DeviceName>
+    And I type the default message and send it
+    Then User Myself sees the recent message from user <Contact> via device <DeviceName> is not changed in 5 seconds
+
+    Examples:
+      | Name      | Contact   | Timer | DeviceName |
+      | user1Name | user2Name | 15    | myDevice2  |
       | user1Name | user2Name | message one | message two | ContactDev | DevLabel    | 15               |
 
   @C259598 @staging @fastLogin

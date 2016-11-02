@@ -9,11 +9,11 @@ Feature: Emoji
     Given User <Contact> sends encrypted message "<EmojiText>" to user Myself
     Given I see conversations list
     When I tap on contact name <Contact>
-    Then I see that the difference in height of "<EmojiText>" and "<NormalText>" messages is greater than <MinHeightDiff> percent
+    Then I see that the height of "<EmojiText>" and "<NormalText>" messages is different
 
     Examples:
-      | Name      | Contact   | NormalText | EmojiText | MinHeightDiff |
-      | user1Name | user2Name | Yo👿       | 👿        | 100           |
+      | Name      | Contact   | NormalText | EmojiText |
+      | user1Name | user2Name | Yo👿      | 👿        |
 
   @C250854 @fastLogin @regression
   Scenario Outline: Verify opening emoji keyboard on tapping on smiley face
@@ -31,4 +31,4 @@ Feature: Emoji
 
     Examples:
       | Name      | Contact   | EmojiChar |
-      | user1Name | user2Name | 😀       |
+      | user1Name | user2Name | 😀        |

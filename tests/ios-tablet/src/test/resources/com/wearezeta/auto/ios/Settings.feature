@@ -71,6 +71,8 @@ Feature: Settings
     When I tap settings gear button
     And I select settings item Support
     And I select settings item Wire Support Website
+    # Wait for web page to be loaded
+    And I wait for 7 seconds
     Then I see Support web page
 
     Examples:
