@@ -94,10 +94,6 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
                 contactName, maxScrolls));
     }
 
-    public void tapAcceptConnectButton() throws Exception {
-        getElement(idConnectRequestAccept).click();
-    }
-
     public void tapAcceptConnectionButton(String contactName) throws Exception {
         scrollToInboxContact(contactName);
         final By locator = By.xpath(xpathStrAcceptButtonByHeaderText.apply(contactName));
@@ -126,8 +122,13 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
         getElement(By.xpath(xpathStrUserDetailsLeftButtonByLabel.apply(label)), label + " button is not visible").click();
     }
 
-    public void tapConnectButton() throws Exception {
+    public void tapSendConnectButton() throws Exception {
         getElement(idSendConnectionRequestButton, "Connect button is not visible").click();
+    }
+
+
+    public void tapAcceptConnectButton() throws Exception {
+        getElement(idConnectRequestAccept).click();
     }
 
     public void waitUntilIgnoreButtonIsClickable() throws Exception {
