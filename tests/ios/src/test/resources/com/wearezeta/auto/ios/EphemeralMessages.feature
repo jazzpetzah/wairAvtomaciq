@@ -326,7 +326,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Message | Timeout | DeviceName    |
       | user1Name | user2Name | y1      | 15      | ContactDevice |
 
-  @C311221 @C259598 @staging @fastLogin
+  @C311221 @staging @fastLogin
   Scenario Outline: Verify receiving ephemeral assets (picture, video, audio, link preview, location)
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -366,12 +366,6 @@ Feature: Ephemeral Messages
     And I see location map container in the conversation view
     And I wait for <EphemeralTimeout> seconds
     Then I do not see location map container in the conversation view
-    # Send regular message after ephemeral
-    When User <Contact> switches user Myself to ephemeral mode with 0 seconds timeout
-    And User <Contact> sends 1 encrypted message using device <DeviceName> to user Myself
-    And I see 1 default message in the conversation view
-    And I wait for 15 seconds
-    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact   | SyncTimeout | EphemeralTimeout | DeviceName    | Picture     | FileName    | VideoMIME | AudioFileName | AudioMIME | Link         |
@@ -406,3 +400,31 @@ Feature: Ephemeral Messages
     Examples:
       | Name      | Contact   | Message1    | Message2    | DeviceName | DeviceLabel | EphemeralTimeout |
       | user1Name | user2Name | message one | message two | ContactDev | DevLabel    | 15               |
+
+  @C259598 @staging @fastLogin
+  Scenario Outline: Verify timer is applyed to the all messages until turning it off
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I tap Hourglass button in conversation view
+    And I set ephemeral messages expiration timer to <Timer> seconds
+    And I type the default message and send it
+    Then I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
+    When I type the default message and send it
+    Then I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
+    When I tap Add Picture button from input tools
+    And I accept alert if visible
+    And I accept alert if visible
+    And I select the first picture from Keyboard Gallery
+    And I tap Confirm button on Picture preview page
+    Then I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
+    When I tap Time Indicator button in conversation view
+    And I set ephemeral messages expiration timer to Off
+    And I type the default message and send it
+    Then I do not see "<EphemeralTimeLabel>" on the message toolbox in conversation view
+
+    Examples:
+      | Name      | Contact   | Timer | EphemeralTimeLabel |
+      | user1Name | user2Name | 15    | seconds            |
