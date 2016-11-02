@@ -21,10 +21,14 @@ public class SketchPage extends AndroidPage {
     private static final By idColorPicker = By.id("cpdl__color_layout");
 
     private static final By idSendButton = By.id("tv__send_button");
+    private static final By idSketchButton = By.id("gtv__drawing_button__sketch");
+    private static final By idEmojiButton = By.id("gtv__drawing_button__emoji");
+    private static final By idTextButton = By.id("gtv__drawing_button__text");
+    private static final By idTextSketchInput = By.id("et__sketch_text");
 
     // Colors should be in the order they appear in the color picker
     public enum SketchColor {
-        EMOJI(0), WHITE(1), BLACK(2), BLUE(3), GREEN(4), YELLOW(5), RED(6), ORANGE(7), PINK(8), PURPLE(9);
+        WHITE(0), BLACK(1), BLUE(2), GREEN(3), YELLOW(4), RED(5), ORANGE(6), PINK(7), PURPLE(8);
 
         private int index;
 
@@ -57,6 +61,29 @@ public class SketchPage extends AndroidPage {
     public void setColor(SketchColor color) throws Exception {
         this.selectedColor = color;
         selectColorFromChooser(getElement(idColorPicker));
+    }
+
+    public void tapOnModeButton(String buttonName) throws Exception {
+        final By locator = getModeButtonLocator(buttonName);
+        getElement(locator).click();
+    }
+
+    public void typeTextOnSketch(String text) throws Exception {
+        AndroidCommonUtils.type(text);
+        pressKeyboardSendButton();
+    }
+
+    private static By getModeButtonLocator(String buttonName) {
+        switch(buttonName.toLowerCase()) {
+            case "emoji":
+                return idEmojiButton;
+            case "sketch":
+                return idSketchButton;
+            case "text":
+                return idTextButton;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify mode button name '%s'", buttonName));
+        }
     }
 
     private void selectColorFromChooser(WebElement colorPicker)
