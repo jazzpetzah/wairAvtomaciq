@@ -1390,9 +1390,9 @@ public class ConversationViewPageSteps {
      *
      * @param buttonName Sketch ot Fullscreen button names allowed
      * @throws Exception
-     * @step. ^I tap (Sketch|Fullscreen) button on image$
+     * @step. ^I tap (Sketch|Fullscreen|Emoji) button on image$
      */
-    @When("^I tap (Sketch|Fullscreen) button on image$")
+    @When("^I tap (Sketch|Fullscreen|Emoji) button on image$")
     public void ITapOnImageButtons(String buttonName) throws Exception {
         getConversationViewPage().tapImageButton(buttonName);
     }

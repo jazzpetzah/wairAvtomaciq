@@ -214,8 +214,9 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameLikeButton = MobileBy.AccessibilityId("likeButton");
 
-    private static final By nameSketchOnImageButton = MobileBy.AccessibilityId("sketchOnImageButton");
-    private static final By nameFullScreenOnImageButton = MobileBy.AccessibilityId("openFullScreenButton");
+    private static final By nameSketchOnImageButton = MobileBy.AccessibilityId("sketchButton");
+    private static final By nameFullScreenOnImageButton = MobileBy.AccessibilityId("expandButton");
+    private static final By nameEmojiOnImageButton = MobileBy.AccessibilityId("emojiButton");
 
     private static final String nameStrRecentMessageToolbox = "MessageToolbox";
     private static final By nameRecentMessageToolbox = MobileBy.AccessibilityId(nameStrRecentMessageToolbox);
@@ -989,14 +990,16 @@ public class ConversationViewPage extends IOSPage {
         this.tapScreenAt(dstElement);
     }
 
-    private By getImageButtonByName(String buttonName) throws Exception {
+    private static By getImageButtonByName(String buttonName) throws Exception {
         switch (buttonName.toLowerCase()) {
             case "sketch":
                 return nameSketchOnImageButton;
             case "fullscreen":
                 return nameFullScreenOnImageButton;
+            case "emoji":
+                return nameEmojiOnImageButton;
             default:
-                throw new Exception("Not recognized button name. Available 'sketch', 'fullscreen'");
+                throw new IllegalArgumentException(String.format("Button name '%s' is not known", buttonName));
         }
     }
 
