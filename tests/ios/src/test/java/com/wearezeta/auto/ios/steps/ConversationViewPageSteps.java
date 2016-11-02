@@ -1182,35 +1182,27 @@ public class ConversationViewPageSteps {
      * Verify the difference between the height of two strings
      *
      * @param msg1               the first conversation message text
-     * @param isNot              equals to null is the current percentage should be greater or equal to the expected one
      * @param msg2               the second message text
-     * @param expectedPercentage the expected diff percentage
+     * @param isNot              equals to null is the current percentage should be greater or equal to the expected one
      * @throws Exception
-     * @step. ^I see that the difference in height of "(.*)" and "(.*)" messages is (not )?greater than (\d+) percent$
+     * @step. ^I see that the height of "(.*)" and "(.*)" messages is (not )?different$
      */
-    @Then("^I see that the difference in height of \"(.*)\" and \"(.*)\" messages is (not )?greater than (\\d+) percent$")
-    public void ISeeMassagesHaveEqualHeight(String msg1, String msg2, String isNot, int expectedPercentage)
-            throws Exception {
+    @Then("^I see that the height of \"(.*)\" and \"(.*)\" messages is (not )?different$")
+    public void ISeeMassagesHaveEqualHeight(String msg1, String msg2, String isNot) throws Exception {
         final int msg1Height = getConversationViewPage().getMessageHeight(msg1);
         assert msg1Height > 0;
         final int msg2Height = getConversationViewPage().getMessageHeight(msg2);
         assert msg2Height > 0;
-        int currentPercentage = 0;
-        if (msg1Height > msg2Height) {
-            currentPercentage = msg1Height * 100 / msg2Height - 100;
-        } else if (msg1Height < msg2Height) {
-            currentPercentage = msg2Height * 100 / msg1Height - 100;
-        }
         if (isNot == null) {
-            Assert.assertTrue(
-                    String.format("The height of '%s' message (%s) is less than %s%% different than the height of "
-                            + "'%s' message (%s)", msg1, msg1Height, expectedPercentage, msg2, msg2Height),
-                    currentPercentage >= expectedPercentage);
+            Assert.assertEquals(
+                    String.format("The height of '%s' message (%s) is not different than  the height of "
+                            + "'%s' message (%s)", msg1, msg1Height, msg2, msg2Height),
+                    msg1Height, msg2Height);
         } else {
-            Assert.assertTrue(
-                    String.format("The height of '%s' message (%s) is more than %s%% different than the height of "
-                            + "'%s' message (%s)", msg1, msg1Height, expectedPercentage, msg2, msg2Height),
-                    currentPercentage <= expectedPercentage);
+            Assert.assertNotEquals(
+                    String.format("The height of '%s' message (%s) is not different than the height of "
+                            + "'%s' message (%s)", msg1, msg1Height, msg2, msg2Height),
+                    msg1Height, msg2Height);
         }
     }
 
