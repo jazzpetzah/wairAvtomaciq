@@ -74,14 +74,25 @@ public class IncomingPendingConnectionsPageSteps {
     }
 
     /**
-     * Click the ignore connection request button from within the dialog of a user who has sent you a connection request
+     * Click the ignore connection request button or connect button from within the dialog of a user who has sent you a
+     * connection request
      *
+     * @param action      Connect/Ignore connect
      * @throws Exception
-     * @step. ^I tap Ignore connect button$
+     * @step. ^I tap (Ignore connect|Connect) button$
      */
-    @When("^I tap Ignore connect button$")
-    public void ITapIgnoreConnectButton() throws Exception {
-        getIncomingPendingConnectionsPage().tapIgnoreButton();
+    @When("^I tap (Ignore connect|Connect) button$")
+    public void ITapIgnoreOrConnectButton(String action) throws Exception {
+        switch (action) {
+            case "Connect":
+                getIncomingPendingConnectionsPage().tapAcceptConnectButton();
+                break;
+            case "Ignore connect":
+                getIncomingPendingConnectionsPage().tapIgnoreButton();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown action name '%s'", action));
+        }
     }
 
     /**
@@ -173,8 +184,8 @@ public class IncomingPendingConnectionsPageSteps {
      * @step. ^I tap [Cc]onnect button on connect to page$
      */
     @When("^I tap [Cc]onnect button on connect to page$")
-    public void ITapConnectButton() throws Exception {
-        getIncomingPendingConnectionsPage().tapConnectButton();
+    public void ITapConnectButtonOnSendConnectionRequest() throws Exception {
+        getIncomingPendingConnectionsPage().tapSendConnectButton();
     }
 
     /**
