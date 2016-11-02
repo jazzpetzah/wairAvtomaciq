@@ -250,6 +250,7 @@ Feature: Settings
     And I accept alert if visible
     And I tap Take Photo button on Camera page
     And I tap Confirm button on Picture preview page
+    And I accept alert if visible
     Then I wait up to <Timeout> seconds until my profile picture is changed
 
     Examples:

@@ -331,27 +331,23 @@ Feature: Utility
       | iphone  | legal         |
       | iphone  | job           |
       | iphone  | download      |
-      | iphone  | forgot        |
       | iphone  | unsupported   |
       | android | start         |
       | android | privacy       |
       | android | legal         |
       | android | job           |
       | android | download      |
-      | android | forgot        |
       | android | unsupported   |
       | osx     | start         |
       | osx     | privacy       |
       | osx     | legal         |
       | osx     | job           |
       | osx     | download      |
-      | osx     | forgot        |
       | osx     | unsupported   |
       | windows | start         |
       | windows | privacy       |
       | windows | legal         |
       | windows | job           |
       | windows | download      |
-      | windows | forgot        |
       | windows | unsupported   |
     
