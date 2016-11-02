@@ -12,8 +12,6 @@ Feature: Ephemeral Messages
     Given I set ephemeral messages expiration timer to <Timeout> seconds
     Given I type the default message and send it
     Given I see 1 default message in the conversation view
-    # make sure the message arrives before saved
-    Given I wait for 5 seconds
     When I remember the recent message from user Myself in the local database
     And I wait for <Timeout> seconds
     Then I see 0 default messages in the conversation view
@@ -23,8 +21,6 @@ Feature: Ephemeral Messages
     # Wait for the message to be delivered
     And I wait for 3 seconds
     And I see 1 default message in the conversation view
-    # make sure the message arrives before saved
-    And I wait for 5 seconds
     And I remember the state of the recent message from user <Contact> in the local database
     And I wait for <Timeout> seconds
     Then I see 0 default messages in the conversation view
@@ -58,8 +54,6 @@ Feature: Ephemeral Messages
     Given I tap Hourglass button in conversation view
     Given I set ephemeral messages expiration timer to <Timeout> seconds
     Given I type the default message and send it
-    # make sure the message arrives before saved
-    Given I wait for 5 seconds
     When I remember the recent message from user Myself in the local database
     And I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
     And I wait for <Timeout> seconds
@@ -275,8 +269,6 @@ Feature: Ephemeral Messages
     Given I set ephemeral messages expiration timer to <Timer> seconds
     Given I type the "<SoundCloudLink>" message and send it
     Given I see media container in the conversation view
-    # make sure the message arrives before saved
-    Given I wait for 5 seconds
     When I remember the recent message from user Myself in the local database
     And I wait for <Timer> seconds
     Then I see 1 message in the conversation view

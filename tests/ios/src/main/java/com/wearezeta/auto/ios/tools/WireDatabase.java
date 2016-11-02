@@ -35,8 +35,8 @@ public class WireDatabase {
                     "FROM ZMESSAGE " +
                     "INNER JOIN ZUSER " +
                     "ON ZMESSAGE.ZSENDER=ZUSER.Z_PK " +
-                    "WHERE ZMESSAGE.ZISENCRYPTED=1 AND ZUSER.ZEMAILADDRESS=\"%s\" " +
-                    "ORDER BY ZMESSAGE.ZUPDATEDTIMESTAMP DESC " +
+                    "WHERE ZUSER.ZEMAILADDRESS=\"%s\" " +
+                    "ORDER BY ZMESSAGE.ZSERVERTIMESTAMP DESC " +
                     "LIMIT 1";
             final ResultSet rs = getQueryResult(connection, queryTpl, user.getEmail());
             if (rs.next()) {
