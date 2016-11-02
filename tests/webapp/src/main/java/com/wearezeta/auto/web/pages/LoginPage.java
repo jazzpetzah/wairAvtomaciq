@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.pages;
 
 import com.wearezeta.auto.common.CommonUtils;
 
+import java.net.URL;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
@@ -178,8 +179,24 @@ public class LoginPage extends WebPage {
     }
 
     public void visitSessionExpiredPage(String langKey) throws Exception {
-        getDriver().get(CommonUtils.getWebAppApplicationPathFromConfig(LoginPage.class) + "auth/?expired&hl=" + langKey
-                + "#login");
+
+        String currentUrl = this.getDriver().getCurrentUrl();
+        URL oldUrl = new URL(currentUrl);
+        StringBuilder newUrl = new StringBuilder();
+        newUrl.append(oldUrl.getProtocol())
+                .append("://")
+                .append(oldUrl.getHost())
+                .append(oldUrl.getPath());
+        if (oldUrl.getQuery() == null) {
+            newUrl.append("?");
+        } else {
+            newUrl.append("?" + oldUrl.getQuery()).append("&");
+        }
+        newUrl.append("expired&hl=").append(langKey);
+        if (oldUrl.getRef() != null) {
+            newUrl.append("#").append(oldUrl.getRef());
+        }
+        this.getDriver().get(newUrl.toString());
     }
 
     public String getSessionExpiredErrorMessage() throws Exception {
