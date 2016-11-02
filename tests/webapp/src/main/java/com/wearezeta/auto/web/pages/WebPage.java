@@ -95,7 +95,7 @@ public class WebPage extends BasePage {
         if (oldUrl.getQuery() == null) {
             newUrl.append("?");
         } else {
-            newUrl.append(oldUrl.getQuery()).append("&");
+            newUrl.append("?" + oldUrl.getQuery()).append("&");
         }
         newUrl.append("hl=").append(language);
         if (oldUrl.getRef() != null) {
