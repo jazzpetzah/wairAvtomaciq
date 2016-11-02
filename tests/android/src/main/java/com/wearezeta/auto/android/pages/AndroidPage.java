@@ -149,16 +149,14 @@ public abstract class AndroidPage extends BasePage {
     /**
      * Swipe from x = 90% of width to x = 10% of width. y = height/2
      */
-    public void swipeRightCoordinates(int durationMilliseconds)
-            throws Exception {
+    public void swipeRightCoordinates(int durationMilliseconds) throws Exception {
         swipeRightCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE);
     }
 
     /**
      * Swipe from x = 10% of width to x = 90% of width. y = heightPercent
      */
-    public void swipeRightCoordinates(int durationMilliseconds,
-                                      int heightPercent) throws Exception {
+    public void swipeRightCoordinates(int durationMilliseconds, int heightPercent) throws Exception {
         swipeByCoordinates(durationMilliseconds,
                 SWIPE_DEFAULT_PERCENTAGE_START, heightPercent,
                 SWIPE_DEFAULT_PERCENTAGE_END, heightPercent);
@@ -174,8 +172,7 @@ public abstract class AndroidPage extends BasePage {
     /**
      * Swipe from x = 90% of width to x = 10% of width. y = heightPercent
      */
-    public void swipeLeftCoordinates(int durationMilliseconds, int heightPercent)
-            throws Exception {
+    public void swipeLeftCoordinates(int durationMilliseconds, int heightPercent) throws Exception {
         swipeByCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE_END,
                 heightPercent, SWIPE_DEFAULT_PERCENTAGE_START, heightPercent);
     }
@@ -190,8 +187,7 @@ public abstract class AndroidPage extends BasePage {
     /**
      * Swipe from y = 90% of height to y = 10% of height. x = widthPercent
      */
-    public void swipeUpCoordinates(int durationMilliseconds, int widthPercent)
-            throws Exception {
+    public void swipeUpCoordinates(int durationMilliseconds, int widthPercent) throws Exception {
         swipeByCoordinates(durationMilliseconds, widthPercent,
                 SWIPE_DEFAULT_PERCENTAGE_END, widthPercent,
                 SWIPE_DEFAULT_PERCENTAGE_START);
