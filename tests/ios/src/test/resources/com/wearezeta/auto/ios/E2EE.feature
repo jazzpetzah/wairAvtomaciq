@@ -349,24 +349,24 @@ Feature: E2EE
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email
-    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact2> sends 1 encrypted message to group conversation <GroupChatName>
-    And I tap on group chat with name <GroupChatName>
-    And I open conversation details
-    And I select participant <Contact1>
-    And I switch to Devices tab
-    And I open details page of device number 1
-    And I tap Verify switcher on Device Details page
-    And I navigate back from Device Details page
-    And I close user profile page
-    And I select participant <Contact2>
-    And I switch to Devices tab
-    And I open details page of device number 1
-    And I tap Verify switcher on Device Details page
-    And I navigate back from Device Details page
-    And I close user profile page
-    And I close group info page
+    Given I see conversations list
+    Given I tap on group chat with name <GroupChatName>
+    Given I open conversation details
+    Given I select participant <Contact1>
+    Given I switch to Devices tab
+    Given I open details page of device number 1
+    Given I tap Verify switcher on Device Details page
+    Given I navigate back from Device Details page
+    Given I close user profile page
+    Given I select participant <Contact2>
+    Given I switch to Devices tab
+    Given I open details page of device number 1
+    Given I tap Verify switcher on Device Details page
+    Given I navigate back from Device Details page
+    Given I close user profile page
+    Given I close group info page
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And I type the default message and send it
     And I close New Device overlay
