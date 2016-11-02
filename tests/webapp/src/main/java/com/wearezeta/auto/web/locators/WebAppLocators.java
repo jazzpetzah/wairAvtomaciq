@@ -313,7 +313,7 @@ public final class WebAppLocators {
 
     public static final class OptionsPage {
 
-        public static final String cssImportButton = "[data-uie-name='do-share-contacts']";
+        public static final String cssImportButton = "[data-uie-name='do-share-contacts'] .preferences-option-label";
 
     }
 
