@@ -415,6 +415,7 @@ Feature: Ephemeral Messages
   Scenario Outline: Verify missed call didn't disappear after receiver saw it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <DeviceName>
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on contact name <Contact>
@@ -429,5 +430,5 @@ Feature: Ephemeral Messages
     Then I see "<Message>" system message in the conversation view
 
     Examples:
-      | Name      | Contact   | Timeout | Message    |
-      | user1Name | user2Name | 5       | YOU CALLED |
+      | Name      | Contact   | Timeout | Message    | DeviceName |
+      | user1Name | user2Name | 5       | YOU CALLED | userDevice |
