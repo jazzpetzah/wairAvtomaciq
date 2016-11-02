@@ -173,37 +173,48 @@ public class ConversationViewPageSteps {
      * Tap the corresponding button in the input controls
      * Tap file button will send file directly when you installed testing_gallery-debug.apk
      *
-     * @param longTap                equals not null means long tap on the cursor button
+     * @param tapType                could be tap/long tap/double tap,  be careful long tap only support audio message button, and double tap only support Ephemeral button
      * @param btnName                button name
      * @param longTapDurationSeconds long tap duration in seconds
      * @param shouldReleaseFinger    this does not equal to hull if one should not
      *                               release his finger after tap on an icon. Works for long tap on Audio Message
      *                               icon only
      * @throws Exception
-     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text|Send|Ephemeral) button (\d+ seconds )? from cursor
+     * @step. ^I (tap|long tap|double tap) (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text|Send|Ephemeral) button (\d+ seconds )? from cursor
      * toolbar( without releasing my finger)?$
      */
-    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text|Send|Ephemeral)" +
+    @When("^I (tap|long tap|double tap) (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text|Send|Ephemeral)" +
             " button (\\d+ seconds )?from cursor toolbar( without releasing my finger)?$")
-    public void ITapCursorToolButton(String longTap, String btnName, String longTapDurationSeconds,
+    public void ITapCursorToolButton(String tapType, String btnName, String longTapDurationSeconds,
                                      String shouldReleaseFinger) throws Exception {
-        if (longTap == null) {
-            getConversationViewPage().tapCursorToolButton(btnName);
-        } else {
-            int longTapDuration = (longTapDurationSeconds == null) ? DriverUtils.LONG_TAP_DURATION :
-                    Integer.parseInt(longTapDurationSeconds.replaceAll("[\\D]", "")) * 1000;
+        switch (tapType) {
+            case "tap":
+                getConversationViewPage().tapCursorToolButton(btnName);
+                break;
+            case "long tap":
+                int longTapDuration = (longTapDurationSeconds == null) ? DriverUtils.LONG_TAP_DURATION :
+                        Integer.parseInt(longTapDurationSeconds.replaceAll("[\\D]", "")) * 1000;
 
-            switch (btnName.toLowerCase()) {
-                case "audio message":
+                if (btnName.toLowerCase().equals("audio message")) {
                     if (shouldReleaseFinger == null) {
                         getConversationViewPage().longTapAudioMessageCursorBtn(longTapDuration);
                     } else {
                         getConversationViewPage().longTapAndKeepAudioMessageCursorBtn();
                     }
-                    break;
-                default:
+                } else {
                     throw new IllegalStateException(String.format("Unknow button name '%s' for long tap", btnName));
-            }
+
+                }
+                break;
+            case "double tap":
+                if (btnName.toLowerCase().equals("ephemeral")) {
+                    getConversationViewPage().doubleTapOnEphemeralButton();
+                } else {
+                    throw new IllegalStateException(String.format("Unknow button name '%s' for double tap", btnName));
+                }
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify tap type '%s'", tapType));
         }
 
     }

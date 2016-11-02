@@ -501,6 +501,10 @@ public class ConversationViewPage extends AndroidPage {
         }
     }
 
+    public void doubleTapOnEphemeralButton() throws Exception {
+        getDriver().doubleTap(getElement(xpathCursorEphemeralButton));
+    }
+
     public boolean waitUntilCursorInputButtonVisible(String buttonType) throws Exception {
         By locator = getCursorInputButtonLocator(buttonType);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);

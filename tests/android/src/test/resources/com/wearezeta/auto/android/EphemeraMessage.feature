@@ -31,20 +31,31 @@ Feature: Ephemeral Message
       | Name      | Contact   | EphemeralTimeout | Message | EphemeralStatus | Message2 | Mydevice |
       | user1Name | user2Name | 15 seconds       | test5s  | left            | ok       | d1       |
 
-  @C261705 @regression
-  Scenario Outline: Verify ephemeral messages are turned off in a group chat
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+  @C261705 @staging
+  Scenario Outline: Verify double tap ephemeral icon will turn on/off the ephemeral mode
+    Given There is 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    When I tap on conversation name <GroupChatName>
-    Then I do not see Ephemeral button in cursor input
+    Given I tap on conversation name <Contact>
+    When I tap Ephemeral button from cursor toolbar
+    And I set timeout to <Timeout1> on Extended cursor ephemeral overlay
+    And I tap on text input
+    And I tap Ephemeral button from cursor toolbar
+    And I set timeout to Off on Extended cursor ephemeral overlay
+    And I tap on text input
+    And I double tap Ephemeral button from cursor toolbar
+    And I tap Ephemeral button from cursor toolbar
+    Then I see current ephemeral timeout is "<Timeout1>"
+    When I tap on text input
+    And I double tap Ephemeral button from cursor toolbar
+    And I tap Ephemeral button from cursor toolbar
+    Then I see current ephemeral timeout is "<Timeout2>"
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | MyGroup       |
+      | Name      | Contact   | Timeout1   | Timeout2 |
+      | user1Name | user2Name | 15 seconds | OFF      |
 
   @C261706 @regression
   Scenario Outline: Verify edit/delete/like/copy/forward is disabled for ephemeral messages
