@@ -370,7 +370,7 @@ Feature: Ephemeral Messages
     When User <Contact> switches user Myself to ephemeral mode with 0 seconds timeout
     And User <Contact> sends 1 encrypted message using device <DeviceName> to user Myself
     And I see 1 default message in the conversation view
-    And I wait for <EphemeralTimeout> seconds
+    And I wait for 15 seconds
     Then I see 1 default message in the conversation view
 
     Examples:
