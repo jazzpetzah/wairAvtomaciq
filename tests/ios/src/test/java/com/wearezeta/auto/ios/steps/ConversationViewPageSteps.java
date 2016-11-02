@@ -391,6 +391,8 @@ public class ConversationViewPageSteps {
 
     /**
      * Store the current assets container state into an internal varibale - especially for ephemeral assets
+     * Remembers the cell above the recent cell. So make sure to send a message after the asset to get rid
+     * of the delivered time label for a better picture comparison result.
      *
      * @throws Exception
      * @step. ^I remember media asset container state$
