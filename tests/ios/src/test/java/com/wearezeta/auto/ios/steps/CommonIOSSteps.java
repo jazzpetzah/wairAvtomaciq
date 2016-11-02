@@ -1387,7 +1387,7 @@ public class CommonIOSSteps {
      * @param waitDuration       how much seconds to wait until the event happens
      * @throws Exception
      * @step. ^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is
-     * changed( in \\d+ seconds?)?$
+     * (not )?changed( in \\d+ seconds?)?$
      */
     @Then("^User (.*) sees? the recent message from (user|group conversation) (.*) via device (.*) is " +
             "(not )?changed( in \\d+ seconds?)?$")
