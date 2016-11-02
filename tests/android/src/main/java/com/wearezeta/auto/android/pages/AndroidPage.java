@@ -306,8 +306,28 @@ public abstract class AndroidPage extends BasePage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathInternetIndicator, timeoutSeconds);
     }
 
+    private static final int DEFAULT_RETRY_DELAY_SECONDS = 3;
+
     public boolean waitUntilNoInternetBarInvisible(int timeoutSeconds) throws Exception {
-        return DriverUtils.waitUntilLocatorIsNotDisplayed(getDriver(), xpathInternetIndicator, timeoutSeconds);
+        final long startTime = System.currentTimeMillis();
+        long timeSpent;
+        int retryNumber = 0;
+        do {
+            retryNumber++;
+            try {
+                final WebElement el = getElement(xpathInternetIndicator);
+                if (DriverUtils.isElementCompletelyOnScreen(getDriver(), el)) {
+                    log.debug(String.format("No internet bar is still visible. Retrying %d...", retryNumber));
+                    Thread.sleep(DEFAULT_RETRY_DELAY_SECONDS * 1000);
+                } else {
+                    return true;
+                }
+            } catch (Exception e) {
+                return true;
+            }
+            timeSpent = (System.currentTimeMillis() - startTime) / 1000;
+        } while (timeSpent <= timeoutSeconds);
+        return false;
     }
 
     /**

@@ -160,7 +160,6 @@ Feature: Delete Message
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     When User Myself adds new device <Device>
-    And User <Contact1> adds new device <ContactDevice>
     And I see Conversations list with conversations
     And I tap on conversation name <Contact1>
     And User Myself send encrypted message "<Message>" via device <Device> to user <Contact1>
@@ -192,8 +191,8 @@ Feature: Delete Message
     Then User Myself see the recent message from user <Contact1> via device <Device> is changed
 
     Examples:
-      | Name      | Contact1  | Contact2  | Message          | Device  | ContactDevice | GroupChatName | Message2        |
-      | user1Name | user2Name | user3Name | MessageRemoteDel | Device1 | Device2       | MyGroup       | MessageLocalDel |
+      | Name      | Contact1  | Contact2  | Message          | Device  | GroupChatName | Message2        |
+      | user1Name | user2Name | user3Name | MessageRemoteDel | Device1 | MyGroup       | MessageLocalDel |
 
   @C111640 @regression @rc
   Scenario Outline: Verify deleting the picture, gif from Giphy

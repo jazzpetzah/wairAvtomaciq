@@ -77,7 +77,7 @@ public class DriverUtils {
         return elementRect.intersects(windowRect);
     }
 
-    private static boolean isElementCompletelyOnScreen(WebDriver driver, final WebElement el) {
+    public static boolean isElementCompletelyOnScreen(WebDriver driver, final WebElement el) {
         final Rectangle elementRect = new Rectangle(el.getLocation().x, el.getLocation().y,
                 el.getSize().width, el.getSize().height);
         final Dimension dim = driver.manage().window().getSize();
@@ -118,47 +118,6 @@ public class DriverUtils {
             } catch (TimeoutException e) {
                 return false;
             }
-        } finally {
-            if (!PlatformDrivers.isMobileDriver(driver)) {
-                restoreImplicitWait(driver);
-            }
-        }
-    }
-
-    /**
-     * Wait until element is not completely present on screen or not displayed at all.
-     * DO NOT use this method if you want to check whether the element not present. Use "waitUntilLocatorDissapears" method
-     * instead.
-     *
-     * @param driver selenium driver instance
-     * @param by     element id or xpath
-     * @return true or false
-     */
-    public static boolean waitUntilLocatorIsNotDisplayed(RemoteWebDriver driver,
-                                                     final By by, int timeoutSeconds) throws Exception {
-        if (!PlatformDrivers.isMobileDriver(driver)) {
-            turnOffImplicitWait(driver);
-        }
-        try {
-            Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-                    .withTimeout(timeoutSeconds, TimeUnit.SECONDS)
-                    .pollingEvery(1, TimeUnit.SECONDS)
-                    .ignoring(NoSuchElementException.class)
-                    .ignoring(InvalidElementStateException.class);
-            return wait.until(drv -> {
-                try {
-                    final List<WebElement> foundElements = drv.findElements(by);
-                    return (foundElements.size() == 0) || !isElementPresentAndDisplayed(driver, foundElements.get(0)) ||
-                            !isElementCompletelyOnScreen(driver, foundElements.get(0));
-                } catch (SessionNotFoundException e) {
-                    log.debug(e.getMessage());
-                    return true;
-                } catch (WebDriverException e) {
-                    return true;
-                }
-            });
-        } catch (TimeoutException ex) {
-            return false;
         } finally {
             if (!PlatformDrivers.isMobileDriver(driver)) {
                 restoreImplicitWait(driver);
