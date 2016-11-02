@@ -1398,18 +1398,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap the corresponding key on Emoji keyboard
-     *
-     * @param keyName The name of the corresponding key
-     * @throws Exception
-     * @step. ^I tap "(.*)" key on Emoji Keyboard$
-     */
-    @When("^I tap \"(.*)\" key on Emoji Keyboard$")
-    public void TapKeyOnEmojiKeyboard(String keyName) throws Exception {
-        getConversationViewPage().tapEmojiKeyboardKey(keyName);
-    }
-
-    /**
      * Verify whether the particular text is present or not on message toolbox
      *
      * @param shouldNotSee equals to null if the text should be visible
