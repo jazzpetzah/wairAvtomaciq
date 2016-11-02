@@ -316,8 +316,8 @@ public abstract class AndroidPage extends BasePage {
             retryNumber++;
             final Optional<WebElement> el = getElementIfDisplayed(xpathInternetIndicator);
             if (el.isPresent() && DriverUtils.isElementCompletelyOnScreen(getDriver(), el.get())) {
-                    log.debug(String.format("No internet bar is still visible. Retrying %d...", retryNumber));
-                    Thread.sleep(DEFAULT_RETRY_DELAY_SECONDS * 1000);
+                log.debug(String.format("No internet bar is still visible. Retrying %d...", retryNumber));
+                Thread.sleep(DEFAULT_RETRY_DELAY_SECONDS * 1000);
             } else {
                 return true;
             }
