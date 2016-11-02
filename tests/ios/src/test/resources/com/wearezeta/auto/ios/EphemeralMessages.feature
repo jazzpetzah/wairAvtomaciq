@@ -326,7 +326,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Message | Timeout | DeviceName    |
       | user1Name | user2Name | y1      | 15      | ContactDevice |
 
-  @C311221 @staging @fastLogin
+  @C311221 @C259598 @staging @fastLogin
   Scenario Outline: Verify receiving ephemeral assets (picture, video, audio, link preview, location)
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -366,6 +366,12 @@ Feature: Ephemeral Messages
     And I see location map container in the conversation view
     And I wait for <EphemeralTimeout> seconds
     Then I do not see location map container in the conversation view
+    # Send regular message after ephemeral
+    When User <Contact> switches user Myself to ephemeral mode with 0 seconds timeout
+    And User <Contact> sends 1 encrypted message using device <DeviceName> to user Myself
+    And I see 1 default message in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact   | SyncTimeout | EphemeralTimeout | DeviceName    | Picture     | FileName    | VideoMIME | AudioFileName | AudioMIME | Link         |
