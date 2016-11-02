@@ -1,5 +1,12 @@
 package com.wearezeta.auto.android.pages;
 
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.logging.AndroidLogListener;
@@ -11,19 +18,17 @@ import com.wearezeta.auto.common.driver.AppiumServer;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.ScreenOrientation;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.touch.TouchActions;
-
-import java.util.Optional;
-import java.util.concurrent.*;
-import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public abstract class AndroidPage extends BasePage {
     private static final Function<String, String> xpathStrAlertMessageByText =
@@ -302,7 +307,7 @@ public abstract class AndroidPage extends BasePage {
     }
 
     public boolean waitUntilNoInternetBarInvisible(int timeoutSeconds) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathInternetIndicator, timeoutSeconds);
+        return DriverUtils.waitUntilLocatorIsNotDisplayed(getDriver(), xpathInternetIndicator, timeoutSeconds);
     }
 
     /**

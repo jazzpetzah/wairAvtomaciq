@@ -180,7 +180,7 @@ Feature: Delete Message
     When I type the message "<Message2>" and send it by cursor Send button
     And User Myself remember the recent message from user <Contact1> via device <Device>
     And I enable Airplane mode on the device
-    And I see No Internet bar in 20 seconds
+    And I see No Internet bar in 15 seconds
     And I long tap the Text message "<Message2>" in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
