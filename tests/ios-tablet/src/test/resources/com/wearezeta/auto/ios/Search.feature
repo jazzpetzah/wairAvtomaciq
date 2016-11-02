@@ -176,7 +176,7 @@ Feature: Search
   Scenario Outline: Verify search by second name (something after space) [LANDSAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given User <Contact> change name to <NewName>
+    Given User <Contact> changes name to <FirstName> <LastName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -185,11 +185,11 @@ Feature: Search
     Given I accept alert if visible
     Given I tap input field on Search UI page
     When I type "<LastName>" in Search UI input field
-    Then I see the conversation "<NewName>" exists in Search results
+    Then I see the conversation "<FirstName> <LastName>" exists in Search results
 
     Examples:
-      | Name      | Contact   | NewName  | LastName |
-      | user1Name | user2Name | NEW NAME | NAME     |
+      | Name      | Contact   | FirstName | LastName |
+      | user1Name | user2Name | FirstName | LastName |
 
   @C2795 @rc @regression @fastLogin
   Scenario Outline: Verify search by part of the name [LANDSAPE]
@@ -199,10 +199,10 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I wait until <Contact> exists in backend search results
-    When I open search UI
-    And I accept alert if visible
-    And I tap input field on Search UI page
-    And I type first <LettersCount> letters of user name "<Contact>" into Search UI input field
+    Given I open search UI
+    Given I accept alert if visible
+    Given I tap input field on Search UI page
+    When I type first <LettersCount> letters of user name "<Contact>" into Search UI input field
     Then I see the conversation "<Contact>" exists in Search results
 
     Examples:
