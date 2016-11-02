@@ -132,7 +132,7 @@ Feature: Ephemeral Messages
 
     Examples:
       | Name      | Contact   | Timer | DeviceName |
-      | user1Name | user2Name | 15    | myDevice2  |
+      | user1Name | user2Name | 30    | myDevice2  |
 
   @C310632 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral audio message
@@ -248,7 +248,7 @@ Feature: Ephemeral Messages
     Given I select the first item from Giphy grid
     Given I tap Send button on Giphy preview page
     #wait for transition and gif is loaded in view
-    Given I wait for 3 seconds
+    Given I wait for 5 seconds
     Given User <Name> sends 1 encrypted message using device <DeviceName> to user <Contact>
     When I remember asset container state
     And I wait for <Timer> seconds
@@ -256,7 +256,7 @@ Feature: Ephemeral Messages
 
     Examples:
       | Name      | Contact   | Timer | GiphyTag | DeviceName |
-      | user1Name | user2Name | 15    | sun      | myDevice2  |
+      | user1Name | user2Name | 30    | sun      | myDevice2  |
 
   @C310637 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral media link
