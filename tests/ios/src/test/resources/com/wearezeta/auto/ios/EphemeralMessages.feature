@@ -408,18 +408,16 @@ Feature: Ephemeral Messages
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on contact name <Contact>
-    When I tap Hourglass button in conversation view
-    And I set ephemeral messages expiration timer to <Timer> seconds
-    And I type the default message and send it
-    Then I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
-    When I type the default message and send it
-    Then I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
-    When I tap Add Picture button from input tools
-    And I accept alert if visible
-    And I accept alert if visible
-    And I select the first picture from Keyboard Gallery
-    And I tap Confirm button on Picture preview page
-    Then I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
+    Given I tap Hourglass button in conversation view
+    Given I set ephemeral messages expiration timer to <Timer> seconds
+    Given I type the default message and send it
+    Given I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
+    Given I tap Add Picture button from input tools
+    Given I accept alert if visible
+    Given I accept alert if visible
+    Given I select the first picture from Keyboard Gallery
+    Given I tap Confirm button on Picture preview page
+    Given I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
     When I tap Time Indicator button in conversation view
     And I set ephemeral messages expiration timer to Off
     And I type the default message and send it
