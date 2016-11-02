@@ -240,7 +240,7 @@ Feature: Ephemeral Messages
       | user1Name | user2Name | 15    | FTRANSFER_MENU_DEFAULT_PNG | myDevice2  |
 
   @C310636 @regression @fastLogin
-  Scenario Outline: Verify sending ephemeral GIF
+  Scenario Outline: ZIOS-7555 Verify sending ephemeral GIF
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
     Given User Myself adds new device <DeviceName>
