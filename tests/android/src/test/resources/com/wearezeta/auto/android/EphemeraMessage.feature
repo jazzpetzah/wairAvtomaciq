@@ -338,3 +338,21 @@ Feature: Ephemeral Message
     Examples:
       | Name      | Contact   | ContactDevice | EphemeralTimeout | FileName    | MIMEType  | SyncTimeout | Picture     | AudioFileName | AudioMIMEType | URL                     | SoundCloud                                       | Youtube                                     |
       | user1Name | user2Name | d1            | 5                | testing.mp4 | video/mp4 | 1           | testing.jpg | test.m4a      | audio/mp4     | http://www.facebook.com | https://soundcloud.com/sodab/256-ra-robag-wruhme | https://www.youtube.com/watch?v=wTcNtgA6gHs |
+
+  @C318631 @staging
+  Scenario Outline: (AN-4591) Verify ephemeral icon is not missed from cursor after I edit message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact1>
+    Given I type the message "<Message>" and send it by cursor Send button
+    Given I long tap the Text message "<Message>" in the conversation view
+    Given I tap Edit button on the message bottom menu
+    When I tap Close button in edit message toolbar
+    Then I see Ephemeral button in cursor input
+
+    Examples:
+      | Name      | Contact1  | Message |
+      | user1Name | user2Name | YO      |
