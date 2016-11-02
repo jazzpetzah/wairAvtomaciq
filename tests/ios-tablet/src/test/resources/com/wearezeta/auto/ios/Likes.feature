@@ -34,6 +34,8 @@ Feature: Likes
     And I tap Like icon in the conversation
     Then I see the state of Like icon is changed in the conversation
     When User <Contact> sends encrypted message "<Link>" to user Myself
+    # Wait for the preview to be generated
+    And I wait for 5 seconds
     And I long tap on link preview in conversation view
     And I tap on Like badge item
     And I tap toolbox of the recent message
