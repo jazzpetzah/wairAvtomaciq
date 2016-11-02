@@ -1661,4 +1661,17 @@ public class CommonIOSSteps {
         Assert.assertTrue("The default map application is not visible",
                 pagesCollection.getCommonPage().isDefaultMapApplicationVisible());
     }
+
+
+    /**
+     * Tap the corresponding key on Emoji keyboard
+     *
+     * @param keyName The name of the corresponding key
+     * @throws Exception
+     * @step. ^I tap "(.*)" key on Emoji Keyboard$
+     */
+    @When("^I tap \"(.*)\" key on Emoji Keyboard$")
+    public void TapKeyOnEmojiKeyboard(String keyName) throws Exception {
+        pagesCollection.getCommonPage().tapEmojiKeyboardKey(keyName);
+    }
 }
