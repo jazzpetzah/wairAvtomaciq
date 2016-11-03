@@ -54,7 +54,7 @@ Feature: Sketch
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C318640 @staging @fastLogin
+  @C318640 @regression @fastLogin
   Scenario Outline: Verify you can add a smile on sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
