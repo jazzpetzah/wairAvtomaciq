@@ -14,6 +14,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
@@ -214,6 +215,9 @@ public class TestrailSyncUtilities {
             sendEmailNotification(notificationHeader, warningMessage);
             return;
         }
+        final boolean isMonitoringRun = Pattern.compile(
+                ".*monitor.*", Pattern.CASE_INSENSITIVE
+        ).matcher(testrailPlanName.get()).matches();
         for (String tcId : actualIds) {
             TestrailExecutionStatus previousTestResult = TestrailExecutionStatus.Untested;
             try {
@@ -221,27 +225,29 @@ public class TestrailSyncUtilities {
                         TestrailRESTWrapper.getCurrentTestResult(testrailRunId.get(), Long.parseLong(tcId));
             } catch (TestrailRequestException e) {
                 if (e.getReturnCode() == 400) {
-                    // No such test case error
-                    final String warningMessage = String
-                            .format("It seems like there is no test case(s) # %s in "
-                                            + "Testrail project '%s', plan '%s', run '%s (%s)'. "
-                                            + "This could slow down the whole RC run. "
-                                            + "Please double check .feature files whether the %s tag is properly set!",
-                                    actualIds, testrailProjectName.get(),
-                                    testrailPlanName.get(), testrailRunName.get(),
-                                    testrailRunConfigName.orElse("<No Config>"),
-                                    RCTestcase.RC_TAG);
-                    log.warn(" --> " + warningMessage + "\n\n");
-                    if (rcNotificationsRecepients.isPresent()) {
-                        final String notificationHeader = String
-                                .format("ACHTUNG! An extra RC test case has been executed in "
-                                                + "project '%s', test plan '%s', run '%s (%s)'",
-                                        testrailProjectName.get(),
+                    if (!isMonitoringRun) {
+                        // No such test case error
+                        final String warningMessage = String
+                                .format("It seems like there is no test case(s) # %s in "
+                                                + "Testrail project '%s', plan '%s', run '%s (%s)'. "
+                                                + "This could slow down the whole RC run. "
+                                                + "Please double check .feature files whether the %s tag is properly set!",
+                                        actualIds, testrailProjectName.get(),
                                         testrailPlanName.get(), testrailRunName.get(),
-                                        testrailRunConfigName.orElse("<No Config>"));
-                        NotificationSender.getInstance().send(
-                                rcNotificationsRecepients.get(),
-                                notificationHeader, warningMessage);
+                                        testrailRunConfigName.orElse("<No Config>"),
+                                        RCTestcase.RC_TAG);
+                        log.warn(" --> " + warningMessage + "\n\n");
+                        if (rcNotificationsRecepients.isPresent()) {
+                            final String notificationHeader = String
+                                    .format("ACHTUNG! An extra RC test case has been executed in "
+                                                    + "project '%s', test plan '%s', run '%s (%s)'",
+                                            testrailProjectName.get(),
+                                            testrailPlanName.get(), testrailRunName.get(),
+                                            testrailRunConfigName.orElse("<No Config>"));
+                            NotificationSender.getInstance().send(
+                                    rcNotificationsRecepients.get(),
+                                    notificationHeader, warningMessage);
+                        }
                     }
                 } else {
                     throw e;
@@ -263,7 +269,7 @@ public class TestrailSyncUtilities {
                                                         Set<String> normalizedTags) {
         syncExecutedScenarioWithTestrail(scenario.getName(), actualTestResult, normalizedTags);
     }
-    
+
     public static void syncExecutedScenarioWithTestrail(String scenarioName, TestrailExecutionStatus actualTestResult,
                                                         Set<String> normalizedTags) {
         final boolean isTestrailRCRun = testrailProjectName.isPresent() && testrailProjectName.get().length() > 0
