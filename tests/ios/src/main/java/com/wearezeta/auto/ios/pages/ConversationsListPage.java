@@ -46,9 +46,6 @@ public class ConversationsListPage extends IOSPage {
 
     // public static final By nameCancelActionButton = MobileBy.AccessibilityId("CANCEL");
 
-    private static final By nameSendAnInviteButton = MobileBy.AccessibilityId("INVITE MORE PEOPLE");
-
-
     private static final Function<String, String> xpathStrContactListPlayPauseButtonByConvoName = name ->
             String.format("//XCUIElementTypeCell[ .//*[@name='%s'] ]" +
                     "//XCUIElementTypeButton[@name='mediaCellButton']", name);
@@ -197,14 +194,6 @@ public class ConversationsListPage extends IOSPage {
         Thread.sleep(2000);
     }
 
-    public boolean isInviteMorePeopleButtonVisible() throws Exception {
-        return isLocatorDisplayed(nameSendAnInviteButton);
-    }
-
-    public boolean isInviteMorePeopleButtonNotVisible() throws Exception {
-        return isLocatorInvisible(nameSendAnInviteButton);
-    }
-
     public BufferedImage getSettingsGearStateScreenshot() throws Exception {
         return this.getElementScreenshot(getElement(nameSettingsGearButton)).orElseThrow(() ->
                 new IllegalStateException("Settings gear button is not visible"));
@@ -213,17 +202,6 @@ public class ConversationsListPage extends IOSPage {
     public void tapConvoItemByIdx(int idx) throws Exception {
         final By locator = By.xpath(xpathStrConvoListEntryByIdx.apply(idx));
         getElement(locator, String.format("Conversation list entry number '%s' is not visible", idx)).click();
-    }
-
-    public void tapOnNameYourInCallWith(String name) throws Exception {
-        findNameIamCallingInContactList(name).orElseThrow(
-                () -> new IllegalStateException(
-                        String.format("The conversation '%s' you are in a call with is not shown on top", name))
-        ).click();
-    }
-
-    private Optional<WebElement> findNameIamCallingInContactList(String name) throws Exception {
-        return getElementIfDisplayed(MobileBy.AccessibilityId(name));
     }
 
     public boolean isFirstConversationName(String convoName) throws Exception {

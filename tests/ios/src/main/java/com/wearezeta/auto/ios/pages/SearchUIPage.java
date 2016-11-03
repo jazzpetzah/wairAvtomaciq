@@ -70,14 +70,6 @@ public class SearchUIPage extends IOSPage {
         this.tapAtTheCenterOfElement((FBElement) getElement(fbNameSearchInput));
     }
 
-    public void tapXButton() throws Exception {
-        final FBElement closeButton = (FBElement) getElement(fbNameXButton);
-        this.tapAtTheCenterOfElement(closeButton);
-        if (!isLocatorInvisible(fbNameXButton, 5)) {
-            this.tapAtTheCenterOfElement(closeButton);
-        }
-    }
-
     public boolean isVisible() throws Exception {
         return isLocatorDisplayed(fbNameSearchInput);
     }
@@ -87,6 +79,41 @@ public class SearchUIPage extends IOSPage {
         searchInput.sendKeys(text + " ");
         // Wait for a user to be found
         Thread.sleep(2000);
+    }
+
+    private static By getButtonLocatorByName(String name) {
+        switch (name.toLowerCase()) {
+            case "x":
+                return fbNameXButton;
+            case "unblock":
+                return nameUnblockButton;
+            case "send invite":
+                return nameInviteMorePeopleButton;
+            case "copy invite":
+                return nameInviteCopyButton;
+            case "close invite list":
+                return nameContactViewCloseButton;
+            default:
+                throw new IllegalArgumentException(String.format("There is no '%s' button on Search UI page", name));
+        }
+    }
+
+    public void tapButton(String name) throws Exception {
+        final By locator = getButtonLocatorByName(name);
+        if (locator.equals(fbNameXButton)) {
+            final FBElement xButton = (FBElement) getElement(locator);
+            this.tapAtTheCenterOfElement(xButton);
+            if (!isLocatorInvisible(locator, 5)) {
+                this.tapAtTheCenterOfElement(xButton);
+            }
+        } else {
+            getElement(locator).click();
+        }
+    }
+
+    public boolean isButtonVisible(String name) throws Exception {
+        final By locator = getButtonLocatorByName(name);
+        return isLocatorDisplayed(locator);
     }
 
     public Optional<WebElement> getSearchResultsElement(String user) throws Exception {
@@ -128,23 +155,7 @@ public class SearchUIPage extends IOSPage {
         getElement(nameAddToConversationButton).click();
     }
 
-    public void tapUnblockButton() throws Exception {
-        getElement(nameUnblockButton).click();
-    }
-
-    public void tapSendInviteButton() throws Exception {
-        getElement(nameInviteMorePeopleButton).click();
-    }
-
-    public void tapSendInviteCopyButton() throws Exception {
-        final WebElement copyButton = getElement(nameInviteCopyButton);
-        copyButton.click();
-        if (!isLocatorInvisible(nameInviteCopyButton)) {
-            copyButton.click();
-        }
-    }
-
-    public void pressInstantConnectButton(String forName) throws Exception {
+    public void tapInstantConnectButton(String forName) throws Exception {
         final By locator = By.xpath(xpathStrInstantConnectButtonByUserName.apply(forName));
         tapElementWithRetryIfStillDisplayed(locator);
         // Wait for animation
@@ -166,10 +177,6 @@ public class SearchUIPage extends IOSPage {
     public void tapOnTopConnectionAvatarByOrder(int i) throws Exception {
         final By locator = By.xpath(xpathStrTopPeopleAvatarByIdx.apply(i));
         getElement(locator).click();
-    }
-
-    public void closeInviteList() throws Exception {
-        getElement(nameContactViewCloseButton).click();
     }
 
     public boolean waitUntilNoResultsLabelIsVisible() throws Exception {
@@ -212,5 +219,10 @@ public class SearchUIPage extends IOSPage {
     public boolean isFirstItemInSearchResult(String name) throws Exception {
         final By locator = By.xpath(xpathStrFirstSearchResultEntryByName.apply(name));
         return isLocatorDisplayed(locator);
+    }
+
+    public boolean isButtonInvisible(String btnName) throws Exception{
+        final By locator = getButtonLocatorByName(btnName);
+        return isLocatorInvisible(locator);
     }
 }

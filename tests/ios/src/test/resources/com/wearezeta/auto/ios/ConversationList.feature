@@ -501,11 +501,11 @@ Feature: Conversation List
     When I open search UI
     And I verify the alert contains text <AlertText>
     And I dismiss alert
-    And I tap Invite more people button
+    And I tap Send Invite button on Search UI page
     Then I see Share Contacts settings warning
     When I dismiss settings warning
     And I discard my choice
-    And I tap Invite more people button
+    And I tap Send Invite button on Search UI page
     Then I see Share Contacts settings warning
 
     Examples:
