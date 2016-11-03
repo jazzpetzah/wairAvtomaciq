@@ -64,7 +64,7 @@ Feature: Sketch
     Given I tap on contact name <Contact>
     Given I tap on image in conversation view
     Given I tap Fullscreen button on image
-    Given I remember current screen state
+    Given I remember current picture preview state
     Given I tap close fullscreen page button
     Given I tap Sketch button on image
     When I tap Emoji button on Sketch page
@@ -73,9 +73,9 @@ Feature: Sketch
     And I see 2 photos in the conversation view
     And I tap on image in conversation view
     And I tap Fullscreen button on image
-    Then I verify that current screen similarity score is less than <MaxScore> within <Timeout> seconds
-    And I verify that current screen similarity score is more than <MinScore> within 1 second
+    Then I verify that current picture preview similarity score is less than <MaxScore> within <Timeout> seconds
+    And I verify that current picture preview similarity score is more than <MinScore> within 1 second
 
     Examples:
       | Name      | Contact   | Picture     | Timeout | MaxScore | MinScore | EmojiChar |
-      | user1Name | user2Name | testing.jpg | 7       | 0.98     | 0.9      | 😀        |
+      | user1Name | user2Name | testing.jpg | 7       | 0.95     | 0.8      | 😀        |
