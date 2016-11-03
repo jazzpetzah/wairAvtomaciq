@@ -410,3 +410,30 @@ Feature: Ephemeral Messages
     Examples:
       | Name      | Contact   | Timer | DeviceName |
       | user1Name | user2Name | 15    | myDevice2  |
+
+  @C318636 @staging @fastLogin @torun
+  Scenario Outline: Group - Verify sending picture
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User Myself adds new device <DeviceName>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on group chat with name <GroupChatName>
+    Given I tap Hourglass button in conversation view
+    Given I set ephemeral messages expiration timer to <Timeout> seconds
+    # Picture
+    When I tap Add Picture button from input tools
+    And I accept alert if visible
+    And I accept alert if visible
+    And I select the first picture from Keyboard Gallery
+    Then I tap Confirm button on Picture preview page
+    Then I wait for 3 seconds
+    And User <Name> sends 1 encrypted message using device <DeviceName> to group conversation <GroupChatName>
+    And I remember asset container state
+    And I wait for <Timeout> seconds
+    Then I see asset container state is changed
+
+    Examples:
+      | Name      | Contact1   | Contact2  | GroupChatName | Timeout | DeviceName |
+      | user1Name | user2Name  | user3Name | Epheme grp    | 15      | device2    |

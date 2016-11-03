@@ -500,7 +500,7 @@ public class ConversationViewPage extends IOSPage {
     public BufferedImage getAssetContainerStateScreenshot() throws Exception {
         final BufferedImage containerScreen = this.getElementScreenshot(getElement(xpathEntryAboveTheRecent)).orElseThrow(() ->
                 new IllegalStateException("Cannot take a screenshot of asset container"));
-//        ImageIO.write(containerScreen, "png", new File("/Users/julianereschke/Desktop/" + System.currentTimeMillis() + ".png"));
+        javax.imageio.ImageIO.write(containerScreen, "png", new java.io.File("/Users/guest/Desktop/" + System.currentTimeMillis() + ".png"));
         return containerScreen;
     }
 
