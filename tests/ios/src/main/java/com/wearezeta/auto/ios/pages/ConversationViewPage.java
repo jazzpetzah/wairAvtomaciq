@@ -95,10 +95,13 @@ public class ConversationViewPage extends IOSPage {
             String.format("//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[@value='%s CALLED'] ]" +
                     "//XCUIElementTypeButton[@name='ConversationMissedCallButton']", name.toUpperCase());
 
+    private static final Function<String, String> xpathStrConnectingToUserLabelByName = name -> String.format(
+            "//XCUIElementTypeStaticText[contains(@value, 'CONNECTING TO %s.')]", name.toUpperCase());
+
     public static final By xpathStrMissedCallButtonByYourself =
             By.xpath(xpathStrMissedCallButtonByContact.apply("you"));
 
-    public static final By xpathCancelRequestButton = By.xpath("//XCUIElementTypeButton[@label='CANCEL REQUEST']");
+    // public static final By xpathCancelRequestButton = By.xpath("//XCUIElementTypeButton[@label='CANCEL REQUEST']");
 
     public static final String MEDIA_STATE_PLAYING = "playing";
 
@@ -468,8 +471,8 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isPendingOutgoingConnectionVisible(String toUserName) throws Exception {
-        return isLocatorDisplayed(xpathCancelRequestButton) &&
-                isLocatorDisplayed(MobileBy.AccessibilityId(toUserName));
+        final By locator = By.xpath(xpathStrConnectingToUserLabelByName.apply(toUserName));
+        return isLocatorDisplayed(locator);
     }
 
     public boolean isShieldIconVisible() throws Exception {
@@ -714,7 +717,7 @@ public class ConversationViewPage extends IOSPage {
         if (isDoubleTap) {
             el.doubleTap();
         } else if (isLongTap) {
-            longClickAt(el, 25, 50);
+            longClickAt(el, 15, 50);
         } else {
             el.click();
         }

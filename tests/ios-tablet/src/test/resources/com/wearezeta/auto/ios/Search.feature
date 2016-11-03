@@ -414,7 +414,8 @@ Feature: Search
     And I see Open conversation action button on Search UI page
     And I tap on 2nd top connection contact
     Then I see Create conversation action button on Search UI page
-    When I press Backspace button in search field
+    When I tap input field on Search UI page
+    And I press Backspace button in search field
     And I press Backspace button in search field
     Then I do not see Create conversation action button on Search UI page
     When I press Backspace button in search field
