@@ -30,20 +30,6 @@ Feature: Ephemeral Messages
       | Name      | Contact   | DeviceName    | Timeout |
       | user1Name | user2Name | ContactDevice | 15      |
 
-  @C259589 @rc @regression @fastLogin
-  Scenario Outline: Verify ephemeral messages are disabled in a group
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on group chat with name <GroupChatName>
-    Then I do not see Hourglass button in conversation view
-
-    Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | TESTCHAT      |
-
   @C259584 @rc @regression @fastLogin
   Scenario Outline: Verify sending ephemeral message - no online receiver (negative case)
     Given There are 2 user where <Name> is me
@@ -318,7 +304,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Message | Timeout | DeviceName    |
       | user1Name | user2Name | y1      | 15      | ContactDevice |
 
-  @C311221 @staging @fastLogin
+  @C311221 @regression @fastLogin
   Scenario Outline: Verify receiving ephemeral assets (picture, video, audio, link preview, location)
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -393,7 +379,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Message1    | Message2    | DeviceName | DeviceLabel | EphemeralTimeout |
       | user1Name | user2Name | message one | message two | ContactDev | DevLabel    | 15               |
 
-  @C259587 @staging @fastLogin
+  @C259587 @regression @fastLogin
   Scenario Outline: Verify ephemeral messages are not sent to my other devices
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -411,7 +397,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer       | DeviceName  |
       | user1Name | user2Name | 15          | myDevice2   |
 
-  @C259598 @staging @fastLogin
+  @C259598 @regression @fastLogin
   Scenario Outline: Verify timer is applyed to the all messages until turning it off
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -437,7 +423,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer | EphemeralTimeLabel |
       | user1Name | user2Name | 15    | seconds            |
 
-  @C261693 @staging @fastLogin
+  @C261693 @regression @fastLogin
   Scenario Outline: Verify missed call didn't disappear after receiver saw it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
