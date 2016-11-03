@@ -38,8 +38,8 @@ Feature: Links Preview
     And I see the link preview message "<Message>" in the conversation view
 
     Examples:
-      | Name      | Contact   | Message                                                                                                       |
-      | user1Name | user2Name | My message http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 |
+      | Name      | Contact   | Message                         |
+      | user1Name | user2Name | My message https://www.wire.com |
 
   @C165151 @regression
   Scenario Outline: Link sent from offline should have correct preview when I back to online
@@ -54,12 +54,13 @@ Feature: Links Preview
     And I type the message "<Link>" and send it by cursor Send button
     And I disable Airplane mode on the device
     And I do not see No Internet bar in 15 seconds
+    And I resend all the visible messages in conversation view
     Then I see Link Preview container in the conversation view
     And I do not see the message "<Link>" in the conversation view
 
     Examples:
-      | Name      | Contact   | Link                                                                                               |
-      | user1Name | user2Name | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 |
+      | Name      | Contact   | Link                 |
+      | user1Name | user2Name | https://www.wire.com |
 
   @C165152 @regression
   Scenario Outline: Show different link for link preview
@@ -71,19 +72,19 @@ Feature: Links Preview
     When I tap on conversation name <Contact>
     And I type the message "<TextLink>" and send it by cursor Send button
     Then I see Link Preview container in the conversation view
-    And I see the message "<TextLink>" in the conversation view
+    And I see the link preview message "<TextLink>" in the conversation view
     When I long tap Link Preview container in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And I type the message "<LinkText>" and send it by cursor Send button
     Then I see Link Preview container in the conversation view
-    And I see the message "<LinkText>" in the conversation view
+    And I see the link preview message "<LinkText>" in the conversation view
     When I long tap Link Preview container in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
     And I type the message "<TextLinkText>" and send it by cursor Send button
     Then I see Link Preview container in the conversation view
-    And I see the message "<TextLinkText>" in the conversation view
+    And I see the link preview message "<TextLinkText>" in the conversation view
     When I long tap Link Preview container in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
