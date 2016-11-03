@@ -408,9 +408,8 @@ Feature: Ephemeral Messages
     Then User Myself sees the recent message from user <Contact> via device <DeviceName> is not changed in 5 seconds
 
     Examples:
-      | Name      | Contact   | Timer | DeviceName |
-      | user1Name | user2Name | 15    | myDevice2  |
-      | user1Name | user2Name | message one | message two | ContactDev | DevLabel    | 15               |
+      | Name      | Contact   | Timer       | DeviceName  |
+      | user1Name | user2Name | 15          | myDevice2   |
 
   @C259598 @staging @fastLogin
   Scenario Outline: Verify timer is applyed to the all messages until turning it off
