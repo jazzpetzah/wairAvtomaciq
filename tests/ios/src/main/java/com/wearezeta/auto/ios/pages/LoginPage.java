@@ -62,7 +62,7 @@ public class LoginPage extends IOSPage {
             return isLocatorDisplayed(MobileBy.AccessibilityId(nameStrMainWindow));
         } catch (IllegalStateException e) {
             // Workaround for extra alert
-            acceptAlertIfVisible();
+            acceptAlert();
         }
         return isLocatorDisplayed(MobileBy.AccessibilityId(nameStrMainWindow));
     }
@@ -167,8 +167,6 @@ public class LoginPage extends IOSPage {
     }
 
     public void switchToLogin() throws Exception {
-        // Wait for a while until the button is 100% accessible
-        Thread.sleep(1000);
         final Optional<WebElement> switchToLoginButton = getElementIfExists(nameSwitchToLoginButton);
         if (switchToLoginButton.isPresent()) {
             try {
