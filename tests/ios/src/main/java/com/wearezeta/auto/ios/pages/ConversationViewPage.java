@@ -991,6 +991,8 @@ public class ConversationViewPage extends IOSPage {
                 () -> new IllegalStateException(buttonName + "button can't be found")
         );
         this.tapScreenAt(dstElement);
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     private static By getImageButtonByName(String buttonName) throws Exception {

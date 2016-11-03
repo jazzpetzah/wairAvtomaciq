@@ -78,4 +78,4 @@ Feature: Sketch
 
     Examples:
       | Name      | Contact   | Picture     | Timeout | MaxScore | MinScore | EmojiChar |
-      | user1Name | user2Name | testing.jpg | 7       | 0.8      | 0.6      | 😀        |
+      | user1Name | user2Name | testing.jpg | 7       | 0.98     | 0.9      | 😀        |
