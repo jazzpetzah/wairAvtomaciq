@@ -358,7 +358,7 @@ Feature: Ephemeral Message
       | user1Name | user2Name | YO      |
 
   @C318635 @staging
-  Scenario Outline: Verify sending all types of messages after I enable ephemeral mode in group conversation
+  Scenario Outline: (Group) Verify sending all types of messages after I enable ephemeral mode in group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given Myself has group chat <Group> with <Contact>,<Contact1>
@@ -426,3 +426,81 @@ Feature: Ephemeral Message
     Examples:
       | Name      | Group | Contact   | Contact1  | EphemeraTimeout | Link                                                                                               | MessageStatus | PingMsg    | FileSize |
       | user1Name | YoG   | user2Name | user3Name | 5 seconds       | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 | Sending       | YOU PINGED | 1.00MB   |
+
+  @C320770 @staging
+  Scenario Outline: (Group) Verify in group sending ephemeral text message will be obfuscated when receiver is offline and not been delivered to my other devices
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
+    Given Myself has group chat <Group> with <Contact>,<Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User Myself adds new device <Mydevice>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Group>
+    When User Myself remembers the recent message from group conversation <Group> via device <Mydevice>
+    And I tap Ephemeral button from cursor toolbar
+    And I set timeout to <EphemeralTimeout> on Extended cursor ephemeral overlay
+    And I type the message "<Message>" and send it by cursor Send button
+    Then I see the message "<Message>" in the conversation view
+    And User Myself sees the recent message from group conversation <Group> via device <Mydevice> is not changed in 5 seconds
+    When I wait for <EphemeralTimeout>
+    Then I do not see the message "<Message>" in the conversation view
+    When I tap Ephemeral button from cursor toolbar
+    And I set timeout to Off on Extended cursor ephemeral overlay
+    And I type the message "<Message2>" and send it by cursor Send button
+    Then I see the message "<Message2>" in the conversation view
+    And User Myself sees the recent message from group conversation <Group> via device <Mydevice> is changed in 15 seconds
+
+    Examples:
+      | Name      | Contact   | EphemeralTimeout | Message | Message2 | Mydevice | Group   | Contact1  |
+      | user1Name | user2Name | 15 seconds       | test5s  | ok       | d1       | YoGroup | user3Name |
+
+  @C320775 @staging
+  Scenario Outline: (Group) Verify edit/delete/like/copy/forward is disabled for ephemeral messages in group
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
+    Given Myself has group chat <Group> with <Contact>,<Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Group>
+    When I tap Ephemeral button from cursor toolbar
+    And I set timeout to <EphemeralTimeout> on Extended cursor ephemeral overlay
+    And I type the message "<Message>" and send it by cursor Send button
+    And I long tap the obfuscated Text message "<Message>" in the conversation view
+    Then I do not see Delete only for me button on the message bottom menu
+    And I do not see Delete for everyone button on the message bottom menu
+    And I do not see Like button on the message bottom menu
+    And I do not see Copy button on the message bottom menu
+    And I do not see Forward button on the message bottom menu
+
+    Examples:
+      | Name      | Contact   | EphemeralTimeout | Message | Group   | Contact1  |
+      | user1Name | user2Name | 5 seconds        | yo      | YoGroup | user3Name |
+
+  @C320790 @staging
+  Scenario Outline: (Group) Verify timer is applyed to all messages until turning it off in group
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
+    Given Myself has group chat <Group> with <Contact>,<Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Group>
+    When I tap Ephemeral button from cursor toolbar
+    And I set timeout to <EphemeralTimeout> on Extended cursor ephemeral overlay
+    And I type the message "<Message>" and send it by cursor Send button
+    And I wait for <EphemeralTimeout>
+    Then I do not see the message "<Message>" in the conversation view
+    When I type the message "<Message2>" and send it by cursor Send button
+    And I wait for <EphemeralTimeout>
+    Then I do not see the message "<Message2>" in the conversation view
+    When I tap Ephemeral button from cursor toolbar
+    And I set timeout to Off on Extended cursor ephemeral overlay
+    And I type the message "<Message3>" and send it by cursor Send button
+    And I wait for <EphemeralTimeout>
+    Then I see the message "<Message3>" in the conversation view
+
+    Examples:
+      | Name      | Contact   | EphemeralTimeout | Message | Group   | Contact1  | Message2 | Message3 |
+      | user1Name | user2Name | 5 seconds        | yo      | YoGroup | user3Name | dd       | hk       |
