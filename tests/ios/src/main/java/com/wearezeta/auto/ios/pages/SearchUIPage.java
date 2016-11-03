@@ -15,8 +15,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 public class SearchUIPage extends IOSPage {
     private static final By fbNameSearchInput = FBBy.AccessibilityId("textViewSearch");
 
-    public static final By fbXpathPickerClearButton =
-            FBBy.xpath("//*[@name='PeoplePickerClearButton' or @name='ContactsViewCloseButton']");
+    public static final By fbNameXButton = FBBy.AccessibilityId("PeoplePickerClearButton");
 
     private static final By xpathCreateConversationButton =
             By.xpath("//XCUIElementTypeButton[@name='CREATE GROUP']");
@@ -72,9 +71,9 @@ public class SearchUIPage extends IOSPage {
     }
 
     public void tapXButton() throws Exception {
-        final FBElement closeButton = (FBElement) getElement(fbXpathPickerClearButton);
+        final FBElement closeButton = (FBElement) getElement(fbNameXButton);
         this.tapAtTheCenterOfElement(closeButton);
-        if (!isLocatorInvisible(fbXpathPickerClearButton, 5)) {
+        if (!isLocatorInvisible(fbNameXButton, 5)) {
             this.tapAtTheCenterOfElement(closeButton);
         }
     }
