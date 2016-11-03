@@ -302,6 +302,8 @@ Feature: Recall Message
     Given User <Contact> shares the default location to user Myself via device <DeviceName>
     Given I see conversations list
     When I tap on contact name <Contact>
+    # wait for sync
+    And I wait for 5 seconds
     Then I see location map container in the conversation view
     And User <Contact> remembers the recent message from user Myself via device <DeviceName>
     When User <Contact> deletes the recent message everywhere from user <Name> via device <DeviceName>

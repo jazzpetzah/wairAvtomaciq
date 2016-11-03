@@ -164,6 +164,8 @@ Feature: Likes
     Given I tap on contact name <Group>
     When I do not see Like icon in the conversation
     And User <Contact1> likes the recent message from group conversation <Group>
+    # Wait for sync
+    And I wait for 3 seconds
     And I tap toolbox of the recent message
     Then I see user <Contact1> in likers list
 
