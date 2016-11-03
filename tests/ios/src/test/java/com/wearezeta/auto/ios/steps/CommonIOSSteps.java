@@ -240,7 +240,11 @@ public class CommonIOSSteps {
         do {
             try {
                 if (ntry > 0) {
-                    IOSSimulatorHelpers.shutdown();
+                    if (caps.is(CAPABILITY_NAME_NO_UNINSTALL)) {
+                        IOSSimulatorHelpers.shutdown();
+                    } else {
+                        IOSSimulatorHelpers.reset();
+                    }
                 }
                 IOSSimulatorHelpers.start();
                 final IOSDistributable currentPackage =
