@@ -645,24 +645,26 @@ Feature: Ephemeral
       | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | 1    | 1 day    | d             | Hello   |
 
   @C318633 @ephemeral @staging
-  Scenario Outline: Verify you don't see the message in the group when it was read by another user
+  Scenario Outline: Verify message is deleted on sender side when it's read by anyone in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
     Given Myself have group chat <ChatName> with <Contact1>,<Contact2>
     Given user <Contact1> adds a new device Device1 with label Label1
-    Given user <Contact2> adds a new device Device2 with label Label2
     Given I switch to Sign In page
     Given I Sign in using login <Email1> and password <Password>
     Given I am signed in properly
-    And I open conversation with <Contact1>
-    When User <Contact1> switches group conversation <ChatName> to ephemeral mode via device Device1 with <TimeLong> timeout
-    And Contact <Contact1> sends message "<Message>" via device Device1 to group conversation <ChatName>
-    #TODO
-    And Contact <Contact2> reads message "<Message>" via device Device2 in group conversation <ChatName>
-    And I open conversation with <ChatName>
-    And I do not see text message "<Message>"
+    When I open conversation with <ChatName>
+    And I click on ephemeral button
+    And I set the timer for ephemeral to <TimeLong>
+    And I see placeholder of conversation input is Timed message
+    And I write message <Message>
+    And I send message
+    Then I see text message <Message>
+    And I wait for 5 seconds
+    And I see the last message is obfuscated
+    When User <Contact1> reads the recent message from group conversation <ChatName> via device Device1
+    And I wait for 6 seconds
     And I see 1 messages in conversation
-    And I see 0 message in database from <Contact1> in active conversation
 
     Examples:
       | Email1     | Password      | Name      | Contact1  | Contact2  | ChatName | TimeLong  | Message |
