@@ -54,9 +54,9 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I tap Leave Conversation button
-    And I see leave conversation alert
-    Then I confirm leaving
+    And I tap Open Menu button on Group info page
+    And I tap Leave action button
+    And I tap Confirm Leaving button on Group info page
     And I open archived conversations
     And I tap on group chat with name <GroupChatName>
     And I see You Left message in group chat
@@ -75,9 +75,9 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact2>
-    And I tap Remove From Conversation button
-    And I confirm removal from conversation
-    And I close user profile page
+    And I tap Remove From Conversation button on Participant profile page
+    And I tap Confirm Removal button on Participant profile page
+    And I tap X button on Participant profile page
     Then I see that <Contact2> is not present on group chat info page
 
     Examples:
@@ -111,7 +111,7 @@ Feature: People View
     And I open group conversation details
     And I change group conversation name to "<ChatName>"
     Then I see correct conversation name <ChatName>
-    And I close group info page
+    And I tap X button on Group info page
     And I see You Renamed Conversation message shown in conversation view
     When I navigate back to conversations list
     Then I see conversation <ChatName> in conversations list
@@ -133,7 +133,7 @@ Feature: People View
     And I select participant <GroupCreator>
     And I verify username <GroupCreator> on Other User Profile page is displayed
     And I verify user email for <GroupCreator> on Other User Profile page is displayed
-    And I close user profile page
+    And I tap X button on Participant profile page
     And I select participant <NonConnectedContact>
     Then I verify username <NonConnectedContact> on Other User Profile page is displayed
 
@@ -151,7 +151,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact1>
-    And I tap Start Conversation button on other user profile page
+    And I tap Open Conversation button on Participant profile page
     And I type the default message and send it
     Then I see 1 default message in the conversation view
 
@@ -229,10 +229,10 @@ Feature: People View
     Given I tap Create Group button
     When I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact3> in search result
-    And I tap X button on Search UI page
+    And I tap Clear Group Participants Picker button on Search UI page
     And I tap Create Group button
-    And I tap X button on Search UI page
-    And I close user profile page
+    And I tap Close Group Participants Picker button on Search UI page
+    And I tap X button on Participant profile page
     And I navigate back to conversations list
     Then I don't see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 
@@ -250,9 +250,9 @@ Feature: People View
     When I remember the state of <Contact> conversation item
     And I tap on contact name <Contact>
     And I open conversation details
-    And I open conversation menu
+    And I tap Open Menu button on Participant profile page
     And I tap Mute action button
-    And I close user profile page
+    And I tap X button on Participant profile page
     And I navigate back to conversations list
     And I see conversations list
     Then I see the state of <Contact> conversation item is changed
@@ -272,9 +272,9 @@ Feature: People View
     When I remember the state of <Contact> conversation item
     And I tap on contact name <Contact>
     And I open conversation details
-    And I open conversation menu
+    And I tap Open Menu button on Participant profile page
     And I tap Unmute action button
-    And I close user profile page
+    And I tap X button on Participant profile page
     And I navigate back to conversations list
     And I see conversations list
     Then I see the state of <Contact> conversation item is changed
@@ -292,7 +292,7 @@ Feature: People View
     When I tap on contact name <Contact1>
     And I open conversation details
     And I see <Contact1> user profile page
-    And I open conversation menu
+    And I tap Open Menu button on Participant profile page
     And I tap Block action button
     And I confirm blocking alert
     Then I do not see conversation <Contact1> in conversations list
@@ -357,9 +357,9 @@ Feature: People View
     Given I see conversations list
     Given I tap on group chat with name <GroupChatName>
     Given I open group conversation details
-    Given I open conversation menu
+    Given I tap Open Menu button on Group info page
     When I tap Delete action button
-    And I confirm delete conversation content
+    And I tap Confirm Deletion button on Group info page
     Then I do not see conversation <GroupChatName> in conversations list
     And I do not see Archive button at the bottom of conversations list
 
@@ -377,10 +377,10 @@ Feature: People View
     Given I see conversations list
     Given I tap on group chat with name <GroupChatName>
     Given I open group conversation details
-    Given I open conversation menu
+    Given I tap Open Menu button on Group info page
     Given I tap Delete action button
-    Given I select Also Leave option on Delete conversation confirmation
-    Given I confirm delete conversation content
+    Given I tap Also Leave checkbox on Group info page
+    Given I tap Confirm Deletion button on Participant profile page
     Given I open search UI
     Given I accept alert if visible
     Given I tap input field on Search UI page
@@ -409,9 +409,9 @@ Feature: People View
     Given User <Contact2> sends encrypted image <Picture> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I open conversation menu
+    And I tap Open Menu button on Group info page
     And I tap Delete action button
-    And I confirm delete conversation content
+    And I tap Confirm Deletion button on Group info page
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
@@ -436,9 +436,9 @@ Feature: People View
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I open conversation menu
+    And I tap Open Menu button on Participant profile page
     And I tap Delete action button
-    And I confirm delete conversation content
+    And I tap Confirm Deletion button on Participant profile page
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
@@ -457,14 +457,14 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I tap Leave Conversation button
-    And I see leave conversation alert
-    Then I confirm leaving
+    And I tap Open Menu button on Group info page
+    And I tap Leave action button
+    And I tap Confirm Leaving button on Group info page
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
@@ -500,7 +500,7 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I open conversation menu
+    And I tap Open Menu button on Participant profile page
     And I tap Block action button
     And I tap Cancel action button
     Then I see conversation action menu

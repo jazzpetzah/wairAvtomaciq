@@ -20,8 +20,8 @@ public class SearchUIPageSteps {
     /**
      * Verify whether Search UI is visible
      *
-     * @step. ^I see Search UI$
      * @throws Exception
+     * @step. ^I see Search UI$
      */
     @Then("^I see Search UI$")
     public void ISeeSearchUI() throws Exception {
@@ -165,26 +165,27 @@ public class SearchUIPageSteps {
         getSearchUIPage().selectElementInSearchResults(name);
     }
 
-    @When("^I tap (X|Unblock|Send Invite|Copy Invite|Close Invite List) button on Search UI page$")
+    @When("^I tap (X|Unblock|Send Invite|Copy Invite|(?:Close|Clear) Group Participants Picker) button on Search UI page$")
     public void ITapButton(String btnName) throws Exception {
-        switch (btnName.toLowerCase()) {
-            case "x":
-                getSearchUIPage().tapXButton();
-                break;
-            case "unblock":
-                getSearchUIPage().tapUnblockButton();
-                break;
-            case "send invite":
-                getSearchUIPage().tapSendInviteButton();
-                break;
-            case "copy invite":
-                getSearchUIPage().tapSendInviteCopyButton();
-                break;
-            case "close invite list":
-                getSearchUIPage().closeInviteList();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("There is no '%s' button on Search UI page", btnName));
+        getSearchUIPage().tapButton(btnName);
+    }
+
+    /**
+     * Verify button visiblity on Search UI page
+     *
+     * @step. ^I (do not )?see (X|Unblock|Send Invite|Copy Invite|Close Group Participants Picker) button on Search UI page$
+     * @param shouldNotSee equals to null if the button should be visible
+     * @param btnName      one of possible button names
+     * @throws Exception
+     */
+    @Then("^I (do not )?see (X|Unblock|Send Invite|Copy Invite|(?:Close|Clear) Group Participants Picker) button on Search UI page$")
+    public void ISeeButton(String shouldNotSee, String btnName) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("The button '%s' is expected to be visible", btnName),
+                    getSearchUIPage().isButtonVisible(btnName));
+        } else {
+            Assert.assertTrue(String.format("The button '%s' is expected to be invisible", btnName),
+                    getSearchUIPage().isButtonInvisible(btnName));
         }
     }
 
@@ -198,7 +199,7 @@ public class SearchUIPageSteps {
     @When("^I tap the instant connect button next to (.*)")
     public void ITapInstantConnectButton(String nameAlias) throws Exception {
         nameAlias = usrMgr.replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
-        getSearchUIPage().pressInstantConnectButton(nameAlias);
+        getSearchUIPage().tapInstantConnectButton(nameAlias);
     }
 
     /**

@@ -136,7 +136,7 @@ Feature: Likes
     Given User <Contact1> sends encrypted image <Picture> to group conversation <Group>
     When I swipe right on a <Group>
     And I tap Delete action button
-    And I confirm delete conversation content
+    And I tap Confirm Deletion button on Group info page
     And User <Contact1> likes the recent message from group conversation <Group>
     Then I do not see conversation <Group> in conversations list
     When I open search UI
@@ -164,6 +164,8 @@ Feature: Likes
     Given I tap on contact name <Group>
     When I do not see Like icon in the conversation
     And User <Contact1> likes the recent message from group conversation <Group>
+    # Wait for sync
+    And I wait for 3 seconds
     And I tap toolbox of the recent message
     Then I see user <Contact1> in likers list
 

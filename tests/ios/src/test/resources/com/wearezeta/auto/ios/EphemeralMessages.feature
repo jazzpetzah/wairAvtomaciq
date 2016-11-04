@@ -30,20 +30,6 @@ Feature: Ephemeral Messages
       | Name      | Contact   | DeviceName    | Timeout |
       | user1Name | user2Name | ContactDevice | 15      |
 
-  @C259589 @rc @regression @fastLogin
-  Scenario Outline: Verify ephemeral messages are disabled in a group
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on group chat with name <GroupChatName>
-    Then I do not see Hourglass button in conversation view
-
-    Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | TESTCHAT      |
-
   @C259584 @rc @regression @fastLogin
   Scenario Outline: Verify sending ephemeral message - no online receiver (negative case)
     Given There are 2 user where <Name> is me
@@ -76,17 +62,13 @@ Feature: Ephemeral Messages
     Given I set ephemeral messages expiration timer to <Timeout> seconds
     Given I type the default message and send it
     Given I see 1 default message in the conversation view
-    When I remember the recent message from user Myself in the local database
-    And I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
-    And I wait for 35 seconds
-    And I verify the remembered message has been changed in the local database
-    And User <Contact> reads the recent message from user <Name>
-    And I wait for 40 seconds
+    And User <Contact> reads the recent message from user Myself
+    And I wait for <Timeout> seconds
     Then I see 0 messages in the conversation view
 
     Examples:
-      | Name      | Contact   | Timeout | EphemeralTimeLabel | DeviceName    |
-      | user1Name | user2Name | 30      | seconds            | ContactDevice |
+      | Name      | Contact   | Timeout | DeviceName    |
+      | user1Name | user2Name | 5       | ContactDevice |
 
   @C259586 @rc @regression @fastLogin
   Scenario Outline: Verify switching on/off ephemeral message
@@ -304,7 +286,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Message | Timeout | DeviceName    |
       | user1Name | user2Name | y1      | 15      | ContactDevice |
 
-  @C311221 @staging @fastLogin
+  @C311221 @regression @fastLogin
   Scenario Outline: Verify receiving ephemeral assets (picture, video, audio, link preview, location)
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -379,7 +361,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Message1    | Message2    | DeviceName | DeviceLabel | EphemeralTimeout |
       | user1Name | user2Name | message one | message two | ContactDev | DevLabel    | 15               |
 
-  @C259587 @staging @fastLogin
+  @C259587 @regression @fastLogin
   Scenario Outline: Verify ephemeral messages are not sent to my other devices
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -422,3 +404,65 @@ Feature: Ephemeral Messages
     Examples:
       | Name      | Contact1   | Contact2  | GroupChatName | Timeout | DeviceName |
       | user1Name | user2Name  | user3Name | Epheme grp    | 15      | device2    |
+
+  @C259598 @regression @fastLogin
+  Scenario Outline: Verify timer is applyed to the all messages until turning it off
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    Given I tap Hourglass button in conversation view
+    Given I set ephemeral messages expiration timer to <Timer> seconds
+    Given I type the default message and send it
+    Given I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
+    Given I tap Add Picture button from input tools
+    Given I accept alert if visible
+    Given I accept alert if visible
+    Given I select the first picture from Keyboard Gallery
+    Given I tap Confirm button on Picture preview page
+    Given I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
+    When I tap Time Indicator button in conversation view
+    And I set ephemeral messages expiration timer to Off
+    And I type the default message and send it
+    Then I do not see "<EphemeralTimeLabel>" on the message toolbox in conversation view
+
+    Examples:
+      | Name      | Contact   | Timer | EphemeralTimeLabel |
+      | user1Name | user2Name | 15    | seconds            |
+
+  @C261693 @regression @fastLogin
+  Scenario Outline: Verify missed call didn't disappear after receiver saw it
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> adds new device <DeviceName>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    Given I tap Hourglass button in conversation view
+    Given I set ephemeral messages expiration timer to <Timeout> seconds
+    Given I tap Audio Call button
+    Given I see Calling overlay
+    Given I tap Leave button on Calling overlay
+    Given I see "<Message>" system message in the conversation view
+    When User <Contact> reads the recent message from user <Name>
+    And I wait for <Timeout> seconds
+    Then I see "<Message>" system message in the conversation view
+
+    Examples:
+      | Name      | Contact   | Timeout | Message    | DeviceName |
+      | user1Name | user2Name | 5       | YOU CALLED | userDevice |
+
+  @C259589 @rc @regression @fastLogin
+  Scenario Outline: Verify ephemeral messages are disabled in a group
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    Then I do not see Hourglass button in conversation view
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | TESTCHAT      |

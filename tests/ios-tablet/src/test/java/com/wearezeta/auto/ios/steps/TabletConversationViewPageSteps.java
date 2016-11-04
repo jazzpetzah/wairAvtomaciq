@@ -34,5 +34,4 @@ public class TabletConversationViewPageSteps {
     public void ITapFileTransferMenuItem(String name) throws Exception {
         getTabletConversationViewPage().tapFileTransferMenuItem(name);
     }
-
 }

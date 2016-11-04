@@ -240,7 +240,11 @@ public class CommonIOSSteps {
         do {
             try {
                 if (ntry > 0) {
-                    IOSSimulatorHelpers.shutdown();
+                    if (caps.is(CAPABILITY_NAME_NO_UNINSTALL)) {
+                        IOSSimulatorHelpers.shutdown();
+                    } else {
+                        IOSSimulatorHelpers.reset();
+                    }
                 }
                 IOSSimulatorHelpers.start();
                 final IOSDistributable currentPackage =
@@ -1660,5 +1664,18 @@ public class CommonIOSSteps {
     public void VerifyMapDefaultApplicationVisibility() throws Exception {
         Assert.assertTrue("The default map application is not visible",
                 pagesCollection.getCommonPage().isDefaultMapApplicationVisible());
+    }
+
+
+    /**
+     * Tap the corresponding key on Emoji keyboard
+     *
+     * @param keyName The name of the corresponding key
+     * @throws Exception
+     * @step. ^I tap "(.*)" key on Emoji Keyboard$
+     */
+    @When("^I tap \"(.*)\" key on Emoji Keyboard$")
+    public void TapKeyOnEmojiKeyboard(String keyName) throws Exception {
+        pagesCollection.getCommonPage().tapEmojiKeyboardKey(keyName);
     }
 }

@@ -1,5 +1,12 @@
 package com.wearezeta.auto.android.pages;
 
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.logging.AndroidLogListener;
@@ -11,19 +18,17 @@ import com.wearezeta.auto.common.driver.AppiumServer;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.ScreenOrientation;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.touch.TouchActions;
-
-import java.util.Optional;
-import java.util.concurrent.*;
-import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public abstract class AndroidPage extends BasePage {
     private static final Function<String, String> xpathStrAlertMessageByText =
@@ -47,6 +52,8 @@ public abstract class AndroidPage extends BasePage {
 
     private static Function<String, String> xpathStrAlertButtonByCaption = caption ->
             String.format("//*[starts-with(@id, 'button') and @value='%s']", caption);
+
+    private static final int DEFAULT_RETRY_DELAY_SECONDS = 3;
 
     @Override
     protected ZetaAndroidDriver getDriver() throws Exception {
@@ -142,16 +149,14 @@ public abstract class AndroidPage extends BasePage {
     /**
      * Swipe from x = 90% of width to x = 10% of width. y = height/2
      */
-    public void swipeRightCoordinates(int durationMilliseconds)
-            throws Exception {
+    public void swipeRightCoordinates(int durationMilliseconds) throws Exception {
         swipeRightCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE);
     }
 
     /**
      * Swipe from x = 10% of width to x = 90% of width. y = heightPercent
      */
-    public void swipeRightCoordinates(int durationMilliseconds,
-                                      int heightPercent) throws Exception {
+    public void swipeRightCoordinates(int durationMilliseconds, int heightPercent) throws Exception {
         swipeByCoordinates(durationMilliseconds,
                 SWIPE_DEFAULT_PERCENTAGE_START, heightPercent,
                 SWIPE_DEFAULT_PERCENTAGE_END, heightPercent);
@@ -167,8 +172,7 @@ public abstract class AndroidPage extends BasePage {
     /**
      * Swipe from x = 90% of width to x = 10% of width. y = heightPercent
      */
-    public void swipeLeftCoordinates(int durationMilliseconds, int heightPercent)
-            throws Exception {
+    public void swipeLeftCoordinates(int durationMilliseconds, int heightPercent) throws Exception {
         swipeByCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE_END,
                 heightPercent, SWIPE_DEFAULT_PERCENTAGE_START, heightPercent);
     }
@@ -183,8 +187,7 @@ public abstract class AndroidPage extends BasePage {
     /**
      * Swipe from y = 90% of height to y = 10% of height. x = widthPercent
      */
-    public void swipeUpCoordinates(int durationMilliseconds, int widthPercent)
-            throws Exception {
+    public void swipeUpCoordinates(int durationMilliseconds, int widthPercent) throws Exception {
         swipeByCoordinates(durationMilliseconds, widthPercent,
                 SWIPE_DEFAULT_PERCENTAGE_END, widthPercent,
                 SWIPE_DEFAULT_PERCENTAGE_START);
@@ -302,7 +305,23 @@ public abstract class AndroidPage extends BasePage {
     }
 
     public boolean waitUntilNoInternetBarInvisible(int timeoutSeconds) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathInternetIndicator, timeoutSeconds);
+        final long startTime = System.currentTimeMillis();
+        long timeSpent;
+        int retryNumber = 0;
+        do {
+            retryNumber++;
+            final Optional<WebElement> el = getElementIfDisplayed(xpathInternetIndicator);
+            if (el.isPresent() && DriverUtils.isElementCompletelyOnScreen(getDriver(), el.get())) {
+                log.debug(String.format("No internet bar is still visible. Retrying %d...", retryNumber));
+                Thread.sleep(DEFAULT_RETRY_DELAY_SECONDS * 1000);
+            } else {
+                //Delay required for SE and UI sync
+                Thread.sleep(DEFAULT_RETRY_DELAY_SECONDS);
+                return true;
+            }
+            timeSpent = (System.currentTimeMillis() - startTime) / 1000;
+        } while (timeSpent <= timeoutSeconds);
+        return false;
     }
 
     /**

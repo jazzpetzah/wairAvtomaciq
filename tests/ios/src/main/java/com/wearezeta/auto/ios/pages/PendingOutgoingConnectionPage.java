@@ -7,25 +7,44 @@ import org.openqa.selenium.By;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class PendingOutgoingConnectionPage extends IOSPage {
-
     private static final By xpathConnectOtherUserButton =
             By.xpath("//XCUIElementTypeButton[@name='CONNECT' or @name='OtherUserMetaControllerLeftButton']");
+
+    private static final By xpathCancelRequestButton = By.xpath("//XCUIElementTypeButton[@label='CANCEL REQUEST']");
 
     public PendingOutgoingConnectionPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
-    public boolean isConnectButtonVisible() throws Exception {
-        return isLocatorDisplayed(xpathConnectOtherUserButton);
+    private static By getButtonLocatorByName(String name) {
+        switch (name.toLowerCase()) {
+            case "connect":
+                return xpathConnectOtherUserButton;
+            case "cancel request":
+                return xpathCancelRequestButton;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
+        }
     }
 
-    public boolean isConnectButtonInvisible() throws Exception {
-        return isLocatorInvisible(xpathConnectOtherUserButton);
+    public void tapButton(String name) throws Exception {
+        final By locator = getButtonLocatorByName(name);
+        if (locator.equals(xpathConnectOtherUserButton)) {
+            this.tapElementWithRetryIfStillDisplayed(xpathConnectOtherUserButton);
+            // Wait for animation
+            Thread.sleep(2000);
+        } else {
+            getElement(locator).click();
+        }
     }
 
-    public void tapConnectButton() throws Exception {
-        this.tapElementWithRetryIfStillDisplayed(xpathConnectOtherUserButton);
-        // Wait for animation
-        Thread.sleep(2000);
+    public boolean isButtonVisible(String name) throws Exception {
+        final By locator = getButtonLocatorByName(name);
+        return isLocatorDisplayed(locator);
+    }
+
+    public boolean isButtonInvisible(String name) throws Exception {
+        final By locator = getButtonLocatorByName(name);
+        return isLocatorInvisible(locator);
     }
 }

@@ -16,16 +16,16 @@ public class OptionsPage extends WebPage {
 
     private static final Logger log = ZetaLogger.getLog(AccountPage.class.getSimpleName());
 
-    @FindBy(how = How.CSS, using = "[name='preferences-options-sound']")
+    @FindBy(how = How.CSS, using = "[name='preferences-options-audio']")
     private List<WebElement> soundAlertsRadioboxes;
 
-    @FindBy(how = How.CSS, using = "label[for='preferences-options-sound-all']")
+    @FindBy(how = How.CSS, using = "label[for='preferences-options-audio-all']")
     private WebElement soundAlertsAll;
 
-    @FindBy(how = How.CSS, using = "label[for='preferences-options-sound-some']")
+    @FindBy(how = How.CSS, using = "label[for='preferences-options-audio-some']")
     private WebElement soundAlertsSome;
 
-    @FindBy(how = How.CSS, using = "label[for='preferences-options-sound-none']")
+    @FindBy(how = How.CSS, using = "label[for='preferences-options-audio-none']")
     private WebElement soundAlertsNone;
 
     @FindBy(how = How.CSS, using = WebAppLocators.OptionsPage.cssImportButton)
@@ -60,7 +60,7 @@ public class OptionsPage extends WebPage {
             if (radiobox.isSelected()) {
                 String id = radiobox.getAttribute("id");
                 if (id != null) {
-                    return id.replace("preferences-options-sound-", "");
+                    return id.replace("preferences-options-audio-", "");
                 }
             }
         }

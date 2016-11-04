@@ -99,14 +99,14 @@ Feature: E2EE
     And I open details page of device number 1
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    And I close group participant details page
+    And I tap X button on Participant profile page
     And I select participant <Contact2>
     And I switch to Devices tab
     And I open details page of device number 1
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    And I close group participant details page
-    And I close group info page
+    And I tap X button on Participant profile page
+    And I tap X button on Group info page
     Then I see shield icon in the conversation view
 
     Examples:
@@ -126,7 +126,7 @@ Feature: E2EE
     And I open details page of device number 1
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    And I close user profile page
+    And I tap X button on Participant profile page
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And User <Contact1> sends 1 encrypted message using device <DeviceName2> to user Myself
     # Wait for sync
@@ -151,7 +151,7 @@ Feature: E2EE
     Given I open details page of device number 1
     Given I tap Verify switcher on Device Details page
     Given I navigate back from Device Details page
-    Given I close user profile page
+    Given I tap X button on Participant profile page
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And I type the default message and send it
     Then I see the label "<Contact1> <ExpectedSuffix>" on New Device overlay
@@ -245,7 +245,7 @@ Feature: E2EE
     Given I open details page of device number 1
     Given I tap Verify switcher on Device Details page
     Given I navigate back from Device Details page
-    Given I close user profile page
+    Given I tap X button on Participant profile page
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And I type the default message and send it
     And I close New Device overlay
@@ -263,15 +263,15 @@ Feature: E2EE
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email
-    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to user Myself
-    And I tap on contact name <Contact1>
-    And I open conversation details
-    And I switch to Devices tab
-    And I open details page of device number 1
-    And I tap Verify switcher on Device Details page
-    And I navigate back from Device Details page
-    And I close user profile page
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    Given I open conversation details
+    Given I switch to Devices tab
+    Given I open details page of device number 1
+    Given I tap Verify switcher on Device Details page
+    Given I navigate back from Device Details page
+    Given I tap X button on Participant profile page
     When User Myself adds a new device <DeviceName2> with label <DeviceLabel2>
     Then I do not see shield icon in the conversation view
     And I see "<ExpectedMsg>" system message in the conversation view
@@ -298,7 +298,7 @@ Feature: E2EE
     And I open details page of device number 2
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    And I close user profile page
+    And I tap X button on Participant profile page
     Then I see shield icon in the conversation view
     And I see "<VerificationMsg>" system message in the conversation view
 
@@ -334,7 +334,7 @@ Feature: E2EE
     When I select participant <Contact1>
     And I switch to Devices tab
     Then I see user <Contact1> device IDs are presented on participant devices tab
-    And I close user profile page
+    And I tap X button on Participant profile page
     When I select participant <Contact2>
     And I switch to Devices tab
     Then I see user <Contact2> device IDs are presented on participant devices tab
@@ -359,14 +359,14 @@ Feature: E2EE
     Given I open details page of device number 1
     Given I tap Verify switcher on Device Details page
     Given I navigate back from Device Details page
-    Given I close user profile page
+    Given I tap X button on Participant profile page
     Given I select participant <Contact2>
     Given I switch to Devices tab
     Given I open details page of device number 1
     Given I tap Verify switcher on Device Details page
     Given I navigate back from Device Details page
-    Given I close user profile page
-    Given I close group info page
+    Given I tap X button on Participant profile page
+    Given I tap X button on Group info page
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And I type the default message and send it
     And I close New Device overlay
@@ -426,7 +426,7 @@ Feature: E2EE
     And I open details page of device number 2
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    And I close user profile page
+    And I tap X button on Participant profile page
     And I do not see shield icon in the conversation view
     Then I do not see "<ExpectedMessage>" system message in the conversation view
 
@@ -440,8 +440,8 @@ Feature: E2EE
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email
-    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to user Myself
+    Given I see conversations list
     And I tap on contact name <Contact1>
     And I open conversation details
     And I switch to Devices tab
@@ -471,7 +471,7 @@ Feature: E2EE
     And I open details page of device number 1
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    And I close user profile page
+    And I tap X button on Participant profile page
     Then I see shield icon in the conversation view
     And I see "<VerificationMsg>" system message in the conversation view
     When I open conversation details
@@ -479,7 +479,7 @@ Feature: E2EE
     And I open details page of device number 1
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    And I close user profile page
+    And I tap X button on Participant profile page
     Then I do not see shield icon in the conversation view
     And I see "<UnverificationMsg>" system message in the conversation view
 

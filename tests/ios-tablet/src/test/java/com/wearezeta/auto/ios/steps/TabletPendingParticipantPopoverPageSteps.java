@@ -4,18 +4,18 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.ios.pages.TabletPendingUserPopoverPage;
+import com.wearezeta.auto.ios.pages.TabletPendingParticipantPopoverPage;
 
 import cucumber.api.java.en.When;
 
-public class TabletPendingUserPopoverPageSteps {
+public class TabletPendingParticipantPopoverPageSteps {
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private TabletPendingUserPopoverPage getTabletPendingUserPopoverPage() throws Exception {
-        return pagesCollection.getPage(TabletPendingUserPopoverPage.class);
+    private TabletPendingParticipantPopoverPage getTabletPendingUserPopoverPage() throws Exception {
+        return pagesCollection.getPage(TabletPendingParticipantPopoverPage.class);
     }
 
     /**

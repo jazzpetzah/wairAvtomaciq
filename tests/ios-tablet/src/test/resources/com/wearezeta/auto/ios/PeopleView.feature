@@ -58,7 +58,7 @@ Feature: People View
     When I tap on contact name <Contact1>
     And I open conversation details
     And I see <Contact1> user profile page in iPad popover
-    And I tap Create Group button
+    And I tap Create Group button on Participant profile page
     And I tap connected user <Contact2> in Search UI on iPad popover
     And I tap connected user <Contact3> in Search UI on iPad popover
     And I tap Create button on iPad popover
@@ -80,7 +80,7 @@ Feature: People View
     When I tap on contact name <Contact1>
     And I open conversation details
     And I see <Contact1> user profile page in iPad popover
-    And I tap Create Group button
+    And I tap Create Group button on Participant profile page
     And I tap connected user <Contact2> in Search UI on iPad popover
     And I tap connected user <Contact3> in Search UI on iPad popover
     And I tap Create button on iPad popover
@@ -99,10 +99,11 @@ Feature: People View
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on group chat with name <GroupChatName>
-    And I open group conversation details
-    And I tap Leave Conversation button on iPad
-    Then I confirm leaving on iPad
+    Given I tap on group chat with name <GroupChatName>
+    Given I open group conversation details
+    Given I tap Open Menu button on Group info page
+    When I tap Leave action button
+    And I tap Confirm Leaving button on Group info page
     And I open archived conversations
     And I tap on group chat with name <GroupChatName>
     Then I see You Left message in group chat
@@ -119,10 +120,11 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on group chat with name <GroupChatName>
-    And I open group conversation details
-    And I tap Leave Conversation button on iPad
-    Then I confirm leaving on iPad
+    Given I tap on group chat with name <GroupChatName>
+    Given I open group conversation details
+    Given I tap Open Menu button on Group info page
+    When I tap Leave action button
+    And I tap Confirm Leaving button on Group info page
     And I open archived conversations
     And I tap on group chat with name <GroupChatName>
     Then I see You Left message in group chat
@@ -142,9 +144,9 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
-    And I tap Remove button on iPad popover
-    And I confirm removal on iPad popover
-    And I tap Go Back button on user profile popover
+    And I tap Remove From Conversation button on Participant profile page
+    And I tap Confirm Removal button on Participant profile page
+    And I tap X button on Participant profile page
     Then I see that <Contact2> is not present on group chat info page
 
     Examples:
@@ -162,9 +164,9 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
-    And I tap Remove button on iPad popover
-    And I confirm removal on iPad popover
-    And I tap Go Back button on user profile popover
+    And I tap Remove From Conversation button on Participant profile page
+    And I tap Confirm Removal button on Participant profile page
+    And I tap X button on Participant profile page
     Then I see that <Contact2> is not present on group chat info page
 
     Examples:
@@ -181,8 +183,8 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I open conversation menu on iPad
-    And I select Rename action from iPad ellipsis menu
+    And I tap Open Menu button on Group info page
+    And I tap Rename action button
     And I change group conversation name to "<ChatName>"
     And I dismiss popover on iPad
     Then I see You Renamed Conversation message shown in conversation view
@@ -204,8 +206,8 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I open conversation menu on iPad
-    And I select Rename action from iPad ellipsis menu
+    And I tap Open Menu button on Group info page
+    And I tap Rename action button
     And I change group conversation name to "<ChatName>"
     And I dismiss popover on iPad
     Then I see You Renamed Conversation message shown in conversation view
@@ -332,7 +334,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
-    And I tap Start Conversation button on other user profile page
+    And I tap Open Conversation button on Participant profile page
     #And I dismiss popover on iPad
     And I type the default message and send it
     Then I see 1 default message in the conversation view
@@ -352,7 +354,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
-    And I tap Start Conversation button on other user profile page
+    And I tap Open Conversation button on Participant profile page
     And I type the default message and send it
     Then I see 1 default message in the conversation view
 
@@ -373,8 +375,8 @@ Feature: People View
     When I remember the right side state of <GroupChatName> conversation item on iPad
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I open conversation menu on iPad
-    And I select Unmute action from iPad ellipsis menu
+    And I tap Open Menu button on Group info page
+    And I tap Unmute action button
     And I dismiss popover on iPad
     And I navigate back to conversations list
     Then I see the state of <GroupChatName> conversation item is changed on iPad
@@ -396,8 +398,8 @@ Feature: People View
     When I remember the right side state of <GroupChatName> conversation item on iPad
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I open conversation menu on iPad
-    And I select Unmute action from iPad ellipsis menu
+    And I tap Open Menu button on Group info page
+    And I tap Unmute action button
     And I dismiss popover on iPad
     Then I see the state of <GroupChatName> conversation item is changed on iPad
 
@@ -417,8 +419,8 @@ Feature: People View
     When I remember the right side state of <GroupChatName> conversation item on iPad
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I open conversation menu on iPad
-    And I select Mute action from iPad ellipsis menu
+    And I tap Open Menu button on Group info page
+    And I tap Mute action button
     And I dismiss popover on iPad
     And I navigate back to conversations list
     Then I see the state of <GroupChatName> conversation item is changed on iPad
@@ -439,8 +441,8 @@ Feature: People View
     When I remember the right side state of <GroupChatName> conversation item on iPad
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I open conversation menu on iPad
-    And I select Mute action from iPad ellipsis menu
+    And I tap Open Menu button on Group info page
+    And I tap Mute action button
     And I dismiss popover on iPad
     Then I see the state of <GroupChatName> conversation item is changed on iPad
 
@@ -458,7 +460,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I tap Add People button
+    And I tap Add People button on Group info page
     And I tap connected user <Contact3> in Search UI on iPad popover
     And I tap Add to Conversation button on iPad popover
     And I open conversation details
@@ -478,7 +480,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I tap Add People button
+    And I tap Add People button on Group info page
     And I tap connected user <Contact3> in Search UI on iPad popover
     And I tap Add to Conversation button on iPad popover
     And I open conversation details
@@ -498,7 +500,7 @@ Feature: People View
     When I tap on contact name <Contact1>
     And I open conversation details
     And I see <Contact1> user profile page
-    And I open conversation menu
+    And I tap Open Menu button on Participant profile page
     And I tap Block action button
     And I confirm blocking alert
     Then I do not see conversation <Contact1> in conversations list
@@ -518,7 +520,7 @@ Feature: People View
     When I tap on contact name <Contact1>
     And I open conversation details
     And I see <Contact1> user profile page
-    And I open conversation menu
+    And I tap Open Menu button on Participant profile page
     And I tap Block action button
     And I confirm blocking alert
     Then I do not see conversation <Contact1> in conversations list
@@ -579,7 +581,7 @@ Feature: People View
     Given I see conversations list
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I tap Add People button
+    And I tap Add People button on Group info page
     And I tap input field on Search UI page
     And I type "<Contact3>" in Search UI input field
     Then I see No Results label on Search UI page
@@ -598,7 +600,7 @@ Feature: People View
     Given I see conversations list
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I tap Add People button
+    And I tap Add People button on Group info page
     And I tap input field on Search UI page
     And I type "<Contact3>" in Search UI input field
     Then I see No Results label on Search UI page
@@ -619,9 +621,9 @@ Feature: People View
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I open conversation menu
+    And I tap Open Menu button on Group info page
     And I tap Delete action button
-    And I confirm delete conversation content
+    And I tap Confirm Deletion button on Group info page
     Then I do not see conversation <GroupChatName> in conversations list
     And I do not see Archive button at the bottom of conversations list
 
@@ -641,9 +643,9 @@ Feature: People View
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I open conversation menu
+    And I tap Open Menu button on Group info page
     And I tap Delete action button
-    And I confirm delete conversation content
+    And I tap Confirm Deletion button on Group info page
     Then I do not see conversation <GroupChatName> in conversations list
     And I do not see Archive button at the bottom of conversations list
 
@@ -662,10 +664,10 @@ Feature: People View
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I open conversation menu
+    And I tap Open Menu button on Group info page
     And I tap Delete action button
-    And I select Also Leave option on Delete conversation confirmation
-    And I confirm delete conversation content
+    And I tap Also Leave checkbox on Group info page
+    And I tap Confirm Deletion button on Group info page
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
@@ -691,10 +693,10 @@ Feature: People View
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I open conversation menu
+    And I tap Open Menu button on Group info page
     And I tap Delete action button
-    And I select Also Leave option on Delete conversation confirmation
-    And I confirm delete conversation content
+    And I tap Also Leave checkbox on Group info page
+    And I tap Confirm Deletion button on Group info page
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
@@ -723,9 +725,9 @@ Feature: People View
     Given User Myself sends encrypted image <Image> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I open conversation menu
+    And I tap Open Menu button on Group info page
     And I tap Delete action button
-    And I confirm delete conversation content
+    And I tap Confirm Deletion button on Group info page
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
@@ -753,9 +755,9 @@ Feature: People View
     Given User Myself sends encrypted image <Image> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I open conversation menu
+    And I tap Open Menu button on Group info page
     And I tap Delete action button
-    And I confirm delete conversation content
+    And I tap Confirm Deletion button on Group info page
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
@@ -782,9 +784,9 @@ Feature: People View
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I open conversation menu
+    And I tap Open Menu button on Participant profile page
     And I tap Delete action button
-    And I confirm delete conversation content
+    And I tap Confirm Deletion button on Participant profile page
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
@@ -811,9 +813,9 @@ Feature: People View
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I open conversation menu
+    And I tap Open Menu button on Participant profile page
     And I tap Delete action button
-    And I confirm delete conversation content
+    And I tap Confirm Deletion button on Participant profile page
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
@@ -834,16 +836,14 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
-    Given I see conversations list
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I tap Leave Conversation button
-    And I see leave conversation alert
-    And I confirm leaving
-    # Wait for the popover to be closed
-    And I wait for 2 seconds
+    And I tap Open Menu button on Group info page
+    And I tap Leave action button
+    And I tap Confirm Leaving button on Group info page
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
@@ -860,16 +860,14 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see conversations list
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I tap Leave Conversation button
-    And I see leave conversation alert
-    And I confirm leaving
-    # Wait for the popover to be closed
-    And I wait for 2 seconds
+    And I tap Open Menu button on Group info page
+    And I tap Leave action button
+    And I tap Confirm Leaving button on Group info page
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
@@ -926,7 +924,7 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I open conversation menu
+    And I tap Open Menu button on Participant profile page
     And I tap Block action button
     And I tap Cancel action button
     Then I see conversation action menu
@@ -944,7 +942,7 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I open conversation menu
+    And I tap Open Menu button on Participant profile page
     And I tap Block action button
     And I tap Cancel action button
     Then I see conversation action menu

@@ -74,8 +74,7 @@ public class IncomingPendingConnectionsPageSteps {
     }
 
     /**
-     * Click the ignore connection request button or connect button from within the dialog of a user who has sent you a
-     * connection request
+     * Click the ignore connection request button or connect button from in incoming connection request
      *
      * @param action      Connect/Ignore connect
      * @throws Exception
@@ -83,6 +82,8 @@ public class IncomingPendingConnectionsPageSteps {
      */
     @When("^I tap (Ignore connect|Connect) button$")
     public void ITapIgnoreOrConnectButton(String action) throws Exception {
+        Assert.assertTrue("Connect and Ignore buttons are not visible", getIncomingPendingConnectionsPage()
+                .isIgnoreConnectButtonVisible());
         switch (action) {
             case "Connect":
                 getIncomingPendingConnectionsPage().tapAcceptConnectButton();
@@ -96,7 +97,7 @@ public class IncomingPendingConnectionsPageSteps {
     }
 
     /**
-     * Click the connect/ignore button in connection request from given user
+     * Click the connect/ignore button in incoming connection request from given user
      *
      * @param action      Connect/Ignore
      * @param contactName User Name
@@ -105,6 +106,8 @@ public class IncomingPendingConnectionsPageSteps {
      */
     @When("^I tap (Connect|Ignore) button for (.*)$")
     public void ITapIgnoreConnectButtonForUser(String action, String contactName) throws Exception {
+        Assert.assertTrue("Connect and Ignore buttons are not visible", getIncomingPendingConnectionsPage()
+                .isIgnoreConnectButtonVisible());
         switch (action) {
             case "Connect":
                 contactName = usrMgr.findUserByNameOrNameAlias(contactName).getName();

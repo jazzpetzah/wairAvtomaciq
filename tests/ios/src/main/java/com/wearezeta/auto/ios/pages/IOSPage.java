@@ -73,6 +73,13 @@ public abstract class IOSPage extends BasePage {
 
     private static final By nameDefaultMapApplication = MobileBy.AccessibilityId("CalloutArrow.png");
 
+    protected static final By xpathConfirmRemoveButton =
+            By.xpath("//XCUIElementTypeButton[@name='CANCEL']/following::XCUIElementTypeButton[@name='REMOVE']");
+    protected static final By xpathConfirmDeleteButton =
+            By.xpath("//XCUIElementTypeButton[@name='CANCEL']/following::XCUIElementTypeButton[@name='DELETE']");
+    protected static final By xpathConfirmLeaveButton =
+            By.xpath("//XCUIElementTypeButton[@name='CANCEL']/following::XCUIElementTypeButton[@name='LEAVE']");
+
     private IOSKeyboard onScreenKeyboard;
 
     private IOSKeyboard getOnScreenKeyboard() throws Exception {
@@ -762,6 +769,17 @@ public abstract class IOSPage extends BasePage {
     }
 
     public boolean isDefaultMapApplicationVisible() throws Exception {
-        return isLocatorExist(nameDefaultMapApplication) || this.isAlertContainsText("access your location");
+        return this.isAlertContainsText("access your location") || isLocatorExist(nameDefaultMapApplication);
+    }
+
+    public void tapEmojiKeyboardKey(String keyName) throws Exception {
+        final List<WebElement> elements = getDriver().findElements(MobileBy.AccessibilityId(keyName));
+        if (elements.size() > 0) {
+            elements.get(elements.size() - 1).click();
+            // Wait for animation
+            Thread.sleep(1000);
+        } else {
+            throw new IllegalArgumentException(String.format("There is no '%s' key on Emoji keyboard", keyName));
+        }
     }
 }

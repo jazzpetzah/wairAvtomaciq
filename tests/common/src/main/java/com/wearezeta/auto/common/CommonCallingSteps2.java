@@ -1,19 +1,26 @@
 package com.wearezeta.auto.common;
 
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceCallException;
-import org.apache.log4j.Logger;
+import javax.imageio.ImageIO;
+import javax.management.InstanceNotFoundException;
+import javax.xml.bind.DatatypeConverter;
 
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.calling2.v1.CallingServiceClient;
+import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceCallException;
 import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceInstanceException;
 import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.calling2.v1.model.CallStatus;
@@ -24,18 +31,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-
-import java.util.Arrays;
-import java.util.HashMap;
-
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-
-import javax.imageio.ImageIO;
-import javax.management.InstanceNotFoundException;
-import javax.xml.bind.DatatypeConverter;
+import org.apache.log4j.Logger;
 
 public final class CommonCallingSteps2 {
 
@@ -74,7 +70,6 @@ public final class CommonCallingSteps2 {
     // recocgnize a failed instances creation for retry mechanisms
     private static final int INSTANCE_START_TIMEOUT_SECONDS = 190;
     private static final int INSTANCE_DESTROY_TIMEOUT_SECONDS = 30;
-    private static final int INSTANCE_CREATION_RETRIES = 3;
     private static final long POLLING_FREQUENCY_MILLISECONDS = 1000;
     private static CommonCallingSteps2 singleton = null;
 

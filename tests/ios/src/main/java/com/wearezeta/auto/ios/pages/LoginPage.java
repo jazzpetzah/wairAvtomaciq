@@ -59,11 +59,13 @@ public class LoginPage extends IOSPage {
 
     public boolean isVisible() throws Exception {
         try {
-            return isLocatorDisplayed(MobileBy.AccessibilityId(nameStrMainWindow));
+            if (isLocatorDisplayed(MobileBy.AccessibilityId(nameStrMainWindow))) {
+                return true;
+            }
         } catch (IllegalStateException e) {
             // Workaround for extra alert
-            acceptAlertIfVisible();
         }
+        acceptAlert();
         return isLocatorDisplayed(MobileBy.AccessibilityId(nameStrMainWindow));
     }
 
@@ -119,9 +121,8 @@ public class LoginPage extends IOSPage {
         getElementIfDisplayed(nameMaybeLater).orElseGet(DummyElement::new).click();
     }
 
-    public Boolean isContactsButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationsListPage.nameContactsButton,
-                LOGIN_TIMEOUT_SECONDS);
+    public boolean isContactsButtonVisible() throws Exception {
+        return isLocatorDisplayed(ConversationsListPage.nameContactsButton, LOGIN_TIMEOUT_SECONDS);
     }
 
     public void tapHoldEmailInput() throws Exception {
@@ -167,8 +168,6 @@ public class LoginPage extends IOSPage {
     }
 
     public void switchToLogin() throws Exception {
-        // Wait for a while until the button is 100% accessible
-        Thread.sleep(1000);
         final Optional<WebElement> switchToLoginButton = getElementIfExists(nameSwitchToLoginButton);
         if (switchToLoginButton.isPresent()) {
             try {

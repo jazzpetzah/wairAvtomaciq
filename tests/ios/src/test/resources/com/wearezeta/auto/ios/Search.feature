@@ -84,6 +84,8 @@ Feature: Search
     And I tap input field on Search UI page
     And I type "<UnconnectedUser>" in Search UI input field
     And I tap on conversation <UnconnectedUser> in search result
+    # Wait until user info is loaded
+    And I wait for 3 seconds
     And I tap Connect button on Pending outgoing connection page
     And I tap X button on Search UI page
     And I tap on contact name <UnconnectedUser>
@@ -326,22 +328,22 @@ Feature: Search
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
     And I accept alert if visible
-    And I see Invite more people button
+    And I see Send Invite button on Search UI page
     And I tap on 1st top connection contact
-    And I do not see Invite more people button
+    And I do not see Send Invite button on Search UI page
     And I see Open conversation action button on Search UI page
     And I tap on 1st top connection contact
     And I do not see Open conversation action button on Search UI page
-    And I see Invite more people button
+    And I see Send Invite button on Search UI page
     And I tap input field on Search UI page
     And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
-    And I do not see Invite more people button
+    And I do not see Send Invite button on Search UI page
     And I see Open conversation action button on Search UI page
     And I press Backspace button in search field
     And I press Backspace button in search field
     And I do not see Open conversation action button on Search UI page
-    Then I see Invite more people button
+    Then I see Send Invite button on Search UI page
 
     Examples:
       | Name      | Contact   |

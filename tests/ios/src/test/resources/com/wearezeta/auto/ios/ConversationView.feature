@@ -213,7 +213,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I open conversation details
-    And I open ellipsis menu
+    And I tap Open Menu button on Participant profile page
     And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
@@ -251,22 +251,6 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C951 @rc @regression @fastLogin
-  Scenario Outline: I can send a sketch
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact1>
-    And I tap Sketch button from input tools
-    And I draw a random sketch
-    And I tap Send button on Sketch page
-    Then I see 1 photo in the conversation view
-
-    Examples:
-      | Name      | Contact1  |
-      | user1Name | user2Name |
-
   @C891 @rc @regression @fastLogin
   Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations
     Given There are 4 users where <Name> is me
@@ -285,26 +269,6 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
       | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
-
-  @C952 @173061 @rc @regression @fastLogin
-  Scenario Outline: Verify drawing on the image from gallery
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I tap Add Picture button from input tools
-    And I accept alert if visible
-    And I accept alert if visible
-    And I select the first picture from Keyboard Gallery
-    And I tap Sketch button on Picture preview page
-    And I draw a random sketch
-    And I tap Send button on Sketch page
-    Then I see 1 photo in the conversation view
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
 
   @C908 @regression @fastLogin
   Scenario Outline: Verify player isn't displayed for vimeo links without video IDs
@@ -343,7 +307,7 @@ Feature: Conversation View
     Given User <Name> sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
     And I tap Delete action button
-    And I confirm delete conversation content
+    And I tap Confirm Deletion button on Participant profile page
     Then I do not see conversation <Contact1> in conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search UI
@@ -555,25 +519,6 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   | GroupChatName |
       | user1Name | user2Name | CURSORTOOLBAR |
-
-  @C954 @regression @fastLogin
-  Scenario Outline: Verify drawing on image by Sketch on image button tap
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    When I tap on contact name <Contact>
-    And I see 1 photo in the conversation view
-    And I tap on image in conversation view
-    And I tap Sketch button on image
-    And I draw a random sketch
-    And I tap Send button on Sketch page
-    Then I see 2 photos in the conversation view
-
-    Examples:
-      | Name      | Contact   | Picture     |
-      | user1Name | user2Name | testing.jpg |
 
   @C911 @regression @fastLogin
   Scenario Outline: Verify downloading images by Save on image button tap

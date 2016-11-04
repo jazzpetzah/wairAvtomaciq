@@ -55,7 +55,7 @@ Feature: Connect
     And I select participant <UnconnectedUser>
     And I tap Connect button on Pending outgoing connection page
     And I do not see Pending outgoing connection page
-    And I close group info page
+    And I tap X button on Group info page
     And I navigate back to conversations list
     Then I see first item in contact list named <UnconnectedUser>
 
@@ -197,7 +197,7 @@ Feature: Connect
     And I tap Send Invite button on Search UI page
     And I tap Invite Others button on Contacts UI page
     And I tap Copy Invite button on Search UI page
-    And I tap Close Invite List button on Search UI page
+    And I tap Close Group Participants Picker button on Search UI page
     And I tap X button on Search UI page
     And I tap on contact name <Contact>
     And I tap on text input
@@ -223,9 +223,8 @@ Feature: Connect
     # Wait for animation
     Given I wait for 3 seconds
     When I tap the instant connect button next to <UnconnectedUser>
-    # And I tap X button in People Picker input field
-    # And I tap on contact name <UnconnectedUser>
-    Then I see Pending Connect to <UnconnectedUser> message in the conversation view
+    And I tap on conversation <UnconnectedUser> in search result
+    Then I see Cancel Request button on Pending outgoing connection page
 
     Examples:
       | Name      | UnconnectedUser | ContactEmail |
@@ -312,7 +311,7 @@ Feature: Connect
     And I see <Contact3> user pending profile page
     And I tap Start Conversation button on pending profile page
     And I tap Ignore button on Incoming Pending Requests page
-    And I close group info page
+    And I tap X button on Group info page
     And I navigate back to conversations list
     # Workaround for ZIOS-4985
     Then I see Pending request link in conversations list

@@ -293,6 +293,9 @@ public class IOSSimulatorHelpers {
     }
 
     public static void shutdown() throws Exception {
+        if (!UnixProcessHelpers.isProcessRunning(SIMULATOR_PROCESS_NAME)) {
+            return;
+        }
         try {
             executeSimctl("shutdown", getId());
             Thread.sleep(1000);

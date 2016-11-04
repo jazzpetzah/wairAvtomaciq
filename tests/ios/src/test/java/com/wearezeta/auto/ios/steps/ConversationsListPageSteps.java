@@ -250,8 +250,8 @@ public class ConversationsListPageSteps {
         ConversationViewPageSteps dialogSteps = new ConversationViewPageSteps();
         dialogSteps.IOpenConversationDetails();
 
-        OtherUserPersonalInfoPageSteps infoPageSteps = new OtherUserPersonalInfoPageSteps();
-        infoPageSteps.ITapCreateGroupButton();
+        ParticipantProfilePageSteps infoPageSteps = new ParticipantProfilePageSteps();
+        infoPageSteps.ITapButton("Create Group");
 
         SearchUIPageSteps pickerSteps = new SearchUIPageSteps();
         pickerSteps.ITapSearchInput();
@@ -419,9 +419,9 @@ public class ConversationsListPageSteps {
      *
      * @param buttonTitle Mute|Unmute|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel
      * @throws Exception
-     * @step. ^I tap (Mute|Unmute|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel) action button$
+     * @step. ^I tap (Mute|Unmute|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel|Rename) action button$
      */
-    @And("^I tap (Mute|Unmute|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel) action button$")
+    @And("^I tap (Mute|Unmute|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel|Rename) action button$")
     public void ITapXButtonInActionMenu(String buttonTitle) throws Exception {
         getConversationsListPage().tapButtonInActionMenu(buttonTitle);
     }
@@ -435,24 +435,6 @@ public class ConversationsListPageSteps {
     @When("^I confirm blocking alert$")
     public void IConfirmBlockingAlert() throws Exception {
         ITapXButtonInActionMenu("Block");
-    }
-
-    /**
-     * Verify if Invite more people button is shown or not in contact list
-     *
-     * @param shouldNotBeVisible equals to null if the button should not be visible
-     * @throws Exception
-     * @step. ^I (do not )?see Invite more people button$
-     */
-    @When("^I (do not )?see Invite more people button$")
-    public void ISeeInviteMorePeopleButton(String shouldNotBeVisible) throws Exception {
-        if (shouldNotBeVisible == null) {
-            Assert.assertTrue("Invite more people button is not shown",
-                    getConversationsListPage().isInviteMorePeopleButtonVisible());
-        } else {
-            Assert.assertTrue("Invite more people button is shown",
-                    getConversationsListPage().isInviteMorePeopleButtonNotVisible());
-        }
     }
 
     private ElementState previousSettingsGearState = new ElementState(
@@ -493,30 +475,6 @@ public class ConversationsListPageSteps {
                             "icon seems to be different after %s seconds", timeoutSeconds),
                     previousSettingsGearState.isNotChanged(timeoutSeconds, minScore));
         }
-    }
-
-    /**
-     * Taps on the name you are in a call with in conversation list
-     *
-     * @param name user name/alias
-     * @throws Exception
-     * @step. ^I tap on chat I am in a call with name (.*)$
-     */
-    @When("^I tap on chat I am in a call with name (.*)$")
-    public void ITapOnChatIAmInACallWithName(String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-        getConversationsListPage().tapOnNameYourInCallWith(name);
-    }
-
-    /**
-     * Taps on the Invite More button in contact list
-     *
-     * @throws Exception
-     * @step. ^I tap Invite more people button$
-     */
-    @When("^I tap Invite more people button$")
-    public void ITapInviteMorePeopleButton() throws Exception {
-        getPeoplePickerPage().tapSendInviteButton();
     }
 
     /**

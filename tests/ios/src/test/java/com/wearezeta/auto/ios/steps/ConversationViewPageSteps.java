@@ -389,6 +389,8 @@ public class ConversationViewPageSteps {
 
     /**
      * Store the current assets container state into an internal varibale - especially for ephemeral assets
+     * Remembers the cell above the recent cell. So make sure to send a message after the asset to get rid
+     * of the delivered time label for a better picture comparison result.
      *
      * @throws Exception
      * @step. ^I remember media asset container state$
@@ -1195,13 +1197,13 @@ public class ConversationViewPageSteps {
         final int msg2Height = getConversationViewPage().getMessageHeight(msg2);
         assert msg2Height > 0;
         if (isNot == null) {
-            Assert.assertEquals(
-                    String.format("The height of '%s' message (%s) is not different than  the height of "
+            Assert.assertNotEquals(
+                    String.format("The height of '%s' message (%s) is not different than the height of "
                             + "'%s' message (%s)", msg1, msg1Height, msg2, msg2Height),
                     msg1Height, msg2Height);
         } else {
-            Assert.assertNotEquals(
-                    String.format("The height of '%s' message (%s) is not different than the height of "
+            Assert.assertEquals(
+                    String.format("The height of '%s' message (%s) is different than the height of "
                             + "'%s' message (%s)", msg1, msg1Height, msg2, msg2Height),
                     msg1Height, msg2Height);
         }
@@ -1396,18 +1398,6 @@ public class ConversationViewPageSteps {
     @When("^I tap (Sketch|Fullscreen|Emoji) button on image$")
     public void ITapOnImageButtons(String buttonName) throws Exception {
         getConversationViewPage().tapImageButton(buttonName);
-    }
-
-    /**
-     * Tap the corresponding key on Emoji keyboard
-     *
-     * @param keyName The name of the corresponding key
-     * @throws Exception
-     * @step. ^I tap "(.*)" key on Emoji Keyboard$
-     */
-    @When("^I tap \"(.*)\" key on Emoji Keyboard$")
-    public void TapKeyOnEmojiKeyboard(String keyName) throws Exception {
-        getConversationViewPage().tapEmojiKeyboardKey(keyName);
     }
 
     /**

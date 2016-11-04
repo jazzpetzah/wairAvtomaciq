@@ -65,6 +65,7 @@ public class LoginPageSteps {
         final boolean isSimulator = CommonUtils.getIsSimulatorFromConfig(getClass());
         getLoginPage().switchToLogin();
         if (FastLoginContainer.getInstance().isEnabled()) {
+            getLoginPage().waitForLoginToFinish();
             return;
         }
         getLoginPage().setLogin(login);

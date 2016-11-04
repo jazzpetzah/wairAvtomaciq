@@ -1,12 +1,11 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.ios.pages.SearchUIPage;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.GroupChatInfoPage;
+import com.wearezeta.auto.ios.pages.GroupInfoPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -14,28 +13,33 @@ import cucumber.api.java.en.When;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GroupChatInfoPageSteps {
+public class GroupInfoPageSteps {
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private GroupChatInfoPage getGroupChatInfoPage() throws Exception {
-        return pagesCollection.getPage(GroupChatInfoPage.class);
-    }
-
-    private SearchUIPage getPeoplePickerPage() throws Exception {
-        return pagesCollection.getPage(SearchUIPage.class);
-    }
-
-    @When("^I tap Leave Conversation button$")
-    public void ITapLeaveConversationButton() throws Exception {
-        getGroupChatInfoPage().tapLeaveConversation();
+    private GroupInfoPage getGroupInfoPage() throws Exception {
+        return pagesCollection.getPage(GroupInfoPage.class);
     }
 
     @When("^I change group conversation name to \"(.*)\"$")
     public void IChangeConversationNameTo(String name) throws Exception {
-        getGroupChatInfoPage().setGroupChatName(name);
+        getGroupInfoPage().setGroupChatName(name);
+    }
+
+    /**
+     * Tap the corresponding button on group info page
+     *
+     * @param btnName one of available button names
+     * @throws Exception
+     * @step. ^I tap (Add People|X|Open Menu|Confirm Deletion|Confirm Leaving|Also Leave) (?:checkbox|button)
+     * on Group info page$
+     */
+    @When("^I tap (Add People|X|Open Menu|Confirm Deletion|Confirm Leaving|Also Leave) (?:checkbox|button) " +
+            "on Group info page$")
+    public void ITapButton(String btnName) throws Exception {
+        getGroupInfoPage().tapButton(btnName);
     }
 
     /**
@@ -48,7 +52,7 @@ public class GroupChatInfoPageSteps {
     @When("^I try to change group conversation name to random with length (.*)$")
     public void IChangeConversationNameToRandom(int length) throws Exception {
         String name = CommonUtils.generateRandomString(length);
-        getGroupChatInfoPage().setGroupChatName(name);
+        getGroupInfoPage().setGroupChatName(name);
     }
 
     @Then("^I see that the conversation name contains users? (.*)$")
@@ -56,84 +60,33 @@ public class GroupChatInfoPageSteps {
         final List<String> expectedNames = CommonSteps.splitAliases(nameAliases).stream().
                 map(x -> usrMgr.replaceAliasesOccurences(x, ClientUsersManager.FindBy.NAME_ALIAS)).
                 collect(Collectors.toList());
-        Assert.assertTrue(getGroupChatInfoPage().isCorrectConversationName(expectedNames));
+        Assert.assertTrue(getGroupInfoPage().isCorrectConversationName(expectedNames));
     }
 
     @Then("I see correct conversation name (.*)")
     public void ISeeCorrectConversationName(String expectedName) throws Exception {
         Assert.assertTrue(String.format("Group conversation name is not equal to '%s'", expectedName),
-                getGroupChatInfoPage().isGroupNameEqualTo(expectedName));
-    }
-
-    @When("^I close group info page$")
-    public void IExitGroupInfoPage() throws Exception {
-        getGroupChatInfoPage().exitGroupInfoPage();
-    }
-
-    @When("^I close group participant details page$")
-    public void IExitParticipantInfoPage() throws Exception {
-        getGroupChatInfoPage().exitParticipantInfoPage();
-    }
-
-    @When("^I see leave conversation alert$")
-    public void ISeeLeaveConversationAlert() throws Throwable {
-        Assert.assertTrue(getGroupChatInfoPage().isLeaveConversationAlertVisible());
-    }
-
-    @Then("^I confirm leaving$")
-    public void IConfirmLeaving() throws Throwable {
-        getGroupChatInfoPage().confirmLeaveConversation();
+                getGroupInfoPage().isGroupNameEqualTo(expectedName));
     }
 
     @When("^I select participant (.*)$")
     public void ISelectParticipant(String name) throws Exception {
         name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        getGroupChatInfoPage().selectParticipant(name);
+        getGroupInfoPage().selectParticipant(name);
     }
 
     @Then("^I see that conversation has (\\d+) people$")
     public void ISeeThatConversationHasNumberPeople(int number) throws Exception {
         Assert.assertTrue(String.format("The actual number of people in the chat is not the same as expected number %s",
-                number), getGroupChatInfoPage().isNumberOfPeopleEquals(number));
+                number), getGroupInfoPage().isNumberOfPeopleEquals(number));
     }
 
     @When("^I see (\\d+) participants? avatars$")
     public void ISeeNumberParticipantsAvatars(int expectedCount) throws Exception {
-        final int actual = getGroupChatInfoPage().getParticipantsAvatarsCount();
+        final int actual = getGroupInfoPage().getParticipantsAvatarsCount();
         Assert.assertTrue(String.format(
                 "Actual number of avatars (%s) is not the same as expected (%s)", actual, expectedCount),
                 actual == expectedCount);
-    }
-
-    @When("I tap on add button on group chat info page")
-    public void ITapAddButtonOnGroupChatInfoPage() throws Exception {
-        getGroupChatInfoPage().clickOnAddButton();
-    }
-
-    /**
-     * Click on continue button on share history warning dialog
-     *
-     * @throws Throwable
-     * @step. I click on Continue button on share history warning
-     */
-    @When("I click on Continue button on share history warning")
-    public void IClickOnContinueButtonInAddPeopleToGroupChatDialog() throws Throwable {
-        getGroupChatInfoPage().clickOnAddDialogContinueButton();
-    }
-
-    @When("I add to existing group chat contact (.*)")
-    public void IAddToExistingChatContact(String contact) throws Throwable {
-        ITapAddButtonOnGroupChatInfoPage();
-        IClickOnContinueButtonInAddPeopleToGroupChatDialog();
-
-        SearchUIPageSteps pickerSteps = new SearchUIPageSteps();
-        pickerSteps.ITypeInSearchInput(contact);
-        pickerSteps.ITapOnConversationFromSearch(contact);
-        if (getPeoplePickerPage().isKeyboardVisible()) {
-            getPeoplePickerPage().tapKeyboardCommitButton();
-        } else {
-            getPeoplePickerPage().tapAddToConversationButton();
-        }
     }
 
     /**
@@ -146,7 +99,7 @@ public class GroupChatInfoPageSteps {
     @Then("^I see that (.*) is not present on group chat info page$")
     public void ISeeContactIsNotPresentOnGroupChatPage(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue(getGroupChatInfoPage().waitForContactToDisappear(contact));
+        Assert.assertTrue(getGroupInfoPage().waitForContactToDisappear(contact));
     }
 
     /**
@@ -158,7 +111,7 @@ public class GroupChatInfoPageSteps {
      */
     @Then("^I see the length of group conversation name equals to (\\d+)$")
     public void IVerifyNameLength(int expectedLength) throws Exception {
-        final int actualLength = getGroupChatInfoPage().getGroupNameLength();
+        final int actualLength = getGroupInfoPage().getGroupNameLength();
         Assert.assertTrue(String.format("The actual group name length %d is not equal to the expected length %d",
                 actualLength, expectedLength), actualLength == expectedLength);
     }
