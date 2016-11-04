@@ -497,8 +497,8 @@ public final class CommonSteps {
         BackendAPIWrappers.sendDialogMessageByChatName(userFrom, dstConversationName, message);
     }
 
-    public void UserSentOtrMessageToConversation(String userFromNameAlias,
-                                                 String dstConversationName, String message, String deviceName)
+    public void UserSentOtrMessageToGroupConversation(String userFromNameAlias,
+                                                      String dstConversationName, String message, String deviceName)
             throws Exception {
         ClientUser userFrom = usrMgr.findUserByNameOrNameAlias(userFromNameAlias);
         dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
@@ -506,9 +506,9 @@ public final class CommonSteps {
         seBridge.sendConversationMessage(userFrom, dstConvId, message, deviceName);
     }
 
-    public void UserSentOtrMessageToConversation(String userFromNameAlias,
-                                                 String dstConversationName, String message) throws Exception {
-        UserSentOtrMessageToConversation(userFromNameAlias, dstConversationName, message, null);
+    public void UserSentOtrMessageToGroupConversation(String userFromNameAlias,
+                                                      String dstConversationName, String message) throws Exception {
+        UserSentOtrMessageToGroupConversation(userFromNameAlias, dstConversationName, message, null);
     }
 
     public void UserSentImageToConversation(String imageSenderUserNameAlias,

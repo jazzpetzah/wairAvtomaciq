@@ -130,7 +130,7 @@ Feature: Ephemeral
     When I open conversation with <Contact>
     And I click on ephemeral button
     And I set the timer for ephemeral to <TimeLong>
-    Then I see <Time> with unit <TimeShortUnit> on ephemeral button
+    Then I see <Time> with unit <TimeShort> on ephemeral button
     And I see placeholder of conversation input is Timed message
     When I write message <Message>
     And I send message
@@ -164,7 +164,7 @@ Feature: Ephemeral
       | Login      | Password      | Login2     | Name      | Contact   | TimeLong  | TimeShortUnit | Time | Message |
       | user1Email | user1Password | user2Email | user1Name | user2Name | 5 seconds | s             | 5    | testing |
 
-  @C262134 @ephemeral @staging
+  @C262134 @ephemeral @regression
   Scenario Outline: Verify timer is applied to the all messages until turning it off in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -198,47 +198,6 @@ Feature: Ephemeral
     Examples:
       | Login      | Password      | Name      | Contact   | TimeLong   | Time | Halftime | Message1 | Message2 |
       | user1Email | user1Password | user1Name | user2Name | 15 seconds | 15   | 8        | testing1 | testing2 |
-
-  @C262540 @ephemeral @staging
-  Scenario Outline: Verify opening picture fullscreen with a short timer in 1:1
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I switch to Sign In page
-    Given I Sign in using login <Login2> and password <Password>
-    Given I am signed in properly
-    Given I open preferences by clicking the gear button
-    Given I click logout in account preferences
-    Given I see the clear data dialog
-    Given I click logout button on clear data dialog
-    Given I Sign in using login <Login> and password <Password>
-    Given I am signed in properly
-    When I open conversation with <Contact>
-    And I click on ephemeral button
-    And I set the timer for ephemeral to <TimeLong>
-    Then I see <Time> with unit <TimeShortUnit> on ephemeral button
-    And I see placeholder of conversation input is Timed message
-    When I send picture <PictureName> to the current conversation
-    And I see only 1 picture in the conversation
-    And I see sent picture <PictureName> in the conversation view
-    Then I open preferences by clicking the gear button
-    And I click logout in account preferences
-    And I see the clear data dialog
-    And I click logout button on clear data dialog
-    Given I Sign in using login <Login2> and password <Password>
-    Given I am signed in properly
-    When I open conversation with <Name>
-    Then I see sent picture <PictureName> in the conversation view
-    When I click on picture
-    And I see picture <PictureName> in fullscreen
-    And I wait for 5 seconds
-    And I see picture <PictureName> in fullscreen
-    And I click x button to close fullscreen mode
-    Then I do not see picture <PictureName> in fullscreen
-    And I do not see any picture in the conversation view
-
-    Examples:
-      | Login      | Password      | Login2     | Name      | Contact   | TimeLong  | TimeShortUnit | Time | PictureName               |
-      | user1Email | user1Password | user2Email | user1Name | user2Name | 5 seconds | s             | 5    | userpicture_landscape.jpg |
 
   @C264664 @ephemeral @regression
   Scenario Outline: Verify I can not edit my last ephemeral message by pressing the up arrow key in 1:1
@@ -512,4 +471,283 @@ Feature: Ephemeral
       | user1Email | user1Password | user1Name | user2Name | 30   | 30 seconds | Hello   |
       | user1Email | user1Password | user1Name | user2Name | 60   | 1 minute   | Hello   |
      #| user1Email | user1Password | user1Name | user2Name | 300  | 5 minutes  | Hello   |
+
+  #GROUP
+
+  @C318623 @ephemeral @staging @WEBAPP-3302
+  Scenario Outline: Verify sending ephemeral text message in group
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself have group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login2> and password <Password>
+    Given I am signed in properly
+    Given I open preferences by clicking the gear button
+    Given I click logout in account preferences
+    Given I see the clear data dialog
+    Given I click logout button on clear data dialog
+    Given I see Sign In page
+    Given I Sign in using login <Login1> and password <Password>
+    And I am signed in properly
+    When I open conversation with <ChatName>
+    And I click on ephemeral button
+    And I set the timer for ephemeral to <TimeLong>
+    Then I see <Time> with unit <TimeShortUnit> on ephemeral button
+    And I see placeholder of conversation input is Timed message
+    When I write message <Message>
+    And I send message
+    Then I see text message <Message>
+    And I verify the database is containing the message <Message> from <Name> in active conversation
+    And I see timer next to the last message
+    When I wait for <Wait> seconds
+    Then I do not see timer next to the last message
+    And I see the last message is obfuscated
+    And I see 2 messages in conversation
+    And I verify the database is not containing the message <Message> from <Name> in active conversation
+    And I see 1 message in database from <Name> in active conversation
+    #And I see localytics event <Event> with attributes <Attributes>
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
+    And I see the clear data dialog
+    And I click logout button on clear data dialog
+    And I see Sign In page
+    And I Sign in using login <Login2> and password <Password>
+    And I am signed in properly
+    And I open conversation with <ChatName>
+    Then I see text message <Message>
+    And I see timer next to the last message
+    When I wait for <Wait> seconds
+    Then I do not see text message <Message>
+    And I see 1 messages in conversation
+    And I see 0 message in database from <Contact1> in active conversation
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
+    And I see the clear data dialog
+    And I click logout button on clear data dialog
+    And I see Sign In page
+    And I Sign in using login <Login1> and password <Password>
+    And I am signed in properly
+    And I open conversation with <ChatName>
+    Then I do not see text message <Message>
+    And I see 1 messages in conversation
+    And I see 0 message in database from <Name> in active conversation
+
+    Examples:
+      | Login1     | Password      | Name      | Contact1  | Contact2  | ChatName | Login2     | Wait | Time | TimeLong   | TimeShortUnit | Message | Event                        | Attributes                                                                                                                  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | groupEph | user2Email | 5    | 5    | 5 seconds  | s             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":true,\"ephemeral_time\":5,\"with_bot\":false}"   |
+      #| user1Email | user1Password | user1Name | user2Name | user3Name | groupEph | user2Email | 15   | 15   | 15 seconds | s             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":true,\"ephemeral_time\":15,\"with_bot\":false}"  |
+      #| user1Email | user1Password | user1Name | user2Name | user3Name | groupEph | user2Email | 30   | 30   | 30 seconds | s             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":true,\"ephemeral_time\":30,\"with_bot\":false}"  |
+      #| user1Email | user1Password | user1Name | user2Name | user3Name | groupEph | user2Email | 60   | 1    | 1 minute   | m             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":true,\"ephemeral_time\":60,\"with_bot\":false}"  |
+     #| user1Email | user1Password | user1Name | user2Name | user3Name | groupEph | user2Email | 300  | 5    | 5 minutes  | m             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":true,\"ephemeral_time\":300,\"with_bot\":false}" |
+
+  @C318625 @ephemeral @staging
+  Scenario Outline: Verify switching on/off ephemeral message in group
+    Given There are 3 users where <Name> is me
+    #Given user <Contact> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself have group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login1> and password <Password>
+    And I am signed in properly
+    When I open conversation with <ChatName>
+    And I click on ephemeral button
+    And I set the timer for ephemeral to <TimeLong>
+    Then I see <Time> with unit <TimeShortUnit> on ephemeral button
+    And I see placeholder of conversation input is Timed message
+    When I write message <Message1>
+    And I send message
+    Then I see text message <Message1>
+    When I wait for <Time> seconds
+    And I do not see text message <Message1>
+    And I click on ephemeral button
+    And I set the timer for ephemeral to OFF
+    And I see placeholder of conversation input is Type a message
+    And I write message <Message2>
+    And I send message
+    Then I see text message <Message2>
+    When I wait for <Time> seconds
+    Then I see text message <Message2>
+    And I see the last message is not obfuscated
+
+    Examples:
+      | Login1     | Password      | Name      | Contact1  | Contact2  | ChatName | Time | TimeLong  | TimeShortUnit | Message1 | Message2 |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | 5    | 5 seconds | s             | Hello1   | Hello2   |
+
+  @C318628 @ephemeral @staging
+  Scenario Outline: Verify that missed call has stayed after receiver saw it in 1:1
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself have group chat <ChatName> with <Contact1>,<Contact2>
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given <Contact1> starts instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    When I open conversation with <ChatName>
+  #Contact calls me
+    When User <Contact1> switches group conversation <ChatName> to ephemeral mode via device Device1 with <TimeLong> timeout
+    And Contact <Contact1> sends message "<Message1>" via device Device1 to group conversation <ChatName>
+    And <Contact1> calls <ChatName>
+    And I wait for 1 second
+    And <Contact1> stops calling <ChatName>
+    And Contact <Contact1> sends message "<Message2>" via device Device1 to group conversation <ChatName>
+    And I wait for 10 seconds
+    Then I do not see text message "<Message1>"
+    And I do not see text message "<Message2>"
+    Then I see <ActionMessage> action in conversation
+    And I see 2 messages in conversation
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Message1 | Message2 | TimeLong  | CallBackend | ActionMessage |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | message1 | message2 | 5 seconds | zcall       | called        |
+
+  @C318624 @ephemeral @staging
+  Scenario Outline: Verify ephemeral messages in group are not sent to my other devices
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself have group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Email1> and password <Password>
+    Given I am signed in properly
+    Given I open preferences by clicking the gear button
+    Given I click logout in account preferences
+    Given I see the clear data dialog
+    Given I click logout button on clear data dialog
+    Given I see Sign In page
+    When I enter email "<Email1>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    Then I see the history info page
+    When I click confirm on history info page
+    And I am signed in properly
+    When I open conversation with <ChatName>
+    And I click on ephemeral button
+    And I set the timer for ephemeral to <TimeLong>
+    Then I see <Time> with unit <TimeShortUnit> on ephemeral button
+    And I see placeholder of conversation input is Timed message
+    When I write message <Message>
+    And I send message
+    Then I see text message <Message>
+    And I see timer next to the last message
+    And I see 2 messages in conversation
+    When I open preferences by clicking the gear button
+    And I click logout in account preferences
+    And I see Sign In page
+    And I Sign in using login <Email1> and password <Password>
+    And I am signed in properly
+    And I open conversation with <ChatName>
+    And I see 1 messages in conversation
+    Then I do not see text message <Message>
+    And I see 0 message in database from <Name> in active conversation
+
+    Examples:
+      | Email1     | Password      | Name      | Contact1  | Contact2  | ChatName | Time | TimeLong | TimeShortUnit | Message |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | 1    | 1 day    | d             | Hello   |
+
+  @C318633 @ephemeral @staging
+  Scenario Outline: Verify you don't see the message in the group when it was read by another user
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself have group chat <ChatName> with <Contact1>,<Contact2>
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contac2> adds a new device Device2 with label Label2
+    Given I switch to Sign In page
+    Given I Sign in using login <Email1> and password <Password>
+    Given I am signed in properly
+    And I open conversation with <Contact1>
+    When User <Contact1> switches group conversation <ChatName> to ephemeral mode via device Device1 with <TimeLong> timeout
+    And Contact <Contact1> sends message "<Message>" via device Device1 to group conversation <ChatName>
+    #TODO
+    And Contact <Contact2> reads message "<Message>" via device Device2 in group conversation <ChatName>
+    And I open conversation with <ChatName>
+    And I do not see text message "<Message>"
+    And I see 1 messages in conversation
+    And I see 0 message in database from <Contact1> in active conversation
+
+    Examples:
+      | Email1     | Password      | Name      | Contact1  | Contact2  | ChatName | TimeLong  | Message |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | 5 seconds | Hello   |
+
+  @C318626 @ephemeral @staging
+  Scenario Outline: Verify sending different types of ephemeral messages (ping, picture, video, audio, file) in group
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login1> and password <Password>
+    Given user <Contact1> adds a new device Device1 with label Label1
+    And I am signed in properly
+    When I open conversation with <ChatName>
+    And I click on ephemeral button
+    And I set the timer for ephemeral to <TimeLong>
+  #timer
+    Then I see <Time> with unit <TimeShortUnit> on ephemeral button
+    And I see placeholder of conversation input is Timed message
+  #ping
+    When I click ping button
+    Then I see <PING> action in conversation
+    And I see timer next to the last message
+    When I wait for <Time> seconds
+    Then I see the last message is obfuscated
+    And I see 2 messages in conversation
+  #Contact read the message (remote step)
+    When User <Contact1> reads the recent message from user <Name> via device Device1
+    Then I do not see ping action in conversation
+    And I see 1 messages in conversation
+  #picture
+    When I send picture <PictureName> to the current conversation
+    Then I see sent picture <PictureName> in the conversation view
+    And I see only 1 picture in the conversation
+    And I see timer next to the last message
+    When I wait for <Time> seconds
+    Then I see orange block replaces the last message in the conversation view
+    And I see 2 messages in conversation
+    When User <Contact1> reads the recent message from user <Name> via device Device1
+    And I do not see any picture in the conversation view
+    And I see 1 messages in conversation
+  #video
+    When I see file transfer button in conversation input
+    When I send <SizeVideo> sized video with name <VideoFile> to the current conversation
+    And I wait until video <VideoFile> is uploaded completely
+    And I see video message <VideoFile> in the conversation view
+    And I see timer next to the last message
+    When I wait for <Time> seconds
+    Then I see orange block replaces the last message in the conversation view
+    And I do not see video message <VideoFile> in the conversation view
+    And I see 2 messages in conversation
+    When User <Contact1> reads the recent message from user <Name> via device Device1
+    When I wait for <Time> seconds
+    And I do not see video message <VideoFile> in the conversation view
+    And I do not see orange block replaces the last message in the conversation view
+    And I see 1 messages in conversation
+  #audio
+    When I send audio file with length <AudioTime> and name <AudioFile> to the current conversation
+    And I wait until audio <AudioFile> is uploaded completely
+    Then I see audio message <AudioFile> in the conversation view
+    And I see timer next to the last message
+    When I wait for <Time> seconds
+    Then I see orange block replaces the last message in the conversation view
+    And I see 2 messages in conversation
+    When User <Contact1> reads the recent message from user <Name> via device Device1
+    And I do not see audio message <AudioFile> in the conversation view
+    And I do not see orange block replaces the last message in the conversation view
+    And I see 1 messages in conversation
+    #file
+    When I send <SizeFile> sized file with name <File> to the current conversation
+    And I wait until file <File> is uploaded completely
+    And I see timer next to the last message
+    When I wait for <Time> seconds
+    Then I see orange block replaces the last message in the conversation view
+    And I see 2 messages in conversation
+    When User <Contact1> reads the recent message from user <Name> via device Device1
+    And I do not see file transfer for file <File> in the conversation view
+    And I do not see orange block replaces the last message in the conversation view
+    And I see 1 messages in conversation
+    And I see 0 messages in database from <Name> in active conversation
+
+    Examples:
+      | Login1     | Password      | Name      | Contact1  | Contact2  | ChatName | Time | TimeLong   | TimeShortUnit | PING       | PictureName               | VideoFile   | SizeVideo | AudioFile   | AudioTime | File         | SizeFile | TypeFile |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | 5    | 5 seconds  | s             | you pinged | userpicture_landscape.jpg | C261733.mp4 | 1 MB      | example.wav | 00:20     | C261733.zip  | 512KB    | ZIP      |
+
 

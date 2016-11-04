@@ -316,7 +316,7 @@ Feature: Connect
     And I tap Send Invite button on Search UI page
     And I tap Invite Others button on Contacts UI page
     And I tap Copy Invite button on Search UI page
-    And I tap Close Invite List button on Search UI page
+    And I tap Close Group Participants Picker button on Search UI page
     And I tap X button on Search UI page
     And I tap on contact name <Contact>
     And I tap on text input
@@ -626,7 +626,7 @@ Feature: Connect
     And I tap Send Invite button on Search UI page
     And I tap Invite Others button on Contacts UI page
     And I tap Copy Invite button on Search UI page
-    And I tap Close Invite List button on Search UI page
+    And I tap Close Group Participants Picker button on Search UI page
     And I tap X button on Search UI page
     And I tap on contact name <Contact>
     And I tap on text input
