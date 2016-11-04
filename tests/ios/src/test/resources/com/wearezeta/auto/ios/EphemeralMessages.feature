@@ -54,8 +54,8 @@ Feature: Ephemeral Messages
   Scenario Outline: Verify the message is deleted on the sender side when it's read on the receiver side
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
     Given User <Contact> adds new device <DeviceName>
+    Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on contact name <Contact>
     Given I tap Hourglass button in conversation view
