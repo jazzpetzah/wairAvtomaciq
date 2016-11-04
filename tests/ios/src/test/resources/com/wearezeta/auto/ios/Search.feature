@@ -84,6 +84,8 @@ Feature: Search
     And I tap input field on Search UI page
     And I type "<UnconnectedUser>" in Search UI input field
     And I tap on conversation <UnconnectedUser> in search result
+    # Wait until user info is loaded
+    And I wait for 3 seconds
     And I tap Connect button on Pending outgoing connection page
     And I tap X button on Search UI page
     And I tap on contact name <UnconnectedUser>
