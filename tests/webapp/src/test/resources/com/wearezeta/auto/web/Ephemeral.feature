@@ -161,8 +161,8 @@ Feature: Ephemeral
     And I see 1 message in conversation
 
     Examples:
-      | Login      | Password      | Login2     | Name      | Contact   | TimeLong  | TimeShort | Time | Message |
-      | user1Email | user1Password | user2Email | user1Name | user2Name | 5 seconds | 5s        | 5    | testing |
+      | Login      | Password      | Login2     | Name      | Contact   | TimeLong  | TimeShortUnit | Time | Message |
+      | user1Email | user1Password | user2Email | user1Name | user2Name | 5 seconds | s             | 5    | testing |
 
   @C262134 @ephemeral @staging
   Scenario Outline: Verify timer is applied to the all messages until turning it off in 1:1
