@@ -57,7 +57,6 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I see <Contact1> user profile page in iPad popover
     And I tap Create Group button on Participant profile page
     And I tap connected user <Contact2> in Search UI on iPad popover
     And I tap connected user <Contact3> in Search UI on iPad popover
@@ -79,7 +78,6 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I see <Contact1> user profile page in iPad popover
     And I tap Create Group button on Participant profile page
     And I tap connected user <Contact2> in Search UI on iPad popover
     And I tap connected user <Contact3> in Search UI on iPad popover
