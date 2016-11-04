@@ -650,7 +650,7 @@ Feature: Ephemeral
     Given Myself is connected to <Contact1>, <Contact2>
     Given Myself have group chat <ChatName> with <Contact1>,<Contact2>
     Given user <Contact1> adds a new device Device1 with label Label1
-    Given user <Contac2> adds a new device Device2 with label Label2
+    Given user <Contact2> adds a new device Device2 with label Label2
     Given I switch to Sign In page
     Given I Sign in using login <Email1> and password <Password>
     Given I am signed in properly
