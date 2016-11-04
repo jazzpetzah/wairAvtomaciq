@@ -101,8 +101,6 @@ public class ConversationViewPage extends IOSPage {
     public static final By xpathStrMissedCallButtonByYourself =
             By.xpath(xpathStrMissedCallButtonByContact.apply("you"));
 
-    // public static final By xpathCancelRequestButton = By.xpath("//XCUIElementTypeButton[@label='CANCEL REQUEST']");
-
     public static final String MEDIA_STATE_PLAYING = "playing";
 
     public static final String MEDIA_STATE_PAUSED = "paused";

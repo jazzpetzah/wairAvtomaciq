@@ -22,21 +22,44 @@ public class OutgoingPendingConnectionPageSteps {
      */
     @When("^I (do not )?see Pending outgoing connection page$")
     public void ISeeView(String shouldNotBeVisible) throws Exception {
-        boolean condition = (shouldNotBeVisible == null) ?
-                getPendingOutgoingConnectionPage().isConnectButtonVisible() :
-                getPendingOutgoingConnectionPage().isConnectButtonInvisible();
-        Assert.assertTrue(String.format("Connect dialog is %s but shouldn't be.",
-                (shouldNotBeVisible == null) ? "invisible" : "visible"), condition);
+        boolean condition;
+        if (shouldNotBeVisible == null) {
+            condition = getPendingOutgoingConnectionPage().isButtonVisible("Connect");
+        } else {
+            condition = getPendingOutgoingConnectionPage().isButtonInvisible("Connect");
+        }
+        Assert.assertTrue(String.format("Pending outgoing connection view is expected to be %s",
+                (shouldNotBeVisible == null) ? "visible" : "invisible"), condition);
     }
 
     /**
-     * Tap Connect button on Pending outgoing connection page
+     * Tap the corresponding button on Pending outgoing connection page
      *
+     * @param btnName one of possible button names
      * @throws Exception
-     * @step. ^I tap Connect button on Pending outgoing connection page$
+     * @step. ^I tap (Cancel Request|Connect) button on Pending outgoing connection page$
      */
-    @When("^I tap Connect button on Pending outgoing connection page$")
-    public void ITapButton() throws Exception {
-        getPendingOutgoingConnectionPage().tapConnectButton();
+    @When("^I tap (Cancel Request|Connect) button on Pending outgoing connection page$")
+    public void ITapButton(String btnName) throws Exception {
+        getPendingOutgoingConnectionPage().tapButton(btnName);
+    }
+
+    /**
+     * Verify button visibility on Pending outgoing connection pag
+     *
+     * @param shouldNotSee equals to null if the button should be visible
+     * @param btnName      one of possible button names
+     * @throws Exception
+     * @step. ^I (do not )?see (Cancel Request|Connect) button on Pending outgoing connection page$
+     */
+    @When("^I (do not )?see (Cancel Request|Connect) button on Pending outgoing connection page$")
+    public void ITapButton(String shouldNotSee, String btnName) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("the button '%s' is expected to be visible", btnName),
+                    getPendingOutgoingConnectionPage().isButtonVisible(btnName));
+        } else {
+            Assert.assertTrue(String.format("the button '%s' is expected to be invisible", btnName),
+                    getPendingOutgoingConnectionPage().isButtonInvisible(btnName));
+        }
     }
 }
