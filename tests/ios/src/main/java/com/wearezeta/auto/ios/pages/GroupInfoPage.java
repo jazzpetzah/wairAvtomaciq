@@ -78,18 +78,6 @@ public class GroupInfoPage extends IOSPage {
         return selectVisibleElements(xpathNameParticipantAvatarCell).size();
     }
 
-    public void tapLeaveConversation() throws Exception {
-        getElement(nameRightActionButton).click();
-        if (!isLocatorInvisible(nameRightActionButton)) {
-            throw new IllegalStateException("Menu button is still shown");
-        }
-        getElement(xpathConfirmLeaveButton).click();
-    }
-
-    public void confirmLeaveConversation() throws Exception {
-        getElement(xpathConfirmLeaveButton).click();
-    }
-
     public void selectParticipant(String name) throws Exception {
         final By locator = FBBy.xpath(xpathPeopleViewCollectionCellByName.apply(name));
         getElement(locator).click();

@@ -182,7 +182,7 @@ public class ConversationsListPage extends IOSPage {
         return isLocatorDisplayed(locator);
     }
 
-    private By getActionButtonByName(String buttonTitle) {
+    private static By getActionButtonByName(String buttonTitle) {
         return MobileBy.AccessibilityId(buttonTitle.toUpperCase());
     }
 

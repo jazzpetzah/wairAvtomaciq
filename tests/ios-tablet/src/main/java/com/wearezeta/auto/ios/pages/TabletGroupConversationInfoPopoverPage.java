@@ -5,14 +5,11 @@ import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
-import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
-public class TabletGroupConversationDetailPopoverPage extends GroupInfoPage {
-    private static final By nameConversationMenu = MobileBy.AccessibilityId("metaControllerRightButton");
-
+public class TabletGroupConversationInfoPopoverPage extends GroupInfoPage {
     private static final Function<String, String> xpathStrPopoverParticipantByName = name ->
             String.format("//XCUIElementTypeTextView[@name='ParticipantsView_GroupName']" +
                     "/following::XCUIElementTypeCollectionView[1]/" +
@@ -23,12 +20,8 @@ public class TabletGroupConversationDetailPopoverPage extends GroupInfoPage {
 
     private static final By fbNamePopoverDismissRegion = FBBy.AccessibilityId("PopoverDismissRegion");
 
-    public TabletGroupConversationDetailPopoverPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+    public TabletGroupConversationInfoPopoverPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
-    }
-
-    public void openConversationMenuOnPopover() throws Exception {
-        getElement(nameConversationMenu).click();
     }
 
     public void dismissPopover() throws Exception {
@@ -45,9 +38,5 @@ public class TabletGroupConversationDetailPopoverPage extends GroupInfoPage {
     public boolean isNumberOfPeopleInGroupEqualToExpected(int expectedNumber) throws Exception {
         final By locator = By.xpath(xpathStrGroupCountByNumber.apply(expectedNumber));
         return isLocatorDisplayed(locator);
-    }
-
-    public void selectEllipsisMenuAction(String actionName) throws Exception {
-        getElement(MobileBy.AccessibilityId(actionName.toUpperCase())).click();
     }
 }

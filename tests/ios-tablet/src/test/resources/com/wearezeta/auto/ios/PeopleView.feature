@@ -99,10 +99,11 @@ Feature: People View
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on group chat with name <GroupChatName>
-    And I open group conversation details
-    And I tap Leave Conversation button on iPad
-    Then I confirm leaving on iPad
+    Given I tap on group chat with name <GroupChatName>
+    Given I open group conversation details
+    Given I tap Open Menu button on Group info page
+    When I tap Leave action button
+    And I tap Confirm Leaving button on Group info page
     And I open archived conversations
     And I tap on group chat with name <GroupChatName>
     Then I see You Left message in group chat
@@ -119,10 +120,11 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on group chat with name <GroupChatName>
-    And I open group conversation details
-    And I tap Leave Conversation button on iPad
-    Then I confirm leaving on iPad
+    Given I tap on group chat with name <GroupChatName>
+    Given I open group conversation details
+    Given I tap Open Menu button on Group info page
+    When I tap Leave action button
+    And I tap Confirm Leaving button on Group info page
     And I open archived conversations
     And I tap on group chat with name <GroupChatName>
     Then I see You Left message in group chat
@@ -181,8 +183,8 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I open conversation menu on iPad
-    And I select Rename action from iPad ellipsis menu
+    And I tap Open Menu button on Group info page
+    And I tap Rename action button
     And I change group conversation name to "<ChatName>"
     And I dismiss popover on iPad
     Then I see You Renamed Conversation message shown in conversation view
@@ -204,8 +206,8 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I open conversation menu on iPad
-    And I select Rename action from iPad ellipsis menu
+    And I tap Open Menu button on Group info page
+    And I tap Rename action button
     And I change group conversation name to "<ChatName>"
     And I dismiss popover on iPad
     Then I see You Renamed Conversation message shown in conversation view
@@ -373,8 +375,8 @@ Feature: People View
     When I remember the right side state of <GroupChatName> conversation item on iPad
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I open conversation menu on iPad
-    And I select Unmute action from iPad ellipsis menu
+    And I tap Open Menu button on Group info page
+    And I tap Unmute action button
     And I dismiss popover on iPad
     And I navigate back to conversations list
     Then I see the state of <GroupChatName> conversation item is changed on iPad
@@ -396,8 +398,8 @@ Feature: People View
     When I remember the right side state of <GroupChatName> conversation item on iPad
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I open conversation menu on iPad
-    And I select Unmute action from iPad ellipsis menu
+    And I tap Open Menu button on Group info page
+    And I tap Unmute action button
     And I dismiss popover on iPad
     Then I see the state of <GroupChatName> conversation item is changed on iPad
 
@@ -417,8 +419,8 @@ Feature: People View
     When I remember the right side state of <GroupChatName> conversation item on iPad
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I open conversation menu on iPad
-    And I select Mute action from iPad ellipsis menu
+    And I tap Open Menu button on Group info page
+    And I tap Mute action button
     And I dismiss popover on iPad
     And I navigate back to conversations list
     Then I see the state of <GroupChatName> conversation item is changed on iPad
@@ -439,8 +441,8 @@ Feature: People View
     When I remember the right side state of <GroupChatName> conversation item on iPad
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I open conversation menu on iPad
-    And I select Mute action from iPad ellipsis menu
+    And I tap Open Menu button on Group info page
+    And I tap Mute action button
     And I dismiss popover on iPad
     Then I see the state of <GroupChatName> conversation item is changed on iPad
 
@@ -834,16 +836,14 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
-    Given I see conversations list
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
     And I tap Leave action button
     And I tap Confirm Leaving button on Group info page
-    # Wait for the popover to be closed
-    And I wait for 2 seconds
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
@@ -860,16 +860,14 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see conversations list
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
     And I tap Leave action button
     And I tap Confirm Leaving button on Group info page
-    # Wait for the popover to be closed
-    And I wait for 2 seconds
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
