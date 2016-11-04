@@ -59,11 +59,13 @@ public class LoginPage extends IOSPage {
 
     public boolean isVisible() throws Exception {
         try {
-            return isLocatorDisplayed(MobileBy.AccessibilityId(nameStrMainWindow));
+            if (isLocatorDisplayed(MobileBy.AccessibilityId(nameStrMainWindow))) {
+                return true;
+            }
         } catch (IllegalStateException e) {
             // Workaround for extra alert
-            acceptAlert();
         }
+        acceptAlert();
         return isLocatorDisplayed(MobileBy.AccessibilityId(nameStrMainWindow));
     }
 

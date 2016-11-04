@@ -118,6 +118,8 @@ public class ConversationsListPage extends IOSPage {
 
     public void swipeRightConversationToRevealActionButtons(String conversation) throws Exception {
         swipeRightOnContact(conversation);
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     public boolean isPendingRequestInContactList() throws Exception {
