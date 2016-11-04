@@ -315,6 +315,8 @@ public abstract class AndroidPage extends BasePage {
                 log.debug(String.format("No internet bar is still visible. Retrying %d...", retryNumber));
                 Thread.sleep(DEFAULT_RETRY_DELAY_SECONDS * 1000);
             } else {
+                //Delay required for SE and UI sync
+                Thread.sleep(DEFAULT_RETRY_DELAY_SECONDS);
                 return true;
             }
             timeSpent = (System.currentTimeMillis() - startTime) / 1000;
