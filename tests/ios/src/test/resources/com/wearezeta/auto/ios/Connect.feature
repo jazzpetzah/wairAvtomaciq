@@ -55,7 +55,7 @@ Feature: Connect
     And I select participant <UnconnectedUser>
     And I tap Connect button on Pending outgoing connection page
     And I do not see Pending outgoing connection page
-    And I close group info page
+    And I tap X button on Group info page
     And I navigate back to conversations list
     Then I see first item in contact list named <UnconnectedUser>
 
@@ -311,7 +311,7 @@ Feature: Connect
     And I see <Contact3> user pending profile page
     And I tap Start Conversation button on pending profile page
     And I tap Ignore button on Incoming Pending Requests page
-    And I close group info page
+    And I tap X button on Group info page
     And I navigate back to conversations list
     # Workaround for ZIOS-4985
     Then I see Pending request link in conversations list

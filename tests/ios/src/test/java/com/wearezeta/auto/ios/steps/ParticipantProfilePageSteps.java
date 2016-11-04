@@ -8,98 +8,37 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
+import com.wearezeta.auto.ios.pages.ParticipantProfilePage;
 
 import cucumber.api.java.en.When;
 
-public class OtherUserPersonalInfoPageSteps {
+public class ParticipantProfilePageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private OtherUserPersonalInfoPage getOtherUserPersonalInfoPage() throws Exception {
-        return pagesCollection.getPage(OtherUserPersonalInfoPage.class);
+    private ParticipantProfilePage getParticipantProfilePage() throws Exception {
+        return pagesCollection.getPage(ParticipantProfilePage.class);
     }
 
     @When("^I see (.*) user profile page$")
     public void WhenISeeOtherUserProfilePage(String name) throws Exception {
         name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        Assert.assertTrue(getOtherUserPersonalInfoPage().isOtherUserProfileNameVisible(name));
-    }
-
-    @When("^I tap (?:Add People|Create Group) button$")
-    public void ITapCreateGroupButton() throws Exception {
-        getOtherUserPersonalInfoPage().addContactToChat();
-    }
-
-    @When("^I tap Remove From Conversation button$")
-    public void TapRemoveButton() throws Exception {
-        getOtherUserPersonalInfoPage().removeFromConversation();
-    }
-
-    @When("^I confirm removal from conversation$")
-    public void IConfirmRemove() throws Exception {
-        getOtherUserPersonalInfoPage().confirmRemove();
-    }
-
-    @When("^I tap Start Conversation button on other user profile page$")
-    public void ITapStartConversationOtherUserPage() throws Exception {
-        getOtherUserPersonalInfoPage().tapStartConversationButton();
+        Assert.assertTrue(getParticipantProfilePage().isOtherUserProfileNameVisible(name));
     }
 
     /**
-     * Close other user personal info page by click on close button
+     * Tap the corresponding button on participant profile page
      *
+     * @param btnName one of available button names
      * @throws Exception
-     * @step. ^I close user profile page$
+     * @step. ^I tap (Create Group|Remove From Conversation|Confirm Removal|Confirm Deletion|X|Open Conversation|Open Menu)
+     * button on Participant profile page$
      */
-    @When("^I close user profile page$")
-    public void ICloseUserProfileForDialog() throws Exception {
-        getOtherUserPersonalInfoPage().tapCloseUserProfileButton();
-    }
-
-    /**
-     * Opens the conversation details menu by clicking the according button
-     *
-     * @throws Exception
-     * @step. ^I open conversation menu$
-     */
-    @When("^I open conversation menu$")
-    public void ITapConversationMenuButton() throws Exception {
-        getOtherUserPersonalInfoPage().openConversationMenu();
-    }
-
-    /**
-     * Open ellipsis menu in conversation details
-     *
-     * @throws Exception
-     * @step. ^I open ellipsis menu$
-     */
-    @When("^I open ellipsis menu$")
-    public void IOpenEllipsisMenu() throws Exception {
-        getOtherUserPersonalInfoPage().openEllipsisMenu();
-    }
-
-    /**
-     * Click delete to confirm conversation content deletion
-     *
-     * @throws Exception
-     * @step. ^I confirm delete conversation content$
-     */
-    @When("^I confirm delete conversation content$")
-    public void IConfirmDelete() throws Exception {
-        getOtherUserPersonalInfoPage().clickConfirmDeleteButton();
-    }
-
-    /**
-     * Select Also Leave option on Delete conversation confirmation
-     *
-     * @throws Exception
-     * @step. ^I select Also Leave option on Delete conversation confirmation$
-     */
-    @When("^I select Also Leave option on Delete conversation confirmation$")
-    public void ISelectAlsoLeaveOptionOnDeleteConfirmation() throws Exception {
-        getOtherUserPersonalInfoPage().clickAlsoLeaveButton();
+    @When("^I tap (Create Group|Remove From Conversation|Confirm Removal|Confirm Deletion|X|Open Conversation|Open Menu) " +
+            "button on Participant profile page$")
+    public void ITapButton(String btnName) throws Exception {
+        getParticipantProfilePage().tapButton(btnName);
     }
 
     /**
@@ -111,7 +50,7 @@ public class OtherUserPersonalInfoPageSteps {
     @When("^I see conversation action menu$")
     public void ISeeConversationActionMenu() throws Exception {
         Assert.assertTrue("Conversation action menu is not visible",
-                getOtherUserPersonalInfoPage().isActionMenuVisible());
+                getParticipantProfilePage().isActionMenuVisible());
     }
 
     /**
@@ -125,10 +64,11 @@ public class OtherUserPersonalInfoPageSteps {
     public void IVerifyUserOtherUserProfilePage(String user) throws Exception {
         String username = usrMgr.findUserByNameOrNameAlias(user).getName();
         Assert.assertTrue(String.format("Use name '%s' is not visible", username),
-                getOtherUserPersonalInfoPage().isUserNameVisible(username));
+                getParticipantProfilePage().isUserNameVisible(username));
     }
 
     private String userAddressBookName;
+
     /**
      * Remembers the name of the user how he is saved in the Address Book
      *
@@ -149,11 +89,11 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @Then("^I verify the previously remembered user name from Address Book is displayed on Other User Profile page$")
     public void IVerifyUsersAddressBookNameOnOtherUserProfilePageIsDisplayed() throws Exception {
-        if(userAddressBookName == null){
+        if (userAddressBookName == null) {
             throw new IllegalStateException("Save the Address Book name of the user first!");
         }
         Assert.assertTrue(String.format("User Address Book name '%s' is not visible", userAddressBookName),
-                getOtherUserPersonalInfoPage().isUserAddressBookNameVisible(userAddressBookName));
+                getParticipantProfilePage().isUserAddressBookNameVisible(userAddressBookName));
     }
 
     /**
@@ -170,10 +110,10 @@ public class OtherUserPersonalInfoPageSteps {
         email = usrMgr.findUserByNameOrNameAlias(email).getEmail();
         if (shouldNotBVisible == null) {
             Assert.assertTrue(String.format("Email '%s' is not visible", email),
-                    getOtherUserPersonalInfoPage().isUserEmailVisible(email));
+                    getParticipantProfilePage().isUserEmailVisible(email));
         } else {
             Assert.assertTrue(String.format("Email '%s' is displayed, but should be hidden", email),
-                    getOtherUserPersonalInfoPage().isUserEmailNotVisible(email));
+                    getParticipantProfilePage().isUserEmailNotVisible(email));
         }
     }
 
@@ -186,7 +126,7 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @When("^I switch to (Devices|Details) tab$")
     public void IChangeTab(String tabName) throws Exception {
-        getOtherUserPersonalInfoPage().switchToTab(tabName);
+        getParticipantProfilePage().switchToTab(tabName);
     }
 
     /**
@@ -201,7 +141,7 @@ public class OtherUserPersonalInfoPageSteps {
     public void ISeeDevicesShownInDevicesTab(int expectedNumDevices) throws Exception {
         Assert.assertTrue(
                 String.format("The expected number of devices: %s is not equals to actual count", expectedNumDevices),
-                getOtherUserPersonalInfoPage().isParticipantDevicesCountEqualTo(expectedNumDevices)
+                getParticipantProfilePage().isParticipantDevicesCountEqualTo(expectedNumDevices)
         );
     }
 
@@ -214,7 +154,7 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @When("^I open details page of device number (\\d+)$")
     public void IOpenDeviceDetails(int deviceIndex) throws Exception {
-        getOtherUserPersonalInfoPage().openDeviceDetailsPage(deviceIndex);
+        getParticipantProfilePage().openDeviceDetailsPage(deviceIndex);
     }
 
     /**
@@ -228,10 +168,10 @@ public class OtherUserPersonalInfoPageSteps {
     public void ISeeShieldIcon(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue("The shield icon is not visible on convo details page",
-                    getOtherUserPersonalInfoPage().isShieldIconVisible());
+                    getParticipantProfilePage().isShieldIconVisible());
         } else {
             Assert.assertTrue("The shield icon is still visible on convo details page",
-                    getOtherUserPersonalInfoPage().isShieldIconNotVisible());
+                    getParticipantProfilePage().isShieldIconNotVisible());
         }
     }
 
@@ -246,7 +186,7 @@ public class OtherUserPersonalInfoPageSteps {
     public void ISeeUserDeveceIDPresentedOnDetailsPage(String name) throws Exception {
         List<String> deviceIDs = CommonSteps.getInstance().GetDevicesIDsForUser(name);
         for (String id : deviceIDs) {
-            Assert.assertTrue(String.format("Device ID '%s' is not visible", id), getOtherUserPersonalInfoPage()
+            Assert.assertTrue(String.format("Device ID '%s' is not visible", id), getParticipantProfilePage()
                     .isUserDeviceIdVisible(id));
         }
     }
@@ -261,6 +201,6 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @When("^I tap \"(.*)\" link in user details$")
     public void ITapLink(String expectedLink) throws Exception {
-        getOtherUserPersonalInfoPage().tapLink(expectedLink);
+        getParticipantProfilePage().tapLink(expectedLink);
     }
 }

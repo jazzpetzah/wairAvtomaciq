@@ -4,7 +4,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.ios.pages.TabletPendingUserPopoverPage;
+import com.wearezeta.auto.ios.pages.TabletPendingUserPopoverPageParticipant;
 
 import cucumber.api.java.en.When;
 
@@ -14,8 +14,8 @@ public class TabletPendingUserPopoverPageSteps {
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private TabletPendingUserPopoverPage getTabletPendingUserPopoverPage() throws Exception {
-        return pagesCollection.getPage(TabletPendingUserPopoverPage.class);
+    private TabletPendingUserPopoverPageParticipant getTabletPendingUserPopoverPage() throws Exception {
+        return pagesCollection.getPage(TabletPendingUserPopoverPageParticipant.class);
     }
 
     /**

@@ -136,7 +136,7 @@ Feature: Likes
     Given User <Contact1> sends encrypted image <Picture> to group conversation <Group>
     When I swipe right on a <Group>
     And I tap Delete action button
-    And I confirm delete conversation content
+    And I tap Confirm Deletion button on Group info page
     And User <Contact1> likes the recent message from group conversation <Group>
     Then I do not see conversation <Group> in conversations list
     When I open search UI

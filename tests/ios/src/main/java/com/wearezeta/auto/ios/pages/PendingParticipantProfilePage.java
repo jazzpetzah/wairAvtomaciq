@@ -7,7 +7,7 @@ import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
-public class OtherUserOnPendingProfilePage extends IOSPage {
+public class PendingParticipantProfilePage extends IOSPage {
 
     private static final By xpathOtherProfileCancelRequestButton =
             By.xpath("//XCUIElementTypeButton[@label='CANCEL REQUEST']");
@@ -23,7 +23,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 
     private static final By xpathConnectConfirmButton = By.xpath("(//XCUIElementTypeButton[@name='CONNECT'])[last()]");
 
-    public OtherUserOnPendingProfilePage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+    public PendingParticipantProfilePage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 

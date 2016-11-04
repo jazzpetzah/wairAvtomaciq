@@ -8,10 +8,7 @@ import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
-public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
-    private static final By nameOtherUserMetaControllerRightButtonIPadPopover =
-            MobileBy.AccessibilityId("OtherUserMetaControllerRightButton");
-
+public class TabletParticipantProfilePage extends ParticipantProfilePage {
     private static final Function<String, String> xpathStrOtherUserEmailField = email ->
             String.format("//XCUIElementTypeTextView[@value='%s']", email.toUpperCase());
 
@@ -23,15 +20,8 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
             String.format("//XCUIElementTypeButton[@name='DEVICES']/following::" +
                     "XCUIElementTypeTable[1]/XCUIElementTypeCell[%d]", idx);
 
-    private static final By nameOtherUserProfilePageCloseButton =
-            MobileBy.AccessibilityId("OtherUserProfileCloseButton");
-
-    public TabletOtherUserInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+    public TabletParticipantProfilePage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
-    }
-
-    public void removeFromConversationOniPad() throws Exception {
-        tapElementWithRetryIfStillDisplayed(nameOtherUserMetaControllerRightButtonIPadPopover);
     }
 
     public boolean isConnectButtonVisible() throws Exception {
@@ -40,14 +30,6 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
 
     public void tapConnectButton() throws Exception {
         getElement(xpathOtherUserConnectButton).click();
-    }
-
-    public void tapGoBackButton() throws Exception {
-        getElement(nameOtherUserProfilePageCloseButton).click();
-    }
-
-    public void exitOtherUserGroupChatPopover() throws Exception {
-        this.tapAtTheCenterOfElement((FBElement) getElement(fbNameOtherUserConversationMenu));
     }
 
     public boolean isNameVisible(String user) throws Exception {

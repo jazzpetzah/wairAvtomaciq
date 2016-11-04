@@ -10,7 +10,7 @@ import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
-public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage {
+public class TabletGroupConversationDetailPopoverPage extends GroupInfoPage {
     private static final By nameConversationMenu = MobileBy.AccessibilityId("metaControllerRightButton");
 
     private static final Function<String, String> xpathStrPopoverParticipantByName = name ->

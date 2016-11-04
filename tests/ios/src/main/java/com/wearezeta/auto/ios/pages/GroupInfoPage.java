@@ -11,16 +11,20 @@ import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import org.openqa.selenium.WebElement;
 
-public class GroupChatInfoPage extends IOSPage {
+public class GroupInfoPage extends IOSPage {
     private static final By nameRightActionButton = MobileBy.AccessibilityId("metaControllerRightButton");
 
-    private static final By nameLeaveConversationButton = MobileBy.AccessibilityId("LEAVE");
+    private static final By nameConfirmLeaveConversationButton = MobileBy.AccessibilityId("LEAVE");
 
     private static final String strNameConversationNameTextField = "ParticipantsView_GroupName";
     private static final By fbNameConversationNameTextField =
             FBBy.AccessibilityId(strNameConversationNameTextField);
+
+    private static final By nameConfirmRemoveButton = MobileBy.AccessibilityId("REMOVE");
+
+    private static final By xpathConfirmDeleteButton =
+            By.xpath("//XCUIElementTypeButton[@name='CANCEL']/following::XCUIElementTypeButton[@name='DELETE']");
 
     private static final Function<String, String> xpathStrConversationNameByText = text ->
             String.format("//*[@name='%s' and @value='%s']", strNameConversationNameTextField, text);
@@ -28,17 +32,14 @@ public class GroupChatInfoPage extends IOSPage {
     private static final Function<String, String> xpathStrConversationNameByExpr = expr ->
             String.format("//*[@name='%s' and %s]", strNameConversationNameTextField, expr);
 
-    private static final By nameExitParticipantInfoPageButton =
-            MobileBy.AccessibilityId("OtherUserProfileCloseButton");
-
     private static final By nameExitGroupInfoPageButton =
             MobileBy.AccessibilityId("metaControllerCancelButton");
 
     private static final By namLeftActionButton = MobileBy.AccessibilityId("metaControllerLeftButton");
 
-    private static final By nameAddPeopleContinueButton = MobileBy.AccessibilityId("CONTINUE");
+    private static final By nameConversationMenu = MobileBy.AccessibilityId("metaControllerRightButton");
 
-    private static final By nameLeaveConversationAlert = MobileBy.AccessibilityId("Leave conversation?");
+    private static final By nameAlsoLeaveCheckbox = MobileBy.AccessibilityId("ALSO LEAVE THE CONVERSATION");
 
     private static final Function<Integer, String> nameStrNumberPeopleByCount =
             count -> String.format("%s PEOPLE", count);
@@ -51,7 +52,7 @@ public class GroupChatInfoPage extends IOSPage {
     private static final By xpathNameParticipantAvatarCell =
             By.xpath("//XCUIElementTypeCollectionView/XCUIElementTypeCell[ ./XCUIElementTypeStaticText ]");
 
-    public GroupChatInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+    public GroupInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
@@ -86,29 +87,16 @@ public class GroupChatInfoPage extends IOSPage {
         return selectVisibleElements(xpathNameParticipantAvatarCell).size();
     }
 
-    public void exitParticipantInfoPage() throws Exception {
-        getElement(nameExitParticipantInfoPageButton).click();
-    }
-
-    public void exitGroupInfoPage() throws Exception {
-        final WebElement closeBtn = getElement(nameExitGroupInfoPageButton);
-        closeBtn.click();
-        if (!isLocatorInvisible(nameExitGroupInfoPageButton, 3)) {
-            // Sometimes we don't click this button in time because of animated transitions
-            closeBtn.click();
-        }
-    }
-
     public void tapLeaveConversation() throws Exception {
         getElement(nameRightActionButton).click();
         if (!isLocatorInvisible(nameRightActionButton)) {
             throw new IllegalStateException("Menu button is still shown");
         }
-        getElement(nameLeaveConversationButton).click();
+        getElement(nameConfirmLeaveConversationButton).click();
     }
 
     public void confirmLeaveConversation() throws Exception {
-        getElement(nameLeaveConversationButton).click();
+        getElement(nameConfirmLeaveConversationButton).click();
     }
 
     public void selectParticipant(String name) throws Exception {
@@ -118,18 +106,6 @@ public class GroupChatInfoPage extends IOSPage {
         Thread.sleep(1000);
     }
 
-    public boolean isLeaveConversationAlertVisible() throws Exception {
-        return isLocatorDisplayed(nameLeaveConversationAlert);
-    }
-
-    public void clickOnAddButton() throws Exception {
-        getElement(namLeftActionButton).click();
-    }
-
-    public void clickOnAddDialogContinueButton() throws Throwable {
-        getElement(nameAddPeopleContinueButton).click();
-    }
-
     public boolean waitForContactToDisappear(String contact) throws Exception {
         final By locator = By.xpath(xpathPeopleViewCollectionCellByName.apply(contact));
         return isLocatorInvisible(locator);
@@ -137,5 +113,35 @@ public class GroupChatInfoPage extends IOSPage {
 
     public int getGroupNameLength() throws Exception {
         return getElement(fbNameConversationNameTextField).getText().length();
+    }
+
+    private static By getButtonLocatorByName(String name) {
+        switch (name.toLowerCase()) {
+            case "add people":
+                return namLeftActionButton;
+            case "confirm removal":
+                return nameConfirmRemoveButton;
+            case "confirm deletion":
+                return xpathConfirmDeleteButton;
+            case "open menu":
+                return nameConversationMenu;
+            case "also leave":
+                return nameAlsoLeaveCheckbox;
+            case "x":
+                return nameExitGroupInfoPageButton;
+            case "confirm leaving":
+                return nameConfirmLeaveConversationButton;
+            case "leave":
+                return nameRightActionButton;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
+        }
+    }
+
+    public void tapButton(String name) throws Exception {
+        final By locator = getButtonLocatorByName(name);
+        getElement(locator).click();
+        // Wait for animation
+        Thread.sleep(1500);
     }
 }

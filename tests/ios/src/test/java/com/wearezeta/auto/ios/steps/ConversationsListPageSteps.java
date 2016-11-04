@@ -250,8 +250,8 @@ public class ConversationsListPageSteps {
         ConversationViewPageSteps dialogSteps = new ConversationViewPageSteps();
         dialogSteps.IOpenConversationDetails();
 
-        OtherUserPersonalInfoPageSteps infoPageSteps = new OtherUserPersonalInfoPageSteps();
-        infoPageSteps.ITapCreateGroupButton();
+        ParticipantProfilePageSteps infoPageSteps = new ParticipantProfilePageSteps();
+        infoPageSteps.ITapButton("Create Group");
 
         SearchUIPageSteps pickerSteps = new SearchUIPageSteps();
         pickerSteps.ITapSearchInput();

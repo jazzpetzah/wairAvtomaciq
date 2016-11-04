@@ -7,14 +7,14 @@ import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
-public class TabletPendingUserPopoverPage extends OtherUserOnPendingProfilePage {
+public class TabletPendingUserPopoverPageParticipant extends PendingParticipantProfilePage {
     public static final Function<String, String> xpathStrUserByName = name ->
             String.format("(//XCUIElementTypeStaticText[contains(@name, '%s')])[last()]", name);
 
     public static final By xpathConnectButton =
             By.xpath("(//XCUIElementTypeButton[@label='CONNECT'])[last()]");
 
-    public TabletPendingUserPopoverPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+    public TabletPendingUserPopoverPageParticipant(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
