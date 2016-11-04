@@ -12,15 +12,10 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 public class ParticipantProfilePage extends IOSPage {
     private static final By nameRightActionButton = MobileBy.AccessibilityId("OtherUserMetaControllerRightButton");
 
-    private static final By nameConfirmRemoveButton = MobileBy.AccessibilityId("REMOVE");
-
     private static final By nameLeftActionButton = MobileBy.AccessibilityId("OtherUserMetaControllerLeftButton");
 
     private static final By nameExitOtherUserPersonalInfoPageButton =
             MobileBy.AccessibilityId("OtherUserProfileCloseButton");
-
-    private static final By xpathConfirmDeleteButton =
-            By.xpath("//XCUIElementTypeButton[@name='CANCEL']/following::XCUIElementTypeButton[@name='DELETE']");
 
     private static final Function<String, String> xpathStrOtherPersonalInfoPageNameFieldByName = name ->
             String.format("//XCUIElementTypeStaticText[@name='%s']", name);
@@ -133,7 +128,7 @@ public class ParticipantProfilePage extends IOSPage {
             case "open menu":
                 return nameRightActionButton;
             case "confirm removal":
-                return nameConfirmRemoveButton;
+                return xpathConfirmRemoveButton;
             case "confirm deletion":
                 return xpathConfirmDeleteButton;
             case "x":

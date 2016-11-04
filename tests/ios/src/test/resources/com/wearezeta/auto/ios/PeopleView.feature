@@ -54,7 +54,8 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I tap Leave button on Group info page
+    And I tap Open Menu button on Group info page
+    And I tap Leave action button
     And I tap Confirm Leaving button on Group info page
     And I open archived conversations
     And I tap on group chat with name <GroupChatName>
@@ -461,7 +462,8 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I tap Leave button on Group info page
+    And I tap Open Menu button on Group info page
+    And I tap Leave action button
     And I tap Confirm Leaving button on Group info page
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list

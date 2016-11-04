@@ -28,7 +28,7 @@ public class GroupInfoPageSteps {
         getGroupInfoPage().setGroupChatName(name);
     }
 
-    @When("^I tap (Add People|Leave|X|Open Menu|Confirm Deletion|Confirm Leaving|Also Leave) (?:checkbox|button) " +
+    @When("^I tap (Add People|X|Open Menu|Confirm Deletion|Confirm Leaving|Also Leave) (?:checkbox|button) " +
             "on Group info page$")
     public void ITapButton(String btnName) throws Exception {
         getGroupInfoPage().tapButton(btnName);

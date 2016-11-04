@@ -15,16 +15,9 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 public class GroupInfoPage extends IOSPage {
     private static final By nameRightActionButton = MobileBy.AccessibilityId("metaControllerRightButton");
 
-    private static final By nameConfirmLeaveConversationButton = MobileBy.AccessibilityId("LEAVE");
-
     private static final String strNameConversationNameTextField = "ParticipantsView_GroupName";
     private static final By fbNameConversationNameTextField =
             FBBy.AccessibilityId(strNameConversationNameTextField);
-
-    private static final By nameConfirmRemoveButton = MobileBy.AccessibilityId("REMOVE");
-
-    private static final By xpathConfirmDeleteButton =
-            By.xpath("//XCUIElementTypeButton[@name='CANCEL']/following::XCUIElementTypeButton[@name='DELETE']");
 
     private static final Function<String, String> xpathStrConversationNameByText = text ->
             String.format("//*[@name='%s' and @value='%s']", strNameConversationNameTextField, text);
@@ -36,8 +29,6 @@ public class GroupInfoPage extends IOSPage {
             MobileBy.AccessibilityId("metaControllerCancelButton");
 
     private static final By namLeftActionButton = MobileBy.AccessibilityId("metaControllerLeftButton");
-
-    private static final By nameConversationMenu = MobileBy.AccessibilityId("metaControllerRightButton");
 
     private static final By nameAlsoLeaveCheckbox = MobileBy.AccessibilityId("ALSO LEAVE THE CONVERSATION");
 
@@ -92,11 +83,11 @@ public class GroupInfoPage extends IOSPage {
         if (!isLocatorInvisible(nameRightActionButton)) {
             throw new IllegalStateException("Menu button is still shown");
         }
-        getElement(nameConfirmLeaveConversationButton).click();
+        getElement(xpathConfirmLeaveButton).click();
     }
 
     public void confirmLeaveConversation() throws Exception {
-        getElement(nameConfirmLeaveConversationButton).click();
+        getElement(xpathConfirmLeaveButton).click();
     }
 
     public void selectParticipant(String name) throws Exception {
@@ -120,18 +111,16 @@ public class GroupInfoPage extends IOSPage {
             case "add people":
                 return namLeftActionButton;
             case "confirm removal":
-                return nameConfirmRemoveButton;
+                return xpathConfirmRemoveButton;
             case "confirm deletion":
                 return xpathConfirmDeleteButton;
-            case "open menu":
-                return nameConversationMenu;
             case "also leave":
                 return nameAlsoLeaveCheckbox;
             case "x":
                 return nameExitGroupInfoPageButton;
             case "confirm leaving":
-                return nameConfirmLeaveConversationButton;
-            case "leave":
+                return xpathConfirmLeaveButton;
+            case "open menu":
                 return nameRightActionButton;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));

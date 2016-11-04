@@ -839,7 +839,8 @@ Feature: People View
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I tap Leave button on Group info page
+    And I tap Open Menu button on Group info page
+    And I tap Leave action button
     And I tap Confirm Leaving button on Group info page
     # Wait for the popover to be closed
     And I wait for 2 seconds
@@ -864,7 +865,8 @@ Feature: People View
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I tap Leave button on Group info page
+    And I tap Open Menu button on Group info page
+    And I tap Leave action button
     And I tap Confirm Leaving button on Group info page
     # Wait for the popover to be closed
     And I wait for 2 seconds
