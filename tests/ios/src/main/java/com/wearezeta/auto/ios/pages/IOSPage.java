@@ -769,7 +769,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     public boolean isDefaultMapApplicationVisible() throws Exception {
-        return isLocatorExist(nameDefaultMapApplication) || this.isAlertContainsText("access your location");
+        return this.isAlertContainsText("access your location") || isLocatorExist(nameDefaultMapApplication);
     }
 
     public void tapEmojiKeyboardKey(String keyName) throws Exception {
