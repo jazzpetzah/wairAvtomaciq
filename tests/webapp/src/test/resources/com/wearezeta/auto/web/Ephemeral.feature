@@ -164,7 +164,7 @@ Feature: Ephemeral
       | Login      | Password      | Login2     | Name      | Contact   | TimeLong  | TimeShortUnit | Time | Message |
       | user1Email | user1Password | user2Email | user1Name | user2Name | 5 seconds | s             | 5    | testing |
 
-  @C262134 @ephemeral @staging
+  @C262134 @ephemeral @regression
   Scenario Outline: Verify timer is applied to the all messages until turning it off in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
