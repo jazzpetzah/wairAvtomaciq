@@ -1,0 +1,3 @@
+[submodule "tests/tools/ios/inspector"]
+	path = tests/tools/ios/inspector
+	url = https://github.com/mykola-mokhnach/Appium-iOS-Inspector.git
