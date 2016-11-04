@@ -142,6 +142,7 @@ public class CommonIOSSteps {
         capabilities.setCapability("bundleId", IOSDistributable.getInstance(appPath).getBundleId());
         capabilities.setCapability("noReset", true);
         capabilities.setCapability("autoLaunch", false);
+        capabilities.setCapability("clearSystemFiles", true);
         if (isRealDevice) {
             final String udid = IOSRealDeviceHelpers.getUDID().orElseThrow(
                     () -> new IllegalStateException("Cannot detect any connected iDevice")
