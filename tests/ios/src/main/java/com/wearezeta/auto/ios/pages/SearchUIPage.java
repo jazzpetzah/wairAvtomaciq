@@ -91,7 +91,8 @@ public class SearchUIPage extends IOSPage {
                 return nameInviteMorePeopleButton;
             case "copy invite":
                 return nameInviteCopyButton;
-            case "close invite list":
+            case "close group participants picker":
+            case "clear group participants picker":
                 return nameContactViewCloseButton;
             default:
                 throw new IllegalArgumentException(String.format("There is no '%s' button on Search UI page", name));

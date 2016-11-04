@@ -229,9 +229,9 @@ Feature: People View
     Given I tap Create Group button
     When I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact3> in search result
-    And I tap X button on Search UI page
+    And I tap Clear Group Participants Picker button on Search UI page
     And I tap Create Group button
-    And I tap X button on Search UI page
+    And I tap Close Group Participants Picker button on Search UI page
     And I close user profile page
     And I navigate back to conversations list
     Then I don't see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>

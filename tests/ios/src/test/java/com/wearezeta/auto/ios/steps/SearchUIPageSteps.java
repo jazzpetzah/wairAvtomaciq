@@ -165,7 +165,7 @@ public class SearchUIPageSteps {
         getSearchUIPage().selectElementInSearchResults(name);
     }
 
-    @When("^I tap (X|Unblock|Send Invite|Copy Invite|Close Invite List) button on Search UI page$")
+    @When("^I tap (X|Unblock|Send Invite|Copy Invite|(?:Close|Clear) Group Participants Picker) button on Search UI page$")
     public void ITapButton(String btnName) throws Exception {
         getSearchUIPage().tapButton(btnName);
     }
@@ -173,12 +173,12 @@ public class SearchUIPageSteps {
     /**
      * Verify button visiblity on Search UI page
      *
-     * @step. ^I (do not )?see (X|Unblock|Send Invite|Copy Invite|Close Invite List) button on Search UI page$
+     * @step. ^I (do not )?see (X|Unblock|Send Invite|Copy Invite|Close Group Participants Picker) button on Search UI page$
      * @param shouldNotSee equals to null if the button should be visible
      * @param btnName      one of possible button names
      * @throws Exception
      */
-    @Then("^I (do not )?see (X|Unblock|Send Invite|Copy Invite|Close Invite List) button on Search UI page$")
+    @Then("^I (do not )?see (X|Unblock|Send Invite|Copy Invite|(?:Close|Clear) Group Participants Picker) button on Search UI page$")
     public void ISeeButton(String shouldNotSee, String btnName) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("The button '%s' is expected to be visible", btnName),

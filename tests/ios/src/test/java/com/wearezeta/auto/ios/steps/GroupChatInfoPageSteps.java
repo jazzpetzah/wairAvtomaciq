@@ -24,10 +24,6 @@ public class GroupChatInfoPageSteps {
         return pagesCollection.getPage(GroupChatInfoPage.class);
     }
 
-    private SearchUIPage getPeoplePickerPage() throws Exception {
-        return pagesCollection.getPage(SearchUIPage.class);
-    }
-
     @When("^I tap Leave Conversation button$")
     public void ITapLeaveConversationButton() throws Exception {
         getGroupChatInfoPage().tapLeaveConversation();
@@ -108,32 +104,6 @@ public class GroupChatInfoPageSteps {
     @When("I tap on add button on group chat info page")
     public void ITapAddButtonOnGroupChatInfoPage() throws Exception {
         getGroupChatInfoPage().clickOnAddButton();
-    }
-
-    /**
-     * Click on continue button on share history warning dialog
-     *
-     * @throws Throwable
-     * @step. I click on Continue button on share history warning
-     */
-    @When("I click on Continue button on share history warning")
-    public void IClickOnContinueButtonInAddPeopleToGroupChatDialog() throws Throwable {
-        getGroupChatInfoPage().clickOnAddDialogContinueButton();
-    }
-
-    @When("I add to existing group chat contact (.*)")
-    public void IAddToExistingChatContact(String contact) throws Throwable {
-        ITapAddButtonOnGroupChatInfoPage();
-        IClickOnContinueButtonInAddPeopleToGroupChatDialog();
-
-        SearchUIPageSteps pickerSteps = new SearchUIPageSteps();
-        pickerSteps.ITypeInSearchInput(contact);
-        pickerSteps.ITapOnConversationFromSearch(contact);
-        if (getPeoplePickerPage().isKeyboardVisible()) {
-            getPeoplePickerPage().tapKeyboardCommitButton();
-        } else {
-            getPeoplePickerPage().tapAddToConversationButton();
-        }
     }
 
     /**
