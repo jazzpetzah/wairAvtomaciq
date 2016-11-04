@@ -676,7 +676,6 @@ Feature: Ephemeral
     Given I switch to Sign In page
     Given I Sign in using login <Login1> and password <Password>
     Given user <Contact1> adds a new device Device1 with label Label1
-    Given user <Contact2> adds a new device Device2 with label Label2
     And I am signed in properly
     When I open conversation with <ChatName>
     And I click on ephemeral button
@@ -692,9 +691,7 @@ Feature: Ephemeral
     Then I see the last message is obfuscated
     And I see 2 messages in conversation
   #Contact read the message (remote step)
-    When User <Contact1> reads the recent message from user <Name> via device Device1
-    Then I see ping action in conversation
-    When User <Contact2> reads the recent message from user <Name> via device Device2
+    When User <Contact1> reads the recent message from group conversation <ChatName> via device Device1
     Then I do not see ping action in conversation
     And I see 1 messages in conversation
   #picture
