@@ -54,25 +54,21 @@ Feature: Ephemeral Messages
   Scenario Outline: Verify the message is deleted on the sender side when it's read on the receiver side
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> adds new device <DeviceName>
     Given I sign in using my email or phone number
+    Given User <Contact> adds new device <DeviceName>
     Given I see conversations list
     Given I tap on contact name <Contact>
     Given I tap Hourglass button in conversation view
     Given I set ephemeral messages expiration timer to <Timeout> seconds
     Given I type the default message and send it
     Given I see 1 default message in the conversation view
-    When I remember the recent message from user Myself in the local database
-    And I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
-    And I wait for 35 seconds
-    And I verify the remembered message has been changed in the local database
-    And User <Contact> reads the recent message from user <Name>
-    And I wait for 40 seconds
+    And User <Contact> reads the recent message from user Myself
+    And I wait for <Timeout> seconds
     Then I see 0 messages in the conversation view
 
     Examples:
-      | Name      | Contact   | Timeout | EphemeralTimeLabel | DeviceName    |
-      | user1Name | user2Name | 30      | seconds            | ContactDevice |
+      | Name      | Contact   | Timeout | DeviceName    |
+      | user1Name | user2Name | 5       | ContactDevice |
 
   @C259586 @rc @regression @fastLogin
   Scenario Outline: Verify switching on/off ephemeral message
@@ -394,8 +390,8 @@ Feature: Ephemeral Messages
     Then User Myself sees the recent message from user <Contact> via device <DeviceName> is not changed in 5 seconds
 
     Examples:
-      | Name      | Contact   | Timer       | DeviceName  |
-      | user1Name | user2Name | 15          | myDevice2   |
+      | Name      | Contact   | Timer | DeviceName |
+      | user1Name | user2Name | 15    | myDevice2  |
 
   @C259598 @regression @fastLogin
   Scenario Outline: Verify timer is applyed to the all messages until turning it off
