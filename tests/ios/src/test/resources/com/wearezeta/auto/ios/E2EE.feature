@@ -440,8 +440,8 @@ Feature: E2EE
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email
-    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to user Myself
+    Given I see conversations list
     And I tap on contact name <Contact1>
     And I open conversation details
     And I switch to Devices tab
