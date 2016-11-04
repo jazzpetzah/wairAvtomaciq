@@ -376,13 +376,6 @@ public class ConversationViewPageSteps {
             () -> getConversationViewPage().getMediaContainerStateGlyphScreenshot()
     );
 
-    private ElementState prepareAssetContainer(int index){
-        this.previousAssetsContainerState = new ElementState(
-                () -> getConversationViewPage().getAssetContainerStateScreenshot(index)
-        );
-        return this.previousAssetsContainerState;
-    }
-
     /**
      * Store the current media container state into an internal varibale - soundcloud play button
      *
@@ -402,7 +395,10 @@ public class ConversationViewPageSteps {
      */
     @When("^I remember asset container state at cell (\\d+)$")
     public void IRememberAssetsContainerState(int index) throws Exception {
-        prepareAssetContainer(index).remember();
+        this.previousAssetsContainerState = new ElementState(
+                () -> getConversationViewPage().getAssetContainerStateScreenshot(index)
+        );
+        this.previousAssetsContainerState.remember();
     }
 
     /**

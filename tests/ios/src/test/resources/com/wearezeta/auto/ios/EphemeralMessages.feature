@@ -274,17 +274,17 @@ Feature: Ephemeral Messages
     Given I see conversations list
     Given I tap on contact name <Contact>
     Given I tap Hourglass button in conversation view
-    Given I set ephemeral messages expiration timer to <Timer> minute
+    Given I set ephemeral messages expiration timer to <Timer> seconds
     Given I type the "<Link>" message and send it
     Given I navigate back to conversations list
     Given I tap on contact name <Contact>
     When I remember asset container state at cell 1
-    And I wait for 60 seconds
+    And I wait for <Timer> seconds
     Then I see asset container state is changed
 
     Examples:
       | Name      | Contact   | Timer | Link                 |
-      | user1Name | user2Name | 1     | https://www.wire.com |
+      | user1Name | user2Name | 30    | https://www.wire.com |
 
   @C259596 @regression @fastLogin
   Scenario Outline: Verify the message is deleted on the receiver side when timer is over
@@ -408,14 +408,14 @@ Feature: Ephemeral Messages
     Given I tap on group chat with name <GroupChatName>
     Given I tap Hourglass button in conversation view
     Given I set ephemeral messages expiration timer to <Timeout> seconds
-    # Picture
     When I tap Add Picture button from input tools
     And I accept alert if visible
     And I accept alert if visible
     And I select the first picture from Keyboard Gallery
     Then I tap Confirm button on Picture preview page
-    Then I wait for 3 seconds
-    And I remember asset container state at cell 1
+    # wait to make the transition and image arrival
+    And I wait for 3 seconds
+    When I remember asset container state at cell 1
     And I wait for <Timeout> seconds
     Then I see asset container state is changed
 

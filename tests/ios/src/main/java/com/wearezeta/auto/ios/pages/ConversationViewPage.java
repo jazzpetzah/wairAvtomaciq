@@ -51,6 +51,7 @@ public class ConversationViewPage extends IOSPage {
     private static final String xpathStrRecentEntry = xpathStrAllEntries + "[1]";
     private static final By xpathRecentEntry = By.xpath(xpathStrRecentEntry);
 
+    //The xpath of the asset container by cell index, which is integer >=1
     private static final Function<String, String> xpathStrAssetContainerByIndex = text ->
             String.format("%s[%s]", xpathStrAllEntries, text);
 
@@ -498,13 +499,9 @@ public class ConversationViewPage extends IOSPage {
         return containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
     }
 
-    public By getAssetContainerLocatorByIndex(int index) throws Exception {
-        final By locator = By.xpath(xpathStrAssetContainerByIndex.apply(Integer.toString(index)));
-        return locator;
-    }
-
     public BufferedImage  getAssetContainerStateScreenshot(int index) throws Exception {
-        final BufferedImage containerScreen = this.getElementScreenshot(getElement(getAssetContainerLocatorByIndex(index))).orElseThrow(() ->
+        final By locator = By.xpath(xpathStrAssetContainerByIndex.apply(Integer.toString(index)));
+        final BufferedImage containerScreen = this.getElementScreenshot(getElement(locator)).orElseThrow(() ->
                 new IllegalStateException("Cannot take a screenshot of asset container"));
         //javax.imageio.ImageIO.write(containerScreen, "png", new java.io.File("/Users/guest/Desktop/" + System.currentTimeMillis() + ".png"));
         return containerScreen;
