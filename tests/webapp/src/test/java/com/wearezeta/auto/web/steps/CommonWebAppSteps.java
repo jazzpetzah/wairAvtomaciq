@@ -15,7 +15,6 @@ import com.wearezeta.auto.web.common.Message;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
-import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
 import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
@@ -430,7 +429,7 @@ public class CommonWebAppSteps {
         if (convoType.equals("user")) {
             context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName + context.getTestname().hashCode());
         } else {
-            context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName + context.getTestname().hashCode());
+            context.getCommonSteps().UserSentOtrMessageToGroupConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName + context.getTestname().hashCode());
         }
     }
 
@@ -447,7 +446,7 @@ public class CommonWebAppSteps {
         } else {
             for (int i = 0; i < amount; i++) {
                 context.getConversationStates().addMessage(dstConvoName, new Message(prefix + i, user.getId()));
-                context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, prefix + i,
+                context.getCommonSteps().UserSentOtrMessageToGroupConversation(msgFromUserNameAlias, dstConvoName, prefix + i,
                         deviceName + context.getTestname().hashCode());
             }
         }
@@ -461,7 +460,7 @@ public class CommonWebAppSteps {
             context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, message, deviceName + context.
                     getTestname().hashCode());
         } else {
-            context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, message,
+            context.getCommonSteps().UserSentOtrMessageToGroupConversation(msgFromUserNameAlias, dstConvoName, message,
                     deviceName + context.getTestname().hashCode());
         }
     }

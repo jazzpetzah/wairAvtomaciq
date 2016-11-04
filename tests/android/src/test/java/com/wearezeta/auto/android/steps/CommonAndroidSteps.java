@@ -804,7 +804,7 @@ public class CommonAndroidSteps {
             if (isEncrypted == null) {
                 commonSteps.UserSentMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend);
             } else {
-                commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
+                commonSteps.UserSentOtrMessageToGroupConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
             }
         }
     }
