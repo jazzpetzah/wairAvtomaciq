@@ -32,6 +32,7 @@ public class TabletLoginPageSteps {
     public void GivenISignInUsingEmail() throws Exception {
         getTabletLoginPage().switchToLogin();
         if (FastLoginContainer.getInstance().isEnabled()) {
+            getTabletLoginPage().waitForLoginToFinish();
             return;
         }
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
