@@ -717,7 +717,7 @@ public class ConversationViewPage extends IOSPage {
         if (isDoubleTap) {
             el.doubleTap();
         } else if (isLongTap) {
-            longClickAt(el, 15, 50);
+            longClickAt(el, 7, 50);
         } else {
             el.click();
         }
