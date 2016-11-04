@@ -62,7 +62,6 @@ public class LoginPageSteps {
     }
 
     private void emailLoginSequence(String login, String password) throws Exception {
-        final boolean isSimulator = CommonUtils.getIsSimulatorFromConfig(getClass());
         getLoginPage().switchToLogin();
         if (FastLoginContainer.getInstance().isEnabled()) {
             getLoginPage().waitForLoginToFinish();
@@ -72,37 +71,20 @@ public class LoginPageSteps {
         getLoginPage().setPassword(password);
         getLoginPage().tapLoginButton();
         getLoginPage().waitForLoginToFinish();
-        if (isSimulator) {
-            getLoginPage().acceptAlert();
-        } else {
-            getLoginPage().acceptAlertIfVisible();
-        }
+        getLoginPage().acceptAlertIfVisible();
         getFirstTimeOverlayPage().accept();
-        if (isSimulator) {
-            getLoginPage().dismissSettingsWarning();
-        } else {
-            getLoginPage().dismissSettingsWarningIfVisible();
-        }
+        getLoginPage().dismissSettingsWarningIfVisible();
     }
 
     private void phoneLoginSequence(final PhoneNumber number) throws Exception {
-        final boolean isSimulator = CommonUtils.getIsSimulatorFromConfig(getClass());
         getLoginPage().switchToLogin();
         getLoginPage().switchToPhoneLogin();
         getRegistrationPage().inputPhoneNumber(number);
         getLoginPage().inputLoginCode(number);
         getLoginPage().waitForLoginToFinish();
-        if (isSimulator) {
-            getLoginPage().acceptAlert();
-        } else {
-            getLoginPage().acceptAlertIfVisible();
-        }
+        getLoginPage().acceptAlertIfVisible();
         getFirstTimeOverlayPage().accept();
-        if (isSimulator) {
-            getLoginPage().dismissSettingsWarning();
-        } else {
-            getLoginPage().dismissSettingsWarningIfVisible();
-        }
+        getLoginPage().dismissSettingsWarningIfVisible();
     }
 
     /**
