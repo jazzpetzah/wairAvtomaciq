@@ -24,6 +24,8 @@ public class ConversationViewPageSteps {
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
+    private ElementState previousAssetsContainerState = null;
+
     private ConversationViewPage getConversationViewPage() throws Exception {
         return pagesCollection.getPage(ConversationViewPage.class);
     }
@@ -385,10 +387,6 @@ public class ConversationViewPageSteps {
         previousMediaContainerState.remember();
     }
 
-    private ElementState previousAssetsContainerState = new ElementState(
-            () -> getConversationViewPage().getAssetContainerStateScreenshot()
-    );
-
     /**
      * Store the current assets container state into an internal varibale - especially for ephemeral assets
      * Remembers the cell above the recent cell. So make sure to send a message after the asset to get rid
@@ -397,9 +395,12 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I remember media asset container state$
      */
-    @When("^I remember asset container state$")
-    public void IRememberAssetsContainerState() throws Exception {
-        previousAssetsContainerState.remember();
+    @When("^I remember asset container state at cell (\\d+)$")
+    public void IRememberAssetsContainerState(int index) throws Exception {
+        this.previousAssetsContainerState = new ElementState(
+                () -> getConversationViewPage().getAssetContainerStateScreenshot(index)
+        );
+        this.previousAssetsContainerState.remember();
     }
 
     /**

@@ -94,7 +94,6 @@ Feature: Ephemeral Messages
   Scenario Outline: Verify sending ephemeral picture
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User Myself adds new device <DeviceName>
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on contact name <Contact>
@@ -107,20 +106,18 @@ Feature: Ephemeral Messages
     Given I tap Confirm button on Picture preview page
     #wait to make the transition and image arrival
     Given I wait for 3 seconds
-    Given User <Name> sends 1 encrypted message using device <DeviceName> to user <Contact>
-    When I remember asset container state
+    When I remember asset container state at cell 1
     And I wait for <Timer> seconds
     Then I see asset container state is changed
 
     Examples:
-      | Name      | Contact   | Timer | DeviceName |
-      | user1Name | user2Name | 30    | myDevice2  |
+      | Name      | Contact   | Timer |
+      | user1Name | user2Name | 15    |
 
   @C310632 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral audio message
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User Myself adds new device <DeviceName>
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on contact name <Contact>
@@ -129,21 +126,19 @@ Feature: Ephemeral Messages
     Given I long tap Audio Message button from input tools
     Given I tap Send record control button
     Given I see audio message container in the conversation view
-    Given User <Name> sends 1 encrypted message using device <DeviceName> to user <Contact>
-    When I remember asset container state
+    When I remember asset container state at cell 1
     And I wait for <Timer> seconds
     Then I see asset container state is changed
 
     Examples:
-      | Name      | Contact   | Timer | DeviceName |
-      | user1Name | user2Name | 15    | myDevice2  |
+      | Name      | Contact   | Timer |
+      | user1Name | user2Name | 15    |
 
   @C310633 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral video message
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
     Given I prepare <FileName> to be uploaded as a video message
-    Given User Myself adds new device <DeviceName>
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on contact name <Contact>
@@ -153,22 +148,20 @@ Feature: Ephemeral Messages
     Given I tap on contact name <Contact>
     Given I tap Video Message button from input tools
     Given I see video message container in the conversation view
-    Given User <Name> sends 1 encrypted message using device <DeviceName> to user <Contact>
     # Wait for delivery of video
     Given I wait for 3 seconds
-    When I remember asset container state
+    When I remember asset container state at cell 1
     And I wait for <Timer> seconds
     Then I see asset container state is changed
 
     Examples:
-      | Name      | Contact   | Timer | FileName    | DeviceName |
-      | user1Name | user2Name | 15    | testing.mp4 | myDevice2  |
+      | Name      | Contact   | Timer | FileName    |
+      | user1Name | user2Name | 15    | testing.mp4 |
 
   @C310634 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral share location
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User Myself adds new device <DeviceName>
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on contact name <Contact>
@@ -181,20 +174,18 @@ Feature: Ephemeral Messages
     # Small delay waiting location detection animation to finish
     Given I wait for 5 seconds
     Given I tap Send location button from map view
-    Given User <Name> sends 1 encrypted message using device <DeviceName> to user <Contact>
-    When I remember asset container state
+    When I remember asset container state at cell 1
     And I wait for <Timer> seconds
     Then I see asset container state is changed
 
     Examples:
-      | Name      | Contact   | Timer | DeviceName |
-      | user1Name | user2Name | 15    | myDevice2  |
+      | Name      | Contact   | Timer |
+      | user1Name | user2Name | 15    |
 
   @C310635 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral file share
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User Myself adds new device <DeviceName>
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on contact name <Contact>
@@ -206,20 +197,18 @@ Feature: Ephemeral Messages
     # Wait for transition
     Given I wait for 5 seconds
     Given I tap file transfer menu item <ItemName>
-    Given User <Name> sends 1 encrypted message using device <DeviceName> to user <Contact>
-    When I remember asset container state
+    When I remember asset container state at cell 1
     And I wait for <Timer> seconds
     Then I see asset container state is changed
 
     Examples:
-      | Name      | Contact   | Timer | ItemName                   | DeviceName |
-      | user1Name | user2Name | 15    | FTRANSFER_MENU_DEFAULT_PNG | myDevice2  |
+      | Name      | Contact   | Timer | ItemName                   |
+      | user1Name | user2Name | 15    | FTRANSFER_MENU_DEFAULT_PNG |
 
   @C310636 @regression @fastLogin
   Scenario Outline: ZIOS-7555 Verify sending ephemeral GIF
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User Myself adds new device <DeviceName>
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on contact name <Contact>
@@ -230,15 +219,14 @@ Feature: Ephemeral Messages
     Given I select the first item from Giphy grid
     Given I tap Send button on Giphy preview page
     #wait for transition and gif is loaded in view
-    Given I wait for 5 seconds
-    Given User <Name> sends 1 encrypted message using device <DeviceName> to user <Contact>
-    When I remember asset container state
+    Given I wait for 3 seconds
+    When I remember asset container state at cell 1
     And I wait for <Timer> seconds
     Then I see asset container state is changed
 
     Examples:
-      | Name      | Contact   | Timer | GiphyTag | DeviceName |
-      | user1Name | user2Name | 30    | sun      | myDevice2  |
+      | Name      | Contact   | Timer | GiphyTag |
+      | user1Name | user2Name | 15    | sun      |
 
   @C310637 @regression @fastLogin
   Scenario Outline: Verify sending ephemeral media link
@@ -264,23 +252,21 @@ Feature: Ephemeral Messages
   Scenario Outline: Verify sending ephemeral link preview
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User Myself adds new device <DeviceName>
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on contact name <Contact>
     Given I tap Hourglass button in conversation view
-    Given I set ephemeral messages expiration timer to <Timer> minute
+    Given I set ephemeral messages expiration timer to <Timer> seconds
     Given I type the "<Link>" message and send it
     Given I navigate back to conversations list
     Given I tap on contact name <Contact>
-    Given User <Name> sends 1 encrypted message using device <DeviceName> to user <Contact>
-    When I remember asset container state
-    And I wait for 60 seconds
+    When I remember asset container state at cell 1
+    And I wait for <Timer> seconds
     Then I see asset container state is changed
 
     Examples:
-      | Name      | Contact   | Timer | Link                 | DeviceName |
-      | user1Name | user2Name | 1     | https://www.wire.com | myDevice2  |
+      | Name      | Contact   | Timer | Link                 |
+      | user1Name | user2Name | 30    | https://www.wire.com |
 
   @C259596 @regression @fastLogin
   Scenario Outline: Verify the message is deleted on the receiver side when timer is over
@@ -393,6 +379,32 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer | DeviceName |
       | user1Name | user2Name | 15    | myDevice2  |
 
+  @C318636 @staging @fastLogin
+  Scenario Outline: Group - Verify sending picture
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User Myself adds new device <DeviceName>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on group chat with name <GroupChatName>
+    Given I tap Hourglass button in conversation view
+    Given I set ephemeral messages expiration timer to <Timeout> seconds
+    When I tap Add Picture button from input tools
+    And I accept alert if visible
+    And I accept alert if visible
+    And I select the first picture from Keyboard Gallery
+    Then I tap Confirm button on Picture preview page
+    # wait to make the transition and image arrival
+    And I wait for 3 seconds
+    When I remember asset container state at cell 1
+    And I wait for <Timeout> seconds
+    Then I see asset container state is changed
+
+    Examples:
+      | Name      | Contact1   | Contact2  | GroupChatName | Timeout | DeviceName |
+      | user1Name | user2Name  | user3Name | Epheme grp    | 15      | device2    |
+
   @C259598 @regression @fastLogin
   Scenario Outline: Verify timer is applyed to the all messages until turning it off
     Given There are 2 user where <Name> is me
@@ -454,5 +466,3 @@ Feature: Ephemeral Messages
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
-
-
