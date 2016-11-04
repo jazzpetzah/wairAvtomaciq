@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.steps;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.pages.FirstTimeOverlay;
 import com.wearezeta.auto.ios.tools.FastLoginContainer;
 import org.junit.Assert;
