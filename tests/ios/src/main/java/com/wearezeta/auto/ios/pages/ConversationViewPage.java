@@ -49,9 +49,10 @@ public class ConversationViewPage extends IOSPage {
     private static final String xpathStrAllEntries = "//XCUIElementTypeTable/XCUIElementTypeCell";
     private static final By xpathAllEntries = By.xpath(xpathStrAllEntries);
     private static final String xpathStrRecentEntry = xpathStrAllEntries + "[1]";
-    private static final String xpathStrEntryAboveTheRecent = xpathStrAllEntries + "[2]";
     private static final By xpathRecentEntry = By.xpath(xpathStrRecentEntry);
-    private static final By xpathEntryAboveTheRecent = By.xpath(xpathStrEntryAboveTheRecent);
+
+    private static final Function<String, String> xpathStrAssetContainerByIndex = text ->
+            String.format("%s[%s]", xpathStrAllEntries, text);
 
     private static final String xpathStrAllTextMessages = xpathStrAllEntries +
             "/XCUIElementTypeTextView[boolean(string(@value))]";
@@ -497,10 +498,15 @@ public class ConversationViewPage extends IOSPage {
         return containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
     }
 
-    public BufferedImage getAssetContainerStateScreenshot() throws Exception {
-        final BufferedImage containerScreen = this.getElementScreenshot(getElement(xpathEntryAboveTheRecent)).orElseThrow(() ->
+    public By getAssetContainerLocatorByIndex(int index) throws Exception {
+        final By locator = By.xpath(xpathStrAssetContainerByIndex.apply(Integer.toString(index)));
+        return locator;
+    }
+
+    public BufferedImage  getAssetContainerStateScreenshot(int index) throws Exception {
+        final BufferedImage containerScreen = this.getElementScreenshot(getElement(getAssetContainerLocatorByIndex(index))).orElseThrow(() ->
                 new IllegalStateException("Cannot take a screenshot of asset container"));
-        javax.imageio.ImageIO.write(containerScreen, "png", new java.io.File("/Users/guest/Desktop/" + System.currentTimeMillis() + ".png"));
+        //javax.imageio.ImageIO.write(containerScreen, "png", new java.io.File("/Users/guest/Desktop/" + System.currentTimeMillis() + ".png"));
         return containerScreen;
     }
 

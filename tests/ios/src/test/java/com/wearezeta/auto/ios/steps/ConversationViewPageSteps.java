@@ -24,6 +24,8 @@ public class ConversationViewPageSteps {
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
+    private ElementState previousAssetsContainerState = null;
+
     private ConversationViewPage getConversationViewPage() throws Exception {
         return pagesCollection.getPage(ConversationViewPage.class);
     }
@@ -385,19 +387,22 @@ public class ConversationViewPageSteps {
         previousMediaContainerState.remember();
     }
 
-    private ElementState previousAssetsContainerState = new ElementState(
-            () -> getConversationViewPage().getAssetContainerStateScreenshot()
-    );
+    public ElementState prepareAssetContainer(int index){
+        this.previousAssetsContainerState = new ElementState(
+                () -> getConversationViewPage().getAssetContainerStateScreenshot(index)
+        );
+        return this.previousAssetsContainerState;
 
+    }
     /**
      * Store the current assets container state into an internal varibale - especially for ephemeral assets
      *
      * @throws Exception
      * @step. ^I remember media asset container state$
      */
-    @When("^I remember asset container state$")
-    public void IRememberAssetsContainerState() throws Exception {
-        previousAssetsContainerState.remember();
+    @When("^I remember asset container state at cell (\\d+)$")
+    public void IRememberAssetsContainerState(int index) throws Exception {
+        prepareAssetContainer(index).remember();
     }
 
     /**
