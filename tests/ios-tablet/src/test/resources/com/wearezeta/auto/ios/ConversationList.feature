@@ -342,7 +342,7 @@ Feature: Conversation List
     Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
     When I swipe right on iPad the conversation named <GroupChatName>
     And I tap Delete action button
-    Given I tap Also Leave checkbox on Group info page
+    And I tap Also Leave checkbox on Group info page
     And I tap Confirm Deletion button on Group info page
     And I open search UI
     And I accept alert if visible
