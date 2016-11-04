@@ -213,7 +213,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I open conversation details
-    And I open ellipsis menu
+    And I tap Open Menu button on Participant profile page
     And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
@@ -307,7 +307,7 @@ Feature: Conversation View
     Given User <Name> sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
     And I tap Delete action button
-    And I confirm delete conversation content
+    And I tap Confirm Deletion button on Participant profile page
     Then I do not see conversation <Contact1> in conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search UI

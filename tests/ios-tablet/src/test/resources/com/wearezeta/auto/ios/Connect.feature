@@ -474,7 +474,7 @@ Feature: Connect
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
     And I see incoming pending popover from user <Contact3> on iPad
-    And I tap Start Conversation button on other user profile page
+    And I tap Open Conversation button on Participant profile page
     And I tap Ignore button on Incoming Pending Requests page
     And I dismiss popover on iPad
     And I navigate back to conversations list
@@ -502,7 +502,7 @@ Feature: Connect
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
     And I see incoming pending popover from user <Contact3> on iPad
-    And I tap Start Conversation button on other user profile page
+    And I tap Open Conversation button on Participant profile page
     And I tap Ignore button on Incoming Pending Requests page
     And I dismiss popover on iPad
     # Workaround for ZIOS-4985

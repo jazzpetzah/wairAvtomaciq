@@ -67,7 +67,7 @@ Feature: Archive
     Given I see conversations list
     When I swipe right on iPad the conversation named <GroupChatName>
     And I tap Leave action button
-    And I confirm leaving
+    And I tap Confirm Leaving button on Group info page
     Then I do not see conversation <GroupChatName> in conversations list
     When <Contact1> added me to group chat <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>

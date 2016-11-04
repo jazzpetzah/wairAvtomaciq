@@ -232,7 +232,7 @@ Feature: Conversation List
     Given User Myself sends 1 encrypted message to user <Contact1>
     When I swipe right on iPad the conversation named <Contact1>
     And I tap Delete action button
-    And I confirm delete conversation content
+    And I tap Confirm Deletion button on Participant profile page
     Then I do not see conversation <Contact1> in conversations list
     And I do not see Archive button at the bottom of conversations list
 
@@ -253,7 +253,7 @@ Feature: Conversation List
     And I open archived conversations
     And I swipe right on iPad the conversation named <Contact1>
     And I tap Delete action button
-    And I confirm delete conversation content
+    And I tap Confirm Deletion button on Participant profile page
     Then I do not see conversation <Contact1> in conversations list
     And I do not see Archive button at the bottom of conversations list
 
@@ -275,7 +275,7 @@ Feature: Conversation List
     Given User Myself sends encrypted image <Image> to group conversation <GroupChatName>
     When I swipe right on iPad the conversation named <GroupChatName>
     And I tap Delete action button
-    And I confirm delete conversation content
+    And I tap Confirm Deletion button on Group info page
     Then I do not see conversation <GroupChatName> in conversations list
     When I open search UI
     And I accept alert if visible
@@ -342,8 +342,8 @@ Feature: Conversation List
     Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
     When I swipe right on iPad the conversation named <GroupChatName>
     And I tap Delete action button
-    And I select Also Leave option on Delete conversation confirmation
-    And I confirm delete conversation content
+    And I tap Also Leave checkbox on Group info page
+    And I tap Confirm Deletion button on Group info page
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
@@ -372,7 +372,7 @@ Feature: Conversation List
     And I see Delete action button
     And I see Cancel action button
     And I tap Delete action button
-    And I confirm delete conversation content
+    And I tap Confirm Deletion button on Group info page
     Then I do not see conversation <GroupChatName> in conversations list
     And I do not see Archive button at the bottom of conversations list
 

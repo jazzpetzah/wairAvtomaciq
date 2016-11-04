@@ -6,7 +6,7 @@ import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
-public class TabletConversationDetailPopoverPage extends OtherUserPersonalInfoPage{
+public class TabletConversationDetailPopoverPage extends ParticipantProfilePage {
 	public static final By nameAddContactToChatButton = MobileBy.AccessibilityId("metaControllerLeftButton");
 
     public TabletConversationDetailPopoverPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {

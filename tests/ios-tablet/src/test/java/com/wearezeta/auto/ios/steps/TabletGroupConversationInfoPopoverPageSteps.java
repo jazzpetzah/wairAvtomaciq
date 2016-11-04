@@ -3,51 +3,18 @@ package com.wearezeta.auto.ios.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.TabletGroupConversationDetailPopoverPage;
+import com.wearezeta.auto.ios.pages.TabletGroupConversationInfoPopoverPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-public class TabletGroupConversationDetailPopoverPageSteps {
+public class TabletGroupConversationInfoPopoverPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private TabletGroupConversationDetailPopoverPage getTabletGroupConversationDetailPopoverPage() throws Exception {
-        return pagesCollection.getPage(TabletGroupConversationDetailPopoverPage.class);
-    }
-
-    /**
-     * Opens the ellipses menu on the ipad popover
-     *
-     * @throws Exception
-     * @step. ^I open conversation menu on iPad$
-     */
-    @When("^I open conversation menu on iPad$")
-    public void IPressConversationMenuButtonOniPad() throws Exception {
-        getTabletGroupConversationDetailPopoverPage().openConversationMenuOnPopover();
-    }
-
-    /**
-     * Presses leave button in ellipsis menu
-     *
-     * @throws Exception
-     * @step. ^I tap Leave Conversation button on iPad$
-     */
-    @When("^I tap Leave Conversation button on iPad$")
-    public void ITapLeaveConversationButtonOniPad() throws Exception {
-        getTabletGroupConversationDetailPopoverPage().tapLeaveConversation();
-    }
-
-    /**
-     * Presses the confirmation leave button
-     *
-     * @throws Exception
-     * @step. ^I confirm leaving on iPad$
-     */
-    @Then("^I confirm leaving on iPad$")
-    public void IConfirmLeaveOnIPad() throws Exception {
-        getTabletGroupConversationDetailPopoverPage().confirmLeaveConversation();
+    private TabletGroupConversationInfoPopoverPage getTabletGroupConversationDetailPopoverPage() throws Exception {
+        return pagesCollection.getPage(TabletGroupConversationInfoPopoverPage.class);
     }
 
     /**
@@ -77,18 +44,6 @@ public class TabletGroupConversationDetailPopoverPageSteps {
         Assert.assertTrue(String.format("The actual number of participants in the current group conversation " +
                         "seems to be different from the expected number %s", expectedNumber),
                 getTabletGroupConversationDetailPopoverPage().isNumberOfPeopleInGroupEqualToExpected(expectedNumber));
-    }
-
-    /**
-     * Clicks on the corresponding button in the iPad popover ellipsis menu
-     *
-     * @throws Exception
-     * @param actionName one of possible action names
-     * @step. ^I select (Mute|Unmute|Rename) action from iPad ellipsis menu$$
-     */
-    @When("^I select (Mute|Unmute|Rename) action from iPad ellipsis menu$")
-    public void ISelectOption(String actionName) throws Exception {
-        getTabletGroupConversationDetailPopoverPage().selectEllipsisMenuAction(actionName);
     }
 
     /**

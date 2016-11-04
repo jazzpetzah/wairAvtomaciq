@@ -121,9 +121,8 @@ public class LoginPage extends IOSPage {
         getElementIfDisplayed(nameMaybeLater).orElseGet(DummyElement::new).click();
     }
 
-    public Boolean isContactsButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationsListPage.nameContactsButton,
-                LOGIN_TIMEOUT_SECONDS);
+    public boolean isContactsButtonVisible() throws Exception {
+        return isLocatorDisplayed(ConversationsListPage.nameContactsButton, LOGIN_TIMEOUT_SECONDS);
     }
 
     public void tapHoldEmailInput() throws Exception {

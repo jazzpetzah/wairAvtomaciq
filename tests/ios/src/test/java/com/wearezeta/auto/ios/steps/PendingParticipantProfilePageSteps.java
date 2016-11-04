@@ -4,26 +4,26 @@ import cucumber.api.java.en.And;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.OtherUserOnPendingProfilePage;
+import com.wearezeta.auto.ios.pages.PendingParticipantProfilePage;
 
 import cucumber.api.java.en.When;
 
-public class OtherUserOnPendingPersonalInfoPageSteps {
+public class PendingParticipantProfilePageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private OtherUserOnPendingProfilePage getOtherUserOnPendingProfilePage() throws Exception {
-        return pagesCollection.getPage(OtherUserOnPendingProfilePage.class);
+    private PendingParticipantProfilePage getPendingParticipantProfilePage() throws Exception {
+        return pagesCollection.getPage(PendingParticipantProfilePage.class);
     }
 
     @When("^I see (.*) user pending profile page$")
     public void WhenISeeOtherUserProfilePage(String name) throws Exception {
         name = usrMgr.findUserByNameOrNameAlias(name).getName();
         Assert.assertTrue("Username is not displayed",
-                getOtherUserOnPendingProfilePage().isUserNameDisplayed(name));
+                getPendingParticipantProfilePage().isUserNameDisplayed(name));
         Assert.assertTrue("Close button not displayed",
-                getOtherUserOnPendingProfilePage().isClosePageButtonVisible());
+                getPendingParticipantProfilePage().isClosePageButtonVisible());
     }
 
     /**
@@ -39,10 +39,10 @@ public class OtherUserOnPendingPersonalInfoPageSteps {
         boolean isVisible;
         switch (btnName.toLowerCase()) {
             case "cancel request":
-                isVisible = getOtherUserOnPendingProfilePage().isCancelRequestButtonVisible();
+                isVisible = getPendingParticipantProfilePage().isCancelRequestButtonVisible();
                 break;
             case "remove from group":
-                isVisible = getOtherUserOnPendingProfilePage().isRemoveFromGroupConversationVisible();
+                isVisible = getPendingParticipantProfilePage().isRemoveFromGroupConversationVisible();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Button %s is unknown", btnName));
@@ -66,16 +66,16 @@ public class OtherUserOnPendingPersonalInfoPageSteps {
     public void ITapButton(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
             case "start conversation":
-                getOtherUserOnPendingProfilePage().tapStartConversationButton();
+                getPendingParticipantProfilePage().tapStartConversationButton();
                 break;
             case "connect":
-                getOtherUserOnPendingProfilePage().tapConnectButton();
+                getPendingParticipantProfilePage().tapConnectButton();
                 break;
             case "cancel request":
-                getOtherUserOnPendingProfilePage().tapCancelRequestButton();
+                getPendingParticipantProfilePage().tapCancelRequestButton();
                 break;
             case "close":
-                getOtherUserOnPendingProfilePage().tapCloseButton();
+                getPendingParticipantProfilePage().tapCloseButton();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Button %s is unknown", btnName));
@@ -93,10 +93,10 @@ public class OtherUserOnPendingPersonalInfoPageSteps {
     public void IConfirm(String action) throws Exception {
         switch (action.toLowerCase()) {
             case "cancel request":
-                getOtherUserOnPendingProfilePage().confirmCancelRequest();
+                getPendingParticipantProfilePage().confirmCancelRequest();
                 break;
             case "connect":
-                getOtherUserOnPendingProfilePage().confirmConnect();
+                getPendingParticipantProfilePage().confirmConnect();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown action to confirm: %s", action));
