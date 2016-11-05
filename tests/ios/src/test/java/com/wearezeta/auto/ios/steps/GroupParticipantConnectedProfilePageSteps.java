@@ -9,7 +9,7 @@ public class GroupParticipantConnectedProfilePageSteps {
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private GroupConnectedParticipantProfilePage getGroupInfoPage() throws Exception {
+    private GroupConnectedParticipantProfilePage getPage() throws Exception {
         return pagesCollection.getPage(GroupConnectedParticipantProfilePage.class);
     }
 }

@@ -13,6 +13,18 @@ public class SinglePendingUserOutgoingConnectionPage extends BasePendingOutgoing
     }
 
     @Override
+    protected By getButtonLocatorByName(String name) {
+        switch (name.toLowerCase()) {
+            case "connect":
+                return xpathConnectOtherUserButton;
+            case "cancel request":
+                return xpathCancelRequestButton;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
+        }
+    }
+
+    @Override
     protected By getLeftActionButtonLocator() {
         return SingleUserDetailsOverlay.nameLeftActionButton;
     }

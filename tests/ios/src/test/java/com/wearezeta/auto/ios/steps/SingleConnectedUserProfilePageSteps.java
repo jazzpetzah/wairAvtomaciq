@@ -1,12 +1,9 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.util.List;
-
 import cucumber.api.java.en.Then;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.details_overlay.single.SingleConnectedUserProfilePage;
 
@@ -17,14 +14,8 @@ public class SingleConnectedUserProfilePageSteps {
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private SingleConnectedUserProfilePage getParticipantProfilePage() throws Exception {
+    private SingleConnectedUserProfilePage getPage() throws Exception {
         return pagesCollection.getPage(SingleConnectedUserProfilePage.class);
-    }
-
-    @When("^I see (.*) user profile page$")
-    public void WhenISeeOtherUserProfilePage(String name) throws Exception {
-        name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        Assert.assertTrue(getParticipantProfilePage().isProfileNameVisible(name));
     }
 
     /**
@@ -32,42 +23,52 @@ public class SingleConnectedUserProfilePageSteps {
      *
      * @param btnName one of available button names
      * @throws Exception
-     * @step. ^I tap (Create Group|Remove From Conversation|Confirm Removal|Confirm Deletion|X|Open Conversation|Open Menu)
-     * button on Participant profile page$
+     * @step. ^I tap (Create Group|X|Open Menu) button on Single user profile page$
      */
-    @When("^I tap (Create Group|Remove From Conversation|Confirm Removal|Confirm Deletion|X|Open Conversation|Open Menu) " +
-            "button on Participant profile page$")
+    @When("^I tap (Create Group|X|Open Menu) button on Single user profile page$")
     public void ITapButton(String btnName) throws Exception {
-        getParticipantProfilePage().tapButton(btnName);
+        getPage().tapButton(btnName);
     }
 
     /**
-     * Verify if conversation action menu is visible
+     * Verify user name on Single user profile page
      *
+     * @param value user name or email
+     * @param fieldType either name or email
      * @throws Exception
-     * @step. I see conversation action menu
+     * @step. ^I see (.*) (name|email) on Single user profile page$
      */
-    @When("^I see conversation action menu$")
-    public void ISeeConversationActionMenu() throws Exception {
-        Assert.assertTrue("Conversation action menu is not visible",
-                getParticipantProfilePage().isActionMenuVisible());
+    @When("^I (do not )?see (.*) (name|email) on Single user profile page$")
+    public void IVerifyUserOtherUserProfilePage(String shouldNotSee, String value, String fieldType) throws Exception {
+        boolean result;
+        switch (fieldType) {
+            case "email":
+                value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.EMAIL_ALIAS);
+                if (shouldNotSee == null) {
+                    result = getPage().isNameVisible(value);
+                } else {
+                    result = getPage().isNameInvisible(value);
+                }
+                break;
+            case "name":
+                value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
+                if (shouldNotSee == null) {
+                    result = getPage().isEmailVisible(value);
+                } else {
+                    result = getPage().isEmailInvisible(value);
+                }
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown field type '%s'", fieldType));
+        }
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("'%s' field is expected to be visible", value), result);
+        } else {
+            Assert.assertTrue(String.format("'%s' field is expected to be invisible", value), result);
+        }
     }
 
-    /**
-     * Verify user name on Other User Profile page
-     *
-     * @param user user name
-     * @throws Exception
-     * @step. ^I verify username (.*) on Other User Profile page is displayed and correct$
-     */
-    @When("^I verify username (.*) on Other User Profile page is displayed")
-    public void IVerifyUserOtherUserProfilePage(String user) throws Exception {
-        String username = usrMgr.findUserByNameOrNameAlias(user).getName();
-        Assert.assertTrue(String.format("Use name '%s' is not visible", username),
-                getParticipantProfilePage().isUserNameVisible(username));
-    }
-
-    private String userAddressBookName;
+    private String userAddressBookName = null;
 
     /**
      * Remembers the name of the user how he is saved in the Address Book
@@ -85,36 +86,15 @@ public class SingleConnectedUserProfilePageSteps {
      * Verifies that the Address Book name of the user is displayed
      *
      * @throws Exception
-     * @step. ^I verify the previously remembered user name from Address Book is displayed on Other User Profile page$
+     * @step. ^I verify the previously remembered user name from Address Book is displayed on Single user profile page$
      */
-    @Then("^I verify the previously remembered user name from Address Book is displayed on Other User Profile page$")
+    @Then("^I verify the previously remembered user name from Address Book is displayed on Single user profile page$")
     public void IVerifyUsersAddressBookNameOnOtherUserProfilePageIsDisplayed() throws Exception {
         if (userAddressBookName == null) {
             throw new IllegalStateException("Save the Address Book name of the user first!");
         }
         Assert.assertTrue(String.format("User Address Book name '%s' is not visible", userAddressBookName),
-                getParticipantProfilePage().isUserAddressBookNameVisible(userAddressBookName));
-    }
-
-    /**
-     * Verify that user email on Other User Profile page is displayed and correct
-     *
-     * @param email             user email
-     * @param shouldNotBVisible equals to null if the email should be visible
-     * @throws Exception
-     * @step. ^I verify user email (.*) on Other User Profile page is correct and displayed$
-     */
-    @When("^I verify user email for (.*) on Other User Profile page is (not )?displayed$")
-    public void IVerifyUserEmailOnOtherUserProfilePageIsDisplayedAndCorrect(String email,
-                                                                            String shouldNotBVisible) throws Exception {
-        email = usrMgr.findUserByNameOrNameAlias(email).getEmail();
-        if (shouldNotBVisible == null) {
-            Assert.assertTrue(String.format("Email '%s' is not visible", email),
-                    getParticipantProfilePage().isUserEmailVisible(email));
-        } else {
-            Assert.assertTrue(String.format("Email '%s' is displayed, but should be hidden", email),
-                    getParticipantProfilePage().isUserEmailNotVisible(email));
-        }
+                getPage().isNameVisible(userAddressBookName));
     }
 
     /**
@@ -126,35 +106,7 @@ public class SingleConnectedUserProfilePageSteps {
      */
     @When("^I switch to (Devices|Details) tab$")
     public void IChangeTab(String tabName) throws Exception {
-        getParticipantProfilePage().switchToTab(tabName);
-    }
-
-    /**
-     * Checks the number of devices in participant devices tab
-     *
-     * @param expectedNumDevices Expected number of devices
-     * @throws Exception
-     * @step. ^I see (\d+) devices shown in participant devices tab$
-     * tab$
-     */
-    @When("^I see (\\d+) devices shown in participant devices tab$")
-    public void ISeeDevicesShownInDevicesTab(int expectedNumDevices) throws Exception {
-        Assert.assertTrue(
-                String.format("The expected number of devices: %s is not equals to actual count", expectedNumDevices),
-                getParticipantProfilePage().isParticipantDevicesCountEqualTo(expectedNumDevices)
-        );
-    }
-
-    /**
-     * Open the details page of corresponding device on conversation details page
-     *
-     * @param deviceIndex the device index. Starts from 1
-     * @throws Exception
-     * @step. ^I open details page of device number (\d+)$
-     */
-    @When("^I open details page of device number (\\d+)$")
-    public void IOpenDeviceDetails(int deviceIndex) throws Exception {
-        getParticipantProfilePage().openDeviceDetailsPage(deviceIndex);
+        getPage().switchToTab(tabName);
     }
 
     /**
@@ -162,45 +114,16 @@ public class SingleConnectedUserProfilePageSteps {
      *
      * @param shouldNotSee equals to null if the shield should be visible
      * @throws Exception
-     * @step. ^I (do not )?see shield icon on conversation details page$
+     * @step. ^I (do not )?see shield icon on Single user profile page$
      */
-    @Then("^I (do not )?see shield icon on conversation details page$")
+    @Then("^I (do not )?see shield icon on Single user profile page$")
     public void ISeeShieldIcon(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue("The shield icon is not visible on convo details page",
-                    getParticipantProfilePage().isShieldIconVisible());
+                    getPage().isShieldIconVisible());
         } else {
             Assert.assertTrue("The shield icon is still visible on convo details page",
-                    getParticipantProfilePage().isShieldIconNotVisible());
+                    getPage().isShieldIconNotVisible());
         }
-    }
-
-    /**
-     * Verify all device with correct IDs are presented on participant devices tab
-     *
-     * @param name username
-     * @throws Exception
-     * @step. ^I see user (.*) devices? IDs? (?:is|are) presented on participant devices tab$
-     */
-    @Then("^I see user (.*) devices? IDs? (?:is|are) presented on participant devices tab$")
-    public void ISeeUserDeveceIDPresentedOnDetailsPage(String name) throws Exception {
-        List<String> deviceIDs = CommonSteps.getInstance().GetDevicesIDsForUser(name);
-        for (String id : deviceIDs) {
-            Assert.assertTrue(String.format("Device ID '%s' is not visible", id), getParticipantProfilePage()
-                    .isUserDeviceIdVisible(id));
-        }
-    }
-
-    /**
-     * Tap the corresponding link on user details page. Since we cannot detect the exact link position
-     * we just assume this link is located at the bottom left corner of the container text block.
-     *
-     * @param expectedLink the full text of the link to be clicked
-     * @throws Exception
-     * @step. ^I tap "(.*)" link in user details$
-     */
-    @When("^I tap \"(.*)\" link in user details$")
-    public void ITapLink(String expectedLink) throws Exception {
-        getParticipantProfilePage().tapLink(expectedLink);
     }
 }

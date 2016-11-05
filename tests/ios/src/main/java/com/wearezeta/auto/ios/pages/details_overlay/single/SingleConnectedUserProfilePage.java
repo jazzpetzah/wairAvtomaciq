@@ -28,10 +28,6 @@ public class SingleConnectedUserProfilePage extends SingleUserDetailsOverlay
             case "remove from conversation":
             case "open menu":
                 return getRightActionButtonLocator();
-            case "confirm removal":
-                return xpathConfirmRemoveButton;
-            case "confirm deletion":
-                return xpathConfirmDeleteButton;
             case "x":
                 return nameXButton;
             default:

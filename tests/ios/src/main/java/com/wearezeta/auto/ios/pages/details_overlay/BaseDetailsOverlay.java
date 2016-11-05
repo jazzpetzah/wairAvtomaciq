@@ -10,8 +10,6 @@ import java.util.concurrent.Future;
 public abstract class BaseDetailsOverlay extends IOSPage {
     private static final By xpathVerifiedShield = MobileBy.AccessibilityId("VerifiedShield");
 
-    private static final By xpathActionsMenu = By.xpath("//XCUIElementTypeButton[@name='CANCEL']");
-
     public BaseDetailsOverlay(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
     }
@@ -31,10 +29,6 @@ public abstract class BaseDetailsOverlay extends IOSPage {
     public boolean isButtonInvisible(String name) throws Exception {
         final By locator = getButtonLocatorByName(name);
         return isLocatorInvisible(locator);
-    }
-
-    public boolean isActionMenuVisible() throws Exception {
-        return isLocatorDisplayed(xpathActionsMenu);
     }
 
     protected abstract By getLeftActionButtonLocator();

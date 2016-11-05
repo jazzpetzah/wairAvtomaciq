@@ -14,7 +14,7 @@ Feature: Connect
     And I tap input field on Search UI page
     And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
-    And I tap Connect button on Pending outgoing connection page
+    And I tap Connect button on Single user Pending outgoing connection page
     And I tap X button on Search UI page
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
@@ -40,7 +40,7 @@ Feature: Connect
     And I tap input field on Search UI page
     And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
-    And I tap Connect button on Pending outgoing connection page
+    And I tap Connect button on Single user Pending outgoing connection page
     And I tap X button on Search UI page
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
@@ -104,7 +104,9 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap Incoming Pending Requests item in conversations list
-    And I tap Ignore button on Incoming Pending Requests page <SentRequests> times
+    And I tap Ignore button on Single user Pending incoming connection page
+    And I tap Ignore button on Single user Pending incoming connection page
+    And I tap Ignore button on Single user Pending incoming connection page
     And I do not see Pending request link in conversations list
     And I do not see conversation <Contact1> in conversations list
     And I wait until <Contact1> exists in backend search results
@@ -116,8 +118,8 @@ Feature: Connect
     Then I see incoming pending popover from user <Contact1> on iPad
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  |
+      | user1Name | user2Name | user3Name | user4Name | user5Name |
 
   @C2440 @regression @fastLogin
   Scenario Outline: Verify transitions between connection requests (ignoring) [LANDSCAPE]
@@ -157,7 +159,9 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap Incoming Pending Requests item in conversations list
-    And I tap Connect button on Incoming Pending Requests page <SentRequests> times
+    And I tap Connect button on Single user Pending incoming connection page
+    And I tap Connect button on Single user Pending incoming connection page
+    And I tap Connect button on Single user Pending incoming connection page
     And I navigate back to conversations list
     Then I do not see Pending request link in conversations list
     And I see conversation <Contact1> in conversations list
@@ -165,8 +169,8 @@ Feature: Connect
     And I see conversation <Contact3> in conversations list
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  |
+      | user1Name | user2Name | user3Name | user4Name | user5Name |
 
   @C2441 @regression @fastLogin
   Scenario Outline: Verify transitions between connection requests (accepting) [LANDSCAPE]
@@ -179,15 +183,17 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap Incoming Pending Requests item in conversations list
-    And I tap Connect button on Incoming Pending Requests page <SentRequests> times
+    And I tap Connect button on Single user Pending incoming connection page
+    And I tap Connect button on Single user Pending incoming connection page
+    And I tap Connect button on Single user Pending incoming connection page
     Then I do not see Pending request link in conversations list
     And I see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
     And I see conversation <Contact3> in conversations list
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  |
+      | user1Name | user2Name | user3Name | user4Name | user5Name |
 
   @C2481 @regression @fastLogin
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending user [PORTRAIT]
@@ -291,7 +297,7 @@ Feature: Connect
     And I tap input field on Search UI page
     And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
-    And I tap Connect button on Pending outgoing connection page
+    And I tap Connect button on Single user Pending outgoing connection page
     And I tap X button on Search UI page
     Then I see first item in contact list named <Contact>
     When I open search UI
@@ -338,8 +344,8 @@ Feature: Connect
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I tap Cancel Request button on pending profile page
-    And I confirm Cancel Request action on pending profile page
+    And I tap Cancel Request button on Single user Pending outgoing connection page
+    And I confirm cancellation action on Single user Pending outgoing connection page
     When I navigate back to conversations list
     Then I do not see conversation <Contact1> in conversations list
 
@@ -356,8 +362,8 @@ Feature: Connect
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I tap Cancel Request button on pending profile page
-    And I confirm Cancel Request action on pending profile page
+    And I tap Cancel Request button on Single user Pending outgoing connection page
+    And I confirm cancellation action on Single user Pending outgoing connection page
     Then I do not see conversation <Contact1> in conversations list
 
     Examples:
@@ -373,8 +379,8 @@ Feature: Connect
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I tap Cancel Request button on pending profile page
-    And I confirm Cancel Request action on pending profile page
+    And I tap Cancel Request button on Single user Pending outgoing connection page
+    And I confirm cancellation action on Single user Pending outgoing connection page
     And I navigate back to conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search UI
@@ -382,8 +388,8 @@ Feature: Connect
     And I tap input field on Search UI page
     And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
-    And I tap Connect button on Pending outgoing connection page
-    And I do not see Pending outgoing connection page
+    And I tap Connect button on Single user Pending outgoing connection page
+    And I do not see Connect button on Single user Pending outgoing connection page
     And I tap X button on Search UI page
     Then I see first item in contact list named <Contact1>
 
@@ -400,16 +406,16 @@ Feature: Connect
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I tap Cancel Request button on pending profile page
-    And I confirm Cancel Request action on pending profile page
+    And I tap Cancel Request button on Single user Pending outgoing connection page
+    And I confirm cancellation action on Single user Pending outgoing connection page
     And I wait until <Contact1> exists in backend search results
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
     And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
-    And I tap Connect button on Pending outgoing connection page
-    And I do not see Pending outgoing connection page
+    And I tap Connect button on Single user Pending outgoing connection page
+    And I do not see Connect button on Single user Pending outgoing connection page
     And I tap X button on Search UI page
     Then I see first item in contact list named <Contact1>
 
@@ -430,8 +436,8 @@ Feature: Connect
     And I tap input field on Search UI page
     And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
-    And I tap Cancel Request button on pending profile page
-    And I confirm Cancel Request action on pending profile page
+    And I tap Cancel Request button on Single user Pending outgoing connection page
+    And I confirm cancellation action on Single user Pending outgoing connection page
     Then I see the conversation "<Contact1>" exists in Search results
 
     Examples:
@@ -451,8 +457,8 @@ Feature: Connect
     And I tap input field on Search UI page
     And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
-    And I tap Cancel Request button on pending profile page
-    And I confirm Cancel Request action on pending profile page
+    And I tap Cancel Request button on Single user Pending outgoing connection page
+    And I confirm cancellation action on Single user Pending outgoing connection page
     Then I see the conversation "<Contact1>" exists in Search results
 
     Examples:
@@ -474,8 +480,8 @@ Feature: Connect
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
     And I see incoming pending popover from user <Contact3> on iPad
-    And I tap Open Conversation button on Participant profile page
-    And I tap Ignore button on Incoming Pending Requests page
+    And I tap Open Conversation button on Group participant Pending incoming connection page
+    And I tap Ignore button on Single user Pending incoming connection page
     And I dismiss popover on iPad
     And I navigate back to conversations list
     # Workaround for ZIOS-4985
@@ -502,8 +508,8 @@ Feature: Connect
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
     And I see incoming pending popover from user <Contact3> on iPad
-    And I tap Open Conversation button on Participant profile page
-    And I tap Ignore button on Incoming Pending Requests page
+    And I tap Open Conversation button on Group participant incoming connection page
+    And I tap Ignore button on Single user Pending incoming connection page
     And I dismiss popover on iPad
     # Workaround for ZIOS-4985
     # Then I do not see Pending request link in conversations list
@@ -523,7 +529,7 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap Incoming Pending Requests item in conversations list
-    Then I see Incoming Pending Requests page
+    Then I see Connect button on Single user Pending incoming connection page
 
     Examples:
       | Name      | Contact   | Contact2  | Contact3  |
@@ -538,7 +544,8 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap Incoming Pending Requests item in conversations list
-    Then I see Hello connect message from user <NewName> on Incoming Pending Requests page
+    Then I see Connect button on Single user Pending incoming connection page
+    And I see <NewName> name on Single user Pending incoming connection page
 
     Examples:
       | Name      | Contact   | NewName  |
@@ -553,7 +560,8 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap Incoming Pending Requests item in conversations list
-    Then I see Hello connect message from user <NewName> on Incoming Pending Requests page
+    Then I see Connect button on Single user Pending incoming connection page
+    And I see <NewName> name on Single user Pending incoming connection page
 
     Examples:
       | Name      | Contact   | NewName  |
@@ -604,8 +612,8 @@ Feature: Connect
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact2>
-    And I tap Connect button on pending profile page
-    And I confirm Connect action on pending profile page
+    And I tap Connect button on Single user Pending outgoing connection page
+    And I confirm connection action on Single user Pending outgoing connection page
     And I dismiss popover on iPad
     Then I see conversation <Contact2> in conversations list
     And I do not see Pending request link in conversations list

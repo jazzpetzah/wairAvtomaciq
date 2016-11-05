@@ -30,7 +30,7 @@ Feature: E2EE
     And I tap on contact name <Contact1>
     And I open conversation details
     And I switch to Devices tab
-    Then I see 3 devices shown in participant devices tab
+    Then I see 3 items are shown on Devices tab$
 
     Examples:
       | Name      | Contact1  | DeviceName1 | DeviceName2 | DeviceName3 |
@@ -67,16 +67,16 @@ Feature: E2EE
     Given I see conversations list
     And I tap on contact name <Contact1>
     And I open conversation details
-    And I do not see shield icon on conversation details page
+    And I do not see shield icon on Single user profile page
     And I switch to Devices tab
     When I open details page of device number 1
     And I tap Verify switcher on Device Details page
-    And I navigate back from Device Details page
+    And I tap Back button on Device Details page
     And I open details page of device number 2
     And I tap Verify switcher on Device Details page
-    And I navigate back from Device Details page
+    And I tap Back button on Device Details page
     And I switch to Details tab
-    Then I see shield icon on conversation details page
+    Then I see shield icon on Single user profile page
 
     Examples:
       | Name      | Contact1  | DeviceName1 | DeviceName2 |
@@ -98,14 +98,14 @@ Feature: E2EE
     And I switch to Devices tab
     And I open details page of device number 1
     And I tap Verify switcher on Device Details page
-    And I navigate back from Device Details page
-    And I tap X button on Participant profile page
+    And I tap Back button on Device Details page
+    And I tap X button on Group participant profile page
     And I select participant <Contact2>
     And I switch to Devices tab
     And I open details page of device number 1
-    And I tap Verify switcher on Device Details page
-    And I navigate back from Device Details page
-    And I tap X button on Participant profile page
+    And I tap Verify switcher in Device Details page
+    And I tap Back button on Device Details page
+    And I tap X button on Group participant profile page
     And I tap X button on Group info page
     Then I see shield icon in the conversation view
 
@@ -124,9 +124,9 @@ Feature: E2EE
     And I open conversation details
     And I switch to Devices tab
     And I open details page of device number 1
-    And I tap Verify switcher on Device Details page
-    And I navigate back from Device Details page
-    And I tap X button on Participant profile page
+    And I tap Verify switcher in Device Details page
+    And I tap Back button on Device Details page
+    And I tap X button on Single user profile page
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And User <Contact1> sends 1 encrypted message using device <DeviceName2> to user Myself
     # Wait for sync
@@ -148,10 +148,10 @@ Feature: E2EE
     Given I tap on contact name <Contact1>
     Given I open conversation details
     Given I switch to Devices tab
-    Given I open details page of device number 1
-    Given I tap Verify switcher on Device Details page
-    Given I navigate back from Device Details page
-    Given I tap X button on Participant profile page
+    Given I open details page of device number 1 on Single user profile page
+    Given I tap Verify switcher in Device Details on Single user profile page
+    Given I navigate back from Device Details on Single user profile page
+    Given I tap X button on Single user profile page
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And I type the default message and send it
     Then I see the label "<Contact1> <ExpectedSuffix>" on New Device overlay
@@ -244,8 +244,8 @@ Feature: E2EE
     Given I switch to Devices tab
     Given I open details page of device number 1
     Given I tap Verify switcher on Device Details page
-    Given I navigate back from Device Details page
-    Given I tap X button on Participant profile page
+    Given I tap Back button on Device Details page
+    Given I tap X button on Single user profile page
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And I type the default message and send it
     And I close New Device overlay
@@ -270,12 +270,11 @@ Feature: E2EE
     Given I switch to Devices tab
     Given I open details page of device number 1
     Given I tap Verify switcher on Device Details page
-    Given I navigate back from Device Details page
-    Given I tap X button on Participant profile page
+    Given I tap Back button on Device Details page
+    Given I tap X button on Single user profile page
     When User Myself adds a new device <DeviceName2> with label <DeviceLabel2>
     Then I do not see shield icon in the conversation view
     And I see "<ExpectedMsg>" system message in the conversation view
-
 
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                    |
@@ -294,11 +293,11 @@ Feature: E2EE
     And I switch to Devices tab
     And I open details page of device number 1
     And I tap Verify switcher on Device Details page
-    And I navigate back from Device Details page
+    And I tap Back button on Device Details page
     And I open details page of device number 2
     And I tap Verify switcher on Device Details page
-    And I navigate back from Device Details page
-    And I tap X button on Participant profile page
+    And I tap Back button on Device Details page
+    And I tap X button on Single user profile page
     Then I see shield icon in the conversation view
     And I see "<VerificationMsg>" system message in the conversation view
 
@@ -333,11 +332,11 @@ Feature: E2EE
     And I open conversation details
     When I select participant <Contact1>
     And I switch to Devices tab
-    Then I see user <Contact1> device IDs are presented on participant devices tab
-    And I tap X button on Participant profile page
+    Then I see user <Contact1> device IDs are present on Devices tab of Single user profile page
+    And I tap X button on Single user profile page
     When I select participant <Contact2>
     And I switch to Devices tab
-    Then I see user <Contact2> device IDs are presented on participant devices tab
+    Then I see user <Contact2> device IDs are present on Devices tab of Single user profile page
 
     Examples:
       | Name      | Contact1  | Contact2  | DeviceName1 | DeviceName2 | GroupChatName | DeviceName3 | DeviceName4 |
@@ -358,14 +357,14 @@ Feature: E2EE
     Given I switch to Devices tab
     Given I open details page of device number 1
     Given I tap Verify switcher on Device Details page
-    Given I navigate back from Device Details page
-    Given I tap X button on Participant profile page
+    Given I tap Back button on Device Details page
+    Given I tap X button on Single user profile page
     Given I select participant <Contact2>
     Given I switch to Devices tab
     Given I open details page of device number 1
     Given I tap Verify switcher on Device Details page
-    Given I navigate back from Device Details page
-    Given I tap X button on Participant profile page
+    Given I tap Back button on Device Details page
+    Given I tap X button on Single user profile page
     Given I tap X button on Group info page
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And I type the default message and send it
@@ -404,7 +403,7 @@ Feature: E2EE
     And I accept alert
     And I select settings item Devices
     And I open details page of device number 2
-    And I tap Remove Device on device detail page
+    And I tap Remove Device button on Device Details page
     And I confirm with my <Password> the deletion of the device
     Then I do not see device <DeviceName> in devices list
 
@@ -425,8 +424,8 @@ Feature: E2EE
     And I switch to Devices tab
     And I open details page of device number 2
     And I tap Verify switcher on Device Details page
-    And I navigate back from Device Details page
-    And I tap X button on Participant profile page
+    And I tap Back button on Device Details page
+    And I tap X button on Single user profile page
     And I do not see shield icon in the conversation view
     Then I do not see "<ExpectedMessage>" system message in the conversation view
 
@@ -445,12 +444,12 @@ Feature: E2EE
     And I tap on contact name <Contact1>
     And I open conversation details
     And I switch to Devices tab
-    When I tap "Why verify conversations?" link in user details
+    When I tap "Why verify conversations?" link on Devices tab of Single user profile page
     And I wait for 12 seconds
     Then I see "https://support.wire.com" web page opened
     When I tap Back To Wire button
     And I open details page of device number 1
-    And I tap "How do I do that?" link in user details
+    And I tap "How do I do that?" link on Devices tab of Single user profile page
     And I wait for 12 seconds
     Then I see "https://support.wire.com" web page opened
 
@@ -470,16 +469,16 @@ Feature: E2EE
     And I switch to Devices tab
     And I open details page of device number 1
     And I tap Verify switcher on Device Details page
-    And I navigate back from Device Details page
-    And I tap X button on Participant profile page
+    And I tap Back button on Device Details page
+    And I tap X button on Single user profile page
     Then I see shield icon in the conversation view
     And I see "<VerificationMsg>" system message in the conversation view
     When I open conversation details
     And I switch to Devices tab
     And I open details page of device number 1
     And I tap Verify switcher on Device Details page
-    And I navigate back from Device Details page
-    And I tap X button on Participant profile page
+    And I tap Back button on Device Details page
+    And I tap X button on Single user profile page
     Then I do not see shield icon in the conversation view
     And I see "<UnverificationMsg>" system message in the conversation view
 

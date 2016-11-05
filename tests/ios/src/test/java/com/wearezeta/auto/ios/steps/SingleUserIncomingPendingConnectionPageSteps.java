@@ -13,45 +13,53 @@ public class SingleUserIncomingPendingConnectionPageSteps {
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private SinglePendingUserIncomingConnectionPage getPendingRequestsPage() throws Exception {
+    private SinglePendingUserIncomingConnectionPage getPage() throws Exception {
         return pagesCollection.getPage(SinglePendingUserIncomingConnectionPage.class);
     }
 
-    /**
-     * Tap the corresponding button on Pending Request page
-     *
-     * @param btnName button name to tap
-     * @throws Exception
-     * @step. ^I tap (Ignore|Connect) button on Incoming Pending Requests page$
-     */
-    @When("^I tap (Ignore|Connect) button on Incoming Pending Requests page$")
-    public void ITapIgnoreButtonPendingRequests(String btnName) throws Exception {
-        getPendingRequestsPage().tapButton(btnName);
+    @Then("^I (do not )?see (.*) (email|name) on Single user Pending incoming connection page$")
+    public void ISeeLabel(String shouldNotSee, String value, String fieldType) throws Exception {
+        boolean result;
+        switch (fieldType) {
+            case "email":
+                value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.EMAIL_ALIAS);
+                if (shouldNotSee == null) {
+                    result = getPage().isNameVisible(value);
+                } else {
+                    result = getPage().isNameInvisible(value);
+                }
+                break;
+            case "name":
+                value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
+                if (shouldNotSee == null) {
+                    result = getPage().isEmailVisible(value);
+                } else {
+                    result = getPage().isEmailInvisible(value);
+                }
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown field type '%s'", fieldType));
+        }
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("'%s' field is expected to be visible", value), result);
+        } else {
+            Assert.assertTrue(String.format("'%s' field is expected to be invisible", value), result);
+        }
     }
 
-    /**
-     * Tap the corresponding button on Pending Request page multiple times
-     *
-     * @param btnName button name to tap
-     * @param count how many times the button should be clicked. Should be greater than zero
-     * @throws Exception
-     * @step. ^I tap (Ignore|Connect) button on Incoming Pending Requests page (\d+) times?$
-     */
-    @When("^I tap (Ignore|Connect) button on Incoming Pending Requests page (\\d+) times?$")
-    public void ITapIgnoreButtonPendingRequests(String btnName, int count) throws Exception {
-        getPendingRequestsPage().tapButton(btnName, count);
+    @Then("^I (do not )?see (Cancel Request|Connect) button on Single user Pending incoming connection page$")
+    public void ISeeButton(String shouldNotSee, String btnName) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("'%s' button is expected to be visible", btnName),
+                    getPage().isButtonVisible(btnName));
+        } else {
+            Assert.assertTrue(String.format("'%s' button is expected to be invisible", btnName),
+                    getPage().isButtonInvisible(btnName));
+        }
     }
 
-    @Then("^I see Incoming Pending Requests page$")
-    public void ISeePendingRequestPage() throws Exception {
-        Assert.assertTrue("Incoming Pending Requests page is not shown",
-                getPendingRequestsPage().isConnectButtonDisplayed());
-    }
-
-    @Then("^I see Hello connect message from user (.*) on Incoming Pending Requests page$")
-    public void ISeeHelloConnectMessageFrom(String user) throws Exception {
-        user = usrMgr.findUserByNameOrNameAlias(user).getName();
-        Assert.assertTrue(String.format("Connect To message is not visible for user '%s'", user),
-                getPendingRequestsPage().isConnectToNameExist(user));
+    @When("^I tap (Ignore|Connect) button on Single user Pending incoming connection page$")
+    public void ITapButton(String btnName) throws Exception {
+        getPage().tapButton(btnName);
     }
 }

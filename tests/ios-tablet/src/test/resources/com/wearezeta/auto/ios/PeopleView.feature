@@ -57,7 +57,7 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I tap Create Group button on Participant profile page
+    And I tap Create Group button on Single user profile page
     And I tap connected user <Contact2> in Search UI on iPad popover
     And I tap connected user <Contact3> in Search UI on iPad popover
     And I tap Create button on iPad popover
@@ -78,7 +78,7 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I tap Create Group button on Participant profile page
+    And I tap Create Group button on Single user profile page
     And I tap connected user <Contact2> in Search UI on iPad popover
     And I tap connected user <Contact3> in Search UI on iPad popover
     And I tap Create button on iPad popover
@@ -142,9 +142,9 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
-    And I tap Remove From Conversation button on Participant profile page
-    And I tap Confirm Removal button on Participant profile page
-    And I tap X button on Participant profile page
+    And I tap Remove From Conversation button on Group participant profile page
+    And I confirm Remove conversation action
+    And I tap X button on Group participant profile page
     Then I see that <Contact2> is not present on group chat info page
 
     Examples:
@@ -162,9 +162,9 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
-    And I tap Remove From Conversation button on Participant profile page
-    And I tap Confirm Removal button on Participant profile page
-    And I tap X button on Participant profile page
+    And I tap Remove From Conversation button on Group participant profile page
+    And I confirm Remove conversation action
+    And I tap X button on Group participant profile page
     Then I see that <Contact2> is not present on group chat info page
 
     Examples:
@@ -332,7 +332,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
-    And I tap Open Conversation button on Participant profile page
+    And I tap Open Conversation button on Group participant profile page
     #And I dismiss popover on iPad
     And I type the default message and send it
     Then I see 1 default message in the conversation view
@@ -352,7 +352,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
-    And I tap Open Conversation button on Participant profile page
+    And I tap Open Conversation button on Group participant profile page
     And I type the default message and send it
     Then I see 1 default message in the conversation view
 
@@ -497,10 +497,9 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I see <Contact1> user profile page
-    And I tap Open Menu button on Participant profile page
-    And I tap Block action button
-    And I confirm blocking alert
+    And I tap Open Menu button on Single user profile page
+    And I tap Block conversation action button
+    And I confirm Block conversation action
     Then I do not see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
 
@@ -517,10 +516,9 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I see <Contact1> user profile page
-    And I tap Open Menu button on Participant profile page
-    And I tap Block action button
-    And I confirm blocking alert
+    And I tap Open Menu button on Single user profile page
+    And I tap Block conversation action button
+    And I confirm Block conversation action
     Then I do not see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
 
@@ -540,7 +538,6 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact1>
-    And I see <Contact1> user profile page
     And I tap Unblock button on Search UI page
     And I navigate back to conversations list
     Then I see conversation <Contact1> in conversations list
@@ -561,7 +558,6 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact1>
-    And I see <Contact1> user profile page
     And I tap Unblock button on Search UI page
     Then I see conversation <Contact1> in conversations list
 
@@ -775,16 +771,16 @@ Feature: People View
     Given Myself is connected to all other users
     Given I rotate UI to portrait
     Given I Sign in on tablet using my email
-    Given I see conversations list
     Given User Myself securely pings conversation <Contact1>
     Given User Myself sends 1 encrypted message to user <Contact1>
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I tap Open Menu button on Participant profile page
-    And I tap Delete action button
-    And I tap Confirm Deletion button on Participant profile page
+    And I tap Open Menu button on Single user profile page
+    And I tap Delete conversation action button
+    And I confirm Delete conversation action
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
@@ -804,16 +800,16 @@ Feature: People View
     Given Myself is connected to all other users
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see conversations list
     Given User Myself securely pings conversation <Contact1>
     Given User Myself sends 1 encrypted message to user <Contact1>
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I tap Open Menu button on Participant profile page
-    And I tap Delete action button
-    And I tap Confirm Deletion button on Participant profile page
+    And I tap Open Menu button on Single user profile page
+    And I tap Delete conversation action button
+    And I confirm Delete conversation action
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
@@ -887,8 +883,8 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact3>
-    Then I see <Contact3> user pending profile popover on iPad
-    And I see Remove From Group button on pending profile page
+    Then I see <Contact3> name on Group participant Pending outgoing connection page
+    And I see Remove From Group button on Group participant Pending outgoing connection page
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
@@ -906,8 +902,8 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact3>
-    Then I see <Contact3> user pending profile popover on iPad
-    And I see Remove From Group button on pending profile page
+    Then I see <Contact3> name on Group participant Pending outgoing connection page
+    And I see Remove From Group button on Group participant Pending outgoing connection page
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
@@ -922,9 +918,9 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I tap Open Menu button on Participant profile page
-    And I tap Block action button
-    And I tap Cancel action button
+    And I tap Open Menu button on Single user profile page
+    And I tap Block conversation action button
+    And I tap Cancel conversation action button
     Then I see conversation action menu
 
     Examples:
@@ -940,9 +936,9 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I tap Open Menu button on Participant profile page
-    And I tap Block action button
-    And I tap Cancel action button
+    And I tap Open Menu button on Single user profile page
+    And I tap Block conversation action button
+    And I tap Cancel conversation action button
     Then I see conversation action menu
 
     Examples:

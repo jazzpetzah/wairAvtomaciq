@@ -394,8 +394,8 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I open conversation details
-    And I tap Open Menu button on Participant profile page
-    And I tap Archive action button
+    And I tap Open Menu button on Single user profile page
+    And I tap Archive conversation action button
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
     Then I see conversation <Contact> in conversations list
@@ -413,8 +413,8 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I open conversation details
-    And I tap Open Menu button on Participant profile page
-    And I tap Archive action button
+    And I tap Open Menu button on Single user profile page
+    And I tap Archive conversation action button
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
     Then I see conversation <Contact> in conversations list
@@ -584,8 +584,8 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends 1 encrypted message to user <Contact1>
     When I swipe right on iPad the conversation named <Contact1>
-    And I tap Delete action button
-    And I tap Confirm Deletion button on Participant profile page
+    And I tap Delete conversation action button
+    And I confirm Delete conversation action
     Then I do not see conversation <Contact1> in conversations list
     When I wait until <Contact1> exists in backend search results
     And I open search UI

@@ -8,7 +8,6 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I see <Contact1> user profile page
     And I tap Create Group button
     And I wait until <Contact2> exists in backend search results
     And I tap input field on Search UI page
@@ -75,9 +74,9 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact2>
-    And I tap Remove From Conversation button on Participant profile page
-    And I tap Confirm Removal button on Participant profile page
-    And I tap X button on Participant profile page
+    And I tap Remove From Conversation button on Group participant profile page
+    And I confirm Remove conversation action
+    And I tap X button on Group participant profile page
     Then I see that <Contact2> is not present on group chat info page
 
     Examples:
@@ -131,15 +130,15 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <GroupCreator>
-    And I verify username <GroupCreator> on Other User Profile page is displayed
-    And I verify user email for <GroupCreator> on Other User Profile page is displayed
-    And I tap X button on Participant profile page
+    And I see <GroupCreatorEmail> name on Group participant profile page
+    And I see <GroupCreatorEmail> email on Group participant profile page
+    And I tap X button on Group participant profile page
     And I select participant <NonConnectedContact>
-    Then I verify username <NonConnectedContact> on Other User Profile page is displayed
+    Then I see <NonConnectedContact> name on Group participant Pending outgoing connection page
 
     Examples:
-      | Name      | GroupCreator | NonConnectedContact | GroupChatName |
-      | user1Name | user2Name    | user3Name           | TESTCHAT      |
+      | Name      | GroupCreator | GroupCreatorEmail | NonConnectedContact | GroupChatName |
+      | user1Name | user2Name    | user2Email        | user3Name           | TESTCHAT      |
 
   @C988 @regression @fastLogin
   Scenario Outline: Verify you can start 1:1 conversation from a group conversation profile
@@ -151,7 +150,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact1>
-    And I tap Open Conversation button on Participant profile page
+    And I tap Open Conversation button on Group participant profile page
     And I type the default message and send it
     Then I see 1 default message in the conversation view
 
@@ -170,7 +169,7 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <NonConnectedContact>
-    Then I see Pending outgoing connection page
+    Then I see Connect button on Group participant Pending outgoing connection page
 
     Examples:
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
@@ -232,7 +231,7 @@ Feature: People View
     And I tap Clear Group Participants Picker button on Search UI page
     And I tap Create Group button
     And I tap Close Group Participants Picker button on Search UI page
-    And I tap X button on Participant profile page
+    And I tap X button on Single user profile page
     And I navigate back to conversations list
     Then I don't see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 
@@ -250,9 +249,9 @@ Feature: People View
     When I remember the state of <Contact> conversation item
     And I tap on contact name <Contact>
     And I open conversation details
-    And I tap Open Menu button on Participant profile page
+    And I tap Open Menu button on Single user profile page
     And I tap Mute action button
-    And I tap X button on Participant profile page
+    And I tap X button on Single user profile page
     And I navigate back to conversations list
     And I see conversations list
     Then I see the state of <Contact> conversation item is changed
@@ -272,9 +271,9 @@ Feature: People View
     When I remember the state of <Contact> conversation item
     And I tap on contact name <Contact>
     And I open conversation details
-    And I tap Open Menu button on Participant profile page
+    And I tap Open Menu button on Single user profile page
     And I tap Unmute action button
-    And I tap X button on Participant profile page
+    And I tap X button on Single user profile page
     And I navigate back to conversations list
     And I see conversations list
     Then I see the state of <Contact> conversation item is changed
@@ -291,8 +290,7 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I see <Contact1> user profile page
-    And I tap Open Menu button on Participant profile page
+    And I tap Open Menu button on Single user profile page
     And I tap Block action button
     And I confirm blocking alert
     Then I do not see conversation <Contact1> in conversations list
@@ -312,7 +310,6 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact1>
-    And I see <Contact1> user profile page
     And I tap Unblock button on Search UI page
     Then I see conversation view page
 
@@ -380,7 +377,7 @@ Feature: People View
     Given I tap Open Menu button on Group info page
     Given I tap Delete action button
     Given I tap Also Leave checkbox on Group info page
-    Given I tap Confirm Deletion button on Participant profile page
+    Given I confirm Delete conversation action
     Given I open search UI
     Given I accept alert if visible
     Given I tap input field on Search UI page
@@ -429,16 +426,16 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User Myself securely pings conversation <Contact1>
     Given User Myself sends 1 encrypted message to user <Contact1>
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I tap Open Menu button on Participant profile page
-    And I tap Delete action button
-    And I tap Confirm Deletion button on Participant profile page
+    And I tap Open Menu button on Single user profile page
+    And I tap Delete conversation action button
+    And I confirm Delete conversation action
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
@@ -485,8 +482,8 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact3>
-    Then I see <Contact3> user pending profile page
-    And I see Remove From Group button on pending profile page
+    Then I see <Contact3> name on Group participant Pending outgoing connection page
+    And I see Remove From Group button on Group participant Pending outgoing connection page
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
@@ -500,7 +497,7 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I tap Open Menu button on Participant profile page
+    And I tap Open Menu button on Single user profile page
     And I tap Block action button
     And I tap Cancel action button
     Then I see conversation action menu

@@ -1,5 +1,8 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import cucumber.api.java.en.And;
+import cucumber.api.java.en.Then;
 import org.junit.Assert;
 
 import com.wearezeta.auto.ios.pages.details_overlay.single.SinglePendingUserOutgoingConnectionPage;
@@ -9,57 +12,60 @@ import cucumber.api.java.en.When;
 public class SingleUserOutgoingPendingConnectionPageSteps {
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private SinglePendingUserOutgoingConnectionPage getPendingOutgoingConnectionPage() throws Exception {
+    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+    private SinglePendingUserOutgoingConnectionPage getPage() throws Exception {
         return pagesCollection.getPage(SinglePendingUserOutgoingConnectionPage.class);
     }
 
-    /**
-     * Verify visibility of pending outgoing connection
-     *
-     * @param shouldNotBeVisible equals to null if the view should be visible
-     * @throws Exception
-     * @step. ^I (do not )?see Pending outgoing connection page$
-     */
-    @When("^I (do not )?see Pending outgoing connection page$")
-    public void ISeeView(String shouldNotBeVisible) throws Exception {
-        boolean condition;
-        if (shouldNotBeVisible == null) {
-            condition = getPendingOutgoingConnectionPage().isButtonVisible("Connect");
-        } else {
-            condition = getPendingOutgoingConnectionPage().isButtonInvisible("Connect");
+    @Then("^I (do not )?see (.*) (email|name) on Single user Pending outgoing connection page$")
+    public void ISeeLabel(String shouldNotSee, String value, String fieldType) throws Exception {
+        boolean result;
+        switch (fieldType) {
+            case "email":
+                value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.EMAIL_ALIAS);
+                if (shouldNotSee == null) {
+                    result = getPage().isNameVisible(value);
+                } else {
+                    result = getPage().isNameInvisible(value);
+                }
+                break;
+            case "name":
+                value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
+                if (shouldNotSee == null) {
+                    result = getPage().isEmailVisible(value);
+                } else {
+                    result = getPage().isEmailInvisible(value);
+                }
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown field type '%s'", fieldType));
         }
-        Assert.assertTrue(String.format("Pending outgoing connection view is expected to be %s",
-                (shouldNotBeVisible == null) ? "visible" : "invisible"), condition);
-    }
-
-    /**
-     * Tap the corresponding button on Pending outgoing connection page
-     *
-     * @param btnName one of possible button names
-     * @throws Exception
-     * @step. ^I tap (Cancel Request|Connect) button on Pending outgoing connection page$
-     */
-    @When("^I tap (Cancel Request|Connect) button on Pending outgoing connection page$")
-    public void ITapButton(String btnName) throws Exception {
-        getPendingOutgoingConnectionPage().tapButton(btnName);
-    }
-
-    /**
-     * Verify button visibility on Pending outgoing connection pag
-     *
-     * @param shouldNotSee equals to null if the button should be visible
-     * @param btnName      one of possible button names
-     * @throws Exception
-     * @step. ^I (do not )?see (Cancel Request|Connect) button on Pending outgoing connection page$
-     */
-    @When("^I (do not )?see (Cancel Request|Connect) button on Pending outgoing connection page$")
-    public void ITapButton(String shouldNotSee, String btnName) throws Exception {
         if (shouldNotSee == null) {
-            Assert.assertTrue(String.format("the button '%s' is expected to be visible", btnName),
-                    getPendingOutgoingConnectionPage().isButtonVisible(btnName));
+            Assert.assertTrue(String.format("'%s' field is expected to be visible", value), result);
         } else {
-            Assert.assertTrue(String.format("the button '%s' is expected to be invisible", btnName),
-                    getPendingOutgoingConnectionPage().isButtonInvisible(btnName));
+            Assert.assertTrue(String.format("'%s' field is expected to be invisible", value), result);
         }
+    }
+
+    @Then("^I (do not )?see (Cancel Request|Connect) button on Single user Pending outgoing connection page$")
+    public void ISeeButton(String shouldNotSee, String btnName) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("'%s' button is expected to be visible", btnName),
+                    getPage().isButtonVisible(btnName));
+        } else {
+            Assert.assertTrue(String.format("'%s' button is expected to be invisible", btnName),
+                    getPage().isButtonInvisible(btnName));
+        }
+    }
+
+    @When("^I tap (Cancel Request|Connect) button on Single user Pending outgoing connection page$")
+    public void ITapButton(String btnName) throws Exception {
+        getPage().tapButton(btnName);
+    }
+
+    @And("^I (confirm (?:cancellation|deletion|connection)) action on Single user Pending outgoing connection page$")
+    public void IConfirm(String what) throws Exception {
+        getPage().tapButton(what);
     }
 }

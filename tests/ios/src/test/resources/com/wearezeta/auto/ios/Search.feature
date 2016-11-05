@@ -86,11 +86,11 @@ Feature: Search
     And I tap on conversation <UnconnectedUser> in search result
     # Wait until user info is loaded
     And I wait for 3 seconds
-    And I tap Connect button on Pending outgoing connection page
+    And I tap Connect button on Single user Pending outgoing connection page
     And I tap X button on Search UI page
     And I tap on contact name <UnconnectedUser>
     And I open conversation details
-    And I see <UnconnectedUser> user pending profile page
+    And I see <UnconnectedUser> name on Single user Pending outgoing connection page
 
     Examples:
       | Name      | UnconnectedUser | Contact2  |

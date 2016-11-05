@@ -12,6 +12,20 @@ public class GroupPendingParticipantOutgoingConnectionPage extends BasePendingOu
     }
 
     @Override
+    protected By getButtonLocatorByName(String name) {
+        switch (name.toLowerCase()) {
+            case "connect":
+                return xpathConnectOtherUserButton;
+            case "cancel request":
+                return xpathCancelRequestButton;
+            case "x":
+                return nameXButton;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
+        }
+    }
+
+    @Override
     protected By getLeftActionButtonLocator() {
         return GroupDetailsOverlay.namLeftActionButton;
     }

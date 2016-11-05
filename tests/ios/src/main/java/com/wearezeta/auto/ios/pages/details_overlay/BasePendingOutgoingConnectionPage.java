@@ -6,26 +6,14 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 
 public abstract class BasePendingOutgoingConnectionPage extends BaseUserDetailsOverlay {
-    private static final By xpathConnectOtherUserButton =
+    protected static final By xpathConnectOtherUserButton =
             By.xpath("(//XCUIElementTypeButton[@label='CONNECT'])[last()]");
 
-    private static final By xpathCancelRequestButton =
+    protected static final By xpathCancelRequestButton =
             By.xpath("(//XCUIElementTypeButton[@label='CANCEL REQUEST'])[last()]");
 
     public BasePendingOutgoingConnectionPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
-    }
-
-    @Override
-    protected By getButtonLocatorByName(String name) {
-        switch (name.toLowerCase()) {
-            case "connect":
-                return xpathConnectOtherUserButton;
-            case "cancel request":
-                return xpathCancelRequestButton;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
-        }
     }
 
     @Override

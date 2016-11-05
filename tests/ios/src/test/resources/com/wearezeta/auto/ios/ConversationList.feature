@@ -231,8 +231,8 @@ Feature: Conversation List
     Then I see 1 photo in the conversation view
     When I navigate back to conversations list
     And I swipe right on a <Contact1>
-    And I tap Delete action button
-    And I tap Confirm Deletion button on Participant profile page
+    And I tap Delete conversation action button
+    And I confirm Delete conversation action
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
@@ -309,8 +309,8 @@ Feature: Conversation List
     Given User <Contact1> sends 1 encrypted message to user <Name>
     Given User Myself sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
-    And I tap Delete action button
-    And I tap Confirm Deletion button on Participant profile page
+    And I tap Delete conversation action button
+    And I confirm Delete conversation action
     Then I do not see conversation <Contact1> in conversations list
     And I do not see Archive button at the bottom of conversations list
 
@@ -329,8 +329,8 @@ Feature: Conversation List
     And I do not see conversation <Contact1> in conversations list
     And I open archived conversations
     And I swipe right on a <Contact1>
-    And I tap Delete action button
-    And I tap Confirm Deletion button on Participant profile page
+    And I tap Delete conversation action button
+    And I confirm Delete conversation action
     Then I do not see conversation <Contact1> in conversations list
     And I do not see Archive button at the bottom of conversations list
 

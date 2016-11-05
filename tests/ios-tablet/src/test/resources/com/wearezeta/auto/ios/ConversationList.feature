@@ -115,7 +115,8 @@ Feature: Conversation List
     And <Contact> sent connection request to Me
     # Workaround for ZIOS-6338
     And I tap Incoming Pending Requests item in conversations list
-    Then I see Hello connect message from user <Contact> on Incoming Pending Requests page
+    Then I see Connect button on Single user Pending incoming connection page
+    And I see <Contact> name on Single user Pending incoming connection page
 
     Examples:
       | Name      | Contact   |
@@ -231,8 +232,8 @@ Feature: Conversation List
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User Myself sends 1 encrypted message to user <Contact1>
     When I swipe right on iPad the conversation named <Contact1>
-    And I tap Delete action button
-    And I tap Confirm Deletion button on Participant profile page
+    And I tap Delete conversation action button
+    And I confirm Delete conversation action
     Then I do not see conversation <Contact1> in conversations list
     And I do not see Archive button at the bottom of conversations list
 
@@ -252,8 +253,8 @@ Feature: Conversation List
     And I do not see conversation <Contact1> in conversations list
     And I open archived conversations
     And I swipe right on iPad the conversation named <Contact1>
-    And I tap Delete action button
-    And I tap Confirm Deletion button on Participant profile page
+    And I tap Delete conversation action button
+    And I confirm Delete conversation action
     Then I do not see conversation <Contact1> in conversations list
     And I do not see Archive button at the bottom of conversations list
 

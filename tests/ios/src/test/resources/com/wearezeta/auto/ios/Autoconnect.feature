@@ -122,8 +122,8 @@ Feature: Autoconnect
     And I tap X button on Search UI page
     And I tap on contact name <Contact>
     And I open conversation details
-    Then I verify username <Contact> on Other User Profile page is displayed
-    And I verify the previously remembered user name from Address Book is displayed on Other User Profile page
+    Then I see <Contact> name on Single user profile page
+    And I verify the previously remembered user name from Address Book is displayed on Single user profile page
 
     Examples:
       | Name      | Contact   | ContactPhone     | NewName |

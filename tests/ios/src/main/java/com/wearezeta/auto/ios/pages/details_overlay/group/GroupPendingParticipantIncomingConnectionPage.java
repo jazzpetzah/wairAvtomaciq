@@ -12,6 +12,21 @@ public class GroupPendingParticipantIncomingConnectionPage extends BasePendingIn
     }
 
     @Override
+    protected By getButtonLocatorByName(String name) {
+        switch (name.toLowerCase()) {
+            case "ignore":
+                return xpathPendingRequestIgnoreButton;
+            case "connect":
+                return xpathPendingRequestConnectButton;
+            case "x":
+                return nameXButton;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s' for Pending requests ",
+                        name));
+        }
+    }
+
+    @Override
     protected By getLeftActionButtonLocator() {
         return GroupDetailsOverlay.namLeftActionButton;
     }
