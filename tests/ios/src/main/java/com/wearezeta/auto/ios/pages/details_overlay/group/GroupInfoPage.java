@@ -81,8 +81,13 @@ public class GroupInfoPage extends GroupDetailsOverlay implements ICanContainVer
         Thread.sleep(1000);
     }
 
-    public boolean waitForContactToDisappear(String contact) throws Exception {
-        final By locator = By.xpath(xpathPeopleViewCollectionCellByName.apply(contact));
+    public boolean isParticipantVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathPeopleViewCollectionCellByName.apply(name));
+        return isLocatorDisplayed(locator);
+    }
+
+    public boolean isParticipantInvisible(String name) throws Exception {
+        final By locator = By.xpath(xpathPeopleViewCollectionCellByName.apply(name));
         return isLocatorInvisible(locator);
     }
 
@@ -95,16 +100,10 @@ public class GroupInfoPage extends GroupDetailsOverlay implements ICanContainVer
         switch (name.toLowerCase()) {
             case "add people":
                 return getLeftActionButtonLocator();
-            case "confirm removal":
-                return xpathConfirmRemoveButton;
-            case "confirm deletion":
-                return xpathConfirmDeleteButton;
             case "also leave":
                 return nameAlsoLeaveCheckbox;
             case "x":
                 return nameExitGroupInfoPageButton;
-            case "confirm leaving":
-                return xpathConfirmLeaveButton;
             case "open menu":
                 return getRightActionButtonLocator();
             default:

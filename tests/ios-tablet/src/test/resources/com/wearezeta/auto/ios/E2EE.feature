@@ -11,11 +11,11 @@ Feature: E2EE
     When I tap on contact name <Contact1>
     Then I do not see shield icon in the conversation view
     When I open conversation details
-    And I switch to Devices tab
-    And I open details page of device number 1 on iPad
+    And I switch to Devices tab on Single user profile page
+    And I open details page of device number 1
     And I tap Verify switcher on Device Details page
-    And I navigate back from Device Details page on iPad
-    And I open details page of device number 2 on iPad
+    And I tap Back button on Device Details page
+    And I open details page of device number 2
     And I tap Verify switcher on Device Details page
     And I dismiss popover on iPad
     Then I see shield icon in the conversation view
@@ -35,8 +35,8 @@ Feature: E2EE
     Given User <Contact1> sends 1 encrypted message to user Myself
     And I tap on contact name <Contact1>
     And I open conversation details
-    And I switch to Devices tab
-    And I open details page of device number 1 on iPad
+    And I switch to Devices tab on Single user profile page
+    And I open details page of device number 1
     And I tap Verify switcher on Device Details page
     And I dismiss popover on iPad
     When User Myself adds a new device <DeviceName2> with label <DeviceLabel2>

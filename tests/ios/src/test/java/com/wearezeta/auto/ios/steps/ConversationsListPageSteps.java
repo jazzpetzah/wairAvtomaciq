@@ -401,42 +401,6 @@ public class ConversationsListPageSteps {
                 conversation), getConversationsListPage().isActionMenuVisibleForConversation(conversation));
     }
 
-    /**
-     * Checks that specified button is exist in displayed action menu
-     *
-     * @param buttonTitle Mute | Unmute | Delete | Leave | Archive | Block | Cancel Request | Cancel
-     * @throws Exception
-     * @step. ^I see (Silence|Delete|Leave|Archive|Block|Cancel Request|Cancel) action button$
-     */
-    @And("^I see (Mute|Unmute|Delete|Leave|Archive|Block|Cancel Request|Cancel) action button$")
-    public void ISeeXButtonInActionMenu(String buttonTitle) throws Exception {
-        Assert.assertTrue("There is no button " + buttonTitle.toUpperCase()
-                + " in opened action menu.", getConversationsListPage().isButtonVisibleInActionMenu(buttonTitle));
-    }
-
-    /**
-     * Tap specified button in action menu
-     *
-     * @param buttonTitle Mute|Unmute|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel
-     * @throws Exception
-     * @step. ^I tap (Mute|Unmute|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel|Rename) action button$
-     */
-    @And("^I tap (Mute|Unmute|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel|Rename) action button$")
-    public void ITapXButtonInActionMenu(String buttonTitle) throws Exception {
-        getConversationsListPage().tapButtonInActionMenu(buttonTitle);
-    }
-
-    /**
-     * Confirms the blocking alert by clicking block
-     *
-     * @throws Exception
-     * @step. ^I confirm blocking alert$
-     */
-    @When("^I confirm blocking alert$")
-    public void IConfirmBlockingAlert() throws Exception {
-        ITapXButtonInActionMenu("Block");
-    }
-
     private ElementState previousSettingsGearState = new ElementState(
             () -> getConversationsListPage().getSettingsGearStateScreenshot()
     );

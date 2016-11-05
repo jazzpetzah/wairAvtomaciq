@@ -73,13 +73,6 @@ public abstract class IOSPage extends BasePage {
 
     private static final By nameDefaultMapApplication = MobileBy.AccessibilityId("CalloutArrow.png");
 
-    protected static final By xpathConfirmRemoveButton =
-            By.xpath("//XCUIElementTypeButton[@name='CANCEL']/following::XCUIElementTypeButton[@name='REMOVE']");
-    protected static final By xpathConfirmDeleteButton =
-            By.xpath("//XCUIElementTypeButton[@name='CANCEL']/following::XCUIElementTypeButton[@name='DELETE']");
-    protected static final By xpathConfirmLeaveButton =
-            By.xpath("//XCUIElementTypeButton[@name='CANCEL']/following::XCUIElementTypeButton[@name='LEAVE']");
-
     private IOSKeyboard onScreenKeyboard;
 
     private IOSKeyboard getOnScreenKeyboard() throws Exception {

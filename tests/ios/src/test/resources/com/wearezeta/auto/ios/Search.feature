@@ -65,7 +65,7 @@ Feature: Search
     When I tap Create conversation action button on Search UI page
     And I see conversation view page
     And I open group conversation details
-    Then I see <ParticipantsCount> participant avatars
+    Then I see "<ParticipantsCount> people" label on Group info page
 
     Examples:
       | Name      | ParticipantsCount |

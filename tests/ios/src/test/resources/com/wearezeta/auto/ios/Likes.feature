@@ -135,8 +135,8 @@ Feature: Likes
     Given I see conversations list
     Given User <Contact1> sends encrypted image <Picture> to group conversation <Group>
     When I swipe right on a <Group>
-    And I tap Delete action button
-    And I tap Confirm Deletion button on Group info page
+    And I tap Delete conversation action button
+    And I confirm Delete conversation action
     And User <Contact1> likes the recent message from group conversation <Group>
     Then I do not see conversation <Group> in conversations list
     When I open search UI
@@ -240,7 +240,7 @@ Feature: Likes
     Given I see conversations list
     Given User <Contact1> sends encrypted image <Picture> to group conversation <Group>
     When I swipe right on a <Group>
-    And I tap Archive action button
+    And I tap Archive conversation action button
     Then I do not see conversation <Group> in conversations list
     When User <Contact1> likes the recent message from group conversation <Group>
     #Lets wait a bit to give a chance to Like action

@@ -14,12 +14,17 @@ public class GroupPendingParticipantIncomingConnectionPage extends BasePendingIn
     @Override
     protected By getButtonLocatorByName(String name) {
         switch (name.toLowerCase()) {
+            case "start conversation":
+            case "open conversation":
+                return getLeftActionButtonLocator();
             case "ignore":
                 return xpathPendingRequestIgnoreButton;
             case "connect":
                 return xpathPendingRequestConnectButton;
             case "x":
                 return nameXButton;
+            case "remove from group":
+                return getRightActionButtonLocator();
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s' for Pending requests ",
                         name));

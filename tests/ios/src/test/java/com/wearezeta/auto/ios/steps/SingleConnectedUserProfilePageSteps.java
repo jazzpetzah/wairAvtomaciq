@@ -104,7 +104,7 @@ public class SingleConnectedUserProfilePageSteps {
      * @throws Exception
      * @step. ^I switch to (Devices|Details) tab$
      */
-    @When("^I switch to (Devices|Details) tab$")
+    @When("^I switch to (Devices|Details) tab on Single user profile page$")
     public void IChangeTab(String tabName) throws Exception {
         getPage().switchToTab(tabName);
     }

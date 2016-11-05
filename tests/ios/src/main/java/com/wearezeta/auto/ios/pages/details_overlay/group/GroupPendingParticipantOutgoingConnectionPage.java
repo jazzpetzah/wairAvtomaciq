@@ -14,12 +14,17 @@ public class GroupPendingParticipantOutgoingConnectionPage extends BasePendingOu
     @Override
     protected By getButtonLocatorByName(String name) {
         switch (name.toLowerCase()) {
+            case "start conversation":
+            case "open conversation":
+                return getLeftActionButtonLocator();
             case "connect":
                 return xpathConnectOtherUserButton;
             case "cancel request":
                 return xpathCancelRequestButton;
             case "x":
                 return nameXButton;
+            case "remove from group":
+                return getRightActionButtonLocator();
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
         }

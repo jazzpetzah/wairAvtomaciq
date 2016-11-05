@@ -100,8 +100,8 @@ Feature: People View
     Given I tap on group chat with name <GroupChatName>
     Given I open group conversation details
     Given I tap Open Menu button on Group info page
-    When I tap Leave action button
-    And I tap Confirm Leaving button on Group info page
+    When I tap Leave conversation action button
+    And I confirm Leave conversation action
     And I open archived conversations
     And I tap on group chat with name <GroupChatName>
     Then I see You Left message in group chat
@@ -121,8 +121,8 @@ Feature: People View
     Given I tap on group chat with name <GroupChatName>
     Given I open group conversation details
     Given I tap Open Menu button on Group info page
-    When I tap Leave action button
-    And I tap Confirm Leaving button on Group info page
+    When I tap Leave conversation action button
+    And I confirm Leave conversation action
     And I open archived conversations
     And I tap on group chat with name <GroupChatName>
     Then I see You Left message in group chat
@@ -145,7 +145,7 @@ Feature: People View
     And I tap Remove From Conversation button on Group participant profile page
     And I confirm Remove conversation action
     And I tap X button on Group participant profile page
-    Then I see that <Contact2> is not present on group chat info page
+    Then I do not see participant name <Contact2> on Group info page
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -165,7 +165,7 @@ Feature: People View
     And I tap Remove From Conversation button on Group participant profile page
     And I confirm Remove conversation action
     And I tap X button on Group participant profile page
-    Then I see that <Contact2> is not present on group chat info page
+    Then I do not see participant name <Contact2> on Group info page
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -182,8 +182,8 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
-    And I tap Rename action button
-    And I change group conversation name to "<ChatName>"
+    And I tap Rename conversation action button
+    And I change group conversation name to "<ChatName>" on Group info page
     And I dismiss popover on iPad
     Then I see You Renamed Conversation message shown in conversation view
     When I navigate back to conversations list
@@ -205,8 +205,8 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
-    And I tap Rename action button
-    And I change group conversation name to "<ChatName>"
+    And I tap Rename conversation action button
+    And I change group conversation name to "<ChatName>" on Group info page
     And I dismiss popover on iPad
     Then I see You Renamed Conversation message shown in conversation view
     And I see conversation <ChatName> in conversations list
@@ -225,8 +225,8 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    Then I see correct conversation name <GroupChatName>
-    Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
+    Then I see conversation name "<GroupChatName>" on Group info page
+    And I see that number of participants <ParticipantsNumber> is correct on iPad popover
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | ParticipantsNumber |
@@ -242,8 +242,8 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    Then I see correct conversation name <GroupChatName>
-    Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
+    Then I see conversation name "<GroupChatName>" on Group info page
+    And I see that number of participants <ParticipantsNumber> is correct on iPad popover
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | ParticipantsNumber |
@@ -260,11 +260,12 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
-    Then I see email and name of user <Contact2> on iPad popover
+    Then I see <Contact2> name on Group participant profile page
+    And I see <Contact2Email> email on Group participant profile page
 
     Examples:
-      | Name      | Contact2  | ConnectedContact | GroupChatName   |
-      | user1Name | user2Name | user3Name        | SingleInfoGroup |
+      | Name      | Contact2  | Contact2Email | ConnectedContact | GroupChatName   |
+      | user1Name | user2Name | user2Email    | user3Name        | SingleInfoGroup |
 
   @C2718 @rc @regression @fastLogin
   Scenario Outline: Check any users personal info in group conversation [LANDSCAPE]
@@ -277,11 +278,12 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
-    Then I see email and name of user <Contact2> on iPad popover
+    Then I see <Contact2> name on Group participant profile page
+    And I see <Contact2Email> email on Group participant profile page
 
     Examples:
-      | Name      | Contact2  | ConnectedContact | GroupChatName   |
-      | user1Name | user2Name | user3Name        | SingleInfoGroup |
+      | Name      | Contact2  | Contact2Email | ConnectedContact | GroupChatName   |
+      | user1Name | user2Name | user2Email    | user3Name        | SingleInfoGroup |
 
   @C2719 @regression @fastLogin
   Scenario Outline: Verify you cant start 1:1 with unconnected user in group [PORTRAIT]
@@ -295,8 +297,8 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <NonConnectedContact>
-    Then I see Connect label on Other user profile popover
-    And I see Connect Button on Other user profile popover
+    And I see Connect button on Group participant Pending outgoing connection page
+
 
     Examples:
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
@@ -314,8 +316,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <NonConnectedContact>
-    Then I see Connect label on Other user profile popover
-    And I see Connect Button on Other user profile popover
+    Then I see Connect button on Group participant Pending outgoing connection page
 
     Examples:
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
@@ -374,7 +375,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
-    And I tap Unmute action button
+    And I tap Unmute conversation action button
     And I dismiss popover on iPad
     And I navigate back to conversations list
     Then I see the state of <GroupChatName> conversation item is changed on iPad
@@ -397,7 +398,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
-    And I tap Unmute action button
+    And I tap Unmute conversation action button
     And I dismiss popover on iPad
     Then I see the state of <GroupChatName> conversation item is changed on iPad
 
@@ -418,7 +419,7 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
-    And I tap Mute action button
+    And I tap Mute conversation action button
     And I dismiss popover on iPad
     And I navigate back to conversations list
     Then I see the state of <GroupChatName> conversation item is changed on iPad
@@ -440,7 +441,7 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
-    And I tap Mute action button
+    And I tap Mute conversation action button
     And I dismiss popover on iPad
     Then I see the state of <GroupChatName> conversation item is changed on iPad
 
@@ -537,7 +538,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select participant <Contact1>
+    And I select participant <Contact1> on Group info page
     And I tap Unblock button on Search UI page
     And I navigate back to conversations list
     Then I see conversation <Contact1> in conversations list
@@ -557,7 +558,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select participant <Contact1>
+    And I select participant <Contact1> on Group info page
     And I tap Unblock button on Search UI page
     Then I see conversation <Contact1> in conversations list
 
@@ -616,8 +617,8 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
-    And I tap Delete action button
-    And I tap Confirm Deletion button on Group info page
+    And I tap Delete conversation action button
+    And I confirm Delete conversation action
     Then I do not see conversation <GroupChatName> in conversations list
     And I do not see Archive button at the bottom of conversations list
 
@@ -638,8 +639,8 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
-    And I tap Delete action button
-    And I tap Confirm Deletion button on Group info page
+    And I tap Delete conversation action button
+    And I confirm Delete conversation action
     Then I do not see conversation <GroupChatName> in conversations list
     And I do not see Archive button at the bottom of conversations list
 
@@ -659,9 +660,9 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
-    And I tap Delete action button
+    And I tap Delete conversation action button
     And I tap Also Leave checkbox on Group info page
-    And I tap Confirm Deletion button on Group info page
+    And I confirm Delete conversation action
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
@@ -688,9 +689,9 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
-    And I tap Delete action button
+    And I tap Delete conversation action button
     And I tap Also Leave checkbox on Group info page
-    And I tap Confirm Deletion button on Group info page
+    And I confirm Delete conversation action
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
@@ -720,8 +721,8 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
-    And I tap Delete action button
-    And I tap Confirm Deletion button on Group info page
+    And I tap Delete conversation action button
+    And I confirm Delete conversation action
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
@@ -750,8 +751,8 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
-    And I tap Delete action button
-    And I tap Confirm Deletion button on Group info page
+    And I tap Delete conversation action button
+    And I confirm Delete conversation action
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
@@ -818,7 +819,7 @@ Feature: People View
     And I tap Open conversation action button on Search UI page
     Then I see 0 default messages in the conversation view
     And I see 0 photos in the conversation view
-    
+
     Examples:
       | Name      | Contact1  | Image       |
       | user1Name | user2Name | testing.jpg |
@@ -836,8 +837,8 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
-    And I tap Leave action button
-    And I tap Confirm Leaving button on Group info page
+    And I tap Leave conversation action button
+    And I confirm Leave conversation action
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
@@ -860,8 +861,8 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
-    And I tap Leave action button
-    And I tap Confirm Leaving button on Group info page
+    And I tap Leave conversation action button
+    And I confirm Leave conversation action
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
@@ -882,7 +883,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select participant <Contact3>
+    And I select participant <Contact3> on Group info page
     Then I see <Contact3> name on Group participant Pending outgoing connection page
     And I see Remove From Group button on Group participant Pending outgoing connection page
 
@@ -901,7 +902,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select participant <Contact3>
+    And I select participant <Contact3> on Group info page
     Then I see <Contact3> name on Group participant Pending outgoing connection page
     And I see Remove From Group button on Group participant Pending outgoing connection page
 
@@ -921,7 +922,7 @@ Feature: People View
     And I tap Open Menu button on Single user profile page
     And I tap Block conversation action button
     And I tap Cancel conversation action button
-    Then I see conversation action menu
+    Then I see conversation actions menu
 
     Examples:
       | Name      | Contact1  |
@@ -939,7 +940,7 @@ Feature: People View
     And I tap Open Menu button on Single user profile page
     And I tap Block conversation action button
     And I tap Cancel conversation action button
-    Then I see conversation action menu
+    Then I see conversation actions menu
 
     Examples:
       | Name      | Contact1  |
@@ -955,10 +956,10 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I change group conversation name to ""
-    Then I see correct conversation name <GroupChatName>
-    When I try to change group conversation name to random with length <ActualLength>
-    Then I see the length of group conversation name equals to <ExpectedLength>
+    And I change group conversation name to "" on Group info page
+    Then I see conversation name "<GroupChatName>" on Group info page
+    When I try to change group conversation name to random with length <ActualLength> on Group info page
+    Then I see the length of group conversation name equals to <ExpectedLength> on Group info page
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | ActualLength | ExpectedLength |
@@ -974,10 +975,10 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I change group conversation name to ""
-    Then I see correct conversation name <GroupChatName>
-    When I try to change group conversation name to random with length <ActualLength>
-    Then I see the length of group conversation name equals to <ExpectedLength>
+    And I change group conversation name to "" on Group info page
+    Then I see conversation name "<GroupChatName>" on Group info page
+    When I try to change group conversation name to random with length <ActualLength> on Group info page
+    Then I see the length of group conversation name equals to <ExpectedLength> on Group info page
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | ActualLength | ExpectedLength |

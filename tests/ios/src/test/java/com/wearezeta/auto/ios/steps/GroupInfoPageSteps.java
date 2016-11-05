@@ -23,7 +23,7 @@ public class GroupInfoPageSteps {
         return pagesCollection.getPage(GroupInfoPage.class);
     }
 
-    @When("^I change group conversation name to \"(.*)\"$")
+    @When("^I change group conversation name to \"(.*)\" on Group info page$")
     public void IChangeConversationNameTo(String name) throws Exception {
         getGroupInfoPage().setGroupChatName(name);
     }
@@ -33,11 +33,9 @@ public class GroupInfoPageSteps {
      *
      * @param btnName one of available button names
      * @throws Exception
-     * @step. ^I tap (Add People|X|Open Menu|Confirm Deletion|Confirm Leaving|Also Leave) (?:checkbox|button)
-     * on Group info page$
+     * @step. ^I tap (Add People|X|Open Menu|Also Leave) (?:checkbox|button) on Group info page$
      */
-    @When("^I tap (Add People|X|Open Menu|Confirm Deletion|Confirm Leaving|Also Leave) (?:checkbox|button) " +
-            "on Group info page$")
+    @When("^I tap (Add People|X|Open Menu|Also Leave) (?:checkbox|button) on Group info page$")
     public void ITapButton(String btnName) throws Exception {
         getGroupInfoPage().tapButton(btnName);
     }
@@ -47,9 +45,9 @@ public class GroupInfoPageSteps {
      *
      * @param length length of the conversation's name
      * @throws Exception
-     * @step. ^I try to change group conversation name to random with length (.*)$"
+     * @step. ^I try to change group conversation name to random with length (\\d+) on Group info page$"
      */
-    @When("^I try to change group conversation name to random with length (.*)$")
+    @When("^I try to change group conversation name to random with length (\\d+) on Group info page$")
     public void IChangeConversationNameToRandom(int length) throws Exception {
         String name = CommonUtils.generateRandomString(length);
         getGroupInfoPage().setGroupChatName(name);
@@ -60,28 +58,30 @@ public class GroupInfoPageSteps {
         final List<String> expectedNames = CommonSteps.splitAliases(nameAliases).stream().
                 map(x -> usrMgr.replaceAliasesOccurences(x, ClientUsersManager.FindBy.NAME_ALIAS)).
                 collect(Collectors.toList());
-        Assert.assertTrue(getGroupInfoPage().isCorrectConversationName(expectedNames));
+        Assert.assertTrue(String.format("Group conversation name does not contain all the aliases from '%s'",
+                nameAliases),
+                getGroupInfoPage().isCorrectConversationName(expectedNames));
     }
 
-    @Then("I see correct conversation name (.*)")
+    @Then("^I see conversation name \"(.*)\" on Group info page$")
     public void ISeeCorrectConversationName(String expectedName) throws Exception {
         Assert.assertTrue(String.format("Group conversation name is not equal to '%s'", expectedName),
                 getGroupInfoPage().isGroupNameEqualTo(expectedName));
     }
 
-    @When("^I select participant (.*)$")
+    @When("^I select participant (.*) on Group info page$")
     public void ISelectParticipant(String name) throws Exception {
         name = usrMgr.findUserByNameOrNameAlias(name).getName();
         getGroupInfoPage().selectParticipant(name);
     }
 
-    @Then("^I see that conversation has (\\d+) people$")
+    @Then("^I see \"(\\d+) people\" label on Group info page$")
     public void ISeeThatConversationHasNumberPeople(int number) throws Exception {
         Assert.assertTrue(String.format("The actual number of people in the chat is not the same as expected number %s",
                 number), getGroupInfoPage().isNumberOfPeopleEquals(number));
     }
 
-    @When("^I see (\\d+) participants? avatars$")
+    @When("^I see (\\d+) participants? avatars? on Group info page$")
     public void ISeeNumberParticipantsAvatars(int expectedCount) throws Exception {
         final int actual = getGroupInfoPage().getParticipantsAvatarsCount();
         Assert.assertTrue(String.format(
@@ -90,16 +90,22 @@ public class GroupInfoPageSteps {
     }
 
     /**
-     * Verifies that contact is not presented on Group chat info page
+     * Verifies whether a contact is present on Group chat info page
      *
      * @param contact username
      * @throws Exception
-     * @step. ^I see that (.*) is not present on group chat info page$
+     * @step. ^I (do not )?see participant name (.*) on Group info page$
      */
-    @Then("^I see that (.*) is not present on group chat info page$")
-    public void ISeeContactIsNotPresentOnGroupChatPage(String contact) throws Exception {
+    @Then("^I (do not )?see participant name (.*) on Group info page$")
+    public void ISeeContactInGroupInfo(String shouldNotSee, String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue(getGroupInfoPage().waitForContactToDisappear(contact));
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("User '%s' should be visible", contact),
+                    getGroupInfoPage().isParticipantVisible(contact));
+        } else {
+            Assert.assertTrue(String.format("User '%s' should not be visible", contact),
+                    getGroupInfoPage().isParticipantInvisible(contact));
+        }
     }
 
     /**
@@ -107,9 +113,9 @@ public class GroupInfoPageSteps {
      *
      * @param expectedLength the expected number of chars in group name
      * @throws Exception
-     * @step. ^I see the length of group conversation name equals to (\d+)$
+     * @step. ^I see the length of group conversation name equals to (\d+) on Group info page$
      */
-    @Then("^I see the length of group conversation name equals to (\\d+)$")
+    @Then("^I see the length of group conversation name equals to (\\d+) on Group info page$")
     public void IVerifyNameLength(int expectedLength) throws Exception {
         final int actualLength = getGroupInfoPage().getGroupNameLength();
         Assert.assertTrue(String.format("The actual group name length %d is not equal to the expected length %d",

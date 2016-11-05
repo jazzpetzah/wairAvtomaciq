@@ -23,9 +23,7 @@ public class SingleConnectedUserProfilePage extends SingleUserDetailsOverlay
     protected By getButtonLocatorByName(String name) {
         switch (name.toLowerCase()) {
             case "create group":
-            case "open conversation":
                 return getLeftActionButtonLocator();
-            case "remove from conversation":
             case "open menu":
                 return getRightActionButtonLocator();
             case "x":

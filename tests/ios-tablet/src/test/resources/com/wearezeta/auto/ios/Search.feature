@@ -93,7 +93,7 @@ Feature: Search
     And I tap Create conversation action button on Search UI page
     And I wait for 5 seconds
     And I open group conversation details
-    And I change group conversation name to "<ConvoName>"
+    And I change group conversation name to "<ConvoName>" on Group info page
     And I dismiss popover on iPad
     And I navigate back to conversations list
     Then I see first item in contact list named <ConvoName>
@@ -117,7 +117,7 @@ Feature: Search
     And I tap Create conversation action button on Search UI page
     And I wait for 5 seconds
     And I open group conversation details
-    And I change group conversation name to "<ConvoName>"
+    And I change group conversation name to "<ConvoName>" on Group info page
     And I dismiss popover on iPad
     And I see first item in contact list named <ConvoName>
 

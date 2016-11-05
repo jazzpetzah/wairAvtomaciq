@@ -51,7 +51,7 @@ Feature: Connect
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select participant <UnconnectedUser>
+    And I select participant <UnconnectedUser> on Group info page
     And I tap Connect button on Group participant Pending outgoing connection page
     And I do not see Connect button on Group participant Pending outgoing connection page
     And I tap X button on Group info page
@@ -243,7 +243,7 @@ Feature: Connect
     When I tap on contact name <Contact1>
     And I open conversation details
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    And I confirm cancellation action on Single user Pending outgoing connection page
+    And I confirm Cancel Request conversation action
     Then I do not see conversation <Contact1> in conversations list
 
     Examples:
@@ -260,7 +260,7 @@ Feature: Connect
     When I tap on contact name <Contact1>
     And I open conversation details
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    And I confirm cancellation action on Single user Pending outgoing connection page
+    And I confirm Cancel Request conversation action
     And I navigate back to conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search UI
@@ -289,7 +289,7 @@ Feature: Connect
     And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    And I confirm cancellation action on Single user Pending outgoing connection page
+    And I confirm Cancel Request conversation action
     # Wait for animation
     And I wait for 1 second
     Then I see the conversation "<Contact1>" exists in Search results
@@ -310,7 +310,7 @@ Feature: Connect
     And I see Pending request link in conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select participant <Contact3>
+    And I select participant <Contact3> on Group info page
     And I see <Contact3> name on Group participant Pending incoming connection page
     And I tap Start Conversation button on Group participant Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page

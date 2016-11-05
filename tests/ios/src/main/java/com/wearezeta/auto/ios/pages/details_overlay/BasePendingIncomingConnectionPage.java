@@ -4,7 +4,6 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
-import java.util.function.Function;
 
 public abstract class BasePendingIncomingConnectionPage extends BaseUserDetailsOverlay {
     protected static final By xpathPendingRequestIgnoreButton =

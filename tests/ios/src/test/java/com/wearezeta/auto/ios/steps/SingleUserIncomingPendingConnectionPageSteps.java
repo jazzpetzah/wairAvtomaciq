@@ -47,7 +47,7 @@ public class SingleUserIncomingPendingConnectionPageSteps {
         }
     }
 
-    @Then("^I (do not )?see (Cancel Request|Connect) button on Single user Pending incoming connection page$")
+    @Then("^I (do not )?see (Ignore|Connect) button on Single user Pending incoming connection page$")
     public void ISeeButton(String shouldNotSee, String btnName) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("'%s' button is expected to be visible", btnName),

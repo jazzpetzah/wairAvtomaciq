@@ -45,7 +45,7 @@ public class GroupParticipantOutgoingPendingConnectionPageSteps {
         }
     }
 
-    @Then("^I (do not )?see (Open Conversation|Connect|Remove From Group) " +
+    @Then("^I (do not )?see (Open Conversation|X|Connect|Remove From Group) " +
             "button on Group participant Pending outgoing connection page$")
     public void ISeeButton(String shouldNotSee, String btnName) throws Exception {
         if (shouldNotSee == null) {

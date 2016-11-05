@@ -21,16 +21,11 @@ public class GroupConnectedParticipantProfilePage extends BaseGroupParticipantPr
     @Override
     protected By getButtonLocatorByName(String name) {
         switch (name.toLowerCase()) {
-            case "create group":
             case "open conversation":
                 return getLeftActionButtonLocator();
             case "remove from conversation":
             case "open menu":
                 return getRightActionButtonLocator();
-            case "confirm removal":
-                return xpathConfirmRemoveButton;
-            case "confirm deletion":
-                return xpathConfirmDeleteButton;
             case "x":
                 return nameXButton;
             default:

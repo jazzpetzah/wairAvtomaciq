@@ -371,7 +371,7 @@ Feature: Recall Message
     Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to group conversation <Group>
     When I swipe right on a <Group>
-    And I tap Archive action button
+    And I tap Archive conversation action button
     Then I do not see conversation <Group> in conversations list
     When User <Contact1> edits the recent message to "<Message1>" from user Myself via device <Contact1Device>
     Then I do not see conversation <Group> in conversations list

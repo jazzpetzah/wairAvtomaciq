@@ -182,20 +182,6 @@ public class ConversationsListPage extends IOSPage {
         return isLocatorDisplayed(locator);
     }
 
-    private static By getActionButtonByName(String buttonTitle) {
-        return MobileBy.AccessibilityId(buttonTitle.toUpperCase());
-    }
-
-    public boolean isButtonVisibleInActionMenu(String buttonTitle) throws Exception {
-        return isLocatorDisplayed(getActionButtonByName(buttonTitle));
-    }
-
-    public void tapButtonInActionMenu(String buttonTitle) throws Exception {
-        getElement(getActionButtonByName(buttonTitle)).click();
-        // Wait for animation
-        Thread.sleep(2000);
-    }
-
     public BufferedImage getSettingsGearStateScreenshot() throws Exception {
         return this.getElementScreenshot(getElement(nameSettingsGearButton)).orElseThrow(() ->
                 new IllegalStateException("Settings gear button is not visible"));

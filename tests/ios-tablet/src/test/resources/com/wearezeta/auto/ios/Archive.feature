@@ -66,8 +66,8 @@ Feature: Archive
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I swipe right on iPad the conversation named <GroupChatName>
-    And I tap Leave action button
-    And I tap Confirm Leaving button on Group info page
+    And I tap Leave conversation action button
+    And I confirm Leave conversation action
     Then I do not see conversation <GroupChatName> in conversations list
     When <Contact1> added me to group chat <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
@@ -97,13 +97,13 @@ Feature: Archive
     When I open archived conversations
     Then I see conversation <ArchivedUser> in conversations list
     When I swipe right on iPad the conversation named <ArchivedUser>
-    And I tap Unarchive action button
+    And I tap Unarchive conversation action button
     Then I do not see conversation <ArchivedUser> in conversations list
     When I tap close Archive page button
     Then I see conversation <ArchivedUser> in conversations list
     And I do not see Archive button at the bottom of conversations list
     When I swipe right on iPad the conversation named <ArchivedUser>
-    And I tap Archive action button
+    And I tap Archive conversation action button
     And I do not see conversation <ArchivedUser> in conversations list
     And I see Archive button at the bottom of conversations list
     And User <ArchivedUser> sends 1 messages to user Myself

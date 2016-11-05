@@ -63,9 +63,4 @@ public class SingleUserOutgoingPendingConnectionPageSteps {
     public void ITapButton(String btnName) throws Exception {
         getPage().tapButton(btnName);
     }
-
-    @And("^I (confirm (?:cancellation|deletion|connection)) action on Single user Pending outgoing connection page$")
-    public void IConfirm(String what) throws Exception {
-        getPage().tapButton(what);
-    }
 }

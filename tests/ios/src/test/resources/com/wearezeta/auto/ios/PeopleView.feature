@@ -8,7 +8,7 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I tap Create Group button
+    And I tap Create Group button on Single user profile page
     And I wait until <Contact2> exists in backend search results
     And I tap input field on Search UI page
     And I type "<Contact2>" in Search UI input field
@@ -30,15 +30,15 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I tap Add People button
+    And I tap Add People button on Group info page
     And I tap input field on Search UI page
     And I type "<Contact3>" in Search UI input field
     And I tap on conversation <Contact3> in search result
     And I tap Done keyboard button
     Then I can see You Added <Contact3> message
     When I open group conversation details
-    Then I see that conversation has <Number> people
-    Then I see <Number> participants avatars
+    Then I see "<Number> people" label on Group info page
+    Then I see <Number> participants avatars on Group info page
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Number | GroupChatName |
@@ -54,8 +54,8 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
-    And I tap Leave action button
-    And I tap Confirm Leaving button on Group info page
+    And I tap Leave conversation action button
+    And I confirm Leave conversation action
     And I open archived conversations
     And I tap on group chat with name <GroupChatName>
     And I see You Left message in group chat
@@ -73,11 +73,11 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select participant <Contact2>
+    And I select participant <Contact2> on Group info page
     And I tap Remove From Conversation button on Group participant profile page
     And I confirm Remove conversation action
     And I tap X button on Group participant profile page
-    Then I see that <Contact2> is not present on group chat info page
+    Then I do not see participant name <Contact2> on Group info page
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -92,8 +92,8 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    Then I see correct conversation name <GroupChatName>
-    And I see that conversation has <ParticipantNumber> people
+    Then I see conversation name "<GroupChatName>" on Group info page
+    And I see "<ParticipantNumber> people" label on Group info page
 
     Examples:
       | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName |
@@ -108,8 +108,8 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I change group conversation name to "<ChatName>"
-    Then I see correct conversation name <ChatName>
+    And I change group conversation name to "<ChatName>" on Group info page
+    Then I see conversation name "<ChatName>" on Group info page
     And I tap X button on Group info page
     And I see You Renamed Conversation message shown in conversation view
     When I navigate back to conversations list
@@ -129,11 +129,11 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select participant <GroupCreator>
+    And I select participant <GroupCreator> on Group info page
     And I see <GroupCreatorEmail> name on Group participant profile page
     And I see <GroupCreatorEmail> email on Group participant profile page
     And I tap X button on Group participant profile page
-    And I select participant <NonConnectedContact>
+    And I select participant <NonConnectedContact> on Group info page
     Then I see <NonConnectedContact> name on Group participant Pending outgoing connection page
 
     Examples:
@@ -149,7 +149,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select participant <Contact1>
+    And I select participant <Contact1> on Group info page
     And I tap Open Conversation button on Group participant profile page
     And I type the default message and send it
     Then I see 1 default message in the conversation view
@@ -168,7 +168,7 @@ Feature: People View
     Given I see conversations list
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select participant <NonConnectedContact>
+    And I select participant <NonConnectedContact> on Group info page
     Then I see Connect button on Group participant Pending outgoing connection page
 
     Examples:
@@ -183,7 +183,7 @@ Feature: People View
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given I open conversation details
-    Given I tap Create Group button
+    Given I tap Create Group button on Single user profile page
     Given I tap input field on Search UI page
     # Tap it 3 times to unselect and select again
     When I tap on conversation <Contact2> in search result
@@ -204,7 +204,7 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I tap Create Group button
+    And I tap Create Group button on Single user profile page
     And I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact3> in search result
     And I tap Create conversation action button on Search UI page
@@ -225,11 +225,11 @@ Feature: People View
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given I open conversation details
-    Given I tap Create Group button
+    Given I tap Create Group button on Single user profile page
     When I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact3> in search result
     And I tap Clear Group Participants Picker button on Search UI page
-    And I tap Create Group button
+    And I tap Create Group button on Single user profile page
     And I tap Close Group Participants Picker button on Search UI page
     And I tap X button on Single user profile page
     And I navigate back to conversations list
@@ -250,7 +250,7 @@ Feature: People View
     And I tap on contact name <Contact>
     And I open conversation details
     And I tap Open Menu button on Single user profile page
-    And I tap Mute action button
+    And I tap Mute conversation action button
     And I tap X button on Single user profile page
     And I navigate back to conversations list
     And I see conversations list
@@ -272,7 +272,7 @@ Feature: People View
     And I tap on contact name <Contact>
     And I open conversation details
     And I tap Open Menu button on Single user profile page
-    And I tap Unmute action button
+    And I tap Unmute conversation action button
     And I tap X button on Single user profile page
     And I navigate back to conversations list
     And I see conversations list
@@ -291,8 +291,8 @@ Feature: People View
     When I tap on contact name <Contact1>
     And I open conversation details
     And I tap Open Menu button on Single user profile page
-    And I tap Block action button
-    And I confirm blocking alert
+    And I tap Block conversation action button
+    And I confirm Block conversation action
     Then I do not see conversation <Contact1> in conversations list
 
     Examples:
@@ -309,7 +309,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select participant <Contact1>
+    And I select participant <Contact1> on Group info page
     And I tap Unblock button on Search UI page
     Then I see conversation view page
 
@@ -334,7 +334,7 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I wait until <Contact2> exists in backend search results
-    And I tap Create Group button
+    And I tap Create Group button on Single user profile page
     And I tap input field on Search UI page
     And I type "<Contact3>" in Search UI input field
     Then I see the conversation "<Contact3>" does not exist in Search results
@@ -355,8 +355,8 @@ Feature: People View
     Given I tap on group chat with name <GroupChatName>
     Given I open group conversation details
     Given I tap Open Menu button on Group info page
-    When I tap Delete action button
-    And I tap Confirm Deletion button on Group info page
+    When I tap Delete conversation action button
+    And I confirm Delete conversation action
     Then I do not see conversation <GroupChatName> in conversations list
     And I do not see Archive button at the bottom of conversations list
 
@@ -375,7 +375,7 @@ Feature: People View
     Given I tap on group chat with name <GroupChatName>
     Given I open group conversation details
     Given I tap Open Menu button on Group info page
-    Given I tap Delete action button
+    Given I tap Delete conversation action button
     Given I tap Also Leave checkbox on Group info page
     Given I confirm Delete conversation action
     Given I open search UI
@@ -407,8 +407,8 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
-    And I tap Delete action button
-    And I tap Confirm Deletion button on Group info page
+    And I tap Delete conversation action button
+    And I confirm Delete conversation action
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
@@ -460,8 +460,8 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap Open Menu button on Group info page
-    And I tap Leave action button
-    And I tap Confirm Leaving button on Group info page
+    And I tap Leave conversation action button
+    And I confirm Leave conversation action
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
@@ -481,7 +481,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select participant <Contact3>
+    And I select participant <Contact3> on Group info page
     Then I see <Contact3> name on Group participant Pending outgoing connection page
     And I see Remove From Group button on Group participant Pending outgoing connection page
 
@@ -498,9 +498,9 @@ Feature: People View
     When I tap on contact name <Contact1>
     And I open conversation details
     And I tap Open Menu button on Single user profile page
-    And I tap Block action button
-    And I tap Cancel action button
-    Then I see conversation action menu
+    And I tap Block conversation action button
+    And I tap Cancel conversation action button
+    Then I see conversation actions menu
 
     Examples:
       | Name      | Contact1  |
@@ -515,10 +515,10 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I change group conversation name to ""
-    Then I see correct conversation name <GroupChatName>
-    When I try to change group conversation name to random with length <ChatNameLength>
-    Then I see the length of group conversation name equals to <MaxAllowedLength>
+    And I change group conversation name to "" on Group info page
+    Then I see conversation name "<GroupChatName>" on Group info page
+    When I try to change group conversation name to random with length <ChatNameLength> on Group info page
+    Then I see the length of group conversation name equals to <MaxAllowedLength> on Group info page
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | ChatNameLength | MaxAllowedLength |
