@@ -1,14 +1,12 @@
-package com.wearezeta.auto.ios.pages;
+package com.wearezeta.auto.ios.pages.details_overlay;
+
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import org.openqa.selenium.By;
-
-import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-
-public class IncomingPendingRequestsPage extends IOSPage {
-
+public abstract class BasePendingIncomingConnectionPage extends BaseUserDetailsOverlay {
     private static final By xpathPendingRequestIgnoreButton =
             By.xpath("(//XCUIElementTypeButton[@name='IGNORE'])[last()]");
 
@@ -18,11 +16,12 @@ public class IncomingPendingRequestsPage extends IOSPage {
     private static final Function<String, String> xpathStrPendingRequesterByName = name ->
             String.format("//XCUIElementTypeStaticText[contains(@name, 'Connect to %s')]", name);
 
-    public IncomingPendingRequestsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+    public BasePendingIncomingConnectionPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
-    private static By getButtonLocatorByName(String name) {
+    @Override
+    protected By getButtonLocatorByName(String name) {
         switch (name.toLowerCase()) {
             case "ignore":
                 return xpathPendingRequestIgnoreButton;
@@ -34,22 +33,11 @@ public class IncomingPendingRequestsPage extends IOSPage {
         }
     }
 
-    public void tapButton(String name, int times) throws Exception {
-        assert times > 0 : String.format("Cannot tap '%s' button %s times", name, times);
-        final By locator = getButtonLocatorByName(name);
-        for (int i = 0; i < times; i++) {
-            getElement(locator).click();
-            // Wait for animation
-            Thread.sleep(2000);
-        }
-    }
-
+    @Override
     public void tapButton(String name) throws Exception {
-        tapButton(name, 1);
-    }
-
-    public boolean isConnectButtonDisplayed() throws Exception {
-        return isLocatorDisplayed(xpathPendingRequestConnectButton);
+        super.tapButton(name);
+        // Wait for animation
+        Thread.sleep(2000);
     }
 
     public boolean isConnectToNameExist(String expectedName) throws Exception {

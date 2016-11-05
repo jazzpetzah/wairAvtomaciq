@@ -1,0 +1,16 @@
+package com.wearezeta.auto.ios.steps;
+
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.ios.pages.details_overlay.group.GroupConnectedParticipantDevicesPage;
+import com.wearezeta.auto.ios.pages.details_overlay.group.GroupConnectedParticipantProfilePage;
+
+public class GroupParticipantConnectedDevicesPageSteps {
+
+    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
+
+    private GroupConnectedParticipantDevicesPage getGroupInfoPage() throws Exception {
+        return pagesCollection.getPage(GroupConnectedParticipantDevicesPage.class);
+    }
+}

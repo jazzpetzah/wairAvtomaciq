@@ -4,11 +4,11 @@ import cucumber.api.java.en.And;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.PendingParticipantProfilePage;
+import com.wearezeta.auto.ios.pages.details_overlay.PendingParticipantProfilePage;
 
 import cucumber.api.java.en.When;
 
-public class PendingParticipantProfilePageSteps {
+public class GroupParticipantIncomingPendingConnectionPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();

@@ -5,7 +5,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.GroupInfoPage;
+import com.wearezeta.auto.ios.pages.details_overlay.group.GroupInfoPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;

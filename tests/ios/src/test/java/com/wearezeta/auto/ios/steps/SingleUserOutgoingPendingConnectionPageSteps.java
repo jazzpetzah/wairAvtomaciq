@@ -2,15 +2,15 @@ package com.wearezeta.auto.ios.steps;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.ios.pages.PendingOutgoingConnectionPage;
+import com.wearezeta.auto.ios.pages.details_overlay.single.SinglePendingUserOutgoingConnectionPage;
 
 import cucumber.api.java.en.When;
 
-public class OutgoingPendingConnectionPageSteps {
+public class SingleUserOutgoingPendingConnectionPageSteps {
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private PendingOutgoingConnectionPage getPendingOutgoingConnectionPage() throws Exception {
-        return pagesCollection.getPage(PendingOutgoingConnectionPage.class);
+    private SinglePendingUserOutgoingConnectionPage getPendingOutgoingConnectionPage() throws Exception {
+        return pagesCollection.getPage(SinglePendingUserOutgoingConnectionPage.class);
     }
 
     /**

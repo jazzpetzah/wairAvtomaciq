@@ -1,4 +1,4 @@
-package com.wearezeta.auto.ios.pages;
+package com.wearezeta.auto.ios.pages.details_overlay.group;
 
 import java.util.List;
 import java.util.concurrent.Future;
@@ -7,13 +7,14 @@ import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
+import com.wearezeta.auto.ios.pages.details_overlay.ICanContainVerificationShield;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
-public class GroupInfoPage extends IOSPage {
-    private static final By nameRightActionButton = MobileBy.AccessibilityId("metaControllerRightButton");
+public class GroupInfoPage extends GroupDetailsOverlay implements ICanContainVerificationShield {
+    private static final By nameExitGroupInfoPageButton = MobileBy.AccessibilityId("metaControllerCancelButton");
 
     private static final String strNameConversationNameTextField = "ParticipantsView_GroupName";
     private static final By fbNameConversationNameTextField =
@@ -24,11 +25,6 @@ public class GroupInfoPage extends IOSPage {
 
     private static final Function<String, String> xpathStrConversationNameByExpr = expr ->
             String.format("//*[@name='%s' and %s]", strNameConversationNameTextField, expr);
-
-    private static final By nameExitGroupInfoPageButton =
-            MobileBy.AccessibilityId("metaControllerCancelButton");
-
-    private static final By namLeftActionButton = MobileBy.AccessibilityId("metaControllerLeftButton");
 
     private static final By nameAlsoLeaveCheckbox = MobileBy.AccessibilityId("ALSO LEAVE THE CONVERSATION");
 
@@ -94,10 +90,11 @@ public class GroupInfoPage extends IOSPage {
         return getElement(fbNameConversationNameTextField).getText().length();
     }
 
-    private static By getButtonLocatorByName(String name) {
+    @Override
+    protected By getButtonLocatorByName(String name) {
         switch (name.toLowerCase()) {
             case "add people":
-                return namLeftActionButton;
+                return getLeftActionButtonLocator();
             case "confirm removal":
                 return xpathConfirmRemoveButton;
             case "confirm deletion":
@@ -109,16 +106,26 @@ public class GroupInfoPage extends IOSPage {
             case "confirm leaving":
                 return xpathConfirmLeaveButton;
             case "open menu":
-                return nameRightActionButton;
+                return getRightActionButtonLocator();
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
         }
     }
 
+    @Override
     public void tapButton(String name) throws Exception {
-        final By locator = getButtonLocatorByName(name);
-        getElement(locator).click();
+        super.tapButton(name);
         // Wait for animation
         Thread.sleep(1500);
+    }
+
+    @Override
+    public boolean isShieldIconVisible() throws Exception {
+        return super.isShieldIconVisible();
+    }
+
+    @Override
+    public boolean isShieldIconNotVisible() throws Exception {
+        return super.isShieldIconNotVisible();
     }
 }

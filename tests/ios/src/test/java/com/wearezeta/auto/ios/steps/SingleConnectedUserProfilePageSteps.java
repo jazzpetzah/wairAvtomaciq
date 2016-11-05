@@ -8,23 +8,23 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.ParticipantProfilePage;
+import com.wearezeta.auto.ios.pages.details_overlay.single.SingleConnectedUserProfilePage;
 
 import cucumber.api.java.en.When;
 
-public class ParticipantProfilePageSteps {
+public class SingleConnectedUserProfilePageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private ParticipantProfilePage getParticipantProfilePage() throws Exception {
-        return pagesCollection.getPage(ParticipantProfilePage.class);
+    private SingleConnectedUserProfilePage getParticipantProfilePage() throws Exception {
+        return pagesCollection.getPage(SingleConnectedUserProfilePage.class);
     }
 
     @When("^I see (.*) user profile page$")
     public void WhenISeeOtherUserProfilePage(String name) throws Exception {
         name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        Assert.assertTrue(getParticipantProfilePage().isOtherUserProfileNameVisible(name));
+        Assert.assertTrue(getParticipantProfilePage().isProfileNameVisible(name));
     }
 
     /**

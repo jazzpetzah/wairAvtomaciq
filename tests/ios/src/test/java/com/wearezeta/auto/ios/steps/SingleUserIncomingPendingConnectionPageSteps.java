@@ -4,17 +4,17 @@ import cucumber.api.java.en.Then;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.IncomingPendingRequestsPage;
+import com.wearezeta.auto.ios.pages.details_overlay.single.SinglePendingUserIncomingConnectionPage;
 
 import cucumber.api.java.en.When;
 
-public class IncomingPendingRequestsPageSteps {
+public class SingleUserIncomingPendingConnectionPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private IncomingPendingRequestsPage getPendingRequestsPage() throws Exception {
-        return pagesCollection.getPage(IncomingPendingRequestsPage.class);
+    private SinglePendingUserIncomingConnectionPage getPendingRequestsPage() throws Exception {
+        return pagesCollection.getPage(SinglePendingUserIncomingConnectionPage.class);
     }
 
     /**
