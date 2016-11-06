@@ -481,7 +481,7 @@ Feature: Connect
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
-    And I tap Start Conversation button on Group participant Pending incoming connection page
+    And I tap Connect button on Group participant Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
     And I dismiss popover on iPad
     And I navigate back to conversations list
@@ -508,7 +508,7 @@ Feature: Connect
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
-    And I tap Start Conversation button on Group participant Pending incoming connection page
+    And I tap Connect button on Group participant Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
     And I dismiss popover on iPad
     # Workaround for ZIOS-4985

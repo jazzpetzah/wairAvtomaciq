@@ -47,7 +47,7 @@ public class GroupParticipantIncomingPendingConnectionPageSteps {
         }
     }
 
-    @Then("^I (do not )?see (Start Conversation|Connect|Remove From Group) " +
+    @Then("^I (do not )?see (Connect|X|Remove From Group) " +
             "button on Group participant Pending incoming connection page$")
     public void ISeeButton(String shouldNotSee, String btnName) throws Exception {
         if (shouldNotSee == null) {
@@ -59,7 +59,7 @@ public class GroupParticipantIncomingPendingConnectionPageSteps {
         }
     }
 
-    @When("^I tap (Start Conversation|Connect|X|Remove From Group) " +
+    @When("^I tap (Connect|X|Remove From Group) " +
             "button on Group participant Pending incoming connection page$")
     public void ITapButton(String btnName) throws Exception {
         getPage().tapButton(btnName);

@@ -312,7 +312,7 @@ Feature: Connect
     And I open group conversation details
     And I select participant <Contact3> on Group info page
     And I see <Contact3> name on Group participant Pending incoming connection page
-    And I tap Start Conversation button on Group participant Pending incoming connection page
+    And I tap Connect button on Group participant Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
     And I tap X button on Group info page
     And I navigate back to conversations list
