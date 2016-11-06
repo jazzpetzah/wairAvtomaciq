@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-public abstract class UserDevicesPage extends BaseUserDetailsOverlay implements ISupportsTabSwitching {
+public class UserDevicesPage extends BaseUserDetailsOverlay implements ISupportsTabSwitching {
     private static final Function<String, String> xpathStrDeviceId = id ->
             String.format("//XCUIElementTypeStaticText[contains(@name, '%s')]", id);
 

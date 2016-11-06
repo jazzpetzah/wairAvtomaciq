@@ -29,14 +29,4 @@ public class GroupPendingParticipantOutgoingConnectionPage extends BasePendingOu
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
         }
     }
-
-    @Override
-    protected By getLeftActionButtonLocator() {
-        return GroupDetailsOverlay.namLeftActionButton;
-    }
-
-    @Override
-    protected By getRightActionButtonLocator() {
-        return GroupDetailsOverlay.nameRightActionButton;
-    }
 }

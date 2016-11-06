@@ -41,14 +41,4 @@ public class SinglePendingUserIncomingConnectionPage extends BasePendingIncoming
         final By locator = MobileBy.AccessibilityId(nameStrUserNameByValue.apply(value));
         return isLocatorInvisible(locator);
     }
-
-    @Override
-    protected By getLeftActionButtonLocator() {
-        return SingleUserDetailsOverlay.nameLeftActionButton;
-    }
-
-    @Override
-    protected By getRightActionButtonLocator() {
-        return SingleUserDetailsOverlay.nameRightActionButton;
-    }
 }

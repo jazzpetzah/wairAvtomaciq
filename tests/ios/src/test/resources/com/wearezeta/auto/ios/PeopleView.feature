@@ -334,7 +334,7 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I wait until <Contact2> exists in backend search results
-    And I tap Create Group button on Single user profile page
+    And I tap Add People button on Group info page
     And I tap input field on Search UI page
     And I type "<Contact3>" in Search UI input field
     Then I see the conversation "<Contact3>" does not exist in Search results

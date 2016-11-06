@@ -12,6 +12,10 @@ import java.util.function.Function;
 public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
     protected static final By nameXButton = MobileBy.AccessibilityId("OtherUserProfileCloseButton");
 
+    private static final By nameRightActionButton = MobileBy.AccessibilityId("OtherUserMetaControllerRightButton");
+
+    private static final By nameLeftActionButton = MobileBy.AccessibilityId("OtherUserMetaControllerLeftButton");
+
     private static final Function<String, String> xpathStrLinkBlockByText = text ->
             String.format("//*[contains(@value, '%s')]", text);
 
@@ -48,5 +52,15 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
     public void tapLink(String expectedLink) throws Exception {
         final By locator = FBBy.xpath(xpathStrLinkBlockByText.apply(expectedLink));
         this.tapByPercentOfElementSize((FBElement) getElement(locator), 15, 95);
+    }
+
+    @Override
+    protected By getLeftActionButtonLocator() {
+        return nameLeftActionButton;
+    }
+
+    @Override
+    protected By getRightActionButtonLocator() {
+        return nameRightActionButton;
     }
 }

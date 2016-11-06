@@ -23,14 +23,4 @@ public class SinglePendingUserOutgoingConnectionPage extends BasePendingOutgoing
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
         }
     }
-
-    @Override
-    protected By getLeftActionButtonLocator() {
-        return SingleUserDetailsOverlay.nameLeftActionButton;
-    }
-
-    @Override
-    protected By getRightActionButtonLocator() {
-        return SingleUserDetailsOverlay.nameRightActionButton;
-    }
 }

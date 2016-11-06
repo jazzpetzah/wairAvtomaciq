@@ -16,14 +16,4 @@ public abstract class BaseGroupParticipantProfilePage extends BaseUserDetailsOve
     public void switchToTab(String tabName) throws Exception {
         super.switchToTab(tabName);
     }
-
-    @Override
-    protected By getRightActionButtonLocator() {
-        return GroupDetailsOverlay.nameRightActionButton;
-    }
-
-    @Override
-    protected By getLeftActionButtonLocator() {
-        return GroupDetailsOverlay.namLeftActionButton;
-    }
 }

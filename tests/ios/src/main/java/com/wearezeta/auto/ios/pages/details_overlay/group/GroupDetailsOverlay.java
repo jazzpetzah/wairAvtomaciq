@@ -8,9 +8,9 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 
 public abstract class GroupDetailsOverlay extends BaseDetailsOverlay {
-    public static final By namLeftActionButton = MobileBy.AccessibilityId("metaControllerLeftButton");
+    private static final By namLeftActionButton = MobileBy.AccessibilityId("metaControllerLeftButton");
 
-    public static final By nameRightActionButton = MobileBy.AccessibilityId("metaControllerRightButton");
+    private static final By nameRightActionButton = MobileBy.AccessibilityId("metaControllerRightButton");
 
     public GroupDetailsOverlay(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);

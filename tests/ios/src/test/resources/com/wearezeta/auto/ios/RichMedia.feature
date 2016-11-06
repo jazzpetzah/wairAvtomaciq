@@ -10,7 +10,7 @@ Feature: Rich Media
     When I tap on contact name <Contact>
     And I type the "<YouTubeLink>" message and send it
     #wait to be sure video is delivered
-    And I wait for 5 seconds
+    And I wait for 8 seconds
     And I see "<DeliveredLabel>" on the message toolbox in conversation view
     And I tap on media container in conversation view
     # Wait until web page is loaded

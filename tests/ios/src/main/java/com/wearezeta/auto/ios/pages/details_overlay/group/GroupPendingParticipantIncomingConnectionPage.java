@@ -30,14 +30,4 @@ public class GroupPendingParticipantIncomingConnectionPage extends BasePendingIn
                         name));
         }
     }
-
-    @Override
-    protected By getLeftActionButtonLocator() {
-        return GroupDetailsOverlay.namLeftActionButton;
-    }
-
-    @Override
-    protected By getRightActionButtonLocator() {
-        return GroupDetailsOverlay.nameRightActionButton;
-    }
 }

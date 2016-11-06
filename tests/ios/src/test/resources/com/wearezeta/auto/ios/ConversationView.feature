@@ -28,7 +28,7 @@ Feature: Conversation View
     And I type the default message and send it
     Then I see 1 default message in the conversation view
     # Wait for message delivery
-    When I wait for 3 seconds
+    When I wait for 5 seconds
     Then I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
