@@ -19,16 +19,16 @@ public class GroupParticipantOutgoingPendingConnectionPageSteps {
     public void ISeeLabel(String shouldNotSee, String value, String fieldType) throws Exception {
         boolean result;
         switch (fieldType) {
-            case "email":
-                value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.EMAIL_ALIAS);
+            case "name":
+                value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
                 if (shouldNotSee == null) {
                     result = getPage().isNameVisible(value);
                 } else {
                     result = getPage().isNameInvisible(value);
                 }
                 break;
-            case "name":
-                value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
+            case "email":
+                value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.EMAIL_ALIAS);
                 if (shouldNotSee == null) {
                     result = getPage().isEmailVisible(value);
                 } else {
