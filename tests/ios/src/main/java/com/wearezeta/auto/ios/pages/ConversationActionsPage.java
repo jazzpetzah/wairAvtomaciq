@@ -10,9 +10,12 @@ import java.util.function.Function;
 public class ConversationActionsPage extends IOSPage {
     private static final By xpathActionsMenu = By.xpath("//XCUIElementTypeButton[@name='CANCEL']");
 
-    private static final Function<String,String> xpathStrConfirmButtonByName = name ->
+    private static final Function<String,String> xpathStrConfirmActionButtonByName = name ->
             String.format("//XCUIElementTypeButton[@name='CANCEL']/following::XCUIElementTypeButton[@name='%s']",
                     name.toUpperCase());
+
+    private static final By xpathYesActionButton =
+            By.xpath("//XCUIElementTypeButton[@name='NO']/following::XCUIElementTypeButton[@name='YES']");
 
     public ConversationActionsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -37,7 +40,10 @@ public class ConversationActionsPage extends IOSPage {
     }
 
     public void confirmAction(String actionName) throws Exception {
-        final By locator = By.xpath(xpathStrConfirmButtonByName.apply(actionName));
+        By locator = By.xpath(xpathStrConfirmActionButtonByName.apply(actionName));
+        if (actionName.toLowerCase().equals("cancel request")) {
+            locator = xpathYesActionButton;
+        }
         getElement(locator).click();
         // Wait for animation
         Thread.sleep(2000);
