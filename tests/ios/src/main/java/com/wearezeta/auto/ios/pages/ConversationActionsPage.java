@@ -8,6 +8,8 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 public class ConversationActionsPage extends IOSPage {
+    private static final long ACTION_DELAY_MS = 2000;
+
     private static final By xpathActionsMenu = By.xpath("//XCUIElementTypeButton[@name='CANCEL']");
 
     private static final Function<String,String> xpathStrConfirmActionButtonByName = name ->
@@ -35,8 +37,8 @@ public class ConversationActionsPage extends IOSPage {
 
     public void tapMenuItem(String buttonTitle) throws Exception {
         getElement(getActionButtonByName(buttonTitle)).click();
-        // Wait for animation
-        Thread.sleep(1000);
+        // Wait for action to be applied
+        Thread.sleep(ACTION_DELAY_MS);
     }
 
     public void confirmAction(String actionName) throws Exception {
@@ -45,7 +47,7 @@ public class ConversationActionsPage extends IOSPage {
             locator = xpathYesActionButton;
         }
         getElement(locator).click();
-        // Wait for animation
-        Thread.sleep(2000);
+        // Wait for action to be applied
+        Thread.sleep(ACTION_DELAY_MS);
     }
 }
