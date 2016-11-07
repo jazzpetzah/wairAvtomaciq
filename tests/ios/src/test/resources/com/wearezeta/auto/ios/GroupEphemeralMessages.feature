@@ -70,5 +70,5 @@ Feature: Group Ephemeral Messages
     Then I do not see "<EphemeralTimeLabel>" on the message toolbox in conversation view
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | DeviceName | Timer | EphemeralTimeLabel | TestMsg |
-      | user1Name | user2Name | user3Name | Epheme grp    | device2    | 15    | seconds            | hi      |
+      | Name      | Contact1  | Contact2  | GroupChatName | Timer | EphemeralTimeLabel | TestMsg |
+      | user1Name | user2Name | user3Name | Epheme grp    | 15    | seconds            | hi      |
