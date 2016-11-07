@@ -573,7 +573,7 @@ Feature: Ephemeral
        | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | 5    | 5 seconds | s             | Hello1   | Hello2   |
 
   @C318628 @ephemeral @staging
-  Scenario Outline: Verify that missed call has stayed after receiver saw it in 1:1
+  Scenario Outline: Verify that missed call has stayed after receiver saw it in group
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
