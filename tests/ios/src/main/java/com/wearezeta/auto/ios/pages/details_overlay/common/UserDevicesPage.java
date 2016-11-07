@@ -12,8 +12,8 @@ public class UserDevicesPage extends BaseUserDetailsOverlay implements ISupports
     private static final Function<String, String> xpathStrDeviceId = id ->
             String.format("//XCUIElementTypeStaticText[contains(@name, '%s')]", id);
 
-    private static final String xpathStrDevicesList = "//XCUIElementTypeButton[@name='DEVICES']/following::" +
-            "XCUIElementTypeTable[1]/XCUIElementTypeCell";
+    private static final String xpathStrDevicesList =
+            "//*[@name='DEVICES' or @name='Devices']/following::XCUIElementTypeTable[1]/XCUIElementTypeCell";
 
     private static final Function<Integer, String> xpathStrDevicesByCount = count ->
             String.format("//XCUIElementTypeTable[count(XCUIElementTypeCell)=%s]", count);
