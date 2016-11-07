@@ -72,3 +72,22 @@ Feature: Group Ephemeral Messages
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Timer | EphemeralTimeLabel | TestMsg |
       | user1Name | user2Name | user3Name | Epheme grp    | 15    | seconds            | hi      |
+
+  @C320773 @staging @fastLogin
+  Scenario Outline: Verify ephemeral messages are not sent to my other devices
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User Myself adds new device <DeviceName>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on group chat with name <GroupChatName>
+    Given I tap Hourglass button in conversation view
+    Given I set ephemeral messages expiration timer to <Timer> seconds
+    When User Myself remembers the recent message from group conversation <GroupChatName> via device <DeviceName>
+    And I type the default message and send it
+    Then User Myself sees the recent message from group conversation <GroupChatName> via device <DeviceName> is not changed in 5 seconds
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | Timer | DeviceName |
+      | user1Name | user2Name | user3Name | Epheme grp    | 15    | myDevice2  |
