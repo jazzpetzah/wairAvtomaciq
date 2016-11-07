@@ -216,11 +216,13 @@ Feature: Audio Messaging
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I see conversations list
-    Given I tap on contact name <Contact1>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User Me sends 1 encrypted message to user <Contact1>
-    And I remember the state of Play button on audio message placeholder
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    # Waiy until the asset is loaded
+    Given I wait for 3 seconds
+    When I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait until the audio is downloaded and starts playback
     And I wait for <AudioDownloadTimeout> seconds
