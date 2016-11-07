@@ -13,6 +13,12 @@ public class SinglePendingUserIncomingConnectionPage extends BasePendingIncoming
     private static final Function<String, String> nameStrUserNameByValue =
             value -> String.format("Connect to %s", value);
 
+    private static final By xpathPendingRequestIgnoreButton =
+            By.xpath("(//XCUIElementTypeButton[@name='IGNORE'])[last()]");
+
+    private static final By xpathPendingRequestConnectButton =
+            By.xpath("(//XCUIElementTypeButton[@name='CONNECT'])[last()]");
+
     public SinglePendingUserIncomingConnectionPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -25,8 +31,7 @@ public class SinglePendingUserIncomingConnectionPage extends BasePendingIncoming
             case "connect":
                 return xpathPendingRequestConnectButton;
             default:
-                throw new IllegalArgumentException(String.format("Unknown button name '%s' for Pending requests ",
-                        name));
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
         }
     }
 
