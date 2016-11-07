@@ -1178,18 +1178,18 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Checks if the picture, video, audio, or file is replaced with orange block
+     * Checks if the picture, video, audio, or file is replaced with replacing block
      * @param doNot
      * @throws Exception
      */
 
-    @When("^I (do not )?see orange block replaces the last message in the conversation view$")
-    public void ISeeOrangeBlock(String doNot) throws Exception {
+    @When("^I (do not )?see block replaces the last message in the conversation view$")
+    public void ISeeReplacingBlock(String doNot) throws Exception {
         if(doNot == null) {
-            assertTrue("Last message is not replaced with an orange block",
+            assertTrue("Last message is not replaced with a replacing block",
                     context.getPagesCollection().getPage(ConversationPage.class).isLastMessageReplaced());
         } else {
-            assertTrue("Orange block is still shown on the last message",
+            assertTrue("Replacing block is still shown on the last message",
                     context.getPagesCollection().getPage(ConversationPage.class).isOrangeBlockInLastMessageNotVisible());
         }
     }
