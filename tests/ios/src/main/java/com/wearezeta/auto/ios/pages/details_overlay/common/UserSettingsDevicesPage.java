@@ -11,7 +11,7 @@ import org.openqa.selenium.WebElement;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-public class UserSettingsDevicesOverlay extends BaseUserDevicesOverlay {
+public class UserSettingsDevicesPage extends BaseUserDevicesOverlay {
     private static final String xpathStrDevicesRoot =
             "//XCUIElementTypeNavigationBar[@name='Devices']/following::XCUIElementTypeTable";
 
@@ -29,7 +29,7 @@ public class UserSettingsDevicesOverlay extends BaseUserDevicesOverlay {
     private static final String xpathStrCurrentDevice = "//XCUIElementTypeTable/XCUIElementTypeCell";
     private static final By xpathCurrentDevices = By.xpath(xpathStrCurrentDevice);
 
-    public UserSettingsDevicesOverlay(Future<ZetaIOSDriver> driver) throws Exception {
+    public UserSettingsDevicesPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
     }
 

@@ -1,7 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.details_overlay.common.UserSettingsDevicesOverlay;
+import com.wearezeta.auto.ios.pages.details_overlay.common.UserSettingsDevicesPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
@@ -12,8 +12,8 @@ public class UserSettingsDevicesPageSteps {
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private UserSettingsDevicesOverlay getUserSettingsDevicesPage() throws Exception {
-        return pagesCollection.getPage(UserSettingsDevicesOverlay.class);
+    private UserSettingsDevicesPage getUserSettingsDevicesPage() throws Exception {
+        return pagesCollection.getPage(UserSettingsDevicesPage.class);
     }
 
     /**

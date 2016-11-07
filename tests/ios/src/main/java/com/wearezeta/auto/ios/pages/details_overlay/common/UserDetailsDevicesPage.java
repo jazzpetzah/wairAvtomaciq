@@ -12,14 +12,14 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-public class UserDetailsDevicesOverlay extends BaseUserDevicesOverlay implements ISupportsTabSwitching {
+public class UserDetailsDevicesPage extends BaseUserDevicesOverlay implements ISupportsTabSwitching {
     private static final String xpathStrDevicesRoot =
             "//XCUIElementTypeButton[@name='DEVICES']/following::XCUIElementTypeTable";
 
     private static final Function<String, String> xpathStrLinkBlockByText = text ->
             String.format("//*[contains(@value, '%s')]", text);
 
-    public UserDetailsDevicesOverlay(Future<ZetaIOSDriver> driver) throws Exception {
+    public UserDetailsDevicesPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
     }
 

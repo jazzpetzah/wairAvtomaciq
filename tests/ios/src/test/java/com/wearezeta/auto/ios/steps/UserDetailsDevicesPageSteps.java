@@ -1,8 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.ios.pages.details_overlay.common.UserDetailsDevicesOverlay;
-import com.wearezeta.auto.ios.pages.details_overlay.common.UserSettingsDevicesOverlay;
+import com.wearezeta.auto.ios.pages.details_overlay.common.UserDetailsDevicesPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
@@ -12,8 +11,8 @@ import java.util.List;
 public class UserDetailsDevicesPageSteps {
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private UserDetailsDevicesOverlay getUserDetailsDevicesPage() throws Exception {
-        return pagesCollection.getPage(UserDetailsDevicesOverlay.class);
+    private UserDetailsDevicesPage getUserDetailsDevicesPage() throws Exception {
+        return pagesCollection.getPage(UserDetailsDevicesPage.class);
     }
 
     /**
