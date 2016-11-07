@@ -65,7 +65,7 @@ Feature: File Transfer
     And I tap File button from cursor toolbar
     Then I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in <UploadingTimeout> seconds failed
     When I disable Airplane mode on the device
-    And I wait for 10 seconds
+    And I do not see No Internet bar in 15 seconds
     And I tap Retry button on file upload placeholder
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
     Then I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"

@@ -115,8 +115,7 @@ Feature: Audio Message
     Then I see Audio Message container in the conversation view
     When I remember the state of Retry button on the recent audio message in the conversation view
     And I disable Airplane mode on the device
-    # Wait for sync
-    And I wait for 10 seconds
+    And I do not see No Internet bar in 15 seconds
     And I tap Retry button on the recent audio message in the conversation view
     # Retry button changes to Play button
     Then I verify the state of Retry button on the recent audio message in the conversation view is changed
