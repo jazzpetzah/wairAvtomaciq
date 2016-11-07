@@ -399,21 +399,21 @@ Feature: People View
     Given Myself is connected to all other users
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Contact1> securely pings conversation <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact2> sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact2> sends encrypted image <Picture> to group conversation <GroupChatName>
-    When I tap on group chat with name <GroupChatName>
-    And I open group conversation details
-    And I tap Open Menu button on Group info page
-    And I tap Delete conversation action button
+    Given I see conversations list
+    Given I tap on group chat with name <GroupChatName>
+    Given I open group conversation details
+    Given I tap Open Menu button on Group info page
+    When I tap Delete conversation action button
     And I confirm Delete conversation action
     And I open search UI
     And I accept alert if visible
     And I tap input field on Search UI page
     And I type "<GroupChatName>" in Search UI input field
-    When I tap on conversation <GroupChatName> in search result
+    And I tap on conversation <GroupChatName> in search result
     Then I see the conversation with <GroupChatName>
     And I see 0 conversation entries
 
