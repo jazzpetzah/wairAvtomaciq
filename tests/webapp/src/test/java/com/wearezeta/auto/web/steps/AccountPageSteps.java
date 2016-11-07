@@ -95,7 +95,7 @@ public class AccountPageSteps {
     public void IVerifyMyAccentColor(String colorName) throws Exception {
         final int expectedColorId = AccentColor.getByName(colorName).getId();
         final int actualColorId = context.getPagesCollection().getPage(AccountPage.class).getCurrentAccentColorId();
-        assertTrue("my actual accent color is not set", actualColorId == expectedColorId);
+        assertThat("my actual accent color is not set", actualColorId, equalTo(expectedColorId));
     }
 
     @Then("^I verify my avatar background color is set to (\\w+) color$")

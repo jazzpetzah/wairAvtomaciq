@@ -167,13 +167,15 @@ public class AccountPage extends WebPage {
     }
 
     public int getCurrentAccentColorId() {
-        int i = 1;
         for (WebElement colorInput : colorsInColorPicker) {
             final String checked = colorInput.getAttribute("checked");
             if (checked != null && checked.toLowerCase().contains("true")) {
-                return i;
+                String id = colorInput.getAttribute("id");
+                id = id.replaceAll("\\D+", "");
+                if (!id.isEmpty()) {
+                    return Integer.parseInt(id);
+                }
             }
-            i++;
         }
         throw new RuntimeException("No accent color is selected in color picker");
     }
