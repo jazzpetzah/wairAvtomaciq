@@ -77,7 +77,6 @@ Feature: Notifications
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I minimize the application
-     # Ephemeral msg
     When User <Contact> switches user Myself to ephemeral mode via device <DeviceName> with <EphemeralTimeout> timeout
     And User <Contact> sends encrypted message "Yo" to user Myself
     Then I see the message "Someone sent you a message" in push notifications list

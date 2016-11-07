@@ -381,9 +381,9 @@ public class ConversationViewPageSteps {
      * Verify there is no text message in the conversation view
      *
      * @throws Exception
-     * @step. ^I do not see any text message in the conversation view$
+     * @step. ^I do not see any text messages? in the conversation view$
      */
-    @Then("^I do not see any text message in the conversation view$")
+    @Then("^I do not see any text messages? in the conversation view$")
     public void IDoNotSeeAnyTextMessage() throws Exception {
         Assert.assertTrue("Expect that no text message is visible in conversation view",
                 getConversationViewPage().waitUntilAnyMessageInvisible());

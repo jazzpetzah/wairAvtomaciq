@@ -182,7 +182,7 @@ Feature: Ephemeral Message
     And I set timeout to <EphemeralTimeout> on Extended cursor ephemeral overlay
     And I type the message "<Message>" and send it by cursor Send button
     And User <Contact> reads the recent message from user Myself via device <ContactDevice>
-    Then I do not see any text message in the conversation view
+    Then I do not see any text messages in the conversation view
 
     Examples:
       | Name      | Contact   | EphemeralTimeout | Message | ContactDevice |
@@ -258,7 +258,7 @@ Feature: Ephemeral Message
     And I do not see No Internet bar in <NetworkTimeout> seconds
     Then I see the message "<Message1>" in the conversation view
     When I wait for <EphemeralTimeout>
-    Then I do not see any text message in the conversation view
+    Then I do not see any text messages in the conversation view
 
     Examples:
       | Name      | Contact   | EphemeralTimeout | NetworkTimeout | Message1 | Message2 | ContactDevice |
@@ -517,7 +517,7 @@ Feature: Ephemeral Message
       | user1Name | user2Name | 5 seconds        | yo      | YoGroup | user3Name | dd       | hk       |
 
   @C321197 @staging
-  Scenario Outline: (Group) Verify the message is deleted on the sender side when it's read by anyone in group
+  Scenario Outline: (Group) Verify the message is deleted on the sender side when it's read by anyone in group and I can receive eph msg in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given Myself has group chat <Group> with <Contact>,<Contact1>
@@ -529,42 +529,41 @@ Feature: Ephemeral Message
     When I tap Ephemeral button from cursor toolbar
     And I set timeout to <EphemeralTimeout> on Extended cursor ephemeral overlay
     And I type the message "<Message>" and send it by cursor Send button
-    And I wait for <EphemeralTimeout>
+    # Wait until SE received last message
+    And I wait for 5 seconds
     And User <Contact> reads the recent message from group conversation <Group> via device <ContactDevice>
-    Then I do not see any text message in the conversation view
+    Then I do not see any text messages in the conversation view
     When User <Contact> switches group conversation <Group> to ephemeral mode via device <ContactDevice> with <EphemeralTimeout2> timeout
     And User <Contact> sends encrypted message "<Message2>" to group conversation <Group>
     Then I see the message "<Message2>" in the conversation view
     And I wait for <EphemeralTimeout2>
-    And I do not see any text message in the conversation view
+    And I do not see any text messages in the conversation view
 
     Examples:
       | Name      | Contact   | EphemeralTimeout | Message | Group   | Contact1  | ContactDevice | Message2 | EphemeralTimeout2 |
       | user1Name | user2Name | 5 seconds        | yo      | YoGroup | user3Name | d1            | Do       | 15 seconds        |
 
   @C321198 @staging
-  Scenario Outline: (Bug will be fixed in eph2) (Group) Verify receiving an ephemeral message in Group on the multiple devices and deleted on all recevier
+  Scenario Outline: (Group) Verify receiving an ephemeral message in Group on the multiple devices and deleted on all recevier
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given Myself has group chat <Group> with <Contact>,<Contact1>
-    Given User <Contact> adds new devices <ContactDevice>
+    Given User <Contact> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User Myself adds new devices <OwnDevice>
+    Given User Myself adds new device <OwnDevice>
     Given I see Conversations list with conversations
     When User <Contact> switches group conversation <Group> to ephemeral mode via device <ContactDevice> with <EphemeralTimeout> timeout
     And User Myself remember the recent message from group conversation <Group> via device <OwnDevice>
     And User <Contact> sends encrypted message "<Message>" to group conversation <Group>
-    And User Myself see the recent message from group conversation <Group> via device <OwnDevice> is changed in 15 seconds
+    And User Myself sees the recent message from group conversation <Group> via device <OwnDevice> is changed in 15 seconds
     And User Myself reads the recent message from group conversation <Group> via device <OwnDevice>
     And I wait for <EphemeralTimeout>
     Then User Myself see the recent message from group conversation <Group> via device <OwnDevice> is not changed in 15 seconds
     # Wait for SE Sync
     When I wait for 5 seconds
     And I tap on conversation name <Group>
-    Then I see the message "<Message>" in the conversation view
-    And I wait for <EphemeralTimeout>
-    And I do not see any text message in the conversation view
+    Then I do not see any text messages in the conversation view
 
     Examples:
       | Name      | Contact   | EphemeralTimeout | Message | Group   | Contact1  | ContactDevice | OwnDevice |
@@ -575,7 +574,7 @@ Feature: Ephemeral Message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given Myself has group chat <Group> with <Contact>,<Contact1>
-    Given User <Contact> adds new devices <ContactDevice>
+    Given User <Contact> adds new device <ContactDevice>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
