@@ -7,8 +7,7 @@ import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
 
-public abstract class DeviceDetailsPage extends BaseDetailsOverlay {
-
+public class DeviceDetailsPage extends BaseDetailsOverlay {
     private final static By classVerifySwitcher = By.className("XCUIElementTypeSwitch");
 
     private static final By xpathBackButton =
