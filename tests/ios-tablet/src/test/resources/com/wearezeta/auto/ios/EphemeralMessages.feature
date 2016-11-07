@@ -14,9 +14,9 @@ Feature: Ephemeral Messages
     Given I click at 0.5,0.5 of Simulator window
     Given I type the default message and send it
     Given I see 1 default message in the conversation view
-    And User <Contact> reads the recent message from user Myself
+    When User <Contact> reads the recent message from user Myself
     And I wait for <Timeout> seconds
-    Then I see 0 messages in the conversation view
+    Then I see 0 conversation entries
 
     Examples:
       | Name      | Contact   | Timeout | DeviceName    |
