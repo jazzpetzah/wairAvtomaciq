@@ -632,3 +632,56 @@ Feature: Ephemeral Message
     Examples:
       | Name      | Contact   | Contact1  | Group   | ContactDevice | EphemeralTimeout | FileName    | MIMEType  | SyncTimeout | Picture     | AudioFileName | AudioMIMEType | URL                     | SoundCloud                                       | Youtube                                     |
       | user1Name | user2Name | user3Name | yogroup | d1            | 5                | testing.mp4 | video/mp4 | 1           | testing.jpg | test.m4a      | audio/mp4     | http://www.facebook.com | https://soundcloud.com/sodab/256-ra-robag-wruhme | https://www.youtube.com/watch?v=wTcNtgA6gHs |
+
+  @C321206 @staging
+  Scenario Outline: (Group) If a user receives multiple ephemeral messages after being offline, all get the same timer
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
+    Given Myself has group chat <Group> with <Contact>,<Contact1>
+    Given User <Contact> adds new devices <ContactDevice>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Group>
+    When I enable Airplane mode on the device
+    And I see No Internet bar in <NetworkTimeout> seconds
+    And User <Contact> switches group conversation <Group> to ephemeral mode via device <ContactDevice> with <EphemeralTimeout> timeout
+    And User <Contact> sends encrypted message "<Message1>" to group conversation <Group>
+    And I wait for 5 seconds
+    And User <Contact> sends encrypted message "<Message2>" to group conversation <Group>
+    And I disable Airplane mode on the device
+    And I do not see No Internet bar in <NetworkTimeout> seconds
+    Then I see the message "<Message1>" in the conversation view
+    When I wait for <EphemeralTimeout>
+    Then I do not see any text messages in the conversation view
+
+    Examples:
+      | Name      | Contact   | Contact1  | EphemeralTimeout | NetworkTimeout | Message1 | Message2 | ContactDevice | Group   |
+      | user1Name | user2Name | user3Name | 15 seconds       | 15             | YO1      | YO2      | d1            | YoGroup |
+
+  @C321207 @staging
+  Scenario Outline: (Group) If ephemeral message can’t be sent due to bad network, it can be resend and will not get obfuscated
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
+    Given Myself has group chat <Group> with <Contact>,<Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Group>
+    When I tap Ephemeral button from cursor toolbar
+    And I set timeout to <EphemeralTimeout> on Extended cursor ephemeral overlay
+    And I enable Airplane mode on the device
+    And I see No Internet bar in <NetworkTimeout> seconds
+    And I type the message "<Message>" and send it by cursor Send button
+    And I see Message status with expected text "<MessageStatus>" in conversation view
+    And I wait for <EphemeralTimeout>
+    And I disable Airplane mode on the device
+    Then I see the message "<Message>" in the conversation view
+    When I do not see No Internet bar in <NetworkTimeout> seconds
+    And I resend all the visible messages in conversation view
+    And I wait for <EphemeralTimeout>
+    Then I do not see the message "<Message>" in the conversation view
+
+    Examples:
+      | Name      | Contact   | Contact1  | EphemeralTimeout | NetworkTimeout | Message | MessageStatus          | Group   |
+      | user1Name | user2Name | user3Name | 5 seconds        | 15             | Yo      | Sending failed. Resend | YoGroup |
