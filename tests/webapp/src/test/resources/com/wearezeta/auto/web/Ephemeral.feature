@@ -438,7 +438,7 @@ Feature: Ephemeral
     Then I see sent picture <PictureName> in the conversation view
     When I click on picture
     And I see picture <PictureName> in fullscreen
-    And I wait for 5 seconds
+    And I wait for <Time> seconds
     Then I do not see picture <PictureName> in fullscreen
     And I do not see any picture in the conversation view
 
@@ -655,19 +655,20 @@ Feature: Ephemeral
     When I open conversation with <ChatName>
     And I click on ephemeral button
     And I set the timer for ephemeral to <TimeLong>
+    Then I see <Time> with unit <TimeShortUnit> on ephemeral button
     And I see placeholder of conversation input is Timed message
     And I write message <Message>
     And I send message
     Then I see text message <Message>
-    And I wait for 5 seconds
+    And I wait for <Time> seconds
     And I see the last message is obfuscated
     When User <Contact1> reads the recent message from group conversation <ChatName> via device Device1
-    And I wait for 6 seconds
+    And I wait for <Time> seconds
     And I see 1 messages in conversation
 
     Examples:
-      | Email1     | Password      | Name      | Contact1  | Contact2  | ChatName | TimeLong  | Message |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | 5 seconds | Hello   |
+      | Email1     | Password      | Name      | Contact1  | Contact2  | ChatName | TimeLong  | Message | Time | TimeShortUnit |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | 5 seconds | Hello   | 5    | s             |
 
   @C318626 @ephemeral @staging
   Scenario Outline: Verify sending different types of ephemeral messages (ping, picture, video, audio, file) in group
