@@ -379,7 +379,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer | DeviceName |
       | user1Name | user2Name | 15    | myDevice2  |
 
-  @C318636 @staging @fastLogin
+  @C318636 @regression @fastLogin
   Scenario Outline: Group - Verify sending picture
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
