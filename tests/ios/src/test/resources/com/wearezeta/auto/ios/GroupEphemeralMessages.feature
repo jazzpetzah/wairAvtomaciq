@@ -37,5 +37,38 @@ Feature: Group Ephemeral Messages
     Then I see asset container state is changed
 
     Examples:
-      | Name      | Contact1   | Contact2  | GroupChatName | Timeout | DeviceName |
-      | user1Name | user2Name  | user3Name | Epheme grp    | 15      | device2    |
+      | Name      | Contact1  | Contact2  | GroupChatName | Timeout | DeviceName |
+      | user1Name | user2Name | user3Name | Epheme grp    | 15      | device2    |
+
+  @C320772 @staging @fastLogin @torun
+  Scenario Outline: ZIOS-7568 Verify timer is applied to the all messages until turning it off
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on group chat with name <GroupChatName>
+    Given I tap Hourglass button in conversation view
+    Given I set ephemeral messages expiration timer to <Timer> seconds
+    Given I type the default message and send it
+    # Need to tap on message due to ZIOS-7568. Step should be delete once bug is fixed.
+    Given I tap default message in conversation view
+    Given I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
+    Given I tap Add Picture button from input tools
+    Given I accept alert if visible
+    Given I accept alert if visible
+    Given I select the first picture from Keyboard Gallery
+    Given I tap Confirm button on Picture preview page
+    # Need to tap on message due to ZIOS-7568. Step should be delete once bug is fixed.
+    Given I tap on image in conversation view
+    Given I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
+    When I tap Time Indicator button in conversation view
+    And I set ephemeral messages expiration timer to Off
+    And I type the "<TestMsg>" message and send it
+    # Need to tap on message due to ZIOS-7568. Step should be delete once bug is fixed.
+    And I tap "<TestMsg>" message in conversation view
+    Then I do not see "<EphemeralTimeLabel>" on the message toolbox in conversation view
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | DeviceName | Timer | EphemeralTimeLabel | TestMsg |
+      | user1Name | user2Name | user3Name | Epheme grp    | device2    | 15    | seconds            | hi      |
