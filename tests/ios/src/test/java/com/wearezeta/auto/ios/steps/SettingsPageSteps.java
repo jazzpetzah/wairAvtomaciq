@@ -101,62 +101,6 @@ public class SettingsPageSteps {
 
     }
 
-    /**
-     * Presses the delete button for the particular device
-     *
-     * @param deviceName name of device that should be deleted
-     * @throws Exception
-     * @step. ^I tap Delete (.*) button from devices$
-     */
-    @When("^I tap Delete (.*) button from devices$")
-    public void ITapDeleteButtonFromDevices(String deviceName) throws Exception {
-        getSettingsPage().tapDeleteDeviceButton(deviceName);
-        getSettingsPage().tapDeleteButton();
-    }
-
-    /**
-     * Types in the password and presses OK to confirm the device deletion
-     *
-     * @param password of user
-     * @throws Exception
-     * @step. ^I confirm with my (.*) the deletion of the device$
-     */
-    @When("^I confirm with my (.*) the deletion of the device$")
-    public void IConfirmWithMyPasswordTheDeletionOfTheDevice(String password) throws Exception {
-        getSettingsPage().typePasswordToConfirmDeleteDevice(password);
-        pagesCollection.getCommonPage().tapAlertButton("OK");
-    }
-
-    /**
-     * Verifies that device is or is not in device settings list
-     *
-     * @param shouldNot equals to null if the device is in list
-     * @param device    name of device in list
-     * @throws Exception
-     * @step. ^I (do not )?see device (.*) in devices list$
-     */
-    @Then("^I (do not )?see device (.*) in devices list$")
-    public void ISeeDeviceInDevicesList(String shouldNot, String device) throws Exception {
-        if (shouldNot == null) {
-            Assert.assertTrue(String.format("The device %s is not visible in the device list", device),
-                    getSettingsPage().isDeviceVisibleInList(device));
-        } else {
-            Assert.assertTrue(String.format("The device %s is still visible in the device list", device),
-                    getSettingsPage().isDeviceInvisibleInList(device));
-        }
-    }
-
-    /**
-     * Tap on current device
-     *
-     * @throws Exception
-     * @step. ^I tap on current device$
-     */
-    @Then("^I tap on current device$")
-    public void ITapOnCurrentDevice() throws Throwable {
-        getSettingsPage().tapCurrentDevice();
-    }
-
     private Future<String> accountRemovalConfirmation;
 
     /**

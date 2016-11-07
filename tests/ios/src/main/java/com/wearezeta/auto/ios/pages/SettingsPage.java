@@ -4,7 +4,6 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
@@ -14,8 +13,6 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 public class SettingsPage extends IOSPage {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
     private static final Function<String, String> xpathStrMenuItemByName = name ->
             String.format("//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[@name='%s'] ]", name);
 
@@ -29,24 +26,10 @@ public class SettingsPage extends IOSPage {
             FBBy.xpath(String.format("%s/XCUIElementTypeTextField[last()]",
                     xpathStrMenuItemByName.apply("Name")));
 
-    private static final Function<String, String> xpathDeleteDeviceButtonByName = devicename ->
-            String.format("//XCUIElementTypeButton[contains(@name,'Delete %s')]", devicename);
-
-    private static final Function<String, String> xpathDeviceListEntry = device ->
-            String.format("//*[contains(@name,'%s')]", device);
-
-    private static final By nameDeleteButton = MobileBy.AccessibilityId("Delete");
-
-    private static final By fbXpathDeleteDevicePasswordField =
-            FBBy.xpath("//XCUIElementTypeSecureTextField[contains(@value,'Password')]");
-
     private static final FunctionFor2Parameters<String, String, String> xpathStrDeviceVerificationLabel =
             (deviceName, verificationLabel) -> String.format(
                     "//XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s'] ]" +
                             "/XCUIElementTypeStaticText[@name='%s']", deviceName, verificationLabel);
-
-    private static final String xpathStrCurrentDevice = "//XCUIElementTypeTable/XCUIElementTypeCell";
-    private static final By xpathCurrentDevices = By.xpath(xpathStrCurrentDevice);
 
     private static final By xpathChangePasswordPageChangePasswordButton =
             By.xpath("//XCUIElementTypeButton[@name='RESET PASSWORD']");
@@ -85,48 +68,12 @@ public class SettingsPage extends IOSPage {
         return isLocatorExist(By.xpath(xpathStrMenuItemByName.apply(itemName)));
     }
 
-    public void tapDeleteDeviceButton(String deviceName) throws Exception {
-        final By locator = By.xpath(xpathDeleteDeviceButtonByName.apply(deviceName));
-        getElement(locator, String.format("Device '%s' is not visible in Manage Device List", deviceName)).click();
-        if (!isLocatorInvisible(locator)) {
-            throw new IllegalStateException("Delete device button is still visible");
-        }
-    }
-
-    public void tapDeleteButton() throws Exception {
-        final WebElement deleteButton = getElement(nameDeleteButton);
-        deleteButton.click();
-
-        if (!isLocatorInvisible(nameDeleteButton)) {
-            deleteButton.click();
-        }
-    }
-
-    public void typePasswordToConfirmDeleteDevice(String password) throws Exception {
-        password = usrMgr.findUserByPasswordAlias(password).getPassword();
-        ((FBElement) getElement(fbXpathDeleteDevicePasswordField)).setValue(password);
-    }
-
-    public boolean isDeviceVisibleInList(String device) throws Exception {
-        final By locator = By.xpath(xpathDeviceListEntry.apply(device));
-        return isLocatorDisplayed(locator);
-    }
-
-    public boolean isDeviceInvisibleInList(String device) throws Exception {
-        final By locator = By.xpath(xpathDeviceListEntry.apply(device));
-        return isLocatorInvisible(locator);
-    }
-
     public boolean verificationLabelVisibility(String deviceName, String verificationLabel) throws Exception {
         final By locator = By.xpath(xpathStrDeviceVerificationLabel.apply(deviceName, verificationLabel));
         return isLocatorDisplayed(locator);
     }
 
-    public void tapCurrentDevice() throws Exception {
-        getElement(xpathCurrentDevices).click();
-    }
-
-    public boolean isItemInvisible(String itemName) throws Exception {
+     public boolean isItemInvisible(String itemName) throws Exception {
         return isLocatorInvisible(By.xpath(xpathStrMenuItemByName.apply(itemName)));
     }
 

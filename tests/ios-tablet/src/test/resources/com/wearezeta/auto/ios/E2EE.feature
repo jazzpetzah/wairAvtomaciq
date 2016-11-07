@@ -12,10 +12,10 @@ Feature: E2EE
     Then I do not see shield icon in the conversation view
     When I open conversation details
     And I switch to Devices tab on Single user profile page
-    And I open details page of device number 1
+    And I open details page of device number 1 on Devices tab
     And I tap Verify switcher on Device Details page
     And I tap Back button on Device Details page
-    And I open details page of device number 2
+    And I open details page of device number 2 on Devices tab
     And I tap Verify switcher on Device Details page
     And I dismiss popover on iPad
     Then I see shield icon in the conversation view
@@ -36,7 +36,7 @@ Feature: E2EE
     And I tap on contact name <Contact1>
     And I open conversation details
     And I switch to Devices tab on Single user profile page
-    And I open details page of device number 1
+    And I open details page of device number 1 on Devices tab
     And I tap Verify switcher on Device Details page
     And I dismiss popover on iPad
     When User Myself adds a new device <DeviceName2> with label <DeviceLabel2>

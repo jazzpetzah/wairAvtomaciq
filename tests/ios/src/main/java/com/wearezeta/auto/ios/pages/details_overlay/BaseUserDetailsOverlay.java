@@ -16,9 +16,6 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
 
     private static final By nameLeftActionButton = MobileBy.AccessibilityId("OtherUserMetaControllerLeftButton");
 
-    private static final Function<String, String> xpathStrLinkBlockByText = text ->
-            String.format("//*[contains(@value, '%s')]", text);
-
     public BaseUserDetailsOverlay(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
     }
@@ -47,11 +44,6 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
     public boolean isEmailInvisible(String value) throws Exception {
         final By locator = MobileBy.AccessibilityId(value.toUpperCase());
         return selectVisibleElements(locator).size() == 0;
-    }
-
-    public void tapLink(String expectedLink) throws Exception {
-        final By locator = FBBy.xpath(xpathStrLinkBlockByText.apply(expectedLink));
-        this.tapByPercentOfElementSize((FBElement) getElement(locator), 15, 95);
     }
 
     @Override

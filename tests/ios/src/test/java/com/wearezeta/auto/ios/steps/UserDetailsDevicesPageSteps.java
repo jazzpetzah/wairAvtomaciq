@@ -1,21 +1,19 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.details_overlay.common.UserDevicesPage;
+import com.wearezeta.auto.ios.pages.details_overlay.common.UserDetailsDevicesOverlay;
+import com.wearezeta.auto.ios.pages.details_overlay.common.UserSettingsDevicesOverlay;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 import java.util.List;
 
-public class UserDevicesPageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
+public class UserDetailsDevicesPageSteps {
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private UserDevicesPage getPage() throws Exception {
-        return pagesCollection.getPage(UserDevicesPage.class);
+    private UserDetailsDevicesOverlay getUserDetailsDevicesPage() throws Exception {
+        return pagesCollection.getPage(UserDetailsDevicesOverlay.class);
     }
 
     /**
@@ -28,7 +26,7 @@ public class UserDevicesPageSteps {
      */
     @When("^I tap \"(.*)\" link on Devices tab$")
     public void ITapLink(String expectedLink) throws Exception {
-        getPage().tapLink(expectedLink);
+        getUserDetailsDevicesPage().tapLink(expectedLink);
     }
 
     /**
@@ -43,7 +41,7 @@ public class UserDevicesPageSteps {
         List<String> deviceIDs = CommonSteps.getInstance().GetDevicesIDsForUser(name);
         for (String id : deviceIDs) {
             Assert.assertTrue(String.format("Device ID '%s' is not visible", id),
-                    getPage().isUserDeviceIdVisible(id));
+                    getUserDetailsDevicesPage().isUserDeviceIdVisible(id));
         }
     }
 
@@ -52,11 +50,12 @@ public class UserDevicesPageSteps {
      *
      * @param deviceIndex the device index. Starts from 1
      * @throws Exception
-     * @step. ^I open details page of device number (\d+) Single user profile page$
+     * @step. ^I open details page of device number (\d+) (on Devices tab|in settings)$
      */
-    @When("^I open details page of device number (\\d+)$")
+    @When("^I open details page of device number (\\d+) on Devices tab$")
     public void IOpenDeviceDetails(int deviceIndex) throws Exception {
-        getPage().openDeviceDetailsPage(deviceIndex);
+        getUserDetailsDevicesPage().openDeviceDetailsPage(deviceIndex);
+
     }
 
     /**
@@ -71,7 +70,7 @@ public class UserDevicesPageSteps {
     public void ISeeDevicesShownInDevicesTab(int expectedNumDevices) throws Exception {
         Assert.assertTrue(
                 String.format("The expected number of devices: %s is not equals to actual count", expectedNumDevices),
-                getPage().isParticipantDevicesCountEqualTo(expectedNumDevices)
+                getUserDetailsDevicesPage().isParticipantDevicesCountEqualTo(expectedNumDevices)
         );
     }
 }

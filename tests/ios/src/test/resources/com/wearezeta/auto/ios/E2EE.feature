@@ -69,10 +69,10 @@ Feature: E2EE
     And I open conversation details
     And I do not see shield icon on Single user profile page
     And I switch to Devices tab on Single user profile page
-    When I open details page of device number 1
+    When I open details page of device number 1 on Devices tab
     And I tap Verify switcher on Device Details page
     And I tap Back button on Device Details page
-    And I open details page of device number 2
+    And I open details page of device number 2 on Devices tab
     And I tap Verify switcher on Device Details page
     And I tap Back button on Device Details page
     And I switch to Details tab on Single user profile page
@@ -96,13 +96,13 @@ Feature: E2EE
     And I open conversation details
     When I select participant <Contact1> on Group info page
     And I switch to Devices tab on Group participant profile page
-    And I open details page of device number 1
+    And I open details page of device number 1 on Devices tab
     And I tap Verify switcher on Device Details page
     And I tap Back button on Device Details page
     And I tap X button on Group participant profile page
     And I select participant <Contact2> on Group info page
     And I switch to Devices tab on Group participant profile page
-    And I open details page of device number 1
+    And I open details page of device number 1 on Devices tab
     And I tap Verify switcher on Device Details page
     And I tap Back button on Device Details page
     And I tap X button on Group participant profile page
@@ -123,7 +123,7 @@ Feature: E2EE
     And I tap on contact name <Contact1>
     And I open conversation details
     And I switch to Devices tab on Single user profile page
-    And I open details page of device number 1
+    And I open details page of device number 1 on Devices tab
     And I tap Verify switcher on Device Details page
     And I tap Back button on Device Details page
     And I tap X button on Single user profile page
@@ -148,7 +148,7 @@ Feature: E2EE
     Given I tap on contact name <Contact1>
     Given I open conversation details
     Given I switch to Devices tab on Single user profile page
-    Given I open details page of device number 1
+    Given I open details page of device number 1 on Devices tab
     Given I tap Verify switcher on Device Details page
     Given I tap Back button on Device Details page
     Given I tap X button on Single user profile page
@@ -186,9 +186,9 @@ Feature: E2EE
     And I accept alert
     And I select settings item Devices
     And I tap Edit navigation button on Settings page
-    And I tap Delete <DeviceName> button from devices
-    And I confirm with my <Password> the deletion of the device
-    Then I do not see device <DeviceName> in devices list
+    And I tap Delete <DeviceName> button on Settings page
+    And I confirm with my <Password> the deletion of the device on Settings page
+    Then I do not see device <DeviceName> in devices list on Settings page
 
     Examples:
       | Name      | DeviceName | Password      |
@@ -203,11 +203,11 @@ Feature: E2EE
     When I tap settings gear button
     And I accept alert
     And I select settings item Devices
-    When I open details page of device number 2
+    When I open details page of device number 2 on Settings page
     And I tap Verify switcher on Device Details page
     And I tap Back navigation button on Settings page
     Then I see the label Verified is shown for the device <DeviceName>
-    When I open details page of device number 2
+    When I open details page of device number 2 on Settings page
     And I tap Verify switcher on Device Details page
     And I tap Back navigation button on Settings page
     Then I see the label Not Verified is shown for the device <DeviceName>
@@ -225,7 +225,7 @@ Feature: E2EE
     Given I tap on contact name <Contact1>
     When I see 1 conversation entry
     And I tap on THIS DEVICE link
-    And I open details page of device number 1
+    And I open details page of device number 1 on Settings page
     Then I see fingerprint is not empty on Device Details page
 
     Examples:
@@ -242,7 +242,7 @@ Feature: E2EE
     Given I tap on contact name <Contact1>
     Given I open conversation details
     Given I switch to Devices tab on Single user profile page
-    Given I open details page of device number 1
+    Given I open details page of device number 1 on Devices tab
     Given I tap Verify switcher on Device Details page
     Given I tap Back button on Device Details page
     Given I tap X button on Single user profile page
@@ -268,7 +268,7 @@ Feature: E2EE
     Given I tap on contact name <Contact1>
     Given I open conversation details
     Given I switch to Devices tab on Single user profile page
-    Given I open details page of device number 1
+    Given I open details page of device number 1 on Devices tab
     Given I tap Verify switcher on Device Details page
     Given I tap Back button on Device Details page
     Given I tap X button on Single user profile page
@@ -291,10 +291,10 @@ Feature: E2EE
     Then I do not see shield icon in the conversation view
     When I open conversation details
     And I switch to Devices tab on Single user profile page
-    And I open details page of device number 1
+    And I open details page of device number 1 on Devices tab
     And I tap Verify switcher on Device Details page
     And I tap Back button on Device Details page
-    And I open details page of device number 2
+    And I open details page of device number 2 on Devices tab
     And I tap Verify switcher on Device Details page
     And I tap Back button on Device Details page
     And I tap X button on Single user profile page
@@ -355,13 +355,13 @@ Feature: E2EE
     Given I open conversation details
     Given I select participant <Contact1> on Group info page
     Given I switch to Devices tab on Group participant profile page
-    Given I open details page of device number 1
+    Given I open details page of device number 1 on Devices tab
     Given I tap Verify switcher on Device Details page
     Given I tap Back button on Device Details page
     Given I tap X button on Single user profile page
     Given I select participant <Contact2> on Group info page
     Given I switch to Devices tab on Group participant profile page
-    Given I open details page of device number 1
+    Given I open details page of device number 1 on Devices tab
     Given I tap Verify switcher on Device Details page
     Given I tap Back button on Device Details page
     Given I tap X button on Single user profile page
@@ -383,7 +383,7 @@ Feature: E2EE
     Given I see conversations list
     And I tap settings gear button
     And I select settings item Devices
-    When I tap on current device
+    When I tap my current device on Settings page
     Then I see settings item Key Fingerprint
     And I do not see settings item Verified
     And I do not see settings item Reset session
@@ -402,10 +402,10 @@ Feature: E2EE
     When I tap settings gear button
     And I accept alert
     And I select settings item Devices
-    And I open details page of device number 2
+    And I open details page of device number 2 on Settings page
     And I tap Remove Device button on Device Details page
-    And I confirm with my <Password> the deletion of the device
-    Then I do not see device <DeviceName> in devices list
+    And I confirm with my <Password> the deletion of the device on Settings page
+    Then I do not see device <DeviceName> in devices list on Settings page
 
     Examples:
       | Name      | DeviceName | Password      |
@@ -422,7 +422,7 @@ Feature: E2EE
     Then I do not see shield icon in the conversation view
     When I open conversation details
     And I switch to Devices tab on Single user profile page
-    And I open details page of device number 2
+    And I open details page of device number 2 on Devices tab
     And I tap Verify switcher on Device Details page
     And I tap Back button on Device Details page
     And I tap X button on Single user profile page
@@ -448,7 +448,7 @@ Feature: E2EE
     And I wait for 12 seconds
     Then I see "https://support.wire.com" web page opened
     When I tap Back To Wire button
-    And I open details page of device number 1
+    And I open details page of device number 1 on Devices tab
     And I tap "How do I do that?" link on Devices tab
     And I wait for 12 seconds
     Then I see "https://support.wire.com" web page opened
@@ -467,7 +467,7 @@ Feature: E2EE
     When I tap on contact name <Contact1>
     And I open conversation details
     And I switch to Devices tab on Single user profile page
-    And I open details page of device number 1
+    And I open details page of device number 1 on Devices tab
     And I tap Verify switcher on Device Details page
     And I tap Back button on Device Details page
     And I tap X button on Single user profile page
@@ -475,7 +475,7 @@ Feature: E2EE
     And I see "<VerificationMsg>" system message in the conversation view
     When I open conversation details
     And I switch to Devices tab on Single user profile page
-    And I open details page of device number 1
+    And I open details page of device number 1 on Devices tab
     And I tap Verify switcher on Device Details page
     And I tap Back button on Device Details page
     And I tap X button on Single user profile page

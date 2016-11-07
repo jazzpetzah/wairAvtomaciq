@@ -1,27 +1,23 @@
-package com.wearezeta.auto.ios.pages.details_overlay.common;
+package com.wearezeta.auto.ios.pages.devices_overlay;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.pages.details_overlay.BaseUserDetailsOverlay;
-import com.wearezeta.auto.ios.pages.details_overlay.ISupportsTabSwitching;
+import com.wearezeta.auto.ios.pages.details_overlay.BaseDetailsOverlay;
 import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-public class UserDevicesPage extends BaseUserDetailsOverlay implements ISupportsTabSwitching {
+public abstract class BaseUserDevicesOverlay extends BaseDetailsOverlay {
     private static final Function<String, String> xpathStrDeviceId = id ->
             String.format("//XCUIElementTypeStaticText[contains(@name, '%s')]", id);
 
-    private static final String xpathStrDevicesList =
-            "//*[@name='DEVICES' or @name='Devices']/following::XCUIElementTypeTable[1]/XCUIElementTypeCell";
-
-    private static final Function<Integer, String> xpathStrDevicesByCount = count ->
+    private final Function<Integer, String> xpathStrDevicesByCount = count ->
             String.format("//XCUIElementTypeTable[count(XCUIElementTypeCell)=%s]", count);
 
-    private static final Function<Integer, String> xpathStrDeviceByIndex =
-            idx -> String.format("%s[%s]", xpathStrDevicesList, idx);
+    private final Function<Integer, String> xpathStrDeviceByIndex =
+            idx -> String.format("%s/XCUIElementTypeCell[%s]", getDevicesListRootXPath(), idx);
 
-    public UserDevicesPage(Future<ZetaIOSDriver> driver) throws Exception {
+    public BaseUserDevicesOverlay(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
     }
 
@@ -29,6 +25,8 @@ public class UserDevicesPage extends BaseUserDetailsOverlay implements ISupports
     protected By getButtonLocatorByName(String name) {
         throw new IllegalStateException("There are no buttons to tap on devices overlay");
     }
+
+    protected abstract String getDevicesListRootXPath();
 
     public boolean isParticipantDevicesCountEqualTo(int expectedCount) throws Exception {
         final By locator = By.xpath(xpathStrDevicesByCount.apply(expectedCount));
@@ -50,11 +48,6 @@ public class UserDevicesPage extends BaseUserDetailsOverlay implements ISupports
     @Override
     protected By getRightActionButtonLocator() {
         throw new IllegalStateException("Right action button is not available for devices overlay");
-    }
-
-    @Override
-    public void switchToTab(String tabName) throws Exception {
-        super.switchToTab(tabName);
     }
 
     private static String convertStringIDtoLocatorTypeID(String id) {
