@@ -171,7 +171,7 @@ Feature: Delete Message
     And User Myself deletes the recent message from user <Contact1> via device <Device>
     And User Myself deletes the recent message from group conversation <GroupChatName> via device <Device>
     And I disable Airplane mode on the device
-    And I do not see No Internet bar in 20 seconds
+    And I do not see No Internet bar in 15 seconds
     Then I do not see the message "<Message>" in the conversation view
     When I tap Back button from top toolbar
     And I tap on conversation name <Contact1>
@@ -185,7 +185,7 @@ Feature: Delete Message
     And I tap Delete button on the alert
     Then I do not see the message "<Message2>" in the conversation view
     When I disable Airplane mode on the device
-    And I do not see No Internet bar in 20 seconds
+    And I do not see No Internet bar in 15 seconds
     # Wait for SE sync
     And I wait for 20 seconds
     Then User Myself see the recent message from user <Contact1> via device <Device> is changed
