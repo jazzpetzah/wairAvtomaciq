@@ -130,7 +130,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <GroupCreator> on Group info page
-    And I see <GroupCreatorEmail> name on Group participant profile page
+    And I see <GroupCreator> name on Group participant profile page
     And I see <GroupCreatorEmail> email on Group participant profile page
     And I tap X button on Group participant profile page
     And I select participant <NonConnectedContact> on Group info page
