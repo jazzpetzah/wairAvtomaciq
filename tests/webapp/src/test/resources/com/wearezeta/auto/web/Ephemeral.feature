@@ -259,7 +259,7 @@ Feature: Ephemeral
     And I see only 1 picture in the conversation
     And I see timer next to the last message
     When I wait for <Time> seconds
-    Then I see orange block replaces the last message in the conversation view
+    Then I see block replaces the last message in the conversation view
     And I see 2 messages in conversation
     When User <Contact> reads the recent message from user <Name> via device Device1
     And I do not see any picture in the conversation view
@@ -271,13 +271,13 @@ Feature: Ephemeral
     And I see video message <VideoFile> in the conversation view
     And I see timer next to the last message
     When I wait for <Time> seconds
-    Then I see orange block replaces the last message in the conversation view
+    Then I see block replaces the last message in the conversation view
     And I do not see video message <VideoFile> in the conversation view
     And I see 2 messages in conversation
     When User <Contact> reads the recent message from user <Name> via device Device1
     When I wait for <Time> seconds
     And I do not see video message <VideoFile> in the conversation view
-    And I do not see orange block replaces the last message in the conversation view
+    And I do not see block replaces the last message in the conversation view
     And I see 1 messages in conversation
   #audio
     When I send audio file with length <AudioTime> and name <AudioFile> to the current conversation
@@ -285,22 +285,22 @@ Feature: Ephemeral
     Then I see audio message <AudioFile> in the conversation view
     And I see timer next to the last message
     When I wait for <Time> seconds
-    Then I see orange block replaces the last message in the conversation view
+    Then I see block replaces the last message in the conversation view
     And I see 2 messages in conversation
     When User <Contact> reads the recent message from user <Name> via device Device1
     And I do not see audio message <AudioFile> in the conversation view
-    And I do not see orange block replaces the last message in the conversation view
+    And I do not see block replaces the last message in the conversation view
     And I see 1 messages in conversation
     #file
     When I send <SizeFile> sized file with name <File> to the current conversation
     And I wait until file <File> is uploaded completely
     And I see timer next to the last message
     When I wait for <Time> seconds
-    Then I see orange block replaces the last message in the conversation view
+    Then I see block replaces the last message in the conversation view
     And I see 2 messages in conversation
     When User <Contact> reads the recent message from user <Name> via device Device1
     And I do not see file transfer for file <File> in the conversation view
-    And I do not see orange block replaces the last message in the conversation view
+    And I do not see block replaces the last message in the conversation view
     And I see 1 messages in conversation
     And I see 0 messages in database from <Name> in active conversation
 
@@ -324,7 +324,7 @@ Feature: Ephemeral
     When I send <Size> sized file with name <File> to the current conversation
     When I wait until file <File> is uploaded completely
     And I wait for <Time> seconds
-    And I see orange block replaces the last message in the conversation view
+    And I see block replaces the last message in the conversation view
     And I click context menu of the last message
     And I do not see download button in context menu
 
@@ -670,7 +670,7 @@ Feature: Ephemeral
       | Email1     | Password      | Name      | Contact1  | Contact2  | ChatName | TimeLong  | Message | Time | TimeShortUnit |
       | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | 5 seconds | Hello   | 5    | s             |
 
-  @C318626 @ephemeral @staging
+  @C318626 @ephemeral @staging @torun
   Scenario Outline: Verify sending different types of ephemeral messages (ping, picture, video, audio, file) in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -702,7 +702,7 @@ Feature: Ephemeral
     And I see only 1 picture in the conversation
     And I see timer next to the last message
     When I wait for <Time> seconds
-    Then I see orange block replaces the last message in the conversation view
+    Then I see block replaces the last message in the conversation view
     And I see 2 messages in conversation
     When User <Contact1> reads the recent message from user <Name> via device Device1
     And I do not see any picture in the conversation view
@@ -714,13 +714,13 @@ Feature: Ephemeral
     And I see video message <VideoFile> in the conversation view
     And I see timer next to the last message
     When I wait for <Time> seconds
-    Then I see orange block replaces the last message in the conversation view
+    Then I see block replaces the last message in the conversation view
     And I do not see video message <VideoFile> in the conversation view
     And I see 2 messages in conversation
     When User <Contact1> reads the recent message from user <Name> via device Device1
     When I wait for <Time> seconds
     And I do not see video message <VideoFile> in the conversation view
-    And I do not see orange block replaces the last message in the conversation view
+    And I do not see block replaces the last message in the conversation view
     And I see 1 messages in conversation
   #audio
     When I send audio file with length <AudioTime> and name <AudioFile> to the current conversation
@@ -728,22 +728,22 @@ Feature: Ephemeral
     Then I see audio message <AudioFile> in the conversation view
     And I see timer next to the last message
     When I wait for <Time> seconds
-    Then I see orange block replaces the last message in the conversation view
+    Then I see block replaces the last message in the conversation view
     And I see 2 messages in conversation
     When User <Contact1> reads the recent message from user <Name> via device Device1
     And I do not see audio message <AudioFile> in the conversation view
-    And I do not see orange block replaces the last message in the conversation view
+    And I do not see block replaces the last message in the conversation view
     And I see 1 messages in conversation
   #file
     When I send <SizeFile> sized file with name <File> to the current conversation
     And I wait until file <File> is uploaded completely
     And I see timer next to the last message
     When I wait for <Time> seconds
-    Then I see orange block replaces the last message in the conversation view
+    Then I see block replaces the last message in the conversation view
     And I see 2 messages in conversation
     When User <Contact1> reads the recent message from user <Name> via device Device1
     And I do not see file transfer for file <File> in the conversation view
-    And I do not see orange block replaces the last message in the conversation view
+    And I do not see block replaces the last message in the conversation view
     And I see 1 messages in conversation
     And I see 0 messages in database from <Name> in active conversation
 
