@@ -72,7 +72,7 @@ public class ZetaFormatter implements Formatter, Reporter {
     public void feature(Feature arg0) {
         feature = arg0.getName();
         log.debug("\n\n----------------------------------------------\nFeature: " + feature +
-            "\n----------------------------------------------");
+                "\n----------------------------------------------");
     }
 
     private static String formatTags(List<Tag> tags) {
@@ -89,8 +89,8 @@ public class ZetaFormatter implements Formatter, Reporter {
     public void scenario(Scenario arg0) {
         scenario = arg0.getName();
         log.debug(String.format("\n\n----------------------------------------------\nScenario: %s " +
-            "%s\n----------------------------------------------", scenario, formatTags
-            (arg0.getTags())));
+                "%s\n----------------------------------------------", scenario, formatTags
+                (arg0.getTags())));
         if (steps.size() > 0) {
             steps.clear();
         }
@@ -148,19 +148,27 @@ public class ZetaFormatter implements Formatter, Reporter {
             do {
                 final String stepNameForScr = stepName.replaceAll("\\W+", "_");
                 tmpScreenshot = new File(String.format("%s/%s/%s/%s_%s.png",
-                    CommonUtils.getPictureResultsPathFromConfig(this.getClass()), feature.replaceAll("\\W+", "_"),
-                    scenario.replaceAll("\\W+", "_"),
-                    stepNameForScr.matches(".*_") ? stepNameForScr.substring(0, stepNameForScr.length() - 1) :
-                        stepNameForScr, index));
+                        CommonUtils.getPictureResultsPathFromConfig(this.getClass()), feature.replaceAll("\\W+", "_"),
+                        scenario.replaceAll("\\W+", "_"),
+                        stepNameForScr.matches(".*_") ? stepNameForScr.substring(0, stepNameForScr.length() - 1) :
+                                stepNameForScr, index));
                 index++;
             } while (tmpScreenshot.exists());
             final File resultScreenshot = tmpScreenshot;
-            if ((driver instanceof IOSDriver) && CommonUtils.getIsSimulatorFromConfig(ZetaFormatter.class)) {
-                try {
-                    CommonUtils.takeIOSSimulatorScreenshot(resultScreenshot);
-                } catch (Exception e) {
-                    log.error("Failed to take iOS simulator screenshot:");
-                    e.printStackTrace();
+            if (driver instanceof IOSDriver) {
+                final Optional<BufferedImage> screenshot = DriverUtils.takeFullScreenShot(driver);
+                if (screenshot.isPresent()) {
+                    screenshotSavers.execute(() -> ImageUtil.storeImage(ImageUtil.scaleTo(screenshot.get(),
+                            MAX_SCREENSHOT_WIDTH, MAX_SCREENSHOT_HEIGHT), resultScreenshot));
+                } else {
+                    if (CommonUtils.getIsSimulatorFromConfig(ZetaFormatter.class)) {
+                        try {
+                            CommonUtils.takeIOSSimulatorScreenshot(resultScreenshot);
+                        } catch (Exception e) {
+                            log.error("Failed to take iOS simulator screenshot:");
+                            e.printStackTrace();
+                        }
+                    }
                 }
             } else if (driver instanceof ZetaAndroidDriver) {
                 try {
@@ -174,12 +182,12 @@ public class ZetaFormatter implements Formatter, Reporter {
                 if (!screenshot.isPresent()) {
                     return;
                 }
-                screenshotSavers.execute(() ->
-                    ImageUtil.storeImage(ImageUtil.scaleTo(screenshot.get(),
+                screenshotSavers.execute(() -> ImageUtil.storeImage(ImageUtil.scaleTo(screenshot.get(),
                         MAX_SCREENSHOT_WIDTH, MAX_SCREENSHOT_HEIGHT), resultScreenshot));
             }
         } else {
-            log.debug(String.format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'", stepName));
+            log.debug(String.format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'",
+                    stepName));
         }
     }
 
@@ -225,14 +233,14 @@ public class ZetaFormatter implements Formatter, Reporter {
                 }
             }
             log.debug(String.format("\n----------------------------------------------\nSTEP: %s (status: %s, step duration: " +
-                "%s ms + screenshot " +
-                    "duration: %s ms)\n----------------------------------------------", stepName, stepStatus,
-                stepFinishedTimestamp - stepStartedTimestamp, System.currentTimeMillis() - stepFinishedTimestamp));
+                            "%s ms + screenshot " +
+                            "duration: %s ms)\n----------------------------------------------", stepName, stepStatus,
+                    stepFinishedTimestamp - stepStartedTimestamp, System.currentTimeMillis() - stepFinishedTimestamp));
         } else {
             log.debug(String.format("\n----------------------------------------------\nSTEP: %s (status: %s, step duration: " +
-                "%s " +
-                    "ms)\n----------------------------------------------", stepName, stepStatus,
-                stepFinishedTimestamp - stepStartedTimestamp));
+                            "%s " +
+                            "ms)\n----------------------------------------------", stepName, stepStatus,
+                    stepFinishedTimestamp - stepStartedTimestamp));
         }
     }
 
@@ -278,7 +286,7 @@ public class ZetaFormatter implements Formatter, Reporter {
             final Set<String> normalizedTags = normalizeTags(scenario.getTags());
 
             TestrailSyncUtilities.syncExecutedScenarioWithTestrail(scenario,
-                new TestcaseResultToTestrailTransformer(steps).transform(), normalizedTags);
+                    new TestcaseResultToTestrailTransformer(steps).transform(), normalizedTags);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
