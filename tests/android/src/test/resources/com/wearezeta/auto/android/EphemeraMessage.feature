@@ -569,3 +569,67 @@ Feature: Ephemeral Message
     Examples:
       | Name      | Contact   | EphemeralTimeout | Message | Group   | Contact1  | ContactDevice | OwnDevice |
       | user1Name | user2Name | 15 seconds       | yo      | YoGroup | user3Name | d1            | d2        |
+
+  @C321205 @staging
+  Scenario Outline: (Group) Verify receiving all types of ephemeral messages in group
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
+    Given Myself has group chat <Group> with <Contact>,<Contact1>
+    Given User <Contact> adds new devices <ContactDevice>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Group>
+    Given User <Contact> switches group conversation <Group> to ephemeral mode via device <ContactDevice> with <EphemeralTimeout> seconds timeout
+    # Ping
+    When User <Contact> securely pings conversation <Group>
+    And I wait for <SyncTimeout> seconds
+    And I see Ping message "<Contact> PINGED" in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I do not see Ping message "<Contact> PINGED" in the conversation view
+    # Video
+    When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <ContactDevice> to group conversation <Group>
+    And I wait for <SyncTimeout> seconds
+    And I see Video Message container in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I do not see Video Message container in the conversation view
+    # Picture
+    When User <Contact> sends encrypted image <Picture> to group conversation <Group>
+    And I wait for <SyncTimeout> seconds
+    And I see Image container in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I do not see Image container in the conversation view
+    # Audio
+    When <Contact> sends local file named "<AudioFileName>" and MIME type "<AudioMIMEType>" via device <ContactDevice> to group conversation <Group>
+    And I wait for <SyncTimeout> seconds
+    And I see Audio Message container in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I do not see Audio Message container in the conversation view
+    # Location
+    When User <Contact> shares his location to group conversation <Group> via device <ContactDevice>
+    And I wait for <SyncTimeout> seconds
+    And I see Share Location container in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I do not see Share Location container in the conversation view
+    # Link Preview
+    When User <Contact> send encrypted message "<URL>" to group conversation <Group>
+    And I wait for <SyncTimeout> seconds
+    And I see Link Preview container in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I do not see Link Preview container in the conversation view
+    # Soundcloud
+    When User <Contact> send encrypted message "<SoundCloud>" to group conversation <Group>
+    And I wait for <SyncTimeout> seconds
+    And I see Soundcloud container in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I do not see Soundcloud container in the conversation view
+    # Youtube
+    When User <Contact> send encrypted message "<Youtube>" to group conversation <Group>
+    And I wait for <SyncTimeout> seconds
+    And I see Youtube container in the conversation view
+    And I wait for <EphemeralTimeout> seconds
+    Then I do not see Youtube container in the conversation view
+
+    Examples:
+      | Name      | Contact   | Contact1  | Group   | ContactDevice | EphemeralTimeout | FileName    | MIMEType  | SyncTimeout | Picture     | AudioFileName | AudioMIMEType | URL                     | SoundCloud                                       | Youtube                                     |
+      | user1Name | user2Name | user3Name | yogroup | d1            | 5                | testing.mp4 | video/mp4 | 1           | testing.jpg | test.m4a      | audio/mp4     | http://www.facebook.com | https://soundcloud.com/sodab/256-ra-robag-wruhme | https://www.youtube.com/watch?v=wTcNtgA6gHs |
