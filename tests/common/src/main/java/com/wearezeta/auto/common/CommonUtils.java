@@ -17,6 +17,7 @@ import java.util.zip.ZipInputStream;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver.SurfaceOrientation;
+import com.wearezeta.auto.common.process.UnixProcessHelpers;
 import com.wearezeta.auto.common.video.SequenceEncoder;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
@@ -498,9 +499,14 @@ public class CommonUtils {
     public static final int SCREENSHOT_TIMEOUT_SECONDS = 5;
 
     public static void takeIOSSimulatorScreenshot(File output) throws Exception {
-        executeUIShellScript(new String[]{String.format("mkdir -p $(dirname \"%s\")", output.getCanonicalPath()),
-                String.format("%s/simshot \"%s\"", getIOSToolsRoot(CommonUtils.class), output.getCanonicalPath())})
-                .get(SCREENSHOT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        try {
+            executeUIShellScript(new String[]{String.format("mkdir -p $(dirname \"%s\")", output.getCanonicalPath()),
+                    String.format("%s/simshot \"%s\"", getIOSToolsRoot(CommonUtils.class), output.getCanonicalPath())})
+                    .get(SCREENSHOT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        } catch (TimeoutException e) {
+            UnixProcessHelpers.killProcessesGracefully("simshot");
+            throw e;
+        }
     }
 
     private static BufferedImage fixScreenshotOrientation(final BufferedImage initialScreenshot,
