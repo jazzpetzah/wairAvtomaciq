@@ -97,22 +97,6 @@ Feature: Ephemeral
       | Login1     | Password      | Name      | Contact   | Time | TimeLong  | TimeShortUnit | Message1 | Message2 |
       | user1Email | user1Password | user1Name | user2Name | 5    | 5 seconds | s             | Hello1   | Hello2   |
 
-  @C261727 @ephemeral @regression
-  Scenario Outline: Verify ephemeral messages are turned off in a group chat
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    Given I am signed in properly
-    Given I see Contact list with name <ChatName>
-    When I open conversation with <ChatName>
-    Then I cannot see ephemeral button
-
-    Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | Ephemeral |
-
   @C262533 @ephemeral @regression
   Scenario Outline: Verify that messages with previous timer are deleted on start-up when the timeout passed in 1:1
     Given There are 2 users where <Name> is me
