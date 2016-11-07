@@ -240,7 +240,7 @@ Feature: Recall Message
     Given I tap on conversation name <Contact>
     When I tap Video message button from cursor toolbar
     Then I see Video Message container in the conversation view
-    And I wait up to 60 seconds until video message upload is completed
+    And I wait up to 30 seconds until video message upload is completed
     And User <Contact> remember the recent message from user Myself via device <ContactDevice>
     And I long tap Video Message container in the conversation view
     And I tap Delete for everyone button on the message bottom menu
@@ -250,7 +250,7 @@ Feature: Recall Message
 
     Examples:
       | Name      | Contact   | FileSize | FileFullName     | ContactDevice |
-      | user1Name | user2Name | 20.00MB  | random_video.mp4 | Device1       |
+      | user1Name | user2Name | 1.00MB   | random_video.mp4 | Device1       |
 
   @C202330 @regression @rc
   Scenario Outline: Verify deleting everywhere is synchronised across own devices when they are online (1:1 and group)
