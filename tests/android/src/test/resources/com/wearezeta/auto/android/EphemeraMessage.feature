@@ -543,7 +543,7 @@ Feature: Ephemeral Message
       | user1Name | user2Name | 5 seconds        | yo      | YoGroup | user3Name | d1            | Do       | 15 seconds        |
 
   @C321198 @staging
-  Scenario Outline: (Group) Verify receiving an ephemeral message in Group on the multiple devices
+  Scenario Outline: (Bug will be fixed in eph2) (Group) Verify receiving an ephemeral message in Group on the multiple devices and deleted on all recevier
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given Myself has group chat <Group> with <Contact>,<Contact1>
@@ -557,8 +557,10 @@ Feature: Ephemeral Message
     And User <Contact> sends encrypted message "<Message>" to group conversation <Group>
     And User Myself see the recent message from group conversation <Group> via device <OwnDevice> is changed in 15 seconds
     And User Myself reads the recent message from group conversation <Group> via device <OwnDevice>
+    And I wait for <EphemeralTimeout>
+    Then User Myself see the recent message from group conversation <Group> via device <OwnDevice> is not changed in 15 seconds
     # Wait for SE Sync
-    And I wait for 5 seconds
+    When I wait for 5 seconds
     And I tap on conversation name <Group>
     Then I see the message "<Message>" in the conversation view
     And I wait for <EphemeralTimeout>
