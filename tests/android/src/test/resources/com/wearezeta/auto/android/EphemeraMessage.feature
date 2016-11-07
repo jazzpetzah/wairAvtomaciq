@@ -541,3 +541,29 @@ Feature: Ephemeral Message
     Examples:
       | Name      | Contact   | EphemeralTimeout | Message | Group   | Contact1  | ContactDevice | Message2 | EphemeralTimeout2 |
       | user1Name | user2Name | 5 seconds        | yo      | YoGroup | user3Name | d1            | Do       | 15 seconds        |
+
+  @C321198 @staging
+  Scenario Outline: (Group) Verify receiving an ephemeral message in Group on the multiple devices
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
+    Given Myself has group chat <Group> with <Contact>,<Contact1>
+    Given User <Contact> adds new devices <ContactDevice>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User Myself adds new devices <OwnDevice>
+    Given I see Conversations list with conversations
+    When User <Contact> switches group conversation <Group> to ephemeral mode via device <ContactDevice> with <EphemeralTimeout> timeout
+    And User Myself remember the recent message from group conversation <Group> via device <OwnDevice>
+    And User <Contact> sends encrypted message "<Message>" to group conversation <Group>
+    And User Myself see the recent message from group conversation <Group> via device <OwnDevice> is changed in 15 seconds
+    And User Myself reads the recent message from group conversation <Group> via device <OwnDevice>
+    # Wait for SE Sync
+    And I wait for 5 seconds
+    And I tap on conversation name <Group>
+    Then I see the message "<Message>" in the conversation view
+    And I wait for <EphemeralTimeout>
+    And I do not see any text message in the conversation view
+
+    Examples:
+      | Name      | Contact   | EphemeralTimeout | Message | Group   | Contact1  | ContactDevice | OwnDevice |
+      | user1Name | user2Name | 15 seconds       | yo      | YoGroup | user3Name | d1            | d2        |
