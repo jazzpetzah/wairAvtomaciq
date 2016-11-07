@@ -473,7 +473,7 @@ Feature: Ephemeral
      #| user1Email | user1Password | user1Name | user2Name | 300  | 5 minutes  | Hello   |
 
   #GROUP
-  @C318623 @ephemeral @staging @WEBAPP-3302
+  @C318623 @ephemeral @staging @WEBAPP-3302 @localytics
   Scenario Outline: Verify sending ephemeral text message in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -504,7 +504,7 @@ Feature: Ephemeral
     And I see 2 messages in conversation
     And I verify the database is not containing the message <Message> from <Name> in active conversation
     And I see 1 message in database from <Name> in active conversation
-    #And I see localytics event <Event> with attributes <Attributes>
+    And I see localytics event <Event> with attributes <Attributes>
     When I open preferences by clicking the gear button
     And I click logout in account preferences
     And I see the clear data dialog
@@ -533,11 +533,11 @@ Feature: Ephemeral
 
      Examples:
        | Login1     | Password      | Name      | Contact1  | Contact2  | ChatName | Login2     | Wait | Time | TimeLong   | TimeShortUnit | Message | Event                        | Attributes                                                                                                                  |
-       | user1Email | user1Password | user1Name | user2Name | user3Name | groupEph | user2Email | 5    | 5    | 5 seconds  | s             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":true,\"ephemeral_time\":5,\"with_bot\":false}"   |
-#       | user1Email | user1Password | user1Name | user2Name | user3Name | groupEph | user2Email | 15   | 15   | 15 seconds | s             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":true,\"ephemeral_time\":15,\"with_bot\":false}"  |
-#       | user1Email | user1Password | user1Name | user2Name | user3Name | groupEph | user2Email | 30   | 30   | 30 seconds | s             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":true,\"ephemeral_time\":30,\"with_bot\":false}"  |
-#       | user1Email | user1Password | user1Name | user2Name | user3Name | groupEph | user2Email | 60   | 1    | 1 minute   | m             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":true,\"ephemeral_time\":60,\"with_bot\":false}"  |
-#       | user1Email | user1Password | user1Name | user2Name | user3Name | groupEph | user2Email | 300  | 5    | 5 minutes  | m             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"one_to_one\",\"is_ephemeral\":true,\"ephemeral_time\":300,\"with_bot\":false}" |
+       | user1Email | user1Password | user1Name | user2Name | user3Name | groupEph | user2Email | 5    | 5    | 5 seconds  | s             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"group\",\"is_ephemeral\":true,\"ephemeral_time\":5,\"with_bot\":false}"   |
+#       | user1Email | user1Password | user1Name | user2Name | user3Name | groupEph | user2Email | 15   | 15   | 15 seconds | s             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"group\",\"is_ephemeral\":true,\"ephemeral_time\":15,\"with_bot\":false}"  |
+#       | user1Email | user1Password | user1Name | user2Name | user3Name | groupEph | user2Email | 30   | 30   | 30 seconds | s             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"group\",\"is_ephemeral\":true,\"ephemeral_time\":30,\"with_bot\":false}"  |
+#       | user1Email | user1Password | user1Name | user2Name | user3Name | groupEph | user2Email | 60   | 1    | 1 minute   | m             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"group\",\"is_ephemeral\":true,\"ephemeral_time\":60,\"with_bot\":false}"  |
+#       | user1Email | user1Password | user1Name | user2Name | user3Name | groupEph | user2Email | 300  | 5    | 5 minutes  | m             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"group\",\"is_ephemeral\":true,\"ephemeral_time\":300,\"with_bot\":false}" |
 
   @C318625 @ephemeral @staging
   Scenario Outline: Verify switching on/off ephemeral message in group
