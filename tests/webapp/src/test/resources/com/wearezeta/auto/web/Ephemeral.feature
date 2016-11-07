@@ -590,15 +590,15 @@ Feature: Ephemeral
     And I wait for 1 second
     And <Contact1> stops calling <ChatName>
     And Contact <Contact1> sends message "<Message2>" via device Device1 to group conversation <ChatName>
-    And I wait for 10 seconds
+    And I wait for <Time> seconds
     Then I do not see text message "<Message1>"
     And I do not see text message "<Message2>"
     Then I see <ActionMessage> action in conversation
     And I see 2 messages in conversation
 
     Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Message1 | Message2 | TimeLong  | CallBackend | ActionMessage |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | message1 | message2 | 5 seconds | zcall       | called        |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Message1 | Message2 | TimeLong  | CallBackend | ActionMessage | Time |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | message1 | message2 | 5 seconds | zcall       | called        | 5    |
 
   @C318624 @ephemeral @staging
   Scenario Outline: Verify ephemeral messages in group are not sent to my other devices
@@ -670,7 +670,7 @@ Feature: Ephemeral
       | Email1     | Password      | Name      | Contact1  | Contact2  | ChatName | TimeLong  | Message | Time | TimeShortUnit |
       | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | 5 seconds | Hello   | 5    | s             |
 
-  @C318626 @ephemeral @staging @torun
+  @C318626 @ephemeral @staging
   Scenario Outline: Verify sending different types of ephemeral messages (ping, picture, video, audio, file) in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
