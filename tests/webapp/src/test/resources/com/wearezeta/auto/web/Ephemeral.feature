@@ -542,7 +542,6 @@ Feature: Ephemeral
   @C318625 @ephemeral @staging
   Scenario Outline: Verify switching on/off ephemeral message in group
     Given There are 3 users where <Name> is me
-    #Given user <Contact> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact1>, <Contact2>
     Given Myself have group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
