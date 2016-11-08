@@ -92,7 +92,7 @@ Feature: Group Ephemeral Messages
       | Name      | Contact1  | Contact2  | GroupChatName | Timer | DeviceName |
       | user1Name | user2Name | user3Name | Epheme grp    | 15    | myDevice2  |
 
-  @C318629 @staging @fastLogin
+  @C318629 @regression @fastLogin
   Scenario Outline: Verify the message is deleted on the sender side when it's read on the receiver side
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
