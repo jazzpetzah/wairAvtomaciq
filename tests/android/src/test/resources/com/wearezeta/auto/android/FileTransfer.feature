@@ -149,7 +149,8 @@ Feature: File Transfer
     When I long tap Image container in the conversation view
     And I tap Delete only for me button on the message bottom menu
     And I tap Delete button on the alert
-    And User <Contact1> sends encrypted image <ImageFile> to single user conversation Myself
+    Then I do not see a picture in the conversation view
+    When User <Contact1> sends encrypted image <ImageFile> to single user conversation Myself
     Then I see a picture in the conversation view
 
     Examples:
