@@ -40,7 +40,7 @@ Feature: Group Ephemeral Messages
       | Name      | Contact1  | Contact2  | GroupChatName | Timeout | DeviceName |
       | user1Name | user2Name | user3Name | Epheme grp    | 15      | device2    |
 
-  @C320772 @staging @fastLogin
+  @C320772 @regression @fastLogin
   Scenario Outline: ZIOS-7568 Verify timer is applied to the all messages until turning it off
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -73,7 +73,7 @@ Feature: Group Ephemeral Messages
       | Name      | Contact1  | Contact2  | GroupChatName | Timer | EphemeralTimeLabel | TestMsg |
       | user1Name | user2Name | user3Name | Epheme grp    | 15    | seconds            | hi      |
 
-  @C320773 @staging @fastLogin
+  @C320773 @regression @fastLogin
   Scenario Outline: Verify ephemeral messages are not sent to my other devices
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
