@@ -64,7 +64,9 @@ Feature: Ephemeral Messages
     Given I see 1 default message in the conversation view
     And User <Contact> reads the recent message from user Myself
     And I wait for <Timeout> seconds
-    Then I see 0 messages in the conversation view
+    # Nick would like to replace see 0 message to check entry instead, to make sure no placeholder remains.
+    # YOU STARTED USING THIS DEVICE counts as 1 message
+    Then I see 1 conversation entry
 
     Examples:
       | Name      | Contact   | Timeout | DeviceName    |
