@@ -103,6 +103,7 @@ Feature: Like
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I type the message "<Message>" and send it by cursor Send button
+    And I do not see Message status with expected text "Sending" in conversation view
     And I tap the Text message "<Message>" in the conversation view
     And I tap Like button in conversation view
     Then I see Like description with expected text "<Name>" in conversation view
