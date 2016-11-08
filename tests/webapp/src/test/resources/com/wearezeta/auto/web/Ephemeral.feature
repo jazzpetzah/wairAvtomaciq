@@ -523,7 +523,7 @@ Feature: Ephemeral
 #       | user1Email | user1Password | user1Name | user2Name | user3Name | groupEph | user2Email | 60   | 1    | 1 minute   | m             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"group\",\"is_ephemeral\":true,\"ephemeral_time\":60,\"with_bot\":false}"  |
 #       | user1Email | user1Password | user1Name | user2Name | user3Name | groupEph | user2Email | 300  | 5    | 5 minutes  | m             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"group\",\"is_ephemeral\":true,\"ephemeral_time\":300,\"with_bot\":false}" |
 
-  @C318625 @ephemeral @staging
+  @C318625 @ephemeral @regression
   Scenario Outline: Verify switching on/off ephemeral message in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -555,7 +555,7 @@ Feature: Ephemeral
        | Login1     | Password      | Name      | Contact1  | Contact2  | ChatName | Time | TimeLong  | TimeShortUnit | Message1 | Message2 |
        | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | 5    | 5 seconds | s             | Hello1   | Hello2   |
 
-  @C318628 @ephemeral @staging
+  @C318628 @ephemeral @regression
   Scenario Outline: Verify that missed call has stayed after receiver saw it in group
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -584,7 +584,7 @@ Feature: Ephemeral
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Message1 | Message2 | TimeLong  | CallBackend | ActionMessage | Time |
       | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | message1 | message2 | 5 seconds | zcall       | called        | 5    |
 
-  @C318624 @ephemeral @staging
+  @C318624 @ephemeral @regression
   Scenario Outline: Verify ephemeral messages in group are not sent to my other devices
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -627,7 +627,7 @@ Feature: Ephemeral
       | Email1     | Password      | Name      | Contact1  | Contact2  | ChatName | Time | TimeLong | TimeShortUnit | Message |
       | user1Email | user1Password | user1Name | user2Name | user3Name | ephGroup | 1    | 1 day    | d             | Hello   |
 
-  @C318633 @ephemeral @staging
+  @C318633 @ephemeral @regression
   Scenario Outline: Verify message is deleted on sender side when it's read by anyone in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
