@@ -1,6 +1,7 @@
 Feature: Personas
 
-  @persona
+  #jenkins picks one of the test tags randomly to execute
+  @persona @test1
   Scenario Outline: Persona sends a text message to a persona
     #needs to be done for real device
     Given I open Wire
@@ -12,11 +13,12 @@ Feature: Personas
     #needs to be done for real device
     And I put Wire into background
 
+    #fill in the random by jenkins picked persona
     Examples:
       | RandomPersona |
       | PersonaB      |
 
-  @persona
+  @persona @test2
   Scenario Outline: Persona sends a picture to a persona
     Given I open Wire
     Given I see conversations list
@@ -35,7 +37,7 @@ Feature: Personas
       | PersonaB      |
 
   #think about how to pick up and end the call via the receiver or sender
-  @persona
+  @persona @test3
   Scenario Outline: Persona makes a call to a persona
     Given I open Wire
     Given I see conversations list
@@ -52,7 +54,7 @@ Feature: Personas
       | RandomPersona |
       | PersonaB      |
 
-  @persona
+  @persona @test4
   Scenario Outline: Persona opens randomly Wire
     Given I open Wire
     Given I see conversations list
