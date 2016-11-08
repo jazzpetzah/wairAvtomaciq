@@ -104,12 +104,12 @@ Feature: Group Ephemeral Messages
     Given I tap Hourglass button in conversation view
     Given I set ephemeral messages expiration timer to <Timeout> seconds
     Given I type the default message and send it
-    Given I see 1 default message in the conversation view
     When I remember the recent message from user Myself in the local database
-    And I wait for 10 seconds
+    And I wait for <Timeout> seconds
     And I verify the remembered message has been changed in the local database
     And User <Contact1> reads the recent message from group conversation <GroupChatName>
-    And I wait for 10 seconds
+    # Wait until read message action propagates
+    And I wait for 3 seconds
     Then I see 0 messages in the conversation view
     And I verify the remembered message has been deleted from the local database
 
@@ -128,8 +128,8 @@ Feature: Group Ephemeral Messages
     Given User <Contact1> sends encrypted message "<Message>" to group conversation <GroupChatName>
     Given I tap on group chat with name <GroupChatName>
     When I see the conversation view contains message <Message>
-    And I wait for 8 seconds
-    Then I see 0 message in the conversation view
+    And I wait for <Timeout> seconds
+    Then I do not see the conversation view contains message <Message>
 
     Examples:
       | Name      | Contact1   | Contact2  | GroupChatName | Timeout | Message |
