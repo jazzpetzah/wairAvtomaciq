@@ -406,7 +406,7 @@ Feature: Ephemeral Messages
       | user1Name | user2Name  | user3Name | Epheme grp    | 15      | device2    |
 
   @C259598 @regression @fastLogin
-  Scenario Outline: Verify timer is applyed to the all messages until turning it off
+  Scenario Outline: Verify timer is applied to the all messages until turning it off
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number

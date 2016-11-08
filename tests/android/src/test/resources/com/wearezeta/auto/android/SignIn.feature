@@ -80,6 +80,7 @@ Feature: Sign In
     And I tap Log in button
     Then I see alert message containing "<ErrMessage>" in the body
     When I disable Airplane mode on the device
+    And I do not see No Internet bar in 15 seconds
     And I accept the error message
     And I tap Log in button
     And I accept First Time overlay as soon as it is visible

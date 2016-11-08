@@ -58,8 +58,8 @@ Feature: Audio Messaging
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And I long tap Audio Message button from input tools
+    Given I tap on contact name <Contact>
+    When I long tap Audio Message button from input tools
     And I tap Cancel record control button
     Then I do not see audio message container in the conversation view
     And I see Audio Message button in input tools palette
@@ -74,9 +74,9 @@ Feature: Audio Messaging
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And I long tap Audio Message button from input tools
-    And I close the app for 3 seconds
+    Given I tap on contact name <Contact>
+    Given I long tap Audio Message button from input tools
+    When I close the app for 3 seconds
     Then I see audio message recorder container in the conversation view
 
     Examples:
@@ -89,9 +89,9 @@ Feature: Audio Messaging
     Given Myself is connected to all other
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And I long tap Audio Message button from input tools
-    Then I see audio message recorder container in the conversation view
+    Given I tap on contact name <Contact>
+    Given I long tap Audio Message button from input tools
+    Given I see audio message recorder container in the conversation view
     When I navigate back to conversations list
     And I tap on contact name <Contact2>
     And I navigate back to conversations list

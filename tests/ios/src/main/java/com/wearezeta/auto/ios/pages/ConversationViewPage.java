@@ -344,7 +344,6 @@ public class ConversationViewPage extends IOSPage {
             inputField.longTap();
         } else {
             inputField.click();
-            Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
         }
     }
 
@@ -449,16 +448,12 @@ public class ConversationViewPage extends IOSPage {
         }
     }
 
-    private static final long KEYBOARD_OPEN_ANIMATION_DURATION = 5500; // milliseconds
-
     public void typeMessage(String message, boolean shouldSend) throws Exception {
         final FBElement convoInput = (FBElement) getElement(fbNameConversationInput,
                 "Conversation input is not visible after the timeout");
         final boolean wasKeyboardInvisible = this.isKeyboardInvisible(2);
         if (wasKeyboardInvisible) {
             convoInput.click();
-            // Wait for keyboard opening animation
-            Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
         }
         convoInput.sendKeys(message);
         if (shouldSend) {
@@ -1083,10 +1078,7 @@ public class ConversationViewPage extends IOSPage {
     public void tapViewButton(String name) throws Exception {
         final By locator = getViewButtonLocatorByName(name);
         getElement(locator).click();
-        if (locator.equals(nameEmojiKeyboardButton)) {
-            Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
-        }
-    }
+     }
 
     public void tapThisDeviceLink() throws Exception {
         getElement(nameThisDeviceLink).click();

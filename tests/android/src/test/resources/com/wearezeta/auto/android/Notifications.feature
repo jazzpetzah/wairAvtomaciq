@@ -68,6 +68,23 @@ Feature: Notifications
       | Name      | Contact   | VideoFileName | VideoMIMEType | DeviceName | AudioFileName | AudioMIMEType | TxtMsg | Image       | FileSize | FileName      | FileMIMEType | EphemeralTimeout |
       | user1Name | user2Name | testing.mp4   | video/mp4     | Device1    | test.m4a      | audio/mp4     | OMG    | testing.jpg | 1.00MB   | qa_random.txt | text/plain   | 5 seconds        |
 
+  @C321202 @staging
+  Scenario Outline: Verify push notification of group message
+    Given I am on Android 4.4 or better
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
+    Given Myself has group chat <Group> with <Contact>,<Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I minimize the application
+    When User <Contact> switches user Myself to ephemeral mode via device <DeviceName> with <EphemeralTimeout> timeout
+    And User <Contact> sends encrypted message "Yo" to user Myself
+    Then I see the message "Someone sent you a message" in push notifications list
+
+    Examples:
+      | Name      | Contact   | Contact1  | Group     | DeviceName | EphemeralTimeout |
+      | user1Name | user2Name | user3Name | NotiGroup | d1         | 5 seconds        |
+
   @C165125 @regression @rc
   Scenario Outline: Verify no GCM notifications are shown for muted chats
     Given I am on Android 4.4 or better
