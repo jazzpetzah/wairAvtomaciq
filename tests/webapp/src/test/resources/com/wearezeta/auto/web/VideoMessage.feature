@@ -109,7 +109,7 @@ Feature: Video Message
       | Login      | Password      | Name      | Contact   | File        | Size  |
       | user1Email | user1Password | user1Name | user2Name | C123929.mp4 | 18MB  |
 
-  @C123928 @videomessage @staging @WEBAPP-3239
+  @C123928 @videomessage @mute
   Scenario Outline: Verify receiver can cancel video message download
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
