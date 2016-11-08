@@ -630,8 +630,8 @@ Feature: Ephemeral Message
     Then I do not see Youtube container in the conversation view
 
     Examples:
-      | Name      | Contact   | Contact1  | Group   | ContactDevice | EphemeralTimeout | FileName    | MIMEType  | SyncTimeout | Picture     | AudioFileName | AudioMIMEType | URL                     | SoundCloud                                       | Youtube                                     |
-      | user1Name | user2Name | user3Name | yogroup | d1            | 5                | testing.mp4 | video/mp4 | 1           | testing.jpg | test.m4a      | audio/mp4     | http://www.facebook.com | https://soundcloud.com/sodab/256-ra-robag-wruhme | https://www.youtube.com/watch?v=wTcNtgA6gHs |
+      | Name      | Contact   | Contact1  | Group   | ContactDevice | EphemeralTimeout | FileName    | MIMEType  | SyncTimeout | Picture        | AudioFileName | AudioMIMEType | URL                     | SoundCloud                                       | Youtube                                     |
+      | user1Name | user2Name | user3Name | yogroup | d1            | 5                | testing.mp4 | video/mp4 | 1           | avatarTest.jpg | test.m4a      | audio/mp4     | http://www.facebook.com | https://soundcloud.com/sodab/256-ra-robag-wruhme | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
   @C321206 @staging
   Scenario Outline: (Group) If a user receives multiple ephemeral messages after being offline, all get the same timer
