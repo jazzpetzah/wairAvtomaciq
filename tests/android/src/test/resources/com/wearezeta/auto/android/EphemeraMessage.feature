@@ -386,7 +386,6 @@ Feature: Ephemeral Message
     # Video
     When I tap Video message button from cursor toolbar
     And I see Video Message container in the conversation view
-    And I do not see Message status with expected text "Sending" in conversation view
     And I remember the state of Video Message container in the conversation view
     And I wait for <EphemeraTimeout>
     Then I verify the state of Video Message container is changed
@@ -395,27 +394,23 @@ Feature: Ephemeral Message
     And I tap Gallery button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
-    And I do not see Message status with expected text "<MessageStatus>" in conversation view
     And I remember the state of Image container in the conversation view
     And I wait for <EphemeraTimeout>
     And I verify the state of Image container is changed
     # Audio message
     When I long tap Audio message cursor button 2 seconds and swipe up
     Then I see Audio Message container in the conversation view
-    And I do not see Message status with expected text "<MessageStatus>" in conversation view
     And I wait for <EphemeraTimeout>
     And I do not see Audio Message container in the conversation view
     And I see Audio Message Placeholder container in the conversation view
     # Ping
     When I tap Ping button from cursor toolbar
     Then I see Ping message "<PingMsg>" in the conversation view
-    And I do not see Message status with expected text "<MessageStatus>" in conversation view
     And I wait for <EphemeraTimeout>
     And I do not see Ping message "YOU PINGED" in the conversation view
     # File
     When I tap File button from cursor toolbar
     Then I see File Upload container in the conversation view
-    And I do not see Message status with expected text "<MessageStatus>" in conversation view
     And I wait for <EphemeraTimeout>
     And I do not see File Upload container in the conversation view
     And I see File Upload Placeholder container in the conversation view
@@ -423,7 +418,6 @@ Feature: Ephemeral Message
     When I tap Share location button from cursor toolbar
     And I tap Send button on Share Location page
     Then I see Share Location container in the conversation view
-    And I do not see Message status with expected text "<MessageStatus>" in conversation view
     And I remember the state of Share Location container in the conversation view
     And I wait for <EphemeraTimeout>
     And I verify the state of Share Location container is changed
@@ -431,12 +425,11 @@ Feature: Ephemeral Message
     # TODO: Link preview should be obfuscated with container instead of pure url text.
     When I type the message "<Link>" and send it by cursor Send button
     Then I see Link Preview container in the conversation view
-    And I do not see Message status with expected text "<MessageStatus>" in conversation view
     And I do not see Link Preview container in the conversation view
 
     Examples:
-      | Name      | Group | Contact   | Contact1  | EphemeraTimeout | Link                                                                                               | MessageStatus | PingMsg    | FileSize |
-      | user1Name | YoG   | user2Name | user3Name | 5 seconds       | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 | Sending       | YOU PINGED | 1.00MB   |
+      | Name      | Group | Contact   | Contact1  | EphemeraTimeout | Link                                                                                               | PingMsg    | FileSize |
+      | user1Name | YoG   | user2Name | user3Name | 5 seconds       | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 | YOU PINGED | 1.00MB   |
 
   @C320770 @staging
   Scenario Outline: (Group) Verify in group sending ephemeral text message will be obfuscated when receiver is offline and not been delivered to my other devices
