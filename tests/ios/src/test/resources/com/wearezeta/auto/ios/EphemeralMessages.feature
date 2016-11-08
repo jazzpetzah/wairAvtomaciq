@@ -66,7 +66,7 @@ Feature: Ephemeral Messages
     And I wait for <Timeout> seconds
     # Nick would like to replace see 0 message to check entry instead, to make sure no placeholder remains.
     # YOU STARTED USING THIS DEVICE counts as 1 message
-    Then I see 1 conversation entries
+    Then I see 1 conversation entry
 
     Examples:
       | Name      | Contact   | Timeout | DeviceName    |
