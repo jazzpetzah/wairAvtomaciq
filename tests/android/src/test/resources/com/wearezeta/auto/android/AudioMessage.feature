@@ -80,24 +80,21 @@ Feature: Audio Message
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
-    # C131189
     Then I see Audio Message container in the conversation view
     When I enable Airplane mode on the device
-    # Wait for network is totally disabled
-    And I wait for 3 seconds
+    And I see No Internet bar in <NetworkTimeout> seconds
     And I tap Play button on the recent audio message in the conversation view
     Then I see No Internet bar in <NetworkTimeout> seconds
     When I disable Airplane mode on the device
     And I do not see No Internet bar in <NetworkTimeout> seconds
     And I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
-    # Wait for the audio to be fully downloaded
-    And I wait for 5 seconds
+    And I wait up to <NetworkTimeout> seconds until audio message download is completed
     Then I verify the state of Play button on the recent audio message in the conversation view is changed
 
     Examples:
       | Name      | Contact   | FileName | MIMEType  | DeviceName | NetworkTimeout |
-      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | 10             |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | 15             |
 
   @C131183 @regression @rc
   Scenario Outline: Verify sending/resending audio message
@@ -108,25 +105,24 @@ Feature: Audio Message
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
     When I enable Airplane mode on the device
-    # Wait for network is totally disabled
-    And I wait for 3 seconds
+    And I see No Internet bar in <NetworkTimeout> seconds
     And I long tap Audio message button <TapDuration> seconds from cursor toolbar
     And I tap audio recording Send button
     Then I see Audio Message container in the conversation view
     When I remember the state of Retry button on the recent audio message in the conversation view
     And I disable Airplane mode on the device
-    And I do not see No Internet bar in 15 seconds
+    And I do not see No Internet bar in <NetworkTimeout> seconds
     And I tap Retry button on the recent audio message in the conversation view
     # Retry button changes to Play button
     Then I verify the state of Retry button on the recent audio message in the conversation view is changed
-    And I wait up to 15 seconds until audio message upload is completed
+    And I wait up to <NetworkTimeout> seconds until audio message upload is completed
     When I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
     Then I verify the state of Play button on the recent audio message in the conversation view is changed
 
     Examples:
-      | Name      | Contact   | TapDuration |
-      | user1Name | user2Name | 5           |
+      | Name      | Contact   | TapDuration | NetworkTimeout |
+      | user1Name | user2Name | 5           | 15             |
 
   @C131177 @regression @rc @legacy
   Scenario Outline: Verify playing and cancelling recorded audio message
@@ -191,7 +187,7 @@ Feature: Audio Message
     When I see Audio Message container in the conversation view
     And I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
-    Then I wait up to 15 seconds until audio message download is completed
+    Then I wait up to <NetworkTimeout> seconds until audio message download is completed
     And I verify the state of recent audio message seekbar in the conversation view is changed
     When I remember the state of Pause button on the recent audio message in the conversation view
     And <Contact> calls me
@@ -201,8 +197,8 @@ Feature: Audio Message
     Then I verify the state of Pause button on the recent audio message in the conversation view is changed
 
     Examples:
-      | Name      | Contact   | FileName | MIMEType  | DeviceName | CallBackend |
-      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | zcall       |
+      | Name      | Contact   | FileName | MIMEType  | DeviceName | CallBackend | NetworkTimeout |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | zcall       | 15             |
 
   @C139851 @regression
   Scenario Outline: (AN-4067) Verify that play of audio message will be stopped by incoming video call
@@ -217,7 +213,7 @@ Feature: Audio Message
     When I see Audio Message container in the conversation view
     And I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
-    Then I wait up to 15 seconds until audio message download is completed
+    Then I wait up to <NetworkTimeout> seconds until audio message download is completed
     And I verify the state of recent audio message seekbar in the conversation view is changed
     When I remember the state of Pause button on the recent audio message in the conversation view
     And <Contact> starts a video call to me
@@ -227,8 +223,8 @@ Feature: Audio Message
     Then I verify the state of Pause button on the recent audio message in the conversation view is changed
 
     Examples:
-      | Name      | Contact   | FileName | MIMEType  | DeviceName | CallBackend |
-      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | chrome      |
+      | Name      | Contact   | FileName | MIMEType  | DeviceName | CallBackend | NetworkTimeout |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | chrome      | 15             |
 
   @C139852 @regression
   Scenario Outline: (AN-4107) Verify that record of audio message will be stopped by incoming voice/video call
