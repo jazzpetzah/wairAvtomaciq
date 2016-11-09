@@ -299,7 +299,7 @@ Feature: Conversation View
       | user1Name | user2Name | https://vimeo.com/129426512 |
 
   @C845 @regression @fastLogin
-  Scenario Outline: ZIOS-7205 Verify posting in a 1-to-1 conversation without content
+  Scenario Outline: Verify posting in a 1-to-1 conversation without content
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
