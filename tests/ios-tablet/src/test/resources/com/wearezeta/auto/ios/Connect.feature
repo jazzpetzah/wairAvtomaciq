@@ -613,7 +613,7 @@ Feature: Connect
     And I open group conversation details
     And I select participant <Contact2> on Group info page
     And I tap Connect button on Single user Pending outgoing connection page
-    And I confirm Cancel Request conversation action
+    And I confirm Connect conversation action
     And I dismiss popover on iPad
     Then I see conversation <Contact2> in conversations list
     And I do not see Pending request link in conversations list

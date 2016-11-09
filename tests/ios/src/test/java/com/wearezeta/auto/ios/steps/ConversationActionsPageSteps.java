@@ -38,7 +38,14 @@ public class ConversationActionsPageSteps {
                 + " in opened action menu.", getPage().isItemVisible(buttonTitle));
     }
 
-    @Then("^I confirm (Block|Remove|Delete|Leave|Cancel Request) conversation action$")
+    /**
+     * Tap the corresponding button to confirm conversation action
+     *
+     * @param actionName one of available action names
+     * @throws Exception
+     * @step. ^I confirm (Block|Remove|Delete|Leave|Cancel Request|Connect) conversation action$
+     */
+    @Then("^I confirm (Block|Remove|Delete|Leave|Cancel Request|Connect) conversation action$")
     public void IConfirmAction(String actionName) throws Exception {
         getPage().confirmAction(actionName);
     }
