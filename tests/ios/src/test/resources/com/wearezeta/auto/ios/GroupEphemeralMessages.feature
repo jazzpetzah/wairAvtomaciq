@@ -117,7 +117,7 @@ Feature: Group Ephemeral Messages
       | Name      | Contact1   | Contact2  | GroupChatName | Timeout | ContactDevice |
       | user1Name | user2Name  | user3Name | Epheme grp    |  5      | d1            |
 
-  @C318634 @staging @fastLogin
+  @C318634 @regression @fastLogin
   Scenario Outline: Verify the message is deleted on the receiver side when timer is over
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -135,7 +135,7 @@ Feature: Group Ephemeral Messages
       | Name      | Contact1   | Contact2  | GroupChatName | Timeout | Message |
       | user1Name | user2Name  | user3Name | Epheme grp    |  5      | m1      |
 
-  @C320786 @staging @fastLogin
+  @C320786 @regression @fastLogin
   Scenario Outline: Verify receiving ephemeral assets (picture, video, audio, link preview, location)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
