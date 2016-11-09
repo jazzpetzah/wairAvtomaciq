@@ -76,21 +76,29 @@ Feature: Link Preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
+    Given User Myself send encrypted message "<Link>" to user <Contact>
     Given I see conversations list
     Given I tap on contact name <Contact>
-    When User Myself send encrypted message "<Link>" to user <Contact>
+    # Wait for link preview to be loaded
+    When I wait for <LinkLoadTimeout> seconds
     Then I see link preview container in the conversation view
     When User Myself deletes the recent message from user <Contact>
     Then I do not see link preview container in the conversation view
     When User Myself send encrypted message "<Link1>" to user <Contact>
+    # Wait for link preview to be loaded
+    And I wait for <LinkLoadTimeout> seconds
     Then I see link preview container in the conversation view
     When User Myself deletes the recent message from user <Contact>
     Then I do not see link preview container in the conversation view
     When User Myself send encrypted message "<Link2>" to user <Contact>
+    # Wait for link preview to be loaded
+    And I wait for <LinkLoadTimeout> seconds
     Then I see link preview container in the conversation view
     When User Myself deletes the recent message from user <Contact>
     Then I do not see link preview container in the conversation view
     When User Myself send encrypted message "<Link3>" to user <Contact>
+    # Wait for link preview to be loaded
+    And I wait for <LinkLoadTimeout> seconds
     Then I see link preview container in the conversation view
     When User Myself deletes the recent message from user <Contact>
     Then I do not see link preview container in the conversation view
@@ -98,8 +106,8 @@ Feature: Link Preview
     Then I see link preview container in the conversation view
 
     Examples:
-      | Name      | Contact   | Link                | Link1                | Link2                   | Link3               | Link4               |
-      | user1Name | user2Name | http://facebook.com | https://facebook.com | http://www.facebook.com | Http://facebook.com | HTTP://FACEBOOK.COM |
+      | Name      | Contact   | Link                | Link1                | Link2                   | Link3               | Link4               | LinkLoadTimeout |
+      | user1Name | user2Name | http://facebook.com | https://facebook.com | http://www.facebook.com | Http://facebook.com | HTTP://FACEBOOK.COM | 3                |
 
   @C167038 @rc @regression @fastLogin
   Scenario Outline: Verify copying link preview
