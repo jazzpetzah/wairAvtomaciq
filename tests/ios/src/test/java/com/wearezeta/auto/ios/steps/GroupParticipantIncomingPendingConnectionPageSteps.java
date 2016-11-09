@@ -17,6 +17,15 @@ public class GroupParticipantIncomingPendingConnectionPageSteps {
         return pagesCollection.getPage(GroupPendingParticipantIncomingConnectionPage.class);
     }
 
+    /**
+     * Verify user name/email presence on Group participant Pending incoming connection page
+     *
+     * @param shouldNotSee equals to null if the label should be visible
+     * @param value        the actual value or alias
+     * @param fieldType    either 'email' or 'name'
+     * @throws Exception
+     * @step. ^I (do not )?see (.*) (email|name) on Group participant Pending incoming connection page$"
+     */
     @Then("^I (do not )?see (.*) (email|name) on Group participant Pending incoming connection page$")
     public void ISeeLabel(String shouldNotSee, String value, String fieldType) throws Exception {
         boolean result;
@@ -47,6 +56,14 @@ public class GroupParticipantIncomingPendingConnectionPageSteps {
         }
     }
 
+    /**
+     * Verify button visibility on Group participant Pending incoming connection page
+     *
+     * @param shouldNotSee equals to null if the button should be visible
+     * @param btnName      button name
+     * @throws Exception
+     * @step. ^I (do not )?see (Connect|X|Remove From Group) button on Group participant Pending incoming connection page$
+     */
     @Then("^I (do not )?see (Connect|X|Remove From Group) " +
             "button on Group participant Pending incoming connection page$")
     public void ISeeButton(String shouldNotSee, String btnName) throws Exception {
@@ -59,6 +76,13 @@ public class GroupParticipantIncomingPendingConnectionPageSteps {
         }
     }
 
+    /**
+     * Tap the corresponding button on Group participant Pending incoming connection page
+     *
+     * @param btnName button name
+     * @throws Exception
+     * @step. ^I tap (Connect|X|Remove From Group) button on Group participant Pending incoming connection page$
+     */
     @When("^I tap (Connect|X|Remove From Group) " +
             "button on Group participant Pending incoming connection page$")
     public void ITapButton(String btnName) throws Exception {

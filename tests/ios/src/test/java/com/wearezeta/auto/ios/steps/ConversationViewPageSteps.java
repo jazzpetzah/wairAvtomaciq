@@ -416,18 +416,22 @@ public class ConversationViewPageSteps {
             throw new IllegalStateException("Please remember the previous container state first");
         }
         if (shouldNotChange == null) {
-            Assert.assertTrue(String.format("The current asset container state is not different from the expected one after " +
-                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
-                    previousAssetsContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT, CONTAINER_COMPARE_MIN_SCORE));
+            Assert.assertTrue(
+                    String.format("The current asset container state is not different from the expected one after " +
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT_SECONDS),
+                    previousAssetsContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT_SECONDS,
+                            CONTAINER_COMPARE_MIN_SCORE));
         } else {
-            Assert.assertTrue(String.format("The current asset container state is different from the expected one after " +
-                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
-                    previousAssetsContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT, CONTAINER_COMPARE_MIN_SCORE));
+            Assert.assertTrue(
+                    String.format("The current asset container state is different from the expected one after " +
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT_SECONDS),
+                    previousAssetsContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT_SECONDS,
+                            CONTAINER_COMPARE_MIN_SCORE));
         }
     }
 
-    private static final double CONTAINER_COMPARE_MIN_SCORE = 0.8;
-    private static final int MEDIA_STATE_CHANGE_TIMEOUT = 10;
+    private static final double CONTAINER_COMPARE_MIN_SCORE = 0.9;
+    private static final int MEDIA_STATE_CHANGE_TIMEOUT_SECONDS = 10;
 
     /**
      * Verify whether the state of a media container is changed - soundclound play button
@@ -442,13 +446,16 @@ public class ConversationViewPageSteps {
             throw new IllegalStateException("Please remember the previous container state first");
         }
         if (shouldNotChange == null) {
-            Assert.assertTrue(String.format("The current media state is not different from the expected one after " +
-                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
-                    previousMediaContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT, CONTAINER_COMPARE_MIN_SCORE));
+            Assert.assertTrue(
+                    String.format("The current media state is not different from the expected one after " +
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT_SECONDS),
+                    previousMediaContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT_SECONDS,
+                            CONTAINER_COMPARE_MIN_SCORE));
         } else {
             Assert.assertTrue(String.format("The current media state is different from the expected one after " +
-                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
-                    previousMediaContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT, CONTAINER_COMPARE_MIN_SCORE));
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT_SECONDS),
+                    previousMediaContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT_SECONDS,
+                            CONTAINER_COMPARE_MIN_SCORE));
         }
     }
 
@@ -464,9 +471,9 @@ public class ConversationViewPageSteps {
                 return;
             }
             Thread.sleep(500);
-        } while (System.currentTimeMillis() - millisecondsStarted <= MEDIA_STATE_CHANGE_TIMEOUT);
+        } while (System.currentTimeMillis() - millisecondsStarted <= MEDIA_STATE_CHANGE_TIMEOUT_SECONDS);
         throw new AssertionError(String.format("The current media state '%s' is different from the expected one after " +
-                "%s seconds timeout", currentState, MEDIA_STATE_CHANGE_TIMEOUT / 1000));
+                "%s seconds timeout", currentState, MEDIA_STATE_CHANGE_TIMEOUT_SECONDS / 1000));
     }
 
     @Then("^I (do not )?see media bar in the conversation view$")
@@ -1184,9 +1191,9 @@ public class ConversationViewPageSteps {
     /**
      * Verify the difference between the height of two strings
      *
-     * @param msg1               the first conversation message text
-     * @param msg2               the second message text
-     * @param isNot              equals to null is the current percentage should be greater or equal to the expected one
+     * @param msg1  the first conversation message text
+     * @param msg2  the second message text
+     * @param isNot equals to null is the current percentage should be greater or equal to the expected one
      * @throws Exception
      * @step. ^I see that the height of "(.*)" and "(.*)" messages is (not )?different$
      */
