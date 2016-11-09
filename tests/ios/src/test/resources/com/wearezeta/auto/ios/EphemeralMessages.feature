@@ -381,7 +381,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer | DeviceName |
       | user1Name | user2Name | 15    | myDevice2  |
 
-  @C259598 @regression @fastLogin
+  @C259598 @C259585 @regression @fastLogin
   Scenario Outline: Verify timer is applied to the all messages until turning it off
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
