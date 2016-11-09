@@ -231,7 +231,7 @@ Feature: Audio Message
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | chrome      |
 
   @C139852 @regression
-  Scenario Outline: (AN-4107) Verify that record of audio message will be stopped by incoming voice/video call
+  Scenario Outline: Verify that record of audio message will be stopped by incoming voice/video call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
@@ -245,7 +245,7 @@ Feature: Audio Message
     And I see incoming call from <Contact>
     And <Contact> stops calling me
     And I do not see incoming call
-    Then I see Cancel button on audio message recorder
+    Then I do not see audio message is recording
 
     Examples:
       | Name      | Contact   | CallBackend |

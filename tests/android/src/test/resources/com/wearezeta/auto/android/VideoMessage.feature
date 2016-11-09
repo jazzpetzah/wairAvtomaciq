@@ -41,10 +41,9 @@ Feature: Video Message
     And I do not see No Internet bar in 15 seconds
     And I tap Play button on the recent video message in the conversation view
     # Wait for the video to be fully loaded
-    And I wait for 5 seconds
-    Then I verify the state of Play button on the recent video message in the conversation view is not changed
-    When I tap Play button on the recent video message in the conversation view
+    And I wait for 10 seconds
     Then I see the Wire app is not in foreground
+    And I tap back button
 
     Examples:
       | Name      | Contact   | FileName    | MIMEType  | DeviceName |
