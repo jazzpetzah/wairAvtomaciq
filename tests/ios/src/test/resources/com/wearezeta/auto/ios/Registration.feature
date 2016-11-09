@@ -55,6 +55,8 @@ Feature: Registration
     And I tap Take Photo button on Camera page
     And I tap Confirm button on Picture preview page
     And I accept alert if visible
+    # Sometimes setting of profile picture takes longer
+    And I wait for 5 seconds
     And I tap Share Contacts button on Share Contacts overlay
     And I accept alert if visible
     And I tap settings gear button
