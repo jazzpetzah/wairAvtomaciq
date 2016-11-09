@@ -134,6 +134,8 @@ Feature: Edit Message
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I type the "<FacebookPrefix> <FacebookLink>" message and send it
+    # Give it some time to generate a preview
+    And I wait for 3 seconds
     # This is to get rid of the keyboard
     And I navigate back to conversations list
     And I tap on contact name <Contact>
