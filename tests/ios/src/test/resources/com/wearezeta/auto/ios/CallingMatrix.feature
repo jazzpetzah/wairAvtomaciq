@@ -65,7 +65,7 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact   | CallBackend          | Timeout |
-      | user1Name | user2Name | chrome:51.0.2704.106 | 20      |
+      | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
       #| user1Name | user2Name | chrome:50.0.2661.75  | 20      |
       #| user1Name | user2Name | firefox:46.0.1       | 20      |
       #| user1Name | user2Name | firefox:45.0.1       | 20      |
