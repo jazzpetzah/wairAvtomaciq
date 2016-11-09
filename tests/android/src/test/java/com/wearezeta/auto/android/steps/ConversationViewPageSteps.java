@@ -1474,7 +1474,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I( do not)? see audio message is recording$")
     public void ISeeOngoingAudioMessageRecording(String shouldNotSee) throws Exception {
-        if(shouldNotSee == null) {
+        if (shouldNotSee == null) {
             Assert.assertTrue("The audio message recording slide should be visible",
                     getConversationViewPage().waitUntilAudioMessageRecordingSlideVisible());
             Assert.assertTrue("The audio message recording play button should be visible",
