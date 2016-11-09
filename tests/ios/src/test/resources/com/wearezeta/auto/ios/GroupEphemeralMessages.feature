@@ -175,3 +175,27 @@ Feature: Group Ephemeral Messages
     Examples:
       | Name      | Contact1  | Contact2  | SyncTimeout | EphemeralTimeout | DeviceName    | GroupChatName | Picture     | FileName    | VideoMIME | AudioFileName | AudioMIME | Link                    |
       | user1Name | user2Name | user3Name | 3           | 15               | ContactDevice | Epheme grp    | testing.jpg | testing.mp4 | video/mp4 | test.m4a      | audio/mp4 | check this www.wire.com |
+
+  @C320784 @staging @fastLogin
+  Scenario Outline: Verify the message is not deleted for users that didn't read the message
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> adds new device <DeviceName1>
+    Given User <Contact2> adds new device <DeviceName2>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given User <Contact1> switches group conversation <GroupChatName> to ephemeral mode with <Timeout> seconds timeout
+    Given User <Contact1> sends encrypted message "<Message>" to group conversation <GroupChatName>
+    Given User <Contact1> remembers the recent message from group conversation <GroupChatName> via device <DeviceName1>
+    Given User <Contact2> remembers the recent message from group conversation <GroupChatName> via device <DeviceName2>
+    Given User <Contact2> reads the recent message from group conversation <GroupChatName>
+    Given I wait for <Timeout> seconds
+    Given User <Contact1> sees the recent message from group conversation <GroupChatName> via device <DeviceName1> is changed in <Timeout> seconds
+    Given User <Contact2> sees the recent message from group conversation <GroupChatName> via device <DeviceName2> is changed in <Timeout> seconds
+    When I tap on group chat with name <GroupChatName>
+    Then I see the conversation view contains message <Message>
+
+    Examples:
+      | Name      | Contact1   | Contact2  | GroupChatName | Timeout | Message | DeviceName1 | DeviceName2 |
+      | user1Name | user2Name  | user3Name | Epheme grp    |  5      | m1      | DeviceName1 | DeviceName2 |
