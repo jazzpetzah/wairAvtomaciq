@@ -159,7 +159,7 @@ Feature: Conversations list
       | user1Name | user2Name | user3Name | DELETELeave   | tututu  |
 
   @C446 @regression
-  Scenario Outline: (AN-3448) Verify I see picture, ping and call after I delete a group conversation from Conversations list
+  Scenario Outline: Verify I see picture, ping and call after I delete a group conversation from Conversations list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -184,6 +184,8 @@ Feature: Conversations list
     And I tap DELETE on the confirm alert
     Then I do not see Conversations list with name <GroupChatName>
     When <Contact1> calls <GroupChatName>
+    And I see incoming call
+    And <Contact1> stops calling <GroupChatName>
     Then I see Conversations list with name <GroupChatName>
 
     Examples:

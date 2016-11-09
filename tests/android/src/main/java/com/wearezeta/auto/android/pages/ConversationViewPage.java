@@ -530,13 +530,22 @@ public class ConversationViewPage extends AndroidPage {
                 DEFAULT_SWIPE_DURATION_MILLISECONDS, durationMillis, Optional.of(elementState::remember));
     }
 
-    public boolean isAudioMessageRecordingSlideVisible() throws Exception {
+    public boolean waitUntilAudioMessageRecordingSlideVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioMessageRecordingSileControl);
     }
 
-    public boolean isAudioRecordingButtonVisible(String name) throws Exception {
+    public boolean waitUntilAudioMessageRecordingSlideInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idAudioMessageRecordingSileControl);
+    }
+
+    public boolean waitUntilAudioRecordingButtonVisible(String name) throws Exception {
         final By locator = getAudioRecordingButtonLocator(name);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitUntilAudioRecordingButtonInvisible(String name) throws Exception {
+        final By locator = getAudioRecordingButtonLocator(name);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     public boolean isAudioMessageRecordingDurationVisible() throws Exception {
