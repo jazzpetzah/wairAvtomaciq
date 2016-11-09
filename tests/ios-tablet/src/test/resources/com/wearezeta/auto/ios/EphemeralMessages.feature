@@ -16,7 +16,7 @@ Feature: Ephemeral Messages
     Given I see 1 default message in the conversation view
     When User <Contact> reads the recent message from user Myself
     And I wait for <Timeout> seconds
-    Then I see 0 conversation entries
+    Then I see 1 conversation entry
 
     Examples:
       | Name      | Contact   | Timeout | DeviceName    |
