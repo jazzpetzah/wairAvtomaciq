@@ -30,7 +30,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | DeviceName    | Timeout |
       | user1Name | user2Name | ContactDevice | 15      |
 
-  @C259584 @rc @regression @fastLogin
+  @C259584 @C259585 @rc @regression @fastLogin
   Scenario Outline: Verify sending ephemeral message - no online receiver (negative case)
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
