@@ -176,7 +176,7 @@ Feature: Group Ephemeral Messages
       | Name      | Contact1  | Contact2  | SyncTimeout | EphemeralTimeout | DeviceName    | GroupChatName | Picture     | FileName    | VideoMIME | AudioFileName | AudioMIME | Link                    |
       | user1Name | user2Name | user3Name | 3           | 15               | ContactDevice | Epheme grp    | testing.jpg | testing.mp4 | video/mp4 | test.m4a      | audio/mp4 | check this www.wire.com |
 
-  @C320784 @staging @fastLogin
+  @C320784 @regression @fastLogin
   Scenario Outline: Verify the message is not deleted for users that didn't read the message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
