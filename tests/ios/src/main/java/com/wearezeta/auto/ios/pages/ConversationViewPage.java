@@ -420,6 +420,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void openConversationDetails() throws Exception {
+        DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathAudioCallButton);
         getElement(xpathConversationDetailsButton).click();
         // Wait for animation
         Thread.sleep(500);

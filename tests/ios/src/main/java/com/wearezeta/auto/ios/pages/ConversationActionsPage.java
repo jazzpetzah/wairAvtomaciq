@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
@@ -38,7 +39,8 @@ public class ConversationActionsPage extends IOSPage {
     public void tapMenuItem(String buttonTitle) throws Exception {
         getElement(getActionButtonByName(buttonTitle)).click();
         // Wait for action to be applied
-        Thread.sleep(ACTION_DELAY_MS);
+        //Thread.sleep(ACTION_DELAY_MS);
+        DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathActionsMenu);
     }
 
     public void confirmAction(String actionName) throws Exception {
