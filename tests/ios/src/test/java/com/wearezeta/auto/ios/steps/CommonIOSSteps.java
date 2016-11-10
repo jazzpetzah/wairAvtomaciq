@@ -162,13 +162,15 @@ public class CommonIOSSteps {
             }
             capabilities.setCapability("realDeviceLogger", IDEVICE_CONSOLE.getCanonicalPath());
             capabilities.setCapability("showXcodeLog", true);
-            if (!KEYCHAIN.exists()) {
-                throw new IllegalStateException(
-                        String.format("The default keychain file does not exist at '%s'", KEYCHAIN.getCanonicalPath())
-                );
+            if (CommonUtils.isRunningInJenkinsNetwork()) {
+                if (!KEYCHAIN.exists()) {
+                    throw new IllegalStateException(
+                            String.format("The default keychain file does not exist at '%s'", KEYCHAIN.getCanonicalPath())
+                    );
+                }
+                capabilities.setCapability("keychainPath", KEYCHAIN.getCanonicalPath());
+                capabilities.setCapability("keychainPassword", KEYCHAIN_PASSWORD);
             }
-            capabilities.setCapability("keychainPath", KEYCHAIN.getCanonicalPath());
-            capabilities.setCapability("keychainPassword", KEYCHAIN_PASSWORD);
         } else {
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()));
             // https://github.com/appium/appium-xcuitest-driver/pull/184/files
