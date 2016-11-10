@@ -1,6 +1,6 @@
 Feature: Ephemeral Group Message
 
-  @C318635 @staging
+  @C318635 @regression
   Scenario Outline: (Group) Verify sending all types of messages after I enable ephemeral mode in group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -63,7 +63,7 @@ Feature: Ephemeral Group Message
       | Name      | Group | Contact   | Contact1  | EphemeraTimeout | Link                                                                                               | PingMsg    | FileSize |
       | user1Name | YoG   | user2Name | user3Name | 5 seconds       | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 | YOU PINGED | 1.00MB   |
 
-  @C320770 @staging
+  @C320770 @regression
   Scenario Outline: (Group) Verify in group sending ephemeral text message will be obfuscated when receiver is offline and not been delivered to my other devices
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -91,7 +91,7 @@ Feature: Ephemeral Group Message
       | Name      | Contact   | EphemeralTimeout | Message | Message2 | Mydevice | Group   | Contact1  |
       | user1Name | user2Name | 15 seconds       | test5s  | ok       | d1       | YoGroup | user3Name |
 
-  @C320775 @staging
+  @C320775 @regression
   Scenario Outline: (Group) Verify edit/delete/like/copy/forward is disabled for ephemeral messages in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -114,7 +114,7 @@ Feature: Ephemeral Group Message
       | Name      | Contact   | EphemeralTimeout | Message | Group   | Contact1  |
       | user1Name | user2Name | 5 seconds        | yo      | YoGroup | user3Name |
 
-  @C320790 @staging
+  @C320790 @regression
   Scenario Outline: (Group) Verify timer is applyed to all messages until turning it off in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -141,7 +141,7 @@ Feature: Ephemeral Group Message
       | Name      | Contact   | EphemeralTimeout | Message | Group   | Contact1  | Message2 | Message3 |
       | user1Name | user2Name | 5 seconds        | yo      | YoGroup | user3Name | dd       | hk       |
 
-  @C321197 @staging
+  @C321197 @regression
   Scenario Outline: (Group) Verify the message is deleted on the sender side when it's read by anyone in group and I can receive eph msg in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -168,7 +168,7 @@ Feature: Ephemeral Group Message
       | Name      | Contact   | EphemeralTimeout | Message | Group   | Contact1  | ContactDevice | Message2 | EphemeralTimeout2 |
       | user1Name | user2Name | 5 seconds        | yo      | YoGroup | user3Name | d1            | Do       | 15 seconds        |
 
-  @C321198 @staging
+  @C321198 @regression
   Scenario Outline: (Group) Verify receiving an ephemeral message in Group on the multiple devices and deleted on all recevier
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -194,7 +194,7 @@ Feature: Ephemeral Group Message
       | Name      | Contact   | EphemeralTimeout | Message | Group   | Contact1  | ContactDevice | OwnDevice |
       | user1Name | user2Name | 15 seconds       | yo      | YoGroup | user3Name | d1            | d2        |
 
-  @C321205 @staging
+  @C321205 @regression
   Scenario Outline: (Group) Verify receiving all types of ephemeral messages in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -256,9 +256,9 @@ Feature: Ephemeral Group Message
 
     Examples:
       | Name      | Contact   | Contact1  | Group   | ContactDevice | EphemeralTimeout | FileName    | MIMEType  | SyncTimeout | Picture        | AudioFileName | AudioMIMEType | URL                     | SoundCloud                                       | Youtube                                     |
-      | user1Name | user2Name | user3Name | yogroup | d1            | 5                | testing.mp4 | video/mp4 | 1           | avatarTest.jpg | test.m4a      | audio/mp4     | http://www.facebook.com | https://soundcloud.com/sodab/256-ra-robag-wruhme | https://www.youtube.com/watch?v=wTcNtgA6gHs |
+      | user1Name | user2Name | user3Name | yogroup | d1            | 5                | testing.mp4 | video/mp4 | 1           | avatarTest.png | test.m4a      | audio/mp4     | http://www.facebook.com | https://soundcloud.com/sodab/256-ra-robag-wruhme | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
-  @C321206 @staging
+  @C321206 @regression
   Scenario Outline: (Group) If a user receives multiple ephemeral messages after being offline, all get the same timer
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -285,7 +285,7 @@ Feature: Ephemeral Group Message
       | Name      | Contact   | Contact1  | EphemeralTimeout | NetworkTimeout | Message1 | Message2 | ContactDevice | Group   |
       | user1Name | user2Name | user3Name | 15 seconds       | 15             | YO1      | YO2      | d1            | YoGroup |
 
-  @C321207 @staging
+  @C321207 @regression
   Scenario Outline: (Group) If ephemeral message can’t be sent due to bad network, it can be resend and will not get obfuscated
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -312,7 +312,7 @@ Feature: Ephemeral Group Message
       | Name      | Contact   | Contact1  | EphemeralTimeout | NetworkTimeout | Message | MessageStatus          | Group   |
       | user1Name | user2Name | user3Name | 5 seconds        | 15             | Yo      | Sending failed. Resend | YoGroup |
 
-  @C321208 @staging
+  @C321208 @regression
   Scenario Outline: (Group) Verify the message is not deleted for users that didn't read the message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>

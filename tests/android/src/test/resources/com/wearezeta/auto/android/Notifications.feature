@@ -68,7 +68,7 @@ Feature: Notifications
       | Name      | Contact   | VideoFileName | VideoMIMEType | DeviceName | AudioFileName | AudioMIMEType | TxtMsg | Image       | FileSize | FileName      | FileMIMEType | EphemeralTimeout |
       | user1Name | user2Name | testing.mp4   | video/mp4     | Device1    | test.m4a      | audio/mp4     | OMG    | testing.jpg | 1.00MB   | qa_random.txt | text/plain   | 5 seconds        |
 
-  @C321202 @staging
+  @C321202 @regression
   Scenario Outline: Verify push notification of group message
     Given I am on Android 4.4 or better
     Given There are 3 users where <Name> is me
