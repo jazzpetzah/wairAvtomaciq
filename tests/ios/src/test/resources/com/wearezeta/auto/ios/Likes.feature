@@ -351,6 +351,8 @@ Feature: Likes
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given User <Contact> shares the default location to user Myself via device <ContactDevice>
+    # Let it to receive the message
+    Given I wait for 5 seconds
     Given I see conversations list
     Given I tap on contact name <Contact>
     When I tap at 5% of width and 5% of height of the recent message
