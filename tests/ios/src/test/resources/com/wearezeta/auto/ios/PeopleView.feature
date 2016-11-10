@@ -282,7 +282,7 @@ Feature: People View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C26 @regression @fastLogin
+  @C26 @regression @fastLogin @torun
   Scenario Outline: Verify you can block a person from profile view
     Given There are 2 users where <Name> is me
     Given Myself is connected to all other users
