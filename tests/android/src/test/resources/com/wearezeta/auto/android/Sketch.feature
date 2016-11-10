@@ -62,19 +62,29 @@ Feature: Sketch
   Scenario Outline: I can send an emoji sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given I push local file named "<FileName>" to the device
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
-    And I tap Sketch button from cursor toolbar
+    When I tap Add picture button from cursor toolbar
+    And I tap Gallery button on Extended cursor camera overlay
+    And I tap Confirm button on Take Picture view
+    And I see a picture in the conversation view
+    And I tap Image container in the conversation view
+    And I tap on Fullscreen button on the recent image in the conversation view
+    And I take screenshot
+    And I tap back button
+    And I tap on Sketch button on the recent image in the conversation view
     And I draw an emoji sketch
     And I send my sketch
     And I tap Image container in the conversation view
-    Then I see a picture in the conversation view
+    And I tap on Fullscreen button on the recent image in the conversation view
+    Then I verify the previous and the current screenshots are different
 
     Examples:
-      | Name      | Contact1  |
-      | user1Name | user2Name |
+      | Name      | Contact1  | FileName       |
+      | user1Name | user2Name | avatarTest.png |
 
   @C318630 @staging
   Scenario Outline: I can send a text sketch
@@ -89,8 +99,6 @@ Feature: Sketch
     And I tap Gallery button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
     And I see a picture in the conversation view
-    #Todo: Workaround for AN-4611
-    And I type the message "workaround" and send it by cursor Send button
     And I tap Image container in the conversation view
     And I tap on Fullscreen button on the recent image in the conversation view
     And I take screenshot
