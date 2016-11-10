@@ -3,8 +3,8 @@ package com.wearezeta.auto.win.steps.webapp;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.AccountPage;
+import com.wearezeta.auto.win.common.WrapperTestContext;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -16,52 +16,53 @@ import static org.junit.Assert.assertTrue;
 
 public class AccountPageSteps {
 
-    private final TestContext context;
+    private final WrapperTestContext context;
 
     public AccountPageSteps() {
-        this.context = new TestContext();
+        this.context = new WrapperTestContext();
     }
 
-    public AccountPageSteps(TestContext context) {
+    public AccountPageSteps(WrapperTestContext context) {
         this.context = context;
     }
 
     @When("^I click logout in account preferences$")
     public void IClosePreferences() throws Exception {
-        context.getPagesCollection().getPage(AccountPage.class).logout();
+        context.getWebappPagesCollection().getPage(AccountPage.class).logout();
     }
-    
+
     @When("^I do not see logout in account preferences$")
     public void IDoNotSeeLogout() throws Exception {
-        assertTrue("Logout should NOT be visible", context.getPagesCollection().getPage(AccountPage.class).isLogoutInvisible());
+        assertTrue("Logout should NOT be visible", context.getWebappPagesCollection().getPage(AccountPage.class).
+                isLogoutInvisible());
     }
 
     @When("^I see the clear data dialog$")
     public void ISeeClearDataDialog() throws Exception {
-        assertThat(context.getPagesCollection().getPage(AccountPage.class).isLogoutDialogShown(), is(true));
+        assertThat(context.getWebappPagesCollection().getPage(AccountPage.class).isLogoutDialogShown(), is(true));
     }
 
     @When("^I enable checkbox to clear all data$")
     public void IEnableClearDataCheckbox() throws Exception {
-        context.getPagesCollection().getPage(AccountPage.class).checkClearDataInLogoutDialog();
+        context.getWebappPagesCollection().getPage(AccountPage.class).checkClearDataInLogoutDialog();
     }
 
     @When("^I click logout button on clear data dialog$")
     public void IClickLogoutOnClearDataDialog() throws Exception {
-        context.getPagesCollection().getPage(AccountPage.class).logoutInLogoutDialog();
+        context.getWebappPagesCollection().getPage(AccountPage.class).logoutInLogoutDialog();
     }
 
     @And("^I see username (.*) in account preferences$")
     public void ISeeUserNameOnSelfProfilePage(String name) throws Exception {
         name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        assertThat("Username", context.getPagesCollection().getPage(AccountPage.class).getUserName(), equalTo(name));
+        assertThat("Username", context.getWebappPagesCollection().getPage(AccountPage.class).getUserName(), equalTo(name));
     }
 
     @And("^I see user phone number (.*) in account preferences$")
     public void ISeeUserPhoneNumberOnSelfProfilePage(String phoneNumber) throws Exception {
         phoneNumber = context.getUserManager().
                 replaceAliasesOccurences(phoneNumber, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
-        assertThat(context.getPagesCollection().getPage(AccountPage.class).getUserPhoneNumber(), equalTo(phoneNumber));
+        assertThat(context.getWebappPagesCollection().getPage(AccountPage.class).getUserPhoneNumber(), equalTo(phoneNumber));
     }
 
     @And("^I see user email (.*) in account preferences$")
@@ -71,57 +72,58 @@ public class AccountPageSteps {
         } catch (NoSuchUserException e) {
 
         }
-        String actualEmail = context.getPagesCollection().getPage(AccountPage.class).getUserMail();
+        String actualEmail = context.getWebappPagesCollection().getPage(AccountPage.class).getUserMail();
         assertEquals(email, actualEmail);
     }
 
     @And("^I change username to (.*)")
     public void IChangeUserNameTo(String name) throws Exception {
-        context.getPagesCollection().getPage(AccountPage.class).setUserName(name);
+        context.getWebappPagesCollection().getPage(AccountPage.class).setUserName(name);
         context.getUserManager().getSelfUserOrThrowError().setName(name);
     }
 
     @When("^I drop picture (.*) to account preferences$")
     public void IDropPicture(String pictureName) throws Exception {
-        context.getPagesCollection().getPage(AccountPage.class).dropPicture(pictureName);
+        context.getWebappPagesCollection().getPage(AccountPage.class).dropPicture(pictureName);
     }
 
     @When("^I upload picture (.*) to account preferences$")
     public void IUploadPicture(String pictureName) throws Exception {
-        context.getPagesCollection().getPage(AccountPage.class).uploadPicture(pictureName);
+        context.getWebappPagesCollection().getPage(AccountPage.class).uploadPicture(pictureName);
     }
 
     @Then("^I set my accent color to (\\w+)$")
     public void ISetMyAccentColorTo(String colorName) throws Exception {
-        context.getPagesCollection().getPage(AccountPage.class).selectAccentColor(colorName);
+        context.getWebappPagesCollection().getPage(AccountPage.class).selectAccentColor(colorName);
     }
 
     @Then("^I verify my accent color in color picker is set to (\\w+) color$")
     public void IVerifyMyAccentColor(String colorName) throws Exception {
         final int expectedColorId = AccentColor.getByName(colorName).getId();
-        final int actualColorId = context.getPagesCollection().getPage(AccountPage.class).getCurrentAccentColorId();
+        final int actualColorId = context.getWebappPagesCollection().getPage(AccountPage.class).getCurrentAccentColorId();
         assertTrue("my actual accent color is not set", actualColorId == expectedColorId);
     }
 
     @Then("^I verify my avatar background color is set to (\\w+) color$")
     public void IVerifyMyAvatarColor(String colorName) throws Exception {
         final AccentColor expectedColor = AccentColor.getByName(colorName);
-        final AccentColor avatarColor = context.getPagesCollection().getPage(AccountPage.class).getCurrentAvatarAccentColor();
+        final AccentColor avatarColor = context.getWebappPagesCollection().getPage(AccountPage.class).
+                getCurrentAvatarAccentColor();
         assertTrue("my avatar background accent color is not set", avatarColor == expectedColor);
     }
 
     @When("^I click delete account button on settings page$")
     public void IClickDeleteAccountButton() throws Exception {
-        context.getPagesCollection().getPage(AccountPage.class).clickDeleteAccountButton();
+        context.getWebappPagesCollection().getPage(AccountPage.class).clickDeleteAccountButton();
     }
 
     @When("^I click cancel deletion button on settings page$")
     public void IClickCancelDeleteButton() throws Exception {
-        context.getPagesCollection().getPage(AccountPage.class).clickCancelDeleteAccountButton();
+        context.getWebappPagesCollection().getPage(AccountPage.class).clickCancelDeleteAccountButton();
     }
 
     @When("^I click send button to delete account$")
     public void IClickSendButton() throws Exception {
-        context.getPagesCollection().getPage(AccountPage.class).clickConfirmDeleteAccountButton();
+        context.getWebappPagesCollection().getPage(AccountPage.class).clickConfirmDeleteAccountButton();
     }
 }
