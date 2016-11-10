@@ -386,21 +386,6 @@ public class ConversationsListPageSteps {
         getConversationsListPage().clickMuteCallButton();
     }
 
-    /**
-     * Checks that conversation name appears in displayed action menu
-     *
-     * @param conversation conversation name
-     * @throws Exception
-     * @step. ^I see conversation (.*) name in action menu in [Cc]ontact
-     * [Ll]ist$
-     */
-    @And("^I see conversation (.*) name in action menu in [Cc]ontact [Ll]ist$")
-    public void ISeeConversationNameInActionMenu(String conversation) throws Exception {
-        conversation = usrMgr.replaceAliasesOccurences(conversation, FindBy.NAME_ALIAS);
-        Assert.assertTrue(String.format("There is no conversation name %s in opened action menu.",
-                conversation), getConversationsListPage().isActionMenuVisibleForConversation(conversation));
-    }
-
     private ElementState previousSettingsGearState = new ElementState(
             () -> getConversationsListPage().getSettingsGearStateScreenshot()
     );

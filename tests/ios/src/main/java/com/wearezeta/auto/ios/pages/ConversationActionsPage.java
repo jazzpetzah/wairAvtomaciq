@@ -50,4 +50,9 @@ public class ConversationActionsPage extends IOSPage {
         // Wait for action to be applied
         Thread.sleep(ACTION_DELAY_MS);
     }
+
+    public boolean isVisibleForConversation(String conversation) throws Exception {
+        final By locator = MobileBy.AccessibilityId(conversation.toUpperCase());
+        return isLocatorDisplayed(locator);
+    }
 }
