@@ -44,7 +44,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | Number | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | 3      | TESTCHAT      |
 
-  @C3175 @rc @regression @clumsy @fastLogin
+  @C3175 @rc @regression @clumsy @fastLogin  @torun
   Scenario Outline: Leave from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -282,7 +282,7 @@ Feature: People View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C26 @regression @fastLogin @torun
+  @C26 @regression @fastLogin
   Scenario Outline: Verify you can block a person from profile view
     Given There are 2 users where <Name> is me
     Given Myself is connected to all other users
@@ -343,7 +343,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
-  @C1829 @regression @fastLogin
+  @C1829 @regression @fastLogin  @torun
   Scenario Outline: Verify that deleted conversation via participant view is not going to archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
