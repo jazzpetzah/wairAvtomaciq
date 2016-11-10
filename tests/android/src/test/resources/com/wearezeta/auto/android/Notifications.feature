@@ -119,6 +119,7 @@ Feature: Notifications
     And User <Contact> sends encrypted message "<Message>" to user Myself
     Then I do not see the message "<Message>" in push notifications list
     When I restore the application
+    And I see Conversations list
     And I minimize the application
     And User <Contact> sends encrypted message "<Message2>" to user Myself
     Then I see the message "<Message2>" in push notifications list
