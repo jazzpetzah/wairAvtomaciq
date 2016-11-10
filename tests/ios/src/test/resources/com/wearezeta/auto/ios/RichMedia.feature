@@ -52,10 +52,10 @@ Feature: Rich Media
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And I scroll to the bottom of the conversation
-    And I tap on media container in conversation view
-    And I scroll to the top of the conversation
+    Given I tap on contact name <Contact>
+    Given I scroll to the bottom of the conversation
+    Given I tap on media container in conversation view
+    When I scroll to the top of the conversation
     And I tap on the media bar
     Then I see media container <SoundCloudLink> in conversation view
 
@@ -71,8 +71,8 @@ Feature: Rich Media
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     Given I see conversations list
-    And I tap on contact name <Contact>
-    And I scroll to the bottom of the conversation
+    Given I tap on contact name <Contact>
+    Given I scroll to the bottom of the conversation
     When I tap on media container in conversation view
     And I scroll to the top of the conversation
     Then I wait up to 35 seconds for media bar to disappear
@@ -89,9 +89,9 @@ Feature: Rich Media
     Given User <Name> sends 40 encrypted messages to user <Contact1>
     Given User <Name> sends encrypted message "<SoundCloudLink>" to user <Contact1>
     Given I see conversations list
-    When I tap on contact name <Contact1>
-    And I scroll to the bottom of the conversation
-    And I tap on media container in conversation view
+    Given I tap on contact name <Contact1>
+    Given I scroll to the bottom of the conversation
+    Given I tap on media container in conversation view
     When I scroll to the top of the conversation
     And I scroll to the bottom of the conversation
     Then I do not see media bar in the conversation view
@@ -110,10 +110,10 @@ Feature: Rich Media
     Given User Myself sends 40 encrypted messages to user <Contact2>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact2>
     Given I see conversations list
-    When I tap on contact name <Contact1>
-    And I tap on media container in conversation view
-    And I navigate back to conversations list
-    And I tap Pause button in conversations list next to <Contact1>
+    Given I tap on contact name <Contact1>
+    Given I tap on media container in conversation view
+    Given I navigate back to conversations list
+    When I tap Pause button in conversations list next to <Contact1>
     And I tap on contact name <Contact2>
     And I tap on media container in conversation view
     And I navigate back to conversations list
