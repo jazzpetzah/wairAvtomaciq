@@ -1,8 +1,14 @@
 package com.wearezeta.auto.common.driver;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.attribute.PosixFilePermission;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.*;
 import java.util.concurrent.TimeoutException;
 
@@ -40,6 +46,9 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
 
     public ZetaIOSDriver(URL remoteAddress, Capabilities desiredCapabilities) {
         super(remoteAddress, desiredCapabilities);
+        if (desiredCapabilities.getCapability("udid") != null) {
+            verifyLockdownPermissions();
+        }
         initOSVersionString();
         this.fbDriverAPI = new FBDriverAPI();
     }
@@ -49,6 +58,27 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
             throw new IllegalStateException("Appium session is dead. No more commands can be scheduled.");
         }
         return this.fbDriverAPI;
+    }
+
+    private static final File LOCKDOWN = new File("/var/db/lockdown");
+
+    private static void verifyLockdownPermissions() {
+        final Set<PosixFilePermission> perms;
+        try {
+            perms = Files.getPosixFilePermissions(LOCKDOWN.toPath());
+        } catch (IOException e) {
+            throw new WebDriverException(e);
+        }
+        if (!perms.containsAll(Arrays.asList(
+                PosixFilePermission.OTHERS_READ,
+                PosixFilePermission.OTHERS_WRITE,
+                PosixFilePermission.OTHERS_EXECUTE))) {
+            throw new IllegalStateException(String.format(
+                    "You cannot perform real device tests unless %s has no RWX permissions. " +
+                            "Execute `sudo chmod 777 %s` to fix the problem and restart the test`",
+                    LOCKDOWN.getAbsolutePath(), LOCKDOWN.getAbsolutePath()
+            ));
+        }
     }
 
     public DefaultArtifactVersion getOSVersion() {

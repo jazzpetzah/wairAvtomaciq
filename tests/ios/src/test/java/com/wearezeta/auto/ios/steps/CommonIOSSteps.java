@@ -119,9 +119,13 @@ public class CommonIOSSteps {
 
     // These settings are needed to properly sign WDA for real device tests
     // See https://github.com/appium/appium-xcuitest-driver for more details
-    private static final String KEYCHAIN_PATH = String.format("%s/%s",
-            System.getProperty("user.home"), "/Library/Keychains/MyKeychain.keychain");
+    private static final File KEYCHAIN = new File(String.format("%s/%s",
+            System.getProperty("user.home"), "/Library/Keychains/MyKeychain.keychain"));
     private static final String KEYCHAIN_PASSWORD = "123456";
+
+    private static final File IDEVICE_CONSOLE = new File(
+            "/usr/local/lib/node_modules/deviceconsole/deviceconsole"
+    );
 
     // https://github.com/wireapp/wire-ios/pull/339
     private static final String ARGS_FILE_NAME = "wire_arguments.txt";
@@ -151,15 +155,19 @@ public class CommonIOSSteps {
             // We don't really care about which particular real device model we have
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()).split("\\s+")[0]);
             capabilities.setCapability("udid", udid);
-            capabilities.setCapability("realDeviceLogger",
-                    "/usr/local/lib/node_modules/deviceconsole/deviceconsole");
-            capabilities.setCapability("showXcodeLog", true);
-            if (!new File(KEYCHAIN_PATH).exists()) {
+            if (!IDEVICE_CONSOLE.exists()) {
                 throw new IllegalStateException(
-                        String.format("The default keychain file does not exist at '%s'", KEYCHAIN_PATH)
+                        "ideviceconsole is expected to be installed: npm install -g deviceconsole"
                 );
             }
-            capabilities.setCapability("keychainPath", KEYCHAIN_PATH);
+            capabilities.setCapability("realDeviceLogger", IDEVICE_CONSOLE.getCanonicalPath());
+            capabilities.setCapability("showXcodeLog", true);
+            if (!KEYCHAIN.exists()) {
+                throw new IllegalStateException(
+                        String.format("The default keychain file does not exist at '%s'", KEYCHAIN.getCanonicalPath())
+                );
+            }
+            capabilities.setCapability("keychainPath", KEYCHAIN.getCanonicalPath());
             capabilities.setCapability("keychainPassword", KEYCHAIN_PASSWORD);
         } else {
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()));
