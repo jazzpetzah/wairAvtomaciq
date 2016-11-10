@@ -317,7 +317,6 @@ public abstract class AndroidPage extends BasePage {
             } else {
                 //Delay required for SE and UI sync
                 Thread.sleep(DEFAULT_RETRY_DELAY_SECONDS);
-                log.info("No internet bar location is "+el.get().getLocation().getX()+":"+el.get().getLocation().getY());
                 return true;
             }
             timeSpent = (System.currentTimeMillis() - startTime) / 1000;
