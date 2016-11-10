@@ -38,8 +38,6 @@ public class ConversationActionsPage extends IOSPage {
 
     public void tapMenuItem(String buttonTitle) throws Exception {
         getElement(getActionButtonByName(buttonTitle)).click();
-        // Wait for action to be applied
-        //Thread.sleep(ACTION_DELAY_MS);
         DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathActionsMenu);
     }
 
