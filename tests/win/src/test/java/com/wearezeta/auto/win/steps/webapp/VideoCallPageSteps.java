@@ -4,15 +4,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Optional;
 
-import com.wearezeta.auto.common.CommonCallingSteps2;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.pages.VideoCallPage;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import com.wearezeta.auto.win.common.WrapperTestContext;
 import com.wearezeta.auto.win.pages.win.MainWirePage;
-import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
@@ -25,33 +22,24 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class VideoCallPageSteps {
+    private final WrapperTestContext context;
 
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection.getInstance();
-    private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2.getInstance();
-    private final WinPagesCollection winPagesCollection = WinPagesCollection.getInstance();
-
-    /**
-     * Maximizes video call
-     *
-     * @throws Exception
-     * @step. ^I maximize video call$
-     */
-    @When("^I maximize video call via titlebar$")
-    public void IMaximizeVideoCall() throws Exception {
-        webappPagesCollection.getPage(VideoCallPage.class).clickMaximizeVideoCallButton();
+    public VideoCallPageSteps() {
+        this.context = new WrapperTestContext();
     }
 
-    /**
-     * Checks if the video call minimized/maximized
-     *
-     * @param videoCallSize is either minimized|maximized
-     * @throws Exception
-     * @step. ^I see video call is (minimized|maximized)$
-     */
+    public VideoCallPageSteps(WrapperTestContext context) {
+        this.context = context;
+    }
+
+    @When("^I maximize video call via titlebar$")
+    public void IMaximizeVideoCall() throws Exception {
+        context.getWebappPagesCollection().getPage(VideoCallPage.class).clickMaximizeVideoCallButton();
+    }
+
     @Then("^I see video call is (minimized|maximized)$")
     public void ISeeVideoCallMinimized(String videoCallSize) throws Exception {
-        VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
+        VideoCallPage videoCallPage = context.getWebappPagesCollection().getPage(VideoCallPage.class);
         if (videoCallSize.equals("minimized")) {
             //Assert.assertTrue("Video is in portrait mode", videoCallPage.isVideoNotInPortrait());
             Assert.assertTrue("Minimize Video Call button is visible", videoCallPage.isMinimizeVideoCallButtonNotVisible());
@@ -63,13 +51,13 @@ public class VideoCallPageSteps {
 
     @Then("^I click on screen share button$")
     public void IClickScreenShareButton() throws Exception {
-        VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
+        VideoCallPage videoCallPage = context.getWebappPagesCollection().getPage(VideoCallPage.class);
         videoCallPage.clickScreenShareButton();
     }
 
     @Then("^I verify my self video shows my screen$")
     public void IVerifyMySelfVideoShowsScreen() throws Exception {
-        VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
+        VideoCallPage videoCallPage = context.getWebappPagesCollection().getPage(VideoCallPage.class);
 
         // get position and size of self video element
         WebElement element = videoCallPage.getLocalScreenShareVideoElement();
@@ -77,7 +65,7 @@ public class VideoCallPageSteps {
         final Dimension elementSize = element.getSize();
 
         // get local screenshot
-        MainWirePage mainWirePage = winPagesCollection.getPage(MainWirePage.class);
+        MainWirePage mainWirePage = context.getWinPagesCollection().getPage(MainWirePage.class);
         Optional<BufferedImage> localScreenshot = mainWirePage.getScreenshot();
         Assert.assertTrue("Fullscreen screenshot cannot be captured", localScreenshot.isPresent());
 
@@ -107,13 +95,13 @@ public class VideoCallPageSteps {
     @Then("^I verify (.*) sees my screen$")
     public void IVerifyUserXVideoShowsScreen(String callees) throws Exception {
         for (String callee : splitAliases(callees)) {
-            final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callee);
+            final ClientUser userAs = context.getUserManager().findUserByNameOrNameAlias(callee);
 
             // get screenshot from remote user
-            BufferedImage remoteScreenshot = commonCallingSteps.getScreenshot(userAs);
+            BufferedImage remoteScreenshot = context.getCallingManager().getScreenshot(userAs);
 
             // get local screenshot and resize to remote size
-            Optional<BufferedImage> localScreenshot = winPagesCollection.getPage(MainWirePage.class).getScreenshot();
+            Optional<BufferedImage> localScreenshot = context.getWinPagesCollection().getPage(MainWirePage.class).getScreenshot();
             Assert.assertTrue("Fullscreen screenshot cannot be captured", localScreenshot.isPresent());
             BufferedImage resizedScreenshot = ImageUtil.scaleTo(localScreenshot.get(), remoteScreenshot.getWidth(),
                     remoteScreenshot.getHeight());
@@ -132,38 +120,20 @@ public class VideoCallPageSteps {
         }
     }
 
-    /**
-     * Click minimize button on video call page
-     *
-     * @throws Exception
-     * @step. ^I minimize video call$
-     */
     @When("^I minimize video call$")
     public void IMinimizeVideoCall() throws Exception {
-        webappPagesCollection.getPage(VideoCallPage.class).clickMinimizeVideoCallButton();
+        context.getWebappPagesCollection().getPage(VideoCallPage.class).clickMinimizeVideoCallButton();
     }
 
-    /**
-     * Turn off and on the camera on video call page
-     *
-     * @throws Exception
-     * @step. ^I see video call is (minimized|maximized)$
-     */
     @When("^I click on video button$")
     public void IClickVideoButton() throws Exception {
-        VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
+        VideoCallPage videoCallPage = context.getWebappPagesCollection().getPage(VideoCallPage.class);
         videoCallPage.clickVideoButton();
     }
 
-    /**
-     * Checks whether the self video is on or off
-     *
-     * @throws Exception
-     * @step. ^I see my self video is (off|on)$
-     */
     @Then("^I see my self video is (off|on)$")
     public void ISeeSelfVideoOff(String onOffToggle) throws Exception {
-        VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
+        VideoCallPage videoCallPage = context.getWebappPagesCollection().getPage(VideoCallPage.class);
         if ("off".equals(onOffToggle)) {
             assertTrue("Disabled video icon is still shown", videoCallPage.isDisabledVideoIconVisible());
         } else {

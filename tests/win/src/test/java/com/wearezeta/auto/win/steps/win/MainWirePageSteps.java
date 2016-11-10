@@ -1,5 +1,6 @@
 package com.wearezeta.auto.win.steps.win;
 
+import com.wearezeta.auto.win.common.WrapperTestContext;
 import com.wearezeta.auto.win.pages.win.MainWirePage;
 import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 
@@ -10,6 +11,16 @@ import org.junit.Assert;
 public class MainWirePageSteps {
 
     private final WinPagesCollection winPagesCollection = WinPagesCollection.getInstance();
+    
+    private final WrapperTestContext context;
+
+    public MainWirePageSteps() {
+        this.context = new WrapperTestContext();
+    }
+
+    public MainWirePageSteps(WrapperTestContext context) {
+        this.context = context;
+    }
 
     /**
      * Closes the app

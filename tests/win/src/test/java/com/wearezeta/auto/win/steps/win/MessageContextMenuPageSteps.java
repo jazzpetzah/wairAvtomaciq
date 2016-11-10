@@ -4,6 +4,7 @@ package com.wearezeta.auto.win.steps.win;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import com.wearezeta.auto.win.common.WrapperTestContext;
 import com.wearezeta.auto.win.pages.win.ForeignMessageContextMenuPage;
 import com.wearezeta.auto.win.pages.win.OwnMessageContextMenuPage;
 import com.wearezeta.auto.win.pages.win.WinPagesCollection;
@@ -19,6 +20,16 @@ public class MessageContextMenuPageSteps {
 
     @SuppressWarnings("unused")
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+    
+    private final WrapperTestContext context;
+
+    public MessageContextMenuPageSteps() {
+        this.context = new WrapperTestContext();
+    }
+
+    public MessageContextMenuPageSteps(WrapperTestContext context) {
+        this.context = context;
+    }
 
     /**
      * Opens or closes the context menu for the last message in the current conversation

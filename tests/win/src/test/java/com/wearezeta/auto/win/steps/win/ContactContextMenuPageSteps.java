@@ -4,6 +4,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.win.pages.win.ContactContextMenuPage;
 import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import com.wearezeta.auto.win.common.WrapperTestContext;
 
 import cucumber.api.java.en.When;
 
@@ -15,6 +16,16 @@ public class ContactContextMenuPageSteps {
 
     @SuppressWarnings("unused")
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+    
+    private final WrapperTestContext context;
+
+    public ContactContextMenuPageSteps() {
+        this.context = new WrapperTestContext();
+    }
+
+    public ContactContextMenuPageSteps(WrapperTestContext context) {
+        this.context = context;
+    }
 
     /**
      * Click the block in context menu
