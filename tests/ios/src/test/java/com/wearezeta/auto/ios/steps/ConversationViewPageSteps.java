@@ -41,14 +41,18 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Scroll to the bottom of the current conversation view
+     * Scroll to the bottom/top of the current conversation view
      *
      * @throws Exception
-     * @step. ^I scroll to the bottom of the conversation$$
+     * @step. ^I scroll to the (top|bottom of the conversation$$
      */
-    @When("^I scroll to the bottom of the conversation$")
-    public void ScrollToTheBottom() throws Exception {
-        getConversationViewPage().scrollToTheBottom();
+    @When("^I scroll to the (top|bottom) of the conversation$")
+    public void ScrollToThe(String where) throws Exception {
+        if (where.equals("top")) {
+            getConversationViewPage().scrollToTheTop();
+        } else {
+            getConversationViewPage().scrollToTheBottom();
+        }
     }
 
     /**
@@ -490,22 +494,16 @@ public class ConversationViewPageSteps {
         getConversationViewPage().tapOnMediaBar();
     }
 
-    @Then("^I see conversation view is scrolled back to the playing media link (.*)")
+    @Then("^I see media container (.*) in conversation view$")
     public void ISeeConversationViewIsScrolledBackToThePlayingMedia(String link) throws Throwable {
         Assert.assertTrue(String.format("The last conversation message does not contain text '%s'", link),
                 getConversationViewPage().isRecentMessageContain(link));
-        Assert.assertTrue("View did not scroll back", getConversationViewPage()
-                .isMediaContainerVisible());
+        Assert.assertTrue("View did not scroll back", getConversationViewPage().isMediaContainerVisible());
     }
 
     @Then("^I navigate back to conversations list")
     public void INavigateToConversationsList() throws Exception {
         getConversationViewPage().returnToConversationsList();
-    }
-
-    @When("^I scroll to the beginning of the conversation$")
-    public void IScrollToTheBeginningOfTheConversation() throws Throwable {
-        getConversationViewPage().scrollToBeginningOfConversation();
     }
 
     /**

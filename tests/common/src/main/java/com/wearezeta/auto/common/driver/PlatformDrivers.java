@@ -113,7 +113,7 @@ public final class PlatformDrivers {
                 } catch (Exception e) {
                     e.printStackTrace();
                     futureDriver.cancel(true);
-                    log.warn(String.format("Canceled driver creation for platform '%s'", platform.getName()));
+                    log.warn(String.format("Canceled driver for platform '%s'", platform.getName()));
                 }
             }
         } finally {

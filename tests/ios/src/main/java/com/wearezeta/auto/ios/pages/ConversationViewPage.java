@@ -51,6 +51,8 @@ public class ConversationViewPage extends IOSPage {
     private static final String xpathStrRecentEntry = xpathStrAllEntries + "[1]";
     private static final By xpathRecentEntry = By.xpath(xpathStrRecentEntry);
 
+    private static final By fbClassConversationViewRoot = FBBy.className("XCUIElementTypeTable");
+
     //The xpath of the asset container by cell index, which is integer >=1
     private static final Function<Integer, String> xpathStrAssetContainerByIndex = index ->
             String.format("%s[%d]", xpathStrAllEntries, index);
@@ -86,8 +88,6 @@ public class ConversationViewPage extends IOSPage {
     private static final By namePlayButton = MobileBy.AccessibilityId("mediaBarPlayButton");
 
     private static final By namePauseButton = MobileBy.AccessibilityId("mediaBarPauseButton");
-
-    private static final By xpathConversationPage = By.xpath("//XCUIElementTypeTable");
 
     private static final By nameMediaBarCloseButton = MobileBy.AccessibilityId("mediabarCloseButton");
 
@@ -437,17 +437,6 @@ public class ConversationViewPage extends IOSPage {
         return isLocatorInvisible(nameTitle);
     }
 
-    public void scrollToBeginningOfConversation() throws Exception {
-        for (int i = 0; i < 2; i++) {
-            if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-                IOSSimulatorHelpers.swipeDown();
-            } else {
-                DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationPage),
-                        500, 50, 10, 50, 90);
-            }
-        }
-    }
-
     public void typeMessage(String message, boolean shouldSend) throws Exception {
         final FBElement convoInput = (FBElement) getElement(fbNameConversationInput,
                 "Conversation input is not visible after the timeout");
@@ -495,7 +484,7 @@ public class ConversationViewPage extends IOSPage {
         return containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
     }
 
-    public BufferedImage  getAssetContainerStateScreenshot(int index) throws Exception {
+    public BufferedImage getAssetContainerStateScreenshot(int index) throws Exception {
         final By locator = By.xpath(xpathStrAssetContainerByIndex.apply(index));
         final BufferedImage containerScreen = this.getElementScreenshot(getElement(locator)).orElseThrow(() ->
                 new IllegalStateException("Cannot take a screenshot of asset container"));
@@ -1078,7 +1067,7 @@ public class ConversationViewPage extends IOSPage {
     public void tapViewButton(String name) throws Exception {
         final By locator = getViewButtonLocatorByName(name);
         getElement(locator).click();
-     }
+    }
 
     public void tapThisDeviceLink() throws Exception {
         getElement(nameThisDeviceLink).click();
@@ -1098,5 +1087,12 @@ public class ConversationViewPage extends IOSPage {
 
     public void setMessageExpirationTimer(String value) throws Exception {
         ((FBElement) getElement(fbClassPickerWheel)).setValue(value);
+    }
+
+    public void scrollToTheTop() throws Exception {
+        final FBElement dstCanvas = (FBElement) getElement(fbClassConversationViewRoot);
+        for (int i = 0; i < 2; i++) {
+            dstCanvas.scrollUp();
+        }
     }
 }

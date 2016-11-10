@@ -26,13 +26,13 @@ Feature: Rich Media
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I tap on text input
     And I tap on media container in conversation view
-    And I scroll to the bottom of the conversation
+    And I scroll to the top of the conversation
     And I pause playing the media in media bar
     Then I see media is paused on Media Bar
     And I tap Play in media bar
@@ -49,15 +49,15 @@ Feature: Rich Media
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I scroll to the bottom of the conversation
     And I tap on media container in conversation view
-    And I scroll to the bottom of the conversation
+    And I scroll to the top of the conversation
     And I tap on the media bar
-    Then I see conversation view is scrolled back to the playing media link <SoundCloudLink>
+    Then I see media container <SoundCloudLink> in conversation view
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                   |
@@ -68,13 +68,13 @@ Feature: Rich Media
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
+    Given I see conversations list
     And I tap on contact name <Contact>
     And I scroll to the bottom of the conversation
     When I tap on media container in conversation view
-    And I scroll to the bottom of the conversation
+    And I scroll to the top of the conversation
     Then I wait up to 35 seconds for media bar to disappear
 
     Examples:
@@ -86,13 +86,14 @@ Feature: Rich Media
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Name> sends 40 encrypted messages to user <Contact1>
     Given User <Name> sends encrypted message "<SoundCloudLink>" to user <Contact1>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I scroll to the bottom of the conversation
     And I tap on media container in conversation view
-    When I scroll to the bottom of the conversation
+    When I scroll to the top of the conversation
+    And I scroll to the bottom of the conversation
     Then I do not see media bar in the conversation view
 
     Examples:
@@ -104,11 +105,11 @@ Feature: Rich Media
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User Myself sends 40 encrypted messages to user <Contact1>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact1>
     Given User Myself sends 40 encrypted messages to user <Contact2>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact2>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I tap on media container in conversation view
     And I navigate back to conversations list
@@ -130,8 +131,8 @@ Feature: Rich Media
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I remember media container state
     And I tap on media container in conversation view
