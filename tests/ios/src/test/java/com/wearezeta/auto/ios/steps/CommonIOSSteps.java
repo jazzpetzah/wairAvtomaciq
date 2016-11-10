@@ -154,6 +154,11 @@ public class CommonIOSSteps {
             capabilities.setCapability("realDeviceLogger",
                     "/usr/local/lib/node_modules/deviceconsole/deviceconsole");
             capabilities.setCapability("showXcodeLog", true);
+            if (CommonUtils.isRunningInJenkinsNetwork() && !new File(KEYCHAIN_PATH).exists()) {
+                throw new IllegalStateException(
+                        String.format("The default keychain file does not exist at '%s'", KEYCHAIN_PATH)
+                );
+            }
             capabilities.setCapability("keychainPath", KEYCHAIN_PATH);
             capabilities.setCapability("keychainPassword", KEYCHAIN_PASSWORD);
         } else {
