@@ -1,13 +1,10 @@
 package com.wearezeta.auto.ios.pages.details_overlay;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
-import java.util.function.Function;
 
 public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
     protected static final By nameXButton = MobileBy.AccessibilityId("OtherUserProfileCloseButton");

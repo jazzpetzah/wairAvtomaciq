@@ -115,7 +115,7 @@ Feature: Connect
     And I tap input field on Search UI page
     And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
-    Then I see <Contact1> name on Single user Pending incoming connection page
+    Then I see <Contact1> name on Group participant Pending incoming connection page
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  |
@@ -144,7 +144,7 @@ Feature: Connect
     And I tap input field on Search UI page
     And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
-    Then I see <Contact1> name on Single user Pending incoming connection page
+    Then I see <Contact1> name on Group participant Pending incoming connection page
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  |
