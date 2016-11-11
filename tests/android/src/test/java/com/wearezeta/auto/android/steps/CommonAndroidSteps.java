@@ -1617,9 +1617,11 @@ public class CommonAndroidSteps {
     @Then("^I (do not )?see No Internet bar in (\\d+) seconds?$")
     public void ISeeNoInternetBar(String shouldNotSee, int timeoutSeconds) throws Exception {
         if (shouldNotSee == null) {
-            pagesCollection.getCommonPage().waitUntilNoInternetBarVisible(timeoutSeconds);
+            Assert.assertTrue(String.format("No Internet bar is not visible after %d seconds timeout", timeoutSeconds),
+                    pagesCollection.getCommonPage().waitUntilNoInternetBarVisible(timeoutSeconds));
         } else {
-            pagesCollection.getCommonPage().waitUntilNoInternetBarInvisible(timeoutSeconds);
+            Assert.assertTrue(String.format("No Internet bar is still visible after %d seconds timeout", timeoutSeconds),
+                    pagesCollection.getCommonPage().waitUntilNoInternetBarInvisible(timeoutSeconds));
         }
     }
 
@@ -1826,7 +1828,7 @@ public class CommonAndroidSteps {
      */
     @When("^I unregister GCM push token in (\\d+) seconds$")
     public void IUnresgisterGCMToekn(int timeoutSeconds) throws Exception {
-        Optional<String> pushToken = CommonUtils.waitUntil( timeoutSeconds,
+        Optional<String> pushToken = CommonUtils.waitUntil(timeoutSeconds,
                 CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
                 () -> {
                     String GCMTokenOutput = AndroidLogListener.getInstance(ListenerType.GCMToken).getStdOut();
