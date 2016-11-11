@@ -23,13 +23,12 @@ public class SketchPageSteps {
      */
     @When("^I draw a sketch with (\\d+) colors? on [Ss]ketch page$")
     public void IDrawSketch(int numColors) throws Exception {
-        // Should skip first emoji selection.
-        if (numColors >= SketchPage.SketchColor.values().length) {
+        if (numColors > SketchPage.SketchColor.values().length) {
             throw new IllegalStateException(String.format("The number colors should be less than %d",
                     SketchPage.SketchColor.values().length));
         }
 
-        for (int i = 1; i <= numColors; i++) {
+        for (int i = 0; i < numColors; i++) {
             getSketchPage().setColor(SketchPage.SketchColor.values()[i]);
             getSketchPage().drawRandomLines(1);
         }
