@@ -191,8 +191,7 @@ Feature: Calling
     Given I see Conversations list with conversations
     When I minimize the application
     And <Contact1>,<Contact2> calls <GroupChatName>
-    And I wait for 10 seconds
-    And I check if Wire process is still running
+    And I wait for 30 seconds
     Then I wait up to <Timeout> seconds for incoming call from <GroupChatName>
     When I swipe to accept the call
     And I see ongoing call
