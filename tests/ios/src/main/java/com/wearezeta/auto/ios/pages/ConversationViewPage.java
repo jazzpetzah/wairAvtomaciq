@@ -49,7 +49,7 @@ public class ConversationViewPage extends IOSPage {
     private static final String xpathStrAllEntries = "//XCUIElementTypeTable/XCUIElementTypeCell";
     private static final By xpathAllEntries = By.xpath(xpathStrAllEntries);
     private static final String xpathStrRecentEntry = xpathStrAllEntries + "[1]";
-    private static final By xpathRecentEntry = By.xpath(xpathStrRecentEntry);
+    private static final By fbXpathRecentEntry = FBBy.xpath(xpathStrRecentEntry);
 
     private static final By fbClassConversationViewRoot = FBBy.className("XCUIElementTypeTable");
 
@@ -692,7 +692,7 @@ public class ConversationViewPage extends IOSPage {
 
     public void scrollToTheBottom() throws Exception {
         getElement(fbNameConversationInput).click();
-        if (!isLocatorDisplayed(xpathRecentEntry)) {
+        if (!isLocatorDisplayed(fbXpathRecentEntry)) {
             throw new IllegalStateException("Failed to scroll to the bottom of the conversation");
         }
     }
@@ -967,7 +967,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapAtRecentMessage(int pWidth, int pHeight) throws Exception {
-        DriverUtils.tapOnPercentOfElement(getDriver(), getElement(xpathRecentEntry), pWidth, pHeight);
+        this.tapByPercentOfElementSize((FBElement) getElement(fbXpathRecentEntry), pWidth, pHeight);
     }
 
     public void tapImageButton(String buttonName) throws Exception {
