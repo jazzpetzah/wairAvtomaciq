@@ -156,6 +156,8 @@ Feature: Notifications
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
+    Given I see Conversations list with name <Contact>
+    When I tap on conversation name <Contact>
     And I minimize the application
     And User <Contact> sends encrypted message <Message> to user Myself
     Then I see the message "<Message>" in push notifications list

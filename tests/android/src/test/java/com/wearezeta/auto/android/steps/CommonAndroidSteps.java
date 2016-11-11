@@ -85,6 +85,7 @@ public class CommonAndroidSteps {
     //TODO: should I move this list to configuration file?
     private static final String[] wirePackageList = {"com.wire.candidate", "com.wire.x", "com.waz.zclient.dev", "com.wire" +
             ".qaavs"};
+    private static final int FILE_SIZE_CALCULATION_DIFFERENCE_IN_BYTES = 100;
 
     private static String getUrl() throws Exception {
         return CommonUtils.getAndroidAppiumUrlFromConfig(CommonAndroidSteps.class);
@@ -1431,23 +1432,19 @@ public class CommonAndroidSteps {
     @Then("^I wait up (\\d+) seconds? until (.*) file having name \"(.*)\" is downloaded to the device$")
     public void TheXFileSavedInDownloadFolder(int timeoutSeconds, String size, String fileFullName)
             throws Exception {
-        Optional<FileInfo> fileInfo = CommonUtils.waitUntil(timeoutSeconds,
+        long expectedSize = CommonUtils.getFileSizeFromString(size);
+        final String filePath = AndroidCommonUtils.getBuildPathFromConfig(CommonAndroidSteps.class) +
+                File.separator + fileFullName;
+
+        boolean fileDownloaded = CommonUtils.waitUntilTrue(timeoutSeconds,
                 CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS,
                 () -> {
                     AndroidCommonUtils.pullFileFromSdcardDownload(fileFullName);
-                    return CommonUtils.retrieveFileInfo(AndroidCommonUtils.getBuildPathFromConfig(CommonAndroidSteps.class) +
-                            File.separator + fileFullName);
+                    FileInfo fileInfo = CommonUtils.retrieveFileInfo(filePath);
+                    return Math.abs(expectedSize - fileInfo.getFileSize()) < FILE_SIZE_CALCULATION_DIFFERENCE_IN_BYTES;
                 });
 
-        fileInfo.orElseThrow(() -> new IllegalStateException(String.format("File '%s' doesn't exist after %s seconds",
-                fileFullName, timeoutSeconds)));
-
-        long expectedSize = CommonUtils.getFileSizeFromString(size);
-        long actualSize = fileInfo.get().getFileSize();
-
-        Assert.assertEquals(String.format("File name should be %s", fileFullName), fileFullName, fileInfo.get().getFileName());
-        Assert.assertTrue(String.format("File size should around %s bytes, but it is %s", expectedSize, actualSize),
-                Math.abs(expectedSize - actualSize) < 100);
+        Assert.assertTrue("File saved to device failed", fileDownloaded);
     }
 
     /**
