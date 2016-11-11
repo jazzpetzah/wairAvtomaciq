@@ -432,11 +432,32 @@ public class ConversationViewPageSteps {
      *
      * @param buttonName which could be Sketch or Fullscreen
      * @throws Exception
-     * @step. ^I tap on (Sketch|Fullscreen) button on the recent (?:image|picture) in the conversation view$
+     * @step. ^I tap on (Sketch|Sketch Emoji|Sketch Text|Fullscreen) button on the recent (?:image|picture) in the conversation view$
      */
-    @When("^I tap on (Sketch|Fullscreen) button on the recent (?:image|picture) in the conversation view$")
+    @When("^I tap on (Sketch|Sketch Emoji|Sketch Text|Fullscreen) button on the recent (?:image|picture) in the conversation view$")
     public void ITapImageContainerButton(String buttonName) throws Exception {
         getConversationViewPage().tapImageContainerButton(buttonName);
+    }
+
+
+    /**
+     * Verify the sketch buttons and fullscreen button is visible in Image Container
+     *
+     * @param shouldNotSee equals null means the button should be visible
+     * @param buttonName the name of button
+     * @throws Exception
+     * @step. ^I( do not)? see (Sketch|Sketch Emoji|Sketch Text|Fullscreen) button on the recent (?:image|picture) in the conversation view$
+     */
+    @Then("^I( do not)? see (Sketch|Sketch Emoji|Sketch Text|Fullscreen) button on the recent (?:image|picture) in the conversation view$")
+    public void ISeeImageContainerButton(String shouldNotSee, String buttonName) throws Exception {
+        if(shouldNotSee == null) {
+            Assert.assertTrue(String.format("The %s button in Image container is not visible", buttonName),
+                    getConversationViewPage().waitUntilImageContainerButtonVisible(buttonName));
+        } else {
+            Assert.assertTrue(String.format("The %s button in Image container is still visible", buttonName),
+                    getConversationViewPage().waitUntilImageContainerButtonInvisible(buttonName));
+        }
+
     }
 
     /**

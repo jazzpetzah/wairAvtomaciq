@@ -14,43 +14,8 @@ public class TabletTakePicturePage extends AndroidTabletPage {
         return this.getAndroidPageInstance(TakePicturePage.class);
     }
 
-    public void confirm() throws Exception {
-        getAndroidTakePicturePage().confirm();
-    }
-
-    public void cancel() throws Exception {
-        getAndroidTakePicturePage().cancel();
-    }
-
-    public void takePhoto() throws Exception {
-        getAndroidTakePicturePage().takePhoto();
-    }
-
-    public void tapChangePhotoButton() throws Exception {
-        getAndroidTakePicturePage().tapChangePhotoButton();
-    }
-
-    public void openGalleryFromCameraView() throws Exception {
-        getAndroidTakePicturePage().openGalleryFromCameraView();
-    }
-
-    public void closeFullScreenImage() throws Exception {
-        getAndroidTakePicturePage().closeFullScreenImage();
-    }
-
-    public void tapCloseTakePictureViewButton() throws Exception {
-        getAndroidTakePicturePage().tapCloseTakePictureViewButton();
-    }
-
-    public boolean tapSwitchCameraButton() throws Exception {
-        return getAndroidTakePicturePage().tapSwitchCameraButton();
-    }
-
-    public void tapSketchOnImageButton() throws Exception {
-        // FIXEME : once AN-4223 fixed or automation find a workaround for tablet rotation issue, should remove this
-        //getAndroidTakePicturePage().tapSketchOnImageButton();
-        throw new IllegalStateException("Based on PR https://github.com/wearezeta/zclient-android/pull/3380, " +
-                "we will skip the image confirm process");
+    public void tapOnButton(String buttonName) throws Exception {
+        getAndroidTakePicturePage().tapOnButton(buttonName);
     }
 
     public boolean isTakePhotoButtonVisible() throws Exception {

@@ -23,17 +23,62 @@ public class TakePicturePage extends AndroidPage {
 
     public static final By xpathCancelButton = By.xpath("//*[@id='ttv__confirmation__cancel' and @value='CANCEL']");
 
-    private static final By xpathSketchImagePaintButton = By.xpath("//*[@value='Add a sketch']");
+    private static final By idSketchImagePaintButton = By.id("gtv__preview__drawing_button__sketch");
+    private static final By idSketchEmojiPaintButton = By.id("gtv__preview__drawing_button__emoji");
+    private static final By idSketchTextPaintButton = By.id("gtv__preview__drawing_button__text");
 
     public TakePicturePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
-    public void tapCloseTakePictureViewButton() throws Exception {
+    public void tapOnButton(String buttonName) throws Exception {
+        switch (buttonName.toLowerCase()) {
+            case "take photo":
+                takePhoto();
+                break;
+            case "change photo":
+                tapChangePhotoButton();
+                break;
+            case "confirm":
+                confirm();
+                break;
+            case "cancel":
+                cancel();
+                break;
+            case "gallery camera":
+                openGalleryFromCameraView();
+                break;
+            case "image close":
+                closeFullScreenImage();
+                break;
+            case "close":
+                tapCloseTakePictureViewButton();
+                break;
+            case "switch camera":
+                if (!tapSwitchCameraButton()) {
+                    throw new IllegalArgumentException(
+                            "Device under test does not have front camera. " + "Skipping all the further verification...");
+                }
+                break;
+            case "sketch image paint":
+                tapSketchOnImageButton();
+                break;
+            case "sketch emoji paint":
+                tapSketchEmojiOnImageButton();
+                break;
+            case "sketch text paint":
+                tapSketchTextOnImageButton();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name: '%s'", buttonName));
+        }
+    }
+
+    private void tapCloseTakePictureViewButton() throws Exception {
         getElement(idCloseTakePictureViewButton).click();
     }
 
-    public void tapChangePhotoButton() throws Exception {
+    private void tapChangePhotoButton() throws Exception {
         getElement(idChangePhotoBtn).click();
     }
 
@@ -57,16 +102,16 @@ public class TakePicturePage extends AndroidPage {
      * @return false if Take Photo button is not visible after Switch Camera button is clicked
      * @throws Exception
      */
-    public boolean tapSwitchCameraButton() throws Exception {
+    private boolean tapSwitchCameraButton() throws Exception {
         getElement(idSwitchCameraButton).click();
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathTakePhotoButton);
     }
 
-    public void openGalleryFromCameraView() throws Exception {
+    private void openGalleryFromCameraView() throws Exception {
         getElement(idGalleryCameraBtn, "Gallery within camera is still not visible").click();
     }
 
-    public void closeFullScreenImage() throws Exception {
+    private void closeFullScreenImage() throws Exception {
         // Sometimes X button is opened automatically after some timeout
         final int MAX_TRIES = 4;
         int ntry = 1;
@@ -77,7 +122,7 @@ public class TakePicturePage extends AndroidPage {
         getElement(idCloseImageBtn).click();
     }
 
-    public void takePhoto() throws Exception {
+    private void takePhoto() throws Exception {
         final WebElement btn = getElement(xpathTakePhotoButton, "Take Photo button is not visible");
         if (!DriverUtils.waitUntilElementClickable(getDriver(), btn)) {
             throw new IllegalStateException("Take Photo button is not clickable");
@@ -88,7 +133,7 @@ public class TakePicturePage extends AndroidPage {
         }
     }
 
-    public void confirm() throws Exception {
+    private void confirm() throws Exception {
         final WebElement okBtn = getElement(xpathConfirmOKButton, "OK button is not visible");
         if (!DriverUtils.waitUntilElementClickable(getDriver(), okBtn)) {
             throw new IllegalStateException("OK button is not clickable");
@@ -99,7 +144,7 @@ public class TakePicturePage extends AndroidPage {
         }
     }
 
-    public void cancel() throws Exception {
+    private void cancel() throws Exception {
         final WebElement cancelBtn = getElement(xpathCancelButton, "Cancel button is not visible");
         if (!DriverUtils.waitUntilElementClickable(getDriver(), cancelBtn)) {
             throw new IllegalStateException("Cancel button is not clickable");
@@ -110,8 +155,16 @@ public class TakePicturePage extends AndroidPage {
         }
     }
 
-    public void tapSketchOnImageButton() throws Exception {
-        getElement(xpathSketchImagePaintButton, "Draw sketch on image button is not visible").click();
+    private void tapSketchOnImageButton() throws Exception {
+        getElement(idSketchImagePaintButton, "Draw sketch on image button is not visible").click();
+    }
+
+    private void tapSketchEmojiOnImageButton() throws Exception {
+        getElement(idSketchEmojiPaintButton, "Draw emoji sketch on image button is not visible").click();
+    }
+
+    private void tapSketchTextOnImageButton() throws Exception {
+        getElement(idSketchTextPaintButton, "Draw text sketch on image button is not visible").click();
     }
 
     public boolean isGalleryCameraButtonVisible() throws Exception {
@@ -121,4 +174,5 @@ public class TakePicturePage extends AndroidPage {
     public boolean isGalleryCameraButtonInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), idGalleryCameraBtn);
     }
+
 }

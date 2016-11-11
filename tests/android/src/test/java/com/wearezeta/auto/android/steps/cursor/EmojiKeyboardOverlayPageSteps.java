@@ -34,6 +34,17 @@ public class EmojiKeyboardOverlayPageSteps {
     }
 
     /**
+     * Verify I see any emoji item
+     *
+     * @throws Exception
+     * @step. ^I see any Emoji item in Emoji keyboard$
+     */
+    @Then("^I see any Emoji item in Emoji keyboard$")
+    public void ISeeAnyEmojiItem() throws Exception {
+        Assert.assertTrue("I don't see any Emoji item", getCursorEmojiOverlayPage().waitUntilAnyEmojiItemVisible());
+    }
+
+    /**
      * Tap on n-th emoji on Cursor Emoji Keyboard
      *
      * @param index the index
