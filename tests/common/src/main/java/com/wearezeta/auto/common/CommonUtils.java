@@ -498,8 +498,9 @@ public class CommonUtils {
             executeUIShellScript(new String[]{String.format("mkdir -p $(dirname \"%s\")", output.getCanonicalPath()),
                     String.format("%s/simshot \"%s\"", getIOSToolsRoot(CommonUtils.class), output.getCanonicalPath())})
                     .get(SCREENSHOT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-        } finally {
+        } catch (TimeoutException e) {
             UnixProcessHelpers.killProcessesGracefully("simshot");
+            throw e;
         }
     }
 
@@ -573,6 +574,9 @@ public class CommonUtils {
                 return null;
             } finally {
                 this.script.delete();
+                if (this.flag.exists()) {
+                    this.flag.delete();
+                }
             }
         }
     }

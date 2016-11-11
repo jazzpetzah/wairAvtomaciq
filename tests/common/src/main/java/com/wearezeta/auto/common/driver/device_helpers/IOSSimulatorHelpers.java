@@ -54,15 +54,11 @@ public class IOSSimulatorHelpers {
      * @throws Exception
      */
     public static void swipe(double startX, double startY, double endX, double endY) throws Exception {
-        try {
-            CommonUtils.executeUIShellScript(new String[]{
-                    String.format("/usr/bin/python '%s/%s' %.2f %.2f %.2f %.2f",
-                            getIOSToolsRoot(IOSSimulatorHelpers.class), SWIPE_SCRIPT_NAME,
-                            startX, startY, endX, endY)
-            }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
-        } finally {
-            UnixProcessHelpers.killProcessesGracefully("python");
-        }
+        CommonUtils.executeUIShellScript(new String[]{
+                String.format("/usr/bin/python '%s/%s' %.2f %.2f %.2f %.2f",
+                        getIOSToolsRoot(IOSSimulatorHelpers.class), SWIPE_SCRIPT_NAME,
+                        startX, startY, endX, endY)
+        }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 
     /**
@@ -75,15 +71,11 @@ public class IOSSimulatorHelpers {
      */
     public static void swipe(double startX, double startY, double endX, double endY,
                              long durationMillis) throws Exception {
-        try {
-            CommonUtils.executeUIShellScript(new String[]{
-                    String.format("/usr/bin/python '%s/%s' %.2f %.2f %.2f %.2f %d",
-                            getIOSToolsRoot(IOSSimulatorHelpers.class), SWIPE_SCRIPT_NAME,
-                            startX, startY, endX, endY, durationMillis)
-            }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
-        } finally {
-            UnixProcessHelpers.killProcessesGracefully("python");
-        }
+        CommonUtils.executeUIShellScript(new String[]{
+                String.format("/usr/bin/python '%s/%s' %.2f %.2f %.2f %.2f %d",
+                        getIOSToolsRoot(IOSSimulatorHelpers.class), SWIPE_SCRIPT_NAME,
+                        startX, startY, endX, endY, durationMillis)
+        }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 
     public static void swipeDown() throws Exception {
@@ -95,25 +87,17 @@ public class IOSSimulatorHelpers {
     }
 
     public static void doubleClickAt(String relativeX, String relativeY) throws Exception {
-        try {
-            CommonUtils.executeUIShellScript(new String[]{
-                    String.format("/usr/bin/python '%s/%s' %s %s",
-                            getIOSToolsRoot(IOSSimulatorHelpers.class), DOUBLE_CLICK_SCRIPT_NAME, relativeX, relativeY)
-            }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
-        } finally {
-            UnixProcessHelpers.killProcessesGracefully("python");
-        }
+        CommonUtils.executeUIShellScript(new String[]{
+                String.format("/usr/bin/python '%s/%s' %s %s",
+                        getIOSToolsRoot(IOSSimulatorHelpers.class), DOUBLE_CLICK_SCRIPT_NAME, relativeX, relativeY)
+        }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 
     public static void clickAt(String relativeX, String relativeY, String durationSeconds) throws Exception {
-        try {
-            CommonUtils.executeUIShellScript(new String[]{
-                    String.format("/usr/bin/python '%s/%s' %s %s %s",
-                            getIOSToolsRoot(IOSSimulatorHelpers.class), CLICK_SCRIPT_NAME, relativeX, relativeY, durationSeconds)
-            }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
-        } finally {
-            UnixProcessHelpers.killProcessesGracefully("python");
-        }
+        CommonUtils.executeUIShellScript(new String[]{
+                String.format("/usr/bin/python '%s/%s' %s %s %s",
+                        getIOSToolsRoot(IOSSimulatorHelpers.class), CLICK_SCRIPT_NAME, relativeX, relativeY, durationSeconds)
+        }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 
     public static void activateWindow() throws Exception {
