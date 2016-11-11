@@ -60,9 +60,8 @@ public class IOSSimulatorHelpers {
                             getIOSToolsRoot(IOSSimulatorHelpers.class), SWIPE_SCRIPT_NAME,
                             startX, startY, endX, endY)
             }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
-        } catch (TimeoutException e) {
+        } finally {
             UnixProcessHelpers.killProcessesGracefully("python");
-            throw e;
         }
     }
 
@@ -82,9 +81,8 @@ public class IOSSimulatorHelpers {
                             getIOSToolsRoot(IOSSimulatorHelpers.class), SWIPE_SCRIPT_NAME,
                             startX, startY, endX, endY, durationMillis)
             }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
-        } catch (TimeoutException e) {
+        } finally {
             UnixProcessHelpers.killProcessesGracefully("python");
-            throw e;
         }
     }
 
@@ -102,9 +100,8 @@ public class IOSSimulatorHelpers {
                     String.format("/usr/bin/python '%s/%s' %s %s",
                             getIOSToolsRoot(IOSSimulatorHelpers.class), DOUBLE_CLICK_SCRIPT_NAME, relativeX, relativeY)
             }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
-        } catch (TimeoutException e) {
+        } finally {
             UnixProcessHelpers.killProcessesGracefully("python");
-            throw e;
         }
     }
 
@@ -114,9 +111,8 @@ public class IOSSimulatorHelpers {
                     String.format("/usr/bin/python '%s/%s' %s %s %s",
                             getIOSToolsRoot(IOSSimulatorHelpers.class), CLICK_SCRIPT_NAME, relativeX, relativeY, durationSeconds)
             }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
-        } catch (TimeoutException e) {
+        } finally {
             UnixProcessHelpers.killProcessesGracefully("python");
-            throw e;
         }
     }
 

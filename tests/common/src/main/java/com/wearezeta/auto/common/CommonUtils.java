@@ -371,13 +371,8 @@ public class CommonUtils {
         return getValueFromConfig(c, "hasBackendSelection").toLowerCase().equals("true");
     }
 
-    public static String getAndroidPackageFromConfig(Class<?> c) {
-        try {
-            return getValueFromConfig(c, "package");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    public static String getAndroidPackageFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "package");
     }
 
     public static String generateGUID() {
@@ -503,9 +498,8 @@ public class CommonUtils {
             executeUIShellScript(new String[]{String.format("mkdir -p $(dirname \"%s\")", output.getCanonicalPath()),
                     String.format("%s/simshot \"%s\"", getIOSToolsRoot(CommonUtils.class), output.getCanonicalPath())})
                     .get(SCREENSHOT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-        } catch (TimeoutException e) {
+        } finally {
             UnixProcessHelpers.killProcessesGracefully("simshot");
-            throw e;
         }
     }
 
