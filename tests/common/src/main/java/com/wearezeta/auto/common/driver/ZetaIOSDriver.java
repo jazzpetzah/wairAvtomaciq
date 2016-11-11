@@ -46,11 +46,15 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
 
     public ZetaIOSDriver(URL remoteAddress, Capabilities desiredCapabilities) {
         super(remoteAddress, desiredCapabilities);
-        if (desiredCapabilities.getCapability("udid") != null) {
+        if (isRealDevice()) {
             verifyLockdownPermissions();
         }
         initOSVersionString();
         this.fbDriverAPI = new FBDriverAPI();
+    }
+
+    public boolean isRealDevice() {
+        return this.getCapabilities().getCapability("udid") != null;
     }
 
     private FBDriverAPI getFbDriverAPI() {
@@ -249,6 +253,14 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
             getFbDriverAPI().deactivateApp(seconds);
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
+        }
+    }
+
+    public void forceAcceptAlert() {
+        try {
+            this.fbDriverAPI.acceptAlert();
+        } catch (Exception e) {
+            // just ignore
         }
     }
 
