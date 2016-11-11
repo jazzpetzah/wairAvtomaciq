@@ -212,7 +212,7 @@ Feature: Ephemeral
       | Login      | Password      | Name      | Contact   | OriginalMessage | EditedMessage | Time | TimeLong   | TimeShortUnit |
       | user1Email | user1Password | user1Name | user2Name | edit me         | edited        | 30   | 30 seconds | s             |
 
-  @C261733 @ephemeral @regression
+  @C261733 @ephemeral @smoke
   Scenario Outline: Verify sending different types of ephemeral messages (ping, picture, video, audio, file) in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -523,7 +523,7 @@ Feature: Ephemeral
 #       | user1Email | user1Password | user1Name | user2Name | user3Name | groupEph | user2Email | 60   | 1    | 1 minute   | m             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"group\",\"is_ephemeral\":true,\"ephemeral_time\":60,\"with_bot\":false}"  |
 #       | user1Email | user1Password | user1Name | user2Name | user3Name | groupEph | user2Email | 300  | 5    | 5 minutes  | m             | Hello   | media.completed_media_action | {\"action\":\"text\",\"conversation_type\":\"group\",\"is_ephemeral\":true,\"ephemeral_time\":300,\"with_bot\":false}" |
 
-  @C318625 @ephemeral @regression
+  @C318625 @ephemeral @smoke
   Scenario Outline: Verify switching on/off ephemeral message in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
