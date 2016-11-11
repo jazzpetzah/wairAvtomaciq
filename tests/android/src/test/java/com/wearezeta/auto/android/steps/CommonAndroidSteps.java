@@ -723,6 +723,19 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * Check if wire is running
+     *
+     * @throws Exception
+     * @step. ^I check if Wire process is still running$
+     */
+    @And("^I check if Wire process is still running$")
+    public void CheckWireProcess() throws Exception {
+        if (!AndroidCommonUtils.verifyWireProcessIsRunning()) {
+            throw new PendingException("Seems wire process is not running");
+        }
+    }
+
+    /**
      * User A blocks user B
      *
      * @param blockAsUserNameAlias The user to do the blocking

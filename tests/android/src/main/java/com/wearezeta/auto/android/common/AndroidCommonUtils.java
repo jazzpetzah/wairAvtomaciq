@@ -789,6 +789,14 @@ public class AndroidCommonUtils extends CommonUtils {
         return pattern.matcher(output).find();
     }
 
+    public static boolean verifyWireProcessIsRunning() throws Exception {
+        String output = AndroidCommonUtils.getAdbOutput("shell 'ps'");
+        final Pattern pattern = Pattern.compile("\\b" + Pattern.quote(CommonUtils.getAndroidPackageFromConfig
+                (AndroidCommonUtils.class)) +"\\b");
+        System.out.println("pattern = " + pattern.toString());
+        return pattern.matcher(output).find();
+    }
+
     public static boolean verifyGoogleGCMServiceInstalled() throws Exception {
         String output = AndroidCommonUtils.getAdbOutput("shell 'pm list packages'");
         final Pattern pattern = Pattern.compile("\\b" + Pattern.quote("com.google.android.gms") + "\\b");
