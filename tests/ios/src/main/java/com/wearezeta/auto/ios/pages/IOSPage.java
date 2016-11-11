@@ -71,7 +71,7 @@ public abstract class IOSPage extends BasePage {
     private static final Function<String, String> xpathStrAddressBarByUrlPart = urlPart ->
             String.format("//XCUIElementTypeTextField[@name='Address' and contains(@value, '%s')]", urlPart);
 
-    private static final By nameDefaultMapApplication = MobileBy.AccessibilityId("CalloutArrow.png");
+    private static final By nameDefaultMapApplication = MobileBy.AccessibilityId("Tracking");
 
     private IOSKeyboard onScreenKeyboard;
 
@@ -539,7 +539,7 @@ public abstract class IOSPage extends BasePage {
             }
             Thread.sleep(ELEMENT_QUERY_DELAY_MS);
         } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
-        //printPageSource();
+        printPageSource();
         return false;
     }
 
