@@ -305,6 +305,7 @@ public class ConversationViewPage extends IOSPage {
         final Optional<WebElement> backBtn = getElementIfDisplayed(nameConversationBackButton);
         if (backBtn.isPresent()) {
             backBtn.get().click();
+            isElementInvisible(backBtn.get(), 3);
         } else {
             log.warn("Back button is not visible. Probably, the conversations list is already visible");
         }

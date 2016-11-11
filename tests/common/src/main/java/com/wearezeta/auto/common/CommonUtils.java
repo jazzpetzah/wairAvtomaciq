@@ -625,14 +625,19 @@ public class CommonUtils {
         return InetAddress.getLocalHost().getHostAddress();
     }
 
+    private static Boolean isInJenkinsNetwork = null;
+
     public static boolean isRunningInJenkinsNetwork() throws UnknownHostException {
-        final Pattern ip4ParsePattern = Pattern.compile("(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)");
-        final Matcher m = ip4ParsePattern.matcher(getLocalIP4Address());
-        return m.find()
-                && Integer.parseInt(m.group(1)) == 192
-                && Integer.parseInt(m.group(2)) == 168
-                && Integer.parseInt(m.group(3)) == 2
-                && Integer.parseInt(m.group(4)) < 200;
+        if (isInJenkinsNetwork == null) {
+            final Pattern ip4ParsePattern = Pattern.compile("(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)");
+            final Matcher m = ip4ParsePattern.matcher(getLocalIP4Address());
+            isInJenkinsNetwork = m.find()
+                    && Integer.parseInt(m.group(1)) == 192
+                    && Integer.parseInt(m.group(2)) == 168
+                    && Integer.parseInt(m.group(3)) == 2
+                    && Integer.parseInt(m.group(4)) < 200;
+        }
+        return isInJenkinsNetwork;
     }
 
     private final static int MAC_GROUPS = 6;

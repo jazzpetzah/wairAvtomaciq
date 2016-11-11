@@ -364,13 +364,9 @@ public class CommonIOSSteps {
             e.printStackTrace();
         }
 
-        FastLoginContainer.getInstance().reset();
-
-        pagesCollection.clearAllPages();
-
         try {
             if (!scenario.getStatus().equals(Result.PASSED) && getIsSimulatorFromConfig(getClass())) {
-                log.debug(IOSSimulatorHelpers.getLogsAndCrashes() + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                log.debug(IOSSimulatorHelpers.getLogsAndCrashes());
             } else if (scenario.getSourceTagNames().contains("@performance")) {
                 IOSLogListener.forceStopAll();
                 IOSLogListener.writeDeviceLogsToConsole(IOSLogListener.getInstance());
@@ -381,17 +377,26 @@ public class CommonIOSSteps {
 
         try {
             if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+                if (!scenario.getStatus().equals(Result.PASSED) && pagesCollection.hasPages()) {
+                    pagesCollection.getCommonPage().printPageSource();
+                }
                 PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        FastLoginContainer.getInstance().reset();
+
+        pagesCollection.clearAllPages();
+
         try {
             usrMgr.resetUsers();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        log.debug("\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     }
 
     /**
