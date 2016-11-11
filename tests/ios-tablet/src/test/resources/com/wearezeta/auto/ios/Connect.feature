@@ -324,7 +324,7 @@ Feature: Connect
     And I tap Send Invite button on Search UI page
     And I tap Invite Others button on Contacts UI page
     And I tap Copy Invite button on Search UI page
-    And I tap Close Group Participants Picker button on Search UI page
+    And I tap X button on Contacts UI page
     And I tap X button on Search UI page
     And I tap on contact name <Contact>
     And I tap on text input
@@ -629,12 +629,12 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search UI
-    And I accept alert if visible
-    And I tap Send Invite button on Search UI page
+    Given I open search UI
+    Given I accept alert if visible
+    When I tap Send Invite button on Search UI page
     And I tap Invite Others button on Contacts UI page
     And I tap Copy Invite button on Search UI page
-    And I tap Close Group Participants Picker button on Search UI page
+    And I tap X button on Contacts UI page
     And I tap X button on Search UI page
     And I tap on contact name <Contact>
     And I tap on text input
