@@ -60,7 +60,7 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isCallStatusLabelInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCallStatusLabel);
+        return isLocatorInvisible(nameCallStatusLabel);
     }
 
     public boolean isSecondCallAlertVisible() throws Exception {

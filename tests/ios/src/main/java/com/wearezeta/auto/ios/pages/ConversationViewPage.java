@@ -24,7 +24,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 
@@ -422,7 +421,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void openConversationDetails() throws Exception {
-        DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathAudioCallButton);
+        isLocatorDisplayed(xpathAudioCallButton);
         getElement(xpathConversationDetailsButton).click();
         // Wait for animation
         Thread.sleep(500);
@@ -647,8 +646,8 @@ public class ConversationViewPage extends IOSPage {
                         String.format("contains(@value, '%s')", extension.toUpperCase())
                 )
         ));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), topLabelLocator, timeoutSeconds) &&
-                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), bottomLabelLocator, timeoutSeconds);
+        return isLocatorDisplayed(topLabelLocator, timeoutSeconds) &&
+                isLocatorDisplayed(bottomLabelLocator, timeoutSeconds);
     }
 
     public boolean waitUntilFilePreviewIsVisible(int secondsTimeout, String expectedFileName) throws Exception {

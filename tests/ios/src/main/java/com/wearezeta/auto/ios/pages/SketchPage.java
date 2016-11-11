@@ -5,11 +5,14 @@ import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDragArguments;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.common.driver.DriverUtils;
+import org.openqa.selenium.Dimension;
 
 public class SketchPage extends IOSPage {
     private static final By nameSendButton = MobileBy.AccessibilityId("sendButton");
@@ -33,7 +36,15 @@ public class SketchPage extends IOSPage {
             if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
                 IOSSimulatorHelpers.swipe(startX / 100.0, startY / 100.0, endX / 100.0, endY / 100.0);
             } else {
-                DriverUtils.swipeByCoordinates(getDriver(), 1000, startX, startY, endX, endY);
+                final Dimension screenSize = getDriver().manage().window().getSize();
+                ((FBElement)getElement(FBBy.AccessibilityId(nameStrMainWindow))).dragFromToForDuration(
+                        new FBDragArguments(
+                                startX * screenSize.getWidth() / 100,
+                                startY * screenSize.getHeight() / 100,
+                                endX * screenSize.getWidth() / 100,
+                                endY * screenSize.getHeight() / 100,
+                                3)
+                );
             }
         }
     }

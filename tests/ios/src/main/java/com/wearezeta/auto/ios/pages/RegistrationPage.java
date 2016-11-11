@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
@@ -260,7 +259,7 @@ public class RegistrationPage extends IOSPage {
         this.tapAtTheCenterOfElement(phoneNumberField);
         Thread.sleep(2000);
         phoneNumberField.sendKeys(phoneNumber.withoutPrefix());
-        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConfirmButton, 3)) {
+        if (isLocatorDisplayed(nameConfirmButton, 3)) {
             throw new IllegalStateException("Confirm button is visible, but should be hidden");
         }
     }
