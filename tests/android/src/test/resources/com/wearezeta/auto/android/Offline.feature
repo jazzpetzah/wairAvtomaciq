@@ -50,7 +50,8 @@ Feature: Offline
     And I do not see No Internet bar in <NetworkTimeout> seconds
     And I type the message "<Message2>" and send it by cursor Send button
     Then I see Message status with expected text "<MessageStatusFailed>" in conversation view
-    Then I see Message status with expected text "<MessageStatusOK>" in conversation view
+    And I scroll to the bottom of conversation view
+    And I see Message status with expected text "<MessageStatusOK>" in conversation view
 
     Examples:
       | Name      | Contact   | Message    | NetworkTimeout | Message2 | MessageStatusFailed    | MessageStatusOK |
