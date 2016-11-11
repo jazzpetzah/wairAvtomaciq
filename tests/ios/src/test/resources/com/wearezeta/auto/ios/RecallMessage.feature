@@ -64,7 +64,7 @@ Feature: Recall Message
       | Name      | Contact   | HisDevice | MySecondDevice | FileName                   |
       | user1Name | user2Name | device1   | device2        | FTRANSFER_MENU_DEFAULT_PNG |
 
-  @C202314 @rc @regression @fastLogin @torun
+  @C202314 @rc @regression @fastLogin
   Scenario Outline: Verify delete everywhere works for images
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -86,7 +86,7 @@ Feature: Recall Message
     And I select Delete for Everyone item from Delete menu
     Then I see 0 photos in the conversation view
     And User <Contact> sees the recent message from user Myself via device <HisDevice> is changed in 15 seconds
-    And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in 3 seconds
+    And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in 5 seconds
 
     Examples:
       | Name      | Contact   | HisDevice | MySecondDevice |
