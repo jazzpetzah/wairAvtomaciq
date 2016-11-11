@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDriverAPI;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
@@ -49,7 +50,7 @@ public class ConversationViewPage extends IOSPage {
     private static final String xpathStrAllEntries = "//XCUIElementTypeTable/XCUIElementTypeCell";
     private static final By xpathAllEntries = By.xpath(xpathStrAllEntries);
     private static final String xpathStrRecentEntry = xpathStrAllEntries + "[1]";
-    private static final By xpathRecentEntry = By.xpath(xpathStrRecentEntry);
+    private static final By fbXpathRecentEntry = FBBy.xpath(xpathStrRecentEntry);
 
     private static final By fbClassConversationViewRoot = FBBy.className("XCUIElementTypeTable");
 
@@ -304,6 +305,7 @@ public class ConversationViewPage extends IOSPage {
         final Optional<WebElement> backBtn = getElementIfDisplayed(nameConversationBackButton);
         if (backBtn.isPresent()) {
             backBtn.get().click();
+            isElementInvisible(backBtn.get(), 3);
         } else {
             log.warn("Back button is not visible. Probably, the conversations list is already visible");
         }
@@ -691,13 +693,6 @@ public class ConversationViewPage extends IOSPage {
         return isLocatorInvisible(locator);
     }
 
-    public void scrollToTheBottom() throws Exception {
-        getElement(fbNameConversationInput).click();
-        if (!isLocatorDisplayed(xpathRecentEntry)) {
-            throw new IllegalStateException("Failed to scroll to the bottom of the conversation");
-        }
-    }
-
     public void tapMessageByText(boolean isLongTap, boolean isDoubleTap, String msg) throws Exception {
         final FBElement el = (FBElement) getElement(FBBy.xpath(xpathStrMessageByTextPart.apply(msg)));
         if (isDoubleTap) {
@@ -968,7 +963,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapAtRecentMessage(int pWidth, int pHeight) throws Exception {
-        DriverUtils.tapOnPercentOfElement(getDriver(), getElement(xpathRecentEntry), pWidth, pHeight);
+        this.tapByPercentOfElementSize((FBElement) getElement(fbXpathRecentEntry), pWidth, pHeight);
     }
 
     public void tapImageButton(String buttonName) throws Exception {
@@ -1090,10 +1085,34 @@ public class ConversationViewPage extends IOSPage {
         ((FBElement) getElement(fbClassPickerWheel)).setValue(value);
     }
 
-    public void scrollToTheTop() throws Exception {
+    private static final int MAX_SCROLLS = 2;
+
+    private void scrollTo(FBDriverAPI.ScrollingDirection direction) throws Exception {
         final FBElement dstCanvas = (FBElement) getElement(fbClassConversationViewRoot);
-        for (int i = 0; i < 2; i++) {
-            dstCanvas.scrollUp();
+        for (int i = 0; i < MAX_SCROLLS; i++) {
+            switch (direction) {
+                case UP:
+                    dstCanvas.scrollUp();
+                    break;
+                case DOWN:
+                    dstCanvas.scrollDown();
+                    break;
+                default:
+                    throw new IllegalArgumentException(
+                            String.format("Unsupported scrolling direction '%s'", direction)
+                    );
+            }
+        }
+    }
+
+    public void scrollToTheTop() throws Exception {
+        scrollTo(FBDriverAPI.ScrollingDirection.UP);
+    }
+
+    public void scrollToTheBottom() throws Exception {
+        scrollTo(FBDriverAPI.ScrollingDirection.DOWN);
+        if (!isLocatorDisplayed(fbXpathRecentEntry)) {
+            throw new IllegalStateException("Failed to scroll to the bottom of the conversation");
         }
     }
 }

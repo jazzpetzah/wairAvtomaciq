@@ -3,7 +3,6 @@ package com.wearezeta.auto.ios.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.ContactsUiPage;
 
 import cucumber.api.java.en.Then;
@@ -29,7 +28,7 @@ public class ContactsUiPageSteps {
         Assert.assertTrue("Search on ContactsUI page is not shown",
                 getContactsUiPage().isSearchInputVisible());
         Assert.assertTrue("Invite on ContactsUI page is not shown",
-                getContactsUiPage().isInviteOthersButtonVisible());
+                getContactsUiPage().isButtonVisible("Invite Others"));
     }
 
     /**
@@ -41,11 +40,7 @@ public class ContactsUiPageSteps {
      */
     @When("^I input user name (.*) in search on ContactsUI$")
     public void IInputUserNameInSearchOnContactsUI(String contact) throws Exception {
-        try {
-            contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        } catch (NoSuchUserException e) {
-            // Ignore silently
-        }
+        contact = usrMgr.replaceAliasesOccurences(contact, ClientUsersManager.FindBy.NAME_ALIAS);
         getContactsUiPage().inputTextToSearch(contact);
     }
 
@@ -59,32 +54,30 @@ public class ContactsUiPageSteps {
      */
     @Then("^I (do not )?see contact (.*) in ContactsUI page list$")
     public void ISeeContactInContactsUIList(String shouldNotBeVisible, String contact) throws Exception {
-        try {
-            contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        } catch (NoSuchUserException e) {
-            // Ignore silently
-        }
+        contact = usrMgr.replaceAliasesOccurences(contact, ClientUsersManager.FindBy.NAME_ALIAS);
         if (shouldNotBeVisible == null) {
-            Assert.assertTrue("User " + contact
-                            + " is not presented in ContactsUI user list",
-                    getContactsUiPage().isContactPresentedInContactsList(contact));
+            Assert.assertTrue(
+                    String.format("User '%s' should be visible in ContactsUI user list", contact),
+                    getContactsUiPage().isContactVisible(contact)
+            );
         } else {
-            Assert.assertFalse("User " + contact
-                    + " is presented in ContactsUI user list", getContactsUiPage()
-                    .isContactPresentedInContactsList(contact));
+            Assert.assertTrue(
+                    String.format("User '%s' should not be visible in ContactsUI user list", contact),
+                    getContactsUiPage().isContactInvisible(contact)
+            );
         }
     }
 
     /**
-     * Presses the Invite others button in the people picker. To invite people
-     * via mail.
+     * Tap the corresponding button on Contacts UI
      *
+     * @param btnName one of available button namers
      * @throws Exception
-     * @step. ^I tap Invite Others button on Contacts UI page$
+     * @step. ^I tap (Invite Others|X) button on Contacts UI page$
      */
-    @When("^I tap Invite Others button on Contacts UI page$")
-    public void ITapInviteOthersButton() throws Exception {
-        getContactsUiPage().tapInviteOthersButton();
+    @When("^I tap (Invite Others|X) button on Contacts UI page$")
+    public void ITapInviteOthersButton(String btnName) throws Exception {
+        getContactsUiPage().tapButton(btnName);
     }
 
     /**

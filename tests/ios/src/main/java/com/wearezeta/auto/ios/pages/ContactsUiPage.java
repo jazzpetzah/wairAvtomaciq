@@ -22,6 +22,8 @@ public class ContactsUiPage extends IOSPage {
     private static final Function<String, String> xpathStrOpenButtonByConvoName = name ->
             String.format("%s/XCUIElementTypeButton[@name='OPEN']", xpathStrConvoCellByName.apply(name));
 
+    private static final By nameXButton = MobileBy.AccessibilityId("ContactsViewCloseButton");
+
     public ContactsUiPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -36,19 +38,9 @@ public class ContactsUiPage extends IOSPage {
         input.sendKeys(text);
     }
 
-    public boolean isContactPresentedInContactsList(String contact) throws Exception {
+    public boolean isContactVisible(String contact) throws Exception {
         final By locator = By.xpath(xpathStrConvoCellByName.apply(contact));
-        return isLocatorDisplayed(locator, 5);
-    }
-
-    public void tapInviteOthersButton() throws Exception {
-        getElement(nameInviteOthersButton).click();
-        // Wait for animation
-        Thread.sleep(2000);
-    }
-
-    public boolean isInviteOthersButtonVisible() throws Exception {
-        return isLocatorDisplayed(nameInviteOthersButton);
+        return isLocatorDisplayed(locator);
     }
 
     public void tapOpenButtonNextToUser(String contact) throws Exception {
@@ -56,5 +48,35 @@ public class ContactsUiPage extends IOSPage {
         getElement(locator).click();
         // Wait for animation
         Thread.sleep(1000);
+    }
+
+    private static By getButtonByName(String name) {
+        switch (name.toLowerCase()) {
+            case "invite others":
+                return nameInviteOthersButton;
+            case "x":
+                return nameXButton;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
+        }
+    }
+
+    public void tapButton(String btnName) throws Exception {
+        final By locator = getButtonByName(btnName);
+        if (locator.equals(nameXButton)) {
+            this.tapElementWithRetryIfStillDisplayed(locator);
+        } else {
+            getElement(locator).click();
+        }
+    }
+
+    public boolean isButtonVisible(String btnName) throws Exception {
+        final By locator = getButtonByName(btnName);
+        return isLocatorDisplayed(locator);
+    }
+
+    public boolean isContactInvisible(String contact) throws Exception {
+        final By locator = By.xpath(xpathStrConvoCellByName.apply(contact));
+        return isLocatorInvisible(locator);
     }
 }

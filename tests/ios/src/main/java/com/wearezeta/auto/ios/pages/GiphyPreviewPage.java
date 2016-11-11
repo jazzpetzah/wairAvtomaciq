@@ -7,6 +7,7 @@ import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import org.openqa.selenium.Dimension;
 
 public class GiphyPreviewPage extends IOSPage {
     // TODO: assign a name to Giphy image element
@@ -31,10 +32,15 @@ public class GiphyPreviewPage extends IOSPage {
     }
 
     public void selectFirstItem() throws Exception {
-        // FIXME: The driver simply freezes on this page
-        clickAt(15, 15);
-        // Wait for animation
-        Thread.sleep(1000);
+        final Dimension screenSize = getDriver().manage().window().getSize();
+        final int x = 15 * screenSize.getWidth() / 100;
+        final int y = 15 * screenSize.getHeight() / 100;
+        // FIXME: It is necessary to tap twice to make sure the thing happened
+        for (int i = 0; i < 2; i++) {
+            this.tapScreenAt(x, y);
+            // Wait for animation
+            Thread.sleep(3000);
+        }
     }
 
     private By getButtonByName(String name) {

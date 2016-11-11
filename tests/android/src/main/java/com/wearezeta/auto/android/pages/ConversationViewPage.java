@@ -110,6 +110,7 @@ public class ConversationViewPage extends AndroidPage {
     private static final By idMessageBottomMenuEditButton = By.id("message_bottom_menu_item_edit");
     private static final By idMessageBottomMenuLikeButton = By.id("message_bottom_menu_item_like");
     private static final By idMessageBottomMenuUnlikeButton = By.id("message_bottom_menu_item_unlike");
+    private static final By idMessageBottomMenuOpenButton = By.id("message_bottom_menu_item_open_file");
     //endregion
 
     private static final By idFullScreenImage = By.id("tiv__single_image_message__image");
@@ -1116,6 +1117,8 @@ public class ConversationViewPage extends AndroidPage {
                 return idMessageBottomMenuLikeButton;
             case "unlike":
                 return idMessageBottomMenuUnlikeButton;
+            case "open":
+                return idMessageBottomMenuOpenButton;
             default:
                 throw new IllegalArgumentException(String.format("There is no '%s' button on Message Bottom Menu",
                         btnName));

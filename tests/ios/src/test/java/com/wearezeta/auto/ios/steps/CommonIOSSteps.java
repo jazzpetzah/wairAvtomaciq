@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.*;
@@ -119,9 +120,13 @@ public class CommonIOSSteps {
 
     // These settings are needed to properly sign WDA for real device tests
     // See https://github.com/appium/appium-xcuitest-driver for more details
-    private static final String KEYCHAIN_PATH = String.format("%s/%s",
-            System.getProperty("user.home"), "/Library/Keychains/MyKeychain.keychain");
+    private static final File KEYCHAIN = new File(String.format("%s/%s",
+            System.getProperty("user.home"), "/Library/Keychains/MyKeychain.keychain"));
     private static final String KEYCHAIN_PASSWORD = "123456";
+
+    private static final File IDEVICE_CONSOLE = new File(
+            "/usr/local/lib/node_modules/deviceconsole/deviceconsole"
+    );
 
     // https://github.com/wireapp/wire-ios/pull/339
     private static final String ARGS_FILE_NAME = "wire_arguments.txt";
@@ -151,11 +156,22 @@ public class CommonIOSSteps {
             // We don't really care about which particular real device model we have
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()).split("\\s+")[0]);
             capabilities.setCapability("udid", udid);
-            capabilities.setCapability("realDeviceLogger",
-                    "/usr/local/lib/node_modules/deviceconsole/deviceconsole");
+            if (!IDEVICE_CONSOLE.exists()) {
+                throw new IllegalStateException(
+                        "ideviceconsole is expected to be installed: npm install -g deviceconsole"
+                );
+            }
+            capabilities.setCapability("realDeviceLogger", IDEVICE_CONSOLE.getCanonicalPath());
             capabilities.setCapability("showXcodeLog", true);
-            capabilities.setCapability("keychainPath", KEYCHAIN_PATH);
-            capabilities.setCapability("keychainPassword", KEYCHAIN_PASSWORD);
+            if (CommonUtils.isRunningInJenkinsNetwork()) {
+                if (!KEYCHAIN.exists()) {
+                    throw new IllegalStateException(
+                            String.format("The default keychain file does not exist at '%s'", KEYCHAIN.getCanonicalPath())
+                    );
+                }
+                capabilities.setCapability("keychainPath", KEYCHAIN.getCanonicalPath());
+                capabilities.setCapability("keychainPassword", KEYCHAIN_PASSWORD);
+            }
         } else {
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()));
             // https://github.com/appium/appium-xcuitest-driver/pull/184/files
@@ -349,13 +365,9 @@ public class CommonIOSSteps {
             e.printStackTrace();
         }
 
-        FastLoginContainer.getInstance().reset();
-
-        pagesCollection.clearAllPages();
-
         try {
             if (!scenario.getStatus().equals(Result.PASSED) && getIsSimulatorFromConfig(getClass())) {
-                log.debug(IOSSimulatorHelpers.getLogsAndCrashes() + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                log.debug(IOSSimulatorHelpers.getLogsAndCrashes());
             } else if (scenario.getSourceTagNames().contains("@performance")) {
                 IOSLogListener.forceStopAll();
                 IOSLogListener.writeDeviceLogsToConsole(IOSLogListener.getInstance());
@@ -366,17 +378,26 @@ public class CommonIOSSteps {
 
         try {
             if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+                if (!scenario.getStatus().equals(Result.PASSED) && pagesCollection.hasPages()) {
+                    pagesCollection.getCommonPage().printPageSource();
+                }
                 PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        FastLoginContainer.getInstance().reset();
+
+        pagesCollection.clearAllPages();
+
         try {
             usrMgr.resetUsers();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        log.debug("\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     }
 
     /**
@@ -1500,10 +1521,16 @@ public class CommonIOSSteps {
             throw new IllegalStateException("This step is only supported on Simulator");
         }
         final List<File> files = IOSSimulatorHelpers.locateFilesOnInternalFS(WireDatabase.DB_FILE_NAME);
-        if (files.isEmpty()) {
-            throw new IllegalStateException("The internal Wire database file cannot be located");
+        final String currentBundleId = IOSDistributable.getInstance(getAppPath()).getBundleId();
+        final List<File> matchedFiles = files.stream().filter(
+                x -> x.getParentFile().getName().equals(currentBundleId)
+        ).collect(Collectors.toList());
+        if (matchedFiles.isEmpty()) {
+            throw new IllegalStateException(
+                    String.format("The internal Wire database file cannot be located in\n%s", files)
+            );
         }
-        return new WireDatabase(files.get(0));
+        return new WireDatabase(matchedFiles.get(0));
     }
 
     /**

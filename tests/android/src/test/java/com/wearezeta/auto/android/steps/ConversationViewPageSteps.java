@@ -1133,9 +1133,9 @@ public class ConversationViewPageSteps {
      *
      * @param name one of possible message bottom menu button name
      * @throws Exception
-     * @step. ^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike) button on the message bottom menu$
+     * @step. ^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike|Open) button on the message bottom menu$
      */
-    @Then("^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike) button on the message bottom menu$")
+    @Then("^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike|Open) button on the message bottom menu$")
     public void ISeeMessageBottomMenuButton(String shouldNotSee, String name) throws Exception {
         final boolean condition = (shouldNotSee == null) ?
                 getConversationViewPage().waitUntilMessageBottomMenuButtonVisible(name) :
@@ -1149,9 +1149,9 @@ public class ConversationViewPageSteps {
      *
      * @param name one of possible message bottom menu button name
      * @throws Exception
-     * @step. ^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike) button on the message bottom menu$
+     * @step. ^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike|Open) button on the message bottom menu$
      */
-    @When("^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike) button on the message bottom menu$")
+    @When("^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike|Open) button on the message bottom menu$")
     public void ITapMessageBottomMenuButton(String name) throws Exception {
         getConversationViewPage().tapMessageBottomMenuButton(name);
     }

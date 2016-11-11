@@ -13,8 +13,12 @@ public class ConversationActionsPage extends IOSPage {
 
     private static final By xpathActionsMenu = By.xpath("//XCUIElementTypeButton[@name='CANCEL']");
 
-    private static final Function<String,String> xpathStrConfirmActionButtonByName = name ->
+    private static final Function<String, String> xpathStrConfirmActionButtonByName = name ->
             String.format("//XCUIElementTypeButton[@name='CANCEL']/following::XCUIElementTypeButton[@name='%s']",
+                    name.toUpperCase());
+
+    private static final Function<String, String> xpathStrConnectActionButtonByName = name ->
+            String.format("//XCUIElementTypeButton[@name='IGNORE']/following::XCUIElementTypeButton[@name='%s']",
                     name.toUpperCase());
 
     private static final By xpathYesActionButton =
@@ -43,8 +47,13 @@ public class ConversationActionsPage extends IOSPage {
 
     public void confirmAction(String actionName) throws Exception {
         By locator = By.xpath(xpathStrConfirmActionButtonByName.apply(actionName));
-        if (actionName.toLowerCase().equals("cancel request")) {
-            locator = xpathYesActionButton;
+        switch (actionName.toLowerCase()) {
+            case "cancel request":
+                locator = xpathYesActionButton;
+                break;
+            case "connect":
+                locator = By.xpath(xpathStrConnectActionButtonByName.apply(actionName));
+                break;
         }
         getElement(locator).click();
         // Wait for action to be applied

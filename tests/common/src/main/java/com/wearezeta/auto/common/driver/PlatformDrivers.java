@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -100,12 +99,16 @@ public final class PlatformDrivers {
             if (!futureDriver.isCancelled()) {
                 try {
                     final RemoteWebDriver driver = futureDriver.get(DRIVER_CANCELLATION_TIMEOUT, TimeUnit.SECONDS);
-                    if (platform == Platform.iOS) {
+                    if (driver instanceof ZetaIOSDriver) {
                         // Do not keep non-closed alerts on iOS
-                        try {
-                            driver.switchTo().alert().accept();
-                        } catch (Exception e) {
-                            // just ignore it
+                        if (((ZetaIOSDriver) driver).isRealDevice()) {
+                            ((ZetaIOSDriver) driver).forceAcceptAlert();
+                        } else {
+                            try {
+                                driver.switchTo().alert().accept();
+                            } catch (Exception e) {
+                                // just ignore it
+                            }
                         }
                     }
                     driver.quit();

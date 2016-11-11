@@ -71,7 +71,7 @@ public abstract class IOSPage extends BasePage {
     private static final Function<String, String> xpathStrAddressBarByUrlPart = urlPart ->
             String.format("//XCUIElementTypeTextField[@name='Address' and contains(@value, '%s')]", urlPart);
 
-    private static final By nameDefaultMapApplication = MobileBy.AccessibilityId("CalloutArrow.png");
+    private static final By nameDefaultMapApplication = MobileBy.AccessibilityId("Tracking");
 
     private IOSKeyboard onScreenKeyboard;
 
@@ -516,7 +516,6 @@ public abstract class IOSPage extends BasePage {
             }
             Thread.sleep(ELEMENT_QUERY_DELAY_MS);
         } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
-        printPageSource();
         throw new IllegalStateException(message, savedException);
     }
 
@@ -539,7 +538,6 @@ public abstract class IOSPage extends BasePage {
             }
             Thread.sleep(ELEMENT_QUERY_DELAY_MS);
         } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
-        //printPageSource();
         return false;
     }
 
@@ -562,7 +560,6 @@ public abstract class IOSPage extends BasePage {
             }
             Thread.sleep(ELEMENT_QUERY_DELAY_MS);
         } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
-        printPageSource();
         return false;
     }
 
@@ -588,6 +585,27 @@ public abstract class IOSPage extends BasePage {
         return false;
     }
 
+    protected boolean isElementInvisible(WebElement element) throws Exception {
+        return this.isElementInvisible(element, DriverUtils.getDefaultLookupTimeoutSeconds());
+    }
+
+    protected boolean isElementInvisible(WebElement el, int timeoutSeconds) throws Exception {
+        final long msStarted = System.currentTimeMillis();
+        do {
+            try {
+                if (!el.isDisplayed()) {
+                    return true;
+                }
+                log.debug(String.format("The element '%s' is still visible after %s ms",
+                        el, System.currentTimeMillis() - msStarted));
+            } catch (WebDriverException e) {
+                return true;
+            }
+            Thread.sleep(ELEMENT_QUERY_DELAY_MS);
+        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
+        return false;
+    }
+
     @Override
     protected Optional<WebElement> getElementIfDisplayed(By locator, int timeoutSeconds) throws Exception {
         final long msStarted = System.currentTimeMillis();
@@ -604,7 +622,6 @@ public abstract class IOSPage extends BasePage {
             }
             Thread.sleep(ELEMENT_QUERY_DELAY_MS);
         } while (System.currentTimeMillis() - msStarted <= timeoutSeconds * 1000);
-        printPageSource();
         return Optional.empty();
     }
 
