@@ -185,10 +185,10 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> starts instance using <CallBackend>
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
+    Given <Contact1>,<Contact2> starts instance using <CallBackend>
     When I minimize the application
     And <Contact1>,<Contact2> calls <GroupChatName>
     And I wait for 30 seconds
