@@ -43,7 +43,7 @@ public class TestrailSyncUtilities {
         try {
             final Optional<String> rcTestsCommentPath =
                     CommonUtils.getRcTestsCommentPathFromCommonConfig(TestrailSyncUtilities.class);
-            if (rcTestsCommentPath.isPresent()) {
+            if (rcTestsCommentPath.isPresent() && !rcTestsCommentPath.get().trim().isEmpty()) {
                 if (new File(rcTestsCommentPath.get()).exists()) {
                     rcTestsComment = Optional.of(new String(Files.readAllBytes(Paths.get(rcTestsCommentPath.get())),
                             Charset.forName("UTF-8")));

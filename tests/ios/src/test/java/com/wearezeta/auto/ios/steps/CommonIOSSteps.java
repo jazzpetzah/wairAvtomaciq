@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.*;
@@ -1520,10 +1521,16 @@ public class CommonIOSSteps {
             throw new IllegalStateException("This step is only supported on Simulator");
         }
         final List<File> files = IOSSimulatorHelpers.locateFilesOnInternalFS(WireDatabase.DB_FILE_NAME);
-        if (files.isEmpty()) {
-            throw new IllegalStateException("The internal Wire database file cannot be located");
+        final String currentBundleId = IOSDistributable.getInstance(getAppPath()).getBundleId();
+        final List<File> matchedFiles = files.stream().filter(
+                x -> x.getParentFile().getName().equals(currentBundleId)
+        ).collect(Collectors.toList());
+        if (matchedFiles.isEmpty()) {
+            throw new IllegalStateException(
+                    String.format("The internal Wire database file cannot be located in\n%s", files)
+            );
         }
-        return new WireDatabase(files.get(0));
+        return new WireDatabase(matchedFiles.get(0));
     }
 
     /**
