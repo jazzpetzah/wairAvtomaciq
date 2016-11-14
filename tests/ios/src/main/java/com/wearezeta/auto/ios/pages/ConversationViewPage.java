@@ -349,7 +349,10 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void clearTextInput() throws Exception {
-        getElement(fbNameConversationInput).clear();
+        final FBElement textExit = (FBElement) getElement(fbNameConversationInput);
+        // This is to make sure the input cursor has been put to the tail of the text
+        this.tapByPercentOfElementSize(textExit, 95, 50);
+        textExit.clear();
     }
 
     public boolean isCurrentInputTextEqualTo(String expectedMsg) throws Exception {
