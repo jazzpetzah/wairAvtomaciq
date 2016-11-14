@@ -1,5 +1,24 @@
 package com.wearezeta.auto.common.driver;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 import com.wearezeta.auto.common.CommonUtils;
@@ -12,21 +31,21 @@ import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.opencv.core.Rect;
-import org.openqa.selenium.*;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.ScreenOrientation;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.HasTouchScreen;
 import org.openqa.selenium.interactions.TouchScreen;
 import org.openqa.selenium.interactions.touch.TouchActions;
-import org.openqa.selenium.remote.*;
-
-import java.io.*;
-import java.net.URL;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.concurrent.*;
-import java.util.concurrent.TimeoutException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.openqa.selenium.remote.DriverCommand;
+import org.openqa.selenium.remote.RemoteTouchScreen;
+import org.openqa.selenium.remote.Response;
+import org.openqa.selenium.remote.SessionNotFoundException;
+import org.openqa.selenium.remote.UnreachableBrowserException;
 
 public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements ZetaDriver, HasTouchScreen {
     public static final long MAX_COMMAND_DURATION_MILLIS = 120000;
@@ -181,7 +200,6 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
             throw new WebDriverException(e);
         }
         tap(1, x, y, 50);
-
     }
 
     public void tap(String tapType, int x, int y) {
