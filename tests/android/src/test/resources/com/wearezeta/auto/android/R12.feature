@@ -1,7 +1,7 @@
-Feature: Registration8
+Feature: Registration12
 
-  @C6678 @regression @rc @torun
-  Scenario Outline: Register new user by phone and set profile picture using camera 8
+  @C66712 @regression @rc @torun
+  Scenario Outline: Register new user by phone and set profile picture using camera 12
     Given I see welcome screen
     When I input a new phone number for user <Name>
     And I input the verification code
