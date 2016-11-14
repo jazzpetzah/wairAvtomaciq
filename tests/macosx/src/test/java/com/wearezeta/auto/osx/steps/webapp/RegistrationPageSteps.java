@@ -19,7 +19,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.osx.common.WrapperTestContext;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 
@@ -38,14 +38,18 @@ public class RegistrationPageSteps {
     private ClientUser userToRegister = null;
     private Future<String> activationMessage;
     public static final int maxCheckCnt = 2;
-    private final WrapperTestContext context;
+    
+    private final TestContext webContext;
+    private final TestContext wrapperContext;
 
     public RegistrationPageSteps() {
-        this.context = new WrapperTestContext();
+        this.webContext = new TestContext();
+        this.wrapperContext = new TestContext();
     }
-
-    public RegistrationPageSteps(WrapperTestContext context) {
-        this.context = context;
+    
+    public RegistrationPageSteps(TestContext webContext, TestContext wrapperContext) {
+        this.webContext = webContext;
+        this.wrapperContext = wrapperContext;
     }
 
     /**
@@ -57,10 +61,10 @@ public class RegistrationPageSteps {
      */
     @When("^I enter user name (.*) on Registration page$")
     public void IEnterName(String name) throws Exception {
-        context.getWebappPagesCollection().getPage(RegistrationPage.class)
+        webContext.getPagesCollection().getPage(RegistrationPage.class)
                 .waitForRegistrationPageToFullyLoad();
         try {
-            this.userToRegister = context.getUserManager().findUserByNameOrNameAlias(name);
+            this.userToRegister = webContext.getUserManager().findUserByNameOrNameAlias(name);
         } catch (NoSuchUserException e) {
             if (this.userToRegister == null) {
                 this.userToRegister = new ClientUser();
@@ -69,7 +73,7 @@ public class RegistrationPageSteps {
             this.userToRegister.clearNameAliases();
             this.userToRegister.addNameAlias(name);
         }
-        context.getWebappPagesCollection().getPage(RegistrationPage.class).enterName(
+        webContext.getPagesCollection().getPage(RegistrationPage.class).enterName(
                 this.userToRegister.getName());
     }
 
@@ -84,7 +88,7 @@ public class RegistrationPageSteps {
     public void IEnterEmail(String email) throws Exception {
         boolean flag = false;
         try {
-            String realEmail = context.getUserManager().findUserByEmailOrEmailAlias(email)
+            String realEmail = webContext.getUserManager().findUserByEmailOrEmailAlias(email)
                     .getEmail();
             this.userToRegister.setEmail(realEmail);
         } catch (NoSuchUserException e) {
@@ -95,10 +99,10 @@ public class RegistrationPageSteps {
         }
 
         if (flag) {
-            context.getWebappPagesCollection().getPage(RegistrationPage.class).enterEmail(
+            webContext.getPagesCollection().getPage(RegistrationPage.class).enterEmail(
                     email);
         } else {
-            context.getWebappPagesCollection().getPage(RegistrationPage.class).enterEmail(
+            webContext.getPagesCollection().getPage(RegistrationPage.class).enterEmail(
                     this.userToRegister.getEmail());
         }
     }
@@ -112,10 +116,10 @@ public class RegistrationPageSteps {
      */
     @When("^(.*) verifies email is correct on Registration page$")
     public void IVerifyEmail(String usernameAlias) throws Exception {
-        String realEmail = context.getUserManager().findUserByNameOrNameAlias(usernameAlias)
+        String realEmail = webContext.getUserManager().findUserByNameOrNameAlias(usernameAlias)
                 .getEmail();
         Assert.assertEquals("Entered email is wrong", realEmail,
-                context.getWebappPagesCollection().getPage(RegistrationPage.class)
+                webContext.getPagesCollection().getPage(RegistrationPage.class)
                 .getEnteredEmail());
 
     }
@@ -129,10 +133,10 @@ public class RegistrationPageSteps {
      */
     @When("^(.*) verifies username is correct on Registration page$")
     public void IVerifyUsername(String usernameAlias) throws Exception {
-        String realUsername = context.getUserManager().findUserByNameOrNameAlias(usernameAlias)
+        String realUsername = webContext.getUserManager().findUserByNameOrNameAlias(usernameAlias)
                 .getName();
         Assert.assertEquals("Entered username is wrong", realUsername,
-                context.getWebappPagesCollection().getPage(RegistrationPage.class)
+                webContext.getPagesCollection().getPage(RegistrationPage.class)
                 .getEnteredName());
 
     }
@@ -148,7 +152,7 @@ public class RegistrationPageSteps {
     public void IEnterPassword(String password) throws Exception {
 
         try {
-            ClientUser user = context.getUserManager().findUserByPasswordAlias(password);
+            ClientUser user = webContext.getUserManager().findUserByPasswordAlias(password);
             if (this.userToRegister == null) {
                 this.userToRegister = user;
             }
@@ -157,7 +161,7 @@ public class RegistrationPageSteps {
             this.userToRegister.setPassword(password);
             this.userToRegister.addPasswordAlias(password);
         }
-        context.getWebappPagesCollection().getPage(RegistrationPage.class).enterPassword(
+        webContext.getPagesCollection().getPage(RegistrationPage.class).enterPassword(
                 this.userToRegister.getPassword());
     }
 
@@ -169,7 +173,7 @@ public class RegistrationPageSteps {
      */
     @When("^I accept the Terms of Use$")
     public void IAcceptTermsOfUse() throws Exception {
-        context.getWebappPagesCollection().getPage(RegistrationPage.class)
+        webContext.getPagesCollection().getPage(RegistrationPage.class)
                 .acceptTermsOfUse();
     }
 
@@ -181,7 +185,7 @@ public class RegistrationPageSteps {
      */
     @When("^I submit registration form$")
     public void ISubmitRegistration() throws Exception {
-        context.getWebappPagesCollection().getPage(RegistrationPage.class)
+        webContext.getPagesCollection().getPage(RegistrationPage.class)
                 .submitRegistration();
     }
 
@@ -211,8 +215,8 @@ public class RegistrationPageSteps {
 	 */
 	@Then("^I see email (.*) on [Vv]erification page$")
 	public void ISeeVerificationEmail(String email) throws Exception {
-		email = context.getUserManager().findUserByEmailOrEmailAlias(email).getEmail();
-		assertThat(context.getWebappPagesCollection().getPage(RegistrationPage.class)
+		email = webContext.getUserManager().findUserByEmailOrEmailAlias(email).getEmail();
+		assertThat(webContext.getPagesCollection().getPage(RegistrationPage.class)
 				.getVerificationEmailAddress(), containsString(email));
 	}
 
@@ -225,8 +229,8 @@ public class RegistrationPageSteps {
      */
     @Then("^I see email (.*) on pending page$")
     public void ISeePendingEmail(String email) throws Exception {
-        email = context.getUserManager().findUserByEmailOrEmailAlias(email).getEmail();
-        assertThat(context.getWebappPagesCollection().getPage(RegistrationPage.class)
+        email = webContext.getUserManager().findUserByEmailOrEmailAlias(email).getEmail();
+        assertThat(webContext.getPagesCollection().getPage(RegistrationPage.class)
                 .getPendingEmailAddress(), containsString(email));
     }
 
@@ -240,7 +244,7 @@ public class RegistrationPageSteps {
     @Then("^I see error \"(.*)\" on [Vv]erification page$")
     public void ISeeErrorMessageOnVerificationPage(String message)
             throws Throwable {
-        assertThat(context.getWebappPagesCollection().getPage(RegistrationPage.class)
+        assertThat(webContext.getPagesCollection().getPage(RegistrationPage.class)
                 .getErrorMessages(), hasItem(message));
     }
 
@@ -253,11 +257,11 @@ public class RegistrationPageSteps {
     @Then("^I verify that the email field on the registration form is( not)? marked as error$")
     public void ARedDotIsShownOnTheEmailField(String not) throws Exception {
         if (not == null) {
-            assertThat("email field marked as error", context.getWebappPagesCollection()
+            assertThat("email field marked as error", webContext.getPagesCollection()
                     .getPage(RegistrationPage.class)
                     .isEmailFieldMarkedAsError());
         } else {
-            assertThat("email field marked as valid", context.getWebappPagesCollection()
+            assertThat("email field marked as valid", webContext.getPagesCollection()
                     .getPage(RegistrationPage.class)
                     .isEmailFieldMarkedAsValid());
         }
@@ -272,7 +276,7 @@ public class RegistrationPageSteps {
     @Then("^I verify that an envelope icon is shown$")
     public void IVerifyThatAnEnvelopeIconIsShown() throws Exception {
         assertThat("Envelope icon not shown",
-                context.getWebappPagesCollection().getPage(RegistrationPage.class)
+                webContext.getPagesCollection().getPage(RegistrationPage.class)
                 .isEnvelopeShown());
     }
 
@@ -316,7 +320,7 @@ public class RegistrationPageSteps {
         }
 
         // indexes in aliases start from 1
-        final int userIndex = context.getUserManager().appendCustomUser(userToRegister) + 1;
+        final int userIndex = webContext.getUserManager().appendCustomUser(userToRegister) + 1;
         userToRegister.addEmailAlias(ClientUsersManager.EMAIL_ALIAS_TEMPLATE
                 .apply(userIndex));
         userToRegister.addNameAlias(ClientUsersManager.NAME_ALIAS_TEMPLATE
@@ -325,7 +329,7 @@ public class RegistrationPageSteps {
                 .addPasswordAlias(ClientUsersManager.PASSWORD_ALIAS_TEMPLATE
                         .apply(userIndex));
 
-        context.getWebappPagesCollection().getPage(LoginPage.class).waitForLogin();
+        webContext.getPagesCollection().getPage(LoginPage.class).waitForLogin();
     }
 
     /**
@@ -336,7 +340,7 @@ public class RegistrationPageSteps {
      */
     @Given("^I switch to [Ss]ign [Ii]n page$")
     public void ISwitchToLoginPage() throws Exception {
-        context.getWebappPagesCollection().getPage(RegistrationPage.class)
+        webContext.getPagesCollection().getPage(RegistrationPage.class)
                 .switchToLoginPage();
     }
 
@@ -348,7 +352,7 @@ public class RegistrationPageSteps {
      */
     @Then("^I click on Verify later button on Verification page$")
     public void IClickVerifyLaterButton() throws Exception {
-        context.getWebappPagesCollection().getPage(RegistrationPage.class)
+        webContext.getPagesCollection().getPage(RegistrationPage.class)
                 .clickVerifyLaterButton();
     }
 }

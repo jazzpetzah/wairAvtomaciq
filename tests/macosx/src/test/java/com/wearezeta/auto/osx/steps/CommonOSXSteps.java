@@ -9,10 +9,11 @@ import static com.wearezeta.auto.osx.common.OSXCommonUtils.getSizeOfAppInMB;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.killAllApps;
 
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
-import com.wearezeta.auto.osx.common.WrapperTestContext;
 
 
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
+import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.steps.CommonWebAppSteps;
 
@@ -35,14 +36,17 @@ public class CommonOSXSteps {
 
     private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
 
-    private final WrapperTestContext context;
+    private final TestContext webContext;
+    private final TestContext wrapperContext;
 
     public CommonOSXSteps() {
-        this.context = new WrapperTestContext();
+        this.webContext = new TestContext();
+        this.wrapperContext = new TestContext();
     }
-
-    public CommonOSXSteps(WrapperTestContext context) {
-        this.context = context;
+    
+    public CommonOSXSteps(TestContext webContext, TestContext wrapperContext) {
+        this.webContext = webContext;
+        this.wrapperContext = wrapperContext;
     }
     
     @Given("^My browser( does not)? support[s]? calling$")
@@ -67,7 +71,7 @@ public class CommonOSXSteps {
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me$")
     public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
             throws Exception {
-        context.getCommonSteps().ThereAreNUsersWhereXIsMe(
+        webContext.getCommonSteps().ThereAreNUsersWhereXIsMe(
                 OSXExecutionContext.CURRENT_PLATFORM, count, myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "default");
     }
@@ -75,20 +79,20 @@ public class CommonOSXSteps {
     @Given("^User (\\w+) change accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
     public void IChangeAccentColor(String userNameAlias, String newColor)
             throws Exception {
-        context.getCommonSteps().IChangeUserAccentColor(userNameAlias, newColor);
+        webContext.getCommonSteps().IChangeUserAccentColor(userNameAlias, newColor);
     }
 
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me without avatar picture$")
     public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count,
             String myNameAlias) throws Exception {
-        context.getCommonSteps().ThereAreNUsersWhereXIsMe(
+        webContext.getCommonSteps().ThereAreNUsersWhereXIsMe(
                 OSXExecutionContext.CURRENT_PLATFORM, count, myNameAlias);
     }
 
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")
     public void ThereAreNUsersWhereXIsMeWithoutEmail(int count,
             String myNameAlias) throws Exception {
-        context.getCommonSteps().ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
+        webContext.getCommonSteps().ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
     }
 
     @When("^User (\\w+) changes? avatar picture to (.*)")
@@ -105,109 +109,109 @@ public class CommonOSXSteps {
                 .toString());
         log.debug("Change avatar of user " + userNameAlias + " to "
                 + uri.getPath());
-        context.getCommonSteps().IChangeUserAvatarPicture(userNameAlias, uri.getPath());
+        webContext.getCommonSteps().IChangeUserAvatarPicture(userNameAlias, uri.getPath());
     }
 
     @Given("^(\\w+) is connected to (.*)$")
     public void UserIsConnectedTo(String userFromNameAlias,
             String usersToNameAliases) throws Exception {
-        context.getCommonSteps().UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
+        webContext.getCommonSteps().UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
     }
 
     @Given("^(\\w+) blocked (\\w+)$")
     public void UserBlocks(String userAsNameAlias, String userToBlockNameAlias)
             throws Exception {
-        context.getCommonSteps().BlockContact(userAsNameAlias, userToBlockNameAlias);
+        webContext.getCommonSteps().BlockContact(userAsNameAlias, userToBlockNameAlias);
     }
 
     @Given("^(.*) (?:has|have) group chat (.*) with (.*)")
     public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
             String chatName, String otherParticipantsNameAlises)
             throws Exception {
-        context.getCommonSteps().UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName,
+        webContext.getCommonSteps().UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName,
                 otherParticipantsNameAlises);
     }
 
     @Given("^User (\\w+) is [Mm]e$")
     public void UserXIsMe(String nameAlias) throws Exception {
-        context.getCommonSteps().UserXIsMe(nameAlias);
+        webContext.getCommonSteps().UserXIsMe(nameAlias);
         IChangeUserAvatarPicture(nameAlias, "default");
     }
 
     @Given("^User (\\w+) is [Mm]e without avatar$")
     public void UserXIsMeWithoutAvatar(String nameAlias) throws Exception {
-        context.getCommonSteps().UserXIsMe(nameAlias);
+        webContext.getCommonSteps().UserXIsMe(nameAlias);
     }
 
     @Given("^(.*) sent connection request to (.*)")
     public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
             String usersToNameAliases) throws Throwable {
-        context.getCommonSteps().ConnectionRequestIsSentTo(userFromNameAlias,
+        webContext.getCommonSteps().ConnectionRequestIsSentTo(userFromNameAlias,
                 usersToNameAliases);
     }
 
     @Given("^(\\w+) waits? until (.*) exists in backend search results$")
     public void UserWaitsUntilContactExistsInHisSearchResults(
             String searchByNameAlias, String query) throws Exception {
-        context.getCommonSteps().WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
+        webContext.getCommonSteps().WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
     }
 
     @When("^I wait for (\\d+) seconds?$")
     public void WaitForTime(int seconds) throws Exception {
-        context.getCommonSteps().WaitForTime(seconds);
+        webContext.getCommonSteps().WaitForTime(seconds);
     }
 
     @When("^(.*) muted conversation with (.*)$")
     public void MuteConversationWithUser(String userToNameAlias,
             String muteUserNameAlias) throws Exception {
-        context.getCommonSteps()
+        webContext.getCommonSteps()
                 .MuteConversationWithUser(userToNameAlias, muteUserNameAlias);
     }
 
     @When("^(.*) archived conversation with (.*)$")
     public void ArchiveConversationWithUser(String userToNameAlias,
             String archivedUserNameAlias) throws Exception {
-        context.getCommonSteps().ArchiveConversationWithUser(userToNameAlias,
+        webContext.getCommonSteps().ArchiveConversationWithUser(userToNameAlias,
                 archivedUserNameAlias);
     }
 
     @When("^User (.*) pinged in the conversation with (.*)$")
     public void UserPingedConversation(String pingFromUserNameAlias,
             String dstConversationName) throws Exception {
-        context.getCommonSteps().UserPingedConversation(pingFromUserNameAlias,
+        webContext.getCommonSteps().UserPingedConversation(pingFromUserNameAlias,
                 dstConversationName);
     }
 
     @When("^User (.*) sent message (.*) to conversation (.*)")
     public void UserSentMessageToConversation(String userFromNameAlias,
             String message, String conversationName) throws Exception {
-        context.getCommonSteps().UserSentMessageToConversation(userFromNameAlias,
+        webContext.getCommonSteps().UserSentMessageToConversation(userFromNameAlias,
                 conversationName, message);
     }
 
     @Given("^User (.*) added contacts? (.*) to group chat (.*)")
     public void UserXAddedContactsToGroupChat(String asUser, String contacts,
             String conversationName) throws Exception {
-        context.getCommonSteps().UserXAddedContactsToGroupChat(asUser, contacts,
+        webContext.getCommonSteps().UserXAddedContactsToGroupChat(asUser, contacts,
                 conversationName);
     }
 
     @Given("^User (.*) has contacts? (.*) in address book")
     public void UserXHasContactsInAddressBook(String asUser, String emails)
             throws Exception {
-        context.getCommonSteps().UserXHasContactsInAddressBook(asUser, emails);
+        webContext.getCommonSteps().UserXHasContactsInAddressBook(asUser, emails);
     }
 
     @Given("(.*) takes? snapshot of current profile picture$")
     public void UserXTakesSnapshotOfProfilePicture(String asUser)
             throws Exception {
-        context.getCommonSteps().UserXTakesSnapshotOfProfilePicture(asUser);
+        webContext.getCommonSteps().UserXTakesSnapshotOfProfilePicture(asUser);
     }
 
     @Then("^I verify that current profile picture snapshot of (.*) differs? from the previous one$")
     public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(
             String userNameAlias) throws Exception {
-        context.getCommonSteps()
+        webContext.getCommonSteps()
                 .UserXVerifiesSnapshotOfProfilePictureIsDifferent(userNameAlias);
     }
 
@@ -221,19 +225,19 @@ public class CommonOSXSteps {
 
     @When("^I click menu bar item \"(.*)\" and menu item \"(.*)\"$")
     public void clickMenuBarItem(String menuBarItemName, String menuItemName) throws Exception {
-        MainWirePage mainPage = context.getOSXPagesCollection().getPage(MainWirePage.class);
+        MainWirePage mainPage = wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class);
         mainPage.clickMenuBarItem(menuBarItemName, menuItemName);
     }
 
     @When("^I click menu bar item \"(.*)\" and menu items \"(.*)\" and \"(.*)\"$")
     public void clickMenuBarItem(String menuBarItemName, String menuItemName, String menuItemName2) throws Exception {
-        MainWirePage mainPage = context.getOSXPagesCollection().getPage(MainWirePage.class);
+        MainWirePage mainPage = wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class);
         mainPage.clickMenuBarItem(menuBarItemName, menuItemName, menuItemName2);
     }
 
     @When("^I click menu bar item with name \"(.*)\"$")
     public void clickMenuBarItem(String menuBarItemName) throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).clickMenuBarItem(menuBarItemName);
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).clickMenuBarItem(menuBarItemName);
     }
 
     @When("^I kill the app$")
@@ -269,14 +273,14 @@ public class CommonOSXSteps {
         final String msgToSend = (msg == null || msg.trim().length() == 0)
                 ? CommonUtils.generateRandomString(10) : msg.trim();
         if (convoType.equals("user")) {
-            context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
+            webContext.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
         } else {
-            context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
+            webContext.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
         }
     }
     
     @When("user (.*) adds a new device (.*) with label (.*)$")
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceName, String label) throws Exception {
-        context.getCommonSteps().UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
+        webContext.getCommonSteps().UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
     }
 }

@@ -135,7 +135,7 @@
             <properties>
                 <picklejar.tag></picklejar.tag>
                 <picklejar.parallel.max>1</picklejar.parallel.max>
-                <picklejar.steps.package>com.wearezeta.auto.osx.steps</picklejar.steps.package>
+                <picklejar.steps.package>com.wearezeta.auto.osx.steps,com.wearezeta.auto.web.steps</picklejar.steps.package>
                 <picklejar.feature.package>com.wearezeta.auto.osx</picklejar.feature.package>
                 <picklejar.cucumber.report.path>target/</picklejar.cucumber.report.path>
                 <picklejar.screenshot.path>${pictureResultsPath}</picklejar.screenshot.path>

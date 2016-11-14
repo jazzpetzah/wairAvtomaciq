@@ -1,44 +1,47 @@
 package com.wearezeta.auto.osx.steps.webapp;
 
-import com.wearezeta.auto.osx.common.WrapperTestContext;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.PreferencesPage;
 import cucumber.api.java.en.When;
 
 public class PreferencesPageSteps {
 
-    private final WrapperTestContext context;
+    private final TestContext webContext;
+    private final TestContext wrapperContext;
 
     public PreferencesPageSteps() {
-        this.context = new WrapperTestContext();
+        this.webContext = new TestContext();
+        this.wrapperContext = new TestContext();
     }
-
-    public PreferencesPageSteps(WrapperTestContext context) {
-        this.context = context;
+    
+    public PreferencesPageSteps(TestContext webContext, TestContext wrapperContext) {
+        this.webContext = webContext;
+        this.wrapperContext = wrapperContext;
     }
 
     @When("^I close preferences$")
     public void IClosePreferences() throws Exception {
-        context.getWebappPagesCollection().getPage(PreferencesPage.class).closePreferences();
+        webContext.getPagesCollection().getPage(PreferencesPage.class).closePreferences();
     }
 
     @When("^I open account in preferences$")
     public void IOpenAccount() throws Exception {
-        context.getWebappPagesCollection().getPage(PreferencesPage.class).openAccount();
+        webContext.getPagesCollection().getPage(PreferencesPage.class).openAccount();
     }
     
     @When("^I open devices in preferences$")
     public void IOpenDevices() throws Exception {
-        context.getWebappPagesCollection().getPage(PreferencesPage.class).openDevices();
+        webContext.getPagesCollection().getPage(PreferencesPage.class).openDevices();
     }
     
     @When("^I open options in preferences$")
     public void IOpenOptions() throws Exception {
-        context.getWebappPagesCollection().getPage(PreferencesPage.class).openOptions();
+        webContext.getPagesCollection().getPage(PreferencesPage.class).openOptions();
     }
     
     @When("^I open about in preferences$")
     public void IOpenAbout() throws Exception {
-        context.getWebappPagesCollection().getPage(PreferencesPage.class).openAbout();
+        webContext.getPagesCollection().getPage(PreferencesPage.class).openAbout();
     }
 
 }

@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.osx.common.WrapperTestContext;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.PhoneNumberVerificationPage;
 
 import cucumber.api.java.en.Then;
@@ -20,14 +20,17 @@ public class PhoneNumberVerificationPageSteps {
     private static final Logger LOG = ZetaLogger
             .getLog(PhoneNumberVerificationPageSteps.class.getName());
 
-    private final WrapperTestContext context;
+    private final TestContext webContext;
+    private final TestContext wrapperContext;
 
     public PhoneNumberVerificationPageSteps() {
-        this.context = new WrapperTestContext();
+        this.webContext = new TestContext();
+        this.wrapperContext = new TestContext();
     }
-
-    public PhoneNumberVerificationPageSteps(WrapperTestContext context) {
-        this.context = context;
+    
+    public PhoneNumberVerificationPageSteps(TestContext webContext, TestContext wrapperContext) {
+        this.webContext = webContext;
+        this.wrapperContext = wrapperContext;
     }
 
     /**
@@ -41,10 +44,10 @@ public class PhoneNumberVerificationPageSteps {
     @When("^I enter phone verification code for user (.*)$")
     public void IEnterPhoneVerificationCodeForUser(String name)
             throws Throwable {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(name);
+        ClientUser user = webContext.getUserManager().findUserByNameOrNameAlias(name);
         String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
                 .getPhoneNumber());
-        context.getWebappPagesCollection().getPage(PhoneNumberVerificationPage.class)
+        webContext.getPagesCollection().getPage(PhoneNumberVerificationPage.class)
                 .enterCode(code);
     }
 
@@ -59,10 +62,10 @@ public class PhoneNumberVerificationPageSteps {
     @When("^I enter phone verification code for emailless user (.*)$")
     public void IEnterPhoneVerificationCodeForEmaillessUser(String name)
             throws Throwable {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(name);
+        ClientUser user = webContext.getUserManager().findUserByNameOrNameAlias(name);
         String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
                 .getPhoneNumber());
-        context.getWebappPagesCollection().getPage(PhoneNumberVerificationPage.class)
+        webContext.getPagesCollection().getPage(PhoneNumberVerificationPage.class)
                 .enterCodeForEmaillessUser(code);
     }
 
@@ -77,7 +80,7 @@ public class PhoneNumberVerificationPageSteps {
     @When("^I enter wrong phone verification code for user (.*)$")
     public void i_enter_wrong_phone_verification_code_for_user_user_Name(
             String name) throws Throwable {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(name);
+        ClientUser user = webContext.getUserManager().findUserByNameOrNameAlias(name);
         String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
                 .getPhoneNumber());
         String wrongcode = "";
@@ -86,7 +89,7 @@ public class PhoneNumberVerificationPageSteps {
         } else {
             wrongcode = "0" + code.substring(1);
         }
-        context.getWebappPagesCollection().getPage(PhoneNumberVerificationPage.class)
+        webContext.getPagesCollection().getPage(PhoneNumberVerificationPage.class)
                 .enterCode(wrongcode);
     }
 
@@ -101,7 +104,7 @@ public class PhoneNumberVerificationPageSteps {
     @Then("^I see invalid phone code error message saying (.*)")
     public void TheSignInErrorMessageReads(String message) throws Exception {
         assertThat("invalid phone code error",
-                context.getWebappPagesCollection()
+                webContext.getPagesCollection()
                 .getPage(PhoneNumberVerificationPage.class)
                 .getErrorMessage(), equalTo(message));
     }
