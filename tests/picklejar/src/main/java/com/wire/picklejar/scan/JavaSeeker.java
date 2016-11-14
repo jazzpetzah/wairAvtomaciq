@@ -6,9 +6,10 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Spliterator;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -25,28 +26,35 @@ public class JavaSeeker {
 
     private static final String CLASS_LOADER_CLASSES_FIELD_NAME = "classes";
 
-    public static Collection<Class> getClasses(final String pack) throws IOException {
+    public static Collection<Class> getClasses(final String[] pkgs) throws IOException {
         final StandardJavaFileManager fileManager = ToolProvider.getSystemJavaCompiler().
                 getStandardFileManager(null, null, null);
-        final Spliterator<JavaFileObject> classesSpliterator = fileManager.list(StandardLocation.CLASS_PATH, pack, Collections.
-                singleton(JavaFileObject.Kind.CLASS), true).spliterator();
         LOG.debug("Loading classes...");
-        return StreamSupport.stream(classesSpliterator, false)
-                .map(javaFileObject -> {
-                    try {
-                        final String fullClassName = javaFileObject.getName()
-                                .replace(".class", "")
-                                .replace(")", "")
-                                .replaceAll(Pattern.quote(File.separator), ".")
-                                .replaceAll("(.*)" + pack, pack);
-                        LOG.trace("Loading class: {}", fullClassName);
-                        return Class.forName(fullClassName);
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
-                    }
+        Set<Class> classes = new HashSet<>();
+        for (String pkg : pkgs) {
+            final Spliterator<JavaFileObject> classesSpliterator = fileManager.list(StandardLocation.CLASS_PATH, pkg, Collections.
+                    singleton(JavaFileObject.Kind.CLASS), true).spliterator();
+            classes.addAll(StreamSupport.stream(classesSpliterator, false)
+                    .map(javaFileObject -> {
+                        try {
+                            LOG.trace("Processing class: {}", javaFileObject.getName());
+                            final String fullClassName = javaFileObject.getName()
+                                    .replace(".class", "")
+                                    .replace(")", "")
+                                    .replaceAll(Pattern.quote(File.separator), ".")
+                                    .replaceAll(Pattern.quote("/"), ".")
+                                    .replaceAll("(.*)" + pkg, pkg);
+                            LOG.trace("Loading class: {}", fullClassName);
+                            return Class.forName(fullClassName);
+                        } catch (ClassNotFoundException e) {
+                            throw new RuntimeException(e);
+                        }
 
-                })
-                .collect(Collectors.toCollection(ArrayList::new));
+                    })
+                    .collect(Collectors.toCollection(ArrayList::new)));
+        }
+        return classes;
+
     }
 
     public static Collection<File> getResource(final String pack, String extension) throws IOException {

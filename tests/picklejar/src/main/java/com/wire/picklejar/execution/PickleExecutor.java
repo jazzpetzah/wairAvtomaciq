@@ -149,7 +149,8 @@ public class PickleExecutor {
             declaringClassObject = classInstanceCache.get(declaringClassName);
         } else {
             final List<Object> constructorParamsList = Arrays.asList(constructorParams);
-            final List<Class<?>> constructorParamTypesList = constructorParamsList.stream().map((object) -> object.getClass()).
+            final List<Class<?>> constructorParamTypesList = constructorParamsList.stream()
+                    .map((object) -> object.getClass()).
                     collect(Collectors.toList());
             LOG.trace("Step constructor param list size: {}", constructorParamsList.size());
             LOG.trace("Step constructor param type list size: {}", constructorParamTypesList.size());

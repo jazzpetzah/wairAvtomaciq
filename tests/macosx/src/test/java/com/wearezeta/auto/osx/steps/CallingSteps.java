@@ -6,7 +6,7 @@ import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.osx.common.WrapperTestContext;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.steps.CallPageSteps;
 import com.wearezeta.auto.web.steps.ConversationPageSteps;
 import com.wearezeta.auto.web.steps.WarningPageSteps;
@@ -26,14 +26,17 @@ public class CallingSteps {
     private static final Logger LOG = ZetaLogger.getLog(com.wearezeta.auto.web.steps.CallingSteps.class
             .getName());
 
-    private final WrapperTestContext context;
+    private final TestContext webContext;
+    private final TestContext wrapperContext;
 
     public CallingSteps() {
-        this.context = new WrapperTestContext();
+        this.webContext = new TestContext();
+        this.wrapperContext = new TestContext();
     }
-
-    public CallingSteps(WrapperTestContext context) {
-        this.context = context;
+    
+    public CallingSteps(TestContext webContext, TestContext wrapperContext) {
+        this.webContext = webContext;
+        this.wrapperContext = wrapperContext;
     }
 
     /**
@@ -47,7 +50,7 @@ public class CallingSteps {
      */
     @When("^(.*) start(?:s|ing) a video call to (.*)$")
     public void UserXCallsWithVideoToConversationY(String callerNames, String conversationName) throws Exception {
-        context.getCallingManager().startVideoCallToConversation(splitAliases(callerNames), conversationName);
+        webContext.getCallingManager().startVideoCallToConversation(splitAliases(callerNames), conversationName);
     }
 
     /**
@@ -61,7 +64,7 @@ public class CallingSteps {
      */
     @When("^(.*) calls (.*)$")
     public void UserXCallsToConversationY(String callerNames, String conversationName) throws Exception {
-        context.getCallingManager().callToConversation(splitAliases(callerNames), conversationName);
+        webContext.getCallingManager().callToConversation(splitAliases(callerNames), conversationName);
     }
 
     /**
@@ -77,9 +80,9 @@ public class CallingSteps {
     public void UserXStopsCallsToUserY(String instanceUsers, String outgoingCall, String conversationName)
             throws Exception {
         if (outgoingCall == null) {
-            context.getCallingManager().stopIncomingCall(splitAliases(instanceUsers));
+            webContext.getCallingManager().stopIncomingCall(splitAliases(instanceUsers));
         } else {
-            context.getCallingManager().stopOutgoingCall(splitAliases(instanceUsers), conversationName);
+            webContext.getCallingManager().stopOutgoingCall(splitAliases(instanceUsers), conversationName);
         }
     }
 
@@ -99,7 +102,7 @@ public class CallingSteps {
     public void UserXVerifesCallStatusToUserY(String callers,
             String conversationName, String expectedStatuses, int timeoutSeconds)
             throws Exception {
-        context.getCallingManager().verifyCallingStatus(splitAliases(callers), conversationName,
+        webContext.getCallingManager().verifyCallingStatus(splitAliases(callers), conversationName,
                 expectedStatuses, timeoutSeconds);
     }
 
@@ -117,7 +120,7 @@ public class CallingSteps {
     @Then("(.*) verif(?:y|ies) that waiting instance status is changed to (.*) in (\\d+) seconds?$")
     public void UserXVerifesCallStatusToUserY(String callees,
             String expectedStatuses, int timeoutSeconds) throws Exception {
-        context.getCallingManager().verifyAcceptingCallStatus(splitAliases(callees),
+        webContext.getCallingManager().verifyAcceptingCallStatus(splitAliases(callees),
                 expectedStatuses, timeoutSeconds);
     }
 
@@ -133,7 +136,7 @@ public class CallingSteps {
     @When("(.*) starts? instances? using (.*)$")
     public void UserXStartsInstance(String callees,
             String callingServiceBackend) throws Exception {
-        context.getCallingManager().startInstances(splitAliases(callees), callingServiceBackend, "OSX_Wrapper", ZetaFormatter.getScenario());
+        webContext.getCallingManager().startInstances(splitAliases(callees), callingServiceBackend, "OSX_Wrapper", ZetaFormatter.getScenario());
     }
 
     /**
@@ -149,9 +152,9 @@ public class CallingSteps {
     public void UserXAcceptsNextIncomingCallAutomatically(String callees, String video)
             throws Exception {
         if (video == null) {
-            context.getCallingManager().acceptNextCall(splitAliases(callees));
+            webContext.getCallingManager().acceptNextCall(splitAliases(callees));
         } else {
-            context.getCallingManager().acceptNextVideoCall(splitAliases(callees));
+            webContext.getCallingManager().acceptNextVideoCall(splitAliases(callees));
         }
 
     }
@@ -168,7 +171,7 @@ public class CallingSteps {
     public void UserXVerifesHavingXFlows(String callees, int numberOfFlows)
             throws Exception {
         for (String callee : splitAliases(callees)) {
-            final List<Flow> flows = context.getCallingManager().getFlows(callee);
+            final List<Flow> flows = webContext.getCallingManager().getFlows(callee);
             assertThat("existing flows: \n" + flows, flows, hasSize(numberOfFlows));
         }
     }
@@ -184,7 +187,7 @@ public class CallingSteps {
     @Then("(.*) verif(?:ies|y) that all flows have greater than 0 bytes$")
     public void UserXVerifesHavingXFlows(String callees) throws Exception {
         for (String callee : splitAliases(callees)) {
-            for (Flow flow : context.getCallingManager().getFlows(callee)) {
+            for (Flow flow : webContext.getCallingManager().getFlows(callee)) {
                 assertThat("incoming bytes: \n" + flow, flow.getTelemetry().getStats().getAudio().getBytesReceived(), greaterThan(0L));
                 assertThat("outgoing bytes: \n" + flow, flow.getTelemetry().getStats().getAudio().getBytesSent(), greaterThan(0L));
             }
@@ -301,7 +304,7 @@ public class CallingSteps {
     private void getCheckAndCompareFlows(Map<String, Flow> flowMap,
             String callee, int participantSize) throws Exception {
         UserXVerifesHavingXFlows(callee, participantSize);
-        for (Flow flow : context.getCallingManager().getFlows(callee)) {
+        for (Flow flow : webContext.getCallingManager().getFlows(callee)) {
             Flow oldFlow = flowMap.get(callee + flow.getMeta().getRemoteUserId());
             if (oldFlow != null) {
                 assertThat("incoming bytes", flow.getTelemetry().getStats().getAudio().getBytesReceived(),
@@ -316,9 +319,9 @@ public class CallingSteps {
     @When("(.*) (maximises|minimises) video call")
     public void UserXResizesVideo(String callees, String toggle) throws Exception {
         if (toggle.equals("maximises")) {
-            context.getCallingManager().maximiseVideoCall(splitAliases(callees));
+            webContext.getCallingManager().maximiseVideoCall(splitAliases(callees));
         } else {
-            context.getCallingManager().minimiseVideoCall(splitAliases(callees));
+            webContext.getCallingManager().minimiseVideoCall(splitAliases(callees));
         }
     }
 }

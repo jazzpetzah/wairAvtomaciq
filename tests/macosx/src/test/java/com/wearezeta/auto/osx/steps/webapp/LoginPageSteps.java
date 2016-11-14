@@ -5,7 +5,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.osx.common.WrapperTestContext;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.LoginPage;
 
 import cucumber.api.java.en.Given;
@@ -18,15 +18,17 @@ public class LoginPageSteps {
 
     private static final Logger LOG = ZetaLogger.getLog(LoginPageSteps.class.getName());
 
-
-    private final WrapperTestContext context;
+    private final TestContext webContext;
+    private final TestContext wrapperContext;
 
     public LoginPageSteps() {
-        this.context = new WrapperTestContext();
+        this.webContext = new TestContext();
+        this.wrapperContext = new TestContext();
     }
-
-    public LoginPageSteps(WrapperTestContext context) {
-        this.context = context;
+    
+    public LoginPageSteps(TestContext webContext, TestContext wrapperContext) {
+        this.webContext = webContext;
+        this.wrapperContext = wrapperContext;
     }
     /**
      * Enters user email and password into corresponding fields on sign in screen then taps "Sign In" button
@@ -42,17 +44,17 @@ public class LoginPageSteps {
     public void ISignInUsingLoginAndPassword(String login, String password)
             throws Exception {
         try {
-            login = context.getUserManager().findUserByEmailOrEmailAlias(login).getEmail();
+            login = webContext.getUserManager().findUserByEmailOrEmailAlias(login).getEmail();
         } catch (NoSuchUserException e) {
             try {
                 // search for email by name aliases in case name is specified
-                login = context.getUserManager().findUserByNameOrNameAlias(login).getEmail();
+                login = webContext.getUserManager().findUserByNameOrNameAlias(login).getEmail();
             } catch (NoSuchUserException ex) {
             }
         }
 
         try {
-            password = context.getUserManager().findUserByPasswordAlias(password).getPassword();
+            password = webContext.getUserManager().findUserByPasswordAlias(password).getPassword();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
@@ -75,7 +77,7 @@ public class LoginPageSteps {
     @When("^I press Sign In button$")
     public void IPressSignInButton() throws Exception {
         Thread.sleep(1000);
-        context.getWebappPagesCollection().getPage(LoginPage.class).clickSignInButton();
+        webContext.getPagesCollection().getPage(LoginPage.class).clickSignInButton();
     }
 
     /**
@@ -89,7 +91,7 @@ public class LoginPageSteps {
     public void IAmSignedInProperly() throws Exception {
         Assert.assertTrue(
                 "Sign In button/login progress spinner are still visible",
-                context.getWebappPagesCollection().getPage(LoginPage.class).waitForLogin());
+                webContext.getPagesCollection().getPage(LoginPage.class).waitForLogin());
     }
 
     /**
@@ -102,7 +104,7 @@ public class LoginPageSteps {
     @Then("^the sign in error message reads (.*)")
     public void TheSignInErrorMessageReads(String message) throws Exception {
         assertThat("sign in error message",
-                context.getWebappPagesCollection().getPage(LoginPage.class)
+                webContext.getPagesCollection().getPage(LoginPage.class)
                 .getErrorMessage(), equalTo(message));
     }
 
@@ -115,7 +117,7 @@ public class LoginPageSteps {
     @Then("^a red dot is shown inside the email field on the sign in form$")
     public void ARedDotIsShownOnTheEmailField() throws Exception {
         assertThat("Red dot on email field",
-                context.getWebappPagesCollection().getPage(LoginPage.class)
+                webContext.getPagesCollection().getPage(LoginPage.class)
                 .isEmailFieldMarkedAsError());
     }
 
@@ -128,7 +130,7 @@ public class LoginPageSteps {
     @Then("^a red dot is shown inside the password field on the sign in form$")
     public void ARedDotIsShownOnThePasswordField() throws Exception {
         assertThat("Red dot on password field",
-                context.getWebappPagesCollection().getPage(LoginPage.class)
+                webContext.getPagesCollection().getPage(LoginPage.class)
                 .isPasswordFieldMarkedAsError());
     }
 
@@ -142,11 +144,11 @@ public class LoginPageSteps {
     @When("^I enter email (\\S+)$")
     public void IEnterEmail(String email) throws Exception {
         try {
-            email = context.getUserManager().findUserByEmailOrEmailAlias(email).getEmail();
+            email = webContext.getUserManager().findUserByEmailOrEmailAlias(email).getEmail();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
-        context.getWebappPagesCollection().getPage(LoginPage.class).inputEmail(email);
+        webContext.getPagesCollection().getPage(LoginPage.class).inputEmail(email);
     }
 
     /**
@@ -159,11 +161,11 @@ public class LoginPageSteps {
     @When("^I enter password \"([^\"]*)\"$")
     public void IEnterPassword(String password) throws Exception {
         try {
-            password = context.getUserManager().findUserByPasswordAlias(password).getPassword();
+            password = webContext.getUserManager().findUserByPasswordAlias(password).getPassword();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
-        context.getWebappPagesCollection().getPage(LoginPage.class).inputPassword(password);
+        webContext.getPagesCollection().getPage(LoginPage.class).inputPassword(password);
     }
 
     /**
@@ -176,7 +178,7 @@ public class LoginPageSteps {
      */
     @Given("^I see Sign In page$")
     public void ISeeSignInPage() throws Exception {
-        Assert.assertTrue(context.getWebappPagesCollection().getPage(LoginPage.class)
+        Assert.assertTrue(webContext.getPagesCollection().getPage(LoginPage.class)
                 .isSignInFormVisible());
     }
 
@@ -189,8 +191,8 @@ public class LoginPageSteps {
      */
     @When("^I click Change Password button$")
     public void IClickChangePassword() throws Exception {
-        context.getWebappPagesCollection().getPage(LoginPage.class)
-                .clickChangePasswordButton(context.getWebappPagesCollection());
+        webContext.getPagesCollection().getPage(LoginPage.class)
+                .clickChangePasswordButton(webContext.getPagesCollection());
     }
 
     /**
@@ -203,7 +205,7 @@ public class LoginPageSteps {
      */
     @Then("^I see login error \"(.*)\"$")
     public void ISeeLoginError(String expectedError) throws Exception {
-        final String loginErrorText = context.getWebappPagesCollection().getPage(
+        final String loginErrorText = webContext.getPagesCollection().getPage(
                 LoginPage.class).getErrorMessage();
         Assert.assertTrue(
                 String.format(
@@ -214,7 +216,7 @@ public class LoginPageSteps {
 
     @When("^I switch to phone number sign in page$")
     public void i_switch_to_phone_number_sign_in_page() throws Throwable {
-        context.getWebappPagesCollection().getPage(LoginPage.class)
+        webContext.getPagesCollection().getPage(LoginPage.class)
                 .switchToPhoneNumberLoginPage();
     }
 }

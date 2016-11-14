@@ -1,7 +1,7 @@
 package com.wearezeta.auto.osx.steps.webapp;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.osx.common.WrapperTestContext;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.AddEmailAddressPage;
 
 import cucumber.api.java.en.Then;
@@ -11,14 +11,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class AddEmailAddressPageSteps {
 
-    private final WrapperTestContext context;
+    private final TestContext webContext;
+    private final TestContext wrapperContext;
 
     public AddEmailAddressPageSteps() {
-        this.context = new WrapperTestContext();
+        this.webContext = new TestContext();
+        this.wrapperContext = new TestContext();
     }
-
-    public AddEmailAddressPageSteps(WrapperTestContext context) {
-        this.context = context;
+    
+    public AddEmailAddressPageSteps(TestContext webContext, TestContext wrapperContext) {
+        this.webContext = webContext;
+        this.wrapperContext = wrapperContext;
     }
     
     /**
@@ -31,8 +34,8 @@ public class AddEmailAddressPageSteps {
     @When("^I enter email of user (.*) on add email address dialog$")
     public void IEnterEmailOfUserOnAddEmailAddressDialog(String name)
             throws Throwable {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(name);
-        context.getWebappPagesCollection().getPage(AddEmailAddressPage.class).setEmail(
+        ClientUser user = webContext.getUserManager().findUserByNameOrNameAlias(name);
+        webContext.getPagesCollection().getPage(AddEmailAddressPage.class).setEmail(
                 user.getEmail());
     }
 
@@ -46,7 +49,7 @@ public class AddEmailAddressPageSteps {
     @When("^I enter email address (.*) on add email address dialog$")
     public void IEnterEmailOnAddEmailAddressDialog(String email)
             throws Throwable {
-        context.getWebappPagesCollection().getPage(AddEmailAddressPage.class)
+        webContext.getPagesCollection().getPage(AddEmailAddressPage.class)
                 .setEmail(email);
     }
 
@@ -60,7 +63,7 @@ public class AddEmailAddressPageSteps {
     @When("^I enter password (.*) on add email address dialog$")
     public void IEnterPasswordOnAddEmailAddressDialog(String password)
             throws Exception {
-        context.getWebappPagesCollection().getPage(AddEmailAddressPage.class).setPassword(
+        webContext.getPagesCollection().getPage(AddEmailAddressPage.class).setPassword(
                 password);
     }
 
@@ -71,7 +74,7 @@ public class AddEmailAddressPageSteps {
      */
     @When("^I click add button on add email address dialog$")
     public void IClickAddButtonOnAddEmailAddressDialog() throws Exception {
-        context.getWebappPagesCollection().getPage(AddEmailAddressPage.class)
+        webContext.getPagesCollection().getPage(AddEmailAddressPage.class)
                 .clickAddButton();
     }
 
@@ -86,7 +89,7 @@ public class AddEmailAddressPageSteps {
     public void ISeeErrorMessageOnAddEmailAddressDialog(String message)
             throws Exception {
         assertThat("invalid email error",
-                context.getWebappPagesCollection().getPage(AddEmailAddressPage.class)
+                webContext.getPagesCollection().getPage(AddEmailAddressPage.class)
                 .getErrorMessage(), equalTo(message));
     }
 

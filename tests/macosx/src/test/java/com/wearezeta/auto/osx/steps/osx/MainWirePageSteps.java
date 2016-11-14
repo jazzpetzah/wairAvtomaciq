@@ -1,7 +1,8 @@
 package com.wearezeta.auto.osx.steps.osx;
 
-import com.wearezeta.auto.osx.common.WrapperTestContext;
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
+import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
+import com.wearezeta.auto.web.common.TestContext;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -16,40 +17,43 @@ public class MainWirePageSteps {
     private final static int OSX_TITLEBAR_HEIGHT = 24;
     private final static int DEVIATION_ALLOWANCE_IN_PX = 16;
 
-    private final WrapperTestContext context;
+    private final TestContext webContext;
+    private final TestContext wrapperContext;
 
     public MainWirePageSteps() {
-        this.context = new WrapperTestContext();
+        this.webContext = new TestContext();
+        this.wrapperContext = new TestContext();
     }
-
-    public MainWirePageSteps(WrapperTestContext context) {
-        this.context = context;
+    
+    public MainWirePageSteps(TestContext webContext, TestContext wrapperContext) {
+        this.webContext = webContext;
+        this.wrapperContext = wrapperContext;
     }
 
     @When("^I close the app$")
     public void ICloseApp() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).closeWindow();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).closeWindow();
     }
 
     @When("^I type shortcut combination to quit the app$")
     public void ITypeShortcutCombinationtoQuit() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).pressShortCutForQuit();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).pressShortCutForQuit();
     }
 
     @When("^I type shortcut combination for preferences$")
     public void ITypeShortcutCombinationForPreferences() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).pressShortCutForPreferences();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).pressShortCutForPreferences();
     }
 
     @When("^I minimize the app$")
     public void IMinimizeApp() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).minimizeWindow();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).minimizeWindow();
     }
 
     @When("^I maximize the app$")
     public void IMaximizeApp() throws Exception {
         int maxHeight;
-        MainWirePage page = context.getOSXPagesCollection().getPage(MainWirePage.class);
+        MainWirePage page = wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class);
 
         Dimension desktopSize = page.getDesktopSize();
         // get Dock position & size
@@ -76,7 +80,7 @@ public class MainWirePageSteps {
         int maxWidth;
 
         // get Desktop size
-        MainWirePage mainPage = context.getOSXPagesCollection().getPage(MainWirePage.class);
+        MainWirePage mainPage = wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class);
         Dimension desktopSize = mainPage.getDesktopSize();
         // get Dock position & size
         Dimension dockSize = mainPage.getDockSize();
@@ -100,27 +104,27 @@ public class MainWirePageSteps {
 
     @When("^I resize the app to the max by hand$")
     public void IResizeToMaxByHand() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).resizeToMaxByHand();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).resizeToMaxByHand();
     }
 
     @When("^I resize the app to the min by hand$")
     public void IResizeToMinByHand() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).resizeToMinByHand();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).resizeToMinByHand();
     }
 
     @When("^I ensure initial positioning$")
     public void IEnsureInitialPositioning() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).ensurePosition();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).ensurePosition();
     }
 
     @When("^I change position of the app to X (\\d+) and Y (\\d+)$")
     public void IPositioningTo(int x, int y) throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).positionByHand(x, y);
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).positionByHand(x, y);
     }
 
     @When("^I verify app X coordinate is (\\d+) and Y coordinate is (\\d+)$")
     public void IVerifyPosition(int x, int y) throws Exception {
-        MainWirePage mainWirePage = context.getOSXPagesCollection().getPage(MainWirePage.class);
+        MainWirePage mainWirePage = wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class);
         Assert.assertTrue("Expected X coordinate " + x
                 + " does not match the actual value " + mainWirePage.getStrippedX(), mainWirePage.isStrippedX(x));
         Assert.assertTrue("Expected Y coordinate " + y
@@ -129,12 +133,12 @@ public class MainWirePageSteps {
 
     @When("^I resize the app to width (\\d+) px and height (\\d+) px$")
     public void IResizeTo(int width, int height) throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).resizeByHand(width, height);
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).resizeByHand(width, height);
     }
 
     @When("^I verify app width is (\\d+) px and height is (\\d+) px$")
     public void IVerifySizeOf(int width, int height) throws Exception {
-        MainWirePage mainPage = context.getOSXPagesCollection().getPage(MainWirePage.class);
+        MainWirePage mainPage = wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class);
         
         // check if height in allowance
         assertThat("Height", mainPage.getHeight(), greaterThan(height - DEVIATION_ALLOWANCE_IN_PX));
@@ -146,71 +150,71 @@ public class MainWirePageSteps {
 
     @Then("^I type shortcut combination to undo$")
     public void ITypeShortcutCombinationToUndo() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).pressShortCutForUndo();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).pressShortCutForUndo();
     }
 
     @Then("^I type shortcut combination to redo$")
     public void ITypeShortcutCombinationToRedo() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).pressShortCutForRedo();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).pressShortCutForRedo();
     }
 
     @Then("^I type shortcut combination to select all$")
     public void ITypeShortcutCombinationToSelectAll() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).pressShortCutForSelectAll();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).pressShortCutForSelectAll();
     }
 
     @Then("^I type shortcut combination to cut$")
     public void ITypeShortcutCombinationToCut() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).pressShortCutForCut();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).pressShortCutForCut();
     }
 
     @Then("^I type shortcut combination to paste$")
     public void ITypeShortcutCombinationToPaste() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).pressShortCutForPaste();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).pressShortCutForPaste();
     }
 
     @Then("^I type shortcut combination to copy$")
     public void ITypeShortcutCombinationToCopy() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).pressShortCutForCopy();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).pressShortCutForCopy();
     }
 
     @Then("^I type shortcut combination to open preferences$")
     public void ITypeShortcutCombinationToOpenPreference() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).pressShortCutForPreferences();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).pressShortCutForPreferences();
     }
 
     @When("^I type shortcut combination to mute or unmute a conversation$")
     public void ITypeShortcutCombinationToMuteOrUnmute() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).pressShortCutToMute();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).pressShortCutToMute();
     }
 
     @When("^I type shortcut combination to archive a conversation$")
     public void ITypeShortcutCombinationToArchive() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).pressShortCutToArchive();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).pressShortCutToArchive();
     }
 
     @When("^I type shortcut combination for next conversation$")
     public void ITypeShortcutCombinationForNextConv() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).pressShortCutForNextConv();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).pressShortCutForNextConv();
     }
 
     @When("^I type shortcut combination for previous conversation$")
     public void ITypeShortcutCombinationForPrevConv() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).pressShortCutForPrevConv();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).pressShortCutForPrevConv();
     }
 
     @Then("^I type shortcut combination to ping$")
     public void ITypeShortcutCombinationToPing() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).pressShortCutForPing();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).pressShortCutForPing();
     }
 
     @Then("^I type shortcut combination to start a call$")
     public void ITypeShortcutCombinationToCall() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).pressShortCutForCall();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).pressShortCutForCall();
     }
 
     @Then("^I type shortcut combination to open search$")
     public void ITypeShortcutCombinationToOpenSearch() throws Exception {
-        context.getOSXPagesCollection().getPage(MainWirePage.class).pressShortCutForSearch();
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).pressShortCutForSearch();
     }
 }
