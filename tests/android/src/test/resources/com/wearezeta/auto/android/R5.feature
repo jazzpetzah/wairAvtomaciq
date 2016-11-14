@@ -1,6 +1,6 @@
 Feature: Registration5
 
-  @C667 @regression @rc
+  @C6675 @regression @rc @torun
   Scenario Outline: Register new user by phone and set profile picture using camera 5
     Given I see welcome screen
     When I input a new phone number for user <Name>
@@ -16,7 +16,7 @@ Feature: Registration5
       | Name      |
       | user1Name |
 
-  @C43807 @rc @regression
+  @C438075 @rc @regression @torun
   Scenario Outline: Verify sign in with email address only 5
     Given There is 1 user with email address only where <Name> is me
     Given I see welcome screen
@@ -32,7 +32,7 @@ Feature: Registration5
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C382 @regression
+  @C3825 @regression @torun
   Scenario Outline: Sign in to Wire by mail 5
     Given There is 1 user where <Name> is me
     Given I see welcome screen
