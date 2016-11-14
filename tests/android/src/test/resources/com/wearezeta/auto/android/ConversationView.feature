@@ -102,18 +102,17 @@ Feature: Conversation View
       | user1Name | user2Name | user3Name |
 
   @C18044 @regression
-  Scenario Outline: I see creation header when someone create group conversation with me
+  Scenario Outline: (AN-4664) I see creation header when someone create group conversation with me
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
-    When I tap on conversation name <GroupChatName>
-    # Workaround for AN-4011, for following two steps
-    And I tap conversation name from top toolbar
-    And I tap back button
-    Then I see group chat page with users <Contact1>,<Contact2>
+    When <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
+    # Wait for SE sync
+    And I wait for 5 seconds
+    And I tap on conversation name <GroupChatName>
+    Then I see group chat page with users Myself,<Contact2>
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName      |

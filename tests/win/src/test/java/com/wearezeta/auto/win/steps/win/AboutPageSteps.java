@@ -3,6 +3,7 @@ package com.wearezeta.auto.win.steps.win;
 import com.wearezeta.auto.win.pages.win.AboutPage;
 import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import com.wearezeta.auto.win.common.WrapperTestContext;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -13,6 +14,16 @@ public class AboutPageSteps {
     private final WinPagesCollection winPagesCollection = WinPagesCollection.getInstance();
     @SuppressWarnings("unused")
     private final WebappPagesCollection webappPagesCollection = WebappPagesCollection.getInstance();
+    
+    private final WrapperTestContext context;
+
+    public AboutPageSteps() {
+        this.context = new WrapperTestContext();
+    }
+
+    public AboutPageSteps(WrapperTestContext context) {
+        this.context = context;
+    }
 
     /**
      * Closes the about window

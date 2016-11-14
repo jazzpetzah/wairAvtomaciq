@@ -5,12 +5,14 @@ Feature: File Transfer
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
+    Given User <Contact> sends file <FileName>.<FileExt> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given User Me sends 1 encrypted message to user <Contact>
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And User <Contact> sends file <FileName>.<FileExt> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    And User Me sends 1 encrypted message to user <Contact>
-    Then I wait up to <Timeout> seconds until the file <FileName>.<FileExt> with size <FileSize> is ready for download from conversation view
-    When I tap file transfer action button
+    Given I tap on contact name <Contact>
+    # Wait for sync
+    Given I wait for 3 seconds
+    When I wait up to <Timeout> seconds until the file <FileName>.<FileExt> with size <FileSize> is ready for download from conversation view
+    And I tap file transfer action button
     Then I wait up to <Timeout> seconds until I see a preview of the file named "<FileName>"
 
     Examples:

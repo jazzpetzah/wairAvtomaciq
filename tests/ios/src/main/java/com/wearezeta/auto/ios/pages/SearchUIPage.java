@@ -9,7 +9,6 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class SearchUIPage extends IOSPage {
@@ -124,7 +123,7 @@ public class SearchUIPage extends IOSPage {
 
     public boolean isElementNotFoundInSearch(String name) throws Exception {
         final By locator = By.xpath(xpathStrFoundContactByName.apply(name));
-        return !DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 2);
+        return !isLocatorDisplayed(locator, 2);
     }
 
     public void selectElementInSearchResults(String name) throws Exception {

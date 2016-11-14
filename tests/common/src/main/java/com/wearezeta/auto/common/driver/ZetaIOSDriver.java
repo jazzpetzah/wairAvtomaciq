@@ -1,8 +1,14 @@
 package com.wearezeta.auto.common.driver;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.attribute.PosixFilePermission;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.*;
 import java.util.concurrent.TimeoutException;
 
@@ -11,7 +17,6 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rest.RESTError;
-import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.openqa.selenium.*;
@@ -28,6 +33,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
         FindsByFBAccessibilityId, FindsByFBXPath, FindsByFBClassName {
     public static final long MAX_COMMAND_DURATION_MILLIS = 90000;
     public static final long MAX_SESSION_INIT_DURATION_MILLIS = 120000;
+    public static final long MAX_GET_SOURCE_DURATION_MILLIS = 15000;
 
     public static final String AUTOMATION_NAME_CAPABILITY_NAME = "automationName";
     public static final String AUTOMATION_MODE_XCUITEST = "XCUITest";
@@ -40,8 +46,43 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
 
     public ZetaIOSDriver(URL remoteAddress, Capabilities desiredCapabilities) {
         super(remoteAddress, desiredCapabilities);
+        if (isRealDevice()) {
+            verifyLockdownPermissions();
+        }
         initOSVersionString();
         this.fbDriverAPI = new FBDriverAPI();
+    }
+
+    public boolean isRealDevice() {
+        return this.getCapabilities().getCapability("udid") != null;
+    }
+
+    private FBDriverAPI getFbDriverAPI() {
+        if (isSessionLost()) {
+            throw new IllegalStateException("Appium session is dead. No more commands can be scheduled.");
+        }
+        return this.fbDriverAPI;
+    }
+
+    private static final File LOCKDOWN = new File("/var/db/lockdown");
+
+    private static void verifyLockdownPermissions() {
+        final Set<PosixFilePermission> perms;
+        try {
+            perms = Files.getPosixFilePermissions(LOCKDOWN.toPath());
+        } catch (IOException e) {
+            throw new WebDriverException(e);
+        }
+        if (!perms.containsAll(Arrays.asList(
+                PosixFilePermission.OTHERS_READ,
+                PosixFilePermission.OTHERS_WRITE,
+                PosixFilePermission.OTHERS_EXECUTE))) {
+            throw new IllegalStateException(String.format(
+                    "You cannot perform real device tests unless %s has no RWX permissions. " +
+                            "Execute `sudo chmod 777 %s` to fix the problem and restart the test`",
+                    LOCKDOWN.getAbsolutePath(), LOCKDOWN.getAbsolutePath()
+            ));
+        }
     }
 
     public DefaultArtifactVersion getOSVersion() {
@@ -96,30 +137,21 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
 
         final Callable<Response> task = () -> super.execute(driverCommand, parameters);
         final Future<Response> future = getPool().submit(task);
-        final long timeout = driverCommand.equals(DriverCommand.NEW_SESSION) ?
-                MAX_SESSION_INIT_DURATION_MILLIS :
-                MAX_COMMAND_DURATION_MILLIS;
+        long timeout = MAX_COMMAND_DURATION_MILLIS;
+        switch (driverCommand) {
+            case DriverCommand.GET_PAGE_SOURCE:
+                timeout = MAX_GET_SOURCE_DURATION_MILLIS;
+                break;
+            case DriverCommand.NEW_SESSION:
+                timeout = MAX_SESSION_INIT_DURATION_MILLIS;
+                break;
+        }
         try {
             return future.get(timeout, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             if (e instanceof ExecutionException) {
-                if (driverCommand.equals(HIDE_KEYBOARD_COMMAND) && (e.getCause() instanceof WebDriverException)) {
-                    log.debug("The keyboard seems to be already hidden.");
-                    final Response response = new Response();
-                    response.setSessionId(this.getSessionId().toString());
-                    response.setStatus(HttpStatus.SC_OK);
-                    return response;
-                }
                 if (isSessionLostBecause(e.getCause())) {
-                    if (!isSessionLost()) {
-                        try {
-                            super.execute(DriverCommand.QUIT);
-                        } catch (Exception eq) {
-                            // ignore
-                        } finally {
-                            setSessionLost(true);
-                        }
-                    }
+                    setSessionLost(true);
                 }
                 if (e.getCause() instanceof WebDriverException) {
                     throw (WebDriverException) e.getCause();
@@ -128,15 +160,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
                 }
             } else {
                 if (e instanceof TimeoutException) {
-                    if (!isSessionLost()) {
-                        try {
-                            super.execute(DriverCommand.QUIT);
-                        } catch (Exception eq) {
-                            // ignore
-                        } finally {
-                            setSessionLost(true);
-                        }
-                    }
+                    setSessionLost(true);
                 }
                 throw new WebDriverException(e);
             }
@@ -146,7 +170,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     @Override
     public FBElement findElementByFBPredicate(String value) {
         try {
-            return fbDriverAPI.findElementByFBPredicate(value)
+            return getFbDriverAPI().findElementByFBPredicate(value)
                     .orElseThrow(() -> new NotFoundException(String.format("Cannot find %s using predicate '%s'",
                             FBElement.class.getSimpleName(), value)));
         } catch (RESTError e) {
@@ -157,7 +181,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     @Override
     public List<FBElement> findElementsByFBPredicate(String value) {
         try {
-            return fbDriverAPI.findElementsByFBPredicate(value);
+            return getFbDriverAPI().findElementsByFBPredicate(value);
         } catch (RESTError e) {
             throw new WebDriverException(e);
         }
@@ -166,7 +190,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     @Override
     public FBElement findElementByFBAccessibilityId(String value) {
         try {
-            return fbDriverAPI.findElementByFBAccessibilityId(value)
+            return getFbDriverAPI().findElementByFBAccessibilityId(value)
                     .orElseThrow(() -> new NotFoundException(String.format("Cannot find %s using accessibility id '%s'",
                             FBElement.class.getSimpleName(), value)));
         } catch (RESTError e) {
@@ -177,7 +201,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     @Override
     public List<FBElement> findElementsByFBAccessibilityId(String value) {
         try {
-            return fbDriverAPI.findElementsByFBAccessibilityId(value);
+            return getFbDriverAPI().findElementsByFBAccessibilityId(value);
         } catch (RESTError e) {
             throw new WebDriverException(e);
         }
@@ -186,7 +210,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     @Override
     public FBElement findElementByFBClassName(String value) {
         try {
-            return fbDriverAPI.findElementByFBClassName(value)
+            return getFbDriverAPI().findElementByFBClassName(value)
                     .orElseThrow(() -> new NotFoundException(String.format("Cannot find %s using class name '%s'",
                             FBElement.class.getSimpleName(), value)));
         } catch (RESTError e) {
@@ -197,7 +221,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     @Override
     public List<FBElement> findElementsByFBClassName(String value) {
         try {
-            return fbDriverAPI.findElementsByFBClassName(value);
+            return getFbDriverAPI().findElementsByFBClassName(value);
         } catch (RESTError e) {
             throw new WebDriverException(e);
         }
@@ -206,7 +230,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     @Override
     public FBElement findElementByFBXPath(String value) {
         try {
-            return fbDriverAPI.findElementByFBXPath(value)
+            return getFbDriverAPI().findElementByFBXPath(value)
                     .orElseThrow(() -> new NotFoundException(String.format("Cannot find %s using XPath '%s'",
                             FBElement.class.getSimpleName(), value)));
         } catch (RESTError e) {
@@ -217,7 +241,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     @Override
     public List<FBElement> findElementsByFBXPath(String value) {
         try {
-            return fbDriverAPI.findElementsByFBXPath(value);
+            return getFbDriverAPI().findElementsByFBXPath(value);
         } catch (RESTError e) {
             throw new WebDriverException(e);
         }
@@ -226,15 +250,23 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
     @Override
     public void runAppInBackground(int seconds) {
         try {
-            fbDriverAPI.deactivateApp(seconds);
+            getFbDriverAPI().deactivateApp(seconds);
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
     }
 
+    public void forceAcceptAlert() {
+        try {
+            this.fbDriverAPI.acceptAlert();
+        } catch (Exception e) {
+            // just ignore
+        }
+    }
+
     protected void acceptAlert() {
         try {
-            fbDriverAPI.acceptAlert();
+            getFbDriverAPI().acceptAlert();
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
@@ -242,7 +274,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
 
     protected void dismissAlert() {
         try {
-            fbDriverAPI.dismissAlert();
+            getFbDriverAPI().dismissAlert();
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
@@ -250,7 +282,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
 
     protected String getAlertText() {
         try {
-            return fbDriverAPI.getAlertText();
+            return getFbDriverAPI().getAlertText();
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
@@ -276,7 +308,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
             public Dimension getSize() {
                 try {
                     final Dimension originalDimension = FBElement.apiStringToDimension(
-                            fbDriverAPI.getWindowSize(CommonUtils.generateGUID().toUpperCase())
+                            getFbDriverAPI().getWindowSize(CommonUtils.generateGUID().toUpperCase())
                     );
                     // FIXME: workaround for webdriver bug https://github.com/facebook/WebDriverAgent/issues/303
                     if (ZetaIOSDriver.this.getOrientation() == ScreenOrientation.LANDSCAPE &&
@@ -344,7 +376,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
 
     public void tapScreenAt(int x, int y) {
         try {
-            fbDriverAPI.tap("0", x, y);
+            getFbDriverAPI().tap("0", x, y);
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }
@@ -352,7 +384,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
 
     public void pressHomeButton() {
         try {
-            fbDriverAPI.switchToHomescreen();
+            getFbDriverAPI().switchToHomescreen();
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }

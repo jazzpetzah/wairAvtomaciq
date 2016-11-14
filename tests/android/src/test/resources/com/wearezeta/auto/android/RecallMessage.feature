@@ -350,8 +350,8 @@ Feature: Recall Message
       | Name      | Contact   | YoutubeLink                                 | SoundCloudLink                                                      | ContactDevice |
       | user1Name | user2Name | https://www.youtube.com/watch?v=gIQS9uUVmgk | https://soundcloud.com/scottisbell/scott-isbell-tonight-feat-adessi | Device1       |
 
-  @C206266 @C202361 @regression @rc
-  Scenario Outline: Verify I cannot delete message everywhere/edit message for someone else message
+  @C206266 @regression @rc
+  Scenario Outline: Verify I cannot delete for everyone/edit message received from other user
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number

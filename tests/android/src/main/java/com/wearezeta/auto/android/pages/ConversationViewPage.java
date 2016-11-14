@@ -110,6 +110,7 @@ public class ConversationViewPage extends AndroidPage {
     private static final By idMessageBottomMenuEditButton = By.id("message_bottom_menu_item_edit");
     private static final By idMessageBottomMenuLikeButton = By.id("message_bottom_menu_item_like");
     private static final By idMessageBottomMenuUnlikeButton = By.id("message_bottom_menu_item_unlike");
+    private static final By idMessageBottomMenuOpenButton = By.id("message_bottom_menu_item_open_file");
     //endregion
 
     private static final By idFullScreenImage = By.id("tiv__single_image_message__image");
@@ -530,13 +531,22 @@ public class ConversationViewPage extends AndroidPage {
                 DEFAULT_SWIPE_DURATION_MILLISECONDS, durationMillis, Optional.of(elementState::remember));
     }
 
-    public boolean isAudioMessageRecordingSlideVisible() throws Exception {
+    public boolean waitUntilAudioMessageRecordingSlideVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioMessageRecordingSileControl);
     }
 
-    public boolean isAudioRecordingButtonVisible(String name) throws Exception {
+    public boolean waitUntilAudioMessageRecordingSlideInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idAudioMessageRecordingSileControl);
+    }
+
+    public boolean waitUntilAudioRecordingButtonVisible(String name) throws Exception {
         final By locator = getAudioRecordingButtonLocator(name);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitUntilAudioRecordingButtonInvisible(String name) throws Exception {
+        final By locator = getAudioRecordingButtonLocator(name);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     public boolean isAudioMessageRecordingDurationVisible() throws Exception {
@@ -1107,6 +1117,8 @@ public class ConversationViewPage extends AndroidPage {
                 return idMessageBottomMenuLikeButton;
             case "unlike":
                 return idMessageBottomMenuUnlikeButton;
+            case "open":
+                return idMessageBottomMenuOpenButton;
             default:
                 throw new IllegalArgumentException(String.format("There is no '%s' button on Message Bottom Menu",
                         btnName));

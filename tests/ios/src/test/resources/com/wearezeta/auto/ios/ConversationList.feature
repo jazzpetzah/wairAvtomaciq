@@ -122,7 +122,7 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <GroupChatName>
-    Then I see conversation <GroupChatName> name in action menu in Contact List
+    Then I see actions menu for <GroupChatName> conversation
     And I see Mute conversation action button
     And I see Archive conversation action button
     And I see Delete conversation action button
@@ -140,7 +140,7 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <Contact>
-    Then I see conversation <Contact> name in action menu in Contact List
+    Then I see actions menu for <Contact> conversation
     And I see Mute conversation action button
     And I see Archive conversation action button
     And I see Delete conversation action button
@@ -158,7 +158,7 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <Contact>
-    And I see conversation <Contact> name in action menu in Contact List
+    And I see actions menu for <Contact> conversation
     And I see Archive conversation action button
     And I tap Archive conversation action button
     Then I do not see conversation <Contact> in conversations list
@@ -177,7 +177,7 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <GroupChatName>
-    And I see conversation <GroupChatName> name in action menu in Contact List
+    And I see actions menu for <GroupChatName> conversation
     And I tap Leave conversation action button
     And I confirm Leave conversation action
     Then I do not see conversation <GroupChatName> in conversations list
@@ -252,7 +252,7 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <Contact>
-    Then I see conversation <Contact> name in action menu in Contact List
+    Then I see actions menu for <Contact> conversation
     And I tap Cancel conversation action button
     Then I see conversations list
 
@@ -473,7 +473,7 @@ Feature: Conversation List
     Given I see conversations list
     Given I see first item in contact list named <Contact>
     When I swipe right on a <Contact>
-    Then I see conversation <Contact> name in action menu in Contact List
+    Then I see actions menu for <Contact> conversation
     And I see Archive conversation action button
     And I see Cancel conversation action button
 

@@ -371,13 +371,8 @@ public class CommonUtils {
         return getValueFromConfig(c, "hasBackendSelection").toLowerCase().equals("true");
     }
 
-    public static String getAndroidPackageFromConfig(Class<?> c) {
-        try {
-            return getValueFromConfig(c, "package");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    public static String getAndroidPackageFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "package");
     }
 
     public static String generateGUID() {
@@ -579,6 +574,9 @@ public class CommonUtils {
                 return null;
             } finally {
                 this.script.delete();
+                if (this.flag.exists()) {
+                    this.flag.delete();
+                }
             }
         }
     }
@@ -627,22 +625,19 @@ public class CommonUtils {
         return InetAddress.getLocalHost().getHostAddress();
     }
 
+    private static Boolean isInJenkinsNetwork = null;
+
     public static boolean isRunningInJenkinsNetwork() throws UnknownHostException {
-        final String prevPropValue = System.getProperty("java.net.preferIPv4Stack");
-        try {
-            try {
-                System.setProperty("java.net.preferIPv4Stack", "true");
-            } catch (Exception e) {
-                // skip silently
-            }
-            return getLocalIP4Address().startsWith("192.168.2.");
-        } finally {
-            try {
-                System.setProperty("java.net.preferIPv4Stack", prevPropValue);
-            } catch (Exception e) {
-                // skip silently
-            }
+        if (isInJenkinsNetwork == null) {
+            final Pattern ip4ParsePattern = Pattern.compile("(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)");
+            final Matcher m = ip4ParsePattern.matcher(getLocalIP4Address());
+            isInJenkinsNetwork = m.find()
+                    && Integer.parseInt(m.group(1)) == 192
+                    && Integer.parseInt(m.group(2)) == 168
+                    && Integer.parseInt(m.group(3)) == 2
+                    && Integer.parseInt(m.group(4)) < 200;
         }
+        return isInJenkinsNetwork;
     }
 
     private final static int MAC_GROUPS = 6;

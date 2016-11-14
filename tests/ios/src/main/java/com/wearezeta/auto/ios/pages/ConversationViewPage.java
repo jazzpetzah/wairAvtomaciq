@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDriverAPI;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
@@ -23,7 +24,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 
@@ -49,7 +49,9 @@ public class ConversationViewPage extends IOSPage {
     private static final String xpathStrAllEntries = "//XCUIElementTypeTable/XCUIElementTypeCell";
     private static final By xpathAllEntries = By.xpath(xpathStrAllEntries);
     private static final String xpathStrRecentEntry = xpathStrAllEntries + "[1]";
-    private static final By xpathRecentEntry = By.xpath(xpathStrRecentEntry);
+    private static final By fbXpathRecentEntry = FBBy.xpath(xpathStrRecentEntry);
+
+    private static final By fbClassConversationViewRoot = FBBy.className("XCUIElementTypeTable");
 
     //The xpath of the asset container by cell index, which is integer >=1
     private static final Function<Integer, String> xpathStrAssetContainerByIndex = index ->
@@ -86,8 +88,6 @@ public class ConversationViewPage extends IOSPage {
     private static final By namePlayButton = MobileBy.AccessibilityId("mediaBarPlayButton");
 
     private static final By namePauseButton = MobileBy.AccessibilityId("mediaBarPauseButton");
-
-    private static final By xpathConversationPage = By.xpath("//XCUIElementTypeTable");
 
     private static final By nameMediaBarCloseButton = MobileBy.AccessibilityId("mediabarCloseButton");
 
@@ -304,6 +304,7 @@ public class ConversationViewPage extends IOSPage {
         final Optional<WebElement> backBtn = getElementIfDisplayed(nameConversationBackButton);
         if (backBtn.isPresent()) {
             backBtn.get().click();
+            isElementInvisible(backBtn.get(), 3);
         } else {
             log.warn("Back button is not visible. Probably, the conversations list is already visible");
         }
@@ -420,6 +421,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void openConversationDetails() throws Exception {
+        isLocatorDisplayed(xpathAudioCallButton);
         getElement(xpathConversationDetailsButton).click();
         // Wait for animation
         Thread.sleep(500);
@@ -435,17 +437,6 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isMediaBarNotDisplayed() throws Exception {
         return isLocatorInvisible(nameTitle);
-    }
-
-    public void scrollToBeginningOfConversation() throws Exception {
-        for (int i = 0; i < 2; i++) {
-            if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-                IOSSimulatorHelpers.swipeDown();
-            } else {
-                DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationPage),
-                        500, 50, 10, 50, 90);
-            }
-        }
     }
 
     public void typeMessage(String message, boolean shouldSend) throws Exception {
@@ -495,7 +486,7 @@ public class ConversationViewPage extends IOSPage {
         return containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
     }
 
-    public BufferedImage  getAssetContainerStateScreenshot(int index) throws Exception {
+    public BufferedImage getAssetContainerStateScreenshot(int index) throws Exception {
         final By locator = By.xpath(xpathStrAssetContainerByIndex.apply(index));
         final BufferedImage containerScreen = this.getElementScreenshot(getElement(locator)).orElseThrow(() ->
                 new IllegalStateException("Cannot take a screenshot of asset container"));
@@ -655,8 +646,8 @@ public class ConversationViewPage extends IOSPage {
                         String.format("contains(@value, '%s')", extension.toUpperCase())
                 )
         ));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), topLabelLocator, timeoutSeconds) &&
-                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), bottomLabelLocator, timeoutSeconds);
+        return isLocatorDisplayed(topLabelLocator, timeoutSeconds) &&
+                isLocatorDisplayed(bottomLabelLocator, timeoutSeconds);
     }
 
     public boolean waitUntilFilePreviewIsVisible(int secondsTimeout, String expectedFileName) throws Exception {
@@ -699,13 +690,6 @@ public class ConversationViewPage extends IOSPage {
     public boolean isPlaceholderTextInvisible(String placeholder) throws Exception {
         final By locator = getInputPlaceholderLocatorByName(placeholder);
         return isLocatorInvisible(locator);
-    }
-
-    public void scrollToTheBottom() throws Exception {
-        getElement(fbNameConversationInput).click();
-        if (!isLocatorDisplayed(xpathRecentEntry)) {
-            throw new IllegalStateException("Failed to scroll to the bottom of the conversation");
-        }
     }
 
     public void tapMessageByText(boolean isLongTap, boolean isDoubleTap, String msg) throws Exception {
@@ -978,7 +962,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapAtRecentMessage(int pWidth, int pHeight) throws Exception {
-        DriverUtils.tapOnPercentOfElement(getDriver(), getElement(xpathRecentEntry), pWidth, pHeight);
+        this.tapByPercentOfElementSize((FBElement) getElement(fbXpathRecentEntry), pWidth, pHeight);
     }
 
     public void tapImageButton(String buttonName) throws Exception {
@@ -1078,7 +1062,7 @@ public class ConversationViewPage extends IOSPage {
     public void tapViewButton(String name) throws Exception {
         final By locator = getViewButtonLocatorByName(name);
         getElement(locator).click();
-     }
+    }
 
     public void tapThisDeviceLink() throws Exception {
         getElement(nameThisDeviceLink).click();
@@ -1098,5 +1082,36 @@ public class ConversationViewPage extends IOSPage {
 
     public void setMessageExpirationTimer(String value) throws Exception {
         ((FBElement) getElement(fbClassPickerWheel)).setValue(value);
+    }
+
+    private static final int MAX_SCROLLS = 2;
+
+    private void scrollTo(FBDriverAPI.ScrollingDirection direction) throws Exception {
+        final FBElement dstCanvas = (FBElement) getElement(fbClassConversationViewRoot);
+        for (int i = 0; i < MAX_SCROLLS; i++) {
+            switch (direction) {
+                case UP:
+                    dstCanvas.scrollUp();
+                    break;
+                case DOWN:
+                    dstCanvas.scrollDown();
+                    break;
+                default:
+                    throw new IllegalArgumentException(
+                            String.format("Unsupported scrolling direction '%s'", direction)
+                    );
+            }
+        }
+    }
+
+    public void scrollToTheTop() throws Exception {
+        scrollTo(FBDriverAPI.ScrollingDirection.UP);
+    }
+
+    public void scrollToTheBottom() throws Exception {
+        scrollTo(FBDriverAPI.ScrollingDirection.DOWN);
+        if (!isLocatorDisplayed(fbXpathRecentEntry)) {
+            throw new IllegalStateException("Failed to scroll to the bottom of the conversation");
+        }
     }
 }

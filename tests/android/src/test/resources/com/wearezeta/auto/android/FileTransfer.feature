@@ -1,7 +1,7 @@
 Feature: File Transfer
 
   @C87628 @rc @regression
-  Scenario Outline: Verify placeholder is shown for the sender
+  Scenario Outline: Verify placeholder is shown for the sender and the message bottom menu for sended file
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -12,12 +12,18 @@ Feature: File Transfer
     And I tap File button from cursor toolbar
     And I remember the state of View button on file upload placeholder
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
-    And I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
-    Then I wait up to <UploadingTimeout> seconds until the state of View button on file upload placeholder is changed
+    Then I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
+    # Verify Sender side message bottom menu
+    When I long tap File Upload container in the conversation view
+    Then I see Delete only for me button on the message bottom menu
+    And I see Delete for everyone button on the message bottom menu
+    And I see Forward button on the message bottom menu
+    And I see Like button on the message bottom menu
+    And I see Open button on the message bottom menu
 
     Examples:
       | Name      | Contact1  | FileName  | FileExtension | FileSize | UploadingTimeout |
-      | user1Name | user2Name | qa_random | txt           | 9.00MB   | 20               |
+      | user1Name | user2Name | qa_random | txt           | 1.00MB   | 20               |
 
   @C87636 @rc @regression
   Scenario Outline: Verify warning is shown for file size more than 25Mb
@@ -88,13 +94,11 @@ Feature: File Transfer
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
     And I tap View button on file upload placeholder
     And I save file from file dialog
-    # Wait for saving
-    And I wait for 5 seconds
     Then I wait up <DownloadTimeout> seconds until <FileSize> file having name "1_<FileName>.<FileExtension>" is downloaded to the device
 
     Examples:
       | Name      | Contact1  | FileName  | FileExtension | FileSize | UploadingTimeout | DownloadTimeout |
-      | user1Name | user2Name | qa_random | txt           | 5.00MB   | 20               | 10              |
+      | user1Name | user2Name | qa_random | txt           | 1.00MB   | 20               | 10              |
 
   @C87634 @rc @regression
   Scenario Outline: Verify downloading file by receiver
@@ -105,7 +109,7 @@ Feature: File Transfer
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
-    And <Contact1> sends local file named "<FileName>.<FileExtension>" and MIME type "<MIMEType>" via device Device1 to user Myself
+    When <Contact1> sends <FileSize> file having name "<FileName>.<FileExtension>" and MIME type "<MIMEType>" via device Device1 to user Myself
     And I see the result of <FileSize> file received having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in <ReceivingTimeout> seconds
     And I remember the state of Download button on file download placeholder
     And I tap Download button on file download placeholder
@@ -115,8 +119,8 @@ Feature: File Transfer
     Then I wait up <DownloadTimeout> seconds until <FileExactSize> file having name "<FileName>.<FileExtension>" is downloaded to the device
 
     Examples:
-      | Name      | Contact1  | FileName   | FileExtension | FileSize | MIMEType  | DownloadTimeout | FileExactSize | ReceivingTimeout |
-      | user1Name | user2Name | avatarTest | png           | 5.68KB   | image/png | 10              | 5813B         | 60               |
+      | Name      | Contact1  | FileName  | FileExtension | FileSize | MIMEType   | DownloadTimeout | FileExactSize | ReceivingTimeout |
+      | user1Name | user2Name | qa_random | txt           | 1.00MB   | text/plain | 10              | 1.00MB        | 60               |
 
   @C87638 @rc @regression
   Scenario Outline: Verify canceling sending a file

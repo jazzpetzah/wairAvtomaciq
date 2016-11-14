@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.ConversationActionsPage;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -8,6 +9,8 @@ import org.junit.Assert;
 
 
 public class ConversationActionsPageSteps {
+    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
     private ConversationActionsPage getPage() throws Exception {
@@ -55,10 +58,26 @@ public class ConversationActionsPageSteps {
      *
      * @param buttonTitle Mute|Unmute|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel
      * @throws Exception
-     * @step. ^I tap (Mute|Unmute|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel|Rename) conversation action button$
+     * @step. ^I tap (Mute|Unmute|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel|Rename)
+     * conversation action button$
      */
     @And("^I tap (Mute|Unmute|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel|Rename) conversation action button$")
     public void ITapXButtonInActionMenu(String buttonTitle) throws Exception {
         getPage().tapMenuItem(buttonTitle);
+    }
+
+    /**
+     * Checks that conversation name appears in displayed action menu
+     *
+     * @param conversation conversation name
+     * @throws Exception
+     * @step. I see actions menu for (.*) conversation$
+     * [Ll]ist$
+     */
+    @And("^I see actions menu for (.*) conversation$")
+    public void ISeeConversationNameInActionMenu(String conversation) throws Exception {
+        conversation = usrMgr.replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("There is no conversation name %s in opened action menu.",
+                conversation), getPage().isVisibleForConversation(conversation));
     }
 }

@@ -24,6 +24,7 @@ public class SketchPageSteps {
      * Draws a sketch consisting of at least numColors colors in random patterns
      * around the canvas
      *
+     * @param numColors count of line you want to draw, which should smaller than 9
      * @throws Exception
      * @step. ^I draw a sketch(?: on image|) with (.*) colors$
      */
@@ -31,13 +32,12 @@ public class SketchPageSteps {
     public void IDrawASketchWithXColors(int numColors)
             throws Exception {
         SketchPage page = getSketchPage();
-        // Should skip first emoji selection.
-        if (numColors >= SketchPage.SketchColor.values().length) {
+        if (numColors > SketchPage.SketchColor.values().length) {
             throw new IllegalStateException(String.format("The number colors should be less than %d",
                     SketchPage.SketchColor.values().length));
         }
 
-        for (int i = 1; i <= numColors; i++) {
+        for (int i = 0; i < numColors; i++) {
             page.setColor(SketchPage.SketchColor.values()[i]);
             page.drawRandomLines(1);
         }
@@ -62,9 +62,22 @@ public class SketchPageSteps {
      */
     @When("^I draw an emoji sketch$")
     public void IDrawAnEmojiSketch() throws Exception {
-        getSketchPage().setColor(SketchPage.SketchColor.EMOJI);
+        getSketchPage().tapOnModeButton("emoji");
         getEmojiKeyboardOverlayPage().tapEmojiByValue(EMOJI_UNICODE);
         getSketchPage().drawEmojiOnCanvas();
+    }
+
+    /**
+     * Draw text to the canvas
+     *
+     * @param text
+     * @throws Exception
+     * @step. ^I type text "(.*)" on sketch$
+     */
+    @When("^I type text \"(.*)\" on sketch$")
+    public void IDrawTextSketch(String text) throws Exception {
+        getSketchPage().tapOnModeButton("text");
+        getSketchPage().typeTextOnSketch(text);
     }
 
 }

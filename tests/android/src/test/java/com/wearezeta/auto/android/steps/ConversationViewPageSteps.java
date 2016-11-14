@@ -516,7 +516,7 @@ public class ConversationViewPageSteps {
     @When("^I see (Send|Cancel|Play) button on audio message recorder$")
     public void ISeeAudioRecorderButton(String buttonType) throws Exception {
         Assert.assertTrue(String.format("The %s button is exoected to be visible on audio recorder control",
-                buttonType), getConversationViewPage().isAudioRecordingButtonVisible(buttonType));
+                buttonType), getConversationViewPage().waitUntilAudioRecordingButtonVisible(buttonType));
     }
 
     /**
@@ -1133,9 +1133,9 @@ public class ConversationViewPageSteps {
      *
      * @param name one of possible message bottom menu button name
      * @throws Exception
-     * @step. ^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike) button on the message bottom menu$
+     * @step. ^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike|Open) button on the message bottom menu$
      */
-    @Then("^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike) button on the message bottom menu$")
+    @Then("^I (do not )?see (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike|Open) button on the message bottom menu$")
     public void ISeeMessageBottomMenuButton(String shouldNotSee, String name) throws Exception {
         final boolean condition = (shouldNotSee == null) ?
                 getConversationViewPage().waitUntilMessageBottomMenuButtonVisible(name) :
@@ -1149,9 +1149,9 @@ public class ConversationViewPageSteps {
      *
      * @param name one of possible message bottom menu button name
      * @throws Exception
-     * @step. ^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike) button on the message bottom menu$
+     * @step. ^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike|Open) button on the message bottom menu$
      */
-    @When("^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike) button on the message bottom menu$")
+    @When("^I tap (Delete only for me|Delete for everyone|Copy|Forward|Edit|Like|Unlike|Open) button on the message bottom menu$")
     public void ITapMessageBottomMenuButton(String name) throws Exception {
         getConversationViewPage().tapMessageBottomMenuButton(name);
     }
@@ -1470,21 +1470,29 @@ public class ConversationViewPageSteps {
      * Verify the audio message is recording
      *
      * @throws Exception
-     * @step. ^I see audio message is recording$
+     * @step. ^I(do not)? see audio message is recording$
      */
-    @Then("^I see audio message is recording$")
-    public void ISeeOngoingAudioMessageRecording() throws Exception {
-        Assert.assertTrue("The audio message recording slide should be visible",
-                getConversationViewPage().isAudioMessageRecordingSlideVisible());
-        Assert.assertTrue("The audio message recording play button should be visible",
-                getConversationViewPage().isAudioRecordingButtonVisible("Play"));
-        Assert.assertTrue("The audio message recording send button should be visible",
-                getConversationViewPage().isAudioRecordingButtonVisible("Send"));
-        Assert.assertTrue("The audio message recording cancel button should be visible",
-                getConversationViewPage().isAudioRecordingButtonVisible("Cancel"));
-        Assert.assertTrue("The audio message recording duration should be visible",
-                getConversationViewPage().isAudioMessageRecordingDurationVisible());
-
+    @Then("^I( do not)? see audio message is recording$")
+    public void ISeeOngoingAudioMessageRecording(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("The audio message recording slide should be visible",
+                    getConversationViewPage().waitUntilAudioMessageRecordingSlideVisible());
+            Assert.assertTrue("The audio message recording play button should be visible",
+                    getConversationViewPage().waitUntilAudioRecordingButtonVisible("Play"));
+            Assert.assertTrue("The audio message recording send button should be visible",
+                    getConversationViewPage().waitUntilAudioRecordingButtonVisible("Send"));
+            Assert.assertTrue("The audio message recording cancel button should be visible",
+                    getConversationViewPage().waitUntilAudioRecordingButtonVisible("Cancel"));
+            Assert.assertTrue("The audio message recording duration should be visible",
+                    getConversationViewPage().isAudioMessageRecordingDurationVisible());
+        } else {
+            Assert.assertTrue("The audio message recording slide should be invisible",
+                    getConversationViewPage().waitUntilAudioMessageRecordingSlideInvisible());
+            Assert.assertTrue("The audio message recording play button should be visible",
+                    getConversationViewPage().waitUntilAudioRecordingButtonInvisible("Play"));
+            Assert.assertTrue("The audio message recording send button should be visible",
+                    getConversationViewPage().waitUntilAudioRecordingButtonInvisible("Send"));
+        }
     }
 
     /**

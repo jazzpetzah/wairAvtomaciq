@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Spliterator;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -33,14 +34,11 @@ public class JavaSeeker {
         return StreamSupport.stream(classesSpliterator, false)
                 .map(javaFileObject -> {
                     try {
-                        final String packagePath = pack.
-                                replaceAll("\\.", File.separator);
-                        final String strippedFullClassNamePath = javaFileObject.getName().
-                                replaceAll("(.*)" + packagePath, packagePath).
-                                replace(".class", "").
-                                replace(")", "");
-                        final String fullClassName = strippedFullClassNamePath.
-                                replaceAll(Pattern.quote(File.separator), ".");
+                        final String fullClassName = javaFileObject.getName()
+                                .replace(".class", "")
+                                .replace(")", "")
+                                .replaceAll(Pattern.quote(File.separator), ".")
+                                .replaceAll("(.*)" + pack, pack);
                         LOG.trace("Loading class: {}", fullClassName);
                         return Class.forName(fullClassName);
                     } catch (ClassNotFoundException e) {

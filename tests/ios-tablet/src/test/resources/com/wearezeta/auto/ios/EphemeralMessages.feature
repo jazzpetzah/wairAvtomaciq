@@ -1,6 +1,6 @@
 Feature: Ephemeral Messages
 
-  @C318642 @staging @fastLogin
+  @C318642 @regression @fastLogin
   Scenario Outline: Verify the message is deleted on the sender side when it's read on the receiver side
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>

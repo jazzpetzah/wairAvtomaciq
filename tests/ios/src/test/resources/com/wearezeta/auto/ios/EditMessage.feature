@@ -144,12 +144,14 @@ Feature: Edit Message
     And I clear conversation text input
     And I type the "<WirePrefix> <WireLink>" message
     And I tap Confirm button on Edit control
+    # Give it some time to generate a preview
+    And I wait for 3 seconds
     Then I see link preview container in the conversation view
     And I see link preview source is equal to <WireLink>
 
     Examples:
-      | Name      | Contact   | FacebookLink        | FacebookPrefix | WirePrefix | WireLink        |
-      | user1Name | user2Name | http://facebook.com | Check FB       | Look for   | http://wire.com |
+      | Name      | Contact   | FacebookLink         | FacebookPrefix | WirePrefix | WireLink         |
+      | user1Name | user2Name | https://facebook.com | Check FB       | Look for   | https://wire.com |
 
   @C202352 @regression @fastLogin
   Scenario Outline: Verify I can edit a message multiple times in a row (group)

@@ -190,12 +190,6 @@
                             <!--<rerunFailingTestsCount>1</rerunFailingTestsCount>-->
                             <excludes>
                                 <exclude>**/DevRun.java</exclude>
-                                <exclude>**/LocalyticsRun.java</exclude>
-                                <exclude>**/RegressionRun.java</exclude>
-                                <exclude>**/SmokeRun.java</exclude>
-                                <exclude>**/StagingRun.java</exclude>
-                                <exclude>**/TestRun.java</exclude>
-                                <exclude>**/VerificationRun.java</exclude>
                                 <exclude>**/PickleJarInheritedTest.java</exclude>
                                 <exclude>**/PickleJarStandaloneTest.java</exclude>
                             </excludes>

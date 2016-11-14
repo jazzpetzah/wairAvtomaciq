@@ -50,9 +50,6 @@ public class ConversationsListPage extends IOSPage {
             String.format("//XCUIElementTypeCell[ .//*[@name='%s'] ]" +
                     "//XCUIElementTypeButton[@name='mediaCellButton']", name);
 
-    private static final Function<String, String> xpathStrActionMenuByConversationName = name ->
-            String.format("//XCUIElementTypeStaticText[@name='%s']", name.toUpperCase());
-
     private static final By nameEmptyConversationsListMessage = MobileBy.AccessibilityId(
             "NO ACTIVE CONVERSATIONS TAP CONTACTS TO START A CONVERSATION");
 
@@ -175,11 +172,6 @@ public class ConversationsListPage extends IOSPage {
 
     public void clickMuteCallButton() throws Exception {
         getElement(nameMuteCallButton).click();
-    }
-
-    public boolean isActionMenuVisibleForConversation(String conversation) throws Exception {
-        final By locator = By.xpath(xpathStrActionMenuByConversationName.apply(conversation));
-        return isLocatorDisplayed(locator);
     }
 
     public BufferedImage getSettingsGearStateScreenshot() throws Exception {

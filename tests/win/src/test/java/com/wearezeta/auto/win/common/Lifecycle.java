@@ -1,26 +1,25 @@
-package com.wearezeta.auto.osx.common;
+package com.wearezeta.auto.win.common;
 
 import com.wearezeta.auto.common.ZetaFormatter;
-import com.wearezeta.auto.common.driver.ZetaOSXDriver;
-import com.wearezeta.auto.common.driver.ZetaOSXWebAppDriver;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.common.driver.ZetaWinDriver;
+import com.wearezeta.auto.common.driver.ZetaWinWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rc.BasicScenarioResultToTestrailTransformer;
 import com.wearezeta.auto.common.testrail.TestrailSyncUtilities;
-import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAddressbookPermission;
-import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAppData;
-import static com.wearezeta.auto.osx.common.OSXCommonUtils.killAllApps;
-import static com.wearezeta.auto.osx.common.OSXCommonUtils.startAppium4Mac;
-import static com.wearezeta.auto.osx.common.OSXExecutionContext.APPIUM_HUB_URL;
-import static com.wearezeta.auto.osx.common.OSXExecutionContext.KEEP_DATABASE;
-import static com.wearezeta.auto.osx.common.OSXExecutionContext.WIRE_APP_PATH;
-import com.wearezeta.auto.osx.locators.OSXLocators;
-import com.wearezeta.auto.osx.pages.osx.MainWirePage;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
 import static com.wearezeta.auto.web.steps.CommonWebAppSteps.log;
+import static com.wearezeta.auto.win.common.WinCommonUtils.clearAppData;
+import static com.wearezeta.auto.win.common.WinCommonUtils.killAllApps;
+import static com.wearezeta.auto.win.common.WinExecutionContext.KEEP_DATABASE;
+import static com.wearezeta.auto.win.common.WinExecutionContext.WINIUM_URL;
+import static com.wearezeta.auto.win.common.WinExecutionContext.WIRE_APP_FOLDER;
+import static com.wearezeta.auto.win.common.WinExecutionContext.WIRE_APP_PATH;
+import com.wearezeta.auto.win.pages.win.MainWirePage;
 import com.wire.picklejar.gherkin.model.Step;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
@@ -29,7 +28,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,11 +37,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LogEntry;
@@ -84,8 +82,7 @@ public class Lifecycle {
     }
     // #### END ############################################################## COMPATIBILITY INSTRUCTIONS
     
-    private Future<ZetaWebAppDriver> createWebDriver(
-            Future<ZetaOSXDriver> osxDriver) throws IOException {
+    private Future<ZetaWebAppDriver> createWebDriver(Future<ZetaWinDriver> winDriver) throws IOException {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         ChromeOptions options = new ChromeOptions();
         // simulate a fake webcam and mic for testing
@@ -93,51 +90,38 @@ public class Lifecycle {
         // allow skipping the security prompt for sharing the media device
         options.addArguments("use-fake-ui-for-media-stream");
         options.addArguments("disable-web-security");
-        options.addArguments("env=" + OSXExecutionContext.ENV_URL);
+        options.addArguments("env=" + WinExecutionContext.ENV_URL);
         options.addArguments("enable-logging");
-        options.setBinary(WIRE_APP_PATH + OSXExecutionContext.ELECTRON_SUFFIX);
-
-        // allow skipping the security prompt for notifications in chrome 46++
-        Map<String, Object> prefs = new HashMap<>();
-        prefs.put("profile.managed_default_content_settings.notifications", 1);
-        options.setExperimentalOption("prefs", prefs);
-
+        options.setBinary(WIRE_APP_FOLDER + WIRE_APP_PATH);
         capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-        capabilities.setCapability("platformName",
-                OSXExecutionContext.CURRENT_SECONDARY_PLATFORM.name());
+        capabilities.setCapability("platformName", WinExecutionContext.CURRENT_SECONDARY_PLATFORM.name());
 
-        setExtendedLoggingLevel(capabilities,
-                OSXExecutionContext.EXTENDED_LOGGING_LEVEL);
+        setExtendedLoggingLevel(capabilities, WinExecutionContext.EXTENDED_LOGGING_LEVEL);
 
         service = new ChromeDriverService.Builder()
-                .usingDriverExecutable(
-                        new File(OSXExecutionContext.CHROMEDRIVER_PATH))
-                .usingAnyFreePort().build();
+                .usingDriverExecutable(new File(WinExecutionContext.CHROMEDRIVER_PATH))
+                .usingAnyFreePort()
+                .build();
         service.start();
         final ExecutorService pool = Executors.newFixedThreadPool(1);
 
-        Callable<ZetaWebAppDriver> callableWebAppDriver = () -> new ZetaOSXWebAppDriver(
-                service.getUrl(), capabilities, osxDriver.get());
+        Callable<ZetaWebAppDriver> callableWebAppDriver = () -> new ZetaWinWebAppDriver(
+                service.getUrl(), capabilities, winDriver.get());
 
         return pool.submit(callableWebAppDriver);
     }
 
-    private Future<ZetaOSXDriver> createOSXDriver() throws MalformedURLException {
+    private Future<ZetaWinDriver> createWinDriver() throws MalformedURLException {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
-        capabilities.setCapability(CapabilityType.PLATFORM, "MAC");
-        capabilities.setCapability("platformName", "Mac");
-
+        capabilities.setCapability(CapabilityType.PLATFORM, "WIN");
+        capabilities.setCapability("platformName", "Win");
+        capabilities.setCapability("app", WIRE_APP_FOLDER + WIRE_APP_PATH);
+        capabilities.setCapability("debugConnectToRunningApp", "true");
         final ExecutorService pool = Executors.newFixedThreadPool(1);
 
-        Callable<ZetaOSXDriver> callableOSXDriver = () -> {
-            ZetaOSXDriver zetaOSXDriver = new ZetaOSXDriver(new URL(APPIUM_HUB_URL), capabilities);
-            // necessary for calculating the size of the window etc. because this is not supported by AppiumForMac
-            zetaOSXDriver.setWindowLocator(By.xpath(OSXLocators.MainWirePage.xpathWindow));
-            return zetaOSXDriver;
-        };
-
-        return pool.submit(callableOSXDriver);
+        Callable<ZetaWinDriver> callableWinDriver = () -> new ZetaWinDriver(new URL(WINIUM_URL), capabilities);
+        return pool.submit(callableWinDriver);
     }
 
     private static void setExtendedLoggingLevel(
@@ -163,58 +147,60 @@ public class Lifecycle {
     }
 
     public void startApp() throws Exception {
-        Future<ZetaOSXDriver> osxDriverFuture;
+        Future<ZetaWinDriver> winDriverFuture;
         Future<ZetaWebAppDriver> webDriverFuture;
 
-        LOG.debug("Create OS X Driver");
-        osxDriverFuture = createOSXDriver();
-        LOG.debug("Init OS X Driver");
-        final ZetaOSXDriver osxDriver = osxDriverFuture.get();
+        LOG.debug("Create Win Driver");
+        winDriverFuture = createWinDriver();
+        LOG.debug("Init Win Driver");
+        final ZetaWinDriver winDriver = winDriverFuture.get();
         LOG.debug("Create Chrome Driver");
-        webDriverFuture = createWebDriver(osxDriverFuture);
+        webDriverFuture = createWebDriver(winDriverFuture);
         LOG.debug("Init Chrome Driver");
         final ZetaWebAppDriver webappDriver = webDriverFuture.get();
         
-        LOG.debug("Waiting for OS X App to be started");
+        // reducing the timeout to fail fast with
+        // "Timed out receiving message from renderer" on endless spinner
+        webappDriver.manage().timeouts().pageLoadTimeout(3, TimeUnit.MINUTES);
+        webappDriver.manage().timeouts().setScriptTimeout(4, TimeUnit.MINUTES);
+        webappDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        
+        LOG.debug("Waiting for App to be started");
         
         LOG.debug("Setting formatter");
-        ZetaFormatter.setLazyDriver(osxDriverFuture);
+        ZetaFormatter.setLazyDriver(winDriverFuture);
         
         /**
          * #### START ############################################################ COMPATIBILITY INSTRUCTIONS
          */
         WrapperTestContext.COMPAT_WEB_DRIVER = webDriverFuture;
-        WrapperTestContext.COMPAT_OSX_DRIVER = osxDriverFuture;
+        WrapperTestContext.COMPAT_WIN_DRIVER = winDriverFuture;
         
         compatContext = new WrapperTestContext();
-        LOG.debug("COMPAT: Setting first OS X Page");
-        compatContext.getOSXPagesCollection().setFirstPage(new MainWirePage(osxDriverFuture));
+        LOG.debug("COMPAT: Setting first Win Page");
+        compatContext.getWinPagesCollection().setFirstPage(new MainWirePage(winDriverFuture));
+        compatContext.getWinPagesCollection().getPage(MainWirePage.class).focusApp();
         LOG.debug("COMPAT: Setting first Webapp Page");
         compatContext.getWebappPagesCollection().setFirstPage(new RegistrationPage(webDriverFuture));
         /**
          * #### END ############################################################## COMPATIBILITY INSTRUCTIONS
          */
 
-        context = new WrapperTestContext(testname, webDriverFuture, osxDriverFuture);
-        LOG.debug("Setting first OS X Page");
-        context.getOSXPagesCollection().setFirstPage(new MainWirePage(osxDriverFuture));
+        context = new WrapperTestContext(testname, webDriverFuture, winDriverFuture);
+        LOG.debug("Setting first Win Page");
+        context.getWinPagesCollection().setFirstPage(new MainWirePage(winDriverFuture));
+        context.getWinPagesCollection().getPage(MainWirePage.class).focusApp();
         LOG.debug("Setting first Webapp Page");
         context.getWebappPagesCollection().setFirstPage(new RegistrationPage(webDriverFuture));
-
-        LOG.debug("Opening app");
-        // necessary to enable the driver
-        context.getOSXDriver().navigate().to(WIRE_APP_PATH);// open app
     }
 
     public void setUp(String testname) throws Exception {
         this.testname = testname;
         try {
-            startAppium4Mac();
             killAllApps();
             if (!KEEP_DATABASE) {
                 clearAppData();
             }
-            clearAddressbookPermission();
         } catch (Exception e) {
             LOG.error(e);
         }
@@ -285,8 +271,8 @@ public class Lifecycle {
                 log.warn(e);
             }
             try {
-                log.debug("Closing osxdriver");
-                context.getOSXDriver().quit();
+                log.debug("Closing windriver");
+                context.getWinDriver().quit();
             } catch (Exception e) {
                 log.warn(e);
             }
