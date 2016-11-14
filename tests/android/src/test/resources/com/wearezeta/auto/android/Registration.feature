@@ -15,6 +15,15 @@ Feature: Registration
     Examples:
       | Name      |
       | user1Name |
+      | user1Name |
+      | user1Name |
+      | user1Name |
+      | user1Name |
+      | user1Name |
+      | user1Name |
+      | user1Name |
+      | user1Name |
+      | user1Name |
 
   @C145970 @regression @rc @legacy
   Scenario Outline: Change self picture during registration using gallery
