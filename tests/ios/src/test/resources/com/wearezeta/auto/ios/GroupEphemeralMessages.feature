@@ -1,6 +1,6 @@
 Feature: Group Ephemeral Messages
 
-  @C259589 @rc @regression @fastLogin
+  @C259589 @regression @fastLogin
   Scenario Outline: Verify ephemeral messages are disabled in a group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

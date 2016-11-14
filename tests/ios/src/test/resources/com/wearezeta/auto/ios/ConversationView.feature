@@ -49,7 +49,7 @@ Feature: Conversation View
       | Name      | Contact   | PingMsg    |
       | user1Name | user2Name | YOU PINGED |
 
-  @C173062 @rc @regression @IPv6 @fastLogin
+  @C173062 @regression @IPv6 @fastLogin
   Scenario Outline: Send a camera roll picture to user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
