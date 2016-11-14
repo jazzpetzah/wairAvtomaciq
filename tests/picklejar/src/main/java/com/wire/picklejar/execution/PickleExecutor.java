@@ -55,7 +55,7 @@ public class PickleExecutor {
             }
             LOG.info(String.format("Loaded %d classes with overall %d methods", loadedClasses.size(), methodCache.size()));
             loadedClasses.stream().forEach((c) -> {
-                LOG.debug(String.format("Loaded class %s", c.getCanonicalName()));
+                LOG.trace(String.format("Loaded class %s", c.getCanonicalName()));
             });
         } catch (IOException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException |
                 InvocationTargetException | InstantiationException ex) {
