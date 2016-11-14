@@ -15,3 +15,19 @@ Feature: Registration4
     Examples:
       | Name      |
       | user1Name |
+
+  @C43807 @rc @regression
+  Scenario Outline: Verify sign in with email address only 4
+    Given There is 1 user with email address only where <Name> is me
+    Given I see welcome screen
+    When I switch to email sign in screen
+    And I have entered login <Login>
+    And I have entered password <Password>
+    And I tap Log in button
+    And I input a new phone number for user <Name>
+    And I input the verification code
+    Then I see Conversations list with no conversations
+
+    Examples:
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
