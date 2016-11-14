@@ -1,6 +1,8 @@
 package com.wearezeta.auto.ios.pages;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -19,8 +21,8 @@ public class ConversationActionsPage extends IOSPage {
             String.format("//XCUIElementTypeButton[@name='IGNORE']/following::XCUIElementTypeButton[@name='%s']",
                     name.toUpperCase());
 
-    private static final By xpathYesActionButton =
-            By.xpath("//XCUIElementTypeButton[@name='NO']/following::XCUIElementTypeButton[@name='YES']");
+    private static final By fbXpathYesActionButton =
+            FBBy.xpath("//XCUIElementTypeButton[@name='NO']/following::XCUIElementTypeButton[@name='YES']");
 
     public ConversationActionsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -45,18 +47,17 @@ public class ConversationActionsPage extends IOSPage {
     }
 
     public void confirmAction(String actionName) throws Exception {
-        By locator = By.xpath(xpathStrConfirmActionButtonByName.apply(actionName));
+        By locator = FBBy.xpath(xpathStrConfirmActionButtonByName.apply(actionName));
         switch (actionName.toLowerCase()) {
             case "cancel request":
-                locator = xpathYesActionButton;
+                locator = fbXpathYesActionButton;
                 break;
             case "connect":
-                locator = By.xpath(xpathStrConnectActionButtonByName.apply(actionName));
+                locator = FBBy.xpath(xpathStrConnectActionButtonByName.apply(actionName));
                 break;
         }
-        final WebElement btn = getElement(locator);
-        btn.click();
-        isElementInvisible(btn);
+        final FBElement btn = (FBElement) getElement(locator);
+        this.tapAtTheCenterOfElement(btn);
     }
 
     public boolean isVisibleForConversation(String conversation) throws Exception {
