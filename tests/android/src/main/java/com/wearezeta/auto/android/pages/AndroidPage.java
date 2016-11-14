@@ -312,7 +312,8 @@ public abstract class AndroidPage extends BasePage {
             retryNumber++;
             final Optional<WebElement> el = getElementIfDisplayed(xpathInternetIndicator);
             if (el.isPresent() && el.get().getLocation().getY() >= 0) {
-                log.debug(String.format("No internet bar is still visible. Retrying %d...(X: %d, Y:%d)", retryNumber, el.get().getLocation().getX(), el.get().getLocation().getY()));
+                log.debug(String.format("No internet bar is still visible (X: %d, Y:%d). Retrying %d...",
+                        el.get().getLocation().getX(), el.get().getLocation().getY(), retryNumber));
                 Thread.sleep(DEFAULT_RETRY_DELAY_SECONDS * 1000);
             } else {
                 //Delay required for SE and UI sync
