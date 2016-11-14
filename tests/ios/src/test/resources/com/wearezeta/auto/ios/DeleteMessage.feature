@@ -43,13 +43,15 @@ Feature: Delete Message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     Then I see 1 photo in the conversation view
     When I long tap on image in conversation view
     And I tap on Delete badge item
     And I select Delete for Me item from Delete menu
+    # Wait for animation
+    And I wait for 2 seconds
     Then I see 0 photos in the conversation view
     When I type the "<GiphyTag>" message
     And I tap GIF button from input tools

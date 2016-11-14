@@ -376,7 +376,23 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
 
     public void tapScreenAt(int x, int y) {
         try {
-            getFbDriverAPI().tap("0", x, y);
+            getFbDriverAPI().tap(x, y);
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
+    public void doubleTapScreenAt(int x, int y) {
+        try {
+            getFbDriverAPI().doubleTap(x, y);
+        } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
+            throw new WebDriverException(e);
+        }
+    }
+
+    public void longTapScreenAt(int x, int y, double durationSeconds) {
+        try {
+            getFbDriverAPI().touchAndHold(x, y, durationSeconds);
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {
             throw new WebDriverException(e);
         }

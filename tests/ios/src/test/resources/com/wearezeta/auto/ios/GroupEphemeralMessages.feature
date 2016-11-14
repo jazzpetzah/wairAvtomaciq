@@ -1,6 +1,6 @@
 Feature: Group Ephemeral Messages
 
-  @C259589 @rc @regression @fastLogin
+  @C259589 @regression @fastLogin
   Scenario Outline: Verify ephemeral messages are disabled in a group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -114,26 +114,26 @@ Feature: Group Ephemeral Messages
     And I verify the remembered message has been deleted from the local database
 
     Examples:
-      | Name      | Contact1   | Contact2  | GroupChatName | Timeout | ContactDevice |
-      | user1Name | user2Name  | user3Name | Epheme grp    |  5      | d1            |
+      | Name      | Contact1  | Contact2  | GroupChatName | Timeout | ContactDevice |
+      | user1Name | user2Name | user3Name | Epheme grp    | 5       | d1            |
 
   @C318634 @regression @fastLogin
   Scenario Outline: Verify the message is deleted on the receiver side when timer is over
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Contact1> switches group conversation <GroupChatName> to ephemeral mode with <Timeout> seconds timeout
+    Given I sign in using my email or phone number
     Given User <Contact1> sends encrypted message "<Message>" to group conversation <GroupChatName>
+    Given I see conversations list
     Given I tap on group chat with name <GroupChatName>
     When I see the conversation view contains message <Message>
     And I wait for <Timeout> seconds
     Then I do not see the conversation view contains message <Message>
 
     Examples:
-      | Name      | Contact1   | Contact2  | GroupChatName | Timeout | Message |
-      | user1Name | user2Name  | user3Name | Epheme grp    |  5      | m1      |
+      | Name      | Contact1  | Contact2  | GroupChatName | Timeout | Message |
+      | user1Name | user2Name | user3Name | Epheme grp    | 15      | m1      |
 
   @C320786 @rc @regression @fastLogin
   Scenario Outline: Verify receiving ephemeral assets (picture, video, audio, link preview, location)
@@ -197,5 +197,5 @@ Feature: Group Ephemeral Messages
     Then I see the conversation view contains message <Message>
 
     Examples:
-      | Name      | Contact1   | Contact2  | GroupChatName | Timeout | Message | DeviceName1 | DeviceName2 |
-      | user1Name | user2Name  | user3Name | Epheme grp    |  5      | m1      | DeviceName1 | DeviceName2 |
+      | Name      | Contact1  | Contact2  | GroupChatName | Timeout | Message | DeviceName1 | DeviceName2 |
+      | user1Name | user2Name | user3Name | Epheme grp    | 5       | m1      | DeviceName1 | DeviceName2 |

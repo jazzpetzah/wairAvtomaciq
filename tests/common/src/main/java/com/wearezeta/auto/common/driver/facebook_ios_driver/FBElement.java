@@ -46,7 +46,6 @@ public class FBElement implements WebElement, FindsByFBAccessibilityId, FindsByF
     }
 
     public void touchAndHold(double durationSeconds) {
-        DurationValidator.validate(durationSeconds);
         try {
             fbDriverAPI.touchAndHold(this.uuid, durationSeconds);
         } catch (RESTError | FBDriverAPI.StatusNotZeroError e) {

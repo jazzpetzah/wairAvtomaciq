@@ -134,8 +134,8 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbNameEllipsisButton = FBBy.AccessibilityId("showOtherRowButton");
     private static final By xpathAudioCallButton = MobileBy.AccessibilityId("audioCallBarButton");
     private static final By xpathVideoCallButton = MobileBy.AccessibilityId("videoCallBarButton");
-    private static final By xpathConversationDetailsButton =
-            By.xpath(xpathStrConversationViewTopBar + "/*[@name='Name']");
+    private static final By fbXpathConversationDetailsButton =
+            FBBy.xpath(xpathStrConversationViewTopBar + "/*[@name='Name']");
 
     private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("Too many people to call");
 
@@ -349,7 +349,10 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void clearTextInput() throws Exception {
-        getElement(fbNameConversationInput).clear();
+        final FBElement textExit = (FBElement) getElement(fbNameConversationInput);
+        // This is to make sure the input cursor has been put to the tail of the text
+        this.tapByPercentOfElementSize(textExit, 95, 50);
+        textExit.clear();
     }
 
     public boolean isCurrentInputTextEqualTo(String expectedMsg) throws Exception {
@@ -421,8 +424,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void openConversationDetails() throws Exception {
-        isLocatorDisplayed(xpathAudioCallButton);
-        getElement(xpathConversationDetailsButton).click();
+        this.tapAtTheCenterOfElement((FBElement) getElement(fbXpathConversationDetailsButton));
         // Wait for animation
         Thread.sleep(500);
     }

@@ -207,8 +207,17 @@ public class FBDriverAPI {
         parseResponseWithStatus(client.doubleTap(getSessionId(), uuid));
     }
 
+    public void doubleTap(double x, double y) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.doubleTap(getSessionId(), x, y));
+    }
+
     public void touchAndHold(String uuid, double durationSeconds) throws RESTError, StatusNotZeroError {
         parseResponseWithStatus(client.touchAndHold(getSessionId(), uuid, durationSeconds));
+    }
+
+    public void touchAndHold(double x, double y, double durationSeconds)
+            throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.touchAndHold(getSessionId(), x, y, durationSeconds));
     }
 
     public void scroll(String uuid, Optional<String> toChildNamed, Optional<ScrollingDirection> direction,
@@ -224,6 +233,10 @@ public class FBDriverAPI {
 
     public void tap(String uuid, double x, double y) throws RESTError, StatusNotZeroError {
         parseResponseWithStatus(client.tap(getSessionId(), uuid, x, y));
+    }
+
+    public void tap(double x, double y) throws RESTError, StatusNotZeroError {
+        parseResponseWithStatus(client.tap(getSessionId(), x, y));
     }
 
     public void sendKeys(CharSequence... charSequences) throws RESTError, StatusNotZeroError {
