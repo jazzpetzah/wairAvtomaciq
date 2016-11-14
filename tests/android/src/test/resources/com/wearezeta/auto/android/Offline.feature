@@ -29,7 +29,7 @@ Feature: Offline
       | user1Name | user2Name | Msg1     | Msg2     | testing.jpg |
 
   @C720 @regression @rc
-  Scenario Outline: I want to see an unsent indicator when I send message or image during offline
+  Scenario Outline: I want to see resend button when I send message or image during offline
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
