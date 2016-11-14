@@ -52,17 +52,23 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
+    And I wait for <Time> seconds
     And I open group conversation details
     And I tap Open Menu button on Group info page
     And I tap Leave conversation action button
+    And I wait for <Time> seconds
     And I confirm Leave conversation action
     And I open archived conversations
     And I tap on group chat with name <GroupChatName>
     And I see You Left message in group chat
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | TESTCHAT      |
+      | Name      | Contact1  | Contact2  | GroupChatName | Time |
+      | user1Name | user2Name | user3Name | TESTCHAT      | 1    |
+      | user1Name | user2Name | user3Name | TESTCHAT      | 2    |
+      | user1Name | user2Name | user3Name | TESTCHAT      | 3    |
+      | user1Name | user2Name | user3Name | TESTCHAT      | 4    |
+      | user1Name | user2Name | user3Name | TESTCHAT      | 5    |
 
   @C3169 @rc @regression @clumsy @fastLogin
   Scenario Outline: Remove from group chat
