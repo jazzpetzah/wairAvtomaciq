@@ -210,9 +210,28 @@ final class FBDriverRESTClient {
         return waitForResponse(() -> restHandlers.httpPost(webResource, EMPTY_JSON_BODY, new int[]{HttpStatus.SC_OK}));
     }
 
+    public JSONObject doubleTap(String sessionId, double x, double y) throws RESTError {
+        // TODO: available since Appium 1.6.1+
+        final Builder webResource = buildDefaultRequest("doubleTap", sessionId);
+        final JSONObject body = new JSONObject();
+        body.put("x", x);
+        body.put("y", y);
+        return waitForResponse(() -> restHandlers.httpPost(webResource, body, new int[]{HttpStatus.SC_OK}));
+    }
+
     public JSONObject touchAndHold(String sessionId, String uuid, double durationSeconds) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("uiaElement/%s/touchAndHold", uuid), sessionId);
         final JSONObject body = new JSONObject();
+        body.put("duration", durationSeconds);
+        return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
+    }
+
+    public JSONObject touchAndHold(String sessionId, double x, double y, double durationSeconds) throws RESTError {
+        // TODO: available since Appium 1.6.1+
+        final Builder webResource = buildDefaultRequest("touchAndHold", sessionId);
+        final JSONObject body = new JSONObject();
+        body.put("x", x);
+        body.put("y", y);
         body.put("duration", durationSeconds);
         return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
@@ -239,6 +258,14 @@ final class FBDriverRESTClient {
 
     public JSONObject tap(String sessionId, String uuid, double x, double y) throws RESTError {
         final Builder webResource = buildDefaultRequest(String.format("tap/%s", uuid), sessionId);
+        final JSONObject body = new JSONObject();
+        body.put("x", x);
+        body.put("y", y);
+        return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
+    }
+
+    public JSONObject tap(String sessionId, double x, double y) throws RESTError {
+        final Builder webResource = buildDefaultRequest("tap/0", sessionId);
         final JSONObject body = new JSONObject();
         body.put("x", x);
         body.put("y", y);
