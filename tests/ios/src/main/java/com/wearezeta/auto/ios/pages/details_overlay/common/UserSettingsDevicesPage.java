@@ -40,10 +40,7 @@ public class UserSettingsDevicesPage extends BaseUserDevicesOverlay {
 
     public void tapDeleteDeviceButton(String deviceName) throws Exception {
         final By locator = By.xpath(xpathDeleteDeviceButtonByName.apply(deviceName));
-        getElement(locator, String.format("Device '%s' is not visible in Manage Device List", deviceName)).click();
-        if (!isLocatorInvisible(locator)) {
-            throw new IllegalStateException("Delete device button is still visible");
-        }
+        this.tapElementWithRetryIfStillDisplayed(locator);
     }
 
     public void tapDeleteButton() throws Exception {
