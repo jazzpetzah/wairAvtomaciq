@@ -344,8 +344,8 @@ public class ContactListPageSteps {
     @When("^I see that conversation (.*) is not muted$")
     public void ISeeConversationIsNotMuted(String contact) throws Exception {
         contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-        Assert.assertFalse(String.format("Mute button visible for conversation '%s'", contact), context.getPagesCollection().
-                getPage(ContactListPage.class).isConversationMuted(contact));
+        Assert.assertTrue(String.format("Mute button visible for conversation '%s'", contact), context.getPagesCollection().
+                getPage(ContactListPage.class).isConversationNotMuted(contact));
     }
 
     /**
