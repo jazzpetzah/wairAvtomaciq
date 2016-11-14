@@ -43,8 +43,8 @@ Feature: Delete Message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     Then I see 1 photo in the conversation view
     When I long tap on image in conversation view
