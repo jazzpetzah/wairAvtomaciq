@@ -43,7 +43,7 @@ Feature: People View
     When I open conversation with <Contact>
     And I click menu bar item "Conversation" and menu item "Add People…"
     Then I see Single User Profile popover
-    And I see Add to conversation button on Single User popover
+    And I select <Contact2> from Single User Profile popover search results
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Contact2  |
