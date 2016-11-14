@@ -5,7 +5,6 @@ import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.Platform;
-import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.driver.ZetaWinDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -34,7 +33,6 @@ public class TestContext {
     private final List<LogEntry> BROWSER_LOG = new ArrayList<>();
     
     public static Future<ZetaWebAppDriver> COMPAT_WEB_DRIVER;
-    public static Future<ZetaOSXDriver> COMPAT_OSX_DRIVER;
     public static Future<ZetaWinDriver> COMPAT_WIN_DRIVER;
 
     private final Platform currentPlatform = Platform.Web;
