@@ -6,7 +6,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Spliterator;
@@ -30,7 +30,7 @@ public class JavaSeeker {
         final StandardJavaFileManager fileManager = ToolProvider.getSystemJavaCompiler().
                 getStandardFileManager(null, null, null);
         LOG.debug("Loading classes...");
-        Set<Class> classes = new HashSet<>();
+        Set<Class> classes = new LinkedHashSet<>();
         for (String pkg : pkgs) {
             final Spliterator<JavaFileObject> classesSpliterator = fileManager.list(StandardLocation.CLASS_PATH, pkg, Collections.
                     singleton(JavaFileObject.Kind.CLASS), true).spliterator();
@@ -53,7 +53,10 @@ public class JavaSeeker {
                     })
                     .collect(Collectors.toCollection(ArrayList::new)));
         }
-        return classes;
+        // reverse order to have most important classes last
+        ArrayList<Class> reversed = new ArrayList<>(classes);
+        Collections.reverse(reversed);
+        return reversed;
 
     }
 

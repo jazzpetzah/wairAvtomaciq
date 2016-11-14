@@ -45,12 +45,18 @@ public class PickleExecutor {
 
     public PickleExecutor() {
         try {
-            Collection<Class> loadedClasses = JavaSeeker.getClasses(Config.STEP_PACKAGE);
+            // Gets all classes in reversed order to override methods with most important methods in cachemap
+            // Config.STEP_PACKAGES defines importance of packages - first package path is most important
+            Collection<Class> loadedClasses = JavaSeeker.getClasses(Config.STEP_PACKAGES);
             for (Class<?> loadedClass : loadedClasses) {
                 for (Class<? extends Annotation> annotationClass : CUCUMBER_STEP_ANNOTATIONS) {
                     cacheMethodsByAnnotationValue(loadedClass, annotationClass);
                 }
             }
+            LOG.info(String.format("Loaded %d classes with overall %d methods", loadedClasses.size(), methodCache.size()));
+            loadedClasses.stream().forEach((c) -> {
+                LOG.debug(String.format("Loaded class %s", c.getCanonicalName()));
+            });
         } catch (IOException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException |
                 InvocationTargetException | InstantiationException ex) {
             LOG.error("Could not load step classes and cache step methods", ex);
