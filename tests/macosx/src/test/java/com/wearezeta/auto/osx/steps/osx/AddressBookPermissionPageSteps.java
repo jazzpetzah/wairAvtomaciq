@@ -13,11 +13,6 @@ public class AddressBookPermissionPageSteps {
     private final TestContext webContext;
     private final TestContext wrapperContext;
 
-    public AddressBookPermissionPageSteps() {
-        this.webContext = new TestContext();
-        this.wrapperContext = new TestContext();
-    }
-    
     public AddressBookPermissionPageSteps(TestContext webContext, TestContext wrapperContext) {
         this.webContext = webContext;
         this.wrapperContext = wrapperContext;

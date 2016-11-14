@@ -12,11 +12,6 @@ public class AboutPageSteps {
 
     private final TestContext webContext;
     private final TestContext wrapperContext;
-
-    public AboutPageSteps() {
-        this.webContext = new TestContext();
-        this.wrapperContext = new TestContext();
-    }
     
     public AboutPageSteps(TestContext webContext, TestContext wrapperContext) {
         this.webContext = webContext;

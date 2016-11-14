@@ -15,11 +15,6 @@ public class MessageContextMenuPageSteps {
 
     private final TestContext webContext;
     private final TestContext wrapperContext;
-
-    public MessageContextMenuPageSteps() {
-        this.webContext = new TestContext();
-        this.wrapperContext = new TestContext();
-    }
     
     public MessageContextMenuPageSteps(TestContext webContext, TestContext wrapperContext) {
         this.webContext = webContext;
