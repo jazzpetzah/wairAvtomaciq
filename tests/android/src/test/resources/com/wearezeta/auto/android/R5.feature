@@ -1,4 +1,4 @@
-Feature: Registration
+Feature: Registration5
 
   @C667 @regression @rc
   Scenario Outline: Register new user by phone and set profile picture using camera 5
@@ -26,6 +26,21 @@ Feature: Registration
     And I tap Log in button
     And I input a new phone number for user <Name>
     And I input the verification code
+    Then I see Conversations list with no conversations
+
+    Examples:
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @C382 @regression
+  Scenario Outline: Sign in to Wire by mail 5
+    Given There is 1 user where <Name> is me
+    Given I see welcome screen
+    When I switch to email sign in screen
+    And I have entered login <Login>
+    And I have entered password <Password>
+    And I tap Log in button
+    And I accept First Time overlay as soon as it is visible
     Then I see Conversations list with no conversations
 
     Examples:

@@ -31,3 +31,18 @@ Feature: Registration7
     Examples:
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
+
+  @C382 @regression
+  Scenario Outline: Sign in to Wire by mail 7
+    Given There is 1 user where <Name> is me
+    Given I see welcome screen
+    When I switch to email sign in screen
+    And I have entered login <Login>
+    And I have entered password <Password>
+    And I tap Log in button
+    And I accept First Time overlay as soon as it is visible
+    Then I see Conversations list with no conversations
+
+    Examples:
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
