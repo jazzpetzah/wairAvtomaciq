@@ -78,12 +78,12 @@ public class PickleJarInheritedTest extends PickleJarTest {
             long execTime = 1L;
             try {
                 try {
-                    // web page step
-                    execTime = getPickle().getExecutor().invokeMethodForStep(rawStep, getExampleRow(), lifecycle.getWebContext());
-                } catch (StepNotExecutableException snee) {
                     // wrapper page step
+                    execTime = getPickle().getExecutor().invokeMethodForStep(rawStep, getExampleRow(), lifecycle.getWebContext(), lifecycle.getWrapperContext());
+                } catch (StepNotExecutableException snee) {
+                    // web page step
                     if (snee.getCause() instanceof NoSuchMethodException) {
-                        execTime = getPickle().getExecutor().invokeMethodForStep(rawStep, getExampleRow(), lifecycle.getWebContext(), lifecycle.getWrapperContext());
+                        execTime = getPickle().getExecutor().invokeMethodForStep(rawStep, getExampleRow(), lifecycle.getWebContext());
                     }else{
                         throw snee;
                     }
