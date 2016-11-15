@@ -21,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -658,7 +659,7 @@ public final class BackendAPIWrappers {
             // This will delete self picture
             BackendREST.updateSelfInfo(receiveAuthToken(user), null, new HashMap<>(), null);
         } else {
-            final byte[] srcImageAsByteArray = Files.readAllBytes(Paths.get(picturePath));
+            final byte[] srcImageAsByteArray = Files.readAllBytes(new File(picturePath).toPath());
 
             ImageAssetData srcImgData = new ImageAssetData(convId, srcImageAsByteArray, getImageMimeType(picturePath));
             srcImgData.setIsPublic(true);
