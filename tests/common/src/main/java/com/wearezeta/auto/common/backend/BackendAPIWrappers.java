@@ -461,6 +461,18 @@ public final class BackendAPIWrappers {
         return DigestUtils.sha256Hex(picture);
     }
 
+    public static String getUserAssetKey(ClientUser user, String size) throws Exception {
+        final JSONObject userInfo = BackendREST.getUserInfo(receiveAuthToken(user));
+        final JSONArray assets = userInfo.getJSONArray("assets");
+        for (int i = 0; i < assets.length(); i++) {
+            JSONObject asset = assets.getJSONObject(i);
+            if (size.equals(asset.getString("size"))) {
+                return asset.getString("key");
+            }
+        }
+        throw new IllegalArgumentException("No user asset found with size: " + size + " in " + assets);
+    }
+
     public static void sendConnectRequest(ClientUser user, ClientUser contact,
                                           String connectName, String message) throws Exception {
         BackendREST.sendConnectRequest(receiveAuthToken(user), contact.getId(), connectName, message);

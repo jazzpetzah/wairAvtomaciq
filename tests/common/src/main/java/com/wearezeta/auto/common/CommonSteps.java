@@ -8,10 +8,12 @@ import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.sync_engine_bridge.MessageReactionType;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
-import com.wearezeta.auto.common.usrmgmt.*;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-
+import com.wearezeta.auto.common.usrmgmt.RegistrationStrategy;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import java.io.File;
@@ -19,8 +21,9 @@ import java.io.IOException;
 import java.util.*;
 
 import static javax.xml.bind.DatatypeConverter.parseDateTime;
-
-import org.apache.log4j.Logger;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertThat;
 
 public final class CommonSteps {
 
@@ -35,6 +38,8 @@ public final class CommonSteps {
 
     //increased timeout to make it stable on jenkins
     private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 240; // seconds
+    private static final String PROFILE_PICTURE_JSON_ATTRIBUTE = "complete";
+    private static final String PROFILE_PREVIEW_PICTURE_JSON_ATTRIBUTE = "preview";
 
     private String pingId = null;
 
@@ -754,36 +759,51 @@ public final class CommonSteps {
     }
 
     private Map<String, String> profilePictureSnapshotsMap = new HashMap<>();
+    private Map<String, String> profilePictureV3SnapshotsMap = new HashMap<>();
+    private Map<String, String> profilePictureV3PreviewSnapshotsMap = new HashMap<>();
 
     public void UserXTakesSnapshotOfProfilePicture(String userNameAlias) throws Exception {
         final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(userNameAlias);
-        profilePictureSnapshotsMap.put(userAs.getEmail(), BackendAPIWrappers.getUserPictureHash(userAs));
+        String email = userAs.getEmail();
+        profilePictureSnapshotsMap.put(email, BackendAPIWrappers.getUserPictureHash(userAs));
+        profilePictureV3SnapshotsMap.put(email,
+                BackendAPIWrappers.getUserAssetKey(userAs, PROFILE_PICTURE_JSON_ATTRIBUTE));
+        profilePictureV3PreviewSnapshotsMap.put(email,
+                BackendAPIWrappers.getUserAssetKey(userAs, PROFILE_PREVIEW_PICTURE_JSON_ATTRIBUTE));
     }
 
     public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(
             String userNameAlias, int secondsTimeout) throws Exception {
         final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(userNameAlias);
-        String previousHash;
-        if (profilePictureSnapshotsMap.containsKey(userAs.getEmail())) {
-            previousHash = profilePictureSnapshotsMap.get(userAs.getEmail());
+        String email = userAs.getEmail();
+        String previousHash, previousCompleteKey, previousPreviewKey;
+        if (profilePictureSnapshotsMap.containsKey(email)
+                && profilePictureV3SnapshotsMap.containsKey(email)
+                && profilePictureV3PreviewSnapshotsMap.containsKey(email)) {
+            previousHash = profilePictureSnapshotsMap.get(email);
+            previousCompleteKey = profilePictureV3SnapshotsMap.get(email);
+            previousPreviewKey = profilePictureV3PreviewSnapshotsMap.get(email);
         } else {
             throw new RuntimeException(String.format(
                     "Please take user picture snapshot for user '%s' first",
                     userAs.getEmail()));
         }
         long millisecondsStarted = System.currentTimeMillis();
-        String actualHash;
+        String actualHash, actualCompleteKey, actualPreviewKey;
         do {
             actualHash = BackendAPIWrappers.getUserPictureHash(userAs);
-            if (!actualHash.equals(previousHash)) {
+            actualCompleteKey = BackendAPIWrappers.getUserAssetKey(userAs, "complete");
+            actualPreviewKey = BackendAPIWrappers.getUserAssetKey(userAs, "preview");
+            if (!actualHash.equals(previousHash)
+                    && !actualCompleteKey.equals(previousCompleteKey)
+                    && !actualPreviewKey.equals(previousPreviewKey)) {
                 break;
             }
             Thread.sleep(500);
         } while (System.currentTimeMillis() - millisecondsStarted <= secondsTimeout * 1000);
-        Assert.assertFalse(
-                String.format(
-                        "Actual and previous user pictures are equal, but expected to be different after %s second(s)",
-                        secondsTimeout), previousHash.equals(actualHash));
+        assertThat("User profile picture is not different (V2)", actualHash, not(equalTo(previousHash)));
+        assertThat("User big profile picture is not different (V3)", actualCompleteKey, not(equalTo(previousCompleteKey)));
+        assertThat("User small profile picture is not different (V3)", actualPreviewKey, not(equalTo(previousPreviewKey)));
     }
 
     private static final int PICTURE_CHANGE_TIMEOUT = 15; // seconds
