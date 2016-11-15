@@ -37,6 +37,8 @@ public class CallingOverlayPage extends IOSPage {
 
     private static final By nameAnswerCallAlertButton = MobileBy.AccessibilityId("Answer");
 
+    private static final By nameCallingConfirmationDialog = MobileBy.AccessibilityId("Confirmation");
+
 
     private static final Function<Integer, String> xpathStrGroupCallAvatarsByCount = count ->
             String.format("//XCUIElementTypeStaticText[@name='%s']/" +
@@ -61,6 +63,14 @@ public class CallingOverlayPage extends IOSPage {
 
     public boolean isCallStatusLabelInvisible() throws Exception {
         return isLocatorInvisible(nameCallStatusLabel);
+    }
+
+    public boolean isCallingConfirmationDialogVisible() throws Exception {
+        return isLocatorDisplayed(nameCallingConfirmationDialog);
+    }
+
+    public boolean isCallingConfirmationDialogInvisible() throws Exception {
+        return isLocatorInvisible(nameCallingConfirmationDialog);
     }
 
     public boolean isSecondCallAlertVisible() throws Exception {

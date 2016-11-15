@@ -41,6 +41,23 @@ public class CallPageSteps {
     }
 
     /**
+     * Verify whether calling confirmation dialog is visible or not
+     *
+     * @param shouldNotBeVisible equals to null if the overlay should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see Calling confirmation dialog
+     */
+    @Then("^I (do not )?see Calling confirmation dialog$")
+    public void iSeeCallingConfirmationDialog(String shouldNotBeVisible) throws Throwable {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("Calling confirmation is not visible", getCallingOverlayPage().isCallingConfirmationDialogVisible());
+        } else {
+            Assert.assertTrue("Calling confirmation is visible, but should be hidden",
+                    getCallingOverlayPage().isCallingConfirmationDialogInvisible());
+        }
+    }
+
+    /**
      * Tap the corresponding button on calling overlay
      *
      * @param name one of possible button names

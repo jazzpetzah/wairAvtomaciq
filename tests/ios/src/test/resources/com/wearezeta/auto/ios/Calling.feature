@@ -446,3 +446,47 @@ Feature: Calling
     Examples:
       | Name      | Contact   | CallBackend    |
       | user1Name | user2Name | zcall:2.7.26   |
+
+  @C343168 @staging @calling_basic @fastLogin
+  Scenario Outline: Verify you see group call conformation dialog for >5 participants group chat
+    Given There are 6 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given Myself has group chat <GroupChat1Name> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given Myself has group chat <GroupChat2Name> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    # Check group chat where participant count = 5
+    When I tap on group chat with name <GroupChat1Name>
+    And I tap Audio Call button
+    Then I see Calling overlay
+    And I tap Leave button on Calling overlay
+    When I navigate back to conversations list
+    # Check group chat where participant count > 5
+    And I tap on group chat with name <GroupChat2Name>
+    And I tap Audio Call button
+    Then I see Calling confirmation dialog
+    # Confirm to call
+    When I accept alert
+    Then I see Calling overlay
+
+    Examples:
+      | Name      | Contact   | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChat1Name | GroupChat2Name |
+      | user1Name | user2Name | user3Name | user3Name | user4Name | user5Name | user6Name | GROUP FIVE     | GROUP SIX      |
+
+  @C343170 @staging @calling_basic @fastLogin
+  Scenario Outline: Verify you can cancel the group call from confirmation dialog for >5 participants group chat
+    Given There are 6 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    And I tap on group chat with name <GroupChatName>
+    And I tap Audio Call button
+    Then I see Calling confirmation dialog
+    When I dismiss alert
+    Then I do not see Calling overlay
+
+    Examples:
+      | Name      | Contact   | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName |
+      | user1Name | user2Name | user3Name | user3Name | user4Name | user5Name | user6Name | GROUP SIX     |
+    
