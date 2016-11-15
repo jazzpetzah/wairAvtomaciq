@@ -56,15 +56,15 @@ Feature: People View
     And I tap Open Menu button on Group info page
     And I tap Leave conversation action button
     # Wait for animation
-    And I wait for <Time> seconds
+    And I wait for 3 seconds
     And I confirm Leave conversation action
     And I open archived conversations
     And I tap on group chat with name <GroupChatName>
     Then I see You Left message in group chat
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | Time |
-      | user1Name | user2Name | user3Name | TESTCHAT      | 3    |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | TESTCHAT      |
 
   @C3169 @rc @regression @clumsy @fastLogin
   Scenario Outline: Remove from group chat
@@ -464,7 +464,7 @@ Feature: People View
     And I tap Open Menu button on Group info page
     And I tap Leave conversation action button
     # Wait for animation
-    And I wait for <Time> seconds
+    And I wait for 3 seconds
     And I confirm Leave conversation action
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list
@@ -472,8 +472,8 @@ Feature: People View
     Then I see 4 conversation entries
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | Image       | Time |
-      | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg | 3    |
+      | Name      | Contact1  | Contact2  | GroupChatName | Image       |
+      | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
 
   @C42 @regression @fastLogin
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending user (People view)
