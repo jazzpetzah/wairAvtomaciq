@@ -677,18 +677,13 @@ public class ContactListPage extends WebPage {
         blockButton.click();
     }
 
-    // only for Wrapper
-    public void openContextMenuForContact(String name)
-            throws Exception {
+    public void openContextMenuWithContextClickForConversation(String name) throws Exception {
         if (name == null) {
-            throw new Exception(
-                    "The name to look for in the conversation list was null");
+            throw new Exception("The name to look for in the conversation list was null");
         }
         name = fixDefaultGroupConvoName(name, false, false);
-        final String locator = WebAppLocators.ContactListPage.cssContactListEntryByName
-                .apply(name);
-        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.cssSelector(locator));
+        final String locator = WebAppLocators.ContactListPage.cssContactListEntryByName.apply(name);
+        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(locator));
         WebElement entry = getDriver().findElement(By.cssSelector(locator));
         new Actions(getDriver()).contextClick(entry).perform();
     }

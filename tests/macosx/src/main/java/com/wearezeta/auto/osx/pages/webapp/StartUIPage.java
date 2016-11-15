@@ -13,8 +13,6 @@ public class StartUIPage extends com.wearezeta.auto.web.pages.StartUIPage {
     @FindBy(how = How.CSS, using = WebAppLocators.StartUIPage.cssBringFriendsFromContactsButton)
     private WebElement importAddressbookButton;
 
-    
-
     public StartUIPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }

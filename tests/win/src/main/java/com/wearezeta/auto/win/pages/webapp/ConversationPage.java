@@ -15,15 +15,14 @@ import org.apache.log4j.Logger;
 public class ConversationPage extends com.wearezeta.auto.web.pages.ConversationPage {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = ZetaLogger.getLog(com.wearezeta.auto.web.pages.ConversationPage.class.getName());
+    private static final Logger LOG = ZetaLogger.getLog(ConversationPage.class.getName());
     
     private static final String PASTE_SCRIPT = "security restrictions";
 
     // TODO hide behind driver impl
     private final Robot robot = new Robot();
 
-    public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
-            throws Exception {
+    public ConversationPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
