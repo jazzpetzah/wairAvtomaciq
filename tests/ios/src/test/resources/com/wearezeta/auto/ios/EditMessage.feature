@@ -85,7 +85,7 @@ Feature: Edit Message
       | Name      | Contact   | Text    |
       | user1Name | user2Name | message |
 
-  @C206271 @rc @regression @fastLogin
+  @C206271 @rc @regression @fastLogin @torun
   Scenario Outline: Verify I can delete message for everyone editing it with nothing/space
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
