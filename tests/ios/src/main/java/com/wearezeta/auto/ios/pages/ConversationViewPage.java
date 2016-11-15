@@ -700,7 +700,6 @@ public class ConversationViewPage extends IOSPage {
             el.doubleTap();
         } else if (isLongTap) {
             el.longTap();
-            //longClickAt(el, 7, 50);
         } else {
             el.click();
         }
