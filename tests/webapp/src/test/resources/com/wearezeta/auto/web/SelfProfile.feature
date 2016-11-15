@@ -68,7 +68,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | PictureName              |
       | user1Email | user1Password | user1Name | userpicture_portrait.jpg |
 
-  @C3266 @regression
+  @C3266 @regression @WEBAPP-3358
   Scenario Outline: Verify you can change your profile picture
     Given There is 1 user where <Name> is me
     Given Myself take snapshot of current profile picture
@@ -76,8 +76,16 @@ Feature: Self Profile
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I open preferences by clicking the gear button
-    And I upload picture <PictureName> to account preferences
-    Then I verify that current profile picture snapshot of Myself differs from the previous one
+    # Wait for the background image to be loaded
+    And I wait for 10 seconds
+    And I remember the background image of the conversation list
+    And I remember the profile image on the account page
+    Then I verify that the background image of the conversation list has not changed
+    And I verify that the profile image on the account page has not changed
+    When I upload picture <PictureName> to account preferences
+    Then I verify that the background image of the conversation list has changed
+    And I verify that the profile image on the account page has changed
+    And I verify that current profile picture snapshot of Myself differs from the previous one
 
     Examples: 
       | Login      | Password      | Name      | PictureName              |

@@ -135,7 +135,7 @@ Feature: Conversation List
     And I navigate back to conversations list
     And I remember the left side state of <Contact> conversation item on iPad
     And <Contact> calls me
-    And <Contact> stops calling me
+    And <Contact> stops outgoing call to me
     Then I see the state of <Contact> conversation item is changed on iPad
     When I remember the left side state of <Contact> conversation item on iPad
     And User <Contact> sends <Number> encrypted messages to user Myself

@@ -752,18 +752,12 @@ public class CommonAndroidSteps {
      *
      * @param pingFromUserNameAlias The user to do the pinging
      * @param dstConversationName   the target conversation to send the ping to
-     * @param isSecure              equals null if ping should not be secure
      * @throws Exception
-     * @step. ^User (\\w+) (securely )?pings? conversation (.*)$
+     * @step. ^User (\w+) (?:securely |\s*)pings? conversation (.*)
      */
-    @When("^User (\\w+) (securely )?pings? conversation (.*)$")
-    public void UserPingedConversation(String pingFromUserNameAlias, String isSecure, String dstConversationName)
-            throws Exception {
-        if (isSecure == null) {
-            commonSteps.UserPingedConversation(pingFromUserNameAlias, dstConversationName);
-        } else {
-            commonSteps.UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
-        }
+    @When("^User (\\w+) (?:securely |\\s*)pings? conversation (.*)")
+    public void UserPingedConversation(String pingFromUserNameAlias, String dstConversationName) throws Exception {
+        commonSteps.UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
     }
 
     /**

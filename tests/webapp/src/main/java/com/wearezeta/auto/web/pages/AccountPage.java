@@ -3,6 +3,8 @@ package com.wearezeta.auto.web.pages;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 
+import java.awt.image.BufferedImage;
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
@@ -41,6 +43,9 @@ public class AccountPage extends WebPage {
 
     @FindBy(css = WebAppLocators.AccountPage.cssNameSelfUserPhoneNumber)
     private WebElement userPhoneNumber;
+
+    @FindBy(css = WebAppLocators.AccountPage.cssPicture)
+    private WebElement picture;
 
     @FindBy(css = WebAppLocators.AccountPage.cssSelectPicture)
     private WebElement selectPictureInput;
@@ -104,6 +109,14 @@ public class AccountPage extends WebPage {
         Thread.sleep(1000);
         userNameInput.clear();
         userNameInput.sendKeys(name + "\n");
+    }
+
+    public BufferedImage getPicture() throws Exception {
+        Optional<BufferedImage> screenshot = getElementScreenshot(picture);
+        if (!screenshot.isPresent()) {
+            throw new Exception("Could not get screenshot of contact list with background");
+        }
+        return screenshot.get();
     }
 
     public void dropPicture(String pictureName) throws Exception {
