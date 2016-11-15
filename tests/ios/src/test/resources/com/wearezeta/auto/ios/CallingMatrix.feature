@@ -164,7 +164,7 @@ Feature: Calling Matrix
       | Name      | Contact   | CallBackend  | Timeout |
       | user1Name | user2Name | chrome       | 20      |
 
-  @C343166 @calling_matrix @fastLogin
+  @C343166 @calling_matrix @fastLogin @real
   Scenario Outline: Verify I can accept two 1:1 video call from callbackend <CallBackend> in a row
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -192,7 +192,7 @@ Feature: Calling Matrix
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C343167 @calling_matrix @fastLogin
+  @C343167 @calling_matrix @fastLogin @real
   Scenario Outline: Verify I can make two 1:1 video call with <CallBackend> in a row
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -219,7 +219,7 @@ Feature: Calling Matrix
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C343169 @calling_matrix @fastLogin
+  @C343169 @calling_matrix @fastLogin @real
   Scenario Outline: Accept 1:1 call when app is in background
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
