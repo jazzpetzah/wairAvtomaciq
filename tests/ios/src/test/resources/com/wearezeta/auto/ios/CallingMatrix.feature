@@ -225,7 +225,7 @@ Feature: Calling Matrix
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given I tap Home button
+    Given I press Home button
     When <Contact> calls me
     And I see Audio Call Kit overlay
     And I tap Accept button on Call Kit overlay

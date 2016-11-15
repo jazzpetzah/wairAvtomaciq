@@ -1707,10 +1707,10 @@ public class CommonIOSSteps {
      * Puts Wire into the background on real device
      *
      * @throws Exception
-     * @step. ^I put Wire into background$
+     * @step. ^I press Home button$
      */
-    @Given("^I tap Home button$")
-    public void ITapHomeButton() throws Exception {
+    @Given("^I press Home button$")
+    public void IPressHomeButton() throws Exception {
         pagesCollection.getCommonPage().putAppInBackground();
     }
 }

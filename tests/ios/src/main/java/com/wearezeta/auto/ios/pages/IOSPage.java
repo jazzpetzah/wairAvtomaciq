@@ -806,7 +806,6 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
-    //pressing home button for real device
     public void putAppInBackground() throws Exception {
         getDriver().pressHomeButton();
     }

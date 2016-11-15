@@ -39,35 +39,16 @@ public class CallingSteps {
         commonCallingSteps.callToConversation(splitAliases(caller), conversationName);
     }
 
-//    /**
-//     * Stop call (audio and video) on the other side
-//     *
-//     * @step. ^(.*) stops? calls( to (.*))$
-//     *
-//     * @param instanceUsers comma separated list of user names/aliases
-//     * @param conversationName destination conversation name
-//     * @throws Exception
-//     */
-//    @When("^(.*) stops? calling( (.*))?$")
-//    public void UserXStopsCallsToUserY(String instanceUsers, String outgoingCall, String conversationName)
-//            throws Exception {
-//        if (outgoingCall == null) {
-//            commonCallingSteps.stopIncomingCall(splitAliases(instanceUsers));
-//        } else {
-//            commonCallingSteps.stopOutgoingCall(splitAliases(instanceUsers), conversationName);
-//        }
-//    }
-
     /**
      * Stop outgoing or incoming call (audio and video) to the other side
      *
-     * @step. ^(.*) stops? (incoming call from|outgoing call to) (.*)$
+     * @step. ^(.*) stops? (incoming call from|outgoing call to) (.*)
      *
      * @param instanceUsers comma separated list of user names/aliases
      * @param conversationName destination conversation name
      * @throws Exception
      */
-    @When("^(.*) stops? (incoming call from|outgoing call to) (.*)$")
+    @When("^(.*) stops? (incoming call from|outgoing call to) (.*)")
     public void UserXStopsIncomingOutgoingCallsToUserY(String instanceUsers, String typeOfCall, String conversationName)
             throws Exception {
         if (typeOfCall.equals("incoming call from")) {
