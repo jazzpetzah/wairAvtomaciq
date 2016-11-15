@@ -1,6 +1,6 @@
 Feature: Registration3
 
-  @C6673 @regression @rc @torun
+  @stability
   Scenario Outline: Register new user by phone and set profile picture using camera 31
     Given I see welcome screen
     When I input a new phone number for user <Name>
@@ -16,7 +16,7 @@ Feature: Registration3
       | Name      |
       | user1Name |
 
-  @C6673 @regression @rc @torun
+  @stability
   Scenario Outline: Register new user by phone and set profile picture using camera 32
     Given I see welcome screen
     When I input a new phone number for user <Name>
@@ -32,7 +32,7 @@ Feature: Registration3
       | Name      |
       | user1Name |
 
-  @C6673 @regression @rc @torun
+  @stability
   Scenario Outline: Register new user by phone and set profile picture using camera 33
     Given I see welcome screen
     When I input a new phone number for user <Name>
@@ -48,7 +48,7 @@ Feature: Registration3
       | Name      |
       | user1Name |
 
-  @C6673 @regression @rc @torun
+  @stability
   Scenario Outline: Register new user by phone and set profile picture using camera 34
     Given I see welcome screen
     When I input a new phone number for user <Name>
@@ -64,7 +64,7 @@ Feature: Registration3
       | Name      |
       | user1Name |
 
-  @C6673 @regression @rc @torun
+  @stability
   Scenario Outline: Register new user by phone and set profile picture using camera 35
     Given I see welcome screen
     When I input a new phone number for user <Name>
