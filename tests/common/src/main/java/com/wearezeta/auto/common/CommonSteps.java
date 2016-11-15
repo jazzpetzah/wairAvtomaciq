@@ -38,7 +38,7 @@ public final class CommonSteps {
 
     //increased timeout to make it stable on jenkins
     private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 240; // seconds
-    
+
     private final ClientUsersManager usrMgr;
 
     private final SEBridge seBridge;

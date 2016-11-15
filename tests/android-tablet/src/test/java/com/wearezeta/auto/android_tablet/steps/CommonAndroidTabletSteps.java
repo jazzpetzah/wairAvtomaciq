@@ -569,8 +569,7 @@ public class CommonAndroidTabletSteps {
      * @step. ^User (\w+) (?:securely |\s*)pings? conversation (.*)
      */
     @When("^User (\\w+) (?:securely |\\s*)pings? conversation (.*)")
-    public void UserPingedConversation(String pingFromUserNameAlias,
-                                       String isSecure, String dstConversationName) throws Exception {
+    public void UserPingedConversation(String pingFromUserNameAlias, String dstConversationName) throws Exception {
         commonSteps.UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
     }
 
