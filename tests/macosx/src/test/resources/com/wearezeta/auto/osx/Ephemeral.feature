@@ -51,7 +51,6 @@ Feature: Ephemeral
     And I see 2 messages in conversation
     When User <Contact> reads the recent message from user <Name> via device Device1
     And I wait for <Time> seconds
-    And I do not see any picture in the conversation view
     And I do not see a title <LinkTitle> in link preview in the conversation view
     And I do not see a picture <LinkPreviewImage> from link preview
     And I see 1 messages in conversation
