@@ -28,7 +28,7 @@ public class MainWirePageSteps {
         wrapperContext.getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).pressShortCutForQuit();
     }
 
-    @When("^I type shortcut combination for preferences$")
+    @When("^I type shortcut combination to open preferences$")
     public void ITypeShortcutCombinationForPreferences() throws Exception {
         wrapperContext.getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).pressShortCutForPreferences();
     }

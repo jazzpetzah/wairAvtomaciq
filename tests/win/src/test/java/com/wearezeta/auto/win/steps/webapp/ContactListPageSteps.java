@@ -32,7 +32,7 @@ public class ContactListPageSteps {
                 actualIndex), actualIndex == expectedIndex);
     }
     
-    @When("^I type shortcut combination to archive the conversation$")
+    @When("^I type shortcut combination to archive a conversation$")
     public void ITypeShortcutCombinationToArchive() throws Exception {
         webContext.getPagesCollection().getPage(ContactListPage.class).pressShortcutForArchive();
     }
