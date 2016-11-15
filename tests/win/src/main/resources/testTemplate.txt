@@ -80,7 +80,17 @@ public class $(TESTNAME)Test extends PickleJarTest{
             final Step reportStep = reportSteps.get(i);
             long execTime = 1L;
             try {
-                execTime = getPickle().getExecutor().invokeMethodForStep(rawStep, getExampleRow(), lifecycle.getContext());
+                try {
+                    // wrapper page step
+                    execTime = getPickle().getExecutor().invokeMethodForStep(rawStep, getExampleRow(), lifecycle.getWebContext(), lifecycle.getWrapperContext());
+                } catch (StepNotExecutableException snee) {
+                    // web page step
+                    if (snee.getCause() instanceof NoSuchMethodException) {
+                        execTime = getPickle().getExecutor().invokeMethodForStep(rawStep, getExampleRow(), lifecycle.getWebContext());
+                    }else{
+                        throw snee;
+                    }
+                }
                 setResult(reportStep, new Result(execTime, PASSED, null));
             } catch (Throwable e) {
                 ex = e;

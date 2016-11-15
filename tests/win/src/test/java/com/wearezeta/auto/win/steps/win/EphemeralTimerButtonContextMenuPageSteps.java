@@ -1,26 +1,22 @@
 package com.wearezeta.auto.win.steps.win;
 
-import com.wearezeta.auto.win.common.WrapperTestContext;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.win.pages.win.EphemeralTimerButtonContextMenuPage;
 import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 import cucumber.api.java.en.When;
 
 public class EphemeralTimerButtonContextMenuPageSteps {
 
-    private final WinPagesCollection winPagesCollection = WinPagesCollection.getInstance();
-    
-    private final WrapperTestContext context;
+    private final TestContext webContext;
+    private final TestContext wrapperContext;
 
-    public EphemeralTimerButtonContextMenuPageSteps() {
-        this.context = new WrapperTestContext();
-    }
-
-    public EphemeralTimerButtonContextMenuPageSteps(WrapperTestContext context) {
-        this.context = context;
+    public EphemeralTimerButtonContextMenuPageSteps(TestContext webContext, TestContext wrapperContext) {
+        this.webContext = webContext;
+        this.wrapperContext = wrapperContext;
     }
 
     @When("^I set the timer for ephemeral to (.*)$")
     public void ISetEphemeralTimer(String label) throws Exception {
-        winPagesCollection.getPage(EphemeralTimerButtonContextMenuPage.class).setEphemeralTimer(label.toUpperCase());
+        wrapperContext.getPagesCollection(WinPagesCollection.class).getPage(EphemeralTimerButtonContextMenuPage.class).setEphemeralTimer(label.toUpperCase());
     }
 }
