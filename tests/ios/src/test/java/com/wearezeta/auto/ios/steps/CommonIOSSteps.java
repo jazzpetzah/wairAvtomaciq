@@ -814,14 +814,9 @@ public class CommonIOSSteps {
         commonSteps.AcceptAllIncomingConnectionRequests(userToNameAlias);
     }
 
-    @Given("^User (\\w+) (securely )?pings conversation (.*)$")
-    public void UserPingedConversation(String pingFromUserNameAlias, String isSecure,
-                                       String dstConversationName) throws Exception {
-        if (isSecure == null) {
-            commonSteps.UserPingedConversation(pingFromUserNameAlias, dstConversationName);
-        } else {
-            commonSteps.UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
-        }
+    @Given("^User (\\w+) (?:securely |\\s*)pings conversation (.*)$")
+    public void UserPingedConversation(String pingFromUserNameAlias, String dstConversationName) throws Exception {
+        commonSteps.UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
     }
 
     @Given("^User (.*) sends (\\d+) (encrypted )?messages? to (user|group conversation) (.*)$")
@@ -1706,5 +1701,16 @@ public class CommonIOSSteps {
     @When("^I tap \"(.*)\" key on Emoji Keyboard$")
     public void TapKeyOnEmojiKeyboard(String keyName) throws Exception {
         pagesCollection.getCommonPage().tapEmojiKeyboardKey(keyName);
+    }
+
+    /**
+     * Puts Wire into the background on real device
+     *
+     * @throws Exception
+     * @step. ^I press Home button$
+     */
+    @Given("^I press Home button$")
+    public void IPressHomeButton() throws Exception {
+        pagesCollection.getCommonPage().putAppInBackground();
     }
 }

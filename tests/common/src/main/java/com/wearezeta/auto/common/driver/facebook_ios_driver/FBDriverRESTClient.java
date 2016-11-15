@@ -69,6 +69,13 @@ final class FBDriverRESTClient {
         return client.target(dstUrl).request().header("Content-type", MediaType.APPLICATION_JSON);
     }
 
+    private Builder buildDefaultRequest(String restAction) {
+        final String dstUrl = String.format("%s/%s", getApiRoot(), restAction);
+        log.debug(String.format("Request to %s...", dstUrl));
+        final Client client = ClientBuilder.newClient();
+        return client.target(dstUrl).request().header("Content-type", MediaType.APPLICATION_JSON);
+    }
+
     public JSONObject setRotation(String sessionId, FBDeviceRotation o) throws RESTError {
         final Builder webResource = buildDefaultRequest("rotation", sessionId);
         final JSONObject body = new JSONObject();
@@ -300,8 +307,8 @@ final class FBDriverRESTClient {
         return waitForResponse(() -> restHandlers.httpPost(webResource, body.toString(), new int[]{HttpStatus.SC_OK}));
     }
 
-    public JSONObject switchToHomescreen(String sessionId) throws RESTError {
-        final Builder webResource = buildDefaultRequest("switchToHomescreen", sessionId);
+    public JSONObject switchToHomescreen() throws RESTError {
+        final Builder webResource = buildDefaultRequest("homescreen");
         return waitForResponse(() -> restHandlers.httpPost(webResource, EMPTY_JSON_BODY, new int[]{HttpStatus.SC_OK}));
     }
 

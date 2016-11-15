@@ -418,19 +418,6 @@ final class BackendREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject sendConvertsationHotPing(AuthToken userFromToken,
-                                                      String convId, String refId) throws Exception {
-        Builder webResource = buildDefaultRequestWithAuth("conversations/"
-                + convId + "/hot-knock", MediaType.APPLICATION_JSON, userFromToken);
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("ref", refId);
-        requestBody.put("nonce", CommonUtils.generateGUID());
-        final String output = restHandlers.httpPost(webResource,
-                requestBody.toString(), new int[]{HttpStatus.SC_OK,
-                        HttpStatus.SC_CREATED});
-        return new JSONObject(output);
-    }
-
     public static JSONObject getConversationsInfo(AuthToken token,
                                                   String startId) throws Exception {
         Builder webResource = buildDefaultRequestWithAuth(
@@ -510,19 +497,20 @@ final class BackendREST {
         return jsonOutput.getString("key");
     }
 
-    public static void updateSelfInfo(AuthToken token, Integer accentId,
-                                      Map<String, AssetData> publishedPictureAssets, String name)
-            throws Exception {
+    public static void updateSelfInfo(AuthToken token,
+                                      Optional<Integer> accentId,
+                                      Optional<Map<String, AssetData>> publishedPictureAssets,
+                                      Optional<String> name) throws Exception {
         Builder webResource = buildDefaultRequestWithAuth("self", MediaType.APPLICATION_JSON, token);
         JSONObject requestBody = new JSONObject();
-        if (accentId != null) {
-            requestBody.put("accent_id", accentId.intValue());
+        if (accentId.isPresent()) {
+            requestBody.put("accent_id", accentId.get());
         }
-        if (publishedPictureAssets != null) {
-            requestBody.put("picture", generateRequestForSelfPicture(publishedPictureAssets));
+        if (publishedPictureAssets.isPresent()) {
+            requestBody.put("picture", generateRequestForSelfPicture(publishedPictureAssets.get()));
         }
-        if (name != null) {
-            requestBody.put("name", name);
+        if (name.isPresent()) {
+            requestBody.put("name", name.get());
         }
         restHandlers.httpPut(webResource, requestBody.toString(), new int[]{HttpStatus.SC_OK});
     }

@@ -82,7 +82,7 @@ Feature: Video Calling
     And I remember the state of <Contact> conversation item
     When <Contact> starts a video call to me
     Then I see call status message contains "<Contact> calling"
-    And <Contact> stops calling me
+    And <Contact> stops outgoing call to me
     And I do not see Calling overlay
     Then I see the state of <Contact> conversation item is changed
     And I tap on contact name <Contact>

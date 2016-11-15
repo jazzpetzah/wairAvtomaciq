@@ -40,6 +40,9 @@ public final class BackendAPIWrappers {
     private static final int MAX_BACKEND_RETRIES = 3;
     private static final float PROFILE_PICTURE_PREVIEW_RESIZE_FACTOR = 0.1f;
 
+    public static final String PROFILE_PICTURE_JSON_ATTRIBUTE = "complete";
+    public static final String PROFILE_PREVIEW_PICTURE_JSON_ATTRIBUTE = "preview";
+
     private static final Logger log = ZetaLogger.getLog(BackendAPIWrappers.class.getSimpleName());
 
     public static Future<String> initMessageListener(ClientUser forUser,
@@ -293,11 +296,6 @@ public final class BackendAPIWrappers {
     public static void sendDialogMessageByChatName(ClientUser fromUser, String toChat, String message) throws Exception {
         String id = getConversationIdByName(fromUser, toChat);
         sendConversationMessage(fromUser, id, message);
-    }
-
-    public static String sendPingToConversation(ClientUser fromUser, String toChat) throws Exception {
-        String id = getConversationIdByName(fromUser, toChat);
-        return sendConversationPing(fromUser, id);
     }
 
     private static AuthToken receiveAuthToken(ClientUser user) throws Exception {
@@ -587,11 +585,6 @@ public final class BackendAPIWrappers {
         return response.getString("id");
     }
 
-    public static void sendConvertsationHotPing(ClientUser userFrom,
-                                                String convId, String refId) throws Exception {
-        BackendREST.sendConvertsationHotPing(receiveAuthToken(userFrom), convId, refId);
-    }
-
     public static JSONArray getConversations(ClientUser user) throws Exception {
         final JSONArray result = new JSONArray();
         String startId = null;
@@ -631,12 +624,29 @@ public final class BackendAPIWrappers {
         return result;
     }
 
-    public static void updateUserPicture(ClientUser user, String picturePath) throws Exception {
-        // upload user picture through the old asset v2 way
-        updateUserPictureV2(user, picturePath);
+    public static void removeUserPicture(ClientUser user) throws Exception {
+        retryOnBackendFailure(2,
+                () -> {
+                    // v2 assets
+                    BackendREST.updateSelfInfo(receiveAuthToken(user),
+                            Optional.empty(), Optional.of(new HashMap<>()), Optional.empty());
+                    // v3 assets
+                    BackendREST.updateSelfAssets(receiveAuthToken(user), new HashSet<>());
+                    return null;
+                }
+        );
+    }
 
-        // upload user picture through the new asset v3 way
-        updateUserPictureV3(user, picturePath);
+    public static void updateUserPicture(ClientUser user, String picturePath) throws Exception {
+        retryOnBackendFailure(2,
+                () -> {
+                    // upload user picture through the old asset v2 way
+                    updateUserPictureV2(user, picturePath);
+                    // upload user picture through the new asset v3 way
+                    updateUserPictureV3(user, picturePath);
+                    return null;
+                }
+        );
     }
 
     public static void updateUserPictureV3(ClientUser user, String picturePath) throws Exception {
@@ -647,49 +657,40 @@ public final class BackendAPIWrappers {
         String completeKey = BackendREST.uploadAssetV3(receiveAuthToken(user), true, "persistent",
                 ImageUtil.asByteArray(image));
         Set<AssetV3> assets = new HashSet<>();
-        assets.add(new AssetV3(previewKey, "image", "preview"));
-        assets.add(new AssetV3(completeKey, "image", "complete"));
+        assets.add(new AssetV3(previewKey, "image", PROFILE_PREVIEW_PICTURE_JSON_ATTRIBUTE));
+        assets.add(new AssetV3(completeKey, "image", PROFILE_PICTURE_JSON_ATTRIBUTE));
         BackendREST.updateSelfAssets(receiveAuthToken(user), assets);
     }
 
     public static void updateUserPictureV2(ClientUser user, String picturePath) throws Exception {
         final String convId = user.getId();
-        if (picturePath == null) {
-            // This will delete self picture
-            BackendREST.updateSelfInfo(receiveAuthToken(user), null, new HashMap<>(), null);
-        } else {
-            final byte[] srcImageAsByteArray = Files.readAllBytes(Paths.get(picturePath));
-
-            ImageAssetData srcImgData = new ImageAssetData(convId, srcImageAsByteArray, getImageMimeType(picturePath));
-            srcImgData.setIsPublic(true);
-            srcImgData.setCorrelationId(String.valueOf(UUID.randomUUID()));
-            srcImgData.setNonce(srcImgData.getCorrelationId());
-            ImageAssetProcessor imgProcessor = new SelfImageProcessor(srcImgData);
-            ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(imgProcessor);
-            Map<JSONObject, AssetData> sentPictures = BackendREST.sendPicture(
-                    receiveAuthToken(user), convId, reqBuilder);
-            Map<String, AssetData> processedAssets = new LinkedHashMap<>();
-            for (Map.Entry<JSONObject, AssetData> entry : sentPictures.entrySet()) {
-                final String postedImageId = entry.getKey().getJSONObject("data").getString("id");
-                processedAssets.put(postedImageId, entry.getValue());
-            }
-            retryOnBackendFailure(2,
-                    () -> {
-                        BackendREST.updateSelfInfo(receiveAuthToken(user), null, processedAssets, null);
-                        return null;
-                    }
-            );
+        final byte[] srcImageAsByteArray = Files.readAllBytes(Paths.get(picturePath));
+        ImageAssetData srcImgData = new ImageAssetData(convId, srcImageAsByteArray, getImageMimeType(picturePath));
+        srcImgData.setIsPublic(true);
+        srcImgData.setCorrelationId(String.valueOf(UUID.randomUUID()));
+        srcImgData.setNonce(srcImgData.getCorrelationId());
+        ImageAssetProcessor imgProcessor = new SelfImageProcessor(srcImgData);
+        ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(imgProcessor);
+        Map<JSONObject, AssetData> sentPictures = BackendREST.sendPicture(
+                receiveAuthToken(user), convId, reqBuilder);
+        Map<String, AssetData> processedAssets = new LinkedHashMap<>();
+        for (Map.Entry<JSONObject, AssetData> entry : sentPictures.entrySet()) {
+            final String postedImageId = entry.getKey().getJSONObject("data").getString("id");
+            processedAssets.put(postedImageId, entry.getValue());
         }
-
+        BackendREST.updateSelfInfo(receiveAuthToken(user),
+                Optional.empty(), Optional.of(processedAssets), Optional.empty());
     }
 
     public static void updateUserName(ClientUser user, String newName) throws Exception {
-        BackendREST.updateSelfInfo(receiveAuthToken(user), null, null, newName);
+        BackendREST.updateSelfInfo(receiveAuthToken(user),
+                Optional.empty(), Optional.empty(), Optional.of(newName));
         user.setName(newName);
     }
 
     public static void updateUserAccentColor(ClientUser user, AccentColor color) throws Exception {
-        BackendREST.updateSelfInfo(receiveAuthToken(user), color.getId(), null, null);
+        BackendREST.updateSelfInfo(receiveAuthToken(user),
+                Optional.of(color.getId()), Optional.empty(), Optional.empty());
         user.setAccentColor(color);
     }
 
@@ -708,6 +709,7 @@ public final class BackendAPIWrappers {
         public NoContactsFoundException(String msg) {
             super(msg);
         }
+
     }
 
     public static void waitUntilContactsFound(ClientUser searchByUser,

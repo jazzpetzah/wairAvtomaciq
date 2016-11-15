@@ -38,10 +38,6 @@ public final class CommonSteps {
 
     //increased timeout to make it stable on jenkins
     private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 240; // seconds
-    private static final String PROFILE_PICTURE_JSON_ATTRIBUTE = "complete";
-    private static final String PROFILE_PREVIEW_PICTURE_JSON_ATTRIBUTE = "preview";
-
-    private String pingId = null;
 
     private final ClientUsersManager usrMgr;
 
@@ -304,14 +300,6 @@ public final class CommonSteps {
                                               String deviceName, String label) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(userNameAlias);
         seBridge.addRemoteDeviceToAccount(user, deviceName, label);
-    }
-
-    public void UserPingedConversation(String pingFromUserNameAlias,
-                                       String dstConversationName) throws Exception {
-        ClientUser pingFromUser = usrMgr.findUserByNameOrNameAlias(pingFromUserNameAlias);
-        dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
-        pingId = BackendAPIWrappers.sendPingToConversation(pingFromUser, dstConversationName);
-        Thread.sleep(1000);
     }
 
     public void UserPingedConversationOtr(String pingFromUserNameAlias,
@@ -666,8 +654,7 @@ public final class CommonSteps {
         }
     }
 
-    public void IChangeUserAvatarPicture(String userNameAlias,
-                                         String picturePath) throws Exception {
+    public void IChangeUserAvatarPicture(String userNameAlias, String picturePath) throws Exception {
         final ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(userNameAlias);
         if (new File(picturePath).exists()) {
             BackendAPIWrappers.updateUserPicture(dstUser, picturePath);
@@ -678,7 +665,7 @@ public final class CommonSteps {
 
     public void UserDeletesAvatarPicture(String userNameAlias) throws Exception {
         final ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(userNameAlias);
-        BackendAPIWrappers.updateUserPicture(dstUser, null);
+        BackendAPIWrappers.removeUserPicture(dstUser);
     }
 
     public void IChangeUserName(String userNameAlias, String newName) throws Exception {
@@ -767,9 +754,11 @@ public final class CommonSteps {
         String email = userAs.getEmail();
         profilePictureSnapshotsMap.put(email, BackendAPIWrappers.getUserPictureHash(userAs));
         profilePictureV3SnapshotsMap.put(email,
-                BackendAPIWrappers.getUserAssetKey(userAs, PROFILE_PICTURE_JSON_ATTRIBUTE));
+                BackendAPIWrappers.getUserAssetKey(userAs,
+                        BackendAPIWrappers.PROFILE_PICTURE_JSON_ATTRIBUTE));
         profilePictureV3PreviewSnapshotsMap.put(email,
-                BackendAPIWrappers.getUserAssetKey(userAs, PROFILE_PREVIEW_PICTURE_JSON_ATTRIBUTE));
+                BackendAPIWrappers.getUserAssetKey(userAs,
+                        BackendAPIWrappers.PROFILE_PREVIEW_PICTURE_JSON_ATTRIBUTE));
     }
 
     public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(
@@ -792,8 +781,10 @@ public final class CommonSteps {
         String actualHash, actualCompleteKey, actualPreviewKey;
         do {
             actualHash = BackendAPIWrappers.getUserPictureHash(userAs);
-            actualCompleteKey = BackendAPIWrappers.getUserAssetKey(userAs, "complete");
-            actualPreviewKey = BackendAPIWrappers.getUserAssetKey(userAs, "preview");
+            actualCompleteKey = BackendAPIWrappers.getUserAssetKey(userAs,
+                    BackendAPIWrappers.PROFILE_PICTURE_JSON_ATTRIBUTE);
+            actualPreviewKey = BackendAPIWrappers.getUserAssetKey(userAs,
+                    BackendAPIWrappers.PROFILE_PREVIEW_PICTURE_JSON_ATTRIBUTE);
             if (!actualHash.equals(previousHash)
                     && !actualCompleteKey.equals(previousCompleteKey)
                     && !actualPreviewKey.equals(previousPreviewKey)) {
