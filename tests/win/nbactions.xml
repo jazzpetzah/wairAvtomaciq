@@ -11,7 +11,17 @@
         </goals>
         <properties>
             <skipTests>true</skipTests>
+            <picklejar.tag>@torun</picklejar.tag>
+            <cucumber.options>--tags @torun</cucumber.options>
+            <com.wire.environment.url>https://wire-webapp-dev.zinfra.io/?hl=en</com.wire.environment.url>
+            <com.wire.calling.env>dev</com.wire.calling.env>
+            <com.wire.browser.name>chrome</com.wire.browser.name>
+            <com.wire.browser.version>45.0</com.wire.browser.version>
+            <com.wire.database.keep>true</com.wire.database.keep>
         </properties>
+        <activatedProfiles>
+                <activatedProfile>WebApp</activatedProfile>
+            </activatedProfiles>
     </action>
     <action>
         <actionName>test.single</actionName>
@@ -23,12 +33,14 @@
             <goal>surefire:test</goal>
         </goals>
         <properties>
+                
+                <picklejar.tag>@torun</picklejar.tag>
                 <cucumber.options>--tags @torun</cucumber.options>
                 <com.wire.environment.url>https://wire-webapp-dev.zinfra.io/?hl=en</com.wire.environment.url>
                 <com.wire.calling.env>dev</com.wire.calling.env>
                 <com.wire.browser.name>chrome</com.wire.browser.name>
                 <com.wire.browser.version>45.0</com.wire.browser.version>
-                <com.wire.chromedriver.path>C:\Users\Michael\Desktop\selenium\chromedriver.exe</com.wire.chromedriver.path>
+                
                 <com.wire.database.keep>true</com.wire.database.keep>
             
             
@@ -37,4 +49,25 @@
             <activatedProfile>WebApp</activatedProfile>
         </activatedProfiles>
     </action>
+    <action>
+            <actionName>test</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>test</goal>
+            </goals>
+            <properties>
+                <picklejar.tag>@torun</picklejar.tag>
+                <cucumber.options>--tags @torun</cucumber.options>
+                <com.wire.environment.url>https://wire-webapp-dev.zinfra.io/?hl=en</com.wire.environment.url>
+                <com.wire.calling.env>dev</com.wire.calling.env>
+                <com.wire.browser.name>chrome</com.wire.browser.name>
+                <com.wire.browser.version>45.0</com.wire.browser.version>
+                <com.wire.database.keep>true</com.wire.database.keep>
+            </properties>
+            <activatedProfiles>
+                <activatedProfile>WebApp</activatedProfile>
+            </activatedProfiles>
+        </action>
 </actions>

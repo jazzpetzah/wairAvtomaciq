@@ -1,9 +1,12 @@
 package com.wearezeta.auto.web.common;
 
+import com.wearezeta.auto.common.AbstractPagesCollection;
+import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.common.driver.ZetaWinDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -29,7 +32,8 @@ public class TestContext {
     private static final long DRIVER_INIT_TIMEOUT = 360; //seconds
     private final List<LogEntry> BROWSER_LOG = new ArrayList<>();
     
-    static Future<ZetaWebAppDriver> COMPAT_WEB_DRIVER;
+    public static Future<ZetaWebAppDriver> COMPAT_WEB_DRIVER;
+    public static Future<ZetaWinDriver> COMPAT_WIN_DRIVER;
 
     private final Platform currentPlatform = Platform.Web;
     private final Pinger pinger;
@@ -39,7 +43,7 @@ public class TestContext {
     private final ClientUsersManager userManager;
     private final SEBridge deviceManager;
     private final CommonCallingSteps2 callingManager;
-    private final WebappPagesCollection pagesCollection;
+    private final AbstractPagesCollection<? extends BasePage> pagesCollection;
     private final Future<? extends RemoteWebDriver> driver;
     private final ConversationStates conversationStates;
 
@@ -69,6 +73,26 @@ public class TestContext {
         this.conversationStates = new ConversationStates();
         this.pinger = new Pinger(driver);
     }
+    
+    private TestContext(Pinger pinger, String testname, CommonSteps commonSteps, ClientUsersManager userManager,
+            SEBridge deviceManager, CommonCallingSteps2 callingManager, AbstractPagesCollection<? extends BasePage> pagesCollection,
+            Future<? extends RemoteWebDriver> driver, ConversationStates conversationStates) {
+        this.pinger = pinger;
+        this.testname = testname;
+        this.commonSteps = commonSteps;
+        this.userManager = userManager;
+        this.deviceManager = deviceManager;
+        this.callingManager = callingManager;
+        this.pagesCollection = pagesCollection;
+        this.driver = driver;
+        this.conversationStates = conversationStates;
+    }
+    
+    
+    public TestContext fromPrimaryContext(Future<? extends RemoteWebDriver> driver, AbstractPagesCollection<? extends BasePage> pagesCollection) throws Exception {
+        return new TestContext(new Pinger(driver), this.testname, this.commonSteps, this.userManager, this.deviceManager, this.callingManager,
+                pagesCollection, driver, conversationStates);
+    }
 
     public String getTestname() {
         return testname;
@@ -91,7 +115,11 @@ public class TestContext {
     }
 
     public WebappPagesCollection getPagesCollection() {
-        return pagesCollection;
+        return (WebappPagesCollection) pagesCollection;
+    }
+    
+    public <T extends AbstractPagesCollection<?>> T getPagesCollection(Class<T> type) {
+        return (T)pagesCollection;
     }
 
     public Future<? extends RemoteWebDriver> getFutureDriver() {

@@ -20,7 +20,6 @@ import cucumber.api.java.en.When;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 public class StartUIPageSteps {
 

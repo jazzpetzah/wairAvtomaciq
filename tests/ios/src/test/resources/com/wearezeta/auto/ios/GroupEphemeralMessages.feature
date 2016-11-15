@@ -1,19 +1,5 @@
 Feature: Group Ephemeral Messages
 
-  @C259589 @regression @fastLogin
-  Scenario Outline: Verify ephemeral messages are disabled in a group
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on group chat with name <GroupChatName>
-    Then I do not see Hourglass button in conversation view
-
-    Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | TESTCHAT      |
-
   @C318636 @rc @regression @fastLogin
   Scenario Outline: Verify sending ephemeral picture
     Given There are 3 users where <Name> is me
@@ -109,8 +95,8 @@ Feature: Group Ephemeral Messages
     And I verify the remembered message has been changed in the local database
     And User <Contact1> reads the recent message from group conversation <GroupChatName>
     # Wait until read message action propagates
-    And I wait for 3 seconds
-    Then I see 0 messages in the conversation view
+    And I wait for 5 seconds
+    Then I see 1 conversation entry
     And I verify the remembered message has been deleted from the local database
 
     Examples:

@@ -12,6 +12,7 @@ Feature: Registration
     And I tap Choose Photo button
     And I accept alert if visible
     And I select the first picture from Camera Roll
+    And I accept alert if visible
     And I tap Share Contacts button on Share Contacts overlay
     And I accept alert if visible
     Then I see conversations list

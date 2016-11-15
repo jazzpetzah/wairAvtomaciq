@@ -1,20 +1,32 @@
 package com.wearezeta.auto.web.steps;
 
+import java.awt.image.BufferedImage;
+import java.util.concurrent.TimeUnit;
+
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.AccountPage;
+import com.wearezeta.auto.web.pages.ContactListPage;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class AccountPageSteps {
+
+    private BufferedImage profileImage = null;
 
     private final TestContext context;
 
@@ -68,6 +80,43 @@ public class AccountPageSteps {
         }
         String actualEmail = context.getPagesCollection().getPage(AccountPage.class).getUserMail();
         assertEquals(email, actualEmail);
+    }
+
+    @When("^I remember the profile image on the account page$")
+    public void IRememberSmallProfileImage() throws Exception {
+        profileImage = context.getPagesCollection().getPage(AccountPage.class).getPicture();
+    }
+
+    @Then("^I verify that the profile image on the account page has( not)? changed$")
+    public void IVerifyBackgroundImageHasChanged(String not) throws Exception {
+        if (not == null) {
+            final int THRESHOLD = 100;
+
+            if (not == null) {
+                AccountPage contactListPage = context.getPagesCollection().getPage(AccountPage.class);
+
+                Wait<AccountPage> wait = new FluentWait(contactListPage)
+                        .withTimeout(15, TimeUnit.SECONDS)
+                        .pollingEvery(5, TimeUnit.SECONDS)
+                        .ignoring(AssertionError.class);
+
+                wait.until(page -> {
+                    int actualMatch = THRESHOLD + 1;
+                    try {
+                        actualMatch = ImageUtil.getMatches(page.getPicture(), profileImage);
+                    } catch (Exception e) {
+                    }
+                    assertThat("Image has not changed", actualMatch, lessThan(THRESHOLD));
+                    return actualMatch;
+                });
+            } else {
+                BufferedImage actualPicture = context.getPagesCollection().getPage(ContactListPage.class).getBackgroundPicture();
+                assertThat("Image has changed", ImageUtil.getMatches(actualPicture, profileImage), greaterThan(THRESHOLD));
+            }
+        } else {
+            BufferedImage actualPicture = context.getPagesCollection().getPage(AccountPage.class).getPicture();
+            assertThat("Profile image has changed", ImageUtil.getMatches(actualPicture, profileImage), greaterThan(100));
+        }
     }
 
     @And("^I change username to (.*)")

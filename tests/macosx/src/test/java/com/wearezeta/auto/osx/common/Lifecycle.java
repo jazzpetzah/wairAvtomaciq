@@ -16,15 +16,12 @@ import static com.wearezeta.auto.osx.common.OSXExecutionContext.KEEP_DATABASE;
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.WIRE_APP_PATH;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
+import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.pages.RegistrationPage;
-import com.wearezeta.auto.web.pages.WebPage;
 import static com.wearezeta.auto.web.steps.CommonWebAppSteps.log;
 import com.wire.picklejar.gherkin.model.Step;
-import cucumber.api.Scenario;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -53,11 +50,11 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class Lifecycle {
-    
+
     public static final Logger LOG = ZetaLogger.getLog(Lifecycle.class.getName());
 
-    private WrapperTestContext context;
-    private WrapperTestContext compatContext;
+    private TestContext webContext;
+    private TestContext wrapperContext;
     private ChromeDriverService service;
     private String testname;
 
@@ -66,26 +63,15 @@ public class Lifecycle {
      *
      * @return
      */
-    public WrapperTestContext getContext() {
-        return context;
+    public TestContext getWebContext() {
+        return webContext;
     }
 
-    // #### START ############################################################ COMPATIBILITY INSTRUCTIONS
-    @Before("~@performance")
-    public void setUp(Scenario scenario) throws Exception {
-        String id = scenario.getId().substring(
-                scenario.getId().lastIndexOf(";") + 1);
-        setUp(scenario.getName() + "_" + id);
+    public TestContext getWrapperContext() {
+        return wrapperContext;
     }
 
-    @After
-    public void tearDown(Scenario scenario) throws Exception {
-        tearDown();
-    }
-    // #### END ############################################################## COMPATIBILITY INSTRUCTIONS
-    
-    private Future<ZetaWebAppDriver> createWebDriver(
-            Future<ZetaOSXDriver> osxDriver) throws IOException {
+    private Future<ZetaWebAppDriver> createWebDriver(Future<ZetaOSXDriver> osxDriver) throws IOException {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         ChromeOptions options = new ChromeOptions();
         // simulate a fake webcam and mic for testing
@@ -103,15 +89,11 @@ public class Lifecycle {
         options.setExperimentalOption("prefs", prefs);
 
         capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-        capabilities.setCapability("platformName",
-                OSXExecutionContext.CURRENT_SECONDARY_PLATFORM.name());
+        capabilities.setCapability("platformName", OSXExecutionContext.CURRENT_SECONDARY_PLATFORM.name());
 
-        setExtendedLoggingLevel(capabilities,
-                OSXExecutionContext.EXTENDED_LOGGING_LEVEL);
+        setExtendedLoggingLevel(capabilities, OSXExecutionContext.EXTENDED_LOGGING_LEVEL);
 
-        service = new ChromeDriverService.Builder()
-                .usingDriverExecutable(
-                        new File(OSXExecutionContext.CHROMEDRIVER_PATH))
+        service = new ChromeDriverService.Builder().usingDriverExecutable(new File(OSXExecutionContext.CHROMEDRIVER_PATH))
                 .usingAnyFreePort().build();
         service.start();
         final ExecutorService pool = Executors.newFixedThreadPool(1);
@@ -136,12 +118,10 @@ public class Lifecycle {
             zetaOSXDriver.setWindowLocator(By.xpath(OSXLocators.MainWirePage.xpathWindow));
             return zetaOSXDriver;
         };
-
         return pool.submit(callableOSXDriver);
     }
 
-    private static void setExtendedLoggingLevel(
-            DesiredCapabilities capabilities, String loggingLevelName) {
+    private static void setExtendedLoggingLevel(DesiredCapabilities capabilities, String loggingLevelName) {
         final LoggingPreferences logs = new LoggingPreferences();
         // set it to SEVERE by default
         Level level = Level.ALL;
@@ -158,8 +138,7 @@ public class Lifecycle {
         // logs.enable(LogType.PROFILER, Level.ALL);
         // logs.enable(LogType.SERVER, Level.ALL);
         capabilities.setCapability(CapabilityType.LOGGING_PREFS, logs);
-        log.debug("Browser logging level has been set to '" + level.getName()
-                + "'");
+        log.debug("Browser logging level has been set to '" + level.getName() + "'");
     }
 
     public void startApp() throws Exception {
@@ -174,36 +153,17 @@ public class Lifecycle {
         webDriverFuture = createWebDriver(osxDriverFuture);
         LOG.debug("Init Chrome Driver");
         final ZetaWebAppDriver webappDriver = webDriverFuture.get();
-        
-        LOG.debug("Waiting for OS X App to be started");
-        
         LOG.debug("Setting formatter");
         ZetaFormatter.setLazyDriver(osxDriverFuture);
-        
-        /**
-         * #### START ############################################################ COMPATIBILITY INSTRUCTIONS
-         */
-        WrapperTestContext.COMPAT_WEB_DRIVER = webDriverFuture;
-        WrapperTestContext.COMPAT_OSX_DRIVER = osxDriverFuture;
-        
-        compatContext = new WrapperTestContext();
-        LOG.debug("COMPAT: Setting first OS X Page");
-        compatContext.getOSXPagesCollection().setFirstPage(new MainWirePage(osxDriverFuture));
-        LOG.debug("COMPAT: Setting first Webapp Page");
-        compatContext.getWebappPagesCollection().setFirstPage(new RegistrationPage(webDriverFuture));
-        /**
-         * #### END ############################################################## COMPATIBILITY INSTRUCTIONS
-         */
-
-        context = new WrapperTestContext(testname, webDriverFuture, osxDriverFuture);
+        webContext = new TestContext(testname, webDriverFuture);
+        wrapperContext = webContext.fromPrimaryContext(osxDriverFuture, new OSXPagesCollection());
         LOG.debug("Setting first OS X Page");
-        context.getOSXPagesCollection().setFirstPage(new MainWirePage(osxDriverFuture));
+        wrapperContext.getPagesCollection(OSXPagesCollection.class).setFirstPage(new MainWirePage(osxDriverFuture));
         LOG.debug("Setting first Webapp Page");
-        context.getWebappPagesCollection().setFirstPage(new RegistrationPage(webDriverFuture));
-
+        webContext.getPagesCollection().setFirstPage(new RegistrationPage(webDriverFuture));
         LOG.debug("Opening app");
         // necessary to enable the driver
-        context.getOSXDriver().navigate().to(WIRE_APP_PATH);// open app
+        wrapperContext.getDriver().navigate().to(WIRE_APP_PATH);
     }
 
     public void setUp(String testname) throws Exception {
@@ -244,10 +204,10 @@ public class Lifecycle {
 
     public void tearDown() throws Exception {
         try {
-            ZetaWebAppDriver driver = (ZetaWebAppDriver) context.getWebDriver();
+            ZetaWebAppDriver driver = (ZetaWebAppDriver) webContext.getDriver();
             // save browser console if possible
             if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
-                writeBrowserLogsIntoMainLog(context);
+                writeBrowserLogsIntoMainLog(webContext);
             }
             if (driver instanceof ZetaWebAppDriver) {
                 // logout with JavaScript because otherwise backend will block
@@ -258,71 +218,53 @@ public class Lifecycle {
         } catch (Exception e) {
             log.warn(e);
         } finally {
-            /**
-             * #### START ############################################################ COMPATIBILITY INSTRUCTIONS
-             */
-            try {
-                log.debug("COMPAT: Releasing devices");
-                log.debug(compatContext.getUserManager().getCreatedUsers());
-                compatContext.getDeviceManager().releaseDevicesOfUsers(compatContext.getUserManager().getCreatedUsers());
-            } catch (Exception e) {
-                log.warn(e);
-            }
-            /**
-             * #### END ############################################################## COMPATIBILITY INSTRUCTIONS
-             */
             try {
                 log.debug("Releasing devices");
-                log.debug(context.getUserManager().getCreatedUsers());
-                context.getDeviceManager().releaseDevicesOfUsers(context.getUserManager().getCreatedUsers());
+                log.debug(webContext.getUserManager().getCreatedUsers());
+                webContext.getDeviceManager().releaseDevicesOfUsers(webContext.getUserManager().getCreatedUsers());
             } catch (Exception e) {
                 log.warn(e);
             }
             try {
                 log.debug("Closing webdriver");
-                context.getWebDriver().quit();
+                webContext.getDriver().quit();
             } catch (Exception e) {
                 log.warn(e);
             }
             try {
                 log.debug("Closing osxdriver");
-                context.getOSXDriver().quit();
+                wrapperContext.getDriver().quit();
             } catch (Exception e) {
                 log.warn(e);
             }
             try {
                 log.debug("Cleaning up calling instances");
-                context.getCallingManager().cleanup();
-                log.debug("COMPAT: Cleaning up calling instances");
-                compatContext.getCallingManager().cleanup();
+                webContext.getCallingManager().cleanup();
             } catch (Exception e) {
                 log.warn(e);
             }
             try {
                 log.debug("Clearing pages collection");
-                context.getPagesCollection().clearAllPages();
-                log.debug("COMPAT: Clearing pages collection");
-                compatContext.getPagesCollection().clearAllPages();
-                WebPage.clearPagesCollection();
+                webContext.getPagesCollection().clearAllPages();
+                wrapperContext.getPagesCollection().clearAllPages();
             } catch (Exception e) {
                 log.warn(e);
             }
             try {
                 log.debug("Resetting users");
-                context.getUserManager().resetUsers();
-                log.debug("COMPAT: Resetting users");
-                compatContext.getUserManager().resetUsers();
+                webContext.getUserManager().resetUsers();
             } catch (Exception e) {
                 log.warn(e);
             }
         }
-        
+
         if (service != null && service.isRunning()) {
             service.stop();
         }
     }
 
-    private void writeBrowserLogsIntoMainLog(TestContext context) throws InterruptedException, ExecutionException, TimeoutException {
+    private void writeBrowserLogsIntoMainLog(TestContext context) throws InterruptedException, ExecutionException,
+            TimeoutException {
         List<LogEntry> logEntries = context.getBrowserLog();
         if (!logEntries.isEmpty()) {
             log.debug("BROWSER CONSOLE LOGS:");

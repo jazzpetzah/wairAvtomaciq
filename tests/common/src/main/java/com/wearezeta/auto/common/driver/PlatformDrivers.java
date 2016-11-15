@@ -99,18 +99,6 @@ public final class PlatformDrivers {
             if (!futureDriver.isCancelled()) {
                 try {
                     final RemoteWebDriver driver = futureDriver.get(DRIVER_CANCELLATION_TIMEOUT, TimeUnit.SECONDS);
-                    if (driver instanceof ZetaIOSDriver) {
-                        // Do not keep non-closed alerts on iOS
-                        if (((ZetaIOSDriver) driver).isRealDevice()) {
-                            ((ZetaIOSDriver) driver).forceAcceptAlert();
-                        } else {
-                            try {
-                                driver.switchTo().alert().accept();
-                            } catch (Exception e) {
-                                // just ignore it
-                            }
-                        }
-                    }
                     driver.quit();
                     log.debug(String.format("Successfully quit driver instance for platform '%s'", platform.name()));
                 } catch (Exception e) {

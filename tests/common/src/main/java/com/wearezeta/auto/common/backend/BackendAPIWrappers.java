@@ -1,6 +1,7 @@
 package com.wearezeta.auto.common.backend;
 
 import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.email.ActivationMessage;
 import com.wearezeta.auto.common.email.InvitationMessage;
 import com.wearezeta.auto.common.email.MessagingUtils;
@@ -19,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.awt.image.BufferedImage;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -36,6 +38,10 @@ public final class BackendAPIWrappers {
     private static final int SERVER_SIDE_ERROR = 500;
     private static final int PHONE_NUMBER_ALREADY_REGISTERED_ERROR = 409;
     private static final int MAX_BACKEND_RETRIES = 3;
+    private static final float PROFILE_PICTURE_PREVIEW_RESIZE_FACTOR = 0.1f;
+
+    public static final String PROFILE_PICTURE_JSON_ATTRIBUTE = "complete";
+    public static final String PROFILE_PREVIEW_PICTURE_JSON_ATTRIBUTE = "preview";
 
     private static final Logger log = ZetaLogger.getLog(BackendAPIWrappers.class.getSimpleName());
 
@@ -292,11 +298,6 @@ public final class BackendAPIWrappers {
         sendConversationMessage(fromUser, id, message);
     }
 
-    public static String sendPingToConversation(ClientUser fromUser, String toChat) throws Exception {
-        String id = getConversationIdByName(fromUser, toChat);
-        return sendConversationPing(fromUser, id);
-    }
-
     private static AuthToken receiveAuthToken(ClientUser user) throws Exception {
         return new AuthToken(user.getTokenType(), user.getToken());
     }
@@ -458,6 +459,18 @@ public final class BackendAPIWrappers {
         return DigestUtils.sha256Hex(picture);
     }
 
+    public static String getUserAssetKey(ClientUser user, String size) throws Exception {
+        final JSONObject userInfo = BackendREST.getUserInfo(receiveAuthToken(user));
+        final JSONArray assets = userInfo.getJSONArray("assets");
+        for (int i = 0; i < assets.length(); i++) {
+            JSONObject asset = assets.getJSONObject(i);
+            if (size.equals(asset.getString("size"))) {
+                return asset.getString("key");
+            }
+        }
+        throw new IllegalArgumentException("No user asset found with size: " + size + " in " + assets);
+    }
+
     public static void sendConnectRequest(ClientUser user, ClientUser contact,
                                           String connectName, String message) throws Exception {
         BackendREST.sendConnectRequest(receiveAuthToken(user), contact.getId(), connectName, message);
@@ -572,11 +585,6 @@ public final class BackendAPIWrappers {
         return response.getString("id");
     }
 
-    public static void sendConvertsationHotPing(ClientUser userFrom,
-                                                String convId, String refId) throws Exception {
-        BackendREST.sendConvertsationHotPing(receiveAuthToken(userFrom), convId, refId);
-    }
-
     public static JSONArray getConversations(ClientUser user) throws Exception {
         final JSONArray result = new JSONArray();
         String startId = null;
@@ -617,6 +625,27 @@ public final class BackendAPIWrappers {
     }
 
     public static void updateUserPicture(ClientUser user, String picturePath) throws Exception {
+        // upload user picture through the old asset v2 way
+        updateUserPictureV2(user, picturePath);
+
+        // upload user picture through the new asset v3 way
+        updateUserPictureV3(user, picturePath);
+    }
+
+    public static void updateUserPictureV3(ClientUser user, String picturePath) throws Exception {
+        BufferedImage image = ImageUtil.readImageFromFile(picturePath);
+        BufferedImage preview = ImageUtil.resizeImage(image, PROFILE_PICTURE_PREVIEW_RESIZE_FACTOR);
+        String previewKey = BackendREST.uploadAssetV3(receiveAuthToken(user), true, "persistent",
+                ImageUtil.asByteArray(preview));
+        String completeKey = BackendREST.uploadAssetV3(receiveAuthToken(user), true, "persistent",
+                ImageUtil.asByteArray(image));
+        Set<AssetV3> assets = new HashSet<>();
+        assets.add(new AssetV3(previewKey, "image", PROFILE_PREVIEW_PICTURE_JSON_ATTRIBUTE));
+        assets.add(new AssetV3(completeKey, "image", PROFILE_PICTURE_JSON_ATTRIBUTE));
+        BackendREST.updateSelfAssets(receiveAuthToken(user), assets);
+    }
+
+    public static void updateUserPictureV2(ClientUser user, String picturePath) throws Exception {
         final String convId = user.getId();
         if (picturePath == null) {
             // This will delete self picture

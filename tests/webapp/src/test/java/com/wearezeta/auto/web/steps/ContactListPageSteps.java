@@ -1,7 +1,11 @@
 package com.wearezeta.auto.web.steps;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
+import com.wearezeta.auto.common.ImageUtil;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -16,14 +20,20 @@ import com.wearezeta.auto.web.pages.ContactListPage;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertTrue;
 import static org.hamcrest.Matchers.not;
 
 public class ContactListPageSteps {
+
+    private BufferedImage backgroundScreenshot = null;
 
     private static final Logger log = ZetaLogger
             .getLog(ContactListPageSteps.class.getSimpleName());
@@ -344,8 +354,8 @@ public class ContactListPageSteps {
     @When("^I see that conversation (.*) is not muted$")
     public void ISeeConversationIsNotMuted(String contact) throws Exception {
         contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-        Assert.assertFalse(String.format("Mute button visible for conversation '%s'", contact), context.getPagesCollection().
-                getPage(ContactListPage.class).isConversationMuted(contact));
+        Assert.assertTrue(String.format("Mute button visible for conversation '%s'", contact), context.getPagesCollection().
+                getPage(ContactListPage.class).isConversationNotMuted(contact));
     }
 
     /**
@@ -936,5 +946,37 @@ public class ContactListPageSteps {
     public void IDoNotSeeUnreadNumberInPageTitle() throws Exception {
         String pageTitle = context.getPagesCollection().getPage(ContactListPage.class).getPageTitle();
         assertThat("Part of unread number is visible", pageTitle, not(containsString("(")));
+    }
+
+    @When("^I remember the background image of the conversation list$")
+    public void IRememberBigProfileImage() throws Exception {
+        backgroundScreenshot = context.getPagesCollection().getPage(ContactListPage.class).getBackgroundPicture();
+    }
+
+    @Then("^I verify that the background image of the conversation list has( not)? changed$")
+    public void IVerifyBackgroundImageHasChanged(String not) throws Exception {
+        final int THRESHOLD = 100;
+
+        if (not == null) {
+            ContactListPage contactListPage = context.getPagesCollection().getPage(ContactListPage.class);
+
+            Wait<ContactListPage> wait = new FluentWait(contactListPage)
+                    .withTimeout(15, TimeUnit.SECONDS)
+                    .pollingEvery(4, TimeUnit.SECONDS)
+                    .ignoring(AssertionError.class);
+
+            wait.until(page -> {
+                int actualMatch = THRESHOLD + 1;
+                try {
+                    actualMatch = ImageUtil.getMatches(page.getBackgroundPicture(), backgroundScreenshot);
+                } catch (Exception e) {
+                }
+                assertThat("Image has not changed", actualMatch, lessThan(THRESHOLD));
+                return actualMatch;
+            });
+        } else {
+            BufferedImage actualPicture = context.getPagesCollection().getPage(ContactListPage.class).getBackgroundPicture();
+            assertThat("Image has changed", ImageUtil.getMatches(actualPicture, backgroundScreenshot), greaterThan(THRESHOLD));
+        }
     }
 }

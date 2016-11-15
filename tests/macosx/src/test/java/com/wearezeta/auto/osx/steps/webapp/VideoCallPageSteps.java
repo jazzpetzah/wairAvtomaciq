@@ -1,83 +1,59 @@
 package com.wearezeta.auto.osx.steps.webapp;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.Optional;
-
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
-import com.wearezeta.auto.osx.common.WrapperTestContext;
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
+import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.VideoCallPage;
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.Optional;
 import org.apache.log4j.Logger;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
 import org.junit.Assert;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
-
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.lessThan;
-import static org.junit.Assert.assertTrue;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class VideoCallPageSteps {
 
     private static final Logger LOG = ZetaLogger.getLog(VideoCallPageSteps.class.getName());
 
-    private final WrapperTestContext context;
+    private final TestContext webContext;
+    private final TestContext wrapperContext;
 
-    public VideoCallPageSteps() {
-        this.context = new WrapperTestContext();
-    }
-
-    public VideoCallPageSteps(WrapperTestContext context) {
-        this.context = context;
-    }
-
-    @When("^I maximize video call via titlebar$")
-    public void IMaximizeVideoCall() throws Exception {
-        context.getWebappPagesCollection().getPage(VideoCallPage.class).clickMaximizeVideoCallButton();
+    public VideoCallPageSteps(TestContext webContext, TestContext wrapperContext) {
+        this.webContext = webContext;
+        this.wrapperContext = wrapperContext;
     }
     
-    @Then("^I see video call is (minimized|maximized)$")
-    public void ISeeVideoCallMinimized(String videoCallSize) throws Exception {
-        VideoCallPage videoCallPage = context.getWebappPagesCollection().getPage(VideoCallPage.class);
-        if (videoCallSize.equals("minimized")) {
-            //Assert.assertTrue("Video is in portrait mode", videoCallPage.isVideoNotInPortrait());
-            Assert.assertTrue("Minimize Video Call button is visible", videoCallPage.isMinimizeVideoCallButtonNotVisible());
-        } else {
-            //Assert.assertTrue("Video is not in portrait mode", videoCallPage.isVideoInPortrait());
-            Assert.assertTrue("Minimize Video Call button is not visible", videoCallPage.isMinimizeVideoCallButtonVisible());
-        }
-    }
-
     @Then("^I click on screen share button$")
     public void IClickScreenShareButton() throws Exception {
-        VideoCallPage videoCallPage = context.getWebappPagesCollection().getPage(VideoCallPage.class);
+        VideoCallPage videoCallPage = webContext.getPagesCollection().getPage(VideoCallPage.class);
         videoCallPage.clickScreenShareButton();
     }
 
     @Then("^I verify my self video shows my screen$")
     public void IVerifyMySelfVideoShowsScreen() throws Exception {
-        VideoCallPage videoCallPage = context.getWebappPagesCollection().getPage(VideoCallPage.class);
+        VideoCallPage videoCallPage = webContext.getPagesCollection().getPage(VideoCallPage.class);
 
         // get position and size of self video element
         final Point elementLocation = videoCallPage.getLocalScreenShareVideoElementLocation();
         final Dimension elementSize = videoCallPage.getLocalScreenShareVideoElementSize();
 
         // get local screenshot
-        MainWirePage mainWirePage = context.getOSXPagesCollection().getPage(MainWirePage.class);
+        MainWirePage mainWirePage = wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class);
         Optional<BufferedImage> localScreenshot = mainWirePage.getScreenshot();
         Assert.assertTrue("Fullscreen screenshot cannot be captured", localScreenshot.isPresent());
 
         // cutout from screenshot
-        int retinaMultiplicator = OSXCommonUtils.screenPixelsMultiplier((ZetaOSXDriver) context.getOSXDriver());
+        int retinaMultiplicator = OSXCommonUtils.screenPixelsMultiplier((ZetaOSXDriver) wrapperContext.getDriver());
         int x = mainWirePage.getX() * retinaMultiplicator;
         int y = mainWirePage.getY() * retinaMultiplicator;
         int elementY = elementLocation.getY() * retinaMultiplicator;
@@ -112,13 +88,13 @@ public class VideoCallPageSteps {
     @Then("^I verify (.*) sees my screen$")
     public void IVerifyUserXVideoShowsScreen(String callees) throws Exception {
         for (String callee : splitAliases(callees)) {
-            final ClientUser userAs = context.getUserManager().findUserByNameOrNameAlias(callee);
+            final ClientUser userAs = webContext.getUserManager().findUserByNameOrNameAlias(callee);
 
             // get screenshot from remote user
-            BufferedImage remoteScreenshot = context.getCallingManager().getScreenshot(userAs);
+            BufferedImage remoteScreenshot = webContext.getCallingManager().getScreenshot(userAs);
 
             // get local screenshot and resize to remote size
-            Optional<BufferedImage> localScreenshot = context.getOSXPagesCollection().getPage(MainWirePage.class).getScreenshot();
+            Optional<BufferedImage> localScreenshot = wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).getScreenshot();
             Assert.assertTrue("Fullscreen screenshot cannot be captured", localScreenshot.isPresent());
             BufferedImage resizedScreenshot = ImageUtil.scaleTo(localScreenshot.get(), remoteScreenshot.getWidth(),
                     remoteScreenshot.getHeight());
@@ -138,42 +114,4 @@ public class VideoCallPageSteps {
         }
     }
 
-    @When("^I minimize video call$")
-    public void IMinimizeVideoCall() throws Exception {
-        context.getWebappPagesCollection().getPage(VideoCallPage.class).clickMinimizeVideoCallButton();
-    }
-
-    @When("^I click on video button$")
-    public void IClickVideoButton() throws Exception {
-        VideoCallPage videoCallPage = context.getWebappPagesCollection().getPage(VideoCallPage.class);
-        videoCallPage.clickVideoButton();
-    }
-
-    @Then("^I see my self video is( not)? black$")
-    public void ISeeSelfVideoBlack(String not) throws Exception {
-        VideoCallPage videoCallPage = context.getWebappPagesCollection().getPage(VideoCallPage.class);
-        Optional<BufferedImage> selfVideo = videoCallPage.getSelfVideo();
-        Assert.assertTrue("Self video is not present", selfVideo.isPresent());
-        BufferedImage image = selfVideo.get();
-        Color pixel = new Color(image.getRGB(image.getWidth() / 2, image.getHeight() / 2));
-        if (not == null) {
-            Assert.assertThat("RGB red", pixel.getRed(), lessThan(2));
-            Assert.assertThat("RGB green", pixel.getGreen(), lessThan(2));
-            Assert.assertThat("RGB blue", pixel.getBlue(), lessThan(2));
-        } else {
-            Assert.
-                    assertThat("All RGB values summarized", pixel.getRed() + pixel.getGreen() + pixel.getGreen(),
-                            greaterThan(20));
-        }
-    }
-
-    @Then("^I see my self video is (off|on)$")
-    public void ISeeSelfVideoOff(String onOffToggle) throws Exception {
-        VideoCallPage videoCallPage = context.getWebappPagesCollection().getPage(VideoCallPage.class);
-        if ("off".equals(onOffToggle)) {
-            assertTrue("Disabled video icon is still shown", videoCallPage.isDisabledVideoIconVisible());
-        } else {
-            assertTrue("Disabled video icon is not shown", videoCallPage.isDisabledVideoIconInvisible());
-        }
-    }
 }

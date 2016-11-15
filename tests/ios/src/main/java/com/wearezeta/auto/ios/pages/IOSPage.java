@@ -216,6 +216,19 @@ public abstract class IOSPage extends BasePage {
 
     private final static int MAX_ALERT_HANDLING_RETRIES = 5;
 
+    public void forceAcceptAlert() throws Exception {
+        // Do not keep non-closed alerts on iOS
+        if (getDriver().isRealDevice()) {
+            getDriver().forceAcceptAlert();
+        } else {
+            try {
+                handleAlert(AlertAction.ACCEPT, 1);
+            } catch (Exception e) {
+                // just ignore it
+            }
+        }
+    }
+
     private enum AlertAction {
         ACCEPT, DISMISS
     }

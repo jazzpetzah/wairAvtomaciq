@@ -1,6 +1,6 @@
 Feature: Calling Matrix
 
-  @C343160 @calling_matrix @fastLogin
+  @C343160 @calling_matrix @fastLogin @real
   Scenario Outline: Verify I can make two 1:1 call to <CallBackend> in a row
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -30,7 +30,7 @@ Feature: Calling Matrix
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 20      |
 
-  @C343161 @calling_matrix @fastLogin
+  @C343161 @calling_matrix @fastLogin @real
   Scenario Outline: Verify I can receive two 1:1 call from <CallBackend> in a row
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -62,7 +62,7 @@ Feature: Calling Matrix
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 20      |
 
-  @C343162 @calling_matrix @fastLogin
+  @C343162 @calling_matrix @fastLogin @real
   Scenario Outline: Verify I can make group call with callbackend <WaitBackend>
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -89,7 +89,7 @@ Feature: Calling Matrix
       | Name      | Contact1  | Contact2  | GroupChatName | WaitBackend | Timeout |
       | user1Name | user2Name | user3Name | GroupCall     | chrome      | 20      |
 
-  @C434163 @calling_matrix @fastLogin
+  @C434163 @calling_matrix @fastLogin @real
   Scenario Outline: Verify I can join group call with callbackend <Backend>
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -120,7 +120,7 @@ Feature: Calling Matrix
       | Name      | Contact1  | Contact2  | GroupChatName | Backend | Timeout |
       | user1Name | user2Name | user3Name | GroupCall     | chrome  | 20      |
 
-  @C343164 @calling_matrix @fastLogin
+  @C343164 @calling_matrix @fastLogin @real
   Scenario Outline: Put app into background after initiating call with user <WaitBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -140,7 +140,7 @@ Feature: Calling Matrix
       | Name      | Contact   | WaitBackend | Timeout |
       | user1Name | user2Name | chrome      | 20      |
 
-  @C343165 @calling_matrix @fastLogin
+  @C343165 @calling_matrix @fastLogin @real
   Scenario Outline: Verify putting client to the background during 1-to-1 call <CallBackend> to me
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
