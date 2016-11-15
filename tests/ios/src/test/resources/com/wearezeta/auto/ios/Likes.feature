@@ -220,7 +220,7 @@ Feature: Likes
     Given User <Contact> sends encrypted message "<SCLink>" to user Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
-    When I tap at <X>% of width and <Y>% of height of the recent message
+    When I tap at 10% of width and 10% of height of the recent message
     And I remember the state of Like icon in the conversation
     And I tap Like icon in the conversation
     Then I see the state of Like icon is changed in the conversation
@@ -228,12 +228,8 @@ Feature: Likes
     Then I see the state of Like icon is not changed in the conversation
 
     Examples:
-      | Name      | Contact   | SCLink                                                           | X | Y |
-      | user1Name | user2Name | https://soundcloud.com/trevorjasper14/lateef-two-birds-one-stone | 10|10 |
-      | user1Name | user2Name | https://soundcloud.com/trevorjasper14/lateef-two-birds-one-stone | 5 |5  |
-      | user1Name | user2Name | https://soundcloud.com/trevorjasper14/lateef-two-birds-one-stone | 99|99 |
-      | user1Name | user2Name | https://soundcloud.com/trevorjasper14/lateef-two-birds-one-stone | 10|10 |
-      | user1Name | user2Name | https://soundcloud.com/trevorjasper14/lateef-two-birds-one-stone | 5 |50 |
+      | Name      | Contact   | SCLink                                                           |
+      | user1Name | user2Name | https://soundcloud.com/trevorjasper14/lateef-two-birds-one-stone |
 
   @C226006 @regression @fastLogin
   Scenario Outline: Verify archived conversation stays in archive after receiving like for the message
