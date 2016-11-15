@@ -378,6 +378,7 @@ public class CommonIOSSteps {
 
         try {
             if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+                pagesCollection.getCommonPage().forceAcceptAlert();
                 if (!scenario.getStatus().equals(Result.PASSED) && pagesCollection.hasPages()) {
                     pagesCollection.getCommonPage().printPageSource();
                 }
