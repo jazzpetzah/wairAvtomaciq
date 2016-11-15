@@ -212,7 +212,7 @@ Feature: Likes
       | Name      | Contact1  | Contact2  | Group          | FileName    | MIMEType  | Contact1Device |
       | user1Name | user2Name | user3Name | VideoLikeGroup | testing.mp4 | video/mp4 | C1Device       |
 
-  @C225985 @rc @regression @fastLogin @torun
+  @C225985 @rc @regression @fastLogin
   Scenario Outline: Verify liking Soundcloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
