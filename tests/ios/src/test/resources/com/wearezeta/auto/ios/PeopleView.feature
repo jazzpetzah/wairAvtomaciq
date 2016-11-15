@@ -135,6 +135,8 @@ Feature: People View
     And I see <GroupCreator> name on Group participant profile page
     And I see <GroupCreatorEmail> email on Group participant profile page
     And I tap X button on Group participant profile page
+    # Wait for animation
+    And I wait for 2 seconds
     And I select participant <NonConnectedContact> on Group info page
     Then I see <NonConnectedContact> name on Group participant Pending outgoing connection page
 
