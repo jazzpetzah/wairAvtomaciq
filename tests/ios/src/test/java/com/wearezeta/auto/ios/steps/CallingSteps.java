@@ -40,17 +40,22 @@ public class CallingSteps {
     }
 
     /**
-     * Stop call on the caller side
+     * Stop call (audio and video) on the other side
      *
-     * @param caller           caller name/alias
+     * @step. ^(.*) stops? calls( to (.*))$
+     *
+     * @param instanceUsers comma separated list of user names/aliases
      * @param conversationName destination conversation name
      * @throws Exception
-     * @step. (.*) stops? all calls to (.*)
      */
-    @When("(.*) stops? calling (.*)")
-    public void UserXStopsCallsToUserY(String caller, String conversationName)
+    @When("^(.*) stops? calling( (.*))?$")
+    public void UserXStopsCallsToUserY(String instanceUsers, String outgoingCall, String conversationName)
             throws Exception {
-        commonCallingSteps.stopOutgoingCall(splitAliases(caller), conversationName);
+        if (outgoingCall == null) {
+            commonCallingSteps.stopIncomingCall(splitAliases(instanceUsers));
+        } else {
+            commonCallingSteps.stopOutgoingCall(splitAliases(instanceUsers), conversationName);
+        }
     }
 
     /**
