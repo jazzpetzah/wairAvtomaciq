@@ -109,6 +109,8 @@ public final class WebAppLocators {
                 .format("%s div[data-uie-name='item-conversation-archived'][data-uie-value='%s']",
                         cssParentArchiveListItem, name);
 
+        public static final String cssBackground = "#background";
+
         public static final String cssGearButton = "[data-uie-name='go-preferences']";
 
         public static final String xpathContactListEntries = xpathParentContactListItem
@@ -286,7 +288,9 @@ public final class WebAppLocators {
         public static final String cssCurrentAccentColorCircleDiv = cssAccentColorPicker + ".selected .circle";
         
         public static final String cssBackgroundAvatarAccentColor = ".background-accent.bg-theme";
-        
+
+        public static final String cssPicture = "user-avatar";
+
         public static final String cssSelectPicture = "[data-uie-name='do-select-picture']";
 
         public static final String cssDeleteAccountButton = "[data-uie-name='go-delete-account']";

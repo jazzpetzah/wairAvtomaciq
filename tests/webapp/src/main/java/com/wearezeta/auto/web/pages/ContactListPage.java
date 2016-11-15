@@ -2,10 +2,12 @@ package com.wearezeta.auto.web.pages;
 
 import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
@@ -34,6 +36,9 @@ public class ContactListPage extends WebPage {
 
     private static final String DEFAULT_GROUP_CONVO_NAMES_SEPARATOR = ",";
     private static final int CONVO_LIST_ENTRY_VISIBILITY_TIMEOUT = 15; // seconds
+
+    @FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssBackground)
+    private WebElement background;
 
     @FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssGearButton)
     private WebElement gearButton;
@@ -697,4 +702,11 @@ public class ContactListPage extends WebPage {
         return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(WebAppLocators.ContactListPage.cssBadge));
     }
 
+    public BufferedImage getBackgroundPicture() throws Exception {
+        Optional<BufferedImage> screenshot = getElementScreenshot(background);
+        if (!screenshot.isPresent()) {
+            throw new Exception("Could not get screenshot of contact list with background");
+        }
+        return screenshot.get();
+    }
 }
