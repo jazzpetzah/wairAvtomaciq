@@ -55,10 +55,12 @@ Feature: People View
     And I open group conversation details
     And I tap Open Menu button on Group info page
     And I tap Leave conversation action button
+    # Wait for animation
+    And I wait for 3 seconds
     And I confirm Leave conversation action
     And I open archived conversations
     And I tap on group chat with name <GroupChatName>
-    And I see You Left message in group chat
+    Then I see You Left message in group chat
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -461,6 +463,8 @@ Feature: People View
     And I open group conversation details
     And I tap Open Menu button on Group info page
     And I tap Leave conversation action button
+    # Wait for animation
+    And I wait for 3 seconds
     And I confirm Leave conversation action
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list
