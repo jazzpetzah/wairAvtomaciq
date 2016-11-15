@@ -638,7 +638,6 @@ public final class BackendAPIWrappers {
                                 Optional.empty(), Optional.of(new HashMap<>()), Optional.empty());
                     }
                     return null;
-
                 }
         );
     }
@@ -672,13 +671,8 @@ public final class BackendAPIWrappers {
             final String postedImageId = entry.getKey().getJSONObject("data").getString("id");
             processedAssets.put(postedImageId, entry.getValue());
         }
-        retryOnBackendFailure(2,
-                () -> {
-                    BackendREST.updateSelfInfo(receiveAuthToken(user),
-                            Optional.empty(), Optional.of(processedAssets), Optional.empty());
-                    return null;
-                }
-        );
+        BackendREST.updateSelfInfo(receiveAuthToken(user),
+                Optional.empty(), Optional.of(processedAssets), Optional.empty());
     }
 
     public static void updateUserName(ClientUser user, String newName) throws Exception {
