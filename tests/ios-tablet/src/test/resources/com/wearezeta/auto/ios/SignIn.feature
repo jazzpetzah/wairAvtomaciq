@@ -57,7 +57,7 @@ Feature: Sign In
     Given I see sign in screen
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
-    When I enter phone number for Myself
+    Given I enter phone number for Myself
     When I enter login verification code for Myself
     And I accept alert if visible
     And I accept First Time overlay
@@ -76,7 +76,7 @@ Feature: Sign In
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
     When I enter phone number for Myself
-    When I enter login verification code for Myself
+    And I enter login verification code for Myself
     And I accept alert if visible
     Then I see set email/password suggestion page
     When I have entered login <Email>
@@ -100,7 +100,7 @@ Feature: Sign In
     Given I see sign in screen
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
-    And I enter phone number for Myself
+    Given I enter phone number for Myself
     When I enter random verification code for Myself
     Then I see wrong credentials notification
 
@@ -115,7 +115,7 @@ Feature: Sign In
     Given I see sign in screen
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
-    And I enter phone number for Myself
+    Given I enter phone number for Myself
     When I tap RESEND code button
     Then I see Resend will be possible after 10 min alert
 
@@ -130,7 +130,7 @@ Feature: Sign In
     Given I see sign in screen
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
-    And I enter 10 digits phone number
+    When I enter 10 digits phone number
     Then I verify the alert contains text <ExpectedText>
 
     Examples:
@@ -144,14 +144,14 @@ Feature: Sign In
     Given I see sign in screen
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
-    And I enter phone number for Myself
+    When I enter phone number for Myself
     And I enter login verification code for Myself
     And I accept alert if visible
     And I see set email/password suggestion page
     And I have entered login <Email>
     And I start activation email monitoring
     And I have entered password <Password>
-    And I tap Return button on the keyboard
+    And I tap Login button
     And I see email verification reminder
     And I verify registration address
     And I accept First Time overlay
@@ -173,12 +173,12 @@ Feature: Sign In
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
     When I enter phone number for Myself
-    When I enter login verification code for Myself
+    And I enter login verification code for Myself
     And I accept alert if visible
     And I see set email/password suggestion page
-    When I have entered login <Email>
+    And I have entered login <Email>
     And I have entered password <Password>
-    When I tap Return button on the keyboard
+    And I tap Login button
     Then I see already registered email alert
 
     Examples:
