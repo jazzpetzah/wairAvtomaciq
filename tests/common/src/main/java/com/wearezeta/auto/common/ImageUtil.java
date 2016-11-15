@@ -3,6 +3,7 @@ package com.wearezeta.auto.common;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -313,5 +314,11 @@ public class ImageUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static byte[] asByteArray(BufferedImage image) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(image, "jpg", baos);
+        return baos.toByteArray();
     }
 }

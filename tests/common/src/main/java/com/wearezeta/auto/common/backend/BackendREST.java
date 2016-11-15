@@ -1,7 +1,9 @@
 package com.wearezeta.auto.common.backend;
 
+import java.io.ByteArrayOutputStream;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
 import java.util.*;
 
 import javax.ws.rs.core.HttpHeaders;
@@ -237,6 +239,17 @@ final class BackendREST {
         restHandlers.httpDelete(webResource, new int[]{HttpStatus.SC_OK});
     }
 
+    public static void updateSelfAssets(AuthToken token, Set<AssetV3> assets) throws Exception {
+        Builder webResource = buildDefaultRequestWithAuth("self", MediaType.APPLICATION_JSON, token);
+        JSONObject requestBody = new JSONObject();
+        JSONArray array = new JSONArray();
+        for (AssetV3 asset : assets) {
+            array.put(asset.toJSON());
+        }
+        requestBody.put("assets", array);
+        restHandlers.httpPut(webResource, requestBody.toString(), new int[]{HttpStatus.SC_OK});
+    }
+
     public static JSONObject registerNewUser(String email, String userName, String password) throws Exception {
         Builder webResource = buildDefaultRequest("register", MediaType.APPLICATION_JSON);
         JSONObject requestBody = new JSONObject();
@@ -457,6 +470,44 @@ final class BackendREST {
             result.put(pictureItem);
         }
         return result;
+    }
+
+    private final static String BOUNDARY = "frontier";
+
+    public static String uploadAssetV3(AuthToken token, boolean isPublic, String retention, byte[] content) throws Exception {
+        Base64.Encoder base64 = Base64.getEncoder();
+
+        // generate MD5 of content
+        MessageDigest m = MessageDigest.getInstance("MD5");
+        m.update(content);
+        String md5 = base64.encodeToString(m.digest());
+
+        Builder webResource = buildDefaultRequestWithAuth("assets/v3", MediaType.APPLICATION_JSON, token);
+        JSONObject metadata = new JSONObject();
+        metadata.put("public", isPublic);
+        metadata.put("retention", retention);
+        Formatter multipartBody = new Formatter();
+        multipartBody.format("--%s\r\n", BOUNDARY);
+        multipartBody.format("Content-Type: application/json; charset=utf-8\r\n");
+        multipartBody.format("Content-length: %d\r\n", metadata.toString().length());
+        multipartBody.format("\r\n%s\r\n", metadata.toString());
+        multipartBody.format("--%s\r\n", BOUNDARY);
+        multipartBody.format("Content-Type: application/octet-stream\r\n");
+        multipartBody.format("Content-length: %d\r\n", content.length);
+        multipartBody.format("Content-MD5: %s\r\n\r\n", md5);
+
+        // footer
+        String footer = "\r\n--" + BOUNDARY + "--\r\n";
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        outputStream.write(multipartBody.toString().getBytes("UTF-8"));
+        outputStream.write(content);
+        outputStream.write(footer.getBytes("UTF-8"));
+
+        String output = restHandlers.httpPost(webResource, outputStream.toByteArray(), "multipart/mixed; boundary=" + BOUNDARY,
+                new int[]{HttpStatus.SC_CREATED});
+        final JSONObject jsonOutput = new JSONObject(output);
+        return jsonOutput.getString("key");
     }
 
     public static void updateSelfInfo(AuthToken token, Integer accentId,
