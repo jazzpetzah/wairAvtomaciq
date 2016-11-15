@@ -30,6 +30,7 @@ Feature: Ephemeral
   Scenario Outline: Verify sending of ephemeral link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given user <Contact> adds a new device Device1 with label Label1
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
@@ -48,6 +49,11 @@ Feature: Ephemeral
     And I see block replaces the last message in the conversation view
     And I do not see a picture <LinkPreviewImage> from link preview
     And I see 2 messages in conversation
+    When User <Contact> reads the recent message from user <Name> via device Device1
+    And I wait for <Time> seconds
+    And I do not see any picture in the conversation view
+    And I do not see block replaces the last message in the conversation view
+    And I see 1 messages in conversation
 
     Examples:
       | Login      | Password      | Name      | Contact   | Time | TimeLong    | TimeShortUnit | Link              | LinkInPreview | LinkTitle                                                                            | LinkPreviewImage |
