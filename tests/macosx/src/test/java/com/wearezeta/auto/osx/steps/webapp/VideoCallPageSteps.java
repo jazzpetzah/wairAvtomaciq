@@ -1,10 +1,5 @@
 package com.wearezeta.auto.osx.steps.webapp;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.Optional;
-
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
@@ -16,16 +11,15 @@ import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.VideoCallPage;
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.Optional;
 import org.apache.log4j.Logger;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
 import org.junit.Assert;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
-
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.lessThan;
-import static org.junit.Assert.assertTrue;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class VideoCallPageSteps {
 
@@ -34,33 +28,11 @@ public class VideoCallPageSteps {
     private final TestContext webContext;
     private final TestContext wrapperContext;
 
-    public VideoCallPageSteps() {
-        this.webContext = new TestContext();
-        this.wrapperContext = new TestContext();
-    }
-    
     public VideoCallPageSteps(TestContext webContext, TestContext wrapperContext) {
         this.webContext = webContext;
         this.wrapperContext = wrapperContext;
     }
-
-    @When("^I maximize video call via titlebar$")
-    public void IMaximizeVideoCall() throws Exception {
-        webContext.getPagesCollection().getPage(VideoCallPage.class).clickMaximizeVideoCallButton();
-    }
     
-    @Then("^I see video call is (minimized|maximized)$")
-    public void ISeeVideoCallMinimized(String videoCallSize) throws Exception {
-        VideoCallPage videoCallPage = webContext.getPagesCollection().getPage(VideoCallPage.class);
-        if (videoCallSize.equals("minimized")) {
-            //Assert.assertTrue("Video is in portrait mode", videoCallPage.isVideoNotInPortrait());
-            Assert.assertTrue("Minimize Video Call button is visible", videoCallPage.isMinimizeVideoCallButtonNotVisible());
-        } else {
-            //Assert.assertTrue("Video is not in portrait mode", videoCallPage.isVideoInPortrait());
-            Assert.assertTrue("Minimize Video Call button is not visible", videoCallPage.isMinimizeVideoCallButtonVisible());
-        }
-    }
-
     @Then("^I click on screen share button$")
     public void IClickScreenShareButton() throws Exception {
         VideoCallPage videoCallPage = webContext.getPagesCollection().getPage(VideoCallPage.class);
@@ -142,42 +114,4 @@ public class VideoCallPageSteps {
         }
     }
 
-    @When("^I minimize video call$")
-    public void IMinimizeVideoCall() throws Exception {
-        webContext.getPagesCollection().getPage(VideoCallPage.class).clickMinimizeVideoCallButton();
-    }
-
-    @When("^I click on video button$")
-    public void IClickVideoButton() throws Exception {
-        VideoCallPage videoCallPage = webContext.getPagesCollection().getPage(VideoCallPage.class);
-        videoCallPage.clickVideoButton();
-    }
-
-    @Then("^I see my self video is( not)? black$")
-    public void ISeeSelfVideoBlack(String not) throws Exception {
-        VideoCallPage videoCallPage = webContext.getPagesCollection().getPage(VideoCallPage.class);
-        Optional<BufferedImage> selfVideo = videoCallPage.getSelfVideo();
-        Assert.assertTrue("Self video is not present", selfVideo.isPresent());
-        BufferedImage image = selfVideo.get();
-        Color pixel = new Color(image.getRGB(image.getWidth() / 2, image.getHeight() / 2));
-        if (not == null) {
-            Assert.assertThat("RGB red", pixel.getRed(), lessThan(2));
-            Assert.assertThat("RGB green", pixel.getGreen(), lessThan(2));
-            Assert.assertThat("RGB blue", pixel.getBlue(), lessThan(2));
-        } else {
-            Assert.
-                    assertThat("All RGB values summarized", pixel.getRed() + pixel.getGreen() + pixel.getGreen(),
-                            greaterThan(20));
-        }
-    }
-
-    @Then("^I see my self video is (off|on)$")
-    public void ISeeSelfVideoOff(String onOffToggle) throws Exception {
-        VideoCallPage videoCallPage = webContext.getPagesCollection().getPage(VideoCallPage.class);
-        if ("off".equals(onOffToggle)) {
-            assertTrue("Disabled video icon is still shown", videoCallPage.isDisabledVideoIconVisible());
-        } else {
-            assertTrue("Disabled video icon is not shown", videoCallPage.isDisabledVideoIconInvisible());
-        }
-    }
 }

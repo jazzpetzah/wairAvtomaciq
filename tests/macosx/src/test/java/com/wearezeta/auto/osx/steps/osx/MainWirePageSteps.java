@@ -19,11 +19,6 @@ public class MainWirePageSteps {
 
     private final TestContext webContext;
     private final TestContext wrapperContext;
-
-    public MainWirePageSteps() {
-        this.webContext = new TestContext();
-        this.wrapperContext = new TestContext();
-    }
     
     public MainWirePageSteps(TestContext webContext, TestContext wrapperContext) {
         this.webContext = webContext;

@@ -17,11 +17,6 @@ public class ContactContextMenuPageSteps {
     private final TestContext webContext;
     private final TestContext wrapperContext;
 
-    public ContactContextMenuPageSteps() {
-        this.webContext = new TestContext();
-        this.wrapperContext = new TestContext();
-    }
-    
     public ContactContextMenuPageSteps(TestContext webContext, TestContext wrapperContext) {
         this.webContext = webContext;
         this.wrapperContext = wrapperContext;

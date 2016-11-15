@@ -9,11 +9,6 @@ public class EphemeralTimerButtonContextMenuPageSteps {
 
     private final TestContext webContext;
     private final TestContext wrapperContext;
-
-    public EphemeralTimerButtonContextMenuPageSteps() {
-        this.webContext = new TestContext();
-        this.wrapperContext = new TestContext();
-    }
     
     public EphemeralTimerButtonContextMenuPageSteps(TestContext webContext, TestContext wrapperContext) {
         this.webContext = webContext;

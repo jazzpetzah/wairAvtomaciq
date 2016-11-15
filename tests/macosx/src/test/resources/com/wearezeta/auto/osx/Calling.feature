@@ -16,7 +16,7 @@ Feature: Calling
     And I see the ongoing call controls for conversation <Contact1>
     And I wait for 10 seconds
     And <Contact1> verify to have 1 flows
-    And <Contact1> verify that all flows have greater than 0 bytes
+    And <Contact1> verifies that all audio flows have greater than 0 bytes
     And I hang up call with conversation <Contact1>
     Then I do not see the call controls for conversation <Contact1>
 
