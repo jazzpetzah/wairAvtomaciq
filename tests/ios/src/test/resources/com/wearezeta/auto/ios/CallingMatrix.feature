@@ -179,13 +179,12 @@ Feature: Calling Matrix
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verifies to have 1 flows
     And <Contact> verifies that all flows have greater than 0 bytes
-    And <Contact> stops calling <Name>
+    And <Contact> stops calling me
     #When <Contact> starts instance using <CallBackend>
     And <Contact> starts a video call to <Name>
     And I see Video Call Kit overlay
     And I tap Accept button on Call Kit overlay
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
-    And <Name> verifies that call status to <Contact> is changed to active in <Timeout> seconds
     And <Contact> verifies to have 1 flows
     And <Contact> verifies that all flows have greater than 0 bytes
 
@@ -193,7 +192,7 @@ Feature: Calling Matrix
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C343167 @calling_matrix @fastLogin @torun
+  @C343167 @calling_matrix @fastLogin
   Scenario Outline: Verify I can make two 1:1 video call with <CallBackend> in a row
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -208,7 +207,8 @@ Feature: Calling Matrix
     Then I see Video Calling overlay
     And <Contact> verifies to have 1 flows
     And <Contact> verifies that all flows have greater than 0 bytes
-    And <Contact> stops calling <Name>
+    And <Contact> stops calling
+    And <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
     Given <Contact> accepts next incoming call automatically
     And I tap Video Call button
     Then I see Video Calling overlay
@@ -216,8 +216,29 @@ Feature: Calling Matrix
     And <Contact> verifies that all flows have greater than 0 bytes
 
     Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | chrome      |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |
 
-  #@calling_matrix @fastLogin
-  #Scenario Outline:
+  @C343169 @calling_matrix @fastLogin
+  Scenario Outline: Accept 1:1 call when app is in background
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I put Wire into background
+    When <Contact> calls me
+    And I see Audio Call Kit overlay
+    And I tap Accept button on Call Kit overlay
+    And I accept alert
+    And I accept alert
+    Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies that all flows have greater than 0 bytes
+    When I tap Leave button on Calling overlay
+    Then I do not see Calling overlay
+
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |
