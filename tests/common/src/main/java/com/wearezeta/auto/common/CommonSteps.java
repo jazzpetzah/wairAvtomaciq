@@ -654,11 +654,10 @@ public final class CommonSteps {
         }
     }
 
-    public void IChangeUserAvatarPicture(String userNameAlias,
-                                         String picturePath) throws Exception {
+    public void IChangeUserAvatarPicture(String userNameAlias, String picturePath) throws Exception {
         final ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(userNameAlias);
         if (new File(picturePath).exists()) {
-            BackendAPIWrappers.updateUserPicture(dstUser, picturePath);
+            BackendAPIWrappers.updateUserPicture(dstUser, Optional.of(picturePath));
         } else {
             throw new IOException(String.format("The picture '%s' is not accessible", picturePath));
         }
@@ -666,7 +665,7 @@ public final class CommonSteps {
 
     public void UserDeletesAvatarPicture(String userNameAlias) throws Exception {
         final ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(userNameAlias);
-        BackendAPIWrappers.updateUserPicture(dstUser, null);
+        BackendAPIWrappers.updateUserPicture(dstUser, Optional.empty());
     }
 
     public void IChangeUserName(String userNameAlias, String newName) throws Exception {
