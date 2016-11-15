@@ -624,19 +624,26 @@ public final class BackendAPIWrappers {
         return result;
     }
 
-    public static void updateUserPicture(ClientUser user, Optional<String> picturePath) throws Exception {
+    public static void removeUserPicture(ClientUser user) throws Exception {
         retryOnBackendFailure(2,
                 () -> {
-                    if (picturePath.isPresent()) {
-                        // upload user picture through the old asset v2 way
-                        updateUserPictureV2(user, picturePath.get());
+                    // v2 assets
+                    BackendREST.updateSelfInfo(receiveAuthToken(user),
+                            Optional.empty(), Optional.of(new HashMap<>()), Optional.empty());
+                    // v3 assets
+                    BackendREST.updateSelfAssets(receiveAuthToken(user), new HashSet<>());
+                    return null;
+                }
+        );
+    }
 
-                        // upload user picture through the new asset v3 way
-                        updateUserPictureV3(user, picturePath.get());
-                    } else {
-                        BackendREST.updateSelfInfo(receiveAuthToken(user),
-                                Optional.empty(), Optional.of(new HashMap<>()), Optional.empty());
-                    }
+    public static void updateUserPicture(ClientUser user, String picturePath) throws Exception {
+        retryOnBackendFailure(2,
+                () -> {
+                    // upload user picture through the old asset v2 way
+                    updateUserPictureV2(user, picturePath);
+                    // upload user picture through the new asset v3 way
+                    updateUserPictureV3(user, picturePath);
                     return null;
                 }
         );
@@ -702,6 +709,7 @@ public final class BackendAPIWrappers {
         public NoContactsFoundException(String msg) {
             super(msg);
         }
+
     }
 
     public static void waitUntilContactsFound(ClientUser searchByUser,
