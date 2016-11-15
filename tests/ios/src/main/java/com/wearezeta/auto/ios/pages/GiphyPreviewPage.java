@@ -12,7 +12,7 @@ public class GiphyPreviewPage extends IOSPage {
     // TODO: assign a name to Giphy image element
     private static final By classImagePreview = FBBy.className("XCUIElementTypeImage");
 
-    private static final By classCellPreview = FBBy.className("XCUIElementTypeCell");
+    // private static final By classCellPreview = FBBy.className("XCUIElementTypeCell");
 
     private static final By nameCancelButton = MobileBy.AccessibilityId("CANCEL");
 
@@ -33,9 +33,13 @@ public class GiphyPreviewPage extends IOSPage {
     }
 
     public void selectFirstItem() throws Exception {
-        getElementIfExists(classCellPreview).orElseThrow(
-                () -> new IllegalStateException("No Giphy preview calls are visible on the page")
-        ).click();
+        // FIXME: The driver simply freezes on this page
+        //        getElementIfExists(classCellPreview).orElseThrow(
+        //                () -> new IllegalStateException("No Giphy preview calls are visible on the page")
+        //        ).click();
+        clickAt(15, 15);
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     private By getButtonByName(String name) {
