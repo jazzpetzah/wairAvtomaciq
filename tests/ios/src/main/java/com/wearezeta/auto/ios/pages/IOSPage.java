@@ -792,4 +792,9 @@ public abstract class IOSPage extends BasePage {
             throw new IllegalArgumentException(String.format("There is no '%s' key on Emoji keyboard", keyName));
         }
     }
+
+    //pressing home button for real device
+    public void putAppInBackground() throws Exception {
+        getDriver().pressHomeButton();
+    }
 }

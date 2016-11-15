@@ -1706,4 +1706,15 @@ public class CommonIOSSteps {
     public void TapKeyOnEmojiKeyboard(String keyName) throws Exception {
         pagesCollection.getCommonPage().tapEmojiKeyboardKey(keyName);
     }
+
+    /**
+     * Puts Wire into the background on real device
+     *
+     * @throws Exception
+     * @step. ^I put Wire into background$
+     */
+    @Given("^I put Wire into background$")
+    public void IPutWireIntoBackground() throws Exception {
+        pagesCollection.getCommonPage().putAppInBackground();
+    }
 }
