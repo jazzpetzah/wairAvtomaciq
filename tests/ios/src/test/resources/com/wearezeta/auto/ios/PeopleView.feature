@@ -121,7 +121,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | ChatName | GroupChatName |
       | user1Name | user2Name | user3Name | QAtest   | TESTCHAT      |
 
-  @C3172 @rc @regression @clumsy @fastLogin
+  @C3172 @rc @regression @clumsy @fastLogin @torun
   Scenario Outline: Tap on participant profiles in group info page participant view
     Given There are 3 users where <Name> is me
     Given <GroupCreator> is connected to me
@@ -135,12 +135,17 @@ Feature: People View
     And I see <GroupCreator> name on Group participant profile page
     And I see <GroupCreatorEmail> email on Group participant profile page
     And I tap X button on Group participant profile page
+    And I wait for <Time> seconds
     And I select participant <NonConnectedContact> on Group info page
     Then I see <NonConnectedContact> name on Group participant Pending outgoing connection page
 
     Examples:
-      | Name      | GroupCreator | GroupCreatorEmail | NonConnectedContact | GroupChatName |
-      | user1Name | user2Name    | user2Email        | user3Name           | TESTCHAT      |
+      | Name      | GroupCreator | GroupCreatorEmail | NonConnectedContact | GroupChatName | Time |
+      | user1Name | user2Name    | user2Email        | user3Name           | TESTCHAT      | 1    |
+      | user1Name | user2Name    | user2Email        | user3Name           | TESTCHAT      | 2    |
+      | user1Name | user2Name    | user2Email        | user3Name           | TESTCHAT      | 3    |
+      | user1Name | user2Name    | user2Email        | user3Name           | TESTCHAT      | 4    |
+      | user1Name | user2Name    | user2Email        | user3Name           | TESTCHAT      | 5    |
 
   @C988 @regression @fastLogin
   Scenario Outline: Verify you can start 1:1 conversation from a group conversation profile
