@@ -55,7 +55,7 @@ public class CallKitOverlayPage extends IOSPage {
 
     public boolean isVisible(String overlayType) throws Exception {
         final By locator = MobileBy.AccessibilityId(nameStrCallLabelByType.apply(overlayType));
-        return isLocatorDisplayed(locator,15);
+        return isLocatorDisplayed(locator, 15);
     }
 
     public boolean isInvisible(String overlayType) throws Exception {

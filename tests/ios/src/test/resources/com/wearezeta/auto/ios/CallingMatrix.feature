@@ -172,17 +172,16 @@ Feature: Calling Matrix
     Given I sign in using my email or phone number
     Given I see conversations list
     When <Contact> starts a video call to <Name>
-    And I see Video Call Kit overlay
+    Then I see Video Call Kit overlay
     And I tap Accept button on Call Kit overlay
     And I accept alert
     And I accept alert
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verifies to have 1 flows
     And <Contact> verifies that all flows have greater than 0 bytes
-    And <Contact> stops calling me
-    #When <Contact> starts instance using <CallBackend>
+    When <Contact> stops outgoing call to me
     And <Contact> starts a video call to <Name>
-    And I see Video Call Kit overlay
+    Then I see Video Call Kit overlay
     And I tap Accept button on Call Kit overlay
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verifies to have 1 flows
@@ -207,9 +206,9 @@ Feature: Calling Matrix
     Then I see Video Calling overlay
     And <Contact> verifies to have 1 flows
     And <Contact> verifies that all flows have greater than 0 bytes
-    And <Contact> stops calling
+    And <Contact> stops incoming call from me
     And <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
-    Given <Contact> accepts next incoming call automatically
+    When <Contact> accepts next incoming call automatically
     And I tap Video Call button
     Then I see Video Calling overlay
     And <Contact> verifies to have 1 flows
@@ -226,7 +225,7 @@ Feature: Calling Matrix
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given I put Wire into background
+    Given I tap Home button
     When <Contact> calls me
     And I see Audio Call Kit overlay
     And I tap Accept button on Call Kit overlay
@@ -237,7 +236,6 @@ Feature: Calling Matrix
     And <Contact> verifies that all flows have greater than 0 bytes
     When I tap Leave button on Calling overlay
     Then I do not see Calling overlay
-
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |

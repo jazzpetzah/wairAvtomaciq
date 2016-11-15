@@ -1709,8 +1709,8 @@ public class CommonIOSSteps {
      * @throws Exception
      * @step. ^I put Wire into background$
      */
-    @Given("^I put Wire into background$")
-    public void IPutWireIntoBackground() throws Exception {
+    @Given("^I tap Home button$")
+    public void ITapHomeButton() throws Exception {
         pagesCollection.getCommonPage().putAppInBackground();
     }
 }
