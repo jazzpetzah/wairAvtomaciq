@@ -418,19 +418,6 @@ final class BackendREST {
         return new JSONObject(output);
     }
 
-    public static JSONObject sendConvertsationHotPing(AuthToken userFromToken,
-                                                      String convId, String refId) throws Exception {
-        Builder webResource = buildDefaultRequestWithAuth("conversations/"
-                + convId + "/hot-knock", MediaType.APPLICATION_JSON, userFromToken);
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("ref", refId);
-        requestBody.put("nonce", CommonUtils.generateGUID());
-        final String output = restHandlers.httpPost(webResource,
-                requestBody.toString(), new int[]{HttpStatus.SC_OK,
-                        HttpStatus.SC_CREATED});
-        return new JSONObject(output);
-    }
-
     public static JSONObject getConversationsInfo(AuthToken token,
                                                   String startId) throws Exception {
         Builder webResource = buildDefaultRequestWithAuth(

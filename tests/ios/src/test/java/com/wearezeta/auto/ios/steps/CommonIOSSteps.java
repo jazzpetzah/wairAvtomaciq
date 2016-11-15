@@ -814,14 +814,9 @@ public class CommonIOSSteps {
         commonSteps.AcceptAllIncomingConnectionRequests(userToNameAlias);
     }
 
-    @Given("^User (\\w+) (securely )?pings conversation (.*)$")
-    public void UserPingedConversation(String pingFromUserNameAlias, String isSecure,
-                                       String dstConversationName) throws Exception {
-        if (isSecure == null) {
-            commonSteps.UserPingedConversation(pingFromUserNameAlias, dstConversationName);
-        } else {
-            commonSteps.UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
-        }
+    @Given("^User (\\w+) (?:securely |\\s*)pings conversation (.*)$")
+    public void UserPingedConversation(String pingFromUserNameAlias, String dstConversationName) throws Exception {
+        commonSteps.UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
     }
 
     @Given("^User (.*) sends (\\d+) (encrypted )?messages? to (user|group conversation) (.*)$")

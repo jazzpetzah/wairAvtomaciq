@@ -40,6 +40,9 @@ public final class BackendAPIWrappers {
     private static final int MAX_BACKEND_RETRIES = 3;
     private static final float PROFILE_PICTURE_PREVIEW_RESIZE_FACTOR = 0.1f;
 
+    public static final String PROFILE_PICTURE_JSON_ATTRIBUTE = "complete";
+    public static final String PROFILE_PREVIEW_PICTURE_JSON_ATTRIBUTE = "preview";
+
     private static final Logger log = ZetaLogger.getLog(BackendAPIWrappers.class.getSimpleName());
 
     public static Future<String> initMessageListener(ClientUser forUser,
@@ -293,11 +296,6 @@ public final class BackendAPIWrappers {
     public static void sendDialogMessageByChatName(ClientUser fromUser, String toChat, String message) throws Exception {
         String id = getConversationIdByName(fromUser, toChat);
         sendConversationMessage(fromUser, id, message);
-    }
-
-    public static String sendPingToConversation(ClientUser fromUser, String toChat) throws Exception {
-        String id = getConversationIdByName(fromUser, toChat);
-        return sendConversationPing(fromUser, id);
     }
 
     private static AuthToken receiveAuthToken(ClientUser user) throws Exception {
@@ -587,11 +585,6 @@ public final class BackendAPIWrappers {
         return response.getString("id");
     }
 
-    public static void sendConvertsationHotPing(ClientUser userFrom,
-                                                String convId, String refId) throws Exception {
-        BackendREST.sendConvertsationHotPing(receiveAuthToken(userFrom), convId, refId);
-    }
-
     public static JSONArray getConversations(ClientUser user) throws Exception {
         final JSONArray result = new JSONArray();
         String startId = null;
@@ -647,8 +640,8 @@ public final class BackendAPIWrappers {
         String completeKey = BackendREST.uploadAssetV3(receiveAuthToken(user), true, "persistent",
                 ImageUtil.asByteArray(image));
         Set<AssetV3> assets = new HashSet<>();
-        assets.add(new AssetV3(previewKey, "image", "preview"));
-        assets.add(new AssetV3(completeKey, "image", "complete"));
+        assets.add(new AssetV3(previewKey, "image", PROFILE_PREVIEW_PICTURE_JSON_ATTRIBUTE));
+        assets.add(new AssetV3(completeKey, "image", PROFILE_PICTURE_JSON_ATTRIBUTE));
         BackendREST.updateSelfAssets(receiveAuthToken(user), assets);
     }
 
