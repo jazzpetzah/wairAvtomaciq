@@ -177,9 +177,36 @@
                                     </target>
                                 </configuration>
                             </execution>
+                            <execution>
+                                <id>unused-steps</id>
+                                <phase>process-test-classes</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <!--<property name="picklejar.tag" value="${picklejar.tag}"/>-->
+                                        <property name="picklejar.feature.package" value="${picklejar.feature.package}"/>
+                                        <property name="picklejar.steps.package" value="${picklejar.steps.package}"/>
+                                        <!--<property name="picklejar.random" value="0"/>-->
+                                        <property name="basedir" value="${project.build.directory}" />
+                                        <property name="runtime_classpath" refid="maven.runtime.classpath" />
+                                        <exec executable="java" spawn="false">
+                                            <arg value="-classpath"/>
+                                            <arg value="${runtime_classpath}:${basedir}/target/test-classes"/>
+                                            <!--<arg value="-Dpicklejar.tag=${picklejar.tag}"/>-->
+                                            <arg value="-Dpicklejar.feature.package=${picklejar.feature.package}"/>
+                                            <arg value="-Dpicklejar.steps.package=${picklejar.steps.package}"/>
+                                            <!--<arg value="-Dpicklejar.random=${picklejar.random}"/>-->
+                                            <arg value="-Dlog4j.rootLogger=DEBUG"/>
+                                            <arg value="com.wire.picklejar.construct.UnusedStepChecker"/>
+                                        </exec>  
+                                    </target>
+                                </configuration>
+                            </execution>
                         </executions>
                     </plugin>
-
+                    
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>

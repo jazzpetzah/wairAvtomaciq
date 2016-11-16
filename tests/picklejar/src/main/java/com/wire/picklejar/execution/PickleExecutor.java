@@ -247,4 +247,7 @@ public class PickleExecutor {
         return sw.toString();
     }
 
+    public Map<String, Method> getMethodCache() {
+        return methodCache;
+    }
 }

@@ -40,6 +40,10 @@ public interface PickleJar {
     public static Collection<Object[]> getTestcases() {
         return PickleJarScanner.getTestcases();
     }
+    
+    public static Collection<Object[]> getAllTestcases() {
+        return PickleJarScanner.getAllTestcases();
+    }
 
     public static Collection<Object[]> getTestcases(String[] filterTags) {
         return PickleJarScanner.getTestcases(filterTags);

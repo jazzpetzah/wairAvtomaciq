@@ -35,6 +35,15 @@ public class PickleJarScanner {
         return params;
     }
 
+    public static Collection<Object[]> getAllTestcases() {
+        Collection<Object[]> params = new ArrayList<>();
+        for (Feature feature : GherkinParser.getAllFeatures()) {
+            params.addAll(mapAndFlatFeature(feature, null));
+        }
+        LOG.info("Found {} Scenarios", params.size());
+        return params;
+    }
+
     /**
      * 0 - Feature name<br>
      * 1 - Scenario name<br>
@@ -49,7 +58,12 @@ public class PickleJarScanner {
      */
     private static Collection<Object[]> mapAndFlatFeature(Feature feature, String[] tagFilter) {
         Collection<Object[]> scenarios = new ArrayList<>();
-        List<ScenarioDefinition> filteredScenarios = GherkinParser.getFilteredScenarios(feature, tagFilter);
+        List<ScenarioDefinition> filteredScenarios;
+        if (tagFilter == null || tagFilter.length == 0) {
+            filteredScenarios = feature.getScenarioDefinitions();
+        } else {
+            filteredScenarios = GherkinParser.getFilteredScenarios(feature, tagFilter);
+        }
         for (ScenarioDefinition scenarioDefinition : filteredScenarios) {
 
             List<String> steps = new ArrayList<>();
@@ -84,7 +98,7 @@ public class PickleJarScanner {
                         scenarioArray[3] = steps;
                         scenarioArray[4] = exampleRowWithHeader;
                         scenarioArray[5] = scenarioDefinition.getTags().stream()
-                                .map((t)->t.getName())
+                                .map((t) -> t.getName())
                                 .collect(Collectors.toList());
 
                         LOG.debug("Adding scenario with example\n"
@@ -109,8 +123,8 @@ public class PickleJarScanner {
                 scenarioArray[3] = steps;
                 scenarioArray[4] = new HashMap<String, String>();
                 scenarioArray[5] = scenarioDefinition.getTags().stream()
-                                .map((t)->t.getName())
-                                .collect(Collectors.toList());
+                        .map((t) -> t.getName())
+                        .collect(Collectors.toList());
 
                 LOG.debug("Adding scenario without example\n"
                         + "FeatureName: " + feature.getName() + "\n"

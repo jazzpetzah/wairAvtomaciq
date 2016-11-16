@@ -29,9 +29,9 @@ public class JavaSeeker {
     public static Collection<Class> getClasses(final String[] pkgs) throws IOException {
         final StandardJavaFileManager fileManager = ToolProvider.getSystemJavaCompiler().
                 getStandardFileManager(null, null, null);
-        LOG.debug("Loading classes...");
         Set<Class> classes = new LinkedHashSet<>();
         for (String pkg : pkgs) {
+            LOG.debug(String.format("Loading classes from %s...", pkg));
             final Spliterator<JavaFileObject> classesSpliterator = fileManager.list(StandardLocation.CLASS_PATH, pkg, Collections.
                     singleton(JavaFileObject.Kind.CLASS), true).spliterator();
             classes.addAll(StreamSupport.stream(classesSpliterator, false)
