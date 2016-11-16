@@ -1,4 +1,4 @@
-Feature: Stability1
+Feature: Stability
 
   @stability
   Scenario Outline: Register new user by phone and use default picture 1
