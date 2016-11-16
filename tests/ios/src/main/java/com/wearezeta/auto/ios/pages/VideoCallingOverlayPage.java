@@ -22,7 +22,7 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
         if (!dstBtn.isPresent()) {
             final Dimension screenSize = getDriver().manage().window().getSize();
             this.tapScreenAt(screenSize.getWidth() / 2, screenSize.getHeight() / 2);
-            return getElementIfDisplayed(locator, 1).orElseThrow(
+            return getElementIfDisplayed(locator, 5).orElseThrow(
                     () -> new IllegalStateException(
                             String.format("The button identified by '%s' is expected to be present", name))
             );
