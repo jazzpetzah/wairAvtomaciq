@@ -46,7 +46,7 @@ Feature: E2EE
     And User Myself adds a new device <DeviceName> with label <DeviceLabel>
     Then I wait until settings gear is changed
     When I tap settings gear button
-    Then I verify the alert contains text <DeviceName>
+    Then I see alert contains text <DeviceName>
     When I accept alert
     And I tap Done navigation button on Settings page
     Then I wait until settings gear is not changed

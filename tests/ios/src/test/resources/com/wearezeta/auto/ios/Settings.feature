@@ -123,13 +123,13 @@ Feature: Settings
     When I clear Name input field on Settings page
     And I tap Return button on the keyboard
     And I tap Return button on the keyboard if visible
-    Then I verify the alert contains text <ExpectedAlertText>
+    Then I see alert contains text <ExpectedAlertText>
     And I accept alert
     When I clear Name input field on Settings page
     And I set "<OneCharName>" value to Name input field on Settings page
     And I tap Return button on the keyboard
     And I tap Return button on the keyboard if visible
-    Then I verify the alert contains text <ExpectedAlertText>
+    Then I see alert contains text <ExpectedAlertText>
 
     Examples:
       | Name      | ExpectedAlertText | OneCharName |
@@ -218,7 +218,7 @@ Feature: Settings
     Given I select settings item Account
     When I select settings item Add phone number
     And I input phone number <Number> with code <Code>
-    Then I verify the alert contains text <ExpectedText>
+    Then I see alert contains text <ExpectedText>
 
     Examples:
       | Name      | Number        | Code | ExpectedText                | Email      | Password      |

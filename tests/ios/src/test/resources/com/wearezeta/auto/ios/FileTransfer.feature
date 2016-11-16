@@ -108,7 +108,7 @@ Feature: File Transfer
     # Wait for the placeholder
     And I wait for 5 seconds
     And I tap file transfer menu item <ItemName>
-    Then I verify the alert contains text <ExpectedAlertText>
+    Then I see alert contains text <ExpectedAlertText>
     When I accept alert
     Then I do not see file transfer placeholder
 

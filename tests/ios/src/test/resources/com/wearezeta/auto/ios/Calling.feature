@@ -125,7 +125,7 @@ Feature: Calling
       | Name      | Contact   | Contact1  | Number | CallBackend |
       | user1Name | user2Name | user3Name | 2      | chrome      |
 
-  @C2080 @calling_basic @fastLogin
+  @C2080 @calling_basic @fastLogin @forceResetAfterTest
   Scenario Outline: Screenlock device when in the call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -446,3 +446,48 @@ Feature: Calling
     Examples:
       | Name      | Contact   | CallBackend    |
       | user1Name | user2Name | zcall:2.7.26   |
+
+  @C343168 @staging @calling_basic @fastLogin
+  Scenario Outline: Verify you see group call conformation dialog for >5 participants group chat
+    Given There are 6 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given Myself has group chat <GroupChat1Name> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given Myself has group chat <GroupChat2Name> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    # Check group chat where participant count = 5
+    When I tap on group chat with name <GroupChat1Name>
+    And I tap Audio Call button
+    And I do not see alert contains text <AlertText>
+    Then I see Calling overlay
+    And I tap Leave button on Calling overlay
+    When I navigate back to conversations list
+    # Check group chat where participant count > 5
+    And I tap on group chat with name <GroupChat2Name>
+    And I tap Audio Call button
+    Then I see alert contains text <AlertText>
+    # Confirm to call
+    When I accept alert
+    Then I see Calling overlay
+
+    Examples:
+      | Name      | Contact   | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChat1Name | GroupChat2Name | AlertText    |
+      | user1Name | user2Name | user3Name | user3Name | user4Name | user5Name | user6Name | GROUP FIVE     | GROUP SIX      | Confirmation |
+
+  @C343170 @staging @calling_basic @fastLogin
+  Scenario Outline: Verify you can cancel the group call from confirmation dialog for >5 participants group chat
+    Given There are 6 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    And I tap Audio Call button
+    Then I see alert contains text <AlertText>
+    When I dismiss alert
+    Then I do not see Calling overlay
+
+    Examples:
+      | Name      | Contact   | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | AlertText    |
+      | user1Name | user2Name | user3Name | user3Name | user4Name | user5Name | user6Name | GROUP SIX     | Confirmation |
+    

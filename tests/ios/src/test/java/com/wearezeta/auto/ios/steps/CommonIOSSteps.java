@@ -70,6 +70,9 @@ public class CommonIOSSteps {
     public static final String CAPABILITY_NAME_FORCE_RESET = "forceReset";
     public static final String TAG_NAME_FORCE_RESET = "@" + CAPABILITY_NAME_FORCE_RESET;
 
+    public static final String CAPABILITY_NAME_FORCE_RESET_AFTER_TEST = "forceResetAfterTest";
+    public static final String TAG_NAME_FORCE_RESET_AFTER_TEST = "@" + CAPABILITY_NAME_FORCE_RESET_AFTER_TEST;
+
     static {
         System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
         System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "warn");
@@ -398,6 +401,15 @@ public class CommonIOSSteps {
             e.printStackTrace();
         }
 
+        try {
+            if (getIsSimulatorFromConfig(getClass())
+                    && scenario.getSourceTagNames().contains(TAG_NAME_FORCE_RESET_AFTER_TEST)) {
+                IOSSimulatorHelpers.reset();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         log.debug("\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     }
 
@@ -576,7 +588,7 @@ public class CommonIOSSteps {
      */
     @When("^I close the app for (\\d+) seconds?$")
     public void ICloseApp(int seconds) throws Exception {
-        pagesCollection.getCommonPage().pressHomeButton(seconds);
+        pagesCollection.getCommonPage().putWireToBackgroundFor(seconds);
     }
 
     /**
@@ -1042,14 +1054,20 @@ public class CommonIOSSteps {
     /**
      * Verify whether currently visible alert contains particular text
      *
+     * @param shouldNotBeVisible equals to null if the alert text should be visible
      * @param expectedText the text (or part of it) to verify
      * @throws Exception
-     * @step. ^I verify the alert contains text (.*)
+     * @step. ^I (do not )?see alert contains text (.*)
      */
-    @Then("^I verify the alert contains text (.*)")
-    public void IVerifyAlertContains(String expectedText) throws Exception {
-        Assert.assertTrue(String.format("There is no '%s' text on the alert", expectedText),
-                pagesCollection.getCommonPage().isAlertContainsText(expectedText));
+    @Then("^I (do not )?see alert contains text (.*)")
+    public void ISeeAlertContains(String shouldNotBeVisible, String expectedText) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue(String.format("There is no '%s' text on the alert", expectedText),
+                    pagesCollection.getCommonPage().isAlertContainsText(expectedText));
+        } else {
+            Assert.assertTrue(String.format("There is '%s' text on the alert", expectedText),
+                    pagesCollection.getCommonPage().isAlertDoesNotContainsText(expectedText));
+        }
     }
 
     /**
@@ -1711,6 +1729,6 @@ public class CommonIOSSteps {
      */
     @Given("^I press Home button$")
     public void IPressHomeButton() throws Exception {
-        pagesCollection.getCommonPage().putAppInBackground();
+        pagesCollection.getCommonPage().pressHomeButton();
     }
 }

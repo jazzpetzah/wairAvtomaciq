@@ -495,7 +495,7 @@ Feature: Conversation List
     Given I dismiss settings warning
     Given I see conversations list
     When I open search UI
-    And I verify the alert contains text <AlertText>
+    And I see alert contains text <AlertText>
     And I dismiss alert
     And I tap Send Invite button on Search UI page
     Then I see Share Contacts settings warning

@@ -37,7 +37,6 @@ public class CallingOverlayPage extends IOSPage {
 
     private static final By nameAnswerCallAlertButton = MobileBy.AccessibilityId("Answer");
 
-
     private static final Function<Integer, String> xpathStrGroupCallAvatarsByCount = count ->
             String.format("//XCUIElementTypeStaticText[@name='%s']/" +
                     "following::XCUIElementTypeCollectionView[count(XCUIElementTypeCell)=%s]",

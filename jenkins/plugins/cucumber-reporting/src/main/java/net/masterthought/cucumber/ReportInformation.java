@@ -1,15 +1,18 @@
 package net.masterthought.cucumber;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import com.googlecode.totallylazy.Sequence;
-import com.googlecode.totallylazy.Sequences;
 import net.masterthought.cucumber.json.Artifact;
 import net.masterthought.cucumber.json.Element;
 import net.masterthought.cucumber.json.Feature;
 import net.masterthought.cucumber.json.Step;
 import net.masterthought.cucumber.util.Util;
-
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 public class ReportInformation {
 
@@ -251,7 +254,7 @@ public class ReportInformation {
                         }
 
                     }
-                    adjustStepsForScenario(scenario);
+                    adjustStepsForScenario(scenario, feature);
                 }
             }
         }
@@ -288,14 +291,25 @@ public class ReportInformation {
 
     }
 
-    private void adjustStepsForScenario(Element element) {
+    private int stepIndex = 0;
+    private String lastScenarioName = "";
+    private String lastFeatureName = "";
+
+    private void adjustStepsForScenario(Element element, Feature feature) {
+
         String scenarioName = element.getRawName();
+        if (lastScenarioName.equals(scenarioName) && lastFeatureName.equals(feature.getName())) {
+            stepIndex++;
+        } else {
+            stepIndex = 0;
+        }
+        lastScenarioName = scenarioName;
+        lastFeatureName = feature.getName();
         if (Util.hasSteps(element)) {
-            Sequence<Step> steps = element.getSteps();
+            Sequence<Step> steps = element.getSteps(true, stepIndex);
             numberOfSteps = numberOfSteps + steps.size();
             for (Step step : steps) {
                 String stepName = step.getRawName();
-
                 //apply artifacts
                 if (ConfigurationOptions.artifactsEnabled()) {
                     Map<String, Artifact> map = ConfigurationOptions.artifactConfig();

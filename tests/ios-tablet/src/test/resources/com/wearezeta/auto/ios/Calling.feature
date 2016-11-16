@@ -90,7 +90,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C2408 @calling_basic @fastLogin
+  @C2408 @calling_basic @fastLogin @forceResetAfterTest
   Scenario Outline: Screenlock device when in the call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

@@ -1,16 +1,14 @@
 package net.masterthought.cucumber.json;
 
+import java.util.List;
+import java.util.UUID;
+
 import com.google.common.base.Joiner;
 import com.google.gson.internal.LinkedTreeMap;
 import com.googlecode.totallylazy.Function1;
 import com.googlecode.totallylazy.Sequences;
 import com.googlecode.totallylazy.predicates.LogicalPredicate;
-
-import net.masterthought.cucumber.ConfigurationOptions;
 import net.masterthought.cucumber.util.Util;
-
-import java.util.List;
-import java.util.UUID;
 
 import static com.googlecode.totallylazy.Option.option;
 import static org.apache.commons.lang.StringUtils.EMPTY;
@@ -27,6 +25,11 @@ public class Step {
     private String[] output;
     private DocString doc_string;
     private static final String NO_IMAGE_URL="http://www.kalmbachfeeds.com/shopping/App_Themes/Kalmbach/Images/no-image-available.png";
+    private static int screenshotIndex = 0;
+
+    public void increaseIndex() {
+        screenshotIndex++;
+    }
 
     public Step() {
 
@@ -103,13 +106,9 @@ public class Step {
     }
 
     public String getRawName() {
-
         return name;
     }
 
-
-    private static int screenshotIndex = 0;
-    
     public String getName() {
         String content = "";
         if (getStatus() == Util.Status.FAILED) {
@@ -141,7 +140,7 @@ public class Step {
     }
 
     public String getName(String feature, String scenario) {
-        screenshotIndex++;
+        increaseIndex();
         String content = "";
         if (getStatus() == Util.Status.FAILED) {
             String errorMessage = result.getErrorMessage();

@@ -654,8 +654,7 @@ public final class CommonSteps {
         }
     }
 
-    public void IChangeUserAvatarPicture(String userNameAlias,
-                                         String picturePath) throws Exception {
+    public void IChangeUserAvatarPicture(String userNameAlias, String picturePath) throws Exception {
         final ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(userNameAlias);
         if (new File(picturePath).exists()) {
             BackendAPIWrappers.updateUserPicture(dstUser, picturePath);
@@ -666,7 +665,7 @@ public final class CommonSteps {
 
     public void UserDeletesAvatarPicture(String userNameAlias) throws Exception {
         final ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(userNameAlias);
-        BackendAPIWrappers.updateUserPicture(dstUser, null);
+        BackendAPIWrappers.removeUserPicture(dstUser);
     }
 
     public void IChangeUserName(String userNameAlias, String newName) throws Exception {

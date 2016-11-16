@@ -1,17 +1,15 @@
 package net.masterthought.cucumber.json;
 
-import com.googlecode.totallylazy.Function1;
-import com.googlecode.totallylazy.Sequence;
-import com.googlecode.totallylazy.Sequences;
-
-import net.masterthought.cucumber.ConfigurationOptions;
-import net.masterthought.cucumber.util.Util;
-
-import org.apache.commons.lang.StringUtils;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import com.googlecode.totallylazy.Function1;
+import com.googlecode.totallylazy.Sequence;
+import com.googlecode.totallylazy.Sequences;
+import net.masterthought.cucumber.ConfigurationOptions;
+import net.masterthought.cucumber.util.Util;
+import org.apache.commons.lang.StringUtils;
 
 import static com.googlecode.totallylazy.Option.option;
 
@@ -27,22 +25,36 @@ public class Element {
 
     }
 
-	protected Boolean updateStepsIndex = true;
-	public Sequence<Step> getSteps() {
-		if (updateStepsIndex) {
-			LinkedHashMap<String, Integer> stepNames = new LinkedHashMap<String, Integer>();
-		    for (Step step : steps) {
-		    	String oldName = step.getRawName();
-		    	Integer count = stepNames.get(oldName);
-		    	if (count == null)
-		    		count = 0;
-		    	step.setName(oldName + " " + (++count));
-		    	stepNames.put(oldName, count);
-		    	}
-		    }
-		    this.updateStepsIndex = false;
-		return Sequences.sequence(option(steps).getOrElse(new Step[] {})).realise();
-	}
+    public Sequence<Step> getSteps() {
+        return getSteps(false, 0);
+    }
+
+	public Sequence<Step> getSteps(Boolean update, int index) {
+        if (update) {
+            LinkedHashMap<String, Integer> stepNames = new LinkedHashMap<String, Integer>();
+            for (Step step : steps) {
+                String oldName = step.getRawName();
+                Integer count = stepNames.get(oldName);
+                if (count == null) {
+                    count = 0;
+                }
+                if (count > 0) {
+                    for (Step step1 : steps) {
+                        for (int i = count; i > 0; i--) {
+                            if (step1.getRawName().equals(oldName + " " + i)) {
+                                step1.setName(oldName + " " + (i + index));
+                                break;
+                            }
+                        }
+                    }
+                }
+                count = count + index;
+                step.setName(oldName + " " + (++count));
+                stepNames.put(oldName, count);
+            }
+        }
+        return Sequences.sequence(option(steps).getOrElse(new Step[]{})).realise();
+    }
 
     public Sequence<Tag> getTags() {
         return Sequences.sequence(option(tags).getOrElse(new Tag[]{})).realise();
@@ -65,6 +77,15 @@ public class Element {
 
     public String getRawName() {
         return name;
+    }
+
+    public String getDescription() {
+        String result = "";
+        if (Util.itemExists(description)) {
+            String content = description.replaceAll("\n", "<br/>");
+            result = "</span><span class=\"scenario-description\">" + content  + "</span>";
+        }
+        return Util.itemExists(description) ?  Util.result(getStatus()) + result + Util.closeDiv() : "";
     }
 
     public String getKeyword() {
