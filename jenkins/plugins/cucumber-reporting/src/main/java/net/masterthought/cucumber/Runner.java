@@ -9,12 +9,12 @@ import java.util.List;
 public class Runner {
 
     public static void main(String[] args) throws Exception {
-        File rd = new File("/Project/Screens/reports_test");
+        File rd = new File("/Project/report");
         List<String> list = new ArrayList<String>();
 //        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project1.json");
 //        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project2.json");
 //        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project3.json");
-//        list.add("/Project/Screens/reports_test/report.json");
+        list.add("/Project/report/report.json");
 //        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project4.json");
 //        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project5.json");
 //        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project6.json");
