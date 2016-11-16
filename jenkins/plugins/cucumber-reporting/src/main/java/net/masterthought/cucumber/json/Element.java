@@ -79,6 +79,15 @@ public class Element {
         return name;
     }
 
+    public String getDescription() {
+        String result = "";
+        if (Util.itemExists(description)) {
+            String content = description.replaceAll("\n", "<br/>");
+            result = "</span><span class=\"scenario-description\">" + content  + "</span>";
+        }
+        return Util.itemExists(description) ?  Util.result(getStatus()) + result + Util.closeDiv() : "";
+    }
+
     public String getKeyword() {
         return keyword;
     }
