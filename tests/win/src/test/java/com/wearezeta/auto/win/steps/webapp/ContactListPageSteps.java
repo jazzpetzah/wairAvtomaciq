@@ -34,7 +34,7 @@ public class ContactListPageSteps {
     
     @When("^I type shortcut combination to archive a conversation$")
     public void ITypeShortcutCombinationToArchive() throws Exception {
-        webContext.getPagesCollection().getPage(ContactListPage.class).pressShortcutForArchive();
+        webContext.getPagesCollection().getPage(ContactListPage.class).pressShortCutToArchive();
     }
     
     @When("^I type shortcut combination to mute or unmute a conversation$")
