@@ -1042,6 +1042,7 @@ public class CommonIOSSteps {
     /**
      * Verify whether currently visible alert contains particular text
      *
+     * @param shouldNotBeVisible equals to null if the alert text should be visible
      * @param expectedText the text (or part of it) to verify
      * @throws Exception
      * @step. ^I (do not )?see alert contains text (.*)
