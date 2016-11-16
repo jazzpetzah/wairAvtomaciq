@@ -283,7 +283,7 @@ public abstract class IOSPage extends BasePage {
 
     public boolean isAlertContainsText(String expectedText) throws Exception {
         final By locator = By.xpath(xpathStrAlertByText.apply(expectedText));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isLocatorDisplayed(locator);
     }
 
     public void pressHomeButton(int timeSeconds) throws Exception {
