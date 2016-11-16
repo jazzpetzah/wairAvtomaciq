@@ -24,7 +24,6 @@ public class ConversationPageSteps {
         this.webContext = webContext;
         this.wrapperContext = wrapperContext;
     }
-
     
     @Then("^I (do not )?see a picture (.*) from link preview$")
     public void ISeePictureInLinkPreview(String doNot, String pictureName) throws Exception {
@@ -42,5 +41,4 @@ public class ConversationPageSteps {
                     .isImageFromLinkPreviewNotVisible());
         }
     }
-    
 }
