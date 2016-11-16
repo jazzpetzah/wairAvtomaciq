@@ -63,4 +63,8 @@ public interface IDevice extends IRemoteEntity {
     String getFingerprint() throws Exception;
 
     void destroy();
+
+    void setAssetToV3() throws Exception;
+
+    void setAssetToV2() throws Exception;
 }

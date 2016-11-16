@@ -189,6 +189,14 @@ public class SEBridge {
         }
     }
 
+    public void setAssetToV3(ClientUser userFrom, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).setAssetToV3();
+    }
+
+    public void setAssetToV2(ClientUser userFrom, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).setAssetToV2();
+    }
+
     public void releaseDevicesOfUser(ClientUser user) throws Exception {
         getDevicePool().releaseDevices(getDevicePool().getDevices(user));
     }
