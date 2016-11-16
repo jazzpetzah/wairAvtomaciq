@@ -17,7 +17,7 @@ public class PreferencesPage extends
     }
 
     public void pressShortCutForPreferences() {
-        robot.keyPress(KeyEvent.VK_CONTROL);// command key
+        robot.keyPress(KeyEvent.VK_CONTROL);
         robot.keyPress(KeyEvent.VK_COMMA);
         robot.keyRelease(KeyEvent.VK_COMMA);
         robot.keyRelease(KeyEvent.VK_CONTROL);

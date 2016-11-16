@@ -5,7 +5,6 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 import java.util.concurrent.Future;
 import java.awt.Robot;
-import java.awt.event.KeyEvent;
 
 import org.apache.log4j.Logger;
 
@@ -21,8 +20,7 @@ public class OwnMessageContextMenuPage extends WinPage {
     // TODO hide behind driver impl
     private final Robot robot = new Robot();
 
-    public OwnMessageContextMenuPage(Future<ZetaWinDriver> lazyDriver)
-            throws Exception {
+    public OwnMessageContextMenuPage(Future<ZetaWinDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
@@ -32,27 +30,18 @@ public class OwnMessageContextMenuPage extends WinPage {
      * @throws Exception
      */
     public void clickLike() throws Exception {
-        selectByIndex(CONTEXT_LIKE_INDEX, 2000);
+        selectByIndex(robot, CONTEXT_LIKE_INDEX, 2000);
     }
     
     public void clickEdit() throws Exception {
-        selectByIndex(CONTEXT_EDIT_INDEX, 2000);
+        selectByIndex(robot, CONTEXT_EDIT_INDEX, 2000);
     }
     
     public void clickDelete() throws Exception {
-        selectByIndex(CONTEXT_DELETE_INDEX, 2000);
+        selectByIndex(robot, CONTEXT_DELETE_INDEX, 2000);
     }
     
     public void clickDeleteEverywhere() throws Exception {
-        selectByIndex(CONTEXT_DELETE_EVERYWHERE_INDEX, 2000);
-    }
-
-    private void selectByIndex(int index, long wait) throws InterruptedException {
-        Thread.sleep(wait);
-        for (int i = 0; i < index; i++) {
-            robot.keyPress(KeyEvent.VK_DOWN);
-            Thread.sleep(wait);
-        }
-        robot.keyPress(KeyEvent.VK_ENTER);
+        selectByIndex(robot, CONTEXT_DELETE_EVERYWHERE_INDEX, 2000);
     }
 }

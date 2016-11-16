@@ -6,6 +6,8 @@ import com.wearezeta.auto.common.driver.ZetaWinDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.win.common.WinExecutionContext;
 import com.wearezeta.auto.win.locators.WinLocators;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -104,5 +106,16 @@ public abstract class WinPage extends BasePage {
 
     public Optional<BufferedImage> getScreenshot() throws Exception {
         return DriverUtils.takeFullScreenShot(getDriver());
+    }
+    
+    protected void selectByIndex(Robot robot, int index, long wait) throws Exception {
+        Thread.sleep(wait);
+        for (int i = 0; i < index; i++) {
+            robot.keyPress(KeyEvent.VK_DOWN);
+            robot.keyRelease(KeyEvent.VK_DOWN);
+            Thread.sleep(wait);
+        }
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
     }
 }

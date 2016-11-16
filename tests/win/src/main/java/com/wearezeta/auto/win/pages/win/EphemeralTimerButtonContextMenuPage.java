@@ -5,7 +5,6 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import java.awt.Robot;
 
 import java.util.concurrent.Future;
-import java.awt.event.KeyEvent;
 
 import org.apache.log4j.Logger;
 
@@ -36,35 +35,26 @@ public class EphemeralTimerButtonContextMenuPage extends WinPage {
     public void setEphemeralTimer(String timerName) throws Exception {
         switch(timerName){
             case "OFF":
-                selectByIndex(CONTEXT_EPH_TIMER_OFF_INDEX, 1000);
+                selectByIndex(robot, CONTEXT_EPH_TIMER_OFF_INDEX, 1000);
                 break;
             case "5 SECONDS":
-                selectByIndex(CONTEXT_EPH_TIMER_5_SECONDS_INDEX, 1000);
+                selectByIndex(robot, CONTEXT_EPH_TIMER_5_SECONDS_INDEX, 1000);
                 break;
             case "15 SECONDS":
-                selectByIndex(CONTEXT_EPH_TIMER_15_SECONDS_INDEX, 1000);
+                selectByIndex(robot, CONTEXT_EPH_TIMER_15_SECONDS_INDEX, 1000);
                 break;
             case "30 SECONDS":
-                selectByIndex(CONTEXT_EPH_TIMER_30_SECONDS_INDEX, 1000);
+                selectByIndex(robot, CONTEXT_EPH_TIMER_30_SECONDS_INDEX, 1000);
                 break;
             case "1 MINUTE":
-                selectByIndex(CONTEXT_EPH_TIMER_1_MINUTE_INDEX, 1000);
+                selectByIndex(robot, CONTEXT_EPH_TIMER_1_MINUTE_INDEX, 1000);
                 break;
             case "5 MINUTES":
-                selectByIndex(CONTEXT_EPH_TIMER_5_MINUTES_INDEX, 1000);
+                selectByIndex(robot, CONTEXT_EPH_TIMER_5_MINUTES_INDEX, 1000);
                 break;
             case "1 DAY":
-                selectByIndex(CONTEXT_EPH_TIMER_1_DAY_INDEX, 1000);
+                selectByIndex(robot, CONTEXT_EPH_TIMER_1_DAY_INDEX, 1000);
                 break;    
         }
-    }
-
-    private void selectByIndex(int index, long wait) throws Exception {
-        Thread.sleep(wait);
-        for (int i = 0; i < index; i++) {
-            robot.keyPress(KeyEvent.VK_DOWN);
-            Thread.sleep(wait);
-        }
-        robot.keyPress(KeyEvent.VK_ENTER);
     }
 }
