@@ -38,7 +38,7 @@ public class Element {
                 if (count == null) {
                     count = 0;
                 }
-                if (count > 0 && index > 0) {
+                if (count > 0) {
                     for (Step step1 : steps) {
                         for (int i = count; i > 0; i--) {
                             if (step1.getRawName().equals(oldName + " " + i)) {
@@ -47,8 +47,8 @@ public class Element {
                             }
                         }
                     }
-                    count = count + index;
                 }
+                count = count + index;
                 step.setName(oldName + " " + (++count));
                 stepNames.put(oldName, count);
             }

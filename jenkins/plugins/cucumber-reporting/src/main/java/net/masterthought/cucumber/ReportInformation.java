@@ -254,7 +254,7 @@ public class ReportInformation {
                         }
 
                     }
-                    adjustStepsForScenario(scenario);
+                    adjustStepsForScenario(scenario, feature);
                 }
             }
         }
@@ -291,17 +291,21 @@ public class ReportInformation {
 
     }
 
-    String lastScenarioName = "";
     private int stepIndex = 0;
+    private String lastScenarioName = "";
+    private String lastFeatureName = "";
 
-    private void adjustStepsForScenario(Element element) {
+    private void adjustStepsForScenario(Element element, Feature feature) {
+
         String scenarioName = element.getRawName();
-        if (lastScenarioName.equals(scenarioName)) {
+        if (lastScenarioName.equals(scenarioName) && lastFeatureName.equals(feature.getName())) {
             stepIndex++;
         } else {
             stepIndex = 0;
         }
+        System.out.println("stepIndex="+stepIndex);
         lastScenarioName = scenarioName;
+        lastFeatureName = feature.getName();
         if (Util.hasSteps(element)) {
             Sequence<Step> steps = element.getSteps(true, stepIndex);
             numberOfSteps = numberOfSteps + steps.size();
