@@ -104,7 +104,7 @@ text.build {
                     #if($fromJenkins)
                         <li><a href="${jenkins_base}job/$build_project/$build_number">Back To Jenkins</a></li>
                     #end
-				<li><a href="tag-overview.html">Tag Overview</a></li>
+				<!--<li><a href="tag-overview.html">Tag Overview</a></li>-->
 				</ul>
 			</div>
 		</div>
