@@ -303,7 +303,6 @@ public class ReportInformation {
         } else {
             stepIndex = 0;
         }
-        System.out.println("stepIndex="+stepIndex);
         lastScenarioName = scenarioName;
         lastFeatureName = feature.getName();
         if (Util.hasSteps(element)) {
