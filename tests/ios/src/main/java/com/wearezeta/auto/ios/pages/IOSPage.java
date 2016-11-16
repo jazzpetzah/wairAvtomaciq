@@ -285,18 +285,13 @@ public abstract class IOSPage extends BasePage {
         final By locator = By.xpath(xpathStrAlertByText.apply(expectedText));
         return isLocatorDisplayed(locator);
     }
-
-<<<<<<< HEAD
+    
     public boolean isAlertDoesNotContainsText(String expectedText) throws Exception {
         final By locator = By.xpath(xpathStrAlertByText.apply(expectedText));
         return isLocatorInvisible(locator);
     }
 
-    public void pressHomeButton(int timeSeconds) throws Exception {
-        assert getDriver() != null : "WebDriver is not ready";
-=======
     public void putWireToBackgroundFor(int timeSeconds) throws Exception {
->>>>>>> master
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             getDriver().pressHomeButton();
             Thread.sleep(timeSeconds * 1000);
