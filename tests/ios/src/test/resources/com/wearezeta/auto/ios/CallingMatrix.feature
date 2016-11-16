@@ -240,3 +240,46 @@ Feature: Calling Matrix
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
+
+  @C343178 @calling_matrix @fastLogin @real
+  Scenario Outline: Verify I can receive 1:1 call from AVS <CallBackend>
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email
+    Given I see conversations list
+    And I tap on contact name <Contact>
+    When <Contact> calls me
+    And I see Audio Call Kit overlay
+    And I tap Accept button on Call Kit overlay
+    And I accept alert
+    And I accept alert
+    Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+    When I tap Leave button on Calling overlay
+    Then I do not see Calling overlay
+    And <Contact> verifies that call to conversation <Name> was successful
+
+    Examples:
+      | Name      | Contact   | CallBackend  | Timeout |
+      | user1Name | user2Name | zcall        | 60      |
+
+  @C343179 @calling_matrix @fastLogin @real
+  Scenario Outline: Verify I can make 1:1 call to AVS <CallBackend>
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given <Contact> accepts next incoming call automatically
+    Given I sign in using my email
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I tap Audio Call button
+    And I accept alert
+    And I accept alert
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see Calling overlay
+    When I tap Leave button on Calling overlay
+    Then I do not see Calling overlay
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | zcall       | 20      |

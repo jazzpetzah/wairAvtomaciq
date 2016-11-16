@@ -8,19 +8,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Metrics {
     
     private final boolean success;
+    private final String setupTime;
 
     @JsonCreator
-    public Metrics(@JsonProperty("success") boolean success) {
+    public Metrics(@JsonProperty("success") boolean success, @JsonProperty("setup_time") String setupTime) {
         this.success = success;
+        this.setupTime = setupTime;
     }
 
     public boolean isSuccess() {
         return success;
     }
 
+    public String getSetupTime() {
+        return setupTime;
+    }
+
     @Override
     public String toString() {
-        return "Metrics{success=" + success + '}';
+        return "Metrics{" +
+                "success=" + success +
+                ", setupTime='" + setupTime + '\'' +
+                '}';
     }
-    
 }
