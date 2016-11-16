@@ -286,6 +286,11 @@ public abstract class IOSPage extends BasePage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
+    public boolean isAlertDoesNotContainsText(String expectedText) throws Exception {
+        final By locator = By.xpath(xpathStrAlertByText.apply(expectedText));
+        return isLocatorInvisible(locator);
+    }
+
     public void pressHomeButton(int timeSeconds) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {

@@ -1044,7 +1044,7 @@ public class CommonIOSSteps {
      *
      * @param expectedText the text (or part of it) to verify
      * @throws Exception
-     * @step. ^I verify the alert contains text (.*)
+     * @step. ^I (do not )?see alert contains text (.*)
      */
     @Then("^I (do not )?see alert contains text (.*)")
     public void ISeeAlertContains(String shouldNotBeVisible, String expectedText) throws Exception {
@@ -1053,7 +1053,7 @@ public class CommonIOSSteps {
                     pagesCollection.getCommonPage().isAlertContainsText(expectedText));
         } else {
             Assert.assertTrue(String.format("There is '%s' text on the alert", expectedText),
-                    !pagesCollection.getCommonPage().isAlertContainsText(expectedText));
+                    pagesCollection.getCommonPage().isAlertDoesNotContainsText(expectedText));
         }
     }
 
