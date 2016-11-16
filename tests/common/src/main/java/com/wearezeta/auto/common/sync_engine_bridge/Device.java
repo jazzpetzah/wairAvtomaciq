@@ -320,4 +320,18 @@ class Device extends RemoteEntity implements IDevice {
             this.hostProcess = null;
         }
     }
+
+    @Override
+    public void setAssetToV3() throws Exception {
+        retryOnTimeoutFailure(
+                () -> askActor(this.ref(), ActorMessage.SetAssetToV3$.MODULE$)
+        );
+    }
+
+    @Override
+    public void setAssetToV2() throws Exception {
+        retryOnTimeoutFailure(
+                () -> askActor(this.ref(), ActorMessage.SetAssetToV2$.MODULE$)
+        );
+    }
 }

@@ -6,6 +6,7 @@ import com.waz.provision.ActorMessage;
 import com.wearezeta.auto.common.backend.*;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.sync_engine_bridge.Asset;
 import com.wearezeta.auto.common.sync_engine_bridge.MessageReactionType;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -344,7 +345,7 @@ public final class CommonSteps {
     }
 
     public void UserReadEphemeralMessage(String msgFromUserNameAlias, String dstConversationName, MessageId messageId,
-                                      String deviceName, boolean isGroup) throws Exception {
+                                         String deviceName, boolean isGroup) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
         if (!isGroup) {
             dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
@@ -354,7 +355,7 @@ public final class CommonSteps {
     }
 
     public void UserReadLastEphemeralMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName,
-                                        boolean isGroup) throws Exception {
+                                             boolean isGroup) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
         if (!isGroup) {
             dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
@@ -365,7 +366,7 @@ public final class CommonSteps {
     }
 
     public void UserReadSecondLastEphemeralMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName,
-                                             boolean isGroup) throws Exception {
+                                                   boolean isGroup) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
         if (!isGroup) {
             dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
@@ -910,6 +911,20 @@ public final class CommonSteps {
         SEBridge.getInstance().setEphemeralMode(msgFromUser, dstConvId, expirationMilliseconds, deviceName);
     }
 
+    public void UserSetAssetMode(String actorUserNameAlias, Asset asset, String deviceName) throws Exception {
+        final ClientUser actorUser = usrMgr.findUserByNameOrNameAlias(actorUserNameAlias);
+        switch (asset) {
+            case V3:
+                SEBridge.getInstance().setAssetToV3(actorUser, deviceName);
+                break;
+            case V2:
+                SEBridge.getInstance().setAssetToV2(actorUser, deviceName);
+                break;
+            default:
+                throw new IllegalArgumentException("Only support Asset V2 and V3");
+        }
+    }
+
     public void UserResetsPassword(String nameAlias, String newPassword) throws Exception {
         final ClientUser usr = usrMgr.findUserByNameOrNameAlias(nameAlias);
         BackendAPIWrappers.changeUserPassword(usr, usr.getPassword(), newPassword);
@@ -962,7 +977,7 @@ public final class CommonSteps {
     }
 
     public void UserXFoundLastMessageNotChanged(String userNameAlias, boolean isGroup, String dstNameAlias,
-                                             String deviceName, int durationSeconds) throws Exception {
+                                                String deviceName, int durationSeconds) throws Exception {
         final String convoKey = generateConversationKey(userNameAlias, dstNameAlias, deviceName);
         if (!recentMessageIds.containsKey(convoKey)) {
             throw new IllegalStateException("You should remember the recent message before you check it");

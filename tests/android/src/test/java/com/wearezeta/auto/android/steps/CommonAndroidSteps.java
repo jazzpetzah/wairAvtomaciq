@@ -24,18 +24,14 @@ import com.wearezeta.auto.android.pages.SecurityAlertPage;
 import com.wearezeta.auto.android.pages.registration.BackendSelectPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.android.tools.WireDatabase;
-import com.wearezeta.auto.common.CommonCallingSteps2;
-import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.FileInfo;
-import com.wearezeta.auto.common.Platform;
-import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.AppiumServer;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.sync_engine_bridge.Asset;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -1919,5 +1915,20 @@ public class CommonAndroidSteps {
                                             String timeMetrics) throws Exception {
         final long timeoutMs = timeMetrics.startsWith("minute") ? timeout * 60 * 1000 : timeout * 1000;
         commonSteps.UserSwitchesToEphemeralMode(userAs, convoName, timeoutMs, isGroup.equals("group conversation"), deviceName);
+    }
+
+    /**
+     * Switch the Actor's Asset mode
+     *
+     * @param userAs     user name/alias
+     * @param mode       V2 or V3
+     * @param deviceName device name
+     * @throws Exception
+     * @step. User (.*) switches assets to (V2|V3) (?:via device (.*))?$
+     */
+    @When("^User (.*) switches assets to (V2|V3) (?:via device (.*))?$")
+    public void UserSwitchAssetMode(String userAs, String mode, String deviceName) throws Exception {
+        Asset asset = mode.toUpperCase().equals("V3") ? Asset.V3 : Asset.V2;
+        commonSteps.UserSetAssetMode(userAs, asset, deviceName);
     }
 }
