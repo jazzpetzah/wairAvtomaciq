@@ -40,18 +40,25 @@ public class CallingSteps {
     }
 
     /**
-     * Stop call on the caller side
+     * Stop outgoing or incoming call (audio and video) to the other side
      *
-     * @param caller           caller name/alias
+     * @step. ^(.*) stops? (incoming call from|outgoing call to) (.*)
+     *
+     * @param instanceUsers comma separated list of user names/aliases
      * @param conversationName destination conversation name
      * @throws Exception
-     * @step. (.*) stops? all calls to (.*)
      */
-    @When("(.*) stops? calling (.*)")
-    public void UserXStopsCallsToUserY(String caller, String conversationName)
+    @When("^(.*) stops? (incoming call from|outgoing call to) (.*)")
+    public void UserXStopsIncomingOutgoingCallsToUserY(String instanceUsers, String typeOfCall, String conversationName)
             throws Exception {
-        commonCallingSteps.stopOutgoingCall(splitAliases(caller), conversationName);
+        if (typeOfCall.equals("incoming call from")) {
+            commonCallingSteps.stopIncomingCall(splitAliases(instanceUsers));
+        } else {
+            commonCallingSteps.stopOutgoingCall(splitAliases(instanceUsers), conversationName);
+        }
     }
+
+
 
     /**
      * Verify whether call status is changed to one of the expected values after

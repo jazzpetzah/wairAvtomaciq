@@ -285,3 +285,18 @@ Feature: Settings
     Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
+
+  @C315479 @real @fastLogin
+  Scenario Outline: Verify Browser option is shown if Chrome or Firefox is installed
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap settings gear button
+    Given I select settings item Options
+    When I select settings item Browser
+    # This test requires Chrome browser to be already installed on the device under test
+    Then I see settings item <AlternativeBrowserName>
+
+    Examples:
+      | Name      | AlternativeBrowserName |
+      | user1Name | Chrome                 |

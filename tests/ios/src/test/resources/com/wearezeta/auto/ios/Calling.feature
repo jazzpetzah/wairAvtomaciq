@@ -9,7 +9,7 @@ Feature: Calling
     Given I see conversations list
     When <Contact> calls me
     And I wait for 5 seconds
-    And <Contact> stops calling me
+    And <Contact> stops outgoing call to me
     And I tap on contact name <Contact>
     Then I tap missed call button to call contact <Contact>
     And I see Calling overlay
@@ -92,7 +92,7 @@ Feature: Calling
     Given I see conversations list
     When <Contact> calls me
     And I wait for 5 seconds
-    And <Contact> stops calling me
+    And <Contact> stops outgoing call to me
     And I tap on contact name <Contact>
     Then I see missed call from contact <Contact>
 
@@ -111,7 +111,7 @@ Feature: Calling
     When I remember the state of <Contact> conversation item
     And <Contact> calls me
     And I wait for 5 seconds
-    And <Contact> stops calling me
+    And <Contact> stops outgoing call to me
     Then I see the state of <Contact> conversation item is changed
     When I remember the state of <Contact> conversation item
     And User <Contact> sends <Number> encrypted messages to user Myself
@@ -125,7 +125,7 @@ Feature: Calling
       | Name      | Contact   | Contact1  | Number | CallBackend |
       | user1Name | user2Name | user3Name | 2      | chrome      |
 
-  @C2080 @calling_basic @fastLogin
+  @C2080 @calling_basic @fastLogin @forceResetAfterTest
   Scenario Outline: Screenlock device when in the call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -162,7 +162,7 @@ Feature: Calling
     And <Contact2> calls me
     And I see call status message contains "<Contact2> calling"
     And I tap Ignore button on Calling overlay
-    And <Contact2> stops calling me
+    And <Contact2> stops outgoing call to me
     And I tap Leave button on Calling overlay
     And I navigate back to conversations list
     And I see the state of <Contact2> conversation item is changed

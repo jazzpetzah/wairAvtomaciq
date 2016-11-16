@@ -283,9 +283,10 @@ public abstract class IOSPage extends BasePage {
 
     public boolean isAlertContainsText(String expectedText) throws Exception {
         final By locator = By.xpath(xpathStrAlertByText.apply(expectedText));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return isLocatorDisplayed(locator);
     }
 
+<<<<<<< HEAD
     public boolean isAlertDoesNotContainsText(String expectedText) throws Exception {
         final By locator = By.xpath(xpathStrAlertByText.apply(expectedText));
         return isLocatorInvisible(locator);
@@ -293,8 +294,11 @@ public abstract class IOSPage extends BasePage {
 
     public void pressHomeButton(int timeSeconds) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
+=======
+    public void putWireToBackgroundFor(int timeSeconds) throws Exception {
+>>>>>>> master
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            IOSSimulatorHelpers.goHome();
+            getDriver().pressHomeButton();
             Thread.sleep(timeSeconds * 1000);
             IOSSimulatorHelpers.launchApp(
                     IOSDistributable.getInstance(getIosApplicationPathFromConfig(getClass())).getBundleId()
@@ -306,25 +310,21 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void pressHomeButton() throws Exception {
-        assert getDriver() != null : "WebDriver is not ready";
-        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            IOSSimulatorHelpers.goHome();
-            Thread.sleep(1000);
-        } else {
-            throw new IllegalStateException("This method works for iOS Simulator only");
-        }
+        getDriver().pressHomeButton();
+        Thread.sleep(1000);
     }
 
     public void restoreWire() throws Exception {
-        assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            assert getDriver() != null : "WebDriver is not ready";
             IOSSimulatorHelpers.launchApp(
                     IOSDistributable.getInstance(getIosApplicationPathFromConfig(getClass())).getBundleId()
             );
-            Thread.sleep(1000);
         } else {
-            throw new IllegalStateException("This method works for iOS Simulator only");
+            // Try to open Wire from dashboard icon
+            getElement(MobileBy.AccessibilityId("Wire")).click();
         }
+        Thread.sleep(1000);
     }
 
     protected void doubleClickAt(WebElement el, int percentX, int percentY) throws Exception {

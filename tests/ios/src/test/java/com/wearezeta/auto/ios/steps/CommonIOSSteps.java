@@ -70,6 +70,9 @@ public class CommonIOSSteps {
     public static final String CAPABILITY_NAME_FORCE_RESET = "forceReset";
     public static final String TAG_NAME_FORCE_RESET = "@" + CAPABILITY_NAME_FORCE_RESET;
 
+    public static final String CAPABILITY_NAME_FORCE_RESET_AFTER_TEST = "forceResetAfterTest";
+    public static final String TAG_NAME_FORCE_RESET_AFTER_TEST = "@" + CAPABILITY_NAME_FORCE_RESET_AFTER_TEST;
+
     static {
         System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
         System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "warn");
@@ -398,6 +401,15 @@ public class CommonIOSSteps {
             e.printStackTrace();
         }
 
+        try {
+            if (getIsSimulatorFromConfig(getClass())
+                    && scenario.getSourceTagNames().contains(TAG_NAME_FORCE_RESET_AFTER_TEST)) {
+                IOSSimulatorHelpers.reset();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         log.debug("\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     }
 
@@ -576,7 +588,7 @@ public class CommonIOSSteps {
      */
     @When("^I close the app for (\\d+) seconds?$")
     public void ICloseApp(int seconds) throws Exception {
-        pagesCollection.getCommonPage().pressHomeButton(seconds);
+        pagesCollection.getCommonPage().putWireToBackgroundFor(seconds);
     }
 
     /**
@@ -1707,5 +1719,16 @@ public class CommonIOSSteps {
     @When("^I tap \"(.*)\" key on Emoji Keyboard$")
     public void TapKeyOnEmojiKeyboard(String keyName) throws Exception {
         pagesCollection.getCommonPage().tapEmojiKeyboardKey(keyName);
+    }
+
+    /**
+     * Puts Wire into the background on real device
+     *
+     * @throws Exception
+     * @step. ^I press Home button$
+     */
+    @Given("^I press Home button$")
+    public void IPressHomeButton() throws Exception {
+        pagesCollection.getCommonPage().pressHomeButton();
     }
 }

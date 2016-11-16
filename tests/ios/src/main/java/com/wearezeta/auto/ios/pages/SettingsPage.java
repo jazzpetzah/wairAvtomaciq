@@ -9,12 +9,15 @@ import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
 
 import java.awt.image.BufferedImage;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
 public class SettingsPage extends IOSPage {
     private static final Function<String, String> xpathStrMenuItemByName = name ->
             String.format("//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[@name='%s'] ]", name);
+
+    private static final By fbClassNameOptionsRoot = FBBy.className("XCUIElementTypeTable");
 
     public static final By xpathSettingsPage = By.xpath("//XCUIElementTypeNavigationBar[@name='Settings']");
 
@@ -51,15 +54,25 @@ public class SettingsPage extends IOSPage {
         return isLocatorExist(xpathSettingsPage);
     }
 
-    public void selectItem(String itemName) throws Exception {
+    private static final int MAX_SCROLLS = 2;
+
+    private FBElement scrollToItem(String itemName) throws Exception {
         final By locator = FBBy.xpath(xpathStrMenuItemByName.apply(itemName));
-        final FBElement dstElement = (FBElement) getElementIfExists(locator).orElseThrow(
-                () -> new IllegalStateException(String.format("Menu element '%s' does not exist", itemName))
-        );
-        if (!dstElement.isDisplayed()) {
-            dstElement.scrollTo();
-        }
-        dstElement.click();
+        final FBElement optionsRoot = (FBElement) getElement(fbClassNameOptionsRoot);
+        int nScrolls = 0;
+        do {
+            final Optional<WebElement> dstElement = getElementIfDisplayed(locator, 2);
+            if (dstElement.isPresent()) {
+                return (FBElement) dstElement.get();
+            }
+            optionsRoot.scrollDown();
+            nScrolls++;
+        } while (nScrolls < MAX_SCROLLS);
+        throw new IllegalStateException(String.format("Menu item '%s' does not exist", itemName));
+    }
+
+    public void selectItem(String itemName) throws Exception {
+        scrollToItem(itemName).click();
         // Wait for animation
         Thread.sleep(1000);
     }
@@ -68,7 +81,7 @@ public class SettingsPage extends IOSPage {
         return isLocatorExist(By.xpath(xpathStrMenuItemByName.apply(itemName)));
     }
 
-    public boolean verificationLabelVisibility(String deviceName, String verificationLabel) throws Exception {
+    public boolean isVerificationLabelVisible(String deviceName, String verificationLabel) throws Exception {
         final By locator = By.xpath(xpathStrDeviceVerificationLabel.apply(deviceName, verificationLabel));
         return isLocatorDisplayed(locator);
     }

@@ -27,7 +27,7 @@ Feature: Calling
     Given I see conversations list
     When <Contact> calls me
     And I wait for 5 seconds
-    And <Contact> stops calling me
+    And <Contact> stops outgoing call to me
     And I tap on contact name <Contact>
     Then I see missed call from contact <Contact>
     And I tap missed call button to call contact <Contact>
@@ -82,7 +82,7 @@ Feature: Calling
     Given I see conversations list
     When <Contact> calls me
     And I wait for 5 seconds
-    And <Contact> stops calling me
+    And <Contact> stops outgoing call to me
     And I tap on contact name <Contact>
     Then I see missed call from contact <Contact>
 
@@ -90,7 +90,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C2408 @calling_basic @fastLogin
+  @C2408 @calling_basic @fastLogin @forceResetAfterTest
   Scenario Outline: Screenlock device when in the call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -125,7 +125,7 @@ Feature: Calling
     And I see call status message contains "<Contact2> calling"
     And I tap Ignore button on Calling overlay
     And I see Calling overlay
-    And <Contact2> stops calling me
+    And <Contact2> stops outgoing call to me
     And I tap Leave button on Calling overlay
     And I do not see Calling overlay
     And I see the state of <Contact2> conversation item is changed on iPad
@@ -206,7 +206,7 @@ Feature: Calling
     And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
     And I wait for 5 seconds
-    And <Contact> stops calling me
+    And <Contact> stops outgoing call to me
     And I do not see Calling overlay
 
     Examples:

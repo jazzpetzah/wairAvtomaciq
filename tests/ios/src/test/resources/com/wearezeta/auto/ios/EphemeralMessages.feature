@@ -299,7 +299,7 @@ Feature: Ephemeral Messages
     Given User <Contact> switches user Myself to ephemeral mode with <EphemeralTimeout> seconds timeout
     # Picture
     When User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    And I wait for <SyncTimeout> seconds
+    And I wait for 2 seconds
     And I see 1 photo in the conversation view
     And I wait for <EphemeralTimeout> seconds
     Then I see 0 photos in the conversation view
