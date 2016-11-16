@@ -248,7 +248,7 @@ Feature: Calling Matrix
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email
     Given I see conversations list
-    And I tap on contact name <Contact>
+    Given I tap on contact name <Contact>
     When <Contact> calls me
     And I see Audio Call Kit overlay
     And I tap Accept button on Call Kit overlay
@@ -271,8 +271,8 @@ Feature: Calling Matrix
     Given <Contact> accepts next incoming call automatically
     Given I sign in using my email
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And I tap Audio Call button
+    Given I tap on contact name <Contact>
+    When I tap Audio Call button
     And I accept alert
     And I accept alert
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
