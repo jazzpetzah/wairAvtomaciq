@@ -588,7 +588,7 @@ public class CommonIOSSteps {
      */
     @When("^I close the app for (\\d+) seconds?$")
     public void ICloseApp(int seconds) throws Exception {
-        pagesCollection.getCommonPage().pressHomeButton(seconds);
+        pagesCollection.getCommonPage().putWireToBackgroundFor(seconds);
     }
 
     /**
@@ -1723,6 +1723,6 @@ public class CommonIOSSteps {
      */
     @Given("^I press Home button$")
     public void IPressHomeButton() throws Exception {
-        pagesCollection.getCommonPage().putAppInBackground();
+        pagesCollection.getCommonPage().pressHomeButton();
     }
 }
