@@ -70,6 +70,9 @@ public class CommonIOSSteps {
     public static final String CAPABILITY_NAME_FORCE_RESET = "forceReset";
     public static final String TAG_NAME_FORCE_RESET = "@" + CAPABILITY_NAME_FORCE_RESET;
 
+    public static final String CAPABILITY_NAME_FORCE_RESET_AFTER_TEST = "forceResetAfterTest";
+    public static final String TAG_NAME_FORCE_RESET_AFTER_TEST = "@" + CAPABILITY_NAME_FORCE_RESET_AFTER_TEST;
+
     static {
         System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
         System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "warn");
@@ -394,6 +397,15 @@ public class CommonIOSSteps {
 
         try {
             usrMgr.resetUsers();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if (getIsSimulatorFromConfig(getClass())
+                    && scenario.getSourceTagNames().contains(TAG_NAME_FORCE_RESET_AFTER_TEST)) {
+                IOSSimulatorHelpers.reset();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

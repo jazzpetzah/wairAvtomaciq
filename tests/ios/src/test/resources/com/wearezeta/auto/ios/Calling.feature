@@ -125,7 +125,7 @@ Feature: Calling
       | Name      | Contact   | Contact1  | Number | CallBackend |
       | user1Name | user2Name | user3Name | 2      | chrome      |
 
-  @C2080 @calling_basic @fastLogin
+  @C2080 @calling_basic @fastLogin @forceResetAfterTest
   Scenario Outline: Screenlock device when in the call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
