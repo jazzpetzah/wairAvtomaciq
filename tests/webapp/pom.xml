@@ -185,10 +185,10 @@
                                 </goals>
                                 <configuration>
                                     <target>
+                                        <!--TODO needs decision whether we want to check by specified tags all always all testcases-->
                                         <!--<property name="picklejar.tag" value="${picklejar.tag}"/>-->
                                         <property name="picklejar.feature.package" value="${picklejar.feature.package}"/>
                                         <property name="picklejar.steps.package" value="${picklejar.steps.package}"/>
-                                        <!--<property name="picklejar.random" value="0"/>-->
                                         <property name="basedir" value="${project.build.directory}" />
                                         <property name="runtime_classpath" refid="maven.runtime.classpath" />
                                         <exec executable="java" spawn="false">
@@ -197,7 +197,6 @@
                                             <!--<arg value="-Dpicklejar.tag=${picklejar.tag}"/>-->
                                             <arg value="-Dpicklejar.feature.package=${picklejar.feature.package}"/>
                                             <arg value="-Dpicklejar.steps.package=${picklejar.steps.package}"/>
-                                            <!--<arg value="-Dpicklejar.random=${picklejar.random}"/>-->
                                             <arg value="-Dlog4j.rootLogger=DEBUG"/>
                                             <arg value="com.wire.picklejar.construct.UnusedStepChecker"/>
                                         </exec>  
