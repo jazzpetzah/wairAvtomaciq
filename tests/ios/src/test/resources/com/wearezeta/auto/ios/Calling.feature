@@ -458,20 +458,21 @@ Feature: Calling
     # Check group chat where participant count = 5
     When I tap on group chat with name <GroupChat1Name>
     And I tap Audio Call button
+    And I do not see alert contains text <AlertText>
     Then I see Calling overlay
     And I tap Leave button on Calling overlay
     When I navigate back to conversations list
     # Check group chat where participant count > 5
     And I tap on group chat with name <GroupChat2Name>
     And I tap Audio Call button
-    Then I see Calling confirmation dialog
+    Then I see alert contains text <AlertText>
     # Confirm to call
     When I accept alert
     Then I see Calling overlay
 
     Examples:
-      | Name      | Contact   | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChat1Name | GroupChat2Name |
-      | user1Name | user2Name | user3Name | user3Name | user4Name | user5Name | user6Name | GROUP FIVE     | GROUP SIX      |
+      | Name      | Contact   | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChat1Name | GroupChat2Name | AlertText    |
+      | user1Name | user2Name | user3Name | user3Name | user4Name | user5Name | user6Name | GROUP FIVE     | GROUP SIX      | Confirmation |
 
   @C343170 @staging @calling_basic @fastLogin
   Scenario Outline: Verify you can cancel the group call from confirmation dialog for >5 participants group chat
@@ -480,13 +481,13 @@ Feature: Calling
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I tap on group chat with name <GroupChatName>
+    When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
-    Then I see Calling confirmation dialog
+    Then I see alert contains text <AlertText>
     When I dismiss alert
     Then I do not see Calling overlay
 
     Examples:
-      | Name      | Contact   | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName |
-      | user1Name | user2Name | user3Name | user3Name | user4Name | user5Name | user6Name | GROUP SIX     |
+      | Name      | Contact   | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | AlertText    |
+      | user1Name | user2Name | user3Name | user3Name | user4Name | user5Name | user6Name | GROUP SIX     | Confirmation |
     

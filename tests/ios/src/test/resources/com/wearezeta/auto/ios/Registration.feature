@@ -25,7 +25,7 @@ Feature: Registration
   Scenario Outline: Verify that it's impossible to proceed registration with more than 16 characters in Phone
     Given I see sign in screen
     When I enter <Count> digits phone number
-    Then I verify the alert contains text <ExpectedText>
+    Then I see alert contains text <ExpectedText>
 
     Examples:
       | Count | ExpectedText               |

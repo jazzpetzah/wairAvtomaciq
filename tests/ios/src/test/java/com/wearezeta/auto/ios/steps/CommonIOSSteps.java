@@ -1046,10 +1046,15 @@ public class CommonIOSSteps {
      * @throws Exception
      * @step. ^I verify the alert contains text (.*)
      */
-    @Then("^I verify the alert contains text (.*)")
-    public void IVerifyAlertContains(String expectedText) throws Exception {
-        Assert.assertTrue(String.format("There is no '%s' text on the alert", expectedText),
-                pagesCollection.getCommonPage().isAlertContainsText(expectedText));
+    @Then("^I (do not )?see alert contains text (.*)")
+    public void ISeeAlertContains(String shouldNotBeVisible, String expectedText) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue(String.format("There is no '%s' text on the alert", expectedText),
+                    pagesCollection.getCommonPage().isAlertContainsText(expectedText));
+        } else {
+            Assert.assertTrue(String.format("There is '%s' text on the alert", expectedText),
+                    !pagesCollection.getCommonPage().isAlertContainsText(expectedText));
+        }
     }
 
     /**

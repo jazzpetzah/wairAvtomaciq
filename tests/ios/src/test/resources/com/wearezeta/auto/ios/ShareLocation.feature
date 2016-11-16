@@ -112,7 +112,7 @@ Feature: Share Location
     And I tap Share Location button from input tools
     # Wait until map app is shown
     And I wait for 5 seconds
-    Then I verify the alert contains text <ExpectedAlertText>
+    Then I see alert contains text <ExpectedAlertText>
     When I dismiss alert
     And I tap Send location button from map view
     Then I see location map container in the conversation view
