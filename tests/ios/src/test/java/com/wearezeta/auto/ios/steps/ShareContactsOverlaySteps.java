@@ -14,22 +14,6 @@ public class ShareContactsOverlaySteps {
     }
 
     /**
-     * Verify whether Share contacts overlay is visible
-     *
-     * @param shouldNotSee equals to null if the overlay should be visible
-     * @throws Exception
-     * @step. I (do not )?see Share Contacts overlay$
-     */
-    @Then("^I (do not )?see Share Contact overlay$")
-    public void ISeeShareContactsOverlay(String shouldNotSee) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue("Share Contacts overlay is not visible", getShareContactsOverlay().waitUntilVisible());
-        } else {
-            Assert.assertTrue("Share Contacts overlay is not visible", getShareContactsOverlay().waitUntilInvisible());
-        }
-    }
-
-    /**
      * Tap the corresponding button on the overlay
      *
      * @param btnName one of possible button names

@@ -27,10 +27,6 @@ public class ConversationsListPageSteps {
         return pagesCollection.getPage(LoginPage.class);
     }
 
-    private SearchUIPage getPeoplePickerPage() throws Exception {
-        return pagesCollection.getPage(SearchUIPage.class);
-    }
-
     @Given("^I see conversations list$")
     public void GivenISeeConversationsList() throws Exception {
         Assert.assertTrue("Conversations list is not visible after the timeout", getLoginPage().isContactsButtonVisible());
@@ -244,30 +240,6 @@ public class ConversationsListPageSteps {
         }
     }
 
-    @When("^I create group chat with (.*) and (.*)$")
-    public void ICreateGroupChat(String contact1, String contact2) throws Exception {
-        WhenITapOnContactName(contact1);
-        ConversationViewPageSteps dialogSteps = new ConversationViewPageSteps();
-        dialogSteps.IOpenConversationDetails();
-
-        SingleConnectedUserProfilePageSteps infoPageSteps = new SingleConnectedUserProfilePageSteps();
-        infoPageSteps.ITapButton("Create Group");
-
-        SearchUIPageSteps pickerSteps = new SearchUIPageSteps();
-        pickerSteps.ITapSearchInput();
-        pickerSteps.ITypeInSearchInput(contact2);
-        pickerSteps.ITapOnConversationFromSearch(contact2);
-        if (getPeoplePickerPage().isKeyboardVisible()) {
-            getPeoplePickerPage().tapKeyboardCommitButton();
-        } else {
-            getPeoplePickerPage().tapAddToConversationButton();
-        }
-
-        GroupConversationViewPageSteps groupChatSteps = new GroupConversationViewPageSteps();
-        groupChatSteps.ThenISeeGroupChatPage(String.format("%s%s%s",
-                contact1, CommonSteps.ALIASES_SEPARATOR, contact2));
-    }
-
     @When("^I swipe right on a (.*)$")
     public void ISwipeRightOnContact(String contact) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
@@ -361,29 +333,6 @@ public class ConversationsListPageSteps {
             Assert.assertFalse(String.format("There is conversation with '%s' in the list, which should be hidden",
                     participantNames), getConversationsListPage().isConversationWithUsersExist(participantNames, 2));
         }
-    }
-
-    /**
-     * Verify that mute call button is shown in conversation list
-     *
-     * @throws Exception
-     * @step. ^I see mute call button in conversation list$
-     */
-    @Then("^I see mute call button in conversation list$")
-    public void ISeeMuteCallButtonInConversationList() throws Exception {
-        Assert.assertTrue("Mute call button is not shown in conversation list",
-                getConversationsListPage().isMuteCallButtonVisible());
-    }
-
-    /**
-     * Click on mute call button in conversation list
-     *
-     * @throws Exception
-     * @step. ^I click mute call button in conversation list
-     */
-    @Then("^I click mute call button in conversation list$")
-    public void IClickMuteCallButtonInConversationList() throws Exception {
-        getConversationsListPage().clickMuteCallButton();
     }
 
     private ElementState previousSettingsGearState = new ElementState(

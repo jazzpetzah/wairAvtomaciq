@@ -11,10 +11,6 @@ public class NewDeviceOverlay extends IOSPage {
     private static final Function<String, String> xpathStrLabelByText = text ->
             String.format("//XCUIElementTypeStaticText[contains(@name, '%s')]", text);
 
-    private static final By nameSendAnywayButton = MobileBy.AccessibilityId("SEND ANYWAY");
-
-    private static final By nameShowDeviceButton = MobileBy.AccessibilityId("SHOW DEVICE");
-
     private static final By nameCloseOverlayButton = MobileBy.AccessibilityId("RightButton");
 
     public NewDeviceOverlay(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -24,14 +20,6 @@ public class NewDeviceOverlay extends IOSPage {
     public boolean isContainingLabel(String expectedLabel) throws Exception {
         final By locator = By.xpath(xpathStrLabelByText.apply(expectedLabel));
         return isLocatorDisplayed(locator);
-    }
-
-    public void tapShowDeviceButton() throws Exception {
-        getElement(nameShowDeviceButton).click();
-    }
-
-    public void tapSendAnywayButton() throws Exception {
-        getElement(nameSendAnywayButton).click();
     }
 
     public void closeNewDeviceOverlay() throws Exception {

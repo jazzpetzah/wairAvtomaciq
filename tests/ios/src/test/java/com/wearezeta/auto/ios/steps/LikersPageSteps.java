@@ -45,15 +45,4 @@ public class LikersPageSteps {
                     getLikersPage().isLikerByPositionVisible(name, position));
         }
     }
-
-    /**
-     * Verify Likers page is opened
-     *
-     * @throws Exception
-     * @step. ^I see Likers page$
-     */
-    @Then("^I see Likers page$")
-    public void ISeeLikersPage() throws Exception {
-        Assert.assertTrue("Likers page is not visible", getLikersPage().likersPageIsVisible());
-    }
 }

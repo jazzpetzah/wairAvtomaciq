@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
@@ -33,10 +32,6 @@ public class CallingOverlayPage extends IOSPage {
 
     private static final By nameCallingMessage = MobileBy.AccessibilityId("CallStatusLabel");
 
-    private static final By nameSecondCallAlert = MobileBy.AccessibilityId("Answer call?");
-
-    private static final By nameAnswerCallAlertButton = MobileBy.AccessibilityId("Answer");
-
     private static final Function<Integer, String> xpathStrGroupCallAvatarsByCount = count ->
             String.format("//XCUIElementTypeStaticText[@name='%s']/" +
                     "following::XCUIElementTypeCollectionView[count(XCUIElementTypeCell)=%s]",
@@ -45,10 +40,6 @@ public class CallingOverlayPage extends IOSPage {
     private static final By xpathCallerAvatar = By.xpath(String.format(
             "//XCUIElementTypeStaticText[@name='%s']/following::*[@name='CallingUsersImage']",
             nameStrCallStatusLabel));
-
-    private static final By nameGroupCallFullMessage = MobileBy.AccessibilityId("The call is full");
-
-    private static final Integer WAIT_FOR_GROUPCALL_FULL_MSG = 20;
 
     public CallingOverlayPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -60,18 +51,6 @@ public class CallingOverlayPage extends IOSPage {
 
     public boolean isCallStatusLabelInvisible() throws Exception {
         return isLocatorInvisible(nameCallStatusLabel);
-    }
-
-    public boolean isSecondCallAlertVisible() throws Exception {
-        return isLocatorDisplayed(nameSecondCallAlert);
-    }
-
-    public void pressAnswerCallAlertButton() throws Exception {
-        getElement(nameAnswerCallAlertButton).click();
-    }
-
-    public boolean isGroupCallFullMessageShown() throws Exception {
-        return isLocatorDisplayed(nameGroupCallFullMessage, WAIT_FOR_GROUPCALL_FULL_MSG);
     }
 
     protected String getButtonAccessibilityIdByName(final String name) {
@@ -124,38 +103,6 @@ public class CallingOverlayPage extends IOSPage {
 
     public boolean isButtonInvisible(String name) throws Exception {
         return isLocatorInvisible(getButtonLocatorByName(name));
-    }
-
-    public boolean isMuteButtonSelected() throws Exception {
-        final long msStarted = System.currentTimeMillis();
-        final WebElement el = getElement(nameMuteCallButton);
-        do {
-            if (el.getText().equals("1")) {
-                return true;
-            }
-            Thread.sleep(500);
-        } while (System.currentTimeMillis() - msStarted <= 5000);
-        return false;
-    }
-
-    public boolean isMuteButtonNotSelected() throws Exception {
-        final long msStarted = System.currentTimeMillis();
-        final WebElement el = getElement(nameMuteCallButton);
-        do {
-            if (el.getText().equals("")) {
-                return true;
-            }
-            Thread.sleep(500);
-        } while (System.currentTimeMillis() - msStarted <= 5000);
-        return false;
-    }
-
-    public boolean isVideoButtonSelected() throws Exception {
-        return isMuteButtonSelected();
-    }
-
-    public boolean isVideoButtonNotSelected() throws Exception {
-        return isMuteButtonNotSelected();
     }
 
     public BufferedImage getMuteButtonScreenshot() throws Exception {

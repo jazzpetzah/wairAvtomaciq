@@ -2,7 +2,6 @@ package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.NewDeviceOverlay;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
@@ -29,30 +28,6 @@ public class NewDeviceOverlaySteps {
         expectedLabel = usrMgr.replaceAliasesOccurences(expectedLabel, ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("New Device overlay does not contain the label '%s'", expectedLabel),
                 getNewDeviceOverlay().isContainingLabel(expectedLabel));
-    }
-
-    /**
-     * Tap SEND ANYWAY button on New Deice overlay
-     *
-     * @step. ^I tap SEND ANYWAY button on New Device overlay$
-     *
-     * @throws Exception
-     */
-    @And("^I tap SEND ANYWAY button on New Device overlay$")
-    public void ITapSendAnywayButton() throws Exception {
-        getNewDeviceOverlay().tapSendAnywayButton();
-    }
-
-    /**
-     * Tap SHOW DEVICE button on New Deice overlay
-     *
-     * @step. ^I tap SHOW DEVICE button on New Device overlay$
-     *
-     * @throws Exception
-     */
-    @And("^I tap SHOW DEVICE button on New Device overlay$")
-    public void ITapShowDeviceButton() throws Exception {
-        getNewDeviceOverlay().tapShowDeviceButton();
     }
 
     /**

@@ -21,11 +21,6 @@ public class ImageFullScreenPageSteps {
         Assert.assertTrue(getImageFullScreenPage().isImageFullScreenShown());
     }
 
-    @When("I tap on fullscreen page")
-    public void ITapFullScreenPage() throws Exception {
-        getImageFullScreenPage().tapOnFullScreenPage();
-    }
-
     @When("I tap close fullscreen page button")
     public void ITapCloseFullscreenButton() throws Exception {
         getImageFullScreenPage().tapCloseButton();

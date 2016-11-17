@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.steps;
 
-import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.ios.pages.CallingOverlayPage;
 import org.junit.Assert;
 
@@ -12,10 +11,6 @@ import cucumber.api.java.en.When;
 public class CallPageSteps {
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private final ElementState muteButtonState = new ElementState(() -> getCallingOverlayPage().getMuteButtonScreenshot());
-
-    private static final int STATE_CHANGE_TIMEOUT = 15;
-    private static final double MIN_BUTTON_SIMILARITY_SCORE = 0.4;
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
@@ -53,58 +48,6 @@ public class CallPageSteps {
     }
 
     /**
-     * Verifies Mute button on calling overlay is selected or not
-     *
-     * @param shouldBeSelected empty if selected
-     * @throws Exception
-     * @step. ^I see Mute button is (not )?selected on calling overlay$
-     */
-    @When("^I see (Mute|Video) button is (not )?selected on calling overlay$")
-    public void ISeeButtonSelected(String btnName, String shouldBeSelected) throws Exception {
-        switch (btnName) {
-            case "Mute":
-                if (shouldBeSelected == null) {
-                    Assert.assertTrue("Mute button is not selected but should be", getCallingOverlayPage().isMuteButtonSelected());
-                } else {
-                    Assert.assertTrue("Mute button is selected but shouldn't be", getCallingOverlayPage().isMuteButtonNotSelected());
-                }
-                break;
-            case "Video":
-                if (shouldBeSelected == null) {
-                    Assert.assertTrue("Video button is not selected but should be", getCallingOverlayPage().isVideoButtonSelected());
-                } else {
-                    Assert.assertTrue("Video button is selected but shouldn't be", getCallingOverlayPage().isVideoButtonNotSelected());
-                }
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
-        }
-
-    }
-
-    /**
-     * Remember the state of Mute button on calling overlay
-     *
-     * @throws Exception
-     * @step. ^I remember Mute button state on calling overlay$
-     */
-    @When("^I remember Mute button state on calling overlay$")
-    public void IRememberMuteButtonStateOnCalling() throws Exception {
-        muteButtonState.remember();
-    }
-
-    /**
-     * Verifies if Mute button state was changed
-     *
-     * @throws Exception
-     * @step. ^I see state of Mute button has changed on Calling overlay page$
-     */
-    @When("^I see state of Mute button has changed on Calling overlay page$")
-    public void VerifyStateOfMuteButtonHasChanged() throws Exception {
-        Assert.assertTrue("State of the Mute button has not been changed", muteButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE));
-    }
-
-    /**
      * Check whether the corresponding button on calling overlay is visible
      *
      * @param shouldNotBeVisible equals to null is the button should not be visible
@@ -138,28 +81,6 @@ public class CallPageSteps {
                 getCallingOverlayPage().isCallingMessageContainingVisible(text));
     }
 
-    /**
-     * Verifies that a second call is coming in alert is shown
-     *
-     * @throws Exception
-     * @step. ^I see Accept second call alert$
-     */
-    @When("^I see Accept second call alert$")
-    public void ISeeAcceptSecondCallAlert() throws Exception {
-        Assert.assertTrue("Second call Alert is not shown", getCallingOverlayPage().isSecondCallAlertVisible());
-    }
-
-    /**
-     * Presses the accept button on the second incoming call alert
-     *
-     * @throws Exception
-     * @step. ^I press Accept button on alert$
-     */
-    @When("^I press Accept button on alert$")
-    public void IPressAnswerCallButtonOnAlert() throws Exception {
-        getCallingOverlayPage().pressAnswerCallAlertButton();
-    }
-
     private static final int CALL_AVATARS_VISIBILITY_TIMEOUT = 20; //seconds
 
     /**
@@ -178,17 +99,4 @@ public class CallPageSteps {
                         CALL_AVATARS_VISIBILITY_TIMEOUT)
         );
     }
-
-    /**
-     * Verifies that the group call is full message is shown
-     *
-     * @throws Exception
-     * @step. ^I see group call is Full message$
-     */
-    @Then("^I see group call is Full message$")
-    public void ISeeGroupCallIsFullMessage() throws Exception {
-        Assert.assertTrue("GROUP CALL IS FULL message is not visible",
-                getCallingOverlayPage().isGroupCallFullMessageShown());
-    }
-
 }

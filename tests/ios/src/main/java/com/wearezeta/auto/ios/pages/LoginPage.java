@@ -30,8 +30,6 @@ public class LoginPage extends IOSPage {
 
     private static final By nameWrongCredentialsNotification = MobileBy.AccessibilityId("Please verify your details and try again.");
 
-    private static final By nameForgotPassword = MobileBy.AccessibilityId("FORGOT PASSWORD?");
-
     private static final By nameMaybeLater = MobileBy.AccessibilityId("MAYBE LATER");
 
     private static final By xpathSetEmailPasswordSuggestionLabel = By.xpath(
@@ -40,8 +38,6 @@ public class LoginPage extends IOSPage {
 
     public static final By nameResentIn10min = MobileBy.AccessibilityId(
             "We already sent you a code via SMS. Tap Resend after 10 minutes to get a new one.");
-
-    private static final By nameSomethingWentWrong = MobileBy.AccessibilityId("Something went wrong, please try again");
 
     private static final By nameInvalidEmail = MobileBy.AccessibilityId("Please enter a valid email address");
 
@@ -138,10 +134,6 @@ public class LoginPage extends IOSPage {
         return isLocatorDisplayed(nameWrongCredentialsNotification, 30);
     }
 
-    public void tapForgotPasswordButton() throws Exception {
-        getElement(nameForgotPassword).click();
-    }
-
     public boolean isSetEmailPasswordSuggestionVisible() throws Exception {
         return isLocatorDisplayed(xpathSetEmailPasswordSuggestionLabel);
     }
@@ -160,10 +152,6 @@ public class LoginPage extends IOSPage {
 
     public void tapPhoneNotNow() throws Exception {
         getElement(nameNotNowButton).click();
-    }
-
-    public boolean isSomethingWentWrongAlertShown() throws Exception {
-        return readAlertText().isPresent() && isLocatorDisplayed(nameSomethingWentWrong);
     }
 
     public void switchToLogin() throws Exception {

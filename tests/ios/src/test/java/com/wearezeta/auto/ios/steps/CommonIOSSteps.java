@@ -19,7 +19,6 @@ import com.wearezeta.auto.common.driver.*;
 import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import com.wearezeta.auto.common.driver.device_helpers.IOSRealDeviceHelpers;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.IOSDistributable;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -27,7 +26,6 @@ import com.wearezeta.auto.ios.reporter.IOSLogListener;
 import com.wearezeta.auto.ios.tools.*;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import gherkin.formatter.model.Result;
 import org.apache.log4j.Logger;
@@ -474,45 +472,6 @@ public class CommonIOSSteps {
         updateDriver(lazyDriver);
     }
 
-    private ElementState screenState = new ElementState(
-            () -> pagesCollection.getCommonPage().takeScreenshot().orElseThrow(
-                    () -> new IllegalStateException("Cannot take a screenshot of the current device state")
-            )
-    );
-
-    /**
-     * Store current screen state into an internal variable
-     *
-     * @throws Exception
-     * @step. ^I remember current screen state$
-     */
-    @When("^I remember current screen state$")
-    public void IRememberCurrentScreenState() throws Exception {
-        screenState.remember();
-    }
-
-    /**
-     * Verify whether screen state has been changed or not
-     *
-     * @param moreOrLess     either one of two possible values
-     * @param score          similarity score value. Can be positive float number less than 1
-     * @param timeoutSeconds screen change timeout
-     * @throws Exception
-     * @step. ^I verify that current screen similarity score is (more|less) than ([\d\.]+) within (\d+) seconds?$
-     */
-    @Then("^I verify that current screen similarity score is (more|less) than ([\\d\\.]+) within (\\d+) seconds?$")
-    public void IVerifyScreenState(String moreOrLess, String score, int timeoutSeconds) throws Exception {
-        if (moreOrLess.equals("less")) {
-            Assert.assertTrue(
-                    String.format("Current screen state looks too similar to the previous one after %s seconds",
-                            timeoutSeconds), screenState.isChanged(timeoutSeconds, Double.parseDouble(score)));
-        } else {
-            Assert.assertTrue(
-                    String.format("Current screen state looks different to the previous one after %s seconds",
-                            timeoutSeconds), screenState.isNotChanged(timeoutSeconds, Double.parseDouble(score)));
-        }
-    }
-
     /**
      * Process on-screen alert
      *
@@ -541,18 +500,6 @@ public class CommonIOSSteps {
             default:
                 throw new IllegalArgumentException(String.format("Unknown alert action: '%s'", action));
         }
-    }
-
-    /**
-     * Tap the corresponding button on an alert
-     *
-     * @param caption button namem as it is visible in UI
-     * @throws Exception
-     * @step. ^I tap (.*) button on the alert$
-     */
-    @And("^I tap (.*) button on the alert$")
-    public void ITapAlertButton(String caption) throws Exception {
-        pagesCollection.getCommonPage().tapAlertButton(caption);
     }
 
     /**
@@ -668,26 +615,6 @@ public class CommonIOSSteps {
         commonSteps.ThereAreNUsers(CURRENT_PLATFORM, count);
     }
 
-    /**
-     * Use this step if you have @fastLogin option set and you want the application to log in
-     * under particular user, skipping the whole login flow in UI, which is supposed to be quite faster
-     * in comparison to the "classic" flow
-     *
-     * @param alias user name/alias to sign in as. This user should have his email address registered on the backedn
-     * @throws Exception
-     * @step. ^I prepare Wire to perform fast log in by email as (.*)
-     */
-    @Given("^I prepare Wire to perform fast log in by email as (.*)")
-    public void IDoFastLogin(String alias) throws Exception {
-        final FastLoginContainer flc = FastLoginContainer.getInstance();
-        if (!flc.isEnabled()) {
-            throw new IllegalStateException(
-                    String.format("Fast login should be enabled first in order to call this step." +
-                            "Make sure you have the '%s' tag in your scenario", FastLoginContainer.TAG_NAME));
-        }
-        updateDriver(flc.executeDriverCreation(usrMgr.findUserByNameOrNameAlias(alias)));
-    }
-
     @Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
     public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
@@ -735,11 +662,6 @@ public class CommonIOSSteps {
         if (flc.isEnabled()) {
             updateDriver(flc.executeDriverCreation(usrMgr.getSelfUserOrThrowError()));
         }
-    }
-
-    @When("^(.*) ignore all requests$")
-    public void IgnoreAllIncomingConnectRequest(String userToNameAlias) throws Exception {
-        commonSteps.IgnoreAllIncomingConnectRequest(userToNameAlias);
     }
 
     /**
@@ -807,23 +729,6 @@ public class CommonIOSSteps {
     public void UserChangeGruopChatName(String user, String oldConversationName, String newConversationName)
             throws Exception {
         commonSteps.ChangeGroupChatName(user, oldConversationName, newConversationName);
-    }
-
-    /**
-     * Call method in BackEnd that should generate new verification code
-     *
-     * @param user user name
-     * @throws Exception
-     */
-    @When("New verification code is generated for user (.*)")
-    public void newVerificationCodeGenrated(String user) throws Exception {
-        commonSteps.GenerateNewLoginCode(user);
-    }
-
-    @When("^(.*) accept all requests$")
-    public void AcceptAllIncomingConnectionRequests(String userToNameAlias)
-            throws Exception {
-        commonSteps.AcceptAllIncomingConnectionRequests(userToNameAlias);
     }
 
     @Given("^User (\\w+) (?:securely |\\s*)pings conversation (.*)$")
@@ -1115,22 +1020,6 @@ public class CommonIOSSteps {
     }
 
     /**
-     * Press Enter button on the keyboard if this is simulator or Commit button on the
-     * on-screen keyboard if real device
-     *
-     * @throws Exception
-     * @step. ^I press Enter key in Simulator window$
-     */
-    @When("^I press Enter key in Simulator window$")
-    public void IPressEnterKey() throws Exception {
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            IOSSimulatorHelpers.pressEnterKey();
-        } else {
-            pagesCollection.getCommonPage().tapKeyboardCommitButton();
-        }
-    }
-
-    /**
      * Check whether web browser is visible with particular url
      *
      * @param expectedUrl full web page URL
@@ -1262,30 +1151,6 @@ public class CommonIOSSteps {
     public void ICreateTemporaryFile(String size, String name, String ext) throws Exception {
         final String tmpFilesRoot = CommonUtils.getBuildPathFromConfig(getClass());
         CommonUtils.createRandomAccessFile(tmpFilesRoot + File.separator + name + "." + ext, size);
-    }
-
-    /**
-     * Locks screen without any time limit on real device
-     * This is a asynchronous step.
-     * TODO: expect to have timeout explicitly defined here
-     *
-     * @throws Exception
-     * @step. ^I lock screen on real device$
-     */
-    @When("^I lock screen on real device$")
-    public void ILockScreenOnRealDevice() throws Exception {
-        pagesCollection.getCommonPage().lockScreenOnRealDevice();
-    }
-
-    /**
-     * Tap Done button
-     *
-     * @throws Exception
-     * @step. ^I tap Done button$
-     */
-    @When("^I tap Done button$")
-    public void ITapDoneButton() throws Exception {
-        pagesCollection.getCommonPage().tapDoneButton();
     }
 
     // Check ZIOS-6570 for more details
@@ -1512,20 +1377,6 @@ public class CommonIOSSteps {
     public void UserXVerifiesRecentMessageType(String msgFromUserNameAlias, String dstConversationName,
                                                String expectedType, String deviceName) throws Exception {
         commonSteps.UserXVerifiesRecentMessageType(msgFromUserNameAlias, dstConversationName, deviceName, expectedType);
-    }
-
-    /**
-     * Add email(s) into address book of a user and upload address book in backend
-     * This step is used to directly upload contacts data to the backend without touching SE
-     *
-     * @param asUser name of the user where the address book is uploaded
-     * @throws Exception
-     * @step. ^User (.*) has (?: emails?|phone numbers?) (.*) in Address Book$
-     */
-    @Given("^User (.*) has (?:emails?|phone numbers?) (.*) in Address Book$")
-    public void UserXHasEmailsInAddressBook(String asUser, String contacts)
-            throws Exception {
-        commonSteps.UserXHasContactsInAddressBook(asUser, contacts);
     }
 
     private Long recentMsgId = null;

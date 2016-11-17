@@ -135,17 +135,6 @@ public class LoginPageSteps {
     }
 
     /**
-     * Verify verification code page shown
-     *
-     * @throws Exception
-     * @step. ^I see verification code page$
-     */
-    @When("^I see verification code page$")
-    public void ISeeVerificationCodePage() throws Exception {
-        Assert.assertTrue(getRegistrationPage().isVerificationCodePageVisible());
-    }
-
-    /**
      * Verify set email/password suggesstion page is shown
      *
      * @throws Exception
@@ -325,29 +314,6 @@ public class LoginPageSteps {
     public void ISeeAlreadyRegisteredEmailAlert() throws Exception {
         Assert.assertTrue("I don't see already registered email alert",
                 getLoginPage().isAlreadyRegisteredEmailAlertShown());
-    }
-
-    /**
-     * Verifies whether the notification something went wrong is shown
-     *
-     * @throws Exception
-     * @step. ^I see something went wrong alert$
-     */
-    @Then("^I see something went wrong alert$")
-    public void ISeeSomethingWentWrongAlert() throws Exception {
-        Assert.assertTrue("I don't see already registered email alert",
-                getLoginPage().isSomethingWentWrongAlertShown());
-    }
-
-    /**
-     * Clicks on the Forgot/Change password button on the Sign In screen
-     *
-     * @throws Exception
-     * @step. ^I click on Change Password button on SignIn$
-     */
-    @When("^I click on Change Password button on SignIn$")
-    public void IClickOnChangePasswordButtonOnSignIn() throws Exception {
-        getLoginPage().tapForgotPasswordButton();
     }
 
     @When("^I tap Not Now to not add phone number$")

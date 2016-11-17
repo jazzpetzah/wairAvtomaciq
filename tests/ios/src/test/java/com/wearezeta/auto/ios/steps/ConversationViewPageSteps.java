@@ -2,16 +2,12 @@ package com.wearezeta.auto.ios.steps;
 
 import java.util.Optional;
 
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
-import com.wearezeta.auto.common.misc.FunctionalInterfaces;
-import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import cucumber.api.java.en.And;
 import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.pages.ConversationViewPage;
@@ -100,13 +96,6 @@ public class ConversationViewPageSteps {
                     "The expected system message '%s' should not be visible in the conversation",
                     expectedMsg), getConversationViewPage().isSystemMessageInvisible(expectedMsg));
         }
-    }
-
-    @Then("^I see User (.*) Pinged message in the conversation$")
-    public void ISeeUserPingedMessageTheDialog(String user) throws Throwable {
-        String username = usrMgr.findUserByNameOrNameAlias(user).getName();
-        String expectedPingMessage = username.toUpperCase() + " PINGED";
-        Assert.assertTrue(getConversationViewPage().isPartOfTextMessageVisible(expectedPingMessage));
     }
 
     @When("^I type the (default|\".*\") message and send it$")
@@ -322,24 +311,6 @@ public class ConversationViewPageSteps {
                     String.format("%d images are expected to be visible in the conversations", expectedCount),
                     getConversationViewPage().areXImagesVisible(expectedCount));
         }
-    }
-
-    /**
-     * Copy to system clipboard, paste and send invitation link from pointed user in a conversation
-     *
-     * @param user username
-     * @throws Exception
-     * @step. ^I copy paste and send invitation link from user (.*)$
-     */
-    @When("^I copy paste and send invitation link from user (.*)$")
-    public void ICopyPasteAndSendInvitationLinkFrom(String user) throws Exception {
-        String link = CommonSteps.getInstance().GetInvitationUrl(user);
-        CommonUtils.setStringValueInSystemClipboard(link);
-        IOSSimulatorHelpers.copySystemClipboardToSimulatorClipboard();
-        getConversationViewPage().tapTextInput(false);
-        getConversationViewPage().tapTextInput(true);
-        getConversationViewPage().tapBadgeItem("Paste");
-        getConversationViewPage().tapSendButton();
     }
 
     @When("^I pause playing the media in media bar$")
@@ -773,17 +744,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify that too many people alert is visible
-     *
-     * @throws Exception
-     * @step. ^I see Too many people alert$
-     */
-    @Then("^I see Too many people alert$")
-    public void ISee10PeopleAlert() throws Exception {
-        Assert.assertTrue(getConversationViewPage().isTooManyPeopleAlertVisible());
-    }
-
-    /**
      * Verify that the YOU CALLED and button is shown
      *
      * @throws Exception
@@ -917,42 +877,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Wait until Uploading label disappears
-     *
-     * @param timeoutSeconds seconds to wait label to disappear
-     * @throws Exception
-     * @step. ^I wait up to (\\d+) seconds until the file is uploaded$
-     */
-    @When("^I wait up to (\\d+) seconds until the file is uploaded$")
-    public void IWaitFileToUpload(int timeoutSeconds) throws Exception {
-        Assert.assertTrue(String.format("File is still uploading after %s seconds", timeoutSeconds),
-                getConversationViewPage().fileUploadingLabelNotVisible(timeoutSeconds));
-    }
-
-    /**
-     * Tap Share button on file preview
-     *
-     * @throws Exception
-     * @step. ^I tap Share button on file preview page$
-     */
-    @When("^I tap Share button on file preview page$")
-    public void ITapShareButtonOnPreview() throws Exception {
-        getConversationViewPage().tapShareButton();
-    }
-
-    /**
-     * Tap share menu item by name
-     *
-     * @param itemName title in Share menu
-     * @throws Exception
-     * @step. ^I tap (Save Image|Copy) share menu item$
-     */
-    @When("^I tap (Save Image|Copy) share menu item$")
-    public void ITapShareMenuItem(String itemName) throws Exception {
-        getConversationViewPage().tapShareMenuItem(itemName);
-    }
-
-    /**
      * long tap on pointed text in conversation view
      *
      * @param msg         message text
@@ -992,18 +916,6 @@ public class ConversationViewPageSteps {
     public void ISeeRecordControlButton(String buttonName) throws Exception {
         Assert.assertTrue(String.format("Record control button '%s' is not visible", buttonName),
                 getConversationViewPage().isRecordControlButtonVisible(buttonName));
-    }
-
-    /**
-     * Tap on record audio button waits and swipe up to send audio message
-     *
-     * @param sec time in seconds
-     * @throws Exception
-     * @step. ^I record (\d+) seconds? audio meassage and send by swipe up$
-     */
-    @When("^I record (\\d+) seconds? long audio message and send it using swipe up gesture$")
-    public void IRecordXSecondsAudioMessageAndSendBySwipe(int sec) throws Exception {
-        getConversationViewPage().tapAudioRecordWaitAndSwipe(sec);
     }
 
     /**
@@ -1087,34 +999,6 @@ public class ConversationViewPageSteps {
             Assert.assertTrue(String.format("The state of the button has changed after %s seconds",
                     PLAY_BUTTON_STATE_CHANGE_TIMEOUT), playButtonState.isNotChanged(PLAY_BUTTON_STATE_CHANGE_TIMEOUT,
                     PLAY_BUTTON_MIN_SIMILARITY));
-        }
-    }
-
-
-    /**
-     * Verify audio message in placeholder|record toolbar state after time label value
-     *
-     * @param playerType placeholder or record toolbar
-     * @param state      played or paused
-     * @throws Exception
-     * @step. ^I see the audio message in (placeholder|record toolbar) gets (played|paused)$
-     */
-    @Then("^I see the audio message in (placeholder|record toolbar) gets (played|paused)$")
-    public void ISeeTheAudioMessageGetsPlayed(String playerType, String state) throws Exception {
-        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc =
-                (playerType.equals("placeholder")) ? getConversationViewPage()::isPlaceholderTimeLabelValueChanging :
-                        getConversationViewPage()::isRecordTimeLabelValueChanging;
-        switch (state) {
-            case "played":
-                Assert.assertTrue(String.format("The Audio message in %s did not get played. StartTime is the same as " +
-                        "CurrentTime", playerType), verificationFunc.call());
-                break;
-            case "paused":
-                Assert.assertFalse(String.format("The Audio message in %s did not get paused. StartTime is not the same as " +
-                        "CurrentTime", playerType), verificationFunc.call());
-                break;
-            default:
-                throw new IllegalArgumentException("Allowed states are 'played|paused'");
         }
     }
 
@@ -1212,20 +1096,6 @@ public class ConversationViewPageSteps {
                             + "'%s' message (%s)", msg1, msg1Height, msg2, msg2Height),
                     msg1Height, msg2Height);
         }
-    }
-
-    /**
-     * Verify whether the Deleted on label is present for a message from a user
-     *
-     * @param nameAlias user name/alias
-     * @throws Exception
-     * @step. ^I see that Deleted label for a message from (.*) is present in the conversation view$
-     */
-    @Then("^I see that Deleted label for a message from (.*) is present in the conversation view$")
-    public void ISeeDeletedLabel(String nameAlias) throws Exception {
-        nameAlias = usrMgr.replaceAliasesOccurences(nameAlias, FindBy.NAME_ALIAS);
-        Assert.assertTrue(String.format("Deleted label is not present for a message from %s in the conversation view",
-                nameAlias), getConversationViewPage().isDeletedOnLabelPresent(nameAlias));
     }
 
     /**

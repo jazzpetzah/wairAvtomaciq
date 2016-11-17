@@ -15,15 +15,7 @@ public class ShareContactsOverlay extends IOSPage {
         super(lazyDriver);
     }
 
-    public boolean waitUntilVisible() throws Exception {
-        return isLocatorDisplayed(xpathShareContactsButton);
-    }
-
-    public boolean waitUntilInvisible() throws Exception {
-        return isLocatorInvisible(xpathShareContactsButton);
-    }
-
-    private By getButtonByName(String name) {
+     private By getButtonByName(String name) {
         switch (name.toLowerCase()) {
             case "not now":
                 return nameNotNowButton;

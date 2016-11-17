@@ -36,10 +36,6 @@ public class ImageFullScreenPage extends IOSPage {
         }
     }
 
-    public void tapOnFullScreenPage() throws Exception {
-        getElement(nameImageFullScreenPage).click();
-    }
-
     public Optional<BufferedImage> getPreviewPictureScreenshot() throws Exception {
         final List<WebElement> visibleImages = getElement(nameImageContainer).findElements(classImage).
                 stream().filter(WebElement::isDisplayed).collect(Collectors.toList());

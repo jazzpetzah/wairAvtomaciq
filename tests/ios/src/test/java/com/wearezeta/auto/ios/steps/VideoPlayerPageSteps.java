@@ -20,17 +20,6 @@ public class VideoPlayerPageSteps {
 		Assert.assertTrue("Video Player is not opened", getVideoPlayerPage().isVideoPlayerPageOpened());
 	}
 
-	@When("I tap on Done button on Video player page")
-	public void ITapOnDoneButtonOnVideoPlayerPage() throws Exception {
-		getVideoPlayerPage().tapVideoPage();
-		getVideoPlayerPage().clickVideoDoneButton();
-	}
-
-	@When("I tap Pause button on Video player page")
-	public void ITapPauseButtonOnVideoPlayerPage() throws Exception {
-		getVideoPlayerPage().clickPauseButton();
-	}
-
 	/**
 	 * Verifies that the video message video player is opened
 	 *

@@ -2,13 +2,11 @@ package com.wearezeta.auto.ios.steps;
 
 
 import com.wearezeta.auto.common.misc.IOSDistributable;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.tools.ABProvisioner.ABContact;
 import com.wearezeta.auto.ios.tools.ABProvisioner.ABProvisionerAPI;
 import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import cucumber.api.java.en.Given;
-import org.junit.Assert;
 
 import java.util.*;
 
@@ -94,24 +92,5 @@ public class AutoconnectPageSteps {
         email = usrMgr.replaceAliasesOccurences(email, ClientUsersManager.FindBy.EMAIL_ALIAS);
         ABContact contact = new ABContact(name, Optional.of(Collections.singletonList(email)), Optional.empty());
         addressbookProvisioner.addContacts(Collections.singletonList(contact));
-    }
-
-    /**
-     * Adds a number of pre created users to the simulator Address Book
-     *
-     * @throws Exception
-     * @step. ^I add (\d+) users to Address Book$
-     */
-    @Given("^I add (\\d+) users to Address Book$")
-    public void IAddXUsersToAddressBook(int numberOfUsers) throws Exception {
-        Assert.assertTrue("Number of users is bigger than allowed maximum user count",
-                numberOfUsers <= ClientUsersManager.MAX_USERS);
-        for (int i = 2; i <= numberOfUsers + 1; i++) {
-            ClientUser user = usrMgr.findUserByNameOrNameAlias(String.format("user%sName", i));
-            String name = user.getName();
-            String phoneNumber = user.getPhoneNumber().toString();
-            ABContact contact = new ABContact(name, Optional.empty(), Optional.of(Collections.singletonList(phoneNumber)));
-            addressbookProvisioner.addContacts(Collections.singletonList(contact));
-        }
     }
 }

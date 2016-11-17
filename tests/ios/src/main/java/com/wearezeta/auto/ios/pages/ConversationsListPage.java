@@ -42,8 +42,6 @@ public class ConversationsListPage extends IOSPage {
     private static final By xpathPendingRequest =
             By.xpath("//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[contains(@name,' waiting')] ]");
 
-    private static final By nameMuteCallButton = MobileBy.AccessibilityId("MuteVoiceButton");
-
     // public static final By nameCancelActionButton = MobileBy.AccessibilityId("CANCEL");
 
     private static final Function<String, String> xpathStrContactListPlayPauseButtonByConvoName = name ->
@@ -164,14 +162,6 @@ public class ConversationsListPage extends IOSPage {
         return this.getElementScreenshot(el).orElseThrow(IllegalStateException::new);
         // ImageIO.write(scr, "png", new File("/Users/elf/Desktop/screen_" + System.currentTimeMillis() + ".png"));
         // return scr;
-    }
-
-    public boolean isMuteCallButtonVisible() throws Exception {
-        return isLocatorDisplayed(nameMuteCallButton);
-    }
-
-    public void clickMuteCallButton() throws Exception {
-        getElement(nameMuteCallButton).click();
     }
 
     public BufferedImage getSettingsGearStateScreenshot() throws Exception {

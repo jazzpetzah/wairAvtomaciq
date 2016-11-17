@@ -52,9 +52,6 @@ public class RegistrationPage extends IOSPage {
 
     private static final By nameTakePhotoButton = MobileBy.AccessibilityId("Take photo");
 
-    private static final By xpathVerificationPage = By
-            .xpath("//XCUIElementTypeStaticText[contains(@name, 'Enter the verification code we sent to')]");
-
     private static final By nameResendCodeButton = MobileBy.AccessibilityId("RESEND");
 
     private static final By nameInvalidCode = MobileBy.AccessibilityId("Please enter a valid code");
@@ -113,10 +110,6 @@ public class RegistrationPage extends IOSPage {
         if (!isLocatorInvisible(nameConfirmButton)) {
             throw new IllegalStateException("Confirm button is still visible");
         }
-    }
-
-    public boolean isVerificationCodePageVisible() throws Exception {
-        return isLocatorDisplayed(xpathVerificationPage);
     }
 
     public void inputActivationCode(PhoneNumber forNumber) throws Exception {

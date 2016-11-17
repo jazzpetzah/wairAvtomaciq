@@ -63,9 +63,7 @@ public abstract class IOSPage extends BasePage {
 
     protected static final By xpathCancelButton = By.xpath("//XCUIElementTypeButton[@name='Cancel']");
 
-    private static final By nameDoneButton = MobileBy.AccessibilityId("Done");
-
-    protected static final Function<String, String> xpathStrAlertButtonByCaption = caption ->
+    private static final Function<String, String> xpathStrAlertButtonByCaption = caption ->
             String.format("//XCUIElementTypeAlert//XCUIElementTypeButton[@label='%s']", caption);
 
     private static final Function<String, String> xpathStrAddressBarByUrlPart = urlPart ->
@@ -439,26 +437,6 @@ public abstract class IOSPage extends BasePage {
                 (long) (durationSeconds * 1000.0));
     }
 
-    public Future<?> lockScreenOnRealDevice() throws Exception {
-        /*
-        this method can return the future itself, so you have more control over execution.
-        Also, it might come in handy to pass timeout as a parameter.
-        This can be done more efficiently with Java8:
-
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> {
-        String threadName = Thread.currentThread().getName();
-        System.out.println("Hello " + threadName);
-        });
-         */
-        final ZetaIOSDriver driver = this.getDriver();
-        final Callable callable = () -> {
-            driver.lockDevice(20);
-            return true;
-        };
-        return Executors.newSingleThreadExecutor().submit(callable);
-    }
-
     public void tapElementWithRetryIfStillDisplayed(By locator, int retryCount) throws Exception {
         WebElement el = getElement(locator);
         int counter = 0;
@@ -704,10 +682,6 @@ public abstract class IOSPage extends BasePage {
 
     public void tapCancelButton() throws Exception {
         getElement(xpathCancelButton).click();
-    }
-
-    public void tapDoneButton() throws Exception {
-        getElement(nameDoneButton).click();
     }
 
     public void installApp(File appFile) throws Exception {

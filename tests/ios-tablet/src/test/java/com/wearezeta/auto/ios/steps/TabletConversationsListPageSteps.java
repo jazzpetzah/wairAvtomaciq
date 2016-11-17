@@ -69,21 +69,9 @@ public class TabletConversationsListPageSteps {
     }
 
     /**
-     * Verifies that mute a call button in landscape in conv list is not shown
-     *
-     * @throws Exception
-     * @step. ^I dont see mute call button in conversation list on iPad$
-     */
-    @Then("^I dont see mute call button in conversation list on iPad$")
-    public void IDontSeeMuteCallButtonInConversationLisOniPad() throws Exception {
-        Assert.assertFalse("Mute call button is still visible",
-                getTabletConversationsListPage().isMuteCallButtonVisible());
-    }
-
-    /**
      * Performs swipe right action on the particular convo list item
      *
-     * @step.^I swipe right on iPad the conversation named (.*)
+     * @step. ^I swipe right on iPad the conversation named (.*)
      * @param name conversation name/alias
      * @throws Exception
      */

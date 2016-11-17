@@ -137,9 +137,6 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbXpathConversationDetailsButton =
             FBBy.xpath(xpathStrConversationViewTopBar + "/*[@name='Name']");
 
-    private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("Too many people to call");
-
-
     private static final String nameStrFileTransferTopLabel = "FileTransferTopLabel";
     private static final By nameFileTransferTopLabel = MobileBy.AccessibilityId(nameStrFileTransferTopLabel);
     private static final Function<String, String> xpathTransferTopLabelByFileName = name ->
@@ -157,11 +154,6 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameGenericFileShareMenu = MobileBy.AccessibilityId("Cancel");
 
-    private static final By xpathFileUploadingLabel =
-            By.xpath("//XCUIElementTypeStaticText[contains(@value,'UPLOADING…')]");
-
-    private static final By nameShareButton = MobileBy.AccessibilityId("Share");
-
     private static final By fbNameVideoMessageActionButton = FBBy.AccessibilityId("VideoActionButton");
 
 //    private static final By nameVideoMessageSizeLabel = MobileBy.AccessibilityId("VideoSizeLabel");
@@ -176,10 +168,6 @@ public class ConversationViewPage extends IOSPage {
 
     private static final Function<String, String> recordControlButtonWithState = state ->
             String.format("//XCUIElementTypeButton[@name='%s' and @value='%s']", strNamePlayAudioRecorderButton, state);
-
-    private static final By nameAudioRecordTimeLabel = MobileBy.AccessibilityId("audioRecorderTimeLabel");
-
-    private static final By nameAudioPlaceholderTimeLabel = MobileBy.AccessibilityId("AudioTimeLabel");
 
     private static final String strNameAudioActionButton = "AudioActionButton";
     private static final By fbNameAudioActionButton = FBBy.AccessibilityId(strNameAudioActionButton);
@@ -197,11 +185,6 @@ public class ConversationViewPage extends IOSPage {
     private static final By fbNameLinkPreview = FBBy.AccessibilityId("linkPreview");
 
     private static final By nameLinkPreviewImage = MobileBy.AccessibilityId("linkPreviewImage");
-
-    private static final Function<String, String> xpathStrDeleteOnLabelForUser = name ->
-            String.format(
-                    "//XCUIElementTypeCell[@name='%s']//XCUIElementTypeStaticText[starts-with(@label, 'Deleted on')]",
-                    name.toUpperCase());
 
     private static final By nameUndoEdit = MobileBy.AccessibilityId("undoButton");
     private static final By nameConfirmEdit = MobileBy.AccessibilityId("confirmButton");
@@ -523,10 +506,6 @@ public class ConversationViewPage extends IOSPage {
         return isLocatorDisplayed(xpathConversationViewTopBar);
     }
 
-    public boolean isTooManyPeopleAlertVisible() throws Exception {
-        return isLocatorDisplayed(nameToManyPeopleAlert);
-    }
-
     public boolean isUserNameInUpperToolbarVisible(String name) throws Exception {
         final By locator = By.xpath(xpathStrToolbarByConversationName.apply(name));
         return isLocatorDisplayed(locator);
@@ -661,18 +640,6 @@ public class ConversationViewPage extends IOSPage {
         return isLocatorDisplayed(nameGenericFileShareMenu, timeoutSeconds);
     }
 
-    public boolean fileUploadingLabelNotVisible(int timeoutSeconds) throws Exception {
-        return isLocatorInvisible(xpathFileUploadingLabel, timeoutSeconds);
-    }
-
-    public void tapShareButton() throws Exception {
-        getElement(nameShareButton).click();
-    }
-
-    public void tapShareMenuItem(String itemName) throws Exception {
-        getElement(MobileBy.AccessibilityId(itemName)).click();
-    }
-
     private static By getInputPlaceholderLocatorByName(String name) {
         switch (name.toLowerCase()) {
             case "standard":
@@ -750,17 +717,6 @@ public class ConversationViewPage extends IOSPage {
         }
     }
 
-    public void tapAudioRecordWaitAndSwipe(int swipeDelaySeconds) throws Exception {
-        final FBElement recordAudioMessageBtn = (FBElement) getElement(fbNameAudioMessageButton);
-        recordAudioMessageBtn.touchAndHold(swipeDelaySeconds);
-        getElement(nameSendAudioMessageButton).click();
-//        new TouchAction(getDriver()).press(recordAudioMessageBtn)
-//                .waitAction(swipeDelaySeconds * 1000)
-//                .moveTo(getElement(xpathAudioCallButton))
-//                .release()
-//                .perform();
-    }
-
     public void tapPlayAudioMessageButton(int placeholderIndex) throws Exception {
         final By locator = By.xpath(xpathStrAudioActionButtonByIndex.apply(placeholderIndex));
         getElement(locator).click();
@@ -791,31 +747,9 @@ public class ConversationViewPage extends IOSPage {
         return isLocatorDisplayed(getRecordControlButtonByName(buttonName));
     }
 
-    private String getAudioMessageRecordTimeLabelValue() throws Exception {
-        return getElement(nameAudioRecordTimeLabel).getAttribute("value");
-    }
-
-    private String getAudioMessagePlaceholderTimeLabelValue() throws Exception {
-        return getElement(nameAudioPlaceholderTimeLabel).getAttribute("value");
-    }
-
     public boolean isPlaceholderAudioMessageButtonState(String buttonState, int index) throws Exception {
         final By locator = By.xpath(placeholderAudioMessageButtonStateByIndex.apply(buttonState, index));
         return isLocatorDisplayed(locator);
-    }
-
-    public boolean isPlaceholderTimeLabelValueChanging() throws Exception {
-        String startTime = getAudioMessagePlaceholderTimeLabelValue();
-        Thread.sleep(1000);
-        String currentTime = getAudioMessagePlaceholderTimeLabelValue();
-        return !startTime.equals(currentTime);
-    }
-
-    public boolean isRecordTimeLabelValueChanging() throws Exception {
-        String startTime = getAudioMessageRecordTimeLabelValue();
-        Thread.sleep(1000);
-        String currentTime = getAudioMessageRecordTimeLabelValue();
-        return !startTime.equals(currentTime);
     }
 
     public boolean isRecordControlButtonState(String buttonState) throws Exception {
@@ -847,11 +781,6 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean deleteMenuItemNotVisible(String name) throws Exception {
         return isLocatorInvisible(MobileBy.AccessibilityId(name));
-    }
-
-    public boolean isDeletedOnLabelPresent(String name) throws Exception {
-        final By locator = By.xpath(xpathStrDeleteOnLabelForUser.apply(name));
-        return isLocatorExist(locator);
     }
 
     private By getEditControlByName(String name) {

@@ -15,8 +15,6 @@ public class LikersPage extends IOSPage {
 
     private static final By nameCloseButton = MobileBy.AccessibilityId("BackButton");
 
-    private static final By nameLikersPageLabel = MobileBy.AccessibilityId("LIKED BY");
-
     private static final FunctionFor2Parameters<String, Integer, String> xpathStrLikerByNameAndIndex = (index, name) ->
             String.format("//UIACollectionCell[%s][./UIAStaticText[@name='%s']]", index, name);
 
@@ -31,10 +29,6 @@ public class LikersPage extends IOSPage {
 
     public void tapCloseButton() throws Exception {
         getElement(nameCloseButton).click();
-    }
-
-    public boolean likersPageIsVisible() throws Exception {
-        return isLocatorDisplayed(nameLikersPageLabel);
     }
 
     public boolean isLikerByPositionVisible(String name, int position) throws Exception {
