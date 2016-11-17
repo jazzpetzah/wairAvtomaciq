@@ -25,7 +25,7 @@ public class ConversationPage extends com.wearezeta.auto.web.pages.ConversationP
     public ConversationPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
-
+    
     @Override
     public void pressShortCutForPing() throws Exception {
         robot.keyPress(KeyEvent.VK_CONTROL);
