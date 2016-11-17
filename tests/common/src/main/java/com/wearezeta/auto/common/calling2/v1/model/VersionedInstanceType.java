@@ -29,10 +29,8 @@ public class VersionedInstanceType {
 				return "/" + name + "/Contents/MacOS/firefox";
 			} else if (name.toLowerCase().contains("chrome")) {
 				return "/" + name + "/Contents/MacOS/Google Chrome";
-			} else if (name.toLowerCase().contains("zcall")) {
-				return "/" + name + "-" + version + "/zcall";
 			} else {
-				return "/" + name + "-" + version + "/autocall";
+				return "/" + name + "-" + version + "/zcall";
 			}
 		} else {
 			switch (name) {
@@ -60,10 +58,6 @@ public class VersionedInstanceType {
 
 	public boolean isChrome() {
 		return this.getName().toLowerCase().contains("chrome");
-	}
-
-	public boolean isAutocall() {
-		return this.getName().toLowerCase().contains("autocall");
 	}
 
 	private boolean isOSX() {
