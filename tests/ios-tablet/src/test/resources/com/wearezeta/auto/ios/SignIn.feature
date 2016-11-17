@@ -131,7 +131,7 @@ Feature: Sign In
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
     When I enter 10 digits phone number
-    Then I verify the alert contains text <ExpectedText>
+    Then I see alert contains text <ExpectedText>
 
     Examples:
       | Name      | ExpectedText               |
