@@ -266,6 +266,7 @@ Feature: Settings
     Given I input name <Name> and hit Enter
     Given I accept alert if visible
     Given I tap Keep This One button
+    Given I accept alert if visible
     Given I tap Share Contacts button on Share Contacts overlay
     Given I accept alert if visible
     Given I see conversations list
