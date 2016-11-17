@@ -20,8 +20,7 @@ import java.util.concurrent.Callable;
 public class AboutPage extends WebPage {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = ZetaLogger.getLog(AboutPage.class
-            .getName());
+    private static final Logger LOG = ZetaLogger.getLog(AboutPage.class.getName());
 
     @FindBy(how = How.XPATH, using = WebAppLocators.AboutPage.xpathVersion)
     private WebElement version;

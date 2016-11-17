@@ -21,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -664,7 +665,7 @@ public final class BackendAPIWrappers {
 
     public static void updateUserPictureV2(ClientUser user, String picturePath) throws Exception {
         final String convId = user.getId();
-        final byte[] srcImageAsByteArray = Files.readAllBytes(Paths.get(picturePath));
+        final byte[] srcImageAsByteArray = Files.readAllBytes(new File(picturePath).toPath());
         ImageAssetData srcImgData = new ImageAssetData(convId, srcImageAsByteArray, getImageMimeType(picturePath));
         srcImgData.setIsPublic(true);
         srcImgData.setCorrelationId(String.valueOf(UUID.randomUUID()));

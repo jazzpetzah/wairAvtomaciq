@@ -1,15 +1,8 @@
 package com.wearezeta.auto.osx.steps.osx;
 
-import org.junit.Assert;
-
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.osx.pages.osx.ContactContextMenuPage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import com.wearezeta.auto.web.common.TestContext;
-import com.wearezeta.auto.web.pages.ContactListPage;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
-
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class ContactContextMenuPageSteps {
@@ -20,16 +13,6 @@ public class ContactContextMenuPageSteps {
     public ContactContextMenuPageSteps(TestContext webContext, TestContext wrapperContext) {
         this.webContext = webContext;
         this.wrapperContext = wrapperContext;
-    }
-
-    @Given("^I open context menu of conversation (.*)$")
-    public void IOpenContextMenuOfContact(String name) throws Exception {
-        name = webContext.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-        ContactListPage contactListPage = webContext.getPagesCollection(WebappPagesCollection.class)
-                .getPage(ContactListPage.class);
-        Assert.assertTrue("No contact list loaded.",
-                contactListPage.waitForContactListVisible());
-        contactListPage.openContextMenuForContact(name);
     }
 
     @When("^I click block in context menu$")

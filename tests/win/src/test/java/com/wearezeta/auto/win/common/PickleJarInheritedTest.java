@@ -77,7 +77,17 @@ public class PickleJarInheritedTest extends PickleJarTest {
             final Step reportStep = reportSteps.get(i);
             long execTime = 1L;
             try {
-                execTime = getPickle().getExecutor().invokeMethodForStep(rawStep, getExampleRow(), lifecycle.getContext());
+                try {
+                    // wrapper page step
+                    execTime = getPickle().getExecutor().invokeMethodForStep(rawStep, getExampleRow(), lifecycle.getWebContext(), lifecycle.getWrapperContext());
+                } catch (StepNotExecutableException snee) {
+                    // web page step
+                    if (snee.getCause() instanceof NoSuchMethodException) {
+                        execTime = getPickle().getExecutor().invokeMethodForStep(rawStep, getExampleRow(), lifecycle.getWebContext());
+                    }else{
+                        throw snee;
+                    }
+                }
                 setResult(reportStep, new Result(execTime, PASSED, null));
             } catch (Throwable e) {
                 ex = e;
@@ -93,7 +103,7 @@ public class PickleJarInheritedTest extends PickleJarTest {
                         PickleExecutor.getThrowableStacktraceString(ex) + "\n" + tailBrowserLog(MAX_LOG_TAIL_SIZE)));
             }
             try {
-                byte[] screenshot = lifecycle.getContext().getWinDriver().getScreenshotAs(OutputType.BYTES);
+                byte[] screenshot = lifecycle.getWrapperContext().getDriver().getScreenshotAs(OutputType.BYTES);
                 saveScreenshot(reportStep, screenshot);
             } catch (Exception e) {
                 LOG.warn("Can not make sceenshot", e);
@@ -136,7 +146,7 @@ public class PickleJarInheritedTest extends PickleJarTest {
             return "No tailed log available";
         }
         try {
-            List<LogEntry> browserLog = lifecycle.getContext().getBrowserLog();
+            List<LogEntry> browserLog = lifecycle.getWebContext().getBrowserLog();
             if (browserLog.size() >= maxLogTailSize) {
                 browserLog = browserLog.subList(browserLog.size() - maxLogTailSize, browserLog.size());
             }
@@ -156,7 +166,7 @@ public class PickleJarInheritedTest extends PickleJarTest {
             return;
         }
         try {
-            browserLog = lifecycle.getContext().getBrowserLog();
+            browserLog = lifecycle.getWebContext().getBrowserLog();
             browserLog = browserLog.stream()
                     .filter((entry)
                             -> entry.getLevel().intValue() >= Level.SEVERE.intValue())
