@@ -369,23 +369,23 @@ public class CommonIOSSteps {
         }
 
         try {
-            if (!scenario.getStatus().equals(Result.PASSED) && getIsSimulatorFromConfig(getClass())) {
-                log.debug(IOSSimulatorHelpers.getLogsAndCrashes());
-            } else if (scenario.getSourceTagNames().contains("@performance")) {
-                IOSLogListener.forceStopAll();
-                IOSLogListener.writeDeviceLogsToConsole(IOSLogListener.getInstance());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
             if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
                 pagesCollection.getCommonPage().forceAcceptAlert();
                 if (!scenario.getStatus().equals(Result.PASSED) && pagesCollection.hasPages()) {
                     pagesCollection.getCommonPage().printPageSource();
                 }
                 PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if (!scenario.getStatus().equals(Result.PASSED) && getIsSimulatorFromConfig(getClass())) {
+                log.debug(IOSSimulatorHelpers.getLogsAndCrashes());
+            } else if (scenario.getSourceTagNames().contains("@performance")) {
+                IOSLogListener.forceStopAll();
+                IOSLogListener.writeDeviceLogsToConsole(IOSLogListener.getInstance());
             }
         } catch (Exception e) {
             e.printStackTrace();
