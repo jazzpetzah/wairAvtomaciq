@@ -89,7 +89,7 @@ public class TestClassGenerator {
         optionList.addAll(Arrays.asList("-d", CLASS_OUTPUT_FOLDER));
         optionList.addAll(Arrays.asList("-classpath", System.getProperty("java.class.path")));
         
-        LOG.info("Compiling source: \n{}", source);
+        LOG.trace("Compiling source: \n{}", source);
 
         JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager,
                 null, optionList, null, files);
