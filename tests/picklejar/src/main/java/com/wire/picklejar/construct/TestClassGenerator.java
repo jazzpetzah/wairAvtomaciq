@@ -77,7 +77,7 @@ public class TestClassGenerator {
 
     private boolean compile(String testName, String source) {
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, Locale.ENGLISH, StandardCharsets.UTF_8);
+        StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
 
         InMemoryJavaFileObject classSourceObject = new InMemoryJavaFileObject(
                 Config.GENERATED_TEST_PACKAGE + "." + testName + "Test", source);
@@ -88,6 +88,8 @@ public class TestClassGenerator {
         List<String> optionList = new ArrayList<>();
         optionList.addAll(Arrays.asList("-d", CLASS_OUTPUT_FOLDER));
         optionList.addAll(Arrays.asList("-classpath", System.getProperty("java.class.path")));
+        
+        LOG.info("Compiling source: \n{}", source);
 
         JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager,
                 null, optionList, null, files);
