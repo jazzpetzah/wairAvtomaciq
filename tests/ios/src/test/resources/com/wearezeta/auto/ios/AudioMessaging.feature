@@ -38,10 +38,12 @@ Feature: Audio Messaging
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I see conversations list
-    Given I tap on contact name <Contact1>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User Me sends 1 encrypted message to user <Contact1>
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    # Small wait to make the appearence of button on jenkins more stable
+    Given I wait for 3 seconds
     Given I see audio message container in the conversation view
     When I long tap on audio message placeholder in conversation view
     And I tap on Delete badge item
@@ -107,11 +109,13 @@ Feature: Audio Messaging
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
+    Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given User Me sends 1 encrypted message to user <Contact1>
     Given I see conversations list
     Given I tap on contact name <Contact1>
-    When User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    And User Me sends 1 encrypted message to user <Contact1>
-    And I long tap on audio message placeholder in conversation view
+    # Small wait to make the appearence of button on jenkins more stable
+    Given I wait for 3 seconds
+    When I long tap on audio message placeholder in conversation view
     Then I do not see Save badge item
     When I tap Play audio message button
     # Small wait to make sure download is completed
@@ -128,13 +132,13 @@ Feature: Audio Messaging
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I see conversations list
-    Given I tap on contact name <Contact1>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User Me sends 1 encrypted message to user <Contact1>
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
     # Small wait to make the appearence of button on jenkins more stable
-    And I wait for 5 seconds
+    Given I wait for 3 seconds
     When I tap Play audio message button on audio message placeholder number 2
     And I see state of button on audio message placeholder number 2 is pause
     And I tap Play audio message button on audio message placeholder number 1
@@ -150,10 +154,12 @@ Feature: Audio Messaging
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
-    Given I see conversations list
-    Given I tap on contact name <Contact>
     Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User Me sends 1 encrypted message to user <Contact>
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    # Small wait to make the appearence of button on jenkins more stable
+    Given I wait for 3 seconds
     And I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait to make sure the audio file is downloaded and starts playback
@@ -172,11 +178,13 @@ Feature: Audio Messaging
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given I see conversations list
-    Given I tap on contact name <Contact>
     Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
     Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User Me sends 1 encrypted message to user <Contact>
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    # Small wait to make the appearence of button on jenkins more stable
+    Given I wait for 3 seconds
     When I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait until the audio is downloaded and starts playback
@@ -195,11 +203,13 @@ Feature: Audio Messaging
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I see conversations list
-    Given I tap on contact name <Contact1>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User Me sends 1 encrypted message to user <Contact1>
-    And I remember the state of Play button on audio message placeholder
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    # Small wait to make the appearence of button on jenkins more stable
+    Given I wait for 3 seconds
+    When I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait until the audio is downloaded and starts playback
     And I wait for <AudioDownloadTimeout> seconds
@@ -300,12 +310,11 @@ Feature: Audio Messaging
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
     Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given I see conversations list
     Given I tap on contact name <Contact>
     Given I tap on media container in conversation view
-    Given User Me sends 1 encrypted message to user <Contact>
     # Wait until audio message is fully loaded
     Given I wait for 7 seconds
     Given I tap Play audio message button
