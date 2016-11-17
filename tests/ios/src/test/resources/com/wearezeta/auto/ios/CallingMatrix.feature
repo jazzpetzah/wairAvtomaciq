@@ -163,8 +163,8 @@ Feature: Calling Matrix
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 
     Examples:
-      | Name      | Contact   | CallBackend  | Timeout |
-      | user1Name | user2Name | chrome       | 20      |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 20      |
 
   @C343166 @calling_matrix @fastLogin @real
   Scenario Outline: Verify I can accept two 1:1 video call from callbackend <CallBackend> in a row
@@ -262,8 +262,8 @@ Feature: Calling Matrix
     And <Contact> verifies that call to conversation <Name> was successful
 
     Examples:
-      | Name      | Contact   | CallBackend  | Timeout |
-      | user1Name | user2Name | zcall        | 60      |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | zcall       | 60      |
 
   @C343179 @calling_matrix @fastLogin @real
   Scenario Outline: Verify I can make 1:1 call to AVS <CallBackend>
@@ -285,3 +285,37 @@ Feature: Calling Matrix
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | zcall       | 20      |
+
+  @C343180 @calling_matrix @fastLogin @real
+  Scenario Outline: AUDIO-1107 Verify application behaviour in case of incoming/outgoing call if there are no permissions to microphone/camera
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I tap Audio Call button
+    And I dismiss alert
+    Then I see alert contains text <AlertText>
+    And I dismiss alert
+    And I do not see Calling overlay
+    When I tap Video Call button
+    And I dismiss alert
+    Then I see alert contains text <AlertText>
+    And I dismiss alert
+    And I do not see Calling overlay
+    When <Contact> calls me
+    And I tap Accept button on Call Kit overlay
+    Then I see alert contains text <AlertText>
+    And I dismiss alert
+    And I do not see Calling overlay
+    When <Contact> stops outgoing call to Me
+    And <Contact> starts a video call to <Name>
+    And I tap Accept button on Call Kit overlay
+    Then I see alert contains text <AlertText>
+    And I dismiss alert
+    And I do not see Calling overlay
+
+    Examples:
+      | Name      | Contact   | CallBackend | AlertText         |
+      | user1Name | user2Name | chrome      | Wire needs access |
