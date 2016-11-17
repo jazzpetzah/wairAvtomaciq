@@ -11,7 +11,7 @@ Feature: Share Location
     Then I see location map container in the conversation view
     When I tap on location map in conversation view
     # Wait until the map is loaded
-    And I wait for 10 seconds
+    And I wait for 15 seconds
     And I accept alert if visible
     Then I see map application is opened
 
