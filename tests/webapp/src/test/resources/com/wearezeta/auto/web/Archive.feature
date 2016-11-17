@@ -55,24 +55,25 @@ Feature: Archive
       | Email      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @bug
+  @C345359 @staging
   Scenario Outline: Verify that Call event can unarchive muted conversation automatically
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I muted conversation with <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    And I am signed in properly
+    When I am signed in properly
+    And I set muted state for conversation <Contact>
     And I archive conversation <Contact>
-    When <Contact> calls me using <CallBackend>
-    And I wait for 5 seconds
-    And <Contact> stops all calls to me
+    Then I do not see Contact list with name <Contact>
+    When <Contact> calls me
+    Then I see the incoming call controls for conversation <Contact>
+    When <Contact> stops calling me
     Then I see Contact list with name <Contact>
-    And I do not see Archive button at the bottom of my Contact list
 
     Examples:
       | Email      | Password      | Name      | Contact   | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | autocall    |
+      | user1Email | user1Password | user1Name | user2Name | zcall       |
 
   @C1687 @regression
   Scenario Outline: Verify the conversation is unarchived when there are new messages in this conversation (Ping message)
