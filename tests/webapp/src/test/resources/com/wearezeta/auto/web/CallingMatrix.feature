@@ -23,10 +23,10 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:52.0.2743.82  | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:49.0         | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:48.0.2       | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:50.0         | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
 
   @C5360 @calling_matrix
@@ -54,10 +54,10 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:52.0.2743.82  | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:49.0         | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:48.0.2       | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:50.0         | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
 
   @C5361 @calling_matrix
@@ -83,7 +83,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend     | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | zcall:2.9.3     | 20      |
+      | user1Email | user1Password | user1Name | user2Name | zcall:2.9.13    | 20      |
 
   @C5362 @calling_matrix
   Scenario Outline: Verify I can receive 1:1 audio call from <CallBackend>
@@ -108,10 +108,10 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:52.0.2743.82  | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:48.0         | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:46.0.1       | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:50.0         | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
 
   @C5363 @calling_matrix
@@ -139,10 +139,10 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:52.0.2743.82  | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:49.0         | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:48.0.2       | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:50.0         | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
 
   @C5364 @calling_matrix
@@ -166,7 +166,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend       | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | zcall:2.9.3       | 20      |
+      | user1Email | user1Password | user1Name | user2Name | zcall:2.9.13      | 20      |
 
   @C5365 @calling_matrix
   Scenario Outline: Verify I can make audio group call with multiple <WaitBackend>
@@ -198,10 +198,10 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | WaitBackend          | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:53.0.2785.116  | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:52.0.2743.82  | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:49.0         | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:48.0.2       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:54.0.2840.100 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:53.0.2785.116 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:50.0         | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:49.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:45.0.1       | 30      |
 
   @C5366 @calling_matrix
@@ -229,7 +229,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend    | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.9.3    | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.9.13   | 30      |
 
   @C5367 @calling_matrix
   Scenario Outline: Verify I can join audio group call with multiple <Backend>
@@ -263,10 +263,10 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | Backend              | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:54.0.2840.100 | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:53.0.2785.116 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:52.0.2743.82  | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:49.0         | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:48.0.2       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:50.0         | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:49.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:45.0.1       | 30      |
       
 
@@ -308,10 +308,10 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | Backend       | WaitBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.3   | chrome:54.0.2840.100 | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.3   | chrome:53.0.2785.116 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.3   | chrome:52.0.2743.82  | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.3   | firefox:49.0         | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.3   | firefox:48.0.2       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.3   | firefox:50.0         | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.3   | firefox:49.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.3   | firefox:45.0.1       | 30      |
 
   @C5369 @calling_matrix
@@ -344,7 +344,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend        | WaitBackend   | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.9.3    | zcall:2.9.3   | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.9.3    | zcall:2.9.13  | 30      |
 
   @C5370 @calling_matrix
   Scenario Outline: Verify I can create, leave and rejoin an audio group call with <WaitBackend>
@@ -373,10 +373,10 @@ Feature: Calling_Matrix
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome:54.0.2840.100 | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome:53.0.2785.116 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome:52.0.2743.82  | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:49.0         | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:48.0.2       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:50.0         | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:49.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:45.0.1       | 30      |
 
   @C5371 @calling_matrix
@@ -407,7 +407,7 @@ Feature: Calling_Matrix
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend  | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | zcall:2.9.3  | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | zcall:2.9.13 | 30      |
 
   @C5372 @calling_matrix
   Scenario Outline: Verify I can 1:1 audio call a user with <CallBackend> twice in a row
@@ -439,10 +439,11 @@ Feature: Calling_Matrix
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:52.0.2743.82  | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:49.0         | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:48.0.2       | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:50.0         | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
 
   @C5373 @calling_matrix
@@ -472,7 +473,7 @@ Feature: Calling_Matrix
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend  | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | zcall:2.9.3  | 20      |
+      | user1Email | user1Password | user1Name | user2Name | zcall:2.9.13 | 20      |
 
   @C5374 @calling_matrix
   Scenario Outline: Verify I can 1:1 video call a user with <CallBackend> twice in a row
@@ -508,8 +509,8 @@ Feature: Calling_Matrix
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:52.0.2743.82  | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:49.0         | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:48.0.2       | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:50.0         | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
