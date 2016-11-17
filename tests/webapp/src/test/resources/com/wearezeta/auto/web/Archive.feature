@@ -70,6 +70,7 @@ Feature: Archive
     Then I see the incoming call controls for conversation <Contact>
     When <Contact> stops calling me
     Then I see Contact list with name <Contact>
+    Then I do not see Archive button at the bottom of my Contact list
 
     Examples:
       | Email      | Password      | Name      | Contact   | CallBackend |
