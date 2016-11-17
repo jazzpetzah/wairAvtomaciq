@@ -20,6 +20,8 @@ Feature: Calling Matrix
     Then I do not see Calling overlay
     When <Contact> accepts next incoming call automatically
     And I tap Audio Call button
+    # Given it some time to connect
+    And I wait for 5 seconds
     Then I see Calling overlay
     And <Contact> verifies to have 1 flow
     And <Contact> verifies that all flows have greater than 0 bytes
