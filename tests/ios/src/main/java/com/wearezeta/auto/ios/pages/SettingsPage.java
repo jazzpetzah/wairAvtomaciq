@@ -58,12 +58,15 @@ public class SettingsPage extends IOSPage {
 
     private FBElement scrollToItem(String itemName) throws Exception {
         final By locator = FBBy.xpath(xpathStrMenuItemByName.apply(itemName));
-        final FBElement optionsRoot = (FBElement) getElement(fbClassNameOptionsRoot);
+        FBElement optionsRoot = null;
         int nScrolls = 0;
         do {
             final Optional<WebElement> dstElement = getElementIfDisplayed(locator, 2);
             if (dstElement.isPresent()) {
                 return (FBElement) dstElement.get();
+            }
+            if (optionsRoot == null) {
+                optionsRoot = (FBElement) getElement(fbClassNameOptionsRoot);
             }
             optionsRoot.scrollDown();
             nScrolls++;
