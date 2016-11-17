@@ -24,12 +24,12 @@ Feature: E2EE
   Scenario Outline: Verify opening device details by clicking on it in person's profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>,<DeviceName3>
     Given I sign in using my email
     Given I see conversations list
-    And User <Contact1> adds new devices <DeviceName1>,<DeviceName2>,<DeviceName3>
-    And I tap on contact name <Contact1>
-    And I open conversation details
-    And I switch to Devices tab on Single user profile page
+    Given I tap on contact name <Contact1>
+    Given I open conversation details
+    When I switch to Devices tab on Single user profile page
     Then I see 3 items are shown on Devices tab
 
     Examples:

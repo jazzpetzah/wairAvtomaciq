@@ -251,11 +251,11 @@ Feature: Edit Message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
+    Given User <Contact> sends file <VideoFileName> having MIME type <VideoMIMEType> to single user conversation <Name> using device <DeviceName>
     Given I see conversations list
     Given I tap on contact name <Contact>
-    When User <Contact> sends file <VideoFileName> having MIME type <VideoMIMEType> to single user conversation <Name> using device <DeviceName>
-    And I wait for 10 seconds
-    And I long tap on video message in conversation view
+    Given I wait for 10 seconds
+    When I long tap on video message in conversation view
     Then I do not see Edit badge item
     When User <Contact> sends file <AudioFileName> having MIME type <AudioMIMEType> to single user conversation <Name> using device <DeviceName>
     And I wait for 5 seconds
