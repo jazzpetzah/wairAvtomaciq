@@ -24,7 +24,7 @@ public class VoiceFiltersOverlay extends IOSPage {
     private static final By nameEffectCathedralButton = MobileBy.AccessibilityId("Cathedral");
     private static final By nameEffectAlienButton = MobileBy.AccessibilityId("Alien");
     private static final By nameEffectVocoderMedButton = MobileBy.AccessibilityId("VocoderMed");
-    private static final By nameEffectUpsideDownButton = MobileBy.AccessibilityId("UpsideDown");
+    private static final By nameEffectRollerCoasterButton = MobileBy.AccessibilityId("Roller coaster");
 
     public VoiceFiltersOverlay(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -57,8 +57,8 @@ public class VoiceFiltersOverlay extends IOSPage {
                 return nameEffectAlienButton;
             case "vocoder mix effect":
                 return nameEffectVocoderMedButton;
-            case "upside down effect":
-                return nameEffectUpsideDownButton;
+            case "roller coaster effect":
+                return nameEffectRollerCoasterButton;
             default:
                 throw new IllegalArgumentException(
                         String.format("The '%s' button is unknown to Voice Filters overlay", name));
@@ -87,7 +87,7 @@ public class VoiceFiltersOverlay extends IOSPage {
     public void tapRandomEffectButtons(int count) throws Exception {
         final By[] availableButtons = new By[]{
                 nameEffectHeliumButton, nameEffectJellyfishButton, nameEffectHareButton, nameEffectCathedralButton,
-                nameEffectAlienButton, nameEffectVocoderMedButton, nameEffectUpsideDownButton
+                nameEffectAlienButton, nameEffectVocoderMedButton, nameEffectRollerCoasterButton
         };
         for (int i = 0; i < count; i++) {
             getElement(availableButtons[rand.nextInt(availableButtons.length)]).click();
