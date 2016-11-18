@@ -1,6 +1,6 @@
 Feature: Link Preview
 
-  @C169204 @staging
+  @C169204 @smoke
   Scenario Outline: Verify you can see preview for sent link in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -44,7 +44,7 @@ Feature: Link Preview
       | Login      | Password      | Name      | Contact   | Link             | LinkInPreview | LinkTitle                                                                            | LinkPreviewImage |
       | user1Email | user1Password | user1Name | user2Name | https://wire.com | wire.com      | Wire · Modern communication, full privacy. For iOS, Android, macOS, Windows and web. | linkpreview0.png |
 
-  @C169208 @staging
+  @C169208 @smoke
   Scenario Outline: Verify sending link previews for link mixed with text
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
