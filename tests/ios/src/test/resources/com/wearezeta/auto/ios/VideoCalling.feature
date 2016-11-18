@@ -257,7 +257,7 @@ Feature: Video Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C12103 @calling_basic @video_calling @fastLogin
+  @C12103 @calling_basic @video_calling @fastLogin @torun
   Scenario Outline: Verify finishing video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>

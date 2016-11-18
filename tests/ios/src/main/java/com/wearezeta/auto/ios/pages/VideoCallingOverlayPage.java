@@ -1,9 +1,10 @@
 package com.wearezeta.auto.ios.pages;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 
 import java.awt.image.BufferedImage;
@@ -11,6 +12,7 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 
 public class VideoCallingOverlayPage extends CallingOverlayPage {
+    private static final By fbClassNameVideoFrame = FBBy.className("XCUIElementTypeOther");
 
     public VideoCallingOverlayPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -20,8 +22,9 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
         final By locator = MobileBy.AccessibilityId(getButtonAccessibilityIdByName(name));
         final Optional<WebElement> dstBtn = getElementIfDisplayed(locator, 1);
         if (!dstBtn.isPresent()) {
-            final Dimension screenSize = getDriver().manage().window().getSize();
-            this.tapScreenAt(screenSize.getWidth() / 2, screenSize.getHeight() / 2);
+            ((FBElement) getElement(fbClassNameVideoFrame)).longTap();
+            //final Dimension screenSize = getDriver().manage().window().getSize();
+            //this.tapScreenAt(screenSize.getWidth() / 2, screenSize.getHeight() / 2);
             return getElementIfDisplayed(locator, 5).orElseThrow(
                     () -> new IllegalStateException(
                             String.format("The button identified by '%s' is expected to be present", name))
