@@ -220,6 +220,8 @@ Feature: Likes
     Given User <Contact> sends encrypted message "<SCLink>" to user Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
+    # Wait for sync
+    Given I wait for 5 seconds
     When I tap at 10% of width and 10% of height of the recent message
     And I remember the state of Like icon in the conversation
     And I tap Like icon in the conversation
