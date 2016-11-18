@@ -8,18 +8,18 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 
 public class LocalyticsSteps {
-	// ID for webapp staging
-	private final static String APP_ID = "905792736c9f17c3464fd4e-60d90c82-d14a-11e4-af66-009c5fda0a25";
-	// TODO: probably, these ids are the same for other platforms
-	// if yes, then it's better to move this stuff to the common config file
-	private final static String API_KEY = "a4bdc55844b980c252680fa-71a7f2a2-b896-11e5-ac37-003e57fecdee";
-	private final static String API_SECRET = "eedf438dd35d9ce43ac25ca-71a7f5cc-b896-11e5-ac37-003e57fecdee";
+    // ID for webapp staging
 
-	private static CommonLocalyticsSteps commonSteps;
-        
-        private final TestContext context;
-        
-        
+    private final static String APP_ID = "905792736c9f17c3464fd4e-60d90c82-d14a-11e4-af66-009c5fda0a25";
+    // TODO: probably, these ids are the same for other platforms
+    // if yes, then it's better to move this stuff to the common config file
+    private final static String API_KEY = "a4bdc55844b980c252680fa-71a7f2a2-b896-11e5-ac37-003e57fecdee";
+    private final static String API_SECRET = "eedf438dd35d9ce43ac25ca-71a7f5cc-b896-11e5-ac37-003e57fecdee";
+
+    private static CommonLocalyticsSteps commonSteps;
+
+    private final TestContext context;
+
     public LocalyticsSteps() {
         this.context = new TestContext();
     }
@@ -27,7 +27,7 @@ public class LocalyticsSteps {
     public LocalyticsSteps(TestContext context) {
         this.context = context;
         this.commonSteps = new CommonLocalyticsSteps(
-			APP_ID, new LocalyticsAPIWrappers(API_KEY, API_SECRET));
+                APP_ID, new LocalyticsAPIWrappers(API_KEY, API_SECRET));
     }
 
 	/**
@@ -43,10 +43,10 @@ public class LocalyticsSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^I take snapshot of (.*) events? count$")
-	public void ITakeSnapshotOfXEventCount(String events) throws Exception {
-		commonSteps.ITakeSnapshotOfXEventCount(events);
-	}
+    @Given("^I take snapshot of (.*) events? count$")
+    public void ITakeSnapshotOfXEventCount(String events) throws Exception {
+        commonSteps.ITakeSnapshotOfXEventCount(events);
+    }
 
 	/**
 	 * Takes snapshot of current event occurrence values on Localytics
@@ -67,11 +67,11 @@ public class LocalyticsSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^I take snapshot of (.*) attributes? count$")
-	public void ITakeSnapshotOfXAttributesCount(String attributes)
-			throws Exception {
-		commonSteps.ITakeSnapshotOfXAttributesCount(attributes);
-	}
+    @Given("^I take snapshot of (.*) attributes? count$")
+    public void ITakeSnapshotOfXAttributesCount(String attributes)
+            throws Exception {
+        commonSteps.ITakeSnapshotOfXAttributesCount(attributes);
+    }
 
 	/**
 	 * Verifies whether the particular events occurrences count is increased
@@ -92,12 +92,12 @@ public class LocalyticsSteps {
 	 *            catch up)
 	 * @throws Exception
 	 */
-	@Then("^I verify the count of (.*) events? (?:has|have) been increased within (\\d+) seconds?$")
-	public void IVerifyTheCountOfXEventHasBeenIncreasedWithinYSeconds(
-			String events, long secondsTimeout) throws Exception {
-		commonSteps.IVerifyTheCountOfXEventHasBeenIncreasedWithinYSeconds(
-				events, secondsTimeout);
-	}
+    @Then("^I verify the count of (.*) events? (?:has|have) been increased within (\\d+) seconds?$")
+    public void IVerifyTheCountOfXEventHasBeenIncreasedWithinYSeconds(
+            String events, long secondsTimeout) throws Exception {
+        commonSteps.IVerifyTheCountOfXEventHasBeenIncreasedWithinYSeconds(
+                events, secondsTimeout);
+    }
 
 	/**
 	 * Verifies whether the particular event attribute occurrences count is
@@ -120,10 +120,10 @@ public class LocalyticsSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I verify the count of (.*) attributes? (?:has|have) been increased within (\\d+) seconds?$")
-	public void IVerifyTheCountOfXAttributesHasBeenIncreasedWithinYSeconds(
-			String attributes, long secondsTimeout) throws Exception {
-		commonSteps.IVerifyTheCountOfXAttributesHasBeenIncreasedWithinYSeconds(
-				attributes, secondsTimeout);
-	}
+    @Then("^I verify the count of (.*) attributes? (?:has|have) been increased within (\\d+) seconds?$")
+    public void IVerifyTheCountOfXAttributesHasBeenIncreasedWithinYSeconds(
+            String attributes, long secondsTimeout) throws Exception {
+        commonSteps.IVerifyTheCountOfXAttributesHasBeenIncreasedWithinYSeconds(
+                attributes, secondsTimeout);
+    }
 }

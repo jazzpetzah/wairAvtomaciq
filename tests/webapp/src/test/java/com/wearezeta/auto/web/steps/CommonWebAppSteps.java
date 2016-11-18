@@ -65,15 +65,7 @@ public class CommonWebAppSteps {
     public CommonWebAppSteps(TestContext context) {
         this.context = context;
     }
-    
-    /**
-     * This step will throw special PendingException whether the current browser does support calling or not. This will cause
-     * Cucumber interpreter to skip the current test instead of failing it.
-     *
-     * @param doesNot is set to null if "does not" part does not exist
-     * @throws Exception
-     * @step. ^My browser( does not)? support[s] calling$
-     */
+
     @Given("^My browser( does not)? support[s]? calling$")
     public void MyBrowserSupportsCalling(String doesNot) throws Exception {
         if (doesNot == null) {
@@ -88,9 +80,9 @@ public class CommonWebAppSteps {
             if (WebAppExecutionContext.getBrowser().isSupportingCalls()) {
                 throw new PendingException(
                         "Browser "
-                                + WebAppExecutionContext.getBrowser()
+                        + WebAppExecutionContext.getBrowser()
                                 .toString()
-                                + " does support calling but this test is just for browsers without support.");
+                        + " does support calling but this test is just for browsers without support.");
             }
         }
     }
@@ -117,7 +109,8 @@ public class CommonWebAppSteps {
 
     @Then("^I see a title (.*) on the page$")
     public void ISeeATitleOnPage(String title) throws Exception {
-        assertThat("Title on the page is not correct", context.getPagesCollection().getPage(WebPage.class).getPageTitle(), equalTo(title));
+        assertThat("Title on the page is not correct", context.getPagesCollection().getPage(WebPage.class).getPageTitle(),
+                equalTo(title));
     }
 
     @Given("^There is a known user (.*) with email (.*) and password (.*)$")
@@ -125,15 +118,6 @@ public class CommonWebAppSteps {
         context.getCommonSteps().ThereIsAKnownUser(name, email, password);
     }
 
-    /**
-     * Creates specified number of users and sets user with specified name as main user. Avatar picture for Self user is set
-     * automatically
-     *
-     * @param count       number of users to create
-     * @param myNameAlias user name or name alias to use as main user
-     * @throws Exception
-     * @step. ^There (?:is|are) (\\d+) users? where (.*) is me$
-     */
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me$")
     public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
             throws Exception {
@@ -142,61 +126,25 @@ public class CommonWebAppSteps {
         IChangeUserAvatarPicture(myNameAlias, "default");
     }
 
-    /**
-     * Changes the accent color settings of the given user
-     *
-     * @param userNameAlias alias of the user where the accent color will be changed
-     * @param newColor      one of possible accent colors: StrongBlue|StrongLimeGreen|BrightYellow
-     *                      |VividRed|BrightOrange|SoftPink|Violet
-     * @throws Exception
-     * @step. ^User (\\w+) change accent color to (StrongBlue|StrongLimeGreen|BrightYellow
-     * |VividRed|BrightOrange|SoftPink|Violet)$
-     */
     @Given("^User (\\w+) change accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
     public void IChangeAccentColor(String userNameAlias, String newColor)
             throws Exception {
         context.getCommonSteps().IChangeUserAccentColor(userNameAlias, newColor);
     }
 
-    /**
-     * Creates specified number of users and sets user with specified name as main user. Avatar picture for Self user is NOT set
-     * automatically
-     *
-     * @param count       number of users to create
-     * @param myNameAlias user name or name alias to use as main user
-     * @throws Exception
-     * @step. ^There (?:is|are) (\\d+) users? where (.*) is me without avatar picture$
-     */
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me without avatar picture$")
     public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count,
-                                                      String myNameAlias) throws Exception {
+            String myNameAlias) throws Exception {
         context.getCommonSteps().ThereAreNUsersWhereXIsMe(context.getCurrentPlatform(), count,
                 myNameAlias);
     }
 
-    /**
-     * Creates specified number of users and sets user with specified name as main user. The user is registered with a phone
-     * number only and has no email address attached
-     *
-     * @param count       number of users to create
-     * @param myNameAlias user name or name alias to use as main user
-     * @throws Exception
-     * @step. ^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$
-     */
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")
     public void ThereAreNUsersWhereXIsMeWithoutEmail(int count,
-                                                     String myNameAlias) throws Exception {
+            String myNameAlias) throws Exception {
         context.getCommonSteps().ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
     }
 
-    /**
-     * Set avatar picture for a particular user
-     *
-     * @param userNameAlias user name/alias
-     * @param path          path to a picture on a local file system or 'default' to set the default picture
-     * @throws Exception
-     * @step. ^User (\\w+) changes? avatar picture to (.*)
-     */
     @When("^User (\\w+) changes? avatar picture to (.*)")
     public void IChangeUserAvatarPicture(String userNameAlias, String path)
             throws Exception {
@@ -214,114 +162,50 @@ public class CommonWebAppSteps {
         context.getCommonSteps().IChangeUserAvatarPicture(userNameAlias, uri.getPath());
     }
 
-    /**
-     * Creates connection between to users
-     *
-     * @param userFromNameAlias  user which sends connection request
-     * @param usersToNameAliases user which accepts connection request
-     * @throws Exception
-     * @step. ^(\\w+) is connected to (.*)$
-     */
     @Given("^(\\w+) is connected to (.*)$")
     public void UserIsConnectedTo(String userFromNameAlias,
-                                  String usersToNameAliases) throws Exception {
+            String usersToNameAliases) throws Exception {
         context.getCommonSteps().UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
     }
 
-    /**
-     * Blocks a user
-     *
-     * @param userAsNameAlias      user which wants to block another
-     * @param userToBlockNameAlias user to block
-     * @throws Exception
-     * @step. ^(\\w+) blocked (\\w+)$
-     */
     @Given("^(\\w+) blocked (\\w+)$")
     public void UserBlocks(String userAsNameAlias, String userToBlockNameAlias)
             throws Exception {
         context.getCommonSteps().BlockContact(userAsNameAlias, userToBlockNameAlias);
     }
 
-    /**
-     * Creates group chat with specified users
-     *
-     * @param chatOwnerNameAlias          user that creates group chat
-     * @param chatName                    group chat name
-     * @param otherParticipantsNameAlises list of users which will be added to chat separated by comma
-     * @throws Exception
-     * @step. ^(.*) (?:has|have) group chat (.*) with (.*)
-     */
     @Given("^(.*) (?:has|have) group chat (.*) with (.*)")
     public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
-                                             String chatName, String otherParticipantsNameAlises)
+            String chatName, String otherParticipantsNameAlises)
             throws Exception {
         context.getCommonSteps().UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName,
                 otherParticipantsNameAlises);
     }
 
-    /**
-     * userWhoRemoves removes UserB from group conversation ChatName
-     *
-     * @param userWhoRemoves          user that removes another participant from group chat
-     * @param chatName                    group chat name
-     * @param userToRemove username to be removed from the group conversation
-     * @throws Exception
-     * @step. ^(.*) removes? (.*) from group conversation (.*)
-     */
     @Given("^(.*) removes? (.*) from group conversation (.*)")
     public void UserRemovesContactFromGroup(String userWhoRemoves, String userToRemove, String chatName)
             throws Exception {
         context.getCommonSteps().UserRemovesAnotherUserFromGroupConversation(userWhoRemoves, userToRemove, chatName);
     }
 
-    /**
-     * Sets self user to be the current user. Avatar picture for this user is set automatically
-     *
-     * @param nameAlias user to be set as self user
-     * @throws Exception
-     * @step. ^User (\\w+) is [Mm]e$
-     */
     @Given("^User (\\w+) is [Mm]e$")
     public void UserXIsMe(String nameAlias) throws Exception {
         context.getCommonSteps().UserXIsMe(nameAlias);
         IChangeUserAvatarPicture(nameAlias, "default");
     }
 
-    /**
-     * Sets self user to be the current user. Avatar picture for this user is NOT set automatically
-     *
-     * @param nameAlias user to be set as self user
-     * @throws Exception
-     * @step. ^User (\\w+) is [Mm]e without avatar$
-     */
     @Given("^User (\\w+) is [Mm]e without avatar$")
     public void UserXIsMeWithoutAvatar(String nameAlias) throws Exception {
         context.getCommonSteps().UserXIsMe(nameAlias);
     }
 
-    /**
-     * Sends connection request by one user to another
-     *
-     * @param userFromNameAlias  user that sends connection request
-     * @param usersToNameAliases user which receive connection request
-     * @throws Exception
-     * @step. ^(.*) sent connection request to (.*)
-     */
     @Given("^(.*) sent connection request to (.*)")
     public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
-                                               String usersToNameAliases) throws Throwable {
+            String usersToNameAliases) throws Throwable {
         context.getCommonSteps().ConnectionRequestIsSentTo(userFromNameAlias,
                 usersToNameAliases);
     }
 
-    /**
-     * Pings BackEnd until user is indexed and avialable in search
-     *
-     * @param searchByNameAlias user name to search string
-     * @param query             querry string
-     * @throws Exception
-     * @step. ^(\\w+) waits? until (.*) exists in backend search results$
-     */
     @Given("^(\\w+) waits? until (.*) exists in backend search results$")
     public void UserWaitsUntilContactExistsInHisSearchResults(
             String searchByNameAlias, String query) throws Exception {
@@ -330,14 +214,6 @@ public class CommonWebAppSteps {
         context.stopPinging();
     }
 
-    /**
-     * Pings BackEnd until user is indexed and available in top people
-     *
-     * @param searchByNameAlias user name to search string
-     * @param size              number of top people
-     * @throws Exception
-     * @step. ^(\\w+) waits? until (.*) exists in backend search results$
-     */
     @Given("^(\\w+) waits? until (\\d+) people in backend top people results$")
     public void UserWaitsUntilContactExistsInTopPeopleResults(
             String searchByNameAlias, int size) throws Exception {
@@ -346,86 +222,48 @@ public class CommonWebAppSteps {
         context.stopPinging();
     }
 
-    /**
-     * Wait for specified amount of seconds
-     *
-     * @param seconds
-     * @throws NumberFormatException
-     * @throws InterruptedException
-     * @step. ^I wait for (\\d+) seconds?$
-     */
     @When("^I wait for (\\d+) seconds?$")
     public void WaitForTime(int seconds) throws Exception {
         context.getCommonSteps().WaitForTime(seconds);
     }
 
-    /**
-     * Mute conversation
-     *
-     * @param userToNameAlias   user who want to mute conversation
-     * @param muteUserNameAlias conversation or user to be muted
-     * @throws Exception
-     * @step. ^(.*) muted conversation with (.*)$
-     */
     @When("^(.*) muted conversation with (user|group) (.*) on device (.*)$")
-    public void MuteConversationWithUser(String userToNameAlias, String convType, String muteUserNameAlias, String deviceName) throws Exception {
-        context.getCommonSteps().UserMutesConversation(userToNameAlias, muteUserNameAlias, deviceName + context.getTestname().hashCode(), convType.equals("group"));
+    public void MuteConversationWithUser(String userToNameAlias, String convType, String muteUserNameAlias, String deviceName)
+            throws Exception {
+        context.getCommonSteps().UserMutesConversation(userToNameAlias, muteUserNameAlias, deviceName + context.getTestname().
+                hashCode(), convType.equals("group"));
     }
 
-    /**
-     * Archive conversation on the backend
-     *
-     * @param userToNameAlias       the name/alias of conversations list owner
-     * @param archivedUserNameAlias the name of conversation to archive
-     * @throws Exception
-     * @step. ^(.*) archived conversation with (.*)$
-     */
     @When("^(.*) archived conversation with (.*)$")
     public void ArchiveConversationWithUser(String userToNameAlias,
-                                            String archivedUserNameAlias) throws Exception {
+            String archivedUserNameAlias) throws Exception {
         context.getCommonSteps().ArchiveConversationWithUser(userToNameAlias,
                 archivedUserNameAlias);
     }
 
-    /**
-     * Send Ping into a conversation using the backend
-     *
-     * @param pingFromUserNameAlias conversations list owner name/alias
-     * @param dstConversationName   the name of conversation to send ping to
-     * @throws Exception
-     * @step. ^User (.*) pinged in the conversation with (.*)$
-     */
     @When("^User (.*) pinged in the conversation with (.*)$")
     public void UserPingedConversation(String pingFromUserNameAlias,
-                                       String dstConversationName) throws Exception {
+            String dstConversationName) throws Exception {
         context.getCommonSteps().UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
     }
 
-    /**
-     * User A sends a simple text message (encrypted) to user B
-     *
-     * @param msgFromUserNameAlias the user who sends the message
-     * @param msg                  a message to send. Random string will be sent if it is empty
-     * @param dstConvoName         The user to receive the message
-     * @param convoType            either 'user' or 'group conversation'
-     * @throws Exception
-     * @step. ^Contact (.*) sends? (encrypted )?message "?(.*?)"?\s?(?:via device (.*)\s)?to (user|group conversation) (.*)$
-     */
     @When("^Contact (.*) sends? message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
     public void UserSendMessageToConversation(String msgFromUserNameAlias,
-                                              String msg, String deviceName, String convoType, String dstConvoName) throws Exception {
+            String msg, String deviceName, String convoType, String dstConvoName) throws Exception {
         final String msgToSend = (msg == null || msg.trim().length() == 0)
                 ? CommonUtils.generateRandomString(10) : msg.trim();
         if (convoType.equals("user")) {
-            context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName + context.getTestname().hashCode());
+            context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend,
+                    deviceName + context.getTestname().hashCode());
         } else {
-            context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName + context.getTestname().hashCode());
+            context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend,
+                    deviceName + context.getTestname().hashCode());
         }
     }
 
     @When("^Contact (.*) sends? (\\d+) messages with prefix (.*) via device (.*) to (user|group conversation) (.*)$")
     public void UserSendAmountOfMessages(String msgFromUserNameAlias, int amount, String prefix, String deviceName,
-                                         String convoType, String dstConvoName) throws Exception {
+            String convoType, String dstConvoName) throws Exception {
         ClientUser user = context.getUserManager().findUserByNameOrNameAlias(msgFromUserNameAlias);
         if (convoType.equals("user")) {
             for (int i = 0; i < amount; i++) {
@@ -444,7 +282,7 @@ public class CommonWebAppSteps {
 
     @When("^Contact (.*) sends? long message from file \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
     public void UserSendLongMessageToConversation(String msgFromUserNameAlias,
-                                                  String file, String deviceName, String convoType, String dstConvoName) throws Exception {
+            String file, String deviceName, String convoType, String dstConvoName) throws Exception {
         String message = WebCommonUtils.getTextFromFile(file);
         if (convoType.equals("user")) {
             context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, message, deviceName + context.
@@ -473,24 +311,14 @@ public class CommonWebAppSteps {
         page.navigateTo();
     }
 
-    /**
-     * Sends an image from one user to a conversation (encrypted).
-     *
-     * @param imageSenderUserNameAlias the user to sending the image
-     * @param imageFileName            the file path name of the image to send. The path name is defined relative to the image file defined
-     *                                 in Configuration.cnf.
-     * @param conversationType         "single user" or "group" conversation.
-     * @param dstConversationName      the name of the conversation to send the image to.
-     * @throws Exception
-     * @step. ^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)
-     */
     @When("^User (.*) sends image (.*) to (single user|group) conversation (.*)")
     public void ContactSendImageToConversation(String imageSenderUserNameAlias,
-                                               String imageFileName, String conversationType,
-                                               String dstConversationName) throws Exception {
+            String imageFileName, String conversationType,
+            String dstConversationName) throws Exception {
         final String imagePath = WebCommonUtils.getFullPicturePath(imageFileName);
         final boolean isGroup = conversationType.equals("group");
-        context.getCommonSteps().UserSentImageToConversationOtr(imageSenderUserNameAlias, imagePath, dstConversationName, isGroup);
+        context.getCommonSteps().UserSentImageToConversationOtr(imageSenderUserNameAlias, imagePath, dstConversationName,
+                isGroup);
     }
 
     @When("^I break the session with device (.*) of user (.*)$")
@@ -503,7 +331,7 @@ public class CommonWebAppSteps {
 
     @When("^(.*) sends? (.*) sized file with name (.*) via device (.*) to (user|group conversation) (.*)$")
     public void IXSizedSendFile(String contact, String size, String fileName, String deviceName, String convoType,
-                                    String dstConvoName) throws Exception {
+            String dstConvoName) throws Exception {
         String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
         path = path.replace("%40", "@");
         RandomAccessFile f = new RandomAccessFile(path + "/" + fileName, "rws");
@@ -522,8 +350,8 @@ public class CommonWebAppSteps {
     }
 
     @When("^(.*) sends? audio file (.*) via device (.*) to (user|group conversation) (.*)$")
-    public void ISendAudioFile(String contact, String fileName, String deviceName, String convoType, String
-            dstConvoName) throws Exception {
+    public void ISendAudioFile(String contact, String fileName, String deviceName, String convoType, String dstConvoName) throws
+            Exception {
         String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
         path = path.replace("%40", "@");
         boolean isGroup = !convoType.equals("user");
@@ -533,7 +361,7 @@ public class CommonWebAppSteps {
 
     @When("^(.*) sends? (.*) sized video with name (.*) via device (.*) to (user|group conversation) (.*)$")
     public void ISendVideo(String contact, String size, String fileName, String deviceName, String convoType,
-                               String dstConvoName) throws Exception {
+            String dstConvoName) throws Exception {
         String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
 
         final String picturePath = WebCommonUtils.getFullPicturePath(VIDEO_MESSAGE_IMAGE);
@@ -543,19 +371,9 @@ public class CommonWebAppSteps {
                 deviceName + context.getTestname().hashCode(), isGroup);
     }
 
-    /**
-     * Send unencrypted message to a conversation
-     *
-     * @param userFromNameAlias user who wants to send a message
-     * @param message           message to send
-     * @param convoType         group conversation or user
-     * @param dstConvoName      the name of existing conversation to send the message to
-     * @throws Exception
-     * @step. ^Contact (.*) sends unencrypted message (.*) to (user|group conversation) (.*)
-     */
     @When("^Contact (.*) sends? unencrypted message (.*) to (user|group conversation) (.*)")
     public void UserSentMessageToConversation(String userFromNameAlias, String message, String convoType,
-                                              String dstConvoName) throws Exception {
+            String dstConvoName) throws Exception {
         if (convoType.equals("user")) {
             context.getCommonSteps().UserSentMessageToUser(userFromNameAlias, dstConvoName, message);
         } else {
@@ -563,20 +381,9 @@ public class CommonWebAppSteps {
         }
     }
 
-    /**
-     * User sends location to a conversation via SEBridge
-     *
-     * @param userFromNameAlias user who wants to send location
-     * @param locationName      name of location
-     * @param longitude         longitude of location
-     * @param latitude          latitude of location
-     * @param conversationName  the name of existing conversation to send the message to
-     * @throws Exception
-     * @step. ^User (.*) sends? location (.*) with ([-+]?[0-9]*\.?[0-9]+) and ([-+]?[0-9]*\.?[0-9]+) to (user|group conversation) (.*) via device (.*)
-     */
     @When("^User (.*) sends? location (.*) with ([-+]?[0-9]*\\.?[0-9]+) and ([-+]?[0-9]*\\.?[0-9]+) to (user|group conversation) (.*) via device (.*)")
     public void UserSentLocationToConversation(String userFromNameAlias,
-                                               String locationName, String longitude, String latitude, String convoType, String conversationName, String deviceName)
+            String locationName, String longitude, String latitude, String convoType, String conversationName, String deviceName)
             throws Exception {
         boolean isGroup = convoType.equals("group conversation");
         float longitudeFloat = Float.parseFloat(longitude);
@@ -586,21 +393,9 @@ public class CommonWebAppSteps {
                 hashCode(), conversationName, longitudeFloat, latitudeFloat, locationName, zoom, isGroup);
     }
 
-    /**
-     * User X delete message from User/Group via specified device
-     * Note : The recent message means the recent message sent from specified device by SE, the device should be online.
-     *
-     * @param userNameAlias
-     * @param amount
-     * @param convoType
-     * @param dstNameAlias
-     * @param deviceName
-     * @param deleteEverywhere
-     * @throws Exception
-     * @step. ^User (.*) deletes? the recent (\\d+) messages? (everywhere )?from (user|group conversation) (.*) via device (.*)$
-     */
     @When("^User (.*) deletes? the recent (\\d+) messages? (everywhere )?from (user|group conversation) (.*) via device (.*)$")
-    public void UserXDeleteLastMessage(String userNameAlias, int amount, String deleteEverywhere, String convoType, String dstNameAlias, String deviceName)
+    public void UserXDeleteLastMessage(String userNameAlias, int amount, String deleteEverywhere, String convoType,
+            String dstNameAlias, String deviceName)
             throws Exception {
         boolean isGroup = convoType.equals("group conversation");
         boolean isDeleteEverywhere = deleteEverywhere != null;
@@ -611,92 +406,58 @@ public class CommonWebAppSteps {
     }
 
     @When("^User (.*) has seen recent (\\d+) ephemeral messages? from user (.*) via device (.*)$")
-    public void UserXSeenRecentEphemeralMessage(String deviceUserNameAlias, int amount, String messageNameAlias, String deviceName)
+    public void UserXSeenRecentEphemeralMessage(String deviceUserNameAlias, int amount, String messageNameAlias,
+            String deviceName)
             throws Exception {
         for (int deleteCounter = 0; deleteCounter < amount; deleteCounter++) {
-            context.getCommonSteps().UserDeleteLatestMessage(deviceUserNameAlias, messageNameAlias, deviceName + context.getTestname().
+            context.getCommonSteps().UserDeleteLatestMessage(deviceUserNameAlias, messageNameAlias, deviceName + context.
+                    getTestname().
                     hashCode(), false, true);
         }
     }
-    
-    /**
-     * User X edit his own messages, be careful this message will not control the type of the message you edit.
-     *
-     * @param userNameAlias user name/alias
-     * @param newMessage    the message you want to update to
-     * @param convoType     either 'user' or 'group conversation'
-     * @param dstNameAlias  destination user name/alias or group convo name
-     * @param deviceName    source device name. Will be created if does not exist yet
-     * @throws Exception
-     */
+
     @When("^User (.*) edits? the recent message to \"(.*)\" from (user|group conversation) (.*) via device (.*)$")
     public void UserXEditLastMessage(String userNameAlias, String newMessage, String convoType,
-                                     String dstNameAlias, String deviceName) throws Exception {
+            String dstNameAlias, String deviceName) throws Exception {
         boolean isGroup = convoType.equals("group conversation");
-        context.getCommonSteps().UserUpdateLatestMessage(userNameAlias, dstNameAlias, newMessage, deviceName + context.getTestname().
-                    hashCode(), isGroup);
+        context.getCommonSteps().UserUpdateLatestMessage(userNameAlias, dstNameAlias, newMessage, deviceName + context.
+                getTestname().
+                hashCode(), isGroup);
     }
-    
-    /**
-     * User X edit his own messages, be careful this message will not control the type of the message you edit.
-     *
-     * @param userNameAlias user name/alias
-     * @param newMessage    the message you want to update to
-     * @param convoType     either 'user' or 'group conversation'
-     * @param dstNameAlias  destination user name/alias or group convo name
-     * @param deviceName    source device name. Will be created if does not exist yet
-     * @throws Exception
-     */
+
     @When("^User (.*) edits? the second last message to \"(.*)\" from (user|group conversation) (.*) via device (.*)$")
     public void UserXEditSecondLastMessage(String userNameAlias, String newMessage, String convoType,
-                                     String dstNameAlias, String deviceName) throws Exception {
+            String dstNameAlias, String deviceName) throws Exception {
         boolean isGroup = convoType.equals("group conversation");
-        context.getCommonSteps().UserUpdateSecondLastMessage(userNameAlias, dstNameAlias, newMessage, deviceName + context.getTestname().
-                    hashCode(), isGroup);
+        context.getCommonSteps().UserUpdateSecondLastMessage(userNameAlias, dstNameAlias, newMessage, deviceName + context.
+                getTestname().
+                hashCode(), isGroup);
     }
-    
-    /**
-     * User X react(like or unlike) the recent message in 1:1 conversation or group conversation
-     *
-     * @param userNameAlias User X's name or alias
-     * @param reactionType User X's reaction , could be like or unlike, be careful you should use like before unlike
-     * @param dstNameAlias the conversation which message is belong to
-     * @param deviceName User X's device
-     * @throws Exception
-     * @step. ^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$
-     */
+
     @When("^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$")
     public void UserReactLastMessage(String userNameAlias, String reactionType, String dstNameAlias, String deviceName)
             throws Exception {
-        switch (reactionType.toLowerCase()){
-            case "likes" :
+        switch (reactionType.toLowerCase()) {
+            case "likes":
                 context.getCommonSteps().UserLikeLatestMessage(userNameAlias, dstNameAlias, deviceName + context.getTestname().
-                    hashCode());
+                        hashCode());
                 break;
-            case "unlikes" :
-                context.getCommonSteps().UserUnlikeLatestMessage(userNameAlias, dstNameAlias, deviceName + context.getTestname().
-                    hashCode());
+            case "unlikes":
+                context.getCommonSteps().UserUnlikeLatestMessage(userNameAlias, dstNameAlias,
+                        deviceName + context.getTestname().
+                                hashCode());
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify the reaction type '%s'", reactionType));
         }
     }
 
-    /**
-     * User X reads the latest ephemeral message in 1:1 conversation or group conversation
-     *
-     * @param userNameAlias User X's name or alias
-     * @param dstNameAlias the conversation which message is belong to
-     * @param deviceName User X's device
-     * @throws Exception
-     * @step. ^User (.*) reads the recent message from (?:user|group conversation) (.*) via device (.*)
-     */
     @When("^User (.*) reads the recent message from (user|group conversation) (.*) via device (.*)")
     public void UserReadsLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
             throws Exception {
         boolean isGroup = convoType.equals("group conversation");
-                context.getCommonSteps().UserReadLastEphemeralMessage(userNameAlias, dstNameAlias,
-                        deviceName + context.getTestname().hashCode(), isGroup);
+        context.getCommonSteps().UserReadLastEphemeralMessage(userNameAlias, dstNameAlias,
+                deviceName + context.getTestname().hashCode(), isGroup);
     }
 
     @When("^User (.*) reads the second last message from (user|group conversation) (.*) via device (.*)")
@@ -707,49 +468,22 @@ public class CommonWebAppSteps {
                 deviceName + context.getTestname().hashCode(), isGroup);
     }
 
-    /**
-     * Switch the corresponding conversation to ephemeral mode
-     *
-     * @param userAs      user name/alias
-     * @param isGroup     whether is 1:1 or group conversation
-     * @param convoName   conversation name
-     * @param timeout     ephemeral messages timeout
-     * @param timeMetrics either seconds or minutes
-     * @throws Exception
-     * @step. ^User (.*) switches (user|group conversation) (.*) to ephemeral mode with (\d+) (seconds?|minutes?) timeout$"
-     */
-    @When("^User (.*) switches (user|group conversation) (.*) to ephemeral mode (?:via device (.*)\\s)?with " +
-            "(\\d+) (seconds?|minutes?) timeout$")
+    @When("^User (.*) switches (user|group conversation) (.*) to ephemeral mode (?:via device (.*)\\s)?with "
+            + "(\\d+) (seconds?|minutes?) timeout$")
     public void UserSwitchesToEphemeralMode(String userAs, String isGroup, String convoName, String deviceName, int timeout,
-                                            String timeMetrics) throws Exception {
+            String timeMetrics) throws Exception {
         final long timeoutMs = timeMetrics.startsWith("minute") ? timeout * 60 * 1000 : timeout * 1000;
         context.getCommonSteps().UserSwitchesToEphemeralMode(userAs, convoName, timeoutMs, isGroup.equals("group conversation"),
                 deviceName + context.getTestname().hashCode());
     }
 
-    /**
-     * Send personal invitation over the backend
-     *
-     * @param userToNameAlias the name/alias of conversations list owner
-     * @param toMail          the email to send the invitation to
-     * @param message         the message for the invitee
-     * @throws Exception
-     * @step. ^(.*) send personal invitation to mail (.*) with name (.*) and message (.*)$
-     */
     @When("^(.*) sends personal invitation to mail (.*) with message (.*)$")
     public void UserXSendsPersonalInvitation(String userToNameAlias,
-                                             String toMail, String message) throws Exception {
+            String toMail, String message) throws Exception {
         context.getCommonSteps().UserXSendsPersonalInvitationWithMessageToUserWithMail(
                 userToNameAlias, toMail, message);
     }
 
-    /**
-     * Verify that invitation email exists in user's mailbox
-     *
-     * @param alias user name/alias
-     * @throws Throwable
-     * @step. ^I verify user (.*) has received (?:an |\s*)email invitation$
-     */
     @Then("^I verify user (.*) has received (?:an |\\s*)email invitation$")
     public void IVerifyUserReceiverInvitation(String alias) throws Throwable {
         context.startPinging();
@@ -784,13 +518,6 @@ public class CommonWebAppSteps {
         assertTrue("Delete account page does not show success message", deleteAccountPage.isSuccess());
     }
 
-    /**
-     * Navigates to the prefilled personal invitation registration page
-     *
-     * @param alias user name/alias
-     * @throws Throwable
-     * @step. ^(.*) navigates to personal invitation registration page$
-     */
     @Then("^(.*) navigates to personal invitation registration page$")
     public void INavigateToPersonalInvitationRegistrationPage(String alias) throws Throwable {
         final ClientUser user = context.getUserManager().findUserByNameOrNameAlias(alias);
@@ -808,35 +535,20 @@ public class CommonWebAppSteps {
         // workaround when using dev (backend is sending mail with account page that redirects to staging webapp)
         final String webapp = CommonUtils.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
         final String backend = CommonUtils.getBackendType(CommonWebAppSteps.class);
-        if(registrationPage.getCurrentUrl().contains("staging") && webapp.contains("dev") && backend.equals("staging")) {
+        if (registrationPage.getCurrentUrl().contains("staging") && webapp.contains("dev") && backend.equals("staging")) {
             url = registrationPage.getCurrentUrl().replace("staging", "dev");
             registrationPage.setUrl(url);
             registrationPage.navigateTo();
         }
     }
 
-    /**
-     * Add one or more of your contacts to the existing group conversation on the backend
-     *
-     * @param asUser           user name to add as
-     * @param contacts         the comma separated list of contacts to add
-     * @param conversationName conversation name to add contacts to
-     * @throws Exception
-     * @step. ^User (.*) added contacts? (.*) to group chat (.*)
-     */
     @Given("^User (.*) added contacts? (.*) to group chat (.*)")
     public void UserXAddedContactsToGroupChat(String asUser, String contacts,
-                                              String conversationName) throws Exception {
+            String conversationName) throws Exception {
         context.getCommonSteps().UserXAddedContactsToGroupChat(asUser, contacts,
                 conversationName);
     }
 
-    /**
-     * Wait until suggestions are in the backend for a certain user
-     *
-     * @param userNameAlias the name of the user
-     * @throws Exception
-     */
     @Given("^There are suggestions for user (.*) on backend$")
     public void suggestions(String userNameAlias) throws Exception {
         // TODO implement
@@ -844,65 +556,32 @@ public class CommonWebAppSteps {
 //        context.getCommonSteps().WaitUntilSuggestionFound(userNameAlias);
     }
 
-    /**
-     * Add email(s) into address book of a user and upload address book in backend
-     *
-     * @param asUser name of the user where the address book is uploaded
-     * @param emails list of email addresses seperated by comma
-     * @throws Exception
-     */
     @Given("^User (.*) has contacts? (.*) in address book")
     public void UserXHasContactsInAddressBook(String asUser, String emails)
             throws Exception {
         context.getCommonSteps().UserXHasContactsInAddressBook(asUser, emails);
     }
 
-    /**
-     * Record SHA256-hash of current user profile picture
-     *
-     * @param asUser user name/alias
-     * @throws Exception
-     * @step. (.*) takes? snapshot of current profile picture$
-     */
     @Given("(.*) takes? snapshot of current profile picture$")
     public void UserXTakesSnapshotOfProfilePicture(String asUser)
             throws Exception {
         context.getCommonSteps().UserXTakesSnapshotOfProfilePicture(asUser);
     }
 
-    /**
-     * Verify whether current user picture is changed since the last snapshot was made
-     *
-     * @param userNameAlias user name/alias
-     * @throws Exception
-     * @step. ^I verify that current profile picture snapshot of (.*) differs? from the previous one$
-     */
     @Then("^I verify that current profile picture snapshot of (.*) differs? from the previous one$")
     public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(String userNameAlias) throws Exception {
         context.getCommonSteps().UserXVerifiesSnapshotOfProfilePictureIsDifferent(userNameAlias);
     }
 
-    /**
-     * User adds a remote device to his list of devices
-     *
-     * @param userNameAlias user name/alias
-     * @param deviceName    unique name of the device
-     * @throws Exception
-     * @step. user (.*) adds a new device (.*)$
-     */
     @When("user (.*) adds a new device (.*) with label (.*)$")
     public void UserAddRemoteDeviceToAccount(String userNameAlias,
-                                             String deviceName, String label) throws Exception {
+            String deviceName, String label) throws Exception {
         context.startPinging();
-        context.getCommonSteps().UserAddsRemoteDeviceToAccount(userNameAlias, deviceName + context.getTestname().hashCode(), label);
+        context.getCommonSteps().UserAddsRemoteDeviceToAccount(userNameAlias, deviceName + context.getTestname().hashCode(),
+                label);
         context.stopPinging();
     }
 
-    /**
-     * Will throw PendingException if the current browser does not support synthetic drag and drop
-     *
-     * @step. ^My browser supports synthetic drag and drop$
-     */
     @Given("^My browser supports synthetic drag and drop$")
     public void MyBrowserSupportsSyntheticDragDrop() {
         if (!WebAppExecutionContext.getBrowser()
@@ -911,12 +590,6 @@ public class CommonWebAppSteps {
         }
     }
 
-    /**
-     * Verifies whether current browser log has errors or not
-     *
-     * @throws Exception
-     * @step. ^I verify browser log does not have errors$
-     */
     @Then("^I verify browser log does not have errors$")
     public void VerifyBrowserLogIsEmpty() throws Exception {
         try {
@@ -926,25 +599,25 @@ public class CommonWebAppSteps {
 
                 StringBuilder bLog = new StringBuilder();
                 browserLog = browserLog.stream()
-                        .filter((entry) -> 
-                                entry.getLevel().intValue() >= Level.SEVERE.intValue())
+                        .filter((entry)
+                                -> entry.getLevel().intValue() >= Level.SEVERE.intValue())
                         // filter auto login attempts
-                        .filter((entry) -> 
-                                !entry.getMessage().contains("/access"))
-                        .filter((entry) -> 
-                                !entry.getMessage().contains("/self"))
-                        .filter((entry) -> 
-                                !entry.getMessage().contains("attempt"))
+                        .filter((entry)
+                                -> !entry.getMessage().contains("/access"))
+                        .filter((entry)
+                                -> !entry.getMessage().contains("/self"))
+                        .filter((entry)
+                                -> !entry.getMessage().contains("attempt"))
                         // filter encryption precondition
-                        .filter((entry) -> 
-                                !entry.getMessage().contains("412 (Precondition Failed)"))
+                        .filter((entry)
+                                -> !entry.getMessage().contains("412 (Precondition Failed)"))
                         .collect(Collectors.toList());
-                
+
                 browserLog.forEach((entry) -> {
-                            bLog.append(entry.getLevel()).append(":")
+                    bLog.append(entry.getLevel()).append(":")
                             .append(entry.getMessage())
                             .append("\n");
-                        });
+                });
 
                 assertTrue("BrowserLog does have errors: \n" + bLog.toString(),
                         browserLog.isEmpty());
@@ -954,66 +627,29 @@ public class CommonWebAppSteps {
         }
     }
 
-    /**
-     * Refreshes page by getting and setting the current URL. Note: Alternative 'WebDriver.navigate().refresh()' hangs with
-     * Firefox.
-     *
-     * @throws Exception
-     * @step. ^I refresh page$
-     */
     @Then("^I refresh page$")
     public void IRefreshPage() throws Exception {
         context.getPagesCollection().getPage(RegistrationPage.class)
                 .refreshPage();
     }
 
-    /**
-     * Unblocks user
-     *
-     * @param userAsNameAlias      user which wants to unblock another
-     * @param userToBlockNameAlias user to unblock
-     * @throws Exception
-     * @step. ^(\\w+) unblocks (\\w+)$
-     */
     @Given("^(\\w+) unblocks user (\\w+)$")
     public void UserUnblocks(String userAsNameAlias, String userToBlockNameAlias)
             throws Exception {
         context.getCommonSteps().UnblockContact(userAsNameAlias, userToBlockNameAlias);
     }
 
-    /**
-     * Open the sign in page directly (not through a link). This is useful when testing pages with dead ends (forget password,
-     * email verification)
-     *
-     * @throws Exception
-     * @step. ^I open Sign In page$
-     */
     @Given("^I open Sign In page$")
     public void IOpenSignInPage() throws Exception {
         context.getPagesCollection().getPage(RegistrationPage.class)
                 .openSignInPage();
     }
 
-    /**
-     * Remove all registered OTR clients for the particular user
-     *
-     * @param userAs user name/alias
-     * @throws Exception
-     * @step. ^User (.*) removes all his registered OTR clients$
-     */
     @Given("^User (.*) removes all his registered OTR clients$")
     public void UserRemovesAllRegisteredOtrClients(String userAs) throws Exception {
         context.getCommonSteps().UserRemovesAllRegisteredOtrClients(userAs);
     }
 
-    /**
-     * Remove all registered OTR clients for the particular user except of the X most recent ones
-     *
-     * @param userAs       user name/alias
-     * @param clientsCount the count of recents OTR clients to keep
-     * @throws Exception
-     * @step. ^User (.*) only keeps his (\d+) most recent OTR clients$
-     */
     @Given("^User (.*) only keeps his (\\d+) most recent OTR clients$")
     public void UserKeepsXOtrClients(String userAs, int clientsCount) throws Exception {
         context.getCommonSteps().UserKeepsXOtrClients(userAs, clientsCount);
@@ -1021,20 +657,20 @@ public class CommonWebAppSteps {
 
     @Then("^I see localytics event (.*) with attributes (.*)$")
     public void ISeeLocalyticsEvent(String event, String attributes) throws Exception {
-        if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement() &&
-                WebCommonUtils.getExtendedLoggingLevelInConfig(CommonWebAppSteps.class).equals("ALL")) {
+        if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()
+                && WebCommonUtils.getExtendedLoggingLevelInConfig(CommonWebAppSteps.class).equals("ALL")) {
             List<String> localyticsEvents = new ArrayList<>();
             List<LogEntry> logEntries = context.getBrowserLog();
             if (!logEntries.isEmpty()) {
                 for (LogEntry logEntry : logEntries) {
-                    if(logEntry.getMessage().contains("Localytics event")) {
+                    if (logEntry.getMessage().contains("Localytics event")) {
                         String message = logEntry.getMessage();
                         localyticsEvents.add(message.substring(message.lastIndexOf("|") + 2));
                     }
                 }
             }
             assertThat("Did not find any localytics events in browser console", not(localyticsEvents.isEmpty()));
-            for(String localyticsEvent: localyticsEvents) {
+            for (String localyticsEvent : localyticsEvents) {
                 log.info("Found event: " + localyticsEvent);
             }
             assertThat("Did not find localytics event " + event + " in browser console", localyticsEvents,

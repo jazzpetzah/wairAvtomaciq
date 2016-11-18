@@ -5,13 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.concurrent.ThreadLocalRandom;
-
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.WebPage;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import cucumber.api.java.en.When;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -20,10 +17,6 @@ import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.log4j.Logger;
 
-/**
- * Steps that are only used for migration tests (tests that check if a release is not breaking accounts from already
- * registered users)
- */
 public class MigrationSteps {
 
     private TestContext context;

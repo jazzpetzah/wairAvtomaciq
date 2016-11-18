@@ -66,32 +66,18 @@ public class ConversationPageSteps {
         this.context = context;
     }
 
-    /**
-     * Sends random message (generated GUID) into opened conversation
-     *
-     * @throws Exception
-     * @step. ^I write random message$
-     */
     @When("^I write random message$")
     public void WhenIWriteRandomMessage() throws Exception {
         randomMessage = CommonUtils.generateGUID();
         IWriteMessage(randomMessage);
     }
 
-    /**
-     * Verify that the input text field contains random message
-     */
     @Then("^I verify that random message was typed$")
     public void IVerifyThatRandomMessageWasTyped() throws Exception {
         assertThat("Random message in input field", context.getPagesCollection().getPage(ConversationPage.class)
                 .getMessageFromInputField(), equalTo(randomMessage));
     }
 
-    /**
-     * Verify that the input text field contains message X
-     *
-     * @param message the message it should contain
-     */
     @Then("^I verify that message \"(.*)\" was typed$")
     public void IVerifyThatMessageWasTyped(String message) throws Exception {
         assertThat("Message in input field", context.getPagesCollection().getPage(ConversationPage.class).
@@ -99,13 +85,6 @@ public class ConversationPageSteps {
                 equalTo(message));
     }
 
-    /**
-     * Types text message to opened conversation, but does not send it
-     *
-     * @param message text message
-     * @throws Exception
-     * @step. ^I write message (.*)$
-     */
     @When("^I write message (.*)$")
     public void IWriteMessage(String message) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).writeNewMessage(message);
@@ -135,13 +114,6 @@ public class ConversationPageSteps {
         }
     }
 
-    /**
-     * Types x number of new lines to opened conversation, but does not send them
-     *
-     * @param amount number of lines to write
-     * @throws Exception
-     * @step. ^I write (.*) new lines$
-     */
     @When("^I write (\\d+) new lines$")
     public void IWriteXNewLines(int amount) throws Exception {
         String message = "";
@@ -155,37 +127,16 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).writeNewMessage(message);
     }
 
-    /**
-     * Submits entered message for sending
-     *
-     * @step. ^I send message$
-     */
     @When("^I send message$")
     public void ISendMessage() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).sendNewMessage();
     }
 
-    /**
-     * Checks that last sent random message appear in conversation
-     *
-     * @throws Exception
-     * @throws AssertionError if message did not appear in conversation
-     * @step. ^I see random message in conversation$
-     */
     @Then("^I see random message in conversation$")
     public void ThenISeeRandomMessageInConversation() throws Exception {
         ISeeTextMessage(randomMessage);
     }
 
-    /**
-     * Verifies whether soundcloud, youtube, vimeo or spotify message is embedded
-     *
-     * @throws Exception
-     * @param typeOfMessage soundcloud| youtube| vimeo| spotify
-     * @param url link of soundcloud| youtube| vimeo| spotify message
-     *
-     * @step. ^I (do not )?see embedded( soundcloud| youtube| vimeo| spotify)? message (.*)
-     */
     @Then("^I (do not )?see embedded( soundcloud| youtube| vimeo| spotify)? message (.*)")
     public void ISeeEmbeddedMessage(String doNot, String typeOfMessage, String url) throws Exception {
         if (doNot == null) {
@@ -195,23 +146,11 @@ public class ConversationPageSteps {
         }
     }
 
-    /**
-     * Click People button in 1:1 conversation
-     *
-     * @throws Exception
-     * @step. I click People button in one to one conversation$
-     */
     @When("^I click People button in one to one conversation$")
     public void WhenIClickPeopleButtonIn1to1() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickPeopleButton();
     }
 
-    /**
-     * Click People button in a group conversation to close People Popover
-     *
-     * @throws Exception if the popover is not visible
-     * @step. ^I close Group Participants popover$
-     */
     @When("^I close Group Participants popover$")
     public void WhenICloseGroupParticipantsPopover() throws Exception {
         GroupPopoverContainer peoplePopoverPage = context.getPagesCollection().getPage(GroupPopoverContainer.class);
@@ -222,12 +161,6 @@ public class ConversationPageSteps {
         }
     }
 
-    /**
-     * Click People button in 1:1 conversation to close People Popover
-     *
-     * @throws Exception if the popover is not visible
-     * @step. ^I close Single User Profile popover$
-     */
     @When("^I close Single User Profile popover$")
     public void WhenICloseSingleUserPopover() throws Exception {
         SingleUserPopoverContainer peoplePopoverPage = context.getPagesCollection().getPage(SingleUserPopoverContainer.class);
@@ -238,12 +171,6 @@ public class ConversationPageSteps {
         }
     }
 
-    /**
-     * Click People button in a group conversation
-     *
-     * @throws Exception
-     * @step. I click People button in group conversation$
-     */
     @When("^I click People button in group conversation$")
     public void WhenIClickPeopleButtonInGroup() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickPeopleButton();
@@ -260,25 +187,11 @@ public class ConversationPageSteps {
                 equalTo(conversationName.toUpperCase()));
     }
 
-    /**
-     * Send a picture into current conversation
-     *
-     * @param pictureName the name of a picture file. This file should already exist in the ~/Documents folder
-     * @throws Exception
-     * @step. ^I send picture (.*) to the current conversation$
-     */
     @When("^I send picture (.*) to the current conversation$")
     public void WhenISendPicture(String pictureName) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).sendPicture(pictureName);
     }
 
-    /**
-     * Verifies whether previously sent picture exists in the conversation view
-     *
-     * @param pictureName the name of a picture file. This file should already exist in the ~/Documents folder
-     * @throws Exception
-     * @step. ^I see sent picture (.*) in the conversation view$
-     */
     @Then("^I see sent picture (.*) in the conversation view$")
     public void ISeeSentPicture(String pictureName) throws Exception {
         assertThat("Overlap score of image comparsion", context.getPagesCollection().getPage(ConversationPage.class)
@@ -291,24 +204,12 @@ public class ConversationPageSteps {
                 .isImageInvisible());
     }
 
-    /**
-     * Verifies that only x images are in the conversation. Helps with checking for doubles.
-     *
-     * @param x the amount of images
-     * @step. ^I see only (\\d+) picture[s]? in the conversation$
-     */
     @Then("^I see only (\\d+) pictures? in the conversation$")
     public void ISeeOnlyXPicturesInConversation(int x) throws Exception {
         assertThat("Number of images in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
                 .getNumberOfImagesInCurrentConversation(), equalTo(x));
     }
 
-    /**
-     * Verifies that x messages are in the conversation
-     *
-     * @param x the amount of sent messages
-     * @step. ^I see (\\d+) messages in conversation$
-     */
     @Then("^I see (\\d+) messages? in conversation$")
     public void ISeeXMessagesInConversation(int x) throws Exception {
         assertThat("Number of messages in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
@@ -320,7 +221,7 @@ public class ConversationPageSteps {
         String userId = context.getUserManager().findUserByNameOrNameAlias(nameAlias).getId();
         String conversationId = context.getPagesCollection().getPage(ContactListPage.class).getActiveConversationId();
         assertThat("Couldn't get id of active conversation!", conversationId, not(isEmptyOrNullString()));
-        if(not != null) {
+        if (not != null) {
             assertThat("Messages still in DB",
                     context.getPagesCollection().getPage(ConversationPage.class).getMessagesFromDb(conversationId, userId),
                     not(hasItem(message)));
@@ -341,12 +242,6 @@ public class ConversationPageSteps {
                 hasSize(numberOfMessages));
     }
 
-    /**
-     * Verifies that x deleted messages are in the conversation
-     *
-     * @param x the amount of deleted messages
-     * @step. ^I see (\\d+) deleted messages in conversation$
-     */
     @Then("^I see (\\d+) deleted messages? in conversation$")
     public void ISeeXDeletedMessagesInConversation(int x) throws Exception {
         assertThat("Number of deleted messages in the conversation", context.getPagesCollection().
@@ -354,23 +249,11 @@ public class ConversationPageSteps {
                 .getNumberOfDeletedMessagesInCurrentConversation(), equalTo(x));
     }
 
-    /**
-     * Verifies if file transfer button is shown in the cursor
-     *
-     * @throws Exception
-     * @step. ^I see file transfer button in conversation input$
-     */
     @Then("^I see file transfer button in conversation input$")
     public void ISeeFileButton() throws Exception {
         assertThat("No button found", context.getPagesCollection().getPage(ConversationPage.class).isFileButtonVisible());
     }
 
-    /**
-     * Verifies if buttons are invisible and input is not usable
-     *
-     * @throws Exception
-     * @step. ^I verify that conversation input and buttons are not visible$
-     */
     @Then("^I verify that conversation input and buttons are not visible$")
     public void IDontSeeConversationInput() throws Exception {
         assertFalse("conversation input is still visible", context.getPagesCollection().getPage(ConversationPage.class)
@@ -385,25 +268,11 @@ public class ConversationPageSteps {
                 .isPingButtonVisible());
     }
 
-    /**
-     * Send a file into current conversation
-     *
-     * @param fileName the name of a file.
-     * @throws Exception
-     * @step. ^I send picture (.*) to the current conversation$
-     */
     @When("^I send file (.*) to the current conversation$")
     public void WhenISendFile(String fileName) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).sendFile(fileName);
     }
 
-    /**
-     * Generate and send a file with a specific size into current conversation
-     *
-     * @param size the size of a file.
-     * @param fileName the name of the file
-     * @throws Exception
-     */
     @When("^I send (.*) sized file with name (.*) to the current conversation$")
     public void WhenIXSizedSendFile(String size, String fileName) throws Exception {
         String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
@@ -421,13 +290,6 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).sendFile(fileName);
     }
 
-    /**
-     * Generate and send a video with a specific size into current conversation
-     *
-     * @param size the size of the video file.
-     * @param fileName the name of the file
-     * @throws Exception
-     */
     @When("^I send (.*) sized video with name (.*) to the current conversation$")
     public void WhenIXSizedSendVideo(String size, String fileName) throws Exception {
         String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
@@ -437,13 +299,6 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).sendFile(fileName);
     }
 
-    /**
-     * Generate and send a audio file with a specific size into current conversation
-     *
-     * @param length the length in format 00:00 (minutes:seconds) of the audio file.
-     * @param fileName the name of the file
-     * @throws Exception
-     */
     @When("^I send audio file with length (.*) and name (.*) to the current conversation$")
     public void WhenIXSizedSendAudio(String length, String fileName) throws Exception {
         String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
@@ -453,13 +308,6 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).sendFile(fileName);
     }
 
-    /**
-     * Verifies if the file transfer placeholder contains correct file name
-     *
-     * @param fileName the name of a file
-     * @throws Exception
-     * @step. ^I see file transfer for file (.*) in the conversation view$
-     */
     @Then("^I (do not )?see file transfer for file (.*) in the conversation view$")
     public void ISeeFileTransferOfFile(String doNot, String fileName) throws Exception {
         if (doNot == null) {
@@ -480,90 +328,34 @@ public class ConversationPageSteps {
         }
     }
 
-    /**
-     * Cancel file upload
-     *
-     * @param fileName the name of a file
-     * @throws Exception
-     * @step. ^I send picture (.*) to the current conversation$
-     */
     @When("^I cancel file upload of file (.*)$")
     public void WhenICancelFileUpload(String fileName) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).cancelFileUpload(fileName);
     }
 
-    /**
-     * Cancel video upload
-     *
-     * @param fileName the name of a file
-     * @throws Exception
-     */
     @When("^I cancel video upload of video (.*)$")
     public void ICancelVideoUpload(String fileName) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).cancelVideoUpload(fileName);
     }
 
-    /**
-     * Verifies if the file transfer placeholder contains correct file name
-     *
-     * @param count the name of a file
-     * @throws Exception
-     * @step. ^I see file transfer for file (.*) in the conversation view$
-     */
-    @Then("^I see (//d+) file transfers in the conversation view$")
-    public void ISeeFileTransfers(String count) throws Exception {
-        // TODO
-    }
-
-    /**
-     * Verifies if the file transfer placeholder contains correct file icon
-     *
-     * @param fileName the name of a file
-     * @throws Exception
-     * @step. ^I verify icon of file (.*) in the conversation view$
-     */
     @Then("^I verify icon of file (.*) in the conversation view$")
     public void IVerifyIconOfFile(String fileName) throws Exception {
         assertThat("No file icon for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
                 .getFileIcon(fileName));
     }
 
-    /**
-     * Verifies if the file transfer placeholder contains correct file size
-     *
-     * @param fileName the name of a file
-     * @throws Exception
-     * @step. ^I verify size of file (.*) in the conversation view$
-     */
     @Then("^I verify size of file (.*) is (.*) in the conversation view$")
     public void IVerifySizeOfFile(String fileName, String size) throws Exception {
         assertThat("Wrong file size for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
                 .getFileSizeOf(fileName), equalTo(size));
     }
 
-    /**
-     * Verifies if the file transfer placeholder contains correct file status
-     *
-     * @param fileName the name of a file
-     * @param status the status of the transfer
-     * @throws Exception
-     * @step. ^I verify status of file (.*) is (.*) in the conversation view$
-     */
     @Then("^I verify status of file (.*) is (.*) in the conversation view$")
     public void IVerifyStatusOfFile(String fileName, String status) throws Exception {
         assertThat("Wrong file status for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
                 .getFileStatusOf(fileName), equalTo(status));
     }
 
-    /**
-     * Verifies if the file transfer placeholder contains correct file status only if the file status is shown at all. This is
-     * helpful in cases of UPLOADING... and DOWNLOADING... status.
-     *
-     * @param fileName the name of a file
-     * @param status the status of the transfer
-     * @throws Exception
-     * @step. ^I verify status of file (.*) is (.*) in the conversation view$
-     */
     @Then("^I verify status of file (.*) is (.*) in the conversation view if possible$")
     public void IVerifyStatusOfFileIfPossible(String fileName, String status) throws Exception {
         Optional<String> optionalStatus = context.getPagesCollection().getPage(ConversationPage.class)
@@ -573,14 +365,6 @@ public class ConversationPageSteps {
         }
     }
 
-    /**
-     * Verifies if the file transfer placeholder contains correct file type
-     *
-     * @param fileName the name of a file
-     * @param type the type of the file
-     * @throws Exception
-     * @step. ^I verify status of file (.*) is (.*) in the conversation view$
-     */
     @Then("^I verify type of file (.*) is (.*) in the conversation view$")
     public void IVerifyTypeOfFile(String fileName, String type) throws Exception {
         assertThat("Wrong file status for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
@@ -601,13 +385,6 @@ public class ConversationPageSteps {
                 .waitUntilFilePlaceholderDisappears(fileName));
     }
 
-    /**
-     * Clicks on download button to download certain file
-     *
-     * @param fileName the name of a file
-     * @throws Exception
-     * @step. ^II click icon to download file (.*) in the conversation view$
-     */
     @Then("^I click icon to download file (.*) in the conversation view$")
     public void IDownloadFile(String fileName) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickFileIcon(fileName);
@@ -672,7 +449,8 @@ public class ConversationPageSteps {
 
     @Then("^I wait until audio (.*) is uploaded completely$")
     public void IWaitUntilAudioIsUploaded(String fileName) throws Exception {
-        assertThat("Upload still not finished for audio " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+        assertThat("Upload still not finished for audio " + fileName, context.getPagesCollection().getPage(
+                ConversationPage.class)
                 .waitUntilAudioUploaded(fileName));
     }
 
@@ -768,7 +546,7 @@ public class ConversationPageSteps {
         assertTrue("Like button is visible", context.getPagesCollection().getPage(ConversationPage.class)
                 .isLikeButtonInContextMenuInvisible());
     }
-    
+
     @When("^I do not see download button in context menu$")
     public void IDoNotSeeDownloadButtonInContext() throws Exception {
         assertTrue("Download button is visible", context.getPagesCollection().getPage(ConversationPage.class)
@@ -791,15 +569,19 @@ public class ConversationPageSteps {
         boolean isSecond = " second".equals(second);
         if (!isSecond) {
             if (doNot == null) {
-                assertTrue("Like symbol is not visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolVisibleForLastMessage());
+                assertTrue("Like symbol is not visible", context.getPagesCollection().getPage(ConversationPage.class).
+                        isLikeSymbolVisibleForLastMessage());
             } else {
-                assertTrue("Like symbol is visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolInvisibleForLastMessage());
+                assertTrue("Like symbol is visible", context.getPagesCollection().getPage(ConversationPage.class).
+                        isLikeSymbolInvisibleForLastMessage());
             }
         } else {
             if (doNot == null) {
-                assertTrue("Like symbol is not visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolVisibleForSecondLastMessage());
+                assertTrue("Like symbol is not visible", context.getPagesCollection().getPage(ConversationPage.class).
+                        isLikeSymbolVisibleForSecondLastMessage());
             } else {
-                assertTrue("Like symbol is visible", context.getPagesCollection().getPage(ConversationPage.class).isLikeSymbolInvisibleForSecondLastMessage());
+                assertTrue("Like symbol is visible", context.getPagesCollection().getPage(ConversationPage.class).
+                        isLikeSymbolInvisibleForSecondLastMessage());
             }
         }
     }
@@ -828,12 +610,11 @@ public class ConversationPageSteps {
         assertEquals("The timestamps are not equal", rememberedEditTimeStamp, editTimeStamp);
     }
 
-
     @Then("^I( do not)? see delivery status of last message is (.*)$")
     public void ISeeDeliveryStatus(String doNot, String status) throws Exception {
         boolean isDoNot = " do not".equals(doNot);
         if (isDoNot) {
-            if(context.getPagesCollection().getPage(ConversationPage.class).isDeliveryStatusOfLastMessageVisible()) {
+            if (context.getPagesCollection().getPage(ConversationPage.class).isDeliveryStatusOfLastMessageVisible()) {
                 assertThat("Status wrong",
                         context.getPagesCollection().getPage(ConversationPage.class).getDeliveryStatusOfLastMessage(),
                         not(equalTo(status)));
@@ -890,12 +671,11 @@ public class ConversationPageSteps {
                 context.getPagesCollection().getPage(ConversationPage.class).clickLikeMessageWithoutOtherLikes(indexNummer);
             } else {
                 context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeMessageWithoutOtherLikes(indexNummer);
-                }
-        } else if (isLike) {
-                context.getPagesCollection().getPage(ConversationPage.class).clickLikeMessageWithOtherLikes(indexNummer);
             }
-        else {
-                context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeMessageWithOtherLikes(indexNummer);
+        } else if (isLike) {
+            context.getPagesCollection().getPage(ConversationPage.class).clickLikeMessageWithOtherLikes(indexNummer);
+        } else {
+            context.getPagesCollection().getPage(ConversationPage.class).clickUnlikeMessageWithOtherLikes(indexNummer);
         }
     }
 
@@ -918,7 +698,7 @@ public class ConversationPageSteps {
     @When("^I see (\\d+) avatars in like list of last message$")
     public void ISeeXAvatarsInLikeList(int amount) throws Exception {
         assertThat("Wrong amount of avatars found", context.getPagesCollection()
-                        .getPage(ConversationPage.class).getAvatarsInLatestLikeList(),
+                .getPage(ConversationPage.class).getAvatarsInLatestLikeList(),
                 equalTo(amount));
     }
 
@@ -934,7 +714,8 @@ public class ConversationPageSteps {
             assertTrue("Likes of others are NOT visible for last message", context.getPagesCollection().getPage(
                     ConversationPage.class).isLikeLineVisibleForMessage(messageIndex));
         } else {
-            assertTrue("Likes of others are visible for last message", context.getPagesCollection().getPage(ConversationPage.class)
+            assertTrue("Likes of others are visible for last message", context.getPagesCollection().getPage(
+                    ConversationPage.class)
                     .isLikeLineInvisibleForMessage(messageIndex));
         }
     }
@@ -942,10 +723,11 @@ public class ConversationPageSteps {
     @Then("^I see the (third |second )?last message is only liked by me$")
     public void ISeeLatestMessageIsOnlyLikedByMe(String indexValue) throws Exception {
         int messageIndex = getXLastMessageIndex(indexValue);
-        assertTrue("The " + indexValue + "last message is NOT only liked by you", context.getPagesCollection().getPage(ConversationPage.class)
+        assertTrue("The " + indexValue + "last message is NOT only liked by you", context.getPagesCollection().getPage(
+                ConversationPage.class)
                 .isUnlikeWithoutOtherLikesVisibleForMessage(messageIndex));
     }
-    
+
     @Then("^I see the last message is only liked by others$")
     public void ISeeLastMessageIsOnlyLikedByOthers() throws Exception {
         assertTrue("The message is liked by you", context.getPagesCollection().getPage(ConversationPage.class)
@@ -963,7 +745,7 @@ public class ConversationPageSteps {
         List<String> likers = context.getPagesCollection().getPage(ConversationPage.class).getUsersThatLikeTheLastMessage();
         List<String> aliases = CommonSteps.splitAliases(usersToNameAliases);
         String[] users = new String[aliases.size()];
-        for(int i = 0; i < aliases.size(); i++) {
+        for (int i = 0; i < aliases.size(); i++) {
             ClientUser userTo = context.getUserManager().findUserByNameOrNameAlias(aliases.get(i));
             users[i] = userTo.getName();
         }
@@ -1001,11 +783,6 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).setCloseResetSessionDialog();
     }
 
-    /**
-     * Verifies whether people button tool tip is correct or not.
-     *
-     * @step. ^I see correct people button tool tip$
-     */
     @Then("^I see correct people button tool tip$")
     public void ThenISeeCorrectPeopleButtonToolTip() throws Exception {
         assertTrue("Tooltip NOT visible for people button", context.getPagesCollection().getPage(ConversationPage.class).
@@ -1030,15 +807,6 @@ public class ConversationPageSteps {
                 equalTo("CONNECTED"));
     }
 
-    /**
-     * Checks action message (e.g. you left, etc.) appear in conversation
-     *
-     * @param doNot if not null, checks if the action message does not display
-     * @param message constant part of the system message
-     * @throws Exception
-     * @throws AssertionError if action message did not appear in conversation
-     * @step. ^I see (.*) action in conversation$
-     */
     @Then("^I( do not)? see (.*) action in conversation$")
     public void ThenISeeActionInConversation(String doNot, String message) throws Exception {
         if (doNot == null) {
@@ -1048,31 +816,12 @@ public class ConversationPageSteps {
         }
     }
 
-    /**
-     * Checks action message (e.g. you left, etc.) appear in conversation
-     *
-     * @param message constant part of the system message
-     * @param times number of times the message appears
-     * @throws Exception
-     * @throws AssertionError if action message did not appear in conversation
-     * @step. ^I see (.*) action in conversation$
-     */
     @Then("^I see (.*) action (\\d+) times in conversation$")
     public void ThenISeeActionInConversation(String message, int times) throws Exception {
         assertThat(message + " action", context.getPagesCollection().getPage(ConversationPage.class)
                 .waitForNumberOfMessageHeadersContain(message), equalTo(times));
     }
 
-    /**
-     * Checks action message (e.g. you left, etc.) appear in conversation
-     *
-     * @param doNot if not null, checks if the action message does not display
-     * @param message constant part of the system message
-     * @param contacts list of comma separated contact names/aliases
-     * @throws AssertionError if action message did not appear in conversation
-     * @throws Exception
-     * @step. ^I see (.*) action for (.*) in conversation$
-     */
     @Then("^I( do not)? see (.*) action for (.*) in conversation$")
     public void ThenISeeActionForContactInConversation(String doNot, String message, String contacts) throws Exception {
         if (doNot == null) {
@@ -1082,16 +831,6 @@ public class ConversationPageSteps {
         }
     }
 
-    /**
-     * Checks action message (e.g. you left, etc.) appear in conversation
-     *
-     * @param message constant part of the system message
-     * @param times number of times the message appears
-     * @param contacts list of comma separated contact names/aliases
-     * @throws AssertionError if action message did not appear in conversation
-     * @throws Exception
-     * @step. ^I see (.*) action for (.*) in conversation$
-     */
     @Then("^I see (.*) action (\\d+) times for (.*) in conversation$")
     public void ThenISeeActionForContactInConversation(String message, int times, String contacts) throws Exception {
         contacts = context.getUserManager().replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
@@ -1102,13 +841,6 @@ public class ConversationPageSteps {
                 .waitForNumberOfMessageHeadersContain(parts), equalTo(times));
     }
 
-    /**
-     * Add a user to group chat
-     *
-     * @param contact
-     * @throws Exception
-     * @step. ^I add (.*) to group chat$
-     */
     @When("^I add (.*) to group chat$")
     public void IAddContactToGroupChat(String contact) throws Exception {
         WhenIClickPeopleButtonInGroup();
@@ -1153,7 +885,7 @@ public class ConversationPageSteps {
 
     @When("^I see the last message is( not)? obfuscated$")
     public void ISeeObfuscatedMessage(String not) throws Exception {
-        if(not == null) {
+        if (not == null) {
             assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isLastMessageObfuscated());
         } else {
             assertTrue("Last message is obfuscated",
@@ -1166,15 +898,9 @@ public class ConversationPageSteps {
         assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isSecondLastMessageObfuscated());
     }
 
-    /**
-     * Checks if the picture, video, audio, or file is replaced with replacing block
-     * @param doNot
-     * @throws Exception
-     */
-
     @When("^I (do not )?see block replaces the last message in the conversation view$")
     public void ISeeReplacingBlock(String doNot) throws Exception {
-        if(doNot == null) {
+        if (doNot == null) {
             assertTrue("Last message is not replaced with a replacing block",
                     context.getPagesCollection().getPage(ConversationPage.class).isLastMessageReplaced());
         } else {
@@ -1183,73 +909,41 @@ public class ConversationPageSteps {
         }
     }
 
-
-    /**
-     * Click ping button to send ping and hot ping
-     *
-     * @throws Exception
-     * @step. ^I click ping button$
-     */
     @When("^I click ping button$")
     public void IClickPingButton() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickPingButton();
     }
 
-    /**
-     * Verify a text message is visible in conversation.
-     *
-     * @param message
-     * @throws Exception
-     * @step. ^I see text message (.*)
-     */
     @Then("^I see text message (.*)")
     public void ISeeTextMessage(String message) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).waitForPresentMessageContains(message);
     }
-    
-    /**
-     * Verify latest text message is visible in conversation.
-     *
-     * @param message
-     * @throws Exception
-     * @step. ^I see text message (.*)
-     */
+
     @Then("^I see latest text message (.*)")
     public void ISeeLatestTextMessage(String message) throws Exception {
-        assertTrue(String.format("Last message is NOT visible with text '%s'", message), 
+        assertTrue(String.format("Last message is NOT visible with text '%s'", message),
                 context.getPagesCollection().getPage(ConversationPage.class).isLatestMessageWithTextVisible(message));
     }
 
-    /**
-     * Verify a text message is visible in conversation.
-     *
-     * @param message
-     * @throws Exception
-     * @step. ^I really see text message (.*)
-     */
     @Then("^I really see text message (.*)")
     public void ISeeTextMessageInViewPort(String message) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).waitForDisplayedMessageContains(message, 30);
     }
 
-    /**
-     * Get last message index (last, second last, third last)
-     *
-     * @param indexValue String
-     * @return
-     * @throws Exception
-     */
-
     private int getXLastMessageIndex(String indexValue) throws Exception {
         int indexNummer = 1;
-        if (indexValue == null)
+        if (indexValue == null) {
             return indexNummer;
+        }
         switch (indexValue) {
-            case "third ": indexNummer = 3;
+            case "third ":
+                indexNummer = 3;
                 break;
-            case "second ": indexNummer = 2;
+            case "second ":
+                indexNummer = 2;
                 break;
-            default: indexNummer = 1;
+            default:
+                indexNummer = 1;
                 break;
         }
         return indexNummer;
@@ -1284,7 +978,6 @@ public class ConversationPageSteps {
      *
      * @param expectedMessage the expected message
      * @throws Exception
-     * @step. ^I verify the last text message equals to (.*)
      */
     @Then("^I verify the last text message equals to (.*)")
     public void IVerifyLastTextMessage(String expectedMessage) throws Exception {
@@ -1299,50 +992,23 @@ public class ConversationPageSteps {
                 .getLastTextMessage());
     }
 
-    /**
-     * Verify the text of the second last text message in conversation. This step should only be used after verifying the last
-     * message of the conversation, because otherwise you might run into a race condition.
-     *
-     * @param expectedMessage the expected message
-     * @throws Exception
-     * @step. ^I verify the second last text message equals to (.*)
-     */
     @Then("^I verify the second last text message equals to (.*)")
     public void IVerifySecondLastTextMessage(String expectedMessage) throws Exception {
         assertThat(context.getPagesCollection().getPage(ConversationPage.class).getSecondLastTextMessage(), equalTo(
                 expectedMessage));
     }
 
-    /**
-     * Verify a text message is not visible in conversation
-     *
-     * @param message
-     * @throws Exception
-     * @step. ^I do not see text message (.*)
-     */
     @Then("^I do not see text message ?(.*)$")
     public void IDontSeeTextMessage(String message) throws Exception {
         assertTrue("Saw text message " + message, context.getPagesCollection().getPage(ConversationPage.class)
                 .isTextMessageInvisible(message == null ? "" : message));
     }
 
-    /**
-     * Start call in opened conversation
-     *
-     * @step. ^I call$
-     */
     @When("^I call$")
     public void ICallUser() throws Throwable {
         context.getPagesCollection().getPage(ConversationPage.class).clickCallButton();
     }
 
-    /**
-     * Verifies whether calling button is visible or not.
-     *
-     * @param doNot is set to null if "do not" part does not exist
-     * @throws java.lang.Exception
-     * @step. ^I( do not)? see call button$
-     */
     @Then("^I( do not)? see call button$")
     public void ISeeCallButton(String doNot) throws Exception {
         if (doNot == null) {
@@ -1352,13 +1018,6 @@ public class ConversationPageSteps {
         }
     }
 
-    /**
-     * Verifies whether video calling button is visible or not.
-     *
-     * @param doNot is set to null if "do not" part does not exist
-     * @throws java.lang.Exception
-     * @step. ^I( do not)? see video call button$
-     */
     @Then("^I( do not)? see video call button$")
     public void ISeeVideoCallButton(String doNot) throws Exception {
         if (doNot == null) {
@@ -1368,57 +1027,26 @@ public class ConversationPageSteps {
         }
     }
 
-    /**
-     * Accepts incoming call by clicking the check button on the calling bar
-     *
-     * @throws Exception
-     * @step. ^I accept the incoming call$
-     */
     @When("^I accept the incoming call$")
     public void IAcceptIncomingCall() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickAcceptCallButton();
     }
 
-    /**
-     * Accepts incoming video call by clicking the video call button on the calling bar
-     *
-     * @throws Exception
-     * @step. ^I accept the incoming video call$
-     */
     @When("^I accept the incoming video call$")
     public void IAcceptIncomingVideoCall() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickAcceptVideoCallButton();
     }
 
-    /**
-     * Silences the incoming call by clicking the corresponding button on the calling bar
-     *
-     * @throws Exception
-     * @step. ^I silence the incoming call$
-     */
     @When("^I silence the incoming call$")
     public void ISilenceIncomingCall() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickSilenceCallButton();
     }
 
-    /**
-     * Click on picture to open it in full screen mode
-     *
-     * @throws Exception
-     * @step. ^I click on picture$
-     */
     @When("^I click on picture$")
     public void WhenIClickOnPicture() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickOnPicture();
     }
 
-    /**
-     * Verifies whether picture is in fullscreen or not.
-     *
-     * @param doNot is set to null if "do not" part does not exist
-     * @throws java.lang.Exception
-     * @step. ^I( do not)? see picture in fullscreen$
-     */
     @Then("^I( do not)? see picture (.*) in fullscreen$")
     public void ISeePictureInFullscreen(String doNot, String pictureName) throws Exception {
         ConversationPage conversationPage = context.getPagesCollection().getPage(ConversationPage.class);
@@ -1432,23 +1060,11 @@ public class ConversationPageSteps {
         }
     }
 
-    /**
-     * Click x button to close picture fullscreen mode
-     *
-     * @throws Exception
-     * @step. ^I click x button to close fullscreen mode$
-     */
     @When("^I click x button to close fullscreen mode$")
     public void IClickXButtonToCloseFullscreen() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickXButton();
     }
 
-    /**
-     * I click on black border to close fullscreen mode
-     *
-     * @throws Exception
-     * @step. ^I click on black border to close fullscreen mode$
-     */
     @When("^I click on black border to close fullscreen mode$")
     public void IClickOnBlackBorderToCloseFullscreen() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickOnBlackBorder();
@@ -1465,44 +1081,22 @@ public class ConversationPageSteps {
                 .isImageMessageFound());
     }
 
-    /**
-     * Verify that the input text field contains message X
-     *
-     * @param message the message it should contain
-     */
     @Then("^I verify that message (.*) was cached$")
     public void IVerifyThatMessageWasCached(String message) throws Exception {
         assertThat("Cached message in input field", context.getPagesCollection().getPage(ConversationPage.class)
                 .getMessageFromInputField(), equalTo(message));
     }
 
-    /**
-     * Types shortcut combination to open search
-     *
-     * @throws Exception
-     * @step. ^I type shortcut combination to open search$
-     */
     @Then("^I type shortcut combination to open search$")
     public void ITypeShortcutCombinationToOpenSearch() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).pressShortCutForSearch();
     }
 
-    /**
-     * Types shortcut combination to ping
-     *
-     * @throws Exception
-     * @step. ^I type shortcut combination to ping$
-     */
     @Then("^I type shortcut combination to ping$")
     public void ITypeShortcutCombinationToPing() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).pressShortCutForPing();
     }
 
-    /**
-     * Verifies whether ping button tool tip is correct or not.
-     *
-     * @step. ^I see correct ping button tool tip$
-     */
     @Then("^I see correct ping button tooltip$")
     public void ISeeCorrectPingButtonTooltip() throws Exception {
 
@@ -1516,11 +1110,6 @@ public class ConversationPageSteps {
                 equalTo(tooltip));
     }
 
-    /**
-     * Verifies whether call button tool tip is correct or not.
-     *
-     * @step. ^I see correct call button tool tip$
-     */
     @Then("^I see correct call button tooltip$")
     public void ISeeCorrectCallButtonTooltip() throws Exception {
         String tooltip = TOOLTIP_CALL;
@@ -1528,11 +1117,6 @@ public class ConversationPageSteps {
                 equalTo(tooltip));
     }
 
-    /**
-     * Verifies whether video call button tool tip is correct or not.
-     *
-     * @step. ^I see correct call button tool tip$
-     */
     @Then("^I see correct video call button tooltip$")
     public void ISeeCorrectVideoCallButtonTooltip() throws Exception {
         String tooltip = TOOLTIP_VIDEO_CALL;
@@ -1562,34 +1146,17 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).clickCancelPendingRequestButton();
     }
 
-    /**
-     * Click on an avatar bubble inside the conversation view
-     *
-     * @param userAlias name of the user
-     * @throws Exception
-     * @step. ^I click on avatar of user (.*) in conversation view$
-     */
     @And("^I click on avatar of user (.*) in conversation view$")
     public void IClickOnUserAvatar(String userAlias) throws Exception {
         ClientUser user = context.getUserManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(ConversationPage.class).clickUserAvatar(user.getId());
     }
 
-    /**
-     * Start a video call in opened conversation
-     *
-     * @step. ^I start a video call$
-     */
     @When("^I start a video call$")
     public void IMakeVideoCallToUser() throws Throwable {
         context.getPagesCollection().getPage(ConversationPage.class).clickVideoCallButton();
     }
 
-    /**
-     * Verifies all remembered messages are present in the given conversation
-     *
-     * @step. I verify all remembered messages are present in conversation (.*)
-     */
     @When("^I verify all remembered messages are present in conversation (.*)$")
     public void IVerifyAllRememberedMessages(String conversation) throws Exception {
         SortedSet<Message> processedMessages = new TreeSet<>();
@@ -1648,32 +1215,16 @@ public class ConversationPageSteps {
         }
     }
 
-    /**
-     * Clicks OK on long message warning dialog
-     *
-     * @step. "^I click OK on long message warning dialog$"
-     */
     @When("^I click OK on long message warning dialog$")
     public void IClickOKOnLongMessageWarning() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickOKButtonOnLongMWarning();
     }
 
-    /**
-     * Clicks X on long message warning dialog
-     *
-     * @step. "^I click X button on long message warning dialog$"
-     */
     @When("^I click X button on long message warning dialog$")
     public void IClickXOnLongMessageWarning() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickXButtonOnLongMWarning();
     }
 
-    /**
-     * Deletes N characters from conversation input
-     *
-     * @param count count of characters
-     * @step. "^I delete (\d+) characters from the conversation input$"
-     */
     @When("^I delete (\\d+) characters from the conversation input$")
     public void IDeleteTypedMessage(int count) throws Exception {
         int i = count;
@@ -1683,27 +1234,11 @@ public class ConversationPageSteps {
         }
     }
 
-    /**
-     * Presses Up Arrow to edit message
-     *
-     * @step. "^I press Up Arrow to edit message$"
-     */
     @When("^I press Up Arrow to edit message$")
     public void IPressUpArrow() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).pressUpArrow();
     }
 
-    /**
-     * Verifies whether location message is shown in the conversation view or not.
-     *
-     * @param doNot is set to null if "do not" part does not exist
-     * @param locationName name of the shared location
-     * @param longitude longitude of the shared location, float
-     * @param latitude latitude of the shared location, float
-     * @throws java.lang.Exception
-     * @step. ^I (do not )?see location message (.*) with ([-+]?[0-9]*\.?[0-9]+) and ([-+]?[0-9]*\.?[0-9]+) in the conversation
-     * view$
-     */
     @Then("^I (do not )?see location message (.*) with ([-+]?[0-9]*\\.?[0-9]+) and ([-+]?[0-9]*\\.?[0-9]+) in the conversation view$")
     public void ISeeLocationMessage(String doNot, String locationName, float longitude, float latitude) throws Exception {
         if (doNot == null) {
@@ -1726,12 +1261,6 @@ public class ConversationPageSteps {
         }
     }
 
-    /**
-     * Cancel video download
-     *
-     * @param fileName the name of a video file
-     * @throws Exception
-     */
     @When("^I cancel video download of video (.*)$")
     public void ICancelVideoDownload(String fileName) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).cancelVideoDownload(fileName);
@@ -1750,14 +1279,6 @@ public class ConversationPageSteps {
         }
     }
 
-    /**
-     * Verifies whether link title is shown in the conversation view or not.
-     *
-     * @param linkTitle title of the link in link preview
-     * @param doNot is set to null if "do not" part does not exist
-     * @throws java.lang.Exception
-     * @step. ^I see a title (.*) in link preview in the conversation view$
-     */
     @Then("^I (do not )?see a title (.*) in link preview in the conversation view$")
     public void ISeeLinkTitle(String doNot, String linkTitle) throws Exception {
         if (doNot == null) {
@@ -1769,13 +1290,6 @@ public class ConversationPageSteps {
         }
     }
 
-    /**
-     * Verifies whether previously link preview contains picture in the conversation view
-     *
-     * @param pictureName the name of a picture file. This file should already exist in the ~/Documents folder
-     * @throws Exception
-     * @step. ^I see a picture (.*) from link preview$
-     */
     @Then("^I (do not )?see a picture (.*) from link preview$")
     public void ISeePictureInLinkPreview(String doNot, String pictureName) throws Exception {
         if (doNot == null) {
@@ -1794,53 +1308,27 @@ public class ConversationPageSteps {
         }
     }
 
-    /**
-     * Verify a link from link preview is visible in conversation.
-     *
-     * @param link link in the link preview
-     * @throws Exception
-     * @step. ^I see link (.*) in link preview message$
-     */
     @Then("^I see link (.*) in link preview message")
     public void ISeeLinkInLinkPreview(String link) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).waitForLinkPreviewContains(link);
     }
-    
-    /**
-     * Verify latest message is a link preview.
-     *
-     * @param not is set to null if "do not" part does not exist
-     * @throws Exception
-     * @step. I (do not )?see latest message is link preview message$
-     */
+
     @Then("^I (do not )?see latest message is link preview message$")
     public void ISeeLatestMessageIsLinkPreview(String not) throws Exception {
         if (not == null) {
             assertTrue("latest message is no link preview", context.getPagesCollection().getPage(ConversationPage.class).
                     isLinkPreviewLinkVisibleForLatestMessage());
         } else {
-            assertTrue("latest message is a link preview", context.getPagesCollection().getPage(ConversationPage.class).isLinkPreviewLinkInvisibleForLatestMessage());
+            assertTrue("latest message is a link preview", context.getPagesCollection().getPage(ConversationPage.class).
+                    isLinkPreviewLinkInvisibleForLatestMessage());
         }
     }
 
-    /**
-     * Clicks x button to close edit mode
-     *
-     * @step. "^I click x button to close edit mode$"
-     */
     @When("^I click x button to close edit mode$")
     public void IClickXButoonToCancelEdit() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickXButtonToCloseEdit();
     }
 
-    /**
-     * Verify that the conversation list shows the info "Start a conversation or invite people to join" and the conversation
-     * shows a watermark of the wire logo
-     *
-     * @param shouldNotBeVisible is set to null if "do not" part does not exist
-     * @throws Exception
-     * @step. ^I( do not)? see first time experience with watermark$
-     */
     @And("^I( do not)? see first time experience with watermark$")
     public void ISeeWelcomePage(String shouldNotBeVisible) throws Exception {
         if (shouldNotBeVisible == null) {

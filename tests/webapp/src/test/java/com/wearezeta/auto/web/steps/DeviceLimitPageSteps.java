@@ -40,12 +40,6 @@ public class DeviceLimitPageSteps {
                 .getPage(DeviceLimitPage.class).isDeviceLimitInfoShown());
     }
 
-    /**
-     * Verify if you see correct label of device in the device list
-     *
-     * @param label model and label of the device
-     * @throws Exception
-     */
     @Then("I( do not)? see a device named (.*) with label (.*) under managed devices$")
     public void ISeeACertainDevice(String doNot, String name, String label) throws Exception {
         if (doNot == null) {

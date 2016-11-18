@@ -5,7 +5,6 @@ import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.web.common.TestContext;
-import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.pages.external.VerifyPage;
 
 import cucumber.api.java.en.Then;
@@ -30,12 +29,6 @@ public class VerifyPageSteps {
         this.context = context;
     }
 
-    /**
-     * Open verify page on website
-     *
-     * @throws Exception
-     * @step. ^I navigate to broken verify page for (.*)$
-     */
     @When("^I go to verify page for (.*)$")
     public void IGoToVerifyPage(String agent) throws Exception {
         final String website = CommonUtils.getAccountPagesFromConfig(VerifyPageSteps.class);
@@ -60,8 +53,8 @@ public class VerifyPageSteps {
     @When("^I go to phone verification page for (.*)$")
     public void IGoToPhoneVerificationPage(String agent) throws Exception {
         final String website = CommonUtils.getAccountPagesFromConfig(VerifyPageSteps.class);
-        context.getPagesCollection().getPage(VerifyPage.class).setUrl(website + "v/" + phoneVerificationCode + "?agent=" +
-                agent);
+        context.getPagesCollection().getPage(VerifyPage.class).setUrl(website + "v/" + phoneVerificationCode + "?agent="
+                + agent);
         context.getPagesCollection().getPage(VerifyPage.class).navigateTo();
     }
 
@@ -96,7 +89,8 @@ public class VerifyPageSteps {
 
     @Then("^I see webapp button$")
     public void ISeeWebappButton() throws Exception {
-        assertThat(context.getPagesCollection().getPage(VerifyPage.class).getWebappUrl(), equalTo("https://wire-webapp-staging.zinfra.io/"));
+        assertThat(context.getPagesCollection().getPage(VerifyPage.class).getWebappUrl(), equalTo(
+                "https://wire-webapp-staging.zinfra.io/"));
     }
 
     @Then("^I see error message$")
@@ -104,6 +98,5 @@ public class VerifyPageSteps {
         assertThat("No error message on " + context.getDriver().getCurrentUrl(),
                 context.getPagesCollection().getPage(VerifyPage.class).isErrorMessageVisible(), is(true));
     }
-
 
 }

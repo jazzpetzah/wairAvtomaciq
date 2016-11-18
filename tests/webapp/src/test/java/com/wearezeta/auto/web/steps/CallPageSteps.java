@@ -12,7 +12,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class CallPageSteps {
 
     private final TestContext context;
-    
+
     public CallPageSteps() {
         this.context = new TestContext();
     }
@@ -21,12 +21,6 @@ public class CallPageSteps {
         this.context = context;
     }
 
-    /**
-     * Verifies visibility of call controls for the given conversation
-     *
-     * @throws Exception
-     * @step. ^I( do not)? see the (incoming|outgoing|ongoing) call controls for conversation (.*)$
-     */
     @And("^I( do not)? see the( incoming| outgoing| ongoing| join)? call controls for conversation (.*)$")
     public void ISeeCallControlsForConversation(String doNot, String direction, String conversation) throws Exception {
         conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
@@ -51,12 +45,6 @@ public class CallPageSteps {
         }
     }
 
-    /**
-     * Verifies visibility of avatars in a call for the given conversation
-     *
-     * @throws Exception
-     * @step. ^I( do not)? see the (incoming|outgoing|ongoing) call controls for conversation (.*)$
-     */
     @And("^I see row of avatars on call controls with users? (.*)$")
     public void ISeeRowOfAvatarsOnCall(String participants) throws Exception {
         CallPage page = context.getPagesCollection().getPage(CallPage.class);
@@ -66,13 +54,6 @@ public class CallPageSteps {
         }
     }
 
-    /**
-     * Click the accept call button in conversation list
-     *
-     * @throws Exception
-     * @step. ^I click the accept call button in conversation list$
-     * @step. ^I accept the call from conversation (.*)$
-     */
     @And("^I accept the call from conversation (.*)$")
     public void IClickAcceptCallButtonInConversationView(String conversation) throws Exception {
         conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
@@ -80,13 +61,6 @@ public class CallPageSteps {
                 .clickAcceptCallButton(conversation);
     }
 
-    /**
-     * Click the decline call button in conversation list
-     *
-     * @throws Exception
-     * @step. ^I click the decline call button in conversation list$
-     * @step. ^I ignore the call from conversation (.*)$
-     */
     @And("^I ignore the call from conversation (.*)$")
     public void IClickDeclineCallButtonInConversationView(String conversation) throws Exception {
         conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
@@ -94,25 +68,11 @@ public class CallPageSteps {
                 .clickDeclineCallButton(conversation);
     }
 
-    /**
-     * Joins ongoing call by clicking the join call bar
-     *
-     * @throws Exception
-     * @step. ^I join call of conversation (.*)$
-     */
     @When("^I join call of conversation (.*)$")
     public void IJoinCall(String conversation) throws Exception {
         context.getPagesCollection().getPage(CallPage.class).clickJoinCallButton(conversation);
     }
 
-    /**
-     * Verifies if mute call button is visible for conversation
-     *
-     * @param doNot is set to null if "do not" part does not exist
-     * @param conversation conversation name string
-     * @throws Exception
-     * @step. ^I see mute call button for conversation (.*)
-     */
     @When("^I( do not)? see mute call button for conversation (.*)")
     public void ISeeMuteCallButton(String doNot, String conversation) throws Exception {
         conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
@@ -127,14 +87,6 @@ public class CallPageSteps {
         }
     }
 
-    /**
-     * Verifies if video button is visible for conversation
-     *
-     * @param doNot is set to null if "do not" part does not exist
-     * @param conversation conversation name string
-     * @throws Exception
-     * @step. ^I see video button for conversation(.*)
-     */
     @When("^I( do not)? see video button for conversation (.*)")
     public void ISeeVideoButton(String doNot, String conversation) throws Exception {
         conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
@@ -149,14 +101,6 @@ public class CallPageSteps {
         }
     }
 
-    /**
-     * Verifies if hang up button is visible for conversation
-     *
-     * @param doNot is set to null if "do not" part does not exist
-     * @param conversation conversation name string
-     * @throws Exception
-     * @step. ^I( do not)? see hang up button for conversation (.*)$
-     */
     @When("^I( do not)? see hang up button for conversation (.*)$")
     public void ISeeEndCallButton(String doNot, String conversation) throws Exception {
         conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
@@ -171,12 +115,6 @@ public class CallPageSteps {
         }
     }
 
-    /**
-     * Clicks hang up button for conversation
-     *
-     * @throws Exception
-     * @step. ^I hang up call with conversation (.*)$
-     */
     @When("^I hang up call with conversation (.*)$")
     public void IClickEndCallButton(String conversation) throws Exception {
         conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
@@ -185,13 +123,6 @@ public class CallPageSteps {
         contactListPage.clickEndCallButton(conversation);
     }
 
-    /**
-     * Checks if your self video is visible
-     *
-     * @param doNot is set to null if "do not" part does not exist
-     * @throws Exception
-     * @step. ^I( do not)? see my self video view$
-     */
     @When("^I( do not)? see my self video view$")
     public void IDoNotSeeMySelfVideoView(String doNot)
             throws Exception {
@@ -204,14 +135,6 @@ public class CallPageSteps {
         }
     }
 
-    /**
-     * Verifies if accept video call button is visible for conversation
-     *
-     * @param doNot is set to null if "do not" part does not exist
-     * @param conversation conversation name string
-     * @throws Exception
-     * @step. ^I( do not)? see accept video call button for conversation (.*)
-     */
     @When("^I( do not)? see accept video call button for conversation (.*)")
     public void ISeeAcceptVideoCallButton(String doNot, String conversation) throws Exception {
         conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
@@ -226,14 +149,6 @@ public class CallPageSteps {
         }
     }
 
-    /**
-     * Verifies if decline call button is visible for conversation
-     *
-     * @param doNot is set to null if "do not" part does not exist
-     * @param conversation conversation name string
-     * @throws Exception
-     * @step. ^I( do not)? see decline call button for conversation (.*)
-     */
     @When("^I( do not)? see decline call button for conversation (.*)")
     public void ISeeDeclineCallButton(String doNot, String conversation) throws Exception {
         conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
@@ -248,14 +163,6 @@ public class CallPageSteps {
         }
     }
 
-    /**
-     * Verifies if decline call button is visible for conversation
-     *
-     * @param doNot is set to null if "do not" part does not exist
-     * @param conversation conversation name string
-     * @throws Exception
-     * @step. ^I( do not)? see decline call button for conversation (.*)
-     */
     @When("^I( do not)? see join call button for conversation (.*)")
     public void ISeeJoinCallButton(String doNot, String conversation) throws Exception {
         conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
@@ -270,12 +177,6 @@ public class CallPageSteps {
         }
     }
 
-    /**
-     * Clicks mute call button in conversation list
-     *
-     * @throws Exception
-     * @step. ^I click mute call button for conversation (.*)$
-     */
     @When("^I click mute call button for conversation (.*)$")
     public void IClickMuteCallButton(String conversation) throws Exception {
         conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
@@ -284,12 +185,6 @@ public class CallPageSteps {
         contactListPage.clickMuteCallButton(conversation);
     }
 
-    /**
-     *
-     * @param doNot is set to null if "do not" part does not exist
-     * @throws Exception
-     * @step. ^I see mute button for conversation (.*) is( not)? pressed$
-     */
     @When("^I see mute button for conversation (.*) is( not)? pressed$")
     public void ISeeMuteButtonNotPressed(String conversation, String doNot)
             throws Exception {

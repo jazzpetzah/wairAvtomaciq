@@ -10,9 +10,8 @@ import static org.hamcrest.Matchers.containsString;
 
 public class ConnectedDevicesPageSteps {
 
-    
     private final TestContext context;
-    
+
     public ConnectedDevicesPageSteps() {
         this.context = new TestContext();
     }
@@ -23,7 +22,7 @@ public class ConnectedDevicesPageSteps {
 
     @When("^I( do not)? see connected devices dialog$")
     public void ISeeDialog(String doNot) throws Exception {
-        if(doNot == null) {
+        if (doNot == null) {
             assertThat("Dialog not shown", context.getPagesCollection().getPage(ConnectedDevicesPage.class).isDialogShown());
         } else {
             assertThat("Dialog still shown", context.getPagesCollection().getPage(ConnectedDevicesPage.class).isDialogNotShown());

@@ -40,43 +40,16 @@ public class CallingSteps {
         this.context = context;
     }
 
-    /**
-     * Make video call(s) to one specific conversation.
-     *
-     * @step. ^(.*) start(?:s|ing) a video call to (.*)$
-     *
-     * @param callerNames caller names/aliases
-     * @param conversationName destination conversation name
-     * @throws Exception
-     */
     @When("^(.*) start(?:s|ing) a video call to (.*)$")
     public void UserXCallsWithVideoToConversationY(String callerNames, String conversationName) throws Exception {
         context.getCallingManager().startVideoCallToConversation(splitAliases(callerNames), conversationName);
     }
 
-    /**
-     * Make calls to one specific conversation.
-     *
-     * @step. ^(.*) calls (.*)$
-     *
-     * @param callerNames caller names/aliases
-     * @param conversationName destination conversation name
-     * @throws Exception
-     */
     @When("^(.*) calls (.*)$")
     public void UserXCallsToConversationY(String callerNames, String conversationName) throws Exception {
         context.getCallingManager().callToConversation(splitAliases(callerNames), conversationName);
     }
 
-    /**
-     * Stop call (audio and video) on the other side
-     *
-     * @step. ^(.*) stops? calls( to (.*))$
-     *
-     * @param instanceUsers comma separated list of user names/aliases
-     * @param conversationName destination conversation name
-     * @throws Exception
-     */
     @When("^(.*) stops? calling( (.*))?$")
     public void UserXStopsCallsToUserY(String instanceUsers, String outgoingCall, String conversationName)
             throws Exception {
@@ -86,33 +59,12 @@ public class CallingSteps {
             context.getCallingManager().stopOutgoingCall(splitAliases(instanceUsers), conversationName);
         }
     }
-    
-    /**
-     * Declines call in conversation
-     *
-     * @step. ^(.*) declines? calls? from conversation (.*)$
-     *
-     * @param calleeNames callee names/aliases
-     * @param conversationName destination conversation name
-     * @throws Exception
-     */
+
     @When("^(.*) declines? calls? from conversation (.*)$")
     public void UserXDeclinesCallFromConversationY(String calleeNames, String conversationName) throws Exception {
         context.getCallingManager().declineIncomingCallToConversation(splitAliases(calleeNames), conversationName);
     }
 
-    /**
-     * Verify whether call status is changed to one of the expected values after N seconds timeout
-     *
-     * @step. (.*) verifies that call status to (.*) is changed to (.*) in (\\d+) seconds?$
-     *
-     * @param callers callers names/aliases
-     * @param conversationName destination conversation
-     * @param expectedStatuses comma-separated list of expected call statuses. See
-     * com.wearezeta.auto.common.calling2.v1.model.CallStatus for more details
-     * @param timeoutSeconds number of seconds to wait until call status is changed
-     * @throws Exception
-     */
     @Then("(.*) verif(?:y|ies) that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
     public void UserXVerifesCallStatusToUserY(String callers,
             String conversationName, String expectedStatuses, int timeoutSeconds)
@@ -121,17 +73,6 @@ public class CallingSteps {
                 expectedStatuses, timeoutSeconds);
     }
 
-    /**
-     * Verify whether waiting instance status is changed to one of the expected values after N seconds timeout
-     *
-     * @step. (.*) verif(?:y|ies) that waiting instance status is changed to (.*) in (\\d+) seconds?$
-     *
-     * @param callees comma separated callee names/aliases
-     * @param expectedStatuses comma-separated list of expected call statuses. See
-     * com.wearezeta.auto.common.calling2.v1.model.CallStatus for more details
-     * @param timeoutSeconds number of seconds to wait until call status is changed
-     * @throws Exception
-     */
     @Then("(.*) verif(?:y|ies) that waiting instance status is changed to (.*) in (\\d+) seconds?$")
     public void UserXVerifesCallStatusToUserY(String callees,
             String expectedStatuses, int timeoutSeconds) throws Exception {
@@ -139,33 +80,15 @@ public class CallingSteps {
                 expectedStatuses, timeoutSeconds);
     }
 
-    /**
-     * Execute instance as 'userAsNameAlias' user on calling server using 'callingServiceBackend' tool
-     *
-     * @step. (.*) starts? instances? using (.*)$
-     *
-     * @param callees callee name/alias
-     * @param callingServiceBackend available values: 'autocall', 'chrome', 'firefox', 'zcall'
-     * @throws Exception
-     */
     @When("(.*) starts? instances? using (.*)$")
     public void UserXStartsInstance(String callees,
             String callingServiceBackend) throws Exception {
         context.startPinging();
-        context.getCallingManager().startInstances(splitAliases(callees), callingServiceBackend, 
+        context.getCallingManager().startInstances(splitAliases(callees), callingServiceBackend,
                 String.format("%s_%s", "Webapp", WebAppExecutionContext.getBrowser()), context.getTestname());
         context.stopPinging();
     }
 
-    /**
-     * Automatically accept the next incoming audio call or for the particular user as soon as it appears in UI. Waiting
-     * instance should be already created for this particular user
-     *
-     * @step. (.*) accepts? next incoming call automatically$
-     *
-     * @param callees callee names/aliases
-     * @throws Exception
-     */
     @When("(.*) accepts? next incoming( video)? call automatically$")
     public void UserXAcceptsNextIncomingCallAutomatically(String callees, String video)
             throws Exception {
@@ -177,14 +100,6 @@ public class CallingSteps {
 
     }
 
-    /**
-     * Verify that the instance has X active flows
-     *
-     * @step. (.*) verif(?:ies|y) to have (\\d+) flows?$
-     * @param callees comma separated list of callee names/aliases
-     * @param numberOfFlows expected number of flows
-     * @throws Exception
-     */
     @Then("(.*) verif(?:ies|y) to have (\\d+) flows?$")
     public void UserXVerifesHavingXFlows(String callees, int numberOfFlows)
             throws Exception {
@@ -195,14 +110,6 @@ public class CallingSteps {
         }
     }
 
-    /**
-     * Verify that each audio flow of the instance had incoming and outgoing bytes running over the line
-     *
-     * @step. (.*) verif(?:ies|y) that all audio flows have greater than 0 bytes$
-     *
-     * @param callees comma separated list of callee names/aliases
-     * @throws Exception
-     */
     @Then("(.*) verif(?:ies|y) that all audio flows have greater than 0 bytes$")
     public void UserXVerifesAllAudioFlowBytesGreaterZero(String callees) throws Exception {
         for (String callee : splitAliases(callees)) {
@@ -217,14 +124,6 @@ public class CallingSteps {
         }
     }
 
-    /**
-     * Verify that each video flow of the instance had incoming and outgoing bytes running over the line
-     *
-     * @step. (.*) verif(?:ies|y) that all video flows have greater than 0 bytes$
-     *
-     * @param callees comma separated list of callee names/aliases
-     * @throws Exception
-     */
     @Then("(.*) verif(?:ies|y) that all video flows have greater than 0 bytes$")
     public void UserXVerifesAllVideoFlowBytesGreaterZero(String callees) throws Exception {
         for (String callee : splitAliases(callees)) {
@@ -239,16 +138,6 @@ public class CallingSteps {
         }
     }
 
-    /**
-     * Verify that the flow of the given user of the instance has incoming video data running over the line
-     *
-     * @step. (.*) verif(?:ies|y) to( not)? get video data from (.*)$
-     *
-     * @param callees comma separated list of callee names/aliases
-     * @param not whether data should flow or not
-     * @param caller the user caller where the data comes from
-     * @throws Exception
-     */
     @Then("(.*) verif(?:ies|y) to( not)? get video data from (.*)$")
     public void UserXVerifesToGetVideoDataFromY(String callees, String not, String caller) throws Exception {
         context.startPinging();
@@ -273,7 +162,7 @@ public class CallingSteps {
             final Flow oldFlow = oldFlows.get(newFlowEntry.getKey());
             if (not == null) {
                 assertThat(
-                        "There is no video data flowing: \noldFlow: " + oldFlow.getTelemetry().getStats().getVideo()+ "\n\nnewFlow: " + newFlow.
+                        "There is no video data flowing: \noldFlow: " + oldFlow.getTelemetry().getStats().getVideo() + "\n\nnewFlow: " + newFlow.
                         getTelemetry().getStats().getVideo(),
                         newFlow.getTelemetry().getStats().getVideo().getBytesReceived(),
                         greaterThan(oldFlow.getTelemetry().getStats().getVideo().getBytesReceived()));
@@ -288,16 +177,6 @@ public class CallingSteps {
         context.stopPinging();
     }
 
-    /**
-     * Verify that the flow of the given user of the instance has incoming audio data running over the line
-     *
-     * @step. (.*) verif(?:ies|y) to( not)? get audio data from (.*)$
-     *
-     * @param callees comma separated list of callee names/aliases
-     * @param not whether data should flow or not
-     * @param caller the user caller where the data comes from
-     * @throws Exception
-     */
     @Then("(.*) verif(?:ies|y) to( not)? get audio data from (.*)$")
     public void UserXVerifesToGetAudioDataFromY(String callees, String not, String caller) throws Exception {
         context.startPinging();
@@ -344,14 +223,6 @@ public class CallingSteps {
                 .collect(Collectors.toMap(f -> String.format("%s_%s", callee, f.getMeta().getRemoteUserId()), f -> f));
     }
 
-    /**
-     * Verify that each outgoing call of the instances was successful
-     *
-     * @step. (.*) verif(?:ies|y) that call to conversation (.*) was successful$
-     *
-     * @param callers comma separated list of caller names/aliases
-     * @throws Exception
-     */
     @Then("(.*) verif(?:ies|y) that call to conversation (.*) was successful$")
     public void UserXVerifesOutgoingCallWasSuccessful(String callers, String conversation) throws Exception {
         for (Call call : context.getCallingManager().getOutgoingCall(splitAliases(callers), conversation)) {
@@ -359,15 +230,7 @@ public class CallingSteps {
             assertTrue("Call failed: \n" + call + "\n" + call.getMetrics(), call.getMetrics().isSuccess());
         }
     }
-    
-    /**
-     * Verify that each incoming call of the instances was successful
-     *
-     * @step. (.*) verif(?:ies|y) that incoming call was successful$
-     *
-     * @param callees comma separated list of callee names/aliases
-     * @throws Exception
-     */
+
     @Then("(.*) verif(?:ies|y) that incoming call was successful$")
     public void UserXVerifesIncomingCallWasSuccessful(String callees) throws Exception {
         for (Call call : context.getCallingManager().getIncomingCall(splitAliases(callees))) {
@@ -376,16 +239,6 @@ public class CallingSteps {
         }
     }
 
-    /**
-     * Executes consecutive calls without logging out etc.
-     *
-     * @step. ^I call (\\d+) times for (\\d+) minutes with (.*)$
-     *
-     * @param callDurationMinutes
-     * @param times number of consecutive calls
-     * @param callees participants which will wait for a call
-     * @throws java.lang.Throwable
-     */
     @Then("^I call (\\d+) times for (\\d+) minutes with (.*)$")
     public void ICallXTimes(int times, int callDurationMinutes, String callees)
             throws Throwable {
@@ -505,7 +358,7 @@ public class CallingSteps {
             context.getCallingManager().switchVideoOff(splitAliases(callees));
         }
     }
-    
+
     @When("(.*) (maximises|minimises) video call")
     public void UserXResizesVideo(String callees, String toggle) throws Exception {
         if (toggle.equals("maximises")) {

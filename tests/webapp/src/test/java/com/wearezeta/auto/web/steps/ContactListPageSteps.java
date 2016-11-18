@@ -40,9 +40,9 @@ public class ContactListPageSteps {
     private static final String TOOLTIP_MUTE = "Mute";
     private static final String SHORTCUT_MUTE_WIN = "(Ctrl + Alt + S)";
     private static final String SHORTCUT_MUTE_MAC = "(⌘⌥S)";
-    
+
     private final TestContext context;
-    
+
     public ContactListPageSteps() {
         this.context = new TestContext();
     }
@@ -57,30 +57,16 @@ public class ContactListPageSteps {
                 .getPage(ContactListPage.class).waitForBadgeVisible());
     }
 
-    /**
-     * Checks that we can see conversation with specified name in Contact List
-     *
-     * @param name conversation name string
-     * @throws AssertionError if conversation name does not appear in Contact List
-     * @step. I see Contact list with name (.*)
-     */
     @Given("I see Contact list with name (.*)")
     public void GivenISeeContactListWithName(String name) throws Exception {
         name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         log.debug("Looking for contact with name " + name);
         Assert.assertTrue("No contact list loaded.", context.getPagesCollection()
                 .getPage(ContactListPage.class).waitForContactListVisible());
-        assertThat("Conversation list entry '" + name + "' is not visible after timeout expired", context.getPagesCollection
-                ().getPage(ContactListPage.class).isConvoListEntryWithNameExist(name));
+        assertThat("Conversation list entry '" + name + "' is not visible after timeout expired", context.getPagesCollection().
+                getPage(ContactListPage.class).isConvoListEntryWithNameExist(name));
     }
 
-    /**
-     * Checks that we can see conversation with specified name in archive List
-     *
-     * @param name conversation name string
-     * @throws Exception if conversation name does not appear in archive List
-     * @step. I see archive list with name (.*)
-     */
     @Given("I see archive list with name (.*)")
     public void GivenISeeArchiveListWithName(String name) throws Exception {
         name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
@@ -98,13 +84,6 @@ public class ContactListPageSteps {
                 + "' is not visible after timeout expired");
     }
 
-    /**
-     * Opens conversation by choosing it from Contact List
-     *
-     * @param conversation conversation name string
-     * @throws Exception
-     * @step. ^I open conversation with (.*)
-     */
     @Given("^I open conversation with (.*)")
     public void IOpenConversationWith(String conversation) throws Exception {
         conversation = context.getUserManager().replaceAliasesOccurences(conversation, FindBy.NAME_ALIAS);
@@ -116,13 +95,6 @@ public class ContactListPageSteps {
                 contactListPage.isConversationSelected(conversation));
     }
 
-    /**
-     * Verifies whether the particular conversation is selected in the list
-     *
-     * @param convoName conversation name
-     * @throws Exception
-     * @step. ^I see conversation with (.*) is selected in conversations list$
-     */
     @Then("^I see conversation with (.*) is selected in conversations list$")
     public void ISeeConversationIsSelected(String convoName) throws Exception {
         convoName = context.getUserManager().replaceAliasesOccurences(convoName,
@@ -133,13 +105,6 @@ public class ContactListPageSteps {
                         .isConversationSelected(convoName));
     }
 
-    /**
-     * Unarchives conversation 'name'
-     *
-     * @param name conversation name string
-     * @throws Exception
-     * @step. I unarchive conversation with (.*)
-     */
     @Given("^I unarchive conversation (.*)")
     public void GivenIUnarchiveConversation(String name) throws Exception {
         name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
@@ -147,74 +112,38 @@ public class ContactListPageSteps {
                 .unarchiveConversation(name);
     }
 
-    /**
-     * Clicks the gear button to open preferences
-     *
-     * @throws Exception
-     * @step. ^I open preferences by clicking the gear button$
-     */
     @When("^I open preferences by clicking the gear button$")
     public void IOpenPreferences() throws Exception {
-        assertTrue("gear button is NOT clickable", 
+        assertTrue("gear button is NOT clickable",
                 context.getPagesCollection().getPage(ContactListPage.class).isPreferencesButtonClickable());
         context.getPagesCollection().getPage(ContactListPage.class).openPreferences();
     }
 
-    /**
-     * Archive conversation by choosing it from Contact List
-     *
-     * @param contact conversation name string
-     * @throws Exception
-     * @step. ^I archive conversation (.*)$
-     */
     @When("^I archive conversation (.*)")
     public void IClickArchiveButton(String contact) throws Exception {
         contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         ContactListPage contactListPage = context.getPagesCollection()
                 .getPage(ContactListPage.class);
         contactListPage.clickOptionsButtonForContact(contact);
-        Assert.assertTrue("Archive button is not clickable",contactListPage.isArchiveButtonClickable());
+        Assert.assertTrue("Archive button is not clickable", contactListPage.isArchiveButtonClickable());
         contactListPage.clickArchiveConversation();
     }
 
-    /**
-     * Types shortcut combination to archive conversation
-     */
     @When("^I type shortcut combination to archive the conversation$")
     public void ITypeShortcutCombinationToArchive() throws Exception {
         context.getPagesCollection().getPage(ContactListPage.class).pressShortcutForArchive();
     }
 
-    /**
-     * Open archived conversations
-     *
-     * @throws Exception
-     * @step. ^I open archive$
-     */
     @When("^I open archive$")
     public void IOpenArchive() throws Exception {
         context.getPagesCollection().getPage(ContactListPage.class).openArchive();
     }
-    
-    /**
-     * Close archive
-     *
-     * @throws Exception
-     * @step. ^I close archive$
-     */
+
     @When("^I close archive$")
     public void ICloseArchive() throws Exception {
         context.getPagesCollection().getPage(ContactListPage.class).closeArchive();
     }
 
-    /**
-     * Checks that we cannot see conversation with specified name in Contact
-     * List
-     *
-     * @param name conversation name string
-     * @throws AssertionError if conversation name appear in Contact List
-     * @step. ^I do not see Contact list with name (.*)$
-     */
     @Given("^I do not see Contact list with name (.*)$")
     public void IDoNotSeeContactListWithName(String name) throws Exception {
         name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
@@ -222,27 +151,11 @@ public class ContactListPageSteps {
                 .isConvoListEntryNotVisible(name));
     }
 
-    /**
-     * Checks that one connection request is displayed in Conversation List or
-     * not
-     *
-     * @param doNot is set to null if "do not" part does not exist
-     * @throws Exception
-     * @step. ^I(do not)? see connection request from one user$
-     */
     @When("^I( do not)? see connection request from one user$")
     public void IDoNotSeeIncomingConnection(String doNot) throws Exception {
         IDoNotSeeXIncomingConnection(doNot, 1);
     }
 
-    /**
-     * Checks that connection requests are displayed in Conversation List or not
-     *
-     * @param doNot  is set to null if "do not" part does not exist
-     * @param amount amount of requests
-     * @throws Exception
-     * @step. ^I(do not)? see connection request from one user$
-     */
     @When("^I( do not)? see connection requests? from (\\d+) user$")
     public void IDoNotSeeXIncomingConnection(String doNot, int amount)
             throws Exception {
@@ -255,7 +168,7 @@ public class ContactListPageSteps {
             } else {
                 assertThat(context.getPagesCollection().getPage(ContactListPage.class)
                         .getIncomingPendingItemText(), equalTo(amount
-                        + WebAppLocators.Common.CONTACT_LIST_X_PEOPLE_WAITING));
+                                + WebAppLocators.Common.CONTACT_LIST_X_PEOPLE_WAITING));
             }
         } else {
             String itemText = "";
@@ -269,12 +182,6 @@ public class ContactListPageSteps {
         }
     }
 
-    /**
-     * Opens list of connection requests from Contact list
-     *
-     * @throws Exception
-     * @step. ^I open the list of incoming connection requests$
-     */
     @Given("^I open the list of incoming connection requests$")
     public void IOpenIncomingConnectionRequestsList() throws Exception {
         ContactListPage contactListPage = context.getPagesCollection().getPage(ContactListPage.class);
@@ -283,59 +190,31 @@ public class ContactListPageSteps {
         Assert.assertTrue("ConnectionRequestList is not selected", contactListPage.isConnectionRequestsListSelected());
     }
 
-    /**
-     * Opens People Picker in Contact List
-     *
-     * @throws Exception
-     * @step. ^I open People Picker from Contact List$
-     */
     @When("^I open search by clicking the people button$")
     public void IOpenStartUI() throws Exception {
         context.getPagesCollection().getPage(ContactListPage.class).openStartUI();
     }
 
-    /**
-     * Silence the particular conversation from the list
-     *
-     * @param contact conversation name string
-     * @throws Exception
-     * @step. ^I set muted state for conversation (.*)
-     */
     @When("^I set muted state for conversation (.*)")
     public void ISetMutedStateFor(String contact) throws Exception {
         contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         ContactListPage contactListPage = context.getPagesCollection()
                 .getPage(ContactListPage.class);
         contactListPage.clickOptionsButtonForContact(contact);
-        Assert.assertTrue("Mute button is not clickable",contactListPage.isMuteButtonClickable());
+        Assert.assertTrue("Mute button is not clickable", contactListPage.isMuteButtonClickable());
         contactListPage.clickMuteConversation();
     }
 
-    /**
-     * Set unmuted state for the particular conversation from the list if it is
-     * already muted
-     *
-     * @param contact conversation name string
-     * @throws Exception
-     * @step. ^I set unmuted state for conversation (.*)
-     */
     @When("^I set unmuted state for conversation (.*)")
     public void ISetUnmutedStateFor(String contact) throws Exception {
         contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         ContactListPage contactListPage = context.getPagesCollection()
                 .getPage(ContactListPage.class);
         contactListPage.clickOptionsButtonForContact(contact);
-        Assert.assertTrue("Unmute button is not clickable",contactListPage.isUnmuteButtonClickable());
+        Assert.assertTrue("Unmute button is not clickable", contactListPage.isUnmuteButtonClickable());
         contactListPage.clickUnmuteConversation();
     }
 
-    /**
-     * Verify that conversation is muted by checking mute icon
-     *
-     * @param contact conversation name string
-     * @throws Exception
-     * @step. ^I see that conversation (.*) is muted$
-     */
     @When("^I see that conversation (.*) is muted$")
     public void ISeeConversationIsMuted(String contact) throws Exception {
         contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
@@ -343,13 +222,6 @@ public class ContactListPageSteps {
                 getPage(ContactListPage.class).isConversationMuted(contact));
     }
 
-    /**
-     * Verify that conversation is muted by checking mute icon is invisible
-     *
-     * @param contact conversation name string
-     * @throws Exception
-     * @step. ^I see that conversation (.*) is not muted$
-     */
     @When("^I see that conversation (.*) is not muted$")
     public void ISeeConversationIsNotMuted(String contact) throws Exception {
         contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
@@ -357,14 +229,6 @@ public class ContactListPageSteps {
                 getPage(ContactListPage.class).isConversationNotMuted(contact));
     }
 
-    /**
-     * Verify whether the particular conversations list item has expected index
-     *
-     * @param convoNameAlias conversation name/alias
-     * @param expectedIndex  the expected index (starts from 1)
-     * @throws Exception
-     * @step. ^I verify that (.*) index in Contact list is (\\d+)$
-     */
     @Then("^I verify that (.*) index in Contact list is (\\d+)$")
     public void IVerifyContactIndex(String convoNameAlias, int expectedIndex)
             throws Exception {
@@ -381,14 +245,6 @@ public class ContactListPageSteps {
 
     private static final int ARCHIVE_BTN_VISILITY_TIMEOUT = 5; // seconds
 
-    /**
-     * Verify whether Archive button at the bottom of the convo list is visible
-     * or not
-     *
-     * @param shouldNotBeVisible is set to null if "do not" part does not exist in the step
-     * @throws Exception
-     * @step. ^I( do not)? see Archive button at the bottom of my Contact list$
-     */
     @Then("^I( do not)? see Archive button at the bottom of my Contact list$")
     public void IVerifyArchiveButtonVisibility(String shouldNotBeVisible)
             throws Exception {
@@ -403,18 +259,9 @@ public class ContactListPageSteps {
         }
     }
 
-    /**
-     * Verify whether missed call notification in the conversation list is present for the given
-     * conversation.
-     *
-     * @param conversationName   name of the conversation
-     * @param shouldNotBeVisible is set to null if "do not" part does not exist in the step
-     * @throws Exception
-     * @step. I(do not)? see missed call notification for conversation (.*)
-     */
     @Then("^I( do not)? see missed call notification in the conversation list for conversation (.*)$")
     public void isCallMissedVisibleForContact(String shouldNotBeVisible,
-                                              String conversationName) throws Exception {
+            String conversationName) throws Exception {
         conversationName = context.getUserManager().replaceAliasesOccurences(conversationName,
                 FindBy.NAME_ALIAS);
         if (shouldNotBeVisible == null) {
@@ -454,7 +301,7 @@ public class ContactListPageSteps {
         final AccentColor expectedColor = AccentColor.getByName(colorName);
         final AccentColor pingIconColor = context.getPagesCollection().getPage(
                 ContactListPage.class).getCurrentPingIconAccentColor(
-                conversationName);
+                        conversationName);
         Assert.assertEquals(expectedColor, pingIconColor);
     }
 
@@ -478,10 +325,10 @@ public class ContactListPageSteps {
         final AccentColor expectedColor = AccentColor.getByName(colorName);
         final AccentColor unreadDotColor = context.getPagesCollection().getPage(
                 ContactListPage.class).getCurrentUnreadDotAccentColor(
-                conversationName);
+                        conversationName);
         Assert.assertEquals(expectedColor, unreadDotColor);
     }
-    
+
     /*
      * Verifies whether unread dot for given conversation is visible or not.
      *
@@ -491,11 +338,13 @@ public class ContactListPageSteps {
     public void IVerifySeeUnreadDot(String not, String conversationName) throws Exception {
         conversationName = context.getUserManager().replaceAliasesOccurences(conversationName, FindBy.NAME_ALIAS);
         if (not == null) {
-            assertTrue(String.format("Unread dot for conversation %s is NOT visible", conversationName), 
-                context.getPagesCollection().getPage(ContactListPage.class).isUnreadDotVisibleForConversation(conversationName));
+            assertTrue(String.format("Unread dot for conversation %s is NOT visible", conversationName),
+                    context.getPagesCollection().getPage(ContactListPage.class).isUnreadDotVisibleForConversation(
+                            conversationName));
         } else {
-            assertTrue(String.format("Unread dot for conversation %s IS visible", conversationName), 
-                context.getPagesCollection().getPage(ContactListPage.class).isUnreadDotInvisibleForConversation(conversationName));
+            assertTrue(String.format("Unread dot for conversation %s IS visible", conversationName),
+                    context.getPagesCollection().getPage(ContactListPage.class).isUnreadDotInvisibleForConversation(
+                            conversationName));
         }
     }
 
@@ -515,14 +364,6 @@ public class ContactListPageSteps {
                         .isPingIconVisibleForConversation(conversationName));
     }
 
-    /**
-     * Verifies whether the conversation with previously remembered users is
-     * selected in the conversation list
-     *
-     * @throws Exception
-     * @step. ^I see previously remembered user selected in the conversations
-     * list$
-     */
     @Then("^I see previously remembered user selected in the conversations list$")
     public void ISeePreviouslyRememberedUserSelectedInConversationList()
             throws Exception {
@@ -548,17 +389,10 @@ public class ContactListPageSteps {
             throw new AssertionError("Conversation list entry '"
                     + selectedTopPeople
                     + "' is not visible after timeout expired");
-        } else
+        } else {
             throw new Error("Top People are not selected");
+        }
     }
-
-    /**
-     * Click on options button for conversation
-     *
-     * @param contact conversation name string
-     * @throws Exception
-     * @step. ^I click on options button for conversation (.*)$
-     */
 
     @When("^I click on options button for conversation (.*)$")
     public void IClickOnOptionsButton(String contact) throws Exception {
@@ -569,15 +403,10 @@ public class ContactListPageSteps {
 
     @Then("I see a conversation option (.*) on the page$")
     public void ISeeAConversationOptionOnPage(String option) throws Throwable {
-        assertThat(context.getPagesCollection().getPage(ContactListPage.class).getConvOptions().toString(), containsString(option));
+        assertThat(context.getPagesCollection().getPage(ContactListPage.class).getConvOptions().toString(), containsString(
+                option));
     }
 
-    /**
-     * Verifies whether mute button tool tip is correct or not.
-     *
-     * @throws Exception
-     * @step. ^I see correct tooltip for mute button in options popover$
-     */
     @Then("^I see correct tooltip for mute button in options popover$")
     public void ISeeCorrectTooltipForSilenceButton() throws Exception {
         String tooltip = TOOLTIP_MUTE + " ";
@@ -591,24 +420,12 @@ public class ContactListPageSteps {
                         .getMuteButtonToolTip(), equalTo(tooltip));
     }
 
-    /**
-     * Types shortcut combination to mute or unmute the conversation
-     *
-     * @throws Exception
-     * @step. ^I type shortcut combination to mute$
-     */
     @When("^I type shortcut combination to mute or unmute$")
     public void ITypeShortcutCombinationToMuteOrUnmute() throws Exception {
         context.getPagesCollection().getPage(ContactListPage.class).pressShortCutToMuteOrUnmute();
 
     }
 
-    /**
-     * Click the mute option
-     *
-     * @throws Exception
-     * @step. ^I click the option to mute in the options popover$
-     */
     @When("^I click the option to mute in the options popover$")
     public void IClickMuteButton() throws Exception {
         Assert.assertTrue("Mute button is not clickable", context.getPagesCollection().getPage(ContactListPage.class)
@@ -617,12 +434,6 @@ public class ContactListPageSteps {
                 .clickMuteConversation();
     }
 
-    /**
-     * Click the leave option
-     *
-     * @throws Exception
-     * @step. ^I click the option to leave in the options popover$
-     */
     @When("^I click the option to leave in the options popover$")
     public void IClickLeaveButton() throws Exception {
         Assert.assertTrue("Leave button is not clickable", context.getPagesCollection().getPage(ContactListPage.class)
@@ -631,12 +442,6 @@ public class ContactListPageSteps {
                 .clickLeaveConversation();
     }
 
-    /**
-     * Click the block option
-     *
-     * @throws Exception
-     * @step. ^I click the option to block in the options popover$
-     */
     @When("^I click the option to block in the options popover$")
     public void IClickBlockButton() throws Exception {
         Assert.assertTrue("Block button is not shown in the option popover",
@@ -644,73 +449,36 @@ public class ContactListPageSteps {
         context.getPagesCollection().getPage(ContactListPage.class).clickBlockButton();
     }
 
-    /**
-     * Verifies the modal is visible
-     *
-     * @throws Exception
-     * @step. ^I see a leave warning modal$
-     */
     @Then("^I see a leave warning modal$")
     public void ISeeALeaveWarning() throws Exception {
         Assert.assertTrue(context.getPagesCollection().getPage(ContactListPage.class)
                 .isLeaveWarningModalVisible());
     }
 
-    /**
-     * Click the cancel button in the leave warning
-     *
-     * @throws Throwable
-     * @step. ^I click cancel button in the leave warning$
-     */
     @Then("^I click cancel button in the leave warning$")
     public void IClickCancelButtonOnLeaveWarning() throws Throwable {
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickCancelOnLeaveWarning();
     }
 
-    /**
-     * Verifies the modal is visible
-     *
-     * @throws Exception
-     * @step. ^I see a block warning modal$
-     */
     @Then("^I see a block warning modal$")
     public void ISeeABlockWarning() throws Exception {
         Assert.assertTrue(context.getPagesCollection().getPage(ContactListPage.class)
                 .isBlockWarningModalVisible());
     }
 
-    /**
-     * Click the cancel button
-     *
-     * @throws Throwable
-     * @step. ^I click cancel button in the block warning$
-     */
     @Then("^I click cancel button in the block warning$")
     public void IClickCancelButtonOnBlockWarning() throws Throwable {
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickCancelOnBlockWarning();
     }
 
-    /**
-     * Click the block button
-     *
-     * @throws Throwable
-     * @step. ^I click block button in the block warning$
-     */
     @Then("^I click block button in the block warning$")
     public void IClickBlockButtonOnBlockWarning() throws Throwable {
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickBlockOnBlockWarning();
     }
 
-    /**
-     * Verifies a conversation is on top of conversation list
-     *
-     * @param conv
-     * @throws Exception
-     * @step. ^I see conversation (.*) is on the top$
-     */
     @When("^I see conversation (.*) is on the top$")
     public void ISeeConversationWithNameOnTop(String conv) throws Exception {
         conv = context.getUserManager().replaceAliasesOccurences(conv, FindBy.NAME_ALIAS);
@@ -720,12 +488,6 @@ public class ContactListPageSteps {
 
     }
 
-    /**
-     * Click the delete option in the options popover
-     *
-     * @throws Exception
-     * @step. ^I click delete in the options popover$
-     */
     @When("^I click delete in the options popover$")
     public void IClickDeleteButton() throws Exception {
         Assert.assertTrue("Delete button is not shown in the option popover",
@@ -733,109 +495,54 @@ public class ContactListPageSteps {
         context.getPagesCollection().getPage(ContactListPage.class).clickDeleteConversation();
     }
 
-    /**
-     * Verifies the delete modal is visible
-     *
-     * @throws Exception
-     * @step. ^I see a delete warning modal for group conversations$
-     */
     @Then("^I see a delete warning modal for group conversations$")
     public void ISeeDeleteWarningForGroup() throws Exception {
         Assert.assertTrue(context.getPagesCollection().getPage(ContactListPage.class)
                 .isDeleteWarningModalForGroupVisible());
     }
 
-    /**
-     * Click the delete button in the delete warning
-     *
-     * @throws Throwable
-     * @step. ^I click delete button in the delete warning$
-     */
     @Then("^I click delete button in the delete warning for group conversations$")
     public void IClickDeleteButtonOnDeleteWarning() throws Throwable {
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickDeleteOnDeleteWarning();
     }
 
-    /**
-     * Click the leave button in the leave warning
-     *
-     * @throws Throwable
-     * @step. ^I click leave button in the leave warning$
-     */
     @Then("^I click leave button in the leave warning$")
     public void IClickLeaveButtonOnLeaveWarning() throws Throwable {
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickLeaveOnLeaveWarning();
     }
 
-    /**
-     * Click Leave checkbox on a delete warning modal for group conversations
-     *
-     * @throws Throwable
-     * @step. ^I click Leave checkbox on a delete warning modal for group
-     * conversations$
-     */
     @Then("^I click Leave checkbox on a delete warning modal for group conversations$")
     public void IClickLeaveCheckboxOnDeleteWarning() throws Throwable {
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickLeaveCheckboxOnDeleteWarning();
     }
 
-    /**
-     * Click the cancel button in the delete warning
-     *
-     * @throws Throwable
-     * @step. ^I click cancel button in the delete warning$
-     */
     @Then("^I click cancel button in the delete warning for group conversations$")
     public void IClickCancelButtonOnDeleteWarning() throws Throwable {
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickCancelOnDeleteWarning();
     }
 
-    /**
-     * Verifies the delete modal is visible
-     *
-     * @throws Exception
-     * @step. ^I see a delete warning modal for 1:1 conversations$
-     */
     @Then("^I see a delete warning modal for 1:1 conversations$")
     public void ISeeDeleteWarningForSingle() throws Exception {
         Assert.assertTrue(context.getPagesCollection().getPage(ContactListPage.class)
                 .isDeleteWarningModalSingleVisible());
     }
 
-    /**
-     * Click the delete button in the delete warning
-     *
-     * @throws Throwable
-     * @step. ^I click delete button in the delete warning for 1:1 conversation$
-     */
     @Then("^I click delete button in the delete warning for 1:1 conversations$")
     public void IClickDeleteButtonOnDeleteWarningForSingle() throws Throwable {
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickDeleteOnDeleteWarningSingle();
     }
 
-    /**
-     * Click the cancel button in the delete warning
-     *
-     * @throws Throwable
-     * @step. ^I click cancel button in the delete warning for 1:1 conversation$
-     */
     @Then("^I click cancel button in the delete warning for 1:1 conversations$")
     public void IClickCancelButtonOnDeleteWarningForSingle() throws Throwable {
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickCancelOnDeleteWarningSingle();
     }
 
-    /**
-     * Click the cancel request option
-     *
-     * @throws Exception
-     * @step. ^I click cancel request in the options popover$
-     */
     @When("^I click cancel request in the options popover$")
     public void IClickCancelRequestButton() throws Exception {
         Assert.assertTrue("Cancel request button is not shown in the option popover",
@@ -844,12 +551,6 @@ public class ContactListPageSteps {
                 .clickCancelRequest();
     }
 
-    /**
-     * Click the archive option
-     *
-     * @throws Exception
-     * @step. ^I click archive in the options popover$
-     */
     @When("^I click archive in the options popover$")
     public void IClickArchiveButton() throws Exception {
         Assert.assertTrue("Archive button is not shown in the option popover",
