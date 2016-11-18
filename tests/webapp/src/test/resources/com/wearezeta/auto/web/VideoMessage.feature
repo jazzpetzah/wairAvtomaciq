@@ -106,8 +106,8 @@ Feature: Video Message
     And I do not see video message <File> in the conversation view
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File        | Size  |
-      | user1Email | user1Password | user1Name | user2Name | C123929.mp4 | 18MB  |
+      | Login      | Password      | Name      | Contact   | File        | Size |
+      | user1Email | user1Password | user1Name | user2Name | C123929.mp4 | 23MB |
 
   @C123928 @videomessage @mute
   Scenario Outline: Verify receiver can cancel video message download
