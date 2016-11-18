@@ -235,6 +235,7 @@ Feature: Ephemeral
     And I see 2 messages in conversation
   #Contact read the message (remote step)
     When User <Contact> reads the recent message from user <Name> via device Device1
+    And I wait for <Time> seconds
     Then I do not see ping action in conversation
     And I see 1 messages in conversation
   #picture
@@ -246,6 +247,7 @@ Feature: Ephemeral
     Then I see block replaces the last message in the conversation view
     And I see 2 messages in conversation
     When User <Contact> reads the recent message from user <Name> via device Device1
+    And I wait for <Time> seconds
     And I do not see any picture in the conversation view
     And I see 1 messages in conversation
   #video
@@ -272,6 +274,7 @@ Feature: Ephemeral
     Then I see block replaces the last message in the conversation view
     And I see 2 messages in conversation
     When User <Contact> reads the recent message from user <Name> via device Device1
+    And I wait for <Time> seconds
     And I do not see audio message <AudioFile> in the conversation view
     And I do not see block replaces the last message in the conversation view
     And I see 1 messages in conversation
@@ -283,6 +286,7 @@ Feature: Ephemeral
     Then I see block replaces the last message in the conversation view
     And I see 2 messages in conversation
     When User <Contact> reads the recent message from user <Name> via device Device1
+    And I wait for <Time> seconds
     And I do not see file transfer for file <File> in the conversation view
     And I do not see block replaces the last message in the conversation view
     And I see 1 messages in conversation
