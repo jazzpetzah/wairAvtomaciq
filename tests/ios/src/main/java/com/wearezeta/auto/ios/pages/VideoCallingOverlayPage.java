@@ -22,7 +22,7 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
         final By locator = MobileBy.AccessibilityId(getButtonAccessibilityIdByName(name));
         final Optional<WebElement> dstBtn = getElementIfDisplayed(locator, 1);
         if (!dstBtn.isPresent()) {
-            ((FBElement) getElement(fbClassNameVideoFrame)).longTap();
+            ((FBElement) getDriver().findElement(fbClassNameVideoFrame)).longTap();
             //final Dimension screenSize = getDriver().manage().window().getSize();
             //this.tapScreenAt(screenSize.getWidth() / 2, screenSize.getHeight() / 2);
             return getElementIfDisplayed(locator, 5).orElseThrow(
