@@ -1070,6 +1070,10 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idVideoContainerButton);
     }
 
+    public boolean isAudioMessageButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idAudioContainerButton);
+    }
+
     public Optional<BufferedImage> getVideoContainerButtonState() throws Exception {
         return getElementScreenshot(getElement(idVideoContainerButton));
     }

@@ -67,4 +67,6 @@ public interface IDevice extends IRemoteEntity {
     void setAssetToV3() throws Exception;
 
     void setAssetToV2() throws Exception;
+
+    void sendGiphy(String convId, String searchQuery) throws Exception;
 }

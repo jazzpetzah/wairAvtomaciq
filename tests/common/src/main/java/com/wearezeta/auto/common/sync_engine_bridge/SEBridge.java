@@ -89,6 +89,10 @@ public class SEBridge {
         getOrAddDevice(userFrom).sendImage(convId, path);
     }
 
+    public void sendGiphy(ClientUser userFrom, String convId, String searchQuery, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).sendGiphy(convId, searchQuery);
+    }
+
     public void sendPing(ClientUser userFrom, String convId) throws Exception {
         getOrAddDevice(userFrom).sendPing(convId);
     }
