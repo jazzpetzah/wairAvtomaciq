@@ -82,7 +82,7 @@ Feature: Sign In
     When I have entered login <Email>
     And I start activation email monitoring
     And I have entered password <Password>
-    When I tap Return button on the keyboard
+    When I tap Login button
     Then I see email verification reminder
     When I verify registration address
     And I accept First Time overlay
