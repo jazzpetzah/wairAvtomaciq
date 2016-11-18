@@ -1563,17 +1563,6 @@ public class ConversationPageSteps {
                 equalTo(tooltip));
     }
 
-    /**
-     * Types shortcut combination to call
-     *
-     * @throws Exception
-     * @step. ^I type shortcut combination to ping$
-     */
-    @Then("^I type shortcut combination to start a call$")
-    public void ITypeShortcutCombinationToCall() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).pressShortCutForCall();
-    }
-
     @Then("^I see nobody to call message")
     public void ISeeNobodyToCallMessage() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).isNobodyToCallMsgVisible();
