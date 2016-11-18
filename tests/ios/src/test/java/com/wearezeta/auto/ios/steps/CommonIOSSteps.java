@@ -1683,4 +1683,19 @@ public class CommonIOSSteps {
     public void IPressHomeButton() throws Exception {
         pagesCollection.getCommonPage().pressHomeButton();
     }
+
+    /**
+     * Switch the Actor's AssetProtocol mode
+     *
+     * @param userAs     user name/alias
+     * @param mode       V2 or V3
+     * @param deviceName device name
+     * @throws Exception
+     * @step. User (.*) switches assets to (V2|V3) protocol(?: via device (.*))?$
+     */
+    @Given("^User (.*) switches assets to (V2|V3) protocol(?: via device (.*))?$")
+    public void UserSwitchAssetMode(String userAs, String mode, String deviceName) throws Exception {
+        AssetProtocol asset = AssetProtocol.valueOf(mode.toUpperCase());
+        commonSteps.UserSetAssetMode(userAs, asset, deviceName);
+    }
 }
