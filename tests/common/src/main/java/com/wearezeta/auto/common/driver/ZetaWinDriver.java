@@ -11,6 +11,13 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebElement;
 
 import io.appium.java_client.AppiumDriver;
+import java.awt.AWTException;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -23,6 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import java.util.stream.Collectors;
+import javax.imageio.ImageIO;
 import org.apache.log4j.Logger;
 
 import org.openqa.selenium.Beta;
@@ -42,11 +50,13 @@ public class ZetaWinDriver extends AppiumDriver<WebElement> implements ZetaDrive
     private static final String APP_NAME = "Wire";
 
     private static final Logger log = ZetaLogger.getLog(ZetaOSXWebAppDriver.class.getSimpleName());
+    private final Robot robot;
     private ExecutorService pool;
     private volatile boolean isSessionLost = false;
 
-    public ZetaWinDriver(URL remoteAddress, Capabilities desiredCapabilities) {
+    public ZetaWinDriver(URL remoteAddress, Capabilities desiredCapabilities) throws AWTException {
         super(remoteAddress, desiredCapabilities, JsonToWebElementConverter.class);
+        this.robot = new Robot();
     }
 
     @Override
@@ -121,6 +131,34 @@ public class ZetaWinDriver extends AppiumDriver<WebElement> implements ZetaDrive
             this.pool = Executors.newSingleThreadExecutor();
         }
         return this.pool;
+    }
+    
+    @Override
+    public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException {
+        if (OutputType.BASE64.equals(outputType)) {
+            throw new WebDriverException("Base64 screenshot not supported yet");
+        } else if (OutputType.BYTES.equals(outputType)) {
+            return (X) bufferedImageAsByteArray(robot.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().
+                    getScreenSize())));
+        } else if (OutputType.FILE.equals(outputType)) {
+            throw new WebDriverException("File screenshot not supported yet");
+        } else {
+            throw new WebDriverException("Unsupported OutputType selection");
+        }
+    }
+    
+    protected byte[] bufferedImageAsByteArray(BufferedImage image) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(image, "png", stream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return stream.toByteArray();
+    }
+
+    public Robot getRobot() {
+        return robot;
     }
 
     protected class WireRemoteWebElement extends RemoteWebElement {
@@ -230,11 +268,20 @@ public class ZetaWinDriver extends AppiumDriver<WebElement> implements ZetaDrive
             return new Point(winPoint.getX(), winPoint.getY());
         }
 
-        @Beta
         @Override
-        public <X> X getScreenshotAs(OutputType<X> outputType)
-                throws WebDriverException {
-            return originalElement.getScreenshotAs(outputType);
+        public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException {
+            Point elLocation = this.getLocation();
+            Dimension elSize = this.getSize();
+            if (OutputType.BASE64.equals(outputType)) {
+                throw new WebDriverException("Base64 screenshot not supported yet");
+            } else if (OutputType.BYTES.equals(outputType)) {
+                return (X) bufferedImageAsByteArray(robot.createScreenCapture(new Rectangle(
+                        elLocation.getX(), elLocation.getY(), elSize.getWidth(), elSize.getHeight())));
+            } else if (OutputType.FILE.equals(outputType)) {
+                throw new WebDriverException("File screenshot not supported yet");
+            } else {
+                throw new WebDriverException("Unsupported OutputType selection");
+            }
         }
 
         @Override
@@ -260,10 +307,14 @@ public class ZetaWinDriver extends AppiumDriver<WebElement> implements ZetaDrive
         @Beta
         protected class ZetaRemoteWindow extends RemoteWindow {
 
-            private final WebElement window;
+            private final WireRemoteWebElement window;
 
             public ZetaRemoteWindow(WebElement window) {
-                this.window = window;
+                this.window = new ZetaWinDriver.WireRemoteWebElement((RemoteWebElement) window);
+            }
+            
+            public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException {
+                return window.getScreenshotAs(outputType);
             }
 
             @Override
