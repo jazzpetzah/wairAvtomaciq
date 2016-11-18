@@ -237,7 +237,7 @@ public class CommonIOSSteps {
     );
 
     private static final String WDA_DERIVED_DATA_PREFIX = "WebDriverAgent";
-    private static final String WDA_DERIVED_DATA_ATTACHMENTS_FOLDER_NAME = "Attachments";
+    private static final String WDA_ATTACHMENTS_FOLDER_NAME = "Attachments";
 
     private static void findFolders(String name, File root, List<File> resultList) {
         final File[] list = root.listFiles();
@@ -306,7 +306,7 @@ public class CommonIOSSteps {
         }
         for (File dstFolder : dstFolders) {
             List<File> attachmentFolders = new ArrayList<>();
-            findFolders(WDA_DERIVED_DATA_ATTACHMENTS_FOLDER_NAME, dstFolder, attachmentFolders);
+            findFolders(WDA_ATTACHMENTS_FOLDER_NAME, dstFolder, attachmentFolders);
             attachmentFolders.stream().forEach(CommonIOSSteps::deleteFolderContents);
             attachmentFolders.stream().forEach(CommonIOSSteps::setReadOnlyPermissions);
         }
