@@ -626,7 +626,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C2739 @rc @regression @fastLogin
+  @C2739 @rc @regression @fastLogin @torun
   Scenario Outline: Verify that deleted conversation via participant view is not going to archive [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
