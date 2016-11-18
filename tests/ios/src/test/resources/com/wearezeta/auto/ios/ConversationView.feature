@@ -544,19 +544,3 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
-
-  @C345364 @staging @fastLogin
-  Scenario Outline: Verify I could see someone changes his avatar on v3 build
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    Given I tap on contact name <Contact>
-    Given I open conversation details
-    When I remember user picture on Single user profile page
-    And User <Contact> changes v3 avatar picture to default
-    Then I see user picture is changed on Single user profile page
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |

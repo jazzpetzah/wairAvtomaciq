@@ -529,3 +529,20 @@ Feature: People View
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | ChatNameLength | MaxAllowedLength |
       | user1Name | user2Name | user3Name | TESTCHAT      | 70             | 64               |
+
+  @C345364 @staging @fastLogin
+  Scenario Outline: (Not implemented yet) Verify I could see someone changes his avatar on v3 build
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    Given I open conversation details
+    When I remember user picture on Single user profile page
+    # TODO: Change it to v3 only when it is supported by iOS client
+    And User <Contact> changes v2 avatar picture to default
+    Then I see user picture is changed on Single user profile page
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |

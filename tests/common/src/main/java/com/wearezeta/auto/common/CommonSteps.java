@@ -670,10 +670,10 @@ public final class CommonSteps {
         if (new File(picturePath).exists()) {
             switch (protocol) {
                 case V2:
-                    BackendAPIWrappers.updateUserPicture(dstUser, picturePath);
+                    BackendAPIWrappers.updateUserPictureV2(dstUser, picturePath);
                     break;
                 case V3:
-                    BackendAPIWrappers.updateUserPicture(dstUser, picturePath);
+                    BackendAPIWrappers.updateUserPictureV3(dstUser, picturePath);
                     break;
                 default:
                     throw new IllegalArgumentException(String.format("Unknown protocol '%s'", protocol.name()));
