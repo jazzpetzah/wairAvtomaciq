@@ -40,14 +40,17 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
         switch (buttonName) {
             case "Leave":
                 this.tapScreenAt(screenWidth / 2, y);
+                Thread.sleep(1000);
                 this.tapScreenAt(screenWidth / 2, y);
                 break;
             case "Mute":
                 this.tapScreenAt(screenWidth / 3, y);
+                Thread.sleep(1000);
                 this.tapScreenAt(screenWidth / 3, y);
                 break;
             case "Video":
                 this.tapScreenAt(screenWidth / 3 * 2, y);
+                Thread.sleep(1000);
                 this.tapScreenAt(screenWidth / 3 * 2, y);
                 break;
             default:
