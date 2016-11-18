@@ -447,7 +447,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend    |
       | user1Name | user2Name | zcall:2.7.26   |
 
-  @C343168 @staging @calling_basic @fastLogin
+  @C343168 @regression @calling_basic @fastLogin
   Scenario Outline: Verify you see group call conformation dialog for >5 participants group chat
     Given There are 6 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
@@ -474,7 +474,7 @@ Feature: Calling
       | Name      | Contact   | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChat1Name | GroupChat2Name | AlertText    |
       | user1Name | user2Name | user3Name | user3Name | user4Name | user5Name | user6Name | GROUP FIVE     | GROUP SIX      | Start a call |
 
-  @C343170 @staging @calling_basic @fastLogin
+  @C343170 @regression @calling_basic @fastLogin
   Scenario Outline: Verify you can cancel the group call from confirmation dialog for >5 participants group chat
     Given There are 6 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>

@@ -1,11 +1,13 @@
 package com.wearezeta.auto.ios.steps;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.PosixFilePermission;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,6 +30,7 @@ import cucumber.api.PendingException;
 import cucumber.api.Scenario;
 import cucumber.api.java.en.Then;
 import gherkin.formatter.model.Result;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -224,8 +227,88 @@ public class CommonIOSSteps {
         }
 
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance().resetDriver(
-                getUrl(), capabilities, retriesCount
+                getUrl(), capabilities, retriesCount, CommonIOSSteps::denyXCTestScreenshoting, null
         );
+    }
+
+    private static final File DERIVED_DATA_ROOT = new File(
+            String.format("%s/Library/Developer/Xcode/DerivedData", System.getProperty("user.home"))
+    );
+
+    private static final String WDA_DERIVED_DATA_PREFIX = "WebDriverAgent";
+    private static final String WDA_DERIVED_DATA_ATTACHMENTS_FOLDER_NAME = "Attachments";
+
+    private static void findFolders(String name, File root, List<File> resultList) {
+        final File[] list = root.listFiles();
+        if (list == null) {
+            return;
+        }
+        for (File fil : list) {
+            if (fil.isDirectory()) {
+                if (fil.getName().equals(name)) {
+                    resultList.add(fil);
+                }
+                findFolders(name, fil, resultList);
+            }
+        }
+    }
+
+    private static void setReadOnlyPermissions(File dst) {
+        try {
+            final Set<PosixFilePermission> perms = Files.getPosixFilePermissions(dst.toPath());
+            perms.removeAll(Arrays.asList(
+                    PosixFilePermission.GROUP_WRITE,
+                    PosixFilePermission.OWNER_WRITE,
+                    PosixFilePermission.OTHERS_WRITE)
+            );
+            log.debug(
+                    String.format("Setting read-only permissions to '%s'...", dst.getAbsolutePath())
+            );
+            Files.setPosixFilePermissions(dst.toPath(), perms);
+            log.debug("Permissions have been successfully set");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void deleteFolderContents(File folder) {
+        final File[] list = folder.listFiles();
+        if (list == null) {
+            return;
+        }
+        for (File fil: list) {
+            if (fil.isDirectory()) {
+                try {
+                    FileUtils.deleteDirectory(fil);
+                } catch (IOException e) {
+                    // ignore silently
+                }
+            } else {
+                fil.delete();
+            }
+        }
+    }
+
+    private static void denyXCTestScreenshoting(RemoteWebDriver drv) {
+        if (!DERIVED_DATA_ROOT.exists()) {
+            return;
+        }
+        final File[] list = DERIVED_DATA_ROOT.listFiles();
+        if (list == null) {
+            return;
+        }
+        List<File> dstFolders = new ArrayList<>();
+        for (File fil : list) {
+            if (fil.isDirectory() && fil.getName().startsWith(WDA_DERIVED_DATA_PREFIX)) {
+                dstFolders.add(fil);
+            }
+        }
+        for (File dstFolder : dstFolders) {
+            List<File> attachmentFolders = new ArrayList<>();
+            findFolders(WDA_DERIVED_DATA_ATTACHMENTS_FOLDER_NAME, dstFolder, attachmentFolders);
+            attachmentFolders.stream().forEach(CommonIOSSteps::deleteFolderContents);
+            attachmentFolders.stream().forEach(CommonIOSSteps::setReadOnlyPermissions);
+        }
     }
 
     private static void prepareRealDevice(final Capabilities caps) throws Exception {
@@ -234,7 +317,6 @@ public class CommonIOSSteps {
                 IOSDistributable.getInstance((String) caps.getCapability("app"));
         IOSRealDeviceHelpers.installApp(udid, !caps.is(CAPABILITY_NAME_NO_UNINSTALL), currentPackage.getAppRoot());
     }
-
 
     // We don't know Wire Application ID for sure,
     // so we do create tmp folder for every application under the current simulator
@@ -960,7 +1042,7 @@ public class CommonIOSSteps {
      * Verify whether currently visible alert contains particular text
      *
      * @param shouldNotBeVisible equals to null if the alert text should be visible
-     * @param expectedText the text (or part of it) to verify
+     * @param expectedText       the text (or part of it) to verify
      * @throws Exception
      * @step. ^I (do not )?see alert contains text (.*)
      */
