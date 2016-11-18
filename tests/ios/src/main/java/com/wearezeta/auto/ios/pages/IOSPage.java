@@ -371,6 +371,10 @@ public abstract class IOSPage extends BasePage {
         this.clickAt(Optional.of(el), percentX, percentY, DriverUtils.LONG_TAP_DURATION / 1000.0);
     }
 
+    protected void longClickAt(int percentX, int percentY) throws Exception {
+        this.clickAt(Optional.empty(), percentX, percentY, DriverUtils.LONG_TAP_DURATION / 1000.0);
+    }
+
     protected void clickAt(int percentX, int percentY) throws Exception {
         this.clickAt(Optional.empty(), percentX, percentY, DriverUtils.SINGLE_TAP_DURATION / 1000.0);
     }
