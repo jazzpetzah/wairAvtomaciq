@@ -735,11 +735,6 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).confirmDeleteForEveryone();
     }
 
-    @When("^I click to delete the latest message$")
-    public void IClickToDelete() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clickToDeleteLastMessage();
-    }
-
     @When("^I click confirm to delete message for me$")
     public void IClickConfirmToDelete() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).confirmDelete();
@@ -1124,12 +1119,6 @@ public class ConversationPageSteps {
         cpSteps.IChooseToCreateGroupConversation();
     }
 
-    @Then("^I cannot see ephemeral button$")
-    public void ICannotSeeEphemeralButton() throws Exception {
-        assertTrue("Ephemeral button is visible",
-                context.getPagesCollection().getPage(ConversationPage.class).isEphemeralButtonNotVisible());
-    }
-
     @When("^I click on ephemeral button$")
     public void IClickEphemeralButton() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickEphemeralButton();
@@ -1410,17 +1399,6 @@ public class ConversationPageSteps {
     @When("^I silence the incoming call$")
     public void ISilenceIncomingCall() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickSilenceCallButton();
-    }
-
-    /**
-     * Verify that conversation contains my missed call
-     *
-     * @throws Exception
-     * @step. ^I see conversation with my missed call$
-     */
-    @Then("^I see conversation with my missed call$")
-    public void ThenISeeConversationWithMyMissedCall() throws Exception {
-        Assert.assertEquals("YOU CALLED", context.getPagesCollection().getPage(ConversationPage.class).getMissedCallMessage());
     }
 
     /**

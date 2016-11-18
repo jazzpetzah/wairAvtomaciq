@@ -600,15 +600,6 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
     }
 
-    public String getMissedCallMessage() throws Exception {
-        final By locator = By
-                .cssSelector(WebAppLocators.ConversationPage.cssLastAction);
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                locator, MISSED_CALL_MSG_TIMOEUT) : "Missed call message is not visible after "
-                + MISSED_CALL_MSG_TIMOEUT + " second(s) timeout";
-        return getDriver().findElement(locator).getText();
-    }
-
     public void clickAcceptCallButton() throws Exception {
         final By locator = By
                 .cssSelector(WebAppLocators.ConversationPage.cssAcceptCallButton);
@@ -1145,11 +1136,6 @@ public class ConversationPage extends WebPage {
     public boolean isLikeLineInvisibleForMessage(int messageIndex) throws Exception {
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssFooterByMessageId.apply(getMessageId(messageIndex)));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
-    }
-
-    public void clickToDeleteLastMessage() throws Exception {
-        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteButtonByMessageId.apply(getMessageId(1)));
-        getDriver().findElement(locator).click();
     }
 
     public void hoverOverLastMessage() throws Exception {

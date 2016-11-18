@@ -1,12 +1,9 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.pages.CallPage;
 import cucumber.api.java.en.And;
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.junit.Assert;
 
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.web.common.TestContext;
@@ -205,21 +202,6 @@ public class CallPageSteps {
         } else {
             assertThat("Self video still visible", contactListPage.isSelfVideoNotVisible());
         }
-    }
-
-    /**
-     * TODO: Checks if the name of user you’re calling is visible
-     *
-     * @param nameAlias name of user whom you’re calling
-     * @throws Exception
-     * @step. ^I see name of user (.*) in calling banner in conversation list$
-     * @step. ^I see the name of user (.*) in calling banner for conversation (.*)$
-     */
-    @Then("^I see the name of user (.*) in calling banner for conversation (.*)$")
-    public void ISeeNameOfUserInCalling(String nameAlias, String conversation) throws Exception {
-        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(nameAlias);
-        Assert.assertTrue(context.getPagesCollection().getPage(
-                CallPage.class).isUserNameVisibleInCallingBanner(user.getName()));
     }
 
     /**

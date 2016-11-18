@@ -15,7 +15,6 @@ import com.wearezeta.auto.web.common.Message;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
-import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
 import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
@@ -67,16 +66,6 @@ public class CommonWebAppSteps {
         this.context = context;
     }
     
-    /**
-     * Step for preparing and debugging testcases while the feature in not implemented completely
-     * 
-     * @throws Exception 
-     */
-    @Then("^I fail the test$")
-    public void IFailTheTest() throws Exception {
-        throw new Exception("The test is supposed to fail here");
-    }
-
     /**
      * This step will throw special PendingException whether the current browser does support calling or not. This will cause
      * Cucumber interpreter to skip the current test instead of failing it.

@@ -85,11 +85,6 @@ public class CallPage extends ContactListPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(locator));
     }
 
-    public boolean isUserNameVisibleInCallingBanner(String user) throws Exception {
-        String locator = WebAppLocators.CallPage.xpathUserNameByConversationName.apply(user);
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(locator));
-    }
-
     public boolean isVideoButtonNotVisibleForConversation(String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
         final String locator = WebAppLocators.CallPage.xpathVideoButtonByConversationName.apply(conversationName);

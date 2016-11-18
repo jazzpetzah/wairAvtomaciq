@@ -213,21 +213,4 @@ public class VideoCallPageSteps {
             assertTrue("Disabled video icon is not shown", videoCallPage.isDisabledVideoIconInvisible());
         }
     }
-
-    /**
-     * Check if minimized video is black
-     *
-     * @throws Exception
-     */
-    @Then("^I see minimized video is black$")
-    public void ISeeMinimizedVideoBlack() throws Exception {
-        VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
-        Optional<BufferedImage> minimizedRemoteVideo = videoCallPage.getMinimizedRemoteVideo();
-        Assert.assertTrue("Minimized remote video is not present", minimizedRemoteVideo.isPresent());
-        BufferedImage image = minimizedRemoteVideo.get();
-        Color pixel = new Color(image.getRGB(20, 20));
-        assertThat("RGB red", pixel.getRed(), lessThan(2));
-        assertThat("RGB green", pixel.getGreen(), lessThan(2));
-        assertThat("RGB blue", pixel.getBlue(), lessThan(2));
-    }
 }
