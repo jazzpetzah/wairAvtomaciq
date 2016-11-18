@@ -71,7 +71,7 @@
 .feature-value{font-weight:bold;}
 .feature-tags{padding-top:10px;padding-left:15px;color:darkblue;}
 .scenario-keyword{font-weight:bold;padding-left:15px;}
-.scenario-description{padding-left:770px;font-style:italic;}
+.scenario-description{padding-left:0px;font-style:italic;}
 .scenario-scenario_name{padding-left:15px;}
 .step-keyword{font-weight:bold;padding-left:50px;}
 .step-error-message{background-color:#FFEEEE;padding-left:50px;border: 1px solid #D88A8A;}

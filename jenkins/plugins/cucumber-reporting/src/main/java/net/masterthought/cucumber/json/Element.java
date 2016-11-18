@@ -83,7 +83,8 @@ public class Element {
         String result = "";
         if (Util.itemExists(description)) {
             String content = description.replaceAll("\n", "<br/>");
-            result = "</span><span class=\"scenario-description\">" + content  + "</span>";
+            result = "<span class=\"step-keyword\">Runner </span><span class=\"scenario-description\">" + content  +
+                    "</span>";
         }
         return Util.itemExists(description) ?  Util.result(getStatus()) + result + Util.closeDiv() : "";
     }
