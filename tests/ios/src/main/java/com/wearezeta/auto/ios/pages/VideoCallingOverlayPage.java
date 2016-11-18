@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 
 import java.awt.image.BufferedImage;
@@ -14,46 +15,65 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
         super(lazyDriver);
     }
 
-    private WebElement makeOverlayButtonVisible(String name) throws Exception {
+    private Optional<WebElement> makeOverlayButtonVisible(String name) throws Exception {
         final By locator = MobileBy.AccessibilityId(getButtonAccessibilityIdByName(name));
         final Optional<WebElement> dstBtn = getElementIfDisplayed(locator, 1);
         if (!dstBtn.isPresent()) {
-            this.longClickAt(50, 50);
-            // ((FBElement) this.selectVisibleElements(fbClassNameVideoFrame).get(0)).longTap();
-            //final Dimension screenSize = getDriver().manage().window().getSize();
-            //this.tapScreenAt(screenSize.getWidth() / 2, screenSize.getHeight() / 2);
-            return getElementIfDisplayed(locator, 5).orElseThrow(
-                    () -> new IllegalStateException(
-                            String.format("The button identified by '%s' is expected to be present", name))
-            );
+            final Dimension screenSize = getDriver().manage().window().getSize();
+            this.tapScreenAt(screenSize.getWidth() / 2, screenSize.getHeight() / 2);
+            return getElementIfExists(locator, 5);
         }
-        return dstBtn.get();
-    }
-
-    private void tapOverlayButton(String name) throws Exception {
-        makeOverlayButtonVisible(name).click();
+        return dstBtn;
     }
 
     @Override
     public void tapButtonByName(String buttonName) throws Exception {
-        tapOverlayButton(buttonName);
+        final By locator = MobileBy.AccessibilityId(getButtonAccessibilityIdByName(buttonName));
+        final Optional<WebElement> dstBtn = getElementIfDisplayed(locator, 1);
+        if (dstBtn.isPresent()) {
+            dstBtn.get().click();
+            return;
+        }
+        final Dimension screenSize = getDriver().manage().window().getSize();
+        final int y = screenSize.getHeight() / 6 * 5;
+        final int screenWidth = screenSize.getWidth();
+        switch (buttonName) {
+            case "Leave":
+                this.tapScreenAt(screenWidth / 2, y);
+                this.tapScreenAt(screenWidth / 2, y);
+                break;
+            case "Mute":
+                this.tapScreenAt(screenWidth / 3, y);
+                this.tapScreenAt(screenWidth / 3, y);
+                break;
+            case "Video":
+                this.tapScreenAt(screenWidth / 3 * 2, y);
+                this.tapScreenAt(screenWidth / 3 * 2, y);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Button '%s' is not supported ", buttonName));
+        }
     }
 
     @Override
     public boolean isButtonVisible(String buttonName) throws Exception {
-        return makeOverlayButtonVisible(buttonName).isDisplayed();
+        return makeOverlayButtonVisible(buttonName).isPresent();
     }
 
     @Override
     public BufferedImage getMuteButtonScreenshot() throws Exception {
-        final WebElement btn = makeOverlayButtonVisible("Mute");
+        final WebElement btn = makeOverlayButtonVisible("Mute").orElseThrow(
+                () -> new IllegalStateException("Mute button is not visible")
+        );
         return getElementScreenshot(btn).orElseThrow(
                 () -> new IllegalStateException("Cannot make a screenshot")
         );
     }
 
     public BufferedImage getVideoButtonScreenshot() throws Exception {
-        final WebElement btn = makeOverlayButtonVisible("Call Video");
+        final WebElement btn = makeOverlayButtonVisible("Call Video").orElseThrow(
+                () -> new IllegalStateException("Video button is not visible")
+        );
         return getElementScreenshot(btn).orElseThrow(
                 () -> new IllegalStateException("Cannot make a screenshot")
         );
