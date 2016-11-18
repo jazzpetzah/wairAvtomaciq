@@ -34,6 +34,7 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
             dstBtn.get().click();
             return;
         }
+        // FIXME: These buttons disappear so fast (or the framework is so slow), that we need to tap by coordinates
         final Dimension screenSize = getDriver().manage().window().getSize();
         final int y = screenSize.getHeight() / 6 * 5;
         final int screenWidth = screenSize.getWidth();
