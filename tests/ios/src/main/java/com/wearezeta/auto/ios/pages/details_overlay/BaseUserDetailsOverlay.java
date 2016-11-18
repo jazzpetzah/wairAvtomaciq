@@ -4,6 +4,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
+import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 
 public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
@@ -12,6 +13,10 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
     private static final By nameRightActionButton = MobileBy.AccessibilityId("OtherUserMetaControllerRightButton");
 
     private static final By nameLeftActionButton = MobileBy.AccessibilityId("OtherUserMetaControllerLeftButton");
+
+    private static final  By xpathProfilePicture = By.xpath(
+        "//XCUIElementTypeButton[@name='DEVICES']/following::XCUIElementTypeStaticText/parent::*"
+    );
 
     public BaseUserDetailsOverlay(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
@@ -41,6 +46,12 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
     public boolean isEmailInvisible(String value) throws Exception {
         final By locator = MobileBy.AccessibilityId(value.toUpperCase());
         return selectVisibleElements(locator).size() == 0;
+    }
+
+    public BufferedImage getProfilePictureScreenshot() throws Exception {
+        return getElementScreenshot(getElement(xpathProfilePicture)).orElseThrow(
+                () -> new IllegalStateException("Cannot take a screenshot of profile picture")
+        );
     }
 
     @Override

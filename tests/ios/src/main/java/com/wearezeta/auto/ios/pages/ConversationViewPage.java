@@ -407,7 +407,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void openConversationDetails() throws Exception {
-        this.tapAtTheCenterOfElement((FBElement) getElement(fbXpathConversationDetailsButton));
+        getElement(fbXpathConversationDetailsButton).click();
         // Wait for animation
         Thread.sleep(500);
     }

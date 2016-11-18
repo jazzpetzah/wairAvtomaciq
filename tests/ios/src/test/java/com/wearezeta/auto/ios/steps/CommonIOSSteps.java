@@ -22,6 +22,7 @@ import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import com.wearezeta.auto.common.driver.device_helpers.IOSRealDeviceHelpers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.IOSDistributable;
+import com.wearezeta.auto.common.sync_engine_bridge.AssetProtocol;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
@@ -276,7 +277,7 @@ public class CommonIOSSteps {
         if (list == null) {
             return;
         }
-        for (File fil: list) {
+        for (File fil : list) {
             if (fil.isDirectory()) {
                 try {
                     FileUtils.deleteDirectory(fil);
@@ -700,7 +701,7 @@ public class CommonIOSSteps {
     @Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
     public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
-        IChangeUserAvatarPicture(myNameAlias, "default");
+        IChangeUserAvatarPicture(myNameAlias, "", "default");
         final FastLoginContainer flc = FastLoginContainer.getInstance();
         if (flc.isEnabled()) {
             updateDriver(flc.executeDriverCreation(usrMgr.getSelfUserOrThrowError()));
@@ -907,14 +908,32 @@ public class CommonIOSSteps {
         }
     }
 
-    @When("^User (\\w+) changes? avatar picture to (.*)$")
-    public void IChangeUserAvatarPicture(String userNameAlias, String name)
-            throws Exception {
-        final String rootPath = getImagesPathFromConfig(getClass());
-        commonSteps.IChangeUserAvatarPicture(userNameAlias, rootPath
-                + "/"
-                + (name.toLowerCase().equals("default") ? DEFAULT_USER_AVATAR
-                : name));
+    /**
+     * Change or set user profile picture
+     *
+     * @param userNameAlias user name/alias
+     * @param protocol      one of possible protocol names. Empty string means that all active protocols should be affected
+     * @param name          picture file name. Can be equal to 'default'
+     * @throws Exception
+     * @step. ^User (\w+) changes? (v2 |v3 |\s*)avatar picture to (.*)
+     */
+    @When("^User (\\w+) changes? (v2 |v3 |\\s*)avatar picture to (.*)")
+    public void IChangeUserAvatarPicture(String userNameAlias, String protocol, String name) throws Exception {
+        final String picturePath = String.format("%s/%s", getImagesPathFromConfig(getClass()),
+                name.toLowerCase().equals("default") ? DEFAULT_USER_AVATAR : name);
+        protocol = protocol.trim();
+        switch (protocol) {
+            case "":
+                commonSteps.IChangeUserAvatarPicture(userNameAlias, picturePath);
+                break;
+            case "v2":
+            case "v3":
+                commonSteps.IChangeUserAvatarPicture(userNameAlias, picturePath,
+                        AssetProtocol.valueOf(protocol.toUpperCase()));
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown protocol name '%s'", protocol));
+        }
     }
 
     /**

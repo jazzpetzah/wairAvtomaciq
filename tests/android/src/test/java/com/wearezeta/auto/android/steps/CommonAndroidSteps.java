@@ -31,7 +31,7 @@ import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
-import com.wearezeta.auto.common.sync_engine_bridge.Asset;
+import com.wearezeta.auto.common.sync_engine_bridge.AssetProtocol;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -1918,7 +1918,7 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Switch the Actor's Asset mode
+     * Switch the Actor's AssetProtocol mode
      *
      * @param userAs     user name/alias
      * @param mode       V2 or V3
@@ -1928,7 +1928,7 @@ public class CommonAndroidSteps {
      */
     @When("^User (.*) switches assets to (V2|V3) (?:via device (.*))?$")
     public void UserSwitchAssetMode(String userAs, String mode, String deviceName) throws Exception {
-        Asset asset = mode.toUpperCase().equals("V3") ? Asset.V3 : Asset.V2;
+        AssetProtocol asset = AssetProtocol.valueOf(mode.toUpperCase());
         commonSteps.UserSetAssetMode(userAs, asset, deviceName);
     }
 }

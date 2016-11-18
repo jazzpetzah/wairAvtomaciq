@@ -639,15 +639,10 @@ public final class BackendAPIWrappers {
     }
 
     public static void updateUserPicture(ClientUser user, String picturePath) throws Exception {
-        retryOnBackendFailure(2,
-                () -> {
-                    // upload user picture through the old asset v2 way
-                    updateUserPictureV2(user, picturePath);
-                    // upload user picture through the new asset v3 way
-                    updateUserPictureV3(user, picturePath);
-                    return null;
-                }
-        );
+        // upload user picture through the old asset v2 way
+        updateUserPictureV2(user, picturePath);
+        // upload user picture through the new asset v3 way
+        updateUserPictureV3(user, picturePath);
     }
 
     public static void updateUserPictureV3(ClientUser user, String picturePath) throws Exception {
@@ -660,7 +655,12 @@ public final class BackendAPIWrappers {
         Set<AssetV3> assets = new HashSet<>();
         assets.add(new AssetV3(previewKey, "image", PROFILE_PREVIEW_PICTURE_JSON_ATTRIBUTE));
         assets.add(new AssetV3(completeKey, "image", PROFILE_PICTURE_JSON_ATTRIBUTE));
-        BackendREST.updateSelfAssets(receiveAuthToken(user), assets);
+        retryOnBackendFailure(2,
+                () -> {
+                    BackendREST.updateSelfAssets(receiveAuthToken(user), assets);
+                    return null;
+                }
+        );
     }
 
     public static void updateUserPictureV2(ClientUser user, String picturePath) throws Exception {
@@ -679,8 +679,13 @@ public final class BackendAPIWrappers {
             final String postedImageId = entry.getKey().getJSONObject("data").getString("id");
             processedAssets.put(postedImageId, entry.getValue());
         }
-        BackendREST.updateSelfInfo(receiveAuthToken(user),
-                Optional.empty(), Optional.of(processedAssets), Optional.empty());
+        retryOnBackendFailure(2,
+                () -> {
+                    BackendREST.updateSelfInfo(receiveAuthToken(user),
+                            Optional.empty(), Optional.of(processedAssets), Optional.empty());
+                    return null;
+                }
+        );
     }
 
     public static void updateUserName(ClientUser user, String newName) throws Exception {

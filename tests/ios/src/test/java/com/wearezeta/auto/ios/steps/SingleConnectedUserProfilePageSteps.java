@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.common.misc.ElementState;
 import cucumber.api.java.en.Then;
 
 import org.junit.Assert;
@@ -33,7 +34,7 @@ public class SingleConnectedUserProfilePageSteps {
     /**
      * Verify user name on Single user profile page
      *
-     * @param value user name or email
+     * @param value     user name or email
      * @param fieldType either name or email
      * @throws Exception
      * @step. ^I see (.*) (name|email) on Single user profile page$
@@ -124,6 +125,42 @@ public class SingleConnectedUserProfilePageSteps {
         } else {
             Assert.assertTrue("The shield icon is still visible on convo details page",
                     getPage().isShieldIconNotVisible());
+        }
+    }
+
+    private static final int PROFILE_PICTURE_CHANGE_TIMEOUT_SECONDS = 7;
+    private static final double PROFILE_PICTURE_MAX_SCORE = 0.7;
+
+    private final ElementState profilePictureState = new ElementState(
+            () -> getPage().getProfilePictureScreenshot()
+    );
+
+    /**
+     * Remember the current sate of user profile picture
+     *
+     * @throws Exception
+     * @step. ^I remember user picture on Single user profile page$
+     */
+    @When("^I remember user picture on Single user profile page$")
+    public void IRememberPicture() throws Exception {
+        profilePictureState.remember();
+    }
+
+    /**
+     * Verify whether user profile picture has been changed or not
+     *
+     * @param shouldNotBeChanged equals to null if the picture should stay the same
+     * @throws Exception
+     * @step. ^I see user picture is (not )?changed on Single user profile page$"
+     */
+    @Then("^I see user picture is (not )?changed on Single user profile page$")
+    public void IVerifyPicture(String shouldNotBeChanged) throws Exception {
+        if (shouldNotBeChanged == null) {
+            Assert.assertTrue("User profile picture is still the same",
+                    profilePictureState.isChanged(PROFILE_PICTURE_CHANGE_TIMEOUT_SECONDS, PROFILE_PICTURE_MAX_SCORE));
+        } else {
+            Assert.assertTrue("User profile picture is expected to be the same",
+                    profilePictureState.isNotChanged(PROFILE_PICTURE_CHANGE_TIMEOUT_SECONDS, PROFILE_PICTURE_MAX_SCORE));
         }
     }
 }
