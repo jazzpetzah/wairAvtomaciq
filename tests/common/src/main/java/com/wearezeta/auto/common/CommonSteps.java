@@ -6,7 +6,7 @@ import com.waz.provision.ActorMessage;
 import com.wearezeta.auto.common.backend.*;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.sync_engine_bridge.Asset;
+import com.wearezeta.auto.common.sync_engine_bridge.AssetProtocol;
 import com.wearezeta.auto.common.sync_engine_bridge.MessageReactionType;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -664,6 +664,25 @@ public final class CommonSteps {
         }
     }
 
+    public void IChangeUserAvatarPicture(String userNameAlias, String picturePath, AssetProtocol protocol)
+            throws Exception {
+        final ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(userNameAlias);
+        if (new File(picturePath).exists()) {
+            switch (protocol) {
+                case V2:
+                    BackendAPIWrappers.updateUserPicture(dstUser, picturePath);
+                    break;
+                case V3:
+                    BackendAPIWrappers.updateUserPicture(dstUser, picturePath);
+                    break;
+                default:
+                    throw new IllegalArgumentException(String.format("Unknown protocol '%s'", protocol.name()));
+            }
+        } else {
+            throw new IOException(String.format("The picture '%s' is not accessible", picturePath));
+        }
+    }
+
     public void UserDeletesAvatarPicture(String userNameAlias) throws Exception {
         final ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(userNameAlias);
         BackendAPIWrappers.removeUserPicture(dstUser);
@@ -911,7 +930,7 @@ public final class CommonSteps {
         SEBridge.getInstance().setEphemeralMode(msgFromUser, dstConvId, expirationMilliseconds, deviceName);
     }
 
-    public void UserSetAssetMode(String actorUserNameAlias, Asset asset, String deviceName) throws Exception {
+    public void UserSetAssetMode(String actorUserNameAlias, AssetProtocol asset, String deviceName) throws Exception {
         final ClientUser actorUser = usrMgr.findUserByNameOrNameAlias(actorUserNameAlias);
         switch (asset) {
             case V3:
@@ -921,7 +940,7 @@ public final class CommonSteps {
                 SEBridge.getInstance().setAssetToV2(actorUser, deviceName);
                 break;
             default:
-                throw new IllegalArgumentException("Only support Asset V2 and V3");
+                throw new IllegalArgumentException("Only support AssetProtocol V2 and V3");
         }
     }
 
