@@ -540,7 +540,7 @@ Feature: People View
     Given I open conversation details
     When I remember user picture on Single user profile page
     # TODO: Change it to v3 only when it is supported by iOS client
-    And User <Contact> changes v2 avatar picture to default
+    And User <Contact> changes avatar picture to default
     Then I see user picture is changed on Single user profile page
 
     Examples:
