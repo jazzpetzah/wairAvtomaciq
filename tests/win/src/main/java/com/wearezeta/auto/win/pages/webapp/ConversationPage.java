@@ -86,12 +86,4 @@ public class ConversationPage extends com.wearezeta.auto.web.pages.ConversationP
         robot.keyRelease(KeyEvent.VK_C);
         robot.keyRelease(KeyEvent.VK_CONTROL);
     }
-
-    @Override
-    public void pressShortCutForCall() throws Exception {
-        robot.keyPress(KeyEvent.VK_CONTROL);
-        robot.keyPress(KeyEvent.VK_R);
-        robot.keyRelease(KeyEvent.VK_R);
-        robot.keyRelease(KeyEvent.VK_CONTROL);
-    }
 }
