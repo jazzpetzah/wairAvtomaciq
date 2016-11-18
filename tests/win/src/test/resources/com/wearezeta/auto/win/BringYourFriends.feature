@@ -23,7 +23,7 @@ Feature: Bring Your Friends
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    When I type shortcut combination for preferences
+    When I type shortcut combination to open preferences
     And I open options in preferences
     And I click button to import contacts from Gmail
     And I see Google login popup
