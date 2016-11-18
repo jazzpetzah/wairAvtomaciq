@@ -2,6 +2,7 @@ package com.wire.picklejar.scan;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -63,7 +64,6 @@ public class PickleFeatureReader {
         if (!file.isFile() || !file.getName().contains(".feature")) {
             throw new IllegalArgumentException("Provided file is a folder or does not have extension '.feature'");
         }
-        final String feature = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
-        return feature;
+        return new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())), StandardCharsets.UTF_8);
     }
 }

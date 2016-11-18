@@ -5,12 +5,16 @@ import com.wearezeta.auto.common.driver.ZetaWinWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
+import java.util.List;
 import java.util.concurrent.Future;
-
+import javax.imageio.ImageIO;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.WebElement;
 
 public class ConversationPage extends com.wearezeta.auto.web.pages.ConversationPage {
 
@@ -25,7 +29,14 @@ public class ConversationPage extends com.wearezeta.auto.web.pages.ConversationP
     public ConversationPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
-
+    
+    @Override
+    public BufferedImage getImageFromLastLinkPreview() throws Exception {
+        List<WebElement> images = getPreviewImages();
+        WebElement lastImage = images.get(images.size() - 1);
+        return ImageIO.read(new ByteArrayInputStream(lastImage.getScreenshotAs(OutputType.BYTES)));
+    }
+    
     @Override
     public void pressShortCutForPing() throws Exception {
         robot.keyPress(KeyEvent.VK_CONTROL);

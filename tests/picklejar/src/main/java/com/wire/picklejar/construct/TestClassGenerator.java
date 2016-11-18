@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.stream.Collectors;
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticListener;
@@ -23,7 +22,6 @@ import javax.tools.JavaFileObject.Kind;
 import javax.tools.SimpleJavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,83 +51,6 @@ public class TestClassGenerator {
         }
     }
 
-    public class TestCase {
-
-        private final String featureName;
-        private final String scenarioName;
-        private final int exampleNum;
-        private final List<String> steps;
-        private final Map<String, String> examples;
-        private final List<String> tags;
-        private final String template;
-
-        /**
-         * 0 - Feature name<br>
-         * 1 - Scenario name<br>
-         * 2 - Example row number (starting with 1, 0 means no examples)<br>
-         * 3 - List of scenario steps<br>
-         * 4 - Map of tuples of examples with header<br>
-         *
-         */
-        public TestCase(Object[] testcase, String template) {
-            this.featureName = (String) testcase[0];
-            this.scenarioName = (String) testcase[1];
-            this.exampleNum = (Integer) testcase[2];
-            this.steps = (List<String>) testcase[3];
-            this.examples = (Map<String, String>) testcase[4];
-            this.tags = (List<String>) testcase[5];
-
-            this.template = template
-                    .replaceAll("\\$\\(TESTNAME\\)", toClassName())
-                    .replaceAll("\\$\\(TESTPACKAGE\\)", Config.GENERATED_TEST_PACKAGE)
-                    .replace("$(DATA)", toData());
-        }
-
-        public String toClassName() {
-            return (featureName + "__" + scenarioName + "_" + exampleNum).replaceAll("[^a-zA-Z0-9]", "_");
-        }
-
-        public String toSource() {
-            return template;
-        }
-
-        public String toData() {
-            StringBuilder data = new StringBuilder("List<Object[]> testcases = new ArrayList<>();\n");
-            data.append(buildExamplesMap());
-            data.append(buildStepList());
-            data.append(buildTagList());
-            data.append(String.format("testcases.add(new Object[]{\"%s\", \"%s\", %d, steps, examples, tags});\n",
-                    featureName, scenarioName, exampleNum));
-            data.append("return testcases;");
-            return data.toString();
-        }
-
-        private String buildExamplesMap() {
-            StringBuilder mapString = new StringBuilder("Map<String, String> examples = new HashMap<>();\n");
-            for (Map.Entry<String, String> entry : examples.entrySet()) {
-                mapString.append(String.format("examples.put(\"%s\", \"%s\");\n", entry.getKey(), StringEscapeUtils.escapeJava(entry.getValue())));
-            }
-            return mapString.toString();
-        }
-
-        private String buildStepList() {
-            StringBuilder listString = new StringBuilder("List<String> steps = new ArrayList<>();\n");
-            for (String step : steps) {
-                listString.append(String.format("steps.add(\"%s\");\n", StringEscapeUtils.escapeJava(step)));
-            }
-            return listString.toString();
-        }
-        
-        private String buildTagList() {
-            StringBuilder listString = new StringBuilder("List<String> tags = new ArrayList<>();\n");
-            for (String tag : tags) {
-                listString.append(String.format("tags.add(\"%s\");\n", StringEscapeUtils.escapeJava(tag)));
-            }
-            return listString.toString();
-        }
-
-    }
-
     public static void main(String[] args) throws IOException {
         TestClassGenerator generator = new TestClassGenerator();
         Collection<Object[]> testcases;
@@ -139,8 +60,9 @@ public class TestClassGenerator {
             testcases = PickleJar.getTestcases();
         }
         for (TestCase generateTestCase : generator.generateTestCases(testcases)) {
-            LOG.info("Generated Testclass: {}", generateTestCase.toClassName());
-            generator.compile(generateTestCase.toClassName(), generateTestCase.toSource());
+            String testClassName = new TestCaseConverter().toClassName(generateTestCase);
+            LOG.info("Generated Testclass: {}", testClassName);
+            generator.compile(testClassName, generateTestCase.getCode());
         }
     }
 
@@ -155,8 +77,7 @@ public class TestClassGenerator {
 
     private boolean compile(String testName, String source) {
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        StandardJavaFileManager fileManager
-                = compiler.getStandardFileManager(null, Locale.ENGLISH, null);
+        StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
 
         InMemoryJavaFileObject classSourceObject = new InMemoryJavaFileObject(
                 Config.GENERATED_TEST_PACKAGE + "." + testName + "Test", source);
@@ -164,25 +85,23 @@ public class TestClassGenerator {
 
         new File(CLASS_OUTPUT_FOLDER).mkdirs();
 
-        List<String> optionList = new ArrayList<String>();
+        List<String> optionList = new ArrayList<>();
         optionList.addAll(Arrays.asList("-d", CLASS_OUTPUT_FOLDER));
         optionList.addAll(Arrays.asList("-classpath", System.getProperty("java.class.path")));
+        
+        LOG.trace("Compiling source: \n{}", source);
 
         JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager,
-                null, optionList, null,
-                files);
+                null, optionList, null, files);
         return task.call();
     }
 
     public class MyDiagnosticListener implements DiagnosticListener<JavaFileObject> {
-
         public void report(Diagnostic<? extends JavaFileObject> diagnostic) {
-
             LOG.info("Line Number -> {}", diagnostic.getLineNumber());
             LOG.info("code -> {}", diagnostic.getCode());
             LOG.info("Message -> {}", diagnostic.getMessage(Locale.ENGLISH));
             LOG.info("Source -> {}\n", diagnostic.getSource());
         }
     }
-
 }

@@ -11,7 +11,7 @@ public class TestCase {
     private final List<String> steps;
     private final Map<String, String> examples;
     private final List<String> tags;
-    private final String template;
+    private final String code;
 
     /**
      * 0 - Feature name<br>
@@ -33,14 +33,14 @@ public class TestCase {
         this.tags = (List<String>) testcase[5];
 
         if (template != null) {
-            this.template = new TestCaseConverter().generateTemplate(this, template);
+            this.code = new TestCaseConverter().generateTemplate(this, template);
         }else{
-            this.template = null;
+            this.code = null;
         }
     }
 
-    public String toSource() {
-        return template;
+    public String getCode() {
+        return code;
     }
 
     public String getFeatureName() {
