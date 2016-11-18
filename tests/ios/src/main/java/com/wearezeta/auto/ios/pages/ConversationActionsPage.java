@@ -59,7 +59,7 @@ public class ConversationActionsPage extends IOSPage {
                 break;
         }
         final FBElement btn = (FBElement) getElement(locator);
-        this.tapAtTheCenterOfElement(btn);
+        btn.click();
         this.isElementInvisible(btn);
     }
 
