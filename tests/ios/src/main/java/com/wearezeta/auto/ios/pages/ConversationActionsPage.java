@@ -47,6 +47,8 @@ public class ConversationActionsPage extends IOSPage {
     }
 
     public void confirmAction(String actionName) throws Exception {
+        // Wait for animation
+        Thread.sleep(1500);
         By locator = FBBy.xpath(xpathStrConfirmActionButtonByName.apply(actionName));
         switch (actionName.toLowerCase()) {
             case "cancel request":
@@ -57,7 +59,8 @@ public class ConversationActionsPage extends IOSPage {
                 break;
         }
         final FBElement btn = (FBElement) getElement(locator);
-        this.tapAtTheCenterOfElement(btn);
+        btn.click();
+        this.isElementInvisible(btn);
     }
 
     public boolean isVisibleForConversation(String conversation) throws Exception {
