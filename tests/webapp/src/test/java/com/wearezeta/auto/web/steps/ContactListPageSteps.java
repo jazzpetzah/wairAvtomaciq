@@ -3,7 +3,6 @@ package com.wearezeta.auto.web.steps;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 
 import com.wearezeta.auto.common.ImageUtil;
 import org.apache.log4j.Logger;
@@ -432,82 +431,6 @@ public class ContactListPageSteps {
                             conversationName),
                     context.getPagesCollection().getPage(ContactListPage.class)
                             .isMissedCallInvisibleForContact(conversationName));
-        }
-    }
-
-    /**
-     * Verify whether joined call notification is present for the given
-     * conversation.
-     *
-     * @param conversationName   name of the conversation
-     * @param shouldNotBeVisible is set to null if "do not" part does not exist in the step
-     * @throws Exception
-     * @step. ^I( do not)? see joined group call notification for conversation
-     * (.*)$
-     */
-    //TODO: rename to "^I( do not)? see joined group call notification in the conversation list for conversation (.*)$"
-    @Then("^I( do not)? see joined group call notification for conversation (.*)$")
-    public void isJoinedGroupCallNotificationVisibleForConversation(
-            String shouldNotBeVisible, String conversationName)
-            throws Exception {
-        conversationName = context.getUserManager().replaceAliasesOccurences(conversationName,
-                FindBy.NAME_ALIAS);
-        if (shouldNotBeVisible == null) {
-            assertTrue(
-                    String.format(
-                            "The joined group call notification in conversation '%s' should be visible",
-                            conversationName),
-                    context.getPagesCollection()
-                            .getPage(ContactListPage.class)
-                            .isJoinedGroupCallNotificationVisibleForConversation(
-                                    conversationName));
-        } else {
-            assertTrue(
-                    String.format(
-                            "The joined group call notification in conversation '%s' should NOT be visible",
-                            conversationName),
-                    context.getPagesCollection()
-                            .getPage(ContactListPage.class)
-                            .isJoinedGroupCallNotificationInvisibleForConversation(
-                                    conversationName));
-        }
-    }
-
-    /**
-     * Verify whether unjoined group call notification is present for the given
-     * conversation.
-     *
-     * @param conversationName   name of the conversation
-     * @param shouldNotBeVisible is set to null if "do not" part does not exist in the step
-     * @throws Exception
-     * @step. ^I( do not)? see unjoined group call notification for conversation
-     * (.*)$
-     */
-    //TODO: rename to "^I( do not)? see unjoined group call notification in the conversation list for conversation (.*)$"
-    @Then("^I( do not)? see unjoined group call notification for conversation (.*)$")
-    public void isUnjoinedGroupCallNotificationVisibleForConversation(
-            String shouldNotBeVisible, String conversationName)
-            throws Exception {
-        conversationName = context.getUserManager().replaceAliasesOccurences(conversationName,
-                FindBy.NAME_ALIAS);
-        if (shouldNotBeVisible == null) {
-            assertTrue(
-                    String.format(
-                            "The unjoined group call notification in conversation '%s' should be visible",
-                            conversationName),
-                    context.getPagesCollection()
-                            .getPage(ContactListPage.class)
-                            .isUnjoinedGroupCallNotificationVisibleForConversation(
-                                    conversationName));
-        } else {
-            assertTrue(
-                    String.format(
-                            "The unjoined group call notification in conversation '%s' should NOT be visible",
-                            conversationName),
-                    context.getPagesCollection()
-                            .getPage(ContactListPage.class)
-                            .isUnjoinedGroupCallNotificationInvisibleForConversation(
-                                    conversationName));
         }
     }
 

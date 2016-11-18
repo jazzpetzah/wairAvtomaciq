@@ -727,14 +727,6 @@ public class ConversationPage extends WebPage {
         return videoCallButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
     }
 
-    public void pressShortCutForCall() throws Exception {
-        if (WebAppExecutionContext.isCurrentPlatformWindows()) {
-            conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "r"));
-        } else {
-            conversationInput.sendKeys(Keys.chord(Keys.META, Keys.ALT, "r"));
-        }
-    }
-
     public void clickUserAvatar() throws Exception {
         DriverUtils.waitUntilElementClickable(this.getDriver(), userAvatar);
         userAvatar.click();
