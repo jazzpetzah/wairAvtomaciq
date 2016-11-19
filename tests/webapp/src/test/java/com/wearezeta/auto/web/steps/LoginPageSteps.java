@@ -50,6 +50,7 @@ public class LoginPageSteps {
         }
         log.debug("Starting to Sign in using login " + login + " and password "
                 + password);
+        this.ISeeSignInPage();
         this.IEnterEmail(login);
         this.IEnterPassword(password);
         if (temporary != null) {
