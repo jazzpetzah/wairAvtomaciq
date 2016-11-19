@@ -322,6 +322,7 @@ Feature: Connect
     And I see the clear data dialog
     And I click logout button on clear data dialog
     And User <User2> is me
+    And I see Sign In page
     And I Sign in using login <User2Email> and password <User2Password>
     And I am signed in properly
     When I open conversation with <User1>
@@ -335,6 +336,7 @@ Feature: Connect
     And I click logout button on clear data dialog
     And <User1> unblocks user <User2>
     And User <User1> is me
+    And I see Sign In page
     And I Sign in using login <User1Email> and password <User1Password>
     Then I see Contact list with name <User2>
     When I open conversation with <User2>
@@ -462,6 +464,7 @@ Feature: Connect
     And I see the clear data dialog
     And I click logout button on clear data dialog
     And User <Contact1> is me
+    And I see Sign In page
     And I Sign in using login <Contact1Email> and password <Contact1Password>
     Then I am signed in properly
     And I do not see Contact list with name <Name>
