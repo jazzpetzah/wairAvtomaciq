@@ -233,9 +233,8 @@ public class ZetaFormatter implements Formatter, Reporter {
                 }
             }
             log.debug(String.format("\n----------------------------------------------\nSTEP: %s (status: %s, step duration: " +
-                            "%s ms + screenshot " +
-                            "duration: %s ms)\n----------------------------------------------", stepName, stepStatus,
-                    stepFinishedTimestamp - stepStartedTimestamp, System.currentTimeMillis() - stepFinishedTimestamp));
+                            "%s ms + screenshot duration: %s ms)\n----------------------------------------------",
+                    stepName, stepStatus, stepFinishedTimestamp - stepStartedTimestamp, System.currentTimeMillis() - stepFinishedTimestamp));
         } else {
             log.debug(String.format("\n----------------------------------------------\nSTEP: %s (status: %s, step duration: " +
                             "%s " +
