@@ -338,17 +338,18 @@ Feature: Calling
   @C2065 @rc @calling_basic @clumsy @IPv6 @fastLogin
   Scenario Outline: Verify possibility of starting group call
     Given There are 4 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
-    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
+    Given Myself is connected to all other
+    Given Myself has group chat <GroupChatName> with all other
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
     Then I see Calling overlay
+    And I tap Leave button on Calling overlay
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName  |
-      | user1Name | user2Name | user3Name | user4Name | StartGROUPCALL |
+      | Name      |  GroupChatName  |
+      | user1Name |  StartGROUPCALL |
 
   @C2048 @rc @calling_advanced @fastLogin
   Scenario Outline: Verify possibility to join call after 45 seconds of starting it
