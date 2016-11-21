@@ -337,9 +337,9 @@ Feature: Calling
 
   @C2065 @rc @calling_basic @clumsy @IPv6 @fastLogin
   Scenario Outline: Verify possibility of starting group call
-    Given There are 7 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>
-    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
@@ -347,8 +347,8 @@ Feature: Calling
     Then I see Calling overlay
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | GroupChatName  |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | StartGROUPCALL |
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName  |
+      | user1Name | user2Name | user3Name | user4Name | StartGROUPCALL |
 
   @C2048 @rc @calling_advanced @fastLogin
   Scenario Outline: Verify possibility to join call after 45 seconds of starting it
@@ -444,8 +444,8 @@ Feature: Calling
     And I call 3 times for 1 minutes with <Contact>
 
     Examples:
-      | Name      | Contact   | CallBackend    |
-      | user1Name | user2Name | zcall:2.7.26   |
+      | Name      | Contact   | CallBackend  |
+      | user1Name | user2Name | zcall:2.7.26 |
 
   @C343168 @regression @calling_basic @fastLogin
   Scenario Outline: Verify you see group call conformation dialog for >5 participants group chat
