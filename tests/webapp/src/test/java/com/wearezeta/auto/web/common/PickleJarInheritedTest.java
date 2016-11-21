@@ -219,7 +219,11 @@ public class PickleJarInheritedTest extends PickleJarTest {
                     // filter encryption precondition
                     .filter((entry)
                             -> !entry.getMessage().contains("otr") && !entry.getMessage().contains("412 (Precondition Failed)"))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList())
+                    //filter youtube javascript error
+                    .filter((entry)
+                             -> !entry.getMessage().contains("/access") && !entry.getMessage().contains("403"));
+
         } catch (Exception e) {
             LOG.warn("No error log check available", e);
         }
