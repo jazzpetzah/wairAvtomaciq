@@ -31,11 +31,15 @@ public class SoundSteps {
     }
 
     @Then("Soundfile ("
+            + "alert|"
             + "ringing_from_me|"
             + "ringing_from_them|"
             + "ready_to_talk|"
             + "call_drop|"
+            + "talk_later|"
+            + "nw_interruption|"
             + "ping_from_me|"
+            + "ping_from_them|"
             + "new_message"
             + ") did (not )?(start|stop) playing( in loop)?$")
     public void SoundfileAttemptSinceLastCheck(String soundName, String notString, String startStopString, String loopString)
