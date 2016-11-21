@@ -30,6 +30,10 @@ public class ConversationsListPageSteps {
         return pagesCollection.getPage(ConversationsListPage.class);
     }
 
+    private SearchListPage getSearchListPage() throws Exception {
+        return pagesCollection.getPage(SearchListPage.class);
+    }
+
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     /**
@@ -161,6 +165,7 @@ public class ConversationsListPageSteps {
     @When("^I open [Ss]earch UI$")
     public void IOpenSearchUI() throws Exception {
         getConversationsListPage().tapListActionsAvatar();
+        getSearchListPage().getPickerEdit();
     }
 
     /**
