@@ -3,7 +3,9 @@ package com.wearezeta.auto.android.steps;
 import com.wearezeta.auto.android.pages.cursor.EmojiKeyboardOverlayPage;
 import com.wearezeta.auto.android.pages.SketchPage;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.junit.Assert;
 
 public class SketchPageSteps {
 
@@ -55,6 +57,18 @@ public class SketchPageSteps {
     }
 
     /**
+     * Tap on any button in Sketch View
+     *
+     * @param buttonName
+     * @throws Exception
+     * @step. ^I tap on (Emoji|Text|Sketch|Gallery) button in sketch page$
+     */
+    @When("^I tap on (Emoji|Text|Sketch|Gallery) button in sketch page$")
+    public void ITapOnButton(String buttonName) throws Exception {
+        getSketchPage().tapOnButton(buttonName);
+    }
+
+    /**
      * Draws the first emoji of the keyboard on to the center of the canvas
      *
      * @throws Exception
@@ -62,7 +76,7 @@ public class SketchPageSteps {
      */
     @When("^I draw an emoji sketch$")
     public void IDrawAnEmojiSketch() throws Exception {
-        getSketchPage().tapOnModeButton("emoji");
+        getSketchPage().tapOnButton("emoji");
         getEmojiKeyboardOverlayPage().tapEmojiByValue(EMOJI_UNICODE);
         getSketchPage().drawEmojiOnCanvas();
     }
@@ -76,8 +90,19 @@ public class SketchPageSteps {
      */
     @When("^I type text \"(.*)\" on sketch$")
     public void IDrawTextSketch(String text) throws Exception {
-        getSketchPage().tapOnModeButton("text");
+        getSketchPage().tapOnButton("text");
         getSketchPage().typeTextOnSketch(text);
+    }
+
+    /**
+     * Verify the text sketch input is visible
+     *
+     * @throws Exception
+     * @step. ^I see text sketch input on sketch page$
+     */
+    @Then("^I see text sketch input on sketch page$")
+    public void ISeeTextSketchInput() throws Exception {
+        Assert.assertTrue("The text sketch input is invisible",getSketchPage().waitUntilSketchTextInputVisible());
     }
 
 }

@@ -30,6 +30,14 @@ Feature: Permissions
     When I long tap Audio message button from cursor toolbar
     And I dismiss security alert
     Then I see conversation view
+    # Galley in Sketch
+    When I tap Sketch button from cursor toolbar
+    And I take screenshot
+    And I tap on Gallery button in sketch page
+    And I dismiss security alert
+    Then I verify the previous and the current screenshots are not different
+    And I tap Back button
+    And I see conversation view
     # --- Share Location ---
     When I tap Share location button from cursor toolbar
     And I dismiss security alert

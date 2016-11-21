@@ -205,16 +205,14 @@ Feature: Conversation View
     And I scroll to the bottom of conversation view
     Then I see a picture in the conversation view
     And I see the picture in the conversation is animated
-    #workaround for AN-4574
-    When User <Contact> sends encrypted message "<Message>" to user Myself
     And I tap Image container in the conversation view
     And I wait for 1 seconds
     And I tap on Fullscreen button on the recent image in the conversation view
     Then I see the picture in the preview is animated
 
     Examples:
-      | Name      | Contact   | GifName      | Message |
-      | user1Name | user2Name | animated.gif | Yo      |
+      | Name      | Contact   | GifName      |
+      | user1Name | user2Name | animated.gif |
 
   @C672 @regression @rc
   Scenario Outline: Send image with non default camera (portrait) in group chat
