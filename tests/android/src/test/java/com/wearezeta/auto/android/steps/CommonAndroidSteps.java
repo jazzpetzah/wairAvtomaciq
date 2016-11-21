@@ -530,21 +530,24 @@ public class CommonAndroidSteps {
         pagesCollection.getCommonPage().tapByCoordinates(50, 40);
     }
 
+    private static double SCREEN_MIN_SCORE = 0.85;
+
     /**
      * Compare that 1st and 2nd screenshots are equal/not equal
      *
      * @param shouldBeEqual equals to null if screenshots should be different
      * @step. ^I verify the previous and the current screenshots are( not)? different$
      */
+    //TODO: Refactoring logic here (Refactoring all image comparing logic alos)
     @Then("^I verify the previous and the current screenshots are( not)? different$")
     public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent(String shouldBeEqual) throws Exception {
         final int timeoutSeconds = 10;
         if (shouldBeEqual == null) {
             Assert.assertTrue(String.format("The current screen state seems to be similar to the previous one after %s " +
-                    "seconds", timeoutSeconds), screenState.isChanged(timeoutSeconds, 0.98));
+                    "seconds", timeoutSeconds), screenState.isChanged(timeoutSeconds, SCREEN_MIN_SCORE));
         } else {
             Assert.assertTrue(String.format("The current screen state seems to be different to the previous one after %s " +
-                    "seconds", timeoutSeconds), screenState.isNotChanged(timeoutSeconds, 0.75));
+                    "seconds", timeoutSeconds), screenState.isNotChanged(timeoutSeconds, SCREEN_MIN_SCORE));
         }
     }
 
@@ -1931,4 +1934,25 @@ public class CommonAndroidSteps {
         AssetProtocol asset = AssetProtocol.valueOf(mode.toUpperCase());
         commonSteps.UserSetAssetMode(userAs, asset, deviceName);
     }
+
+
+    /**
+     * Send giphy from SE Acotr
+     *
+     * @param userAs     Sender user name alias
+     * @param convoType  user or group conversation
+     * @param convName   conversation name
+     * @param query      giphy query
+     * @param deviceName via which device
+     * @throws Exception
+     * @step. ^User (.*) sends? giphy to (user|group conversation) (.*) with query "(.*)" via device (.*)$
+     */
+    @When("^User (.*) sends? giphy to (user|group conversation) (.*) with query \"(.*)\" via device (.*)$")
+    public void UserSendsGiphy(String userAs, String convoType, String convName, String query, String deviceName)
+            throws Exception {
+        boolean isGroup = convoType.equals("group conversation");
+        commonSteps.UserSendsGiphy(userAs, convName, query, deviceName, isGroup);
+    }
+
+
 }

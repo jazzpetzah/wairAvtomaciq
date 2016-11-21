@@ -1316,13 +1316,19 @@ public class ConversationViewPageSteps {
     /**
      * Check whether a button is visible on video message container
      *
+     * @param messageType could be video or audio
      * @throws Exception
-     * @step. ^I see (?:Play|X|Retry) button on the recent video message in the conversation view$
+     * @step. ^I see (?:Play|X|Retry) button on the recent (video|audio) message in the conversation view$
      */
-    @When("^I see (?:Play|X|Retry) button on the recent video message in the conversation view$")
-    public void ISeeButtonOnVideoMessage() throws Exception {
-        Assert.assertTrue("The button is not visible on the recent video message",
-                getConversationViewPage().isVideoMessageButtonVisible());
+    @When("^I see (?:Play|X|Retry) button on the recent (video|audio) message in the conversation view$")
+    public void ISeeButtonOnVideoMessage(String messageType) throws Exception {
+        if (messageType.toLowerCase().equals("video")) {
+            Assert.assertTrue("The button is not visible on the recent video message",
+                    getConversationViewPage().isVideoMessageButtonVisible());
+        } else {
+            Assert.assertTrue("The button is not visible on the recent video message",
+                    getConversationViewPage().isAudioMessageButtonVisible());
+        }
     }
 
     private final ElementState videoMessagePlayButtonState = new ElementState(
