@@ -478,8 +478,8 @@ Feature: Calling
   @C343170 @regression @calling_basic @fastLogin
   Scenario Outline: Verify you can cancel the group call from confirmation dialog for >5 participants group chat
     Given There are 6 users where <Name> is me
-    Given Myself is connected to <Contact>,<Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
-    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given Myself is connected to all other
+    Given Myself has group chat <GroupChatName> with all other
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
@@ -489,6 +489,6 @@ Feature: Calling
     Then I do not see Calling overlay
 
     Examples:
-      | Name      | Contact   | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | AlertText    |
-      | user1Name | user2Name | user3Name | user3Name | user4Name | user5Name | user6Name | GROUP SIX     | Start a call |
+      | Name      | GroupChatName | AlertText    |
+      | user1Name | GROUP SIX     | Start a call |
     
