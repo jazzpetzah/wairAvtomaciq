@@ -24,7 +24,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -595,7 +594,7 @@ public class CommonWebAppSteps {
         try {
             if (WebAppExecutionContext.getBrowser()
                     .isSupportingConsoleLogManagement()) {
-                List<LogEntry> browserLog = context.getBrowserLog();
+                List<LogEntry> browserLog = context.getLogManager().getBrowserLog();
 
                 StringBuilder bLog = new StringBuilder();
                 browserLog = browserLog.stream()
@@ -659,20 +658,14 @@ public class CommonWebAppSteps {
     public void ISeeLocalyticsEvent(String event, String attributes) throws Exception {
         if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()
                 && WebCommonUtils.getExtendedLoggingLevelInConfig(CommonWebAppSteps.class).equals("ALL")) {
-            List<String> localyticsEvents = new ArrayList<>();
-            List<LogEntry> logEntries = context.getBrowserLog();
-            if (!logEntries.isEmpty()) {
-                for (LogEntry logEntry : logEntries) {
-                    if (logEntry.getMessage().contains("Localytics event")) {
-                        String message = logEntry.getMessage();
-                        localyticsEvents.add(message.substring(message.lastIndexOf("|") + 2));
-                    }
-                }
-            }
+            List<String> localyticsEvents = context.getLogManager().getBrowserLog().stream()
+                    .filter((entry) -> entry.getMessage().contains("Localytics event"))
+                    .map((entry) -> entry.getMessage().substring(entry.getMessage().lastIndexOf("|") + 2))
+                    .collect(Collectors.toList());
             assertThat("Did not find any localytics events in browser console", not(localyticsEvents.isEmpty()));
-            for (String localyticsEvent : localyticsEvents) {
+            localyticsEvents.forEach((localyticsEvent) -> {
                 log.info("Found event: " + localyticsEvent);
-            }
+            });
             assertThat("Did not find localytics event " + event + " in browser console", localyticsEvents,
                     hasItem("Localytics event '" + event + "' with attributes: " + attributes));
         }

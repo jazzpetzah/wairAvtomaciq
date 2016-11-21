@@ -11,15 +11,20 @@ Feature: Calling_Matrix
     And I am signed in properly
     And I open conversation with <Contact>
     When I call
-    Then <Contact> accepts next incoming call automatically
+    Then Soundfile ringing_from_me did start playing in loop
+    When <Contact> accepts next incoming call automatically
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then Soundfile ringing_from_me did stop playing
+    And Soundfile ready_to_talk did start playing
     And I see the ongoing call controls for conversation <Contact>
     And I wait for 5 seconds
     And <Contact> verifies to have 1 flow
     And <Contact> verifies to get audio data from me
     And <Contact> verifies that all audio flows have greater than 0 bytes
-    And I hang up call with conversation <Contact>
+    And Soundfile call_drop did not start playing
+    When I hang up call with conversation <Contact>
     Then I do not see the call controls for conversation <Contact>
+    And Soundfile call_drop did start playing
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |

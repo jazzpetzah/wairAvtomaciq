@@ -4,12 +4,11 @@ import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rc.BasicScenarioResultToTestrailTransformer;
 import com.wearezeta.auto.common.testrail.TestrailSyncUtilities;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
-import com.wearezeta.auto.web.steps.CommonWebAppSteps;
-import static com.wearezeta.auto.web.steps.CommonWebAppSteps.log;
 import com.wire.picklejar.gherkin.model.Step;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
@@ -18,23 +17,20 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.NotImplementedException;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
@@ -43,6 +39,8 @@ import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.safari.SafariOptions;
 
 public class Lifecycle {
+    
+    private static final Logger log = ZetaLogger.getLog(Lifecycle.class.getSimpleName());
 
     public static final int SAFARI_DRIVER_CREATION_RETRY = 3;
     private boolean DEBUG = false;
@@ -95,8 +93,7 @@ public class Lifecycle {
 
         final String hubHost = System.getProperty("hubHost");
         final String hubPort = System.getProperty("hubPort");
-        final String url = CommonUtils
-                .getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
+        final String url = CommonUtils.getWebAppApplicationPathFromConfig(Lifecycle.class);
         final ExecutorService pool = Executors.newFixedThreadPool(1);
 
         Callable<ZetaWebAppDriver> callableWebAppDriver = new Callable<ZetaWebAppDriver>() {
@@ -208,7 +205,7 @@ public class Lifecycle {
             ZetaWebAppDriver driver = (ZetaWebAppDriver) context.getDriver();
             // save browser console if possible
             if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
-                writeBrowserLogsIntoMainLog(context);
+                context.getLogManager().printBrowserLog();
             }
             if (driver instanceof ZetaWebAppDriver) {
                 // logout with JavaScript because otherwise backend will block
@@ -273,17 +270,7 @@ public class Lifecycle {
         }
     }
 
-    private void writeBrowserLogsIntoMainLog(TestContext context) throws InterruptedException, ExecutionException,
-            TimeoutException {
-        List<LogEntry> logEntries = context.getBrowserLog();
-        if (!logEntries.isEmpty()) {
-            log.debug("BROWSER CONSOLE LOGS:");
-            for (LogEntry logEntry : logEntries) {
-                log.debug(logEntry.getMessage().replaceAll("^.*z\\.", "z\\."));
-            }
-            log.debug("--- END OF LOG ---");
-        }
-    }
+    
 
     private static void setCustomChromeProfile(DesiredCapabilities capabilities)
             throws Exception {

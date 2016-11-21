@@ -146,7 +146,7 @@ public class PickleJarInheritedTest extends PickleJarTest {
             return "No tailed log available";
         }
         try {
-            List<LogEntry> browserLog = lifecycle.getWebContext().getBrowserLog();
+            List<LogEntry> browserLog = lifecycle.getWebContext().getLogManager().getBrowserLog();
             if (browserLog.size() >= maxLogTailSize) {
                 browserLog = browserLog.subList(browserLog.size() - maxLogTailSize, browserLog.size());
             }
@@ -166,7 +166,7 @@ public class PickleJarInheritedTest extends PickleJarTest {
             return;
         }
         try {
-            browserLog = lifecycle.getWebContext().getBrowserLog();
+            browserLog = lifecycle.getWebContext().getLogManager().getBrowserLog();
             browserLog = browserLog.stream()
                     .filter((entry)
                             -> entry.getLevel().intValue() >= Level.SEVERE.intValue())
