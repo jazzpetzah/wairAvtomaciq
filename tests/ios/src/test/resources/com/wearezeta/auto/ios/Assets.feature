@@ -47,6 +47,8 @@ Feature: Assets
     When I remember user picture on Single user profile page
     # TODO: Change it to v3 only when it is supported by iOS client
     And User <Contact> changes avatar picture to default
+    # Given it some time to refresh
+    And I wait for 7 seconds
     Then I see user picture is changed on Single user profile page
 
     Examples:
