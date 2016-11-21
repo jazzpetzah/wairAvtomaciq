@@ -61,9 +61,9 @@ Feature: Ephemeral Messages
     Given I tap Hourglass button in conversation view
     Given I set ephemeral messages expiration timer to <Timeout> seconds
     Given I type the default message and send it
-    Given I see 1 default message in the conversation view
-    And User <Contact> reads the recent message from user Myself
-    And I wait for <Timeout> seconds
+    When User <Contact> reads the recent message from user Myself
+    # Wait for sync
+    And I wait for 10 seconds
     # Nick would like to replace see 0 message to check entry instead, to make sure no placeholder remains.
     # YOU STARTED USING THIS DEVICE counts as 1 message
     Then I see 1 conversation entry
