@@ -21,7 +21,7 @@ Feature: Rich Media
       | Name      | Contact   | YouTubeLink                                | DeviceName1 | DeliveredLabel |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU | device1     | Delivered      |
 
-  @C3210 @regression @IPv6 @fastLogin
+  @C3210 @real @IPv6 @fastLogin
   Scenario Outline: (MediaBar disappears on Simulator) Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -44,7 +44,7 @@ Feature: Rich Media
       | Name      | Contact   | SoundCloudLink                                                   |
       | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
-  @C3205 @regression @fastLogin
+  @C3205 @real @fastLogin
   Scenario Outline: (MediaBar disappears on Simulator) Conversation gets scrolled back to playing media when clicking on media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -105,9 +105,7 @@ Feature: Rich Media
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given User Myself sends 40 encrypted messages to user <Contact1>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact1>
-    Given User Myself sends 40 encrypted messages to user <Contact2>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact2>
     Given I see conversations list
     Given I tap on contact name <Contact1>
@@ -117,10 +115,8 @@ Feature: Rich Media
     And I tap on contact name <Contact2>
     And I tap on media container in conversation view
     And I navigate back to conversations list
-    And I tap Pause button in conversations list next to <Contact2>
-    And I tap on contact name <Contact2>
-    And I scroll to the bottom of the conversation
-    Then I see media is paused on Media Bar
+    Then I do not see Play button in conversations list next to <Contact1>
+    And I see Pause button in conversations list next to <Contact2>
 
     Examples:
       | Name      | Contact1  | Contact2  | SoundCloudLink                                                                       |

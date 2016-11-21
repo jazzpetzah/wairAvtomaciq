@@ -299,10 +299,22 @@ public class ConversationsListPageSteps {
                 getConversationsListPage().noConversationsMessageIsVisible());
     }
 
-    @When("I tap (?:Play|Pause) button in conversations list next to (.*)")
+    @When("^I tap (?:Play|Pause) button in conversations list next to (.*)")
     public void ITapPlayPauseButtonInContactListNextTo(String contact) throws Exception {
         String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
         getConversationsListPage().tapPlayPauseButtonNextTo(name);
+    }
+
+    @Then("^I (do not )?see (?:Play|Pause) button in conversations list next to (.*)")
+    public void ISeePlayPauseButtonInContactListNextTo(String shouldNotBeVisible, String contact) throws Exception {
+        String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue(String.format("Play/Pause button is expected to be visible next to '%s' conversation",
+                    contact), getConversationsListPage().isPlayPauseButtonVisibleNextTo(name));
+        } else {
+            Assert.assertTrue(String.format("Play/Pause button is expected to be invisible next to '%s' conversation",
+                    contact), getConversationsListPage().isPlayPauseButtonInvisibleNextTo(name));
+        }
     }
 
     @When("I tap Incoming Pending Requests item in conversations list")

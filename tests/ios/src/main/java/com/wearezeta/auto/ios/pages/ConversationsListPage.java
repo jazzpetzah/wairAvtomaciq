@@ -68,6 +68,16 @@ public class ConversationsListPage extends IOSPage {
         getElement(locator).click();
     }
 
+    public boolean isPlayPauseButtonVisibleNextTo(String name) throws Exception {
+        final By locator = By.xpath(xpathStrContactListPlayPauseButtonByConvoName.apply(name));
+        return isLocatorDisplayed(locator);
+    }
+
+    public boolean isPlayPauseButtonInvisibleNextTo(String name) throws Exception {
+        final By locator = By.xpath(xpathStrContactListPlayPauseButtonByConvoName.apply(name));
+        return isLocatorInvisible(locator);
+    }
+
     public void tapSettingsGearButton() throws Exception {
         getElement(nameSettingsGearButton).click();
         // Wait for transition animation

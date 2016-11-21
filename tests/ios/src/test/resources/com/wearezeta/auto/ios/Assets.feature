@@ -1,6 +1,6 @@
 Feature: Assets
 
-  @C345366 @staging @fastLogin
+  @C345366 @regression @fastLogin
   Scenario Outline: Receive V3 assets
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -36,7 +36,7 @@ Feature: Assets
       | Name      | Contact   | SyncTimeout | DeviceName    | Picture     | FileName    | VideoMIME | AudioFileName | AudioMIME | Link         | BinaryFileName | BinaryFileExt | BinaryFileSize | BinaryFileMIME           |
       | user1Name | user2Name | 5           | ContactDevice | testing.jpg | testing.mp4 | video/mp4 | test.m4a      | audio/mp4 | www.wire.com | testing        | tmp           | 240 KB         | application/octet-stream |
 
-  @C345364 @staging @fastLogin
+  @C345364 @regression @fastLogin
   Scenario Outline: (Not implemented yet) Verify I could see someone changes his avatar on v3 build
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
