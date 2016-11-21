@@ -6,6 +6,8 @@ import cucumber.api.java.en.When;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 public class OptionsPageSteps {
 
@@ -43,6 +45,21 @@ public class OptionsPageSteps {
     @When("^I click button to import contacts from Gmail$")
     public void IClickImportButton() throws Exception {
         context.getPagesCollection().getPage(OptionsPage.class).clickImportButton();
+    }
+
+    @When("^I see option to send reports is (checked|unchecked)$")
+    public void ISeeOptionToSendReports(String checked) throws Exception {
+        boolean isChecked = "checked".equals(checked);
+        if (isChecked) {
+            assertTrue("Checkbox is not checked", context.getPagesCollection().getPage(OptionsPage.class).isReportOptionChecked());
+        } else {
+            assertFalse("Checkbox is checked",context.getPagesCollection().getPage(OptionsPage.class).isReportOptionChecked());
+        }
+    }
+
+    @When("^I click on option to send reports$")
+    public void ICheckOptionToSendReports() throws Exception {
+        context.getPagesCollection().getPage(OptionsPage.class).clickReportOption();
     }
 
 }

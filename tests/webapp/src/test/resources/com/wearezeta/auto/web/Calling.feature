@@ -929,9 +929,10 @@ Feature: Calling
     Given <Contact1>,<Contact2> starts instance using <WaitBackend>
     Given <Contact3>,<Contact4> starts instance using <WaitBackend>
     Given <Contact1>,<Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
+    Given I enable localytics via URL parameter
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I am signed in properly
+    Given I am signed in properly
     And I open conversation with <ChatName>
     When I call
     And <Contact1>,<Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds

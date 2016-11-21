@@ -5,6 +5,7 @@ Feature: Ping
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact>
+    Given I enable localytics via URL parameter
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly

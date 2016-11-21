@@ -4,6 +4,7 @@ Feature: Audio Message
   Scenario Outline: Verify you can send and play the audio file in 1:1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I enable localytics via URL parameter
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
