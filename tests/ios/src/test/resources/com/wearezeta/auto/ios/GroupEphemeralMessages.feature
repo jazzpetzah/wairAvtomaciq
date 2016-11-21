@@ -95,7 +95,7 @@ Feature: Group Ephemeral Messages
     And I verify the remembered message has been changed in the local database
     And User <Contact1> reads the recent message from group conversation <GroupChatName>
     # Wait until read message action propagates
-    And I wait for 5 seconds
+    And I wait for 10 seconds
     Then I see 0 conversation entries
     And I verify the remembered message has been deleted from the local database
 
