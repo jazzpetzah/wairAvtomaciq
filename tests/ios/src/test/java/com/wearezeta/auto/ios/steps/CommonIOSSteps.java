@@ -25,7 +25,6 @@ import com.wearezeta.auto.common.misc.IOSDistributable;
 import com.wearezeta.auto.common.sync_engine_bridge.AssetProtocol;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.ios.reporter.IOSLogListener;
 import com.wearezeta.auto.ios.tools.*;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
@@ -391,14 +390,6 @@ public class CommonIOSSteps {
             usrMgr.useSpecialEmail();
         }
 
-        if (scenario.getSourceTagNames().contains("@performance")) {
-            try {
-                IOSLogListener.getInstance().start();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
         final Map<String, Object> additionalCaps = new HashMap<>();
         String appPath = IOSDistributable.getInstance(getAppPath()).getAppRoot().getAbsolutePath();
         if (scenario.getSourceTagNames().contains(TAG_NAME_UPGRADE) ||
@@ -464,9 +455,6 @@ public class CommonIOSSteps {
         try {
             if (!scenario.getStatus().equals(Result.PASSED) && getIsSimulatorFromConfig(getClass())) {
                 log.debug(IOSSimulatorHelpers.getLogsAndCrashes());
-            } else if (scenario.getSourceTagNames().contains("@performance")) {
-                IOSLogListener.forceStopAll();
-                IOSLogListener.writeDeviceLogsToConsole(IOSLogListener.getInstance());
             }
         } catch (Exception e) {
             e.printStackTrace();
