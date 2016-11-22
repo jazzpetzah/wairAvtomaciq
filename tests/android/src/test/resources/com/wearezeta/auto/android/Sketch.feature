@@ -114,7 +114,7 @@ Feature: Sketch
       | Name      | Contact1  | Text                     | FileName       |
       | user1Name | user2Name | YoASDFJKSDFKJLSDKFJSDLKF | avatarTest.png |
 
-  @staging
+  @C345385 @staging
   Scenario Outline: Verify I could draw emoji sketch from Image Container
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -136,7 +136,7 @@ Feature: Sketch
       | Name      | Contact   | GifName      |
       | user1Name | user2Name | animated.gif |
 
-  @staging
+  @C345386 @staging
   Scenario Outline: Verify I could draw text sketch from Image Container
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -156,7 +156,7 @@ Feature: Sketch
       | Name      | Contact   | GifName      |
       | user1Name | user2Name | animated.gif |
 
-  @staging
+  @C345387 @staging
   Scenario Outline: Verify I could add photo and change photo from sketch page
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
