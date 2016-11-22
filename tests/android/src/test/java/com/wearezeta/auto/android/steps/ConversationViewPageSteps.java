@@ -432,11 +432,32 @@ public class ConversationViewPageSteps {
      *
      * @param buttonName which could be Sketch or Fullscreen
      * @throws Exception
-     * @step. ^I tap on (Sketch|Fullscreen) button on the recent (?:image|picture) in the conversation view$
+     * @step. ^I tap on (Sketch|Sketch Emoji|Sketch Text|Fullscreen) button on the recent (?:image|picture) in the conversation view$
      */
-    @When("^I tap on (Sketch|Fullscreen) button on the recent (?:image|picture) in the conversation view$")
+    @When("^I tap on (Sketch|Sketch Emoji|Sketch Text|Fullscreen) button on the recent (?:image|picture) in the conversation view$")
     public void ITapImageContainerButton(String buttonName) throws Exception {
         getConversationViewPage().tapImageContainerButton(buttonName);
+    }
+
+
+    /**
+     * Verify the sketch buttons and fullscreen button is visible in Image Container
+     *
+     * @param shouldNotSee equals null means the button should be visible
+     * @param buttonName the name of button
+     * @throws Exception
+     * @step. ^I( do not)? see (Sketch|Sketch Emoji|Sketch Text|Fullscreen) button on the recent (?:image|picture) in the conversation view$
+     */
+    @Then("^I( do not)? see (Sketch|Sketch Emoji|Sketch Text|Fullscreen) button on the recent (?:image|picture) in the conversation view$")
+    public void ISeeImageContainerButton(String shouldNotSee, String buttonName) throws Exception {
+        if(shouldNotSee == null) {
+            Assert.assertTrue(String.format("The %s button in Image container is not visible", buttonName),
+                    getConversationViewPage().waitUntilImageContainerButtonVisible(buttonName));
+        } else {
+            Assert.assertTrue(String.format("The %s button in Image container is still visible", buttonName),
+                    getConversationViewPage().waitUntilImageContainerButtonInvisible(buttonName));
+        }
+
     }
 
     /**
@@ -1295,13 +1316,19 @@ public class ConversationViewPageSteps {
     /**
      * Check whether a button is visible on video message container
      *
+     * @param messageType could be video or audio
      * @throws Exception
-     * @step. ^I see (?:Play|X|Retry) button on the recent video message in the conversation view$
+     * @step. ^I see (?:Play|X|Retry) button on the recent (video|audio) message in the conversation view$
      */
-    @When("^I see (?:Play|X|Retry) button on the recent video message in the conversation view$")
-    public void ISeeButtonOnVideoMessage() throws Exception {
-        Assert.assertTrue("The button is not visible on the recent video message",
-                getConversationViewPage().isVideoMessageButtonVisible());
+    @When("^I see (?:Play|X|Retry) button on the recent (video|audio) message in the conversation view$")
+    public void ISeeButtonOnVideoMessage(String messageType) throws Exception {
+        if (messageType.toLowerCase().equals("video")) {
+            Assert.assertTrue("The button is not visible on the recent video message",
+                    getConversationViewPage().isVideoMessageButtonVisible());
+        } else {
+            Assert.assertTrue("The button is not visible on the recent video message",
+                    getConversationViewPage().isAudioMessageButtonVisible());
+        }
     }
 
     private final ElementState videoMessagePlayButtonState = new ElementState(

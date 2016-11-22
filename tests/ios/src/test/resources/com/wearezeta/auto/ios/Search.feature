@@ -110,7 +110,7 @@ Feature: Search
     And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
     And I tap Create conversation action button on Search UI page
-    Then I see group chat page with users <Contact>,<Contact2>
+    Then I see group conversation with users <Contact>,<Contact2>
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -193,7 +193,7 @@ Feature: Search
     And I accept alert if visible
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
-    Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
+    Then I see group conversation with users <Contact1>,<Contact2>,<Contact3>
     And I see 1 photo in the conversation view
     When I navigate back to conversations list
     Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>

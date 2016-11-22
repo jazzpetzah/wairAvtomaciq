@@ -1,24 +1,28 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.common.localytics.CommonLocalyticsSteps;
-import com.wearezeta.auto.common.localytics.LocalyticsAPIWrappers;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.TestContext;
 
-import cucumber.api.java.en.Given;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+import org.apache.log4j.Logger;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.not;
 
 public class LocalyticsSteps {
-    // ID for webapp staging
 
-    private final static String APP_ID = "905792736c9f17c3464fd4e-60d90c82-d14a-11e4-af66-009c5fda0a25";
-    // TODO: probably, these ids are the same for other platforms
-    // if yes, then it's better to move this stuff to the common config file
-    private final static String API_KEY = "a4bdc55844b980c252680fa-71a7f2a2-b896-11e5-ac37-003e57fecdee";
-    private final static String API_SECRET = "eedf438dd35d9ce43ac25ca-71a7f5cc-b896-11e5-ac37-003e57fecdee";
-
-    private static CommonLocalyticsSteps commonSteps;
+    private static final Logger log = ZetaLogger.getLog(LocalyticsSteps.class.getSimpleName());
 
     private final TestContext context;
+
+    private int rememberedEvents = -1;
 
     public LocalyticsSteps() {
         this.context = new TestContext();
@@ -26,104 +30,66 @@ public class LocalyticsSteps {
 
     public LocalyticsSteps(TestContext context) {
         this.context = context;
-        this.commonSteps = new CommonLocalyticsSteps(
-                APP_ID, new LocalyticsAPIWrappers(API_KEY, API_SECRET));
     }
 
-	/**
-	 * Takes snapshot of current event occurrence values on Localytics
-	 * 
-	 * @step. ^I take snapshot of (.*) events? count$
-	 * 
-	 * @param events
-	 *            the list of events to take snapshot from. Every event name is
-	 *            separated from each other by pipe "|" character. Use
-	 *            https://api.localytics.com/docs#show-attributes API call to
-	 *            get the list of available event names
-	 * 
-	 * @throws Exception
-	 */
-    @Given("^I take snapshot of (.*) events? count$")
-    public void ITakeSnapshotOfXEventCount(String events) throws Exception {
-        commonSteps.ITakeSnapshotOfXEventCount(events);
+    @When("^I enable localytics via URL parameter$")
+    public void IEnableLocalytics() throws Exception {
+        if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
+            String currentUrl = context.getDriver().getCurrentUrl();
+            if (currentUrl.contains("?")) {
+                context.getDriver().get(currentUrl + "&localytics");
+            } else {
+                context.getDriver().get(currentUrl + "?localytics");
+            }
+        }
     }
 
-	/**
-	 * Takes snapshot of current event occurrence values on Localytics
-	 * 
-	 * @step. ^I take snapshot of (.*) attributes? count$
-	 * 
-	 * @param attributes
-	 *            the list of attributes to take snapshot from. Every item is
-	 *            separated from each other by pipe "|" character. Item format
-	 *            is the following: EventName1:AttributeName1=AttributeValue1 If
-	 *            AttributeValue is not provided for the particular
-	 *            AttributeName then all occurrences of this particular
-	 *            attribute will be counted. Use
-	 *            https://api.localytics.com/docs#show-attributes API call to
-	 *            get the list of available event and attribute names. Check the
-	 *            documentation on the particular app and/or its source code
-	 *            about the possible attribute values.
-	 * 
-	 * @throws Exception
-	 */
-    @Given("^I take snapshot of (.*) attributes? count$")
-    public void ITakeSnapshotOfXAttributesCount(String attributes)
-            throws Exception {
-        commonSteps.ITakeSnapshotOfXAttributesCount(attributes);
+    @Then("^I( do not)? see localytics event (.*) with attributes (.*)$")
+    public void ISeeLocalyticsEvent(String doNot, String event, String attributes) throws Exception {
+        if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
+            List<String> localyticsEvents = this.getLocalyticEvents();
+            assertThat("Did not find any localytics events in browser console", not(localyticsEvents.isEmpty()));
+
+            if (doNot == null) {
+                assertThat("Did not find localytics event " + event + " in browser console", localyticsEvents,
+                        hasItem("Localytics event '" + event + "' with attributes: " + attributes));
+            } else {
+                assertThat("Found localytics event " + event + " in browser console", localyticsEvents,
+                        not(hasItem("Localytics event '" + event + "' with attributes: " + attributes)));
+            }
+        }
     }
 
-	/**
-	 * Verifies whether the particular events occurrences count is increased
-	 * within the given timeout on Localytics. It is mandatory to snapshot all
-	 * the previous event occurrence values by calling the 'I take snapshot of
-	 * ... events count' step before.
-	 * 
-	 * @step. ^I verify the count of (.*) events? (?:has|have) been increased
-	 *        within (\\d+) seconds?$
-	 * 
-	 * @param events
-	 *            the list of events, whose occurrences count we have to verify.
-	 *            Check the documentation for 'I take snapshot of ... events
-	 *            count' step about how to format the list of events.
-	 * @param secondsTimeout
-	 *            the number of seconds to wait until occurrences count is
-	 *            changed (usually it takes up to 5-15 minutes for Localytics to
-	 *            catch up)
-	 * @throws Exception
-	 */
-    @Then("^I verify the count of (.*) events? (?:has|have) been increased within (\\d+) seconds?$")
-    public void IVerifyTheCountOfXEventHasBeenIncreasedWithinYSeconds(
-            String events, long secondsTimeout) throws Exception {
-        commonSteps.IVerifyTheCountOfXEventHasBeenIncreasedWithinYSeconds(
-                events, secondsTimeout);
+    @When("^I remember number of localytics events$")
+    public void IRememberLocalyticsEvents() throws Exception {
+        if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
+            rememberedEvents = getLocalyticEvents().size();
+        }
     }
 
-	/**
-	 * Verifies whether the particular event attribute occurrences count is
-	 * increased within the given timeout on Localytics. It is mandatory to
-	 * snapshot all the previous attribute occurrence values by calling the 'I
-	 * take snapshot of ... attributes count' step before.
-	 * 
-	 * @step. ^I verify the count of (.*) attributes? (?:has|have) been
-	 *        increased within (\\d+) seconds?$
-	 * 
-	 * @param attributes
-	 *            the list of attributes, whose occurrences count we have to
-	 *            verify. Check the documentation for 'I take snapshot of ...
-	 *            attributes count' step about how to format the list of
-	 *            attributes.
-	 * @param secondsTimeout
-	 *            the number of seconds to wait until occurrences count is
-	 *            changed (usually it takes up to 5-15 minutes for Localytics to
-	 *            catch up)
-	 * 
-	 * @throws Exception
-	 */
-    @Then("^I verify the count of (.*) attributes? (?:has|have) been increased within (\\d+) seconds?$")
-    public void IVerifyTheCountOfXAttributesHasBeenIncreasedWithinYSeconds(
-            String attributes, long secondsTimeout) throws Exception {
-        commonSteps.IVerifyTheCountOfXAttributesHasBeenIncreasedWithinYSeconds(
-                attributes, secondsTimeout);
+    @Then("^There are( no)? added localytics events$")
+    public void ThereAreAddedEvents(String no) throws Exception {
+        if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
+            if (rememberedEvents == -1) {
+                throw new Exception("Please use step to remember localytics events before this step");
+            }
+            int newEvents = this.getLocalyticEvents().size();
+            if (no == null) {
+                assertThat("No new Events happened", rememberedEvents, not(equalTo(newEvents)));
+            } else {
+                assertThat("New Events happened", rememberedEvents, equalTo(newEvents));
+            }
+        }
+    }
+
+    private List<String> getLocalyticEvents() throws Exception {
+        List<String> localyticsEvents = context.getLogManager().getBrowserLog().stream()
+                .filter((entry) -> entry.getMessage().contains("Localytics event"))
+                .map((entry) -> entry.getMessage().substring(entry.getMessage().lastIndexOf("|") + 2))
+                .collect(Collectors.toList());
+        localyticsEvents.forEach((localyticsEvent) -> {
+            log.info("Found event: " + localyticsEvent);
+        });
+        return localyticsEvents;
     }
 }

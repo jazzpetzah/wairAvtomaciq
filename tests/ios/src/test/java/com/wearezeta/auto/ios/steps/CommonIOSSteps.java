@@ -25,7 +25,6 @@ import com.wearezeta.auto.common.misc.IOSDistributable;
 import com.wearezeta.auto.common.sync_engine_bridge.AssetProtocol;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.ios.reporter.IOSLogListener;
 import com.wearezeta.auto.ios.tools.*;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
@@ -132,10 +131,6 @@ public class CommonIOSSteps {
             System.getProperty("user.home"), "/Library/Keychains/MyKeychain.keychain"));
     private static final String KEYCHAIN_PASSWORD = "123456";
 
-    private static final File IDEVICE_CONSOLE = new File(
-            "/usr/local/lib/node_modules/deviceconsole/deviceconsole"
-    );
-
     // https://github.com/wireapp/wire-ios/pull/339
     private static final String ARGS_FILE_NAME = "wire_arguments.txt";
 
@@ -157,19 +152,17 @@ public class CommonIOSSteps {
         capabilities.setCapability("autoLaunch", false);
         capabilities.setCapability("clearSystemFiles", true);
         if (isRealDevice) {
-            final String udid = IOSRealDeviceHelpers.getUDID().orElseThrow(
-                    () -> new IllegalStateException("Cannot detect any connected iDevice")
-            );
+            final String udid = IOSRealDeviceHelpers.getUDID();
 
             // We don't really care about which particular real device model we have
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()).split("\\s+")[0]);
             capabilities.setCapability("udid", udid);
-            if (!IDEVICE_CONSOLE.exists()) {
+            if (!IOSRealDeviceHelpers.IDEVICE_CONSOLE.exists()) {
                 throw new IllegalStateException(
                         "ideviceconsole is expected to be installed: npm install -g deviceconsole"
                 );
             }
-            capabilities.setCapability("realDeviceLogger", IDEVICE_CONSOLE.getCanonicalPath());
+            capabilities.setCapability("realDeviceLogger", IOSRealDeviceHelpers.IDEVICE_CONSOLE.getCanonicalPath());
             capabilities.setCapability("showXcodeLog", true);
             capabilities.setCapability("showIOSLog", true);
             if (CommonUtils.isRunningInJenkinsNetwork()) {
@@ -395,12 +388,8 @@ public class CommonIOSSteps {
             usrMgr.useSpecialEmail();
         }
 
-        if (scenario.getSourceTagNames().contains("@performance")) {
-            try {
-                IOSLogListener.getInstance().start();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if (!getIsSimulatorFromConfig(getClass())) {
+            IOSRealDeviceHelpers.startLogListener();
         }
 
         final Map<String, Object> additionalCaps = new HashMap<>();
@@ -469,11 +458,20 @@ public class CommonIOSSteps {
         }
 
         try {
-            if (!scenario.getStatus().equals(Result.PASSED) && getIsSimulatorFromConfig(getClass())) {
-                log.debug(IOSSimulatorHelpers.getLogsAndCrashes());
-            } else if (scenario.getSourceTagNames().contains("@performance")) {
-                IOSLogListener.forceStopAll();
-                IOSLogListener.writeDeviceLogsToConsole(IOSLogListener.getInstance());
+            if (!scenario.getStatus().equals(Result.PASSED)) {
+                if (getIsSimulatorFromConfig(getClass())) {
+                    log.debug(IOSSimulatorHelpers.getLogsAndCrashes());
+                } else {
+                    log.debug(IOSRealDeviceHelpers.getLogs());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if (!getIsSimulatorFromConfig(getClass())) {
+                IOSRealDeviceHelpers.stopLogListener();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1445,9 +1443,9 @@ public class CommonIOSSteps {
      *
      * @param itemName the badge item name
      * @throws Exception
-     * @step. ^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike) badge item$
+     * @step. ^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike|Forward) badge item$
      */
-    @When("^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike) badge item$")
+    @When("^I tap on (Select All|Copy|Save|Delete|Paste|Edit|Like|Unlike|Forward) badge item$")
     public void ITapBadge(String itemName) throws Exception {
         pagesCollection.getCommonPage().tapBadgeItem(itemName);
     }

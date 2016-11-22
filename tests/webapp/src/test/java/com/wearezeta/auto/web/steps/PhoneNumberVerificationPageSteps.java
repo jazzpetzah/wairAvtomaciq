@@ -17,8 +17,7 @@ import cucumber.api.java.en.When;
 public class PhoneNumberVerificationPageSteps {
 
     @SuppressWarnings("unused")
-    private static final Logger log = ZetaLogger
-            .getLog(PhoneNumberVerificationPage.class.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(PhoneNumberVerificationPage.class.getSimpleName());
 
     private final TestContext context;
 

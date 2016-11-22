@@ -58,4 +58,8 @@ public class EmojiKeyboardOverlayPage extends CursorOverlayPage {
     public void tapEmojiKeyboardTab(KeboardTab tab) throws Exception {
         getElement(By.xpath(xpathTabByEmojiTab.apply(tab))).click();
     }
+
+    public boolean waitUntilAnyEmojiItemVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(strIdEmojiItem));
+    }
 }

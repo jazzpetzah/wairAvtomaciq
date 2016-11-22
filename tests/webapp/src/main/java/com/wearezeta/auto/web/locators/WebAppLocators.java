@@ -307,6 +307,8 @@ public final class WebAppLocators {
 
         public static final String cssImportButton = "[data-uie-name='do-share-contacts'] .preferences-option-label";
 
+        public static final String cssReportOption = ".preferences-options-checkbox-label";
+
     }
 
     public static final class SettingsPage {

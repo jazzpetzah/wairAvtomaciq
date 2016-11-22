@@ -31,11 +31,6 @@
         <!-- leave webappApplicationPath empty to get the default URL for the backendType -->
         <webappApplicationPath />
         <otrOnly>true</otrOnly>
-        <!-- The levels in descending order are: SEVERE (highest value), WARNING, 
-        INFO, CONFIG, FINE, FINER, FINEST (lowest value). In addition there is a 
-        level OFF that can be used to turn off logging, and a level ALL that can 
-        be used to enable logging of all messages. -->
-        <extendedLoggingLevel>SEVERE</extendedLoggingLevel>
         <rcNotificationsRecepients>michael@wire.com,sven.jost@wire.com,nastia@wire.com</rcNotificationsRecepients>
         <com.wire.os.name>Windows</com.wire.os.name>
         <com.wire.os.version>7</com.wire.os.version>
@@ -165,8 +160,6 @@
                                 </goals>
                                 <configuration>
                                     <target>
-                                        <!--TODO needs decision whether we want to check by specified tags all always all testcases-->
-                                        <!--<property name="picklejar.tag" value="${picklejar.tag}"/>-->
                                         <property name="picklejar.feature.package" value="${picklejar.feature.package}"/>
                                         <property name="picklejar.steps.package" value="${picklejar.steps.package}"/>
                                         <property name="basedir" value="${project.build.directory}" />
@@ -174,7 +167,6 @@
                                         <exec executable="java" spawn="false">
                                             <arg value="-classpath"/>
                                             <arg value="${runtime_classpath}:${basedir}/target/test-classes"/>
-                                            <!--<arg value="-Dpicklejar.tag=${picklejar.tag}"/>-->
                                             <arg value="-Dpicklejar.feature.package=${picklejar.feature.package}"/>
                                             <arg value="-Dpicklejar.steps.package=${picklejar.steps.package}"/>
                                             <arg value="-Dlog4j.rootLogger=DEBUG"/>

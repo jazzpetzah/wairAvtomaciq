@@ -2,13 +2,11 @@ package com.wearezeta.auto.web.common;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class Pinger {
 
@@ -18,22 +16,22 @@ public class Pinger {
 
     private final ScheduledThreadPoolExecutor PING_EXECUTOR = new ScheduledThreadPoolExecutor(1);
     private ScheduledFuture<?> RUNNING_PINGER;
-    private Future<? extends RemoteWebDriver> driver;
+    private TestContext context;
     private final Runnable PINGER = new Runnable() {
         @Override
         public void run() {
             try {
                 log.debug("Pinging driver");
-                driver.get(1, TimeUnit.SECONDS).getPageSource();
+                context.getDriver().getPageSource();
             } catch (InterruptedException | ExecutionException | TimeoutException ex) {
                 log.warn(String.format("Could not ping driver: %s", ex.getMessage()));
             }
         }
     };
 
-    public Pinger(Future<? extends RemoteWebDriver> driver) {
+    public Pinger(TestContext context) {
         PING_EXECUTOR.setRemoveOnCancelPolicy(true);
-        this.driver = driver;
+        this.context = context;
     }
 
     public void startPinging() {

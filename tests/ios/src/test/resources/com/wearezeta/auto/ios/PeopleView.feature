@@ -15,7 +15,7 @@ Feature: People View
     And I tap on conversation <Contact2> in search result
     And I tap Create conversation action button on Search UI page
     And I wait for 2 seconds
-    Then I see group chat page with users <Contact1>,<Contact2>
+    Then I see group conversation with users <Contact1>,<Contact2>
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -194,7 +194,7 @@ Feature: People View
     And I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact2> in search result
     And I tap Create conversation action button on Search UI page
-    Then I see group chat page with users <Contact1>,<Contact2>
+    Then I see group conversation with users <Contact1>,<Contact2>
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -212,7 +212,7 @@ Feature: People View
     And I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact3> in search result
     And I tap Create conversation action button on Search UI page
-    And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
+    And I see group conversation with users <Contact1>,<Contact2>,<Contact3>
     And I navigate back to conversations list
     And I see conversations list
     Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>

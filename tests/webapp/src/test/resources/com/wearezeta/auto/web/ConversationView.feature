@@ -37,9 +37,10 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact>
+    Given I enable localytics via URL parameter
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I am signed in properly
+    Given I am signed in properly
     And I open conversation with <Contact>
     When I write random message
     And I send message
@@ -214,9 +215,10 @@ Feature: Conversation View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I enable localytics via URL parameter
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I am signed in properly
+    Given I am signed in properly
     And I open conversation with <ChatName>
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
@@ -378,6 +380,7 @@ Feature: Conversation View
   Scenario Outline: Verify you can send not-random gif with giphy button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I enable localytics via URL parameter
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly

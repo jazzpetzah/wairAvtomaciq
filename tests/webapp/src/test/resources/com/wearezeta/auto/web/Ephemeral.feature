@@ -4,6 +4,7 @@ Feature: Ephemeral
   Scenario Outline: Verify sending ephemeral text message in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I enable localytics via URL parameter
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password>
     Given I am signed in properly
@@ -468,6 +469,7 @@ Feature: Ephemeral
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
     Given Myself have group chat <ChatName> with <Contact1>,<Contact2>
+    Given I enable localytics via URL parameter
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password>
     Given I am signed in properly

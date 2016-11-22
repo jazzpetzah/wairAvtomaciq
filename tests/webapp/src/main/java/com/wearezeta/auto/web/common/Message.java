@@ -6,7 +6,8 @@ import java.util.Objects;
 import org.apache.log4j.Logger;
 
 public class Message implements Comparable<Message>{
-    
+
+    @SuppressWarnings("unused")
     private static final Logger log = ZetaLogger.getLog(Message.class.getSimpleName());
     
     private String message;

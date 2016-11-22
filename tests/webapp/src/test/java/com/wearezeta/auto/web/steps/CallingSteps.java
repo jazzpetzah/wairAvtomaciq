@@ -26,8 +26,7 @@ import static org.junit.Assert.assertTrue;
 
 public class CallingSteps {
 
-    private static final Logger LOG = ZetaLogger.getLog(CallingSteps.class
-            .getName());
+    private static final Logger LOG = ZetaLogger.getLog(CallingSteps.class.getName());
     private static final int FLOW_UPDATE_WAIT_MS = 5000;
 
     private final TestContext context;

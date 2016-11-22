@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 public class ContactListPage extends com.wearezeta.auto.web.pages.ContactListPage {
 
+    @SuppressWarnings("unused")
     private static final Logger LOG = ZetaLogger.getLog(ContactListPage.class.getSimpleName());
 
     // TODO hide behind driver impl

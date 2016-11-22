@@ -25,6 +25,7 @@ public class SketchPage extends AndroidPage {
     private static final By idEmojiButton = By.id("gtv__drawing_button__emoji");
     private static final By idTextButton = By.id("gtv__drawing_button__text");
     private static final By idTextSketchInput = By.id("et__sketch_text");
+    private static final By idGalleryButton = By.id("gtv__drawing__gallery_button");
 
     // Colors should be in the order they appear in the color picker
     public enum SketchColor {
@@ -63,8 +64,8 @@ public class SketchPage extends AndroidPage {
         selectColorFromChooser(getElement(idColorPicker));
     }
 
-    public void tapOnModeButton(String buttonName) throws Exception {
-        final By locator = getModeButtonLocator(buttonName);
+    public void tapOnButton(String buttonName) throws Exception {
+        final By locator = getButtonLocator(buttonName);
         getElement(locator).click();
     }
 
@@ -73,14 +74,16 @@ public class SketchPage extends AndroidPage {
         pressKeyboardSendButton();
     }
 
-    private static By getModeButtonLocator(String buttonName) {
-        switch(buttonName.toLowerCase()) {
+    private static By getButtonLocator(String buttonName) {
+        switch (buttonName.toLowerCase()) {
             case "emoji":
                 return idEmojiButton;
             case "sketch":
                 return idSketchButton;
             case "text":
                 return idTextButton;
+            case "gallery":
+                return idGalleryButton;
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify mode button name '%s'", buttonName));
         }
@@ -149,5 +152,9 @@ public class SketchPage extends AndroidPage {
 
     public void drawEmojiOnCanvas() throws Exception {
         DriverUtils.tapInTheCenterOfTheElement(getDriver(), getElement(idCanvas));
+    }
+
+    public boolean waitUntilSketchTextInputVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idTextSketchInput);
     }
 }

@@ -18,8 +18,7 @@ import cucumber.api.java.en.When;
 public class PasswordChangeSteps {
 
     @SuppressWarnings("unused")
-    private static final Logger log = ZetaLogger
-            .getLog(PasswordChangeSteps.class.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(PasswordChangeSteps.class.getSimpleName());
 
     private static final int VISIBILITY_TIMEOUT_SECONDS = 15;
 

@@ -1,15 +1,15 @@
 package com.wearezeta.auto.android.pages;
 
+import java.awt.image.BufferedImage;
+import java.util.Optional;
+import java.util.concurrent.Future;
+import java.util.function.Function;
+
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-
-import java.awt.image.BufferedImage;
-import java.util.Optional;
-import java.util.concurrent.Future;
-import java.util.function.Function;
 
 public abstract class AbstractPickUserPage extends AndroidPage {
 
@@ -169,7 +169,7 @@ public abstract class AbstractPickUserPage extends AndroidPage {
 
     private static final int MAX_SCROLLS = 3;
 
-    private WebElement getPickerEdit() throws Exception {
+    public WebElement getPickerEdit() throws Exception {
         return getElement(xpathSearchField, "Search field is not visible on the current page");
     }
 

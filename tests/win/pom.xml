@@ -17,12 +17,6 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <skipTests>false</skipTests>
         <defaultEmail>smoketester@wire.com</defaultEmail>
-        <!--<backendType>staging</backendType>-->
-        <!-- The levels in descending order are: SEVERE (highest value), WARNING, 
-        INFO, CONFIG, FINE, FINER, FINEST (lowest value). In addition there is a 
-        level OFF that can be used to turn off logging, and a level ALL that can 
-        be used to enable logging of all messages. -->
-        <extendedLoggingLevel>SEVERE</extendedLoggingLevel>
         <com.wire.app.folder>C:\Users\Michael\AppData\Local\wire\</com.wire.app.folder>
         <com.wire.app.path>app-2.11.2670\Wire.exe</com.wire.app.path>
         <com.wire.app.cache.folder>C:\Users\Michael\AppData\Roaming\Wire\</com.wire.app.cache.folder>

@@ -41,6 +41,8 @@ public class ConversationActionsPage extends IOSPage {
     }
 
     public void tapMenuItem(String buttonTitle) throws Exception {
+        // Wait for animation
+        Thread.sleep(2000);
         final WebElement btn = getElement(getActionButtonByName(buttonTitle));
         btn.click();
         isElementInvisible(btn);
@@ -48,7 +50,7 @@ public class ConversationActionsPage extends IOSPage {
 
     public void confirmAction(String actionName) throws Exception {
         // Wait for animation
-        Thread.sleep(2500);
+        Thread.sleep(4500);
         By locator = FBBy.xpath(xpathStrConfirmActionButtonByName.apply(actionName));
         switch (actionName.toLowerCase()) {
             case "cancel request":

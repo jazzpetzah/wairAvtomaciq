@@ -10,7 +10,8 @@ import org.apache.log4j.Logger;
 
 public class EphemeralTimerButtonContextMenuPage extends OSXPage {
 
-    public static final Logger LOG = ZetaLogger.getLog(EphemeralTimerButtonContextMenuPage.class.getName());
+    @SuppressWarnings("unused")
+    private static final Logger LOG = ZetaLogger.getLog(EphemeralTimerButtonContextMenuPage.class.getName());
 
     private static final int CONTEXT_EPH_TIMER_OFF_INDEX = 1;
     private static final int CONTEXT_EPH_TIMER_5_SECONDS_INDEX = 2;

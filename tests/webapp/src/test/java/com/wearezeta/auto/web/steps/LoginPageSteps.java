@@ -17,8 +17,7 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class LoginPageSteps {
 
-    private static final Logger log = ZetaLogger.getLog(LoginPageSteps.class
-            .getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(LoginPageSteps.class.getSimpleName());
 
     private final TestContext context;
 

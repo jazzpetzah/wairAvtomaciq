@@ -147,6 +147,13 @@ class Device extends RemoteEntity implements IDevice {
     }
 
     @Override
+    public void sendGiphy(String convId, String searchQuery) throws Exception {
+        retryOnTimeoutFailure(
+                () -> askActor(this.ref(), new ActorMessage.SendGiphy(new RConvId(convId), searchQuery))
+        );
+    }
+
+    @Override
     public void sendPing(String convId) throws Exception {
         retryOnTimeoutFailure(
                 () -> askActor(this.ref(), new ActorMessage.Knock(new RConvId(convId)))

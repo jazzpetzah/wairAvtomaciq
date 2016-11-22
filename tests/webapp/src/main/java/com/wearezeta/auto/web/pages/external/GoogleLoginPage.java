@@ -18,8 +18,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 
 public class GoogleLoginPage extends WebPage {
 
-    private static final Logger log = ZetaLogger.getLog(GoogleLoginPage.class
-            .getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(GoogleLoginPage.class.getSimpleName());
 
     // TODO move to Locators
     private static final String EMAIL_ID = "Email";

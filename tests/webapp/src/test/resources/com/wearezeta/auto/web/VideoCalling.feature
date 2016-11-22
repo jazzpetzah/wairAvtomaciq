@@ -8,6 +8,7 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming video call automatically
     Given <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    Given I enable localytics via URL parameter
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly

@@ -29,16 +29,13 @@ Feature: Rich Media
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And I tap on text input
-    And I tap on media container in conversation view
+    Given I tap on contact name <Contact>
+    When I tap on media container in conversation view
     And I scroll to the top of the conversation
     And I pause playing the media in media bar
     Then I see media is paused on Media Bar
-    And I tap Play in media bar
+    When I tap Play in media bar
     Then I see media is playing on Media Bar
-    And I stop media in media bar
-    Then I see media is stopped on Media Bar
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                                   |

@@ -45,8 +45,7 @@ public class ConversationPage extends WebPage {
     private static final int MISSED_CALL_MSG_TIMOEUT = 15;
     private static final int MAX_CALLING_BAR_VISIBILITY_TIMEOUT = 5; // seconds
 
-    private static final Logger log = ZetaLogger.getLog(ConversationPage.class
-            .getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(ConversationPage.class.getSimpleName());
 
     private static final String TOOLTIP_PEOPLE = "People";
 

@@ -18,8 +18,7 @@ import com.wearezeta.auto.osx.pages.osx.OSXPage;
 
 public class ChoosePicturePage extends OSXPage {
 
-    private static final Logger log = ZetaLogger.getLog(ChoosePicturePage.class
-            .getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(ChoosePicturePage.class.getSimpleName());
 
     @FindBy(how = How.ID, using = OSXLocators.ChoosePicturePage.idOpenButton)
     private WebElement openButton;

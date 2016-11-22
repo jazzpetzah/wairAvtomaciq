@@ -8,13 +8,15 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 public class OptionsPage extends WebPage {
 
-    private static final Logger log = ZetaLogger.getLog(AccountPage.class.getSimpleName());
+    @SuppressWarnings("unused")
+    private static final Logger log = ZetaLogger.getLog(OptionsPage.class.getSimpleName());
 
     @FindBy(how = How.CSS, using = "[name='preferences-options-audio']")
     private List<WebElement> soundAlertsRadioboxes;
@@ -30,6 +32,9 @@ public class OptionsPage extends WebPage {
 
     @FindBy(how = How.CSS, using = WebAppLocators.OptionsPage.cssImportButton)
     private WebElement importButton;
+
+    @FindBy(how = How.CSS, using = WebAppLocators.OptionsPage.cssReportOption)
+    private WebElement reportOption;
 
     public OptionsPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -65,5 +70,14 @@ public class OptionsPage extends WebPage {
             }
         }
         return "";
+    }
+
+    public boolean isReportOptionChecked() throws Exception {
+        return getDriver().findElement(By.id("data-checkbox")).isSelected();
+    }
+
+    public void clickReportOption() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), reportOption);
+        reportOption.click();
     }
 }

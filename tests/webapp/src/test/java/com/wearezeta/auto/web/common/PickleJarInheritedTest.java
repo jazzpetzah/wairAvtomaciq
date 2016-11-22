@@ -136,7 +136,7 @@ public class PickleJarInheritedTest extends PickleJarTest {
             return "No tailed log available";
         }
         try {
-            List<LogEntry> browserLog = lifecycle.getContext().getBrowserLog();
+            List<LogEntry> browserLog = lifecycle.getContext().getLogManager().getBrowserLog();
             if (browserLog.size() >= maxLogTailSize) {
                 browserLog = browserLog.subList(browserLog.size() - maxLogTailSize, browserLog.size());
             }
@@ -156,7 +156,7 @@ public class PickleJarInheritedTest extends PickleJarTest {
             return;
         }
         try {
-            browserLog = lifecycle.getContext().getBrowserLog();
+            browserLog = lifecycle.getContext().getLogManager().getBrowserLog();
             browserLog = browserLog.stream()
                     .filter((entry)
                             -> entry.getLevel().intValue() >= Level.SEVERE.intValue())
@@ -219,7 +219,11 @@ public class PickleJarInheritedTest extends PickleJarTest {
                     // filter encryption precondition
                     .filter((entry)
                             -> !entry.getMessage().contains("otr") && !entry.getMessage().contains("412 (Precondition Failed)"))
+                    //filter youtube javascript error
+                    .filter((entry)
+                             -> !entry.getMessage().contains("ytcfg is not defined"))
                     .collect(Collectors.toList());
+
         } catch (Exception e) {
             LOG.warn("No error log check available", e);
         }

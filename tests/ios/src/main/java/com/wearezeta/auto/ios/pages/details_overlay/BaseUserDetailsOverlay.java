@@ -15,7 +15,7 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
     private static final By nameLeftActionButton = MobileBy.AccessibilityId("OtherUserMetaControllerLeftButton");
 
     private static final  By xpathProfilePicture = By.xpath(
-        "//XCUIElementTypeButton[@name='DEVICES']/following::XCUIElementTypeStaticText/parent::*"
+        "//XCUIElementTypeButton[@name='DEVICES']/following::XCUIElementTypeOther[ ./XCUIElementTypeImage ][1]"
     );
 
     public BaseUserDetailsOverlay(Future<ZetaIOSDriver> driver) throws Exception {

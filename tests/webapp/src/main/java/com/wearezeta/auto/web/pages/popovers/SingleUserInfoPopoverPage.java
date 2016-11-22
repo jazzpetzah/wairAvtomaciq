@@ -17,8 +17,7 @@ import org.apache.log4j.Logger;
 
 class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
 
-    public static final Logger log = ZetaLogger
-            .getLog(SingleUserInfoPopoverPage.class.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(SingleUserInfoPopoverPage.class.getSimpleName());
 
     @FindBy(how = How.XPATH, using = PopoverLocators.SingleUserPopover.SingleUserInfoPage.xpathBlockButton)
     private WebElement blockButton;

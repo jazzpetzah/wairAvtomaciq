@@ -239,9 +239,13 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idAudioMessagePreviewSeekbar = By.id("sb__voice_message__recording__seekbar");
 
-    private static final By idImageContainerSketchButton = By.id("gtv__row_conversation__image_sketch");
+    private static final By idImageContainerSketchButton = By.id("gtv__row_conversation__drawing_button__sketch");
 
     private static final By idImageContainerFullScreenButton = By.id("gtv__row_conversation__image_fullscreen");
+
+    private static final By idImageContainerSketchEmojiButton = By.id("gtv__row_conversation__drawing_button__emoji");
+
+    private static final By idImageContainerSketchTextButton = By.id("gtv__row_conversation__drawing_button__text");
 
     private static final int MAX_CLICK_RETRIES = 5;
 
@@ -1056,6 +1060,10 @@ public class ConversationViewPage extends AndroidPage {
                 return idImageContainerSketchButton;
             case "fullscreen":
                 return idImageContainerFullScreenButton;
+            case "sketch emoji":
+                return idImageContainerSketchEmojiButton;
+            case "sketch text":
+                return idImageContainerSketchTextButton;
             default:
                 throw new IllegalArgumentException(String.format("Cannot identify the button type '%s'", buttonName));
         }
@@ -1066,8 +1074,22 @@ public class ConversationViewPage extends AndroidPage {
         getElement(locator).click();
     }
 
+    public boolean waitUntilImageContainerButtonVisible(String buttonName) throws Exception {
+        By locator = getImageContainerButtonLocator(buttonName);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitUntilImageContainerButtonInvisible(String buttonName) throws Exception {
+        By locator = getImageContainerButtonLocator(buttonName);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
     public boolean isVideoMessageButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idVideoContainerButton);
+    }
+
+    public boolean isAudioMessageButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idAudioContainerButton);
     }
 
     public Optional<BufferedImage> getVideoContainerButtonState() throws Exception {

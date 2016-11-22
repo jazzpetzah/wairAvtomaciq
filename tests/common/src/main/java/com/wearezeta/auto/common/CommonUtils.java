@@ -1,22 +1,55 @@
 package com.wearezeta.auto.common;
 
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
+import java.io.Writer;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import javax.activation.MimetypesFileTypeMap;
+import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver.SurfaceOrientation;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.process.UnixProcessHelpers;
 import com.wearezeta.auto.common.video.SequenceEncoder;
 import org.apache.commons.codec.binary.Base64;
@@ -25,15 +58,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.jcodec.common.model.Picture;
-
-import com.wearezeta.auto.common.log.ZetaLogger;
-
-import javax.activation.MimetypesFileTypeMap;
-import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 
 import static com.wearezeta.auto.common.driver.ZetaAndroidDriver.ADB_PREFIX;
 
@@ -526,6 +550,9 @@ public class CommonUtils {
                         + "adb pull %1$s %2$s; " + ADB_PREFIX + "adb shell rm %1$s", pathOnPhone,
                 resultScreenshot.getCanonicalPath());
         Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", adbCommandsChain}).waitFor();
+        if (!resultScreenshot.getParentFile().exists()) {
+            resultScreenshot.getParentFile().mkdirs();
+        }
         byte[] output = FileUtils.readFileToByteArray(resultScreenshot);
         final boolean isTablet = getIsTabletFromConfig(CommonUtils.class);
         BufferedImage resultImg = ImageIO.read(new ByteArrayInputStream(output));

@@ -19,44 +19,11 @@ public class TakePicturePageSteps {
      *
      * @param buttonName the button to press
      * @throws Exception
-     * @step. ^I tap "(Take Photo|Confirm|Cancel|Gallery|Gallery Camera|Image Close|Switch Camera|Sketch Image Paint|Close)" button on Take Picture view$
+     * @step. ^I tap "(Take Photo|Confirm|Cancel|Gallery|Gallery Camera|Image Close|Switch Camera|Sketch Image Paint|Sketch Emoji Paint|Sketch Text Paint|Close)" button on Take Picture view$
      */
-    @When("^I tap (Take Photo|Change Photo|Confirm|Cancel|Gallery|Gallery Camera|Image Close|Switch Camera|Sketch Image Paint|Close) button on Take Picture view$")
+    @When("^I tap (Take Photo|Change Photo|Confirm|Cancel|Gallery|Gallery Camera|Image Close|Switch Camera|Sketch Image Paint|Sketch Emoji Paint|Sketch Text Paint|Close) button on Take Picture view$")
     public void ITapButton(String buttonName) throws Exception {
-        switch (buttonName.toLowerCase()) {
-            case "take photo":
-                getTakePicturePage().takePhoto();
-                break;
-            case "change photo":
-                getTakePicturePage().tapChangePhotoButton();
-                break;
-            case "confirm":
-                getTakePicturePage().confirm();
-                break;
-            case "cancel":
-                getTakePicturePage().cancel();
-                break;
-            case "gallery camera":
-                getTakePicturePage().openGalleryFromCameraView();
-                break;
-            case "image close":
-                getTakePicturePage().closeFullScreenImage();
-                break;
-            case "close":
-                getTakePicturePage().tapCloseTakePictureViewButton();
-                break;
-            case "switch camera":
-                if (!getTakePicturePage().tapSwitchCameraButton()) {
-                    throw new PendingException(
-                            "Device under test does not have front camera. " + "Skipping all the further verification...");
-                }
-                break;
-            case "sketch image paint":
-                getTakePicturePage().tapSketchOnImageButton();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown button name: '%s'", buttonName));
-        }
+        getTakePicturePage().tapOnButton(buttonName);
     }
 
     /**

@@ -1,7 +1,9 @@
 package com.wearezeta.auto.ios.steps;
 
+import java.util.List;
 import java.util.Optional;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
 import cucumber.api.java.en.And;
@@ -340,11 +342,6 @@ public class ConversationViewPageSteps {
     @When("^I tap Play in media bar$")
     public void ITapPlayInMediaBar() throws Exception {
         getConversationViewPage().playMediaContent();
-    }
-
-    @When("^I stop media in media bar$")
-    public void IStopMediaInMediaBar() throws Exception {
-        getConversationViewPage().stopMediaContent();
     }
 
     private ElementState previousMediaContainerState = new ElementState(
@@ -1308,6 +1305,24 @@ public class ConversationViewPageSteps {
     @And("^I set ephemeral messages expiration timer to (Off|5 seconds|15 seconds|30 seconds|1 minute|15 minutes)$")
     public void ISetExpirationTimer(String value) throws Exception {
         getConversationViewPage().setMessageExpirationTimer(value);
+    }
+
+    /**
+     * Verify whether conversation view with particular participant(s) is visible
+     *
+     * @step. ^I see (?:group |\s*)conversation with users? (.*)
+     * @param participantNameAliases user names/aliases separated with comma
+     * @throws Exception
+     */
+    @Then("^I see (?:group |\\s*)conversation with users? (.*)")
+    public void ISeeConversationPageWithUsers(String participantNameAliases) throws Exception {
+        participantNameAliases = usrMgr.replaceAliasesOccurences(participantNameAliases,
+                ClientUsersManager.FindBy.NAME_ALIAS);
+        final List<String> participantNames = CommonSteps.splitAliases(participantNameAliases);
+        Assert.assertTrue(
+                String.format("Users '%s' are not displayed on Upper Toolbar", participantNameAliases),
+                getConversationViewPage().isUpperToolbarContainNames(participantNames)
+        );
     }
 }
 

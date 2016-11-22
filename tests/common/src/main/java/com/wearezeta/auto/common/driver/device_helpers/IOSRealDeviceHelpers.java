@@ -2,6 +2,7 @@ package com.wearezeta.auto.common.driver.device_helpers;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.process.AsyncProcess;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -21,27 +22,33 @@ import java.util.regex.Pattern;
 public class IOSRealDeviceHelpers {
     private static Logger log = ZetaLogger.getLog(IOSRealDeviceHelpers.class.getSimpleName());
 
+    public static final File IDEVICE_CONSOLE = new File(
+            "/usr/local/lib/node_modules/deviceconsole/deviceconsole"
+    );
+
     private static final int CMDLINE_TIMEOUT_SECONDS = 30;
 
-    /**
-     * This will return only UDID of the first connected iDevice
-     *
-     * @return udid string
-     * @throws Exception
-     */
-    public static Optional<String> getUDID() throws Exception {
-        for (String deviceName : new String[]{"iPhone", "iPad"}) {
-            final String result = CommonUtils.executeOsXCommandWithOutput(new String[]{
-                    "/bin/bash",
-                    "-c",
-                    "system_profiler SPUSBDataType | sed -n '/"
-                            + deviceName
-                            + "/,/Serial/p' | grep 'Serial Number:' | awk -F ': ' '{print $2}'"}).trim();
-            if (result.length() > 0) {
-                return Optional.of(result);
+    private static Optional<String> udid = Optional.empty();
+
+    public static String getUDID() throws Exception {
+        if (!udid.isPresent()) {
+            for (String deviceName : new String[]{"iPhone", "iPad"}) {
+                final String result = CommonUtils.executeOsXCommandWithOutput(new String[]{
+                        "/bin/bash",
+                        "-c",
+                        "system_profiler SPUSBDataType | sed -n '/"
+                                + deviceName
+                                + "/,/Serial/p' | grep 'Serial Number:' | awk -F ': ' '{print $2}'"}).trim();
+                if (result.length() > 0) {
+                    udid = Optional.of(result);
+                    break;
+                }
             }
         }
-        return Optional.empty();
+        if (udid.isPresent()) {
+            return udid.get();
+        }
+        throw new IllegalStateException("No connected iOS devices can be detected");
     }
 
     private static final String IOS_DEPLOY = "/usr/local/bin/ios-deploy";
@@ -154,5 +161,46 @@ public class IOSRealDeviceHelpers {
         }
         throw new IllegalStateException(String.format("Cannot find IP address of iDEvice with MAC address %s in\n%s",
                 deviceMAC, output.toString()));
+    }
+
+    private static Optional<AsyncProcess> logListener = Optional.empty();
+
+    public static synchronized void startLogListener() throws Exception {
+        if (!logListener.isPresent()) {
+            final String[] cmdLine = new String[]{IDEVICE_CONSOLE.getAbsolutePath(), "-u", getUDID()};
+            log.debug(String.format("Starting real iOS device listener with command line: %s", cmdLine));
+            logListener = Optional.of(
+                    new AsyncProcess(cmdLine, false, false).start()
+            );
+        }
+    }
+
+    public static String getLogs() throws Exception {
+        final AsyncProcess listener = logListener.orElseThrow(
+                () -> new IllegalStateException("You should start log listener first")
+        );
+        return String.format("%s\n%s", listener.getStderr(), listener.getStdout());
+    }
+
+    public static synchronized void stopLogListener() throws Exception {
+        if (!logListener.isPresent()) {
+            return;
+        }
+        try {
+            log.debug("Stopping real iOS device listener");
+            logListener.get().stop(2000);
+        } finally {
+            logListener = Optional.empty();
+        }
+    }
+
+    static {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                IOSRealDeviceHelpers.stopLogListener();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }));
     }
 }

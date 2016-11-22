@@ -39,7 +39,8 @@ public final class BackendAPIWrappers {
     private static final int SERVER_SIDE_ERROR = 500;
     private static final int PHONE_NUMBER_ALREADY_REGISTERED_ERROR = 409;
     private static final int MAX_BACKEND_RETRIES = 3;
-    private static final float PROFILE_PICTURE_PREVIEW_RESIZE_FACTOR = 0.1f;
+    private static final int PROFILE_PREVIEW_MAX_WIDTH = 280;
+    private static final int PROFILE_PREVIEW_MAX_HEIGHT = 280;
 
     public static final String PROFILE_PICTURE_JSON_ATTRIBUTE = "complete";
     public static final String PROFILE_PREVIEW_PICTURE_JSON_ATTRIBUTE = "preview";
@@ -647,7 +648,8 @@ public final class BackendAPIWrappers {
 
     public static void updateUserPictureV3(ClientUser user, String picturePath) throws Exception {
         BufferedImage image = ImageUtil.readImageFromFile(picturePath);
-        BufferedImage preview = ImageUtil.resizeImage(image, PROFILE_PICTURE_PREVIEW_RESIZE_FACTOR);
+        BufferedImage square = ImageUtil.cropToSquare(image);
+        BufferedImage preview = ImageUtil.scaleTo(square, PROFILE_PREVIEW_MAX_WIDTH, PROFILE_PREVIEW_MAX_HEIGHT);
         String previewKey = BackendREST.uploadAssetV3(receiveAuthToken(user), true, "persistent",
                 ImageUtil.asByteArray(preview));
         String completeKey = BackendREST.uploadAssetV3(receiveAuthToken(user), true, "persistent",

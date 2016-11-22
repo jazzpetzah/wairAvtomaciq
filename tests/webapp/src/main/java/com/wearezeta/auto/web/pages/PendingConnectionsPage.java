@@ -22,8 +22,7 @@ import org.openqa.selenium.support.How;
 public class PendingConnectionsPage extends WebPage {
 
     @SuppressWarnings("unused")
-    private static final Logger log = ZetaLogger.getLog(PendingConnectionsPage.class
-            .getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(PendingConnectionsPage.class.getSimpleName());
 
     private static final String CSS_BACKGROUND_COLOR = "background-color";
     private static final String CSS_BORDER_TOP_COLOR = "border-top-color";

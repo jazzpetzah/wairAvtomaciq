@@ -21,7 +21,8 @@ import org.openqa.selenium.WebElement;
 
 public abstract class WinPage extends BasePage {
 
-    public static final Logger LOG = ZetaLogger.getLog(WinPage.class.getName());
+    @SuppressWarnings("unused")
+    private static final Logger LOG = ZetaLogger.getLog(WinPage.class.getName());
 
     private static final String MENU_ITEM_VERSION = "Version";
     private static final String MENUBAR_ITEM_HELP = "Help";

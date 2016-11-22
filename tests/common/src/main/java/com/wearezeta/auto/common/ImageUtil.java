@@ -222,11 +222,23 @@ public class ImageUtil {
         int w = image.getWidth(), h = image.getHeight();
         int scaledW = Math.round(w * resizeRatio);
         int scaledH = Math.round(h * resizeRatio);
-        BufferedImage result = new BufferedImage(scaledW, scaledH, BufferedImage.TYPE_INT_RGB);
+        BufferedImage result = new BufferedImage(scaledW, scaledH, image.getType());
         Graphics2D g2d = result.createGraphics();
         g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
         g2d.drawImage(image, 0, 0, scaledW, scaledH, null);
         return result;
+    }
+
+    public static BufferedImage cropToSquare(BufferedImage image) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+        int newWidth = (height > width) ? width : height;
+        int newHeight = (height > width) ? height - (height - width) : height;
+        int cropW = (width - height) / 2;
+        cropW = (cropW < 0) ? 0 : cropW;
+        int cropH = (height - width) / 2;
+        cropH = (cropH < 0) ? 0 : cropH;
+        return image.getSubimage(cropW, cropH, newWidth, newHeight);
     }
 
     public static BufferedImage tilt(BufferedImage image, double angle) {

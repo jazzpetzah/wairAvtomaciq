@@ -26,12 +26,12 @@ Feature: File Transfer
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
+    Given User <Contact> sends file <FileName>.<FileExt> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And User <Contact> sends file <FileName>.<FileExt> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given I tap on contact name <Contact>
     # Wait for the placeholder to be loaded
-    And I wait for 5 seconds
-    Then I wait up to <Timeout> seconds until the file <FileName>.<FileExt> with size <FileSize> is ready for download from conversation view
+    Given I wait for 5 seconds
+    Given I wait up to <Timeout> seconds until the file <FileName>.<FileExt> with size <FileSize> is ready for download from conversation view
     When I tap file transfer action button
     Then I wait up to <Timeout> seconds until I see a preview of the file named "<FileName>"
 

@@ -34,8 +34,7 @@ public class ContactListPageSteps {
 
     private BufferedImage backgroundScreenshot = null;
 
-    private static final Logger log = ZetaLogger
-            .getLog(ContactListPageSteps.class.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(ContactListPageSteps.class.getSimpleName());
 
     private static final String TOOLTIP_MUTE = "Mute";
     private static final String SHORTCUT_MUTE_WIN = "(Ctrl + Alt + S)";
@@ -584,7 +583,7 @@ public class ContactListPageSteps {
         if (not == null) {
             ContactListPage contactListPage = context.getPagesCollection().getPage(ContactListPage.class);
 
-            Wait<ContactListPage> wait = new FluentWait(contactListPage)
+            Wait<ContactListPage> wait = new FluentWait<>(contactListPage)
                     .withTimeout(15, TimeUnit.SECONDS)
                     .pollingEvery(4, TimeUnit.SECONDS)
                     .ignoring(AssertionError.class);

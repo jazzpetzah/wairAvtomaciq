@@ -11,6 +11,7 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class PreferencesPage extends WebPage {
 
+    @SuppressWarnings("unused")
     private static final Logger log = ZetaLogger.getLog(PreferencesPage.class.getSimpleName());
 
     @FindBy(css = WebAppLocators.PreferencesPage.cssPreferencesCloseButton)

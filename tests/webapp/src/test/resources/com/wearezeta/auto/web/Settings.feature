@@ -78,3 +78,31 @@ Feature: Settings
     Examples:
       | Email      | Password      | Name      | Error                                     |
       | user1Email | user1Password | user1Name | Please verify your details and try again. |
+
+  @C345367 @localytics @regression
+  Scenario Outline: Verify tracking data is never uploaded if user opted out
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I enable localytics via URL parameter
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I am signed in properly
+    When I see Contact list with name <Contact>
+    Then I open preferences by clicking the gear button
+    And I open options in preferences
+    When I see option to send reports is checked
+    And I remember number of localytics events
+    And I click on option to send reports
+    Then I see option to send reports is unchecked
+    When I close preferences
+    And I see Contact list with name <Contact>
+    And I open conversation with <Contact>
+    And I write random message
+    And I send message
+    And I see random message in conversation
+    And I wait for 10 seconds
+    Then There are no added localytics events
+
+    Examples:
+      | Email      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

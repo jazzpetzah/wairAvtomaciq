@@ -17,8 +17,7 @@ import java.util.concurrent.Callable;
 public class GoogleLoginPage extends WebPage {
 
     @SuppressWarnings("unused")
-    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-            .getInstance();
+    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection.getInstance();
 
     @FindBy(id = "Email")
     private WebElement emailField;
