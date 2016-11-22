@@ -1139,3 +1139,49 @@ Feature: Calling
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName1 | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GC1       | chrome      | chrome      | 20      |
+
+  @C1748 @staging @calling
+  Scenario Outline: Verify I can silence an incoming audio call
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact>
+    Then Soundfile ringing_from_them did not start playing in loop
+    When <Contact> calls me
+    Then I see the incoming call controls for conversation <Contact>
+    And Soundfile ringing_from_them did start playing in loop
+    When I ignore the call from conversation <Contact>
+    Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
+    And I see the join call controls for conversation <Contact>
+    And Soundfile ringing_from_them did stop playing
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 20      |
+
+  @C345396 @staging @calling
+  Scenario Outline: Verify I can silence an incoming video call
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact>
+    Then Soundfile ringing_from_them did not start playing in loop
+    And <Contact> starts a video call to me
+    Then I see the incoming call controls for conversation <Contact>
+    And Soundfile ringing_from_them did start playing in loop
+    When I ignore the call from conversation <Contact>
+    Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
+    And I see the join call controls for conversation <Contact>
+    And Soundfile ringing_from_them did stop playing
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 20      |
