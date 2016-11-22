@@ -204,6 +204,7 @@ public class CallingSteps {
         for (Call call : commonCallingSteps.getOutgoingCall(splitAliases(callees), conversation)) {
             assertNotNull("There are no metrics available for this call \n" + call, call.getMetrics());
             assertTrue("Call failed: \n" + call + "\n" + call.getMetrics(), call.getMetrics().isSuccess());
+            System.out.println("Establish time for " + call + "is" + call.getMetrics().getEstabTime());
         }
     }
 

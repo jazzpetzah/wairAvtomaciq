@@ -31,12 +31,15 @@ import cucumber.api.PendingException;
 import cucumber.api.Scenario;
 import cucumber.api.java.en.Then;
 import gherkin.formatter.model.Result;
+import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.ScreenOrientation;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -168,6 +171,7 @@ public class CommonIOSSteps {
             }
             capabilities.setCapability("realDeviceLogger", IDEVICE_CONSOLE.getCanonicalPath());
             capabilities.setCapability("showXcodeLog", true);
+            capabilities.setCapability("showIOSLog", true);
             if (CommonUtils.isRunningInJenkinsNetwork()) {
                 if (!KEYCHAIN.exists()) {
                     throw new IllegalStateException(
@@ -455,6 +459,9 @@ public class CommonIOSSteps {
                 if (!scenario.getStatus().equals(Result.PASSED) && pagesCollection.hasPages()) {
                     pagesCollection.getCommonPage().printPageSource();
                 }
+//                System.out.println("LOGS HERE");
+//                IteratorUtils.toList((Iterator<LogEntry>) PlatformDrivers.getInstance().getDriver(CURRENT_PLATFORM).get().manage().logs().get(LogType.SERVER).
+//                        iterator()).stream().forEach((e)->System.out.println(e));
                 PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
             }
         } catch (Exception e) {

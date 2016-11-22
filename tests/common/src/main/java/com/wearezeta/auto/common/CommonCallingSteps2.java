@@ -40,7 +40,7 @@ public final class CommonCallingSteps2 {
 
     private static final String CALL_BACKEND_VERSION_SEPARATOR = ":";
 
-    private static final String ZCALL_DEFAULT_VERSION = "2.9.13";
+    private static final String ZCALL_DEFAULT_VERSION = "2.9.14";
     private String zcallVersion = ZCALL_DEFAULT_VERSION;
 
     public String getZcallVersion() {

@@ -236,7 +236,7 @@ Feature: Calling Matrix
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C343178 @calling_matrix @fastLogin @real
+  @C343178 @calling_matrix @fastLogin @real @torun
   Scenario Outline: Verify I can receive 1:1 call from AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
