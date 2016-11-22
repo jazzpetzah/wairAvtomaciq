@@ -128,10 +128,6 @@ public class CommonIOSSteps {
             System.getProperty("user.home"), "/Library/Keychains/MyKeychain.keychain"));
     private static final String KEYCHAIN_PASSWORD = "123456";
 
-    private static final File IDEVICE_CONSOLE = new File(
-            "/usr/local/lib/node_modules/deviceconsole/deviceconsole"
-    );
-
     // https://github.com/wireapp/wire-ios/pull/339
     private static final String ARGS_FILE_NAME = "wire_arguments.txt";
 
@@ -153,19 +149,17 @@ public class CommonIOSSteps {
         capabilities.setCapability("autoLaunch", false);
         capabilities.setCapability("clearSystemFiles", true);
         if (isRealDevice) {
-            final String udid = IOSRealDeviceHelpers.getUDID().orElseThrow(
-                    () -> new IllegalStateException("Cannot detect any connected iDevice")
-            );
+            final String udid = IOSRealDeviceHelpers.getUDID();
 
             // We don't really care about which particular real device model we have
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()).split("\\s+")[0]);
             capabilities.setCapability("udid", udid);
-            if (!IDEVICE_CONSOLE.exists()) {
+            if (!IOSRealDeviceHelpers.IDEVICE_CONSOLE.exists()) {
                 throw new IllegalStateException(
                         "ideviceconsole is expected to be installed: npm install -g deviceconsole"
                 );
             }
-            capabilities.setCapability("realDeviceLogger", IDEVICE_CONSOLE.getCanonicalPath());
+            capabilities.setCapability("realDeviceLogger", IOSRealDeviceHelpers.IDEVICE_CONSOLE.getCanonicalPath());
             capabilities.setCapability("showXcodeLog", true);
             if (CommonUtils.isRunningInJenkinsNetwork()) {
                 if (!KEYCHAIN.exists()) {
@@ -390,6 +384,10 @@ public class CommonIOSSteps {
             usrMgr.useSpecialEmail();
         }
 
+        if (!getIsSimulatorFromConfig(getClass())) {
+            IOSRealDeviceHelpers.startLogListener();
+        }
+
         final Map<String, Object> additionalCaps = new HashMap<>();
         String appPath = IOSDistributable.getInstance(getAppPath()).getAppRoot().getAbsolutePath();
         if (scenario.getSourceTagNames().contains(TAG_NAME_UPGRADE) ||
@@ -453,8 +451,20 @@ public class CommonIOSSteps {
         }
 
         try {
-            if (!scenario.getStatus().equals(Result.PASSED) && getIsSimulatorFromConfig(getClass())) {
-                log.debug(IOSSimulatorHelpers.getLogsAndCrashes());
+            if (!scenario.getStatus().equals(Result.PASSED)) {
+                if (getIsSimulatorFromConfig(getClass())) {
+                    log.debug(IOSSimulatorHelpers.getLogsAndCrashes());
+                } else {
+                    log.debug(IOSRealDeviceHelpers.getLogs());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if (!getIsSimulatorFromConfig(getClass())) {
+                IOSRealDeviceHelpers.stopLogListener();
             }
         } catch (Exception e) {
             e.printStackTrace();
