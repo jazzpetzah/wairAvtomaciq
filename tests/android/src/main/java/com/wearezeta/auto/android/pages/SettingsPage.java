@@ -46,8 +46,6 @@ public class SettingsPage extends AndroidPage {
     private static final Function<Integer, String> idStrVerificationCodeDigitInput = idx ->
             String.format("et__verification_code__%s", idx);
 
-    private static final int SCREEN_HEIGHT_THRESHOLD = 0;
-
     public SettingsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -59,8 +57,7 @@ public class SettingsPage extends AndroidPage {
         while (nScrolls < maxScrolls) {
             if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
                 WebElement menuElement = getElement(locator);
-                if (menuElement.getLocation().getY() + menuElement.getSize().getHeight()
-                        <= screenHeight + SCREEN_HEIGHT_THRESHOLD) {
+                if (DriverUtils.isElementCompletelyOnScreen(getDriver(), menuElement)) {
                     return true;
                 }
             }
