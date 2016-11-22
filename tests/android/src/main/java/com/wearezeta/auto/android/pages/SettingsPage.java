@@ -46,7 +46,7 @@ public class SettingsPage extends AndroidPage {
     private static final Function<Integer, String> idStrVerificationCodeDigitInput = idx ->
             String.format("et__verification_code__%s", idx);
 
-    private static final int SCREEN_HEIGHT_THRESHOLD = 10;
+    private static final int SCREEN_HEIGHT_THRESHOLD = 0;
 
     public SettingsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
