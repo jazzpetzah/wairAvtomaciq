@@ -10,8 +10,8 @@ import org.apache.log4j.Logger;
 
 public class ContactContextMenuPage extends OSXPage {
 
-    public static final Logger LOG = ZetaLogger.getLog(ContactContextMenuPage.class
-            .getName());
+    @SuppressWarnings("unused")
+    private static final Logger LOG = ZetaLogger.getLog(ContactContextMenuPage.class.getName());
 
     private static final int CONTEXT_SILENCE_INDEX = 1;
     private static final int CONTEXT_ARCHIVE_INDEX = 2;

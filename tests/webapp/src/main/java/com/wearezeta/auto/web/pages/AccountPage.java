@@ -24,6 +24,7 @@ import org.openqa.selenium.By;
 
 public class AccountPage extends WebPage {
 
+    @SuppressWarnings("unused")
     private static final Logger log = ZetaLogger.getLog(AccountPage.class.getSimpleName());
 
     @FindBy(css = WebAppLocators.AccountPage.cssLogoutButton)

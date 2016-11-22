@@ -29,7 +29,7 @@ public class MigrationSteps {
         this.context = context;
     }
 
-    public static final Logger log = ZetaLogger.getLog(MigrationSteps.class.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(MigrationSteps.class.getSimpleName());
 
     private static final int IS_RUNNING_CHECK_INTERVAL = 20; // milliseconds
     private static final int MAX_RETRY = 3;

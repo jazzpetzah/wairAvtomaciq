@@ -10,6 +10,7 @@ import org.openqa.selenium.support.FindBy;
 
 public class AboutPage extends WebPage {
 
+    @SuppressWarnings("unused")
     private static final Logger log = ZetaLogger.getLog(AboutPage.class.getSimpleName());
 
     @FindBy(css = "[data-uie-name='go-support']")

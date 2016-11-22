@@ -15,7 +15,8 @@ import org.openqa.selenium.support.How;
 
 public class OptionsPage extends WebPage {
 
-    private static final Logger log = ZetaLogger.getLog(AccountPage.class.getSimpleName());
+    @SuppressWarnings("unused")
+    private static final Logger log = ZetaLogger.getLog(OptionsPage.class.getSimpleName());
 
     @FindBy(how = How.CSS, using = "[name='preferences-options-audio']")
     private List<WebElement> soundAlertsRadioboxes;

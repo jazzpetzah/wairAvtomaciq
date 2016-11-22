@@ -28,8 +28,7 @@ import org.junit.Assert;
 
 public class SingleUserPopoverPageSteps {
 
-    public static final Logger log = ZetaLogger
-            .getLog(SingleUserPopoverPageSteps.class.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(SingleUserPopoverPageSteps.class.getSimpleName());
 
     private static final String MAILTO = "mailto:";
     private static final String CAPTION_PENDING = "Pending";

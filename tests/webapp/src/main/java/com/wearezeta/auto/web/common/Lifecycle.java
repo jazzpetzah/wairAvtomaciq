@@ -328,28 +328,6 @@ public class Lifecycle {
         capabilities.setCapability("ie.ensureCleanSession", true);
     }
 
-    private static void setExtendedLoggingLevel(
-            DesiredCapabilities capabilities, String loggingLevelName) {
-        final LoggingPreferences logs = new LoggingPreferences();
-        // set it to SEVERE by default
-        Level level = Level.SEVERE;
-        try {
-            level = Level.parse(loggingLevelName);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-            // Just continue with the default logging level
-        }
-        logs.enable(LogType.BROWSER, level);
-        // logs.enable(LogType.CLIENT, Level.ALL);
-        // logs.enable(LogType.DRIVER, Level.ALL);
-        // logs.enable(LogType.PERFORMANCE, Level.ALL);
-        // logs.enable(LogType.PROFILER, Level.ALL);
-        // logs.enable(LogType.SERVER, Level.ALL);
-        capabilities.setCapability(CapabilityType.LOGGING_PREFS, logs);
-        log.debug("Browser logging level has been set to '" + level.getName()
-                + "'");
-    }
-
     private String getUniqueTestName(String testname) {
         String browserName = WebAppExecutionContext.getBrowserName();
         String browserVersion = WebAppExecutionContext.getBrowserVersion();
@@ -393,11 +371,11 @@ public class Lifecycle {
                         "Unsupported/incorrect browser name is set: " + browserName);
         }
 
+        // Set log level to ALL for browser logs when supported
         if (browser.isSupportingConsoleLogManagement()) {
-            setExtendedLoggingLevel(
-                    capabilities,
-                    WebCommonUtils
-                    .getExtendedLoggingLevelInConfig(CommonCallingSteps2.class));
+            final LoggingPreferences logs = new LoggingPreferences();
+            logs.enable(LogType.BROWSER, Level.ALL);
+            capabilities.setCapability(CapabilityType.LOGGING_PREFS, logs);
         }
 
         capabilities.setCapability("platform", platform);

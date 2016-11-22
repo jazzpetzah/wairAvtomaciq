@@ -10,8 +10,6 @@ import com.wearezeta.auto.common.driver.ZetaWinDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.web.common.ConversationStates;
-import com.wearezeta.auto.web.common.Pinger;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -22,6 +20,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class TestContext {
 
+    @SuppressWarnings("unused")
     private static final Logger LOG = ZetaLogger.getLog(TestContext.class.getSimpleName());
 
     // IDLE_TIMEOUT 90s https://www.browserstack.com/automate/timeouts

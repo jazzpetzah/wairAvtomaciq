@@ -20,7 +20,6 @@ import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.pages.RegistrationPage;
-import static com.wearezeta.auto.web.steps.CommonWebAppSteps.log;
 import com.wire.picklejar.gherkin.model.Step;
 import java.io.File;
 import java.io.IOException;
@@ -47,7 +46,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class Lifecycle {
 
-    public static final Logger LOG = ZetaLogger.getLog(Lifecycle.class.getName());
+    private static final Logger LOG = ZetaLogger.getLog(Lifecycle.class.getName());
 
     private TestContext webContext;
     private TestContext wrapperContext;
@@ -87,7 +86,10 @@ public class Lifecycle {
         capabilities.setCapability(ChromeOptions.CAPABILITY, options);
         capabilities.setCapability("platformName", OSXExecutionContext.CURRENT_SECONDARY_PLATFORM.name());
 
-        setExtendedLoggingLevel(capabilities, OSXExecutionContext.EXTENDED_LOGGING_LEVEL);
+        // Set log level to ALL for browser logs
+        final LoggingPreferences logs = new LoggingPreferences();
+        logs.enable(LogType.BROWSER, Level.ALL);
+        capabilities.setCapability(CapabilityType.LOGGING_PREFS, logs);
 
         service = new ChromeDriverService.Builder().usingDriverExecutable(new File(OSXExecutionContext.CHROMEDRIVER_PATH))
                 .usingAnyFreePort().build();
@@ -115,26 +117,6 @@ public class Lifecycle {
             return zetaOSXDriver;
         };
         return pool.submit(callableOSXDriver);
-    }
-
-    private static void setExtendedLoggingLevel(DesiredCapabilities capabilities, String loggingLevelName) {
-        final LoggingPreferences logs = new LoggingPreferences();
-        // set it to SEVERE by default
-        Level level = Level.ALL;
-        try {
-            level = Level.parse(loggingLevelName);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-            // Just continue with the default logging level
-        }
-        logs.enable(LogType.BROWSER, level);
-        // logs.enable(LogType.CLIENT, Level.ALL);
-        // logs.enable(LogType.DRIVER, Level.ALL);
-        // logs.enable(LogType.PERFORMANCE, Level.ALL);
-        // logs.enable(LogType.PROFILER, Level.ALL);
-        // logs.enable(LogType.SERVER, Level.ALL);
-        capabilities.setCapability(CapabilityType.LOGGING_PREFS, logs);
-        log.debug("Browser logging level has been set to '" + level.getName() + "'");
     }
 
     public void startApp() throws Exception {
@@ -185,7 +167,7 @@ public class Lifecycle {
             TestrailSyncUtilities.syncExecutedScenarioWithTestrail(scenario.getName(),
                     new BasicScenarioResultToTestrailTransformer(mapScenario(scenario)).transform(), tagSet);
         } catch (Exception e) {
-            log.warn(e);
+            LOG.warn(e);
         }
         tearDown();
     }
@@ -212,45 +194,45 @@ public class Lifecycle {
                 driver.executeScript(logoutScript);
             }
         } catch (Exception e) {
-            log.warn(e);
+            LOG.warn(e);
         } finally {
             try {
-                log.debug("Releasing devices");
-                log.debug(webContext.getUserManager().getCreatedUsers());
+                LOG.debug("Releasing devices");
+                LOG.debug(webContext.getUserManager().getCreatedUsers());
                 webContext.getDeviceManager().releaseDevicesOfUsers(webContext.getUserManager().getCreatedUsers());
             } catch (Exception e) {
-                log.warn(e);
+                LOG.warn(e);
             }
             try {
-                log.debug("Closing webdriver");
+                LOG.debug("Closing webdriver");
                 webContext.getDriver().quit();
             } catch (Exception e) {
-                log.warn(e);
+                LOG.warn(e);
             }
             try {
-                log.debug("Closing osxdriver");
+                LOG.debug("Closing osxdriver");
                 wrapperContext.getDriver().quit();
             } catch (Exception e) {
-                log.warn(e);
+                LOG.warn(e);
             }
             try {
-                log.debug("Cleaning up calling instances");
+                LOG.debug("Cleaning up calling instances");
                 webContext.getCallingManager().cleanup();
             } catch (Exception e) {
-                log.warn(e);
+                LOG.warn(e);
             }
             try {
-                log.debug("Clearing pages collection");
+                LOG.debug("Clearing pages collection");
                 webContext.getPagesCollection().clearAllPages();
                 wrapperContext.getPagesCollection().clearAllPages();
             } catch (Exception e) {
-                log.warn(e);
+                LOG.warn(e);
             }
             try {
-                log.debug("Resetting users");
+                LOG.debug("Resetting users");
                 webContext.getUserManager().resetUsers();
             } catch (Exception e) {
-                log.warn(e);
+                LOG.warn(e);
             }
         }
 

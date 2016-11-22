@@ -21,8 +21,7 @@ import cucumber.api.java.en.Then;
 
 public class DeleteAccountPageSteps {
 
-    public static final Logger log = ZetaLogger.getLog(CommonWebAppSteps.class
-            .getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(CommonWebAppSteps.class.getSimpleName());
 
     private static final int DELETION_RECEIVING_TIMEOUT = 120;
 

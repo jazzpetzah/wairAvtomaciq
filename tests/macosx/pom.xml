@@ -16,12 +16,6 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <defaultEmail>smoketester@wire.com</defaultEmail>
-        <!--<backendType>staging</backendType> -->
-        <!-- The levels in descending order are: SEVERE (highest value), WARNING, 
-        INFO, CONFIG, FINE, FINER, FINEST (lowest value). In addition there is a 
-        level OFF that can be used to turn off logging, and a level ALL that can 
-        be used to enable logging of all messages. -->
-        <extendedLoggingLevel>SEVERE</extendedLoggingLevel>
         <com.wire.app.path>/Applications/Wire.app</com.wire.app.path>
         <com.wire.electron.path.suffix>/Contents/MacOS/Wire</com.wire.electron.path.suffix>
         <com.wire.appium.hub.url>http://127.0.0.1:4622/wd/hub</com.wire.appium.hub.url>

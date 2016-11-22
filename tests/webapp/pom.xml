@@ -31,11 +31,6 @@
         <!-- leave webappApplicationPath empty to get the default URL for the backendType -->
         <webappApplicationPath />
         <otrOnly>true</otrOnly>
-        <!-- The levels in descending order are: SEVERE (highest value), WARNING, 
-        INFO, CONFIG, FINE, FINER, FINEST (lowest value). In addition there is a 
-        level OFF that can be used to turn off logging, and a level ALL that can 
-        be used to enable logging of all messages. -->
-        <extendedLoggingLevel>SEVERE</extendedLoggingLevel>
         <rcNotificationsRecepients>michael@wire.com,sven.jost@wire.com,nastia@wire.com</rcNotificationsRecepients>
         <com.wire.os.name>Windows</com.wire.os.name>
         <com.wire.os.version>7</com.wire.os.version>

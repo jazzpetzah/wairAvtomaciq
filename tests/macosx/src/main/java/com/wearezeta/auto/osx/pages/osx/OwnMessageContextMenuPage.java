@@ -10,7 +10,8 @@ import org.apache.log4j.Logger;
 
 public class OwnMessageContextMenuPage extends OSXPage {
 
-    public static final Logger LOG = ZetaLogger.getLog(OwnMessageContextMenuPage.class.getName());
+    @SuppressWarnings("unused")
+    private static final Logger LOG = ZetaLogger.getLog(OwnMessageContextMenuPage.class.getName());
 
     private static final int CONTEXT_LIKE_INDEX = 1;
     private static final int CONTEXT_EDIT_INDEX = 2;

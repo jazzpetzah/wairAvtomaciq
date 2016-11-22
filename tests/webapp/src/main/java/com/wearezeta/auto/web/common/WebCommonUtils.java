@@ -27,8 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 public class WebCommonUtils extends CommonUtils {
 
-    private static final Logger log = ZetaLogger.getLog(WebCommonUtils.class
-            .getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(WebCommonUtils.class.getSimpleName());
 
     public static String getHubHostFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "hubHost");
@@ -36,11 +35,6 @@ public class WebCommonUtils extends CommonUtils {
 
     public static int getHubPortFromConfig(Class<?> c) throws Exception {
         return Integer.parseInt(getValueFromConfig(c, "hubPort"));
-    }
-
-    public static String getExtendedLoggingLevelInConfig(Class<?> c)
-            throws Exception {
-        return getValueFromConfig(c, "extendedLoggingLevel");
     }
 
     public static String getScriptsTemplatesPath() {

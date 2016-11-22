@@ -41,8 +41,7 @@ public class RegistrationPageSteps {
 
     public static final int maxCheckCnt = 2;
 
-    private static final Logger LOG = ZetaLogger
-            .getLog(RegistrationPageSteps.class.getName());
+    private static final Logger LOG = ZetaLogger.getLog(RegistrationPageSteps.class.getName());
 
     private final TestContext context;
 

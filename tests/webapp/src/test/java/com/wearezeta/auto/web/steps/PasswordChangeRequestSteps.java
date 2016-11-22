@@ -30,8 +30,7 @@ import cucumber.api.java.en.When;
 public class PasswordChangeRequestSteps {
 
     @SuppressWarnings("unused")
-    private static final Logger log = ZetaLogger
-            .getLog(PasswordChangeRequestSteps.class.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(PasswordChangeRequestSteps.class.getSimpleName());
 
     private Future<String> passwordChangeMessage = null;
 

@@ -23,8 +23,7 @@ import com.wearezeta.auto.web.pages.external.PasswordChangeRequestPage;
 public class LoginPage extends WebPage {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = ZetaLogger.getLog(LoginPage.class
-            .getName());
+    private static final Logger LOG = ZetaLogger.getLog(LoginPage.class.getName());
 
     private static final int TIMEOUT_SIGNED_IN_PROPERLY = 40; // seconds
 

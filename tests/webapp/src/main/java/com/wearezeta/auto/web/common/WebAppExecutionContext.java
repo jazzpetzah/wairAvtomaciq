@@ -6,8 +6,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class WebAppExecutionContext {
 
-	private static final Logger log = ZetaLogger
-			.getLog(WebAppExecutionContext.class.getSimpleName());
+	private static final Logger log = ZetaLogger.getLog(WebAppExecutionContext.class.getSimpleName());
 
 	private static String osName;
 	private static String osVersion;
