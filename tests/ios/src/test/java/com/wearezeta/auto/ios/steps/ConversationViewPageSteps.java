@@ -342,11 +342,6 @@ public class ConversationViewPageSteps {
         getConversationViewPage().playMediaContent();
     }
 
-    @When("^I stop media in media bar$")
-    public void IStopMediaInMediaBar() throws Exception {
-        getConversationViewPage().stopMediaContent();
-    }
-
     private ElementState previousMediaContainerState = new ElementState(
             () -> getConversationViewPage().getMediaContainerStateGlyphScreenshot()
     );

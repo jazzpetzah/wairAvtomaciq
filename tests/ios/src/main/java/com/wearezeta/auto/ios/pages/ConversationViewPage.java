@@ -381,10 +381,6 @@ public class ConversationViewPage extends IOSPage {
         getElement(nameMediaBarCloseButton, "Close button is not visible on Media bar").click();
     }
 
-    public void stopMediaContent() throws Exception {
-        clickMediaBarCloseButton();
-    }
-
     public boolean isUpperToolbarContainNames(List<String> expectedNames) throws Exception {
         final String xpathExpr = String.join(" and ", expectedNames.stream()
                 .map(x -> String.format("contains(@value, '%s')", x.toUpperCase()))
