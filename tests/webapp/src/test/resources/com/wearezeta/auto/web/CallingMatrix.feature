@@ -21,6 +21,7 @@ Feature: Calling_Matrix
     And <Contact> verifies to have 1 flow
     And <Contact> verifies to get audio data from me
     And <Contact> verifies that all audio flows have greater than 0 bytes
+    And Soundfile nw_interruption did not start playing
     And Soundfile call_drop did not start playing
     When I hang up call with conversation <Contact>
     Then I do not see the call controls for conversation <Contact>

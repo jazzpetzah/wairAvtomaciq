@@ -12,11 +12,15 @@ Feature: Calling
     And I open conversation with <Contact>
     And I see call button
     Then I see correct call button tooltip
+    Then Soundfile ringing_from_me did not start playing in loop
     When I call
     Then I see the outgoing call controls for conversation <Contact>
+    Then Soundfile ringing_from_me did start playing in loop
     When <Contact> accepts next incoming call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
+    Then Soundfile ringing_from_me did stop playing
+    Then Soundfile ready_to_talk did start playing
     And <Contact> verifies to have 1 flow
     And <Contact> verifies to get audio data from me
     And <Contact> verifies that all audio flows have greater than 0 bytes
@@ -29,8 +33,11 @@ Feature: Calling
     And I see sent picture <PictureName> in the conversation view
     And <Contact> verifies to have 1 flow
     And <Contact> verifies to get audio data from me
+    And Soundfile nw_interruption did not start playing
+    And Soundfile call_drop did not start playing
     When I hang up call with conversation <Contact>
     And I do not see the call controls for conversation <Contact>
+    And Soundfile call_drop did start playing
 
     Examples:
       | Login      | Password      | Name      | Contact   | PING       | PictureName               | CallBackend | Timeout |
@@ -104,18 +111,25 @@ Feature: Calling
     And I open conversation with <Contact1>
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact2> is on the top
+    Then Soundfile ringing_from_them did not start playing in loop
     And <Contact1> calls me
     And I see the incoming call controls for conversation <Contact1>
+    Then Soundfile ringing_from_them did start playing in loop
     And I see conversation <Contact1> is on the top
     When I accept the call from conversation <Contact1>
     Then I see the ongoing call controls for conversation <Contact1>
+    Then Soundfile ringing_from_them did stop playing
+    Then Soundfile ready_to_talk did start playing
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies to get audio data from me
     And <Contact1> verify that all audio flows have greater than 0 bytes
 #    And I see conversation <Contact1> is on the top
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact1> is on the top
+    And Soundfile nw_interruption did not start playing
+    And Soundfile call_drop did not start playing
     And I hang up call with conversation <Contact1>
+    And Soundfile call_drop did start playing
     When User <Contact2> pinged in the conversation with <Contact2>
     #And I see conversation <Contact2> is on the top
 
