@@ -6,7 +6,7 @@ Feature: Forward Message
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given User <Contact1> sends encrypted image <Picture> to single user conversation Myself
+    Given User Myself sends encrypted image <Picture> to single user conversation <Contact1>
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given I long tap on image in conversation view

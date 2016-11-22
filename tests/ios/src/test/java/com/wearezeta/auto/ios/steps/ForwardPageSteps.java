@@ -28,7 +28,7 @@ public class ForwardPageSteps {
     /**
      * Select the corresponding conversation from the list on Forward page
      *
-     * @param name     conversation name/alias
+     * @param name conversation name/alias
      * @throws Exception
      * @step. ^I select (.*) conversation on Forward page$
      */
