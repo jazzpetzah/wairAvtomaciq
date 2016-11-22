@@ -1,10 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.util.List;
-
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.GroupConversationViewPage;
 
@@ -18,16 +15,6 @@ public class GroupConversationViewPageSteps {
 
     private GroupConversationViewPage getGroupConversationViewPage() throws Exception {
         return pagesCollection.getPage(GroupConversationViewPage.class);
-    }
-
-    @Then("^I see group chat page with users (.*)$")
-    public void ThenISeeGroupChatPage(String participantNameAliases) throws Exception {
-        participantNameAliases = usrMgr.replaceAliasesOccurences(participantNameAliases,
-                ClientUsersManager.FindBy.NAME_ALIAS);
-        final List<String> participantNames = CommonSteps.splitAliases(participantNameAliases);
-        Assert.assertTrue(
-                String.format("Users '%s' are not displayed on Upper Toolbar", participantNameAliases),
-                getGroupConversationViewPage().isUpperToolbarContainNames(participantNames));
     }
 
     @When("^I see You Renamed Conversation message shown in conversation view$")

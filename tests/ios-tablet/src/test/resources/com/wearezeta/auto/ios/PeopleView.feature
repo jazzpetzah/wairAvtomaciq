@@ -18,7 +18,7 @@ Feature: People View
     And I type "<Contact2>" in Search UI input field
     And I tap on conversation <Contact2> in search result
     And I tap Create conversation action button on Search UI page
-    Then I see group chat page with users <Contact1>,<Contact2>
+    Then I see group conversation with users <Contact1>,<Contact2>
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -42,7 +42,7 @@ Feature: People View
     And I type "<Contact2>" in Search UI input field
     And I tap on conversation <Contact2> in search result
     And I tap Create conversation action button on Search UI page
-    Then I see group chat page with users <Contact1>,<Contact2>
+    Then I see group conversation with users <Contact1>,<Contact2>
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -61,7 +61,7 @@ Feature: People View
     And I tap connected user <Contact2> in Search UI on iPad popover
     And I tap connected user <Contact3> in Search UI on iPad popover
     And I tap Create button on iPad popover
-    Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
+    Then I see group conversation with users <Contact1>,<Contact2>,<Contact3>
     And I navigate back to conversations list
     Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 
@@ -82,7 +82,7 @@ Feature: People View
     And I tap connected user <Contact2> in Search UI on iPad popover
     And I tap connected user <Contact3> in Search UI on iPad popover
     And I tap Create button on iPad popover
-    And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
+    And I see group conversation with users <Contact1>,<Contact2>,<Contact3>
     Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
