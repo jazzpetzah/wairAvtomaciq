@@ -23,20 +23,25 @@ Feature: Forward Message
 
   @C345394 @staging @fastLogin
   Scenario Outline: ZIOS-7673 Verify outgoing/incoming connection requests/ left conversations are not in a forward list
-    Given There are 4 users where <Name> is me
-    Given Myself is connected to <Contact3>
-    Given <Contact1> sent connection request to Me
-    Given Myself sent connection request to <Contact2>
+    Given There are 6 users where <Name> is me
+    Given Myself is connected to <ConnectedUser1>,<ConnectedUser2>,<BlockedUser>
+    Given Myself has group chat <GroupChatName> with <ConnectedUser1>,<ConnectedUser2>
+    Given User Myself blocks user <BlockedUser>
+    Given <NonConnectedIncomingUser> sent connection request to Me
+    Given Myself sent connection request to <NonConnectedOutgoingUser>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given User <Contact3> sends 1 encrypted message to user Myself
+    Given <ConnectedUser1> removes Me from group chat <GroupChatName>
+    Given User <ConnectedUser1> sends 1 encrypted message to user Myself
     Given I see conversations list
-    Given I tap on contact name <Contact3>
+    Given I tap on contact name <ConnectedUser1>
     Given I long tap default message in conversation view
     When I tap on Forward badge item
-    Then I do not see <Contact2> conversation on Forward page
-    And I do not see <Contact1> conversation on Forward page
+    Then I do not see <NonConnectedIncomingUser> conversation on Forward page
+    And I do not see <NonConnectedOutgoingUser> conversation on Forward page
+    And I do not see <GroupChatName> conversation on Forward page
+    And I do not see <BlockedUser> conversation on Forward page
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact3  |
-      | user1Name | user2Name | user3name | user4name |
+      | Name      | ConnectedUser1 | ConnectedUser2 | NonConnectedIncomingUser | NonConnectedOutgoingUser | BlockedUser | GroupChatName |
+      | user1Name | user2Name      | user3name      | user4name                | user5Name                | user6Name   | Group         |
