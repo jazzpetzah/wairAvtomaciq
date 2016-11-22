@@ -79,7 +79,7 @@ Feature: Settings
       | Email      | Password      | Name      | Error                                     |
       | user1Email | user1Password | user1Name | Please verify your details and try again. |
 
-  @C345367 @localytics @staging
+  @C345367 @localytics @regression
   Scenario Outline: Verify tracking data is never uploaded if user opted out
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
