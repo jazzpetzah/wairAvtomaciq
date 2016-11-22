@@ -82,7 +82,7 @@ public class DriverUtils {
                 el.getSize().width, el.getSize().height);
         final Dimension dim = driver.manage().window().getSize();
         final Rectangle windowRect = new Rectangle(dim.getWidth(), dim.getHeight());
-        return elementRect.contains(windowRect);
+        return windowRect.contains(elementRect);
     }
 
     public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver, By by) throws Exception {
