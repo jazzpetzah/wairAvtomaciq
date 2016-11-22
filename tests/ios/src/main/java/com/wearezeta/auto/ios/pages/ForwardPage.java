@@ -43,4 +43,14 @@ public class ForwardPage extends IOSPage {
         final By locator = getButtonByName(name);
         getElement(locator).click();
     }
+
+    public boolean isConversationVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathStrConversationByName.apply(name));
+        return isLocatorDisplayed(locator);
+    }
+
+    public boolean isConversationInvisible(String name) throws Exception {
+        final By locator = By.xpath(xpathStrConversationByName.apply(name));
+        return isLocatorInvisible(locator);
+    }
 }
