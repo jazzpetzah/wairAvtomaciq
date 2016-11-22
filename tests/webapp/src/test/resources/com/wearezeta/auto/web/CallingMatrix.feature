@@ -89,7 +89,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend     | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | zcall:2.9.13    | 20      |
+      | user1Email | user1Password | user1Name | user2Name | zcall:2.9.14    | 20      |
 
   @C5362 @calling_matrix
   Scenario Outline: Verify I can receive 1:1 audio call from <CallBackend>
@@ -172,7 +172,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend       | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | zcall:2.9.13      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | zcall:2.9.14      | 20      |
 
   @C5365 @calling_matrix
   Scenario Outline: Verify I can make audio group call with multiple <WaitBackend>
@@ -235,7 +235,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend    | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.9.13   | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.9.14   | 30      |
 
   @C5367 @calling_matrix
   Scenario Outline: Verify I can join audio group call with multiple <Backend>
@@ -350,7 +350,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend        | WaitBackend   | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.9.3    | zcall:2.9.13  | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.9.3    | zcall:2.9.14  | 30      |
 
   @C5370 @calling_matrix
   Scenario Outline: Verify I can create, leave and rejoin an audio group call with <WaitBackend>
@@ -413,7 +413,7 @@ Feature: Calling_Matrix
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend  | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | zcall:2.9.13 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | zcall:2.9.14 | 30      |
 
   @C5372 @calling_matrix
   Scenario Outline: Verify I can 1:1 audio call a user with <CallBackend> twice in a row
@@ -479,7 +479,7 @@ Feature: Calling_Matrix
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend  | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | zcall:2.9.13 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | zcall:2.9.14 | 20      |
 
   @C5374 @calling_matrix
   Scenario Outline: Verify I can 1:1 video call a user with <CallBackend> twice in a row
