@@ -41,6 +41,8 @@ public class ConversationActionsPage extends IOSPage {
     }
 
     public void tapMenuItem(String buttonTitle) throws Exception {
+        // Wait for animation
+        Thread.sleep(2000);
         final WebElement btn = getElement(getActionButtonByName(buttonTitle));
         btn.click();
         isElementInvisible(btn);
