@@ -8,6 +8,8 @@ Feature: Forward Message
     Given User Myself sends encrypted image <Picture> to single user conversation <Contact1>
     Given I see conversations list
     Given I tap on contact name <Contact1>
+    # Wait for the picture to be loaded
+    Given I wait for 3 seconds
     Given I long tap on image in conversation view
     When I tap on Forward badge item
     And I select <Contact2> conversation on Forward page
@@ -21,8 +23,8 @@ Feature: Forward Message
       | Name      | Contact1  | Contact2  | Picture     |
       | user1Name | user2Name | user3name | testing.jpg |
 
-  @C345383 @staging @fastLogin
-  Scenario Outline: ZIOS-7673 Verify outgoing/incoming connection requests/ left conversations are not in a forward list
+  @C345383 @regression @fastLogin
+  Scenario Outline: Verify outgoing/incoming connection requests/ left conversations are not in a forward list
     Given There are 6 users where <Name> is me
     Given Myself is connected to <ConnectedUser1>,<ConnectedUser2>,<BlockedUser>
     Given Myself has group chat <GroupChatName> with <ConnectedUser1>,<ConnectedUser2>
@@ -45,8 +47,8 @@ Feature: Forward Message
       | Name      | ConnectedUser1 | ConnectedUser2 | NonConnectedIncomingUser | NonConnectedOutgoingUser | BlockedUser | GroupChatName |
       | user1Name | user2Name      | user3name      | user4name                | user5Name                | user6Name   | Group         |
 
-  @C345382 @staging @fastLogin
-  Scenario Outline: ZIOS-7670 Verify message is sent as normal when ephemeral keyboard is chosen in the destination conversation
+  @C345382 @regression @fastLogin
+  Scenario Outline: Verify message is sent as normal when ephemeral keyboard is chosen in the destination conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
@@ -70,8 +72,8 @@ Feature: Forward Message
       | Name      | Contact1  | Contact2  | Timeout |
       | user1Name | user2Name | user3name | 5       |
     
-  @C345384 @staging @fastLogin
-  Scenario Outline: Verify forwarding to archived conversation unarchive it
+  @C345384 @regression @fastLogin
+  Scenario Outline: ZIOS-7674 Verify forwarding to archived conversation unarchive it
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given User Myself archives single user conversation <Contact2>
@@ -91,7 +93,7 @@ Feature: Forward Message
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3name |
 
-  @C345368 @staging @fastLogin
+  @C345368 @regression @fastLogin
   Scenario Outline: Verify forwarding own text message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
