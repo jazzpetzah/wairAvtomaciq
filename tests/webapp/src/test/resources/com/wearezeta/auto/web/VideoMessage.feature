@@ -1,9 +1,10 @@
 Feature: Video Message
 
-  @C123927 @videomessage @regression
+  @C123927 @videomessage @regression @localytics
   Scenario Outline: Verify sender can play video message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I enable localytics via URL parameter
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly

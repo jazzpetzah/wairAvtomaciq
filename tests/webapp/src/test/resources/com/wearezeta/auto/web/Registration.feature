@@ -2,6 +2,8 @@ Feature: Registration
 
   @C1761 @smoke @useSpecialEmail @localytics
   Scenario Outline: Verify new user can be registered
+    Given I see Registration page
+    Given I enable localytics via URL parameter
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password "<Password>" on Registration page
