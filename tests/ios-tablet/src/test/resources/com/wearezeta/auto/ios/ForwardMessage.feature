@@ -116,3 +116,32 @@ Feature: Forward Message
     Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3name |
+
+  @C345392 @staging @fastLogin
+  Scenario Outline: Verify forwarding someone else audio message
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given User Me sends 1 encrypted message to user <Contact1>
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+# Small wait to make the appearence of button on jenkins more stable
+    Given I wait for 3 seconds
+    When I long tap on audio message placeholder in conversation view
+    Then I do not see Forward badge item
+    When I tap Play audio message button
+# Small wait to make sure download is completed
+    And I wait for 5 seconds
+    And I long tap on audio message placeholder in conversation view
+    When I tap on Forward badge item
+    And I select <Contact2> conversation on Forward page
+    And I tap Send button on Forward page
+    Then I see conversation with user <Contact1>
+    When I tap on contact name <Contact2>
+    Then I see audio message container in the conversation view
+
+    Examples:
+      | Name      | Contact1  | Contact2  | FileName | FileMIME  | ContactDevice |
+      | user1Name | user2Name | user3name | test.m4a | audio/mp4 | Device1       |
