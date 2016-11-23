@@ -41,13 +41,16 @@ public class ClientUsersManager {
             .format("user%dEmail", idx);
     public static final Function<Integer, String> PHONE_NUMBER_ALIAS_TEMPLATE = idx -> String
             .format("user%dPhoneNumber", idx);
+    public static final Function<Integer, String> UNIQUE_USERNAME_ALIAS_TEMPLATE = idx -> String
+            .format("user%dUniqueUsername", idx);
     public static final int MAX_USERS = 3001;
 
     private static final Logger log = ZetaLogger.getLog(ClientUsersManager.class.getSimpleName());
 
     public static void setClientUserAliases(ClientUser user,
                                             String[] nameAliases, String[] passwordAliases,
-                                            String[] emailAliases, String[] phoneNumberAliases) {
+                                            String[] emailAliases, String[] phoneNumberAliases,
+                                            String[] uniqueUsernameAliases) {
         if (nameAliases != null && nameAliases.length > 0) {
             user.clearNameAliases();
             for (String nameAlias : nameAliases) {
@@ -72,6 +75,12 @@ public class ClientUsersManager {
                 user.addPhoneNumberAlias(phoneNumberAlias);
             }
         }
+        if (uniqueUsernameAliases != null && uniqueUsernameAliases.length > 0) {
+            user.clearUniqueUsernameAliases();
+            for (String alias : uniqueUsernameAliases) {
+                user.addUniqueUsernameAlias(alias);
+            }
+        }
     }
 
     private void setUserDefaults(ClientUser user, int userIdx) throws Exception {
@@ -83,7 +92,8 @@ public class ClientUsersManager {
         final String[] passwordAliases = new String[]{PASSWORD_ALIAS_TEMPLATE.apply(userIdx + 1)};
         final String[] emailAliases = new String[]{EMAIL_ALIAS_TEMPLATE.apply(userIdx + 1)};
         final String[] phoneNumberAliases = new String[]{PHONE_NUMBER_ALIAS_TEMPLATE.apply(userIdx + 1)};
-        setClientUserAliases(user, nameAliases, passwordAliases, emailAliases, phoneNumberAliases);
+        final String[] uniqueUsernameAliases = new String[]{UNIQUE_USERNAME_ALIAS_TEMPLATE.apply(userIdx + 1)};
+        setClientUserAliases(user, nameAliases, passwordAliases, emailAliases, phoneNumberAliases, uniqueUsernameAliases);
     }
 
     private void resetClientsList(int maxCount) throws Exception {
@@ -152,9 +162,9 @@ public class ClientUsersManager {
 
     public enum FindBy {
         NAME("Name"), PASSWORD("Password"), EMAIL("Email"), PHONE_NUMBER(
-                "Phone Number"), NAME_ALIAS("Name Alias(es)"), PASSWORD_ALIAS(
+                "Phone Number"), UNIQUE_USERNAME("Unique Username"), NAME_ALIAS("Name Alias(es)"), PASSWORD_ALIAS(
                 "Password Alias(es)"), EMAIL_ALIAS("Email Alias(es)"), PHONENUMBER_ALIAS(
-                "Phone Number Alias(es)");
+                "Phone Number Alias(es)"), UNIQUE_USERNAME_ALIAS("Unique Username Alias(es)");
 
         private final String name;
 
@@ -188,6 +198,11 @@ public class ClientUsersManager {
                 FindBy.EMAIL_ALIAS});
     }
 
+    public ClientUser findUserByUniqueUsernameAlias(String alias) throws NoSuchUserException {
+        return findUserBy(alias,
+                new FindBy[]{FindBy.UNIQUE_USERNAME, FindBy.UNIQUE_USERNAME_ALIAS});
+    }
+
     public ClientUser findUserBy(String searchStr, FindBy[] findByCriterias) throws NoSuchUserException {
         for (FindBy findBy : findByCriterias) {
             try {
@@ -213,6 +228,8 @@ public class ClientUsersManager {
                 aliases = user.getPasswordAliases();
             } else if (findByCriteria == FindBy.PHONENUMBER_ALIAS) {
                 aliases = user.getPhoneNumberAliases();
+            } else if (findByCriteria == FindBy.UNIQUE_USERNAME_ALIAS) {
+                aliases = user.getUniqueUsernameAliases();
             } else if (findByCriteria == FindBy.NAME) {
                 if (user.getName().equalsIgnoreCase(searchStr)) {
                     return user;
@@ -227,6 +244,10 @@ public class ClientUsersManager {
                 }
             } else if (findByCriteria == FindBy.PHONE_NUMBER) {
                 if (user.getPhoneNumber().toString().equals(searchStr)) {
+                    return user;
+                }
+            } else if (findByCriteria == FindBy.UNIQUE_USERNAME) {
+                if (user.getUniqueUsername().equalsIgnoreCase(searchStr)) {
                     return user;
                 }
             } else {
@@ -261,6 +282,9 @@ public class ClientUsersManager {
             } else if (findByAliasType == FindBy.PHONENUMBER_ALIAS) {
                 aliases = dstUser.getPhoneNumberAliases();
                 replacement = dstUser.getPhoneNumber().toString();
+            } else if (findByAliasType == FindBy.UNIQUE_USERNAME_ALIAS) {
+                aliases = dstUser.getUniqueUsernameAliases();
+                replacement = dstUser.getUniqueUsername();
             } else {
                 throw new RuntimeException(String.format("Unsupported FindBy criteria '%s'", findByAliasType));
             }
@@ -370,6 +394,7 @@ public class ClientUsersManager {
     private static String[] SELF_USER_PASSWORD_ALIASES = new String[]{"myPassword"};
     private static String[] SELF_USER_EMAIL_ALIASES = new String[]{"myEmail"};
     private static String[] SELF_USER_PHONE_NUMBER_ALIASES = new String[]{"myPhoneNumber"};
+    private static String[] SELF_USER_UNIQUE_USERNAME_ALIASES = new String[]{"myUniqueUsername"};
 
     private Optional<ClientUser> selfUser = Optional.empty();
 
@@ -402,6 +427,11 @@ public class ClientUsersManager {
                     this.selfUser.get().removePhoneNumberAlias(phoneNumberAlias);
                 }
             }
+            for (String alias : SELF_USER_UNIQUE_USERNAME_ALIASES) {
+                if (this.selfUser.get().getUniqueUsernameAliases().contains(alias)) {
+                    this.selfUser.get().removeUniqueUsernameAlias(alias);
+                }
+            }
         }
         this.selfUser = Optional.of(usr);
         for (String nameAlias : SELF_USER_NAME_ALIASES) {
@@ -415,6 +445,9 @@ public class ClientUsersManager {
         }
         for (String phoneNumberAlias : SELF_USER_PHONE_NUMBER_ALIASES) {
             this.selfUser.get().addPhoneNumberAlias(phoneNumberAlias);
+        }
+        for (String alias : SELF_USER_UNIQUE_USERNAME_ALIASES) {
+            this.selfUser.get().addUniqueUsernameAlias(alias);
         }
     }
 

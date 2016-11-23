@@ -700,8 +700,12 @@ public final class CommonSteps {
         BackendAPIWrappers.removeUserPicture(dstUser);
     }
 
-    public void IChangeUserName(String userNameAlias, String newName) throws Exception {
-        BackendAPIWrappers.updateUserName(usrMgr.findUserByNameOrNameAlias(userNameAlias), newName);
+    public void IChangeName(String userNameAlias, String newName) throws Exception {
+        BackendAPIWrappers.updateName(usrMgr.findUserByNameOrNameAlias(userNameAlias), newName);
+    }
+
+    public void IChangeUniqueUsername(String userNameAlias, String newUsername) throws Exception {
+        BackendAPIWrappers.updateUniqueUsername(usrMgr.findUserByNameOrNameAlias(userNameAlias), newUsername);
     }
 
     public void IChangeUserAccentColor(String userNameAlias, String colorName) throws Exception {

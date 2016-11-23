@@ -690,7 +690,7 @@ public final class BackendAPIWrappers {
         );
     }
 
-    public static void updateUserName(ClientUser user, String newName) throws Exception {
+    public static void updateName(ClientUser user, String newName) throws Exception {
         BackendREST.updateSelfInfo(receiveAuthToken(user),
                 Optional.empty(), Optional.empty(), Optional.of(newName));
         user.setName(newName);
@@ -700,6 +700,11 @@ public final class BackendAPIWrappers {
         BackendREST.updateSelfInfo(receiveAuthToken(user),
                 Optional.of(color.getId()), Optional.empty(), Optional.empty());
         user.setAccentColor(color);
+    }
+
+    public static void updateUniqueUsername(ClientUser user, String username) throws Exception {
+        BackendREST.updateSelfHandle(receiveAuthToken(user), username);
+        user.setUniqueUsername(username);
     }
 
     public static void changeGroupChatName(ClientUser asUser, String conversationIDToRename, String newConversationName)

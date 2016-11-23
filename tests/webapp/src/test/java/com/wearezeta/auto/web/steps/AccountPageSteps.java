@@ -2,6 +2,8 @@ package com.wearezeta.auto.web.steps;
 
 import java.awt.image.BufferedImage;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.AccentColor;
@@ -18,11 +20,13 @@ import org.openqa.selenium.support.ui.Wait;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import org.junit.Assert;
 
 public class AccountPageSteps {
 
@@ -58,10 +62,10 @@ public class AccountPageSteps {
         context.getPagesCollection().getPage(AccountPage.class).logoutInLogoutDialog();
     }
 
-    @And("^I see username (.*) in account preferences$")
-    public void ISeeUserNameOnSelfProfilePage(String name) throws Exception {
+    @And("^I see name (.*) in account preferences$")
+    public void ISeeNameOnSelfProfilePage(String name) throws Exception {
         name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        assertThat("Username", context.getPagesCollection().getPage(AccountPage.class).getUserName(), equalTo(name));
+        assertThat("Name", context.getPagesCollection().getPage(AccountPage.class).getName(), equalTo(name));
     }
 
     @And("^I see user phone number (.*) in account preferences$")
@@ -80,6 +84,29 @@ public class AccountPageSteps {
         }
         String actualEmail = context.getPagesCollection().getPage(AccountPage.class).getUserMail();
         assertEquals(email, actualEmail);
+    }
+
+    @And("^I see unique username starts with (.*) in account preferences$")
+    public void ISeeUniqueUsernameOnSelfProfilePage(String name) throws Exception {
+        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        name = removeSymbols(name).toLowerCase();
+
+        // if username did not contain any non symbol characters, the username is a number
+        if(name.isEmpty()) {
+            // TODO
+            //Assert.assertThat("Username on take over screen",
+            //        context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(), matchesPattern("^[0-9]{8}$"));
+        } else {
+            Assert.assertThat("Username in settings",
+                    context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(), startsWith(name));
+        }
+    }
+
+    private String removeSymbols(String text) {
+        // convert name to fit the requirements (strip spaces, dots and other symbols)
+        Pattern pattern = Pattern.compile("[^a-zA-Z]");
+        Matcher matcher = pattern.matcher(text);
+        return matcher.replaceAll("");
     }
 
     @When("^I remember the profile image on the account page$")
@@ -119,10 +146,15 @@ public class AccountPageSteps {
         }
     }
 
-    @And("^I change username to (.*)")
-    public void IChangeUserNameTo(String name) throws Exception {
-        context.getPagesCollection().getPage(AccountPage.class).setUserName(name);
+    @And("^I change name to (.*)")
+    public void IChangeNameTo(String name) throws Exception {
+        context.getPagesCollection().getPage(AccountPage.class).setName(name);
         context.getUserManager().getSelfUserOrThrowError().setName(name);
+    }
+
+    @And("^I change unique username to (.*)")
+    public void IChangeUniqueUserNameTo(String name) throws Exception {
+        // TODO
     }
 
     @When("^I drop picture (.*) to account preferences$")

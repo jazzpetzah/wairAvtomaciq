@@ -17,7 +17,7 @@ Feature: Registration
     And User <Name> is Me without avatar
     And I see first time experience with watermark
     And I open preferences by clicking the gear button
-    Then I see username <Name> in account preferences
+    Then I see name <Name> in account preferences
     Then I see user email <Email> in account preferences
     And I see localytics event <Event> with attributes <Attributes>
 

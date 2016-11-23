@@ -7,7 +7,7 @@ Feature: Settings
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
     And I open preferences by clicking the gear button
-    Then I see username <Name> in account preferences
+    Then I see name <Name> in account preferences
 
     Examples: 
       | Email      | Password      | Name      |

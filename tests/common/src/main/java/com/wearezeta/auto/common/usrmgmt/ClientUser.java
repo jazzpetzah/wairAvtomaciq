@@ -20,17 +20,12 @@ public class ClientUser {
     private Set<String> nameAliases = new HashSet<>();
     private PhoneNumber phoneNumber;
     private Set<String> phoneNumberAliases = new HashSet<>();
+    private String uniqueUsername = null;
+    private Set<String> uniqueUsernameAliases = new HashSet<>();
     private Set<String> passwordAliases = new HashSet<>();
     private Optional<String> tokenType = Optional.empty();
     private Optional<String> token = Optional.empty();
     private AccentColor accentColor = AccentColor.Undefined;
-
-    public ClientUser(String email, String password, PhoneNumber phoneNumber, String name) {
-        this.email = email;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.name = name;
-    }
 
     public String getName() {
         return name;
@@ -165,6 +160,30 @@ public class ClientUser {
         this.phoneNumberAliases.clear();
     }
 
+    public String getUniqueUsername() {
+        return uniqueUsername;
+    }
+
+    public void setUniqueUsername(String uniqueUsername) {
+        this.uniqueUsername = uniqueUsername;
+    }
+
+    public void addUniqueUsernameAlias(String alias) {
+        this.uniqueUsernameAliases.add(alias);
+    }
+
+    public void removeUniqueUsernameAlias(String alias) {
+        this.uniqueUsernameAliases.remove(alias);
+    }
+
+    public void clearUniqueUsernameAliases() {
+        this.uniqueUsernameAliases.clear();
+    }
+
+    public Set<String> getUniqueUsernameAliases() {
+        return new HashSet<>(this.uniqueUsernameAliases);
+    }
+
     private static String generateUniqueName() {
         return CommonUtils.generateGUID().replace("-", "").substring(0, 8);
     }
@@ -174,6 +193,7 @@ public class ClientUser {
         this.phoneNumber = new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX);
         this.password = CommonUtils.getDefaultPasswordFromConfig(ClientUser.class);
         this.email = MessagingUtils.generateEmail(MessagingUtils.getDefaultAccountName(), name);
+        this.uniqueUsername = generateUniqueName();
     }
 
     public void forceTokenExpiration() {

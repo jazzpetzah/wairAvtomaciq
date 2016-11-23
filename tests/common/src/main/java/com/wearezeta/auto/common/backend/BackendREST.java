@@ -515,6 +515,13 @@ final class BackendREST {
         restHandlers.httpPut(webResource, requestBody.toString(), new int[]{HttpStatus.SC_OK});
     }
 
+    public static void updateSelfHandle(AuthToken token, String handle) throws Exception {
+        Builder webResource = buildDefaultRequestWithAuth("self/handle", MediaType.APPLICATION_JSON, token);
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("handle", handle);
+        restHandlers.httpPut(webResource, requestBody.toString(), new int[]{HttpStatus.SC_ACCEPTED});
+    }
+
     public static JSONObject searchForContacts(AuthToken token, String query) throws Exception {
         // Changed this to make it look the same as in webapp
         Builder webResource = buildDefaultRequestWithAuth(String.format(

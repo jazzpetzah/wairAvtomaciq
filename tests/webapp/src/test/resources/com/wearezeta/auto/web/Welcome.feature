@@ -28,7 +28,7 @@ Feature: Welcome
     And I press Sign In button
     Then I am signed in properly
     When I open preferences by clicking the gear button
-    Then I see username <Name> in account preferences
+    Then I see name <Name> in account preferences
     And I see user email <Email> in account preferences
 
     Examples: 

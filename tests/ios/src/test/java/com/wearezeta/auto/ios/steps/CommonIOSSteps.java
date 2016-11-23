@@ -943,9 +943,9 @@ public class CommonIOSSteps {
      * @step. ^User (\\w+) changes? name to (.*)$
      */
     @When("^User (\\w+) changes? name to (.*)$")
-    public void IChangeUserName(String userNameAlias, String newName)
+    public void IChangeName(String userNameAlias, String newName)
             throws Exception {
-        commonSteps.IChangeUserName(userNameAlias, newName);
+        commonSteps.IChangeName(userNameAlias, newName);
     }
 
     @When("^User (\\w+) changes? accent color to (.*)$")

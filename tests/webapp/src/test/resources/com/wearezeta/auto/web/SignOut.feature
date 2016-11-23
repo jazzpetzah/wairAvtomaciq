@@ -11,7 +11,7 @@ Feature: Sign Out
     When I Sign in using login <Email> and password <Password>
     And I am signed in properly
     When I open preferences by clicking the gear button
-    Then I see username <Name> in account preferences
+    Then I see name <Name> in account preferences
     And I see user email <Email> in account preferences
     And I close preferences
     When I open conversation with <GroupChatName>
@@ -34,7 +34,7 @@ Feature: Sign Out
     And I see Bring Your Friends or Invite People button
     When I close People Picker
     And I open preferences by clicking the gear button
-    Then I see username <Contact3> in account preferences
+    Then I see name <Contact3> in account preferences
     And I see user email <Email3> in account preferences
     And I do not see Contact list with name <GroupChatName>
     And I do not see Contact list with name <Contact1>

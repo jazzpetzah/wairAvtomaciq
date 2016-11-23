@@ -225,7 +225,7 @@ Feature: Utility
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
     Given I open preferences by clicking the gear button
-    Then I see username <Name> in account preferences
+    Then I see name <Name> in account preferences
     And I click delete account button on settings page
     And I click send button to delete account
     And I delete account of user <Name> via email on <Agent>
@@ -250,7 +250,7 @@ Feature: Utility
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
     Given I open preferences by clicking the gear button
-    Then I see username <Name> in account preferences
+    Then I see name <Name> in account preferences
     And I click delete account button on settings page
     And I click send button to delete account
     And I navigate to delete account page of user <Name> on <Agent> with changed key checksum
@@ -271,7 +271,7 @@ Feature: Utility
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
     Given I open preferences by clicking the gear button
-    Then I see username <Name> in account preferences
+    Then I see name <Name> in account preferences
     And I click delete account button on settings page
     And I click send button to delete account
     Then I navigate to delete account page of user <Name> on <Agent> with changed code checksum
@@ -292,7 +292,7 @@ Feature: Utility
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
     Given I open preferences by clicking the gear button
-    Then I see username <Name> in account preferences
+    Then I see name <Name> in account preferences
     And I click delete account button on settings page
     And I click send button to delete account
     And I remember delete link of user <Name>

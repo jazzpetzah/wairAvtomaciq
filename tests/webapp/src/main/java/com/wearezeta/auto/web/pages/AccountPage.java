@@ -36,8 +36,8 @@ public class AccountPage extends WebPage {
     @FindBy(css = ".modal-logout .checkbox span")
     private WebElement clearDataCheckbox;
 
-    @FindBy(css = WebAppLocators.AccountPage.cssSelfUserNameInput)
-    private WebElement userNameInput;
+    @FindBy(css = WebAppLocators.AccountPage.cssSelfNameInput)
+    private WebElement nameInput;
 
     @FindBy(css = WebAppLocators.AccountPage.cssNameSelfUserMail)
     private WebElement userMail;
@@ -62,6 +62,9 @@ public class AccountPage extends WebPage {
 
     @FindBy(css = WebAppLocators.AccountPage.cssConfirmDeleteAccountButton)
     private WebElement confirmDeleteAccountButton;
+
+    @FindBy(css = WebAppLocators.AccountPage.cssTakeOverUniqueUsername)
+    private WebElement takeOverUniqueUsername;
 
     public AccountPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -91,10 +94,10 @@ public class AccountPage extends WebPage {
         logoutInDialogButton.click();
     }
 
-    public String getUserName() throws Exception {
+    public String getName() throws Exception {
         DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(
-                WebAppLocators.AccountPage.cssSelfUserNameInput));
-        return userNameInput.getAttribute("value");
+                WebAppLocators.AccountPage.cssSelfNameInput));
+        return nameInput.getAttribute("value");
     }
 
     public String getUserMail() {
@@ -105,11 +108,11 @@ public class AccountPage extends WebPage {
         return userPhoneNumber.getText();
     }
 
-    public void setUserName(String name) throws InterruptedException {
-        userNameInput.click();
+    public void setName(String name) throws InterruptedException {
+        nameInput.click();
         Thread.sleep(1000);
-        userNameInput.clear();
-        userNameInput.sendKeys(name + "\n");
+        nameInput.clear();
+        nameInput.sendKeys(name + "\n");
     }
 
     public BufferedImage getPicture() throws Exception {
@@ -216,5 +219,9 @@ public class AccountPage extends WebPage {
     public void clickConfirmDeleteAccountButton() throws Exception {
         DriverUtils.waitUntilElementClickable(getDriver(), confirmDeleteAccountButton);
         confirmDeleteAccountButton.click();
+    }
+
+    public String getUniqueUsername() throws Exception{
+        return takeOverUniqueUsername.getAttribute("value");
     }
 }

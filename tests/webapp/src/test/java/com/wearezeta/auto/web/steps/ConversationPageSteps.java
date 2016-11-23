@@ -22,6 +22,7 @@ import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.ContactListPage;
 import com.wearezeta.auto.web.pages.ConversationPage;
+import com.wearezeta.auto.web.pages.TakeOverPage;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 
@@ -1343,6 +1344,17 @@ public class ConversationPageSteps {
             assertThat("First time experience message",
                     context.getPagesCollection().getPage(ConversationPage.class).getFirstTimeExperienceMessage(),
                     not(containsString("Start a conversation or invite people to join.")));
+        }
+    }
+
+    @And("^I( do not)? see take over screen$")
+    public void ISeeTakeOverScreen(String doNot) throws Exception {
+        if (doNot == null) {
+            assertThat("Take over screen not shown",
+                    context.getPagesCollection().getPage(TakeOverPage.class).isTakeOverScreenVisible());
+        } else {
+            assertThat("Take over screen shown",
+                    context.getPagesCollection().getPage(TakeOverPage.class).isTakeOverScreenNotVisible());
         }
     }
 }

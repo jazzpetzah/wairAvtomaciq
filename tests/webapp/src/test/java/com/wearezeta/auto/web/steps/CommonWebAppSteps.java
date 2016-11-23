@@ -122,6 +122,8 @@ public class CommonWebAppSteps {
         context.getCommonSteps().ThereAreNUsersWhereXIsMe(context.getCurrentPlatform(), count,
                 myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "default");
+        // TODO: Uncomment next line when backend has implemented self/handle
+        //context.getCommonSteps().IChangeUniqueUsername(myNameAlias, myNameAlias);
     }
 
     @Given("^User (\\w+) change accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
@@ -130,11 +132,25 @@ public class CommonWebAppSteps {
         context.getCommonSteps().IChangeUserAccentColor(userNameAlias, newColor);
     }
 
+    @When("^User (\\w+) changes? name to (.*)")
+    public void IChangeName(String userNameAlias, String name) throws Exception {
+        context.getCommonSteps().IChangeName(userNameAlias, name);
+    }
+
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me without avatar picture$")
     public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count,
             String myNameAlias) throws Exception {
         context.getCommonSteps().ThereAreNUsersWhereXIsMe(context.getCurrentPlatform(), count,
                 myNameAlias);
+        // TODO: Uncomment next line when backend has implemented self/handle
+        //context.getCommonSteps().IChangeUniqueUsername(myNameAlias, myNameAlias);
+    }
+
+    @Given("^There (?:is|are) (\\d+) users? where (.*) is me without unique username$")
+    public void ThereAreNUsersWhereXIsMeWithoutUsername(int count, String myNameAlias) throws Exception {
+        context.getCommonSteps().ThereAreNUsersWhereXIsMe(context.getCurrentPlatform(), count,
+                myNameAlias);
+        IChangeUserAvatarPicture(myNameAlias, "default");
     }
 
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")

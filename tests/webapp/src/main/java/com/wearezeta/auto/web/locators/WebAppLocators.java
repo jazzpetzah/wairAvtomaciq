@@ -258,7 +258,7 @@ public final class WebAppLocators {
     
         public static final String cssLogoutButton = "#preferences-account [data-uie-name='do-logout']";
 
-        public static final String cssSelfUserNameInput = "[data-uie-name='enter-name']";
+        public static final String cssSelfNameInput = "[data-uie-name='enter-name']";
 
         public static final String cssNameSelfUserMail = "[data-uie-name='enter-email']";
 
@@ -286,6 +286,8 @@ public final class WebAppLocators {
         public static final String cssCancelDeleteAccountButton = "[data-uie-name='modal-delete-account'] [data-uie-name='do-cancel']";
 
         public static final String cssConfirmDeleteAccountButton = "[data-uie-name='modal-delete-account'] [data-uie-name='do-send']";
+
+        public static final String cssTakeOverUniqueUsername = "[data-uie-name='takeover-username']";
     }
 
     public static final class DevicesPage {
@@ -342,7 +344,6 @@ public final class WebAppLocators {
     }
 
     public static final class ConversationPage {
-
         // content
         public static final String idConversation = "conversation";
         
@@ -960,5 +961,17 @@ public final class WebAppLocators {
 
     public static final class HistoryInfoPage {
         public static final String cssConfirmButton = "[data-uie-name='do-history-confirm']";
+    }
+
+    public static final class TakeOverScreenPage {
+        public static final String idTakeOverScreen = "takeover";
+
+        public static final String cssChooseYourOwnButton = "[data-uie-name='do-takeover-choose']";
+
+        public static final String cssTakeThisOneButton = "[data-uie-name='do-takeover-keep']";
+
+        public static final String cssTakeOverName = "[data-uie-name='takeover-name']";
+
+        public static final String cssTakeOverUniqueUsername = "[data-uie-name='takeover-username']";
     }
 }
