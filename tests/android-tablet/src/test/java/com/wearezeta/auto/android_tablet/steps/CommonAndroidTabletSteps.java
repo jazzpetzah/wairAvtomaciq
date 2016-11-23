@@ -803,31 +803,28 @@ public class CommonAndroidTabletSteps {
     /**
      * Add a new contact into address book
      *
-     * @param alias         user alias
-     * @param whatToExclude comma-separated list of user properties to exclude from being added to AB.
-     *                      Can be email|phone
+     * @param alias          user alias
+     * @param withCustomName whether we specify custom name for contact
+     * @param customName     specified custom name
+     * @param withInfo       whether we add extra infor for this contact in AB
+     * @param infoType       which could be phone, email or phone + email
      * @throws Exception
-     * @step. ^I add (.*) into Address Book(?:\s+excluding\s+|\s*)(.*)$
+     * @step. ^I add (\\w+)( having custom name "(.*)")? into Address Book( with (phone|email|phone and email))?$
      */
-    @Given("^I add (.*) into Address Book(?:\\s+excluding\\s+|\\s*)(.*)$")
-    public void IImportUserIntoAddressBook(String alias, String whatToExclude) throws Exception {
-        List<String> excludesList = new ArrayList<>();
-        if (whatToExclude != null) {
-            excludesList = CommonSteps.splitAliases(whatToExclude.trim());
+    @Given("^I add (\\w+)( having custom name \"(.*)\")? into Address Book( with (phone|email|phone and email))?$")
+    public void IImportUserIntoAddressBook(String alias, String withCustomName, String customName, String withInfo,
+                                           String infoType) throws Exception {
+        //TODO: Robin handle when custom name contains space
+        String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
+        if (withCustomName != null) {
+            name = customName;
         }
-        final String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
-        final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
-        final PhoneNumber phoneNumber = usrMgr.findUserByNameOrNameAlias(alias).getPhoneNumber();
-        if (excludesList.isEmpty()) {
-            AndroidCommonUtils.insertContact(name, email, phoneNumber);
-        } else if (excludesList.contains("email") && excludesList.contains("phone")) {
-            AndroidCommonUtils.insertContact(name);
-        } else if (excludesList.contains("email")) {
-            AndroidCommonUtils.insertContact(name, email);
-        } else if (excludesList.contains("phone")) {
-            AndroidCommonUtils.insertContact(name, phoneNumber);
+        if (withInfo != null) {
+            final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
+            final PhoneNumber phoneNumber = usrMgr.findUserByNameOrNameAlias(alias).getPhoneNumber();
+            AndroidCommonUtils.insertContact(name, email, phoneNumber, infoType);
         } else {
-            throw new IllegalArgumentException(String.format("Cannot parse what to exclude from '%s'", whatToExclude));
+            AndroidCommonUtils.insertContact(name);
         }
     }
 

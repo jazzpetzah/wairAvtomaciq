@@ -32,8 +32,6 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
     private static final Function<String, String> xpathStrUserDetailsLeftButtonByLabel = label -> String.format
             ("//*[@id='ttv__participants__left_label' and @value='%s']", label);
 
-    private static final By idConnectToCharCounter = By.id("ttv__send_connect_request__connect_button__character_counter");
-
     private static final By xpathCloseButton = By.xpath
             ("//*[@id='fl__conversation_list__profile_overlay']//*[@id='gtv__participants__close']");
 
@@ -140,10 +138,6 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
     public boolean getConnectButtonState() throws Exception {
         String state = getElement(idSendConnectionRequestButton).getAttribute("enabled");
         return Boolean.parseBoolean(state);
-    }
-
-    public int getCharCounterValue() throws Exception {
-        return Integer.parseInt(getElement(idConnectToCharCounter).getText());
     }
 
     public void tapCloseButton() throws Exception {

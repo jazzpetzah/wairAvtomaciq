@@ -167,19 +167,19 @@ public class AndroidCommonUtils extends CommonUtils {
      * @throws Exception
      */
     public static void lockScreen() throws Exception {
-        executeAdb("shell input keyevent "+AndroidKeyEvent.KEYCODE_POWER);
+        executeAdb("shell input keyevent " + AndroidKeyEvent.KEYCODE_POWER);
     }
 
     public static void tapBackButton() throws Exception {
-        executeAdb("shell input keyevent "+AndroidKeyEvent.KEYCODE_BACK);
+        executeAdb("shell input keyevent " + AndroidKeyEvent.KEYCODE_BACK);
     }
 
     public static void tapHomeButton() throws Exception {
-        executeAdb("shell input keyevent "+AndroidKeyEvent.KEYCODE_HOME);
+        executeAdb("shell input keyevent " + AndroidKeyEvent.KEYCODE_HOME);
     }
 
     public static void tapBackspaceButton() throws Exception {
-        executeAdb("shell input keyevent "+AndroidKeyEvent.KEYCODE_BACKSPACE);
+        executeAdb("shell input keyevent " + AndroidKeyEvent.KEYCODE_BACKSPACE);
     }
 
     public static double getScreenDensity() throws Exception {
@@ -534,8 +534,24 @@ public class AndroidCommonUtils extends CommonUtils {
         bindContactNameById(ids, name);
     }
 
-    public static void insertContact(String name, String email,
-                                     PhoneNumber phoneNumber) throws Exception {
+    public static void insertContact(String name, String email, PhoneNumber phoneNumber, String addType)
+            throws Exception {
+        switch (addType.toLowerCase()) {
+            case "phone":
+                insertContact(name, phoneNumber);
+                break;
+            case "email":
+                insertContact(name, email);
+                break;
+            case "phone and email":
+                insertContact(name, email, phoneNumber);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Cannot identify the insert contact type '%s'", addType));
+        }
+    }
+
+    public static void insertContact(String name, String email, PhoneNumber phoneNumber) throws Exception {
         final List<Integer> ids = insertContactAndGetIds();
         bindContactNameById(ids, name);
         bindContactEmailById(ids, email);

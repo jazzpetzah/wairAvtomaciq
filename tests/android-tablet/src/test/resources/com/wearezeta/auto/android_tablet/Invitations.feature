@@ -4,7 +4,7 @@ Feature: Invitations
   Scenario Outline: Verify impossibility of sending invite to the person with a wrong email or phone (landscape)
     Given I delete all contacts from Address Book
     Given There is 1 user where <Name> is me
-    Given I add <Contact> into Address Book excluding phone,email
+    Given I add <Contact> into Address Book
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
