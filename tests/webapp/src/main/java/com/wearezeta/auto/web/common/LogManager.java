@@ -70,7 +70,7 @@ public class LogManager {
     public void printBrowserLog() throws InterruptedException, ExecutionException, TimeoutException {
         LOG.debug("BROWSER CONSOLE LOGS:");
         getBrowserLog().forEach((logEntry) -> {
-            LOG.debug(logEntry.getMessage().replaceAll("^.*z\\.", "z\\."));
+            LOG.debug(logEntry.getMessage().replaceAll("^.*\"z\\.", "z\\."));
         });
         LOG.debug("--- END OF LOG ---");
     }
