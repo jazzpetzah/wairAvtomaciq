@@ -89,6 +89,7 @@ Feature: Permissions
     And I tap Back button
     # --- Verify no user if visible in invites list if contacts access is denied
     And I open Search UI
+    And I dismiss security alert
     Then I do not see user <Contact3> in Contact list
 
     Examples:
