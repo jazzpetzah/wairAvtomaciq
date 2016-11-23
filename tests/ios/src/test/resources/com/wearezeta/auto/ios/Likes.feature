@@ -300,6 +300,8 @@ Feature: Likes
     Given User <Contact> sends encrypted message "<Link>" to user Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
+    # Load the link
+    Given I wait for 5 seconds
     When I tap at 5% of width and 5% of height of the recent message
     And I remember the state of Like icon in the conversation
     And I tap Like icon in the conversation
