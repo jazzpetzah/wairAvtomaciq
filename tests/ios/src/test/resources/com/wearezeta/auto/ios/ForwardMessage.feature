@@ -131,7 +131,7 @@ Feature: Forward Message
 # Small wait to make sure download is completed
     And I wait for 5 seconds
     And I long tap on audio message placeholder in conversation view
-    When I tap on Forward badge item
+    And I tap on Forward badge item
     And I select <Contact2> conversation on Forward page
     And I tap Send button on Forward page
     Then I see conversation with user <Contact1>
