@@ -723,8 +723,7 @@ public class ConversationPage extends WebPage {
     }
 
     public void clickUserAvatar(String userId) throws Exception {
-        String css = WebAppLocators.ConversationPage.cssUserAvatarById
-                .apply(userId);
+        String css = WebAppLocators.ConversationPage.cssUserAvatarById.apply(userId);
         final WebElement avatar = getDriver().findElement(By.cssSelector(css));
         DriverUtils.waitUntilElementClickable(this.getDriver(), avatar);
         avatar.click();

@@ -638,7 +638,7 @@ public final class WebAppLocators {
         public static final String cssFullscreenImage = ".detail-view-image";
 
         public static final Function<String, String> cssUserAvatarById = id -> String
-                .format("[user-id='%s'] .user-avatar-border", id);
+                .format("[user-id='%s'].user-avatar-sm", id);
 
         public static final String cssConnectedMessageUser = ".message-connected-header";
 
