@@ -11,7 +11,8 @@ Feature: Ephemeral Messages
     Given I tap on contact name <Contact>
     Given I tap Hourglass button in conversation view
     Given I set ephemeral messages expiration timer to <Timeout> seconds
-    Given I click at 0.5,0.5 of Simulator window
+    # This is to close expiration timer popup
+    Given I tap at 50%,50% of the viewport coordinates
     Given I type the default message and send it
     Given I see 1 default message in the conversation view
     When User <Contact> reads the recent message from user Myself
