@@ -32,9 +32,9 @@ public class CallingSteps {
      * @param conversationName destination conversation name
      *
      * @throws Exception
-     * @step. (.*) calls (.*)$
+     * @step. (\w+) calls (\w+)$
      */
-    @When("(.*) calls (.*)$")
+    @When("(\\w+) calls (\\w+)$")
     public void UserXCallsToUserYUsingCallBackend(String caller, String conversationName) throws Exception {
         commonCallingSteps.callToConversation(splitAliases(caller), conversationName);
     }
@@ -204,7 +204,7 @@ public class CallingSteps {
         for (Call call : commonCallingSteps.getOutgoingCall(splitAliases(callees), conversation)) {
             assertNotNull("There are no metrics available for this call \n" + call, call.getMetrics());
             assertTrue("Call failed: \n" + call + "\n" + call.getMetrics(), call.getMetrics().isSuccess());
-            System.out.println("Establish time for " + call + "is" + call.getMetrics().getEstabTime());
+            System.out.println("Establish time for " + call + "is " + call.getMetrics().getEstabTime());
         }
     }
 
@@ -266,6 +266,91 @@ public class CallingSteps {
                     convSteps.IDonotSeeCallingButtonsOnUpperToolbar(null, "Audio Call");
                 } catch (Throwable ex) {
                     LOG.error("Can not stop call " + i + " " + ex);
+                }
+                failures.put(i, t);
+            }
+
+        }
+
+        LOG.info(failures.size() + " failures happened during " + times
+                + " calls");
+        failures.forEach((Integer i, Throwable t) -> {
+            LOG.error(i + ": " + t.getMessage());
+        });
+
+        for (Map.Entry<Integer, Throwable> entrySet : failures.entrySet()) {
+            // will just throw the first exception to indicate failed calls in
+            // test results
+            throw entrySet.getValue();
+        }
+    }
+
+    /**
+     * Receive consecutive calls without logging out etc.
+     *
+     * @step. ^(.*) calls me (\d+) times for (\d+) minutes with (.*)$
+     *
+     * @param callDurationMinutes time of the call
+     * @param times number of consecutive calls
+     * @param callees participants which will wait for a call
+     * @param conversationName user to be called
+     * @throws java.lang.Throwable
+     */
+    @Then("^(.*) calls to (.*) (\\d+) times? for (\\d+) minutes?$")
+    public void IReceiveCallsXTimes(String callees, String conversationName, int times, int callDurationMinutes)
+            throws Throwable {
+        final int timeBetweenCall = 10;
+        final List<String> calleeList = splitAliases(callees);
+        final ConversationViewPageSteps convSteps = new ConversationViewPageSteps();
+        final CallPageSteps callPageSteps = new CallPageSteps();
+        final CommonIOSSteps commonIOSSteps = new CommonIOSSteps();
+        final CallKitPageSteps callKitPageSteps = new CallKitPageSteps();
+        final Map<Integer, Throwable> failures = new HashMap<>();
+        for (int i = 0; i < times; i++) {
+            LOG.info("\n\nSTARTING CALL " + i);
+            try {
+
+                for (String callee : calleeList) {
+                    UserXCallsToUserYUsingCallBackend(callee, conversationName);
+                }
+
+                callKitPageSteps.ISeeOverlay(null, "Audio");
+                LOG.info("Audio Call Kit overlay is visible");
+
+                callKitPageSteps.ITapButton("Accept");
+                commonIOSSteps.IAcceptAlert("accept", "if visible");
+
+                for (String callee : calleeList) {
+                    UserXVerifesCallStatusToUserY(callee,conversationName, "active", 20);
+                }
+                LOG.info("All instances are active");
+
+                commonIOSSteps.WaitForTime(callDurationMinutes * 60);
+
+                callPageSteps.ITapButton("Leave");
+                callPageSteps.ISeeCallingOverlay("do not");
+                LOG.info("Calling overlay is NOT visible");
+
+                for (String callee : calleeList) {
+                    UserXVerifesCallWasSuccessful(callee, conversationName);
+                }
+
+                LOG.info("CALL " + i + " SUCCESSFUL");
+                commonIOSSteps.WaitForTime(timeBetweenCall);
+
+            } catch (Throwable t){
+                LOG.info("CALL " + i + " FAILED");
+                LOG.error("Can not stop waiting call " + i + " " + t);
+
+                try {
+                    callKitPageSteps.ITapButton("Decline");
+                } catch (Throwable ex) {
+                    LOG.error("Can not stop call kit " + i + " " + ex);
+                    try {
+                        callPageSteps.ITapButton("Leave");
+                    } catch (Throwable exe) {
+                        LOG.error("Can not stop call " + i + " " + exe);
+                    }
                 }
                 failures.put(i, t);
             }

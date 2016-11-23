@@ -8,10 +8,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Metrics {
     
     private final boolean success;
-    private final String estabTime;
+    private final long estabTime;
 
     @JsonCreator
-    public Metrics(@JsonProperty("success") boolean success, @JsonProperty("estab_time") String estabTime) {
+    public Metrics(@JsonProperty("success") boolean success, @JsonProperty("estab_time") long estabTime) {
         this.success = success;
         this.estabTime = estabTime;
     }
@@ -20,7 +20,7 @@ public class Metrics {
         return success;
     }
 
-    public String getEstabTime() {
+    public long getEstabTime() {
         return estabTime;
     }
 

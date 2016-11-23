@@ -446,7 +446,21 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend  |
-      | user1Name | user2Name | zcall:2.7.26 |
+      | user1Name | user2Name | zcall        |
+
+  @call_loop @fastLogin @torun
+  Scenario Outline: I receive 1:1 call loop from AVS <CallBackend>
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And <Contact> calls to me 6 times for 1 minute
+
+    Examples:
+      | Name      | Contact   | CallBackend  |
+      | user1Name | user2Name | zcall        |
 
   @C343168 @regression @calling_basic @fastLogin
   Scenario Outline: Verify you see group call conformation dialog for >5 participants group chat
