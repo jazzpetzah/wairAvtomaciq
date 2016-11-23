@@ -23,6 +23,7 @@ Feature: Unique User Name
 
     Examples:
       | ContactInABEmail | Name      | ContactInABPhone | ContactInABSameName | WaitingMess1     |
+<<<<<<< 54aa7cd5b5965fd88866b7cf882f6130ba8e7568
       | user1Name        | user2Name | user3Name        | user4Name           | 3 people waiting |
 
   @C352019 @staging
