@@ -55,7 +55,9 @@ Feature: Share Location
     Then I see location map container in the conversation view
     #TODO Stabilize sent address verification step
     #And I see the default sent Share Location address in the conversation view
-    And I see "<DeliveredLabel>" on the message toolbox in conversation view
+    # Wait for delivery
+    When I wait for 5 seconds
+    Then I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
       | Name      | Contact   | DeviceName1 | DeliveredLabel |
