@@ -12,18 +12,18 @@ Feature: Unique User Name
     Given <ContactInABSameName> sent connection request to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
+    Given I see Conversations list with conversations
     Given I see Conversations list with name <WaitingMess1>
     When I tap on conversation name <WaitingMess1>
     And I scroll to inbox contact <ContactInABEmail>
     #TODO: Check Unique Name + AB Name are visible
-    When I scroll to inbox contact <ContactInABPhone>
+    And I scroll to inbox contact <ContactInABPhone>
     #TODO: Check Unique Name + AB  are visible
-    When I scroll to inbox contact <ContactInABSameName>
+    And I scroll to inbox contact <ContactInABSameName>
     #TODO: Check Unique Name is visible, but AB name is invisible
 
     Examples:
       | ContactInABEmail | Name      | ContactInABPhone | ContactInABSameName | WaitingMess1     |
-<<<<<<< 54aa7cd5b5965fd88866b7cf882f6130ba8e7568
       | user1Name        | user2Name | user3Name        | user4Name           | 3 people waiting |
 
   @C352019 @staging
