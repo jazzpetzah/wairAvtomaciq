@@ -6,7 +6,7 @@ Feature: Permissions
     Given I delete all contacts from Address Book
     Given There is 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given I add <Contact3> into Address Book
+    Given I add <Contact3> into Address Book with phone and email
     Given <Contact1> starts instance using <CallBackend>
     Given <Contact2> starts instance using <CallBackend2>
     When I sign in using my phone number
