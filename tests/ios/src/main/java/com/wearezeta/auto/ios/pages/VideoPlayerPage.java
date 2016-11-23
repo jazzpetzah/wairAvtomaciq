@@ -23,4 +23,8 @@ public class VideoPlayerPage extends IOSPage {
     public boolean isVideoMessagePlayerPageDoneButtonVisible() throws Exception {
         return isLocatorExist(nameVideoDoneButton, 20);
     }
+
+    public void tapDoneButton() throws Exception {
+        getElement(nameVideoDoneButton).click();
+    }
 }
