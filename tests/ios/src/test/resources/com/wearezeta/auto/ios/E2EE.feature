@@ -405,6 +405,8 @@ Feature: E2EE
     And I open details page of device number 2 on Settings page
     And I tap Remove Device button on Device Details page
     And I confirm with my <Password> the deletion of the device on Settings page
+    # Wait for sync
+    And I wait for 3 seconds
     Then I do not see device <DeviceName> in devices list on Settings page
 
     Examples:
