@@ -1046,12 +1046,12 @@ public class CommonIOSSteps {
     /**
      * Tap at the corresponding point of the visible viewport
      *
-     * @step. ^I tap at (\d+)%,(\d+)% of the viewport coordinates$"
+     * @step. ^I tap at (\d+)%,(\d+)% of the viewport size"
      * @param percentX 0 <= percentX <= 100
      * @param percentY 0 <= percentY <= 100
      * @throws Exception
      */
-    @When("^I tap at (\\d+)%,(\\d+)% of the viewport coordinates$")
+    @When("^I tap at (\\d+)%,(\\d+)% of the viewport size")
     public void ITapAtPoint(int percentX, int percentY) throws Exception {
         pagesCollection.getCommonPage().tapScreenByPercents(percentX, percentY);
     }

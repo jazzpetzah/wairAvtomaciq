@@ -60,7 +60,7 @@ Feature: Forward Message
     Given I tap Hourglass button in conversation view
     Given I set ephemeral messages expiration timer to <Timeout> seconds
     # This is to close expiration timer popup
-    Given I tap at 50%,50% of the viewport coordinates
+    Given I tap at 50%,50% of the viewport size
     Given I tap on contact name <Contact2>
     Given I long tap default message in conversation view
     When I tap on Forward badge item
