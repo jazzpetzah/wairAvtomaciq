@@ -313,12 +313,12 @@ Feature: Calling_Matrix
     Then <Contact1> verifies that call to conversation <ChatName1> was successful
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | Backend       | WaitBackend          | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.3   | chrome:54.0.2840.100 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.3   | chrome:53.0.2785.116 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.3   | firefox:50.0         | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.3   | firefox:49.0.2       | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.3   | firefox:45.0.1       | 30      |
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | Backend      | WaitBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | chrome:54.0.2840.100 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | chrome:53.0.2785.116 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | firefox:50.0         | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | firefox:49.0.2       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | firefox:45.0.1       | 30      |
 
   @C5369 @calling_matrix
   Scenario Outline: Verify I can join audio group call with AVS <Backend> and <WaitBackend>
