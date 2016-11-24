@@ -261,7 +261,9 @@ Feature: Recall Message
     And I tap Send button on Giphy preview page
     Then I see 1 photo in the conversation view
     And User <Contact> remembers the recent message from user Myself via device <HisDevice>
-    When I long tap on image in conversation view
+    # Wait for sync
+    When I wait for 3 seconds
+    And I long tap on image in conversation view
     And I tap on Delete badge item
     And I select Delete for Everyone item from Delete menu
     Then I see 0 photos in the conversation view
