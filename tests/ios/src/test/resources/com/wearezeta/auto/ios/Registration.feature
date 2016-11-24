@@ -10,6 +10,8 @@ Feature: Registration
     And I accept alert if visible
     And I tap Choose Own Picture button
     And I tap Choose Photo button
+    # Wait for animation
+    And I wait for 5 seconds
     And I accept alert if visible
     And I select the first picture from Camera Roll
     And I accept alert if visible
