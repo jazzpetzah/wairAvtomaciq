@@ -71,7 +71,7 @@ Feature: Forward Message
     Examples:
       | Name      | Contact1  | Contact2  | Timeout |
       | user1Name | user2Name | user3name | 5       |
-    
+
   @C345384 @regression @fastLogin
   Scenario Outline: ZIOS-7674 Verify forwarding to archived conversation unarchive it
     Given There are 3 users where <Name> is me
@@ -154,6 +154,7 @@ Feature: Forward Message
     Given I tap on contact name <Contact1>
 # Small wait to make the appearence of button on jenkins more stable
     Given I wait for 3 seconds
+# Have to tap play video message to download video. Otherwise Forward button is missing.
     When I tap on video message in conversation view
 # Small wait to make sure download is completed
     And I wait for 5 seconds

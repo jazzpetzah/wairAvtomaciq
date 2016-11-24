@@ -147,7 +147,7 @@ Feature: Forward Message
       | user1Name | user2Name | user3name | test.m4a | audio/mp4 | Device1       |
 
   @C345390 @staging @fastLogin
-  Scenario Outline: Verify forwarding someone else video message
+  Scenario Outline: (ZIOS-7682) Verify forwarding someone else video message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
