@@ -439,7 +439,7 @@ public class CommonAndroidTabletSteps {
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
-        commonSteps.IChangeUserName(name, newName);
+        commonSteps.IChangeName(name, newName);
     }
 
     /**

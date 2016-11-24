@@ -306,6 +306,8 @@ Feature: Conversation List
     Given User <Contact1> sends 1 encrypted message to user <Name>
     Given User Myself sends 1 encrypted message to user <Contact1>
     Given I see conversations list
+    # Wait for sync
+    Given I wait for 5 seconds
     When I swipe right on a <Contact1>
     And I tap Delete conversation action button
     And I confirm Delete conversation action
