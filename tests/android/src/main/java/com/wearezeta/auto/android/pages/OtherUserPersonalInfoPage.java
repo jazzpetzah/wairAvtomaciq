@@ -2,6 +2,7 @@ package com.wearezeta.auto.android.pages;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -136,11 +137,11 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
     public boolean verifyParticipantDevice() throws Exception {
         final By unselectedSwitchLocator = By.xpath(xpathStrOtrSwitchByState.apply(NOT_VERIFIED_STATE));
-        if(DriverUtils.getElementIfDisplayed(getDriver(), unselectedSwitchLocator, 3).isPresent()) {
-            getElement(unselectedSwitchLocator).click();
-            return true;
+        final Optional<WebElement> otrSwitch = getElementIfDisplayed(unselectedSwitchLocator, 3);
+        if (otrSwitch.isPresent()) {
+            otrSwitch.get().click();
         }
-        return false;
+        return otrSwitch.isPresent();
     }
 
     public boolean isParticipantShieldShowed() throws Exception {
