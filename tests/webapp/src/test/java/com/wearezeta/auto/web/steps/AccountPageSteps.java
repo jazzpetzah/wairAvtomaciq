@@ -136,7 +136,7 @@ public class AccountPageSteps {
                 return actualMatch;
             });
         } else {
-            BufferedImage actualPicture = context.getPagesCollection().getPage(ContactListPage.class).getBackgroundPicture();
+            BufferedImage actualPicture = context.getPagesCollection().getPage(AccountPage.class).getPicture();
             assertThat("Image has changed", ImageUtil.getMatches(actualPicture, profileImage), greaterThan(THRESHOLD));
         }
     }
