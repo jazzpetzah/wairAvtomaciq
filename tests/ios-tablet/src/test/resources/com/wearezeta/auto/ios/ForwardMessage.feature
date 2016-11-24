@@ -1,6 +1,6 @@
 Feature: Forward Message
 
-  @C345391 @regression @fastLogin
+  @C345391 @staging @fastLogin
   Scenario Outline: Verify forwarding own picture
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -117,7 +117,7 @@ Feature: Forward Message
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3name |
 
-  @C345392 @regression @fastLogin
+  @C345392 @staging @fastLogin
   Scenario Outline: Verify forwarding someone else audio message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
