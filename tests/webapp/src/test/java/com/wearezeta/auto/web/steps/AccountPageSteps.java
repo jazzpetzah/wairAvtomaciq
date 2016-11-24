@@ -116,33 +116,28 @@ public class AccountPageSteps {
 
     @Then("^I verify that the profile image on the account page has( not)? changed$")
     public void IVerifyBackgroundImageHasChanged(String not) throws Exception {
+        final int THRESHOLD = 100;
+
         if (not == null) {
-            final int THRESHOLD = 100;
+            AccountPage contactListPage = context.getPagesCollection().getPage(AccountPage.class);
 
-            if (not == null) {
-                AccountPage contactListPage = context.getPagesCollection().getPage(AccountPage.class);
+            Wait<AccountPage> wait = new FluentWait<>(contactListPage)
+                    .withTimeout(15, TimeUnit.SECONDS)
+                    .pollingEvery(5, TimeUnit.SECONDS)
+                    .ignoring(AssertionError.class);
 
-                Wait<AccountPage> wait = new FluentWait(contactListPage)
-                        .withTimeout(15, TimeUnit.SECONDS)
-                        .pollingEvery(5, TimeUnit.SECONDS)
-                        .ignoring(AssertionError.class);
-
-                wait.until(page -> {
-                    int actualMatch = THRESHOLD + 1;
-                    try {
-                        actualMatch = ImageUtil.getMatches(page.getPicture(), profileImage);
-                    } catch (Exception e) {
-                    }
-                    assertThat("Image has not changed", actualMatch, lessThan(THRESHOLD));
-                    return actualMatch;
-                });
-            } else {
-                BufferedImage actualPicture = context.getPagesCollection().getPage(ContactListPage.class).getBackgroundPicture();
-                assertThat("Image has changed", ImageUtil.getMatches(actualPicture, profileImage), greaterThan(THRESHOLD));
-            }
+            wait.until(page -> {
+                int actualMatch = THRESHOLD + 1;
+                try {
+                    actualMatch = ImageUtil.getMatches(page.getPicture(), profileImage);
+                } catch (Exception e) {
+                }
+                assertThat("Image has not changed", actualMatch, lessThan(THRESHOLD));
+                return actualMatch;
+            });
         } else {
-            BufferedImage actualPicture = context.getPagesCollection().getPage(AccountPage.class).getPicture();
-            assertThat("Profile image has changed", ImageUtil.getMatches(actualPicture, profileImage), greaterThan(100));
+            BufferedImage actualPicture = context.getPagesCollection().getPage(ContactListPage.class).getBackgroundPicture();
+            assertThat("Image has changed", ImageUtil.getMatches(actualPicture, profileImage), greaterThan(THRESHOLD));
         }
     }
 
