@@ -19,7 +19,7 @@ Feature: Link Preview
       | Login      | Password      | Name      | Contact   | Link              | LinkInPreview | LinkTitle                                                                            | LinkPreviewImage |
       | user1Email | user1Password | user1Name | user2Name | https://wire.com/ | wire.com      | Wire · Modern communication, full privacy. For iOS, Android, macOS, Windows and web. | linkpreview0.png |
 
-  @C169205 @staging
+  @C169205 @smoke
   Scenario Outline: Verify you can delete link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

@@ -302,7 +302,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Message   |
       | user1Email | user1Password | user1Name | user2Name | delete me |
 
-  @C206276 @staging
+  @C206276 @smoke
   Scenario Outline: Verify I can only locally delete a message from other person (1:1)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
