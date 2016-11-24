@@ -222,6 +222,8 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameThisDeviceLink = MobileBy.AccessibilityId("THIS DEVICE");
 
+    private static final By nameFileActionsMenu = MobileBy.AccessibilityId("ActivityListView");
+
     protected static final String[] UPLOAD_MENU_ITEMS = new String[]{
             "Record a video", "Videos", "20 MB file", "Big file",
             "group-icon@3x.png", "CountryCodes.plist", "iCloud"
@@ -1040,5 +1042,9 @@ public class ConversationViewPage extends IOSPage {
         if (!isLocatorDisplayed(fbXpathRecentEntry)) {
             throw new IllegalStateException("Failed to scroll to the bottom of the conversation");
         }
+    }
+
+    public boolean waitUntilFileActionsMenuVisible() throws Exception {
+        return isLocatorDisplayed(nameFileActionsMenu);
     }
 }
