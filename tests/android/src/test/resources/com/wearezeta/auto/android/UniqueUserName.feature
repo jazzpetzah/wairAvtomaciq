@@ -62,21 +62,21 @@ Feature: Unique User Name
     And I tap on conversation name <ContactInABEmail>
     Then I see outgoing pending connection to <ContactInABEmail>
 #    TODO change when unique username will be implemented
-    And I check that unique username is visible
+    And I see unique username
     And I tap Back button
 
     #Second case
     And I tap on conversation name <ContactInABEmail>
     Then I see outgoing pending connection to <ContactInABEmail>
 #    TODO change when unique username will be implemented
-    And I check that unique username is visible
+    And I see unique username
     And I tap Back button
 
     #Third case
     And I tap on conversation name <ContactInABEmail>
     Then I see outgoing pending connection to <ContactInABEmail>
 #    TODO change when unique username will be implemented
-#    And I check that unique username is not visible
+    And I do not see unique username
 
     Examples:
       | Name      | ContactInABEmail | ContactInABPhone | ContactInABSameName |
