@@ -1,24 +1,23 @@
 package com.wearezeta.auto.android.steps;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.wearezeta.auto.android.pages.ConversationsListPage;
+import com.wearezeta.auto.android.pages.SearchListPage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.misc.ElementState;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
-
-import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.Assert;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ConversationsListPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
@@ -153,7 +152,6 @@ public class ConversationsListPageSteps {
     public void IShortSwipeRightOnAUser(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         getConversationsListPage().swipeShortRightOnConversation(1000, contact);
-
     }
 
     /**
@@ -165,7 +163,6 @@ public class ConversationsListPageSteps {
     @When("^I open [Ss]earch UI$")
     public void IOpenSearchUI() throws Exception {
         getConversationsListPage().tapListActionsAvatar();
-        getSearchListPage().getPickerEdit();
     }
 
     /**
