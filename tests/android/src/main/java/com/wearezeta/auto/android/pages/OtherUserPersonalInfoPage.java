@@ -6,12 +6,10 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 public class OtherUserPersonalInfoPage extends AndroidPage {
 
@@ -136,11 +134,13 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
     private static final String NOT_VERIFIED_STATE = "Not verified";
 
-    public void verifyParticipantDevice() throws Exception {
+    public boolean verifyParticipantDevice() throws Exception {
         final By unselectedSwitchLocator = By.xpath(xpathStrOtrSwitchByState.apply(NOT_VERIFIED_STATE));
-        Assert.assertTrue("Not verified switch is not visible", DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                unselectedSwitchLocator, 3));
-        getElement(unselectedSwitchLocator).click();
+        if(DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), unselectedSwitchLocator, 3)) {
+            getElement(unselectedSwitchLocator).click();
+            return true;
+        }
+        return false;
     }
 
     public boolean isParticipantShieldShowed() throws Exception {
