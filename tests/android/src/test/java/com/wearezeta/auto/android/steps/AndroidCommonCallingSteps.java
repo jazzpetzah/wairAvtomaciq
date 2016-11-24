@@ -1,8 +1,9 @@
-package com.wearezeta.auto.android.common;
+package com.wearezeta.auto.android.steps;
 
 import java.util.List;
 import java.util.Random;
 
+import com.wearezeta.auto.android.pages.CallIncomingPage;
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceCallException;
@@ -10,10 +11,15 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import org.apache.log4j.Logger;
 
 public class AndroidCommonCallingSteps {
+    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
     private static final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2.getInstance();
 
     private static final Logger log = ZetaLogger.getLog(CommonUtils.class.getSimpleName());
+
+    private CallIncomingPage getIncomingCallPage() throws Exception {
+        return pagesCollection.getPage(CallIncomingPage.class);
+    }
 
     private static final int DEFAULT_RETRIES = 3;
     private static final int DEFAULT_RETRY_DELAY = 30;
@@ -33,6 +39,9 @@ public class AndroidCommonCallingSteps {
                 sleepInterval = (intervalSeconds +
                         random.nextInt(DEFAULT_RETRY_DELAY)) * 2000;
                 intervalSeconds *= 2;
+                if (getIncomingCallPage().waitUntilIncomingCallOverlayAppears()) {
+                    return;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
