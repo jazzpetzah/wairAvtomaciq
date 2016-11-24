@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.wearezeta.auto.android.common.AndroidCommonCallingSteps;
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.calling2.v1.model.Call;
