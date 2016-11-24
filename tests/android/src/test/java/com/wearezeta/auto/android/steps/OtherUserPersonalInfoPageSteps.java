@@ -1,25 +1,23 @@
 package com.wearezeta.auto.android.steps;
 
-import static org.hamcrest.Matchers.is;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.wearezeta.auto.common.misc.ElementState;
-import org.junit.Assert;
-
 import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.android.pages.UnknownUserDetailsPage;
 import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.junit.Assert;
+
+import static org.hamcrest.Matchers.is;
 
 public class OtherUserPersonalInfoPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
@@ -171,7 +169,7 @@ public class OtherUserPersonalInfoPageSteps {
     @Then("^I verify (\\d+)(?:st|nd|rd|th)? device$")
     public void IVerifyDeviceX(int deviceNum) throws Exception {
         getOtherUserPersonalInfoPage().tapOnParticipantFirstDevice(deviceNum);
-        getOtherUserPersonalInfoPage().verifyParticipantDevice();
+        Assert.assertTrue("Not verified switch is not visible", getOtherUserPersonalInfoPage().verifyParticipantDevice());
         pagesCollection.getCommonPage().navigateBack();
     }
 
@@ -195,7 +193,7 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @Then("^I verify device$")
     public void IVerifyParticipantDevice() throws Exception {
-        getOtherUserPersonalInfoPage().verifyParticipantDevice();
+        Assert.assertTrue("Not verified switch is not visible", getOtherUserPersonalInfoPage().verifyParticipantDevice());
     }
 
     /**
