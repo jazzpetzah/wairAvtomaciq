@@ -189,7 +189,7 @@ Feature: Search
     And I tap Send image action button on Search UI page
     And I tap Camera Roll button on Camera page
     # Wait for animation
-    And I wait for 3 seconds
+    And I wait for 5 seconds
     And I accept alert if visible
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
