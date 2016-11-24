@@ -152,7 +152,6 @@ public class ConversationsListPageSteps {
     public void IShortSwipeRightOnAUser(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         getConversationsListPage().swipeShortRightOnConversation(1000, contact);
-
     }
 
     /**
