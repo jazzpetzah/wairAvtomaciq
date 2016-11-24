@@ -861,6 +861,19 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Verify whether file actions menu is visible
+     *
+     * @throws Exception
+     * @step. ^I see File Actions menu$
+     */
+    @Then("^I see File Actions menu$")
+    public void IWaitForFileActionsMenu() throws Exception {
+        Assert.assertTrue("File actions menu has not been shown after thes timeout",
+                getConversationViewPage().waitUntilFileActionsMenuVisible()
+        );
+    }
+
+    /**
      * Verify whether generic file share menu is shown
      *
      * @param timeoutSeconds timeout in seconds

@@ -30,11 +30,11 @@ Feature: File Transfer
     Given I see conversations list
     Given I tap on contact name <Contact>
     # Wait for the placeholder to be loaded
-    Given I wait for 5 seconds
-    Given I wait up to <Timeout> seconds until the file <FileName>.<FileExt> with size <FileSize> is ready for download from conversation view
-    When I tap file transfer action button
-    Then I wait up to <Timeout> seconds until I see a preview of the file named "<FileName>"
+    Given I wait for 3 seconds
+    When I wait up to <Timeout> seconds until the file <FileName>.<FileExt> with size <FileSize> is ready for download from conversation view
+    And I tap file transfer action button
+    Then I see File Actions menu
 
     Examples:
-      | Name      | Contact   | FileName | FileExt | FileSize | FileMIME   | ContactDevice | Timeout |
-      | user1Name | user2Name | testing  | jpg     | 240 KB   | image/jpeg | device1       | 20      |
+      | Name      | Contact   | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | Timeout |
+      | user1Name | user2Name | testing  | bin     | 240 KB   | application/octet-stream | device1       | 20      |

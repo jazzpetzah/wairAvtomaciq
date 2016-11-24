@@ -4,20 +4,20 @@ Feature: File Transfer
   Scenario Outline: Verify placeholder is shown for the receiver
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
     Given I sign in using my email or phone number
-    Given User <Contact> sends file <FileName>.<FileExt> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User Me sends 1 encrypted message to user <Contact>
+    Given User <Contact> sends temporary file <FileName>.<FileExt> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given I see conversations list
     Given I tap on contact name <Contact>
     # Wait for sync
     Given I wait for 3 seconds
     When I wait up to <Timeout> seconds until the file <FileName>.<FileExt> with size <FileSize> is ready for download from conversation view
     And I tap file transfer action button
-    Then I wait up to <Timeout> seconds until I see a preview of the file named "<FileName>"
+    Then I see File Actions menu
 
     Examples:
-      | Name      | Contact   | FileName | FileExt | FileSize | FileMIME   | ContactDevice | Timeout |
-      | user1Name | user2Name | testing  | jpg     | 240 KB   | image/jpeg | device1       | 20      |
+      | Name      | Contact   | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | Timeout |
+      | user1Name | user2Name | testing  | bin     | 240 KB   | application/octet-stream | device1       | 20      |
 
   @C82517 @regression @fastLogin
   Scenario Outline: Verify file transfer icon exists in cursor area in 1-to-1 and group conversations
