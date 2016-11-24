@@ -6,6 +6,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -137,9 +138,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
     public void verifyParticipantDevice() throws Exception {
         final By unselectedSwitchLocator = By.xpath(xpathStrOtrSwitchByState.apply(NOT_VERIFIED_STATE));
-        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), unselectedSwitchLocator, 3)) {
-            getElement(xpathSingleOtrSwitch).click();
-        }
+        Assert.assertTrue("Not verified switch is not visible", DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                unselectedSwitchLocator, 3));
+        getElement(unselectedSwitchLocator).click();
     }
 
     public boolean isParticipantShieldShowed() throws Exception {
