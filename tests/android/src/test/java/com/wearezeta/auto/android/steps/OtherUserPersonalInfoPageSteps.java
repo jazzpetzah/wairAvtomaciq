@@ -174,29 +174,6 @@ public class OtherUserPersonalInfoPageSteps {
     }
 
     /**
-     * Select device number X in single participant devices tab
-     *
-     * @param deviceNum Device number to verify
-     * @throws Exception
-     * @step. ^I select (\\d+)(?:st|nd|rd|th)? device$
-     */
-    @Then("^I select (\\d+)(?:st|nd|rd|th)? device$")
-    public void ISelectDeviceX(int deviceNum) throws Exception {
-        getOtherUserPersonalInfoPage().tapOnParticipantFirstDevice(deviceNum);
-    }
-
-    /**
-     * Verify selected participant device
-     *
-     * @throws Exception
-     * @step. ^I verify device$
-     */
-    @Then("^I verify device$")
-    public void IVerifyParticipantDevice() throws Exception {
-        Assert.assertTrue("Not verified switch is not visible", getOtherUserPersonalInfoPage().verifyParticipantDevice());
-    }
-
-    /**
      * Verifies that shield is showed in participant profile
      *
      * @throws Exception
