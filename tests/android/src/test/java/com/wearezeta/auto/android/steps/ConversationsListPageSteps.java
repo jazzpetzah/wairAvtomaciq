@@ -68,7 +68,7 @@ public class ConversationsListPageSteps {
         newDeviceIndicatorState.remember();
     }
 
-    private static final double MIN_NEW_DEVICE_INDICATOR_SCORE = 0.93;
+    private static final double MIN_NEW_DEVICE_INDICATOR_SCORE = 0.95;
     private static final int NEW_DEVICE_INDICATOR_STATE_CHANGE_TIMEOUT = 10; //seconds
 
     /**
@@ -79,7 +79,7 @@ public class ConversationsListPageSteps {
      */
     @Then("^I verify the state of new device indicator is changed$")
     public void ISeeNewDeviceIndicatorIsChanged() throws Exception {
-        Assert.assertTrue("The current and previous state of audio message preview seekbar seems to be same",
+        Assert.assertTrue("The current and previous state of settings button seems to be same",
                 newDeviceIndicatorState.isChanged(NEW_DEVICE_INDICATOR_STATE_CHANGE_TIMEOUT,
                         MIN_NEW_DEVICE_INDICATOR_SCORE));
     }
