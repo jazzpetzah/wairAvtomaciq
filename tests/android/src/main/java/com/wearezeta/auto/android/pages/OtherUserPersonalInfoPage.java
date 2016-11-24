@@ -136,7 +136,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
     public boolean verifyParticipantDevice() throws Exception {
         final By unselectedSwitchLocator = By.xpath(xpathStrOtrSwitchByState.apply(NOT_VERIFIED_STATE));
-        if(DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), unselectedSwitchLocator, 3)) {
+        if(DriverUtils.getElementIfDisplayed(getDriver(), unselectedSwitchLocator, 3).isPresent()) {
             getElement(unselectedSwitchLocator).click();
             return true;
         }
