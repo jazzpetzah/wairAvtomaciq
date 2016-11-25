@@ -39,7 +39,6 @@ Feature: Group Ephemeral Messages
     Given I type the default message and send it
     # Need to tap on message due to ZIOS-7568. Step should be delete once bug is fixed.
     Given I tap default message in conversation view
-    Given I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
     Given I tap Add Picture button from input tools
     Given I accept alert if visible
     Given I accept alert if visible
@@ -47,7 +46,6 @@ Feature: Group Ephemeral Messages
     Given I tap Confirm button on Picture preview page
     # Need to tap on message due to ZIOS-7568. Step should be delete once bug is fixed.
     Given I tap on image in conversation view
-    Given I see "<EphemeralTimeLabel>" on the message toolbox in conversation view
     When I tap Time Indicator button in conversation view
     And I set ephemeral messages expiration timer to Off
     And I type the "<TestMsg>" message and send it
