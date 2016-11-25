@@ -31,15 +31,17 @@ public final class CommonRESTHandlers {
 
     private static final Logger log = ZetaLogger.getLog(CommonRESTHandlers.class.getSimpleName());
     private static final String EMPTY_LOG_RECORD = "EMPTY";
+    private static final int IS_ALIVE_CONNECTION_TIMEOUT_MS = 5000;
 
     public static boolean isAlive(URL siteURL) {
         try {
             final HttpURLConnection connection = (HttpURLConnection) siteURL.openConnection();
             connection.setRequestMethod("HEAD");
+            connection.setConnectTimeout(IS_ALIVE_CONNECTION_TIMEOUT_MS);
             connection.connect();
             final int responseCode = connection.getResponseCode();
             log.debug(String.format("Response code from %s: %s", siteURL.toString(), responseCode));
-            return (responseCode == 200);
+            return (responseCode == HttpURLConnection.HTTP_OK);
         } catch (Exception e) {
             // Just ignore
             // e.printStackTrace();
