@@ -162,14 +162,14 @@ Feature: Ephemeral
     And I set the timer for ephemeral to <TimeLong>
     And I write message <Message1>
     And I send message
-    And I wait for <Halftime> seconds
+    And I wait for <ReducedTime> seconds
     And I write message <Message2>
     And I send message
     And I see text message <Message1>
     And I see text message <Message2>
-    When I wait for <Halftime> seconds
+    When I wait for <ReducedTime> seconds
     Then I see the second last message is obfuscated
-    When I wait for <Halftime> seconds
+    When I wait for <ReducedTime> seconds
     Then I see the last message is obfuscated
     When User <Contact> reads the second last message from user <Name> via device Device1
     And I wait for <Time> seconds
@@ -181,8 +181,8 @@ Feature: Ephemeral
     Then I see 1 message in conversation
 
     Examples:
-      | Login      | Password      | Name      | Contact   | TimeLong   | Time | Halftime | Message1 | Message2 |
-      | user1Email | user1Password | user1Name | user2Name | 15 seconds | 15   | 8        | testing1 | testing2 |
+      | Login      | Password      | Name      | Contact   | TimeLong   | Time | ReducedTime | Message1 | Message2 |
+      | user1Email | user1Password | user1Name | user2Name | 15 seconds | 15   | 6           | testing1 | testing2 |
 
   @C264664 @ephemeral @regression
   Scenario Outline: Verify I can not edit my last ephemeral message by pressing the up arrow key in 1:1
