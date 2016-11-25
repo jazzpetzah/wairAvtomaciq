@@ -143,7 +143,7 @@ Feature: Forward Message
       | Name      | Contact1  | Contact2  | FileName | FileMIME  | ContactDevice |
       | user1Name | user2Name | user3name | test.m4a | audio/mp4 | Device1       |
 
-  @C345371 @staging @fastLogin
+  @C345371 @regression @fastLogin
   Scenario Outline: Verify forwarding someone else video message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
