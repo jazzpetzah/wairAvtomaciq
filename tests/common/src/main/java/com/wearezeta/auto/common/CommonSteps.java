@@ -960,6 +960,13 @@ public final class CommonSteps {
         }
     }
 
+    public void UserCancelConnection(String userNameAlias, String canceldUserNameAlias, String deviceName)
+            throws Exception {
+        final ClientUser user = usrMgr.findUserByNameOrNameAlias(userNameAlias);
+        final ClientUser canceledUser = usrMgr.findUserByNameOrNameAlias(canceldUserNameAlias);
+        SEBridge.getInstance().cancelConnection(user, canceledUser, deviceName);
+    }
+
     public void UserResetsPassword(String nameAlias, String newPassword) throws Exception {
         final ClientUser usr = usrMgr.findUserByNameOrNameAlias(nameAlias);
         BackendAPIWrappers.changeUserPassword(usr, usr.getPassword(), newPassword);

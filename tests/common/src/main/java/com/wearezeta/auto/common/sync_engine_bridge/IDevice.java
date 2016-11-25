@@ -1,6 +1,7 @@
 package com.wearezeta.auto.common.sync_engine_bridge;
 
 import com.waz.model.MessageId;
+import com.waz.model.UserId;
 import com.waz.provision.ActorMessage;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
@@ -69,4 +70,6 @@ public interface IDevice extends IRemoteEntity {
     void setAssetToV2() throws Exception;
 
     void sendGiphy(String convId, String searchQuery) throws Exception;
+
+    void cancelConnection(UserId userId) throws Exception;
 }
