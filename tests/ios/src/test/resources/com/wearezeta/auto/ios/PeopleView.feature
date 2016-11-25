@@ -408,6 +408,8 @@ Feature: People View
     Given User <Contact2> sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact2> sends encrypted image <Picture> to group conversation <GroupChatName>
     Given I see conversations list
+    # Wait for delivery
+    Given I wait for 5 seconds
     Given I tap on group chat with name <GroupChatName>
     Given I open group conversation details
     Given I tap Open Menu button on Group info page
@@ -435,6 +437,8 @@ Feature: People View
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     Given I see conversations list
+    # Wait for delivery
+    Given I wait for 5 seconds
     When I tap on contact name <Contact1>
     And I open conversation details
     And I tap Open Menu button on Single user profile page
