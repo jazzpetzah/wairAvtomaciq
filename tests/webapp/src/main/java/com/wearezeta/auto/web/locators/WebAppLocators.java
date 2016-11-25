@@ -189,7 +189,7 @@ public final class WebAppLocators {
         public static final Function<String, String> xpathVideoButtonByConversationName = (
                 name) -> String
                 .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
-                                + "*/parent::*//*[@data-uie-name='do-video-call']",
+                                + "*/parent::*//*[@data-uie-name='do-call-video']",
                         name);
 
         public static final Function<String, String> xpathEndCallButtonByConversationName = (

@@ -173,4 +173,11 @@ public class CallPage extends ContactListPage {
         final String locator = WebAppLocators.CallPage.cssAvatarInCallControlsByUserId.apply(userId);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(locator));
     }
+
+    public void clickVideoCallButton(String conversationName) throws Exception {
+        conversationName = fixDefaultGroupConvoName(conversationName, false);
+        final String locator = WebAppLocators.CallPage.xpathVideoButtonByConversationName.apply(conversationName);
+        WebElement button = getDriver().findElementByXPath(locator);
+        button.click();
+    }
 }

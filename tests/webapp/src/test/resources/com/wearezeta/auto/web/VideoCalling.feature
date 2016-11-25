@@ -904,3 +904,39 @@ Feature: VideoCalling
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 20      |
+
+  @C169369 @videocalling @staging
+  Scenario Outline: Verify I can start an audio call and can upgrade to video call
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact>
+    And I call
+    And <Contact> accepts next incoming call automatically
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verify that all audio flows have greater than 0 bytes
+    When I click upgrade to video call button for conversation <Contact>
+    Then I see broadcast indicator is shown for video
+    When I maximize video call via titlebar
+    Then I see my self video view
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see video call is maximized
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
+    When I end the video call
+    Then I do not see the call controls for conversation <Contact>
+    And I do not see my self video view
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 20      |

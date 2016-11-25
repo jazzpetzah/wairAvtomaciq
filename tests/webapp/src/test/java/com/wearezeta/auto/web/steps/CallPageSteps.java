@@ -199,4 +199,11 @@ public class CallPageSteps {
                     contactListPage.isMuteCallButtonNotPressed(conversation));
         }
     }
+
+    @When("^I click upgrade to video call button for conversation (.*)$")
+    public void IClickVideoCallButton(String conversation) throws Exception {
+        conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
+        CallPage page = context.getPagesCollection().getPage(CallPage.class);
+        page.clickVideoCallButton(conversation);
+    }
 }
