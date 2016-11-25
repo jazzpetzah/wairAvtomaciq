@@ -47,6 +47,8 @@ Feature: Likes
     Given I sign in using my email or phone number
     Given User <Contact1> sends 1 encrypted message to group conversation <Group>
     Given I see conversations list
+    # Sync message delivery
+    Given I wait for 5 seconds
     Given <Contact1> removes Myself from group chat <Group>
     Given I tap on contact name <Group>
     When I tap default message in conversation view
