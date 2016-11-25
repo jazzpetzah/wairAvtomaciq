@@ -1774,6 +1774,20 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * User cancel outgoing request
+     *
+     * @param userNameAlias         name alias of the user
+     * @param canceledUserNameAlias name alias of the user which you send the connect request
+     * @param deviceName            device name
+     * @throws Exception
+     * @step. ^User (.*) cancels the outgoing request to user (\\w+)(?: via device (.*)\s)?$
+     */
+    @When("^User (.*) cancels the outgoing request to user (\\w+)(?: via device (.*))?$")
+    public void UserXCancelRequestToUserY(String userNameAlias, String canceledUserNameAlias, String deviceName) throws Exception {
+        commonSteps.UserCancelConnection(userNameAlias, canceledUserNameAlias, deviceName);
+    }
+
+    /**
      * Add email(s) into address book of a user and upload address book in backend
      *
      * @param asUser   name of the user where the address book is uploaded

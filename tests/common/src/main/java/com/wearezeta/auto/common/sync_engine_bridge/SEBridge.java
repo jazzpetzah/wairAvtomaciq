@@ -2,6 +2,7 @@ package com.wearezeta.auto.common.sync_engine_bridge;
 
 import com.google.common.base.Throwables;
 import com.waz.model.MessageId;
+import com.waz.model.UserId;
 import com.waz.provision.ActorMessage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -199,6 +200,10 @@ public class SEBridge {
 
     public void setAssetToV2(ClientUser userFrom, String deviceName) throws Exception {
         getOrAddDevice(userFrom, deviceName).setAssetToV2();
+    }
+
+    public void cancelConnection(ClientUser userFrom, ClientUser userDst, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).cancelConnection(new UserId(userDst.getId()));
     }
 
     public void releaseDevicesOfUser(ClientUser user) throws Exception {
