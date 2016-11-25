@@ -139,7 +139,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         final By unselectedSwitchLocator = By.xpath(xpathStrOtrSwitchByState.apply(NOT_VERIFIED_STATE));
         final Optional<WebElement> otrSwitch = getElementIfDisplayed(unselectedSwitchLocator, 3);
         if (otrSwitch.isPresent()) {
-            otrSwitch.get().click();
+            //Need to tap on standalone switch, because tap on switch text do nothing
+            getElement(xpathSingleOtrSwitch).click();
         }
         return otrSwitch.isPresent();
     }
