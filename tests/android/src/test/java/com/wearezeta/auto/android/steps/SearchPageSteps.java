@@ -1,29 +1,31 @@
 package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.MultipleTestCaseAssertionFaultException;
+import com.wearezeta.auto.android.pages.ContactListPage;
+import com.wearezeta.auto.android.pages.SearchListPage;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.InvitationMessage;
 import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import org.junit.Assert;
-
-import com.wearezeta.auto.android.pages.*;
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.apache.log4j.Logger;
+import org.junit.Assert;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.Future;
 
 public class SearchPageSteps {
+
+    private static Logger logger = ZetaLogger.getLog(SearchPageSteps.class.getSimpleName());
+
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private static final Random random = new Random();
@@ -133,7 +135,6 @@ public class SearchPageSteps {
             text = (partialSize < text.length()) ? text.substring(0, partialSize) : text;
         }
         getSearchListPage().typeTextInPeopleSearch(text);
-        CommonSteps.getInstance().WaitForTime(2);
     }
 
     /**
@@ -469,5 +470,62 @@ public class SearchPageSteps {
         final String invitationLink = new InvitationMessage(receivedMessage).extractInvitationLink();
         final String code = invitationLink.substring(invitationLink.indexOf("/i/") + 3, invitationLink.length());
         AndroidCommonUtils.broadcastInvitationCode(code);
+    }
+
+    /**
+     * Search people in request parameters and assert, that information in searching result is correct
+     *
+     * @param expectedResultParameters cucumber dataTable with columns (name, ABName, CommonFriends)
+     * @throws Exception
+     * @step. ^I verify results in search page, according to datatable$
+     */
+    @Then("^I verify results in search page, according to datatable$")
+    public void searchAndCheckFields(List<ResultParameter> expectedResultParameters) throws Exception {
+        List<AssertionError> assertionErrors = new ArrayList<>();
+        SearchListPage searchListPage = getSearchListPage();
+        for (int i = 0; i < expectedResultParameters.size(); i++) {
+            try {
+                ResultParameter resultParameter = expectedResultParameters.get(i);
+                String contactName = resultParameter.name;
+                logger.debug(String.format("Searching for username: %s", contactName));
+                String contactActualName = usrMgr.replaceAliasesOccurences(contactName, FindBy.NAME_ALIAS);
+
+                if (i > 0) {
+                    searchListPage.clearTextInPeopleSearch();
+                }
+
+                searchListPage.typeTextInPeopleSearch(contactActualName);
+                Assert.assertTrue(
+                        String.format("No user was found with name: %s", contactActualName),
+                        searchListPage.waitUntilNameVisible(false, contactActualName));
+                searchListPage.swipeRightOnContactAvatar(contactActualName);
+
+                String abName = usrMgr.replaceAliasesOccurences(resultParameter.aBName, FindBy.NAME_ALIAS);
+                String expectedDetailsValue = searchListPage.compileSearchResultItemDetails(contactName, abName, resultParameter.commonFriends);
+                Assert.assertTrue(
+                        String.format("There is no search item details '%s' for user %s", expectedDetailsValue, contactActualName),
+                        searchListPage.isSearchResultItemDetailsVisible(contactActualName, expectedDetailsValue));
+            } catch (AssertionError e) {
+                assertionErrors.add(e);
+            }
+        }
+        if (assertionErrors.size() > 0) {
+            if (assertionErrors.size() == 1) {
+                throw assertionErrors.get(0);
+            }
+            throw new MultipleTestCaseAssertionFaultException(assertionErrors);
+        }
+    }
+
+    class ResultParameter {
+        private final String name;
+        private final String aBName;
+        private final Integer commonFriends;
+
+        public ResultParameter(String name, String aBName, Integer commonFriends) {
+            this.name = name;
+            this.aBName = aBName;
+            this.commonFriends = commonFriends;
+        }
     }
 }

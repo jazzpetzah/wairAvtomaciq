@@ -1,13 +1,13 @@
 package com.wearezeta.auto.android.pages;
 
-import java.util.concurrent.Future;
-import java.util.function.Function;
-
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.By;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import java.util.concurrent.Future;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class SearchListPage extends AbstractPickUserPage {
 
@@ -22,6 +22,10 @@ public class SearchListPage extends AbstractPickUserPage {
     public static final Function<String, String> xpathStrUserAvatarByName = name -> String
             .format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']"
                     + "/preceding-sibling::*[@id='cv_pickuser__searchuser_chathead']", name);
+
+    public static final BiFunction<String, String, String> xpathStrSearchResultUserNameAndAddressBook = (name, details) -> String
+            .format("//*[@id='ttv__contactlist__user__name' and @value='%s']"
+                    + "/../*[@id='ttv__contactlist__user__username_and_address_book' and @value='%s']", name, details);
 
     public SearchListPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -61,5 +65,15 @@ public class SearchListPage extends AbstractPickUserPage {
     protected By getInviteButtonLocator(String name) {
         // TODO: Fix the the avatar locator
         throw new NotImplementedException("Do not support invite button on search list");
+    }
+
+    public String compileSearchResultItemDetails(String name, String ABName, Integer commonFriendsCount) {
+        //TODO: implement mechanism, that will generate string like "unique name, someName in your AB, has X common friends" from parameters
+        return "";
+    }
+
+    public boolean isSearchResultItemDetailsVisible(String name, String searchResultItemDetails) throws Exception {
+        final By locator = By.xpath(xpathStrSearchResultUserNameAndAddressBook.apply(name, searchResultItemDetails));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 }
