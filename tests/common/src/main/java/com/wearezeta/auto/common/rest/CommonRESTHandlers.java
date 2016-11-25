@@ -41,7 +41,8 @@ public final class CommonRESTHandlers {
             log.debug(String.format("Response code from %s: %s", siteURL.toString(), responseCode));
             return (responseCode == 200);
         } catch (Exception e) {
-            e.printStackTrace();
+            // Just ignore
+            // e.printStackTrace();
         }
         return false;
     }
