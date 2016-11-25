@@ -1,6 +1,6 @@
 package com.wearezeta.auto.common.email.handlers;
 
-import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import com.google.common.base.Throwables;
+import com.wearezeta.auto.common.rest.CommonRESTHandlers;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -63,16 +65,11 @@ class RESTMBoxClientWrapper implements ISupportsMessagesPolling {
     @Override
     public boolean isAlive() {
         try {
-            final URL siteURL =
-                    new URL(String.format("%s/recent_emails/%s/0/0", RESTMBoxAPI.getApiRoot(), this.mboxUserName));
-            final HttpURLConnection connection = (HttpURLConnection) siteURL.openConnection();
-            connection.setRequestMethod("HEAD");
-            connection.connect();
-            final int responseCode = connection.getResponseCode();
-            log.debug(String.format("Response code from %s: %s", siteURL.toString(), responseCode));
-            return (responseCode == 200);
-        } catch (Exception e) {
-            e.printStackTrace();
+            return CommonRESTHandlers.isAlive(
+                    new URL(String.format("%s/recent_emails/%s/0/0", RESTMBoxAPI.getApiRoot(), this.mboxUserName))
+            );
+        } catch (MalformedURLException e) {
+            Throwables.propagate(e);
         }
         return false;
     }

@@ -1,5 +1,6 @@
 package com.wearezeta.auto.common.driver.facebook_ios_driver;
 
+import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rest.CommonRESTHandlers;
@@ -14,6 +15,8 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.MediaType;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.*;
@@ -30,16 +33,24 @@ final class FBDriverRESTClient {
     private static final String EMPTY_JSON_BODY = new JSONObject().toString();
 
     private String hostname;
-    private String port;
+    private int port;
 
-    public FBDriverRESTClient(String ip, String port) {
+    public FBDriverRESTClient(String ip, int port) {
         this.hostname = ip;
         this.port = port;
     }
 
     public String getApiRoot() {
-        System.out.print(String.format("%s%s:%s/", URL_PROTOCOL, this.hostname, this.port));
         return String.format("%s%s:%s", URL_PROTOCOL, this.hostname, this.port);
+    }
+
+    public static boolean isAlive(String hostname, int port) {
+        try {
+            return CommonRESTHandlers.isAlive(new URL(String.format("%s%s:%s", URL_PROTOCOL, hostname, port)));
+        } catch (MalformedURLException e) {
+            Throwables.propagate(e);
+        }
+        return false;
     }
 
     private static final CommonRESTHandlers restHandlers =

@@ -20,6 +20,7 @@ import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.*;
 import com.wearezeta.auto.common.driver.device_helpers.IOSSimulatorHelpers;
 import com.wearezeta.auto.common.driver.device_helpers.IOSRealDeviceHelpers;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDriverAPI;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.IOSDistributable;
 import com.wearezeta.auto.common.sync_engine_bridge.AssetProtocol;
@@ -218,6 +219,10 @@ public class CommonIOSSteps {
             prepareRealDevice(capabilities);
         } else {
             prepareSimulator(capabilities, processArgs);
+        }
+
+        if (!capabilities.is(CAPABILITY_NAME_FORCE_RESET) && FBDriverAPI.isAlive()) {
+            capabilities.setCapability(ZetaIOSDriver.CAPABILITY_NAME_USE_PREBUILT_WDA, true);
         }
 
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance().resetDriver(

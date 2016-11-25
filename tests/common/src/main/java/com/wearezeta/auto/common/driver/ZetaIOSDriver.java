@@ -16,6 +16,7 @@ import com.google.common.collect.ImmutableMap;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.process.UnixProcessHelpers;
 import com.wearezeta.auto.common.rest.RESTError;
 import org.apache.log4j.Logger;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
@@ -37,6 +38,8 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
 
     public static final String AUTOMATION_NAME_CAPABILITY_NAME = "automationName";
     public static final String AUTOMATION_MODE_XCUITEST = "XCUITest";
+
+    public static final String CAPABILITY_NAME_USE_PREBUILT_WDA = "usePrebuiltWDA";
 
     private static final Logger log = ZetaLogger.getLog(ZetaIOSDriver.class.getSimpleName());
 
@@ -83,6 +86,10 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver, 
                     LOCKDOWN.getAbsolutePath(), LOCKDOWN.getAbsolutePath()
             ));
         }
+    }
+
+    public static void resetXCTest() throws Exception {
+        UnixProcessHelpers.killProcessesGracefully("xcodebuild", "XCTRunner", "iproxy");
     }
 
     public DefaultArtifactVersion getOSVersion() {

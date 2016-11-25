@@ -10,6 +10,8 @@ import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Optional;
 
 public final class CommonRESTHandlers {
@@ -29,6 +31,20 @@ public final class CommonRESTHandlers {
 
     private static final Logger log = ZetaLogger.getLog(CommonRESTHandlers.class.getSimpleName());
     private static final String EMPTY_LOG_RECORD = "EMPTY";
+
+    public static boolean isAlive(URL siteURL) {
+        try {
+            final HttpURLConnection connection = (HttpURLConnection) siteURL.openConnection();
+            connection.setRequestMethod("HEAD");
+            connection.connect();
+            final int responseCode = connection.getResponseCode();
+            log.debug(String.format("Response code from %s: %s", siteURL.toString(), responseCode));
+            return (responseCode == 200);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     private static final int MAX_SINGLE_ENTITY_LENGTH_IN_LOG = 400;
 

@@ -6,8 +6,6 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +16,7 @@ public class FBDriverAPI {
     private static final Logger log = ZetaLogger.getLog(FBDriverAPI.class.getSimpleName());
 
     private static final String HOST_NAME = "localhost";
-    private static final String PORT_NUMBER = "8100";
+    private static final int PORT_NUMBER = 8100;
 
     private static final String BY_PREDICATE_STRING = "predicate string";
     private static final String BY_CLASS_NAME_STRING = "class name";
@@ -35,7 +33,7 @@ public class FBDriverAPI {
 
     private String getSessionId() throws RESTError {
         if (!this.sessionId.isPresent()) {
-            if (!this.isAlive()) {
+            if (!isAlive()) {
                 throw new IllegalStateException(String.format("Facebook Driver service listener at %s:%s is dead",
                         HOST_NAME, PORT_NUMBER));
             }
@@ -76,20 +74,8 @@ public class FBDriverAPI {
         return parseFindElementsOutput(client.findElements(getSessionId(), BY_CLASS_NAME_STRING, query));
     }
 
-    public boolean isAlive() {
-        try {
-            final URL siteURL = new URL(String.format("%s%s:%s/", FBDriverRESTClient.URL_PROTOCOL,
-                    HOST_NAME, PORT_NUMBER));
-            final HttpURLConnection connection = (HttpURLConnection) siteURL.openConnection();
-            connection.setRequestMethod("HEAD");
-            connection.connect();
-            final int responseCode = connection.getResponseCode();
-            log.debug(String.format("Response code from %s: %s", siteURL.toString(), responseCode));
-            return (responseCode == 200);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+    public static boolean isAlive() {
+        return FBDriverRESTClient.isAlive(HOST_NAME, PORT_NUMBER);
     }
 
     public Optional<FBElement> findChildElementByFBAccessibilityId(String uuid, String value) throws RESTError {
