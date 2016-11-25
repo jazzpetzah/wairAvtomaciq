@@ -68,9 +68,13 @@ Feature: Likes
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given User Myself sends 1 encrypted message to user <Contact>
+    # Wait for delivery
+    Given I wait for 5 seconds
     Given I see conversations list
     Given User <Contact> likes the recent message from user Myself
     Given I tap on contact name <Contact>
+    # Wait for sync
+    Given I wait for 3 seconds
     When I tap default message in conversation view
     And I remember the state of Like icon in the conversation
     And I tap Like icon in the conversation
