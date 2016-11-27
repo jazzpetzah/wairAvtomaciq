@@ -219,10 +219,9 @@ public class CommonIOSSteps {
             prepareRealDevice(capabilities);
         } else {
             prepareSimulator(capabilities, processArgs);
-        }
-
-        if (!capabilities.is(CAPABILITY_NAME_FORCE_RESET) && FBDriverAPI.isAlive()) {
-            capabilities.setCapability(ZetaIOSDriver.CAPABILITY_NAME_USE_PREBUILT_WDA, true);
+            if (!capabilities.is(CAPABILITY_NAME_FORCE_RESET) && FBDriverAPI.isAlive()) {
+                capabilities.setCapability(ZetaIOSDriver.CAPABILITY_NAME_USE_PREBUILT_WDA, true);
+            }
         }
 
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance().resetDriver(
