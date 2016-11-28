@@ -158,7 +158,7 @@ Feature: Forward Message
     When I tap on video message in conversation view
     And I do not see video message container in the conversation view
 # Small wait to make sure download is completed
-    And I wait for <Time> seconds
+    #And I wait for <Time> seconds
     And I see video message player page is opened
     And I tap Done button on video message player page
     And I long tap on video message in conversation view
