@@ -78,7 +78,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     public static final By xpathRightActionButton =
             By.xpath("//*[contains(@id, '__right__action') and starts-with(@id, 'gtv__') and @shown='true']");
 
-    private static final By idParticipantsSubHeader = By.id("ttv__participants__user_name");
+    private static final By idParticipantsSubHeader = By.id("ttv__participants__sub_header");
 
     private static final By xpathConfirmRemoveButton = By.xpath("//*[@id='positive' and @value='REMOVE']");
 
