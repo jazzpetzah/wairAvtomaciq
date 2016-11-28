@@ -301,7 +301,7 @@ public class CallingSteps {
             throws Throwable {
         final int timeBetweenCall = 10;
         final List<String> calleeList = splitAliases(callees);
-        final ConversationViewPageSteps convSteps = new ConversationViewPageSteps();
+        //final ConversationViewPageSteps convSteps = new ConversationViewPageSteps();
         final CallPageSteps callPageSteps = new CallPageSteps();
         final CommonIOSSteps commonIOSSteps = new CommonIOSSteps();
         final CallKitPageSteps callKitPageSteps = new CallKitPageSteps();
@@ -309,6 +309,8 @@ public class CallingSteps {
         for (int i = 0; i < times; i++) {
             LOG.info("\n\nSTARTING CALL " + i);
             try {
+                commonIOSSteps.IPressHomeButton();
+                LOG.info("Put app into background");
 
                 for (String callee : calleeList) {
                     UserXCallsToUserYUsingCallBackend(callee, conversationName);
@@ -318,7 +320,10 @@ public class CallingSteps {
                 LOG.info("Audio Call Kit overlay is visible");
 
                 callKitPageSteps.ITapButton("Accept");
-                commonIOSSteps.IAcceptAlert("accept", "if visible");
+
+                if (i == 0){
+                    commonIOSSteps.IAcceptAlert("accept", "if visible");
+                }
 
                 for (String callee : calleeList) {
                     UserXVerifesCallStatusToUserY(callee,conversationName, "active", 20);

@@ -455,8 +455,10 @@ Feature: Calling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And <Contact> calls to me 6 times for 1 minute
+    #Given I press Home button
+    #When I tap on contact name <Contact>
+    # Will put app into BG in the beginning of every call
+    And <Contact> calls to me 1 times for 1 minute
 
     Examples:
       | Name      | Contact   | CallBackend  |
