@@ -260,6 +260,8 @@ Feature: Recall Message
     And I wait for 10 seconds
     And I select the first item from Giphy grid
     And I tap Send button on Giphy preview page
+    # Wait for sync
+    And I wait for 3 seconds
     Then I see 1 photo in the conversation view
     And User <Contact> remembers the recent message from user Myself via device <HisDevice>
     # Wait for sync
