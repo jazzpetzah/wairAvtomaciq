@@ -287,7 +287,7 @@ public final class WebAppLocators {
 
         public static final String cssConfirmDeleteAccountButton = "[data-uie-name='modal-delete-account'] [data-uie-name='do-send']";
 
-        public static final String cssTakeOverUniqueUsername = "[data-uie-name='takeover-username']";
+        public static final String cssTakeOverUniqueUsername = "[data-uie-name='enter-username']";
     }
 
     public static final class DevicesPage {
