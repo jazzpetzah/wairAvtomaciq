@@ -448,7 +448,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend  |
       | user1Name | user2Name | zcall        |
 
-  @call_loop @fastLogin @torun
+  @call_loop @fastLogin @consecutive_call @torun
   Scenario Outline: I receive 1:1 call loop from AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

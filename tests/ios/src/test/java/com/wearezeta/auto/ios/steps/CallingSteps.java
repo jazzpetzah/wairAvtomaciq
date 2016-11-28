@@ -16,6 +16,8 @@ import cucumber.api.java.en.When;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -364,6 +366,10 @@ public class CallingSteps {
 
         LOG.info(failures.size() + " failures happened during " + times
                 + " calls");
+        String msg = failures.size() + " failures happened during " + times
+                + " calls";
+        Files.write(Paths.get("target/multi_call_result.txt"), msg.getBytes());
+
         failures.forEach((Integer i, Throwable t) -> {
             LOG.error(i + ": " + t.getMessage());
         });
