@@ -127,12 +127,12 @@ Feature: Forward Message
     Given User Me sends 1 encrypted message to user <Contact1>
     Given I see conversations list
     Given I tap on contact name <Contact1>
-# Small wait to make the appearence of button on jenkins more stable
+    # Small wait to make the appearence of button on jenkins more stable
     Given I wait for 3 seconds
     When I long tap on audio message placeholder in conversation view
     Then I do not see Forward badge item
     When I tap Play audio message button
-# Small wait to make sure download is completed
+    # Small wait to make sure download is completed
     And I wait for 5 seconds
     And I long tap on audio message placeholder in conversation view
     And I tap on Forward badge item
@@ -146,20 +146,20 @@ Feature: Forward Message
       | Name      | Contact1  | Contact2  | FileName | FileMIME  | ContactDevice |
       | user1Name | user2Name | user3name | test.m4a | audio/mp4 | Device1       |
 
-  @C345390 @staging @fastLogin
+  @C345390 @regression @fastLogin
   Scenario Outline: (ZIOS-7682) Verify forwarding someone else video message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given User <Contact1> sends file <FileName> having MIME type <MIMEType> to single user conversation <Name> using device <DeviceName>
-#Given User Me sends 1 encrypted message to user <Contact1>
+    #Given User Me sends 1 encrypted message to user <Contact1>
     Given I see conversations list
     Given I tap on contact name <Contact1>
-# Small wait to make the appearence of button on jenkins more stable
+    # Small wait to make the appearence of button on jenkins more stable
     Given I wait for 3 seconds
     When I tap on video message in conversation view
-# Small wait to make sure download is completed
+    # Small wait to make sure download is completed
     And I wait for 5 seconds
     And I see video message player page is opened
     And I tap Done button on video message player page
