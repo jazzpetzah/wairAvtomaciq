@@ -370,6 +370,9 @@ public class CallingSteps {
         String msg = failures.size() + " failures happened during " + times
                 + " calls";
 
+        String path = CommonUtils.getBuildPathFromConfig(CallingSteps.class)+"/target/multi_call_result.txt";
+        LOG.info("PATH:"+path);
+
         Files.write(Paths.get(CommonUtils.getBuildPathFromConfig(CallingSteps.class)+"/target/multi_call_result.txt"), msg.getBytes());
 
         failures.forEach((Integer i, Throwable t) -> {
