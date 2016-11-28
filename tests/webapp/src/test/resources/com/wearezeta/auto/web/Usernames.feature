@@ -45,7 +45,7 @@ Feature: Usernames
 
   @C343174 @usernames @staging
   Scenario Outline: Verify take over screen doesn't go away on reload
-    Given There are 2 users where <NameAlias> is me
+    Given There are 2 users where <NameAlias> is me without unique username
     Given User <NameAlias> changes name to <Name>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>

@@ -79,6 +79,8 @@ public class TakeOverPageSteps {
     }
 
     private String removeSymbols(String text) {
+        // replace spaces with -
+        text = text.replace(" ", "-");
         // convert name to fit the requirements (strip spaces, dots and other symbols)
         Pattern pattern = Pattern.compile("[^a-zA-Z]");
         Matcher matcher = pattern.matcher(text);
