@@ -24,6 +24,7 @@ Feature: File Transfer
   Scenario Outline: Verify downloading and opening file for a preview [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given User <Contact> sends temporary file <FileName>.<FileExt> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
