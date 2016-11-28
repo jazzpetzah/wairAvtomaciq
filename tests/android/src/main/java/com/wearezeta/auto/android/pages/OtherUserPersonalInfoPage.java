@@ -220,12 +220,12 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
             throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.xpath(xpathParticipantEmailByText.apply(expectedEmail)), 1)
-                || DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By
-                .xpath(xpathSingleParticipantEmailByText.apply(expectedEmail)), 1) ||
+                || DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(xpathSingleParticipantEmailByText.apply(expectedEmail)), 1) ||
                 DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.xpath(xpathParticipantEmailByText.apply("@whisker_pants")), 1)
-                || DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By
-                .xpath(xpathSingleParticipantEmailByText.apply("@whisker_pants")), 1);
+                || DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(xpathSingleParticipantEmailByText.apply("@whisker_pants")), 1);
     }
 
     public boolean isConversationAlertVisible() throws Exception {
