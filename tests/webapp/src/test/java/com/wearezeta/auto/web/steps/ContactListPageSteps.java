@@ -578,7 +578,7 @@ public class ContactListPageSteps {
 
     @Then("^I verify that the background image of the conversation list has( not)? changed$")
     public void IVerifyBackgroundImageHasChanged(String not) throws Exception {
-        final int THRESHOLD = 100;
+        final int THRESHOLD = 120;
 
         if (not == null) {
             ContactListPage contactListPage = context.getPagesCollection().getPage(ContactListPage.class);
