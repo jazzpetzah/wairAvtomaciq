@@ -2,6 +2,7 @@ Feature: Permissions
 
   @C129781 @noAcceptAlert @permissionsTest
   Scenario Outline: Deny permissions scenario
+    Given I am on Android with Google Location Service
     Given I am on Android 6 or better
     Given I delete all contacts from Address Book
     Given There is 4 users where <Name> is me

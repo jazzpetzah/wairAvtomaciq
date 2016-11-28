@@ -2,6 +2,7 @@ Feature: Ephemeral Group Message
 
   @C318635 @regression
   Scenario Outline: (Group) Verify sending all types of messages after I enable ephemeral mode in group conversation
+    Given I am on Android with Google Location Service
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given Myself has group chat <Group> with <Contact>,<Contact1>

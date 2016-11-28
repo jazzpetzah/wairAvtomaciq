@@ -81,6 +81,7 @@ Feature: Ephemeral Message
 
   @C261704 @regression
   Scenario Outline: Verify sending all types of messages after I enable ephemeral mode
+    Given I am on Android with Google Location Service
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
