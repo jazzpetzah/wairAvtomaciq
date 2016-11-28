@@ -519,7 +519,7 @@ final class BackendREST {
         Builder webResource = buildDefaultRequestWithAuth("self/handle", MediaType.APPLICATION_JSON, token);
         JSONObject requestBody = new JSONObject();
         requestBody.put("handle", handle);
-        restHandlers.httpPut(webResource, requestBody.toString(), new int[]{HttpStatus.SC_ACCEPTED});
+        restHandlers.httpPut(webResource, requestBody.toString(), new int[]{HttpStatus.SC_OK});
     }
 
     public static JSONObject searchForContacts(AuthToken token, String query) throws Exception {

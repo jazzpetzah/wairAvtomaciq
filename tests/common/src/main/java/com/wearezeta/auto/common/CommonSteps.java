@@ -704,8 +704,13 @@ public final class CommonSteps {
         BackendAPIWrappers.updateName(usrMgr.findUserByNameOrNameAlias(userNameAlias), newName);
     }
 
-    public void IChangeUniqueUsername(String userNameAlias, String newUsername) throws Exception {
-        BackendAPIWrappers.updateUniqueUsername(usrMgr.findUserByNameOrNameAlias(userNameAlias), newUsername);
+    public void IChangeUniqueUsername(String userNameAlias, String name) throws Exception {
+        BackendAPIWrappers.updateUniqueUsername(usrMgr.findUserByNameOrNameAlias(userNameAlias), name);
+    }
+
+    public void ISetUniqueUsername(String userNameAlias) throws Exception {
+        final ClientUser user = usrMgr.findUserByNameOrNameAlias(userNameAlias);
+        BackendAPIWrappers.updateUniqueUsername(usrMgr.findUserByNameOrNameAlias(userNameAlias), user.getName().toLowerCase());
     }
 
     public void IChangeUserAccentColor(String userNameAlias, String colorName) throws Exception {
