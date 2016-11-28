@@ -143,7 +143,7 @@ Feature: Forward Message
       | Name      | Contact1  | Contact2  | FileName | FileMIME  | ContactDevice |
       | user1Name | user2Name | user3name | test.m4a | audio/mp4 | Device1       |
 
-  @C345371 @regression @fastLogin
+  @C345371 @regression @fastLogin @torun
   Scenario Outline: Verify forwarding someone else video message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -155,12 +155,11 @@ Feature: Forward Message
 # Small wait to make the appearence of button on jenkins more stable
     Given I wait for 3 seconds
 # Have to tap play video message to download video. Otherwise Forward button is missing.
-    When I tap on video message in conversation view
-# Small wait to make sure download is completed
-    And I wait for 5 seconds
-    And I see video message player page is opened
-    And I tap Done button on video message player page
-    And I long tap on video message in conversation view
+    Given I tap on video message in conversation view
+    Given I do not see video message container in the conversation view
+    Given I see video message player page is opened
+    Given I tap Done button on video message player page
+    When I long tap on video message in conversation view
     And I tap on Forward badge item
     And I select <Contact2> conversation on Forward page
     And I tap Send button on Forward page
