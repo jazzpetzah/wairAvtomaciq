@@ -143,7 +143,7 @@ Feature: Forward Message
       | Name      | Contact1  | Contact2  | FileName | FileMIME  | ContactDevice |
       | user1Name | user2Name | user3name | test.m4a | audio/mp4 | Device1       |
 
-  @C345371 @regression @fastLogin
+  @C345371 @regression @fastLogin @torun
   Scenario Outline: Verify forwarding someone else video message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -157,7 +157,7 @@ Feature: Forward Message
 # Have to tap play video message to download video. Otherwise Forward button is missing.
     When I tap on video message in conversation view
 # Small wait to make sure download is completed
-    And I wait for 5 seconds
+    And I wait for <Time> seconds
     And I see video message player page is opened
     And I tap Done button on video message player page
     And I long tap on video message in conversation view
@@ -170,5 +170,10 @@ Feature: Forward Message
     Then I see video message container in the conversation view
 
     Examples:
-      | Name      | Contact1  | Contact2  | FileName    | MIMEType  | DeviceName |
-      | user1Name | user2Name | user3name | testing.mp4 | video/mp4 | Device1    |
+      | Name      | Contact1  | Contact2  | FileName    | MIMEType  | DeviceName | Time |
+      | user1Name | user2Name | user3name | testing.mp4 | video/mp4 | Device1    | 0    |
+      | user1Name | user2Name | user3name | testing.mp4 | video/mp4 | Device1    | 1    |
+      | user1Name | user2Name | user3name | testing.mp4 | video/mp4 | Device1    | 2    |
+      | user1Name | user2Name | user3name | testing.mp4 | video/mp4 | Device1    | 3    |
+      | user1Name | user2Name | user3name | testing.mp4 | video/mp4 | Device1    | 4    |
+      | user1Name | user2Name | user3name | testing.mp4 | video/mp4 | Device1    | 5    |
