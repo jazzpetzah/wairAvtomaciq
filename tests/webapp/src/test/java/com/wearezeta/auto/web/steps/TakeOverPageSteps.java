@@ -65,7 +65,8 @@ public class TakeOverPageSteps {
     @Then("^I see unique username starts with (.*) on take over screen$")
     public void ISeeTextAboutUsernamesSayingX(String name) throws Throwable {
         name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        name = removeSymbols(name).toLowerCase();
+        // convert to lowercase and remove symbols
+        name = removeSymbols(name.toLowerCase());
 
         // if username did not contain any non symbol characters, the username is a number
         if (name.isEmpty()) {
@@ -79,10 +80,8 @@ public class TakeOverPageSteps {
     }
 
     private String removeSymbols(String text) {
-        // replace spaces with -
-        text = text.replace(" ", "-");
-        // convert name to fit the requirements (strip spaces, dots and other symbols)
-        Pattern pattern = Pattern.compile("[^a-zA-Z]");
+        // Remove all not allowed characters/symbols (except Latin a-z and underscores)
+        Pattern pattern = Pattern.compile("[^a-z0-9_]");
         Matcher matcher = pattern.matcher(text);
         return matcher.replaceAll("");
     }

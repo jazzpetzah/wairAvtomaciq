@@ -89,7 +89,8 @@ public class AccountPageSteps {
     @And("^I see unique username starts with (.*) in account preferences$")
     public void ISeeUniqueUsernameOnSelfProfilePage(String name) throws Exception {
         name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        name = removeSymbols(name).toLowerCase();
+        // convert to lowercase and remove symbols
+        name = removeSymbols(name.toLowerCase());
 
         // if username did not contain any non symbol characters, the username is a number
         if(name.isEmpty()) {
@@ -103,8 +104,8 @@ public class AccountPageSteps {
     }
 
     private String removeSymbols(String text) {
-        // convert name to fit the requirements (strip spaces, dots and other symbols)
-        Pattern pattern = Pattern.compile("[^a-zA-Z]");
+        // Remove all not allowed characters/symbols (except Latin a-z and underscores)
+        Pattern pattern = Pattern.compile("[^a-z0-9_]");
         Matcher matcher = pattern.matcher(text);
         return matcher.replaceAll("");
     }
