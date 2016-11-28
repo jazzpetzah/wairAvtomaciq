@@ -222,6 +222,7 @@ public class AccountPage extends WebPage {
     }
 
     public String getUniqueUsername() throws Exception{
+        DriverUtils.waitUntilElementClickable(getDriver(), takeOverUniqueUsername);
         return takeOverUniqueUsername.getAttribute("value");
     }
 }
