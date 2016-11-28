@@ -156,7 +156,7 @@ Feature: Forward Message
     Given I wait for 3 seconds
 # Have to tap play video message to download video. Otherwise Forward button is missing.
     When I tap on video message in conversation view
-    And I do not see audio message container in the conversation view
+    And I do not see video message container in the conversation view
 # Small wait to make sure download is completed
     And I wait for <Time> seconds
     And I see video message player page is opened
