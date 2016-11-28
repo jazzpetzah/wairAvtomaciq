@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 
@@ -368,7 +369,8 @@ public class CallingSteps {
                 + " calls");
         String msg = failures.size() + " failures happened during " + times
                 + " calls";
-        Files.write(Paths.get("target/multi_call_result.txt"), msg.getBytes());
+
+        Files.write(Paths.get(CommonUtils.getBuildPathFromConfig(CallingSteps.class)+"/target/multi_call_result.txt"), msg.getBytes());
 
         failures.forEach((Integer i, Throwable t) -> {
             LOG.error(i + ": " + t.getMessage());
