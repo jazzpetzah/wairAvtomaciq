@@ -155,11 +155,11 @@ Feature: Forward Message
 # Small wait to make the appearence of button on jenkins more stable
     Given I wait for 3 seconds
 # Have to tap play video message to download video. Otherwise Forward button is missing.
-    When I tap on video message in conversation view
-    And I do not see video message container in the conversation view
-    And I see video message player page is opened
-    And I tap Done button on video message player page
-    And I long tap on video message in conversation view
+    Given I tap on video message in conversation view
+    Given I do not see video message container in the conversation view
+    Given I see video message player page is opened
+    Given I tap Done button on video message player page
+    When I long tap on video message in conversation view
     And I tap on Forward badge item
     And I select <Contact2> conversation on Forward page
     And I tap Send button on Forward page
