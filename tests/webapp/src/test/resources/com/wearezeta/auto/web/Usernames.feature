@@ -115,8 +115,8 @@ Feature: Usernames
       | user1Email | user1Password | user1Name | a                      |
       | user1Email | user1Password | user1Name | 1234567890123456789012 |
 
-  @C352028 @usernames @staging
-  Scenario Outline: Verify autogeneration of a username for a user with latin characters only
+  @C352077 @usernames @staging
+  Scenario Outline: Verify autogeneration of a username for a user (different scenarios)
       Given There are 2 users where <NameAlias> is me without unique username
       Given User <NameAlias> changes name to <Name>
       Given I switch to Sign In page
@@ -126,8 +126,15 @@ Feature: Usernames
       And I see name <NameAlias> on take over screen
       When I click TakeThisOne button on take over screen
       When I open preferences by clicking the gear button
-      Then I see unique username starts with <NameAlias> in account preferences
+      Then I see unique username starts with <UserName> in account preferences
 
     Examples:
-      | Email      | Password      | NameAlias | Name |
-      | user1Email | user1Password | user1Name | Jack |
+      | Email      | Password      | NameAlias | Name         | UserName    |
+      | user1Email | user1Password | user1Name | Jack         | jack        |
+      | user1Email | user1Password | user1Name | Jack.Wireson | jackwireson |
+      | user1Email | user1Password | user1Name | Æéÿüíøšłźçñ  | aeyuioslzcn |
+      | user1Email | user1Password | user1Name | Даша         | dasha       |
+      | user1Email | user1Password | user1Name |   داريا      | darya       |
+      | user1Email | user1Password | user1Name | 明麗          | mengli      |
+
+
