@@ -9,11 +9,14 @@ public class Metrics {
     
     private final boolean success;
     private final long estabTime;
+    private final long setupTime;
 
     @JsonCreator
-    public Metrics(@JsonProperty("success") boolean success, @JsonProperty("estab_time") long estabTime) {
+    public Metrics(@JsonProperty("success") boolean success, @JsonProperty("estab_time") long estabTime,
+                   @JsonProperty("setup_time") long setupTime) {
         this.success = success;
         this.estabTime = estabTime;
+        this.setupTime = setupTime;
     }
 
     public boolean isSuccess() {
@@ -24,11 +27,16 @@ public class Metrics {
         return estabTime;
     }
 
+    public long getSetupTime() {
+        return setupTime;
+    }
+
     @Override
     public String toString() {
         return "Metrics{" +
                 "success=" + success +
                 ", estabTime='" + estabTime + '\'' +
+                ", setupTime='" + setupTime + '\'' +
                 '}';
     }
 }
