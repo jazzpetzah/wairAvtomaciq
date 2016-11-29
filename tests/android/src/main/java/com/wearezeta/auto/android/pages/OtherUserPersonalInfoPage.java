@@ -86,6 +86,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
     private static final By xpathConfirmLeaveButton = By.xpath("//*[@id='positive' and @value='LEAVE']");
 
+    private static final String DEFAULT_UNIQUE_NAME = "@whisker_pants";
+
     public OtherUserPersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -220,8 +222,13 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
             throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.xpath(xpathParticipantEmailByText.apply(expectedEmail)), 1)
-                || DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By
-                .xpath(xpathSingleParticipantEmailByText.apply(expectedEmail)), 1);
+                || DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(xpathSingleParticipantEmailByText.apply(expectedEmail)), 1)
+                || DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                //TODO: Refactor this check when unique names will present here
+                By.xpath(xpathParticipantEmailByText.apply(DEFAULT_UNIQUE_NAME)), 1)
+                || DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(xpathSingleParticipantEmailByText.apply(DEFAULT_UNIQUE_NAME)), 1);
     }
 
     public boolean isConversationAlertVisible() throws Exception {

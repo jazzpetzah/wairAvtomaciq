@@ -1,20 +1,18 @@
 package com.wearezeta.auto.android.pages;
 
-import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 public class IncomingPendingConnectionsPage extends AndroidPage {
     private static final By idSendConnectionRequestButton = By.id("zb__send_connect_request__connect_button");
 
     private static final Function<String, String> xpathStrConnectToHeaderByText = text -> String.format
-            ("//*[@id='taet__participants__header' and contains(@value, '%s')]", text);
+            ("//*[@id='tv__send_connect__toolbar__title' and contains(@value, '%s')]", text);
 
     public static final String idStrConnectRequestAccept = "zb__connect_request__accept_button";
     public static final By idConnectRequestAccept = By.id(idStrConnectRequestAccept);
