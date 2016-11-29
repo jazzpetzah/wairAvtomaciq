@@ -114,3 +114,20 @@ Feature: Usernames
       | user1Email | user1Password | user1Name |                        |
       | user1Email | user1Password | user1Name | a                      |
       | user1Email | user1Password | user1Name | 1234567890123456789012 |
+
+  @C352028 @usernames @staging
+  Scenario Outline: Verify autogeneration of a username for a user with latin characters only
+      Given There are 2 users where <NameAlias> is me without unique username
+      Given User <NameAlias> changes name to <Name>
+      Given I switch to Sign In page
+      When I Sign in using login <Email> and password <Password>
+      And I am signed in properly
+      And I see take over screen
+      And I see name <NameAlias> on take over screen
+      When I click TakeThisOne button on take over screen
+      When I open preferences by clicking the gear button
+      Then I see unique username starts with <NameAlias> in account preferences
+
+    Examples:
+      | Email      | Password      | NameAlias | Name |
+      | user1Email | user1Password | user1Name | Jack |
