@@ -941,7 +941,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 20      |
 
-  @C345396 @regression @calling
+  @C345396 @regression @videocalling
   Scenario Outline: Verify I can silence an incoming video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
