@@ -59,7 +59,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
     private static final By idParticipantsHeaderEditable = By.id("taet__participants__header__editable");
 
-    private static final By idSingleParticipantClose = By.id("gtv__single_participants__close");
+    private static final String idSingleParticipantToolbar = "t__single_participant__toolbar";
+
+    private static final By xpathSingleParticipantClose = By.xpath(String.format("//*[@id='%s']/*", idSingleParticipantToolbar));
 
     private static final By idUserProfileConfirmationMenu = By.id("user_profile_confirmation_menu");
 
@@ -299,7 +301,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     public void tapSingleParticipantCloseButton() throws Exception {
-        final WebElement closeButton = getElement(idSingleParticipantClose,
+        final WebElement closeButton = getElement(xpathSingleParticipantClose,
                 "Close single participant button is not visible");
         final int halfHeight = this.getDriver().manage().window().getSize().getHeight() / 2;
         int ntry = 1;
@@ -307,7 +309,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         do {
             closeButton.click();
             ntry++;
-        } while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idSingleParticipantClose, 1)
+        } while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSingleParticipantClose, 1)
                 && closeButton.getLocation().getY() < halfHeight
                 && ntry <= maxRetries);
         if (ntry > maxRetries) {
