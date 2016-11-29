@@ -1,17 +1,17 @@
 package com.wearezeta.auto.android.pages;
 
+import java.util.concurrent.Future;
+import java.util.function.Function;
+
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import org.openqa.selenium.By;
-
-import java.util.concurrent.Future;
-import java.util.function.Function;
 
 public class OutgoingPendingConnectionPage extends AndroidPage {
     private static final By idPageRoot = By.id("fl__pending_connect_request");
 
     private static final Function<String, String> xpathStrNameByText = text -> String
-            .format("//*[@id='taet__participants__header' and @value='%s']", text);
+            .format("//*[@id='tv__pending_connect_toolbar__title' and @value='%s']", text);
 
     public OutgoingPendingConnectionPage(
             Future<ZetaAndroidDriver> lazyDriver) throws Exception {
