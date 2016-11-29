@@ -105,7 +105,7 @@ Feature: Usernames
     And I see take over screen
     And I see name <NameAlias> on take over screen
     When I click ChooseYourOwn button on take over screen
-    Then I see unique username starts with username in account preferences
+    Then I see unique username starts with <NameAlias> in account preferences
     When I change unique username to <IncorrectName>
     Then I see error message in account preferences
 
