@@ -260,6 +260,10 @@ public final class WebAppLocators {
 
         public static final String cssSelfNameInput = "[data-uie-name='enter-name']";
 
+        public static final String cssUniqueUsername = "[data-uie-name='enter-username']";
+
+        public static final String cssUniqueUsernameError = ".preferences-account-username-error";
+
         public static final String cssNameSelfUserMail = "[data-uie-name='enter-email']";
 
         public static final String cssNameSelfUserPhoneNumber = "[data-uie-name='enter-phone']";
@@ -286,8 +290,6 @@ public final class WebAppLocators {
         public static final String cssCancelDeleteAccountButton = "[data-uie-name='modal-delete-account'] [data-uie-name='do-cancel']";
 
         public static final String cssConfirmDeleteAccountButton = "[data-uie-name='modal-delete-account'] [data-uie-name='do-send']";
-
-        public static final String cssTakeOverUniqueUsername = "[data-uie-name='enter-username']";
     }
 
     public static final class DevicesPage {

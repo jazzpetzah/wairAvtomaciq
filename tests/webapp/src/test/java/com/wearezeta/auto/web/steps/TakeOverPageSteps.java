@@ -64,25 +64,7 @@ public class TakeOverPageSteps {
 
     @Then("^I see unique username starts with (.*) on take over screen$")
     public void ISeeTextAboutUsernamesSayingX(String name) throws Throwable {
-        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        // convert to lowercase and remove symbols
-        name = removeSymbols(name.toLowerCase());
-
-        // if username did not contain any non symbol characters, the username is a number
-        if (name.isEmpty()) {
-            // TODO
-            //Assert.assertThat("Username on take over screen",
-            //        context.getPagesCollection().getPage(TakeOverPage.class).getUniqueUsername(), matchesPattern("^[0-9]{8}$"));
-        } else {
-            Assert.assertThat("Username on take over screen",
-                    context.getPagesCollection().getPage(TakeOverPage.class).getUniqueUsername(), startsWith(name));
-        }
-    }
-
-    private String removeSymbols(String text) {
-        // Remove all not allowed characters/symbols (except Latin a-z and underscores)
-        Pattern pattern = Pattern.compile("[^a-z0-9_]");
-        Matcher matcher = pattern.matcher(text);
-        return matcher.replaceAll("");
+        Assert.assertThat("Username on take over screen",
+                context.getPagesCollection().getPage(TakeOverPage.class).getUniqueUsername(), startsWith(name));
     }
 }
