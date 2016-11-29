@@ -397,14 +397,6 @@ public class GroupPopoverPageSteps {
 
     }
 
-    @Then("^Would open mail client when clicking mail on Group Participants popover$")
-    public void ThenISeeThatClickOnMailWouldOpenMailClient() throws Exception {
-        Assert.assertTrue(context.getPagesCollection()
-                .getPage(GroupPopoverContainer.class).getMailHref()
-                .contains(MAILTO));
-
-    }
-
     @Then("^I see Pending text box on Group Participants popover$")
     public void ISeePendingTextBox() throws Exception {
         Assert.assertTrue(context.getPagesCollection().getPage(
