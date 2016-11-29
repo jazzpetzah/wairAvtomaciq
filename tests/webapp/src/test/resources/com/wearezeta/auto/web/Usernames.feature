@@ -130,10 +130,10 @@ Feature: Usernames
       Then I see unique username starts with <Username> in account preferences
 
     Examples:
-      | Email      | Password      | NameAlias | Name         | Username     |
-      | user1Email | user1Password | user1Name | Jack         | jack         |
-      | user1Email | user1Password | user1Name | Jack.Wireson | jackwireson  |
-      | user1Email | user1Password | user1Name | Æéÿüíøšłźçñ  | aeeyuioslzcn |
-      | user1Email | user1Password | user1Name | Даша         | dasha        |
-      | user1Email | user1Password | user1Name |   داريا      | darya        |
-      | user1Email | user1Password | user1Name | 明麗         | mengli       |
+      | Email      | Password      | NameAlias | Name         | Username      |
+      | user1Email | user1Password | user1Name | Jack         | jack          |
+      | user1Email | user1Password | user1Name | Jack.Wireson | jackwireson   |
+      | user1Email | user1Password | user1Name | Æéÿüíøšłźçñ  | aeeyueioslzcn |
+      | user1Email | user1Password | user1Name | Даша         | dasha         |
+      | user1Email | user1Password | user1Name |   داريا      | darya         |
+      | user1Email | user1Password | user1Name | 明麗         | mengli        |
