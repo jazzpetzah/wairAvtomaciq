@@ -22,11 +22,13 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     private static final Function<String, String> xpathParticipantEmailByText = text -> String
             .format("//*[@id='ttv__participants__sub_header' and @value='%s']", text);
 
+    //locator for other user name opened from group details
     private static final Function<String, String> xpathSingleParticipantNameByText = text -> String
-            .format("//*[@id='ttv__single_participants__header' and @value='%s']", text);
+            .format("//*[@id='tv__single_participant__toolbar__title' and @value='%s']", text);
 
+    //locator for other user email opened from group details
     private static final Function<String, String> xpathSingleParticipantEmailByText = text -> String
-            .format("//*[@id='ttv__single_participants__sub_header' and @value='%s']", text);
+            .format("//*[@id='ttv__user_details__user_name' and @value='%s']", text);
 
     private static final Function<String, String> xpathSingleParticipantTabByText = text -> String
             .format("//*[@value='%s']", text);
