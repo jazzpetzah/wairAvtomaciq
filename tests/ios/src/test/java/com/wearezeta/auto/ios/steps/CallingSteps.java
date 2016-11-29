@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
@@ -365,13 +366,9 @@ public class CallingSteps {
 
         }
 
-        LOG.info(failures.size() + " failures happened during " + times
-                + " calls");
-        String msg = failures.size() + " failures happened during " + times
-                + " calls";
-
-        String path = CommonUtils.getBuildPathFromConfig(CallingSteps.class)+"/multi_call_result.txt";
-        LOG.info("PATH:"+path);
+        String msg = times - failures.size() + "/" + times
+                + " calls succeeded";
+        LOG.info(msg);
 
         Files.write(Paths.get(CommonUtils.getBuildPathFromConfig(CallingSteps.class)+"/multi_call_result.txt"), msg.getBytes());
 

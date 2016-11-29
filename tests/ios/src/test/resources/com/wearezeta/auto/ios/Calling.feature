@@ -458,7 +458,7 @@ Feature: Calling
     #Given I press Home button
     #When I tap on contact name <Contact>
     # Will put app into BG in the beginning of every call
-    And <Contact> calls to me 1 times for 1 minute
+    And <Contact> calls to me 5 times for 1 minute
 
     Examples:
       | Name      | Contact   | CallBackend  |
