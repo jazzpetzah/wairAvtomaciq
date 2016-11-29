@@ -134,9 +134,10 @@ Feature: Settings
     And I see random message in conversation
     When I break the session with device Device1 of user <Name>
     And Contact <Name> sends message TEST via device Device1 to user <Contact>
+    Then I see <UNABLE_TO_DECRYPT> action in conversation
     And I wait for 10 seconds
     Then There are no added raygun events
 
     Examples:
-      | Email      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT |
+      | user1Email | user1Password | user1Name | user2Name | WAS NOT RECEIVED  |
