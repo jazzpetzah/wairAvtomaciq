@@ -448,9 +448,6 @@ public class CommonIOSSteps {
                 if (!scenario.getStatus().equals(Result.PASSED) && pagesCollection.hasPages()) {
                     pagesCollection.getCommonPage().printPageSource();
                 }
-//                System.out.println("LOGS HERE");
-//                IteratorUtils.toList((Iterator<LogEntry>) PlatformDrivers.getInstance().getDriver(CURRENT_PLATFORM).get().manage().logs().get(LogType.SERVER).
-//                        iterator()).stream().forEach((e)->System.out.println(e));
                 PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
             }
         } catch (Exception e) {
