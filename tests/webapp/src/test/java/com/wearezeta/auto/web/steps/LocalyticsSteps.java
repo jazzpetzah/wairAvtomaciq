@@ -47,7 +47,7 @@ public class LocalyticsSteps {
     @Then("^I( do not)? see localytics event (.*) with attributes (.*)$")
     public void ISeeLocalyticsEvent(String doNot, String event, String attributes) throws Exception {
         if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
-            List<String> localyticsEvents = this.getLocalyticEvents();
+            List<String> localyticsEvents = this.getLoggedEvents("localytics");
             assertThat("Did not find any localytics events in browser console", not(localyticsEvents.isEmpty()));
 
             if (doNot == null) {
@@ -60,36 +60,42 @@ public class LocalyticsSteps {
         }
     }
 
-    @When("^I remember number of localytics events$")
-    public void IRememberLocalyticsEvents() throws Exception {
+    @When("^I remember number of (localytics|raygun) events$")
+    public void IRememberLoggedEvents(String eventType) throws Exception {
         if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
-            rememberedEvents = getLocalyticEvents().size();
+            rememberedEvents = getLoggedEvents(eventType).size();
         }
     }
 
-    @Then("^There are( no)? added localytics events$")
-    public void ThereAreAddedEvents(String no) throws Exception {
+    @Then("^There are( no)? added (localytics|raygun) events$")
+    public void ThereAreAddedEvents(String no, String eventType) throws Exception {
         if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
             if (rememberedEvents == -1) {
-                throw new Exception("Please use step to remember localytics events before this step");
+                throw new Exception("Please use step to remember " + eventType + " events before this step");
             }
-            int newEvents = this.getLocalyticEvents().size();
+            int newEvents = this.getLoggedEvents(eventType).size();
             if (no == null) {
-                assertThat("No new Events happened", rememberedEvents, not(equalTo(newEvents)));
+                assertThat("No new " + eventType + " Events happened", newEvents, not(equalTo(rememberedEvents)));
             } else {
-                assertThat("New Events happened", rememberedEvents, equalTo(newEvents));
+                assertThat("New " + eventType + " Events happened", newEvents, equalTo(rememberedEvents));
             }
         }
     }
 
-    private List<String> getLocalyticEvents() throws Exception {
-        List<String> localyticsEvents = context.getLogManager().getBrowserLog().stream()
-                .filter((entry) -> entry.getMessage().contains("Localytics event"))
+    private List<String> getLoggedEvents(String eventType) throws Exception {
+        String event;
+        if (eventType.equals("localytics")) {
+            event = "Localytics event";
+        } else {
+            event = "Raygun";
+        }
+        List<String> loggedEvents = context.getLogManager().getBrowserLog().stream()
+                .filter((entry) -> entry.getMessage().contains(event))
                 .map((entry) -> entry.getMessage().substring(entry.getMessage().lastIndexOf("|") + 2))
                 .collect(Collectors.toList());
-        localyticsEvents.forEach((localyticsEvent) -> {
+        loggedEvents.forEach((localyticsEvent) -> {
             log.info("Found event: " + localyticsEvent);
         });
-        return localyticsEvents;
+        return loggedEvents;
     }
 }
