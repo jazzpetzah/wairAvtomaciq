@@ -239,3 +239,4 @@ Feature: People View
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
