@@ -88,6 +88,7 @@ public class AccountPageSteps {
 
     @And("^I see unique username starts with (.*) in account preferences$")
     public void ISeeUniqueUsernameOnSelfProfilePage(String name) throws Exception {
+        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertThat("Username in settings",
                 context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(), startsWith(name));
     }

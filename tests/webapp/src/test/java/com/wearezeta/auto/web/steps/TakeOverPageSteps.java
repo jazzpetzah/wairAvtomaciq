@@ -64,6 +64,7 @@ public class TakeOverPageSteps {
 
     @Then("^I see unique username starts with (.*) on take over screen$")
     public void ISeeTextAboutUsernamesSayingX(String name) throws Throwable {
+        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertThat("Username on take over screen",
                 context.getPagesCollection().getPage(TakeOverPage.class).getUniqueUsername(), startsWith(name));
     }
