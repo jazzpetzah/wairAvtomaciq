@@ -302,11 +302,11 @@ Feature: Conversations list
     And I tap back button
     When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
-    When I tap options menu button
-    Then I see MUTE button in option menu
-    And I see ARCHIVE button in option menu
-    And I see DELETE button in option menu
-    And I see BLOCK button in option menu
+    And I tap open menu button on Single connected user details page
+    Then I see MUTE button on Conversation options menu overlay page
+    And I see ARCHIVE button on Conversation options menu overlay page
+    And I see DELETE button on Conversation options menu overlay page
+    And I see BLOCK button on Conversation options menu overlay page
 
     Examples:
       | Name      | Contact1  |
@@ -328,12 +328,12 @@ Feature: Conversations list
     And I tap back button
     When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
-    When I tap options menu button
-    Then I see MUTE button in option menu
-    And I see RENAME button in option menu
-    And I see ARCHIVE button in option menu
-    And I see DELETE button in option menu
-    And I see LEAVE button in option menu
+    And I tap open menu button on Group info page
+    Then I see MUTE button on Conversation options menu overlay page
+    And I see RENAME button on Conversation options menu overlay page
+    And I see ARCHIVE button on Conversation options menu overlay page
+    And I see DELETE button on Conversation options menu overlay page
+    And I see LEAVE button on Conversation options menu overlay page
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
