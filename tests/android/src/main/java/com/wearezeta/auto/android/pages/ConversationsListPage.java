@@ -7,13 +7,15 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
-import org.openqa.selenium.*;
-
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebElement;
 
 public class ConversationsListPage extends AndroidPage {
 
@@ -300,5 +302,11 @@ public class ConversationsListPage extends AndroidPage {
         ).collect(Collectors.toList()));
         final By locator = By.xpath(xpathStrContactByExpr.apply(xpathExpr));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public BufferedImage getConversationsListScreenshot() throws Exception {
+        return this.getElementScreenshot(getElement(idConversationListFrame)).orElseThrow(
+                () -> new IllegalStateException("Cannot get a screenshot of Conversations List background")
+        );
     }
 }
