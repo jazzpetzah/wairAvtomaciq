@@ -20,6 +20,7 @@ import org.junit.Assert;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -208,7 +209,6 @@ public class CallingSteps {
         for (Call call : commonCallingSteps.getOutgoingCall(splitAliases(callees), conversation)) {
             assertNotNull("There are no metrics available for this call \n" + call, call.getMetrics());
             assertTrue("Call failed: \n" + call + "\n" + call.getMetrics(), call.getMetrics().isSuccess());
-            System.out.println("Establish time for " + call + "is " + call.getMetrics().getEstabTime());
         }
     }
 
@@ -289,6 +289,10 @@ public class CallingSteps {
         }
     }
 
+    //save the setup time and estab time for every call to calculate the average time
+    private List<Long> arrayCallSetupTime = new ArrayList<>();
+    private List<Long> arrayCallEstabTime = new ArrayList<>();
+
     /**
      * Receive consecutive calls without logging out etc.
      *
@@ -342,6 +346,10 @@ public class CallingSteps {
 
                 for (String callee : calleeList) {
                     UserXVerifesCallWasSuccessful(callee, conversationName);
+                    for (Call call : commonCallingSteps.getOutgoingCall(calleeList, conversationName)) {
+                        arrayCallSetupTime.add(call.getMetrics().getSetupTime());
+                        arrayCallEstabTime.add(call.getMetrics().getEstabTime());
+                    }
                 }
 
                 LOG.info("CALL " + i + " SUCCESSFUL");
@@ -366,8 +374,15 @@ public class CallingSteps {
 
         }
 
+        long sumCallSetupTime = 0;
+        for (long element : arrayCallSetupTime) {
+            sumCallSetupTime += element;
+        }
+
+        long avgCallSetupTime = sumCallSetupTime/(times - failures.size());
+
         String msg = times - failures.size() + "/" + times
-                + " calls succeeded";
+                + " calls succeeded, average Call setup_time: " + avgCallSetupTime;
         LOG.info(msg);
 
         Files.write(Paths.get(CommonUtils.getBuildPathFromConfig(CallingSteps.class)+"/multi_call_result.txt"), msg.getBytes());
