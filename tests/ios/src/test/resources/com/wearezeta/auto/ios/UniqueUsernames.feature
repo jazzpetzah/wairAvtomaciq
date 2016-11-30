@@ -1,4 +1,4 @@
-Feature: Usernames
+Feature: Unique Usernames
 
   @CC352039 @staging @fastLogin
   Scenario Outline: Verify empty username is impossible to save
