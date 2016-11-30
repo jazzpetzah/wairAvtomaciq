@@ -147,8 +147,7 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given User Myself removes his avatar picture
-    Given <Contact1> starts instance using <CallBackend>
-    Given <Contact2> starts instance using <CallBackend2>
+    Given <Contact>, <Contact2> starts instance using <CallBackend>
     Given <Contact1> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -170,8 +169,8 @@ Feature: Calling
     Then I see missed call from contact <Contact2>
 
     Examples:
-      | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 |
-      | user1Name | user2Name | user3Name | chrome      | chrome       |
+      | Name      | Contact1  | Contact2  | CallBackend |
+      | user1Name | user2Name | user3Name | chrome      |
 
   @C2082 @calling_basic @fastLogin
   Scenario Outline: Put app into background after initiating call
@@ -195,7 +194,6 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
-    Given <Contact> starts instance using <CallBackend2>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
@@ -205,8 +203,8 @@ Feature: Calling
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 
     Examples:
-      | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | chrome      | chrome       | 30      |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 30      |
 
   @C2074 @calling_basic @fastLogin
   Scenario Outline: Verify starting and ending outgoing call
@@ -226,7 +224,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C2103 @staging @calling_basic @fastLogin
+  @C2103 @staging @fastLogin
   Scenario Outline: Verify than outgoing call is automatically terminated after 1 minute timeout if there is no answer
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -235,14 +233,14 @@ Feature: Calling
     When I tap on contact name <Contact>
     And I tap Audio Call button
     Then I see Calling overlay
-    And I wait for 60 seconds
+    And I wait for <Timeout> seconds
     Then I do not see Calling overlay
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | Timeout |
+      | user1Name | user2Name | 60      |
 
-  @C3155 @calling_advanced @fastLogin
+  @C3155 @staging @fastLogin
   Scenario Outline: Verify call back after ignoring call (during outgoing call from other side)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -262,12 +260,11 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | zcall       | 30      |
 
-  @C3155 @calling_advanced @fastLogin
+  @C3155 @staging @fastLogin
   Scenario Outline: Verify call back after ignoring call (during outgoing call from other side)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
-    Given <Contact> starts instance using <CallBackend>
-    Given <Contact2> starts instance using <CallBackend2>
+    Given <Contact>, <Contact2> starts instance using <CallBackend>
     Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -281,16 +278,15 @@ Feature: Calling
     Then <Contact2> verifies that waiting instance status is changed to active in 10 seconds
 
     Examples:
-      | Name      | Contact   | Contact2  | CallBackend | CallBackend2 |
-      | user1Name | user2Name | user3Name | chrome      | chrome       |
+      | Name      | Contact   | Contact2  | CallBackend |
+      | user1Name | user2Name | user3Name | chrome      |
 
   @C2046 @calling_basic @IPv6 @fastLogin
   Scenario Outline: Verify accepting group call in foreground
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given <Contact1> starts instance using <CallBackend2>
-    Given <Contact2> starts instance using <CallBackend>
+    Given <Contact>, <Contact2> starts instance using <CallBackend>
     Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -301,8 +297,8 @@ Feature: Calling
     Then I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName      | CallBackend | CallBackend2 | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | AcceptingGROUPCALL | chrome      | chrome       | 2               |
+      | Name      | Contact1  | Contact2  | GroupChatName      | CallBackend | NumberOfAvatars |
+      | user1Name | user2Name | user3Name | AcceptingGROUPCALL | chrome      | 2               |
 
   @C2047 @calling_basic @fastLogin
   Scenario Outline: Verify ignoring group call in foreground
