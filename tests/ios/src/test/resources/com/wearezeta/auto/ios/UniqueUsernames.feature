@@ -7,16 +7,15 @@ Feature: Unique Usernames
     Given I see conversations list
     When I tap settings gear button
     And I select settings item Account
-    And I select settings item Add @name
+    And I select settings item @name
     When I enter "<Empty>" name on Unique Username page
     Then I see Save button state is Disabled on Unique Username page
     When I tap Save button on Unique Username page
     When I enter "<MinChars>" name on Unique Username page
     Then I see Save button state is Disabled on Unique Username page
     When I tap Save button on Unique Username page
-    When I enter "<22Chars>" name on Unique Username page
-    Then I see Save button state is Disabled on Unique Username page
-    When I tap Save button on Unique Username page
+    When I attempt to enter over max allowed <MaxChars> chars as name on Unique Username page
+    Then I see that name length is less than <MaxChars> chars on Unique Username page
     When I enter "<Cyrillic>" name on Unique Username page
     Then I see Save button state is Disabled on Unique Username page
     When I tap Save button on Unique Username page
@@ -32,5 +31,5 @@ Feature: Unique Usernames
     Then I see Unique Username page
 
     Examples:
-      | Name      | Empty | MinChars | 22Chars               | Cyrillic | Arabic | Chines | SpecialChars |
-      | user1Name | ""    | 1        | 123456789012345789012 | МоёИмя   | اسمي   | 我的名字| %^&@#$       |
+      | Name      | Empty | MinChars | MaxChars | Cyrillic | Arabic | Chines | SpecialChars |
+      | user1Name | ""    | 1        | 22       | МоёИмя   | اسمي   | 我的名字   | %^&@#$    |

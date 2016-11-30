@@ -66,4 +66,29 @@ public class UniqueUsernamePageSteps {
         }
 
     }
+
+    /**
+     * Attempt to enter over max allowed chars amount as name
+     *
+     * @param count max allowed chars count +1
+     * @throws Exception
+     * @step. ^I attempt to enter over max allowed (\d+) chars as name on Unique Username page$
+     */
+    @When("^I attempt to enter over max allowed (\\d+) chars as name on Unique Username page$")
+    public void IAttemtToEnterMaxAllowedCharsAsName(int count) throws Exception {
+        getUsernamePageSteps().inputXrandomString(count);
+    }
+
+    /**
+     * Verify that Username in name input is less than X chars
+     *
+     * @param count max allowed chars count
+     * @throws Exception
+     * @step. ^I see that name length is less than (\d+) chars on Unique Username page$
+     */
+    @Then("^I see that name length is less than (\\d+) chars on Unique Username page$")
+    public void ISeeNameLenghIsLessThanXChars(int count) throws Exception {
+        Assert.assertTrue(String.format("Username in name input is not less than %s chars.", count),
+                getUsernamePageSteps().isNameInputTextLengthLessThan(count));
+    }
 }
