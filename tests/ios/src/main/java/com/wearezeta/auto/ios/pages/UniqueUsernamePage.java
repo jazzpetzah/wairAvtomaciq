@@ -21,10 +21,10 @@ public class UniqueUsernamePage extends IOSPage {
 
     private static By getLocatorByName(String locatorName) {
         switch (locatorName.toLowerCase()) {
-            case "save" :
+            case "save":
                 return nameSaveButton;
             default:
-                throw new IllegalArgumentException(String.format("Unknown locator name %s", locatorName));
+                throw new IllegalArgumentException(String.format("Unknown button name %s", locatorName));
         }
     }
 
