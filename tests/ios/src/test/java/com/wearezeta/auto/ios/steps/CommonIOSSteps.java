@@ -161,7 +161,6 @@ public class CommonIOSSteps {
             }
             capabilities.setCapability("realDeviceLogger", IOSRealDeviceHelpers.IDEVICE_CONSOLE.getCanonicalPath());
             capabilities.setCapability("showXcodeLog", true);
-            capabilities.setCapability("showIOSLog", true);
             if (CommonUtils.isRunningInJenkinsNetwork()) {
                 if (!KEYCHAIN.exists()) {
                     throw new IllegalStateException(

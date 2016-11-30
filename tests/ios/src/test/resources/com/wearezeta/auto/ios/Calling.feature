@@ -434,7 +434,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @call_loop @fastLogin
+  @fastLogin @consecutive_call
   Scenario Outline: Make 1:1 call loop to AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -448,7 +448,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend  |
       | user1Name | user2Name | zcall        |
 
-  @call_loop @fastLogin @consecutive_call
+  @fastLogin @consecutive_call @torun
   Scenario Outline: I receive 1:1 call loop from AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -456,7 +456,7 @@ Feature: Calling
     Given I sign in using my email
     Given I see conversations list
     # Will put app into BG in the beginning of every call right now
-    And <Contact> calls to me 1 times for 1 minute
+    And <Contact> calls to me 1 time for 1 minute
 
     Examples:
       | Name      | Contact   | CallBackend  |

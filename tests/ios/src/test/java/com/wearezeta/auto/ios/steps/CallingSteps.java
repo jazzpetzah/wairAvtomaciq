@@ -304,7 +304,7 @@ public class CallingSteps {
      * @param conversationName user to be called
      * @throws java.lang.Throwable
      */
-    @Then("^(.*) calls to (.*) (\\d+) times? for (\\d+) minutes?$")
+    @Then("^(\\w+) calls to (\\w+) (\\d+) times? for (\\d+) minutes?$")
     public void IReceiveCallsXTimes(String callees, String conversationName, int times, int callDurationMinutes)
             throws Throwable {
         final int timeBetweenCall = 10;
@@ -380,12 +380,13 @@ public class CallingSteps {
         }
 
         long avgCallSetupTime = sumCallSetupTime/(times - failures.size());
+        
+        String message = String.format("%s/%s calls succeeded, average Call setup_time: %s",
+                times - failures.size(),times, avgCallSetupTime);
+        LOG.info(message);
 
-        String msg = times - failures.size() + "/" + times
-                + " calls succeeded, average Call setup_time: " + avgCallSetupTime;
-        LOG.info(msg);
-
-        Files.write(Paths.get(CommonUtils.getBuildPathFromConfig(CallingSteps.class)+"/multi_call_result.txt"), msg.getBytes());
+        Files.write(Paths.get(CommonUtils.getBuildPathFromConfig(CallingSteps.class)+"/multi_call_result.txt"),
+                message.getBytes());
 
         failures.forEach((Integer i, Throwable t) -> {
             LOG.error(i + ": " + t.getMessage());
