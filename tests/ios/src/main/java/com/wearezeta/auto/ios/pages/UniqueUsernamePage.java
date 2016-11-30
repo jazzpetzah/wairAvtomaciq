@@ -42,7 +42,7 @@ public class UniqueUsernamePage extends IOSPage {
         el.sendKeys(name);
     }
 
-    public boolean getSaveButtonState() throws Exception {
+    public boolean isSaveButtonEnabled() throws Exception {
         return getElement(nameSaveButton).isEnabled();
     }
 

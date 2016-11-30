@@ -58,11 +58,11 @@ public class UniqueUsernamePageSteps {
      */
     @When("^I see Save button state is (Disabled|Enabled) on Unique Username page$")
     public void ISeeSaveButtonIsDisabled(String expectedState) throws Exception {
-        boolean buttonState = getUsernamePageSteps().getSaveButtonState();
-        if (expectedState == "Disabled") {
-            Assert.assertFalse("Wrong Save button state. Should be " + expectedState, buttonState);
+        boolean buttonState = getUsernamePageSteps().isSaveButtonEnabled();
+        if (expectedState.equals("Disabled")) {
+            Assert.assertFalse(String.format("Wrong Save button state. Should be %s.",expectedState), buttonState);
         } else {
-            Assert.assertTrue("Wrong Save button state. Should be " + expectedState, buttonState);
+            Assert.assertTrue(String.format("Wrong Save button state. Should be %s.",expectedState), buttonState);
         }
 
     }

@@ -8,31 +8,24 @@ Feature: Unique Usernames
     When I tap settings gear button
     And I select settings item Account
     And I select settings item Add @name
-    Then I see Unique Username page
     When I enter "<Empty>" name on Unique Username page
     Then I see Save button state is Disabled on Unique Username page
     When I tap Save button on Unique Username page
-    Then I see Unique Username page
     When I enter "<MinChars>" name on Unique Username page
     Then I see Save button state is Disabled on Unique Username page
     When I tap Save button on Unique Username page
-    Then I see Unique Username page
     When I enter "<22Chars>" name on Unique Username page
     Then I see Save button state is Disabled on Unique Username page
     When I tap Save button on Unique Username page
-    Then I see Unique Username page
     When I enter "<Cyrillic>" name on Unique Username page
     Then I see Save button state is Disabled on Unique Username page
     When I tap Save button on Unique Username page
-    Then I see Unique Username page
     When I enter "<Arabic>" name on Unique Username page
     Then I see Save button state is Disabled on Unique Username page
     When I tap Save button on Unique Username page
-    Then I see Unique Username page
     When I enter "<Chines>" name on Unique Username page
     Then I see Save button state is Disabled on Unique Username page
     When I tap Save button on Unique Username page
-    Then I see Unique Username page
     When I enter "<SpecialChars>" name on Unique Username page
     Then I see Save button state is Disabled on Unique Username page
     When I tap Save button on Unique Username page
