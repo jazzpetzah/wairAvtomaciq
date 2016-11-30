@@ -4,14 +4,14 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.UniqueUsernamePage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.jcodec.common.Assert;
+import org.junit.Assert;
 
 public class UniqueUsernamePageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private UniqueUsernamePage getUsernamePageSteps () throws Exception {
+    private UniqueUsernamePage getUsernamePageSteps() throws Exception {
         return pagesCollection.getPage(UniqueUsernamePage.class);
     }
 
@@ -42,10 +42,28 @@ public class UniqueUsernamePageSteps {
      *
      * @param name string to be input
      * @throws Exception
-     * @step. ^I fill in name input on Unique Username page (.*) username$
+     * @step. ^I enter "(.*)" name on Unique Username page$
      */
-    @When("^I fill in name input on Unique Username page (.*) username$")
+    @When("^I enter \"(.*)\" name on Unique Username page$")
     public void IFillInNameInInputOnUniqueUsernamePage(String name) throws Exception {
         getUsernamePageSteps().inputStringInNameInput(name);
+    }
+
+    /**
+     * Verify Save button isEnable state
+     *
+     * @param expectedState Disabe/Enable
+     * @throws Exception
+     * @step. ^I see Save button state is (Disabled|Enabled) on Unique Username page$
+     */
+    @When("^I see Save button state is (Disabled|Enabled) on Unique Username page$")
+    public void ISeeSaveButtonIsDisabled(String expectedState) throws Exception {
+        boolean buttonState = getUsernamePageSteps().getSaveButtonState();
+        if (expectedState == "Disabled") {
+            Assert.assertFalse("Wrong Save button state. Should be " + expectedState, buttonState);
+        } else {
+            Assert.assertTrue("Wrong Save button state. Should be " + expectedState, buttonState);
+        }
+
     }
 }
