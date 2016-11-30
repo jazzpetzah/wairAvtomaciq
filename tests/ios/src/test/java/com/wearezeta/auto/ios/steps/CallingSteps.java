@@ -6,7 +6,9 @@ import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
+
 import com.wearezeta.auto.common.ZetaFormatter;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -17,6 +19,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import org.apache.log4j.Logger;
+import org.jcodec.common.RunLength;
 import org.junit.Assert;
 
 import java.nio.file.Files;
@@ -38,7 +41,6 @@ public class CallingSteps {
      *
      * @param caller           caller name/alias
      * @param conversationName destination conversation name
-     *
      * @throws Exception
      * @step. (\w+) calls (\w+)$
      */
@@ -50,11 +52,10 @@ public class CallingSteps {
     /**
      * Stop outgoing or incoming call (audio and video) to the other side
      *
-     * @step. ^(.*) stops? (incoming call from|outgoing call to) (.*)
-     *
-     * @param instanceUsers comma separated list of user names/aliases
+     * @param instanceUsers    comma separated list of user names/aliases
      * @param conversationName destination conversation name
      * @throws Exception
+     * @step. ^(.*) stops? (incoming call from|outgoing call to) (.*)
      */
     @When("^(.*) stops? (incoming call from|outgoing call to) (.*)")
     public void UserXStopsIncomingOutgoingCallsToUserY(String instanceUsers, String typeOfCall, String conversationName)
@@ -65,7 +66,6 @@ public class CallingSteps {
             commonCallingSteps.stopOutgoingCall(splitAliases(instanceUsers), conversationName);
         }
     }
-
 
 
     /**
@@ -190,7 +190,6 @@ public class CallingSteps {
      *
      * @param callers          caller names/aliases
      * @param conversationName destination conversation name
-     *
      * @throws Exception
      * @step. (.*) starts? a video call to (.*)$
      */
@@ -202,10 +201,9 @@ public class CallingSteps {
     /**
      * Verify that each call of the instances was successful
      *
-     * @step. (.*) verif(?:ies|y) that call to conversation (.*) was successful$
-     *
      * @param callees comma separated list of callee names/aliases
      * @throws Exception
+     * @step. (.*) verif(?:ies|y) that call to conversation (.*) was successful$
      */
     @Then("(.*) verif(?:ies|y) that call to conversation (.*) was successful$")
     public void UserXVerifesCallWasSuccessful(String callees, String conversation) throws Exception {
@@ -221,12 +219,11 @@ public class CallingSteps {
     /**
      * Executes consecutive calls without logging out etc.
      *
-     * @step. ^I call (\\d+) times for (\\d+) minutes with (.*)$
-     *
      * @param callDurationMinutes
-     * @param times number of consecutive calls
-     * @param callees participants which will wait for a call
+     * @param times               number of consecutive calls
+     * @param callees             participants which will wait for a call
      * @throws java.lang.Throwable
+     * @step. ^I call (\\d+) times for (\\d+) minutes with (.*)$
      */
     @Then("^I call (\\d+) times for (\\d+) minutes with (.*)$")
     public void ICallXTimes(int times, int callDurationMinutes, String callees)
@@ -240,32 +237,32 @@ public class CallingSteps {
         for (int i = 0; i < times; i++) {
             LOG.info("\n\nSTARTING CALL " + i);
             try {
-                    convSteps.ITapCallButton("Audio");
+                convSteps.ITapCallButton("Audio");
 
-                    for (String callee : calleeList) {
-                        UserXAcceptsNextIncomingCallAutomatically(callee);
-                        UserXVerifesCallStatusToUserY(callee, "active", 20);
-                    }
-                    LOG.info("All instances are active");
+                for (String callee : calleeList) {
+                    UserXAcceptsNextIncomingCallAutomatically(callee);
+                    UserXVerifesCallStatusToUserY(callee, "active", 20);
+                }
+                LOG.info("All instances are active");
 
-                    callPageSteps.ISeeCallingOverlay(null);
-                    LOG.info("Calling overlay is visible");
+                callPageSteps.ISeeCallingOverlay(null);
+                LOG.info("Calling overlay is visible");
 
-                    commonIOSSteps.WaitForTime(callDurationMinutes * 60);
+                commonIOSSteps.WaitForTime(callDurationMinutes * 60);
 
-                    callPageSteps.ITapButton("Leave");
+                callPageSteps.ITapButton("Leave");
 
-                    for (String callee : calleeList) {
-                        UserXVerifesCallStatusToUserY(callee, "destroyed", 20);
-                    }
-                    LOG.info("All instances are destroyed");
+                for (String callee : calleeList) {
+                    UserXVerifesCallStatusToUserY(callee, "destroyed", 20);
+                }
+                LOG.info("All instances are destroyed");
 
-                    callPageSteps.ISeeCallingOverlay("do not");
-                    LOG.info("Calling overlay is NOT visible");
-                    LOG.info("CALL " + i + " SUCCESSFUL");
-                    commonIOSSteps.WaitForTime(timeBetweenCall);
+                callPageSteps.ISeeCallingOverlay("do not");
+                LOG.info("Calling overlay is NOT visible");
+                LOG.info("CALL " + i + " SUCCESSFUL");
+                commonIOSSteps.WaitForTime(timeBetweenCall);
 
-            } catch (Throwable t){
+            } catch (Throwable t) {
                 LOG.info("CALL " + i + " FAILED");
                 LOG.error("Can not stop waiting call " + i + " " + t);
                 try {
@@ -293,35 +290,45 @@ public class CallingSteps {
     }
 
     //save the setup time and estab time for every call to calculate the average time
-    private List<Long> arrayCallSetupTime = new ArrayList<>();
-    private List<Long> arrayCallEstabTime = new ArrayList<>();
+    private List<Integer> arrayCallSetupTime = new ArrayList<>();
+    private List<Integer> arrayCallEstabTime = new ArrayList<>();
 
     /**
      * Receive consecutive calls without logging out etc.
      *
-     * @step. ^(.*) calls me (\d+) times for (\d+) minutes with (.*)$
-     *
      * @param callDurationMinutes time of the call
-     * @param times number of consecutive calls
-     * @param callees participants which will wait for a call
-     * @param conversationName user to be called
-     * @throws java.lang.Throwable
+     * @param times               number of consecutive calls
+     * @param callees             participants which will wait for a call
+     * @param conversationName    user to be called
+     * @throws Exception
+     * @step. ^(.*) calls me (\d+) times for (\d+) minutes with (.*)$
      */
     @Then("^(\\w+) calls to (\\w+) (\\d+) times? for (\\d+) minutes?$")
     public void IReceiveCallsXTimes(String callees, String conversationName, int times, int callDurationMinutes)
-            throws Throwable {
+            throws Exception {
+        final Map<Integer, Exception> failures = new HashMap<>();
 
-        final Map<Integer, Throwable> failures = new HashMap<>();
+        if (!arrayCallSetupTime.isEmpty()) {
+            LOG.info("Call setup_time array needs to be emptied");
+            arrayCallSetupTime.clear();
+        }
+
         for (int i = 0; i < times; i++) {
             receiveOneCallInConsecutiveLoop(callees, i, conversationName, callDurationMinutes, failures);
         }
 
-        long sumCallSetupTime = 0;
-        for (long element : arrayCallSetupTime) {
+        int sumCallSetupTime = 0;
+        for (int element : arrayCallSetupTime) {
             sumCallSetupTime += element;
         }
 
-        long avgCallSetupTime = sumCallSetupTime/(times - failures.size());
+        int avgCallSetupTime;
+        if (times == failures.size()) {
+            LOG.info("All calls failed. Call setup time will be 0.");
+            avgCallSetupTime = 0;
+        } else {
+            avgCallSetupTime = sumCallSetupTime / (times - failures.size());
+        }
 
         createCallingReport(times, failures, avgCallSetupTime);
 
@@ -329,25 +336,25 @@ public class CallingSteps {
             LOG.error(i + ": " + t.getMessage());
         });
 
-        for (Map.Entry<Integer, Throwable> entrySet : failures.entrySet()) {
+        for (Map.Entry<Integer, Exception> entrySet : failures.entrySet()) {
             // will just throw the first exception to indicate failed calls in
             // test results
             throw entrySet.getValue();
         }
     }
 
-    private void createCallingReport(int timesOfCalls, final Map<Integer, Throwable> failures, long avgCallSetupTime )
+    private void createCallingReport(int timesOfCalls, final Map<Integer, Exception> failures, int avgCallSetupTime)
             throws Exception {
         String message = String.format("%s/%s calls succeeded, average Call setup_time: %s",
-                timesOfCalls - failures.size(),timesOfCalls, avgCallSetupTime);
+                timesOfCalls - failures.size(), timesOfCalls, avgCallSetupTime);
         LOG.info(message);
 
-        Files.write(Paths.get(CommonUtils.getBuildPathFromConfig(CallingSteps.class)+"/multi_call_result.txt"),
+        Files.write(Paths.get(CommonUtils.getBuildPathFromConfig(CallingSteps.class) + "/multi_call_result.txt"),
                 message.getBytes());
     }
 
     private void receiveOneCallInConsecutiveLoop(String callees, int numberOfCall, String conversationName,
-                                                 int callDurationMinutes, final Map<Integer, Throwable> failures){
+                                                 int callDurationMinutes, final Map<Integer, Exception> failures) {
         final int timeBetweenCall = 10;
         final List<String> calleeList = splitAliases(callees);
         final CommonIOSSteps commonIOSSteps = new CommonIOSSteps();
@@ -364,7 +371,7 @@ public class CallingSteps {
 
             pagesCollection.getPage(CallKitOverlayPage.class).tapButton("Accept");
 
-            if (numberOfCall == 0){
+            if (numberOfCall == 0) {
                 pagesCollection.getCommonPage().acceptAlert();
             }
 
@@ -380,15 +387,15 @@ public class CallingSteps {
             for (String callee : calleeList) {
                 UserXVerifesCallWasSuccessful(callee, conversationName);
                 for (Call call : commonCallingSteps.getOutgoingCall(calleeList, conversationName)) {
-                    arrayCallSetupTime.add(call.getMetrics().getSetupTime());
-                    arrayCallEstabTime.add(call.getMetrics().getEstabTime());
+                    arrayCallSetupTime.add(((int) call.getMetrics().getSetupTime()));
+                    arrayCallEstabTime.add(((int) call.getMetrics().getEstabTime()));
                 }
             }
 
             LOG.info("CALL " + numberOfCall + " SUCCESSFUL");
             commonIOSSteps.WaitForTime(timeBetweenCall);
 
-        } catch (Throwable t){
+        } catch (Exception t) {
             LOG.info("CALL " + numberOfCall + " FAILED");
             LOG.error("Can not stop waiting call " + numberOfCall + " " + t);
 
