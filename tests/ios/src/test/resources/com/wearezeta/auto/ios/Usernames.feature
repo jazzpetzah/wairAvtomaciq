@@ -7,7 +7,7 @@ Feature: Usernames
     Given I see conversations list
     When I tap settings gear button
     And I select settings item Account
-    And I select settings item @name
+    And I select settings item Add @name
 
     Examples:
       | Name      |
