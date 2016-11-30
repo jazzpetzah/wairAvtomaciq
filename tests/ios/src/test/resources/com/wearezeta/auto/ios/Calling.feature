@@ -226,6 +226,64 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
+  @C2103 @staging @calling_basic @fastLogin
+  Scenario Outline: Verify than outgoing call is automatically terminated after 1 minute timeout if there is no answer
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I tap Audio Call button
+    Then I see Calling overlay
+    And I wait for 60 seconds
+    Then I do not see Calling overlay
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @C3155 @calling_advanced @fastLogin
+  Scenario Outline: Verify call back after ignoring call (during outgoing call from other side)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When <Contact> calls me
+    And I see call status message contains "<Contact> calling"
+    And I tap Ignore button on Calling overlay
+    Then I do not see Calling overlay
+    When I tap on contact name <Contact>
+    And I tap Audio Call button
+    And I see Calling overlay
+    Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | zcall       | 30      |
+
+  @C3155 @calling_advanced @fastLogin
+  Scenario Outline: Verify call back after ignoring call (during outgoing call from other side)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact2>
+    Given <Contact> starts instance using <CallBackend>
+    Given <Contact2> starts instance using <CallBackend2>
+    Given <Contact2> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When <Contact> calls me
+    And I see call status message contains "<Contact> calling"
+    And I tap Ignore button on Calling overlay
+    Then I do not see Calling overlay
+    When I tap on contact name <Contact2>
+    And I tap Audio Call button
+    And I see Calling overlay
+    Then <Contact2> verifies that waiting instance status is changed to active in 10 seconds
+
+    Examples:
+      | Name      | Contact   | Contact2  | CallBackend | CallBackend2 |
+      | user1Name | user2Name | user3Name | chrome      | chrome       |
+
   @C2046 @calling_basic @IPv6 @fastLogin
   Scenario Outline: Verify accepting group call in foreground
     Given There are 3 users where <Name> is me
