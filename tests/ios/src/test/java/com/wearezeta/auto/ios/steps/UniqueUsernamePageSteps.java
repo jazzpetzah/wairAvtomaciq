@@ -36,4 +36,16 @@ public class UniqueUsernamePageSteps {
     public void ITapButtonOnUniqueUsernamePage(String buttonName) throws Exception {
         getUsernamePageSteps().tapButtonByName(buttonName);
     }
+
+    /**
+     * Fill in name input an string
+     *
+     * @param name string to be input
+     * @throws Exception
+     * @step. ^I fill in name input on Unique Username page (.*) username$
+     */
+    @When("^I fill in name input on Unique Username page (.*) username$")
+    public void IFillInNameInInputOnUniqueUsernamePage(String name) throws Exception {
+        getUsernamePageSteps().inputStringInNameInput(name);
+    }
 }
