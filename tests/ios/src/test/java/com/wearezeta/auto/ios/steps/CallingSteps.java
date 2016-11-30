@@ -11,6 +11,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.ios.pages.CallKitOverlayPage;
+import com.wearezeta.auto.ios.pages.CallingOverlayPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -28,6 +30,7 @@ import java.util.Map;
 public class CallingSteps {
 
     private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2.getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
     /**
      * Make call to a specific user. You may instantiate more than one incoming
@@ -307,71 +310,10 @@ public class CallingSteps {
     @Then("^(\\w+) calls to (\\w+) (\\d+) times? for (\\d+) minutes?$")
     public void IReceiveCallsXTimes(String callees, String conversationName, int times, int callDurationMinutes)
             throws Throwable {
-        final int timeBetweenCall = 10;
-        final List<String> calleeList = splitAliases(callees);
-        //final ConversationViewPageSteps convSteps = new ConversationViewPageSteps();
-        final CallPageSteps callPageSteps = new CallPageSteps();
-        final CommonIOSSteps commonIOSSteps = new CommonIOSSteps();
-        final CallKitPageSteps callKitPageSteps = new CallKitPageSteps();
+
         final Map<Integer, Throwable> failures = new HashMap<>();
         for (int i = 0; i < times; i++) {
-            LOG.info("\n\nSTARTING CALL " + i);
-            try {
-                commonIOSSteps.IPressHomeButton();
-                LOG.info("Put app into background");
-
-                for (String callee : calleeList) {
-                    UserXCallsToUserYUsingCallBackend(callee, conversationName);
-                }
-
-                callKitPageSteps.ISeeOverlay(null, "Audio");
-                LOG.info("Audio Call Kit overlay is visible");
-
-                callKitPageSteps.ITapButton("Accept");
-
-                if (i == 0){
-                    commonIOSSteps.IAcceptAlert("accept", null);
-                }
-
-                for (String callee : calleeList) {
-                    UserXVerifesCallStatusToUserY(callee,conversationName, "active", 20);
-                }
-                LOG.info("All instances are active");
-
-                commonIOSSteps.WaitForTime(callDurationMinutes * 60);
-
-                callPageSteps.ITapButton("Leave");
-                callPageSteps.ISeeCallingOverlay("do not");
-                LOG.info("Calling overlay is NOT visible");
-
-                for (String callee : calleeList) {
-                    UserXVerifesCallWasSuccessful(callee, conversationName);
-                    for (Call call : commonCallingSteps.getOutgoingCall(calleeList, conversationName)) {
-                        arrayCallSetupTime.add(call.getMetrics().getSetupTime());
-                        arrayCallEstabTime.add(call.getMetrics().getEstabTime());
-                    }
-                }
-
-                LOG.info("CALL " + i + " SUCCESSFUL");
-                commonIOSSteps.WaitForTime(timeBetweenCall);
-
-            } catch (Throwable t){
-                LOG.info("CALL " + i + " FAILED");
-                LOG.error("Can not stop waiting call " + i + " " + t);
-
-                try {
-                    callKitPageSteps.ITapButton("Decline");
-                } catch (Throwable ex) {
-                    LOG.error("Can not stop call kit " + i + " " + ex);
-                    try {
-                        callPageSteps.ITapButton("Leave");
-                    } catch (Throwable exe) {
-                        LOG.error("Can not stop call " + i + " " + exe);
-                    }
-                }
-                failures.put(i, t);
-            }
-
+            receiveOneCallInConsecutiveLoop(callees, i, conversationName, callDurationMinutes, failures);
         }
 
         long sumCallSetupTime = 0;
@@ -380,13 +322,8 @@ public class CallingSteps {
         }
 
         long avgCallSetupTime = sumCallSetupTime/(times - failures.size());
-        
-        String message = String.format("%s/%s calls succeeded, average Call setup_time: %s",
-                times - failures.size(),times, avgCallSetupTime);
-        LOG.info(message);
 
-        Files.write(Paths.get(CommonUtils.getBuildPathFromConfig(CallingSteps.class)+"/multi_call_result.txt"),
-                message.getBytes());
+        createCallingReport(times, failures, avgCallSetupTime);
 
         failures.forEach((Integer i, Throwable t) -> {
             LOG.error(i + ": " + t.getMessage());
@@ -396,6 +333,76 @@ public class CallingSteps {
             // will just throw the first exception to indicate failed calls in
             // test results
             throw entrySet.getValue();
+        }
+    }
+
+    private void createCallingReport(int timesOfCalls, final Map<Integer, Throwable> failures, long avgCallSetupTime )
+            throws Exception {
+        String message = String.format("%s/%s calls succeeded, average Call setup_time: %s",
+                timesOfCalls - failures.size(),timesOfCalls, avgCallSetupTime);
+        LOG.info(message);
+
+        Files.write(Paths.get(CommonUtils.getBuildPathFromConfig(CallingSteps.class)+"/multi_call_result.txt"),
+                message.getBytes());
+    }
+
+    private void receiveOneCallInConsecutiveLoop(String callees, int numberOfCall, String conversationName,
+                                                 int callDurationMinutes, final Map<Integer, Throwable> failures){
+        final int timeBetweenCall = 10;
+        final List<String> calleeList = splitAliases(callees);
+        final CommonIOSSteps commonIOSSteps = new CommonIOSSteps();
+
+        LOG.info("\n\nSTARTING CALL " + numberOfCall);
+        try {
+            pagesCollection.getCommonPage().pressHomeButton();
+            LOG.info("Put app into background");
+
+            commonCallingSteps.callToConversation(calleeList, conversationName);
+
+            pagesCollection.getPage(CallKitOverlayPage.class).isVisible("Audio");
+            LOG.info("Audio Call Kit overlay is visible");
+
+            pagesCollection.getPage(CallKitOverlayPage.class).tapButton("Accept");
+
+            if (numberOfCall == 0){
+                pagesCollection.getCommonPage().acceptAlert();
+            }
+
+            commonCallingSteps.verifyCallingStatus(calleeList, conversationName, "active", 20);
+            LOG.info("All instances are active");
+
+            commonIOSSteps.WaitForTime(callDurationMinutes * 60);
+
+            pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName("Leave");
+            pagesCollection.getPage(CallingOverlayPage.class).isCallStatusLabelInvisible();
+            LOG.info("Calling overlay is NOT visible");
+
+            for (String callee : calleeList) {
+                UserXVerifesCallWasSuccessful(callee, conversationName);
+                for (Call call : commonCallingSteps.getOutgoingCall(calleeList, conversationName)) {
+                    arrayCallSetupTime.add(call.getMetrics().getSetupTime());
+                    arrayCallEstabTime.add(call.getMetrics().getEstabTime());
+                }
+            }
+
+            LOG.info("CALL " + numberOfCall + " SUCCESSFUL");
+            commonIOSSteps.WaitForTime(timeBetweenCall);
+
+        } catch (Throwable t){
+            LOG.info("CALL " + numberOfCall + " FAILED");
+            LOG.error("Can not stop waiting call " + numberOfCall + " " + t);
+
+            try {
+                pagesCollection.getPage(CallKitOverlayPage.class).tapButton("Decline");
+            } catch (Throwable ex) {
+                LOG.error("Can not stop call kit " + numberOfCall + " " + ex);
+                try {
+                    pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName("Leave");
+                } catch (Throwable exe) {
+                    LOG.error("Can not stop call " + numberOfCall + " " + exe);
+                }
+            }
+            failures.put(numberOfCall, t);
         }
     }
 }
