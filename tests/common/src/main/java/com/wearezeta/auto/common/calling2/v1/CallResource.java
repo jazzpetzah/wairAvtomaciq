@@ -168,8 +168,6 @@ public class CallResource {
         final String target = String.format("%s/api/v%s/instance/%s/call/%s/status", callingServiceAdress,
                 callingServiceVersion, instance.getId(), call.getId());
         try {
-            LOG.debug(restHandler.httpGet(buildDefaultRequest(target, MediaType.APPLICATION_JSON), new GenericType<String>() {
-            }, new int[]{HttpStatus.SC_OK}));
             return restHandler.httpGet(buildDefaultRequest(target, MediaType.APPLICATION_JSON), new GenericType<Call>() {
             }, new int[]{HttpStatus.SC_OK});
         } catch (RESTError ex) {

@@ -330,7 +330,7 @@ public class CallingSteps {
                 callKitPageSteps.ITapButton("Accept");
 
                 if (i == 0){
-                    commonIOSSteps.IAcceptAlert("accept", "if visible");
+                    commonIOSSteps.IAcceptAlert("accept", null);
                 }
 
                 for (String callee : calleeList) {

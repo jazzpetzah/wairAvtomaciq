@@ -190,7 +190,7 @@ public abstract class IOSPage extends BasePage {
 
     public void acceptAlertIfVisible() throws Exception {
         try {
-            handleAlert(AlertAction.ACCEPT, 7);
+            handleAlert(AlertAction.ACCEPT, 3);
         } catch (IllegalStateException e) {
             log.error("Did not accept the alert",e);
         }
