@@ -42,8 +42,4 @@ public class UniqueUsernamePage extends IOSPage {
         el.sendKeys(name);
     }
 
-    public void clearNameInput() throws Exception {
-        inputStringInNameInput("");
-    }
-
 }
