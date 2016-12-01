@@ -14,10 +14,10 @@ public class SinglePendingUserIncomingConnectionPage extends BasePendingIncoming
             value -> String.format("Connect to %s", value);
 
     private static final By xpathPendingRequestIgnoreButton =
-            By.xpath("(//XCUIElementTypeButton[@name='accept'])[last()]");
+            By.xpath("(//XCUIElementTypeButton[@name='ignore'])[last()]");
 
     private static final By xpathPendingRequestConnectButton =
-            By.xpath("(//XCUIElementTypeButton[@name='ignore'])[last()]");
+            By.xpath("(//XCUIElementTypeButton[@name='accept'])[last()]");
 
     public SinglePendingUserIncomingConnectionPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
