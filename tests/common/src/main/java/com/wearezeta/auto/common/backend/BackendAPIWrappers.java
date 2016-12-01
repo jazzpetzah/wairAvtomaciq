@@ -1,5 +1,6 @@
 package com.wearezeta.auto.common.backend;
 
+import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.email.ActivationMessage;
@@ -281,13 +282,8 @@ public final class BackendAPIWrappers {
         return sentence.getContent();
     }
 
-    public static void autoTestSendRequest(ClientUser userFrom, ClientUser userTo) throws Exception {
+    public static void sendConnectionRequest(ClientUser userFrom, ClientUser userTo) throws Exception {
         sendConnectRequest(userFrom, userTo, userTo.getName(), CommonSteps.CONNECTION_MESSAGE);
-    }
-
-    public static ClientUser autoTestAcceptAllRequest(ClientUser userTo) throws Exception {
-        acceptAllConnections(userTo);
-        return userTo;
     }
 
     public static void sendDialogMessage(ClientUser fromUser, ClientUser toUser, String message) throws Exception {
@@ -495,35 +491,40 @@ public final class BackendAPIWrappers {
         return result;
     }
 
-    public static void acceptAllConnections(ClientUser user) throws Exception {
-        final JSONArray connections = getAllConnections(user);
-        for (int i = 0; i < connections.length(); i++) {
-            String to = connections.getJSONObject(i).getString("to");
-            String status = connections.getJSONObject(i).getString("status");
-            if (status.equals(ConnectionStatus.Pending.toString())) {
-                changeConnectRequestStatus(user, to, ConnectionStatus.Accepted);
-            }
-        }
+    public static void acceptAllIncomingConnectionRequests(ClientUser asUser) throws Exception {
+        updateConnections(asUser, ConnectionStatus.Pending, ConnectionStatus.Accepted, Optional.empty());
     }
 
-    public static void cancelAllOutgoingConnections(ClientUser user) throws Exception {
-        final JSONArray connections = getAllConnections(user);
-        for (int i = 0; i < connections.length(); i++) {
-            String to = connections.getJSONObject(i).getString("to");
-            String status = connections.getJSONObject(i).getString("status");
-            if (status.equals(ConnectionStatus.Sent.toString())) {
-                changeConnectRequestStatus(user, to, ConnectionStatus.Canceled);
-            }
-        }
+    public static void acceptIncomingConnectionRequest(ClientUser asUser, ClientUser fromUser) throws Exception {
+        updateConnections(asUser, ConnectionStatus.Pending, ConnectionStatus.Accepted,
+                Optional.of(Collections.singletonList(fromUser)));
     }
 
-    public static void ignoreAllConnections(ClientUser user) throws Exception {
-        final JSONArray connections = getAllConnections(user);
+    public static void cancelAllOutgoingConnections(ClientUser asUser) throws Exception {
+        updateConnections(asUser, ConnectionStatus.Sent, ConnectionStatus.Canceled, Optional.empty());
+    }
+
+    public static void ignoreAllIncomingConnections(ClientUser asUser) throws Exception {
+        updateConnections(asUser, ConnectionStatus.Pending, ConnectionStatus.Ignored, Optional.empty());
+    }
+
+    private static void updateConnections(ClientUser asUser, ConnectionStatus srcStatus, ConnectionStatus dstStatus,
+                                          Optional<List<ClientUser>> forUsers) throws Exception {
+        final JSONArray connections = getAllConnections(asUser);
         for (int i = 0; i < connections.length(); i++) {
-            String to = connections.getJSONObject(i).getString("to");
-            String status = connections.getJSONObject(i).getString("status");
-            if (status.equals(ConnectionStatus.Pending.toString())) {
-                changeConnectRequestStatus(user, to, ConnectionStatus.Ignored);
+            final String to = connections.getJSONObject(i).getString("to");
+            final String status = connections.getJSONObject(i).getString("status");
+            if (status.equals(srcStatus.toString())) {
+                if (forUsers.isPresent() && forUsers.get().stream().anyMatch(x -> {
+                    try {
+                        return x.getId().equals(to);
+                    } catch (Exception e) {
+                        Throwables.propagate(e);
+                    }
+                    return false;
+                }) || !forUsers.isPresent()) {
+                    changeConnectRequestStatus(asUser, to, dstStatus);
+                }
             }
         }
     }

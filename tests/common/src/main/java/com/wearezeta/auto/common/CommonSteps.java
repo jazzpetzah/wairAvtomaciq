@@ -112,8 +112,9 @@ public final class CommonSteps {
         usrMgr.appendCustomUser(groupUser);
     }
 
-    public void UserRemovesAnotherUserFromGroupConversation(String userWhoRemovesAlias, String userToRemoveAlias, String chatName)
-            throws Exception {
+    public void UserRemovesAnotherUserFromGroupConversation(String userWhoRemovesAlias,
+                                                            String userToRemoveAlias,
+                                                            String chatName) throws Exception {
         ClientUser userWhoRemoves = usrMgr.findUserByNameOrNameAlias(userWhoRemovesAlias);
         ClientUser userToRemove = usrMgr.findUserByNameOrNameAlias(userToRemoveAlias);
 
@@ -123,27 +124,25 @@ public final class CommonSteps {
 
     public void UserIsConnectedTo(String userFromNameAlias,
                                   String usersToNameAliases) throws Exception {
-        ClientUser usrFrom = usrMgr
-                .findUserByNameOrNameAlias(userFromNameAlias);
+        ClientUser asUser = usrMgr.findUserByNameOrNameAlias(userFromNameAlias);
         if (usersToNameAliases.toLowerCase().contains(OTHER_USERS_ALIAS)) {
             List<ClientUser> otherUsers = usrMgr.getCreatedUsers();
-            final int conversationsCount = BackendAPIWrappers.getConversations(
-                    usrFrom).length();
+            final int conversationsCount = BackendAPIWrappers.getConversations(asUser).length();
             if (conversationsCount >= otherUsers.size() * 0.9) {
                 // Skip reconnect since this shortcut is used only for perf
                 // tests
                 return;
             }
-            otherUsers.remove(usrFrom);
-            for (ClientUser contact : otherUsers) {
-                BackendAPIWrappers.autoTestSendRequest(contact, usrFrom);
+            otherUsers.remove(asUser);
+            for (ClientUser usrTo : otherUsers) {
+                BackendAPIWrappers.sendConnectionRequest(usrTo, asUser);
+                BackendAPIWrappers.acceptIncomingConnectionRequest(usrTo, asUser);
             }
-            BackendAPIWrappers.autoTestAcceptAllRequest(usrFrom);
         } else {
             for (String userToName : splitAliases(usersToNameAliases)) {
-                ClientUser usrTo = usrMgr.findUserByNameOrNameAlias(userToName);
-                BackendAPIWrappers.autoTestSendRequest(usrFrom, usrTo);
-                BackendAPIWrappers.autoTestAcceptAllRequest(usrTo);
+                final ClientUser usrTo = usrMgr.findUserByNameOrNameAlias(userToName);
+                BackendAPIWrappers.sendConnectionRequest(asUser, usrTo);
+                BackendAPIWrappers.acceptIncomingConnectionRequest(usrTo, asUser);
             }
         }
     }
@@ -182,7 +181,7 @@ public final class CommonSteps {
 
     public void IgnoreAllIncomingConnectRequest(String userToNameAlias) throws Exception {
         ClientUser userTo = usrMgr.findUserByNameOrNameAlias(userToNameAlias);
-        BackendAPIWrappers.ignoreAllConnections(userTo);
+        BackendAPIWrappers.ignoreAllIncomingConnections(userTo);
     }
 
     public void CancelAllOutgoingConnectRequests(String userToNameAlias) throws Exception {
@@ -294,7 +293,7 @@ public final class CommonSteps {
 
     public void AcceptAllIncomingConnectionRequests(String userToNameAlias) throws Exception {
         ClientUser userTo = usrMgr.findUserByNameOrNameAlias(userToNameAlias);
-        BackendAPIWrappers.acceptAllConnections(userTo);
+        BackendAPIWrappers.acceptAllIncomingConnectionRequests(userTo);
     }
 
     public void UserAddsRemoteDeviceToAccount(String userNameAlias,
