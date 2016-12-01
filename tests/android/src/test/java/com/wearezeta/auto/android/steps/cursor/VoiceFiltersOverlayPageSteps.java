@@ -39,7 +39,7 @@ public class VoiceFiltersOverlayPageSteps {
      */
     @Then("^I see Voice (recording|filters) overlay$")
     public void ISeeVoiceRecordingDialog(String overlayName) throws Exception {
-        switch(overlayName.toLowerCase()) {
+        switch (overlayName.toLowerCase()) {
             case "recording":
                 Assert.assertTrue("The voice recording overlay should be visible", getVoiceFiltersOverlayPage()
                         .isVoiceRecordingDialogVisible());
