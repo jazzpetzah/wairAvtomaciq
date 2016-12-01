@@ -14,7 +14,7 @@ public class UniqueUsernamePage extends IOSPage {
 
     private static final By namePageHeader = MobileBy.AccessibilityId("@Name");
     private static final By nameSaveButton = MobileBy.AccessibilityId("Save");
-    private static final By fbUniqueUsernameInput = FBBy.AccessibilityId("handleTextField");
+    private static final By fbNameUniqueUsernameInput = FBBy.AccessibilityId("handleTextField");
 
     public UniqueUsernamePage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -38,7 +38,7 @@ public class UniqueUsernamePage extends IOSPage {
     }
 
     public void inputStringInNameInput(String name) throws Exception {
-        final FBElement el = ((FBElement) getElement(fbUniqueUsernameInput));
+        final FBElement el = ((FBElement) getElement(fbNameUniqueUsernameInput));
         el.clear();
         el.sendKeys(name);
     }
@@ -48,17 +48,15 @@ public class UniqueUsernamePage extends IOSPage {
     }
 
     public void inputXrandomString(int count) throws Exception {
-        String randString = CommonUtils.generateRandomString(count);
-        inputStringInNameInput(randString);
+        inputStringInNameInput(CommonUtils.generateRandomString(count));
     }
 
     private String getNameInputValue() throws Exception {
-        final FBElement el = ((FBElement) getElement(fbUniqueUsernameInput));
-        return el.getText();
+        return getElement(fbNameUniqueUsernameInput).getText();
     }
 
-    public boolean isNameInputTextLengthLessThan(int size) throws Exception {
-        return getNameInputValue().length() < size;
+    public int getNameInputTextLength() throws Exception {
+        return getNameInputValue().length();
     }
 
 }

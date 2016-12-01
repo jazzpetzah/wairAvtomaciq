@@ -60,11 +60,10 @@ public class UniqueUsernamePageSteps {
     public void ISeeSaveButtonIsDisabled(String expectedState) throws Exception {
         boolean buttonState = getUsernamePageSteps().isSaveButtonEnabled();
         if (expectedState.equals("Disabled")) {
-            Assert.assertFalse(String.format("Wrong Save button state. Should be %s.",expectedState), buttonState);
+            Assert.assertFalse(String.format("Wrong Save button state. Should be %s.", expectedState), buttonState);
         } else {
-            Assert.assertTrue(String.format("Wrong Save button state. Should be %s.",expectedState), buttonState);
+            Assert.assertTrue(String.format("Wrong Save button state. Should be %s.", expectedState), buttonState);
         }
-
     }
 
     /**
@@ -89,6 +88,6 @@ public class UniqueUsernamePageSteps {
     @Then("^I see that name length is less than (\\d+) chars on Unique Username page$")
     public void ISeeNameLenghIsLessThanXChars(int count) throws Exception {
         Assert.assertTrue(String.format("Username in name input is not less than %s chars.", count),
-                getUsernamePageSteps().isNameInputTextLengthLessThan(count));
+                getUsernamePageSteps().getNameInputTextLength() < count);
     }
 }
