@@ -38,7 +38,7 @@ public class VoiceFiltersOverlayPage extends CursorOverlayPage {
     }
 
     public boolean isVoiceGraphVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idVoiceGraph, 3);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idVoiceGraph);
     }
 
     private By getButtonLocatorByName(String name) {

@@ -271,4 +271,4 @@ Feature: Audio Message
 
     Examples:
       | Name      | Contact   | MessageDuration |
-      | user1Name | user2Name | 5               |
+      | user1Name | user2Name | 10              |
