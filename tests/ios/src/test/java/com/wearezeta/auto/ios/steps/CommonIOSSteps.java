@@ -759,6 +759,8 @@ public class CommonIOSSteps {
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")
     public void ThereAreNUsersWhereXIsMeWithoutEmail(int count, String myNameAlias) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
+        IChangeUserAvatarPicture(myNameAlias, "", "default");
+        commonSteps.ISetUniqueUsername(myNameAlias);
         final FastLoginContainer flc = FastLoginContainer.getInstance();
         if (flc.isEnabled()) {
             throw new IllegalStateException("Fast login feature is only supported in log in by email");
@@ -778,6 +780,8 @@ public class CommonIOSSteps {
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me with email only$")
     public void ThereAreNUsersWhereXIsMeWithoutPhone(int count, String myNameAlias) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMeRegOnlyByMail(count, myNameAlias);
+        IChangeUserAvatarPicture(myNameAlias, "", "default");
+        commonSteps.ISetUniqueUsername(myNameAlias);
         final FastLoginContainer flc = FastLoginContainer.getInstance();
         if (flc.isEnabled()) {
             updateDriver(flc.executeDriverCreation(usrMgr.getSelfUserOrThrowError()));
