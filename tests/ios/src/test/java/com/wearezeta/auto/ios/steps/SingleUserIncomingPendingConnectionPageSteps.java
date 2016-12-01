@@ -24,9 +24,9 @@ public class SingleUserIncomingPendingConnectionPageSteps {
      * @param value        the actual value or alias
      * @param fieldType    either 'email' or 'name'
      * @throws Exception
-     * @step. ^I (do not )?see (.*) (email|name) on Single user Pending incoming connection page$"
+     * @step. ^I (do not )?see (.*) (email|name|Address Book name) on Single user Pending incoming connection page$"
      */
-    @Then("^I (do not )?see (.*) (email|name) on Single user Pending incoming connection page$")
+    @Then("^I (do not )?see (.*) (email|name|Address Book name) on Single user Pending incoming connection page$")
     public void ISeeLabel(String shouldNotSee, String value, String fieldType) throws Exception {
         boolean result;
         switch (fieldType) {
@@ -44,6 +44,13 @@ public class SingleUserIncomingPendingConnectionPageSteps {
                     result = getPage().isEmailVisible(value);
                 } else {
                     result = getPage().isEmailInvisible(value);
+                }
+                break;
+            case "address book name":
+                if (shouldNotSee == null) {
+                    result = getPage().isAddressBookNameVisible(value);
+                } else {
+                    result = getPage().isAddressBookNameInvisible(value);
                 }
                 break;
             default:
