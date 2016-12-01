@@ -1,13 +1,13 @@
 package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.common.exception.MultipleTestCaseAssertionFaultException;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.SearchListPage;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.InvitationMessage;
 import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
+import com.wearezeta.auto.common.exception.MultipleTestCaseAssertionFaultException;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -24,11 +24,12 @@ import java.util.concurrent.Future;
 
 public class SearchPageSteps {
 
+    private static final Random random = new Random();
     private static Logger logger = ZetaLogger.getLog(SearchPageSteps.class.getSimpleName());
-
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private static final Random random = new Random();
+    private ElementState avatarState = null;
+    private Map<ClientUser, Future<String>> invitationMessages = new HashMap<>();
 
     private SearchListPage getSearchListPage() throws Exception {
         return pagesCollection.getPage(SearchListPage.class);
@@ -37,8 +38,6 @@ public class SearchPageSteps {
     private ContactListPage getContactListPage() throws Exception {
         return pagesCollection.getPage(ContactListPage.class);
     }
-
-    private ElementState avatarState = null;
 
     /**
      * Checks to see that the Search page (search view) is visible
@@ -432,8 +431,6 @@ public class SearchPageSteps {
         Assert.assertTrue(String.format("Invitation email for %s has not been received", user.getEmail()),
                 new InvitationMessage(receivedMessage).isValid());
     }
-
-    private Map<ClientUser, Future<String>> invitationMessages = new HashMap<>();
 
     /**
      * Start invitation messages listener for the particular user
