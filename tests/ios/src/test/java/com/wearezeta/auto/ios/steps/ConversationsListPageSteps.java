@@ -120,11 +120,17 @@ public class ConversationsListPageSteps {
      * Click MAYBE LATER on settings warning screen
      *
      * @throws Exception
-     * @step. ^I dismiss settings warning$
+     * @param ignoreIfInvisible equals to null if the warning should not be ignored if it was
+     *                          not shown
+     * @step. ^I dismiss settings warning( if visible)?$
      */
-    @When("^I dismiss settings warning$")
-    public void IDismissSettingsWarning() throws Exception {
-        getLoginPage().dismissSettingsWarning();
+    @When("^I dismiss settings warning( if visible)?$")
+    public void IDismissSettingsWarning(String ignoreIfInvisible) throws Exception {
+        if (ignoreIfInvisible == null) {
+            getLoginPage().dismissSettingsWarning();
+        } else {
+            getLoginPage().dismissSettingsWarningIfVisible();
+        }
     }
 
     /**

@@ -11,7 +11,7 @@ Feature: Sign In
     And I tap Login button
     And I accept alert if visible
     And I accept First Time overlay
-    And I dismiss settings warning
+    And I dismiss settings warning if visible
     Then I see conversations list
 
     Examples:
@@ -29,7 +29,7 @@ Feature: Sign In
     And I tap Login button
     And I accept alert if visible
     And I accept First Time overlay
-    And I dismiss settings warning
+    And I dismiss settings warning if visible
     Then I see conversations list
 
     Examples:
@@ -61,7 +61,7 @@ Feature: Sign In
     When I enter login verification code for Myself
     And I accept alert if visible
     And I accept First Time overlay
-    And I dismiss settings warning
+    And I dismiss settings warning if visible
     Then I see conversations list
 
     Examples:
@@ -86,7 +86,7 @@ Feature: Sign In
     Then I see email verification reminder
     When I verify registration address
     And I accept First Time overlay
-    And I dismiss settings warning
+    And I dismiss settings warning if visible
     Then I see conversations list
 
     Examples:
@@ -155,7 +155,7 @@ Feature: Sign In
     And I see email verification reminder
     And I verify registration address
     And I accept First Time overlay
-    And I dismiss settings warning
+    And I dismiss settings warning if visible
     Then I see conversations list
     When I tap settings gear button
     And I select settings item Account
