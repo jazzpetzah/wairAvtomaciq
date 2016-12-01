@@ -6,7 +6,7 @@ Feature: Unique Usernames
     Given I enter phone number for <Name>
     Given I enter activation code
     Given I accept terms of service
-    Given I input custom name <WireName> and commit it
+    Given I input name <Name> and commit it
     Given I accept alert if visible
     Given I tap Keep This One button
     Given I tap Not Now button on Share Contacts overlay
@@ -18,5 +18,5 @@ Feature: Unique Usernames
     Then I see conversations list
 
     Examples:
-      | Name      | WireName | ExpectedUniqueName |
-      | user1Name | Wire     | @wire              |
+      | Name      | ExpectedUniqueName   |
+      | user1Name | @user1UniqueUsername |
