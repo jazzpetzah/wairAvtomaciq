@@ -1,7 +1,7 @@
 package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.android.common.MultipleTestCaseAssertionFaultException;
+import com.wearezeta.auto.common.exception.MultipleTestCaseAssertionFaultException;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.SearchListPage;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;

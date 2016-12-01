@@ -1,4 +1,4 @@
-package com.wearezeta.auto.android.common;
+package com.wearezeta.auto.common.exception;
 
 import java.io.IOException;
 import java.io.PrintWriter;
