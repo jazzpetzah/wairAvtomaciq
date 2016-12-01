@@ -2,16 +2,19 @@ package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.UniqueUsernamePage;
+import cucumber.api.DataTable;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
+
+import java.util.List;
 
 public class UniqueUsernamePageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private UniqueUsernamePage getUsernamePageSteps() throws Exception {
+    private UniqueUsernamePage getUniqueUsernamePageSteps() throws Exception {
         return pagesCollection.getPage(UniqueUsernamePage.class);
     }
 
@@ -23,7 +26,7 @@ public class UniqueUsernamePageSteps {
      */
     @Then("^I see Unique Username page$")
     public void ISeeUsernamePage() throws Exception {
-        Assert.assertTrue("Unique Username page is not visible", getUsernamePageSteps().isUsernamePageVisible());
+        Assert.assertTrue("Unique Username page is not visible", getUniqueUsernamePageSteps().isUsernamePageVisible());
     }
 
     /**
@@ -34,7 +37,7 @@ public class UniqueUsernamePageSteps {
      */
     @When("^I tap (Save) button on Unique Username page$")
     public void ITapButtonOnUniqueUsernamePage(String buttonName) throws Exception {
-        getUsernamePageSteps().tapButtonByName(buttonName);
+        getUniqueUsernamePageSteps().tapButtonByName(buttonName);
     }
 
     /**
@@ -46,7 +49,7 @@ public class UniqueUsernamePageSteps {
      */
     @When("^I enter \"(.*)\" name on Unique Username page$")
     public void IFillInNameInInputOnUniqueUsernamePage(String name) throws Exception {
-        getUsernamePageSteps().inputStringInNameInput(name);
+        getUniqueUsernamePageSteps().inputStringInNameInput(name);
     }
 
     /**
@@ -58,7 +61,7 @@ public class UniqueUsernamePageSteps {
      */
     @When("^I see Save button state is (Disabled|Enabled) on Unique Username page$")
     public void ISeeSaveButtonIsDisabled(String expectedState) throws Exception {
-        boolean buttonState = getUsernamePageSteps().isSaveButtonEnabled();
+        boolean buttonState = getUniqueUsernamePageSteps().isSaveButtonEnabled();
         if (expectedState.equals("Disabled")) {
             Assert.assertFalse(String.format("Wrong Save button state. Should be %s.", expectedState), buttonState);
         } else {
@@ -75,7 +78,7 @@ public class UniqueUsernamePageSteps {
      */
     @When("^I attempt to enter over max allowed (\\d+) chars as name on Unique Username page$")
     public void IAttemtToEnterMaxAllowedCharsAsName(int count) throws Exception {
-        getUsernamePageSteps().inputXrandomString(count);
+        getUniqueUsernamePageSteps().inputXrandomString(count);
     }
 
     /**
@@ -88,7 +91,7 @@ public class UniqueUsernamePageSteps {
     @Then("^I see that name length is less than (\\d+) chars? on Unique Username page$")
     public void ISeeNameLenghIsLessThanXChars(int count) throws Exception {
         Assert.assertTrue(String.format("Username in name input is not less than %s chars.", count),
-                getUsernamePageSteps().getNameInputTextLength() < count);
+                getUniqueUsernamePageSteps().getNameInputTextLength() < count);
     }
 
     /**
@@ -99,6 +102,27 @@ public class UniqueUsernamePageSteps {
      */
     @Then("^I see that name input is empty on Unique Username page$")
     public void ISeeNameInputIsEmptyOnUniqueUsernamePage() throws Exception {
-        ISeeNameLenghIsLessThanXChars(1);
+        Assert.assertTrue("Name input is not empty on Unique Username page",
+                getUniqueUsernamePageSteps().isNameInputEmpty());
+    }
+
+    /**
+     * Verify that name input stays empty if user try input unacceptable symbols from the table
+     *
+     * @param table table of symbols
+     * @step. ^I fill in unacceptable symbols from table and verify name input stays empty on Unique Username page$
+     */
+    @When("^I fill in unacceptable symbols from table and verify name input stays empty on Unique Username page$")
+    public void IFillInInputDataAndVerify(DataTable table) {
+        List<List<String>> data = table.raw();
+
+        for (int i = 1; i <= data.size(); i++) {
+            try {
+                getUniqueUsernamePageSteps().inputStringInNameInput(data.get(i).get(1));
+                ISeeNameInputIsEmptyOnUniqueUsernamePage();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

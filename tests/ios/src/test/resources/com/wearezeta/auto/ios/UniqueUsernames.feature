@@ -16,15 +16,13 @@ Feature: Unique Usernames
     When I tap Save button on Unique Username page
     And I attempt to enter over max allowed <MaxChars> chars as name on Unique Username page
     Then I see that name length is less than <MaxChars> chars on Unique Username page
-    When I enter "<Cyrillic>" name on Unique Username page
-    Then I see that name input is empty on Unique Username page
-    When I enter "<Arabic>" name on Unique Username page
-    Then I see that name input is empty on Unique Username page
-    When I enter "<Chines>" name on Unique Username page
-    Then I see that name input is empty on Unique Username page
-    When I enter "<SpecialChars>" name on Unique Username page
-    Then I see that name input is empty on Unique Username page
+    When I fill in unacceptable symbols from table and verify name input stays empty on Unique Username page
+      | Charset      | Chars  |
+      | Cyrillic     | МоёИмя |
+      | Arabic       | اسمي   |
+      | Chinese      | 我的名字|
+      | SpecialChars | %^&@#$ |
 
     Examples:
-      | Name      | Empty | MinChars | MaxChars | Cyrillic | Arabic | Chines | SpecialChars |
-      | user1Name | ""    | 1        | 22       | МоёИмя   | اسمي   | 我的名字   | %^&@#$    |
+      | Name      | Empty | MinChars | MaxChars |
+      | user1Name | ""    | 1        | 22       |
