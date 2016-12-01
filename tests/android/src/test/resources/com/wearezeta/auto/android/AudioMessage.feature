@@ -257,12 +257,13 @@ Feature: Audio Message
     Given I tap on conversation name <Contact>
     # single tap to record check
     When I tap Audio message button from cursor toolbar
-    Then I see Voice filters overlay
+    Then I see Voice recording overlay
     When I tap Start Record button on Voice filters overlay
     And I wait for <MessageDuration> seconds
     And I tap Stop Record button on Voice filters overlay
     # filter check
-    And I tap the 3rd Filter button on Voice filters overlay
+    Then I see Voice filters overlay
+    When I tap the 3rd Filter button on Voice filters overlay
     Then I see voice graph on Voice filters overlay
     # send message check
     When I tap Approve button on Voice filters overlay
@@ -270,4 +271,4 @@ Feature: Audio Message
 
     Examples:
       | Name      | Contact   | MessageDuration |
-      | user1Name | user2Name | 15              |
+      | user1Name | user2Name | 5               |
