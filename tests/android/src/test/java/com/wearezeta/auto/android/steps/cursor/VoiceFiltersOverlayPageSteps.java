@@ -45,9 +45,11 @@ public class VoiceFiltersOverlayPageSteps {
                         .isVoiceRecordingDialogVisible());
                 break;
             case "filters":
-                Assert.assertTrue("The voice recording overlay should be visible", getVoiceFiltersOverlayPage()
+                Assert.assertTrue("The voice filters overlay should be visible", getVoiceFiltersOverlayPage()
                         .isVoiceFiltersDialogVisible());
                 break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown overlay name '%s'", overlayName));
         }
     }
 
