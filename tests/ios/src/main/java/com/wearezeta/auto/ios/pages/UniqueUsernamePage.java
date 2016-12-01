@@ -51,7 +51,7 @@ public class UniqueUsernamePage extends IOSPage {
         inputStringInNameInput(CommonUtils.generateRandomString(count));
     }
 
-    private String getNameInputValue() throws Exception {
+    public String getNameInputValue() throws Exception {
         return getElement(fbNameUniqueUsernameInput).getText();
     }
 

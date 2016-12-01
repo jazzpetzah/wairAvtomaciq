@@ -17,18 +17,13 @@ Feature: Unique Usernames
     And I attempt to enter over max allowed <MaxChars> chars as name on Unique Username page
     Then I see that name length is less than <MaxChars> chars on Unique Username page
     When I enter "<Cyrillic>" name on Unique Username page
-    Then I see Save button state is Disabled on Unique Username page
-    When I tap Save button on Unique Username page
-    And I enter "<Arabic>" name on Unique Username page
-    Then I see Save button state is Disabled on Unique Username page
-    When I tap Save button on Unique Username page
-    And I enter "<Chines>" name on Unique Username page
-    Then I see Save button state is Disabled on Unique Username page
-    When I tap Save button on Unique Username page
-    And I enter "<SpecialChars>" name on Unique Username page
-    Then I see Save button state is Disabled on Unique Username page
-    When I tap Save button on Unique Username page
-    Then I see Unique Username page
+    Then I see that name input is empty on Unique Username page
+    When I enter "<Arabic>" name on Unique Username page
+    Then I see that name input is empty on Unique Username page
+    When I enter "<Chines>" name on Unique Username page
+    Then I see that name input is empty on Unique Username page
+    When I enter "<SpecialChars>" name on Unique Username page
+    Then I see that name input is empty on Unique Username page
 
     Examples:
       | Name      | Empty | MinChars | MaxChars | Cyrillic | Arabic | Chines | SpecialChars |

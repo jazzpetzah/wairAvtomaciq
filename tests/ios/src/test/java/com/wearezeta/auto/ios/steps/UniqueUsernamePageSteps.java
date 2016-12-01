@@ -83,11 +83,22 @@ public class UniqueUsernamePageSteps {
      *
      * @param count max allowed chars count
      * @throws Exception
-     * @step. ^I see that name length is less than (\d+) chars on Unique Username page$
+     * @step. ^I see that name length is less than (\d+) chars? on Unique Username page$
      */
-    @Then("^I see that name length is less than (\\d+) chars on Unique Username page$")
+    @Then("^I see that name length is less than (\\d+) chars? on Unique Username page$")
     public void ISeeNameLenghIsLessThanXChars(int count) throws Exception {
         Assert.assertTrue(String.format("Username in name input is not less than %s chars.", count),
                 getUsernamePageSteps().getNameInputTextLength() < count);
+    }
+
+    /**
+     * Verify that name input is emtpy on Unique Username page
+     *
+     * @throws Exception
+     * @step. ^I see that name input is empty on Unique Username page$
+     */
+    @Then("^I see that name input is empty on Unique Username page$")
+    public void ISeeNameInputIsEmptyOnUniqueUsernamePage() throws Exception {
+        ISeeNameLenghIsLessThanXChars(1);
     }
 }
