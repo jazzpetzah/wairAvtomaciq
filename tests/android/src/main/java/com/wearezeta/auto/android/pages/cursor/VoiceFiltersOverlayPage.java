@@ -1,11 +1,11 @@
 package com.wearezeta.auto.android.pages.cursor;
 
+import java.util.concurrent.Future;
+import java.util.function.Function;
+
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import org.openqa.selenium.By;
-
-import java.util.concurrent.Future;
-import java.util.function.Function;
 
 public class VoiceFiltersOverlayPage extends CursorOverlayPage {
 
