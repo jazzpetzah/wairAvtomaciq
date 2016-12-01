@@ -169,7 +169,7 @@ public class LoginPage extends IOSPage {
     }
 
     public void inputLoginCode(PhoneNumber forNumber) throws Exception {
-        final WebElement codeInput = getElement(RegistrationPage.xpathVerificationCodeInput,
+        final WebElement codeInput = getElement(RegistrationPage.nameVerificationCodeInput,
                 "Login code input is not visible");
         final String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(forNumber);
         codeInput.sendKeys(code);

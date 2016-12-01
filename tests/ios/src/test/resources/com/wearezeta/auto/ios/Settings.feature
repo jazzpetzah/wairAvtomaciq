@@ -263,7 +263,7 @@ Feature: Settings
     Given I enter phone number for <Name>
     Given I enter activation code
     Given I accept terms of service
-    Given I input name <Name> and hit Enter
+    Given I input name <Name> and commit it
     Given I accept alert if visible
     Given I tap Keep This One button
     Given I accept alert if visible
