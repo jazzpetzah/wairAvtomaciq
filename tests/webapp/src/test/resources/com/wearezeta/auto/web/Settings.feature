@@ -54,6 +54,47 @@ Feature: Settings
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
+  @staging
+  Scenario Outline: Verify I can set sound alert settings
+    Given There is 2 user where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given <Contact> is connected to Myself
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I am signed in properly
+    And I open preferences by clicking the gear button
+    And I open options in preferences
+    When I set sound alerts setting to none
+    Then I see Sound Alerts setting is set to none
+    Then Soundfile new_message did not start playing
+    When Contact <Contact> sends message Hello1 to user Myself
+    Then Soundfile new_message did not start playing
+    Then Soundfile ping_from_them did not start playing
+    And User <Contact> pinged in the conversation with me
+    Then Soundfile ping_from_them did not start playing
+    Then I see Sound Alerts setting is set to none
+    When I set sound alerts setting to some
+    Then I see Sound Alerts setting is set to some
+    Then Soundfile new_message did not start playing
+    When Contact <Contact> sends message Hello2 to user Myself
+    Then Soundfile new_message did not start playing
+    Then Soundfile ping_from_them did not start playing
+    And User <Contact> pinged in the conversation with me
+    Then Soundfile ping_from_them did start playing
+    Then I see Sound Alerts setting is set to some
+    When I set sound alerts setting to all
+    Then I see Sound Alerts setting is set to all
+    Then Soundfile new_message did not start playing
+    When Contact <Contact> sends message Hello4 to user Myself
+    Then Soundfile new_message did start playing
+    Then Soundfile ping_from_them did not start playing
+    And User <Contact> pinged in the conversation with me
+    Then Soundfile ping_from_them did start playing
+
+    Examples: 
+      | Email      | Password      | Name      | Contact    |
+      | user1Email | user1Password | user1Name | user2Name  |
+
   @C12064 @regression @useSpecialEmail
   Scenario Outline: Verify you can delete account
     Given There is 1 user where <Name> is me
