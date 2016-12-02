@@ -600,13 +600,13 @@ public class ClientUsersManager {
     public static final String ALIASES_SEPARATOR = ",";
 
     public List<String> splitAliases(String aliases) throws SelfUserIsNotDefinedException {
-        List<String> result = new ArrayList<>();
         if (aliases.toLowerCase().startsWith(OTHER_USERS_ALIAS)) {
             final List<ClientUser> otherUsers = getCreatedUsers();
             otherUsers.remove(getSelfUserOrThrowError());
             return otherUsers.stream().map(ClientUser::getName).collect(Collectors.toList());
         }
-        String[] splitAliases = aliases.split(ALIASES_SEPARATOR);
+        final List<String> result = new ArrayList<>();
+        final String[] splitAliases = aliases.split(ALIASES_SEPARATOR);
         for (String splitAlias : splitAliases) {
             result.add(splitAlias.trim());
         }
