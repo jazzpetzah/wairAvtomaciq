@@ -138,7 +138,7 @@ Feature: Usernames
       | user1Email | user1Password | user1Name |   داريا      | darya         |
       | user1Email | user1Password | user1Name | 明麗         | mengli        |
 
-  @C352080 @staging @useSpecialEmail
+  @C352080 @staging @useSpecialEmail @usernames
   Scenario Outline: Verify deleting an account release a username
     Given There are 2 users where <Name2> is me without unique username
     And User <Name> is me
