@@ -49,7 +49,7 @@ public class UniqueUsernamePage extends IOSPage {
     }
 
     public void inputXrandomString(int count) throws Exception {
-        inputStringInNameInput(CommonUtils.generateRandomString(count));
+        inputStringInNameInput(CommonUtils.generateRandomString(count).toLowerCase());
     }
 
     private String getNameInputValue() throws Exception {
