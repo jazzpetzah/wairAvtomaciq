@@ -705,7 +705,6 @@ public class CommonIOSSteps {
     public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "", "default");
-        commonSteps.ISetUniqueUsername(myNameAlias);
         final FastLoginContainer flc = FastLoginContainer.getInstance();
         if (flc.isEnabled()) {
             updateDriver(flc.executeDriverCreation(usrMgr.getSelfUserOrThrowError()));
