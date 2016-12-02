@@ -71,10 +71,11 @@ Feature: Connect
     Given Myself is connected to <Contact4>
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I tap Incoming Pending Requests item in conversations list
+    When I tap Incoming Pending Requests item in conversations list
     And I tap Ignore button on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
+    And I navigate back to conversations list
     And I do not see Pending request link in conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search UI
