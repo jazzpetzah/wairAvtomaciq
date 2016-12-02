@@ -515,7 +515,7 @@ public final class BackendAPIWrappers {
             final String to = connection.getString("to");
             final String status = connection.getString("status");
             if (status.equals(srcStatus.toString())) {
-                if (forUserIds.isPresent() && forUserIds.get().stream().anyMatch(x ->  x.equals(to))
+                if (forUserIds.isPresent() && forUserIds.get().stream().anyMatch(x -> x.equals(to))
                         || !forUserIds.isPresent()) {
                     changeConnectRequestStatus(asUser, to, dstStatus);
                 }
