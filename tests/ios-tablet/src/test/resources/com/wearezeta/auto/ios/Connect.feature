@@ -482,7 +482,7 @@ Feature: Connect
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
     And I tap Connect button on Group participant Pending incoming connection page
-    And I tap Ignore button on Single user Pending incoming connection page
+    And I decline Connect conversation action
     And I dismiss popover on iPad
     And I navigate back to conversations list
     # Workaround for ZIOS-4985
@@ -509,7 +509,7 @@ Feature: Connect
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
     And I tap Connect button on Group participant Pending incoming connection page
-    And I tap Ignore button on Single user Pending incoming connection page
+    And I decline Connect conversation action
     And I dismiss popover on iPad
     # Workaround for ZIOS-4985
     # Then I do not see Pending request link in conversations list

@@ -5,7 +5,6 @@ import com.wearezeta.auto.web.pages.CallPage;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 
-import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.web.common.TestContext;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -48,7 +47,7 @@ public class CallPageSteps {
     @And("^I see row of avatars on call controls with users? (.*)$")
     public void ISeeRowOfAvatarsOnCall(String participants) throws Exception {
         CallPage page = context.getPagesCollection().getPage(CallPage.class);
-        for (String alias : splitAliases(participants)) {
+        for (String alias : context.getUserManager().splitAliases(participants)) {
             String id = context.getUserManager().findUserByNameOrNameAlias(alias).getId();
             assertThat(String.format("Avatar of user %s not visible", alias), page.isAvatarVisibleInCallControls(id));
         }

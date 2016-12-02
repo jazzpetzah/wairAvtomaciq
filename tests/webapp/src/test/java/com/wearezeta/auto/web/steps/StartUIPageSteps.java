@@ -193,7 +193,7 @@ public class StartUIPageSteps {
 
     @When("^I select (.*) from Top People$")
     public void ISelectUsersFromTopPeople(String namesOfTopPeople) throws Exception {
-        for (String alias : CommonSteps.splitAliases(namesOfTopPeople)) {
+        for (String alias : context.getUserManager().splitAliases(namesOfTopPeople)) {
             final String userName = context.getUserManager().findUserByNameOrNameAlias(alias).getName();
             context.getPagesCollection().getPage(StartUIPage.class).clickNameInTopPeople(userName);
         }

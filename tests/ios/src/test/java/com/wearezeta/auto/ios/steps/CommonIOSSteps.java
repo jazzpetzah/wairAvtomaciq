@@ -1154,7 +1154,7 @@ public class CommonIOSSteps {
      */
     @When("^User (.*) adds new devices? (.*)")
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
-        final List<String> names = CommonSteps.splitAliases(deviceNames);
+        final List<String> names = usrMgr.splitAliases(deviceNames);
         final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
         final ExecutorService pool = Executors.newFixedThreadPool(poolSize);
         for (String name : names) {

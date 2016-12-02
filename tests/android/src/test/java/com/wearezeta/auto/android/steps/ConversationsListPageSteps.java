@@ -195,7 +195,7 @@ public class ConversationsListPageSteps {
     @Then("^I (do not )?see group conversation with (.*) in conversations list$")
     public void ISeeGroupChatInContactList(String shouldNotSee, String contacts) throws Exception {
         final List<String> users = new ArrayList<>();
-        for (String alias : CommonSteps.splitAliases(contacts)) {
+        for (String alias : usrMgr.splitAliases(contacts)) {
             users.add(usrMgr.findUserByNameOrNameAlias(alias).getName());
         }
         if (shouldNotSee == null) {

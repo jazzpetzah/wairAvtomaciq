@@ -744,7 +744,7 @@ public class ConversationPageSteps {
     @Then("^I see the last message is liked by users? (.*)$")
     public void ISeeLastMessageIsLikedBy(String usersToNameAliases) throws Exception {
         List<String> likers = context.getPagesCollection().getPage(ConversationPage.class).getUsersThatLikeTheLastMessage();
-        List<String> aliases = CommonSteps.splitAliases(usersToNameAliases);
+        List<String> aliases = context.getUserManager().splitAliases(usersToNameAliases);
         String[] users = new String[aliases.size()];
         for (int i = 0; i < aliases.size(); i++) {
             ClientUser userTo = context.getUserManager().findUserByNameOrNameAlias(aliases.get(i));
@@ -837,7 +837,7 @@ public class ConversationPageSteps {
         contacts = context.getUserManager().replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
         Set<String> parts = new HashSet<String>();
         parts.add(message);
-        parts.addAll(CommonSteps.splitAliases(contacts));
+        parts.addAll(context.getUserManager().splitAliases(contacts));
         assertThat(message + " action for " + contacts, context.getPagesCollection().getPage(ConversationPage.class)
                 .waitForNumberOfMessageHeadersContain(parts), equalTo(times));
     }

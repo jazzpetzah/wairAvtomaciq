@@ -67,41 +67,22 @@ public final class CommonSteps {
         this.seBridge = seBridge;
     }
 
-    public static final String ALIASES_SEPARATOR = ",";
-
-    public static List<String> splitAliases(String aliases) {
-        List<String> result = new ArrayList<>();
-        String[] splittedAliases = aliases.split(ALIASES_SEPARATOR);
-        for (String splittedAlias : splittedAliases) {
-            result.add(splittedAlias.trim());
-        }
-        return result;
-    }
-
     public void ConnectionRequestIsSentTo(String userFromNameAlias,
                                           String usersToNameAliases) throws Exception {
         ClientUser userFrom = usrMgr.findUserByNameOrNameAlias(userFromNameAlias);
-        for (String userToNameAlias : splitAliases(usersToNameAliases)) {
+        for (String userToNameAlias : usrMgr.splitAliases(usersToNameAliases)) {
             ClientUser userTo = usrMgr.findUserByNameOrNameAlias(userToNameAlias);
             BackendAPIWrappers.sendConnectRequest(userFrom, userTo,
                     CONNECTION_NAME + userTo.getName(), CONNECTION_MESSAGE);
         }
     }
 
-    private static final String OTHER_USERS_ALIAS = "all other";
-
     public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
                                              String chatName, String otherParticipantsNameAlises) throws Exception {
         ClientUser chatOwner = usrMgr.findUserByNameOrNameAlias(chatOwnerNameAlias);
-        List<ClientUser> participants = new ArrayList<>();
-
-        if (otherParticipantsNameAlises.toLowerCase().contains(OTHER_USERS_ALIAS)) {
-            participants = usrMgr.getCreatedUsers();
-            participants.remove(chatOwner);
-        } else {
-            for (String participantNameAlias : splitAliases(otherParticipantsNameAlises)) {
-                participants.add(usrMgr.findUserByNameOrNameAlias(participantNameAlias));
-            }
+        final List<ClientUser> participants = new ArrayList<>();
+        for (String participantNameAlias : usrMgr.splitAliases(otherParticipantsNameAlises)) {
+            participants.add(usrMgr.findUserByNameOrNameAlias(participantNameAlias));
         }
         BackendAPIWrappers.createGroupConversation(chatOwner, participants, chatName);
         // Set nameAlias for the group
@@ -122,28 +103,12 @@ public final class CommonSteps {
         BackendAPIWrappers.removeUserFromGroupConversation(userWhoRemoves, userToRemove, chatName);
     }
 
-    public void UserIsConnectedTo(String userFromNameAlias,
-                                  String usersToNameAliases) throws Exception {
-        ClientUser asUser = usrMgr.findUserByNameOrNameAlias(userFromNameAlias);
-        if (usersToNameAliases.toLowerCase().contains(OTHER_USERS_ALIAS)) {
-            List<ClientUser> otherUsers = usrMgr.getCreatedUsers();
-            final int conversationsCount = BackendAPIWrappers.getConversations(asUser).length();
-            if (conversationsCount >= otherUsers.size() * 0.9) {
-                // Skip reconnect since this shortcut is used only for perf
-                // tests
-                return;
-            }
-            otherUsers.remove(asUser);
-            for (ClientUser usrTo : otherUsers) {
-                BackendAPIWrappers.sendConnectionRequest(usrTo, asUser);
-                BackendAPIWrappers.acceptIncomingConnectionRequest(usrTo, asUser);
-            }
-        } else {
-            for (String userToName : splitAliases(usersToNameAliases)) {
-                final ClientUser usrTo = usrMgr.findUserByNameOrNameAlias(userToName);
-                BackendAPIWrappers.sendConnectionRequest(asUser, usrTo);
-                BackendAPIWrappers.acceptIncomingConnectionRequest(usrTo, asUser);
-            }
+    public void UserIsConnectedTo(String userFromNameAlias, String usersToNameAliases) throws Exception {
+        final ClientUser asUser = usrMgr.findUserByNameOrNameAlias(userFromNameAlias);
+        for (String userToName : usrMgr.splitAliases(usersToNameAliases)) {
+            final ClientUser usrTo = usrMgr.findUserByNameOrNameAlias(userToName);
+            BackendAPIWrappers.sendConnectionRequest(usrTo, asUser);
+            BackendAPIWrappers.acceptIncomingConnectionRequest(asUser, usrTo);
         }
     }
 
@@ -764,7 +729,7 @@ public final class CommonSteps {
                                               String contactsToAddNameAliases, String chatName) throws Exception {
         final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(userAsNameAlias);
         List<ClientUser> contactsToAdd = new ArrayList<>();
-        for (String contactNameAlias : splitAliases(contactsToAddNameAliases)) {
+        for (String contactNameAlias : usrMgr.splitAliases(contactsToAddNameAliases)) {
             contactsToAdd.add(usrMgr.findUserByNameOrNameAlias(contactNameAlias));
         }
         BackendAPIWrappers.addContactsToGroupConversation(userAs, contactsToAdd, chatName);
@@ -853,13 +818,13 @@ public final class CommonSteps {
      */
     public void UserXHasContactsInAddressBook(String userAsNameAlias, String contacts) throws Exception {
         StringBuilder sb = new StringBuilder();
-        for (String contact : splitAliases(contacts)) {
+        for (String contact : usrMgr.splitAliases(contacts)) {
             if (contact.startsWith("+")) {
                 sb.append(contact);
             } else {
                 sb.append(usrMgr.replaceAliasesOccurences(contact, FindBy.EMAIL_ALIAS));
             }
-            sb.append(ALIASES_SEPARATOR);
+            sb.append(ClientUsersManager.ALIASES_SEPARATOR);
         }
         this.UserXHasEmailsInAddressBook(userAsNameAlias, sb.toString());
     }
@@ -867,7 +832,7 @@ public final class CommonSteps {
     public void UserXHasEmailsInAddressBook(String userAsNameAlias,
                                             String emails) throws Exception {
         final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(userAsNameAlias);
-        BackendAPIWrappers.uploadAddressBookWithContacts(userAs, splitAliases(emails));
+        BackendAPIWrappers.uploadAddressBookWithContacts(userAs, usrMgr.splitAliases(emails));
     }
 
     public void UserXSendsPersonalInvitationWithMessageToUserWithMail(

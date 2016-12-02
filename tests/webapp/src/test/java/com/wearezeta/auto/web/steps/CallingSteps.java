@@ -2,7 +2,6 @@ package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
-import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceInstanceException;
 import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -41,41 +40,44 @@ public class CallingSteps {
 
     @When("^(.*) start(?:s|ing) a video call to (.*)$")
     public void UserXCallsWithVideoToConversationY(String callerNames, String conversationName) throws Exception {
-        context.getCallingManager().startVideoCallToConversation(splitAliases(callerNames), conversationName);
+        context.getCallingManager().startVideoCallToConversation(context.getUserManager().splitAliases(callerNames),
+                conversationName);
     }
 
     @When("^(.*) calls (.*)$")
     public void UserXCallsToConversationY(String callerNames, String conversationName) throws Exception {
-        context.getCallingManager().callToConversation(splitAliases(callerNames), conversationName);
+        context.getCallingManager().callToConversation(context.getUserManager().splitAliases(callerNames),
+                conversationName);
     }
 
     @When("^(.*) stops? calling( (.*))?$")
     public void UserXStopsCallsToUserY(String instanceUsers, String outgoingCall, String conversationName)
             throws Exception {
         if (outgoingCall == null) {
-            context.getCallingManager().stopIncomingCall(splitAliases(instanceUsers));
+            context.getCallingManager().stopIncomingCall(context.getUserManager().splitAliases(instanceUsers));
         } else {
-            context.getCallingManager().stopOutgoingCall(splitAliases(instanceUsers), conversationName);
+            context.getCallingManager().stopOutgoingCall(context.getUserManager().splitAliases(instanceUsers), conversationName);
         }
     }
 
     @When("^(.*) declines? calls? from conversation (.*)$")
     public void UserXDeclinesCallFromConversationY(String calleeNames, String conversationName) throws Exception {
-        context.getCallingManager().declineIncomingCallToConversation(splitAliases(calleeNames), conversationName);
+        context.getCallingManager().declineIncomingCallToConversation(
+                context.getUserManager().splitAliases(calleeNames), conversationName);
     }
 
     @Then("(.*) verif(?:y|ies) that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
     public void UserXVerifesCallStatusToUserY(String callers,
             String conversationName, String expectedStatuses, int timeoutSeconds)
             throws Exception {
-        context.getCallingManager().verifyCallingStatus(splitAliases(callers), conversationName,
+        context.getCallingManager().verifyCallingStatus(context.getUserManager().splitAliases(callers), conversationName,
                 expectedStatuses, timeoutSeconds);
     }
 
     @Then("(.*) verif(?:y|ies) that waiting instance status is changed to (.*) in (\\d+) seconds?$")
     public void UserXVerifesCallStatusToUserY(String callees,
             String expectedStatuses, int timeoutSeconds) throws Exception {
-        context.getCallingManager().verifyAcceptingCallStatus(splitAliases(callees),
+        context.getCallingManager().verifyAcceptingCallStatus(context.getUserManager().splitAliases(callees),
                 expectedStatuses, timeoutSeconds);
     }
 
@@ -83,7 +85,7 @@ public class CallingSteps {
     public void UserXStartsInstance(String callees,
             String callingServiceBackend) throws Exception {
         context.startPinging();
-        context.getCallingManager().startInstances(splitAliases(callees), callingServiceBackend,
+        context.getCallingManager().startInstances(context.getUserManager().splitAliases(callees), callingServiceBackend,
                 String.format("%s_%s", "Webapp", WebAppExecutionContext.getBrowser()), context.getTestname());
         context.stopPinging();
     }
@@ -92,9 +94,9 @@ public class CallingSteps {
     public void UserXAcceptsNextIncomingCallAutomatically(String callees, String video)
             throws Exception {
         if (video == null) {
-            context.getCallingManager().acceptNextCall(splitAliases(callees));
+            context.getCallingManager().acceptNextCall(context.getUserManager().splitAliases(callees));
         } else {
-            context.getCallingManager().acceptNextVideoCall(splitAliases(callees));
+            context.getCallingManager().acceptNextVideoCall(context.getUserManager().splitAliases(callees));
         }
 
     }
@@ -102,7 +104,7 @@ public class CallingSteps {
     @Then("(.*) verif(?:ies|y) to have (\\d+) flows?$")
     public void UserXVerifesHavingXFlows(String callees, int numberOfFlows)
             throws Exception {
-        for (String callee : splitAliases(callees)) {
+        for (String callee : context.getUserManager().splitAliases(callees)) {
             final List<Flow> flows = context.getCallingManager().getFlows(callee);
             LOG.info("flows: \n" + flows);
             assertThat("# of flows don't match " + numberOfFlows, flows, hasSize(numberOfFlows));
@@ -111,7 +113,7 @@ public class CallingSteps {
 
     @Then("(.*) verif(?:ies|y) that all audio flows have greater than 0 bytes$")
     public void UserXVerifesAllAudioFlowBytesGreaterZero(String callees) throws Exception {
-        for (String callee : splitAliases(callees)) {
+        for (String callee : context.getUserManager().splitAliases(callees)) {
             List<Flow> flows = context.getCallingManager().getFlows(callee);
             for (Flow flow : flows) {
                 LOG.info("flows: \n" + flows);
@@ -125,7 +127,7 @@ public class CallingSteps {
 
     @Then("(.*) verif(?:ies|y) that all video flows have greater than 0 bytes$")
     public void UserXVerifesAllVideoFlowBytesGreaterZero(String callees) throws Exception {
-        for (String callee : splitAliases(callees)) {
+        for (String callee : context.getUserManager().splitAliases(callees)) {
             List<Flow> flows = context.getCallingManager().getFlows(callee);
             for (Flow flow : flows) {
                 LOG.info("flows: \n" + flows);
@@ -141,7 +143,7 @@ public class CallingSteps {
     public void UserXVerifesToGetVideoDataFromY(String callees, String not, String caller) throws Exception {
         context.startPinging();
         ClientUser sender = context.getUserManager().findUserByNameOrNameAlias(caller);
-        List<String> splitAliases = splitAliases(callees);
+        List<String> splitAliases = context.getUserManager().splitAliases(callees);
         Map<String, Flow> oldFlows = new HashMap<>();
         Map<String, Flow> newFlows = new HashMap<>();
 
@@ -180,7 +182,7 @@ public class CallingSteps {
     public void UserXVerifesToGetAudioDataFromY(String callees, String not, String caller) throws Exception {
         context.startPinging();
         ClientUser sender = context.getUserManager().findUserByNameOrNameAlias(caller);
-        List<String> splitAliases = splitAliases(callees);
+        List<String> splitAliases = context.getUserManager().splitAliases(callees);
         Map<String, Flow> oldFlows = new HashMap<>();
         Map<String, Flow> newFlows = new HashMap<>();
 
@@ -224,7 +226,8 @@ public class CallingSteps {
 
     @Then("(.*) verif(?:ies|y) that call to conversation (.*) was successful$")
     public void UserXVerifesOutgoingCallWasSuccessful(String callers, String conversation) throws Exception {
-        for (Call call : context.getCallingManager().getOutgoingCall(splitAliases(callers), conversation)) {
+        for (Call call : context.getCallingManager().getOutgoingCall(context.getUserManager().splitAliases(callers),
+                conversation)) {
             assertNotNull("There are no metrics available for this call \n" + call, call.getMetrics());
             assertTrue("Call failed: \n" + call + "\n" + call.getMetrics(), call.getMetrics().isSuccess());
         }
@@ -232,7 +235,7 @@ public class CallingSteps {
 
     @Then("(.*) verif(?:ies|y) that incoming call was successful$")
     public void UserXVerifesIncomingCallWasSuccessful(String callees) throws Exception {
-        for (Call call : context.getCallingManager().getIncomingCall(splitAliases(callees))) {
+        for (Call call : context.getCallingManager().getIncomingCall(context.getUserManager().splitAliases(callees))) {
             assertNotNull("There are no metrics available for this incoming call \n" + call, call.getMetrics());
             assertTrue("Call failed: \n" + call + "\n" + call.getMetrics(), call.getMetrics().isSuccess());
         }
@@ -242,7 +245,7 @@ public class CallingSteps {
     public void ICallXTimes(int times, int callDurationMinutes, String callees)
             throws Throwable {
         final int flowWaitTime = 3;
-        final List<String> calleeList = splitAliases(callees);
+        final List<String> calleeList = context.getUserManager().splitAliases(callees);
         final ConversationPageSteps convSteps = new ConversationPageSteps(context);
         final CommonCallingSteps2 commonCalling = context.getCallingManager();
         final WarningPageSteps warningSteps = new WarningPageSteps(context);
@@ -352,18 +355,18 @@ public class CallingSteps {
     @When("(.*) switch(?:es) video (off|on)$")
     public void UserXSwitchesVideo(String callees, String toggle) throws Exception {
         if (toggle.equals("on")) {
-            context.getCallingManager().switchVideoOn(splitAliases(callees));
+            context.getCallingManager().switchVideoOn(context.getUserManager().splitAliases(callees));
         } else {
-            context.getCallingManager().switchVideoOff(splitAliases(callees));
+            context.getCallingManager().switchVideoOff(context.getUserManager().splitAliases(callees));
         }
     }
 
     @When("(.*) (maximises|minimises) video call")
     public void UserXResizesVideo(String callees, String toggle) throws Exception {
         if (toggle.equals("maximises")) {
-            context.getCallingManager().maximiseVideoCall(splitAliases(callees));
+            context.getCallingManager().maximiseVideoCall(context.getUserManager().splitAliases(callees));
         } else {
-            context.getCallingManager().minimiseVideoCall(splitAliases(callees));
+            context.getCallingManager().minimiseVideoCall(context.getUserManager().splitAliases(callees));
         }
     }
 }

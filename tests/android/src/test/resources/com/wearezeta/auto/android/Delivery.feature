@@ -70,7 +70,8 @@ Feature: Delivery
     Given I tap on conversation name <Contact>
     When I type the message "<Msg>" and send it by cursor Send button
     And I type the message "<Msg2>" and send it by cursor Send button
-    And I long tap the Text message "<Msg>" in the conversation view
+    Then I see Message status with expected text "<MessageStatus>" in conversation view
+    When I long tap the Text message "<Msg>" in the conversation view
     And I tap Like button on the message bottom menu
     Then I see 1 Message status in conversation view
     And I see Like description with expected text "Myself" in conversation view
@@ -81,5 +82,5 @@ Feature: Delivery
     And I see Like button in conversation view
 
     Examples:
-      | Name      | Contact   | Msg | Msg2 | ContactDevice | Msg3 |
-      | user1Name | user2Name | M1  | M2   | D1            | M3   |
+      | Name      | Contact   | Msg | Msg2 | ContactDevice | Msg3 | MessageStatus |
+      | user1Name | user2Name | M1  | M2   | D1            | M3   | Delivered     |
