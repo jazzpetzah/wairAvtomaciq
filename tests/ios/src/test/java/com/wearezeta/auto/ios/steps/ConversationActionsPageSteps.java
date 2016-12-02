@@ -42,15 +42,20 @@ public class ConversationActionsPageSteps {
     }
 
     /**
-     * Tap the corresponding button to confirm conversation action
+     * Tap the corresponding button to confirm/decline conversation action
      *
+     * @param what either 'confirm' or 'decline'
      * @param actionName one of available action names
      * @throws Exception
-     * @step. ^I confirm (Block|Remove|Delete|Leave|Cancel Request|Connect) conversation action$
+     * @step. ^I (confirm|decline)  (Block|Remove|Delete|Leave|Cancel Request|Connect) conversation action$
      */
-    @Then("^I confirm (Block|Remove|Delete|Leave|Cancel Request|Connect) conversation action$")
-    public void IConfirmAction(String actionName) throws Exception {
-        getPage().confirmAction(actionName);
+    @Then("^I (confirm|decline) (Block|Remove|Delete|Leave|Cancel Request|Connect) conversation action$")
+    public void IDoAction(String what, String actionName) throws Exception {
+        if (what.equals("confirm")) {
+            getPage().confirmAction(actionName);
+        } else {
+            getPage().declineAction(actionName);
+        }
     }
 
     /**
