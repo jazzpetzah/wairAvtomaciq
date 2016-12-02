@@ -131,7 +131,7 @@ public class AccountPageSteps {
         context.getUserManager().getSelfUserOrThrowError().setName(name);
     }
 
-    @And("^I type (.*) into unique username field")
+    @And("^I type (.*) into unique username field$")
     public void ITypeIntoUniqueUserNameField(String name) throws Exception {
         context.getPagesCollection().getPage(AccountPage.class).setUniqueUsername(name);
     }
