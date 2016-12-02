@@ -260,7 +260,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
-    Then I see <Contact2> name on Group participant profile page
+    Then I see name "<Contact2>" on Group participant profile page
 
     Examples:
       | Name      | Contact2  | ConnectedContact | GroupChatName   |
@@ -277,7 +277,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
-    Then I see <Contact2> name on Group participant profile page
+    Then I see name "<Contact2>" on Group participant profile page
 
     Examples:
       | Name      | Contact2  | ConnectedContact | GroupChatName   |
@@ -882,7 +882,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact3> on Group info page
-    Then I see <Contact3> name on Group participant Pending outgoing connection page
+    Then I see name "<Contact3>" on Group participant Pending outgoing connection page
     And I see Remove From Group button on Group participant Pending outgoing connection page
 
     Examples:
@@ -901,7 +901,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact3> on Group info page
-    Then I see <Contact3> name on Group participant Pending outgoing connection page
+    Then I see name "<Contact3>" on Group participant Pending outgoing connection page
     And I see Remove From Group button on Group participant Pending outgoing connection page
 
     Examples:

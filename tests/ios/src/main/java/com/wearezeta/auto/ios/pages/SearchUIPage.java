@@ -225,4 +225,8 @@ public class SearchUIPage extends IOSPage {
         final By locator = getButtonLocatorByName(btnName);
         return isLocatorInvisible(locator);
     }
+
+    public void clearSearchInput() throws Exception {
+        getElement(fbNameSearchInput).clear();
+    }
 }

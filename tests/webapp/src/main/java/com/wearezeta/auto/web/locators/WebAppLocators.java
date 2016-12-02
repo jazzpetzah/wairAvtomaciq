@@ -264,6 +264,8 @@ public final class WebAppLocators {
 
         public static final String cssUniqueUsernameError = ".preferences-account-username-error";
 
+        public static final String cssUniqueUsernameHint = ".preferences-account-username-hint";
+
         public static final String cssNameSelfUserMail = "[data-uie-name='enter-email']";
 
         public static final String cssNameSelfUserPhoneNumber = "[data-uie-name='enter-phone']";

@@ -669,6 +669,7 @@ public final class CommonSteps {
     }
 
     public void IChangeUniqueUsername(String userNameAlias, String name) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         BackendAPIWrappers.updateUniqueUsername(usrMgr.findUserByNameOrNameAlias(userNameAlias), name);
     }
 
