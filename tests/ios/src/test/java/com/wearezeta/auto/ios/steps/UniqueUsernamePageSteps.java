@@ -94,6 +94,12 @@ public class UniqueUsernamePageSteps {
                 getUniqueUsernamePageSteps().getNameInputTextLength() < count);
     }
 
+    @Then("^I see that name length is (\\d+) chars? on Unique Username page$")
+    public void ISeeNameLenghInInput(int count) throws Exception {
+        Assert.assertTrue(String.format("Username in name input is not less than %s chars.", count),
+                getUniqueUsernamePageSteps().getNameInputTextLength() == count);
+    }
+
     /**
      * Verify that name input is emtpy on Unique Username page
      *
