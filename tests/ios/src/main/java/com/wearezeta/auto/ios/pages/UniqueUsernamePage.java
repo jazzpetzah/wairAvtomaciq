@@ -5,6 +5,7 @@ import java.util.concurrent.Future;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
+import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDriverAPI;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
@@ -60,6 +61,6 @@ public class UniqueUsernamePage extends IOSPage {
     }
 
     public boolean isNameInputEmpty() throws Exception {
-        return getNameInputValue().equals("null");
+        return getNameInputValue().equals(FBDriverAPI.NULL_VALUE);
     }
 }

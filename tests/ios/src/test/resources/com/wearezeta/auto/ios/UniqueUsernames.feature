@@ -16,7 +16,7 @@ Feature: Unique Usernames
     When I tap Save button on Unique Username page
     And I attempt to enter over max allowed <MaxChars> chars as name on Unique Username page
     Then I see that name length is less than <MaxChars> chars on Unique Username page
-    When I fill in unacceptable symbols from table and verify name input stays empty on Unique Username page
+    And I type unique usernames from the data table and verify they cannot be committed on Unique Username page
       | Charset      | Chars  |
       | Cyrillic     | МоёИмя |
       | Arabic       | اسمي   |
