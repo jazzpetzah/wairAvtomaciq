@@ -25,8 +25,6 @@ public class UniqueUsernamePage extends IOSPage {
         super(lazyDriver);
     }
 
-    private String  newUniqueName;
-
     private static By getLocatorByName(String locatorName) {
         switch (locatorName.toLowerCase()) {
             case "save":
@@ -54,9 +52,10 @@ public class UniqueUsernamePage extends IOSPage {
         return getElement(nameSaveButton).isEnabled();
     }
 
-    public void inputXrandomString(int count) throws Exception {
-        this.newUniqueName = CommonUtils.generateRandomString(count).toLowerCase();
+    public String inputXrandomString(int count) throws Exception {
+        String newUniqueName = CommonUtils.generateRandomString(count).toLowerCase();
         inputStringInNameInput(newUniqueName);
+        return newUniqueName;
     }
 
     private String getNameInputValue() throws Exception {
@@ -71,8 +70,8 @@ public class UniqueUsernamePage extends IOSPage {
         return getNameInputValue().equals(FBDriverAPI.NULL_VALUE);
     }
 
-    public boolean isUniqueUsernameInSettingsDisplayed() throws Exception {
-        By locator = By.xpath(xpathStrUniqueUsernameInSettings.apply(this.newUniqueName));
+    public boolean isUniqueUsernameInSettingsDisplayed(String uniqueName) throws Exception {
+        By locator = By.xpath(xpathStrUniqueUsernameInSettings.apply(uniqueName));
         return isLocatorDisplayed(locator);
     }
 }

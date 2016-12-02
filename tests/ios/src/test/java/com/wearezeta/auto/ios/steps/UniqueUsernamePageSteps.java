@@ -19,6 +19,8 @@ public class UniqueUsernamePageSteps {
         return pagesCollection.getPage(UniqueUsernamePage.class);
     }
 
+    private String newUniqueName;
+
     /**
      * Verify visibility of Unique Username page
      *
@@ -79,7 +81,7 @@ public class UniqueUsernamePageSteps {
      */
     @When("^I attempt to enter (\\d+) random chars as name on Unique Username page$")
     public void IAttemtToEnterMaxAllowedCharsAsName(int count) throws Exception {
-        getUniqueUsernamePage().inputXrandomString(count);
+        this.newUniqueName = getUniqueUsernamePage().inputXrandomString(count);
     }
 
     /**
@@ -126,6 +128,6 @@ public class UniqueUsernamePageSteps {
      */
     @Then("^I see new unique username is displayed on Settings Page$")
     public void ISeeNewUniqueUsernameOnSettingsPage() throws Exception {
-        getUniqueUsernamePage().isUniqueUsernameInSettingsDisplayed();
+        getUniqueUsernamePage().isUniqueUsernameInSettingsDisplayed(this.newUniqueName);
     }
 }
