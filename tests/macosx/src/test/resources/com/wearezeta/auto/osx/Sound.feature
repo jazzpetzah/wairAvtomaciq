@@ -11,6 +11,7 @@ Feature: Sound
     When I open conversation with <Contact2>
     Then Soundfile new_message did not start playing
     When Contact <Contact1> sends message Hello1 via device Device1 to user Myself
+    And I see unread dot in conversation <Contact1>
     Then Soundfile new_message did start playing
 
     Examples: 
@@ -31,6 +32,7 @@ Feature: Sound
     Then I see the incoming call controls for conversation <Contact>
     Then Soundfile ringing_from_them did start playing in loop
     When <Contact> stops calling me
+    Then I do not see the incoming call controls for conversation <Contact>
     Then Soundfile ringing_from_them did stop playing
 
     Examples: 
