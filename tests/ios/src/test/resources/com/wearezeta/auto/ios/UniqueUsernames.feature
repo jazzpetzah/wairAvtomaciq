@@ -21,7 +21,7 @@ Feature: Unique Usernames
       | Name      | ExpectedUniqueName   |
       | user1Name | @user1UniqueUsername |
 
-  @C352060 @addressbookStart @forceReset
+  @C352060 @addressbookStart @forceReset @staging
   Scenario Outline: (ZIOS-7699) Verify incoming connection view
     Given There are 7 users where <Name> is me
     Given <Contact1WithABEmail> sent connection request to Me
@@ -111,7 +111,7 @@ Feature: Unique Usernames
       | Name      | Empty | MinChars | MaxChars |
       | user1Name | ""    | 1        | 22       |
 
-  @C352059 @addressbookStart @forceReset
+  @C352059 @addressbookStart @forceReset @staging
   Scenario Outline: (ZIOS-7699) Verify outgoing connection request view
     Given There are 7 users where <Name> is me
     Given Myself sent connection request to <Contact1WithABEmail>,<Contact2WithABPhoneNumber>,<Contact3WithUniqueUserName>,<Contact4WithCommonFriends>,<Contact5WithSameNameInAB>
