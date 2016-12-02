@@ -1,6 +1,6 @@
 Feature: Unique Usernames
 
-  @C352039 @staging @fastLogin
+  @C352039 @staging @fastLogin @torun
   Scenario Outline: Verify impossibility to save incorrect username
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
