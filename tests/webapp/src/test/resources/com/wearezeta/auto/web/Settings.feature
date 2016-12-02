@@ -54,7 +54,7 @@ Feature: Settings
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging
+  @C352087 @regression
   Scenario Outline: Verify I can set sound alert settings
     Given There is 2 user where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
