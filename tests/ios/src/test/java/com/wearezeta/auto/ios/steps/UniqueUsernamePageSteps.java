@@ -113,16 +113,13 @@ public class UniqueUsernamePageSteps {
      * @step. ^I fill in unacceptable symbols from table and verify name input stays empty on Unique Username page$
      */
     @When("^I fill in unacceptable symbols from table and verify name input stays empty on Unique Username page$")
-    public void IFillInInputDataAndVerify(DataTable table) {
+    public void IFillInInputDataAndVerify(DataTable table) throws Exception {
         List<List<String>> data = table.raw();
 
         for (int i = 1; i <= data.size(); i++) {
-            try {
-                getUniqueUsernamePageSteps().inputStringInNameInput(data.get(i).get(1));
-                ISeeNameInputIsEmptyOnUniqueUsernamePage();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            getUniqueUsernamePageSteps().inputStringInNameInput(data.get(i).get(1));
+            Assert.assertTrue("Name input is not empty on Unique Username page",
+                    getUniqueUsernamePageSteps().isNameInputEmpty());
         }
     }
 }
