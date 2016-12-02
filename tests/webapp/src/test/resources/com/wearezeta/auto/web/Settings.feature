@@ -182,3 +182,51 @@ Feature: Settings
     Examples:
       | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT |
       | user1Email | user1Password | user1Name | user2Name | WAS NOT RECEIVED  |
+
+  @C352085 @localytics @staging
+  Scenario Outline: Verify data is uploaded again to Raygun after user opted-out and opted-in
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I enable localytics via URL parameter
+    Given I switch to Sign In page
+    Given user <Name> adds a new device Device1 with label Label1
+    Given I Sign in using login <Email> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I am signed in properly
+    When I see Contact list with name <Contact>
+    Then I open preferences by clicking the gear button
+    And I open options in preferences
+    When I see option to send reports is checked
+    And I click on option to send reports
+    Then I see option to send reports is unchecked
+    And I wait for 2 seconds
+    And I remember number of raygun events
+    When I close preferences
+    And I see Contact list with name <Contact>
+    And I open conversation with <Contact>
+    And I write random message
+    And I send message
+    And I see random message in conversation
+    When I break the session with device Device1 of user <Name>
+    And Contact <Name> sends message TEST via device Device1 to user <Contact>
+    Then I see <UNABLE_TO_DECRYPT> action in conversation
+    And There are no added raygun events
+    When I open preferences by clicking the gear button
+    And I open options in preferences
+    When I see option to send reports is unchecked
+    And I click on option to send reports
+    Then I see option to send reports is checked
+    And I wait for 2 seconds
+    And I remember number of raygun events
+    When I close preferences
+    And I see Contact list with name <Contact>
+    And I open conversation with <Contact>
+    And Contact <Name> sends message TEST via device Device1 to user <Contact>
+    Then I see <UNABLE_TO_DECRYPT> action 2 times in conversation
+    And I wait for 10 seconds
+    Then There are added raygun events
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT |
+      | user1Email | user1Password | user1Name | user2Name | WAS NOT RECEIVED  |
