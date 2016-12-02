@@ -132,12 +132,12 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <GroupCreator> on Group info page
-    And I see <GroupCreator> name on Group participant profile page
+    And I see name "<GroupCreator>" on Group participant profile page
     And I tap X button on Group participant profile page
     # Wait for animation
     And I wait for 2 seconds
     And I select participant <NonConnectedContact> on Group info page
-    Then I see <NonConnectedContact> name on Group participant Pending outgoing connection page
+    Then I see name "<NonConnectedContact>" on Group participant Pending outgoing connection page
 
     Examples:
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
@@ -491,7 +491,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact3> on Group info page
-    Then I see <Contact3> name on Group participant Pending outgoing connection page
+    Then I see name "<Contact3>" on Group participant Pending outgoing connection page
     And I see Remove From Group button on Group participant Pending outgoing connection page
 
     Examples:

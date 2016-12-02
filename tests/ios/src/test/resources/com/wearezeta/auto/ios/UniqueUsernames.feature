@@ -21,24 +21,23 @@ Feature: Unique Usernames
       | Name      | ExpectedUniqueName   |
       | user1Name | @user1UniqueUsername |
 
-  @C352060 @addressbookStart @forceReset @torun
-  Scenario Outline: Verify incoming connection view
-    Given There are 8 users where <Name> is me
+  @C352060 @addressbookStart @forceReset
+  Scenario Outline: (ZIOS-7699) Verify incoming connection view
+    Given There are 7 users where <Name> is me
     Given <Contact1WithABEmail> sent connection request to Me
     Given <Contact2WithABPhoneNumber> sent connection request to Me
     Given <Contact3WithUniqueUserName> sent connection request to Me
     Given User <Contact3WithUniqueUserName> sets the unique username
-    Given <Contact4WOUniqueUserName> sent connection request to Me
-    Given <Contact5WithCommonFriends> sent connection request to Me
-    Given <Contact5WithCommonFriends> is connected to <Contact7Common>
-    Given <Contact6WithSameNameInAB> sent connection request to Me
-    Given <Contact7Common> is connected to me
+    Given <Contact4WithCommonFriends> sent connection request to Me
+    Given <Contact4WithCommonFriends> is connected to <Contact6Common>
+    Given <Contact5WithSameNameInAB> sent connection request to Me
+    Given <Contact6Common> is connected to me
     Given I minimize Wire
     Given I install Address Book Helper app
     Given I launch Address Book Helper app
     Given I add name <Contact1ABName> and email <Contact1Email> to Address Book
     Given I add name <Contact2ABName> and phone <Contact2PhoneNumber> to Address Book
-    Given I add name <Contact6WithSameNameInAB> and email <Contact6Email> to Address Book
+    Given I add name <Contact5WithSameNameInAB> and email <Contact5Email> to Address Book
     Given I restore Wire
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -47,15 +46,36 @@ Feature: Unique Usernames
     Given I tap input field on Search UI page
     Given I type "<Contact1WithABEmail>" in Search UI input field
     When I tap on conversation <Contact1WithABEmail> in search result
-    And I see <Contact1WithABEmail> name on Single user Pending incoming connection page
-    Then I see <Contact1ABName> Address Book name on Single user Pending incoming connection page
+    And I see name "<Contact1WithABEmail>" on Single user Pending incoming connection page
+    Then I see Address Book name "<Contact1ABName>" on Single user Pending incoming connection page
+    And I do not see unique username on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
-    When I tap X button on Search UI page
-    And I type "<Contact2WithABPhoneNumber>" in Search UI input field
+    When I type "<Contact2WithABPhoneNumber>" in Search UI input field
     And I tap on conversation <Contact2WithABPhoneNumber> in search result
-    Then I see <Contact2WithABPhoneNumber> name on Single user Pending incoming connection page
-    And I see <Contact2ABName> Address Book name on Single user Pending incoming connection page
+    Then I see name "<Contact2WithABPhoneNumber>" on Single user Pending incoming connection page
+    And I see Address Book name "<Contact2ABName>" on Single user Pending incoming connection page
+    And I do not see unique username on Single user Pending incoming connection page
+    And I tap Ignore button on Single user Pending incoming connection page
+    When I type "<Contact3WithUniqueUserName>" in Search UI input field
+    And I tap on conversation <Contact3WithUniqueUserName> in search result
+    Then I see name "<Contact3WithUniqueUserName>" on Single user Pending incoming connection page
+    And I see unique username "<Contact3UniqueUserName>" on Single user Pending incoming connection page
+    And I do not see Address Book name on Single user Pending incoming connection page
+    And I tap Ignore button on Single user Pending incoming connection page
+    When I type "<Contact4WithCommonFriends>" in Search UI input field
+    And I tap on conversation <Contact4WithCommonFriends> in search result
+    Then I see name "<Contact4WithCommonFriends>" on Single user Pending incoming connection page
+    And I do not see unique username on Single user Pending incoming connection page
+    And I do not see Address Book name on Single user Pending incoming connection page
+    # TODO: Verify common friends label
+    And I tap Ignore button on Single user Pending incoming connection page
+    When I type "<Contact5WithSameNameInAB>" in Search UI input field
+    And I tap on conversation <Contact5WithSameNameInAB> in search result
+    Then I see name "<Contact5WithSameNameInAB>" on Single user Pending incoming connection page
+    And I do not see unique username on Single user Pending incoming connection page
+    And I see Address Book name "" on Single user Pending incoming connection page
+    And I tap Ignore button on Single user Pending incoming connection page
 
     Examples:
-      | Name      | Contact1WithABEmail | Contact1ABName | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact4WOUniqueUserName | Contact5WithCommonFriends | Contact6WithSameNameInAB | Contact6Email | Contact7Common |
-      | user1Name | user2Name           | user2ABName    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user5Name                | user6Name                 | user7Name                | user7Email    | user8Name      |
+      | Name      | Contact1WithABEmail | Contact1ABName | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common |
+      | user1Name | user2Name           | user2ABName    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      |

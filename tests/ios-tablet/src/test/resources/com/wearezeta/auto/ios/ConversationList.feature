@@ -116,7 +116,7 @@ Feature: Conversation List
     # Workaround for ZIOS-6338
     And I tap Incoming Pending Requests item in conversations list
     Then I see Connect button on Single user Pending incoming connection page
-    And I see <Contact> name on Single user Pending incoming connection page
+    And I see name "<Contact>" on Single user Pending incoming connection page
 
     Examples:
       | Name      | Contact   |

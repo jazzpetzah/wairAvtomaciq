@@ -90,7 +90,7 @@ Feature: Search
     And I tap X button on Search UI page
     And I tap on contact name <UnconnectedUser>
     And I open conversation details
-    And I see <UnconnectedUser> name on Single user Pending outgoing connection page
+    And I see name "<UnconnectedUser>" on Single user Pending outgoing connection page
 
     Examples:
       | Name      | UnconnectedUser | Contact2  |

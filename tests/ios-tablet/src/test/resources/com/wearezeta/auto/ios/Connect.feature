@@ -20,7 +20,7 @@ Feature: Connect
     And I tap on contact name <Contact>
     And I see Pending Connect to <Contact> message in the conversation view
     When I open conversation details
-    Then I see <Contact> name on Single user Pending outgoing connection page
+    Then I see name "<Contact>" on Single user Pending outgoing connection page
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -46,7 +46,7 @@ Feature: Connect
     And I tap on contact name <Contact>
     And I see Pending Connect to <Contact> message in the conversation view
     When I open conversation details
-    Then I see <Contact> name on Single user Pending outgoing connection page
+    Then I see name "<Contact>" on Single user Pending outgoing connection page
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -306,7 +306,7 @@ Feature: Connect
     And I tap input field on Search UI page
     And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
-    Then I see <Contact> name on Single user Pending outgoing connection page
+    Then I see name "<Contact>" on Single user Pending outgoing connection page
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -545,7 +545,7 @@ Feature: Connect
     Given I see conversations list
     When I tap Incoming Pending Requests item in conversations list
     Then I see Connect button on Single user Pending incoming connection page
-    And I see <NewName> name on Single user Pending incoming connection page
+    And I see name "<NewName>" on Single user Pending incoming connection page
 
     Examples:
       | Name      | Contact   | NewName  |
@@ -561,7 +561,7 @@ Feature: Connect
     Given I see conversations list
     When I tap Incoming Pending Requests item in conversations list
     Then I see Connect button on Single user Pending incoming connection page
-    And I see <NewName> name on Single user Pending incoming connection page
+    And I see name "<NewName>" on Single user Pending incoming connection page
 
     Examples:
       | Name      | Contact   | NewName  |
