@@ -7,11 +7,11 @@ import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceCallExcepti
 import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceInstanceException;
 import com.wearezeta.auto.common.calling2.v1.model.BackendType;
 import com.wearezeta.auto.common.calling2.v1.model.Call;
-import com.wearezeta.auto.common.calling2.v1.model.Instance;
-import com.wearezeta.auto.common.calling2.v1.model.InstanceStatus;
 import com.wearezeta.auto.common.calling2.v1.model.CallRequest;
-import com.wearezeta.auto.common.calling2.v1.model.InstanceRequest;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
+import com.wearezeta.auto.common.calling2.v1.model.Instance;
+import com.wearezeta.auto.common.calling2.v1.model.InstanceRequest;
+import com.wearezeta.auto.common.calling2.v1.model.InstanceStatus;
 import com.wearezeta.auto.common.calling2.v1.model.VersionedInstanceType;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -51,14 +51,12 @@ public class CallingServiceClient {
     public Call acceptNextIncomingCall(Instance instance)
             throws CallingServiceCallException {
         CallRequest callRequest = new CallRequest();
-
         return CALL_RESOURCE.acceptNext(instance, callRequest);
     }
 
     public Call acceptNextIncomingVideoCall(Instance instance)
             throws CallingServiceCallException {
         CallRequest callRequest = new CallRequest();
-
         return CALL_RESOURCE.acceptNextVideo(instance, callRequest);
     }
 

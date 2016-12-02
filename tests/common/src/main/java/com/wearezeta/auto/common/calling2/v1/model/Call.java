@@ -29,8 +29,6 @@ public class Call {
         this.creationTime = creationTime;
         this.metrics = metrics;
     }
-    
-    
 
     public String getId() {
         return id;
@@ -82,7 +80,7 @@ public class Call {
 
     @Override
     public String toString() {
-        return "Call{id=" + id + ", status=" + status + ", conversationId=" + conversationId + ", timeout=" + timeout + ", creationTime=" + creationTime + ", metrics=" + metrics + '}';
+        return "Call{id=" + id + ", status=" + status + ", conversationId=" + conversationId + ", timeout=" + timeout + ", " +
+                "creationTime=" + creationTime + ", metrics=" + metrics + '}';
     }
-
 }

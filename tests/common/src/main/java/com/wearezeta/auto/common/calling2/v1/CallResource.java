@@ -147,7 +147,7 @@ public class CallResource {
                 instance.getId(), call.getId());
         try {
             return restHandler.httpPut(buildDefaultRequest(target, MediaType.APPLICATION_JSON), "", Call.class,
-                    new int[]{HttpStatus.SC_OK});
+                    new int[]{HttpStatus.SC_OK, HttpStatus.SC_INTERNAL_SERVER_ERROR});
         } catch (RESTError ex) {
             throw new CallingServiceCallException(ex);
         }
