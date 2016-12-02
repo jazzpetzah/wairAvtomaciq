@@ -122,28 +122,21 @@ public final class CommonSteps {
         BackendAPIWrappers.removeUserFromGroupConversation(userWhoRemoves, userToRemove, chatName);
     }
 
-    public void UserIsConnectedTo(String userFromNameAlias,
-                                  String usersToNameAliases) throws Exception {
-        ClientUser asUser = usrMgr.findUserByNameOrNameAlias(userFromNameAlias);
-        if (usersToNameAliases.toLowerCase().contains(OTHER_USERS_ALIAS)) {
-            List<ClientUser> otherUsers = usrMgr.getCreatedUsers();
-            final int conversationsCount = BackendAPIWrappers.getConversations(asUser).length();
-            if (conversationsCount >= otherUsers.size() * 0.9) {
-                // Skip reconnect since this shortcut is used only for perf
-                // tests
-                return;
-            }
+    public void UserIsConnectedTo(String userFromNameAlias, String usersToNameAliases) throws Exception {
+        final ClientUser asUser = usrMgr.findUserByNameOrNameAlias(userFromNameAlias);
+        List<ClientUser> otherUsers = new ArrayList<>();
+        if (usersToNameAliases.toLowerCase().startsWith(OTHER_USERS_ALIAS)) {
+            otherUsers = usrMgr.getCreatedUsers();
             otherUsers.remove(asUser);
-            for (ClientUser usrTo : otherUsers) {
-                BackendAPIWrappers.sendConnectionRequest(usrTo, asUser);
-                BackendAPIWrappers.acceptIncomingConnectionRequest(usrTo, asUser);
-            }
         } else {
             for (String userToName : splitAliases(usersToNameAliases)) {
                 final ClientUser usrTo = usrMgr.findUserByNameOrNameAlias(userToName);
-                BackendAPIWrappers.sendConnectionRequest(asUser, usrTo);
-                BackendAPIWrappers.acceptIncomingConnectionRequest(usrTo, asUser);
+                otherUsers.add(usrTo);
             }
+        }
+        for (ClientUser usrTo : otherUsers) {
+            BackendAPIWrappers.sendConnectionRequest(usrTo, asUser);
+            BackendAPIWrappers.acceptIncomingConnectionRequest(asUser, usrTo);
         }
     }
 
