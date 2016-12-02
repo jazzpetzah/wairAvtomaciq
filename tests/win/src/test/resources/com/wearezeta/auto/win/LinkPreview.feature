@@ -23,13 +23,13 @@ Feature: Link Preview
   Scenario Outline: Verify you can see preview for received link in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given user <Contact1> adds a new device Device1 with label Label1
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I open conversation with <ChatName>
-    And I write message <Link>
-    Then I send message
+    And Contact <Contact1> sends message <Link> via device Device1 to group conversation <ChatName>
     Then I see link <LinkInPreview> in link preview message
     And I see a title <LinkTitle> in link preview in the conversation view
     And I see a picture <LinkPreviewImage> from link preview
