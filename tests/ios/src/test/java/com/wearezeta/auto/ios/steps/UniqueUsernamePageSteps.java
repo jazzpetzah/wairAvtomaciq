@@ -116,7 +116,7 @@ public class UniqueUsernamePageSteps {
     public void IFillInInputDataAndVerify(DataTable table) throws Exception {
         List<List<String>> data = table.raw();
 
-        for (int i = 1; i <= data.size(); i++) {
+        for (int i = 1; i < data.size(); i++) {
             getUniqueUsernamePageSteps().inputStringInNameInput(data.get(i).get(1));
             Assert.assertTrue("Name input is not empty on Unique Username page",
                     getUniqueUsernamePageSteps().isNameInputEmpty());
