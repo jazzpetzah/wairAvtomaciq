@@ -19,7 +19,7 @@ Feature: Link Preview
       | Login      | Password      | Name      | Contact   | Link              | LinkInPreview | LinkTitle                                                                            | LinkPreviewImage |
       | user1Email | user1Password | user1Name | user2Name | https://wire.com/ | wire.com      | Wire · Modern communication, full privacy. For iOS, Android, macOS, Windows and web. | linkpreview0.png |
 
-  @C169203 @staging
+  @C169203 @smoke
   Scenario Outline: Verify you can see preview for received link in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
