@@ -97,7 +97,7 @@ Feature: Usernames
       | user1Email | user1Password | user1Name | Jack Johnson | jackjohnson |
 
   @C343177 @usernames @staging
-  Scenario Outline: Verifying impossibility of setting incorrect username
+  Scenario Outline: Verifying impossibility to set username with less than 2 characters
     Given There are 2 users where <NameAlias> is me without unique username
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
@@ -106,14 +106,19 @@ Feature: Usernames
     And I see name <NameAlias> on take over screen
     When I click ChooseYourOwn button on take over screen
     Then I see unique username starts with <NameAlias> in account preferences
+    When I type <IncorrectName> into unique username field
+    Then I see hint message for unique username saying <Hint>
     When I change unique username to <IncorrectName>
-    Then I see error message for unique username saying <Error>
+    Then I see hint message for unique username saying <Hint>
+    When I refresh page
+    And I am signed in properly
+    And I see take over screen
+    And I see name <NameAlias> on take over screen
 
     Examples:
-      | Email      | Password      | NameAlias | IncorrectName          | Error            |
-      | user1Email | user1Password | user1Name |                        | Invalid username |
-      | user1Email | user1Password | user1Name | a                      | Invalid username |
-      | user1Email | user1Password | user1Name | 1234567890123456789012 | Invalid username |
+      | Email      | Password      | NameAlias | IncorrectName | Hint                                        |
+      | user1Email | user1Password | user1Name |               | At least 2 characters. a—z, 0—9 and _ only. |
+      | user1Email | user1Password | user1Name | a             | At least 2 characters. a—z, 0—9 and _ only. |
 
   @C352077 @usernames @staging
   Scenario Outline: Verify autogeneration of a username for a user (different scenarios)

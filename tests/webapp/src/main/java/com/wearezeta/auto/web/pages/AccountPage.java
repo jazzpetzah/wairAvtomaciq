@@ -45,6 +45,9 @@ public class AccountPage extends WebPage {
     @FindBy(css = WebAppLocators.AccountPage.cssUniqueUsernameError)
     private WebElement uniqueUsernameError;
 
+    @FindBy(css = WebAppLocators.AccountPage.cssUniqueUsernameHint)
+    private WebElement uniqueUsernameHint;
+
     @FindBy(css = WebAppLocators.AccountPage.cssNameSelfUserMail)
     private WebElement userMail;
 
@@ -118,16 +121,28 @@ public class AccountPage extends WebPage {
         nameInput.sendKeys(name + "\n");
     }
 
-    public void setUniqueUsername(String name) throws InterruptedException {
+    public void typeUniqueUsername(String name) throws InterruptedException {
         uniqueUsernameInput.click();
         Thread.sleep(1000);
         uniqueUsernameInput.clear();
         uniqueUsernameInput.sendKeys(name);
-        // uniqueUsernameInput.sendKeys(name + "\n");
+    }
+
+    public void submitUniqueUsername() throws InterruptedException {
+        uniqueUsernameInput.sendKeys("\n");
+    }
+
+    public void setUniqueUsername(String name) throws InterruptedException {
+        typeUniqueUsername(name);
+        submitUniqueUsername();
     }
 
     public String getUniqueUsernameError() {
         return uniqueUsernameError.getText();
+    }
+
+    public String getUniqueUsernameHint() {
+        return uniqueUsernameHint.getText();
     }
 
     public String getUniqueUsername() throws Exception{

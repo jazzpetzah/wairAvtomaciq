@@ -131,6 +131,11 @@ public class AccountPageSteps {
         context.getUserManager().getSelfUserOrThrowError().setName(name);
     }
 
+    @And("^I type (.*) into unique username field")
+    public void ITypeIntoUniqueUserNameField(String name) throws Exception {
+        context.getPagesCollection().getPage(AccountPage.class).setUniqueUsername(name);
+    }
+
     @And("^I change unique username to (.*)")
     public void IChangeUniqueUserNameTo(String name) throws Exception {
         context.getPagesCollection().getPage(AccountPage.class).setUniqueUsername(name);
@@ -139,6 +144,12 @@ public class AccountPageSteps {
     @Then("^I see error message for unique username saying (.*)")
     public void ISeeErrorMessageForUniqueUsername(String error) throws Exception {
         assertThat("Error does not match", context.getPagesCollection().getPage(AccountPage.class).getUniqueUsernameError(),
+                is(error));
+    }
+
+    @Then("^I see hint message for unique username saying (.*)")
+    public void ISeeHintMessageForUniqueUsername(String error) throws Exception {
+        assertThat("Hint does not match", context.getPagesCollection().getPage(AccountPage.class).getUniqueUsernameHint(),
                 is(error));
     }
 
