@@ -24,9 +24,9 @@ public class GroupParticipantIncomingPendingConnectionPageSteps {
      * @param value        the actual value or alias
      * @param fieldType    either name or Address Book name or unique username
      * @throws Exception
-     * @step. ^I (do not )?see (email|unique username|Address Book name) (".*" |\s*)on Group participant Pending incoming connection page$
+     * @step. ^I (do not )?see (email|unique username|Address Book name|common friends count) (".*" |\s*)on Group participant Pending incoming connection page$
      */
-    @Then("^I (do not )?see (email|unique username|Address Book name) (\".*\" |\\s*)on Group participant Pending incoming connection page$")
+    @Then("^I (do not )?see (email|unique username|Address Book name|common friends count) (\".*\" |\\s*)on Group participant Pending incoming connection page$")
     public void ISeeLabel(String shouldNotSee, String fieldType, String value) throws Exception {
         value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
         value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);

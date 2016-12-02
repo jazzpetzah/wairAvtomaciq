@@ -24,9 +24,9 @@ public class SingleUserOutgoingPendingConnectionPageSteps {
      * @param value        the actual value or alias
      * @param fieldType    either unique username or Address Book name or name
      * @throws Exception
-     * @step. ^I (do not )?see (email|name) (".*" |\s*)on Single user Pending outgoing connection page$"
+     * @step. ^I (do not )?see (unique username|Address Book name|name|common friends count) (".*" |\s*)on Single user Pending outgoing connection page$"
      */
-    @Then("^I (do not )?see (unique username|Address Book name|name) (\".*\" |\\s*)on Single user Pending outgoing connection page$")
+    @Then("^I (do not )?see (unique username|Address Book name|name|common friends count) (\".*\" |\\s*)on Single user Pending outgoing connection page$")
     public void ISeeLabel(String shouldNotSee, String fieldType, String value) throws Exception {
         value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
         value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);

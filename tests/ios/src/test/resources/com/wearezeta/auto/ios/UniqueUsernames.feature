@@ -70,7 +70,7 @@ Feature: Unique Usernames
     Then I see name "<Contact4WithCommonFriends>" on Single user Pending incoming connection page
     And I do not see unique username on Single user Pending incoming connection page
     And I do not see Address Book name on Single user Pending incoming connection page
-    # TODO: Verify common friends label
+    And I see common friends count "1" on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
     When I tap X button on Search UI page
     And I type "<Contact5WithSameNameInAB>" in Search UI input field
