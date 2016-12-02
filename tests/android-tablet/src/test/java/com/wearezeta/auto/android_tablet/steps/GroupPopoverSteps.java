@@ -134,7 +134,7 @@ public class GroupPopoverSteps {
      */
     @Then("^I (do not )?see the participant avatars? (.*) on [Gg]roup popover$")
     public void ISeeParticipantAvatar(String shouldNotBeVisible, String names) throws Exception {
-        for (String name : CommonSteps.splitAliases(names)) {
+        for (String name : usrMgr.splitAliases(names)) {
             name = usrMgr.findUserByNameOrNameAlias(name).getName();
             if (shouldNotBeVisible == null) {
                 Assert.assertTrue(

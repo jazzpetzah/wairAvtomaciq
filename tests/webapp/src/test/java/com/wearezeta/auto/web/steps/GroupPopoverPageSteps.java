@@ -224,7 +224,7 @@ public class GroupPopoverPageSteps {
 
     @When("^I see (.*) displayed on Group Participants popover$")
     public void ISeeContactsDisplayed(String contactsAliases) throws Exception {
-        List<String> contacts = CommonSteps.splitAliases(contactsAliases);
+        List<String> contacts = context.getUserManager().splitAliases(contactsAliases);
         for (String contact : contacts) {
             contact = context.getUserManager().replaceAliasesOccurences(contact,
                     FindBy.NAME_ALIAS);
@@ -235,7 +235,7 @@ public class GroupPopoverPageSteps {
 
     @When("^I( do not)? see user (.*) in verified section$")
     public void ISeeUserInVerifiedSection(String donot, String contactsAliases) throws Exception {
-        List<String> contacts = CommonSteps.splitAliases(contactsAliases);
+        List<String> contacts = context.getUserManager().splitAliases(contactsAliases);
         for (String contact : contacts) {
             contact = context.getUserManager().replaceAliasesOccurences(contact,
                     FindBy.NAME_ALIAS);

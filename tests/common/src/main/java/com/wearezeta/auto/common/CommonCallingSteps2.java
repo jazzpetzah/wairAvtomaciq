@@ -88,6 +88,10 @@ public final class CommonCallingSteps2 {
         this.usrMgr = usrMgr;
     }
 
+    public ClientUsersManager getUsersManager() {
+        return this.usrMgr;
+    }
+
     public static class CallNotFoundException extends Exception {
 
         private static final long serialVersionUID = -2260765997668002031L;

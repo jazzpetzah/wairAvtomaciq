@@ -343,7 +343,7 @@ public class ConversationsListPageSteps {
     public void ISeeInContactsGroupChatWith(String shouldNotSee, String participantNameAliases) throws Exception {
         participantNameAliases = usrMgr.replaceAliasesOccurences(participantNameAliases,
                 ClientUsersManager.FindBy.NAME_ALIAS);
-        final List<String> participantNames = CommonSteps.splitAliases(participantNameAliases);
+        final List<String> participantNames = usrMgr.splitAliases(participantNameAliases);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("There is no conversation with '%s' in the list", participantNames),
                     getConversationsListPage().isConversationWithUsersExist(participantNames, 5));

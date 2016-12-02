@@ -16,6 +16,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ClientUsersManager {
     private static final int NUMBER_OF_REGISTRATION_RETRIES = 5;
@@ -593,5 +594,22 @@ public class ClientUsersManager {
             this.usersMap.get(UserState.NotCreated).remove(user);
         }
         return getCreatedUsers().size() - 1;
+    }
+
+    private static final String OTHER_USERS_ALIAS = "all other";
+    public static final String ALIASES_SEPARATOR = ",";
+
+    public List<String> splitAliases(String aliases) throws SelfUserIsNotDefinedException {
+        List<String> result = new ArrayList<>();
+        if (aliases.toLowerCase().startsWith(OTHER_USERS_ALIAS)) {
+            final List<ClientUser> otherUsers = getCreatedUsers();
+            otherUsers.remove(getSelfUserOrThrowError());
+            return otherUsers.stream().map(ClientUser::getName).collect(Collectors.toList());
+        }
+        String[] splitAliases = aliases.split(ALIASES_SEPARATOR);
+        for (String splitAlias : splitAliases) {
+            result.add(splitAlias.trim());
+        }
+        return result;
     }
 }

@@ -42,7 +42,7 @@ public class TakeoverPageSteps {
                 getTakeoverPage().isTakeoverScreenTextCorrect());
         String name;
         final String headerText = getTakeoverPage().getHeaderText();
-        for (String nameAlias : CommonSteps.splitAliases(nameAliases)) {
+        for (String nameAlias : usrMgr.splitAliases(nameAliases)) {
             name = usrMgr.findUserByNameOrNameAlias(nameAlias).getName();
             Assert.assertTrue(String.format("Takeover header from user %s is not visible", name), headerText.contains(name));
         }
