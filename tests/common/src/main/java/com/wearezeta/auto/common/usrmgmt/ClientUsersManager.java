@@ -605,11 +605,9 @@ public class ClientUsersManager {
             otherUsers.remove(getSelfUserOrThrowError());
             return otherUsers.stream().map(ClientUser::getName).collect(Collectors.toList());
         }
-        final List<String> result = new ArrayList<>();
-        final String[] splitAliases = aliases.split(ALIASES_SEPARATOR);
-        for (String splitAlias : splitAliases) {
-            result.add(splitAlias.trim());
-        }
-        return result;
+        return Arrays.asList(aliases.split(ALIASES_SEPARATOR))
+                .stream()
+                .map(String::trim)
+                .collect(Collectors.toList());
     }
 }
