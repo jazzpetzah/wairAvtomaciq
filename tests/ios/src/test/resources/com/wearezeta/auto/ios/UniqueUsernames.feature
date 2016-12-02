@@ -35,7 +35,7 @@ Feature: Unique Usernames
     And I enter "<MinChars>" name on Unique Username page
     Then I see Save button state is Disabled on Unique Username page
     When I tap Save button on Unique Username page
-    And I attempt to enter over max allowed <MaxChars> chars as name on Unique Username page
+    And I attempt to enter <MaxChars> random chars as name on Unique Username page
     Then I see that name length is less than <MaxChars> chars on Unique Username page
     And I type unique usernames from the data table and verify they cannot be committed on Unique Username page
       | Charset      | Chars  |
@@ -47,3 +47,27 @@ Feature: Unique Usernames
     Examples:
       | Name      | Empty | MinChars | MaxChars |
       | user1Name | ""    | 1        | 22       |
+
+  @C352036 @staging @fastLogin
+  Scenario Outline: Verify setting correct user name
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap settings gear button
+    Given I select settings item Account
+    Given I select settings item Username
+    When I attempt to enter <RegularLength> random chars as name on Unique Username page
+    And I tap Save button on Unique Username page
+    Then I see new unique username is displayed on Settings Page
+    When I select settings item Username
+    And I attempt to enter <MinLength> random chars as name on Unique Username page
+    And I tap Save button on Unique Username page
+    Then I see new unique username is displayed on Settings Page
+    When I select settings item Username
+    And I attempt to enter <MaxLength> random chars as name on Unique Username page
+    And I tap Save button on Unique Username page
+    Then I see new unique username is displayed on Settings Page
+
+    Examples:
+      | Name      | RegularLength | MinLength | MaxLength |
+      | user1Name | 6             | 2         | 21        |

@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
@@ -17,9 +18,14 @@ public class UniqueUsernamePage extends IOSPage {
     private static final By nameSaveButton = MobileBy.AccessibilityId("Save");
     private static final By fbNameUniqueUsernameInput = FBBy.AccessibilityId("handleTextField");
 
+    private static final Function<String, String> xpathStrUniqueUsernameInSettings = name ->
+            String.format("//XCUIElementTypeStaticText[@name='@%s']", name);
+
     public UniqueUsernamePage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
+
+    private String  newUniqueName;
 
     private static By getLocatorByName(String locatorName) {
         switch (locatorName.toLowerCase()) {
@@ -49,7 +55,8 @@ public class UniqueUsernamePage extends IOSPage {
     }
 
     public void inputXrandomString(int count) throws Exception {
-        inputStringInNameInput(CommonUtils.generateRandomString(count).toLowerCase());
+        this.newUniqueName = CommonUtils.generateRandomString(count).toLowerCase();
+        inputStringInNameInput(newUniqueName);
     }
 
     private String getNameInputValue() throws Exception {
@@ -62,5 +69,10 @@ public class UniqueUsernamePage extends IOSPage {
 
     public boolean isNameInputEmpty() throws Exception {
         return getNameInputValue().equals(FBDriverAPI.NULL_VALUE);
+    }
+
+    public boolean isUniqueUsernameInSettingsDisplayed() throws Exception {
+        By locator = By.xpath(xpathStrUniqueUsernameInSettings.apply(this.newUniqueName));
+        return isLocatorDisplayed(locator);
     }
 }

@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.ios.pages.SettingsPage;
 import com.wearezeta.auto.ios.pages.UniqueUsernamePage;
 import cucumber.api.DataTable;
 import cucumber.api.java.en.Then;
@@ -74,9 +75,9 @@ public class UniqueUsernamePageSteps {
      *
      * @param count max allowed chars count +1
      * @throws Exception
-     * @step. ^I attempt to enter over max allowed (\d+) chars as name on Unique Username page$
+     * @step. ^I attempt to enter (\d+) random chars as name on Unique Username page$
      */
-    @When("^I attempt to enter over max allowed (\\d+) chars as name on Unique Username page$")
+    @When("^I attempt to enter (\\d+) random chars as name on Unique Username page$")
     public void IAttemtToEnterMaxAllowedCharsAsName(int count) throws Exception {
         getUniqueUsernamePage().inputXrandomString(count);
     }
@@ -115,5 +116,16 @@ public class UniqueUsernamePageSteps {
                     String.format("Name input after enter of '%s' charset is not empty on Unique Username page", newName),
                     getUniqueUsernamePage().isNameInputEmpty());
         }
+    }
+
+    /**
+     * Verify expected previously set unique username is displayed on Settings page
+     *
+     * @throws Exception
+     * @step. ^I see new unique username is displayed on Settings Page$
+     */
+    @Then("^I see new unique username is displayed on Settings Page$")
+    public void ISeeNewUniqueUsernameOnSettingsPage() throws Exception {
+        getUniqueUsernamePage().isUniqueUsernameInSettingsDisplayed();
     }
 }
