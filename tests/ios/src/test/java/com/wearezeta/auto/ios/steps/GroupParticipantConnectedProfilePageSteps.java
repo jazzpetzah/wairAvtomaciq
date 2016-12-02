@@ -34,7 +34,7 @@ public class GroupParticipantConnectedProfilePageSteps {
      * @param value user name or unique username or Address Book name
      * @param fieldType either name or unique username or Address Book name
      * @throws Exception
-     * @step. ^I (do not )?see (name|unique username|Address Book name) (".*" |\s)on Group participant profile page$
+     * @step. ^I (do not )?see (name|unique username|Address Book name) (".*" |\s*)on Group participant profile page$
      */
     @When("^I (do not )?see (name|unique username|Address Book name) (\".*\" |\\s*)on Group participant profile page$")
     public void ISeeLabel(String shouldNotSee, String fieldType, String value) throws Exception {
