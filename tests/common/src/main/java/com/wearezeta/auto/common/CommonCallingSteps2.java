@@ -51,7 +51,7 @@ public final class CommonCallingSteps2 {
         this.zcallVersion = zcallVersion;
     }
 
-    private static final String FIREFOX_DEFAULT_VERSION = "50.0";
+    private static final String FIREFOX_DEFAULT_VERSION = "50.0.2";
     private static final String CHROME_DEFAULT_VERSION = "54.0.2840.100";
 
     // Request timeout of 180 secs is set by callingservice, we add additional

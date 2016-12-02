@@ -31,7 +31,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:50.0         | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:50.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.5         | 20      |
 
@@ -62,7 +62,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:50.0         | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:50.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.5         | 20      |
 
@@ -116,7 +116,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:50.0         | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:50.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.5         | 20      |
 
@@ -147,7 +147,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:50.0         | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:50.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.5         | 20      |
 
@@ -206,7 +206,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | WaitBackend          | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:54.0.2840.100 | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:53.0.2785.116 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:50.0         | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:50.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:49.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:45.5         | 30      |
 
@@ -271,7 +271,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | Backend              | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:54.0.2840.100 | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:53.0.2785.116 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:50.0         | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:50.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:49.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:45.5         | 30      |
       
@@ -316,7 +316,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | Backend      | WaitBackend          | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | chrome:54.0.2840.100 | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | chrome:53.0.2785.116 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | firefox:50.0         | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | firefox:50.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | firefox:49.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | zcall:2.9.14 | firefox:45.5         | 30      |
 
@@ -381,7 +381,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend          | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome:54.0.2840.100 | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome:53.0.2785.116 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:50.0         | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:50.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:49.0.2       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:45.5         | 30      |
 
@@ -447,7 +447,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact   | CallBackend          | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:50.0         | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:50.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.5         | 20      |
 
@@ -517,6 +517,6 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | chrome:54.0.2840.100 | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:53.0.2785.116 | 20      |
 # fails continuously
-#      | user1Email | user1Password | user1Name | user2Name | firefox:50.0         | 20      |
+#      | user1Email | user1Password | user1Name | user2Name | firefox:50.0.2       | 20      |
 #      | user1Email | user1Password | user1Name | user2Name | firefox:49.0.2       | 20      |
 #      | user1Email | user1Password | user1Name | user2Name | firefox:45.5         | 20      |
