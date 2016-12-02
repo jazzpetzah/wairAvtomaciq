@@ -261,11 +261,10 @@ Feature: People View
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
     Then I see <Contact2> name on Group participant profile page
-    And I see <Contact2Email> email on Group participant profile page
 
     Examples:
-      | Name      | Contact2  | Contact2Email | ConnectedContact | GroupChatName   |
-      | user1Name | user2Name | user2Email    | user3Name        | SingleInfoGroup |
+      | Name      | Contact2  | ConnectedContact | GroupChatName   |
+      | user1Name | user2Name | user3Name        | SingleInfoGroup |
 
   @C2718 @rc @regression @fastLogin
   Scenario Outline: Check any users personal info in group conversation [LANDSCAPE]
@@ -279,11 +278,10 @@ Feature: People View
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
     Then I see <Contact2> name on Group participant profile page
-    And I see <Contact2Email> email on Group participant profile page
 
     Examples:
-      | Name      | Contact2  | Contact2Email | ConnectedContact | GroupChatName   |
-      | user1Name | user2Name | user2Email    | user3Name        | SingleInfoGroup |
+      | Name      | Contact2  | ConnectedContact | GroupChatName   |
+      | user1Name | user2Name | user3Name        | SingleInfoGroup |
 
   @C2719 @regression @fastLogin
   Scenario Outline: Verify you cant start 1:1 with unconnected user in group [PORTRAIT]
