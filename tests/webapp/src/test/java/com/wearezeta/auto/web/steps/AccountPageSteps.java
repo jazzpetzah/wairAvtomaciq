@@ -133,11 +133,13 @@ public class AccountPageSteps {
 
     @And("^I type (.*) into unique username field$")
     public void ITypeIntoUniqueUserNameField(String name) throws Exception {
+        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(AccountPage.class).setUniqueUsername(name);
     }
 
     @And("^I change unique username to (.*)")
     public void IChangeUniqueUserNameTo(String name) throws Exception {
+        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(AccountPage.class).setUniqueUsername(name);
     }
 

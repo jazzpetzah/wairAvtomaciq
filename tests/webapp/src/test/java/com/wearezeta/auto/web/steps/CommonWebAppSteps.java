@@ -136,6 +136,11 @@ public class CommonWebAppSteps {
         context.getCommonSteps().IChangeName(userNameAlias, name);
     }
 
+    @When("^User (\\w+) changes? unique username to (.*)")
+    public void IChangeUniqueUsername(String userNameAlias, String name) throws Exception {
+        context.getCommonSteps().IChangeUniqueUsername(userNameAlias, name);
+    }
+
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me without avatar picture$")
     public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count,
             String myNameAlias) throws Exception {

@@ -120,6 +120,30 @@ Feature: Usernames
       | user1Email | user1Password | user1Name |               | At least 2 characters. a—z, 0—9 and _ only. |
       | user1Email | user1Password | user1Name | a             | At least 2 characters. a—z, 0—9 and _ only. |
 
+  @C352242 @usernames @staging
+  Scenario Outline: Verify username is unique
+    Given There are 2 users where <Name> is me without unique username
+    Given User <SecondUser> changes unique username to <SecondUser>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    And I see take over screen
+    And I see name <Name> on take over screen
+    When I click ChooseYourOwn button on take over screen
+    Then I see unique username starts with <Name> in account preferences
+    When I type <SecondUser> into unique username field
+    Then I see error message for unique username saying <Error>
+    When I change unique username to <SecondUser>
+    Then I see error message for unique username saying <Error>
+    When I refresh page
+    And I am signed in properly
+    And I see take over screen
+    And I see name <Name> on take over screen
+
+    Examples:
+      | Email      | Password      | Name      | SecondUser | Error         |
+      | user1Email | user1Password | user1Name | user2Name  | Already taken |
+
   @C352077 @usernames @staging
   Scenario Outline: Verify autogeneration of a username for a user (different scenarios)
       Given There are 2 users where <NameAlias> is me without unique username
