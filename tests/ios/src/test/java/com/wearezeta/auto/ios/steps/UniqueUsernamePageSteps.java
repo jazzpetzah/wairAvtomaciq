@@ -80,7 +80,7 @@ public class UniqueUsernamePageSteps {
      * @step. ^I attempt to enter (\d+) random chars as name on Unique Username page$
      */
     @When("^I attempt to enter (\\d+) random chars as name on Unique Username page$")
-    public void IAttemtToEnterMaxAllowedCharsAsName(int count) throws Exception {
+    public void IAttemtToEnterXRandomCharsAsName(int count) throws Exception {
         this.newUniqueName = getUniqueUsernamePage().inputXrandomString(count);
     }
 
@@ -128,6 +128,10 @@ public class UniqueUsernamePageSteps {
      */
     @Then("^I see new unique username is displayed on Settings Page$")
     public void ISeeNewUniqueUsernameOnSettingsPage() throws Exception {
+        if (this.newUniqueName == null) {
+            throw new AssertionError("'newUniqueName' variable is 'null'. This step can be used only after step " +
+                    "IAttemtToEnterXRandomCharsAsName(int count)");
+        }
         getUniqueUsernamePage().isUniqueUsernameInSettingsDisplayed(this.newUniqueName);
     }
 }
