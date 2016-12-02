@@ -474,15 +474,15 @@ public final class BackendAPIWrappers {
         BackendREST.sendConnectRequest(receiveAuthToken(user), contact.getId(), connectName, message);
     }
 
-    private static JSONArray getAllConnections(ClientUser user) throws Exception {
+    private static List<JSONObject> getAllConnections(ClientUser user) throws Exception {
         String startId = null;
         JSONObject connectionsInfo;
-        final JSONArray result = new JSONArray();
+        final List<JSONObject> result = new ArrayList<>();
         do {
             connectionsInfo = BackendREST.getConnectionsInfo(receiveAuthToken(user), null, startId);
             final JSONArray connections = connectionsInfo.getJSONArray("connections");
             for (int i = 0; i < connections.length(); i++) {
-                result.put(connections.getJSONObject(i));
+                result.add(connections.getJSONObject(i));
             }
             if (connections.length() > 0) {
                 startId = connections.getJSONObject(connections.length() - 1).getString("to");
@@ -497,7 +497,7 @@ public final class BackendAPIWrappers {
 
     public static void acceptIncomingConnectionRequest(ClientUser asUser, ClientUser fromUser) throws Exception {
         updateConnections(asUser, ConnectionStatus.Pending, ConnectionStatus.Accepted,
-                Optional.of(Collections.singletonList(fromUser)));
+                Optional.of(Collections.singletonList(fromUser.getId())));
     }
 
     public static void cancelAllOutgoingConnections(ClientUser asUser) throws Exception {
@@ -509,20 +509,14 @@ public final class BackendAPIWrappers {
     }
 
     private static void updateConnections(ClientUser asUser, ConnectionStatus srcStatus, ConnectionStatus dstStatus,
-                                          Optional<List<ClientUser>> forUsers) throws Exception {
-        final JSONArray connections = getAllConnections(asUser);
-        for (int i = 0; i < connections.length(); i++) {
-            final String to = connections.getJSONObject(i).getString("to");
-            final String status = connections.getJSONObject(i).getString("status");
+                                          Optional<List<String>> forUserIds) throws Exception {
+        final List<JSONObject> connections = getAllConnections(asUser);
+        for (final JSONObject connection : connections) {
+            final String to = connection.getString("to");
+            final String status = connection.getString("status");
             if (status.equals(srcStatus.toString())) {
-                if (forUsers.isPresent() && forUsers.get().stream().anyMatch(x -> {
-                    try {
-                        return x.getId().equals(to);
-                    } catch (Exception e) {
-                        Throwables.propagate(e);
-                    }
-                    return false;
-                }) || !forUsers.isPresent()) {
+                if (forUserIds.isPresent() && forUserIds.get().stream().anyMatch(x ->  x.equals(to))
+                        || !forUserIds.isPresent()) {
                     changeConnectRequestStatus(asUser, to, dstStatus);
                 }
             }
