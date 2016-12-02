@@ -50,26 +50,30 @@ Feature: Unique Usernames
     Then I see Address Book name "<Contact1ABName>" on Single user Pending incoming connection page
     And I do not see unique username on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
-    When I type "<Contact2WithABPhoneNumber>" in Search UI input field
+    When I tap X button on Search UI page
+    And I type "<Contact2WithABPhoneNumber>" in Search UI input field
     And I tap on conversation <Contact2WithABPhoneNumber> in search result
     Then I see name "<Contact2WithABPhoneNumber>" on Single user Pending incoming connection page
     And I see Address Book name "<Contact2ABName>" on Single user Pending incoming connection page
     And I do not see unique username on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
-    When I type "<Contact3WithUniqueUserName>" in Search UI input field
+    When I tap X button on Search UI page
+    And I type "<Contact3WithUniqueUserName>" in Search UI input field
     And I tap on conversation <Contact3WithUniqueUserName> in search result
     Then I see name "<Contact3WithUniqueUserName>" on Single user Pending incoming connection page
     And I see unique username "<Contact3UniqueUserName>" on Single user Pending incoming connection page
     And I do not see Address Book name on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
-    When I type "<Contact4WithCommonFriends>" in Search UI input field
+    When I tap X button on Search UI page
+    And I type "<Contact4WithCommonFriends>" in Search UI input field
     And I tap on conversation <Contact4WithCommonFriends> in search result
     Then I see name "<Contact4WithCommonFriends>" on Single user Pending incoming connection page
     And I do not see unique username on Single user Pending incoming connection page
     And I do not see Address Book name on Single user Pending incoming connection page
     # TODO: Verify common friends label
     And I tap Ignore button on Single user Pending incoming connection page
-    When I type "<Contact5WithSameNameInAB>" in Search UI input field
+    When I tap X button on Search UI page
+    And I type "<Contact5WithSameNameInAB>" in Search UI input field
     And I tap on conversation <Contact5WithSameNameInAB> in search result
     Then I see name "<Contact5WithSameNameInAB>" on Single user Pending incoming connection page
     And I do not see unique username on Single user Pending incoming connection page
@@ -106,4 +110,3 @@ Feature: Unique Usernames
     Examples:
       | Name      | Empty | MinChars | MaxChars |
       | user1Name | ""    | 1        | 22       |
-    
