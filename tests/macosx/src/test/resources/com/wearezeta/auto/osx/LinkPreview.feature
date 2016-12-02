@@ -19,6 +19,27 @@ Feature: Link Preview
       | Login      | Password      | Name      | Contact   | Link              | LinkInPreview | LinkTitle                                                                            | LinkPreviewImage |
       | user1Email | user1Password | user1Name | user2Name | https://wire.com/ | wire.com      | Wire · Modern communication, full privacy. For iOS, Android, macOS, Windows and web. | linkpreview0.png |
 
+  @C169203 @staging
+  Scenario Outline: Verify you can see preview for received link in group
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <ChatName>
+    And I write message <Link>
+    Then I send message
+    Then I see link <LinkInPreview> in link preview message
+    And I see a title <LinkTitle> in link preview in the conversation view
+    And I see a picture <LinkPreviewImage> from link preview
+    And I see 2 messages in conversation
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | Link              | LinkInPreview | LinkTitle                                                                            | LinkPreviewImage |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | https://wire.com/ | wire.com      | Wire · Modern communication, full privacy. For iOS, Android, macOS, Windows and web. | linkpreview0.png |
+
+
   @C169205 @smoke
   Scenario Outline: Verify you can delete link preview
     Given There are 2 users where <Name> is me
