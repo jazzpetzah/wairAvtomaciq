@@ -1,6 +1,5 @@
 package com.wearezeta.auto.osx.steps.webapp;
 
-import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -87,7 +86,7 @@ public class VideoCallPageSteps {
 
     @Then("^I verify (.*) sees my screen$")
     public void IVerifyUserXVideoShowsScreen(String callees) throws Exception {
-        for (String callee : splitAliases(callees)) {
+        for (String callee : webContext.getUserManager().splitAliases(callees)) {
             final ClientUser userAs = webContext.getUserManager().findUserByNameOrNameAlias(callee);
 
             // get screenshot from remote user

@@ -232,8 +232,8 @@ public class SEBridgeTest {
     }
 
     private static void connect(ClientUser one, ClientUser two) throws Exception {
-        BackendAPIWrappers.autoTestSendRequest(one, two);
-        BackendAPIWrappers.autoTestAcceptAllRequest(two);
+        BackendAPIWrappers.sendConnectionRequest(one, two);
+        BackendAPIWrappers.acceptAllIncomingConnectionRequests(two);
     }
 
     private static String getConversationIdByName(ClientUser me, String name) throws Exception {

@@ -563,7 +563,7 @@ public class ConversationViewPageSteps {
     @Then("^I see group chat page with users (.*)$")
     public void ISeeGroupChatPage(String participantNameAliases) throws Exception {
         List<String> participantNames = new ArrayList<>();
-        for (String nameAlias : CommonSteps.splitAliases(participantNameAliases)) {
+        for (String nameAlias : usrMgr.splitAliases(participantNameAliases)) {
             participantNames.add(usrMgr.findUserByNameOrNameAlias(nameAlias).getName());
         }
         Assert.assertTrue(String.format("Group chat view with names %s is not visible", participantNames),

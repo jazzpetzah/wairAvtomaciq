@@ -42,7 +42,7 @@ public class RegistrationPage extends IOSPage {
 
     private static final By fbNamePhoneNumberField = FBBy.AccessibilityId("PhoneNumberField");
 
-    public static final By xpathVerificationCodeInput = By.xpath("//XCUIElementTypeTextField");
+    public static final By nameVerificationCodeInput = MobileBy.AccessibilityId("verificationField");
 
     private static final By nameCountryPickerButton = MobileBy.AccessibilityId("CountryPickerButton");
 
@@ -113,8 +113,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void inputActivationCode(PhoneNumber forNumber) throws Exception {
-        final WebElement codeInput = getElement(xpathVerificationCodeInput,
-                "Activation code input is not visible");
+        final WebElement codeInput = getElement(nameVerificationCodeInput, "Activation code input is not visible");
         final String code = BackendAPIWrappers.getActivationCodeByPhoneNumber(forNumber);
         codeInput.sendKeys(code);
         getElement(nameConfirmButton, "Confirm button is not visible", 2).click();
@@ -123,7 +122,7 @@ public class RegistrationPage extends IOSPage {
     private static final Random rand = new Random();
 
     public void inputRandomConfirmationCode() throws Exception {
-        getElement(xpathVerificationCodeInput).sendKeys(Integer.toString(100000 + rand.nextInt(900000)));
+        getElement(nameVerificationCodeInput).sendKeys(Integer.toString(100000 + rand.nextInt(900000)));
         getElement(nameConfirmButton, "Confirm button is not visible", 2).click();
     }
 

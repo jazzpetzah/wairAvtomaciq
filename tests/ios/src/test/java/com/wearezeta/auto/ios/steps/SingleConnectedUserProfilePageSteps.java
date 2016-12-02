@@ -95,7 +95,7 @@ public class SingleConnectedUserProfilePageSteps {
             throw new IllegalStateException("Save the Address Book name of the user first!");
         }
         Assert.assertTrue(String.format("User Address Book name '%s' is not visible", userAddressBookName),
-                getPage().isNameVisible(userAddressBookName));
+                getPage().isAddressBookNameVisible(userAddressBookName));
     }
 
     /**

@@ -102,21 +102,13 @@ public class RegistrationPageSteps {
         getRegistrationPage().setName(this.userToRegister.getName());
     }
 
-    @When("^I input name (.*) and hit Enter$")
-    public void IInputNameAndHitEnter(String name) throws Exception {
-        IEnterName(name);
-        getRegistrationPage().commitName();
-    }
-
-    /**
-     * Copy and paste non-English chars and send extra space keystroke (workaround for simulator bug)
-     *
-     * @throws Exception
-     * @step. ^I input Non-English name (.*) and hit Enter
-     */
-    @When("^I input Non-English name (.*) and hit Enter$")
-    public void IInputNonEnglishNameAndHitEnter(String name) throws Exception {
-        getRegistrationPage().setName(name);
+    @When("^I input (custom )?name (.*) and commit it$")
+    public void IInputNameAndCommit(String isCuston, String name) throws Exception {
+        if (isCuston == null) {
+            IEnterName(name);
+        } else {
+            getRegistrationPage().setName(name);
+        }
         getRegistrationPage().commitName();
     }
 

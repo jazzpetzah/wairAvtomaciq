@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 
 import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
     protected static final By nameXButton = MobileBy.AccessibilityId("OtherUserProfileCloseButton");
@@ -18,6 +19,9 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
             "//XCUIElementTypeButton[@name='DEVICES']/following::" +
                     "XCUIElementTypeOther[ ./XCUIElementTypeImage or ./XCUIElementTypeStaticText ][1]"
     );
+
+    private static final Function<String, String> nameStrABNameByName = name ->
+            String.format("%s in Address Book", name);
 
     public BaseUserDetailsOverlay(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
@@ -37,6 +41,16 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
     public boolean isNameInvisible(String value) throws Exception {
         final By locator = MobileBy.AccessibilityId(value);
         return selectVisibleElements(locator).size() == 0;
+    }
+
+    public boolean isAddressBookNameVisible(String value) throws Exception {
+        final By locator = MobileBy.AccessibilityId(nameStrABNameByName.apply(value));
+        return isLocatorDisplayed(locator);
+    }
+
+    public boolean isAddressBookNameInvisible(String value) throws Exception {
+        final By locator = MobileBy.AccessibilityId(nameStrABNameByName.apply(value));
+        return isLocatorInvisible(locator);
     }
 
     public boolean isEmailVisible(String value) throws Exception {

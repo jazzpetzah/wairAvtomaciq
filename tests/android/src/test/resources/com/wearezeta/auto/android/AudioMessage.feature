@@ -247,27 +247,28 @@ Feature: Audio Message
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | zcall       |
 
-  @C165127 @C165128 @C165137 @regression
-  Scenario Outline: Single tap on mic button open voice recording dialog
+  @C165127 @regression
+  Scenario Outline: I can record voice message by single tap on mic, apply filter and send it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
     Given I tap on conversation name <Contact>
+    # single tap to record check
     When I tap Audio message button from cursor toolbar
-    # C165127
-    Then I see Voice filters overlay
+    Then I see Voice recording overlay
     When I tap Start Record button on Voice filters overlay
     And I wait for <MessageDuration> seconds
     And I tap Stop Record button on Voice filters overlay
-    And I tap the 3rd Filter button on Voice filters overlay
-    # C165137
+    # filter check
+    Then I see Voice filters overlay
+    When I tap the 3rd Filter button on Voice filters overlay
     Then I see voice graph on Voice filters overlay
+    # send message check
     When I tap Approve button on Voice filters overlay
-    # C165128
     Then I see Audio Message container in the conversation view
 
     Examples:
       | Name      | Contact   | MessageDuration |
-      | user1Name | user2Name | 5               |
+      | user1Name | user2Name | 10              |

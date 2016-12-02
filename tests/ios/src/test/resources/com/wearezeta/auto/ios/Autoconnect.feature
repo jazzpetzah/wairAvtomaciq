@@ -14,7 +14,7 @@ Feature: Autoconnect
     When I enter phone number for <Name>
     And I enter activation code
     And I accept terms of service
-    And I input name <Name> and hit Enter
+    And I input name <Name> and commit it
     And I accept alert
     And I tap Keep This One button
     And I accept alert if visible
@@ -86,7 +86,7 @@ Feature: Autoconnect
     When I enter phone number for <Name>
     And I enter activation code
     And I accept terms of service
-    And I input name <Name> and hit Enter
+    And I input name <Name> and commit it
     And I accept alert
     And I tap Keep This One button
     And I tap Share Contacts button on Share Contacts overlay

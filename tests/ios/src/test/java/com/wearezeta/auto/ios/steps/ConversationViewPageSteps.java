@@ -1331,7 +1331,7 @@ public class ConversationViewPageSteps {
     public void ISeeConversationPageWithUsers(String participantNameAliases) throws Exception {
         participantNameAliases = usrMgr.replaceAliasesOccurences(participantNameAliases,
                 ClientUsersManager.FindBy.NAME_ALIAS);
-        final List<String> participantNames = CommonSteps.splitAliases(participantNameAliases);
+        final List<String> participantNames = usrMgr.splitAliases(participantNameAliases);
         Assert.assertTrue(
                 String.format("Users '%s' are not displayed on Upper Toolbar", participantNameAliases),
                 getConversationViewPage().isUpperToolbarContainNames(participantNames)
