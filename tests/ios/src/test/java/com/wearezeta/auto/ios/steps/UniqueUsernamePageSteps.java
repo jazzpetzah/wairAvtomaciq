@@ -100,18 +100,6 @@ public class UniqueUsernamePageSteps {
     }
 
     /**
-     * Verify that name input is emtpy on Unique Username page
-     *
-     * @throws Exception
-     * @step. ^I see that name input is empty on Unique Username page$
-     */
-    @Then("^I see that name input is empty on Unique Username page$")
-    public void ISeeNameInputIsEmptyOnUniqueUsernamePage() throws Exception {
-        Assert.assertTrue("Name input is not empty on Unique Username page",
-                getUniqueUsernamePage().isNameInputEmpty());
-    }
-
-    /**
      * Verify that name input stays empty if user try input unacceptable symbols from the table
      *
      * @param table table of symbols
