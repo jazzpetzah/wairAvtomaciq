@@ -28,40 +28,36 @@ public class GroupParticipantConnectedProfilePageSteps {
     }
 
     /**
-     * Verify user name/email on participant profile page
+     * Verify user details on participant profile page
      *
-     * @param value user name or email
-     * @param fieldType either name or email
+     * @param shouldNotSee equals to null if the label should be visible
+     * @param value user name or unique username or Address Book name
+     * @param fieldType either name or unique username or Address Book name
      * @throws Exception
-     * @step. ^I see (.*) (name|email) on Group participant profile page$
+     * @step. ^I (do not )?see (name|unique username|Address Book name) (".*" |\s*)on Group participant profile page$
      */
-    @When("^I (do not )?see (.*) (name|email) on Group participant profile page$")
-    public void IVerifyUserOtherUserProfilePage(String shouldNotSee, String value, String fieldType) throws Exception {
-        boolean result;
-        switch (fieldType) {
-            case "name":
-                value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
-                if (shouldNotSee == null) {
-                    result = getPage().isNameVisible(value);
-                } else {
-                    result = getPage().isNameInvisible(value);
-                }
-                break;
-            case "email":
-                value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.EMAIL_ALIAS);
-                if (shouldNotSee == null) {
-                    result = getPage().isEmailVisible(value);
-                } else {
-                    result = getPage().isEmailInvisible(value);
-                }
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown field type '%s'", fieldType));
-        }
+    @When("^I (do not )?see (name|unique username|Address Book name) (\".*\" |\\s*)on Group participant profile page$")
+    public void ISeeLabel(String shouldNotSee, String fieldType, String value) throws Exception {
+        value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
+        value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         if (shouldNotSee == null) {
-            Assert.assertTrue(String.format("'%s' field is expected to be visible", value), result);
+            if (value.startsWith("\"")) {
+                value = value.trim().replaceAll("^\"|\"$", "");
+                Assert.assertTrue(String.format("'%s' field is expected to be visible", value),
+                        getPage().isUserDetailVisible(fieldType, value));
+            } else {
+                Assert.assertTrue(String.format("'%s' field is expected to be visible", fieldType),
+                        getPage().isUserDetailVisible(fieldType));
+            }
         } else {
-            Assert.assertTrue(String.format("'%s' field is expected to be invisible", value), result);
+            if (value.startsWith("\"")) {
+                value = value.trim().replaceAll("^\"|\"$", "");
+                Assert.assertTrue(String.format("'%s' field is expected to be invisible", value),
+                        getPage().isUserDetailInvisible(fieldType, value));
+            } else {
+                Assert.assertTrue(String.format("'%s' field is expected to be invisible", value),
+                        getPage().isUserDetailInvisible(fieldType));
+            }
         }
     }
 

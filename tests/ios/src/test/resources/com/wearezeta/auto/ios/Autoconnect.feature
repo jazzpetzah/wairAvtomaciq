@@ -126,7 +126,7 @@ Feature: Autoconnect
     And I tap X button on Search UI page
     And I tap on contact name <Contact>
     And I open conversation details
-    Then I see <Contact> name on Single user profile page
+    Then I see name "<Contact>" on Single user profile page
     And I verify the previously remembered user name from Address Book is displayed on Single user profile page
 
     Examples:

@@ -127,7 +127,7 @@ Feature: Connect
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Single user Pending outgoing connection page
     And I tap on conversation <Contact> in search result
-    And I see <Contact> name on Single user Pending outgoing connection page
+    And I see name "<Contact>" on Single user Pending outgoing connection page
     And I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
@@ -393,7 +393,7 @@ Feature: Connect
     Given I see conversations list
     When I tap Incoming Pending Requests item in conversations list
     Then I see Connect button on Single user Pending incoming connection page
-    And I see <NewName> name on Single user Pending incoming connection page
+    And I see name "<NewName>" on Single user Pending incoming connection page
 
     Examples:
       | Name      | Contact   | NewName  |
