@@ -14,7 +14,7 @@ public class UniqueUsernamePageSteps {
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private UniqueUsernamePage getUniqueUsernamePageSteps() throws Exception {
+    private UniqueUsernamePage getUniqueUsernamePage() throws Exception {
         return pagesCollection.getPage(UniqueUsernamePage.class);
     }
 
@@ -26,7 +26,7 @@ public class UniqueUsernamePageSteps {
      */
     @Then("^I see Unique Username page$")
     public void ISeeUsernamePage() throws Exception {
-        Assert.assertTrue("Unique Username page is not visible", getUniqueUsernamePageSteps().isUsernamePageVisible());
+        Assert.assertTrue("Unique Username page is not visible", getUniqueUsernamePage().isUsernamePageVisible());
     }
 
     /**
@@ -37,7 +37,7 @@ public class UniqueUsernamePageSteps {
      */
     @When("^I tap (Save) button on Unique Username page$")
     public void ITapButtonOnUniqueUsernamePage(String buttonName) throws Exception {
-        getUniqueUsernamePageSteps().tapButtonByName(buttonName);
+        getUniqueUsernamePage().tapButtonByName(buttonName);
     }
 
     /**
@@ -49,7 +49,7 @@ public class UniqueUsernamePageSteps {
      */
     @When("^I enter \"(.*)\" name on Unique Username page$")
     public void IFillInNameInInputOnUniqueUsernamePage(String name) throws Exception {
-        getUniqueUsernamePageSteps().inputStringInNameInput(name);
+        getUniqueUsernamePage().inputStringInNameInput(name);
     }
 
     /**
@@ -61,7 +61,7 @@ public class UniqueUsernamePageSteps {
      */
     @When("^I see Save button state is (Disabled|Enabled) on Unique Username page$")
     public void ISeeSaveButtonIsDisabled(String expectedState) throws Exception {
-        boolean buttonState = getUniqueUsernamePageSteps().isSaveButtonEnabled();
+        boolean buttonState = getUniqueUsernamePage().isSaveButtonEnabled();
         if (expectedState.equals("Disabled")) {
             Assert.assertFalse(String.format("Wrong Save button state. Should be %s.", expectedState), buttonState);
         } else {
@@ -78,26 +78,25 @@ public class UniqueUsernamePageSteps {
      */
     @When("^I attempt to enter over max allowed (\\d+) chars as name on Unique Username page$")
     public void IAttemtToEnterMaxAllowedCharsAsName(int count) throws Exception {
-        getUniqueUsernamePageSteps().inputXrandomString(count);
+        getUniqueUsernamePage().inputXrandomString(count);
     }
 
     /**
-     * Verify that Username in name input is less than X chars
+     * Verify Username length in name input
      *
-     * @param count max allowed chars count
+     * @param count chars count to compare with
      * @throws Exception
-     * @step. ^I see that name length is less than (\d+) chars? on Unique Username page$
+     * @step. ^I see that name length is (less than|equal to) (\d+) chars? on Unique Username page$
      */
-    @Then("^I see that name length is less than (\\d+) chars? on Unique Username page$")
-    public void ISeeNameLenghIsLessThanXChars(int count) throws Exception {
-        Assert.assertTrue(String.format("Username in name input is not less than %s chars.", count),
-                getUniqueUsernamePageSteps().getNameInputTextLength() < count);
-    }
-
-    @Then("^I see that name length is (\\d+) chars? on Unique Username page$")
-    public void ISeeNameLenghInInput(int count) throws Exception {
-        Assert.assertTrue(String.format("Username in name input is not less than %s chars.", count),
-                getUniqueUsernamePageSteps().getNameInputTextLength() == count);
+    @Then("^I see that name length is (less than|equal to) (\\d+) chars? on Unique Username page$")
+    public void ISeeNameLenghIsLessThanXChars(String compareState, int count) throws Exception {
+        if (compareState.equals("less than")) {
+            Assert.assertTrue(String.format("Username length in name input is not less than %s chars.", count),
+                    getUniqueUsernamePage().getNameInputTextLength() < count);
+        } else {
+            Assert.assertTrue(String.format("Username length in name input is not equal to %s chars.", count),
+                    getUniqueUsernamePage().getNameInputTextLength() == count);
+        }
     }
 
     /**
@@ -109,22 +108,24 @@ public class UniqueUsernamePageSteps {
     @Then("^I see that name input is empty on Unique Username page$")
     public void ISeeNameInputIsEmptyOnUniqueUsernamePage() throws Exception {
         Assert.assertTrue("Name input is not empty on Unique Username page",
-                getUniqueUsernamePageSteps().isNameInputEmpty());
+                getUniqueUsernamePage().isNameInputEmpty());
     }
 
     /**
      * Verify that name input stays empty if user try input unacceptable symbols from the table
      *
      * @param table table of symbols
-     * @step.  ^I type unique usernames from the data table and verify they cannot be committed on Unique Username page$
+     * @step. ^I type unique usernames from the data table and verify they cannot be committed on Unique Username page$
      */
     @When("^I type unique usernames from the data table and verify they cannot be committed on Unique Username page$")
     public void IFillInInputDataAndVerify(DataTable table) throws Exception {
         final List<List<String>> data = table.raw();
         for (int i = 1; i < data.size(); i++) {
-            getUniqueUsernamePageSteps().inputStringInNameInput(data.get(i).get(1));
-            Assert.assertTrue("Name input is not empty on Unique Username page",
-                    getUniqueUsernamePageSteps().isNameInputEmpty());
+            String newName = data.get(i).get(1);
+            getUniqueUsernamePage().inputStringInNameInput(newName);
+            Assert.assertTrue(
+                    String.format("Name input after enter of '%s' charset is not empty on Unique Username page", newName),
+                    getUniqueUsernamePage().isNameInputEmpty());
         }
     }
 }
