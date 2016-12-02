@@ -637,8 +637,7 @@ public class CommonIOSSteps {
     }
 
     @Given("^(.*) sent connection request to (.*)$")
-    public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
-                                               String usersToNameAliases) throws Throwable {
+    public void GivenConnectionRequestIsSentTo(String userFromNameAlias, String usersToNameAliases) throws Exception {
         commonSteps.ConnectionRequestIsSentTo(userFromNameAlias, usersToNameAliases);
     }
 
