@@ -62,17 +62,18 @@ public class Element {
 
     public Util.Status getStatus() {
     	// can be optimized to retrieve only the count of elements and not the all list
-        int results = getSteps().filter(Step.predicates.hasStatus(Util.Status.FAILED)).size();
+        int failedResults = getSteps().filter(Step.predicates.hasStatus(Util.Status.FAILED)).size();
+        int passedResults = getSteps().filter(Step.predicates.hasStatus(Util.Status.PASSED)).size();
         
-        if (results == 0 && ConfigurationOptions.skippedFailsBuild()) {
-        	results = getSteps().filter(Step.predicates.hasStatus(Util.Status.SKIPPED)).size();
+        if (failedResults == 0 && ConfigurationOptions.skippedFailsBuild()) {
+            failedResults = getSteps().filter(Step.predicates.hasStatus(Util.Status.SKIPPED)).size();
         }
 
-        if (results == 0 && ConfigurationOptions.undefinedFailsBuild()) {
-        	results = getSteps().filter(Step.predicates.hasStatus(Util.Status.UNDEFINED)).size();
+        if (failedResults == 0 && ConfigurationOptions.undefinedFailsBuild()) {
+            failedResults = getSteps().filter(Step.predicates.hasStatus(Util.Status.UNDEFINED)).size();
         }
         
-        return results == 0 ? Util.Status.PASSED : Util.Status.FAILED;
+        return (failedResults == 0) && (passedResults != 0) ? Util.Status.PASSED : Util.Status.FAILED;
     }
 
     public String getRawName() {
