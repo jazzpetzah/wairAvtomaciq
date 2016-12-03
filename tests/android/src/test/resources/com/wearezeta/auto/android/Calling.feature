@@ -281,7 +281,7 @@ Feature: Calling
     Then I do not see incoming call
     When <Contact3> stop calling me
     Then I see incoming call from <GroupChatName>
-    When <Contact1>,<Contact2> stop calling <GroupChatName>
+    When <Contact1> stop calling <GroupChatName>
     Then I do not see incoming call
 
     Examples:
