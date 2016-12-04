@@ -62,18 +62,19 @@ public class Element {
 
     public Util.Status getStatus() {
     	// can be optimized to retrieve only the count of elements and not the all list
-        int failedResults = getSteps().filter(Step.predicates.hasStatus(Util.Status.FAILED)).size();
-        int passedResults = getSteps().filter(Step.predicates.hasStatus(Util.Status.PASSED)).size();
+        int failedSteps = getSteps().filter(Step.predicates.hasStatus(Util.Status.FAILED)).size();
+        int passedSteps = getSteps().filter(Step.predicates.hasStatus(Util.Status.PASSED)).size();
+        int pendingSteps = getSteps().filter(Step.predicates.hasStatus(Util.Status.PENDING)).size();
         
-        if (failedResults == 0 && ConfigurationOptions.skippedFailsBuild()) {
-            failedResults = getSteps().filter(Step.predicates.hasStatus(Util.Status.SKIPPED)).size();
+        if (failedSteps == 0 && ConfigurationOptions.skippedFailsBuild()) {
+            failedSteps = getSteps().filter(Step.predicates.hasStatus(Util.Status.SKIPPED)).size();
         }
 
-        if (failedResults == 0 && ConfigurationOptions.undefinedFailsBuild()) {
-            failedResults = getSteps().filter(Step.predicates.hasStatus(Util.Status.UNDEFINED)).size();
+        if (failedSteps == 0 && ConfigurationOptions.undefinedFailsBuild()) {
+            failedSteps = getSteps().filter(Step.predicates.hasStatus(Util.Status.UNDEFINED)).size();
         }
         
-        return (failedResults == 0) && (passedResults != 0) ? Util.Status.PASSED : Util.Status.FAILED;
+        return (failedSteps == 0) && ((passedSteps > 0) || (pendingSteps > 0)) ? Util.Status.PASSED : Util.Status.FAILED;
     }
 
     public String getRawName() {
