@@ -15,6 +15,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.common.Message;
 import com.wearezeta.auto.web.common.TestContext;
@@ -830,6 +831,13 @@ public class ConversationPageSteps {
         } else {
             ThenISeeActionForContactInConversation(message, 0, contacts);
         }
+    }
+
+    @And("^I see unique username starts with (.*) in conversation$")
+    public void ISeeUniqueUsernameOnSelfProfilePage(String name) throws Exception {
+        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        Assert.assertThat("Username in conversation",
+                context.getPagesCollection().getPage(ConversationPage.class).getUniqueUsername(), startsWith(name));
     }
 
     @Then("^I see (.*) action (\\d+) times for (.*) in conversation$")
