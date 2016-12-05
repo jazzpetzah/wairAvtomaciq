@@ -268,9 +268,11 @@ public class SettingsPageSteps {
      */
     @Then("^I see new previously set unique username is displayed on Settings Page$")
     public void ISeeNewUniqueUsernameOnSettingsPage() throws Exception {
-        if (UniqueUsernamePageSteps.newUniqueName == null) {
+        String newName = UniqueUsernamePageSteps.newUniqueName;
+        if (newName == null) {
             throw new IllegalStateException("'newUniqueName' variable should be initialised first");
         }
-        getSettingsPage().isUniqueUsernameInSettingsDisplayed(UniqueUsernamePageSteps.newUniqueName);
+        Assert.assertTrue(String.format("New previously set unique username %s is displayed on Settings Page", newName),
+                getSettingsPage().isUniqueUsernameInSettingsDisplayed(newName));
     }
 }
