@@ -122,16 +122,29 @@ public class SearchPageSteps {
      * @param partialWords if not null, means only type the part of word[Start from index 0]
      * @param text         the text to type
      * @throws Exception
-     * @step. ^I type (the first \d+ chars? of )?(?:user name|user email|user phone number|group name) "(.*)" in search field$
+     * @step. ^I type (the first \d+ chars? of )?(user name|user email|user phone number|group name) "(.*)" in search field$
      */
-    @When("^I type (the first \\d+ chars? of )?(?:user name|user email|user phone number|group name) \"(.*)\" in search field$")
-    public void ITypeWordInSearchFiled(String partialWords, String text) throws Exception {
-        text = usrMgr.replaceAliasesOccurences(text, FindBy.EMAIL_ALIAS);
-        text = usrMgr.replaceAliasesOccurences(text, FindBy.NAME_ALIAS);
-        text = usrMgr.replaceAliasesOccurences(text, FindBy.PHONENUMBER_ALIAS);
+    @When("^I type (the first \\d+ chars? of )?(user name|user email|user phone number|group name) \"(.*)\" in search field$")
+    public void ITypeWordInSearchFiled(String partialWords, String type, String text) throws Exception {
+        switch (type) {
+            case "user name":
+                text = usrMgr.replaceAliasesOccurences(text, FindBy.NAME_ALIAS);
+                break;
+            case "user email":
+                text = usrMgr.replaceAliasesOccurences(text, FindBy.EMAIL_ALIAS);
+                break;
+            case "user phone number":
+                text = usrMgr.replaceAliasesOccurences(text, FindBy.PHONENUMBER_ALIAS);
+                break;
+            case "group name":
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("No such search text type as %s", type));
+        }
         if (partialWords != null) {
             int partialSize = Integer.parseInt(partialWords.replaceAll("[\\D]", ""));
-            text = (partialSize < text.length()) ? text.substring(0, partialSize) : text;
+            int length = text.length();
+            text = (partialSize < length) ? text.substring(0, partialSize) : text;
         }
         getSearchListPage().typeTextInPeopleSearch(text);
     }
