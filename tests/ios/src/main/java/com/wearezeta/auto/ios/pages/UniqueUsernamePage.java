@@ -49,7 +49,7 @@ public class UniqueUsernamePage extends IOSPage {
     }
 
     public String inputXrandomString(int count) throws Exception {
-        String newUniqueName = CommonUtils.generateRandomString(count).toLowerCase();
+        String newUniqueName = CommonUtils.generateRandomAlphanumericPlusUnderscoreString(count).toLowerCase();
         inputStringInNameInput(newUniqueName);
         return newUniqueName;
     }
