@@ -67,6 +67,8 @@ public class CommonUtils {
 
     private static final String USER_IMAGE = "userpicture_landscape.jpg";
 
+    private static final String ENGLISH_ALPHANUMERIC = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+
     private static final Random rand = new Random();
 
     private static final Logger log = ZetaLogger.getLog(CommonUtils.class.getSimpleName());
@@ -407,9 +409,9 @@ public class CommonUtils {
         return RandomStringUtils.randomAlphanumeric(lengh);
     }
 
-    public static String generateRandomAlphanumericPlusLowLineString(int length) {
-        String set = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_";
-        return RandomStringUtils.random(length, set);
+    public static String generateRandomAlphanumericPlusUnderscoreString(int length) {
+        String charsSet = ENGLISH_ALPHANUMERIC + "_";
+        return RandomStringUtils.random(length, charsSet);
     }
 
     public static String generateRandomNumericString(int length) {
