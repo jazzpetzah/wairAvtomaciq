@@ -826,15 +826,19 @@ public class CommonAndroidSteps {
      * Verifies that there are N new users for a test, makes them if they don't
      * exist, and sets one of those users to be the current user.
      *
-     * @param count       the number of users to make
-     * @param myNameAlias the name of the user to set as the current user
+     * @param count                 the number of users to make
+     * @param myNameAlias           the name of the user to set as the current user
+     * @param withoutUniqueUsername equals null means the user will use user name as unique user name by default
      * @throws Exception
-     * @step. ^There (?:are|is) (\\d+) user[s]* where (.*) is me$
+     * @step. ^There (?:are|is) (\\d+) user[s]* where (.*) is me( without unique user name)?$
      */
-    @Given("^There (?:are|is) (\\d+) users? where (.*) is me$")
-    public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
+    @Given("^There (?:are|is) (\\d+) users? where (.*) is me( without unique user name)?$")
+    public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias, String withoutUniqueUsername) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
         UserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
+        if (withoutUniqueUsername == null) {
+            commonSteps.ISetUniqueUsername(myNameAlias);
+        }
     }
 
     /**
@@ -855,6 +859,7 @@ public class CommonAndroidSteps {
             commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
         }
         UserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
+        commonSteps.ISetUniqueUsername(myNameAlias);
     }
 
     /**

@@ -14,17 +14,17 @@ Feature: Unique Username
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with name <WaitingMess1>
     Given I tap on conversation name <WaitingMess1>
-    When I scroll to inbox contact <ContactInABSameName>
+    When I scroll to contact <ContactInABSameName> on Single pending incoming connection page
     #TODO: Check Unique Name is visible, but AB name is invisible
-    And I tap Connect button for <ContactInABSameName>
+    And I tap connect button for user <ContactInABSameName> on Single pending incoming connection page
     #TODO: Check AB name is not show, User Unique Name is show
-    When I scroll to inbox contact <ContactInABPhone>
+    When I scroll to contact <ContactInABPhone> on Single pending incoming connection page
     #TODO: Check Unique Name + AB Name are visible
-    And I tap Connect button for <ContactInABPhone>
+    And I tap connect button for user <ContactInABPhone> on Single pending incoming connection page
     #TODO: Check Unique User Name + AB name is show
-    When I scroll to inbox contact <ContactInABEmail>
+    When I scroll to contact <ContactInABEmail> on Single pending incoming connection page
     #TODO: Check Unique Name + AB Name are visible
-    And I tap Connect button for <ContactInABEmail>
+    And I tap connect button for user <ContactInABEmail> on Single pending incoming connection page
     And I see Conversations list with conversations
     And I tap on conversation name <ContactInABEmail>
     #TODO: Check Unique User Name + AB name is show
