@@ -19,7 +19,7 @@ public class UniqueUsernamePageSteps {
         return pagesCollection.getPage(UniqueUsernamePage.class);
     }
 
-    private String newUniqueName;
+    private String newUniqueName = null;
 
     /**
      * Verify visibility of Unique Username page
@@ -73,13 +73,13 @@ public class UniqueUsernamePageSteps {
     }
 
     /**
-     * Attempt to enter over max allowed chars amount as name
+     * Attempt to enter X random latin alphanumeric chars as name
      *
-     * @param count max allowed chars count +1
+     * @param count number of chars to enter
      * @throws Exception
-     * @step. ^I attempt to enter (\d+) random chars as name on Unique Username page$
+     * @step. ^I attempt to enter (\d+) random latin alphanumeric chars as name on Unique Username page$
      */
-    @When("^I attempt to enter (\\d+) random chars as name on Unique Username page$")
+    @When("^I attempt to enter (\\d+) random latin alphanumeric chars as name on Unique Username page$")
     public void IAttemtToEnterXRandomCharsAsName(int count) throws Exception {
         this.newUniqueName = getUniqueUsernamePage().inputXrandomString(count);
     }
@@ -129,8 +129,7 @@ public class UniqueUsernamePageSteps {
     @Then("^I see new unique username is displayed on Settings Page$")
     public void ISeeNewUniqueUsernameOnSettingsPage() throws Exception {
         if (this.newUniqueName == null) {
-            throw new AssertionError("'newUniqueName' variable is 'null'. This step can be used only after step " +
-                    "IAttemtToEnterXRandomCharsAsName(int count)");
+            throw new IllegalStateException("'newUniqueName' variable should be initialised first");
         }
         getUniqueUsernamePage().isUniqueUsernameInSettingsDisplayed(this.newUniqueName);
     }
