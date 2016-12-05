@@ -227,7 +227,7 @@ public class CommonWebAppSteps {
     public void UserWaitsUntilContactExistsInHisSearchResults(
             String searchByNameAlias, String query) throws Exception {
         context.startPinging();
-        context.getCommonSteps().WaitUntilContactIsFoundInSearchByEmail(searchByNameAlias, query);
+        context.getCommonSteps().WaitUntilContactIsFoundInSearchByUniqueUsername(searchByNameAlias, query);
         context.stopPinging();
     }
 

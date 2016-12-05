@@ -721,6 +721,13 @@ public final class CommonSteps {
                 BACKEND_USER_SYNC_TIMEOUT);
     }
 
+    public void WaitUntilContactIsFoundInSearchByUniqueUsername(String searchByNameAlias, String contactAlias) throws Exception {
+        final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(contactAlias);
+        String query = userAs.getUniqueUsername();
+        BackendAPIWrappers.waitUntilContactsFound(usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query, 1, true,
+                BACKEND_USER_SYNC_TIMEOUT);
+    }
+
     public void WaitUntilTopPeopleContactsIsFoundInSearch(String searchByNameAlias, int size) throws Exception {
         BackendAPIWrappers.waitUntilTopPeopleContactsFound(usrMgr.findUserByNameOrNameAlias(searchByNameAlias), size,
                 size, true, BACKEND_USER_SYNC_TIMEOUT);
