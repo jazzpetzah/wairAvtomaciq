@@ -88,7 +88,7 @@ public class UniqueUsernamePageSteps {
      */
     @When("^I attempt to enter (\\d+) random latin alphanumeric chars as name on Unique Username page$")
     public void IAttemtToEnterXRandomCharsAsName(int count) throws Exception {
-        this.newUniqueName = getUniqueUsernamePage().inputXrandomString(count);
+        newUniqueName = getUniqueUsernamePage().inputXrandomString(count);
     }
 
     /**

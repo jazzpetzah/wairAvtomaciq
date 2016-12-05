@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
-import java.util.function.Function;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
