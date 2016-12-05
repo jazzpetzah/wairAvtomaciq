@@ -12,7 +12,7 @@ Feature: Unique Usernames
     Given I tap Not Now button on Share Contacts overlay
     # Wait until takeover screen appears
     Given I wait for 7 seconds
-    When I see username <WireName> on Unique Username Takeover page
+    When I see username <Name> on Unique Username Takeover page
     Then I see unique username <ExpectedUniqueName> on Unique Username Takeover page
     When I tap Keep This One button on Unique Username Takeover page
     Then I see conversations list
