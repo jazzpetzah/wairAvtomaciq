@@ -136,5 +136,20 @@ Feature: Usernames
       | user1Email | user1Password | user1Name | Даша         | dasha        |
       | user1Email | user1Password | user1Name |   داريا      | darya        |
       | user1Email | user1Password | user1Name | 明麗          | mengli       |
+    
+  @C345365 @usernames @staging
+  Scenario Outline: Verify new username is synched across the devices
+    Given There are 2 users where <NameAlias> is me without unique username
+    Given user <NameAlias> adds a new device Device1 with label Label1
+    Given User <NameAlias> changes name to <Name>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I see take over screen
+    And I see name <NameAlias> on take over screen
+    And I see unique username starts with <NameAlias> on take over screen
+    When I click ChooseYourOwn button on take over screen
+    Then I see unique username starts with <NameAlias> in account preferences
 
-
+    Examples:
+      | Email      | Password      | NameAlias | Name         |
+      | user1Email | user1Password | user1Name | Jack Johnson |
