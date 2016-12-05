@@ -494,7 +494,7 @@ Feature: Conversation List
     Given I tap Login button
     Given I dismiss alert
     Given I accept First Time overlay
-    Given I dismiss settings warning
+    Given I dismiss settings warning if visible
     Given I see conversations list
     When I open search UI
     And I see alert contains text <AlertText>
