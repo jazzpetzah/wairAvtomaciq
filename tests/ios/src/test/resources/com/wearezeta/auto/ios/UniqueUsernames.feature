@@ -98,7 +98,7 @@ Feature: Unique Usernames
     And I enter "<MinChars>" name on Unique Username page
     Then I see Save button state is Disabled on Unique Username page
     When I tap Save button on Unique Username page
-    And I attempt to enter over max allowed <MaxChars> chars as name on Unique Username page
+    And I attempt to enter <MaxChars> random latin alphanumeric chars as name on Unique Username page
     Then I see that name length is less than <MaxChars> chars on Unique Username page
     And I type unique usernames from the data table and verify they cannot be committed on Unique Username page
       | Charset      | Chars  |
@@ -169,3 +169,27 @@ Feature: Unique Usernames
     Examples:
       | Name      | Contact1WithABEmail | Contact1ABName | Contact1Email | Contact2WithABPhoneNumber | Contact2ABName | Contact2PhoneNumber | Contact3WithUniqueUserName | Contact3UniqueUserName | Contact4WithCommonFriends | Contact5WithSameNameInAB | Contact5Email | Contact6Common |
       | user1Name | user2Name           | user2ABName    | user2Email    | user3Name                 | user3ABName    | user3PhoneNumber    | user4Name                  | user4UniqueUsername    | user5Name                 | user6Name                | user6Email    | user7Name      |
+
+  @C352036 @staging @fastLogin
+  Scenario Outline: Verify setting correct user name
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap settings gear button
+    Given I select settings item Account
+    Given I select settings item Username
+    When I attempt to enter <RegularLength> random latin alphanumeric chars as name on Unique Username page
+    And I tap Save button on Unique Username page
+    Then I see new unique username is displayed on Settings Page
+    When I select settings item Username
+    And I attempt to enter <MinLength> random latin alphanumeric chars as name on Unique Username page
+    And I tap Save button on Unique Username page
+    Then I see new unique username is displayed on Settings Page
+    When I select settings item Username
+    And I attempt to enter <MaxLength> random latin alphanumeric chars as name on Unique Username page
+    And I tap Save button on Unique Username page
+    Then I see new unique username is displayed on Settings Page
+
+    Examples:
+      | Name      | RegularLength | MinLength | MaxLength |
+      | user1Name | 6             | 2         | 21        |

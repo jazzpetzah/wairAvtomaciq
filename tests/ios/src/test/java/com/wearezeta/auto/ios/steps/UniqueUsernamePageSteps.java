@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.ios.pages.SettingsPage;
 import com.wearezeta.auto.ios.pages.UniqueUsernamePage;
 import cucumber.api.DataTable;
 import cucumber.api.java.en.Then;
@@ -16,6 +17,15 @@ public class UniqueUsernamePageSteps {
 
     private UniqueUsernamePage getUniqueUsernamePage() throws Exception {
         return pagesCollection.getPage(UniqueUsernamePage.class);
+    }
+
+    private static String newUniqueName = null;
+
+    public static String getNewUniqueName() {
+        if (newUniqueName == null) {
+            throw new IllegalStateException("'newUniqueName' variable should be initialised first");
+        }
+        return newUniqueName;
     }
 
     /**
@@ -70,15 +80,15 @@ public class UniqueUsernamePageSteps {
     }
 
     /**
-     * Attempt to enter over max allowed chars amount as name
+     * Attempt to enter X random latin alphanumeric chars as name
      *
-     * @param count max allowed chars count +1
+     * @param count number of chars to enter
      * @throws Exception
-     * @step. ^I attempt to enter over max allowed (\d+) chars as name on Unique Username page$
+     * @step. ^I attempt to enter (\d+) random latin alphanumeric chars as name on Unique Username page$
      */
-    @When("^I attempt to enter over max allowed (\\d+) chars as name on Unique Username page$")
-    public void IAttemtToEnterMaxAllowedCharsAsName(int count) throws Exception {
-        getUniqueUsernamePage().inputXrandomString(count);
+    @When("^I attempt to enter (\\d+) random latin alphanumeric chars as name on Unique Username page$")
+    public void IAttemtToEnterXRandomCharsAsName(int count) throws Exception {
+        newUniqueName = getUniqueUsernamePage().inputXrandomString(count);
     }
 
     /**

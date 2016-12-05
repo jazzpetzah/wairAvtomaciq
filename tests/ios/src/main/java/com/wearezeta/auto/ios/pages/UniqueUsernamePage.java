@@ -48,8 +48,10 @@ public class UniqueUsernamePage extends IOSPage {
         return getElement(nameSaveButton).isEnabled();
     }
 
-    public void inputXrandomString(int count) throws Exception {
-        inputStringInNameInput(CommonUtils.generateRandomString(count).toLowerCase());
+    public String inputXrandomString(int count) throws Exception {
+        String newUniqueName = CommonUtils.generateRandomString(count).toLowerCase();
+        inputStringInNameInput(newUniqueName);
+        return newUniqueName;
     }
 
     private String getNameInputValue() throws Exception {

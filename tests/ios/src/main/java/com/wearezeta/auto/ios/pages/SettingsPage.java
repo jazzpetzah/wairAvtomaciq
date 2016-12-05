@@ -46,6 +46,9 @@ public class SettingsPage extends IOSPage {
     private static final Function<Integer, String> xpathSreColorByIdx = idx ->
             String.format("%s/XCUIElementTypeCell[%s]", xpathStrColorPicker, idx);
 
+    private static final Function<String, String> xpathStrUniqueUsernameInSettings = name ->
+            String.format("//XCUIElementTypeStaticText[@name='@%s']", name);
+
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -133,5 +136,10 @@ public class SettingsPage extends IOSPage {
     public void selectAccentColor(AccentColor byName) throws Exception {
         final By locator = By.xpath(xpathSreColorByIdx.apply(byName.getId()));
         getElement(locator).click();
+    }
+
+    public boolean isUniqueUsernameInSettingsDisplayed(String uniqueName) throws Exception {
+        By locator = By.xpath(xpathStrUniqueUsernameInSettings.apply(uniqueName));
+        return isLocatorDisplayed(locator);
     }
 }
