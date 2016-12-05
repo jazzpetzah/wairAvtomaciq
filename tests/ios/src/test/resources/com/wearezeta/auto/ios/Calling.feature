@@ -147,7 +147,7 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given User Myself removes his avatar picture
-    Given <Contact>, <Contact2> starts instance using <CallBackend>
+    Given <Contact1>,<Contact2> start instance using <CallBackend>
     Given <Contact1> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
