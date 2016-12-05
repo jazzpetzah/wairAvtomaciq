@@ -883,7 +883,7 @@ Feature: VideoCalling
     And I am signed in properly
     And I open conversation with <Contact>
     When I call
-    Then <Contact> declines call from conversation <Contact>
+    Then <Contact> declines call from conversation <Name>
     And <Contact> starts a video call to me
     And I see video call is minimized
     And I see video button unpressed

@@ -410,11 +410,11 @@ public class CommonWebAppSteps {
                 hashCode(), conversationName, longitudeFloat, latitudeFloat, locationName, zoom, isGroup);
     }
 
-    @When("^User (.*) deletes? the recent (\\d+) messages? (everywhere )?from (user|group conversation) (.*) via device (.*)$")
+    @When("^User (.*) deletes? the recent (\\d+) messages? (everywhere )?in (group|single) conversation (.*) via device (.*)$")
     public void UserXDeleteLastMessage(String userNameAlias, int amount, String deleteEverywhere, String convoType,
             String dstNameAlias, String deviceName)
             throws Exception {
-        boolean isGroup = convoType.equals("group conversation");
+        boolean isGroup = convoType.equals("group");
         boolean isDeleteEverywhere = deleteEverywhere != null;
         for (int deleteCounter = 0; deleteCounter < amount; deleteCounter++) {
             context.getCommonSteps().UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName + context.getTestname().

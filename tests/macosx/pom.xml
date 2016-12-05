@@ -129,7 +129,7 @@
             <properties>
                 <picklejar.tag></picklejar.tag>
                 <picklejar.parallel.max>1</picklejar.parallel.max>
-                <picklejar.steps.package>com.wearezeta.auto.osx.steps,com.wearezeta.auto.web.steps</picklejar.steps.package>
+                <picklejar.steps.packages>com.wearezeta.auto.osx.steps,com.wearezeta.auto.web.steps</picklejar.steps.packages>
                 <picklejar.feature.package>com.wearezeta.auto.osx</picklejar.feature.package>
                 <picklejar.cucumber.report.path>target/</picklejar.cucumber.report.path>
                 <picklejar.screenshot.path>${pictureResultsPath}</picklejar.screenshot.path>
@@ -152,6 +152,7 @@
                                     <target>
                                         <property name="picklejar.tag" value="${picklejar.tag}"/>
                                         <property name="picklejar.feature.package" value="${picklejar.feature.package}"/>
+                                        <property name="picklejar.steps.packages" value="${picklejar.steps.packages}"/>
                                         <property name="picklejar.random" value="${picklejar.random}"/>
                                         <property name="basedir" value="${project.build.directory}" />
                                         <property name="runtime_classpath" refid="maven.runtime.classpath" />
@@ -160,6 +161,7 @@
                                             <arg value="${runtime_classpath}:${basedir}/target/test-classes"/>
                                             <arg value="-Dpicklejar.tag=${picklejar.tag}"/>
                                             <arg value="-Dpicklejar.feature.package=${picklejar.feature.package}"/>
+                                            <arg value="-Dpicklejar.steps.packages=${picklejar.steps.packages}"/>
                                             <arg value="-Dpicklejar.random=${picklejar.random}"/>
                                             <arg value="-Dlog4j.rootLogger=DEBUG"/>
                                             <arg value="com.wire.picklejar.construct.TestClassGenerator"/>
@@ -196,7 +198,7 @@
                             </properties>
                             <systemPropertyVariables>
                                 <picklejar.tag>${picklejar.tag}</picklejar.tag>
-                                <picklejar.steps.package>${picklejar.steps.package}</picklejar.steps.package>
+                                <picklejar.steps.packages>${picklejar.steps.packages}</picklejar.steps.packages>
                                 <picklejar.feature.package>${picklejar.feature.package}</picklejar.feature.package>
                                 <picklejar.parallel.max>${picklejar.parallel.max}</picklejar.parallel.max>
                                 <picklejar.cucumber.report.path>${picklejar.cucumber.report.path}</picklejar.cucumber.report.path>

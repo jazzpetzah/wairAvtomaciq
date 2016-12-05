@@ -60,7 +60,7 @@ Feature: Calling
     And <Contact> verifies to have 1 flow
     And <Contact> verifies to get audio data from me
     And <Contact> verify that all audio flows have greater than 0 bytes
-    And User <Contact> pinged in the conversation with <Contact>
+    And User <Contact> pinged in the conversation with <Name>
     And I see <PING> action in conversation
     And <Contact> verifies to get audio data from me
     And I hang up call with conversation <Contact>
@@ -79,7 +79,7 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     And I open conversation with <Contact1>
-    When User <Contact2> pinged in the conversation with <Contact2>
+    When User <Contact2> pinged in the conversation with <Name>
     And I see conversation <Contact2> is on the top
     And I call
     And I see the outgoing call controls for conversation <Contact1>
@@ -89,10 +89,10 @@ Feature: Calling
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies to get audio data from me
     And <Contact1> verify that all audio flows have greater than 0 bytes
-    When User <Contact2> pinged in the conversation with <Contact2>
+    When User <Contact2> pinged in the conversation with <Name>
     And I see conversation <Contact1> is on the top
     And I hang up call with conversation <Contact1>
-    When User <Contact2> pinged in the conversation with <Contact2>
+    When User <Contact2> pinged in the conversation with <Name>
     And I see conversation <Contact2> is on the top
 
     Examples:
@@ -109,7 +109,7 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     And I open conversation with <Contact1>
-    When User <Contact2> pinged in the conversation with <Contact2>
+    When User <Contact2> pinged in the conversation with <Name>
     And I see conversation <Contact2> is on the top
     Then Soundfile ringing_from_them did not start playing in loop
     And <Contact1> calls me
