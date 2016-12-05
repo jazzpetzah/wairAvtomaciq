@@ -407,8 +407,8 @@ public class CommonUtils {
         return UUID.randomUUID().toString();
     }
 
-    public static String generateRandomString(int lengh) {
-        return RandomStringUtils.randomAlphanumeric(lengh);
+    public static String generateRandomString(int length) {
+        return RandomStringUtils.randomAlphanumeric(length);
     }
 
     public static String generateRandomAlphanumericPlusUnderscoreString(int length) {
