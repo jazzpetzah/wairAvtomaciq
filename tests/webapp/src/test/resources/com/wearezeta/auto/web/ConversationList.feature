@@ -384,7 +384,7 @@ Feature: Conversation List
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     And I open conversation with <Contact1>
-    When Contact <Contact1> sends message <Msg1> to group conversation <Contact1>
+    When Contact <Contact1> sends message <Msg1> to user <Name>
     Then I see text message <Msg1>
     When I click on options button for conversation <Contact1>
     And I click delete in the options popover
@@ -395,7 +395,7 @@ Feature: Conversation List
     And I type <Contact1> in search field of People Picker
     Then I see user <Contact1> found in People Picker
     And I close People Picker
-    When Contact <Contact1> sends message <Msg2> to group conversation <Contact1>
+    When Contact <Contact1> sends message <Msg2> to user <Name>
     Then I see Contact list with name <Contact1>
     And I open conversation with <Contact1>
     And I see text message <Msg2>
