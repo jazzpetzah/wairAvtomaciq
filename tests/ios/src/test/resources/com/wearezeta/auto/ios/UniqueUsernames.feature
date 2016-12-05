@@ -193,3 +193,18 @@ Feature: Unique Usernames
     Examples:
       | Name      | RegularLength | MinLength | MaxLength |
       | user1Name | 6             | 2         | 21        |
+
+  @C352027 @staging @fastLogin
+  Scenario Outline: Verify Settings are opened on choosing generating your own username
+    Given There is 1 user where <Name> is me with no unique user name assigned
+    Given I sign in using my email or phone number
+    When I tap Choose Yours button on Unique Username Takeover page
+    Then I see Unique Username page
+    And I see unique username input is prefilled with <Name> on Unique Username page
+    When I attempt to enter <NewNameLength> random latin alphanumeric chars as name on Unique Username page
+    And I tap Save button on Unique Username page
+    Then I see new previously set unique username is displayed on Settings Page
+
+    Examples:
+      | Name      | NewNameLength |
+      | user1Name | 8             |

@@ -711,6 +711,16 @@ public class CommonIOSSteps {
         }
     }
 
+    @Given("^There \\w+ (\\d+) user[s]* where (.*) is me with no unique user name assigned$")
+    public void ThereAreNUsersWhereXIsMeWithNoUniqueName(int count, String myNameAlias) throws Exception {
+        commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
+        IChangeUserAvatarPicture(myNameAlias, "", "default");
+        final FastLoginContainer flc = FastLoginContainer.getInstance();
+        if (flc.isEnabled()) {
+            updateDriver(flc.executeDriverCreation(usrMgr.getSelfUserOrThrowError()));
+        }
+    }
+
     /**
      * Assign a unique username
      *
