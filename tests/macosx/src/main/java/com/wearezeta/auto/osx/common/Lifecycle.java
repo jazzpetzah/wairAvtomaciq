@@ -20,6 +20,7 @@ import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.pages.RegistrationPage;
+import com.wire.picklejar.gherkin.model.Scenario;
 import com.wire.picklejar.gherkin.model.Step;
 import java.io.File;
 import java.io.IOException;
@@ -144,8 +145,8 @@ public class Lifecycle {
         wrapperContext.getDriver().navigate().to(WIRE_APP_PATH);
     }
 
-    public void setUp(String testname) throws Exception {
-        this.testname = testname;
+    public void setUp(Scenario scenario) throws Exception {
+        this.testname = scenario.getName();
         try {
             startAppium4Mac();
             killAllApps();
@@ -159,7 +160,7 @@ public class Lifecycle {
         startApp();
     }
 
-    public void tearDown(com.wire.picklejar.gherkin.model.Scenario scenario) throws Exception {
+    public void tearDown(Scenario scenario) throws Exception {
         try {
             Set<String> tagSet = scenario.getTags().stream()
                     .map((tag) -> tag.getName())
@@ -172,7 +173,7 @@ public class Lifecycle {
         tearDown();
     }
 
-    private Map<String, String> mapScenario(com.wire.picklejar.gherkin.model.Scenario scenario) {
+    private Map<String, String> mapScenario(Scenario scenario) {
         Map<String, String> stepResultMap = new LinkedHashMap<>();
         for (Step step : scenario.getSteps()) {
             stepResultMap.put(step.getName(), step.getResult().getStatus());
