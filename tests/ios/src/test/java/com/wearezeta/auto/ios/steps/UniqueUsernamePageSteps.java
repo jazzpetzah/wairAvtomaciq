@@ -19,7 +19,7 @@ public class UniqueUsernamePageSteps {
         return pagesCollection.getPage(UniqueUsernamePage.class);
     }
 
-    private String newUniqueName = null;
+    public static String newUniqueName = null;
 
     /**
      * Verify visibility of Unique Username page
@@ -118,19 +118,5 @@ public class UniqueUsernamePageSteps {
                     String.format("Name input after enter of '%s' charset is not empty on Unique Username page", newName),
                     getUniqueUsernamePage().isNameInputEmpty());
         }
-    }
-
-    /**
-     * Verify expected previously set unique username is displayed on Settings page
-     *
-     * @throws Exception
-     * @step. ^I see new unique username is displayed on Settings Page$
-     */
-    @Then("^I see new unique username is displayed on Settings Page$")
-    public void ISeeNewUniqueUsernameOnSettingsPage() throws Exception {
-        if (this.newUniqueName == null) {
-            throw new IllegalStateException("'newUniqueName' variable should be initialised first");
-        }
-        getUniqueUsernamePage().isUniqueUsernameInSettingsDisplayed(this.newUniqueName);
     }
 }

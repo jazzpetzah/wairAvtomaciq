@@ -18,9 +18,6 @@ public class UniqueUsernamePage extends IOSPage {
     private static final By nameSaveButton = MobileBy.AccessibilityId("Save");
     private static final By fbNameUniqueUsernameInput = FBBy.AccessibilityId("handleTextField");
 
-    private static final Function<String, String> xpathStrUniqueUsernameInSettings = name ->
-            String.format("//XCUIElementTypeStaticText[@name='@%s']", name);
-
     public UniqueUsernamePage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -68,10 +65,5 @@ public class UniqueUsernamePage extends IOSPage {
 
     public boolean isNameInputEmpty() throws Exception {
         return getNameInputValue().equals(FBDriverAPI.NULL_VALUE);
-    }
-
-    public boolean isUniqueUsernameInSettingsDisplayed(String uniqueName) throws Exception {
-        By locator = By.xpath(xpathStrUniqueUsernameInSettings.apply(uniqueName));
-        return isLocatorDisplayed(locator);
     }
 }

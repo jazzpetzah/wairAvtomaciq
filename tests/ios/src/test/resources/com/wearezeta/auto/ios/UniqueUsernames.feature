@@ -98,7 +98,7 @@ Feature: Unique Usernames
     And I enter "<MinChars>" name on Unique Username page
     Then I see Save button state is Disabled on Unique Username page
     When I tap Save button on Unique Username page
-    And I attempt to enter <MaxChars> random chars as name on Unique Username page
+    And I attempt to enter <MaxChars> random latin alphanumeric chars as name on Unique Username page
     Then I see that name length is less than <MaxChars> chars on Unique Username page
     And I type unique usernames from the data table and verify they cannot be committed on Unique Username page
       | Charset      | Chars  |
@@ -178,15 +178,15 @@ Feature: Unique Usernames
     Given I tap settings gear button
     Given I select settings item Account
     Given I select settings item Username
-    When I attempt to enter <RegularLength> random chars as name on Unique Username page
+    When I attempt to enter <RegularLength> random latin alphanumeric chars as name on Unique Username page
     And I tap Save button on Unique Username page
     Then I see new unique username is displayed on Settings Page
     When I select settings item Username
-    And I attempt to enter <MinLength> random chars as name on Unique Username page
+    And I attempt to enter <MinLength> random latin alphanumeric chars as name on Unique Username page
     And I tap Save button on Unique Username page
     Then I see new unique username is displayed on Settings Page
     When I select settings item Username
-    And I attempt to enter <MaxLength> random chars as name on Unique Username page
+    And I attempt to enter <MaxLength> random latin alphanumeric chars as name on Unique Username page
     And I tap Save button on Unique Username page
     Then I see new unique username is displayed on Settings Page
 

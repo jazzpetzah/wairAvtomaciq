@@ -259,4 +259,18 @@ public class SettingsPageSteps {
     public void IChangeMyAccentColor(String color) throws Exception {
         getSettingsPage().selectAccentColor(AccentColor.getByName(color));
     }
+
+    /**
+     * Verify expected previously set unique username is displayed on Settings page
+     *
+     * @throws Exception
+     * @step. ^I see new previously set unique username is displayed on Settings Page$
+     */
+    @Then("^I see new previously set unique username is displayed on Settings Page$")
+    public void ISeeNewUniqueUsernameOnSettingsPage() throws Exception {
+        if (UniqueUsernamePageSteps.newUniqueName == null) {
+            throw new IllegalStateException("'newUniqueName' variable should be initialised first");
+        }
+        getSettingsPage().isUniqueUsernameInSettingsDisplayed(UniqueUsernamePageSteps.newUniqueName);
+    }
 }
