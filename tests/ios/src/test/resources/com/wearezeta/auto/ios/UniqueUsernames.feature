@@ -180,15 +180,15 @@ Feature: Unique Usernames
     Given I select settings item Username
     When I attempt to enter <RegularLength> random latin alphanumeric chars as name on Unique Username page
     And I tap Save button on Unique Username page
-    Then I see new unique username is displayed on Settings Page
+    Then I see new previously set unique username is displayed on Settings Page
     When I select settings item Username
     And I attempt to enter <MinLength> random latin alphanumeric chars as name on Unique Username page
     And I tap Save button on Unique Username page
-    Then I see new unique username is displayed on Settings Page
+    Then I see new previously set unique username is displayed on Settings Page
     When I select settings item Username
     And I attempt to enter <MaxLength> random latin alphanumeric chars as name on Unique Username page
     And I tap Save button on Unique Username page
-    Then I see new unique username is displayed on Settings Page
+    Then I see new previously set unique username is displayed on Settings Page
 
     Examples:
       | Name      | RegularLength | MinLength | MaxLength |
