@@ -361,6 +361,8 @@ public final class WebAppLocators {
         
         public static final String cssCancelRequestButton = "#"+idConversation+" [data-uie-name='do-cancel-request']";
 
+        public static final String cssUsername = ".message-connected-username.label-username";
+
         // messages (including images, text, missed call notifications, pings)
         public static final String cssMessage = "[data-uie-name='item-message']";
 
