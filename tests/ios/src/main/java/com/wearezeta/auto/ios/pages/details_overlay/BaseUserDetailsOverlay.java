@@ -21,8 +21,8 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
     );
 
     private static final Function<String, String> xpathStrNameByValue = name ->
-            String.format("//XCUIElementTypeStaticText[@name='name' and @value='%s']", name);
-    private static final By xpathName = By.xpath("//XCUIElementTypeStaticText[@name='name']");
+            String.format("(//XCUIElementTypeStaticText[@name='name' and @value='%s'])[last()]", name);
+    private static final By xpathName = By.xpath("(//XCUIElementTypeStaticText[@name='name'])[last()]");
 
     private static final Function<String, String> xpathStrABNameByName = name ->
             String.format("//XCUIElementTypeStaticText[@name='correlation' and @value='%s']",
@@ -49,7 +49,7 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
         Thread.sleep(1000);
     }
 
-    protected By getUserDetailLocator(String detailName, String expectedValue) {
+    private By getUserDetailLocator(String detailName, String expectedValue) {
         switch (detailName.toLowerCase()) {
             case "name":
                 return By.xpath(xpathStrNameByValue.apply(expectedValue));
@@ -64,7 +64,7 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
         }
     }
 
-    protected By getUserDetailLocator(String detailName) {
+    private By getUserDetailLocator(String detailName) {
         switch (detailName.toLowerCase()) {
             case "name":
                 return xpathName;
