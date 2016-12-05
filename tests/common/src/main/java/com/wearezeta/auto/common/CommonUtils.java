@@ -407,6 +407,11 @@ public class CommonUtils {
         return RandomStringUtils.randomAlphanumeric(lengh);
     }
 
+    public static String generateRandomAlphanumericPlusLowLineString(int length) {
+        String set = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_";
+        return RandomStringUtils.random(length, set);
+    }
+
     public static String generateRandomNumericString(int length) {
         return RandomStringUtils.randomNumeric(length);
     }
