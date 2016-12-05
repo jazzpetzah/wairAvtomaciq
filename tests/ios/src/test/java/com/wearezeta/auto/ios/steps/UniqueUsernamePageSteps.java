@@ -19,7 +19,14 @@ public class UniqueUsernamePageSteps {
         return pagesCollection.getPage(UniqueUsernamePage.class);
     }
 
-    public static String newUniqueName = null;
+    private static String newUniqueName = null;
+
+    public static String getNewUniqueName() {
+        if (newUniqueName == null) {
+            throw new IllegalStateException("'newUniqueName' variable should be initialised first");
+        }
+        return newUniqueName;
+    }
 
     /**
      * Verify visibility of Unique Username page
