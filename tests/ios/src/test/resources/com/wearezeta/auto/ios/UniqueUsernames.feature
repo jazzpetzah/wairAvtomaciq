@@ -91,7 +91,7 @@ Feature: Unique Usernames
     Given I see conversations list
     Given I tap settings gear button
     Given I select settings item Account
-    Given I select settings item @name
+    Given I select settings item Username
     When I enter "<Empty>" name on Unique Username page
     Then I see Save button state is Disabled on Unique Username page
     When I tap Save button on Unique Username page
