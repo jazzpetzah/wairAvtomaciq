@@ -166,6 +166,39 @@ Feature: Usernames
       | user1Email | user1Password | user1Name |   داريا      | darya        |
       | user1Email | user1Password | user1Name | 明麗          | mengli       |
     
+  @C352080 @staging @useSpecialEmail @usernames
+  Scenario Outline: Verify deleting an account release a username
+    Given There are 2 users where <Name2> is me without unique username
+    And User <Name> is me
+    Given I switch to Sign In page
+    Given I remember current page
+    Given I Sign in using login <Email> and password <Password>
+    And I see take over screen
+    And I see name <Name> on take over screen
+    When I click ChooseYourOwn button on take over screen
+    When I change unique username to <UserName>
+    And I click delete account button on settings page
+    And I click send button to delete account
+    And I delete account of user <Name> via email
+    And I navigate to previously remembered page
+    And I see Sign In page
+    When I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    Then the sign in error message reads <Error>
+    When I Sign in using login <Email2> and password <Password>
+    And I am signed in properly
+    And I see take over screen
+    And I see name <Name2> on take over screen
+    When I click ChooseYourOwn button on take over screen
+    Then I see unique username starts with <Name2> in account preferences
+    When I change unique username to <UserName>
+    Then I see unique username starts with <UserName> in account preferences
+
+    Examples:
+      | Email      | Password      | Name      | Error                                     | UserName      | Name2     | Email2     |
+      | user1Email | user1Password | user1Name | Please verify your details and try again. | torelease1086 | user2Name | user2Email |
+
   @C345365 @usernames @staging
   Scenario Outline: Verify new username is synched across the devices
     Given There are 2 users where <NameAlias> is me without unique username
