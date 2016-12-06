@@ -50,7 +50,6 @@ public class GroupInfoPage extends GroupDetailsOverlay implements ICanContainVer
 
     public void setGroupChatName(String name) throws Exception {
         final FBElement nameInputField = (FBElement) getElement(fbNameConversationNameTextField);
-        tapAtTheCenterOfElement(nameInputField);
         this.isKeyboardVisible();
         nameInputField.clear();
         nameInputField.sendKeys(name);
