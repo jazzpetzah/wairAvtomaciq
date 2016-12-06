@@ -14,7 +14,8 @@ import org.openqa.selenium.By;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class GroupInfoPage extends GroupDetailsOverlay implements ICanContainVerificationShield {
-    private static final By nameExitGroupInfoPageButton = MobileBy.AccessibilityId("metaControllerCancelButton");
+    private static final By nameExitGroupInfoPageButton =
+            MobileBy.AccessibilityId("metaControllerCancelButton");
 
     private static final String strNameConversationNameTextField = "ParticipantsView_GroupName";
     private static final By fbNameConversationNameTextField =
@@ -26,15 +27,16 @@ public class GroupInfoPage extends GroupDetailsOverlay implements ICanContainVer
     private static final Function<String, String> xpathStrConversationNameByExpr = expr ->
             String.format("//*[@name='%s' and %s]", strNameConversationNameTextField, expr);
 
-    private static final By nameAlsoLeaveCheckbox = MobileBy.AccessibilityId("ALSO LEAVE THE CONVERSATION");
+    private static final By nameAlsoLeaveCheckbox =
+            MobileBy.AccessibilityId("ALSO LEAVE THE CONVERSATION");
 
     private static final Function<Integer, String> nameStrNumberPeopleByCount =
             count -> String.format("%s PEOPLE", count);
 
     private static final Function<String, String> xpathPeopleViewCollectionCellByName = name ->
-            String.format("//XCUIElementTypeButton[@name='metaControllerCancelButton']/following::" +
+            String.format("//XCUIElementTypeTextView[@name='%s']/following::" +
                             "XCUIElementTypeCell[ ./XCUIElementTypeStaticText[@name='%s'] ]",
-                    name.toUpperCase());
+                    strNameConversationNameTextField, name.toUpperCase());
 
     private static final By xpathNameParticipantAvatarCell =
             By.xpath("//XCUIElementTypeCollectionView/XCUIElementTypeCell[ ./XCUIElementTypeStaticText ]");
