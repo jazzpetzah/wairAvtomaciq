@@ -196,7 +196,8 @@ Feature: Unique Usernames
 
   @C352027 @staging @fastLogin
   Scenario Outline: Verify Settings are opened on choosing generating your own username
-    Given There is 1 user where <Name> is me with no unique user name assigned
+    Given There is 1 user
+    Given User <Name> is me
     Given I sign in using my email or phone number
     When I tap Choose Yours button on Unique Username Takeover page
     Then I see Unique Username page

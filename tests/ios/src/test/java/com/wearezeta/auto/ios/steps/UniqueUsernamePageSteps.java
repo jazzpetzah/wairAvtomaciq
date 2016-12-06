@@ -137,6 +137,7 @@ public class UniqueUsernamePageSteps {
     @Then("^I see unique username input is prefilled with (.*) on Unique Username page$")
     public void ISeeUniqueUsernameInputIsPrefilledWith(String nameAlias) throws Exception {
         final String name = usrMgr.replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
-        Assert.assertTrue(getUniqueUsernamePage().getNameInputValue().equals(name));
+        Assert.assertTrue(String.format("Unique username is not prefilled with %s", name),
+                getUniqueUsernamePage().getNameInputValue().equals(name));
     }
 }
