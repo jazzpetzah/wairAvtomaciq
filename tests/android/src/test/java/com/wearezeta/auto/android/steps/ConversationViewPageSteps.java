@@ -1433,7 +1433,6 @@ public class ConversationViewPageSteps {
      */
     @Then("^I wait up to (\\d+) seconds? until audio message play is started$")
     public void IWaitForAudioMessagePlay(int timeoutSeconds) throws Exception {
-        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         final BufferedImage pauseBntInitialState = ImageUtil.readImageFromFile(
                 AndroidCommonUtils.getImagesPathFromConfig(AndroidCommonUtils.class)
                         + "android_audio_msg_pause_btn.png");
