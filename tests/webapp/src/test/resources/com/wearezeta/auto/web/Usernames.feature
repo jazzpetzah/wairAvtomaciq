@@ -165,7 +165,7 @@ Feature: Usernames
       | user1Email | user1Password | user1Name | Даша         | dasha        |
       | user1Email | user1Password | user1Name |   داريا      | darya        |
       | user1Email | user1Password | user1Name | 明麗          | mengli       |
-    
+
   @C352080 @staging @useSpecialEmail @usernames
   Scenario Outline: Verify deleting an account release a username
     Given There are 2 users where <Name2> is me without unique username
@@ -215,9 +215,9 @@ Feature: Usernames
     When I click TakeThisOne button on take over screen
     And I open preferences by clicking the gear button
     Then I see unique username starts with <Username> in account preferences
-    When User <NameAlias> updates the unique user name to "<NewUsername>" via device Device1
+    When User <NameAlias> updates the unique user name to the one started with "<NewUsername>" via device Device1
     Then I see unique username starts with <NewUsername> in account preferences
-    When User <NameAlias> updates the unique user name to "<Username>" via device Device1
+    When User <NameAlias> updates the unique user name to the one started with "<Username>" via device Device1
     Then I see unique username starts with <Username> in account preferences
 
     Examples:

@@ -27,6 +27,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -675,5 +676,12 @@ public class CommonWebAppSteps {
     @Given("^User (.*) updates? the unique user name to \"(.*)\"(?: via device (.*))?")
     public void UserXUpdateUniqueUserName(String userNameAlias, String uniqueUserName, String deviceName) throws Exception {
         context.getCommonSteps().UpdateUniqueUsername(userNameAlias, uniqueUserName, deviceName);
+    }
+
+    @Given("^User (.*) updates? the unique user name to the one started with \"(.*)\"(?: via device (.*))?")
+    public void UserXUpdateUniqueUserNameAndRandom(String userNameAlias, String uniqueUserName, String deviceName) throws Exception {
+        Random rand = new Random();
+        String uniqUserName = uniqueUserName + rand.nextInt(5);
+        context.getCommonSteps().UpdateUniqueUsername(userNameAlias, uniqUserName, deviceName);
     }
 }
