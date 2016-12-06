@@ -144,12 +144,13 @@ Feature: Usernames
     Given User <NameAlias> changes name to <Name>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
-    And I see take over screen
-    And I see name <NameAlias> on take over screen
-    And I see unique username starts with <NameAlias> on take over screen
-    When I click ChooseYourOwn button on take over screen
+    Then I see unique username starts with <Name> in account preferences
+    When User <NameAlias> updates the unqiue user name to <NewName> via device Device1
     Then I see unique username starts with <NameAlias> in account preferences
+    When User <NameAlias> updates the unqiue user name to <Name> via device Device1
+    Then I see unique username starts with <Name> in account preferences
+
 
     Examples:
-      | Email      | Password      | NameAlias | Name         |
-      | user1Email | user1Password | user1Name | Jack Johnson |
+      | Email      | Password      | NameAlias | UserName | NewUserName  |
+      | user1Email | user1Password | user1Name | ohnson   | s123aram5r1e |
