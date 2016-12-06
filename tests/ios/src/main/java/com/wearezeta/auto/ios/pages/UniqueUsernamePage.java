@@ -1,21 +1,23 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBDriverAPI;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 
 public class UniqueUsernamePage extends IOSPage {
 
     private static final By namePageHeader = MobileBy.AccessibilityId("Username");
     private static final By nameSaveButton = MobileBy.AccessibilityId("Save");
-    private static final By fbNameUniqueUsernameInput = FBBy.AccessibilityId("handleTextField");
+    private static final By nameUniqueUsernameInput = MobileBy.AccessibilityId("handleTextField");
+    private static final Function<String, String> xpathStrErrorLabelByText = text ->
+            String.format("//XCUIElementTypeStaticText[@value='%s']", text);
 
     public UniqueUsernamePage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -35,7 +37,7 @@ public class UniqueUsernamePage extends IOSPage {
     }
 
     public void inputStringInNameInput(String name) throws Exception {
-        final FBElement el = ((FBElement) getElement(fbNameUniqueUsernameInput));
+        final WebElement el = getElement(nameUniqueUsernameInput);
         el.clear();
         el.sendKeys(name);
     }
@@ -44,14 +46,14 @@ public class UniqueUsernamePage extends IOSPage {
         return getElement(nameSaveButton).isEnabled();
     }
 
-    public String inputXrandomString(int count) throws Exception {
+    public String inputXCharsRandomString(int count) throws Exception {
         String newUniqueName = CommonUtils.generateRandomAlphanumericPlusUnderscoreString(count).toLowerCase();
         inputStringInNameInput(newUniqueName);
         return newUniqueName;
     }
 
     public String getNameInputValue() throws Exception {
-        return ((FBElement) getElement(fbNameUniqueUsernameInput)).getText();
+        return getElement(nameUniqueUsernameInput).getText();
     }
 
     public int getNameInputTextLength() throws Exception {
@@ -64,5 +66,10 @@ public class UniqueUsernamePage extends IOSPage {
 
     public boolean isPageHeaderVisible() throws Exception {
         return isLocatorDisplayed(namePageHeader);
+    }
+
+    public boolean isErrorLabelVisible(String expectedLabel) throws Exception {
+        final By locator = By.xpath(xpathStrErrorLabelByText.apply(expectedLabel));
+        return isLocatorDisplayed(locator);
     }
 }
