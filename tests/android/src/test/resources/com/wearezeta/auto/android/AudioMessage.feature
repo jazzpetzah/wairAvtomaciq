@@ -107,6 +107,7 @@ Feature: Audio Message
     And I long tap Audio message button <TapDuration> seconds from cursor toolbar
     And I tap audio recording Send button
     Then I see Audio Message container in the conversation view
+    Then I see Message status with expected text "<MessageStatusFailed>" in conversation view
     When I remember the state of Retry button on the recent audio message in the conversation view
     And I disable Airplane mode on the device
     And I do not see No Internet bar in <NetworkTimeout> seconds
@@ -118,8 +119,8 @@ Feature: Audio Message
     Then I wait up to <PlayTimeout> seconds until audio message play is started
 
     Examples:
-      | Name      | Contact   | TapDuration | NetworkTimeout | UploadTimeout | PlayTimeout |
-      | user1Name | user2Name | 5           | 45             | 60            | 10          |
+      | Name      | Contact   | MessageStatusFailed    | TapDuration | NetworkTimeout | UploadTimeout | PlayTimeout |
+      | user1Name | user2Name | Sending failed. Resend | 5           | 45             | 60            | 10          |
 
   @C131177 @regression @rc @legacy
   Scenario Outline: Verify playing and cancelling recorded audio message
