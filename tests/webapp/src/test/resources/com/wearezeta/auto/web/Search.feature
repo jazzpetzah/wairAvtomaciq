@@ -193,7 +193,7 @@ Feature: Search
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | Message1 |
 
   @C1802 @smoke
-  Scenario Outline: Verify you can search by email
+  Scenario Outline: Verify you can not search by email
     Given There are 2 users where <Name> is me
     Given User <Name2> changes unique username to <Name2>
     Given I switch to Sign In page
@@ -204,7 +204,7 @@ Feature: Search
     When I see Search is opened
     And I see Bring Your Friends or Invite People button
     And I type <Email2> in search field of People Picker
-    Then I see user <Name2> found in People Picker
+    Then I do not see user <Name2> found in People Picker
 
     Examples: 
       | Login      | Password      | Name      | Name2     | Email2     |
