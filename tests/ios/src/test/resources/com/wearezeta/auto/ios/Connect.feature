@@ -312,7 +312,7 @@ Feature: Connect
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact3> on Group info page
-    And I see <Contact3> name on Group participant Pending incoming connection page
+    And I see name "<Contact3>" on Group participant Pending incoming connection page
     And I tap Connect button on Group participant Pending incoming connection page
     And I decline Connect conversation action
     And I tap X button on Group info page

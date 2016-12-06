@@ -1,20 +1,18 @@
 package com.wearezeta.auto.ios.pages.details_overlay.single;
 
 import java.util.concurrent.Future;
-import java.util.function.Function;
 
 import com.wearezeta.auto.ios.pages.details_overlay.BasePendingIncomingConnectionPage;
-import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class SinglePendingUserIncomingConnectionPage extends BasePendingIncomingConnectionPage {
     private static final By xpathPendingRequestIgnoreButton =
-            By.xpath("(//XCUIElementTypeButton[@name='ignore'])[last()]");
+            By.xpath("(//XCUIElementTypeButton[@name='ignore' or @name='IGNORE'])[last()]");
 
     private static final By xpathPendingRequestConnectButton =
-            By.xpath("(//XCUIElementTypeButton[@name='accept'])[last()]");
+            By.xpath("(//XCUIElementTypeButton[@name='accept' or @name='CONNECT'])[last()]");
 
     public SinglePendingUserIncomingConnectionPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
