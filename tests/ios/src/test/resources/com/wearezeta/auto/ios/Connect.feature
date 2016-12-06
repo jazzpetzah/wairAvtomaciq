@@ -16,8 +16,9 @@ Feature: Connect
     And I tap Connect button on Single user Pending outgoing connection page
     And I tap X button on Search UI page
     Then I see first item in contact list named <Contact>
-    And I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message in the conversation view
+    When I tap on contact name <Contact>
+    Then I see name "<Contact>" on Single user Pending outgoing connection page
+    And I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
       | Name      | Contact   | Contact2  |

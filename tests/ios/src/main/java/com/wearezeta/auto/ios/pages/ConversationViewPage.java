@@ -89,16 +89,11 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By namePlayButton = MobileBy.AccessibilityId("mediaBarPlayButton");
 
-    private static final By namePauseButton = MobileBy.AccessibilityId("mediaBarPauseButton");
-
     private static final By nameTitle = MobileBy.AccessibilityId("playingMediaTitle");
 
     private static final Function<String, String> xpathStrMissedCallButtonByContact = name ->
             String.format("//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[@value='%s CALLED'] ]" +
                     "//XCUIElementTypeButton[@name='ConversationMissedCallButton']", name.toUpperCase());
-
-    private static final Function<String, String> xpathStrConnectingToUserLabelByName = name -> String.format(
-            "//XCUIElementTypeStaticText[contains(@value, 'CONNECTING TO %s.')]", name.toUpperCase());
 
     private static final By xpathStrMissedCallButtonByYourself =
             By.xpath(xpathStrMissedCallButtonByContact.apply("you"));
@@ -355,18 +350,6 @@ public class ConversationViewPage extends IOSPage {
         return isLocatorDisplayed(locator);
     }
 
-    private boolean isMediaBarPauseButtonVisible() throws Exception {
-        return isLocatorDisplayed(namePauseButton, 3);
-    }
-
-    private void clickMediaBarPauseButton() throws Exception {
-        getElement(namePauseButton, "Pause button is not visible on media bar").click();
-    }
-
-    public void pauseMediaContent() throws Exception {
-        clickMediaBarPauseButton();
-    }
-
     private boolean isMediaBarPlayButtonVisible() throws Exception {
         return isLocatorDisplayed(namePlayButton, 3);
     }
@@ -385,15 +368,6 @@ public class ConversationViewPage extends IOSPage {
                 .collect(Collectors.toList()));
         final By locator = By.xpath(xpathStrToolbarByExpr.apply(xpathExpr));
         return isLocatorDisplayed(locator);
-    }
-
-    public String getMediaStateFromMediaBar() throws Exception {
-        if (isMediaBarPlayButtonVisible()) {
-            return MEDIA_STATE_PAUSED;
-        } else if (isMediaBarPauseButtonVisible()) {
-            return MEDIA_STATE_PLAYING;
-        }
-        return MEDIA_STATE_STOPPED;
     }
 
     public void tapOnMediaBar() throws Exception {
@@ -433,11 +407,6 @@ public class ConversationViewPage extends IOSPage {
 
     public void typeMessage(String message) throws Exception {
         typeMessage(message, false);
-    }
-
-    public boolean isPendingOutgoingConnectionVisible(String toUserName) throws Exception {
-        final By locator = By.xpath(xpathStrConnectingToUserLabelByName.apply(toUserName));
-        return isLocatorDisplayed(locator);
     }
 
     public boolean isShieldIconVisible() throws Exception {

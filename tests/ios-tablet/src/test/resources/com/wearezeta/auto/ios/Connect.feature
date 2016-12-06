@@ -18,9 +18,8 @@ Feature: Connect
     And I tap X button on Search UI page
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message in the conversation view
-    When I open conversation details
     Then I see name "<Contact>" on Single user Pending outgoing connection page
+    And I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -43,10 +42,9 @@ Feature: Connect
     And I tap Connect button on Single user Pending outgoing connection page
     And I tap X button on Search UI page
     Then I see first item in contact list named <Contact>
-    And I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message in the conversation view
-    When I open conversation details
+    When I tap on contact name <Contact>
     Then I see name "<Contact>" on Single user Pending outgoing connection page
+    And I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -207,8 +205,8 @@ Feature: Connect
     Given I see conversations list
     And I see conversation <Contact> in conversations list
     When I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message in the conversation view
-    Then I do not see text input in conversation view
+    Then I see name "<Contact>" on Single user Pending outgoing connection page
+    And I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -224,8 +222,8 @@ Feature: Connect
     Given I see conversations list
     And I see conversation <Contact> in conversations list
     When I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message in the conversation view
-    Then I do not see text input in conversation view
+    Then I see name "<Contact>" on Single user Pending outgoing connection page
+    And I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -635,7 +633,7 @@ Feature: Connect
     And I long tap on text input
     And I tap on Paste badge item
     And I tap Send Message button in conversation view
-    Then I see last message in the conversation view contains expected message MyEmail
+    Then I see link preview container in the conversation view
 
     Examples:
       | Name      | Contact   |

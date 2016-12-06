@@ -193,6 +193,8 @@ public class ConversationsListPage extends IOSPage {
 
     public void openArchivedConversations() throws Exception {
         tapElementWithRetryIfStillDisplayed(nameOpenArchiveButton);
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     public boolean isArchiveButtonVisible() throws Exception {
