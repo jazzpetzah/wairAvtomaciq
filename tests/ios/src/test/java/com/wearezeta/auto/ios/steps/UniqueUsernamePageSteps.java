@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.SettingsPage;
 import com.wearezeta.auto.ios.pages.UniqueUsernamePage;
 import cucumber.api.DataTable;
 import cucumber.api.java.en.Then;
@@ -88,7 +87,7 @@ public class UniqueUsernamePageSteps {
      */
     @When("^I attempt to enter (\\d+) random latin alphanumeric chars as name on Unique Username page$")
     public void IAttemtToEnterXRandomCharsAsName(int count) throws Exception {
-        newUniqueName = getUniqueUsernamePage().inputXrandomString(count);
+        newUniqueName = getUniqueUsernamePage().inputXCharsRandomString(count);
     }
 
     /**
@@ -139,5 +138,17 @@ public class UniqueUsernamePageSteps {
         final String name = usrMgr.replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("Unique username is not prefilled with %s", name),
                 getUniqueUsernamePage().getNameInputValue().equals(name));
+    }
+
+    /**
+     * Verify error label presence
+     *
+     * @param expectedLabel the expected error label
+     * @step. ^I see "(.*)" error label on Unique Username page$
+     */
+    @Then("^I see \"(.*)\" error label on Unique Username page$")
+    public void ISeeErrorLabel(String expectedLabel) throws Exception {
+        Assert.assertTrue(String.format("Error label '%s' is not shown", expectedLabel),
+                getUniqueUsernamePage().isErrorLabelVisible(expectedLabel));
     }
 }

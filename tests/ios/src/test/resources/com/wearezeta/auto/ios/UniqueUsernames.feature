@@ -104,7 +104,7 @@ Feature: Unique Usernames
       | Charset      | Chars  |
       | Cyrillic     | МоёИмя |
       | Arabic       | اسمي   |
-      | Chinese      | 我的名字|
+      | Chinese      | 我的名字   |
       | SpecialChars | %^&@#$ |
 
     Examples:
@@ -194,7 +194,7 @@ Feature: Unique Usernames
       | Name      | RegularLength | MinLength | MaxLength |
       | user1Name | 6             | 2         | 21        |
 
-  @C352027 @staging @fastLogin
+  @C352027 @staging
   Scenario Outline: Verify Settings are opened on choosing generating your own username
     Given There is 1 user
     Given User <Name> is me
@@ -209,3 +209,18 @@ Feature: Unique Usernames
     Examples:
       | Name      | NewNameLength |
       | user1Name | 8             |
+
+  @C352042 @staging
+  Scenario Outline: Verify username is unique
+    Given There are 2 users
+    Given User <Name> is me
+    Given User <Contact> changes the unique username to "<MyUniqueUsername>"
+    Given I sign in using my email or phone number
+    When I tap Choose Yours button on Unique Username Takeover page
+    And I enter "<MyUniqueUsername>" name on Unique Username page
+    Then I see Save button state is Disabled on Unique Username page
+    And I see "<ExpectedText>" error label on Unique Username page
+
+    Examples:
+      | Name      | MyUniqueUsername    | Contact   | ExpectedText  |
+      | user1Name | user1UniqueUsername | user2Name | Already taken |
