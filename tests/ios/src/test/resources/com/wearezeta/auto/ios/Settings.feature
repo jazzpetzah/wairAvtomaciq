@@ -270,6 +270,7 @@ Feature: Settings
     Given User <Name> sets the unique username
     Given I tap Share Contacts button on Share Contacts overlay
     Given I accept alert if visible
+    Given I dismiss settings warning if visible
     Given I see conversations list
     Given I tap settings gear button
     Given I select settings item Account

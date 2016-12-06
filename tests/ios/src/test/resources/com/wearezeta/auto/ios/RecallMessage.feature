@@ -79,7 +79,7 @@ Feature: Recall Message
     And I select the first picture from Keyboard Gallery
     And I tap Confirm button on Picture preview page
     # Wait until the picture is loaded
-    And I wait for 3 seconds
+    And I wait for 5 seconds
     And I see 1 photo in the conversation view
     And User <Contact> remembers the recent message from user Myself via device <HisDevice>
     And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>
