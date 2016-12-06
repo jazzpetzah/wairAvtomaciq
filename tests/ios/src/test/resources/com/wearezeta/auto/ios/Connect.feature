@@ -71,10 +71,11 @@ Feature: Connect
     Given Myself is connected to <Contact4>
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I tap Incoming Pending Requests item in conversations list
+    When I tap Incoming Pending Requests item in conversations list
     And I tap Ignore button on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
+    And I navigate back to conversations list
     And I do not see Pending request link in conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search UI
@@ -126,7 +127,7 @@ Feature: Connect
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Single user Pending outgoing connection page
     And I tap on conversation <Contact> in search result
-    And I see <Contact> name on Single user Pending outgoing connection page
+    And I see name "<Contact>" on Single user Pending outgoing connection page
     And I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
@@ -311,9 +312,9 @@ Feature: Connect
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact3> on Group info page
-    And I see <Contact3> name on Group participant Pending incoming connection page
+    And I see name "<Contact3>" on Group participant Pending incoming connection page
     And I tap Connect button on Group participant Pending incoming connection page
-    And I tap Ignore button on Single user Pending incoming connection page
+    And I decline Connect conversation action
     And I tap X button on Group info page
     And I navigate back to conversations list
     # Workaround for ZIOS-4985
@@ -392,7 +393,7 @@ Feature: Connect
     Given I see conversations list
     When I tap Incoming Pending Requests item in conversations list
     Then I see Connect button on Single user Pending incoming connection page
-    And I see <NewName> name on Single user Pending incoming connection page
+    And I see name "<NewName>" on Single user Pending incoming connection page
 
     Examples:
       | Name      | Contact   | NewName  |

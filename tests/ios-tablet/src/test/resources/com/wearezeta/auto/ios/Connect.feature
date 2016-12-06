@@ -20,7 +20,7 @@ Feature: Connect
     And I tap on contact name <Contact>
     And I see Pending Connect to <Contact> message in the conversation view
     When I open conversation details
-    Then I see <Contact> name on Single user Pending outgoing connection page
+    Then I see name "<Contact>" on Single user Pending outgoing connection page
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -46,7 +46,7 @@ Feature: Connect
     And I tap on contact name <Contact>
     And I see Pending Connect to <Contact> message in the conversation view
     When I open conversation details
-    Then I see <Contact> name on Single user Pending outgoing connection page
+    Then I see name "<Contact>" on Single user Pending outgoing connection page
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -306,7 +306,7 @@ Feature: Connect
     And I tap input field on Search UI page
     And I type "<Contact>" in Search UI input field
     And I tap on conversation <Contact> in search result
-    Then I see <Contact> name on Single user Pending outgoing connection page
+    Then I see name "<Contact>" on Single user Pending outgoing connection page
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -482,7 +482,7 @@ Feature: Connect
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
     And I tap Connect button on Group participant Pending incoming connection page
-    And I tap Ignore button on Single user Pending incoming connection page
+    And I decline Connect conversation action
     And I dismiss popover on iPad
     And I navigate back to conversations list
     # Workaround for ZIOS-4985
@@ -509,7 +509,7 @@ Feature: Connect
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
     And I tap Connect button on Group participant Pending incoming connection page
-    And I tap Ignore button on Single user Pending incoming connection page
+    And I decline Connect conversation action
     And I dismiss popover on iPad
     # Workaround for ZIOS-4985
     # Then I do not see Pending request link in conversations list
@@ -545,7 +545,7 @@ Feature: Connect
     Given I see conversations list
     When I tap Incoming Pending Requests item in conversations list
     Then I see Connect button on Single user Pending incoming connection page
-    And I see <NewName> name on Single user Pending incoming connection page
+    And I see name "<NewName>" on Single user Pending incoming connection page
 
     Examples:
       | Name      | Contact   | NewName  |
@@ -561,7 +561,7 @@ Feature: Connect
     Given I see conversations list
     When I tap Incoming Pending Requests item in conversations list
     Then I see Connect button on Single user Pending incoming connection page
-    And I see <NewName> name on Single user Pending incoming connection page
+    And I see name "<NewName>" on Single user Pending incoming connection page
 
     Examples:
       | Name      | Contact   | NewName  |

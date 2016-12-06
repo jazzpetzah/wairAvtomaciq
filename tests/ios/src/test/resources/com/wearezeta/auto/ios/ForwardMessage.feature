@@ -123,12 +123,12 @@ Feature: Forward Message
     Given User Me sends 1 encrypted message to user <Contact1>
     Given I see conversations list
     Given I tap on contact name <Contact1>
-# Small wait to make the appearence of button on jenkins more stable
+    # Small wait to make the appearence of button on jenkins more stable
     Given I wait for 3 seconds
     When I long tap on audio message placeholder in conversation view
     Then I do not see Forward badge item
     When I tap Play audio message button
-# Small wait to make sure download is completed
+    # Small wait to make sure download is completed
     And I wait for 5 seconds
     And I long tap on audio message placeholder in conversation view
     And I tap on Forward badge item
@@ -149,15 +149,14 @@ Feature: Forward Message
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given User <Contact1> sends file <FileName> having MIME type <MIMEType> to single user conversation <Name> using device <DeviceName>
-    #Given User Me sends 1 encrypted message to user <Contact1>
+    # Given User Me sends 1 encrypted message to user <Contact1>
     Given I see conversations list
     Given I tap on contact name <Contact1>
-# Small wait to make the appearence of button on jenkins more stable
+    # Small wait to make the appearence of button on jenkins more stable
     Given I wait for 3 seconds
-# Have to tap play video message to download video. Otherwise Forward button is missing.
+    # Have to tap play video message to download video. Otherwise Forward button is missing.
     Given I tap on video message in conversation view
     Given I do not see video message container in the conversation view
-    Given I see video message player page is opened
     Given I tap Done button on video message player page
     When I long tap on video message in conversation view
     And I tap on Forward badge item

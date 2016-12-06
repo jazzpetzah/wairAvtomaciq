@@ -54,7 +54,7 @@ public class GroupInfoPageSteps {
 
     @Then("^I see that the conversation name contains users? (.*)$")
     public void IVerifyCorrectConversationName(String nameAliases) throws Exception {
-        final List<String> expectedNames = CommonSteps.splitAliases(nameAliases).stream().
+        final List<String> expectedNames = usrMgr.splitAliases(nameAliases).stream().
                 map(x -> usrMgr.replaceAliasesOccurences(x, ClientUsersManager.FindBy.NAME_ALIAS)).
                 collect(Collectors.toList());
         Assert.assertTrue(String.format("Group conversation name does not contain all the aliases from '%s'",

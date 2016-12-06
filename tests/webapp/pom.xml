@@ -61,7 +61,7 @@
         <dependency>
             <groupId>com.wire</groupId>
             <artifactId>picklejar</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.2-SNAPSHOT</version>
         </dependency>
         
     </dependencies>
@@ -114,7 +114,7 @@
             <properties>
                 <picklejar.tag></picklejar.tag>
                 <picklejar.parallel.max>2</picklejar.parallel.max>
-                <picklejar.steps.package>com.wearezeta.auto.web.steps</picklejar.steps.package>
+                <picklejar.steps.packages>com.wearezeta.auto.web.steps</picklejar.steps.packages>
                 <picklejar.feature.package>com.wearezeta.auto.web</picklejar.feature.package>
                 <picklejar.cucumber.report.path>target/</picklejar.cucumber.report.path>
                 <picklejar.screenshot.path>${pictureResultsPath}</picklejar.screenshot.path>
@@ -161,14 +161,14 @@
                                 <configuration>
                                     <target>
                                         <property name="picklejar.feature.package" value="${picklejar.feature.package}"/>
-                                        <property name="picklejar.steps.package" value="${picklejar.steps.package}"/>
+                                        <property name="picklejar.steps.packages" value="${picklejar.steps.packages}"/>
                                         <property name="basedir" value="${project.build.directory}" />
                                         <property name="runtime_classpath" refid="maven.runtime.classpath" />
                                         <exec executable="java" spawn="false">
                                             <arg value="-classpath"/>
                                             <arg value="${runtime_classpath}:${basedir}/target/test-classes"/>
                                             <arg value="-Dpicklejar.feature.package=${picklejar.feature.package}"/>
-                                            <arg value="-Dpicklejar.steps.package=${picklejar.steps.package}"/>
+                                            <arg value="-Dpicklejar.steps.packages=${picklejar.steps.packages}"/>
                                             <arg value="-Dlog4j.rootLogger=DEBUG"/>
                                             <arg value="com.wire.picklejar.construct.UnusedStepChecker"/>
                                         </exec>  
@@ -210,7 +210,7 @@
                             </properties>
                             <systemPropertyVariables>
                                 <picklejar.tag>${picklejar.tag}</picklejar.tag>
-                                <picklejar.steps.package>${picklejar.steps.package}</picklejar.steps.package>
+                                <picklejar.steps.packages>${picklejar.steps.packages}</picklejar.steps.packages>
                                 <picklejar.feature.package>${picklejar.feature.package}</picklejar.feature.package>
                                 <picklejar.parallel.max>${picklejar.parallel.max}</picklejar.parallel.max>
                                 <picklejar.cucumber.report.path>${picklejar.cucumber.report.path}</picklejar.cucumber.report.path>

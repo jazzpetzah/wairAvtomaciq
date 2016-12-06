@@ -6,7 +6,6 @@ import java.util.Map;
 
 import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.android.pages.UnknownUserDetailsPage;
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -301,7 +300,7 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @Then("^I see the correct participant avatars for (.*)$")
     public void ISeeCorrectParticipantAvatars(String contacts) throws Exception {
-        for (String contactName : CommonSteps.splitAliases(contacts)) {
+        for (String contactName : usrMgr.splitAliases(contacts)) {
             contactName = usrMgr.findUserByNameOrNameAlias(contactName).getName();
             Assert.assertTrue(String.format("The avatar for '%s' is not visible", contactName),
                     getOtherUserPersonalInfoPage().isParticipantAvatarVisible(contactName));
@@ -317,7 +316,7 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @Then("^I see the verified participant avatars? for (.*)$")
     public void ISeeVerifiedParticipantAvatars(String contacts) throws Exception {
-        for (String contactName : CommonSteps.splitAliases(contacts)) {
+        for (String contactName : usrMgr.splitAliases(contacts)) {
             contactName = usrMgr.findUserByNameOrNameAlias(contactName).getName();
             Assert.assertTrue(String.format("The verified avatar for '%s' is not visible", contactName),
                     getOtherUserPersonalInfoPage().isVerifiedParticipantAvatarVisible(contactName));

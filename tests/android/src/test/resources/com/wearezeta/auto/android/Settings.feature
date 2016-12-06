@@ -35,7 +35,7 @@ Feature: Settings
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with no conversations
-    When I take screenshot
+    When I remember Conversations list background
     And I tap conversations list settings button
     And I select "Account" settings menu item
     And I select "Picture" settings menu item
@@ -43,7 +43,7 @@ Feature: Settings
     And I tap Confirm button on Take Picture view
     And I tap Back button
     And I tap Back button
-    Then I verify the previous and the current screenshots are different
+    Then I verify Conversations list backgroud is changed
 
     Examples:
       | Name      |
@@ -71,7 +71,7 @@ Feature: Settings
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with no conversations
-    When I take screenshot
+    When I remember Conversations list background
     And I tap conversations list settings button
     And I select "Account" settings menu item
     And I select "Picture" settings menu item
@@ -79,7 +79,7 @@ Feature: Settings
     And I tap Confirm button on Take Picture view
     And I tap Back button
     And I tap Back button
-    Then I verify the previous and the current screenshots are different
+    Then I verify Conversations list backgroud is changed
 
     Examples:
       | Name      |

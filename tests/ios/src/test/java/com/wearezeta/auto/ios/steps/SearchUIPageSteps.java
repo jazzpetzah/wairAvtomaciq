@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import cucumber.api.java.en.And;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -168,6 +169,18 @@ public class SearchUIPageSteps {
     @When("^I tap (X|Unblock|Send Invite|Copy Invite|(?:Close|Clear) Group Participants Picker) button on Search UI page$")
     public void ITapButton(String btnName) throws Exception {
         getSearchUIPage().tapButton(btnName);
+    }
+
+    /**
+     * Clear the text from search input field
+     *
+     * @step. ^I clear search input on Search UI page$
+     *
+     * @throws Exception
+     */
+    @And("^I clear search input on Search UI page$")
+    public void IClearSearchInput() throws Exception {
+        getSearchUIPage().clearSearchInput();
     }
 
     /**

@@ -9,17 +9,17 @@ Feature: Usernames
     When I Sign in using login <Email> and password <Password>
     And I see take over screen
     And I see name <NameAlias> on take over screen
-    And I see unique username starts with <NameAlias> on take over screen
+    And I see unique username starts with <Username> on take over screen
     And I see ChooseYourOwn button on take over screen
     And I see TakeThisOne button on take over screen
     When I click TakeThisOne button on take over screen
     Then I see conversation with <Contact> is selected in conversations list
     When I open preferences by clicking the gear button
-    Then I see unique username starts with <NameAlias> in account preferences
+    Then I see unique username starts with <Username> in account preferences
 
     Examples:
-      | Email      | Password      | NameAlias | Name         | Contact   |
-      | user1Email | user1Password | user1Name | Jack Johnson | user2Name |
+      | Email      | Password      | NameAlias | Name         | Contact   | Username    |
+      | user1Email | user1Password | user1Name | Jack Johnson | user2Name | jackjohnson |
 
   @C343172 @usernames @staging @useSpecialEmail
   Scenario Outline: Verify new user has a take over screen with offered username
@@ -32,16 +32,16 @@ Feature: Usernames
     When I activate user by URL
     And I see take over screen
     And I see name <NameAlias> on take over screen
-    And I see unique username starts with <NameAlias> on take over screen
+    And I see unique username starts with <Username> on take over screen
     And I see ChooseYourOwn button on take over screen
     And I see TakeThisOne button on take over screen
     When I click TakeThisOne button on take over screen
     When I open preferences by clicking the gear button
-    Then I see unique username starts with <NameAlias> in account preferences
+    Then I see unique username starts with <Username> in account preferences
 
     Examples:
-      | Email      | Password      | NameAlias | Name             |
-      | user1Email | user1Password | user1Name | Marie Antoinette |
+      | Email      | Password      | NameAlias | Name             | Username        |
+      | user1Email | user1Password | user1Name | Marie Antoinette | marieantoinette |
 
   @C343174 @usernames @staging
   Scenario Outline: Verify take over screen doesn't go away on reload
@@ -51,15 +51,15 @@ Feature: Usernames
     When I Sign in using login <Email> and password <Password>
     And I see take over screen
     And I see name <NameAlias> on take over screen
-    And I see unique username starts with <NameAlias> on take over screen
+    And I see unique username starts with <Username> on take over screen
     When I refresh page
     Then I see take over screen
     And I see name <NameAlias> on take over screen
-    And I see unique username starts with <NameAlias> on take over screen
+    And I see unique username starts with <Username> on take over screen
 
     Examples:
-      | Email      | Password      | NameAlias | Name               |
-      | user1Email | user1Password | user1Name | Hans-Peter Baxxter |
+      | Email      | Password      | NameAlias | Name               | Username         |
+      | user1Email | user1Password | user1Name | Hans-Peter Baxxter | hanspeterbaxxter |
 
   @C343175 @usernames @staging @useSpecialEmail
   Scenario Outline: Verify Settings are opened on choosing generating your own username after registration
@@ -72,13 +72,13 @@ Feature: Usernames
     When I activate user by URL
     And I see take over screen
     And I see name <NameAlias> on take over screen
-    And I see unique username starts with <NameAlias> on take over screen
+    And I see unique username starts with <Username> on take over screen
     When I click ChooseYourOwn button on take over screen
-    Then I see unique username starts with <NameAlias> in account preferences
+    Then I see unique username starts with <Username> in account preferences
 
     Examples:
-      | Email      | Password      | NameAlias | Name         |
-      | user1Email | user1Password | user1Name | Jack Johnson |
+      | Email      | Password      | NameAlias | Name         | Username    |
+      | user1Email | user1Password | user1Name | Jack Johnson | jackjohnson |
 
   @C343176 @usernames @staging
   Scenario Outline: Verify Settings are opened on choosing generating your own username for existing user
@@ -88,16 +88,16 @@ Feature: Usernames
     When I Sign in using login <Email> and password <Password>
     And I see take over screen
     And I see name <NameAlias> on take over screen
-    And I see unique username starts with <NameAlias> on take over screen
+    And I see unique username starts with <Username> on take over screen
     When I click ChooseYourOwn button on take over screen
-    Then I see unique username starts with <NameAlias> in account preferences
+    Then I see unique username starts with <Username> in account preferences
 
     Examples:
-      | Email      | Password      | NameAlias | Name         |
-      | user1Email | user1Password | user1Name | Jack Johnson |
+      | Email      | Password      | NameAlias | Name         | Username    |
+      | user1Email | user1Password | user1Name | Jack Johnson | jackjohnson |
 
   @C343177 @usernames @staging
-  Scenario Outline: Verifying impossibility of setting incorrect username
+  Scenario Outline: Verifying impossibility to set username with less than 2 characters
     Given There are 2 users where <NameAlias> is me without unique username
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
@@ -106,14 +106,43 @@ Feature: Usernames
     And I see name <NameAlias> on take over screen
     When I click ChooseYourOwn button on take over screen
     Then I see unique username starts with <NameAlias> in account preferences
+    When I type <IncorrectName> into unique username field
+    Then I see hint message for unique username saying <Hint>
     When I change unique username to <IncorrectName>
-    Then I see error message in account preferences
+    Then I see hint message for unique username saying <Hint>
+    When I refresh page
+    And I am signed in properly
+    And I see take over screen
+    And I see name <NameAlias> on take over screen
 
     Examples:
-      | Email      | Password      | NameAlias | IncorrectName          |
-      | user1Email | user1Password | user1Name |                        |
-      | user1Email | user1Password | user1Name | a                      |
-      | user1Email | user1Password | user1Name | 1234567890123456789012 |
+      | Email      | Password      | NameAlias | IncorrectName | Hint                                        |
+      | user1Email | user1Password | user1Name |               | At least 2 characters. a—z, 0—9 and _ only. |
+      | user1Email | user1Password | user1Name | a             | At least 2 characters. a—z, 0—9 and _ only. |
+
+  @C352242 @usernames @staging
+  Scenario Outline: Verify username is unique
+    Given There are 2 users where <Name> is me without unique username
+    Given User <SecondUser> changes unique username to <SecondUser>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    And I see take over screen
+    And I see name <Name> on take over screen
+    When I click ChooseYourOwn button on take over screen
+    Then I see unique username starts with <Name> in account preferences
+    When I type <SecondUser> into unique username field
+    Then I see error message for unique username saying <Error>
+    When I change unique username to <SecondUser>
+    Then I see error message for unique username saying <Error>
+    When I refresh page
+    And I am signed in properly
+    And I see take over screen
+    And I see name <Name> on take over screen
+
+    Examples:
+      | Email      | Password      | Name      | SecondUser | Error         |
+      | user1Email | user1Password | user1Name | user2Name  | Already taken |
 
   @C352077 @usernames @staging
   Scenario Outline: Verify autogeneration of a username for a user (different scenarios)
@@ -150,7 +179,7 @@ Feature: Usernames
     When User <NameAlias> updates the unqiue user name to <Name> via device Device1
     Then I see unique username starts with <Name> in account preferences
 
-
     Examples:
       | Email      | Password      | NameAlias | UserName | NewUserName  |
       | user1Email | user1Password | user1Name | ohnson   | s123aram5r1e |
+

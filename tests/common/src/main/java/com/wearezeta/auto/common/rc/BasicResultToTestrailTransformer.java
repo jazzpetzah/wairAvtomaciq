@@ -72,7 +72,7 @@ public abstract class BasicResultToTestrailTransformer {
     
     protected void printStepResults(){
         for (Map.Entry<String, String> entry : scenario.entrySet()) {
-            LOG.debug(String.format("%s -\t %s", entry.getValue(), entry.getKey()));
+            LOG.trace(String.format("%s -\t %s", entry.getValue(), entry.getKey()));
         }
     }
     

@@ -883,7 +883,7 @@ Feature: VideoCalling
     And I am signed in properly
     And I open conversation with <Contact>
     When I call
-    Then <Contact> declines call from conversation <Contact>
+    Then <Contact> declines call from conversation <Name>
     And <Contact> starts a video call to me
     And I see video call is minimized
     And I see video button unpressed
@@ -905,7 +905,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 20      |
 
-  @C169369 @videocalling @staging
+  @C169369 @videocalling @regression
   Scenario Outline: Verify I can start an audio call and can upgrade to video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -936,6 +936,29 @@ Feature: VideoCalling
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
     And I do not see my self video view
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 20      |
+
+  @C345396 @regression @videocalling
+  Scenario Outline: Verify I can silence an incoming video call
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact>
+    Then Soundfile ringing_from_them did not start playing in loop
+    And <Contact> starts a video call to me
+    Then I see the incoming call controls for conversation <Contact>
+    And Soundfile ringing_from_them did start playing in loop
+    When I ignore the call from conversation <Contact>
+    Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
+    And I see the join call controls for conversation <Contact>
+    And Soundfile ringing_from_them did stop playing
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |

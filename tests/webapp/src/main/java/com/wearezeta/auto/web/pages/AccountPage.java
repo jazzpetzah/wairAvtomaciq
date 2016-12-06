@@ -39,6 +39,15 @@ public class AccountPage extends WebPage {
     @FindBy(css = WebAppLocators.AccountPage.cssSelfNameInput)
     private WebElement nameInput;
 
+    @FindBy(css = WebAppLocators.AccountPage.cssUniqueUsername)
+    private WebElement uniqueUsernameInput;
+
+    @FindBy(css = WebAppLocators.AccountPage.cssUniqueUsernameError)
+    private WebElement uniqueUsernameError;
+
+    @FindBy(css = WebAppLocators.AccountPage.cssUniqueUsernameHint)
+    private WebElement uniqueUsernameHint;
+
     @FindBy(css = WebAppLocators.AccountPage.cssNameSelfUserMail)
     private WebElement userMail;
 
@@ -62,9 +71,6 @@ public class AccountPage extends WebPage {
 
     @FindBy(css = WebAppLocators.AccountPage.cssConfirmDeleteAccountButton)
     private WebElement confirmDeleteAccountButton;
-
-    @FindBy(css = WebAppLocators.AccountPage.cssTakeOverUniqueUsername)
-    private WebElement takeOverUniqueUsername;
 
     public AccountPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -113,6 +119,35 @@ public class AccountPage extends WebPage {
         Thread.sleep(1000);
         nameInput.clear();
         nameInput.sendKeys(name + "\n");
+    }
+
+    public void typeUniqueUsername(String name) throws InterruptedException {
+        uniqueUsernameInput.click();
+        Thread.sleep(1000);
+        uniqueUsernameInput.clear();
+        uniqueUsernameInput.sendKeys(name);
+    }
+
+    public void submitUniqueUsername() throws InterruptedException {
+        uniqueUsernameInput.sendKeys("\n");
+    }
+
+    public void setUniqueUsername(String name) throws InterruptedException {
+        typeUniqueUsername(name);
+        submitUniqueUsername();
+    }
+
+    public String getUniqueUsernameError() {
+        return uniqueUsernameError.getText();
+    }
+
+    public String getUniqueUsernameHint() {
+        return uniqueUsernameHint.getText();
+    }
+
+    public String getUniqueUsername() throws Exception{
+        DriverUtils.waitUntilElementClickable(getDriver(), uniqueUsernameInput);
+        return uniqueUsernameInput.getAttribute("value");
     }
 
     public BufferedImage getPicture() throws Exception {
@@ -219,10 +254,5 @@ public class AccountPage extends WebPage {
     public void clickConfirmDeleteAccountButton() throws Exception {
         DriverUtils.waitUntilElementClickable(getDriver(), confirmDeleteAccountButton);
         confirmDeleteAccountButton.click();
-    }
-
-    public String getUniqueUsername() throws Exception{
-        DriverUtils.waitUntilElementClickable(getDriver(), takeOverUniqueUsername);
-        return takeOverUniqueUsername.getAttribute("value");
     }
 }

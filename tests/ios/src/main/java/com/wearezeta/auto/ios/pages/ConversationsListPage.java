@@ -137,6 +137,8 @@ public class ConversationsListPage extends IOSPage {
 
     public void tapPendingRequest() throws Exception {
         getElement(xpathPendingRequest).click();
+        // Wait for animation
+        Thread.sleep(2000);
     }
 
     public boolean isConversationNotInList(String name, int timeoutSeconds) throws Exception {

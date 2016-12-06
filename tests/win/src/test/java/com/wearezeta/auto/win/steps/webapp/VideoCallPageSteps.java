@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Optional;
 
-import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.web.common.TestContext;
@@ -74,7 +73,7 @@ public class VideoCallPageSteps {
 
     @Then("^I verify (.*) sees my screen$")
     public void IVerifyUserXVideoShowsScreen(String callees) throws Exception {
-        for (String callee : splitAliases(callees)) {
+        for (String callee : webContext.getUserManager().splitAliases(callees)) {
             final ClientUser userAs = webContext.getUserManager().findUserByNameOrNameAlias(callee);
 
             // get screenshot from remote user

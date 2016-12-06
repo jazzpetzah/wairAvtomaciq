@@ -15,6 +15,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.common.Message;
 import com.wearezeta.auto.web.common.TestContext;
@@ -744,7 +745,7 @@ public class ConversationPageSteps {
     @Then("^I see the last message is liked by users? (.*)$")
     public void ISeeLastMessageIsLikedBy(String usersToNameAliases) throws Exception {
         List<String> likers = context.getPagesCollection().getPage(ConversationPage.class).getUsersThatLikeTheLastMessage();
-        List<String> aliases = CommonSteps.splitAliases(usersToNameAliases);
+        List<String> aliases = context.getUserManager().splitAliases(usersToNameAliases);
         String[] users = new String[aliases.size()];
         for (int i = 0; i < aliases.size(); i++) {
             ClientUser userTo = context.getUserManager().findUserByNameOrNameAlias(aliases.get(i));
@@ -832,12 +833,19 @@ public class ConversationPageSteps {
         }
     }
 
+    @And("^I see unique username starts with (.*) in conversation$")
+    public void ISeeUniqueUsernameOnSelfProfilePage(String name) throws Exception {
+        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        Assert.assertThat("Username in conversation",
+                context.getPagesCollection().getPage(ConversationPage.class).getUniqueUsername(), startsWith(name));
+    }
+
     @Then("^I see (.*) action (\\d+) times for (.*) in conversation$")
     public void ThenISeeActionForContactInConversation(String message, int times, String contacts) throws Exception {
         contacts = context.getUserManager().replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
         Set<String> parts = new HashSet<String>();
         parts.add(message);
-        parts.addAll(CommonSteps.splitAliases(contacts));
+        parts.addAll(context.getUserManager().splitAliases(contacts));
         assertThat(message + " action for " + contacts, context.getPagesCollection().getPage(ConversationPage.class)
                 .waitForNumberOfMessageHeadersContain(parts), equalTo(times));
     }

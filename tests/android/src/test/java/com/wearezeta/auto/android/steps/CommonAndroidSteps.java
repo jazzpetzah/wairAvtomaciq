@@ -1123,7 +1123,7 @@ public class CommonAndroidSteps {
      */
     @When("^User (.*) adds new devices? (.*)$")
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
-        final List<String> names = CommonSteps.splitAliases(deviceNames);
+        final List<String> names = usrMgr.splitAliases(deviceNames);
         final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
         final ExecutorService pool = Executors.newFixedThreadPool(poolSize);
         for (String name : names) {
@@ -1785,6 +1785,20 @@ public class CommonAndroidSteps {
     @When("^User (.*) cancels the outgoing request to user (\\w+)(?: via device (.*))?$")
     public void UserXCancelRequestToUserY(String userNameAlias, String canceledUserNameAlias, String deviceName) throws Exception {
         commonSteps.UserCancelConnection(userNameAlias, canceledUserNameAlias, deviceName);
+    }
+
+    /**
+     * User update unique user name
+     *
+     * @param userNameAlias  name alias of the user
+     * @param uniqueUserName unique user name
+     * @param deviceName     device name
+     * @throws Exception
+     * @step.^User (.*) updates? the unqiue user name to "(.*)"(?: via device (.*))?
+     */
+    @Given("^User (.*) updates? the unqiue user name to \"(.*)\"(?: via device (.*))?")
+    public void UserXUpdateUniqueUserName(String userNameAlias, String uniqueUserName, String deviceName) throws Exception {
+        commonSteps.UpdateUniqueUsername(userNameAlias, uniqueUserName, deviceName);
     }
 
     /**

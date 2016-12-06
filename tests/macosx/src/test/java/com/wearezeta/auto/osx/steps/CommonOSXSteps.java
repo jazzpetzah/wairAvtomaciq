@@ -3,6 +3,7 @@ package com.wearezeta.auto.osx.steps;
 import org.apache.log4j.Logger;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.getSizeOfAppInMB;
+import static com.wearezeta.auto.osx.common.OSXCommonUtils.isHibernateBlocked;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.killAllApps;
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
@@ -11,6 +12,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 
 public class CommonOSXSteps {
@@ -41,6 +43,11 @@ public class CommonOSXSteps {
     public void clickMenuBarItem(String menuBarItemName) throws Exception {
         wrapperContext.getPagesCollection(OSXPagesCollection.class).getPage(MainWirePage.class).
                 clickMenuBarItem(menuBarItemName);
+    }
+
+    @When("^Mac would enter hibernate mode when closing the lid$")
+    public void enterHibernate() throws Exception {
+        assertThat("Hibernate is blocked", isHibernateBlocked(), is(false));
     }
 
     @When("^I kill the app$")

@@ -89,7 +89,7 @@ public class ReportBuilder {
     }
 
     public boolean getBuildStatus() {
-        return !(ri.getTotalNumberFailingSteps() > 0);
+        return (ri.getTotalNumberOfSteps() > 0) && (ri.getTotalScenariosFailed() == 0);
     }
 
     public void generateReports() throws Exception {

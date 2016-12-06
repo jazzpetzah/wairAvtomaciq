@@ -11,13 +11,13 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.AccountPage;
-import com.wearezeta.auto.web.pages.ContactListPage;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
@@ -89,25 +89,8 @@ public class AccountPageSteps {
     @And("^I see unique username starts with (.*) in account preferences$")
     public void ISeeUniqueUsernameOnSelfProfilePage(String name) throws Exception {
         name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        // convert to lowercase and remove symbols
-        name = removeSymbols(name.toLowerCase());
-
-        // if username did not contain any non symbol characters, the username is a number
-        if(name.isEmpty()) {
-            // TODO
-            //Assert.assertThat("Username on take over screen",
-            //        context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(), matchesPattern("^[0-9]{8}$"));
-        } else {
-            Assert.assertThat("Username in settings",
-                    context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(), startsWith(name));
-        }
-    }
-
-    private String removeSymbols(String text) {
-        // Remove all not allowed characters/symbols (except Latin a-z and underscores)
-        Pattern pattern = Pattern.compile("[^a-z0-9_]");
-        Matcher matcher = pattern.matcher(text);
-        return matcher.replaceAll("");
+        Assert.assertThat("Username in settings",
+                context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(), startsWith(name));
     }
 
     @When("^I remember the profile image on the account page$")
@@ -148,9 +131,28 @@ public class AccountPageSteps {
         context.getUserManager().getSelfUserOrThrowError().setName(name);
     }
 
+    @And("^I type (.*) into unique username field$")
+    public void ITypeIntoUniqueUserNameField(String name) throws Exception {
+        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        context.getPagesCollection().getPage(AccountPage.class).setUniqueUsername(name);
+    }
+
     @And("^I change unique username to (.*)")
     public void IChangeUniqueUserNameTo(String name) throws Exception {
-        // TODO
+        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        context.getPagesCollection().getPage(AccountPage.class).setUniqueUsername(name);
+    }
+
+    @Then("^I see error message for unique username saying (.*)")
+    public void ISeeErrorMessageForUniqueUsername(String error) throws Exception {
+        assertThat("Error does not match", context.getPagesCollection().getPage(AccountPage.class).getUniqueUsernameError(),
+                is(error));
+    }
+
+    @Then("^I see hint message for unique username saying (.*)")
+    public void ISeeHintMessageForUniqueUsername(String error) throws Exception {
+        assertThat("Hint does not match", context.getPagesCollection().getPage(AccountPage.class).getUniqueUsernameHint(),
+                is(error));
     }
 
     @When("^I drop picture (.*) to account preferences$")

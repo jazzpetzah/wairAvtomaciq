@@ -13,7 +13,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.apache.log4j.Logger;
 
-import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertNotNull;
@@ -36,7 +35,8 @@ public class CallingSteps {
      */
     @When("^(.*) start(?:s|ing) a video call to (.*)$")
     public void UserXCallsWithVideoToConversationY(String callerNames, String conversationName) throws Exception {
-        commonCallingSteps.startVideoCallToConversation(splitAliases(callerNames), conversationName);
+        commonCallingSteps.startVideoCallToConversation(commonCallingSteps.getUsersManager().splitAliases(callerNames),
+                conversationName);
     }
 
     /**
@@ -49,7 +49,8 @@ public class CallingSteps {
      */
     @When("^(.*) calls (.*)$")
     public void UserXCallsToConversationY(String callerNames, String conversationName) throws Exception {
-        androidCallingSteps.callToConversation(splitAliases(callerNames), conversationName);
+        androidCallingSteps.callToConversation(commonCallingSteps.getUsersManager().splitAliases(callerNames),
+                conversationName);
     }
 
     /**
@@ -64,9 +65,10 @@ public class CallingSteps {
     public void UserXStopsCallsToUserY(String instanceUsers, String outgoingCall, String conversationName)
             throws Exception {
         if (outgoingCall == null) {
-            commonCallingSteps.stopIncomingCall(splitAliases(instanceUsers));
+            commonCallingSteps.stopIncomingCall(commonCallingSteps.getUsersManager().splitAliases(instanceUsers));
         } else {
-            commonCallingSteps.stopOutgoingCall(splitAliases(instanceUsers), conversationName);
+            commonCallingSteps.stopOutgoingCall(commonCallingSteps.getUsersManager().splitAliases(instanceUsers),
+                    conversationName);
         }
     }
 
@@ -84,8 +86,8 @@ public class CallingSteps {
     public void UserXVerifesCallStatusToUserY(String callers,
                                               String conversationName, String expectedStatuses, int timeoutSeconds)
             throws Exception {
-        commonCallingSteps.verifyCallingStatus(splitAliases(callers), conversationName,
-                expectedStatuses, timeoutSeconds);
+        commonCallingSteps.verifyCallingStatus(commonCallingSteps.getUsersManager().splitAliases(callers),
+                conversationName, expectedStatuses, timeoutSeconds);
     }
 
     /**
@@ -101,7 +103,7 @@ public class CallingSteps {
     @Then("(.*) verif(?:y|ies) that waiting instance status is changed to (.*) in (\\d+) seconds?$")
     public void UserXVerifesCallStatusToUserY(String callees,
                                               String expectedStatuses, int timeoutSeconds) throws Exception {
-        commonCallingSteps.verifyAcceptingCallStatus(splitAliases(callees),
+        commonCallingSteps.verifyAcceptingCallStatus(commonCallingSteps.getUsersManager().splitAliases(callees),
                 expectedStatuses, timeoutSeconds);
     }
 
@@ -116,7 +118,8 @@ public class CallingSteps {
     @When("(.*) starts? instances? using (.*)$")
     public void UserXStartsInstance(String callees,
                                     String callingServiceBackend) throws Exception {
-        commonCallingSteps.startInstances(splitAliases(callees), callingServiceBackend, "Android", ZetaFormatter.getScenario());
+        commonCallingSteps.startInstances(commonCallingSteps.getUsersManager().splitAliases(callees),
+                callingServiceBackend, "Android", ZetaFormatter.getScenario());
     }
 
     /**
@@ -131,9 +134,9 @@ public class CallingSteps {
     public void UserXAcceptsNextIncomingCallAutomatically(String callees, String video)
             throws Exception {
         if (video == null) {
-            commonCallingSteps.acceptNextCall(splitAliases(callees));
+            commonCallingSteps.acceptNextCall(commonCallingSteps.getUsersManager().splitAliases(callees));
         } else {
-            commonCallingSteps.acceptNextVideoCall(splitAliases(callees));
+            commonCallingSteps.acceptNextVideoCall(commonCallingSteps.getUsersManager().splitAliases(callees));
         }
 
     }
@@ -149,7 +152,7 @@ public class CallingSteps {
     @Then("(.*) verif(?:ies|y) to have (\\d+) flows?$")
     public void UserXVerifesHavingXFlows(String callees, int numberOfFlows)
             throws Exception {
-        for (String callee : splitAliases(callees)) {
+        for (String callee : commonCallingSteps.getUsersManager().splitAliases(callees)) {
             assertThat(commonCallingSteps.getFlows(callee),
                     hasSize(numberOfFlows));
         }
@@ -164,7 +167,7 @@ public class CallingSteps {
      */
     @Then("(.*) verif(?:ies|y) that all flows have greater than 0 bytes$")
     public void UserXVerifesHavingXFlows(String callees) throws Exception {
-        for (String callee : splitAliases(callees)) {
+        for (String callee : commonCallingSteps.getUsersManager().splitAliases(callees)) {
             for (Flow flow : commonCallingSteps.getFlows(callee)) {
                 assertThat("incoming bytes", flow.getTelemetry().getStats().getAudio().getBytesReceived(), greaterThan(0L));
                 assertThat("outgoing bytes", flow.getTelemetry().getStats().getAudio().getBytesSent(),
@@ -182,7 +185,8 @@ public class CallingSteps {
      */
     @Then("(.*) verif(?:ies|y) that call to conversation (.*) was successful$")
     public void UserXVerifesCallWasSuccessful(String callees, String conversation) throws Exception {
-        for (Call call : commonCallingSteps.getOutgoingCall(splitAliases(callees), conversation)) {
+        for (Call call : commonCallingSteps.getOutgoingCall(commonCallingSteps.getUsersManager().splitAliases(callees),
+                conversation)) {
             assertNotNull("There are no metrics available for this call \n" + call, call.getMetrics());
             assertTrue("Call failed: \n" + call + "\n" + call.getMetrics(), call.getMetrics().isSuccess());
         }
@@ -204,7 +208,7 @@ public class CallingSteps {
     public void ICallXTimes(int times, int callDurationMinutes, String callees)
             throws Throwable {
         final int timeBetweenCall = 10;
-        final List<String> calleeList = splitAliases(callees);
+        final List<String> calleeList = commonCallingSteps.getUsersManager().splitAliases(callees);
         final ConversationViewPageSteps convSteps = new ConversationViewPageSteps();
         final CallOngoingAudioPageSteps callOngoingPageSteps = new CallOngoingAudioPageSteps();
         final CallOutgoingPageSteps callOutgoingPageSteps = new CallOutgoingPageSteps();

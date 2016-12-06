@@ -14,13 +14,14 @@ Feature: Autoconnect
     When I enter phone number for <Name>
     And I enter activation code
     And I accept terms of service
-    And I input name <Name> and hit Enter
+    And I input name <Name> and commit it
     And I accept alert
     And I tap Keep This One button
     And I accept alert if visible
     And I tap Share Contacts button on Share Contacts overlay
-    And I accept alert if visible
     And User <Name> is me
+    And User Myself sets the unique username
+    And I accept alert if visible
     Then I see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
 
@@ -86,12 +87,16 @@ Feature: Autoconnect
     When I enter phone number for <Name>
     And I enter activation code
     And I accept terms of service
-    And I input name <Name> and hit Enter
+    And I input name <Name> and commit it
     And I accept alert
     And I tap Keep This One button
+    # Wait for self picture to be applied
+    And I wait for 3 seconds
     And I tap Share Contacts button on Share Contacts overlay
-    And I accept alert
     And User <Name> is me
+    And User Myself sets the unique username
+    And I accept alert
+    And I tap Keep This One button on Unique Username Takeover page
     And I see conversations list
     And I wait until <Contact> exists in backend search results
     When I open search UI
@@ -122,7 +127,7 @@ Feature: Autoconnect
     And I tap X button on Search UI page
     And I tap on contact name <Contact>
     And I open conversation details
-    Then I see <Contact> name on Single user profile page
+    Then I see name "<Contact>" on Single user profile page
     And I verify the previously remembered user name from Address Book is displayed on Single user profile page
 
     Examples:

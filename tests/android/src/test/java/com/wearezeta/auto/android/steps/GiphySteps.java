@@ -171,7 +171,7 @@ public class GiphySteps {
                         MIN_GIPHY_IMPAGE_CONTAINER_SCORE));
     }
 
-    private static final double MIN_GIPHY_IMPAGE_PREVIEW_SCORE = 0.4;
+    private static final double MIN_GIPHY_IMPAGE_PREVIEW_SCORE = 0.55;
     private static final int MIN_GIPHY_IMPAGE_PREVIEW_CHANGE_TIMEOUT = 20; //seconds
 
     /**

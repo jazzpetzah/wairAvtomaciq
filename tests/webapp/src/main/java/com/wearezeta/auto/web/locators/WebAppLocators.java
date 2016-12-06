@@ -260,6 +260,12 @@ public final class WebAppLocators {
 
         public static final String cssSelfNameInput = "[data-uie-name='enter-name']";
 
+        public static final String cssUniqueUsername = "[data-uie-name='enter-username']";
+
+        public static final String cssUniqueUsernameError = ".preferences-account-username-error";
+
+        public static final String cssUniqueUsernameHint = ".preferences-account-username-hint";
+
         public static final String cssNameSelfUserMail = "[data-uie-name='enter-email']";
 
         public static final String cssNameSelfUserPhoneNumber = "[data-uie-name='enter-phone']";
@@ -286,8 +292,6 @@ public final class WebAppLocators {
         public static final String cssCancelDeleteAccountButton = "[data-uie-name='modal-delete-account'] [data-uie-name='do-cancel']";
 
         public static final String cssConfirmDeleteAccountButton = "[data-uie-name='modal-delete-account'] [data-uie-name='do-send']";
-
-        public static final String cssTakeOverUniqueUsername = "[data-uie-name='enter-username']";
     }
 
     public static final class DevicesPage {
@@ -356,6 +360,8 @@ public final class WebAppLocators {
         public static final String cssWatermark = "[data-uie-name='no-conversation']";
         
         public static final String cssCancelRequestButton = "#"+idConversation+" [data-uie-name='do-cancel-request']";
+
+        public static final String cssUsername = ".message-connected-username.label-username";
 
         // messages (including images, text, missed call notifications, pings)
         public static final String cssMessage = "[data-uie-name='item-message']";

@@ -238,7 +238,7 @@ Feature: Settings
     Given I accept alert if visible
     Given I tap Not Now to not add phone number
     Given I accept First Time overlay
-    Given I dismiss settings warning
+    Given I dismiss settings warning if visible
     Given I see conversations list
     Given I tap settings gear button
     Given I select settings item Account
@@ -265,7 +265,7 @@ Feature: Settings
     Given I accept alert if visible
     Given I tap Not Now to not add phone number
     Given I accept First Time overlay
-    Given I dismiss settings warning
+    Given I dismiss settings warning if visible
     Given I see conversations list
     Given I tap settings gear button
     Given I select settings item Account

@@ -136,6 +136,11 @@ public class CommonWebAppSteps {
         context.getCommonSteps().IChangeName(userNameAlias, name);
     }
 
+    @When("^User (\\w+) changes? unique username to (.*)")
+    public void IChangeUniqueUsername(String userNameAlias, String name) throws Exception {
+        context.getCommonSteps().IChangeUniqueUsername(userNameAlias, name);
+    }
+
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me without avatar picture$")
     public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count,
             String myNameAlias) throws Exception {
@@ -222,7 +227,7 @@ public class CommonWebAppSteps {
     public void UserWaitsUntilContactExistsInHisSearchResults(
             String searchByNameAlias, String query) throws Exception {
         context.startPinging();
-        context.getCommonSteps().WaitUntilContactIsFoundInSearchByEmail(searchByNameAlias, query);
+        context.getCommonSteps().WaitUntilContactIsFoundInSearchByUniqueUsername(searchByNameAlias, query);
         context.stopPinging();
     }
 
@@ -405,11 +410,11 @@ public class CommonWebAppSteps {
                 hashCode(), conversationName, longitudeFloat, latitudeFloat, locationName, zoom, isGroup);
     }
 
-    @When("^User (.*) deletes? the recent (\\d+) messages? (everywhere )?from (user|group conversation) (.*) via device (.*)$")
+    @When("^User (.*) deletes? the recent (\\d+) messages? (everywhere )?in (group|single) conversation (.*) via device (.*)$")
     public void UserXDeleteLastMessage(String userNameAlias, int amount, String deleteEverywhere, String convoType,
             String dstNameAlias, String deviceName)
             throws Exception {
-        boolean isGroup = convoType.equals("group conversation");
+        boolean isGroup = convoType.equals("group");
         boolean isDeleteEverywhere = deleteEverywhere != null;
         for (int deleteCounter = 0; deleteCounter < amount; deleteCounter++) {
             context.getCommonSteps().UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName + context.getTestname().

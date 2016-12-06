@@ -1,5 +1,10 @@
 package com.wearezeta.auto.android.steps;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.wearezeta.auto.android.pages.ConversationsListPage;
 import com.wearezeta.auto.android.pages.SearchListPage;
 import com.wearezeta.auto.common.CommonSteps;
@@ -14,16 +19,14 @@ import cucumber.api.java.en.When;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class ConversationsListPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
     private final ElementState newDeviceIndicatorState = new ElementState(
             () -> getConversationsListPage().getNewDeviceIndicatorState());
+
+    private final ElementState conversationsListBackgroundState = new ElementState(
+            () -> getConversationsListPage().getConversationsListScreenshot());
 
     private ConversationsListPage getConversationsListPage() throws Exception {
         return pagesCollection.getPage(ConversationsListPage.class);
@@ -34,6 +37,10 @@ public class ConversationsListPageSteps {
     }
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+    private static final double CONVERSATIONS_LIST_BACKGROUND_MIN_SCORE = 0.9;
+
+    private static final int CONVERSATIONS_LIST_BACKGROUND_CHANGE_TIMEOUT = 3;
 
     /**
      * Verify whether conversations list is visible or not
@@ -188,7 +195,7 @@ public class ConversationsListPageSteps {
     @Then("^I (do not )?see group conversation with (.*) in conversations list$")
     public void ISeeGroupChatInContactList(String shouldNotSee, String contacts) throws Exception {
         final List<String> users = new ArrayList<>();
-        for (String alias : CommonSteps.splitAliases(contacts)) {
+        for (String alias : usrMgr.splitAliases(contacts)) {
             users.add(usrMgr.findUserByNameOrNameAlias(alias).getName());
         }
         if (shouldNotSee == null) {
@@ -502,5 +509,36 @@ public class ConversationsListPageSteps {
     @When("^I tap the three dots option menu button$")
     public void ITapTheThreeDotsOptionMenuButton() throws Exception {
         getConversationsListPage().tapThreeDotOptionMenuButton();
+    }
+
+    /**
+     * Remember Conversations list background state
+     *
+     * @throws Exception
+     * @step. ^I remember Conversations list background$
+     */
+    @When("^I remember Conversations list background$")
+    public void IRememberConversationsListBackground() throws Exception {
+        conversationsListBackgroundState.remember();
+    }
+
+    /**
+     * Verify that Conversations list bachfround is (not) changed
+     *
+     * @param shouldNotBeChanged is not null if the background should not be changed
+     * @throws Exception
+     * @step. ^I verify Conversations list backgroud is (not )?changed$
+     */
+    @Then("^I verify Conversations list backgroud is (not )?changed$")
+    public void IVerifyConversationsListBackgroundChanged(String shouldNotBeChanged) throws Exception {
+        if (shouldNotBeChanged == null) {
+            Assert.assertTrue(String.format("State of conversations list has not been changed after timeout"),
+                    conversationsListBackgroundState.isChanged(CONVERSATIONS_LIST_BACKGROUND_CHANGE_TIMEOUT,
+                    CONVERSATIONS_LIST_BACKGROUND_MIN_SCORE));
+        } else {
+            Assert.assertTrue(String.format("State of conversations list has not been changed after timeout"),
+                    conversationsListBackgroundState.isNotChanged(CONVERSATIONS_LIST_BACKGROUND_CHANGE_TIMEOUT,
+                    CONVERSATIONS_LIST_BACKGROUND_MIN_SCORE));
+        }
     }
 }

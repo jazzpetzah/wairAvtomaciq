@@ -30,7 +30,7 @@ Feature: Delete
     And I see sent picture <Picture1> in the conversation view
     And I see only 1 picture in the conversation
     And I see 3 messages in conversation
-    When User Myself deletes the recent 1 message from user <Contact> via device SecondDevice
+    When User Myself deletes the recent 1 message in single conversation <Contact> via device SecondDevice
     Then I see text message <Message1>
     And I do not see any picture in the conversation view
     And I see 2 messages in conversation
@@ -121,7 +121,7 @@ Feature: Delete
     When I click context menu of the last message
     And I click to delete message for me in context menu
     And I click confirm to delete message for me
-    And User Myself deletes the recent 1 message from user <Contact> via device Device1
+    And User Myself deletes the recent 1 message in single conversation <Contact> via device Device1
     Then I see text message <Message_1>
     And I do not see text message <Message_2>
     And I do not see text message <Message_3>
@@ -168,7 +168,7 @@ Feature: Delete
     Given I see Sign In page
     And Contact Myself sends message <Message4> via device SecondDevice to user <Contact>
     And Contact <Contact> sends message <Message5> via device ContactDevice to user Myself
-    When User Myself deletes the recent 4 messages from user <Contact> via device SecondDevice
+    When User Myself deletes the recent 4 messages in single conversation <Contact> via device SecondDevice
     And Contact Myself sends message <Message6> via device SecondDevice to user <Contact>
     And I Sign in using login <Login> and password <Password>
     And I am signed in properly
@@ -262,7 +262,7 @@ Feature: Delete
     And I send message
     And I see text message MESSAGE2_NAME
     Then I see 4 messages in conversation
-    When User Myself deletes the recent 1 message from user GROUPCHAT via device SecondDevice
+    When User Myself deletes the recent 1 message in group conversation GROUPCHAT via device SecondDevice
     And I see text message MESSAGE1_CONTACT
     And I do not see text message MESSAGE2_NAME
     And I see 3 messages in conversation

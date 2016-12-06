@@ -206,6 +206,14 @@ public class SEBridge {
         getOrAddDevice(userFrom, deviceName).cancelConnection(new UserId(userDst.getId()));
     }
 
+    public String getUniqueUsername(ClientUser userFrom, String deviceName) throws Exception {
+        return getOrAddDevice(userFrom, deviceName).getUniqueUserName();
+    }
+
+    public void updateUniqueUsername(ClientUser userFrom, String uniqueUserName, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).updateUniqueUserName(uniqueUserName);
+    }
+
     public void releaseDevicesOfUser(ClientUser user) throws Exception {
         getDevicePool().releaseDevices(getDevicePool().getDevices(user));
     }

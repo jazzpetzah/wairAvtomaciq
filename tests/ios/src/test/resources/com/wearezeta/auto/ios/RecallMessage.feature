@@ -23,7 +23,7 @@ Feature: Recall Message
     And User Myself sees the recent message from user <Contact> via device <MySecondDevice> is changed in <Wait2> seconds
     When User Myself send 1 encrypted message using device <MySecondDevice> to user <Contact>
     # Wait until the message is synchronized
-    And I wait for 3 seconds
+    And I wait for 5 seconds
     And I see 1 default message in the conversation view
     And User <Contact> remembers the recent message from user Myself via device <HisDevice>
     And User Myself remembers the recent message from user <Contact> via device <MySecondDevice>

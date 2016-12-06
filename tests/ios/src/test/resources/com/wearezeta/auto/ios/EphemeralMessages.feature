@@ -354,6 +354,8 @@ Feature: Ephemeral Messages
     And I do not see Copy badge item
     And I do not see Forward badge item
     When User <Contact> sends encrypted message "<Message2>" to user Myself
+    # Wait for sync
+    And I wait for 3 seconds
     And I long tap "<Message2>" message in conversation view
     Then I do not see Edit badge item
     And I do not see Delete badge item

@@ -51,8 +51,8 @@ public final class CommonCallingSteps2 {
         this.zcallVersion = zcallVersion;
     }
 
-    private static final String FIREFOX_DEFAULT_VERSION = "50.0";
-    private static final String CHROME_DEFAULT_VERSION = "54.0.2840.100";
+    private static final String FIREFOX_DEFAULT_VERSION = "50.0.2";
+    private static final String CHROME_DEFAULT_VERSION = "55.0.2883.75";
 
     // Request timeout of 180 secs is set by callingservice, we add additional
     // 10 seconds on the client side to actually get a timeout response to
@@ -86,6 +86,10 @@ public final class CommonCallingSteps2 {
         this.instanceMapping = new ConcurrentHashMap<>();
         this.client = new CallingServiceClient();
         this.usrMgr = usrMgr;
+    }
+
+    public ClientUsersManager getUsersManager() {
+        return this.usrMgr;
     }
 
     public static class CallNotFoundException extends Exception {

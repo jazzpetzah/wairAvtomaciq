@@ -12,20 +12,21 @@ import org.openqa.selenium.*;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class SearchUIPage extends IOSPage {
-    private static final By fbNameSearchInput = FBBy.AccessibilityId("textViewSearch");
 
-    public static final By fbNameXButton = FBBy.AccessibilityId("PeoplePickerClearButton");
+    private static final String nameStrSearchInput = "textViewSearch";
+    private static final By nameSearchInput = MobileBy.AccessibilityId(nameStrSearchInput);
+    private static final By fbNameSearchInput = FBBy.AccessibilityId(nameStrSearchInput);
+
+    private static final By fbNameXButton = FBBy.AccessibilityId("PeoplePickerClearButton");
 
     private static final By xpathCreateConversationButton =
             By.xpath("//XCUIElementTypeButton[@name='CREATE GROUP']");
 
     private static final By nameTopPeopleLabel = MobileBy.AccessibilityId("TOP PEOPLE");
 
-    private static final By nameAddToConversationButton = MobileBy.AccessibilityId("ADD");
-
     private static final By nameUnblockButton = MobileBy.AccessibilityId("UNBLOCK");
 
-    public static final By nameInviteCopyButton = MobileBy.AccessibilityId("Copy");
+    private static final By nameInviteCopyButton = MobileBy.AccessibilityId("Copy");
 
     private static final By nameInviteMorePeopleButton = MobileBy.AccessibilityId("INVITE MORE PEOPLE");
 
@@ -148,11 +149,7 @@ public class SearchUIPage extends IOSPage {
     }
 
     public void pressBackspaceKeyboardButton() throws Exception {
-        tapKeyboardDeleteButton();
-    }
-
-    public void tapAddToConversationButton() throws Exception {
-        getElement(nameAddToConversationButton).click();
+        getElement(nameSearchInput).sendKeys(Keys.BACK_SPACE);
     }
 
     public void tapInstantConnectButton(String forName) throws Exception {
@@ -177,6 +174,8 @@ public class SearchUIPage extends IOSPage {
     public void tapOnTopConnectionAvatarByOrder(int i) throws Exception {
         final By locator = By.xpath(xpathStrTopPeopleAvatarByIdx.apply(i));
         getElement(locator).click();
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     public boolean waitUntilNoResultsLabelIsVisible() throws Exception {
@@ -224,5 +223,9 @@ public class SearchUIPage extends IOSPage {
     public boolean isButtonInvisible(String btnName) throws Exception{
         final By locator = getButtonLocatorByName(btnName);
         return isLocatorInvisible(locator);
+    }
+
+    public void clearSearchInput() throws Exception {
+        getElement(fbNameSearchInput).clear();
     }
 }

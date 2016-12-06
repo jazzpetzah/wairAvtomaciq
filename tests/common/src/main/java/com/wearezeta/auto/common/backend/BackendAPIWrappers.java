@@ -1,5 +1,6 @@
 package com.wearezeta.auto.common.backend;
 
+import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.email.ActivationMessage;
@@ -281,13 +282,8 @@ public final class BackendAPIWrappers {
         return sentence.getContent();
     }
 
-    public static void autoTestSendRequest(ClientUser userFrom, ClientUser userTo) throws Exception {
+    public static void sendConnectionRequest(ClientUser userFrom, ClientUser userTo) throws Exception {
         sendConnectRequest(userFrom, userTo, userTo.getName(), CommonSteps.CONNECTION_MESSAGE);
-    }
-
-    public static ClientUser autoTestAcceptAllRequest(ClientUser userTo) throws Exception {
-        acceptAllConnections(userTo);
-        return userTo;
     }
 
     public static void sendDialogMessage(ClientUser fromUser, ClientUser toUser, String message) throws Exception {
@@ -478,15 +474,15 @@ public final class BackendAPIWrappers {
         BackendREST.sendConnectRequest(receiveAuthToken(user), contact.getId(), connectName, message);
     }
 
-    private static JSONArray getAllConnections(ClientUser user) throws Exception {
+    private static List<JSONObject> getAllConnections(ClientUser user) throws Exception {
         String startId = null;
         JSONObject connectionsInfo;
-        final JSONArray result = new JSONArray();
+        final List<JSONObject> result = new ArrayList<>();
         do {
             connectionsInfo = BackendREST.getConnectionsInfo(receiveAuthToken(user), null, startId);
             final JSONArray connections = connectionsInfo.getJSONArray("connections");
             for (int i = 0; i < connections.length(); i++) {
-                result.put(connections.getJSONObject(i));
+                result.add(connections.getJSONObject(i));
             }
             if (connections.length() > 0) {
                 startId = connections.getJSONObject(connections.length() - 1).getString("to");
@@ -495,35 +491,33 @@ public final class BackendAPIWrappers {
         return result;
     }
 
-    public static void acceptAllConnections(ClientUser user) throws Exception {
-        final JSONArray connections = getAllConnections(user);
-        for (int i = 0; i < connections.length(); i++) {
-            String to = connections.getJSONObject(i).getString("to");
-            String status = connections.getJSONObject(i).getString("status");
-            if (status.equals(ConnectionStatus.Pending.toString())) {
-                changeConnectRequestStatus(user, to, ConnectionStatus.Accepted);
-            }
-        }
+    public static void acceptAllIncomingConnectionRequests(ClientUser asUser) throws Exception {
+        updateConnections(asUser, ConnectionStatus.Pending, ConnectionStatus.Accepted, Optional.empty());
     }
 
-    public static void cancelAllOutgoingConnections(ClientUser user) throws Exception {
-        final JSONArray connections = getAllConnections(user);
-        for (int i = 0; i < connections.length(); i++) {
-            String to = connections.getJSONObject(i).getString("to");
-            String status = connections.getJSONObject(i).getString("status");
-            if (status.equals(ConnectionStatus.Sent.toString())) {
-                changeConnectRequestStatus(user, to, ConnectionStatus.Canceled);
-            }
-        }
+    public static void acceptIncomingConnectionRequest(ClientUser asUser, ClientUser fromUser) throws Exception {
+        updateConnections(asUser, ConnectionStatus.Pending, ConnectionStatus.Accepted,
+                Optional.of(Collections.singletonList(fromUser.getId())));
     }
 
-    public static void ignoreAllConnections(ClientUser user) throws Exception {
-        final JSONArray connections = getAllConnections(user);
-        for (int i = 0; i < connections.length(); i++) {
-            String to = connections.getJSONObject(i).getString("to");
-            String status = connections.getJSONObject(i).getString("status");
-            if (status.equals(ConnectionStatus.Pending.toString())) {
-                changeConnectRequestStatus(user, to, ConnectionStatus.Ignored);
+    public static void cancelAllOutgoingConnections(ClientUser asUser) throws Exception {
+        updateConnections(asUser, ConnectionStatus.Sent, ConnectionStatus.Canceled, Optional.empty());
+    }
+
+    public static void ignoreAllIncomingConnections(ClientUser asUser) throws Exception {
+        updateConnections(asUser, ConnectionStatus.Pending, ConnectionStatus.Ignored, Optional.empty());
+    }
+
+    private static void updateConnections(ClientUser asUser, ConnectionStatus srcStatus, ConnectionStatus dstStatus,
+                                          Optional<List<String>> forUserIds) throws Exception {
+        final List<JSONObject> connections = getAllConnections(asUser);
+        for (final JSONObject connection : connections) {
+            final String to = connection.getString("to");
+            final String status = connection.getString("status");
+            if (status.equals(srcStatus.toString())) {
+                if (forUserIds.isPresent() && forUserIds.get().contains(to) || !forUserIds.isPresent()) {
+                    changeConnectRequestStatus(asUser, to, dstStatus);
+                }
             }
         }
     }

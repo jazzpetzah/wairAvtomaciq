@@ -10,7 +10,7 @@ import java.util.concurrent.Future;
 
 public class SupportPage extends WebPage {
 
-    @FindBy(css = ".writeSupport")
+    @FindBy(id = "askSupport")
     private WebElement askSupportLink;
 
     public SupportPage(Future<ZetaWebAppDriver> lazyDriver)

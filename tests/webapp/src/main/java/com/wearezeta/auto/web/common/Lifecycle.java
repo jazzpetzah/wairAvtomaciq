@@ -1,6 +1,5 @@
 package com.wearezeta.auto.web.common;
 
-import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -9,8 +8,8 @@ import com.wearezeta.auto.common.rc.BasicScenarioResultToTestrailTransformer;
 import com.wearezeta.auto.common.testrail.TestrailSyncUtilities;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
+import com.wire.picklejar.gherkin.model.Scenario;
 import com.wire.picklejar.gherkin.model.Step;
-import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import java.net.URL;
@@ -39,7 +38,7 @@ import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.safari.SafariOptions;
 
 public class Lifecycle {
-    
+
     private static final Logger log = ZetaLogger.getLog(Lifecycle.class.getSimpleName());
 
     public static final int SAFARI_DRIVER_CREATION_RETRY = 3;
@@ -58,20 +57,20 @@ public class Lifecycle {
 
     // #### START ############################################################ COMPATIBILITY INSTRUCTIONS
     @Before("~@performance")
-    public void setUp(Scenario scenario) throws Exception {
+    public void setUp(cucumber.api.Scenario scenario) throws Exception {
         String id = scenario.getId().substring(
                 scenario.getId().lastIndexOf(";") + 1);
-        setUp(scenario.getName() + "_" + id);
+        Scenario pjScenario = new Scenario(null, scenario.getName() + "_" + id, 0, "", null, null);
+        setUp(pjScenario);
     }
 
     @After
-    public void tearDown(Scenario scenario) throws Exception {
+    public void tearDown(cucumber.api.Scenario scenario) throws Exception {
         tearDown();
     }
     // #### END ############################################################## COMPATIBILITY INSTRUCTIONS
 
-    public void setUp(String testname) throws Exception {
-
+    public void setUp(Scenario scenario) throws Exception {
         String[] command = new String[]{"/bin/sh", "-c", String.format("killall %s", "grunt")};
         log.debug("Kill all grunt processes: " + Arrays.toString(command));
         Process process = Runtime.getRuntime().exec(command);
@@ -84,7 +83,7 @@ public class Lifecycle {
         String browserName = WebAppExecutionContext.getBrowserName();
         String browserVersion = WebAppExecutionContext.getBrowserVersion();
 
-        String uniqueTestname = getUniqueTestName(testname);
+        String uniqueTestname = getUniqueTestName(scenario.getName());
         log.debug("Unique name for this test: " + uniqueTestname);
 
         // get custom capabilities
@@ -172,7 +171,7 @@ public class Lifecycle {
          * #### END ############################################################## COMPATIBILITY INSTRUCTIONS
          */
 
-        context = new TestContext(testname, lazyWebDriver);
+        context = new TestContext(scenario.getName(), lazyWebDriver);
         context.getDriver().get(url);
         context.getPagesCollection().setFirstPage(new RegistrationPage(lazyWebDriver, url));
 
@@ -269,8 +268,6 @@ public class Lifecycle {
             }
         }
     }
-
-    
 
     private static void setCustomChromeProfile(DesiredCapabilities capabilities)
             throws Exception {
