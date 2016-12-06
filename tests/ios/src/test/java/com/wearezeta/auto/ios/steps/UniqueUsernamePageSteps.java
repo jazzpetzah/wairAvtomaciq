@@ -36,7 +36,7 @@ public class UniqueUsernamePageSteps {
      */
     @Then("^I see Unique Username page$")
     public void ISeeUsernamePage() throws Exception {
-        Assert.assertTrue("Unique Username page is not visible", getUniqueUsernamePage().isUsernamePageVisible());
+        Assert.assertTrue("Unique Username page is not visible", getUniqueUsernamePage().isPageHeaderVisible());
     }
 
     /**
@@ -125,5 +125,19 @@ public class UniqueUsernamePageSteps {
                     String.format("Name input after enter of '%s' charset is not empty on Unique Username page", newName),
                     getUniqueUsernamePage().isNameInputEmpty());
         }
+    }
+
+    /**
+     * Verify unique username input is prefilled with pointed name
+     *
+     * @param nameAlias user name/alias
+     * @throws Exception
+     * @step. ^I see unique username input is prefilled with (.*) on Unique Username page$
+     */
+    @Then("^I see unique username input is prefilled with (.*) on Unique Username page$")
+    public void ISeeUniqueUsernameInputIsPrefilledWith(String nameAlias) throws Exception {
+        final String name = usrMgr.replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("Unique username is not prefilled with %s", name),
+                getUniqueUsernamePage().getNameInputValue().equals(name));
     }
 }
