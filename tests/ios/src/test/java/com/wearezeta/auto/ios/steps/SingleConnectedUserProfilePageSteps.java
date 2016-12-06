@@ -51,7 +51,7 @@ public class SingleConnectedUserProfilePageSteps {
                         getPage().isUserDetailVisible(fieldType, value));
             } else {
                 Assert.assertTrue(String.format("'%s' field is expected to be visible", fieldType),
-                        getPage().isUserDetailVisible(fieldType));
+                        getPage().isUserDetailInvisible(fieldType));
             }
         } else {
             if (value.startsWith("\"")) {
@@ -59,7 +59,7 @@ public class SingleConnectedUserProfilePageSteps {
                 Assert.assertTrue(String.format("'%s' field is expected to be invisible", value),
                         getPage().isUserDetailInvisible(fieldType, value));
             } else {
-                Assert.assertTrue(String.format("'%s' field is expected to be invisible", value),
+                Assert.assertTrue(String.format("'%s' field is expected to be invisible", fieldType),
                         getPage().isUserDetailInvisible(fieldType));
             }
         }
