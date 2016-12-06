@@ -13,7 +13,7 @@ import org.openqa.selenium.By;
 
 public class UniqueUsernamePage extends IOSPage {
 
-    private static final By namePageHeader = MobileBy.AccessibilityId("@Name");
+    private static final By namePageHeader = MobileBy.AccessibilityId("Username");
     private static final By nameSaveButton = MobileBy.AccessibilityId("Save");
     private static final By fbNameUniqueUsernameInput = FBBy.AccessibilityId("handleTextField");
 
@@ -34,10 +34,6 @@ public class UniqueUsernamePage extends IOSPage {
         getElement(getLocatorByName(buttonName)).click();
     }
 
-    public boolean isUsernamePageVisible() throws Exception {
-        return isLocatorDisplayed(nameSaveButton);
-    }
-
     public void inputStringInNameInput(String name) throws Exception {
         final FBElement el = ((FBElement) getElement(fbNameUniqueUsernameInput));
         el.clear();
@@ -54,7 +50,7 @@ public class UniqueUsernamePage extends IOSPage {
         return newUniqueName;
     }
 
-    private String getNameInputValue() throws Exception {
+    public String getNameInputValue() throws Exception {
         return ((FBElement) getElement(fbNameUniqueUsernameInput)).getText();
     }
 
@@ -64,5 +60,9 @@ public class UniqueUsernamePage extends IOSPage {
 
     public boolean isNameInputEmpty() throws Exception {
         return getNameInputValue().equals(FBDriverAPI.NULL_VALUE);
+    }
+
+    public boolean isPageHeaderVisible() throws Exception {
+        return isLocatorDisplayed(namePageHeader);
     }
 }
