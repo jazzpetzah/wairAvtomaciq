@@ -19,9 +19,9 @@ Feature: Autoconnect
     And I tap Keep This One button
     And I accept alert if visible
     And I tap Share Contacts button on Share Contacts overlay
-    And I accept alert if visible
     And User <Name> is me
-    And I tap Keep This One button on Unique Username Takeover page
+    And User Myself sets the unique username
+    And I accept alert if visible
     Then I see conversation <Contact1> in conversations list
     And I see conversation <Contact2> in conversations list
 
@@ -93,8 +93,9 @@ Feature: Autoconnect
     # Wait for self picture to be applied
     And I wait for 3 seconds
     And I tap Share Contacts button on Share Contacts overlay
-    And I accept alert
     And User <Name> is me
+    And User Myself sets the unique username
+    And I accept alert
     And I tap Keep This One button on Unique Username Takeover page
     And I see conversations list
     And I wait until <Contact> exists in backend search results
