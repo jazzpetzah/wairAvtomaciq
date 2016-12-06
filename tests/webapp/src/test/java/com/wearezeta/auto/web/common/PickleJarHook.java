@@ -67,7 +67,7 @@ public class PickleJarHook implements PickleJarTestHook {
     @Override
     public void onStepFailed(Scenario scenario, Step step) throws Throwable {
         step.setResult(new Result(step.getResult().getDuration(), FAILED,
-                step.getResult().getStatus() + "\n" + tailBrowserLog(MAX_LOG_TAIL_SIZE)));
+                step.getResult().getErrorMessage() + "\n" + tailBrowserLog(MAX_LOG_TAIL_SIZE)));
     }
 
     @Override
