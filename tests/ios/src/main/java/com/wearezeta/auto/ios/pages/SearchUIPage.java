@@ -5,7 +5,6 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
 
@@ -106,15 +105,7 @@ public class SearchUIPage extends IOSPage {
 
     public void tapButton(String name) throws Exception {
         final By locator = getButtonLocatorByName(name);
-        if (locator.equals(fbNameXButton)) {
-            final FBElement xButton = (FBElement) getElement(locator);
-            this.tapAtTheCenterOfElement(xButton);
-            if (!isLocatorInvisible(locator, 5)) {
-                this.tapAtTheCenterOfElement(xButton);
-            }
-        } else {
-            getElement(locator).click();
-        }
+        getElement(locator).click();
     }
 
     public boolean isButtonVisible(String name) throws Exception {
