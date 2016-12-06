@@ -104,6 +104,7 @@ public class PickleJarHook implements PickleJarTestHook {
     @Override
     public void onAfterScenario(Scenario scenario) throws Throwable {
         List<Step> reportSteps = scenario.getSteps();
+        Exception ex = null;
         try {
             checkLogForErrors();
         } catch (Exception e) {
@@ -112,13 +113,16 @@ public class PickleJarHook implements PickleJarTestHook {
                 lastStep.setResult(new Result(lastStep.getResult().getDuration(), FAILED,
                         PickleExecutor.getThrowableStacktraceString(e) + "\n" + tailBrowserLog(MAX_LOG_TAIL_SIZE)));
             }
-            throw e;
+            ex = e;
         }
         lifecycle.tearDown(scenario);
         LOG.info(String.format("### After testcase Count: %d", CURRENTLY_RUNNING_TESTS.decrementAndGet()));
         reportSteps.forEach((step)
                 -> LOG.info(String.format("::          %s - %s", step.getResult().getStatus().toUpperCase(), step.getName()))
         );
+        if (ex != null) {
+            throw ex;
+        }
     }
 
     private String tailBrowserLog(int maxLogTailSize) throws InterruptedException, ExecutionException, TimeoutException {
