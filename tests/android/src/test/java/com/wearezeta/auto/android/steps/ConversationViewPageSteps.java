@@ -1,11 +1,14 @@
 package com.wearezeta.auto.android.steps;
 
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.ConversationViewPage;
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -183,7 +186,8 @@ public class ConversationViewPageSteps {
      * @step. ^I (tap|long tap|double tap) (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text|Send|Ephemeral) button (\d+ seconds )? from cursor
      * toolbar( without releasing my finger)?$
      */
-    @When("^I (tap|long tap|double tap) (Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text|Send|Ephemeral)" +
+    @When("^I (tap|long tap|double tap) " +
+            "(Video message|Ping|Add picture|Sketch|File|Audio message|Share location|Gif|Switch to emoji|Switch to text|Send|Ephemeral)" +
             " button (\\d+ seconds )?from cursor toolbar( without releasing my finger)?$")
     public void ITapCursorToolButton(String tapType, String btnName, String longTapDurationSeconds,
                                      String shouldReleaseFinger) throws Exception {
@@ -434,7 +438,8 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I tap on (Sketch|Sketch Emoji|Sketch Text|Fullscreen) button on the recent (?:image|picture) in the conversation view$
      */
-    @When("^I tap on (Sketch|Sketch Emoji|Sketch Text|Fullscreen) button on the recent (?:image|picture) in the conversation view$")
+    @When("^I tap on (Sketch|Sketch Emoji|Sketch Text|Fullscreen) button on the recent (?:image|picture)" +
+            " in the conversation view$")
     public void ITapImageContainerButton(String buttonName) throws Exception {
         getConversationViewPage().tapImageContainerButton(buttonName);
     }
@@ -448,7 +453,8 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I( do not)? see (Sketch|Sketch Emoji|Sketch Text|Fullscreen) button on the recent (?:image|picture) in the conversation view$
      */
-    @Then("^I( do not)? see (Sketch|Sketch Emoji|Sketch Text|Fullscreen) button on the recent (?:image|picture) in the conversation view$")
+    @Then("^I( do not)? see (Sketch|Sketch Emoji|Sketch Text|Fullscreen) button on the recent (?:image|picture)" +
+            " in the conversation view$")
     public void ISeeImageContainerButton(String shouldNotSee, String buttonName) throws Exception {
         if(shouldNotSee == null) {
             Assert.assertTrue(String.format("The %s button in Image container is not visible", buttonName),
@@ -1209,8 +1215,9 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I (do not )?see (Image|Youtube|Soundcloud|File Upload|File Upload Placeholder|Video Message|Audio Message|Audio Message Placeholder|Share Location|Link Preview) container in the conversation view$
      */
-    @Then("^I (do not )?see (Image|Youtube|Soundcloud|File Upload|File Upload Placeholder|Video Message|Audio Message|Audio Message Placeholder|Share Location|Link Preview) " +
-            "container in the conversation view$")
+    @Then("^I (do not )?see " +
+            "(Image|Youtube|Soundcloud|File Upload|File Upload Placeholder|Video Message|Audio Message|Audio Message Placeholder|Share Location|Link Preview)" +
+            " container in the conversation view$")
     public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
         final boolean condition = (shouldNotSee == null) ?
                 getConversationViewPage().isContainerVisible(containerType) :
@@ -1228,8 +1235,9 @@ public class ConversationViewPageSteps {
      * @step. ^I remember the state of (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|
      * Share Location|Link Preview) container in the conversation view$
      */
-    @When("^I remember the state of (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
-            "container in the conversation view$")
+    @When("^I remember the state of " +
+            "(Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview)" +
+            " container in the conversation view$")
     public void IRememberContainer(String containerType) throws Exception {
         messageContainerState = new ElementState(
                 () -> getConversationViewPage().getMessageContainerState(containerType)
@@ -1250,8 +1258,9 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I verify the state of (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container is (not )?changed$
      */
-    @Then("^I verify the state of (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
-            "container is (not )?changed$")
+    @Then("^I verify the state of " +
+            "(Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview)" +
+            " container is (not )?changed$")
     public void IVerifyStateOfMessageContainerChanged(String containerType, String notChanged) throws Exception {
         if (notChanged == null) {
             Assert.assertTrue(String.format("The state of %s container is expected to be changed", containerType),
@@ -1285,8 +1294,9 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I (long tap|double tap|tap) (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) container in the conversation view$
      */
-    @When("^I (long tap|double tap|tap) (Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview) " +
-            "container in the conversation view$")
+    @When("^I (long tap|double tap|tap) " +
+            "(Image|Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location|Link Preview)" +
+            " container in the conversation view$")
     public void ITapContainer(String tapType, String containerType) throws Exception {
         getConversationViewPage().tapContainer(tapType, containerType);
     }
@@ -1353,7 +1363,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I remember the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message)" +
             " in the conversation view$")
-    public void IRememberPlayButtonState(String buttonType) throws Exception {
+    public void IRememberButtonStateInAudioMessageContainer(String buttonType) throws Exception {
         switch (buttonType.toLowerCase()) {
             case "video message":
                 videoMessagePlayButtonState.remember();
@@ -1398,7 +1408,8 @@ public class ConversationViewPageSteps {
                 verificationFunc = () -> audioMessagePlayButtonState.isChanged(timeoutSeconds,
                         MIN_UPLOAD_TO_PLAY_SCORE);
                 final BufferedImage cancelBntInitialState = ImageUtil.readImageFromFile(
-                        AndroidCommonUtils.getImagesPathFromConfig(AndroidCommonUtils.class) + "android_audio_msg_cancel_btn.png");
+                        AndroidCommonUtils.getImagesPathFromConfig(AndroidCommonUtils.class)
+                                + "android_audio_msg_cancel_btn.png");
                 audioMessagePlayButtonState.remember(cancelBntInitialState);
                 break;
             default:
@@ -1411,6 +1422,25 @@ public class ConversationViewPageSteps {
     private static final double MIN_UPLOAD_TO_PLAY_SCORE = 0.75;
     private static final double MIN_PLAY_BUTTON_SCORE = 0.82;
     private static final int PLAY_BUTTON_STATE_CHANGE_TIMEOUT = 20; //seconds
+
+
+    /**
+     * Wait until audio message play started (pause button shown)
+     *
+     * @param timeoutSeconds seconds to wait for play started
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until audio message play is started$
+     */
+    @Then("^I wait up to (\\d+) seconds? until audio message play is started$")
+    public void IWaitForAudioMessagePlay(int timeoutSeconds) throws Exception {
+        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
+        final BufferedImage pauseBntInitialState = ImageUtil.readImageFromFile(
+                AndroidCommonUtils.getImagesPathFromConfig(AndroidCommonUtils.class)
+                        + "android_audio_msg_pause_btn.png");
+        audioMessagePlayButtonState.remember(pauseBntInitialState);
+        Assert.assertTrue("Audio message pause button is not visible",
+                audioMessagePlayButtonState.isNotChanged(timeoutSeconds, MIN_PLAY_BUTTON_SCORE));
+    }
 
     /**
      * Verify whether current button state differs from the previous one
