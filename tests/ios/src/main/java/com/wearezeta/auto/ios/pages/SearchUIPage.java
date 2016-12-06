@@ -14,8 +14,8 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 public class SearchUIPage extends IOSPage {
 
     private static final String nameStrSearchInput = "textViewSearch";
-    private static final By nameSearchInput = MobileBy.AccessibilityId(nameStrSearchInput);
-    private static final By fbNameSearchInput = FBBy.AccessibilityId(nameStrSearchInput);
+    private static final By xpathSearchInput = By.xpath(
+            String.format("(//XCUIElementTypeTextView[@name='%s'])[last()]", nameStrSearchInput));
 
     private static final By fbNameXButton = FBBy.AccessibilityId("PeoplePickerClearButton");
 
@@ -67,15 +67,20 @@ public class SearchUIPage extends IOSPage {
     }
 
     public void tapSearchInput() throws Exception {
-        this.tapAtTheCenterOfElement((FBElement) getElement(fbNameSearchInput));
+        getElement(xpathSearchInput).click();
+        if (!this.isKeyboardVisible()) {
+            throw new IllegalStateException(
+                    "On-screen keyboard is expected to be shown after click on search input field"
+            );
+        }
     }
 
     public boolean isVisible() throws Exception {
-        return isLocatorDisplayed(fbNameSearchInput);
+        return isLocatorDisplayed(xpathSearchInput);
     }
 
     public void typeText(String text) throws Exception {
-        final WebElement searchInput = getElement(fbNameSearchInput);
+        final WebElement searchInput = getElement(xpathSearchInput);
         searchInput.sendKeys(text + " ");
         // Wait for a user to be found
         Thread.sleep(2000);
@@ -149,7 +154,7 @@ public class SearchUIPage extends IOSPage {
     }
 
     public void pressBackspaceKeyboardButton() throws Exception {
-        getElement(nameSearchInput).sendKeys(Keys.BACK_SPACE);
+        getElement(xpathSearchInput).sendKeys(Keys.BACK_SPACE);
     }
 
     public void tapInstantConnectButton(String forName) throws Exception {
@@ -220,12 +225,12 @@ public class SearchUIPage extends IOSPage {
         return isLocatorDisplayed(locator);
     }
 
-    public boolean isButtonInvisible(String btnName) throws Exception{
+    public boolean isButtonInvisible(String btnName) throws Exception {
         final By locator = getButtonLocatorByName(btnName);
         return isLocatorInvisible(locator);
     }
 
     public void clearSearchInput() throws Exception {
-        getElement(fbNameSearchInput).clear();
+        getElement(xpathSearchInput).clear();
     }
 }
