@@ -170,3 +170,23 @@ Feature: Usernames
     Examples:
       | Email      | Password      | Name      | Error                                     | UserName      | Name2     | Email2     |
       | user1Email | user1Password | user1Name | Please verify your details and try again. | torelease1086 | user2Name | user2Email |
+
+  @C352081 @usernames @staging
+  Scenario Outline: Verify autogeneration of a username for a user with emoji in name
+    Given There is 1 user where <NameAlias> is me without unique username
+    Given User <NameAlias> changes name to <Name>
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I am signed in properly
+    When I see take over screen
+    And I see name <NameAlias> on take over screen
+    Then I remember unique user name on take over screen
+    And I see remembered unique username contains a random adjective and noun
+    When I click TakeThisOne button on take over screen
+    And I wait for 3 seconds
+    And I open preferences by clicking the gear button
+    Then I see remembered unique username in account preferences
+
+    Examples:
+      | Email      | Password      | NameAlias | Name    |
+      | user1Email | user1Password | user1Name | 😼      |
