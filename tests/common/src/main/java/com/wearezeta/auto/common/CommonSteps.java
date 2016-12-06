@@ -944,6 +944,16 @@ public final class CommonSteps {
         SEBridge.getInstance().cancelConnection(user, canceledUser, deviceName);
     }
 
+    public String GetUserUnqiueUsername(String userNameAlias, String deviceName) throws Exception {
+        final ClientUser user = usrMgr.findUserByNameOrNameAlias(userNameAlias);
+        return SEBridge.getInstance().getUniqueUsername(user, deviceName);
+    }
+
+    public void UpdateUniqueUsername(String userNameAlias, String uniqueUserName, String deviceName) throws Exception {
+        final ClientUser user = usrMgr.findUserByNameOrNameAlias(userNameAlias);
+        SEBridge.getInstance().updateUniqueUsername(user, uniqueUserName, deviceName);
+    }
+
     public void UserResetsPassword(String nameAlias, String newPassword) throws Exception {
         final ClientUser usr = usrMgr.findUserByNameOrNameAlias(nameAlias);
         BackendAPIWrappers.changeUserPassword(usr, usr.getPassword(), newPassword);

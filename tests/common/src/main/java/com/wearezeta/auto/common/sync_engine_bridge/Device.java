@@ -349,4 +349,19 @@ class Device extends RemoteEntity implements IDevice {
                 () -> askActor(this.ref(), new ActorMessage.CancelConnection(userId))
         );
     }
+
+    @Override
+    public String getUniqueUserName() throws Exception {
+        final String uniqueUserName = retryOnTimeoutFailure(
+                () -> (String)askActor(this.ref(), ActorMessage.GetUserName$.MODULE$)
+        );
+        return uniqueUserName;
+    }
+
+    @Override
+    public void updateUniqueUserName(String uniqueUserName) throws Exception {
+        retryOnTimeoutFailure(
+                () -> askActor(this.ref(), new ActorMessage.UpdateProfileUserName(uniqueUserName))
+        );
+    }
 }

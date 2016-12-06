@@ -1788,6 +1788,20 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * User update unique user name
+     *
+     * @param userNameAlias  name alias of the user
+     * @param uniqueUserName unique user name
+     * @param deviceName     device name
+     * @throws Exception
+     * @step.^User (.*) updates? the unqiue user name to "(.*)"(?: via device (.*))?
+     */
+    @Given("^User (.*) updates? the unqiue user name to \"(.*)\"(?: via device (.*))?")
+    public void UserXUpdateUniqueUserName(String userNameAlias, String uniqueUserName, String deviceName) throws Exception {
+        commonSteps.UpdateUniqueUsername(userNameAlias, uniqueUserName, deviceName);
+    }
+
+    /**
      * Add email(s) into address book of a user and upload address book in backend
      *
      * @param asUser   name of the user where the address book is uploaded
