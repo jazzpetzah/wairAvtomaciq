@@ -224,7 +224,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C2103 @staging @fastLogin
+  @C2103 @calling_basic @fastLogin
   Scenario Outline: Verify than outgoing call is automatically terminated after 1 minute timeout if there is no answer
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -240,7 +240,7 @@ Feature: Calling
       | Name      | Contact   | Timeout |
       | user1Name | user2Name | 60      |
 
-  @C3155 @staging @fastLogin
+  @C3155 @calling_basic @fastLogin
   Scenario Outline: Verify call back after ignoring call (during outgoing call from other side)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -260,8 +260,8 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | zcall       | 30      |
 
-  @C3155 @staging @fastLogin
-  Scenario Outline: Verify call back after ignoring call (during outgoing call from other side)
+  @C3156 @calling_basic @fastLogin
+  Scenario Outline: Verify call back to third user after ignoring call (during outgoing call from other side)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
     Given <Contact>,<Contact2> start instance using <CallBackend>
