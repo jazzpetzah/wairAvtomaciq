@@ -244,7 +244,6 @@ Feature: Connect
     When I tap on contact name <Contact1>
     And I open conversation details
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    And I confirm Cancel Request conversation action
     Then I do not see conversation <Contact1> in conversations list
 
     Examples:
@@ -261,7 +260,6 @@ Feature: Connect
     When I tap on contact name <Contact1>
     And I open conversation details
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    And I confirm Cancel Request conversation action
     And I navigate back to conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search UI
@@ -290,7 +288,6 @@ Feature: Connect
     And I type "<Contact1>" in Search UI input field
     And I tap on conversation <Contact1> in search result
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    And I confirm Cancel Request conversation action
     # Wait for animation
     And I wait for 1 second
     Then I see the conversation "<Contact1>" exists in Search results

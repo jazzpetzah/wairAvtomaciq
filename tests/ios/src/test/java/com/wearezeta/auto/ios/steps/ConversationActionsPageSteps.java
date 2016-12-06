@@ -47,9 +47,9 @@ public class ConversationActionsPageSteps {
      * @param what either 'confirm' or 'decline'
      * @param actionName one of available action names
      * @throws Exception
-     * @step. ^I (confirm|decline)  (Block|Remove|Delete|Leave|Cancel Request|Connect) conversation action$
+     * @step. ^I (confirm|decline)  (Block|Remove|Delete|Leave|Connect) conversation action$
      */
-    @Then("^I (confirm|decline) (Block|Remove|Delete|Leave|Cancel Request|Connect) conversation action$")
+    @Then("^I (confirm|decline) (Block|Remove|Delete|Leave|Connect) conversation action$")
     public void IDoAction(String what, String actionName) throws Exception {
         if (what.equals("confirm")) {
             getPage().confirmAction(actionName);

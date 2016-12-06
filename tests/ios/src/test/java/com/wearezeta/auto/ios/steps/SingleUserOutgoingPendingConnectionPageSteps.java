@@ -75,9 +75,9 @@ public class SingleUserOutgoingPendingConnectionPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Cancel Request|Connect) button on Single user Pending incoming connection page$
+     * @step. ^I tap (Cancel Request|Archive|Connect) button on Single user Pending incoming connection page$
      */
-    @When("^I tap (Cancel Request|Connect) button on Single user Pending outgoing connection page$")
+    @When("^I tap (Cancel Request|Archive|Connect) button on Single user Pending outgoing connection page$")
     public void ITapButton(String btnName) throws Exception {
         getPage().tapButton(btnName);
     }
