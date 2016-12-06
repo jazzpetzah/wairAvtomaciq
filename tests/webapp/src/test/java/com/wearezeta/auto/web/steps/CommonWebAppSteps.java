@@ -671,4 +671,9 @@ public class CommonWebAppSteps {
     public void UserKeepsXOtrClients(String userAs, int clientsCount) throws Exception {
         context.getCommonSteps().UserKeepsXOtrClients(userAs, clientsCount);
     }
+
+    @Given("^User (.*) updates? the unique user name to \"(.*)\"(?: via device (.*))?")
+    public void UserXUpdateUniqueUserName(String userNameAlias, String uniqueUserName, String deviceName) throws Exception {
+        context.getCommonSteps().UpdateUniqueUsername(userNameAlias, uniqueUserName, deviceName);
+    }
 }
