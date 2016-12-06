@@ -375,6 +375,10 @@ public final class WebAppLocators {
 
         public static final Function<String, String> cssMessagesById = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s']", text);
+
+        public static final Function<String, String> xpathMessageHeaderByText = text -> String
+                .format("//*[@data-uie-name='item-message']//*[contains(@class,'text') and contains(text(),'%s')]//../../..",
+                        text);
         
         public static final FunctionFor2Parameters<String, String, String> xpathMessageTextByMessageId = (messageId, text) -> String
                 .format("//*[@data-uie-name='item-message' and @data-uie-uid='%s']//*[contains(@class, 'text') and text()='%s']", messageId, text);

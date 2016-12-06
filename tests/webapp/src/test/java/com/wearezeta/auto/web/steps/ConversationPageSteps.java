@@ -939,6 +939,11 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).waitForDisplayedMessageContains(message, 30);
     }
 
+    @Then("^I scroll up in the conversation")
+    public void IScrollUp() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).scrollUp();
+    }
+
     private int getXLastMessageIndex(String indexValue) throws Exception {
         int indexNummer = 1;
         if (indexValue == null) {

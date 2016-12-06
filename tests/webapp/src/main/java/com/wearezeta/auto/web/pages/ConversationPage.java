@@ -259,6 +259,11 @@ public class ConversationPage extends WebPage {
         return getNumberOfElementsContainingText(locator, parts);
     }
 
+    public String getMessageIdFromMessageText(String messageText) throws Exception {
+        By locator = By.xpath(WebAppLocators.ConversationPage.xpathMessageHeaderByText.apply(messageText));
+        return getDriver().findElement(locator).getAttribute("data-uie-uid");
+    }
+
     public String getUniqueUsername() throws Exception{
         return uniqueUsername.getText();
     }

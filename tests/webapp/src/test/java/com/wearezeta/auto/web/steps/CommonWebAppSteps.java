@@ -15,6 +15,7 @@ import com.wearezeta.auto.web.common.Message;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
 import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
@@ -49,6 +50,8 @@ public class CommonWebAppSteps {
     private static final int DELETION_RECEIVING_TIMEOUT = 120;
 
     private String rememberedPage = null;
+
+    private String rememberedMessageId = null;
 
     private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
 
@@ -449,6 +452,20 @@ public class CommonWebAppSteps {
         context.getCommonSteps().UserUpdateSecondLastMessage(userNameAlias, dstNameAlias, newMessage, deviceName + context.
                 getTestname().
                 hashCode(), isGroup);
+    }
+
+    @When("^I remember the message (.*)")
+    public void IRememberTheMessage(String text) throws Exception {
+        rememberedMessageId = context.getPagesCollection().getPage(ConversationPage.class).getMessageIdFromMessageText(text);
+    }
+
+    @When("^User (.*) edits? the remembered message to \"(.*)\" on device (.*)$")
+    public void UserXEditRememberedMessage(String userNameAlias, String newMessage, String deviceName) throws Exception {
+        if (rememberedMessageId == null) {
+            throw new PendingException("No remembered message found. Please run the step first.");
+        }
+        context.getCommonSteps().UserUpdateMessageById(userNameAlias, rememberedMessageId, newMessage,
+                deviceName + context.getTestname().hashCode());
     }
 
     @When("^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$")

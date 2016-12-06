@@ -424,6 +424,12 @@ public final class CommonSteps {
         seBridge.updateMessage(user, getFilteredSecondLastMessageId(messageInfos), newMessage, deviceName);
     }
 
+    public void UserUpdateMessageById(String msgFromUserNameAlias, String messageId,
+                                      String newMessage, String deviceName) throws Exception {
+        ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
+        seBridge.updateMessage(user, MessageId.apply(messageId), newMessage, deviceName);
+    }
+
     /**
      * Note: if there is no message in conversation, it will return Optional.empty()
      */

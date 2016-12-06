@@ -398,3 +398,38 @@ Feature: Edit
     Examples:
       | Login      | Password      | Name      | Contact   | OriginalMessage | OriginalMessage2 | IntermediateMessage | EditedMessage |
       | user1Email | user1Password | user1Name | user2Name | edit me         | edit me 2        | abort edit          | edited1       |
+
+  @WEBAPP-3422 @edit @staging
+  Scenario Outline: Verify I do not loose messages when someone edits a message from a long time ago
+    Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <ChatName>
+    And Contact <Contact1> sends 10 messages with prefix <Prefix1> via device Device1 to group conversation <ChatName>
+    And I remember the message <Prefix1>1
+    And Contact <Contact2> sends 10 messages with prefix <Prefix2> via device Device1 to group conversation <ChatName>
+    And Contact <Contact1> sends 10 messages with prefix <Prefix3> via device Device1 to group conversation <ChatName>
+    And Contact <Contact1> sends 10 messages with prefix <Prefix4> via device Device1 to group conversation <ChatName>
+    When I open conversation with <Contact1>
+    And User <Contact1> edits the remembered message to "<EditedMessage>" on device Device1
+    And I open conversation with <ChatName>
+    And I scroll up in the conversation
+    Then I see text message <Prefix1>0
+    And I see text message <EditedMessage>
+    And I do not see text message <Prefix1>1
+    And I see text message <Prefix1>2
+    And I see text message <Prefix1>9
+    And I see text message <Prefix2>0
+    And I see text message <Prefix2>9
+    And I see text message <Prefix3>0
+    And I see text message <Prefix3>9
+    And I see text message <Prefix4>0
+    And I see text message <Prefix4>9
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName | Prefix1 | Prefix2 | Prefix3 | Prefix4 | EditedMessage |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | Editing  | first   | second  | third   | fourth  | edited        |
