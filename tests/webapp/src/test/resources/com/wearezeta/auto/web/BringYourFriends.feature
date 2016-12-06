@@ -74,7 +74,8 @@ Feature: Bring Your Friends
     Given There is 1 user where user1Name is me without avatar picture
     Given I switch to Sign In page
     Given I Sign in using login user1Email and password user1Password
-    Given I see first time experience with watermark
+    Given I see watermark
+    Given I see first time experience hint
     Given I open search by clicking the people button
     When I click button to bring friends from Gmail
     And I see Google login popup

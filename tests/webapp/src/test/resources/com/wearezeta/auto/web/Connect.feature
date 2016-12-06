@@ -81,7 +81,7 @@ Feature: Connect
     Given I am signed in properly
     When I open search by clicking the people button
     And I see Bring Your Friends or Invite People button
-    And I type <ContactEmail> in search field of People Picker
+    And I type <Contact> in search field of People Picker
     And I see user <Contact> found in People Picker
     And I click on not connected user <Contact> found in People Picker
     And I see Connect To popover
@@ -89,8 +89,8 @@ Feature: Connect
     Then I see Contact list with name <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | ContactEmail |
-      | user1Email | user1Password | user1Name | user2Name | user2Email   |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @C1817 @regression
   Scenario Outline: Verify sending a connection request to user from conversation view
