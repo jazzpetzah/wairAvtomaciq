@@ -3,6 +3,8 @@ Feature: Search
   @C1711 @smoke
   Scenario Outline: Start group chat with users from contact list
     Given There are 3 users where <Name> is me
+    Given User <Contact1> changes unique username to <Contact1>
+    Given User <Contact2> changes unique username to <Contact2>
     Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -26,6 +28,8 @@ Feature: Search
   @C1723 @regression
   Scenario Outline: Verify the new conversation is created on the other end from Search UI
     Given There are 3 users where <Name> is me
+    Given User <Contact1> changes unique username to <Contact1>
+    Given User <Contact2> changes unique username to <Contact2>
     Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -67,6 +71,7 @@ Feature: Search
   @C1698 @regression
   Scenario Outline: Verify you can unblock someone from search list
     Given There are 2 users where <Name> is me
+    Given User <Contact> changes unique username to <Contact>
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -94,6 +99,7 @@ Feature: Search
   @C1722 @regression
   Scenario Outline: Verify you can add new user from search results from the other end
     Given There are 2 users where <Name> is me
+    Given User <Name2> changes unique username to <Name2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I wait until <Name2> exists in backend search results
@@ -189,6 +195,7 @@ Feature: Search
   @C1802 @smoke
   Scenario Outline: Verify you can search by email
     Given There are 2 users where <Name> is me
+    Given User <Name2> changes unique username to <Name2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I wait until <Name2> exists in backend search results
@@ -207,6 +214,7 @@ Feature: Search
   Scenario Outline: Verify I can start a 1:1 call with search ui buttons
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given User <Contact1> changes unique username to <Contact1>
     Given Myself is connected to <Contact1>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -229,6 +237,8 @@ Feature: Search
   Scenario Outline: Verify I can start a group call with search ui buttons
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given User <Contact1> changes unique username to <Contact1>
+    Given User <Contact2> changes unique username to <Contact2>
     Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>

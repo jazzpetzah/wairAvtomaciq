@@ -386,6 +386,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can start 1:1 Video Call from Start UI
     Given My browser supports calling
     Given There are 2 users where <Name> is me
+    Given User <Contact> changes unique username to <Contact>
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
@@ -420,6 +421,8 @@ Feature: VideoCalling
   Scenario Outline: Verify you don't see video call button when you're creating group from Start UI
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given User <Contact1> changes unique username to <Contact1>
+    Given User <Contact2> changes unique username to <Contact2>
     Given Myself is connected to <Contact1>, <Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>

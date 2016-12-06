@@ -74,6 +74,7 @@ Feature: Connect
   @C1699 @smoke
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
+    Given User <Contact> changes unique username to <Contact>
     Given I wait until <Contact> exists in backend search results
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -115,6 +116,7 @@ Feature: Connect
   @C1767 @smoke
   Scenario Outline: Verify 1to1 conversation is successfully created for sender end after connection is accepted
     Given There are 2 users where <Name> is me
+    Given User <Name2> changes unique username to <Name2>
     Given I switch to Sign In page
     When I wait until <Name2> exists in backend search results
     And I Sign in using login <Login> and password <Password>
@@ -158,6 +160,7 @@ Feature: Connect
   @C1694 @regression
   Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request
     Given There are 2 users where <Name> is me
+    Given User <Name2> changes unique username to <Name2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I wait until <Name2> exists in backend search results
@@ -437,6 +440,7 @@ Feature: Connect
   @C1790 @regression
   Scenario Outline: I want to cancel a pending request from search
     Given There are 3 users where <Name> is me
+    Given User <Contact1> changes unique username to <Contact1>
     Given I sent connection request to <Contact1>
     Given Myself is connected to <Contact2>
     Given I switch to Sign In page
