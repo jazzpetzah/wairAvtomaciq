@@ -266,7 +266,7 @@ Feature: Unique Usernames
     Then I see name "<Contact4WithCommonFriends>" on Single user Pending outgoing connection page
     And I do not see unique username on Single user Pending outgoing connection page
     And I do not see Address Book name on Single user Pending outgoing connection page
-    And I see common friends count "1" on Single user Pending outgoing connection page
+    And I do not see common friends count on Single user Pending outgoing connection page
     And I tap X button on Single user profile page
     When I navigate back to conversations list
     And I tap on contact name <Contact5WithSameNameInAB>
