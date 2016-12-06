@@ -72,4 +72,8 @@ public interface IDevice extends IRemoteEntity {
     void sendGiphy(String convId, String searchQuery) throws Exception;
 
     void cancelConnection(UserId userId) throws Exception;
+
+    String getUniqueUserName() throws Exception;
+
+    void updateUniqueUserName(String uniqueUserName) throws Exception;
 }
