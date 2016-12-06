@@ -1,7 +1,7 @@
 Feature: Search
 
   @C1035 @rc @clumsy @regression @fastLogin
-  Scenario Outline: Verify search by email
+  Scenario Outline: Verify search by email does not work
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -9,7 +9,7 @@ Feature: Search
     And I accept alert if visible
     And I tap input field on Search UI page
     And I type "<ContactEmail>" in Search UI input field
-    Then I see the conversation "<ContactName>" exists in Search results
+    Then I see the conversation "<ContactName>" does not exist in Search results
 
     Examples:
       | Name      | ContactEmail | ContactName |
