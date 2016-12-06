@@ -93,4 +93,10 @@ public class OSXCommonUtils extends CommonUtils {
         LOG.debug("executing command: " + Arrays.toString(commands));
         return executeOsXCommand(commands);
     }
+
+    public static boolean isHibernateBlocked() throws Exception {
+        String stringResult = executeOsXCommandWithOutput(new String[]{"/bin/sh", "-c", "pmset -g | grep sleep"});
+        LOG.debug("result: " + stringResult);
+        return stringResult.contains("sleep prevented by");
+    }
 }
