@@ -723,7 +723,7 @@ public class ConversationViewPageSteps {
                 isYouCalledMessageAndButtonVisible());
     }
 
-    private static final double MAX_SIMILARITY_THRESHOLD = 0.98;
+    private static final double MAX_SIMILARITY_THRESHOLD = 0.985;
 
     /**
      * Verify whether the particular picture is animated
@@ -736,8 +736,8 @@ public class ConversationViewPageSteps {
         // no need to wait, since screenshoting procedure itself is quite long
         final long screenshotingDelay = 0;
         final int maxFrames = 4;
-        final double avgThreshold = ImageUtil.getAnimationThreshold(getConversationViewPage()::getRecentPictureScreenshot,
-                maxFrames, screenshotingDelay);
+        final double avgThreshold = ImageUtil.getAnimationThreshold(
+                getConversationViewPage()::getRecentPictureScreenshot, maxFrames, screenshotingDelay);
         Assert.assertTrue(String.format("The picture in the conversation view seems to be static (%.2f >= %.2f)",
                 avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
     }
