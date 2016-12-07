@@ -25,10 +25,10 @@ public class ConversationActionsPage extends IOSPage {
     private static final By fbXpathIgnoreActionButtonByName =
             FBBy.xpath("//XCUIElementTypeButton[@name='IGNORE']");
 
-//    private static final By fbXpathYesActionButton =
-//            FBBy.xpath("//XCUIElementTypeButton[@name='NO']/following::XCUIElementTypeButton[@name='YES']");
-//    private static final By fbXpathNoActionButton =
-//            FBBy.xpath("//XCUIElementTypeButton[@name='NO']");
+    private static final By fbXpathYesActionButton =
+            FBBy.xpath("//XCUIElementTypeButton[@name='NO']/following::XCUIElementTypeButton[@name='YES']");
+    private static final By fbXpathNoActionButton =
+            FBBy.xpath("//XCUIElementTypeButton[@name='NO']");
 
     public ConversationActionsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -60,6 +60,9 @@ public class ConversationActionsPage extends IOSPage {
         Thread.sleep(TRANSITION_DURATION_MS);
         By locator = FBBy.xpath(xpathStrConfirmActionButtonByName.apply(actionName));
         switch (actionName.toLowerCase()) {
+            case "cancel request":
+                locator = fbXpathYesActionButton;
+                break;
             case "connect":
                 locator = FBBy.xpath(xpathStrConnectActionButtonByName.apply(actionName));
                 break;
@@ -79,6 +82,9 @@ public class ConversationActionsPage extends IOSPage {
         Thread.sleep(TRANSITION_DURATION_MS);
         By locator = fbXpathDeclineActionButtonByName;
         switch (actionName.toLowerCase()) {
+            case "cancel request":
+                locator = fbXpathNoActionButton;
+                break;
             case "connect":
                 locator = fbXpathIgnoreActionButtonByName;
                 break;
