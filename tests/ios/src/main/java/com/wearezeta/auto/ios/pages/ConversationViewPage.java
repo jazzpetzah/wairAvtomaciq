@@ -811,6 +811,8 @@ public class ConversationViewPage extends IOSPage {
         if (isDoubleTap) {
             dstElement.doubleTap();
         } else if (isLongTap) {
+            // FIXME: replace it after switch to Appium 1.6.2
+            // longTapAt(dstElement, 25, 50);
             longClickAt(dstElement, 25, 50);
         } else {
             dstElement.click();
@@ -838,11 +840,11 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isLikeIconVisible() throws Exception {
-        return isLocatorDisplayed(nameLikeButton);
+        return isLocatorDisplayed(nameLikeButton) && isLocatorDisplayed(nameRecentMessageToolbox);
     }
 
     public boolean isLikeIconInvisible() throws Exception {
-        return isLocatorInvisible(nameLikeButton);
+        return isLocatorInvisible(nameLikeButton) || isLocatorInvisible(nameRecentMessageToolbox);
     }
 
     public void tapAtRecentMessage(int pWidth, int pHeight) throws Exception {

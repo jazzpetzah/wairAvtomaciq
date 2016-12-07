@@ -283,7 +283,7 @@ public abstract class IOSPage extends BasePage {
         final By locator = By.xpath(xpathStrAlertByText.apply(expectedText));
         return isLocatorDisplayed(locator);
     }
-    
+
     public boolean isAlertDoesNotContainsText(String expectedText) throws Exception {
         final By locator = By.xpath(xpathStrAlertByText.apply(expectedText));
         return isLocatorInvisible(locator);
@@ -365,6 +365,34 @@ public abstract class IOSPage extends BasePage {
         IOSSimulatorHelpers.clickAt(String.format("%.2f", px),
                 String.format("%.2f", py),
                 String.format("%.3f", durationSeconds));
+    }
+
+    private Point calculateTapCoordinates(Optional<WebElement> el, int percentX, int percentY) throws Exception {
+        final Dimension screenSize = getDriver().manage().window().getSize();
+        int tapX = screenSize.getWidth() * percentX / 100;
+        int tapY = screenSize.getHeight() * percentY / 100;
+        if (el.isPresent()) {
+            final Point elLocation = el.get().getLocation();
+            final Dimension elSize = el.get().getSize();
+            tapX = elLocation.getX() + elSize.getWidth() * percentX / 100;
+            tapY = elLocation.getY() + elSize.getHeight() * percentY / 100;
+        }
+        return new Point(tapX, tapY);
+    }
+
+    protected void doubleTapAt(Optional<WebElement> el, int percentX, int percentY) throws Exception {
+        final Point tapPoint = calculateTapCoordinates(el, percentX, percentY);
+        getDriver().doubleTapScreenAt(tapPoint.getX(), tapPoint.getY());
+    }
+
+    protected void longTapAt(WebElement el, int percentX, int percentY) throws Exception {
+        this.longTapAt(Optional.of(el), percentX, percentY, DriverUtils.LONG_TAP_DURATION / 1000.0);
+    }
+
+    protected void longTapAt(Optional<WebElement> el, int percentX, int percentY, double durationSeconds)
+            throws Exception {
+        final Point tapPoint = calculateTapCoordinates(el, percentX, percentY);
+        getDriver().longTapScreenAt(tapPoint.getX(), tapPoint.getY(), durationSeconds);
     }
 
     protected void longClickAt(WebElement el, int percentX, int percentY) throws Exception {
@@ -720,12 +748,6 @@ public abstract class IOSPage extends BasePage {
     public void tapScreenByPercents(int percentX, int percentY) throws Exception {
         final Dimension size = getDriver().manage().window().getSize();
         getDriver().tapScreenAt(percentX * size.getWidth() / 100, percentY * size.getHeight() / 100);
-    }
-
-    public void tapScreenAt(WebElement el) throws Exception {
-        final Point location = el.getLocation();
-        final Dimension size = el.getSize();
-        tapScreenAt(location.getX() + size.getWidth() / 2, location.getY() + size.getHeight() / 2);
     }
 
     public Optional<String> readAlertText() throws Exception {
