@@ -120,7 +120,7 @@ Feature: Usernames
       | user1Email | user1Password | user1Name |               | At least 2 characters. a—z, 0—9 and _ only. |
       | user1Email | user1Password | user1Name | a             | At least 2 characters. a—z, 0—9 and _ only. |
 
-  @C352242 @usernames @staging
+  @C352079 @usernames @staging
   Scenario Outline: Verify username is unique
     Given There are 2 users where <Name> is me without unique username
     Given User <SecondUser> changes unique username to <SecondUser>
