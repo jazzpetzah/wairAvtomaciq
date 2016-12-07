@@ -329,7 +329,7 @@ Feature: Connect
     And I long tap on text input
     And I tap on Paste badge item
     And I tap Send Message button in conversation view
-    Then I see last message in the conversation view contains expected message MyEmail
+    Then I see link preview container in the conversation view
 
     Examples:
       | Name      | Contact   |
