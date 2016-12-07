@@ -220,11 +220,11 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given I wait until <ContactEmail> exists in backend search results
+    Given I wait until <UnconnectedUser> exists in backend search results
     Given I open search UI
     Given I accept alert if visible
     Given I tap input field on Search UI page
-    Given I type "<ContactEmail>" in Search UI input field
+    Given I type "<UnconnectedUser>" in Search UI input field
     # Wait for animation
     Given I wait for 3 seconds
     When I tap the instant connect button next to <UnconnectedUser>
@@ -232,8 +232,8 @@ Feature: Connect
     Then I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
-      | Name      | UnconnectedUser | ContactEmail |
-      | user1Name | user2Name       | user2Email   |
+      | Name      | UnconnectedUser |
+      | user1Name | user2Name       |
 
   @C38 @rc @clumsy @regression @fastLogin
   Scenario Outline: Verify possibility of disconnecting from conversation list
