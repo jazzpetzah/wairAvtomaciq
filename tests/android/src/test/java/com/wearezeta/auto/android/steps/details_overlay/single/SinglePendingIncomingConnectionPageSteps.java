@@ -67,15 +67,15 @@ public class SinglePendingIncomingConnectionPageSteps {
     }
 
     /**
-     * Verify user data (User name, Unique user name, User info)
+     * Verify user data (User name, Unique user name)
      *
      * @param shouldNotSee  equals null means the item should be visible
-     * @param type          which could be user name, unique user name, user info
+     * @param type          which could be user name, unique user name
      * @param userNameAlias the name alias
      * @throws Exception
-     * @step.^I( do not)? see (user name|unique user name|user info) of user (.*) on Single pending incoming connection page$
+     * @step.^I( do not)? see (user name|unique user name) of user (.*) on Single pending incoming connection page$
      */
-    @Then("^I( do not)? see (user name|unique user name|user info) of user (.*) on Single pending incoming connection page$")
+    @Then("^I( do not)? see (user name|unique user name) of user (.*) on Single pending incoming connection page$")
     public void ISeeUserNameAndEmail(String shouldNotSee, String type, String userNameAlias) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(userNameAlias);
         if (shouldNotSee == null) {
@@ -84,6 +84,25 @@ public class SinglePendingIncomingConnectionPageSteps {
         } else {
             Assert.assertTrue(String.format("%s should be invisible", type),
                     getSinglePendingIncomingConnectionPage().waitUntilUserDataInvisible(type, user));
+        }
+    }
+
+    /**
+     * Wait until user info visible or invisible, user info which could be common friends message, or address book message
+     *
+     * @param shouldNotSee equals null means the user info should be visible
+     * @param userInfo     the expected user info you want to see
+     * @throws Exception
+     * @step. ^I( do not)? see user info "(.*)" on Single pending incoming connection page$
+     */
+    @Then("^I( do not)? see user info \"(.*)\" on Single pending incoming connection page$")
+    public void IseeUserInfo(String shouldNotSee, String userInfo) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("The user info '%s' is invisible", userInfo),
+                    getSinglePendingIncomingConnectionPage().waitUntilUserInfoVisible(userInfo));
+        } else {
+            Assert.assertTrue(String.format("The user info '%s' is still visible", userInfo),
+                    getSinglePendingIncomingConnectionPage().waitUntilUserInfoInvisible(userInfo));
         }
     }
 }

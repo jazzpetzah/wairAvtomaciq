@@ -837,7 +837,7 @@ public class CommonAndroidSteps {
         commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
         UserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
         if (withoutUniqueUsername == null) {
-            commonSteps.ISetUniqueUsername(myNameAlias);
+            commonSteps.UsersSetUniqueUsername(myNameAlias);
         }
     }
 
@@ -859,7 +859,7 @@ public class CommonAndroidSteps {
             commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
         }
         UserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
-        commonSteps.ISetUniqueUsername(myNameAlias);
+        commonSteps.UsersSetUniqueUsername(myNameAlias);
     }
 
     /**
@@ -935,6 +935,21 @@ public class CommonAndroidSteps {
     public void UserWaitsUntilContactDoesNotExistsInHisSearchResults(String searchByNameAlias, int timeoutSeconds,
                                                                      String query) throws Exception {
         commonSteps.WaitUntilContactIsNotFoundInSearch(searchByNameAlias, query, timeoutSeconds);
+    }
+
+    /**
+     * Wait until the common friends between A and B are already generated in BE
+     *
+     * @param searchByNameAlias A's user name alias
+     * @param expectedCountOfCommonContacts B's user name alias
+     * @param contactNameAlias expect count of common users between A and B
+     * @throws Exception
+     * @step. ^(\w+) waits? until (\d+) common contacts? with (.*) exists in backend
+     */
+    @Given("^(\\w+) waits? until (\\d+) common contacts? with (.*) exists in backend")
+    public void UserWaitUntilCommonContactsInBackend(String searchByNameAlias, int expectedCountOfCommonContacts,
+                                                     String contactNameAlias) throws Exception {
+        commonSteps.WaitUntilCommonContactsIsGenerated(searchByNameAlias, contactNameAlias, expectedCountOfCommonContacts);
     }
 
     /**
@@ -1799,10 +1814,11 @@ public class CommonAndroidSteps {
      * @param uniqueUserName unique user name
      * @param deviceName     device name
      * @throws Exception
-     * @step.^User (.*) updates? the unqiue user name to "(.*)"(?: via device (.*))?
+     * @step.^User (.*) updates? the unique user name to "(.*)"(?: via device (.*))?
      */
-    @Given("^User (.*) updates? the unqiue user name to \"(.*)\"(?: via device (.*))?")
+    @Given("^User (.*) updates? the unique user name to \"(.*)\"(?: via device (.*))?")
     public void UserXUpdateUniqueUserName(String userNameAlias, String uniqueUserName, String deviceName) throws Exception {
+        uniqueUserName = usrMgr.replaceAliasesOccurences(uniqueUserName, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         commonSteps.UpdateUniqueUsername(userNameAlias, uniqueUserName, deviceName);
     }
 

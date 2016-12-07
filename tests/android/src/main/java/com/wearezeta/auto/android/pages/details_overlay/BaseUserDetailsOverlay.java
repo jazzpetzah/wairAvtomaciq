@@ -23,7 +23,7 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
 
     private static final Function<String, String> xpathStrTabByText = text -> String.format("//*[@value='%s']", text);
     private static final Function<String, String> xpathStrUniqueUserName = text -> String.format
-            ("//*[@id='%s' and @value='%s']", strIdUniqueName, text);
+            ("//*[@id='%s' and @value='@%s']", strIdUniqueName, text);
     private static final Function<String, String> xpathStrUserInfo = text -> String.format
             ("//*[@id='%s' and @value='%s']", strIdUserInfo, text);
     private final Function<String, String> xpathStrUserName = userName -> String.format
@@ -44,6 +44,16 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
 
     public boolean waitUntilUserDataInvisible(String type, ClientUser user) throws Exception {
         By locator = getUserDataLocator(type, user);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public boolean waitUntilUserInfoVisible(String expectedInfo) throws Exception {
+        By locator = By.xpath(xpathStrUserInfo.apply(expectedInfo));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitUntilUserInfoInvisible(String expectedInfo) throws Exception {
+        By locator = By.xpath(xpathStrUserInfo.apply(expectedInfo));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
@@ -69,8 +79,6 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
                 return By.xpath(xpathStrUserName.apply(user.getName()));
             case "unique user name":
                 return By.xpath(xpathStrUniqueUserName.apply(user.getUniqueUsername()));
-            case "user info":
-                throw new NotImplementedException("not implemented");
             default:
                 throw new IllegalArgumentException(
                         String.format("Cannot find the locator for '%s'", type));
@@ -83,8 +91,6 @@ public abstract class BaseUserDetailsOverlay extends BaseDetailsOverlay {
                 return By.id(getUserNameId());
             case "unique user name":
                 return idUniqueUserName;
-            case "user info":
-                return idUserInfo;
             default:
                 throw new IllegalArgumentException(String.format("Cannot find the locator for '%s'", type));
         }
