@@ -5,8 +5,6 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 
-import static com.wearezeta.auto.common.CommonSteps.splitAliases;
-
 import com.wearezeta.auto.common.ZetaFormatter;
 
 import static org.junit.Assert.assertNotNull;
@@ -312,9 +310,10 @@ public class CallingSteps {
             throws Exception {
         final Map<Integer, Exception> failures = new HashMap<>();
 
-        if (!arrayCallSetupTime.isEmpty()) {
-            LOG.info("Call setup_time array needs to be emptied");
+        if (!arrayCallSetupTime.isEmpty() || !arrayCallEstabTime.isEmpty()) {
+            LOG.info("Call setup_time and estab_time array needs to be emptied");
             arrayCallSetupTime.clear();
+            arrayCallEstabTime.clear();
         }
 
         for (int i = 0; i < times; i++) {
@@ -326,15 +325,24 @@ public class CallingSteps {
             sumCallSetupTime += element;
         }
 
-        int avgCallSetupTime;
-        if (times == failures.size()) {
-            LOG.info("All calls failed. Call setup time will be 0.");
-            avgCallSetupTime = 0;
-        } else {
-            avgCallSetupTime = sumCallSetupTime / (times - failures.size());
+        int sumCallEstabTime = 0;
+        for (int element : arrayCallEstabTime) {
+            sumCallEstabTime += element;
         }
 
-        createCallingReport(times, failures, avgCallSetupTime);
+        int avgCallSetupTime;
+        int avgCallEstabTime;
+        int successfullCallsCount = times - failures.size();
+        if (times == failures.size()) {
+            LOG.info("All calls failed. Call setup time  and estab time will be 0.");
+            avgCallSetupTime = 0;
+            avgCallEstabTime = 0;
+        } else {
+            avgCallSetupTime = sumCallSetupTime / successfullCallsCount;
+            avgCallEstabTime = sumCallEstabTime / successfullCallsCount;
+        }
+
+        createCallingReport(times, failures, avgCallSetupTime, avgCallEstabTime);
 
         failures.forEach((Integer i, Throwable t) -> {
             LOG.error(i + ": " + t.getMessage());
@@ -347,10 +355,11 @@ public class CallingSteps {
         }
     }
 
-    private void createCallingReport(int timesOfCalls, final Map<Integer, Exception> failures, int avgCallSetupTime)
+    private void createCallingReport(int timesOfCalls, final Map<Integer, Exception> failures, int avgCallSetupTime,
+                                     int avgCallEstabTime)
             throws Exception {
-        String message = String.format("%s/%s calls succeeded, average Call setup_time: %s",
-                timesOfCalls - failures.size(), timesOfCalls, avgCallSetupTime);
+        String message = String.format("%s/%s calls succeeded, average Call setup_time: %s ms , average Call estab_time:" +
+                " %s ms", timesOfCalls - failures.size(), timesOfCalls, avgCallSetupTime, avgCallEstabTime);
         LOG.info(message);
 
         Files.write(Paths.get(CommonUtils.getBuildPathFromConfig(CallingSteps.class) + "/multi_call_result.txt"),
@@ -358,9 +367,10 @@ public class CallingSteps {
     }
 
     private void receiveOneCallInConsecutiveLoop(String callees, int numberOfCall, String conversationName,
-                                                 int callDurationMinutes, final Map<Integer, Exception> failures) {
+                                                 int callDurationMinutes, final Map<Integer, Exception> failures)
+            throws Exception {
         final int timeBetweenCall = 10;
-        final List<String> calleeList = splitAliases(callees);
+        final List<String> calleeList = commonCallingSteps.getUsersManager().splitAliases(callees);
         final CommonIOSSteps commonIOSSteps = new CommonIOSSteps();
 
         LOG.info("\n\nSTARTING CALL " + numberOfCall);
@@ -404,11 +414,11 @@ public class CallingSteps {
             LOG.error("Can not stop waiting call " + numberOfCall + " " + t);
 
             try {
-                pagesCollection.getPage(CallKitOverlayPage.class).tapButton("Decline");
+                pagesCollection.getPage(CallKitOverlayPage.class).tapButton("Leave");
             } catch (Throwable ex) {
                 LOG.error("Can not stop call kit " + numberOfCall + " " + ex);
                 try {
-                    pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName("Leave");
+                    pagesCollection.getPage(CallingOverlayPage.class).tapButtonByName("Decline");
                 } catch (Throwable exe) {
                     LOG.error("Can not stop call " + numberOfCall + " " + exe);
                 }
