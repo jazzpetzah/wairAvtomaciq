@@ -18,13 +18,15 @@ Feature: People View
     And I type "<Contact2>" in Search UI input field
     And I tap on conversation <Contact2> in search result
     And I tap Create conversation action button on Search UI page
+    # Wait until the conversation is created
+    And I wait for 3 seconds
     Then I see group conversation with users <Contact1>,<Contact2>
 
     Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2896 @regression @fastLogin
+  @C2896 @regression @fastLogin @torun
   Scenario Outline: Start group chat with users from contact list [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -42,6 +44,8 @@ Feature: People View
     And I type "<Contact2>" in Search UI input field
     And I tap on conversation <Contact2> in search result
     And I tap Create conversation action button on Search UI page
+    # Wait until the conversation is created
+    And I wait for 3 seconds
     Then I see group conversation with users <Contact1>,<Contact2>
 
     Examples:
@@ -61,6 +65,9 @@ Feature: People View
     And I tap connected user <Contact2> in Search UI on iPad popover
     And I tap connected user <Contact3> in Search UI on iPad popover
     And I tap Create button on iPad popover
+    And I tap Create button on iPad popover
+    # Wait until the conversation is created
+    And I wait for 3 seconds
     Then I see group conversation with users <Contact1>,<Contact2>,<Contact3>
     And I navigate back to conversations list
     Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
@@ -82,6 +89,8 @@ Feature: People View
     And I tap connected user <Contact2> in Search UI on iPad popover
     And I tap connected user <Contact3> in Search UI on iPad popover
     And I tap Create button on iPad popover
+    # Wait until the conversation is created
+    And I wait for 3 seconds
     And I see group conversation with users <Contact1>,<Contact2>,<Contact3>
     Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 
