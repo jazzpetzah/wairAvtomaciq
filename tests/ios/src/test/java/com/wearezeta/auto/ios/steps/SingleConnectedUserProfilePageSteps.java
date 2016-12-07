@@ -51,7 +51,7 @@ public class SingleConnectedUserProfilePageSteps {
                         getPage().isUserDetailVisible(fieldType, value));
             } else {
                 Assert.assertTrue(String.format("'%s' field is expected to be visible", fieldType),
-                        getPage().isUserDetailInvisible(fieldType));
+                        getPage().isUserDetailVisible(fieldType));
             }
         } else {
             if (value.startsWith("\"")) {
