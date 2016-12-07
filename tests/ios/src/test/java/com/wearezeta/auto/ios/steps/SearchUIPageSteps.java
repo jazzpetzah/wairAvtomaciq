@@ -37,12 +37,12 @@ public class SearchUIPageSteps {
     /**
      * Type in text in Search input field
      *
-     * @param text text to input
+     * @param text    text to input
      * @param isUpper null if should be input as it is
      * @throws Exception
-     * @step. ^I type "(.*)" in Search UI input field( in upper register)?$
+     * @step. ^I type "(.*)" in Search UI input field( in upper case)?$
      */
-    @When("^I type \"(.*)\" in Search UI input field( in upper register)?$")
+    @When("^I type \"(.*)\" in Search UI input field( in upper case)?$")
     public void ITypeInSearchInput(String text, String isUpper) throws Exception {
         text = usrMgr.replaceAliasesOccurences(text, ClientUsersManager.FindBy.NAME_ALIAS);
         text = usrMgr.replaceAliasesOccurences(text, ClientUsersManager.FindBy.EMAIL_ALIAS);
@@ -183,9 +183,8 @@ public class SearchUIPageSteps {
     /**
      * Clear the text from search input field
      *
-     * @step. ^I clear search input on Search UI page$
-     *
      * @throws Exception
+     * @step. ^I clear search input on Search UI page$
      */
     @And("^I clear search input on Search UI page$")
     public void IClearSearchInput() throws Exception {
@@ -195,10 +194,10 @@ public class SearchUIPageSteps {
     /**
      * Verify button visiblity on Search UI page
      *
-     * @step. ^I (do not )?see (X|Unblock|Send Invite|Copy Invite|Close Group Participants Picker) button on Search UI page$
      * @param shouldNotSee equals to null if the button should be visible
      * @param btnName      one of possible button names
      * @throws Exception
+     * @step. ^I (do not )?see (X|Unblock|Send Invite|Copy Invite|Close Group Participants Picker) button on Search UI page$
      */
     @Then("^I (do not )?see (X|Unblock|Send Invite|Copy Invite|(?:Close|Clear) Group Participants Picker) button on Search UI page$")
     public void ISeeButton(String shouldNotSee, String btnName) throws Exception {

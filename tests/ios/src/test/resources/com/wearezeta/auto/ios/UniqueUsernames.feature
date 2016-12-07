@@ -283,7 +283,6 @@ Feature: Unique Usernames
   Scenario Outline: Verify search is not case sensitive
     Given There are 2 users where <Name> is me
     Given User <Contact> sets the unique username
-    Given User <Contact> changes name to <NewName>
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I open search UI
@@ -291,9 +290,9 @@ Feature: Unique Usernames
     When I type "<ContactUniqueUserName>" in Search UI input field
     Then I see the conversation "<Contact>" exists in Search results
     When I clear search input on Search UI page
-    And I type "<ContactUniqueUserName>" in Search UI input field in upper register
+    And I type "<ContactUniqueUserName>" in Search UI input field in upper case
     Then I see the conversation "<Contact>" exists in Search results
 
     Examples:
-      | Name      | Contact   | NewName  | ContactUniqueUserName |
-      | user1Name | user2Name | New Name | user2UniqueUsername   |
+      | Name      | Contact   | ContactUniqueUserName |
+      | user1Name | user2Name | user2UniqueUsername   |
