@@ -316,30 +316,10 @@ public class CallingSteps {
             receiveOneCallInConsecutiveLoop(callees, i, conversationName, callDurationMinutes, failures);
         }
 
-//        int sumCallSetupTime = 0;
-//        for (int element : arrayCallSetupTime) {
-//            sumCallSetupTime += element;
-//        }
-
         int sumCallSetupTime = arrayCallSetupTime.stream().reduce(0, Integer::sum);
 
-//        int sumCallEstabTime = 0;
-//        for (int element : arrayCallEstabTime) {
-//            sumCallEstabTime += element;
-//        }
         int sumCallEstabTime = arrayCallEstabTime.stream().reduce(0, Integer::sum);
 
-//        int avgCallSetupTime;
-//        int avgCallEstabTime;
-//        int successfulCallsCount = times - failures.size();
-//        if (times == failures.size()) {
-//            LOG.info("All calls failed. Call setup time  and estab time will be 0.");
-//            avgCallSetupTime = 0;
-//            avgCallEstabTime = 0;
-//        } else {
-//            avgCallSetupTime = sumCallSetupTime / successfullCallsCount;
-//            avgCallEstabTime = sumCallEstabTime / successfullCallsCount;
-//        }
         int avgCallSetupTime = 0;
         int avgCallEstabTime = 0;
         int successfulCallsCount = times - failures.size();
