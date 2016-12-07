@@ -297,7 +297,7 @@ Feature: Unique Usernames
       | Name      | Contact   | ContactUniqueUserName |
       | user1Name | user2Name | user2UniqueUsername   |
 
-  @C352054 @C352055 @staging @fastLogin
+  @C352054 @staging @fastLogin
   Scenario Outline: Verify search by full and partial user name
     Given There are 2 users where <Name> is me
     Given User <Contact> sets the unique username
@@ -307,8 +307,8 @@ Feature: Unique Usernames
     Given I accept alert if visible
     Given I tap input field on Search UI page
     When I type "<ContactWithUniqueUserName>" in Search UI input field
-    And I see the conversation "<Contact>" exists in Search results
-    Then I clear search input on Search UI page
+    Then I see the conversation "<Contact>" exists in Search results
+    And I clear search input on Search UI page
     When I type first 6 letter of user name "<ContactWithUniqueUserName>" into Search UI input field
     And I see the conversation "<Contact>" exists in Search results
 
