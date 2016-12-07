@@ -28,7 +28,8 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 
 public class ConversationViewPage extends IOSPage {
-    private static final By nameConversationBackButton = MobileBy.AccessibilityId("ConversationBackButton");
+    private static final By nameConversationBackButton =
+            MobileBy.AccessibilityId("ConversationBackButton");
 
     private static final String nameStrConversationInputField = "inputField";
 
@@ -41,7 +42,8 @@ public class ConversationViewPage extends IOSPage {
     private static final String DEFAULT_INPUT_PLACEHOLDER_TEXT = "TYPE A MESSAGE";
     private static final By nameInputPlaceholderText = MobileBy.AccessibilityId(DEFAULT_INPUT_PLACEHOLDER_TEXT);
 
-    protected static final By nameYouRenamedConversation = MobileBy.AccessibilityId("YOU RENAMED THE CONVERSATION");
+    public static final By nameYouRenamedConversation =
+            MobileBy.AccessibilityId("YOU RENAMED THE CONVERSATION");
 
     /**
      * !!! The actual message order in DOM is reversed relatively to the messages order in the conversation view
@@ -87,30 +89,17 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By namePlayButton = MobileBy.AccessibilityId("mediaBarPlayButton");
 
-    private static final By namePauseButton = MobileBy.AccessibilityId("mediaBarPauseButton");
-
-    private static final By nameMediaBarCloseButton = MobileBy.AccessibilityId("mediabarCloseButton");
-
     private static final By nameTitle = MobileBy.AccessibilityId("playingMediaTitle");
 
-    public static final Function<String, String> xpathStrMissedCallButtonByContact = name ->
+    private static final Function<String, String> xpathStrMissedCallButtonByContact = name ->
             String.format("//XCUIElementTypeCell[ .//XCUIElementTypeStaticText[@value='%s CALLED'] ]" +
                     "//XCUIElementTypeButton[@name='ConversationMissedCallButton']", name.toUpperCase());
 
-    private static final Function<String, String> xpathStrConnectingToUserLabelByName = name -> String.format(
-            "//XCUIElementTypeStaticText[contains(@value, 'CONNECTING TO %s.')]", name.toUpperCase());
-
-    public static final By xpathStrMissedCallButtonByYourself =
+    private static final By xpathStrMissedCallButtonByYourself =
             By.xpath(xpathStrMissedCallButtonByContact.apply("you"));
 
-    public static final String MEDIA_STATE_PLAYING = "playing";
-
-    public static final String MEDIA_STATE_PAUSED = "paused";
-
-    public static final String MEDIA_STATE_STOPPED = "ended";
-
     private static final By fbNameCursorSketchButton = FBBy.AccessibilityId("sketchButton");
-    protected static final By fbNameAddPictureButton = FBBy.AccessibilityId("photoButton");
+    private static final By fbNameAddPictureButton = FBBy.AccessibilityId("photoButton");
     private static final By fbNamePingButton = FBBy.AccessibilityId("pingButton");
     private static final By fbNameFileTransferButton = FBBy.AccessibilityId("uploadFileButton");
     private static final By fbNameVideoMessageButton = FBBy.AccessibilityId("videoButton");
@@ -222,7 +211,9 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameThisDeviceLink = MobileBy.AccessibilityId("THIS DEVICE");
 
-    protected static final String[] UPLOAD_MENU_ITEMS = new String[]{
+    private static final By nameFileActionsMenu = MobileBy.AccessibilityId("ActivityListView");
+
+    public static final String[] UPLOAD_MENU_ITEMS = new String[]{
             "Record a video", "Videos", "20 MB file", "Big file",
             "group-icon@3x.png", "CountryCodes.plist", "iCloud"
     };
@@ -238,7 +229,7 @@ public class ConversationViewPage extends IOSPage {
         super(lazyDriver);
     }
 
-    public void tapSendButton() throws Exception {
+    private void tapSendButton() throws Exception {
         getElement(nameSendButton).click();
         // Wait for animation
         Thread.sleep(1000);
@@ -353,22 +344,6 @@ public class ConversationViewPage extends IOSPage {
         return isLocatorDisplayed(locator);
     }
 
-    private boolean isMediaBarPauseButtonVisible() throws Exception {
-        return isLocatorDisplayed(namePauseButton, 3);
-    }
-
-    private void clickMediaBarPauseButton() throws Exception {
-        getElement(namePauseButton, "Pause button is not visible on media bar").click();
-    }
-
-    public void pauseMediaContent() throws Exception {
-        clickMediaBarPauseButton();
-    }
-
-    private boolean isMediaBarPlayButtonVisible() throws Exception {
-        return isLocatorDisplayed(namePlayButton, 3);
-    }
-
     private void clickMediaBarPlayButton() throws Exception {
         getElement(namePlayButton, "Play button is not visible on media bar").click();
     }
@@ -377,25 +352,12 @@ public class ConversationViewPage extends IOSPage {
         clickMediaBarPlayButton();
     }
 
-    private void clickMediaBarCloseButton() throws Exception {
-        getElement(nameMediaBarCloseButton, "Close button is not visible on Media bar").click();
-    }
-
     public boolean isUpperToolbarContainNames(List<String> expectedNames) throws Exception {
         final String xpathExpr = String.join(" and ", expectedNames.stream()
                 .map(x -> String.format("contains(@value, '%s')", x.toUpperCase()))
                 .collect(Collectors.toList()));
         final By locator = By.xpath(xpathStrToolbarByExpr.apply(xpathExpr));
         return isLocatorDisplayed(locator);
-    }
-
-    public String getMediaStateFromMediaBar() throws Exception {
-        if (isMediaBarPlayButtonVisible()) {
-            return MEDIA_STATE_PAUSED;
-        } else if (isMediaBarPauseButtonVisible()) {
-            return MEDIA_STATE_PLAYING;
-        }
-        return MEDIA_STATE_STOPPED;
     }
 
     public void tapOnMediaBar() throws Exception {
@@ -435,11 +397,6 @@ public class ConversationViewPage extends IOSPage {
 
     public void typeMessage(String message) throws Exception {
         typeMessage(message, false);
-    }
-
-    public boolean isPendingOutgoingConnectionVisible(String toUserName) throws Exception {
-        final By locator = By.xpath(xpathStrConnectingToUserLabelByName.apply(toUserName));
-        return isLocatorDisplayed(locator);
     }
 
     public boolean isShieldIconVisible() throws Exception {
@@ -894,10 +851,9 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapImageButton(String buttonName) throws Exception {
         By locator = getImageButtonByName(buttonName);
-        final WebElement dstElement = getElementIfExists(locator).orElseThrow(
+        getElementIfExists(locator).orElseThrow(
                 () -> new IllegalStateException(buttonName + "button can't be found")
-        );
-        this.tapScreenAt(dstElement);
+        ).click();
         // Wait for animation
         Thread.sleep(1000);
     }
@@ -1040,5 +996,9 @@ public class ConversationViewPage extends IOSPage {
         if (!isLocatorDisplayed(fbXpathRecentEntry)) {
             throw new IllegalStateException("Failed to scroll to the bottom of the conversation");
         }
+    }
+
+    public boolean waitUntilFileActionsMenuVisible() throws Exception {
+        return isLocatorDisplayed(nameFileActionsMenu);
     }
 }

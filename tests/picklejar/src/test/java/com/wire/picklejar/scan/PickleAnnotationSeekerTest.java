@@ -1,18 +1,18 @@
 package com.wire.picklejar.scan;
 
 import com.wire.picklejar.testclasses.TestStepClass;
-import cucumber.api.java.en.When;
 import java.lang.reflect.Method;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class PickleAnnotationSeekerTest {
     
     @Test
     public void testGetMethodsAnnotatedWith() {
-        List<Method> result = PickleAnnotationSeeker.getMethodsAnnotatedWith(TestStepClass.class, When.class);
+        List<Method> result = PickleAnnotationSeeker.getMethodsAnnotatedWith(TestStepClass.class, Ignore.class);
         assertTrue("Method collection is empty", !result.isEmpty());
         assertEquals("Method name is wrong", 
                 "testStep", 

@@ -1,5 +1,6 @@
 package com.wire.picklejar.gherkin.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -17,6 +18,7 @@ public class Scenario implements Serializable {
     private List<Around> after;
     @JsonProperty("line")
     private long line;
+    private Feature feature;
     @JsonProperty("name")
     private String name;
     @JsonProperty("description")
@@ -32,10 +34,11 @@ public class Scenario implements Serializable {
     @JsonProperty("tags")
     private List<Tag> tags;
 
-    public Scenario(String feature, String name, int exampleNum, String keyword, List<Step> steps, List<Tag> tags) {
+    public Scenario(Feature feature, String name, int exampleNum, String keyword, List<Step> steps, List<Tag> tags) {
+        this.feature = feature;
         this.line = 1;
         this.name = name.trim();
-        this.id = (feature.toLowerCase() + ";" + this.name.toLowerCase()).replaceAll("[^a-zA-Z0-9]", "-")+";;"+exampleNum;
+        this.id = (feature.getName().toLowerCase() + ";" + this.name.toLowerCase()).replaceAll("[^a-zA-Z0-9]", "-")+";;"+exampleNum;
         this.type = "scenario";
         this.keyword = keyword;
         this.steps = steps;
@@ -55,6 +58,11 @@ public class Scenario implements Serializable {
 
     public List<Tag> getTags() {
         return tags;
+    }
+
+    @JsonIgnore
+    public Feature getFeature() {
+        return feature;
     }
     
     @Override

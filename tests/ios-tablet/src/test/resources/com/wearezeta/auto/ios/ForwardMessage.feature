@@ -1,6 +1,6 @@
 Feature: Forward Message
 
-  @C345391 @staging @fastLogin
+  @C345391 @regression @fastLogin
   Scenario Outline: Verify forwarding own picture
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -9,6 +9,8 @@ Feature: Forward Message
     Given User Myself sends encrypted image <Picture> to single user conversation <Contact1>
     Given I see conversations list
     Given I tap on contact name <Contact1>
+    # Wait for the picture to be loaded
+    Given I wait for 3 seconds
     Given I long tap on image in conversation view
     When I tap on Forward badge item
     And I select <Contact2> conversation on Forward page
@@ -21,8 +23,8 @@ Feature: Forward Message
       | Name      | Contact1  | Contact2  | Picture     |
       | user1Name | user2Name | user3name | testing.jpg |
 
-  @C345394 @staging @fastLogin
-  Scenario Outline: ZIOS-7673 Verify outgoing/incoming connection requests/ left conversations are not in a forward list
+  @C345394 @regression @fastLogin
+  Scenario Outline: Verify outgoing/incoming connection requests/ left conversations are not in a forward list
     Given There are 6 users where <Name> is me
     Given Myself is connected to <ConnectedUser1>,<ConnectedUser2>,<BlockedUser>
     Given Myself has group chat <GroupChatName> with <ConnectedUser1>,<ConnectedUser2>
@@ -46,8 +48,8 @@ Feature: Forward Message
       | Name      | ConnectedUser1 | ConnectedUser2 | NonConnectedIncomingUser | NonConnectedOutgoingUser | BlockedUser | GroupChatName |
       | user1Name | user2Name      | user3name      | user4name                | user5Name                | user6Name   | Group         |
 
-  @C345393 @staging @fastLogin
-  Scenario Outline: ZIOS-7670 Verify message is sent as normal when ephemeral keyboard is chosen in the destination conversation
+  @C345393 @regression @fastLogin
+  Scenario Outline: Verify message is sent as normal when ephemeral keyboard is chosen in the destination conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
@@ -57,6 +59,8 @@ Feature: Forward Message
     Given I tap on contact name <Contact1>
     Given I tap Hourglass button in conversation view
     Given I set ephemeral messages expiration timer to <Timeout> seconds
+    # This is to close expiration timer popup
+    Given I tap at 50%,50% of the viewport size
     Given I tap on contact name <Contact2>
     Given I long tap default message in conversation view
     When I tap on Forward badge item
@@ -70,8 +74,8 @@ Feature: Forward Message
       | Name      | Contact1  | Contact2  | Timeout |
       | user1Name | user2Name | user3name | 5       |
 
-  @C345395 @staging @fastLogin
-  Scenario Outline: Verify forwarding to archived conversation unarchive it
+  @C345395 @regression @fastLogin
+  Scenario Outline: ZIOS-7674 Verify forwarding to archived conversation unarchive it
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given User Myself archives single user conversation <Contact2>
@@ -91,7 +95,7 @@ Feature: Forward Message
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3name |
 
-  @C345388 @staging @fastLogin
+  @C345388 @regression @fastLogin
   Scenario Outline: Verify forwarding own text message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -112,3 +116,60 @@ Feature: Forward Message
     Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3name |
+
+  @C345392 @regression @fastLogin
+  Scenario Outline: Verify forwarding someone else audio message
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given User Me sends 1 encrypted message to user <Contact1>
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    # Small wait to make the appearence of button on jenkins more stable
+    Given I wait for 3 seconds
+    When I long tap on audio message placeholder in conversation view
+    Then I do not see Forward badge item
+    When I tap Play audio message button
+    # Small wait to make sure download is completed
+    And I wait for 5 seconds
+    And I long tap on audio message placeholder in conversation view
+    And I tap on Forward badge item
+    And I select <Contact2> conversation on Forward page
+    And I tap Send button on Forward page
+    Then I see conversation with user <Contact1>
+    When I tap on contact name <Contact2>
+    Then I see audio message container in the conversation view
+
+    Examples:
+      | Name      | Contact1  | Contact2  | FileName | FileMIME  | ContactDevice |
+      | user1Name | user2Name | user3name | test.m4a | audio/mp4 | Device1       |
+
+  @C345390 @regression @fastLogin
+  Scenario Outline: (ZIOS-7682) Verify forwarding someone else video message
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given User <Contact1> sends file <FileName> having MIME type <MIMEType> to single user conversation <Name> using device <DeviceName>
+    #Given User Me sends 1 encrypted message to user <Contact1>
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    # Small wait to make the appearence of button on jenkins more stable
+    Given I wait for 3 seconds
+    When I tap on video message in conversation view
+    # Small wait to make sure download is completed
+    And I wait for 2 seconds
+    And I tap Done button on video message player page
+    And I long tap on video message in conversation view
+    And I tap on Forward badge item
+    And I select <Contact2> conversation on Forward page
+    And I tap Send button on Forward page
+    Then I see conversation with user <Contact1>
+    When I tap on contact name <Contact2>
+    Then I see video message container in the conversation view
+
+    Examples:
+      | Name      | Contact1  | Contact2  | FileName    | MIMEType  | DeviceName |
+      | user1Name | user2Name | user3name | testing.mp4 | video/mp4 | Device1    |

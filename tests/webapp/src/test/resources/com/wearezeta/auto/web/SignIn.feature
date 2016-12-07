@@ -126,7 +126,7 @@ Feature: Sign In
     And I click confirm on history info page
     Then I am signed in properly
     And I open preferences by clicking the gear button
-    And I see username <Name> in account preferences
+    And I see name <Name> in account preferences
     And I see user phone number <PhoneNumber> in account preferences
 
     Examples: 
@@ -161,7 +161,7 @@ Feature: Sign In
     And I press Sign In button on phone login page
     Then I am signed in properly
     And I open preferences by clicking the gear button
-    And I see username <Name> in account preferences
+    And I see name <Name> in account preferences
     And I see user phone number <PhoneNumber> in account preferences
 
     Examples: 
@@ -178,7 +178,7 @@ Feature: Sign In
     And I press Sign In button
     Then I am signed in properly
     And I open preferences by clicking the gear button
-    And I see username <Name> in account preferences
+    And I see name <Name> in account preferences
     And I see user phone number <PhoneNumber> in account preferences
 
     Examples: 
@@ -260,7 +260,7 @@ Feature: Sign In
     And I verify that an envelope icon is shown
     When I click on Verify later button on Verification page
     Then I am signed in properly
-    And I see first time experience with watermark
+    And I see watermark
 
     Examples: 
       | Name      | PasswordOfOtherUser |

@@ -475,7 +475,7 @@ Feature: E2EE
       | user1Name | user1Email | user1Password | device1 |
 
   @C12081 @regression
-  Scenario Outline: (AN-4546) When 1:1 conversation was degraded - I can ignore takeover screen and send message
+  Scenario Outline: When 1:1 conversation was degraded - I can ignore takeover screen and send message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -503,7 +503,7 @@ Feature: E2EE
       | user1Name | user2Name | device2 | Msg1     | MsgToSendAnyway |
 
   @C12065 @regression
-  Scenario Outline: (AN-4546) When 1:1 conversation was degraded - I can manage new device to verified and resend message
+  Scenario Outline: When 1:1 conversation was degraded - I can manage new device to verified and resend message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number

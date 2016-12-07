@@ -1,25 +1,22 @@
 package com.wearezeta.auto.android.steps;
 
-import static org.hamcrest.Matchers.is;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.wearezeta.auto.common.misc.ElementState;
-import org.junit.Assert;
-
 import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.android.pages.UnknownUserDetailsPage;
-import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.junit.Assert;
+
+import static org.hamcrest.Matchers.is;
 
 public class OtherUserPersonalInfoPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
@@ -171,31 +168,8 @@ public class OtherUserPersonalInfoPageSteps {
     @Then("^I verify (\\d+)(?:st|nd|rd|th)? device$")
     public void IVerifyDeviceX(int deviceNum) throws Exception {
         getOtherUserPersonalInfoPage().tapOnParticipantFirstDevice(deviceNum);
-        getOtherUserPersonalInfoPage().verifyParticipantDevice();
+        Assert.assertTrue("Not verified switch is not visible", getOtherUserPersonalInfoPage().verifyParticipantDevice());
         pagesCollection.getCommonPage().navigateBack();
-    }
-
-    /**
-     * Select device number X in single participant devices tab
-     *
-     * @param deviceNum Device number to verify
-     * @throws Exception
-     * @step. ^I select (\\d+)(?:st|nd|rd|th)? device$
-     */
-    @Then("^I select (\\d+)(?:st|nd|rd|th)? device$")
-    public void ISelectDeviceX(int deviceNum) throws Exception {
-        getOtherUserPersonalInfoPage().tapOnParticipantFirstDevice(deviceNum);
-    }
-
-    /**
-     * Verify selected participant device
-     *
-     * @throws Exception
-     * @step. ^I verify device$
-     */
-    @Then("^I verify device$")
-    public void IVerifyParticipantDevice() throws Exception {
-        getOtherUserPersonalInfoPage().verifyParticipantDevice();
     }
 
     /**
@@ -326,7 +300,7 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @Then("^I see the correct participant avatars for (.*)$")
     public void ISeeCorrectParticipantAvatars(String contacts) throws Exception {
-        for (String contactName : CommonSteps.splitAliases(contacts)) {
+        for (String contactName : usrMgr.splitAliases(contacts)) {
             contactName = usrMgr.findUserByNameOrNameAlias(contactName).getName();
             Assert.assertTrue(String.format("The avatar for '%s' is not visible", contactName),
                     getOtherUserPersonalInfoPage().isParticipantAvatarVisible(contactName));
@@ -342,7 +316,7 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @Then("^I see the verified participant avatars? for (.*)$")
     public void ISeeVerifiedParticipantAvatars(String contacts) throws Exception {
-        for (String contactName : CommonSteps.splitAliases(contacts)) {
+        for (String contactName : usrMgr.splitAliases(contacts)) {
             contactName = usrMgr.findUserByNameOrNameAlias(contactName).getName();
             Assert.assertTrue(String.format("The verified avatar for '%s' is not visible", contactName),
                     getOtherUserPersonalInfoPage().isVerifiedParticipantAvatarVisible(contactName));

@@ -143,6 +143,7 @@ Feature: Conversation List
   @C1810 @regression
   Scenario Outline: Verify I can delete a group conversation from conversation list
     Given There are 3 users where <Name> is me
+    Given <Contact1> has unique username
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
@@ -180,6 +181,7 @@ Feature: Conversation List
   @C1803 @regression
   Scenario Outline: Verify I can block a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given User <Contact> changes avatar picture to default
     Given I switch to Sign In page
@@ -218,6 +220,7 @@ Feature: Conversation List
   @C1806 @regression
   Scenario Outline: Verify I can leave a group conversation from conversation list
     Given There are 3 users where <Name> is me
+    Given <Contact1> has unique username
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given User <Contact1> changes avatar picture to default
@@ -316,6 +319,7 @@ Feature: Conversation List
   @C1814 @regression
   Scenario Outline: Verify I can delete and leave a group conversation from conversation list
     Given There are 3 users where <Name> is me
+    Given <Contact1>,<Contact2> have unique usernames
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given User <Contact1> changes avatar picture to default
@@ -379,12 +383,13 @@ Feature: Conversation List
   @C1808 @regression
   Scenario Outline: Verify I can delete a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
+    Given <Contact1> has unique username
     Given Myself is connected to <Contact1>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     And I open conversation with <Contact1>
-    When Contact <Contact1> sends message <Msg1> to group conversation <Contact1>
+    When Contact <Contact1> sends message <Msg1> to user <Name>
     Then I see text message <Msg1>
     When I click on options button for conversation <Contact1>
     And I click delete in the options popover
@@ -392,10 +397,10 @@ Feature: Conversation List
     And I click delete button in the delete warning for 1:1 conversations
     Then I do not see Contact list with name <Contact1>
     When I open search by clicking the people button
-    And I type <Contact1> in search field of People Picker
+    And I type <Contact1Username> in search field of People Picker
     Then I see user <Contact1> found in People Picker
     And I close People Picker
-    When Contact <Contact1> sends message <Msg2> to group conversation <Contact1>
+    When Contact <Contact1> sends message <Msg2> to user <Name>
     Then I see Contact list with name <Contact1>
     And I open conversation with <Contact1>
     And I see text message <Msg2>
@@ -414,8 +419,8 @@ Feature: Conversation List
     Then I do not see <Action> action in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Action | Msg1   | Msg2   |Login2     | Password2     |
-      | user1Email | user1Password | user1Name | user2Name | LEFT   | hello1 | hello2 | user2Email | user2Password |
+      | Login      | Password      | Name      | Contact1  | Contact1Username    | Action | Msg1   | Msg2   |Login2     | Password2     |
+      | user1Email | user1Password | user1Name | user2Name | user2UniqueUsername | LEFT   | hello1 | hello2 | user2Email | user2Password |
 
   @C1809 @regression
   Scenario Outline: Verify I can cancel deleting a 1:1 conversation from conversation list
@@ -438,6 +443,7 @@ Feature: Conversation List
   @C58607 @regression
   Scenario Outline: Verify the order of conversation list is synced between devices
     Given There are 5 users where <Name> is me
+    Given <Contact2> has unique username
     Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>

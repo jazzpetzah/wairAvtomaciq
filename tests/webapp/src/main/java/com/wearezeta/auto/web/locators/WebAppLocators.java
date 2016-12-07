@@ -189,7 +189,7 @@ public final class WebAppLocators {
         public static final Function<String, String> xpathVideoButtonByConversationName = (
                 name) -> String
                 .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
-                                + "*/parent::*//*[@data-uie-name='do-video-call']",
+                                + "*/parent::*//*[@data-uie-name='do-call-video']",
                         name);
 
         public static final Function<String, String> xpathEndCallButtonByConversationName = (
@@ -258,7 +258,13 @@ public final class WebAppLocators {
     
         public static final String cssLogoutButton = "#preferences-account [data-uie-name='do-logout']";
 
-        public static final String cssSelfUserNameInput = "[data-uie-name='enter-name']";
+        public static final String cssSelfNameInput = "[data-uie-name='enter-name']";
+
+        public static final String cssUniqueUsername = "[data-uie-name='enter-username']";
+
+        public static final String cssUniqueUsernameError = ".preferences-account-username-error";
+
+        public static final String cssUniqueUsernameHint = ".preferences-account-username-hint";
 
         public static final String cssNameSelfUserMail = "[data-uie-name='enter-email']";
 
@@ -342,7 +348,6 @@ public final class WebAppLocators {
     }
 
     public static final class ConversationPage {
-
         // content
         public static final String idConversation = "conversation";
         
@@ -356,6 +361,8 @@ public final class WebAppLocators {
         
         public static final String cssCancelRequestButton = "#"+idConversation+" [data-uie-name='do-cancel-request']";
 
+        public static final String cssUsername = ".message-connected-username.label-username";
+
         // messages (including images, text, missed call notifications, pings)
         public static final String cssMessage = "[data-uie-name='item-message']";
 
@@ -368,6 +375,10 @@ public final class WebAppLocators {
 
         public static final Function<String, String> cssMessagesById = text -> String
                 .format("[data-uie-name='item-message'][data-uie-uid='%s']", text);
+
+        public static final Function<String, String> xpathMessageHeaderByText = text -> String
+                .format("//*[@data-uie-name='item-message']//*[contains(@class,'text') and contains(text(),'%s')]//../../..",
+                        text);
         
         public static final FunctionFor2Parameters<String, String, String> xpathMessageTextByMessageId = (messageId, text) -> String
                 .format("//*[@data-uie-name='item-message' and @data-uie-uid='%s']//*[contains(@class, 'text') and text()='%s']", messageId, text);
@@ -638,7 +649,7 @@ public final class WebAppLocators {
         public static final String cssFullscreenImage = ".detail-view-image";
 
         public static final Function<String, String> cssUserAvatarById = id -> String
-                .format("[user-id='%s'] .user-avatar-border", id);
+                .format("[user-id='%s'].user-avatar-sm", id);
 
         public static final String cssConnectedMessageUser = ".message-connected-header";
 
@@ -665,6 +676,7 @@ public final class WebAppLocators {
 
         public static final String cssRequestEmailPartial = " .mail";
         public static final String cssRequestMessagePartial = " .message";
+        public static final String cssRequestUniqueUsernamePartial = " .connect-request-username";
 
         public static final Function<String, String> cssRequestById = uid -> String
                 .format("[data-uie-name='connect-request'][data-uie-uid='%s']",
@@ -681,7 +693,7 @@ public final class WebAppLocators {
         public static final String cssAllConnectionRequests = "[data-uie-name='connect-request']";
 
         public static final Function<String, String> cssRequestAvatarByUserId = uid -> String
-                .format("[data-uie-name='connect-request'][data-uie-uid='%s'] .image",
+                .format("[data-uie-name='connect-request'][data-uie-uid='%s'] user-avatar",
                         uid);
 
         public static final Function<String, String> cssKnownConnectionAvatarsById = uid -> String
@@ -960,5 +972,17 @@ public final class WebAppLocators {
 
     public static final class HistoryInfoPage {
         public static final String cssConfirmButton = "[data-uie-name='do-history-confirm']";
+    }
+
+    public static final class TakeOverScreenPage {
+        public static final String idTakeOverScreen = "takeover";
+
+        public static final String cssChooseYourOwnButton = "[data-uie-name='do-takeover-choose']";
+
+        public static final String cssTakeThisOneButton = "[data-uie-name='do-takeover-keep']";
+
+        public static final String cssTakeOverName = "[data-uie-name='takeover-name']";
+
+        public static final String cssTakeOverUniqueUsername = "[data-uie-name='takeover-username']";
     }
 }

@@ -47,6 +47,8 @@ Feature: Likes
     Given I sign in using my email or phone number
     Given User <Contact1> sends 1 encrypted message to group conversation <Group>
     Given I see conversations list
+    # Sync message delivery
+    Given I wait for 5 seconds
     Given <Contact1> removes Myself from group chat <Group>
     Given I tap on contact name <Group>
     When I tap default message in conversation view
@@ -66,9 +68,13 @@ Feature: Likes
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given User Myself sends 1 encrypted message to user <Contact>
+    # Wait for delivery
+    Given I wait for 5 seconds
     Given I see conversations list
     Given User <Contact> likes the recent message from user Myself
     Given I tap on contact name <Contact>
+    # Wait for sync
+    Given I wait for 3 seconds
     When I tap default message in conversation view
     And I remember the state of Like icon in the conversation
     And I tap Like icon in the conversation
@@ -300,6 +306,8 @@ Feature: Likes
     Given User <Contact> sends encrypted message "<Link>" to user Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
+    # Load the link
+    Given I wait for 5 seconds
     When I tap at 5% of width and 5% of height of the recent message
     And I remember the state of Like icon in the conversation
     And I tap Like icon in the conversation

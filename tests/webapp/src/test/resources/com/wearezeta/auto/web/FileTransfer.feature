@@ -1,9 +1,10 @@
 Feature: File Transfer
 
-  @C82815 @filetransfer @regression
+  @C82815 @filetransfer @regression @localytics
   Scenario Outline: Verify file can be uploaded and re-downloaded by sender himself in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I enable localytics via URL parameter
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly

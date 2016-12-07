@@ -1,12 +1,10 @@
 package com.wearezeta.auto.android.pages;
 
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-
-import java.util.function.Function;
-
 import org.openqa.selenium.By;
 
 public class CallIncomingPage extends AndroidPage {
@@ -62,4 +60,7 @@ public class CallIncomingPage extends AndroidPage {
         DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 85, 80, 85);
     }
 
+    public boolean waitUntilIncomingCallOverlayAppears() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idMainContent, 2);
+    }
 }

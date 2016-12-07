@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -19,11 +18,7 @@ import java.util.function.Function;
 public class RegistrationPage extends IOSPage {
     private static final String WIRE_COUNTRY_NAME_PREFIX = "Wirestan";
 
-    private static final String WIRE_COUNTRY_NAME = WIRE_COUNTRY_NAME_PREFIX + " ☀️";
-
     private static final By nameSearchField = MobileBy.AccessibilityId("Search");
-
-    private static final By nameWireCountry = MobileBy.AccessibilityId(WIRE_COUNTRY_NAME);
 
     private static final By xpathYourName = By.xpath("//XCUIElementTypeTextField[@value='YOUR FULL NAME']");
 
@@ -42,7 +37,7 @@ public class RegistrationPage extends IOSPage {
 
     private static final By fbNamePhoneNumberField = FBBy.AccessibilityId("PhoneNumberField");
 
-    public static final By xpathVerificationCodeInput = By.xpath("//XCUIElementTypeTextField");
+    public static final By nameVerificationCodeInput = MobileBy.AccessibilityId("verificationField");
 
     private static final By nameCountryPickerButton = MobileBy.AccessibilityId("CountryPickerButton");
 
@@ -65,8 +60,12 @@ public class RegistrationPage extends IOSPage {
     private static final By xpathNoCodeShowingUpLabel = By.
             xpath("//XCUIElementTypeStaticText[contains(@name, 'NO CODE SHOWING UP?')]");
 
-    private static final Logger log = ZetaLogger.getLog(RegistrationPage.class.getSimpleName());
+    private static final By nameSearchResultsTable = MobileBy.AccessibilityId("Search results");
 
+    private static final Function<String, String> xpathStrSearchResultByPrefix = prefix ->
+            String.format("//XCUIElementTypeStaticText[starts-with(@name, '%s')]", prefix);
+
+    private static final Logger log = ZetaLogger.getLog(RegistrationPage.class.getSimpleName());
 
     private String name;
     private String email;
@@ -90,14 +89,12 @@ public class RegistrationPage extends IOSPage {
         searchInput.click();
         searchInput.sendKeys(WIRE_COUNTRY_NAME_PREFIX);
         // Wait for animation
-        Thread.sleep(1000);
-        final List<WebElement> countryElements = selectVisibleElements(nameWireCountry);
-        if (countryElements.size() == 0) {
-            throw new IllegalStateException(String.format("There are no visible '%s' elements", WIRE_COUNTRY_NAME));
-        }
-        countryElements.get(0).click();
-        // Wait for animation
         Thread.sleep(2000);
+        final WebElement searchResults = getElement(nameSearchResultsTable);
+        final By searchResultLocator = By.xpath(xpathStrSearchResultByPrefix.apply(WIRE_COUNTRY_NAME_PREFIX));
+        searchResults.findElement(searchResultLocator).click();
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     public void inputPhoneNumber(PhoneNumber number) throws Exception {
@@ -113,8 +110,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void inputActivationCode(PhoneNumber forNumber) throws Exception {
-        final WebElement codeInput = getElement(xpathVerificationCodeInput,
-                "Activation code input is not visible");
+        final WebElement codeInput = getElement(nameVerificationCodeInput, "Activation code input is not visible");
         final String code = BackendAPIWrappers.getActivationCodeByPhoneNumber(forNumber);
         codeInput.sendKeys(code);
         getElement(nameConfirmButton, "Confirm button is not visible", 2).click();
@@ -123,7 +119,7 @@ public class RegistrationPage extends IOSPage {
     private static final Random rand = new Random();
 
     public void inputRandomConfirmationCode() throws Exception {
-        getElement(xpathVerificationCodeInput).sendKeys(Integer.toString(100000 + rand.nextInt(900000)));
+        getElement(nameVerificationCodeInput).sendKeys(Integer.toString(100000 + rand.nextInt(900000)));
         getElement(nameConfirmButton, "Confirm button is not visible", 2).click();
     }
 

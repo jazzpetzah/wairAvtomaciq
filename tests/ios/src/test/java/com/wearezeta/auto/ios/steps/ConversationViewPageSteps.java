@@ -289,13 +289,6 @@ public class ConversationViewPageSteps {
         }
     }
 
-    @Then("^I see Pending Connect to (.*) message in the conversation view$")
-    public void ISeePendingConnectMessage(String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue(String.format("Pending outgoing connection screen to %s is not visible", contact),
-                getConversationViewPage().isPendingOutgoingConnectionVisible(contact));
-    }
-
     /**
      * Verify whether images are visible in the conversarion
      *
@@ -313,11 +306,6 @@ public class ConversationViewPageSteps {
                     String.format("%d images are expected to be visible in the conversations", expectedCount),
                     getConversationViewPage().areXImagesVisible(expectedCount));
         }
-    }
-
-    @When("^I pause playing the media in media bar$")
-    public void IPausePlayingTheMediaInMediaBar() throws Exception {
-        getConversationViewPage().pauseMediaContent();
     }
 
     /**
@@ -429,23 +417,6 @@ public class ConversationViewPageSteps {
                     previousMediaContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT_SECONDS,
                             CONTAINER_COMPARE_MIN_SCORE));
         }
-    }
-
-    @Then("^I see media is (playing|stopped|paused) on [Mm]edia [Bb]ar$")
-    public void TheMediaIs(String expectedState) throws Exception {
-        final long millisecondsStarted = System.currentTimeMillis();
-        String currentState;
-        do {
-            currentState = getConversationViewPage().getMediaStateFromMediaBar();
-            if (expectedState.equals("playing") && currentState.equals(ConversationViewPage.MEDIA_STATE_PLAYING) ||
-                    expectedState.equals("stopped") && currentState.equals(ConversationViewPage.MEDIA_STATE_STOPPED) ||
-                    expectedState.equals("paused") && currentState.equals(ConversationViewPage.MEDIA_STATE_PAUSED)) {
-                return;
-            }
-            Thread.sleep(500);
-        } while (System.currentTimeMillis() - millisecondsStarted <= MEDIA_STATE_CHANGE_TIMEOUT_SECONDS);
-        throw new AssertionError(String.format("The current media state '%s' is different from the expected one after " +
-                "%s seconds timeout", currentState, MEDIA_STATE_CHANGE_TIMEOUT_SECONDS / 1000));
     }
 
     @Then("^I (do not )?see media bar in the conversation view$")
@@ -752,7 +723,7 @@ public class ConversationViewPageSteps {
                 isYouCalledMessageAndButtonVisible());
     }
 
-    private static final double MAX_SIMILARITY_THRESHOLD = 0.98;
+    private static final double MAX_SIMILARITY_THRESHOLD = 0.985;
 
     /**
      * Verify whether the particular picture is animated
@@ -765,8 +736,8 @@ public class ConversationViewPageSteps {
         // no need to wait, since screenshoting procedure itself is quite long
         final long screenshotingDelay = 0;
         final int maxFrames = 4;
-        final double avgThreshold = ImageUtil.getAnimationThreshold(getConversationViewPage()::getRecentPictureScreenshot,
-                maxFrames, screenshotingDelay);
+        final double avgThreshold = ImageUtil.getAnimationThreshold(
+                getConversationViewPage()::getRecentPictureScreenshot, maxFrames, screenshotingDelay);
         Assert.assertTrue(String.format("The picture in the conversation view seems to be static (%.2f >= %.2f)",
                 avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
     }
@@ -858,6 +829,19 @@ public class ConversationViewPageSteps {
         Assert.assertTrue(String.format("The preview was not shown for '%s' after %s seconds timeout", expectedFileName,
                 secondsTimeout),
                 getConversationViewPage().waitUntilFilePreviewIsVisible(secondsTimeout, expectedFileName));
+    }
+
+    /**
+     * Verify whether file actions menu is visible
+     *
+     * @throws Exception
+     * @step. ^I see File Actions menu$
+     */
+    @Then("^I see File Actions menu$")
+    public void IWaitForFileActionsMenu() throws Exception {
+        Assert.assertTrue("File actions menu has not been shown after thes timeout",
+                getConversationViewPage().waitUntilFileActionsMenuVisible()
+        );
     }
 
     /**
@@ -1318,7 +1302,7 @@ public class ConversationViewPageSteps {
     public void ISeeConversationPageWithUsers(String participantNameAliases) throws Exception {
         participantNameAliases = usrMgr.replaceAliasesOccurences(participantNameAliases,
                 ClientUsersManager.FindBy.NAME_ALIAS);
-        final List<String> participantNames = CommonSteps.splitAliases(participantNameAliases);
+        final List<String> participantNames = usrMgr.splitAliases(participantNameAliases);
         Assert.assertTrue(
                 String.format("Users '%s' are not displayed on Upper Toolbar", participantNameAliases),
                 getConversationViewPage().isUpperToolbarContainNames(participantNames)

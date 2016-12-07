@@ -8,11 +8,9 @@ import static org.junit.Assert.assertTrue;
 public class AccountPageSteps {
 
     private final TestContext webContext;
-    private final TestContext wrapperContext;
 
-    public AccountPageSteps(TestContext webContext, TestContext wrapperContext) {
+    public AccountPageSteps(TestContext webContext) {
         this.webContext = webContext;
-        this.wrapperContext = wrapperContext;
     }
     
     @When("^I do not see logout in account preferences$")

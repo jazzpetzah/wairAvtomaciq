@@ -1,5 +1,6 @@
 package com.wire.picklejar.scan;
 
+import com.wire.picklejar.Config;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -12,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class PickleFeatureReader {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(PickleFeatureReader.class.getSimpleName());
 
     public static List<String> readFolders(File[] files) throws IOException {
@@ -30,7 +31,7 @@ public class PickleFeatureReader {
         }
         return features;
     }
-    
+
     public static List<String> readFiles(List<File> files) throws IOException {
         List<String> features = new ArrayList<>();
         for (File file : files) {
@@ -38,7 +39,7 @@ public class PickleFeatureReader {
         }
         return features;
     }
-    
+
     public static List<String> readFiles(File[] files) throws IOException {
         return readFiles(Arrays.asList(files));
     }
@@ -61,8 +62,9 @@ public class PickleFeatureReader {
 
     public static String readFile(File file) throws IOException {
         LOG.trace("Reading file: {}", file.getName());
-        if (!file.isFile() || !file.getName().contains(".feature")) {
-            throw new IllegalArgumentException("Provided file is a folder or does not have extension '.feature'");
+        if (!file.isFile() || !file.getName().contains(String.format(".%s", Config.FEATURE_EXTENSION))) {
+            throw new IllegalArgumentException(String.format("Provided file is a folder or does not have extension '.%s'",
+                    Config.FEATURE_EXTENSION));
         }
         return new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())), StandardCharsets.UTF_8);
     }

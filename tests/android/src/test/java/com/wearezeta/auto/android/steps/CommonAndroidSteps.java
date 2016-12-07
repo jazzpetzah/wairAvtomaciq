@@ -617,7 +617,7 @@ public class CommonAndroidSteps {
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
-        commonSteps.IChangeUserName(name, newName);
+        commonSteps.IChangeName(name, newName);
     }
 
     /**
@@ -1016,16 +1016,29 @@ public class CommonAndroidSteps {
     /**
      * Add a new contact into address book
      *
-     * @param alias user alias
+     * @param alias          user alias
+     * @param withCustomName whether we specify custom name for contact
+     * @param customName     specified custom name
+     * @param withInfo       whether we add extra infor for this contact in AB
+     * @param infoType       which could be phone, email or phone + email
      * @throws Exception
-     * @step. ^I add (.*) into Address Book$
+     * @step. ^I add (\\w+)( having custom name "(.*)")? into Address Book( with (phone|email|phone and email))?$
      */
-    @Given("^I add (.*) into Address Book$")
-    public void IImportUserIntoAddressBook(String alias) throws Exception {
-        final String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
-        final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
-        final PhoneNumber phoneNumber = usrMgr.findUserByNameOrNameAlias(alias).getPhoneNumber();
-        AndroidCommonUtils.insertContact(name, email, phoneNumber);
+    @Given("^I add (\\w+)( having custom name \"(.*)\")? into Address Book( with (phone|email|phone and email))?$")
+    public void IImportUserIntoAddressBook(String alias, String withCustomName, String customName, String withInfo,
+                                           String infoType) throws Exception {
+        //TODO: Robin handle when custom name contains space
+        String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
+        if (withCustomName != null) {
+            name = customName;
+        }
+        if (withInfo != null) {
+            final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
+            final PhoneNumber phoneNumber = usrMgr.findUserByNameOrNameAlias(alias).getPhoneNumber();
+            AndroidCommonUtils.insertContact(name, email, phoneNumber, infoType);
+        } else {
+            AndroidCommonUtils.insertContact(name);
+        }
     }
 
     /**
@@ -1110,7 +1123,7 @@ public class CommonAndroidSteps {
      */
     @When("^User (.*) adds new devices? (.*)$")
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
-        final List<String> names = CommonSteps.splitAliases(deviceNames);
+        final List<String> names = usrMgr.splitAliases(deviceNames);
         final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
         final ExecutorService pool = Executors.newFixedThreadPool(poolSize);
         for (String name : names) {
@@ -1758,6 +1771,34 @@ public class CommonAndroidSteps {
     public void UserXRestesPassword(String userNmaeAlias, String newPassword) throws Exception {
         newPassword = usrMgr.replaceAliasesOccurences(newPassword, ClientUsersManager.FindBy.PASSWORD_ALIAS);
         commonSteps.UserResetsPassword(userNmaeAlias, newPassword);
+    }
+
+    /**
+     * User cancel outgoing request
+     *
+     * @param userNameAlias         name alias of the user
+     * @param canceledUserNameAlias name alias of the user which you send the connect request
+     * @param deviceName            device name
+     * @throws Exception
+     * @step. ^User (.*) cancels the outgoing request to user (\\w+)(?: via device (.*)\s)?$
+     */
+    @When("^User (.*) cancels the outgoing request to user (\\w+)(?: via device (.*))?$")
+    public void UserXCancelRequestToUserY(String userNameAlias, String canceledUserNameAlias, String deviceName) throws Exception {
+        commonSteps.UserCancelConnection(userNameAlias, canceledUserNameAlias, deviceName);
+    }
+
+    /**
+     * User update unique user name
+     *
+     * @param userNameAlias  name alias of the user
+     * @param uniqueUserName unique user name
+     * @param deviceName     device name
+     * @throws Exception
+     * @step.^User (.*) updates? the unqiue user name to "(.*)"(?: via device (.*))?
+     */
+    @Given("^User (.*) updates? the unqiue user name to \"(.*)\"(?: via device (.*))?")
+    public void UserXUpdateUniqueUserName(String userNameAlias, String uniqueUserName, String deviceName) throws Exception {
+        commonSteps.UpdateUniqueUsername(userNameAlias, uniqueUserName, deviceName);
     }
 
     /**

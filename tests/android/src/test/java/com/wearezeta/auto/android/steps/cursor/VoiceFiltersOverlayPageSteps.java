@@ -31,14 +31,26 @@ public class VoiceFiltersOverlayPageSteps {
     }
 
     /**
-     * Verify the voice recording dialog is visible
+     * Verify the voice recording/filters dialog is visible
      *
+     * @param overlayName overlay name
      * @throws Exception
-     * @step. ^I see Voice filters overlay$
+     * @step. ^I see Voice (recording|filters) overlay$
      */
-    @Then("^I see Voice filters overlay$")
-    public void ISeeVoiceRecordingDialog() throws Exception {
-        Assert.assertTrue("The voice recording overlay should be visible", getVoiceFiltersOverlayPage().isVoiceRecordingDialogVisible());
+    @Then("^I see Voice (recording|filters) overlay$")
+    public void ISeeVoiceRecordingDialog(String overlayName) throws Exception {
+        switch (overlayName.toLowerCase()) {
+            case "recording":
+                Assert.assertTrue("The voice recording overlay should be visible", getVoiceFiltersOverlayPage()
+                        .isVoiceRecordingDialogVisible());
+                break;
+            case "filters":
+                Assert.assertTrue("The voice filters overlay should be visible", getVoiceFiltersOverlayPage()
+                        .isVoiceFiltersDialogVisible());
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown overlay name '%s'", overlayName));
+        }
     }
 
     /**

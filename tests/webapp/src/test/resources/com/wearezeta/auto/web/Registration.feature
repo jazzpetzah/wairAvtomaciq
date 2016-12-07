@@ -2,6 +2,8 @@ Feature: Registration
 
   @C1761 @smoke @useSpecialEmail @localytics
   Scenario Outline: Verify new user can be registered
+    Given I see Registration page
+    Given I enable localytics via URL parameter
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password "<Password>" on Registration page
@@ -13,10 +15,16 @@ Feature: Registration
     And I see email <Email> on Verification page
     When I activate user by URL
     And User <Name> is Me without avatar
-    And I see first time experience with watermark
-    And I open preferences by clicking the gear button
-    Then I see username <Name> in account preferences
-    Then I see user email <Email> in account preferences
+    Then I see watermark
+    And I see take over screen page
+    And I see name <Name> on take over screen
+    And I see unique username starts with <Name> on take over screen
+    And I see ChooseYourOwn button on take over screen
+    And I see TakeThisOne button on take over screen
+    When I click ChooseYourOwn button on take over screen
+    Then I see name <Name> in account preferences
+    And I see unique username starts with <Name> in account preferences
+    And I see user email <Email> in account preferences
     And I see localytics event <Event> with attributes <Attributes>
 
     Examples: 
@@ -36,7 +44,9 @@ Feature: Registration
     And I enter user password "<Password>" on Registration page
     And I accept the Terms of Use
     And I submit registration form
-    And I see first time experience with watermark
+    And I see watermark
+    And I see take over screen page
+    And I click TakeThisOne button on take over screen
     And I see Contact list with name <Name>
 
     Examples: 

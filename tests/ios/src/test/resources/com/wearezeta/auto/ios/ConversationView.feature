@@ -64,7 +64,7 @@ Feature: Conversation View
     And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
     # Wait for delivery
-    And I wait for 6 seconds
+    And I wait for 8 seconds
     And I see "<DeliveredLabel>" on the message toolbox in conversation view
 
     Examples:
@@ -133,7 +133,7 @@ Feature: Conversation View
     And I tap Login button
     And I accept alert if visible
     And I accept First Time overlay
-    And I dismiss settings warning
+    And I dismiss settings warning if visible
     And I see conversations list
     And I tap on contact name <Contact>
     And I tap on text input

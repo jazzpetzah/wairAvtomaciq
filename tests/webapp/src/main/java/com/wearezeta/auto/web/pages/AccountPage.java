@@ -36,8 +36,17 @@ public class AccountPage extends WebPage {
     @FindBy(css = ".modal-logout .checkbox span")
     private WebElement clearDataCheckbox;
 
-    @FindBy(css = WebAppLocators.AccountPage.cssSelfUserNameInput)
-    private WebElement userNameInput;
+    @FindBy(css = WebAppLocators.AccountPage.cssSelfNameInput)
+    private WebElement nameInput;
+
+    @FindBy(css = WebAppLocators.AccountPage.cssUniqueUsername)
+    private WebElement uniqueUsernameInput;
+
+    @FindBy(css = WebAppLocators.AccountPage.cssUniqueUsernameError)
+    private WebElement uniqueUsernameError;
+
+    @FindBy(css = WebAppLocators.AccountPage.cssUniqueUsernameHint)
+    private WebElement uniqueUsernameHint;
 
     @FindBy(css = WebAppLocators.AccountPage.cssNameSelfUserMail)
     private WebElement userMail;
@@ -91,10 +100,10 @@ public class AccountPage extends WebPage {
         logoutInDialogButton.click();
     }
 
-    public String getUserName() throws Exception {
+    public String getName() throws Exception {
         DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(
-                WebAppLocators.AccountPage.cssSelfUserNameInput));
-        return userNameInput.getAttribute("value");
+                WebAppLocators.AccountPage.cssSelfNameInput));
+        return nameInput.getAttribute("value");
     }
 
     public String getUserMail() {
@@ -105,11 +114,40 @@ public class AccountPage extends WebPage {
         return userPhoneNumber.getText();
     }
 
-    public void setUserName(String name) throws InterruptedException {
-        userNameInput.click();
+    public void setName(String name) throws InterruptedException {
+        nameInput.click();
         Thread.sleep(1000);
-        userNameInput.clear();
-        userNameInput.sendKeys(name + "\n");
+        nameInput.clear();
+        nameInput.sendKeys(name + "\n");
+    }
+
+    public void typeUniqueUsername(String name) throws InterruptedException {
+        uniqueUsernameInput.click();
+        Thread.sleep(1000);
+        uniqueUsernameInput.clear();
+        uniqueUsernameInput.sendKeys(name);
+    }
+
+    public void submitUniqueUsername() throws InterruptedException {
+        uniqueUsernameInput.sendKeys("\n");
+    }
+
+    public void setUniqueUsername(String name) throws InterruptedException {
+        typeUniqueUsername(name);
+        submitUniqueUsername();
+    }
+
+    public String getUniqueUsernameError() {
+        return uniqueUsernameError.getText();
+    }
+
+    public String getUniqueUsernameHint() {
+        return uniqueUsernameHint.getText();
+    }
+
+    public String getUniqueUsername() throws Exception{
+        DriverUtils.waitUntilElementClickable(getDriver(), uniqueUsernameInput);
+        return uniqueUsernameInput.getAttribute("value");
     }
 
     public BufferedImage getPicture() throws Exception {

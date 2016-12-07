@@ -5,7 +5,6 @@ import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -16,13 +15,22 @@ public class ConversationActionsPage extends IOSPage {
     private static final Function<String, String> xpathStrConfirmActionButtonByName = name ->
             String.format("//XCUIElementTypeButton[@name='CANCEL']/following::XCUIElementTypeButton[@name='%s']",
                     name.toUpperCase());
+    private static final By fbXpathDeclineActionButtonByName =
+            FBBy.xpath("//XCUIElementTypeButton[@name='CANCEL']");
 
     private static final Function<String, String> xpathStrConnectActionButtonByName = name ->
             String.format("//XCUIElementTypeButton[@name='IGNORE']/following::XCUIElementTypeButton[@name='%s']",
                     name.toUpperCase());
+    private static final By fbXpathIgnoreActionButtonByName =
+            FBBy.xpath("//XCUIElementTypeButton[@name='IGNORE']");
 
     private static final By fbXpathYesActionButton =
             FBBy.xpath("//XCUIElementTypeButton[@name='NO']/following::XCUIElementTypeButton[@name='YES']");
+    private static final By fbXpathNoActionButton =
+            FBBy.xpath("//XCUIElementTypeButton[@name='NO']");
+
+    private static final Function<String, String> xpathStrMenuTitleByValue = value ->
+            String.format("//XCUIElementTypeStaticText[@name='name' and @value='%s']", value);
 
     public ConversationActionsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -43,14 +51,14 @@ public class ConversationActionsPage extends IOSPage {
     public void tapMenuItem(String buttonTitle) throws Exception {
         // Wait for animation
         Thread.sleep(2000);
-        final WebElement btn = getElement(getActionButtonByName(buttonTitle));
-        btn.click();
-        isElementInvisible(btn);
+        getElement(getActionButtonByName(buttonTitle)).click();
     }
+
+    private static final long TRANSITION_DURATION_MS = 4500;
 
     public void confirmAction(String actionName) throws Exception {
         // Wait for animation
-        Thread.sleep(4500);
+        Thread.sleep(TRANSITION_DURATION_MS);
         By locator = FBBy.xpath(xpathStrConfirmActionButtonByName.apply(actionName));
         switch (actionName.toLowerCase()) {
             case "cancel request":
@@ -66,7 +74,24 @@ public class ConversationActionsPage extends IOSPage {
     }
 
     public boolean isVisibleForConversation(String conversation) throws Exception {
-        final By locator = MobileBy.AccessibilityId(conversation.toUpperCase());
-        return selectVisibleElements(locator).size() > 0;
+        final By locator = By.xpath(xpathStrMenuTitleByValue.apply(conversation));
+        return isLocatorDisplayed(locator);
+    }
+
+    public void declineAction(String actionName) throws Exception {
+        // Wait for animation
+        Thread.sleep(TRANSITION_DURATION_MS);
+        By locator = fbXpathDeclineActionButtonByName;
+        switch (actionName.toLowerCase()) {
+            case "cancel request":
+                locator = fbXpathNoActionButton;
+                break;
+            case "connect":
+                locator = fbXpathIgnoreActionButtonByName;
+                break;
+        }
+        final FBElement btn = (FBElement) getElement(locator);
+        btn.click();
+        this.isElementInvisible(btn);
     }
 }

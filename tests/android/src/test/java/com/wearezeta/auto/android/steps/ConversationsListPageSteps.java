@@ -5,26 +5,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.wearezeta.auto.android.pages.ConversationsListPage;
+import com.wearezeta.auto.android.pages.SearchListPage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.misc.ElementState;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
-
-import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.Assert;
 
 public class ConversationsListPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
     private final ElementState newDeviceIndicatorState = new ElementState(
             () -> getConversationsListPage().getNewDeviceIndicatorState());
+
+    private final ElementState conversationsListBackgroundState = new ElementState(
+            () -> getConversationsListPage().getConversationsListScreenshot());
 
     private ConversationsListPage getConversationsListPage() throws Exception {
         return pagesCollection.getPage(ConversationsListPage.class);
@@ -35,6 +37,10 @@ public class ConversationsListPageSteps {
     }
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+    private static final double CONVERSATIONS_LIST_BACKGROUND_MIN_SCORE = 0.9;
+
+    private static final int CONVERSATIONS_LIST_BACKGROUND_CHANGE_TIMEOUT = 3;
 
     /**
      * Verify whether conversations list is visible or not
@@ -68,7 +74,7 @@ public class ConversationsListPageSteps {
         newDeviceIndicatorState.remember();
     }
 
-    private static final double MIN_NEW_DEVICE_INDICATOR_SCORE = 0.93;
+    private static final double MIN_NEW_DEVICE_INDICATOR_SCORE = 0.95;
     private static final int NEW_DEVICE_INDICATOR_STATE_CHANGE_TIMEOUT = 10; //seconds
 
     /**
@@ -79,7 +85,7 @@ public class ConversationsListPageSteps {
      */
     @Then("^I verify the state of new device indicator is changed$")
     public void ISeeNewDeviceIndicatorIsChanged() throws Exception {
-        Assert.assertTrue("The current and previous state of audio message preview seekbar seems to be same",
+        Assert.assertTrue("The current and previous state of settings button seems to be same",
                 newDeviceIndicatorState.isChanged(NEW_DEVICE_INDICATOR_STATE_CHANGE_TIMEOUT,
                         MIN_NEW_DEVICE_INDICATOR_SCORE));
     }
@@ -153,7 +159,6 @@ public class ConversationsListPageSteps {
     public void IShortSwipeRightOnAUser(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         getConversationsListPage().swipeShortRightOnConversation(1000, contact);
-
     }
 
     /**
@@ -165,7 +170,6 @@ public class ConversationsListPageSteps {
     @When("^I open [Ss]earch UI$")
     public void IOpenSearchUI() throws Exception {
         getConversationsListPage().tapListActionsAvatar();
-        getSearchListPage().getPickerEdit();
     }
 
     /**
@@ -191,7 +195,7 @@ public class ConversationsListPageSteps {
     @Then("^I (do not )?see group conversation with (.*) in conversations list$")
     public void ISeeGroupChatInContactList(String shouldNotSee, String contacts) throws Exception {
         final List<String> users = new ArrayList<>();
-        for (String alias : CommonSteps.splitAliases(contacts)) {
+        for (String alias : usrMgr.splitAliases(contacts)) {
             users.add(usrMgr.findUserByNameOrNameAlias(alias).getName());
         }
         if (shouldNotSee == null) {
@@ -505,5 +509,36 @@ public class ConversationsListPageSteps {
     @When("^I tap the three dots option menu button$")
     public void ITapTheThreeDotsOptionMenuButton() throws Exception {
         getConversationsListPage().tapThreeDotOptionMenuButton();
+    }
+
+    /**
+     * Remember Conversations list background state
+     *
+     * @throws Exception
+     * @step. ^I remember Conversations list background$
+     */
+    @When("^I remember Conversations list background$")
+    public void IRememberConversationsListBackground() throws Exception {
+        conversationsListBackgroundState.remember();
+    }
+
+    /**
+     * Verify that Conversations list bachfround is (not) changed
+     *
+     * @param shouldNotBeChanged is not null if the background should not be changed
+     * @throws Exception
+     * @step. ^I verify Conversations list backgroud is (not )?changed$
+     */
+    @Then("^I verify Conversations list backgroud is (not )?changed$")
+    public void IVerifyConversationsListBackgroundChanged(String shouldNotBeChanged) throws Exception {
+        if (shouldNotBeChanged == null) {
+            Assert.assertTrue(String.format("State of conversations list has not been changed after timeout"),
+                    conversationsListBackgroundState.isChanged(CONVERSATIONS_LIST_BACKGROUND_CHANGE_TIMEOUT,
+                    CONVERSATIONS_LIST_BACKGROUND_MIN_SCORE));
+        } else {
+            Assert.assertTrue(String.format("State of conversations list has not been changed after timeout"),
+                    conversationsListBackgroundState.isNotChanged(CONVERSATIONS_LIST_BACKGROUND_CHANGE_TIMEOUT,
+                    CONVERSATIONS_LIST_BACKGROUND_MIN_SCORE));
+        }
     }
 }

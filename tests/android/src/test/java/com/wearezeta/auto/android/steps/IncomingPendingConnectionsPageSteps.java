@@ -34,7 +34,7 @@ public class IncomingPendingConnectionsPageSteps {
     private final static int MAX_USERS = 5;
 
     /**
-     * Scroll to gived user in the inbox
+     * Scroll to given user in the inbox
      *
      * @param contact The name of the user to search.
      * @throws Throwable
@@ -154,18 +154,6 @@ public class IncomingPendingConnectionsPageSteps {
     @Then("^I see connect button enabled state is (.*)$")
     public void ISeeConnectButtonIsDisabled(boolean state) throws Throwable {
         Assert.assertEquals(state, getIncomingPendingConnectionsPage().getConnectButtonState());
-    }
-
-    /**
-     * Checks to see that the counter value has a given number of remaining characters
-     *
-     * @param value
-     * @throws Throwable
-     * @step. ^I see counter value (.*)$
-     */
-    @Then("^I see counter value (.*)$")
-    public void ISeeCounterValue(int value) throws Throwable {
-        Assert.assertEquals(value, getIncomingPendingConnectionsPage().getCharCounterValue());
     }
 
     /**

@@ -21,45 +21,6 @@ Feature: Rich Media
       | Name      | Contact   | YouTubeLink                                | DeviceName1 | DeliveredLabel |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU | device1     | Delivered      |
 
-  @C3210 @real @IPv6 @fastLogin
-  Scenario Outline: (MediaBar disappears on Simulator) Play/pause SoundCloud media link from the media bar
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given User Myself sends 40 encrypted messages to user <Contact>
-    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
-    Given I see conversations list
-    Given I tap on contact name <Contact>
-    When I tap on media container in conversation view
-    And I scroll to the top of the conversation
-    And I pause playing the media in media bar
-    Then I see media is paused on Media Bar
-    When I tap Play in media bar
-    Then I see media is playing on Media Bar
-
-    Examples:
-      | Name      | Contact   | SoundCloudLink                                                   |
-      | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
-
-  @C3205 @real @fastLogin
-  Scenario Outline: (MediaBar disappears on Simulator) Conversation gets scrolled back to playing media when clicking on media bar
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given User Myself sends 40 encrypted messages to user <Contact>
-    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
-    Given I see conversations list
-    Given I tap on contact name <Contact>
-    Given I scroll to the bottom of the conversation
-    Given I tap on media container in conversation view
-    When I scroll to the top of the conversation
-    And I tap on the media bar
-    Then I see media container <SoundCloudLink> in conversation view
-
-    Examples:
-      | Name      | Contact   | SoundCloudLink                                   |
-      | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
-
   @C3206 @regression @fastLogin
   Scenario Outline: (MediaBar disappears on Simulator) Verify the Media Bar dissapears after playback finishes - SoundCloud
     Given There are 2 users where <Name> is me

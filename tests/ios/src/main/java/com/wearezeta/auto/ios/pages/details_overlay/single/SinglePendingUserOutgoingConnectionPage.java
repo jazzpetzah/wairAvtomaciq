@@ -15,6 +15,8 @@ public class SinglePendingUserOutgoingConnectionPage extends BasePendingOutgoing
     @Override
     protected By getButtonLocatorByName(String name) {
         switch (name.toLowerCase()) {
+            case "archive":
+                return nameArchiveRequestButton;
             case "connect":
                 return xpathConnectOtherUserButton;
             case "cancel request":

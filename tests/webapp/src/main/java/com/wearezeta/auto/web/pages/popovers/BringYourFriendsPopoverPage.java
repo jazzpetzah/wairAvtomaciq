@@ -39,16 +39,16 @@ public class BringYourFriendsPopoverPage extends WebPage {
 		return invitationTextarea.getAttribute("value");
 	}
 
-	public String parseInvitationLink() {
+	public String getUsernameFromInvitation() {
 		final String invitationText = this.getInvitationText();
-		final String regex = "(https://\\S+)";
+		final String regex = "(@\\S+)";
 		final Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-		final Matcher urlMatcher = p.matcher(invitationText);
-		if (urlMatcher.find()) {
-			return urlMatcher.group(1);
+		final Matcher usernameMatcher = p.matcher(invitationText);
+		if (usernameMatcher.find()) {
+			return usernameMatcher.group(1);
 		} else {
 			throw new RuntimeException(String.format(
-					"Invitation link could not be parsed from this text: '%s'",
+					"Username could not be parsed from this text: '%s'",
 					invitationText));
 		}
 	}

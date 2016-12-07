@@ -199,6 +199,8 @@ Feature: Ephemeral Messages
     # Wait for transition
     Given I wait for 5 seconds
     Given I tap file transfer menu item <ItemName>
+    # Wait for transition
+    Given I wait for 5 seconds
     When I remember asset container state at cell 1
     And I wait for <Timer> seconds
     Then I see asset container state is changed
@@ -270,7 +272,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Timer | Link                 |
       | user1Name | user2Name | 30    | https://www.wire.com |
 
-  @C259596 @regression @fastLogin
+  @C259596 @rc @regression @fastLogin
   Scenario Outline: Verify the message is deleted on the receiver side when timer is over
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -333,7 +335,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | SyncTimeout | EphemeralTimeout | DeviceName    | Picture     | FileName    | VideoMIME | AudioFileName | AudioMIME | Link         |
       | user1Name | user2Name | 3           | 5                | ContactDevice | testing.jpg | testing.mp4 | video/mp4 | test.m4a      | audio/mp4 | www.wire.com |
 
-  @C259590 @regression @fastLogin
+  @C259590 @rc @regression @fastLogin
   Scenario Outline: Verify edit/delete/like/copy/forward are switched off
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -352,6 +354,8 @@ Feature: Ephemeral Messages
     And I do not see Copy badge item
     And I do not see Forward badge item
     When User <Contact> sends encrypted message "<Message2>" to user Myself
+    # Wait for sync
+    And I wait for 3 seconds
     And I long tap "<Message2>" message in conversation view
     Then I do not see Edit badge item
     And I do not see Delete badge item
@@ -363,7 +367,7 @@ Feature: Ephemeral Messages
       | Name      | Contact   | Message1    | Message2    | DeviceName | DeviceLabel | EphemeralTimeout |
       | user1Name | user2Name | message one | message two | ContactDev | DevLabel    | 15               |
 
-  @C259587 @regression @fastLogin
+  @C259587 @rc @regression @fastLogin
   Scenario Outline: Verify ephemeral messages are not sent to my other devices
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>

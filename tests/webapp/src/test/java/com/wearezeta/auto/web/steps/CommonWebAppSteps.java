@@ -15,6 +15,7 @@ import com.wearezeta.auto.web.common.Message;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
 import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
@@ -49,6 +50,8 @@ public class CommonWebAppSteps {
     private static final int DELETION_RECEIVING_TIMEOUT = 120;
 
     private String rememberedPage = null;
+
+    private String rememberedMessageId = null;
 
     private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
 
@@ -122,6 +125,7 @@ public class CommonWebAppSteps {
         context.getCommonSteps().ThereAreNUsersWhereXIsMe(context.getCurrentPlatform(), count,
                 myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "default");
+        context.getCommonSteps().UsersSetUniqueUsername(myNameAlias);
     }
 
     @Given("^User (\\w+) change accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
@@ -130,11 +134,34 @@ public class CommonWebAppSteps {
         context.getCommonSteps().IChangeUserAccentColor(userNameAlias, newColor);
     }
 
+    @When("^User (\\w+) changes? name to (.*)")
+    public void IChangeName(String userNameAlias, String name) throws Exception {
+        context.getCommonSteps().IChangeName(userNameAlias, name);
+    }
+
+    @When("^User (\\w+) changes? unique username to (.*)")
+    public void IChangeUniqueUsername(String userNameAlias, String name) throws Exception {
+        context.getCommonSteps().IChangeUniqueUsername(userNameAlias, name);
+    }
+
+    @Given("(.*) (?:has|have) unique usernames?$")
+    public void UserHasUniqueUsername(String userNameAliases) throws Exception {
+        context.getCommonSteps().UsersSetUniqueUsername(userNameAliases);
+    }
+
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me without avatar picture$")
     public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count,
             String myNameAlias) throws Exception {
         context.getCommonSteps().ThereAreNUsersWhereXIsMe(context.getCurrentPlatform(), count,
                 myNameAlias);
+        context.getCommonSteps().UsersSetUniqueUsername(myNameAlias);
+    }
+
+    @Given("^There (?:is|are) (\\d+) users? where (.*) is me without unique username$")
+    public void ThereAreNUsersWhereXIsMeWithoutUsername(int count, String myNameAlias) throws Exception {
+        context.getCommonSteps().ThereAreNUsersWhereXIsMe(context.getCurrentPlatform(), count,
+                myNameAlias);
+        IChangeUserAvatarPicture(myNameAlias, "default");
     }
 
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")
@@ -208,7 +235,7 @@ public class CommonWebAppSteps {
     public void UserWaitsUntilContactExistsInHisSearchResults(
             String searchByNameAlias, String query) throws Exception {
         context.startPinging();
-        context.getCommonSteps().WaitUntilContactIsFoundInSearchByEmail(searchByNameAlias, query);
+        context.getCommonSteps().WaitUntilContactIsFoundInSearchByUniqueUsername(searchByNameAlias, query);
         context.stopPinging();
     }
 
@@ -391,11 +418,11 @@ public class CommonWebAppSteps {
                 hashCode(), conversationName, longitudeFloat, latitudeFloat, locationName, zoom, isGroup);
     }
 
-    @When("^User (.*) deletes? the recent (\\d+) messages? (everywhere )?from (user|group conversation) (.*) via device (.*)$")
+    @When("^User (.*) deletes? the recent (\\d+) messages? (everywhere )?in (group|single) conversation (.*) via device (.*)$")
     public void UserXDeleteLastMessage(String userNameAlias, int amount, String deleteEverywhere, String convoType,
             String dstNameAlias, String deviceName)
             throws Exception {
-        boolean isGroup = convoType.equals("group conversation");
+        boolean isGroup = convoType.equals("group");
         boolean isDeleteEverywhere = deleteEverywhere != null;
         for (int deleteCounter = 0; deleteCounter < amount; deleteCounter++) {
             context.getCommonSteps().UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName + context.getTestname().
@@ -430,6 +457,20 @@ public class CommonWebAppSteps {
         context.getCommonSteps().UserUpdateSecondLastMessage(userNameAlias, dstNameAlias, newMessage, deviceName + context.
                 getTestname().
                 hashCode(), isGroup);
+    }
+
+    @When("^I remember the message (.*)")
+    public void IRememberTheMessage(String text) throws Exception {
+        rememberedMessageId = context.getPagesCollection().getPage(ConversationPage.class).getMessageIdFromMessageText(text);
+    }
+
+    @When("^User (.*) edits? the remembered message to \"(.*)\" on device (.*)$")
+    public void UserXEditRememberedMessage(String userNameAlias, String newMessage, String deviceName) throws Exception {
+        if (rememberedMessageId == null) {
+            throw new PendingException("No remembered message found. Please run the step first.");
+        }
+        context.getCommonSteps().UserUpdateMessageById(userNameAlias, rememberedMessageId, newMessage,
+                deviceName + context.getTestname().hashCode());
     }
 
     @When("^User (.*) (likes|unlikes) the recent message from (?:user|group conversation) (.*) via device (.*)$")

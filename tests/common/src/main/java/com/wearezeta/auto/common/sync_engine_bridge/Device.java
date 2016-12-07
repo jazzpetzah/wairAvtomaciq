@@ -10,6 +10,7 @@ import akka.actor.PoisonPill;
 import com.waz.api.EphemeralExpiration;
 import com.waz.model.MessageId;
 import com.waz.model.RConvId;
+import com.waz.model.UserId;
 import com.waz.provision.ActorMessage;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -339,6 +340,28 @@ class Device extends RemoteEntity implements IDevice {
     public void setAssetToV2() throws Exception {
         retryOnTimeoutFailure(
                 () -> askActor(this.ref(), ActorMessage.SetAssetToV2$.MODULE$)
+        );
+    }
+
+    @Override
+    public void cancelConnection(UserId userId) throws Exception {
+        retryOnTimeoutFailure(
+                () -> askActor(this.ref(), new ActorMessage.CancelConnection(userId))
+        );
+    }
+
+    @Override
+    public String getUniqueUserName() throws Exception {
+        final String uniqueUserName = retryOnTimeoutFailure(
+                () -> (String)askActor(this.ref(), ActorMessage.GetUserName$.MODULE$)
+        );
+        return uniqueUserName;
+    }
+
+    @Override
+    public void updateUniqueUserName(String uniqueUserName) throws Exception {
+        retryOnTimeoutFailure(
+                () -> askActor(this.ref(), new ActorMessage.UpdateProfileUserName(uniqueUserName))
         );
     }
 }

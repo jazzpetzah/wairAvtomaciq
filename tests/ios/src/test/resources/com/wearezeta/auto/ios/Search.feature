@@ -1,7 +1,7 @@
 Feature: Search
 
   @C1035 @rc @clumsy @regression @fastLogin
-  Scenario Outline: Verify search by email
+  Scenario Outline: Verify search by email does not work
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -9,7 +9,7 @@ Feature: Search
     And I accept alert if visible
     And I tap input field on Search UI page
     And I type "<ContactEmail>" in Search UI input field
-    Then I see the conversation "<ContactName>" exists in Search results
+    Then I see the conversation "<ContactName>" does not exist in Search results
 
     Examples:
       | Name      | ContactEmail | ContactName |
@@ -90,7 +90,7 @@ Feature: Search
     And I tap X button on Search UI page
     And I tap on contact name <UnconnectedUser>
     And I open conversation details
-    And I see <UnconnectedUser> name on Single user Pending outgoing connection page
+    And I see name "<UnconnectedUser>" on Single user Pending outgoing connection page
 
     Examples:
       | Name      | UnconnectedUser | Contact2  |
@@ -189,7 +189,7 @@ Feature: Search
     And I tap Send image action button on Search UI page
     And I tap Camera Roll button on Camera page
     # Wait for animation
-    And I wait for 3 seconds
+    And I wait for 5 seconds
     And I accept alert if visible
     And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page

@@ -55,14 +55,15 @@ public class StartUIPageSteps {
     }
 
     @When("^I type (.*) in search field of People Picker$")
-    public void ISearchForUser(String nameOrEmail) throws Exception {
-        nameOrEmail = context.getUserManager().replaceAliasesOccurences(nameOrEmail,
+    public void ISearchForUser(String nameOrEmailOrUniqueUsername) throws Exception {
+        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
                 FindBy.NAME_ALIAS);
-        nameOrEmail = context.getUserManager().replaceAliasesOccurences(nameOrEmail,
+        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
                 FindBy.EMAIL_ALIAS);
+        nameOrEmailOrUniqueUsername = context.getUserManager().replaceAliasesOccurences(nameOrEmailOrUniqueUsername,
+                FindBy.UNIQUE_USERNAME_ALIAS);
         // adding spaces to ensure trimming of input
-        context.getPagesCollection().getPage(StartUIPage.class).searchForUser(
-                " " + nameOrEmail + " ");
+        context.getPagesCollection().getPage(StartUIPage.class).searchForUser(" " + nameOrEmailOrUniqueUsername + " ");
     }
 
     @When("^I( do not)? see user (.*) found in People Picker$")
@@ -193,7 +194,7 @@ public class StartUIPageSteps {
 
     @When("^I select (.*) from Top People$")
     public void ISelectUsersFromTopPeople(String namesOfTopPeople) throws Exception {
-        for (String alias : CommonSteps.splitAliases(namesOfTopPeople)) {
+        for (String alias : context.getUserManager().splitAliases(namesOfTopPeople)) {
             final String userName = context.getUserManager().findUserByNameOrNameAlias(alias).getName();
             context.getPagesCollection().getPage(StartUIPage.class).clickNameInTopPeople(userName);
         }

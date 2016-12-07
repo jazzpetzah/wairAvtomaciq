@@ -1,15 +1,16 @@
 package com.wearezeta.auto.android.pages.cursor;
 
+import java.util.concurrent.Future;
+import java.util.function.Function;
+
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import org.openqa.selenium.By;
 
-import java.util.concurrent.Future;
-import java.util.function.Function;
-
 public class VoiceFiltersOverlayPage extends CursorOverlayPage {
 
     private static final By idVoiceRecordingContainer = By.id("vfc");
+    private static final By idVoiceFiltersContainer = By.id("ll__voice_filter__grid_container");
     private static final By idRecordButton = By.id("gtv__record_button");
     private static final By idApproveButton = By.id("v__voice_approve");
     private static final By idVoiceGraph = By.id("wbv__voice_filter");
@@ -50,7 +51,9 @@ public class VoiceFiltersOverlayPage extends CursorOverlayPage {
             default:
                 throw new IllegalArgumentException(String.format("Unknown tool button name '%s'", name));
         }
-
     }
 
+    public boolean isVoiceFiltersDialogVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idVoiceFiltersContainer);
+    }
 }

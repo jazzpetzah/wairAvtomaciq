@@ -2,15 +2,15 @@ package com.wearezeta.auto.android.pages;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 public class OtherUserPersonalInfoPage extends AndroidPage {
 
@@ -22,11 +22,13 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     private static final Function<String, String> xpathParticipantEmailByText = text -> String
             .format("//*[@id='ttv__participants__sub_header' and @value='%s']", text);
 
+    //locator for other user name opened from group details
     private static final Function<String, String> xpathSingleParticipantNameByText = text -> String
-            .format("//*[@id='ttv__single_participants__header' and @value='%s']", text);
+            .format("//*[@id='tv__single_participant__toolbar__title' and @value='%s']", text);
 
+    //locator for other user email opened from group details
     private static final Function<String, String> xpathSingleParticipantEmailByText = text -> String
-            .format("//*[@id='ttv__single_participants__sub_header' and @value='%s']", text);
+            .format("//*[@id='ttv__user_details__user_name' and @value='%s']", text);
 
     private static final Function<String, String> xpathSingleParticipantTabByText = text -> String
             .format("//*[@value='%s']", text);
@@ -59,7 +61,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
     private static final By idParticipantsHeaderEditable = By.id("taet__participants__header__editable");
 
-    private static final By idSingleParticipantClose = By.id("gtv__single_participants__close");
+    private static final String idSingleParticipantToolbar = "t__single_participant__toolbar";
+
+    private static final By xpathSingleParticipantClose = By.xpath(String.format("//*[@id='%s']/*", idSingleParticipantToolbar));
 
     private static final By idUserProfileConfirmationMenu = By.id("user_profile_confirmation_menu");
 
@@ -85,6 +89,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     private static final By xpathConfirmBlockButton = By.xpath("//*[@id='positive' and @value='BLOCK']");
 
     private static final By xpathConfirmLeaveButton = By.xpath("//*[@id='positive' and @value='LEAVE']");
+
+    private static final String DEFAULT_UNIQUE_NAME = "@whisker_pants";
 
     public OtherUserPersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -135,11 +141,14 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
     private static final String NOT_VERIFIED_STATE = "Not verified";
 
-    public void verifyParticipantDevice() throws Exception {
+    public boolean verifyParticipantDevice() throws Exception {
         final By unselectedSwitchLocator = By.xpath(xpathStrOtrSwitchByState.apply(NOT_VERIFIED_STATE));
-        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), unselectedSwitchLocator, 3)) {
+        final Optional<WebElement> otrSwitch = getElementIfDisplayed(unselectedSwitchLocator, 3);
+        if (otrSwitch.isPresent()) {
+            //Need to tap on standalone switch, because tap on switch text do nothing
             getElement(xpathSingleOtrSwitch).click();
         }
+        return otrSwitch.isPresent();
     }
 
     public boolean isParticipantShieldShowed() throws Exception {
@@ -217,8 +226,13 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
             throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.xpath(xpathParticipantEmailByText.apply(expectedEmail)), 1)
-                || DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By
-                .xpath(xpathSingleParticipantEmailByText.apply(expectedEmail)), 1);
+                || DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(xpathSingleParticipantEmailByText.apply(expectedEmail)), 1)
+                || DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                //TODO: Refactor this check when unique names will present here
+                By.xpath(xpathParticipantEmailByText.apply(DEFAULT_UNIQUE_NAME)), 1)
+                || DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(xpathSingleParticipantEmailByText.apply(DEFAULT_UNIQUE_NAME)), 1);
     }
 
     public boolean isConversationAlertVisible() throws Exception {
@@ -289,7 +303,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     public void tapSingleParticipantCloseButton() throws Exception {
-        final WebElement closeButton = getElement(idSingleParticipantClose,
+        final WebElement closeButton = getElement(xpathSingleParticipantClose,
                 "Close single participant button is not visible");
         final int halfHeight = this.getDriver().manage().window().getSize().getHeight() / 2;
         int ntry = 1;
@@ -297,7 +311,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         do {
             closeButton.click();
             ntry++;
-        } while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idSingleParticipantClose, 1)
+        } while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSingleParticipantClose, 1)
                 && closeButton.getLocation().getY() < halfHeight
                 && ntry <= maxRetries);
         if (ntry > maxRetries) {

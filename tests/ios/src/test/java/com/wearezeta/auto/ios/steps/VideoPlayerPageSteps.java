@@ -31,4 +31,15 @@ public class VideoPlayerPageSteps {
 		Assert.assertTrue("Video Message Player is not opened", getVideoPlayerPage().
 				isVideoMessagePlayerPageDoneButtonVisible());
 	}
+
+	/**
+	 * Tap Done button on video message player page
+	 *
+	 * @throws Exception
+	 * @step. ^I tap Done button on video message player page$
+     */
+	@When("^I tap Done button on video message player page$")
+	public void ITapDoneButtonOnVideoMessagePlayer() throws Exception {
+		getVideoPlayerPage().tapDoneButton();
+	}
 }

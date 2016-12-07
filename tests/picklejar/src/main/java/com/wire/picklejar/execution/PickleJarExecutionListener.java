@@ -17,6 +17,11 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Helper for deleting screenshots. This class should actually reside on the
+ * test execution implementation but for testing purposes it's included in PickleJar for now.
+ *
+ */
 public class PickleJarExecutionListener extends RunListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(PickleJarExecutionListener.class.getSimpleName());
@@ -39,11 +44,11 @@ public class PickleJarExecutionListener extends RunListener {
         if (directory.exists()) {
             File[] files = directory.listFiles();
             if (null != files) {
-                for (int i = 0; i < files.length; i++) {
-                    if (files[i].isDirectory()) {
-                        deleteDirectory(files[i]);
+                for (File file : files) {
+                    if (file.isDirectory()) {
+                        deleteDirectory(file);
                     } else {
-                        files[i].delete();
+                        file.delete();
                     }
                 }
             }

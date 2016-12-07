@@ -16,8 +16,9 @@ Feature: Connect
     And I tap Connect button on Single user Pending outgoing connection page
     And I tap X button on Search UI page
     Then I see first item in contact list named <Contact>
-    And I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message in the conversation view
+    When I tap on contact name <Contact>
+    Then I see name "<Contact>" on Single user Pending outgoing connection page
+    And I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -71,10 +72,11 @@ Feature: Connect
     Given Myself is connected to <Contact4>
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I tap Incoming Pending Requests item in conversations list
+    When I tap Incoming Pending Requests item in conversations list
     And I tap Ignore button on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
     And I tap Ignore button on Single user Pending incoming connection page
+    And I navigate back to conversations list
     And I do not see Pending request link in conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search UI
@@ -126,7 +128,7 @@ Feature: Connect
     And I tap on conversation <Contact> in search result
     And I tap Connect button on Single user Pending outgoing connection page
     And I tap on conversation <Contact> in search result
-    And I see <Contact> name on Single user Pending outgoing connection page
+    And I see name "<Contact>" on Single user Pending outgoing connection page
     And I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
@@ -218,11 +220,11 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given I wait until <ContactEmail> exists in backend search results
+    Given I wait until <UnconnectedUser> exists in backend search results
     Given I open search UI
     Given I accept alert if visible
     Given I tap input field on Search UI page
-    Given I type "<ContactEmail>" in Search UI input field
+    Given I type "<UnconnectedUser>" in Search UI input field
     # Wait for animation
     Given I wait for 3 seconds
     When I tap the instant connect button next to <UnconnectedUser>
@@ -230,8 +232,8 @@ Feature: Connect
     Then I see Cancel Request button on Single user Pending outgoing connection page
 
     Examples:
-      | Name      | UnconnectedUser | ContactEmail |
-      | user1Name | user2Name       | user2Email   |
+      | Name      | UnconnectedUser |
+      | user1Name | user2Name       |
 
   @C38 @rc @clumsy @regression @fastLogin
   Scenario Outline: Verify possibility of disconnecting from conversation list
@@ -243,7 +245,6 @@ Feature: Connect
     When I tap on contact name <Contact1>
     And I open conversation details
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    And I confirm Cancel Request conversation action
     Then I do not see conversation <Contact1> in conversations list
 
     Examples:
@@ -260,7 +261,6 @@ Feature: Connect
     When I tap on contact name <Contact1>
     And I open conversation details
     And I tap Cancel Request button on Single user Pending outgoing connection page
-    And I confirm Cancel Request conversation action
     And I navigate back to conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search UI
@@ -311,9 +311,9 @@ Feature: Connect
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact3> on Group info page
-    And I see <Contact3> name on Group participant Pending incoming connection page
+    And I see name "<Contact3>" on Group participant Pending incoming connection page
     And I tap Connect button on Group participant Pending incoming connection page
-    And I tap Ignore button on Single user Pending incoming connection page
+    And I decline Connect conversation action
     And I tap X button on Group info page
     And I navigate back to conversations list
     # Workaround for ZIOS-4985
@@ -392,7 +392,7 @@ Feature: Connect
     Given I see conversations list
     When I tap Incoming Pending Requests item in conversations list
     Then I see Connect button on Single user Pending incoming connection page
-    And I see <NewName> name on Single user Pending incoming connection page
+    And I see name "<NewName>" on Single user Pending incoming connection page
 
     Examples:
       | Name      | Contact   | NewName  |

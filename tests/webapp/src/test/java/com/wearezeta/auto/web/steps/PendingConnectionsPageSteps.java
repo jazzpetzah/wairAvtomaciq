@@ -9,6 +9,8 @@ import com.wearezeta.auto.web.pages.PendingConnectionsPage;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -26,25 +28,27 @@ public class PendingConnectionsPageSteps {
         this.context = context;
     }
 
-    @Then("^I see mail (.*)in connection request from user (.*)$")
-    public void ICanSeeEmailFromUser(String mailAlias, String userAlias)
+    @Then("^I see unique username in connection request from user (.*)$")
+    public void ICanSeeUniqueUsernameFromUser(String userAlias)
             throws Exception {
         ClientUser user = context.getUserManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
-        mailAlias = mailAlias.trim();
-        if ("".equals(mailAlias)) {
-            // no mail given. just check if any text is in mail field
-            assertThat(
-                    context.getPagesCollection().getPage(PendingConnectionsPage.class)
-                            .getEmailByName(user.getId()), not(equalTo("")));
-        } else {
-            // mail given. strict check for mail
-            String email = user.getEmail();
-            assertThat(
-                    context.getPagesCollection().getPage(PendingConnectionsPage.class)
-                            .getEmailByName(user.getId()).toLowerCase(),
-                    equalTo(email));
+        // username given. strict check for username
+        String uniqueUsername = user.getUniqueUsername();
+        assertThat(
+                context.getPagesCollection().getPage(PendingConnectionsPage.class)
+                        .getUniqueUsernameByName(user.getId()).toLowerCase(),
+                equalTo(uniqueUsername));
+    }
 
-        }
+    @Then("^I do not see mail in connection request from user (.*)$")
+    public void ICanSeeEmailFromUser(String userAlias)
+            throws Exception {
+        ClientUser user = context.getUserManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
+        String email = user.getEmail();
+            assertThat(
+                    context.getPagesCollection().getPage(PendingConnectionsPage.class)
+                            .getAllTextOfRequestById(user.getId()).toLowerCase(),
+                    not(containsString(email)));
     }
 
     @Then("^I see connection message \"(.*)\" in connection request from user (.*)$")

@@ -8,15 +8,14 @@ import cucumber.api.java.en.When;
 public class EphemeralTimerButtonContextMenuPageSteps {
 
     private final TestContext webContext;
-    private final TestContext wrapperContext;
 
-    public EphemeralTimerButtonContextMenuPageSteps(TestContext webContext, TestContext wrapperContext) {
+    public EphemeralTimerButtonContextMenuPageSteps(TestContext webContext) {
         this.webContext = webContext;
-        this.wrapperContext = wrapperContext;
     }
 
     @When("^I set the timer for ephemeral to (.*)$")
     public void ISetEphemeralTimer(String label) throws Exception {
-        wrapperContext.getPagesCollection(WinPagesCollection.class).getPage(EphemeralTimerButtonContextMenuPage.class).setEphemeralTimer(label.toUpperCase());
+        webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(
+                EphemeralTimerButtonContextMenuPage.class).setEphemeralTimer(label.toUpperCase());
     }
 }

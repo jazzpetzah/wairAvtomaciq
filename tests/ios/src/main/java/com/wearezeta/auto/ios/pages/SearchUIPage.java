@@ -5,27 +5,27 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.facebook_ios_driver.FBBy;
-import com.wearezeta.auto.common.driver.facebook_ios_driver.FBElement;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class SearchUIPage extends IOSPage {
-    private static final By fbNameSearchInput = FBBy.AccessibilityId("textViewSearch");
 
-    public static final By fbNameXButton = FBBy.AccessibilityId("PeoplePickerClearButton");
+    private static final String nameStrSearchInput = "textViewSearch";
+    private static final By xpathSearchInput = By.xpath(
+            String.format("(//XCUIElementTypeTextView[@name='%s'])[last()]", nameStrSearchInput));
+
+    private static final By fbNameXButton = FBBy.AccessibilityId("PeoplePickerClearButton");
 
     private static final By xpathCreateConversationButton =
             By.xpath("//XCUIElementTypeButton[@name='CREATE GROUP']");
 
     private static final By nameTopPeopleLabel = MobileBy.AccessibilityId("TOP PEOPLE");
 
-    private static final By nameAddToConversationButton = MobileBy.AccessibilityId("ADD");
-
     private static final By nameUnblockButton = MobileBy.AccessibilityId("UNBLOCK");
 
-    public static final By nameInviteCopyButton = MobileBy.AccessibilityId("Copy");
+    private static final By nameInviteCopyButton = MobileBy.AccessibilityId("Copy");
 
     private static final By nameInviteMorePeopleButton = MobileBy.AccessibilityId("INVITE MORE PEOPLE");
 
@@ -66,15 +66,20 @@ public class SearchUIPage extends IOSPage {
     }
 
     public void tapSearchInput() throws Exception {
-        this.tapAtTheCenterOfElement((FBElement) getElement(fbNameSearchInput));
+        getElement(xpathSearchInput).click();
+        if (!this.isKeyboardVisible()) {
+            throw new IllegalStateException(
+                    "On-screen keyboard is expected to be shown after click on search input field"
+            );
+        }
     }
 
     public boolean isVisible() throws Exception {
-        return isLocatorDisplayed(fbNameSearchInput);
+        return isLocatorDisplayed(xpathSearchInput);
     }
 
     public void typeText(String text) throws Exception {
-        final WebElement searchInput = getElement(fbNameSearchInput);
+        final WebElement searchInput = getElement(xpathSearchInput);
         searchInput.sendKeys(text + " ");
         // Wait for a user to be found
         Thread.sleep(2000);
@@ -100,15 +105,7 @@ public class SearchUIPage extends IOSPage {
 
     public void tapButton(String name) throws Exception {
         final By locator = getButtonLocatorByName(name);
-        if (locator.equals(fbNameXButton)) {
-            final FBElement xButton = (FBElement) getElement(locator);
-            this.tapAtTheCenterOfElement(xButton);
-            if (!isLocatorInvisible(locator, 5)) {
-                this.tapAtTheCenterOfElement(xButton);
-            }
-        } else {
-            getElement(locator).click();
-        }
+        getElement(locator).click();
     }
 
     public boolean isButtonVisible(String name) throws Exception {
@@ -148,11 +145,7 @@ public class SearchUIPage extends IOSPage {
     }
 
     public void pressBackspaceKeyboardButton() throws Exception {
-        tapKeyboardDeleteButton();
-    }
-
-    public void tapAddToConversationButton() throws Exception {
-        getElement(nameAddToConversationButton).click();
+        getElement(xpathSearchInput).sendKeys(Keys.BACK_SPACE);
     }
 
     public void tapInstantConnectButton(String forName) throws Exception {
@@ -177,6 +170,8 @@ public class SearchUIPage extends IOSPage {
     public void tapOnTopConnectionAvatarByOrder(int i) throws Exception {
         final By locator = By.xpath(xpathStrTopPeopleAvatarByIdx.apply(i));
         getElement(locator).click();
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     public boolean waitUntilNoResultsLabelIsVisible() throws Exception {
@@ -221,8 +216,12 @@ public class SearchUIPage extends IOSPage {
         return isLocatorDisplayed(locator);
     }
 
-    public boolean isButtonInvisible(String btnName) throws Exception{
+    public boolean isButtonInvisible(String btnName) throws Exception {
         final By locator = getButtonLocatorByName(btnName);
         return isLocatorInvisible(locator);
+    }
+
+    public void clearSearchInput() throws Exception {
+        getElement(xpathSearchInput).clear();
     }
 }

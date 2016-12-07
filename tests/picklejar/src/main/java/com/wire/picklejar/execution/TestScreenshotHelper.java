@@ -29,7 +29,7 @@ public class TestScreenshotHelper {
     private static final int MAX_SCREENSHOT_WIDTH = 1440;
     private static final int MAX_SCREENSHOT_HEIGHT = 800;
 
-    protected void saveScreenshot(Step step, Scenario scenario, Feature feature, byte[] screenshot) throws IOException {
+    public void saveScreenshot(Step step, Scenario scenario, Feature feature, byte[] screenshot) throws IOException {
         Path path = Paths.get(
                 Paths.get(SCREENSHOT_PATH).toAbsolutePath().toString(),
                 getReportFeatureName(feature.getName()),
@@ -97,15 +97,18 @@ public class TestScreenshotHelper {
         ByteArrayInputStream in = new ByteArrayInputStream(screenshot);
 //        Arrays.asList(ImageIO.getReaderFormatNames()).stream().forEach((String r) -> LOG.debug(r));
         BufferedImage imgScreenshot = ImageIO.read(in);
-        try {
-            imgScreenshot = scaleTo(imgScreenshot, maxWidth, maxHeight);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(imgScreenshot, "png", baos);
-            return baos.toByteArray();
-        } catch (Exception e) {
-            LOG.warn("Could not resize image", e);
-            return screenshot;
+        if (imgScreenshot != null) {
+            try {
+                imgScreenshot = scaleTo(imgScreenshot, maxWidth, maxHeight);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(imgScreenshot, "png", baos);
+                return baos.toByteArray();
+            } catch (Exception e) {
+                LOG.warn("Could not resize image", e);
+                return screenshot;
+            }
         }
+        return screenshot;
     }
 
     private static BufferedImage scaleTo(BufferedImage originalImage, final int maxWidth, final int maxHeight) throws

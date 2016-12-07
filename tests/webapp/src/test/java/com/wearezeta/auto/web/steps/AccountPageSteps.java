@@ -2,6 +2,8 @@ package com.wearezeta.auto.web.steps;
 
 import java.awt.image.BufferedImage;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.AccentColor;
@@ -9,20 +11,22 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.AccountPage;
-import com.wearezeta.auto.web.pages.ContactListPage;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import org.junit.Assert;
 
 public class AccountPageSteps {
 
@@ -58,10 +62,10 @@ public class AccountPageSteps {
         context.getPagesCollection().getPage(AccountPage.class).logoutInLogoutDialog();
     }
 
-    @And("^I see username (.*) in account preferences$")
-    public void ISeeUserNameOnSelfProfilePage(String name) throws Exception {
+    @And("^I see name (.*) in account preferences$")
+    public void ISeeNameOnSelfProfilePage(String name) throws Exception {
         name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-        assertThat("Username", context.getPagesCollection().getPage(AccountPage.class).getUserName(), equalTo(name));
+        assertThat("Name", context.getPagesCollection().getPage(AccountPage.class).getName(), equalTo(name));
     }
 
     @And("^I see user phone number (.*) in account preferences$")
@@ -82,6 +86,13 @@ public class AccountPageSteps {
         assertEquals(email, actualEmail);
     }
 
+    @And("^I see unique username starts with (.*) in account preferences$")
+    public void ISeeUniqueUsernameOnSelfProfilePage(String name) throws Exception {
+        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        Assert.assertThat("Username in settings",
+                context.getPagesCollection().getPage(AccountPage.class).getUniqueUsername(), startsWith(name));
+    }
+
     @When("^I remember the profile image on the account page$")
     public void IRememberSmallProfileImage() throws Exception {
         profileImage = context.getPagesCollection().getPage(AccountPage.class).getPicture();
@@ -89,40 +100,59 @@ public class AccountPageSteps {
 
     @Then("^I verify that the profile image on the account page has( not)? changed$")
     public void IVerifyBackgroundImageHasChanged(String not) throws Exception {
+        final int THRESHOLD = 100;
+
         if (not == null) {
-            final int THRESHOLD = 100;
+            AccountPage contactListPage = context.getPagesCollection().getPage(AccountPage.class);
 
-            if (not == null) {
-                AccountPage contactListPage = context.getPagesCollection().getPage(AccountPage.class);
+            Wait<AccountPage> wait = new FluentWait<>(contactListPage)
+                    .withTimeout(15, TimeUnit.SECONDS)
+                    .pollingEvery(5, TimeUnit.SECONDS)
+                    .ignoring(AssertionError.class);
 
-                Wait<AccountPage> wait = new FluentWait(contactListPage)
-                        .withTimeout(15, TimeUnit.SECONDS)
-                        .pollingEvery(5, TimeUnit.SECONDS)
-                        .ignoring(AssertionError.class);
-
-                wait.until(page -> {
-                    int actualMatch = THRESHOLD + 1;
-                    try {
-                        actualMatch = ImageUtil.getMatches(page.getPicture(), profileImage);
-                    } catch (Exception e) {
-                    }
-                    assertThat("Image has not changed", actualMatch, lessThan(THRESHOLD));
-                    return actualMatch;
-                });
-            } else {
-                BufferedImage actualPicture = context.getPagesCollection().getPage(ContactListPage.class).getBackgroundPicture();
-                assertThat("Image has changed", ImageUtil.getMatches(actualPicture, profileImage), greaterThan(THRESHOLD));
-            }
+            wait.until(page -> {
+                int actualMatch = THRESHOLD + 1;
+                try {
+                    actualMatch = ImageUtil.getMatches(page.getPicture(), profileImage);
+                } catch (Exception e) {
+                }
+                assertThat("Image has not changed", actualMatch, lessThan(THRESHOLD));
+                return actualMatch;
+            });
         } else {
             BufferedImage actualPicture = context.getPagesCollection().getPage(AccountPage.class).getPicture();
-            assertThat("Profile image has changed", ImageUtil.getMatches(actualPicture, profileImage), greaterThan(100));
+            assertThat("Image has changed", ImageUtil.getMatches(actualPicture, profileImage), greaterThan(THRESHOLD));
         }
     }
 
-    @And("^I change username to (.*)")
-    public void IChangeUserNameTo(String name) throws Exception {
-        context.getPagesCollection().getPage(AccountPage.class).setUserName(name);
+    @And("^I change name to (.*)")
+    public void IChangeNameTo(String name) throws Exception {
+        context.getPagesCollection().getPage(AccountPage.class).setName(name);
         context.getUserManager().getSelfUserOrThrowError().setName(name);
+    }
+
+    @And("^I type (.*) into unique username field$")
+    public void ITypeIntoUniqueUserNameField(String name) throws Exception {
+        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        context.getPagesCollection().getPage(AccountPage.class).setUniqueUsername(name);
+    }
+
+    @And("^I change unique username to (.*)")
+    public void IChangeUniqueUserNameTo(String name) throws Exception {
+        name = context.getUserManager().replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        context.getPagesCollection().getPage(AccountPage.class).setUniqueUsername(name);
+    }
+
+    @Then("^I see error message for unique username saying (.*)")
+    public void ISeeErrorMessageForUniqueUsername(String error) throws Exception {
+        assertThat("Error does not match", context.getPagesCollection().getPage(AccountPage.class).getUniqueUsernameError(),
+                is(error));
+    }
+
+    @Then("^I see hint message for unique username saying (.*)")
+    public void ISeeHintMessageForUniqueUsername(String error) throws Exception {
+        assertThat("Hint does not match", context.getPagesCollection().getPage(AccountPage.class).getUniqueUsernameHint(),
+                is(error));
     }
 
     @When("^I drop picture (.*) to account preferences$")

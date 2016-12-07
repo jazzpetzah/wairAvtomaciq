@@ -717,6 +717,11 @@ public abstract class IOSPage extends BasePage {
         getDriver().tapScreenAt(x, y);
     }
 
+    public void tapScreenByPercents(int percentX, int percentY) throws Exception {
+        final Dimension size = getDriver().manage().window().getSize();
+        getDriver().tapScreenAt(percentX * size.getWidth() / 100, percentY * size.getHeight() / 100);
+    }
+
     public void tapScreenAt(WebElement el) throws Exception {
         final Point location = el.getLocation();
         final Dimension size = el.getSize();

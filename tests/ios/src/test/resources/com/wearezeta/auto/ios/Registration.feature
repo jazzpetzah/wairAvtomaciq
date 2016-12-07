@@ -6,10 +6,12 @@ Feature: Registration
     When I enter phone number for <Name>
     And I enter activation code
     And I accept terms of service
-    And I input name <Name> and hit Enter
+    And I input name <Name> and commit it
     And I accept alert if visible
     And I tap Choose Own Picture button
     And I tap Choose Photo button
+    # Wait for animation
+    And I wait for 5 seconds
     And I accept alert if visible
     And I select the first picture from Camera Roll
     And I accept alert if visible
@@ -48,7 +50,7 @@ Feature: Registration
     When I enter phone number for <Name>
     And I enter activation code
     And I accept terms of service
-    And I input name <Name> and hit Enter
+    And I input name <Name> and commit it
     And I accept alert if visible
     And I tap Choose Own Picture button
     And I tap Take Photo button
@@ -75,7 +77,7 @@ Feature: Registration
     Given I enter phone number for <Name>
     Given I enter activation code
     Given I accept terms of service
-    Given I input Non-English name <ArabicName> and hit Enter
+    Given I input custom name <ArabicName> and commit it
     Given I accept alert if visible
     Given I tap Keep This One button
     When I tap Not Now button on Share Contacts overlay

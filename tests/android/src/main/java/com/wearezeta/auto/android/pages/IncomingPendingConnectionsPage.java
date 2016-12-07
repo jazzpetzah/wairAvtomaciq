@@ -1,20 +1,18 @@
 package com.wearezeta.auto.android.pages;
 
-import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 public class IncomingPendingConnectionsPage extends AndroidPage {
     private static final By idSendConnectionRequestButton = By.id("zb__send_connect_request__connect_button");
 
     private static final Function<String, String> xpathStrConnectToHeaderByText = text -> String.format
-            ("//*[@id='taet__participants__header' and contains(@value, '%s')]", text);
+            ("//*[@id='tv__send_connect__toolbar__title' and contains(@value, '%s')]", text);
 
     public static final String idStrConnectRequestAccept = "zb__connect_request__accept_button";
     public static final By idConnectRequestAccept = By.id(idStrConnectRequestAccept);
@@ -31,8 +29,6 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
 
     private static final Function<String, String> xpathStrUserDetailsLeftButtonByLabel = label -> String.format
             ("//*[@id='ttv__participants__left_label' and @value='%s']", label);
-
-    private static final By idConnectToCharCounter = By.id("ttv__send_connect_request__connect_button__character_counter");
 
     private static final By xpathCloseButton = By.xpath
             ("//*[@id='fl__conversation_list__profile_overlay']//*[@id='gtv__participants__close']");
@@ -140,10 +136,6 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
     public boolean getConnectButtonState() throws Exception {
         String state = getElement(idSendConnectionRequestButton).getAttribute("enabled");
         return Boolean.parseBoolean(state);
-    }
-
-    public int getCharCounterValue() throws Exception {
-        return Integer.parseInt(getElement(idConnectToCharCounter).getText());
     }
 
     public void tapCloseButton() throws Exception {

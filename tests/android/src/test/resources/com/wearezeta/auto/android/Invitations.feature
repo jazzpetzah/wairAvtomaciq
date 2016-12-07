@@ -4,7 +4,7 @@ Feature: Invitations
   Scenario Outline: (AN-4019) Invitations (Conversations List): I can send an email notification from conversations list
     Given I delete all contacts from Address Book
     Given There is 1 user where <Name> is me
-    Given I add <Contact> into Address Book
+    Given I add <Contact> into Address Book with phone and email
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with no conversations
@@ -76,7 +76,7 @@ Feature: Invitations
   Scenario Outline: Sending invite to user which already on Wire create pending connection request
     Given I delete all contacts from Address Book
     Given There are 2 users where <Name> is me
-    Given I add <Contact> into Address Book
+    Given I add <Contact> into Address Book with phone and email
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with no conversations

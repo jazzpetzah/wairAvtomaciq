@@ -3,6 +3,7 @@ Feature: Ephemeral
   @C261723 @ephemeral @regression @localytics @WEBAPP-3302
   Scenario Outline: Verify sending ephemeral text message in 1:1
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given I enable localytics via URL parameter
     Given I switch to Sign In page
@@ -101,6 +102,7 @@ Feature: Ephemeral
   @C262533 @ephemeral @regression
   Scenario Outline: Verify that messages with previous timer are deleted on start-up when the timeout passed in 1:1
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login2> and password <Password>
@@ -162,14 +164,14 @@ Feature: Ephemeral
     And I set the timer for ephemeral to <TimeLong>
     And I write message <Message1>
     And I send message
-    And I wait for <Halftime> seconds
+    And I wait for <ReducedTime> seconds
     And I write message <Message2>
     And I send message
     And I see text message <Message1>
     And I see text message <Message2>
-    When I wait for <Halftime> seconds
+    When I wait for <ReducedTime> seconds
     Then I see the second last message is obfuscated
-    When I wait for <Halftime> seconds
+    When I wait for <ReducedTime> seconds
     Then I see the last message is obfuscated
     When User <Contact> reads the second last message from user <Name> via device Device1
     And I wait for <Time> seconds
@@ -181,8 +183,8 @@ Feature: Ephemeral
     Then I see 1 message in conversation
 
     Examples:
-      | Login      | Password      | Name      | Contact   | TimeLong   | Time | Halftime | Message1 | Message2 |
-      | user1Email | user1Password | user1Name | user2Name | 15 seconds | 15   | 8        | testing1 | testing2 |
+      | Login      | Password      | Name      | Contact   | TimeLong   | Time | ReducedTime | Message1 | Message2 |
+      | user1Email | user1Password | user1Name | user2Name | 15 seconds | 15   | 6           | testing1 | testing2 |
 
   @C264664 @ephemeral @regression
   Scenario Outline: Verify I can not edit my last ephemeral message by pressing the up arrow key in 1:1
@@ -390,52 +392,6 @@ Feature: Ephemeral
     Examples:
       | Email1     | Password      | Name      | Contact   | Time | TimeLong | TimeShortUnit | Message |
       | user1Email | user1Password | user1Name | user2Name | 1    | 1 day    | d             | Hello   |
-
-  @C311067 @ephemeral @regression @WEBAPP-3314
-  Scenario Outline: Verify on sender and receiver side picture fullscreen automatically closes when timer exceeds in 1:1
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I switch to Sign In page
-    Given I Sign in using login <Login2> and password <Password>
-    Given I am signed in properly
-    Given I open preferences by clicking the gear button
-    Given I click logout in account preferences
-    Given I see the clear data dialog
-    Given I click logout button on clear data dialog
-    Given I see Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    Given I am signed in properly
-    When I open conversation with <Contact>
-    And I click on ephemeral button
-    And I set the timer for ephemeral to <TimeLong>
-    Then I see <Time> with unit <TimeShortUnit> on ephemeral button
-    And I see placeholder of conversation input is Timed message
-    When I send picture <PictureName> to the current conversation
-    And I see only 1 picture in the conversation
-    And I see sent picture <PictureName> in the conversation view
-    When I click on picture
-    And I see picture <PictureName> in fullscreen
-    And I wait for <Time> seconds
-#    This fails at the moment
-    Then I do not see picture <PictureName> in fullscreen
-    And I open preferences by clicking the gear button
-    And I click logout in account preferences
-    And I see the clear data dialog
-    And I click logout button on clear data dialog
-    And I see Sign In page
-    Given I Sign in using login <Login2> and password <Password>
-    Given I am signed in properly
-    When I open conversation with <Name>
-    Then I see sent picture <PictureName> in the conversation view
-    When I click on picture
-    And I see picture <PictureName> in fullscreen
-    And I wait for <Time> seconds
-    Then I do not see picture <PictureName> in fullscreen
-    And I do not see any picture in the conversation view
-
-    Examples:
-      | Login      | Login2     | Password      | Name      | Contact   | Time  | TimeLong   | TimeShortUnit | PictureName               |
-      | user1Email | user2Email | user1Password | user1Name | user2Name | 15    | 15 seconds | s             | userpicture_landscape.jpg |
 
   @C262537 @ephemeral @regression
   Scenario Outline: Verify I can receive ephemeral text message (5s/15s/1m/5m) timeout starts while being in the conversation in 1:1

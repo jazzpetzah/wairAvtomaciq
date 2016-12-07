@@ -16,7 +16,7 @@ public class UnknownUserDetailsPage extends AndroidPage {
             By.xpath("//*[@id='ttv__participants__left_label' and @value='Connect']");
 
     private static final By xpathPendingButton =
-            By.xpath("//*[@id='ttv__participants__left_label' and @value='Pending']");
+            By.xpath("//*[@id='ttv__participants__left_label' and @value='Cancel connection request']");
 
     public UnknownUserDetailsPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {

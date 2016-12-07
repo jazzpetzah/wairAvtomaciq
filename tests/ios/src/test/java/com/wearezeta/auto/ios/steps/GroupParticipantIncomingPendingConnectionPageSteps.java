@@ -22,37 +22,32 @@ public class GroupParticipantIncomingPendingConnectionPageSteps {
      *
      * @param shouldNotSee equals to null if the label should be visible
      * @param value        the actual value or alias
-     * @param fieldType    either 'email' or 'name'
+     * @param fieldType    either name or Address Book name or unique username
      * @throws Exception
-     * @step. ^I (do not )?see (.*) (email|name) on Group participant Pending incoming connection page$"
+     * @step. ^I (do not )?see (name|unique username|Address Book name|common friends count) (".*" |\s*)on Group participant Pending incoming connection page$
      */
-    @Then("^I (do not )?see (.*) (email|name) on Group participant Pending incoming connection page$")
-    public void ISeeLabel(String shouldNotSee, String value, String fieldType) throws Exception {
-        boolean result;
-        switch (fieldType) {
-            case "name":
-                value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
-                if (shouldNotSee == null) {
-                    result = getPage().isNameVisible(value);
-                } else {
-                    result = getPage().isNameInvisible(value);
-                }
-                break;
-            case "email":
-                value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.EMAIL_ALIAS);
-                if (shouldNotSee == null) {
-                    result = getPage().isEmailVisible(value);
-                } else {
-                    result = getPage().isEmailInvisible(value);
-                }
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown field type '%s'", fieldType));
-        }
+    @Then("^I (do not )?see (name|unique username|Address Book name|common friends count) (\".*\" |\\s*)on Group participant Pending incoming connection page$")
+    public void ISeeLabel(String shouldNotSee, String fieldType, String value) throws Exception {
+        value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.NAME_ALIAS);
+        value = usrMgr.replaceAliasesOccurences(value, ClientUsersManager.FindBy.UNIQUE_USERNAME_ALIAS);
         if (shouldNotSee == null) {
-            Assert.assertTrue(String.format("'%s' field is expected to be visible", value), result);
+            if (value.startsWith("\"")) {
+                value = value.trim().replaceAll("^\"|\"$", "");
+                Assert.assertTrue(String.format("'%s' field is expected to be visible", value),
+                        getPage().isUserDetailVisible(fieldType, value));
+            } else {
+                Assert.assertTrue(String.format("'%s' field is expected to be visible", fieldType),
+                        getPage().isUserDetailVisible(fieldType));
+            }
         } else {
-            Assert.assertTrue(String.format("'%s' field is expected to be invisible", value), result);
+            if (value.startsWith("\"")) {
+                value = value.trim().replaceAll("^\"|\"$", "");
+                Assert.assertTrue(String.format("'%s' field is expected to be invisible", value),
+                        getPage().isUserDetailInvisible(fieldType, value));
+            } else {
+                Assert.assertTrue(String.format("'%s' field is expected to be invisible", fieldType),
+                        getPage().isUserDetailInvisible(fieldType));
+            }
         }
     }
 

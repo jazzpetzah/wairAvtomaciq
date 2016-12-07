@@ -2,11 +2,12 @@ Feature: Permissions
 
   @C129781 @noAcceptAlert @permissionsTest
   Scenario Outline: Deny permissions scenario
+    Given I am on Android with Google Location Service
     Given I am on Android 6 or better
     Given I delete all contacts from Address Book
     Given There is 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given I add <Contact3> into Address Book
+    Given I add <Contact3> into Address Book with phone and email
     Given <Contact1> starts instance using <CallBackend>
     Given <Contact2> starts instance using <CallBackend2>
     When I sign in using my phone number
@@ -89,6 +90,7 @@ Feature: Permissions
     And I tap Back button
     # --- Verify no user if visible in invites list if contacts access is denied
     And I open Search UI
+    And I dismiss security alert
     Then I do not see user <Contact3> in Contact list
 
     Examples:
