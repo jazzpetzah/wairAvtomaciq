@@ -532,6 +532,13 @@ final class BackendREST {
         return new JSONObject(output);
     }
 
+    public static JSONObject searchForCommonContacts(AuthToken token, String userId) throws Exception {
+        Builder webResource = buildDefaultRequestWithAuth(String.format("/search/common/%s", userId),
+                MediaType.APPLICATION_JSON, token);
+        final String output = restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK});
+        return new JSONObject(output);
+    }
+
     public static JSONObject searchForSuggestionsForContact(AuthToken token, String query) throws Exception {
         Builder webResource = buildDefaultRequestWithAuth(String.format("/search/contacts?q=%s&l=1&d=0", query),
                 MediaType.APPLICATION_JSON, token);
