@@ -1,6 +1,5 @@
 package com.wearezeta.auto.osx.common;
 
-import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.driver.ZetaOSXWebAppDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -61,10 +60,6 @@ public class Lifecycle {
      */
     public TestContext getWebContext() {
         return webContext;
-    }
-
-    public TestContext getWrapperContext() {
-        return wrapperContext;
     }
 
     private Future<ZetaWebAppDriver> createWebDriver(Future<ZetaOSXDriver> osxDriver) throws IOException {
@@ -132,8 +127,6 @@ public class Lifecycle {
         webDriverFuture = createWebDriver(osxDriverFuture);
         LOG.debug("Init Chrome Driver");
         final ZetaWebAppDriver webappDriver = webDriverFuture.get();
-        LOG.debug("Setting formatter");
-        ZetaFormatter.setLazyDriver(osxDriverFuture);
         webContext = new TestContext(testname, webDriverFuture);
         wrapperContext = webContext.fromPrimaryContext(osxDriverFuture, new OSXPagesCollection());
         LOG.debug("Setting first OS X Page");

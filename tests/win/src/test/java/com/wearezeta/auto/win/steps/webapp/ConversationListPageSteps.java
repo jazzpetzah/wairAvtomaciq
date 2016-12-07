@@ -12,15 +12,18 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-public class ContactListPageSteps {
+public class ConversationListPageSteps {
 
-    private static final Logger LOG = ZetaLogger.getLog(ContactListPageSteps.class.getName());
+    private static final Logger LOG = ZetaLogger.getLog(ConversationListPageSteps.class.getName());
     private final TestContext webContext;
-    private final TestContext wrapperContext;
 
-    public ContactListPageSteps(TestContext webContext, TestContext wrapperContext) {
+    public ConversationListPageSteps(TestContext webContext) {
         this.webContext = webContext;
-        this.wrapperContext = wrapperContext;
+    }
+    
+    @Given("^I click context menu of the last message$")
+    public void IClickContextMenuOfLast() throws Exception {
+        webContext.getPagesCollection().getPage(com.wearezeta.auto.web.pages.ConversationPage.class).clickContextMenuOnMessage(1);
     }
 
     //TODO move to webapp

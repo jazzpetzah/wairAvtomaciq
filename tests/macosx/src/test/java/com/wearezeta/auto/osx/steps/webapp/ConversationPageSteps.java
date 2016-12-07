@@ -7,6 +7,8 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.pages.webapp.ConversationPage;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import java.awt.image.BufferedImage;
 
@@ -14,17 +16,21 @@ import org.apache.log4j.Logger;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ConversationPageSteps {
-    
+
     @SuppressWarnings("unused")
-    private static final Logger log = ZetaLogger.getLog(ConversationPageSteps.class.getSimpleName());
+    private static final Logger LOG = ZetaLogger.getLog(ConversationPageSteps.class.getSimpleName());
     private final TestContext webContext;
-    private final TestContext wrapperContext;
-    
-    public ConversationPageSteps(TestContext webContext, TestContext wrapperContext) {
+
+    public ConversationPageSteps(TestContext webContext) {
         this.webContext = webContext;
-        this.wrapperContext = wrapperContext;
     }
-    
+
+    @Given("^I open context menu of the last message$")
+    public void IOpenContextMenuOfLast() throws Exception {
+        webContext.getPagesCollection(WebappPagesCollection.class).getPage(com.wearezeta.auto.web.pages.ConversationPage.class).
+                clickContextMenuOnMessage(1);
+    }
+
     @Then("^I (do not )?see a picture (.*) from link preview$")
     public void ISeePictureInLinkPreview(String doNot, String pictureName) throws Exception {
         if (doNot == null) {

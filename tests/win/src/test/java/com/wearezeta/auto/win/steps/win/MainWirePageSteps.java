@@ -11,31 +11,29 @@ import org.junit.Assert;
 public class MainWirePageSteps {
 
     private final TestContext webContext;
-    private final TestContext wrapperContext;
 
-    public MainWirePageSteps(TestContext webContext, TestContext wrapperContext) {
+    public MainWirePageSteps(TestContext webContext) {
         this.webContext = webContext;
-        this.wrapperContext = wrapperContext;
     }
 
     @When("^I close the app$")
     public void ICloseApp() throws Exception {
-        wrapperContext.getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).closeWindow();
+        webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).closeWindow();
     }
 
     @When("^I type shortcut combination to quit the app$")
     public void ITypeShortcutCombinationtoQuit() throws Exception {
-        wrapperContext.getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).pressShortCutForQuit();
+        webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).pressShortCutForQuit();
     }
 
     @When("^I type shortcut combination to open preferences$")
     public void ITypeShortcutCombinationForPreferences() throws Exception {
-        wrapperContext.getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).pressShortCutForPreferences();
+        webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).pressShortCutForPreferences();
     }
 
     @When("^I minimize the app$")
     public void IMinimizeApp() throws Exception {
-        wrapperContext.getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).minimizeWindow();
+        webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).minimizeWindow();
     }
 
     @When("^I maximize the app$")
@@ -50,32 +48,32 @@ public class MainWirePageSteps {
 
     @When("^I verify app is in minimum size$")
     public void IVerifyAppMini() throws Exception {
-        Assert.assertTrue(wrapperContext.getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).isMini());
+        Assert.assertTrue(webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).isMini());
     }
 
     @When("^I resize the app to the max by hand$")
     public void IResizeToMaxByHand() throws Exception {
-        wrapperContext.getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).resizeToMaxByHand();
+        webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).resizeToMaxByHand();
     }
 
     @When("^I resize the app to the min by hand$")
     public void IResizeToMinByHand() throws Exception {
-        wrapperContext.getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).resizeToMinByHand();
+        webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).resizeToMinByHand();
     }
 
     @When("^I ensure initial positioning$")
     public void IEnsureInitialPositioning() throws Exception {
-        wrapperContext.getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).ensurePosition();
+        webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).ensurePosition();
     }
 
     @When("^I change position of the app to X (\\d+) and Y (\\d+)$")
     public void IPositioningTo(int x, int y) throws Exception {
-        wrapperContext.getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).positionByHand(x, y);
+        webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).positionByHand(x, y);
     }
 
     @When("^I verify app X coordinate is (\\d+) and Y coordinate is (\\d+)$")
     public void IVerifyPosition(int x, int y) throws Exception {
-        MainWirePage mainWirePage = wrapperContext.getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class);
+        MainWirePage mainWirePage = webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class);
         Assert.assertTrue("Expected X coordinate " + x + " does not match the actual value " + mainWirePage.getX(),
                 mainWirePage.isX(x));
         Assert.assertTrue("Expected Y coordinate " + y + " does not match the actual value " + mainWirePage.getY(),
@@ -84,12 +82,12 @@ public class MainWirePageSteps {
 
     @When("^I resize the app to width (\\d+) px and height (\\d+) px$")
     public void IResizeTo(int width, int height) throws Exception {
-        wrapperContext.getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).resizeByHand(width, height);
+        webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class).resizeByHand(width, height);
     }
 
     @When("^I verify app width is (\\d+) px and height is (\\d+) px$")
     public void IVerifySizeOf(int width, int height) throws Exception {
-        MainWirePage mainWirePage = wrapperContext.getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class);
+        MainWirePage mainWirePage = webContext.getChildContext().getPagesCollection(WinPagesCollection.class).getPage(MainWirePage.class);
         Assert.assertTrue(mainWirePage.isApproximatelyHeight(height));
         Assert.assertTrue(mainWirePage.isApproximatelyWidth(width));
     }
