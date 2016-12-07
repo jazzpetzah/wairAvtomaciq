@@ -143,6 +143,7 @@ Feature: Conversation List
   @C1810 @regression
   Scenario Outline: Verify I can delete a group conversation from conversation list
     Given There are 3 users where <Name> is me
+    Given <Contact1> has unique username
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
@@ -180,6 +181,7 @@ Feature: Conversation List
   @C1803 @regression
   Scenario Outline: Verify I can block a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
+    Given <Contact> has unique username
     Given Myself is connected to <Contact>
     Given User <Contact> changes avatar picture to default
     Given I switch to Sign In page
@@ -218,6 +220,7 @@ Feature: Conversation List
   @C1806 @regression
   Scenario Outline: Verify I can leave a group conversation from conversation list
     Given There are 3 users where <Name> is me
+    Given <Contact1> has unique username
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given User <Contact1> changes avatar picture to default
@@ -380,6 +383,7 @@ Feature: Conversation List
   @C1808 @regression
   Scenario Outline: Verify I can delete a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
+    Given <Contact1> has unique username
     Given Myself is connected to <Contact1>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -439,6 +443,7 @@ Feature: Conversation List
   @C58607 @regression
   Scenario Outline: Verify the order of conversation list is synced between devices
     Given There are 5 users where <Name> is me
+    Given <Contact2> has unique username
     Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
