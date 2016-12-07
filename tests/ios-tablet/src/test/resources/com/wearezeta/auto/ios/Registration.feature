@@ -20,6 +20,7 @@ Feature: Registration
     And User <Name> sets the unique username
     And I tap Share Contacts button on Share Contacts overlay
     And I accept alert if visible
+    And I dismiss settings warning if visible
     Then I see conversations list
 
     Examples: 
